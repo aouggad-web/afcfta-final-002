@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import re
-from typing import Any, Dict, List, Optional
+from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
@@ -116,13 +116,21 @@ _CEMAC = {  # shared base profile for CEMAC members
     "source": "Tarif Extérieur Commun CEMAC — Directive TVA CEMAC art. 9",
 }
 _EAC = {  # EAC common profile (Kenya, Tanzania, Uganda, Rwanda, Burundi)
-    "taxes_order": ["DD", "IDF", "TVA"],
+    "taxes_order": ["DD", "IDF", "RDL", "TVA"],
     "tax_bases": {
         "DD": ("CIF", []),
         "IDF": ("CIF", []),  # Import Declaration Fee: base CIF
+        "RDL": ("CIF", []),  # Railway Development Levy: base CIF
         "TVA": ("CIF", ["DD"]),  # EAC Customs Management Act: base = CIF+DD
     },
     "source": "EAC Customs Management Act — VAT base = CIF+DD",
+}
+_IMPORT_VAT_CIF_DD = {
+    "taxes_order": ["DD", "TVA"],
+    "tax_bases": {
+        "DD": ("CIF", []),
+        "TVA": ("CIF", ["DD"]),
+    },
 }
 
 COUNTRY_TAX_PROFILES = {
@@ -188,13 +196,24 @@ COUNTRY_TAX_PROFILES = {
     # ── Afrique du Sud — SARS (sars.gov.za) ──────────────────────────────────
     # VAT : base = CIF + DD  (VAT Act s.13(2))
     "ZAF": {
-        "taxes_order": ["DD", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "TVA": ("CIF", ["DD"]),  # VAT Act s.13(2)
-        },
+        **_IMPORT_VAT_CIF_DD,
         "source": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
     },
+    # ── Afrique australe et océan Indien ─────────────────────────────────────
+    # Les fichiers tarifaires de ces pays fournissent DD + TVA/IVA par ligne.
+    # La taxe à la consommation à l'importation est assise sur CIF + DD.
+    "ZMB": {**_IMPORT_VAT_CIF_DD, "source": "Zambia Revenue Authority — VAT on imports"},
+    "ZWE": {**_IMPORT_VAT_CIF_DD, "source": "ZIMRA — VAT on imported goods"},
+    "MOZ": {
+        **_IMPORT_VAT_CIF_DD,
+        "source": "Autoridade Tributária de Moçambique — IVA na importação",
+    },
+    "MUS": {**_IMPORT_VAT_CIF_DD, "source": "Mauritius Revenue Authority — VAT on imports"},
+    "MDG": {
+        **_IMPORT_VAT_CIF_DD,
+        "source": "Direction Générale des Impôts Madagascar — TVA à l'importation",
+    },
+    "MWI": {**_IMPORT_VAT_CIF_DD, "source": "Malawi Revenue Authority — import VAT"},
     # ── Kenya / EAC — KRA (kra.go.ke) ────────────────────────────────────────
     # IDF (3.5%): base CIF  (Finance Act 2022)
     # VAT (16%): base = CIF + DD  (VAT Act Cap 476)
@@ -276,6 +295,7 @@ _TAX_LABELS = {
     "NHIL": "National Health Insurance Levy",
     "CISS": "Comprehensive Import Supervision Scheme",
     "IDF": "Import Declaration Fee",
+    "RDL": "Railway Development Levy",
     "TCI": "Taxe Communautaire d'Intégration",
     "CAC": "Centimes Additionnels Communaux",
     "RS": "Redevance Statistique",
@@ -289,7 +309,61 @@ _TAX_LABELS = {
 
 def _normalize_tax_code(code: str) -> str:
     """Normalise 'D.D' → 'DD', 'T.V.A' → 'TVA', etc."""
-    return code.replace(".", "").replace(" ", "").upper()
+    return code.replace(".", "").replace(" ", "").replace("/", "").replace("-", "").upper()
+
+
+def _canonical_tax_code(code: str, label: str = "") -> str:
+    """Map tax aliases found in generated country tariff files to calculator codes.
+
+    The recent tariff files use source-native labels/codes (DI in Morocco, CET
+    in EAC, VAT/IVA/TVA-APTAXE, GETFL in Ghana, etc.).  The cascade profiles
+    are intentionally expressed with canonical calculator codes, so every tax
+    coming from `taxes_detail` must be canonicalized before selecting bases.
+    """
+    norm = _normalize_tax_code(code)
+    text = f"{norm} {label or ''}".lower()
+
+    if norm in {"DD", "DI", "ID", "DROIT", "DDDROIT", "GENERAL", "CET"}:
+        return "DD"
+    if norm in {"TVA", "TVAI", "TVAAPTAXE", "VAT", "IVA", "VALUEADDE"}:
+        return "TVA"
+    if "value added" in text or "valeur ajoute" in text or "valeur ajout" in text:
+        return "TVA"
+    if "customs duty" in text or "import duty" in text or "droit d'importation" in text:
+        return "DD"
+    if norm in {"IMPORTDEC", "IMPORTDECL", "IDF"} or "import declaration" in text:
+        return "IDF"
+    if norm in {"RAILWAYDE", "RDL"} or "railway development" in text:
+        return "RDL"
+    if norm in {"GETFL", "GETFUND"} or "ghana education" in text:
+        return "GETFUND"
+    if norm in {"SR", "SUR"} or "surtax" in text:
+        return "SUR"
+    if norm in {"RPDIMPORREDEV", "RPDIMPOR", "TCL"}:
+        return "TCL"
+    return norm
+
+
+# Codes TVA équivalents selon le pays (portugais IVA, anglais VAT, tunisien
+# TVA/APTAXE) — un seul et même impôt fonctionnellement, jamais deux taxes
+# distinctes. _find_vat_key() doit être utilisé PARTOUT où un code de taxe est
+# comparé à "TVA" pour éviter (a) de rater le taux réel des pays non-DZA/MAR/
+# COM/MDG/MRT (qui utilisent IVA/VAT), et (b) de la compter deux fois — une
+# fois comme "TVA" au taux périmé de l'autre source, une fois comme sa propre
+# entrée "IVA"/"VAT" dans le détail par taxe.
+_VAT_EQUIVALENT_CODES = ("TVA", "IVA", "VAT", "TVAI")
+
+
+def _is_vat_code(code: str) -> bool:
+    norm = _normalize_tax_code(code)
+    return norm in _VAT_EQUIVALENT_CODES or norm.startswith("TVA/") or norm.startswith("TVA-")
+
+
+def _find_vat_key(crawled_taxes: dict) -> Optional[str]:
+    for k in crawled_taxes:
+        if _is_vat_code(k):
+            return k
+    return None
 
 
 def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) -> dict:
@@ -309,6 +383,7 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         legal_source:   official legal reference used
     """
     profile = COUNTRY_TAX_PROFILES.get(country_iso3)
+    profile_status = "country_specific" if profile else "default"
 
     # ── Default profile for unmapped countries ────────────────────────────────
     # All taxes on CIF; TVA on CIF+DD (most common pattern)
@@ -322,20 +397,23 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         profile = {
             "taxes_order": ordered_codes,
             "tax_bases": bases,
-            "source": f"Profil par défaut (TVA base = CIF+DD)",
+            "source": "Profil par défaut (TVA base = CIF+DD)",
         }
 
-    taxes_order = profile["taxes_order"]
-    tax_bases = profile["tax_bases"]
+    # Work on request-local copies: profiles intentionally share regional base
+    # dictionaries, and a source-specific extra tax must not leak into another
+    # country or a later calculation.
+    taxes_order = list(profile["taxes_order"])
+    tax_bases = dict(profile["tax_bases"])
     legal_source = profile.get("source", "")
 
     # Build a normalized lookup: norm_code → rate
-    norm_rates = {_normalize_tax_code(k): v for k, v in taxes_rates.items()}
+    norm_rates = {_canonical_tax_code(k): v for k, v in taxes_rates.items()}
 
     # Add any taxes present in the data but not in the profile (apply on CIF)
     for code in list(norm_rates.keys()):
         if code not in [_normalize_tax_code(c) for c in taxes_order]:
-            taxes_order = list(taxes_order) + [code]
+            taxes_order.append(code)
             tax_bases[code] = ("CIF", [])
 
     # Compute amounts in order, tracking each computed amount for cascade reuse
@@ -395,6 +473,7 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         "total_to_pay": total_to_pay,
         "effective_rate_pct": effective_rate_pct,
         "legal_source": legal_source,
+        "profile_status": profile_status,
     }
 
 
@@ -836,11 +915,12 @@ def get_country_summary(country_iso3):
         "country_iso3": country_iso3,
         "total_lines": len(tariff_lines),
         "total_sub_positions": summary.get(
-            "total_sub_positions", sum(len(l.get("sub_positions", [])) for l in tariff_lines)
+            "total_sub_positions",
+            sum(len(line.get("sub_positions", [])) for line in tariff_lines),
         ),
         "total_national_positions": len(nomenclature) if nomenclature else 0,
         "chapters_covered": summary.get(
-            "chapters_covered", len({l.get("chapter", "") for l in tariff_lines})
+            "chapters_covered", len({line.get("chapter", "") for line in tariff_lines})
         ),
         "vat_rate_pct": summary.get("vat_rate_pct", 0),
         "dd_rate_range": summary.get("dd_rate_range", {}),
@@ -1061,7 +1141,20 @@ def _resolve_zlecaf_context(
             zlecaf_note=None,
         )
 
-    # 4. Autres pays ratifiés des deux côtés : taux ZLECAf générique de la ligne.
+    # 4. Autres pays ratifiés des deux côtés : le taux ZLECAf générique de la
+    #    ligne n'est appliqué que si la DESTINATION a une preuve d'application
+    #    réelle du barème préférentiel (même principe que la circulaire DGD
+    #    482/2024 pour l'Algérie, généralisé) — une ratification seule ne
+    #    garantit aucune réduction effective au poste-frontière.
+    from services.zlecaf_active_implementers import implementation_evidence, is_active_implementer
+
+    if not is_active_implementer(dest):
+        return _no_preference(
+            f"ZLECAf ratifié par {dest} mais aucune preuve d'application réelle "
+            f"du barème préférentiel trouvée à ce jour (recherche 2026-07-06) "
+            f"— taux NPF appliqué"
+        )
+
     eff_dd = line_zlecaf_rate_pct
     applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)
     return _result(
@@ -1071,10 +1164,17 @@ def _resolve_zlecaf_context(
         daps=False,
         regime="ZLECAF",
         code="ZLECAF",
-        note=None,
+        note=f"Application réelle : {implementation_evidence(dest)}" if applied else None,
         zlecaf_eligible=True,
         zlecaf_note=None,
     )
+
+
+# Alias public : le moteur de rapports (benchmarking_service) doit appliquer
+# EXACTEMENT le même régime préférentiel que le calculateur (activation
+# bilatérale Algérie/Afrique du Sud, unions douanières, ratification) — jamais
+# le taux ZLECAf générique de la ligne sans tenir compte de l'origine.
+resolve_zlecaf_context = _resolve_zlecaf_context
 
 
 def calculate_import_taxes(
@@ -1168,9 +1268,11 @@ def calculate_import_taxes(
             for k, v in crawled_taxes.items()
             if isinstance(v, dict)
         }
-        # Inherit VAT and ZLECAf from ETL line (not always in crawled)
-        if "TVA" in crawled_taxes:
-            vat_rate_pct = float(crawled_taxes["TVA"].get("rate", vat_rate_pct))
+        # Inherit VAT and ZLECAf from ETL line (not always in crawled). Le code
+        # varie selon le pays (TVA/IVA/VAT/TVA-APTAXE) — cf. _find_vat_key.
+        _vat_key = _find_vat_key(crawled_taxes)
+        if _vat_key:
+            vat_rate_pct = float(crawled_taxes[_vat_key].get("rate", vat_rate_pct) or 0)
     else:
         # Copie défensive : on ne mute jamais l'objet de ligne (potentiellement
         # mis en cache) lors de la normalisation des libellés. Le format liste
@@ -1185,10 +1287,14 @@ def calculate_import_taxes(
     # List format (ETL):         [{'tax': 'D.D', 'rate': 20, 'observation': '...'}, ...]
     if isinstance(taxes_detail, list):
         taxes_detail = {
-            _normalize_tax_code(item.get("tax", item.get("code", ""))): {
+            _canonical_tax_code(
+                item.get("tax", item.get("code", "")),
+                item.get("observation", item.get("label", item.get("tax", ""))),
+            ): {
                 "rate": float(item.get("rate", 0) or 0),
                 "label": item.get("observation", item.get("label", item.get("tax", ""))),
                 "source": "etl",
+                "source_tax_code": item.get("tax", item.get("code", "")),
             }
             for item in taxes_detail
             if item.get("tax") or item.get("code")
@@ -1203,11 +1309,13 @@ def calculate_import_taxes(
     for tax_code, tax_info in taxes_detail.items():
         if not isinstance(tax_info, dict):
             continue
-        norm = _normalize_tax_code(tax_code)
+        label = tax_info.get(
+            "label", tax_info.get("name", _TAX_LABELS.get(_normalize_tax_code(tax_code), tax_code))
+        )
+        norm = _canonical_tax_code(tax_code, label)
         rate = float(tax_info.get("rate", 0) or 0)
         if rate == 0:
             continue
-        label = tax_info.get("label", tax_info.get("name", _TAX_LABELS.get(norm, tax_code)))
         # PRCT : intitulé officiel fixe (« Précompte (PRCT) ») — on ignore les
         # libellés hérités des données crawled (ex. « Prélèvement à la
         # Compensation du Transport »).
@@ -1221,13 +1329,20 @@ def calculate_import_taxes(
         elif norm == "TCS":
             tcs_rate_pct = rate
         # Capture VAT from taxes_detail when not already set from crawled source
-        elif norm in ("TVA", "TVAI") and vat_rate_pct == 0:
+        elif _is_vat_code(norm) and vat_rate_pct == 0:
             vat_rate_pct = rate
 
     # Normaliser l'intitulé officiel du PRCT dans le dict taxes_detail renvoyé
     # (entrée recréée, jamais de mutation des objets de ligne mis en cache).
     for _k in list(taxes_detail.keys()):
-        if _normalize_tax_code(_k) == "PRCT" and isinstance(taxes_detail.get(_k), dict):
+        if _canonical_tax_code(
+            _k,
+            (
+                taxes_detail.get(_k, {}).get("label", "")
+                if isinstance(taxes_detail.get(_k), dict)
+                else ""
+            ),
+        ) == "PRCT" and isinstance(taxes_detail.get(_k), dict):
             _entry = dict(taxes_detail[_k])
             for _lk in ("label", "name"):
                 if _lk in _entry:
@@ -1238,7 +1353,9 @@ def calculate_import_taxes(
     # Only add PRCT fallback if other_taxes_pct is not already covered by an
     # explicit individual tax (e.g. TPI for MAR already covers the 0.25%).
     _covered_other = sum(
-        t["rate_pct"] for t in individual_taxes if t["code"] not in ("DD", "TVA", "DAPS")
+        t["rate_pct"]
+        for t in individual_taxes
+        if t["code"] not in ("DD", "DAPS") and not _is_vat_code(t["code"])
     )
     if (
         prct_rate_pct == 0
@@ -1264,10 +1381,14 @@ def calculate_import_taxes(
         taxes_for_cascade["TCS"] = tcs_rate_pct
     if vat_rate_pct > 0:
         taxes_for_cascade["TVA"] = vat_rate_pct
-    # Add any other taxes from individual_taxes not yet covered
+    # Add any other taxes from individual_taxes not yet covered. Les codes TVA
+    # équivalents (IVA/VAT/TVA-APTAXE) sont exclus : déjà représentés par
+    # taxes_for_cascade["TVA"] via vat_rate_pct — les rajouter ici les
+    # compterait deux fois (une fois comme "TVA", une fois sous leur propre
+    # code).
     for t in individual_taxes:
-        c = _normalize_tax_code(t["code"])
-        if c not in taxes_for_cascade and t.get("rate_pct", 0) > 0:
+        c = _canonical_tax_code(t["code"], t.get("label", ""))
+        if c not in taxes_for_cascade and t.get("rate_pct", 0) > 0 and not _is_vat_code(c):
             taxes_for_cascade[c] = t["rate_pct"]
 
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
@@ -1502,6 +1623,7 @@ def calculate_import_taxes(
         "calculation_steps": npf_cascade["steps"],
         "calculation_steps_zlecaf": zlecaf_cascade["steps"],
         "cascade_legal_source": npf_cascade["legal_source"],
+        "calculation_profile_status": npf_cascade["profile_status"],
         # Legacy keys kept for backward compatibility with existing frontend code
         "npf_calculation": npf_legacy,
         "zlecaf_calculation": zlecaf_legacy,

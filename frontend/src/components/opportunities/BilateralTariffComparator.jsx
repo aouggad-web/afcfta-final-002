@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { ArrowLeftRight, Scale, TrendingDown, Info } from 'lucide-react';
 import { getAllCountries } from '../../utils/countryCodes';
+import { useHsLabel } from '../../hooks/useHsLabel';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 
 const TEXTS = {
   fr: {
@@ -83,6 +86,7 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const { label: hs6Label } = useHsLabel(hs6, language);
 
   const sameCountry = a && b && a === b;
   const canRun = a && b && !sameCountry && /^\d{6}$/.test(hs6);
@@ -101,13 +105,49 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
 
   const fill = (tpl, vals) => tpl.replace('{a}', vals.a).replace('{b}', vals.b);
 
+  // Rapport PDF : les deux sens de la paire, en clé-valeur.
+  const buildPdfSpec = () => {
+    if (!result) return null;
+    const nA = nameOf(result.country_a);
+    const nB = nameOf(result.country_b);
+    const flowSection = (label, flow) => ({
+      title: label,
+      keyValues: [
+        { label: t.mfn, value: `${flow?.mfn_rate ?? '—'}%` },
+        { label: t.zlecaf, value: `${flow?.zlecaf_rate ?? '—'}%` },
+        { label: t.margin, value: `${flow?.preference_margin ?? '—'} pts` },
+      ],
+    });
+    const bestText =
+      result.best_preference_direction === 'equal'
+        ? (language === 'en' ? 'Equal preference in both directions' : 'Préférence égale dans les deux sens')
+        : `${t.best}: ${result.best_preference_direction === 'a_to_b' ? `${nA} → ${nB}` : `${nB} → ${nA}`}`;
+    return {
+      badge: language === 'en' ? 'BILATERAL COMPARATOR' : 'COMPARATEUR BILATÉRAL',
+      title: `${nA} ⇄ ${nB} · SH6 ${hs6}`,
+      subtitle: t.subtitle,
+      sections: [
+        flowSection(fill(t.flowAB, { a: nA, b: nB }), result.flow_a_to_b),
+        flowSection(fill(t.flowBA, { a: nA, b: nB }), result.flow_b_to_a),
+        { title: t.best, paragraphs: [bestText] },
+      ],
+      source: language === 'en'
+        ? 'National tariffs + AfCFTA schedules'
+        : 'Tarifs nationaux + calendriers ZLECAf',
+      filename: opportunityPdfFilename('Comparateur', `${result.country_a}_${result.country_b}_${hs6}`),
+    };
+  };
+
   return (
     <Card className="bg-slate-800/50 border-slate-700">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-white">
-          <Scale className="w-5 h-5 text-emerald-400" />
-          {t.title}
-        </CardTitle>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Scale className="w-5 h-5 text-emerald-400" />
+            {t.title}
+          </CardTitle>
+          {result && <OpportunityPdfExport getSpec={buildPdfSpec} language={language} />}
+        </div>
         <p className="text-sm text-slate-400">{t.subtitle}</p>
       </CardHeader>
       <CardContent className="space-y-5">
@@ -153,6 +193,11 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
               inputMode="numeric"
               className="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white"
             />
+            {hs6Label && (
+              <span className="text-xs text-emerald-400 truncate" title={hs6Label}>
+                {hs6Label}
+              </span>
+            )}
           </label>
         </div>
 

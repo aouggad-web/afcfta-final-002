@@ -6,8 +6,8 @@ pydantic==2.12.0
 pydantic_core==2.41.1
 
 # MongoDB
-motor==3.3.1
-pymongo==4.5.0
+motor==3.7.1
+pymongo==4.17.0
 
 # HTTP clients and scraping
 aiohttp==3.13.3

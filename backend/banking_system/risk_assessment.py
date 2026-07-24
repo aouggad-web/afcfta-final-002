@@ -45,16 +45,24 @@ RISK_PROFILES: Dict[str, CountryRiskProfile] = {
     "DZ": CountryRiskProfile(
         country_code="DZ",
         country_name="Algérie",
-        country_risk_rating="B",
+        country_risk_rating="A4",
         forex_risk="high",
-        political_risk="moderate",
+        political_risk="low",
         transfer_risk="high",
-        recommended_instruments=["LC_CONFIRMED", "BANK_GUARANTEE_ADVANCE"],
+        recommended_instruments=[
+            "LC_IRREVOCABLE",
+            "LC_CONFIRMED",
+            "BANK_GUARANTEE_ADVANCE",
+            "EXPORT_FACTORING",
+        ],
         credit_insurance_available=True,
-        max_exposure_usd=2_000_000,
+        max_exposure_usd=5_000_000,
         notes=(
-            "Risque de change élevé (dinar non convertible). "
-            "Délais de paiement longs. Crédit documentaire confirmé recommandé."
+            "Profil macroéconomique SOLIDE: réserves de change importantes (~$60Mds), "
+            "balance courante positive, jamais de défaut souverain. MAIS: "
+            "Dinar non convertible + politique de change restrictive = risque transfert élevé. "
+            "STRATÉGIE: LC irrévocable suffisante (convertibilité gérée par hedge). "
+            "Assurance-crédit (Coface/SARA) très efficace. FX hedging recommandé (forward/option)."
         ),
     ),
     "TN": CountryRiskProfile(

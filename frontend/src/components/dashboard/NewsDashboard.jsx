@@ -36,10 +36,17 @@ const CATEGORY_ACCENTS = {
   Économie: { icon: '📊', accent: '#38bdf8' },
 };
 
+const CONTENT_TAG_LABELS = {
+  statistics: { fr: 'Statistiques', en: 'Statistics', icon: '📊', accent: '#38bdf8' },
+  opportunities: { fr: 'Opportunités', en: 'Opportunities', icon: '💡', accent: '#d4a017' },
+  development: { fr: 'Développement', en: 'Development', icon: '🚀', accent: '#20c997' },
+  events: { fr: 'Événement', en: 'Event', icon: '📅', accent: '#9b6ef5' },
+};
+
 const translations = {
   fr: {
     title: "Fil d'Actualités Économiques Africaines",
-    subtitle: 'Sources: AllAfrica, Google News (Reuters, AFP)',
+    subtitle: 'Sources: Agence Ecofin, AllAfrica, médias locaux (20+ pays), Google News',
     lastUpdate: 'Dernière mise à jour',
     refresh: 'Actualiser',
     refreshing: 'Actualisation...',
@@ -57,12 +64,14 @@ const translations = {
     daysAgo: 'il y a {days} jours',
     strategicHeadline: 'Lecture stratégique du flux économique africain',
     strategicLead: "Surveillance des signaux commerce, finance, énergie, infrastructures et chaînes d'approvisionnement.",
+    countryOfWeek: 'Pays de la semaine',
+    countryOfWeekLead: 'Points forts et perspectives',
     footer:
       'Actualités agrégées depuis Agence Ecofin, AllAfrica et flux associés. Les articles complets restent consultables sur les sites sources.',
   },
   en: {
     title: 'African Economic News Feed',
-    subtitle: 'Sources: AllAfrica, Google News (Reuters, AFP)',
+    subtitle: 'Sources: Agence Ecofin, AllAfrica, local media (20+ countries), Google News',
     lastUpdate: 'Last update',
     refresh: 'Refresh',
     refreshing: 'Refreshing...',
@@ -80,6 +89,8 @@ const translations = {
     daysAgo: '{days} days ago',
     strategicHeadline: 'Strategic reading of the African economic feed',
     strategicLead: 'Monitoring trade, finance, energy, infrastructure and supply-chain signals.',
+    countryOfWeek: 'Country of the week',
+    countryOfWeekLead: 'Strengths and prospects',
     footer:
       'News aggregated from Agence Ecofin, AllAfrica and related feeds. Full articles remain available on source websites.',
   },
@@ -96,9 +107,10 @@ const formatRelativeDate = (dateString, t) => {
   return t.daysAgo.replace('{days}', diffDays);
 };
 
-const ArticleCard = ({ article, t, featured = false }) => {
+const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
   const regionAccent = REGION_ACCENTS[article.region] || REGION_ACCENTS.Afrique;
   const categoryStyle = CATEGORY_ACCENTS[article.category] || CATEGORY_ACCENTS.Économie;
+  const contentTags = article.content_tags || [];
 
   return (
     <article
@@ -133,6 +145,24 @@ const ArticleCard = ({ article, t, featured = false }) => {
           <MapPin className="w-3 h-3 mr-1" />
           {article.region}
         </Badge>
+
+        {contentTags.map((tag) => {
+          const tagStyle = CONTENT_TAG_LABELS[tag];
+          if (!tagStyle) return null;
+          return (
+            <Badge
+              key={tag}
+              className="border"
+              style={{
+                background: `${tagStyle.accent}18`,
+                color: tagStyle.accent,
+                borderColor: `${tagStyle.accent}40`,
+              }}
+            >
+              {tagStyle.icon} {tagStyle[language] || tagStyle.fr}
+            </Badge>
+          );
+        })}
       </div>
 
       <h3
@@ -182,7 +212,7 @@ const ArticleCard = ({ article, t, featured = false }) => {
   );
 };
 
-const RegionSection = ({ region, articles, t }) => {
+const RegionSection = ({ region, articles, t, language }) => {
   const accent = REGION_ACCENTS[region] || REGION_ACCENTS.Afrique;
 
   return (
@@ -207,14 +237,14 @@ const RegionSection = ({ region, articles, t }) => {
 
       <div className="grid gap-3">
         {articles.slice(0, 5).map((article) => (
-          <ArticleCard key={article.id} article={article} t={t} />
+          <ArticleCard key={article.id} article={article} t={t} language={language} />
         ))}
       </div>
     </section>
   );
 };
 
-const CategorySection = ({ category, articles, t }) => {
+const CategorySection = ({ category, articles, t, language }) => {
   const categoryStyle = CATEGORY_ACCENTS[category] || CATEGORY_ACCENTS.Économie;
 
   return (
@@ -239,15 +269,60 @@ const CategorySection = ({ category, articles, t }) => {
 
       <div className="grid gap-3">
         {articles.slice(0, 5).map((article) => (
-          <ArticleCard key={article.id} article={article} t={t} />
+          <ArticleCard key={article.id} article={article} t={t} language={language} />
         ))}
       </div>
     </section>
   );
 };
 
+const CountrySpotlight = ({ spotlight, t, language }) => {
+  if (!spotlight || !spotlight.country) return null;
+  const countryName = language === 'fr' ? spotlight.country_name_fr : spotlight.country_name_en;
+  const profile = language === 'fr' ? spotlight.profile_fr : spotlight.profile_en;
+
+  return (
+    <section
+      className="rounded-2xl border p-4 md:p-5"
+      style={{
+        background:
+          'linear-gradient(135deg, rgba(212,137,26,0.10), rgba(255,255,255,0.02))',
+        borderColor: 'rgba(212,137,26,0.22)',
+      }}
+    >
+      <div className="flex items-center gap-3 mb-4 flex-wrap">
+        <span className="text-3xl">{spotlight.flag}</span>
+        <div>
+          <div className="text-xs uppercase tracking-wide font-bold text-[var(--gold)]">
+            {t.countryOfWeek}
+          </div>
+          <h4 className="text-xl font-bold text-[var(--text)]">{countryName}</h4>
+          <p className="text-xs text-[var(--afcfta-muted)]">{t.countryOfWeekLead}</p>
+        </div>
+      </div>
+
+      {profile && (
+        <p className="text-sm text-[rgba(234,224,208,0.9)] mb-4 leading-relaxed">
+          {profile}
+        </p>
+      )}
+
+      {spotlight.highlights.length === 0 ? (
+        <p className="text-sm text-[var(--afcfta-muted)]">{t.noArticles}</p>
+      ) : (
+        <div className="grid gap-3">
+          {spotlight.highlights.map((article) => (
+            <ArticleCard key={article.id} article={article} t={t} language={language} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+};
+
 const NewsDashboard = ({ language = 'fr' }) => {
   const [news, setNews] = useState({ articles: [], by_region: {}, by_category: {} });
+  const [countryOfWeek, setCountryOfWeek] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [lastUpdate, setLastUpdate] = useState(null);
@@ -277,6 +352,16 @@ const NewsDashboard = ({ language = 'fr' }) => {
       });
       setLastUpdate(allNews.last_update);
       setError(null);
+
+      // Le spotlight est secondaire: une panne de cet appel ne doit pas
+      // empêcher l'affichage du fil principal.
+      fetch(`${API}/news/country-of-the-week?force_refresh=${forceRefresh}`)
+        .then((r) => r.json())
+        .then((spotlight) => setCountryOfWeek(spotlight.success ? spotlight : null))
+        .catch((err) => {
+          console.error('Error fetching country of the week:', err);
+          setCountryOfWeek(null);
+        });
     } catch (err) {
       console.error('Error fetching news:', err);
       setError(err.message);
@@ -400,10 +485,12 @@ const NewsDashboard = ({ language = 'fr' }) => {
         </div>
       </div>
 
+      <CountrySpotlight spotlight={countryOfWeek} t={t} language={language} />
+
       {featuredArticles.length > 0 && (
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
           {featuredArticles.map((article, index) => (
-            <ArticleCard key={article.id || index} article={article} t={t} featured />
+            <ArticleCard key={article.id || index} article={article} t={t} language={language} featured />
           ))}
         </div>
       )}
@@ -437,7 +524,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
             ) : (
               <div className="grid gap-4">
                 {remainingArticles.map((article) => (
-                  <ArticleCard key={article.id} article={article} t={t} />
+                  <ArticleCard key={article.id} article={article} t={t} language={language} />
                 ))}
               </div>
             )}
@@ -449,7 +536,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
             ) : (
               <div className="grid md:grid-cols-2 gap-6">
                 {Object.entries(news.by_region).map(([region, articles]) => (
-                  <RegionSection key={region} region={region} articles={articles} t={t} />
+                  <RegionSection key={region} region={region} articles={articles} t={t} language={language} />
                 ))}
               </div>
             )}
@@ -461,7 +548,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
             ) : (
               <div className="grid md:grid-cols-2 gap-6">
                 {Object.entries(news.by_category).map(([category, articles]) => (
-                  <CategorySection key={category} category={category} articles={articles} t={t} />
+                  <CategorySection key={category} category={category} articles={articles} t={t} language={language} />
                 ))}
               </div>
             )}

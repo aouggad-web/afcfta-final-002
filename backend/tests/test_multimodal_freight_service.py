@@ -79,7 +79,9 @@ def test_compare_multimodal_tags_options_and_computes_roi(monkeypatch):
         ],
     )
 
-    result = service.compare_multimodal("MAR", "MLI", weight_kg=10_000, include_future=True)
+    # Weight below AIR_FREIGHT_MAX_KG_GENERAL so the (mocked) air option stays
+    # eligible — heavier shipments are policy-excluded from air entirely.
+    result = service.compare_multimodal("MAR", "MLI", weight_kg=900, include_future=True)
 
     assert result["options_count"] == 5
     assert result["operational_count"] == 3
@@ -217,3 +219,42 @@ def test_options_expose_exact_corridor_operators():
     assert "Transrail" in (
         land_seg[0].get("carriers") or []
     ), "Dakar-Bamako land leg must surface its exact rail operator (Transrail)"
+
+
+def test_land_then_sea_option_is_symmetric_to_sea_then_land():
+    # _sea_then_land_option only ever handled landlocked DESTINATIONS. Without
+    # its mirror, a landlocked ORIGIN (e.g. Ethiopia exporting) had no
+    # land+sea route at all — only air and often-nonoperational direct land
+    # corridors, systematically overpricing landlocked-country exports.
+    opts = service._land_then_sea_option(
+        "ETH", "KEN", weight_kg=12_500, container_type="teu", weight_tonnes=12.5
+    )
+    assert opts, "landlocked origin ETH must yield a land+sea option via its Djibouti gateway"
+    assert all(o["mode"] == "multimodal" for o in opts)
+    assert any(o.get("via_country") == "DJI" for o in opts)
+    rail_opt = next(o for o in opts if o.get("corridor_mode") == "rail")
+    assert rail_opt["available"] is True
+    assert rail_opt["total_cost_usd"] > 0
+    seg_modes = [s["mode"] for s in rail_opt["segments"]]
+    assert seg_modes == ["rail", "sea"], "land leg must come first, then the sea leg to destination"
+
+
+def test_landlocked_origin_ethiopia_prefers_real_corridor_over_air():
+    # Regression for the reported bug: $50k of coffee (ETH, landlocked) was
+    # recommended via air freight because no rail/road+sea route existed in
+    # the corridor registry for Ethiopia at all.
+    #
+    # A 12.5 t shipment also exceeds AIR_FREIGHT_MAX_KG_GENERAL (air freight is
+    # only realistic below ~1000 kg for general cargo) — so air is now
+    # excluded outright rather than merely losing on cost, which is a
+    # stronger version of the same fix (see test_multimodal_air_freight_realism.py).
+    result = service.compare_multimodal("ETH", "KEN", weight_kg=12_500, container_type="teu")
+    multimodal = [o for o in result["options"] if o["mode"] == "multimodal" and o["available"]]
+    air = next((o for o in result["options"] if o["mode"] == "air"), None)
+    assert multimodal, "Ethiopia (landlocked) must have at least one operational multimodal route"
+    assert air is None, "12.5 t exceeds the realistic air-freight weight ceiling"
+    assert result.get("options_count", 0) >= 1
+    cheapest_overall = min(
+        (o for o in result["options"] if o["available"]), key=lambda o: o["total_cost_usd"]
+    )
+    assert cheapest_overall["mode"] == "multimodal", "rail+sea via Djibouti must beat air on cost"

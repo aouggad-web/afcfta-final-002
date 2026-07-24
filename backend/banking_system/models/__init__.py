@@ -14,6 +14,16 @@ from .finance_models import (
     PaymentSystem,
     TradeFinanceInstrument,
 )
+from .insurance_models import (
+    CountryInsuranceProfile,
+    InsuranceClaim,
+    InsuranceCoverageScope,
+    InsuranceProduct,
+    InsuranceProductType,
+    InsuranceQuote,
+    InsuranceRiskLevel,
+    Insurer,
+)
 from .regulation_models import (
     CountryForexProfile,
     DomiciliationRule,
@@ -38,4 +48,13 @@ __all__ = [
     "TradeFinanceInstrument",
     "PaymentSystem",
     "CountryRiskProfile",
+    # Insurance
+    "InsuranceProductType",
+    "InsuranceCoverageScope",
+    "InsuranceRiskLevel",
+    "InsuranceProduct",
+    "Insurer",
+    "CountryInsuranceProfile",
+    "InsuranceQuote",
+    "InsuranceClaim",
 ]

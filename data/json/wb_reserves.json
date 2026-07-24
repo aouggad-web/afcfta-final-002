@@ -1,0 +1,272 @@
+{
+  "source": "World Bank, World Development Indicators (WDI)",
+  "indicators": {
+    "fx_reserves_busd": "FI.RES.TOTL.CD",
+    "import_cover_months": "FI.RES.TOTL.MO"
+  },
+  "note": "Total reserves include gold. Latest available observation per country.",
+  "countries": {
+    "DZA": {
+      "fx_reserves_busd": 72.496,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 16.53,
+      "import_cover_year": 2024
+    },
+    "AGO": {
+      "fx_reserves_busd": 13.536,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 5.32,
+      "import_cover_year": 2025
+    },
+    "BWA": {
+      "fx_reserves_busd": 3.456,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 4.76,
+      "import_cover_year": 2024
+    },
+    "BDI": {
+      "fx_reserves_busd": 0.09,
+      "fx_reserves_year": 2023,
+      "import_cover_months": 0.73,
+      "import_cover_year": 2023
+    },
+    "CPV": {
+      "fx_reserves_busd": 1.259,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 8.69,
+      "import_cover_year": 2025
+    },
+    "CMR": {
+      "fx_reserves_busd": 5.062,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 5.28,
+      "import_cover_year": 2024
+    },
+    "CAF": {
+      "fx_reserves_busd": 0.489,
+      "fx_reserves_year": 2024
+    },
+    "TCD": {
+      "fx_reserves_busd": 1.548,
+      "fx_reserves_year": 2024
+    },
+    "COM": {
+      "fx_reserves_busd": 0.409,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 7.61,
+      "import_cover_year": 2023
+    },
+    "COG": {
+      "fx_reserves_busd": 0.759,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 1.6,
+      "import_cover_year": 2021
+    },
+    "COD": {
+      "fx_reserves_busd": 5.104,
+      "fx_reserves_year": 2023,
+      "import_cover_months": 1.69,
+      "import_cover_year": 2023
+    },
+    "DJI": {
+      "fx_reserves_busd": 0.656,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 0.85,
+      "import_cover_year": 2024
+    },
+    "EGY": {
+      "fx_reserves_busd": 48.875,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 4.36,
+      "import_cover_year": 2025
+    },
+    "GNQ": {
+      "fx_reserves_busd": 1.077,
+      "fx_reserves_year": 2024
+    },
+    "ERI": {
+      "fx_reserves_busd": 0.192,
+      "fx_reserves_year": 2019
+    },
+    "SWZ": {
+      "fx_reserves_busd": 0.537,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 1.91,
+      "import_cover_year": 2024
+    },
+    "ETH": {
+      "fx_reserves_busd": 3.784,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 1.78,
+      "import_cover_year": 2024
+    },
+    "GAB": {
+      "fx_reserves_busd": 0.639,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 4.25,
+      "import_cover_year": 2015
+    },
+    "GMB": {
+      "fx_reserves_busd": 0.629,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 4.79,
+      "import_cover_year": 2024
+    },
+    "GHA": {
+      "fx_reserves_busd": 4.472,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 1.64,
+      "import_cover_year": 2024
+    },
+    "GIN": {
+      "fx_reserves_busd": 1.346,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 1.28,
+      "import_cover_year": 2024
+    },
+    "KEN": {
+      "fx_reserves_busd": 12.394,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 4.03,
+      "import_cover_year": 2024
+    },
+    "LSO": {
+      "fx_reserves_busd": 1.008,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 5.54,
+      "import_cover_year": 2024
+    },
+    "LBR": {
+      "fx_reserves_busd": 0.339,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 2.02,
+      "import_cover_year": 2024
+    },
+    "LBY": {
+      "fx_reserves_busd": 104.657,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 31.57,
+      "import_cover_year": 2023
+    },
+    "MDG": {
+      "fx_reserves_busd": 2.785,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 5.5,
+      "import_cover_year": 2024
+    },
+    "MWI": {
+      "fx_reserves_busd": 0.594,
+      "fx_reserves_year": 2020,
+      "import_cover_months": 1.91,
+      "import_cover_year": 2020
+    },
+    "MRT": {
+      "fx_reserves_busd": 2.039,
+      "fx_reserves_year": 2021,
+      "import_cover_months": 5.41,
+      "import_cover_year": 2021
+    },
+    "MUS": {
+      "fx_reserves_busd": 10.308,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 5.16,
+      "import_cover_year": 2024
+    },
+    "MAR": {
+      "fx_reserves_busd": 48.454,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 5.93,
+      "import_cover_year": 2025
+    },
+    "MOZ": {
+      "fx_reserves_busd": 3.843,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 3.44,
+      "import_cover_year": 2024
+    },
+    "NAM": {
+      "fx_reserves_busd": 3.105,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 3.96,
+      "import_cover_year": 2024
+    },
+    "NGA": {
+      "fx_reserves_busd": 46.025,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 7.12,
+      "import_cover_year": 2025
+    },
+    "RWA": {
+      "fx_reserves_busd": 1.963,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 4.18,
+      "import_cover_year": 2024
+    },
+    "STP": {
+      "fx_reserves_busd": 0.059,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 3.46,
+      "import_cover_year": 2024
+    },
+    "SYC": {
+      "fx_reserves_busd": 0.774,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 3.67,
+      "import_cover_year": 2024
+    },
+    "SLE": {
+      "fx_reserves_busd": 0.433,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 1.75,
+      "import_cover_year": 2024
+    },
+    "ZAF": {
+      "fx_reserves_busd": 76.023,
+      "fx_reserves_year": 2025,
+      "import_cover_months": 6.22,
+      "import_cover_year": 2025
+    },
+    "SSD": {
+      "fx_reserves_busd": 0.016,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 0.17,
+      "import_cover_year": 2023
+    },
+    "SDN": {
+      "fx_reserves_busd": 0.178,
+      "fx_reserves_year": 2017,
+      "import_cover_months": 0.19,
+      "import_cover_year": 2017
+    },
+    "TZA": {
+      "fx_reserves_busd": 5.05,
+      "fx_reserves_year": 2018,
+      "import_cover_months": 5.39,
+      "import_cover_year": 2018
+    },
+    "TUN": {
+      "fx_reserves_busd": 9.344,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 4.51,
+      "import_cover_year": 2024
+    },
+    "UGA": {
+      "fx_reserves_busd": 3.483,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 2.39,
+      "import_cover_year": 2024
+    },
+    "ZMB": {
+      "fx_reserves_busd": 4.09,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 3.29,
+      "import_cover_year": 2024
+    },
+    "ZWE": {
+      "fx_reserves_busd": 0.485,
+      "fx_reserves_year": 2024,
+      "import_cover_months": 0.52,
+      "import_cover_year": 2024
+    }
+  }
+}

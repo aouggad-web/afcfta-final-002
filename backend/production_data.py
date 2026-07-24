@@ -276,9 +276,72 @@ def get_manufacturing_by_country(country_iso3: str) -> Dict:
         "country_iso3": country_iso3,
         "country_name": records[0].get("country_name") if records else None,
         "data_by_isic": by_isic,
+        "key_products": get_manufacturing_key_products(country_iso3),
+        "manufacturing_profile": get_manufacturing_profile(country_iso3),
         "total_records": len(records),
         "years_covered": years_covered,
         "latest_year": years_covered[-1] if years_covered else None,
+    }
+
+
+def _unido_industry_data() -> Dict:
+    """
+    Table UNIDO INDSTAT4 curée (``backend/etl/unido_data.py``), source des
+    enregistrements manufacturiers du fichier de production.
+
+    Import paresseux + dégradation silencieuse : le fichier de production reste
+    la source d'autorité pour la valeur ajoutée par secteur ; on ne lit ici que
+    les signaux additionnels curés (produits phares, part haute technologie,
+    exports manufacturiers) qui ne sont pas matérialisés dans le JSON, afin que
+    le module production expose le MAXIMUM d'information disponible sans dépendre
+    d'une reconstruction du fichier.
+    """
+    try:
+        from etl.unido_data import UNIDO_INDUSTRY_DATA
+
+        return UNIDO_INDUSTRY_DATA
+    except Exception:  # pragma: no cover - source absente
+        return {}
+
+
+def get_manufacturing_key_products(country_iso3: str) -> List[str]:
+    """
+    Produits manufacturés phares (exportables) curés pour un pays.
+
+    Ces libellés (« Ciment », « Acier », « Véhicules automobiles »…) nomment
+    concrètement ce qu'un pays produit déjà, au-delà de la seule valeur ajoutée
+    par division ISIC. Ils ancrent la découverte d'opportunités d'export sur des
+    produits réels. Retourne ``[]`` si le pays n'est pas curé.
+    """
+    iso3 = _normalize_country_iso3(country_iso3)
+    entry = _unido_industry_data().get(iso3) or {}
+    return list(entry.get("key_products", []))
+
+
+def get_manufacturing_profile(country_iso3: str) -> Dict:
+    """
+    Profil manufacturier synthétique d'un pays (signaux UNIDO curés au-delà de
+    la valeur ajoutée par secteur) : valeur ajoutée manufacturière totale, part
+    moyenne/haute technologie, emploi industriel, exports manufacturiers, rang
+    CIP. Champs absents -> ``None``. Retourne ``{}`` si le pays n'est pas curé.
+    """
+    iso3 = _normalize_country_iso3(country_iso3)
+    entry = _unido_industry_data().get(iso3)
+    if not entry:
+        return {}
+    return {
+        "country_name": entry.get("country_name"),
+        "region": entry.get("region"),
+        "mva_mln_usd": entry.get("mva_2024_mln_usd", entry.get("mva_2023_mln_usd")),
+        "mva_gdp_percent": entry.get("mva_gdp_percent"),
+        "mva_per_capita_usd": entry.get("mva_per_capita_usd"),
+        "mht_share_mva": entry.get("mht_share_mva"),
+        "industry_employment": entry.get("industry_employment"),
+        "exports_manuf_mln_usd": entry.get("exports_manuf_mln_usd"),
+        "manuf_share_exports": entry.get("manuf_share_exports"),
+        "cip_index_rank": entry.get("cip_index_rank"),
+        "data_year": entry.get("data_year"),
+        "source": entry.get("source"),
     }
 
 

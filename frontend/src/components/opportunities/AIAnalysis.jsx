@@ -16,11 +16,13 @@ import {
   Loader2, AlertCircle, Target, DollarSign, ArrowRight,
   ChevronDown, ChevronUp, Info, CheckCircle, AlertTriangle,
   Zap, Clock, Tag, ShieldCheck, BarChart2, Lightbulb,
-  XCircle, Award, ListChecks, BadgeCheck, Database,
+  XCircle, Award, ListChecks, BadgeCheck, Database, Truck,
 } from 'lucide-react';
 
 import TradeSankeyDiagram from './TradeSankeyDiagram';
 import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -76,7 +78,7 @@ const HSBadge = ({ product }) => {
 };
 
 // ── Advantage Metrics strip ───────────────────────────────────────────────────
-const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin, lang }) => {
+const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin, hs6Code, lang }) => {
   if (!leadTimeSavings && !priceCompetitiveness && !rulesOfOrigin) return null;
   return (
     <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[var(--afcfta-border)] text-center text-[11px]">
@@ -101,8 +103,63 @@ const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin
             <span className="font-medium">{lang === 'fr' ? 'Règles d\'origine ZLECAf' : 'AfCFTA Rules of Origin'}:</span>
           </div>
           <span className="text-[var(--text)] text-[11px] leading-tight">{rulesOfOrigin}</span>
+          <OfficialRuleOfOrigin hs6Code={hs6Code} lang={lang} />
         </div>
       )}
+    </div>
+  );
+};
+
+// ── Official Rules of Origin (backend dataset, not AI-generated) ─────────────
+// Module-level cache so opportunity cards sharing an HS6 code (or re-renders)
+// don't each fire their own request — this data is static per code+lang.
+const ruleOfOriginCache = new Map();
+
+const OfficialRuleOfOrigin = ({ hs6Code, lang }) => {
+  const [rule, setRule] = useState(null);
+
+  useEffect(() => {
+    if (!hs6Code) return;
+    const cacheKey = `${hs6Code}|${lang}`;
+    if (ruleOfOriginCache.has(cacheKey)) {
+      setRule(ruleOfOriginCache.get(cacheKey));
+      return;
+    }
+    let cancelled = false;
+    axios.get(`${API}/rules-of-origin/${hs6Code}`, { params: { lang } })
+      .then(r => {
+        ruleOfOriginCache.set(cacheKey, r.data);
+        if (!cancelled) setRule(r.data);
+      })
+      .catch(() => { if (!cancelled) setRule(null); });
+    return () => { cancelled = true; };
+  }, [hs6Code, lang]);
+
+  const primaryRule = rule?.rules?.primary_rule;
+  if (!primaryRule || !primaryRule.explanation) return null;
+
+  return (
+    <div style={{
+      marginTop: 6,
+      padding: '8px 10px',
+      background: 'rgba(26,122,74,0.06)',
+      border: '1px solid rgba(26,122,74,0.15)',
+      borderRadius: 6,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
+        <ShieldCheck style={{ width: 11, height: 11, color: 'var(--green)', flexShrink: 0 }} />
+        <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--green)' }}>
+          {primaryRule.name || primaryRule.code}
+        </span>
+        {rule.status === 'YTB' && (
+          <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--gold)' }}>
+            {lang === 'fr' ? '· en négociation' : '· under negotiation'}
+          </span>
+        )}
+      </div>
+      <p style={{ fontSize: 11, color: 'var(--afcfta-muted)', lineHeight: 1.4, margin: 0 }}>
+        {primaryRule.explanation}
+      </p>
     </div>
   );
 };
@@ -261,12 +318,72 @@ const SOURCE_BADGE = {
   manufacturing: { label: 'UNIDO · INDSTAT4', color: '#4f8ef7', bg: 'rgba(79,142,247,0.10)' },
 };
 
+const LogisticsSizing = ({ logistics, lang }) => {
+  if (!logistics || !logistics.available) return null;
+  const fr = lang === 'fr';
+  const { containers_needed, container_type, total_freight_usd, estimated_weight_kg, accessibility_index } = logistics;
+
+  return (
+    <div style={{ marginTop: 14, borderTop: '2px solid rgba(79,142,247,0.20)', paddingTop: 14 }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 7,
+        fontSize: 12, fontWeight: 800, color: '#4f8ef7',
+        marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em',
+      }}>
+        <Truck style={{ width: 14, height: 14 }} />
+        {fr ? 'Logistique estimée' : 'Estimated logistics'}
+      </div>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        {containers_needed != null && (
+          <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
+              {fr ? 'Conteneurs' : 'Containers'}
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
+              {containers_needed} × {container_type === 'feu' ? "40′" : "20′"}
+            </div>
+          </div>
+        )}
+        {total_freight_usd != null && (
+          <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
+              {fr ? 'Fret total estimé' : 'Est. total freight'}
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
+              {fmtBig(total_freight_usd, 'USD')}
+            </div>
+          </div>
+        )}
+        {accessibility_index != null && (
+          <div style={{ flex: '1 1 90px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
+            <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
+              {fr ? 'Accessibilité' : 'Accessibility'}
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--gold)' }}>
+              {Math.round(accessibility_index * 100)}%
+            </div>
+          </div>
+        )}
+      </div>
+      {estimated_weight_kg != null && (
+        <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginTop: 6 }}>
+          {fr ? 'Poids estimé depuis la valeur potentielle' : 'Weight estimated from potential value'}:{' '}
+          {Math.round(estimated_weight_kg).toLocaleString()} kg
+        </div>
+      )}
+    </div>
+  );
+};
+
 const ProductionCapacity = ({ capacity, lang }) => {
   if (!capacity || !capacity.available) return null;
   const fr = lang === 'fr';
   const { commodity, unit, dimension, latest_value, latest_year, cagr_pct,
-          continental = {}, integration_scenarios = {}, source = {} } = capacity;
-  const badge = SOURCE_BADGE[dimension] || SOURCE_BADGE.agri;
+          continental = {}, integration_scenarios = {}, source = {},
+          is_proxy, proxy_caveat, measure, match_level } = capacity;
+  const badge = is_proxy
+    ? { label: source.institution || 'OEC / BACI', bg: '#fef3c7', color: '#92400e' }
+    : (SOURCE_BADGE[dimension] || SOURCE_BADGE.agri);
   const rank = continental.rank;
   const share = continental.country_share_pct;
   const scenarioList = Object.values(integration_scenarios).filter(s => s.annual_growth_pct != null);
@@ -281,7 +398,9 @@ const ProductionCapacity = ({ capacity, lang }) => {
         marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em',
       }}>
         <Factory style={{ width: 14, height: 14 }} />
-        {fr ? 'Capacité de production' : 'Production capacity'}
+        {is_proxy
+          ? (fr ? 'Capacité de production — proxy export' : 'Production capacity — export proxy')
+          : (fr ? 'Capacité de production' : 'Production capacity')}
         <span style={{
           marginLeft: 'auto', fontSize: 9, fontWeight: 700,
           background: badge.bg, color: badge.color,
@@ -295,11 +414,18 @@ const ProductionCapacity = ({ capacity, lang }) => {
       <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
         <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
           <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
-            {commodity} · {latest_year}
+            {is_proxy
+              ? `${fr ? 'Exportations' : 'Exports'}${match_level ? ` ${match_level}` : ''} · ${latest_year}`
+              : `${commodity} · ${latest_year}`}
           </div>
           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
             {fmtBig(latest_value, unit)}
           </div>
+          {is_proxy && measure && (
+            <div style={{ fontSize: 9, color: 'var(--afcfta-muted)', marginTop: 2 }}>
+              {measure}
+            </div>
+          )}
         </div>
         {cagr_pct != null && (
           <div style={{ flex: '1 1 90px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
@@ -334,6 +460,36 @@ const ProductionCapacity = ({ capacity, lang }) => {
           {continental.continental_total != null && (
             <> · {fr ? 'Total Afrique' : 'Africa total'}: {fmtBig(continental.continental_total, unit)}</>
           )}
+        </div>
+      )}
+
+      {is_proxy && proxy_caveat && (
+        <div style={{
+          fontSize: 10.5, color: '#92400e', background: '#fef3c7',
+          border: '1px solid #fde68a', borderRadius: 6, padding: '6px 9px',
+          marginBottom: 10, lineHeight: 1.4,
+        }}>
+          ⚠ {proxy_caveat}
+        </div>
+      )}
+
+      {is_proxy && capacity.measured_reference && (
+        <div style={{ fontSize: 10.5, color: 'var(--afcfta-muted)', marginBottom: 10, lineHeight: 1.4 }}>
+          {fr ? 'Référence mesurée (couverture partielle)' : 'Measured reference (partial coverage)'} :{' '}
+          {capacity.measured_reference.institution} — {capacity.measured_reference.commodity}
+          {capacity.measured_reference.latest_value != null && (
+            <> · {fmtBig(capacity.measured_reference.latest_value, capacity.measured_reference.unit)} ({capacity.measured_reference.latest_year})</>
+          )}
+        </div>
+      )}
+
+      {continental.coverage_caveat && (
+        <div style={{
+          fontSize: 10.5, color: '#92400e', background: '#fef3c7',
+          border: '1px solid #fde68a', borderRadius: 6, padding: '6px 9px',
+          marginBottom: 10, lineHeight: 1.4,
+        }}>
+          ⚠ {continental.coverage_caveat}
         </div>
       )}
 
@@ -411,6 +567,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
   const entryStrategy = opp.entryStrategy || opp.entry_strategy;
   const oecData = opp.oec_data;
   const productionCapacity = opp.production_capacity || opp.productionCapacity;
+  const logistics = opp.logistics;
 
   // Industrial input
   const input = opp.industrialInput || opp.industrial_input || {};
@@ -593,11 +750,15 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
         leadTimeSavings={leadTimeSavings}
         priceCompetitiveness={priceComp}
         rulesOfOrigin={roo}
+        hs6Code={product.hs6Code || product.hs_code}
         lang={lang}
       />
 
       {/* Production Capacity — données réelles FAO/USGS/UNIDO + scénarios */}
       <ProductionCapacity capacity={productionCapacity} lang={lang} />
+
+      {/* Logistique — conteneurs dimensionnés depuis la valeur potentielle */}
+      <LogisticsSizing logistics={logistics} lang={lang} />
 
       {/* Entry Strategy — section clé manquante */}
       <EntryStrategy strategy={entryStrategy} lang={lang} />
@@ -1056,6 +1217,61 @@ export default function AIAnalysis({ language = 'fr' }) {
       {/* Results */}
       {!loading && !error && data && (
         <>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <OpportunityPdfExport
+              language={lang}
+              getSpec={() => {
+                const fr = lang !== 'en';
+                const opps = data.opportunities || [];
+                const musd = (v) => (v ? `$${Number(v).toLocaleString(fr ? 'fr-FR' : 'en-US', { maximumFractionDigits: 1 })}M` : '—');
+                return {
+                  badge: fr ? 'ANALYSE IA' : 'AI ANALYSIS',
+                  title: `${fr ? 'Opportunités' : 'Opportunities'} ${mode === 'export' ? 'export' : mode === 'import' ? 'import' : ''} — ${data.country || selectedCountry}`,
+                  subtitle: fr
+                    ? 'Analyse générée par IA — à recouper avec les flux réels OEC/BACI'
+                    : 'AI-generated analysis — cross-check against real OEC/BACI flows',
+                  sections: [
+                    opps.length && {
+                      title: fr ? 'Opportunités identifiées' : 'Identified opportunities',
+                      table: {
+                        columns: [
+                          { key: 'product', label: fr ? 'Produit' : 'Product', width: 2.4, fmt: (v, o) => o.product?.name || o.output_product || o.product_name || '—' },
+                          {
+                            // Même résolution par mode que la carte à l'écran
+                            // (voir OpportunityCard ci-dessus, isExport/isIndustrial) :
+                            // le mode "industriel" a ses propres champs
+                            // (targetMarkets, potentialTradeValue) et tombait
+                            // sinon dans la branche import -> colonnes à "—".
+                            key: 'partner', label: fr ? 'Partenaire / marché' : 'Partner / market', width: 1.6,
+                            fmt: (v, o) =>
+                              (mode === 'export'
+                                ? (o.potentialPartner || o.potential_partner)
+                                : mode === 'industrial'
+                                ? (o.targetMarkets || o.target_markets || []).slice(0, 2).join(', ')
+                                : (o.potentialSupplier || o.potential_supplier)) || '—',
+                          },
+                          {
+                            key: 'value', label: fr ? 'Potentiel (M$)' : 'Potential ($M)', align: 'right', width: 1,
+                            fmt: (v, o) =>
+                              musd(
+                                mode === 'export'
+                                  ? (o.potentialTradeValue || o.potential_value_musd || o.potential_trade_value)
+                                  : mode === 'industrial'
+                                  ? (o.potentialTradeValue || o.potential_value_musd)
+                                  : (o.substitutionPotential || o.substitution_potential_musd || o.currentImportValue),
+                              ),
+                          },
+                        ],
+                        rows: opps,
+                      },
+                    },
+                  ].filter(Boolean),
+                  source: fr ? 'Claude AI + OEC, UN Comtrade, IMF, UNCTAD' : 'Claude AI + OEC, UN Comtrade, IMF, UNCTAD',
+                  filename: opportunityPdfFilename('AnalyseIA', `${data.country || selectedCountry}_${mode}`),
+                };
+              }}
+            />
+          </div>
           <SummaryStrip data={data} mode={mode} lang={lang} />
 
           {/* Sankey */}

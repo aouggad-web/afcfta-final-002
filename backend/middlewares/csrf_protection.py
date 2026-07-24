@@ -58,7 +58,7 @@ class CSRFMiddleware(BaseHTTPMiddleware):
             else:
                 path = "/" + raw_path.split("/", 1)[-1] if "/" in raw_path else raw_path
 
-        if any(path.startswith(p) for p in self.exempt_paths):
+        if path in self.exempt_paths:
             return await call_next(request)
 
         cookie_token = request.cookies.get(CSRF_COOKIE)

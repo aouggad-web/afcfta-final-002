@@ -70,7 +70,8 @@
     "zod": "^3.24.4"
   },
   "scripts": {
-    "start": "vite --host 0.0.0.0 --port 5000",
+    "start": "sh -c 'if [ ! -f build/index.html ]; then vite build; fi && vite preview --host 0.0.0.0 --port ${PORT:-3000}'",
+    "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
@@ -90,7 +91,7 @@
   },
   "devDependencies": {
     "@testing-library/dom": "^10",
-    "@testing-library/jest-dom": "^6",
+    "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "^16",
     "@testing-library/user-event": "^14",
     "@vitejs/plugin-react": "^4.3.4",

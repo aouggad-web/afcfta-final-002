@@ -27,7 +27,6 @@ Cost estimate (Haiku, Dec 2024 pricing):
     - Per call: ~1500 input tokens × $0.80/MTok + ~3500 output tokens × $4/MTok = $0.015
     - 54 countries × 3 modes × 2 langs = 324 calls × $0.015 = ~$4.86 total
     - Value chains (6 sectors × 2 langs) = 12 calls × $0.015 = ~$0.18
-    - Summary (2 langs) = 2 calls × $0.015 = ~$0.03
     TOTAL ONE-TIME COST: ~$5
 """
 
@@ -173,24 +172,6 @@ async def seed_value_chains(sectors: list, langs: list, skip_existing: bool, sta
             await asyncio.sleep(1.2)
 
 
-async def seed_summary(langs: list, skip_existing: bool, stats: dict):
-    for lang in langs:
-        params = {"lang": lang}
-        if skip_existing and cache_service.get("claude_summary", params):
-            print(f"  SKIP (cached): summary/{lang}")
-            stats["skipped"] += 1
-            continue
-        try:
-            t0 = time.time()
-            await claude_trade_service.get_trade_summary(lang=lang)
-            print(f"  OK  ({time.time()-t0:.1f}s): summary/{lang}")
-            stats["done"] += 1
-        except Exception as e:
-            print(f"  ERR: summary/{lang} — {e}")
-            stats["errors"] += 1
-        await asyncio.sleep(1.2)
-
-
 async def main():
     parser = argparse.ArgumentParser(description="Seed AfCFTA AI analysis cache")
     parser.add_argument("--dry-run", action="store_true", help="Cost estimate only, no API calls")
@@ -199,7 +180,6 @@ async def main():
     parser.add_argument("--modes", default="export,import,industrial", help="Comma-separated modes")
     parser.add_argument("--langs", default="fr,en", help="Comma-separated langs")
     parser.add_argument("--no-value-chains", action="store_true", help="Skip value chains seeding")
-    parser.add_argument("--no-summary", action="store_true", help="Skip summary seeding")
     args = parser.parse_args()
 
     selected_modes = args.modes.split(",")
@@ -255,11 +235,6 @@ async def main():
     if not args.no_value_chains:
         print(f"\n[Value Chains] 6 sectors × {len(selected_langs)} langs")
         await seed_value_chains(VALUE_CHAIN_SECTORS, selected_langs, args.skip_existing, stats)
-
-    # ── Summary ──
-    if not args.no_summary:
-        print(f"\n[Summary] {len(selected_langs)} langs")
-        await seed_summary(selected_langs, args.skip_existing, stats)
 
     elapsed = time.time() - t_start
     cache_files = list(cache_service._file.cache_dir.glob("claude_*.json"))

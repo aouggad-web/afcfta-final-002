@@ -6,6 +6,9 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { TrendingDown, Calculator, Info } from 'lucide-react';
 import { getAllCountries } from '../../utils/countryCodes';
+import { useHsLabel } from '../../hooks/useHsLabel';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 
 const TEXTS = {
   fr: {
@@ -80,6 +83,7 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const { label: hs6Label } = useHsLabel(hs6, language);
 
   const canRun = importer && /^\d{6}$/.test(hs6) && Number(value) > 0;
 
@@ -103,13 +107,53 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
     annual_saving: r.annual_saving,
   }));
 
+  // Rapport PDF du simulateur : KPIs + projection année par année.
+  const buildPdfSpec = () => {
+    if (!result) return null;
+    const fr = language !== 'en';
+    return {
+      badge: fr ? 'SIMULATEUR ZLECAf' : 'AfCFTA SIMULATOR',
+      title: `${t.title} — ${importer} · SH6 ${hs6}`,
+      subtitle: `${t.subtitle}`,
+      kpis: [
+        { label: t.npfRate, value: `${result.npf_rate}%`, accent: 'red' },
+        { label: t.currentRate, value: `${result.current_zlecaf_rate}%`, accent: 'green' },
+        { label: t.savingNow, value: fmtUSD(result.annual_saving_now), accent: 'green' },
+        { label: t.totalSaving, value: fmtUSD(result.total_saving_over_schedule), accent: 'gold' },
+      ],
+      sections: [
+        {
+          title: t.chartTitle,
+          table: {
+            columns: [
+              { key: 'calendar_year', label: t.tableYear, width: 0.8 },
+              { key: 'zlecaf_rate', label: t.tableRate, align: 'right', width: 0.9, fmt: (v) => `${v}%` },
+              { key: 'duty_npf', label: t.tableDutyNpf, align: 'right', width: 1.1, fmt: fmtUSD },
+              { key: 'duty_zlecaf', label: t.tableDutyZlecaf, align: 'right', width: 1.1, fmt: fmtUSD },
+              { key: 'annual_saving', label: t.tableSaving, align: 'right', width: 1.1, fmt: fmtUSD },
+              { key: 'cumulative_saving', label: t.tableCum, align: 'right', width: 1.1, fmt: fmtUSD },
+            ],
+            rows: result.projection || [],
+          },
+        },
+      ],
+      source: fr
+        ? 'Calendrier officiel de démantèlement ZLECAf + tarifs nationaux'
+        : 'Official AfCFTA dismantlement schedule + national tariffs',
+      filename: opportunityPdfFilename('Simulateur', `${importer}_${hs6}`),
+    };
+  };
+
   return (
     <Card className="bg-slate-800/50 border-slate-700">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-white">
-          <Calculator className="w-5 h-5 text-emerald-400" />
-          {t.title}
-        </CardTitle>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Calculator className="w-5 h-5 text-emerald-400" />
+            {t.title}
+          </CardTitle>
+          {result && <OpportunityPdfExport getSpec={buildPdfSpec} language={language} />}
+        </div>
         <p className="text-sm text-slate-400">{t.subtitle}</p>
       </CardHeader>
       <CardContent className="space-y-5">
@@ -140,6 +184,11 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
               inputMode="numeric"
               className="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white"
             />
+            {hs6Label && (
+              <span className="text-xs text-emerald-400 truncate" title={hs6Label}>
+                {hs6Label}
+              </span>
+            )}
           </label>
 
           <label className="flex flex-col gap-1">

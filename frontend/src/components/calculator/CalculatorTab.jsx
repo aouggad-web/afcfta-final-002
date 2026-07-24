@@ -12,12 +12,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { toast } from '../../hooks/use-toast';
+import { useHsLabel } from '../../hooks/useHsLabel';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
 import SmartHSSearch from '../SmartHSSearch';
 import { Package, ChevronDown, ChevronUp, Sparkles, AlertTriangle, Info, Calculator, Globe, FileText, CheckCircle, ClipboardList, Scale, FileCheck, Shield, DollarSign, RotateCcw } from 'lucide-react';
 import DetailedCalculationBreakdown from './DetailedCalculationBreakdown';
 import TaxBreakdownDual from './TaxBreakdownDual';
 import CalculationJournal from './CalculationJournal';
+import CalculationMethodStatus from './CalculationMethodStatus';
 import { DetailedTaxTable, SavingsHighlight, TaxComparisonBarChart, TaxDistributionPieChart } from './TaxBreakdownChart';
 import MultiCountryComparison from './MultiCountryComparison';
 import DataStatusBanner from '../common/DataStatusBanner';
@@ -78,6 +80,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [ruleOfOrigin, setRuleOfOrigin] = useState(null);
   const [selectedSubPositionDesc, setSelectedSubPositionDesc] = useState(null);
   const [selectedSubPositionFormalities, setSelectedSubPositionFormalities] = useState(null);
+  // Repli en mode saisie directe (hors recherche intelligente) : celle-ci ne
+  // remplit jamais selectedSubPositionDesc, donc sans ce hook le code SH
+  // reste affiché nu tant qu'aucune sélection via recherche n'a été faite.
+  const { label: hsCodeSimpleLabel } = useHsLabel(hsCode, language);
   const [countryTariffProfile, setCountryTariffProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [regulatorySelectedPos, setRegulatorySelectedPos] = useState(null);
@@ -466,6 +472,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           taxes_breakdown: authenticResult.taxes_breakdown || [],
           taxes_summary: authenticResult.taxes_summary || null,
           currency: authenticResult.currency || null,
+          calculation_profile_status: authenticResult.calculation_profile_status || 'default',
+          cascade_legal_source: authenticResult.cascade_legal_source || null,
           
           // Détails des taxes
           taxes_detail: authenticResult.taxes_detail || [],
@@ -908,7 +916,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   className="h-12 font-mono text-lg bg-slate-800/50 border-slate-600 hover:border-purple-500/50 focus:border-purple-500 transition-colors tracking-wider"
                   data-testid="hs-code-simple-input"
                 />
-                <p className="text-slate-500 text-xs">{t.hsCodeHint}</p>
+                {hsCodeSimpleLabel ? (
+                  <p className="text-emerald-400 text-xs truncate" title={hsCodeSimpleLabel}>
+                    {hsCodeSimpleLabel}
+                  </p>
+                ) : (
+                  <p className="text-slate-500 text-xs">{t.hsCodeHint}</p>
+                )}
               </div>
             )}
 
@@ -919,7 +933,44 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <span className="text-slate-400 text-xs line-clamp-1">{selectedSubPositionDesc}</span>
               </div>
             )}
-            
+
+            {/* Règle d'origine ZLECAf applicable au code sélectionné.
+                hs_code is matched against the current input so a rule loaded
+                for a previous code (e.g. via Smart Search) never lingers
+                after the user switches to simple input or types a new code. */}
+            {ruleOfOrigin && ruleOfOrigin.rule && ruleOfOrigin.rules && ruleOfOrigin.hs_code === hsCode && (
+              <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3 space-y-2">
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <span className="text-amber-300 text-xs font-semibold uppercase tracking-wide">
+                    {language === 'fr' ? "Règle d'origine ZLECAf" : 'AfCFTA Rule of Origin'}
+                  </span>
+                  <Badge className="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs">
+                    {ruleOfOrigin.rules.primary_rule?.name || ruleOfOrigin.rules.primary_rule?.code}
+                  </Badge>
+                  {ruleOfOrigin.rules.regional_content != null && (
+                    <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs">
+                      {language === 'fr' ? 'Contenu régional' : 'Regional content'}: {ruleOfOrigin.rules.regional_content}%
+                    </Badge>
+                  )}
+                  {ruleOfOrigin.status === 'YTB' && (
+                    <Badge className="bg-orange-500/20 text-orange-300 border border-orange-500/30 text-xs">
+                      {language === 'fr' ? 'En négociation' : 'Under negotiation'}
+                    </Badge>
+                  )}
+                </div>
+                {ruleOfOrigin.rules.primary_rule?.explanation && (
+                  <p className="text-slate-300 text-xs leading-relaxed">
+                    {ruleOfOrigin.rules.primary_rule.explanation}
+                  </p>
+                )}
+                {ruleOfOrigin.rules.alternative_rule && (
+                  <p className="text-slate-500 text-xs">
+                    {language === 'fr' ? 'Règle alternative' : 'Alternative rule'}: {ruleOfOrigin.rules.alternative_rule.name}
+                  </p>
+                )}
+              </div>
+            )}
+
             <Button
               type="button"
               variant="outline"
@@ -1297,6 +1348,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           )}
 
           {/* Détail complet NPF vs ZLECAf, base par base + bi-devise */}
+          <CalculationMethodStatus
+            status={result.calculation_profile_status}
+            legalSource={result.cascade_legal_source}
+            language={language}
+          />
+
           {result.taxes_breakdown && result.taxes_breakdown.length > 0 && (
             <TaxBreakdownDual
               breakdown={result.taxes_breakdown}

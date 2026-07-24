@@ -8,6 +8,16 @@
 
 ---
 
+## 0. Doctrine de Re-Collecte — Priorité Absolue
+
+Ce chantier doit repartir des **bases officielles vérifiables** pour éviter les erreurs, approximations et hallucinations des jeux précédents. Les règles suivantes sont bloquantes :
+
+1. **Re-crawler avant de compléter** : aucune ligne tarifaire africaine ne doit être complétée par interpolation, réplication de chapitre ou valeur générée.
+2. **Source officielle obligatoire** : chaque fichier pays doit porter `source` et `source_url`; chaque taux doit pouvoir être relié à un portail douanier, un PDF/Excel officiel, un tarif extérieur commun officiel ou une source multilatérale reconnue.
+3. **Rejet automatique des estimations** : les tags `etl_computed`, `etl_estimated`, `estimated`, `synthetic`, `generated` et `chapter_replicated` sont non servables.
+4. **Transparence utilisateur** : si un pays n'a pas encore de crawler authentique branché, le pipeline doit le signaler `skipped: no_authentic_crawler` plutôt que fabriquer un tarif.
+5. **Validation avant publication** : `backend/scripts/crawl_all_countries.py --validate-file ISO3` doit réussir avant qu'un fichier `data/crawled/{ISO3}_tariffs.json` soit considéré publiable.
+
 ## 1. Format Cible Canonique
 
 Chaque position tarifaire doit produire un objet JSON conforme au format suivant (basé sur le modèle DZA validé) :
@@ -90,8 +100,8 @@ Chaque position tarifaire doit produire un objet JSON conforme au format suivant
 | `crawled_authentic` | Extrait directement du portail officiel de la douane nationale |
 | `pdf_official` | Extrait d'un PDF officiel (CEMAC, EAC CET, SARS Schedule 1) |
 | `excel_official` | Extrait d'un Excel officiel (TEC CEDEAO, GUCE CIV) |
-| `etl_verified` | Taux vérifiés manuellement sur source officielle, ETL appliqué |
-| `etl_estimated` | Taux estimés par interpolation (données non disponibles publiquement) |
+| `etl_verified` | Taux vérifiés manuellement sur source officielle, ETL appliqué sans invention |
+| `etl_estimated` | **INTERDIT / non servable** : taux estimés par interpolation ou données non publiées officiellement |
 
 ---
 

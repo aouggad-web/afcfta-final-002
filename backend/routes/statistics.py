@@ -106,124 +106,48 @@ def translate_products_list(products: list, language: str = "fr") -> list:
     return translated
 
 
-GDP_HISTORY_TOP10 = {
-    "NGA": {
-        "name": "Nigéria",
-        "series": {2019: 448.1, 2020: 432.3, 2021: 441.5, 2022: 472.6, 2023: 477.0, 2024: 477.0},
-    },
-    "EGY": {
-        "name": "Égypte",
-        "series": {2019: 303.1, 2020: 361.9, 2021: 394.3, 2022: 476.7, 2023: 387.0, 2024: 387.0},
-    },
-    "ZAF": {
-        "name": "Afrique du Sud",
-        "series": {2019: 381.3, 2020: 335.4, 2021: 419.0, 2022: 405.7, 2023: 377.8, 2024: 373.0},
-    },
-    "DZA": {
-        "name": "Algérie",
-        "series": {2019: 171.0, 2020: 145.0, 2021: 167.6, 2022: 191.9, 2023: 239.9, 2024: 266.0},
-    },
-    "ETH": {
-        "name": "Éthiopie",
-        "series": {2019: 96.1, 2020: 107.6, 2021: 111.3, 2022: 126.8, 2023: 163.7, 2024: 205.0},
-    },
-    "MAR": {
-        "name": "Maroc",
-        "series": {2019: 119.7, 2020: 114.7, 2021: 132.7, 2022: 130.9, 2023: 141.1, 2024: 142.0},
-    },
-    "KEN": {
-        "name": "Kenya",
-        "series": {2019: 95.5, 2020: 98.8, 2021: 110.3, 2022: 113.4, 2023: 107.4, 2024: 116.0},
-    },
-    "AGO": {
-        "name": "Angola",
-        "series": {2019: 88.8, 2020: 72.4, 2021: 72.4, 2022: 92.3, 2023: 84.9, 2024: 76.0},
-    },
-    "TZA": {
-        "name": "Tanzanie",
-        "series": {2019: 60.8, 2020: 63.2, 2021: 67.9, 2022: 75.5, 2023: 79.2, 2024: 85.0},
-    },
-    "GHA": {
-        "name": "Ghana",
-        "series": {2019: 66.9, 2020: 68.3, 2021: 77.6, 2022: 72.8, 2023: 76.4, 2024: 77.0},
-    },
-}
-
-
 def build_top_10_gdp_2024():
-    """Top 10 African economies by GDP 2024 (World Bank WDI)"""
-    return [
-        {
-            "rank": 1,
-            "country": "Nigéria",
-            "iso3": "NGA",
-            "gdp_2024_musd": 477000,
-            "gdp_per_capita": 2248,
-        },
-        {
-            "rank": 2,
-            "country": "Égypte",
-            "iso3": "EGY",
-            "gdp_2024_musd": 387000,
-            "gdp_per_capita": 3443,
-        },
-        {
-            "rank": 3,
-            "country": "Afrique du Sud",
-            "iso3": "ZAF",
-            "gdp_2024_musd": 373000,
-            "gdp_per_capita": 6176,
-        },
-        {
-            "rank": 4,
-            "country": "Algérie",
-            "iso3": "DZA",
-            "gdp_2024_musd": 266000,
-            "gdp_per_capita": 5949,
-        },
-        {
-            "rank": 5,
-            "country": "Éthiopie",
-            "iso3": "ETH",
-            "gdp_2024_musd": 205000,
-            "gdp_per_capita": 1634,
-        },
-        {
-            "rank": 6,
-            "country": "Kenya",
-            "iso3": "KEN",
-            "gdp_2024_musd": 116000,
-            "gdp_per_capita": 2146,
-        },
-        {
-            "rank": 7,
-            "country": "Tanzanie",
-            "iso3": "TZA",
-            "gdp_2024_musd": 85000,
-            "gdp_per_capita": 1329,
-        },
-        {
-            "rank": 8,
-            "country": "Ghana",
-            "iso3": "GHA",
-            "gdp_2024_musd": 77000,
-            "gdp_per_capita": 2296,
-        },
-        {
-            "rank": 9,
-            "country": "Angola",
-            "iso3": "AGO",
-            "gdp_2024_musd": 76000,
-            "gdp_per_capita": 2155,
-        },
-        {
-            "rank": 10,
-            "country": "Maroc",
-            "iso3": "MAR",
-            "gdp_2024_musd": 142000,
-            "gdp_per_capita": 3758,
-        },
-    ]
+    """
+    Top 10 économies africaines par PIB — calculé en direct depuis le dataset
+    Banque Mondiale auto-actualisé (data/json/worldbank_data_latest.json, API
+    officielle, cf. donnees.banquemondiale.org), au lieu d'une table figée.
+
+    L'ancienne table figée portait deux défauts : des valeurs gelées à leur
+    date de curation (ex. DZA 266 Md$ vs 269,3 Md$ dans le dataset BM le plus
+    récent) et un classement erroné (le Maroc, ~140 Md$, apparaissait après le
+    Ghana et l'Angola, ~76-77 Md$, au lieu d'être classé par PIB décroissant).
+
+    Croissance 2025 : la Banque Mondiale ne publie pas de projections futures
+    (uniquement du réalisé) — repli sur le dataset curé Profils Pays (FMI WEO)
+    pour cette seule valeur, jamais inventée si absente ("N/A").
+    """
+    from services import wb_macro_service
+
+    rows = []
+    for iso3 in wb_macro_service.all_countries_iso3():
+        macro = wb_macro_service.get_macro(iso3).get("indicators", {})
+        gdp = macro.get("gdp_usd")
+        if not gdp or not gdp.get("value"):
+            continue
+        gdp_per_capita = macro.get("gdp_per_capita_usd")
+        growth = macro.get("gdp_growth_percent")
+        curated = REAL_COUNTRY_DATA.get(iso3, {})
+        rows.append(
+            {
+                "country": curated.get("name", iso3),
+                "iso3": iso3,
+                "gdp_2024_billion": round(gdp["value"] / 1_000_000_000, 1),
+                "gdp_2024_year": gdp["year"],
+                "gdp_per_capita": (round(gdp_per_capita["value"]) if gdp_per_capita else None),
+                "growth_2024": round(growth["value"], 1) if growth else None,
+                "growth_projection_2025": curated.get("growth_projection_2025", "N/A"),
+            }
+        )
+    rows.sort(key=lambda r: r["gdp_2024_billion"], reverse=True)
+    top10 = rows[:10]
+    for i, row in enumerate(top10, start=1):
+        row["rank"] = i
+    return top10
 
 
 router = APIRouter(prefix="/statistics")
@@ -374,34 +298,46 @@ async def get_main_statistics():
 @router.get("/gdp-history-top10")
 async def get_gdp_history_top10():
     """
-    Return the historical GDP series (2019–2024) for the Top 10 African economies.
-    Source: World Bank — Open Data (NY.GDP.MKTP.CD, current US$ billion).
+    Historique du PIB (dataset Banque Mondiale auto-actualisé, API officielle
+    NY.GDP.MKTP.CD) pour les 10 premières économies africaines par PIB courant
+    — calculé en direct via build_top_10_gdp_2024(), au lieu de la table figée
+    GDP_HISTORY_TOP10 (valeurs gelées, classement erroné pour le Maroc).
+
+    Les années disponibles dépendent de la plage collectée par l'ETL
+    (update_data_automated.py, actuellement 2020-2024) — jamais de valeur
+    inventée pour une année non collectée.
     """
+    from services import wb_macro_service
+
+    top10 = build_top_10_gdp_2024()  # déjà trié par PIB décroissant
+
     series = []
-    for iso3, info in GDP_HISTORY_TOP10.items():
-        # Order years ascending so Recharts renders left-to-right.
-        ordered = sorted(info["series"].items())
+    for row in top10:
+        iso3 = row["iso3"]
+        raw_series = wb_macro_service.get_series(iso3, "gdp_usd")
+        ordered = sorted(raw_series.items())
         series.append(
             {
                 "iso3": iso3,
-                "country": info["name"],
-                "history": [{"year": y, "gdp_billion": v} for y, v in ordered],
-                "gdp_2024_billion": ordered[-1][1] if ordered else None,
+                "country": row["country"],
+                "history": [
+                    {"year": y, "gdp_billion": round(v / 1_000_000_000, 1)} for y, v in ordered
+                ],
+                "gdp_2024_billion": row["gdp_2024_billion"],
             }
         )
-    # Sort by 2024 GDP descending so the legend matches the Top 10 ranking.
-    series.sort(key=lambda r: r.get("gdp_2024_billion") or 0, reverse=True)
 
-    years = sorted({y for info in GDP_HISTORY_TOP10.values() for y in info["series"]})
+    years = sorted({p["year"] for s in series for p in s["history"]})
     # Wide-format table for charting libraries that prefer one row per year.
     chart_rows = []
     for year in years:
         row = {"year": year}
         for entry in series:
-            iso3 = entry["iso3"]
-            year_value = GDP_HISTORY_TOP10[iso3]["series"].get(year)
+            year_value = next(
+                (p["gdp_billion"] for p in entry["history"] if p["year"] == year), None
+            )
             if year_value is not None:
-                row[iso3] = year_value
+                row[entry["iso3"]] = year_value
         chart_rows.append(row)
 
     return {
@@ -734,6 +670,20 @@ TRADE_PERFORMANCE_INTRA_AFRICAN_2024 = [
 ]
 
 
+@router.get("/afreximbank-atr2026")
+async def get_afreximbank_atr2026():
+    """
+    Sourced indicators from the Afreximbank African Trade Report 2026.
+
+    Continental 2025 indicators + per-country intra-African trade and merchandise
+    exports (2021-2025). Facts only, attributed to Afreximbank (the report itself
+    is not reproduced).
+    """
+    from services import afreximbank_data
+
+    return afreximbank_data.get_dataset()
+
+
 @router.get("/trade-performance")
 async def get_trade_performance_global():
     """
@@ -791,9 +741,6 @@ async def get_country_comparison(country_code: str, lang: str = "fr"):
 
     macro = REAL_COUNTRY_DATA.get(iso3, {})
 
-    population = macro.get("population_2024")
-    population_millions = round(population / 1_000_000, 2) if population else None
-
     name = macro.get("name") or iso3
     if lang == "en" and iso2:
         name = translate_country_name(iso2, "en") or name
@@ -805,14 +752,36 @@ async def get_country_comparison(country_code: str, lang: str = "fr"):
     glob = next((t for t in TRADE_PERFORMANCE_GLOBAL_2024 if t["code"] == iso2), None)
     intra = next((t for t in TRADE_PERFORMANCE_INTRA_AFRICAN_2024 if t["code"] == iso2), None)
 
+    # Indicateurs macro BM auto-actualisés (data/json/worldbank_data_latest.json,
+    # API officielle, cf. donnees.banquemondiale.org) : préférés partout où
+    # disponibles ; repli sur le dataset curé Profils Pays sinon ; null jamais
+    # inventé. Même cascade que routes/countries.py:get_country_profile.
+    from services import wb_macro_service
+
+    wb = wb_macro_service.get_macro(iso3).get("indicators", {})
+
+    def _wb(key):
+        entry = wb.get(key)
+        return entry["value"] if entry else None
+
+    gdp_billion_wb = _wb("gdp_usd")
+    gdp_billion_usd = (
+        round(gdp_billion_wb / 1_000_000_000, 2)
+        if gdp_billion_wb is not None
+        else macro.get("gdp_usd_2024")
+    )
+    population = _wb("population") or macro.get("population_2024")
+    population_millions = round(population / 1_000_000, 2) if population else None
+
     return {
         "iso3": iso3,
         "country_name": name,
         "economic_indicators": {
-            "gdp_billion_usd": macro.get("gdp_usd_2024"),
-            "gdp_per_capita_usd": macro.get("gdp_per_capita_2024"),
-            "inflation_percent": None,
-            "unemployment_percent": None,
+            "gdp_billion_usd": gdp_billion_usd,
+            "gdp_per_capita_usd": _wb("gdp_per_capita_usd") or macro.get("gdp_per_capita_2024"),
+            "gdp_growth_percent": _wb("gdp_growth_percent"),
+            "inflation_percent": _wb("inflation_percent"),
+            "unemployment_percent": _wb("unemployment_percent"),
             "population_millions": population_millions,
         },
         "trade_summary": {
