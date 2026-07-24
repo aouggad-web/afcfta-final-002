@@ -1,0 +1,1243 @@
+{
+  "schema_version": "1.0",
+  "country": "KEN",
+  "as_of": "2026-07-24",
+  "import_declaration_fee": [
+    {
+      "record_id": "IDF-20230701",
+      "legal_product_description": "All goods imported into Kenya for home use unless exempt under Part A of the Second Schedule",
+      "normalized_product_description": "all goods imported into kenya for home use unless exempt under part a of the second schedule",
+      "rate": "2.5%",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "section 7",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    }
+  ],
+  "railway_development_levy": [
+    {
+      "record_id": "RDL-20190701",
+      "legal_product_description": "All goods imported into Kenya for home use unless exempt under Part B of the Second Schedule",
+      "normalized_product_description": "all goods imported into kenya for home use unless exempt under part b of the second schedule",
+      "rate": "2%",
+      "rate_basis": "customs value",
+      "effective_from": "2019-11-07",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "section 8",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    }
+  ],
+  "export_and_investment_promotion_levy": [
+    {
+      "record_id": "EIPL-001",
+      "legal_product_description": "Cement Clinkers",
+      "normalized_product_description": "cement clinkers",
+      "rate": "17.5 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 1",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "2523.10.00"
+      ]
+    },
+    {
+      "record_id": "EIPL-002",
+      "legal_product_description": "Semi-finished products of iron or non-alloy steel containing, by weight, <0.25% of carbon; of rectangular (including square) cross-section, the width measuring less than twice the thickness",
+      "normalized_product_description": "semi-finished products of iron or non-alloy steel containing, by weight, <0.25% of carbon; of rectangular (including square) cross-section, the width measuring less than twice the thickness",
+      "rate": "17.5 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 2",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7207.11.00"
+      ]
+    },
+    {
+      "record_id": "EIPL-003",
+      "legal_product_description": "Bars and rods of iron or non-alloy steel, hot-rolled, in irregularly wound coils of circular cross-section measuring less than 14mm in diameter of cross section measuring less than 8 mm",
+      "normalized_product_description": "bars and rods of iron or non-alloy steel, hot-rolled, in irregularly wound coils of circular cross-section measuring less than 14mm in diameter of cross section measuring less than 8 mm",
+      "rate": "17.5 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 3",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7213.91.10"
+      ]
+    },
+    {
+      "record_id": "EIPL-004",
+      "legal_product_description": "Bars and rods of iron or non-alloy steel, hot-rolled, in irregularly wound coils of circular cross-section measuring less than 14mm in diameter; other",
+      "normalized_product_description": "bars and rods of iron or non-alloy steel, hot-rolled, in irregularly wound coils of circular cross-section measuring less than 14mm in diameter; other",
+      "rate": "17.5 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 4",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7213.91.90"
+      ]
+    },
+    {
+      "record_id": "EIPL-005",
+      "legal_product_description": "Uncoated kraft paper and paperboard, in rolls or sheets; Kraft liner; Unbleached",
+      "normalized_product_description": "uncoated kraft paper and paperboard, in rolls or sheets; kraft liner; unbleached",
+      "rate": "10 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 5",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4804.11.00"
+      ]
+    },
+    {
+      "record_id": "EIPL-006",
+      "legal_product_description": "Sack kraft paper; Unbleached",
+      "normalized_product_description": "sack kraft paper; unbleached",
+      "rate": "10 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 6",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4804.21.00"
+      ]
+    },
+    {
+      "record_id": "EIPL-007",
+      "legal_product_description": "Other kraft paper and paperboard weighing 150 g/m2 or less:Unbleached",
+      "normalized_product_description": "other kraft paper and paperboard weighing 150 g/m2 or less:unbleached",
+      "rate": "10 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 7",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4804.31.00"
+      ]
+    },
+    {
+      "record_id": "EIPL-008",
+      "legal_product_description": "Sacks and bags, having a base of a width of 40 cm or more.",
+      "normalized_product_description": "sacks and bags, having a base of a width of 40 cm or more.",
+      "rate": "10 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 8",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4819.30.00"
+      ]
+    },
+    {
+      "record_id": "EIPL-009",
+      "legal_product_description": "Other sacks and bags, including cones.",
+      "normalized_product_description": "other sacks and bags, including cones.",
+      "rate": "10 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 9",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4819.40.00"
+      ]
+    },
+    {
+      "record_id": "EIPL-010",
+      "legal_product_description": "Sack kraft bleached",
+      "normalized_product_description": "sack kraft bleached",
+      "rate": "10 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 10",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4804.29.00"
+      ]
+    },
+    {
+      "record_id": "EIPL-011",
+      "legal_product_description": "Sack kraft bleached",
+      "normalized_product_description": "sack kraft bleached",
+      "rate": "10 % of the customs value",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 11",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4804.39.00"
+      ]
+    },
+    {
+      "record_id": "EIPL-012",
+      "legal_product_description": "Ceramic flags and paving, hearth or wall tiles; unglazed ceramic mosaic cubes and the like, whether or not on a backing; finishing ceramics.",
+      "normalized_product_description": "ceramic flags and paving, hearth or wall tiles; unglazed ceramic mosaic cubes and the like, whether or not on a backing; finishing ceramics.",
+      "rate": "3%",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 12",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "EIPL-013",
+      "legal_product_description": "Ceramic sinks, wash basins, wash basin pedestals, baths, bidets, water closet pans, flushing cisterns, urinals and similar sanitary fixtures.",
+      "normalized_product_description": "ceramic sinks, wash basins, wash basin pedestals, baths, bidets, water closet pans, flushing cisterns, urinals and similar sanitary fixtures.",
+      "rate": "3%",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 13",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "EIPL-014",
+      "legal_product_description": "Iron and non-alloy steel in ingots or other primary forms (excluding iron of heading 72.03).",
+      "normalized_product_description": "iron and non-alloy steel in ingots or other primary forms (excluding iron of heading 72.03).",
+      "rate": "17.5%",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 14",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "EIPL-015",
+      "legal_product_description": "Semi-finished products of iron or non-alloy steel",
+      "normalized_product_description": "semi-finished products of iron or non-alloy steel",
+      "rate": "17.5%",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 15",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "EIPL-016",
+      "legal_product_description": "Bars and rods, hot-rolled, in irregularly wound coils, of iron or non-alloy steel;",
+      "normalized_product_description": "bars and rods, hot-rolled, in irregularly wound coils, of iron or non-alloy steel;",
+      "rate": "17.5%",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 16",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "EIPL-017",
+      "legal_product_description": "Other bars and rods of iron or non-alloy steel, not further worked than forged, hot-rolled, hot-drawn or hot-extruded, but including those twisted after rolling.",
+      "normalized_product_description": "other bars and rods of iron or non-alloy steel, not further worked than forged, hot-rolled, hot-drawn or hot-extruded, but including those twisted after rolling.",
+      "rate": "17.5%",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 17",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "EIPL-018",
+      "legal_product_description": "Other alloy steel in ingots or other primary forms; semi-finished products of other alloy steel.",
+      "normalized_product_description": "other alloy steel in ingots or other primary forms; semi-finished products of other alloy steel.",
+      "rate": "17.5%",
+      "rate_basis": "customs value",
+      "effective_from": "2023-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "Third Schedule row 18",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    }
+  ],
+  "sugar_development_levy": [
+    {
+      "record_id": "SUGAR-DEV-LEVY-IMPORT-20250630",
+      "legal_product_description": "Imported sugar",
+      "normalized_product_description": "imported sugar",
+      "rate": "4%",
+      "rate_basis": "CIF value",
+      "effective_from": "2025-06-30",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-SUGAR-LEVY-ORDER-2025",
+      "legal_reference": "paragraph 4(2)",
+      "verification_status": "VERIFIED_OFFICIAL_HTML",
+      "hs_codes_explicit": []
+    }
+  ],
+  "other_import_levies": [
+    {
+      "record_id": "ANTI-ADULTERATION-LEVY",
+      "legal_product_description": "Illuminating kerosene imported for home use",
+      "normalized_product_description": "illuminating kerosene imported for home use",
+      "rate": "KES 18 per litre",
+      "rate_basis": "volume",
+      "effective_from": "2018-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "section 8A",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "DUTY-FREE-MOTOR-PROCESSING-FEE",
+      "legal_product_description": "Motor vehicles excluding motorcycles imported or purchased duty free under specified Fifth Schedule EACCMA paragraphs",
+      "normalized_product_description": "motor vehicles excluding motorcycles imported or purchased duty free under specified fifth schedule eaccma paragraphs",
+      "rate": "KES 10,000",
+      "rate_basis": "per motor vehicle",
+      "effective_from": "2020-04-25",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "section 8B",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "EPZ-HOME-USE-ADDITIONAL-DUTY",
+      "legal_product_description": "Goods entered for home use from an export processing zone enterprise, except specified Central Bank currency",
+      "normalized_product_description": "goods entered for home use from an export processing zone enterprise, except specified central bank currency",
+      "rate": "2.5%",
+      "rate_basis": "customs value",
+      "effective_from": "2020-06-30",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "section 9A",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    }
+  ],
+  "export_levy_reference_only": [
+    {
+      "record_id": "EXPORT-LEVY-001",
+      "legal_product_description": "Molasses resulting from the extraction or refining of sugar",
+      "normalized_product_description": "molasses resulting from the extraction or refining of sugar",
+      "rate": "20% of the customs value",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 1",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "EXPORT-LEVY-002",
+      "legal_product_description": "Iron ores and concentrates, including roasted iron pyrites",
+      "normalized_product_description": "iron ores and concentrates, including roasted iron pyrites",
+      "rate": "USD 175 per tonne",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 2",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "EXPORT-LEVY-003",
+      "legal_product_description": "Whole unsplit hides and skins, of a weight per skin not exceeding 8 kg when simply dried, 10kg when dry salted, or 16kg when fresh, wet salted or otherwise preserved",
+      "normalized_product_description": "whole unsplit hides and skins, of a weight per skin not exceeding 8 kg when simply dried, 10kg when dry salted, or 16kg when fresh, wet salted or otherwise preserved",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 3",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4101.20.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-004",
+      "legal_product_description": "Raw skins of sheep or lambs (pickled, but not tanned, parchment-dressed or further prepared), without wool on whether or not split, other than those excluded by Note 1(c) to Chapter 41.",
+      "normalized_product_description": "raw skins of sheep or lambs (pickled, but not tanned, parchment-dressed or further prepared), without wool on whether or not split, other than those excluded by note 1(c) to chapter 41.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 4",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4102.21.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-005",
+      "legal_product_description": "Other raw skins of sheep or lamb (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), without wool on, whether or not split, other than those excluded by Note (c) to Chapter 41",
+      "normalized_product_description": "other raw skins of sheep or lamb (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), without wool on, whether or not split, other than those excluded by note (c) to chapter 41",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 5",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4102.29.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-006",
+      "legal_product_description": "Other raw hides and skins (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not debarred or split, other than those excluded by Note 1 (b) or (c) to this Chapter, of reptiles.",
+      "normalized_product_description": "other raw hides and skins (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), whether or not debarred or split, other than those excluded by note 1 (b) or (c) to this chapter, of reptiles.",
+      "rate": "50% or USD 0.32 whichever is higher.",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 6",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4103.20.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-007",
+      "legal_product_description": "Other raw hides and skins (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), but not debarred or split, other than those excluded by Note 1 (b) or 1 (c) to this Chapter, of swine.",
+      "normalized_product_description": "other raw hides and skins (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), but not debarred or split, other than those excluded by note 1 (b) or 1 (c) to this chapter, of swine.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 7",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4103.30.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-008",
+      "legal_product_description": "Other raw hides and skins other than of reptiles, swine, goats or kids.",
+      "normalized_product_description": "other raw hides and skins other than of reptiles, swine, goats or kids.",
+      "rate": "50% or USD 0.32 whichever is higher.",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 8",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4103.90.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-009",
+      "legal_product_description": "Other tanned or crust hides and skins of bovine (including buffalo) or equine animals, without hair on, whether or not split, but not further prepared, in the wet state (including wet - blue).",
+      "normalized_product_description": "other tanned or crust hides and skins of bovine (including buffalo) or equine animals, without hair on, whether or not split, but not further prepared, in the wet state (including wet - blue).",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 9",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4104.19.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-010",
+      "legal_product_description": "Raw furskins of fox, whole, with or without head, tail or paws.",
+      "normalized_product_description": "raw furskins of fox, whole, with or without head, tail or paws.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 10",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4301.60.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-011",
+      "legal_product_description": "Whole hides and skins, of weight exceeding 16 kg.",
+      "normalized_product_description": "whole hides and skins, of weight exceeding 16 kg.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 11",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4101.50.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-012",
+      "legal_product_description": "Other, including butts, bends and bellies.",
+      "normalized_product_description": "other, including butts, bends and bellies.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 12",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4101.90.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-013",
+      "legal_product_description": "Raw skins of sheep or lamb (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), with wool on, whether or not split, other than those excluded by Note 1(c) to Chapter 41.",
+      "normalized_product_description": "raw skins of sheep or lamb (fresh, or salted, dried, limed, pickled or otherwise preserved, but not tanned, parchment-dressed or further prepared), with wool on, whether or not split, other than those excluded by note 1(c) to chapter 41.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 13",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4102.10.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-014",
+      "legal_product_description": "Raw furskins of mink, whole, with or without head, tail or paws.",
+      "normalized_product_description": "raw furskins of mink, whole, with or without head, tail or paws.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 14",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4301.10.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-015",
+      "legal_product_description": "Raw furskins of lamb, the following: Astrkhan, broadtail, Caracul, Persian and similar lamb, Indian, Chinese, Mongolian or Tibetan lamb, whole, with or without head, tail or paws.",
+      "normalized_product_description": "raw furskins of lamb, the following: astrkhan, broadtail, caracul, persian and similar lamb, indian, chinese, mongolian or tibetan lamb, whole, with or without head, tail or paws.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 15",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4301.30.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-016",
+      "legal_product_description": "Other raw furskins, whole, with or without head, tail or paws.",
+      "normalized_product_description": "other raw furskins, whole, with or without head, tail or paws.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 16",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4301.80.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-017",
+      "legal_product_description": "Heads, tail, paws,and other pieces or cuttings, suitable for furriers’ use.",
+      "normalized_product_description": "heads, tail, paws,and other pieces or cuttings, suitable for furriers’ use.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 17",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4301.90.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-018",
+      "legal_product_description": "Whole skins, with or without head, tail or paws, not assembled, of mink.",
+      "normalized_product_description": "whole skins, with or without head, tail or paws, not assembled, of mink.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 18",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4302.11.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-019",
+      "legal_product_description": "Other whole skins, with or without head, tail or paws, not assembled.",
+      "normalized_product_description": "other whole skins, with or without head, tail or paws, not assembled.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 19",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4302.19.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-020",
+      "legal_product_description": "Heads, tails, paws and other pieces or cuttings, not assembled.",
+      "normalized_product_description": "heads, tails, paws and other pieces or cuttings, not assembled.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 20",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4302.20.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-021",
+      "legal_product_description": "Whole skins and pieces or cuttings thereof, assembled.",
+      "normalized_product_description": "whole skins and pieces or cuttings thereof, assembled.",
+      "rate": "50% or USD 0.32 whichever is higher",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 21",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "4302.30.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-022",
+      "legal_product_description": "Waste and scrap of precious metal or of metal clad with precious metal; other waste and scrap containing precious metal or precious metal compounds of a kind used principally for the recovery of precious metal of ash containing precious metal or precious metal compounds.",
+      "normalized_product_description": "waste and scrap of precious metal or of metal clad with precious metal; other waste and scrap containing precious metal or precious metal compounds of a kind used principally for the recovery of precious metal of ash containing precious metal or precious metal compounds.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 22",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7112.30.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-023",
+      "legal_product_description": "Other waste and scrap of precious metal or precious metal compounds of a kind used principally for the recovery of precious metal of gold including metal clad with gold.",
+      "normalized_product_description": "other waste and scrap of precious metal or precious metal compounds of a kind used principally for the recovery of precious metal of gold including metal clad with gold.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 23",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7112.91.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-024",
+      "legal_product_description": "Other waste and scraps of precious metal or precious metal compounds of a kind used principally for the recovery of precious metal of platinum, including metal clad with platinum.",
+      "normalized_product_description": "other waste and scraps of precious metal or precious metal compounds of a kind used principally for the recovery of precious metal of platinum, including metal clad with platinum.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 24",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7112.92.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-025",
+      "legal_product_description": "Other waste and scrap of precious metal or metal clad with precious metal, other waste and scrap containing precious metal compounds, of a kind used principally for the recovery of precious metal.",
+      "normalized_product_description": "other waste and scrap of precious metal or metal clad with precious metal, other waste and scrap containing precious metal compounds, of a kind used principally for the recovery of precious metal.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 25",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7112.99.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-026",
+      "legal_product_description": "Waste and scrap of cast of iron.",
+      "normalized_product_description": "waste and scrap of cast of iron.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 26",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7204.10.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-027",
+      "legal_product_description": "Waste and scrap of other alloy or steel.",
+      "normalized_product_description": "waste and scrap of other alloy or steel.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 27",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7204.29.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-028",
+      "legal_product_description": "Waste and scrap of tinned iron steel.",
+      "normalized_product_description": "waste and scrap of tinned iron steel.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 28",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7204.30.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-029",
+      "legal_product_description": "Turnings, shavings, chips, milling waste, sawdust, fillings, trimmings and stampings, whether or not in bundles, or iron or steel.",
+      "normalized_product_description": "turnings, shavings, chips, milling waste, sawdust, fillings, trimmings and stampings, whether or not in bundles, or iron or steel.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 29",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7204.41.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-030",
+      "legal_product_description": "Other waste and scrap or iron or steel",
+      "normalized_product_description": "other waste and scrap or iron or steel",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 30",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7204.49.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-031",
+      "legal_product_description": "Remelting scrap ingots",
+      "normalized_product_description": "remelting scrap ingots",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 31",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7204.50.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-032",
+      "legal_product_description": "Granules of pig iron, spiegeleisen, iron or steel.",
+      "normalized_product_description": "granules of pig iron, spiegeleisen, iron or steel.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 32",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7205.10.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-033",
+      "legal_product_description": "Zinc waste and scrap.",
+      "normalized_product_description": "zinc waste and scrap.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 33",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "7902.00.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-034",
+      "legal_product_description": "Tin waste and scrap.",
+      "normalized_product_description": "tin waste and scrap.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 34",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8002.00.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-035",
+      "legal_product_description": "Unwrought molybdenum including bars and rods obtained simply by sintering; waste and scrap.",
+      "normalized_product_description": "unwrought molybdenum including bars and rods obtained simply by sintering; waste and scrap.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 35",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8102.94.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-036",
+      "legal_product_description": "Waste and scrap of molybdenum",
+      "normalized_product_description": "waste and scrap of molybdenum",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 36",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8102.97.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-037",
+      "legal_product_description": "Waste and scrap of tantalum",
+      "normalized_product_description": "waste and scrap of tantalum",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 37",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8103.30.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-038",
+      "legal_product_description": "Waste of scrap of magnesium",
+      "normalized_product_description": "waste of scrap of magnesium",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 38",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8104.20.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-039",
+      "legal_product_description": "Cobalt mattes and other intermediate products of cobalt metallurgy; cobalt and articles thereof, including waste and scrap",
+      "normalized_product_description": "cobalt mattes and other intermediate products of cobalt metallurgy; cobalt and articles thereof, including waste and scrap",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 39",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "EXPORT-LEVY-040",
+      "legal_product_description": "Waste and scrap of cobalt matters.",
+      "normalized_product_description": "waste and scrap of cobalt matters.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 40",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8105.30.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-041",
+      "legal_product_description": "Bismuth and articles thereof including waste and scrap containing more than 99.99% of bismuth, by weight",
+      "normalized_product_description": "bismuth and articles thereof including waste and scrap containing more than 99.99% of bismuth, by weight",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 41",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8106.10.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-042",
+      "legal_product_description": "Other bismuth and articles thereof including waste and scrap",
+      "normalized_product_description": "other bismuth and articles thereof including waste and scrap",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 42",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8106.90.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-043",
+      "legal_product_description": "Waste and scrap of zirconium containing less than 1 part hafnium to 500 parts zirconium by weight",
+      "normalized_product_description": "waste and scrap of zirconium containing less than 1 part hafnium to 500 parts zirconium by weight",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 43",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8109.31.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-044",
+      "legal_product_description": "Waste and scrap of cadmium.",
+      "normalized_product_description": "waste and scrap of cadmium.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 44",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8112.61.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-045",
+      "legal_product_description": "Waste and scrap of titanium.",
+      "normalized_product_description": "waste and scrap of titanium.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 45",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8108.30.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-046",
+      "legal_product_description": "Waste and scrap of antimony.",
+      "normalized_product_description": "waste and scrap of antimony.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 46",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8110.20.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-047",
+      "legal_product_description": "Waste and scrap of beryllium.",
+      "normalized_product_description": "waste and scrap of beryllium.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 47",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8112.13.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-048",
+      "legal_product_description": "Waste and scrap of chromium.",
+      "normalized_product_description": "waste and scrap of chromium.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 48",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8112.22.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-049",
+      "legal_product_description": "Waste and scrap of thallium.",
+      "normalized_product_description": "waste and scrap of thallium.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 49",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8112.52.00"
+      ]
+    },
+    {
+      "record_id": "EXPORT-LEVY-050",
+      "legal_product_description": "Unwrought waste and scrap; powders.",
+      "normalized_product_description": "unwrought waste and scrap; powders.",
+      "rate": "20%",
+      "rate_basis": "as stated",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "KEN-MFL-2016-CONS-20260101",
+      "legal_reference": "First Schedule row 50",
+      "verification_status": "VERIFIED_CONSOLIDATED_HTML",
+      "hs_codes_explicit": [
+        "8112.92.00"
+      ]
+    }
+  ]
+}
