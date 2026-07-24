@@ -46,6 +46,7 @@ def calculate_kenya_legal_layer(
     measures, fiscal_store, coverage_complete = _resources()
     context = OverrideContext(
         jurisdiction="KEN",
+        regional_blocs=["EAC"],
         origin=origin,
         beneficiary=beneficiary,
         import_purpose=import_purpose,

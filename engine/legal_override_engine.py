@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Iterable, List, Optional, Sequence
 
 from engine.schemas.legal_override import (
+    LegalLayer,
     LegalMeasureType,
     LegalOverrideMeasure,
     OverrideContext,
@@ -23,7 +24,33 @@ RATE_STAGES = (
     LegalMeasureType.STAY_OF_APPLICATION,
     LegalMeasureType.DUTY_REMISSION,
     LegalMeasureType.KENYA_NATIONAL_EXEMPTION,
+    LegalMeasureType.NATIONAL_EXEMPTION,
 )
+
+LAYERED_RATE_STAGES = tuple(
+    (legal_layer, stage)
+    for legal_layer in (LegalLayer.REGIONAL_COMMON, LegalLayer.NATIONAL_COUNTRY)
+    for stage in RATE_STAGES
+)
+
+
+def _effective_layer(measure: LegalOverrideMeasure) -> LegalLayer:
+    """Return explicit layer, with compatibility for legacy EAC/KEN rows."""
+    if (
+        measure.legal_layer == LegalLayer.NATIONAL_COUNTRY
+        and measure.jurisdiction.strip().upper() in {"EAC", "KEN"}
+        and measure.measure_type
+        in {
+            LegalMeasureType.EAC_CET_BASE,
+            LegalMeasureType.EAC_CET_AMENDMENT,
+            LegalMeasureType.STAY_OF_APPLICATION,
+            LegalMeasureType.DUTY_REMISSION,
+        }
+        and not measure.regional_bloc
+        and not measure.customs_territory
+    ):
+        return LegalLayer.REGIONAL_COMMON
+    return measure.legal_layer
 
 
 def load_legal_measures(path: Path) -> List[LegalOverrideMeasure]:
@@ -37,9 +64,20 @@ class LegalOverrideResolver:
         measures: Iterable[LegalOverrideMeasure],
         *,
         coverage_complete: bool = False,
+        regional_coverage_complete: Optional[bool] = None,
+        national_coverage_complete: Optional[bool] = None,
     ):
         self.measures = list(measures)
-        self.coverage_complete = coverage_complete
+        self.regional_coverage_complete = (
+            coverage_complete
+            if regional_coverage_complete is None
+            else regional_coverage_complete
+        )
+        self.national_coverage_complete = (
+            coverage_complete
+            if national_coverage_complete is None
+            else national_coverage_complete
+        )
 
     @staticmethod
     def _condition(value: Optional[str], actual: Optional[str]) -> str:
@@ -137,6 +175,8 @@ class LegalOverrideResolver:
         trace: List[OverrideTraceStep] = [
             OverrideTraceStep(
                 stage=LegalMeasureType.EAC_CET_BASE.value,
+                legal_layer=LegalLayer.REGIONAL_COMMON,
+                jurisdiction=",".join(context.regional_blocs),
                 outcome="APPLIED",
                 rate_before=None,
                 rate_after=base_rate,
@@ -145,16 +185,24 @@ class LegalOverrideResolver:
         ]
         missing: List[str] = []
         sources = set()
+        layer_sources = {layer: set() for layer in LegalLayer}
         eligibility_status = None
         requires_eligibility_input = False
-        status = "VERIFIED_COMPLETE" if self.coverage_complete else "VERIFIED_PARTIAL"
-        if not self.coverage_complete:
+        coverage_complete = (
+            self.regional_coverage_complete and self.national_coverage_complete
+        )
+        status = "VERIFIED_COMPLETE" if coverage_complete else "VERIFIED_PARTIAL"
+        if not self.regional_coverage_complete:
             missing.append("EAC gazette coverage is not complete for the requested date.")
+        if not self.national_coverage_complete:
+            missing.append(
+                f"{context.jurisdiction} national-measure coverage is not complete for the requested date."
+            )
 
         potentially_relevant = [
             m
             for m in self.measures
-            if m.jurisdiction.upper() in {"EAC", context.jurisdiction.upper()}
+            if m.applies_to(context.jurisdiction, context.regional_blocs)
             and m.is_effective(on_date)
             and m.covers_hs(hs_code)
         ]
@@ -169,6 +217,8 @@ class LegalOverrideResolver:
                 trace.append(
                     OverrideTraceStep(
                         stage=measure.measure_type.value,
+                        legal_layer=_effective_layer(measure),
+                        jurisdiction=measure.jurisdiction,
                         measure_id=measure.measure_id,
                         outcome="MAPPING_REVIEW_REQUIRED",
                         rate_before=current_rate,
@@ -183,10 +233,15 @@ class LegalOverrideResolver:
                     )
                 )
 
-        for stage in RATE_STAGES:
+        for legal_layer, stage in LAYERED_RATE_STAGES:
             matched: List[LegalOverrideMeasure] = []
-            for measure in (m for m in candidates if m.measure_type == stage):
+            for measure in (
+                m
+                for m in candidates
+                if _effective_layer(m) == legal_layer and m.measure_type == stage
+            ):
                 sources.add(measure.publication_url)
+                layer_sources[_effective_layer(measure)].add(measure.publication_url)
                 condition = self._context_result(measure, context)
                 if self._is_conditional_remission(measure):
                     eligibility, eligibility_reason = self._authorization_result(
@@ -199,6 +254,8 @@ class LegalOverrideResolver:
                         trace.append(
                             OverrideTraceStep(
                                 stage=stage.value,
+                                legal_layer=_effective_layer(measure),
+                                jurisdiction=measure.jurisdiction,
                                 measure_id=measure.measure_id,
                                 outcome=eligibility,
                                 rate_before=current_rate,
@@ -213,6 +270,8 @@ class LegalOverrideResolver:
                         trace.append(
                             OverrideTraceStep(
                                 stage=stage.value,
+                                legal_layer=_effective_layer(measure),
+                                jurisdiction=measure.jurisdiction,
                                 measure_id=measure.measure_id,
                                 outcome="NOT_ELIGIBLE",
                                 rate_before=current_rate,
@@ -235,6 +294,8 @@ class LegalOverrideResolver:
                     trace.append(
                         OverrideTraceStep(
                             stage=stage.value,
+                            legal_layer=_effective_layer(measure),
+                            jurisdiction=measure.jurisdiction,
                             measure_id=measure.measure_id,
                             outcome="CONDITION_UNRESOLVED",
                             rate_before=current_rate,
@@ -254,6 +315,8 @@ class LegalOverrideResolver:
                 trace.append(
                     OverrideTraceStep(
                         stage=stage.value,
+                        legal_layer=_effective_layer(measure),
+                        jurisdiction=measure.jurisdiction,
                         measure_id=measure.measure_id,
                         outcome="RATE_UNRESOLVED",
                         rate_before=current_rate,
@@ -275,6 +338,8 @@ class LegalOverrideResolver:
                     trace.append(
                         OverrideTraceStep(
                             stage=stage.value,
+                            legal_layer=_effective_layer(measure),
+                            jurisdiction=measure.jurisdiction,
                             measure_id=measure.measure_id,
                             outcome="CONFLICT",
                             rate_before=current_rate,
@@ -293,6 +358,8 @@ class LegalOverrideResolver:
                 trace.append(
                     OverrideTraceStep(
                         stage=stage.value,
+                        legal_layer=_effective_layer(measure),
+                        jurisdiction=measure.jurisdiction,
                         measure_id=measure.measure_id,
                         outcome="APPLIED",
                         rate_before=before,
@@ -320,21 +387,46 @@ class LegalOverrideResolver:
                 )
                 target.append(measure.model_dump())
                 sources.add(measure.publication_url)
+                layer_sources[_effective_layer(measure)].add(measure.publication_url)
             elif condition == "UNKNOWN":
                 missing.append(f"{measure.measure_id}: administrative condition unresolved.")
 
         if missing and status != "CONFLICT_REVIEW":
             status = "VERIFIED_PARTIAL"
+        serialized_trace = [step.model_dump() for step in trace]
         return {
             "base_rate": base_rate,
             "override_rate": current_rate if current_rate != base_rate else None,
             "applicable_customs_rate": current_rate,
             "calculation_status": status,
-            "trace": [step.model_dump() for step in trace],
+            "trace": serialized_trace,
             "missing_elements": list(dict.fromkeys(missing)),
             "restrictions": restrictions,
             "administrative_requirements": requirements,
             "sources_used": sorted(sources),
             "remission_eligibility_status": eligibility_status,
             "requires_eligibility_input": requires_eligibility_input,
+            "legal_layers": {
+                LegalLayer.REGIONAL_COMMON.value: {
+                    "regional_blocs": context.regional_blocs,
+                    "country_scope": context.jurisdiction,
+                    "coverage_complete": self.regional_coverage_complete,
+                    "trace": [
+                        item
+                        for item in serialized_trace
+                        if item["legal_layer"] == LegalLayer.REGIONAL_COMMON
+                    ],
+                    "sources_used": sorted(layer_sources[LegalLayer.REGIONAL_COMMON]),
+                },
+                LegalLayer.NATIONAL_COUNTRY.value: {
+                    "country": context.jurisdiction,
+                    "coverage_complete": self.national_coverage_complete,
+                    "trace": [
+                        item
+                        for item in serialized_trace
+                        if item["legal_layer"] == LegalLayer.NATIONAL_COUNTRY
+                    ],
+                    "sources_used": sorted(layer_sources[LegalLayer.NATIONAL_COUNTRY]),
+                },
+            },
         }

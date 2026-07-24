@@ -9,9 +9,14 @@ from engine.schemas.legal_override import (
 
 
 def measure(measure_id, measure_type, rate, start="2025-07-01", end="2026-06-30", **kw):
+    legal_layer = kw.pop("legal_layer", "REGIONAL_COMMON")
     return LegalOverrideMeasure(
         measure_id=measure_id,
-        jurisdiction="KEN",
+        jurisdiction=kw.pop("jurisdiction", "KEN"),
+        legal_layer=legal_layer,
+        regional_bloc=kw.pop(
+            "regional_bloc", "EAC" if legal_layer == "REGIONAL_COMMON" else None
+        ),
         measure_type=measure_type,
         legal_title="Test official instrument",
         gazette_number="TEST/1",
@@ -137,8 +142,57 @@ def test_expired_authorization_keeps_normal_cet():
 
 
 def test_national_exemption():
-    exemption = measure("exemption", "KENYA_NATIONAL_EXEMPTION", 0)
+    exemption = measure(
+        "exemption",
+        "NATIONAL_EXEMPTION",
+        0,
+        legal_layer="NATIONAL_COUNTRY",
+    )
     assert resolve([exemption])["applicable_customs_rate"] == 0
+
+
+def test_regional_layer_is_applied_before_country_layer():
+    regional_stay = measure("regional-stay", "STAY_OF_APPLICATION", 35)
+    national_exemption = measure(
+        "national-exemption",
+        "NATIONAL_EXEMPTION",
+        0,
+        legal_layer="NATIONAL_COUNTRY",
+    )
+    result = resolve([national_exemption, regional_stay])
+    assert result["applicable_customs_rate"] == 0
+    assert [step["measure_id"] for step in result["trace"] if step["measure_id"]] == [
+        "regional-stay",
+        "national-exemption",
+    ]
+    assert result["legal_layers"]["REGIONAL_COMMON"]["trace"][-1][
+        "measure_id"
+    ] == "regional-stay"
+    assert result["legal_layers"]["NATIONAL_COUNTRY"]["trace"][-1][
+        "measure_id"
+    ] == "national-exemption"
+
+
+def test_national_layer_is_isolated_by_country():
+    uganda_exemption = measure(
+        "uganda-exemption",
+        "NATIONAL_EXEMPTION",
+        0,
+        legal_layer="NATIONAL_COUNTRY",
+        jurisdiction="UGA",
+    )
+    result = resolve([uganda_exemption])
+    assert result["applicable_customs_rate"] == 10
+    assert result["legal_layers"]["NATIONAL_COUNTRY"]["trace"] == []
+
+
+def test_regional_measure_requires_membership_of_the_regional_bloc():
+    regional_stay = measure("regional-stay", "STAY_OF_APPLICATION", 35)
+    result = resolve(
+        [regional_stay],
+        context=OverrideContext(jurisdiction="KEN", regional_blocs=[]),
+    )
+    assert result["applicable_customs_rate"] == 10
 
 
 def test_expired_measure_is_ignored():

@@ -6,7 +6,7 @@
   "measures": [
     {
       "measure_id": "EAC-171-2025-STAY-63090010-KEN",
-      "jurisdiction": "KEN",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC",
       "measure_type": "STAY_OF_APPLICATION",
       "legal_title": "Approved Measures on Import Duty Rates in the EAC CET",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 19; Legal Notice EAC/171/2025",
@@ -25,7 +25,7 @@
     },
     {
       "measure_id": "EAC-171-2025-STAY-87012190-87012990-KEN",
-      "jurisdiction": "KEN", "measure_type": "STAY_OF_APPLICATION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "STAY_OF_APPLICATION",
       "legal_title": "Approved Measures on Import Duty Rates in the EAC CET",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 19; Legal Notice EAC/171/2025", "gazette_date": "2025-06-30",
       "legal_reference": "Legal Notice EAC/171/2025, Table I, row 25",
@@ -41,7 +41,7 @@
     },
     {
       "measure_id": "EAC-171-2025-STAY-87163990-87164090-KEN",
-      "jurisdiction": "KEN", "measure_type": "STAY_OF_APPLICATION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "STAY_OF_APPLICATION",
       "legal_title": "Approved Measures on Import Duty Rates in the EAC CET",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 19; Legal Notice EAC/171/2025", "gazette_date": "2025-06-30",
       "legal_reference": "Legal Notice EAC/171/2025, Table I, row 26",
@@ -57,7 +57,7 @@
     },
     {
       "measure_id": "EAC-171-2025-STAY-87163190-KEN",
-      "jurisdiction": "KEN", "measure_type": "STAY_OF_APPLICATION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "STAY_OF_APPLICATION",
       "legal_title": "Approved Measures on Import Duty Rates in the EAC CET",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 19; Legal Notice EAC/171/2025", "gazette_date": "2025-06-30",
       "legal_reference": "Legal Notice EAC/171/2025, Table I, row 27",
@@ -72,7 +72,7 @@
     },
     {
       "measure_id": "EAC-177-2025-REMISSION-WHEAT-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 19; Legal Notice EAC/177/2025", "gazette_date": "2025-06-30",
       "legal_reference": "Legal Notice EAC/177/2025, table, row 40",
@@ -88,7 +88,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-10019910-10019990-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 37",
@@ -104,7 +104,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-83082000-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 101",
@@ -119,7 +119,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-83081000-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 102",
@@ -134,7 +134,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-34029000-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 103",
@@ -149,7 +149,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-32100010-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 104",
@@ -164,7 +164,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-32089010-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 105",
@@ -179,7 +179,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-32099090-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 106",
@@ -194,7 +194,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-84251100-84313900-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 109",
@@ -210,7 +210,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-44089000-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 121",
@@ -225,7 +225,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-44111200-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 122",
@@ -240,7 +240,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-76082000-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 123",
@@ -255,7 +255,7 @@
     },
     {
       "measure_id": "EAC-161-2026-REMISSION-39095000-KEN",
-      "jurisdiction": "KEN", "measure_type": "DUTY_REMISSION",
+      "jurisdiction": "KEN", "legal_layer": "REGIONAL_COMMON", "regional_bloc": "EAC", "measure_type": "DUTY_REMISSION",
       "legal_title": "Approved Duty Remission on Raw Materials and Industrial Inputs for the Manufacture of Goods",
       "gazette_number": "EAC Gazette Vol. AT 1 No. 16; Legal Notice EAC/161/2026", "gazette_date": "2026-06-30",
       "legal_reference": "Legal Notice EAC/161/2026, Table A, row 124",

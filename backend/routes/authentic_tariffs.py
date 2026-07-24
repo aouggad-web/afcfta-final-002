@@ -19,6 +19,7 @@ from services.kenya_legal_calculation_service import calculate_kenya_legal_layer
 from services.tariff_provider_service import get_tariff_provider_service
 
 from engine.schemas.legal_override import RemissionEligibility
+from engine.import_charges import calculate_import_charges
 
 logger = logging.getLogger(__name__)
 
@@ -264,6 +265,38 @@ async def calculate_taxes_endpoint(
             beneficiary=beneficiary,
             import_purpose=import_purpose,
             quantity=quantity,
+            currency_code="USD",
+        )
+    else:
+        # All non-Kenya destinations use the shared regional/national facade.
+        # Providers are intentionally not guessed here: absent dated layers
+        # produce VERIFIED_PARTIAL with the missing sources in the trace.
+        result["generic_legal_calculation"] = calculate_import_charges(
+            importing_country=country_iso3.upper(),
+            exporting_country=(origin or "").upper(),
+            hs6=hs_code[:6],
+            national_code=hs_code,
+            customs_value=cif_value,
+            calculation_date=calculation_date or date.today(),
+            importer_profile={
+                "base_rate": float(result.get("rates", {}).get("dd_rate_pct", 0) or 0),
+                "origin": (origin or "").upper() or None,
+                "beneficiary": beneficiary,
+                "import_purpose": import_purpose,
+                "quantity": quantity,
+                "administrative_formalities": get_administrative_formalities(country_iso3.upper(), hs_code) or [],
+            },
+            intended_use=import_purpose,
+            authorizations={
+                "remission_eligibility": remission_eligibility,
+                "authorization_reference": authorization_reference,
+                "authorization_effective_from": authorization_valid_from,
+                "authorization_effective_to": authorization_valid_to,
+                "authorization_hs_codes": [value.strip() for value in (authorization_hs_codes or "").split(",") if value.strip()],
+                "authorization_goods": [value.strip() for value in (authorization_goods or "").split(",") if value.strip()],
+            },
+            regional_coverage_complete=False,
+            national_coverage_complete=False,
             currency_code="USD",
         )
 

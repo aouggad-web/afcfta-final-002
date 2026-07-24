@@ -71,7 +71,7 @@ class KenyaFiscalStore:
         ]
 
 
-def calculate_kenya_customs(
+def _calculate_kenya_customs_legacy(
     *,
     hs_code: str,
     on_date: date,
@@ -165,6 +165,16 @@ def calculate_kenya_customs(
             "susceptible d’affecter ce produit reste à vérifier. "
             "Le total ne doit pas être utilisé pour une déclaration en douane."
         )
+    national_layer = dict(override["legal_layers"]["NATIONAL_COUNTRY"])
+    national_layer["taxes_and_levies"] = {
+        "vat": (
+            {"rate": vat_rate, "amount": vat, "source_id": vat_row["source_id"]}
+            if vat_row
+            else None
+        ),
+        "excise": {"amount": round(excise, 2), "lines": excise_lines},
+        "levies": levy_amounts,
+    }
     return {
         "hs_code": hs_code,
         "calculation_date": on_date.isoformat(),
@@ -198,4 +208,141 @@ def calculate_kenya_customs(
         "display_warning": warning,
         "remission_eligibility_status": override["remission_eligibility_status"],
         "requires_eligibility_input": override["requires_eligibility_input"],
+        "legal_layers": {
+            "REGIONAL_COMMON": override["legal_layers"]["REGIONAL_COMMON"],
+            "NATIONAL_COUNTRY": national_layer,
+        },
     }
+
+
+
+def _kenya_tax_rows(fiscal_store: KenyaFiscalStore, on_date: date, hs_code: str) -> list[dict]:
+    """Adapt verified Kenya fiscal tables to the generic tax-layer shape."""
+    rows: list[dict] = []
+    excise_codes: list[str] = []
+    for item in fiscal_store.excise_rates(on_date, hs_code):
+        rate = _pct(item.get("rate"))
+        code = f"EXCISE-{item['record_id']}"
+        excise_codes.append(code)
+        rows.append(
+            {
+                "tax_id": item["record_id"],
+                "country_iso3": "KEN",
+                "code": code,
+                "name": item.get("name", "Excise Duty"),
+                "rate_pct": rate,
+                "basis": "CIF_PLUS_INCLUDED",
+                "basis_includes": ["CUSTOMS_DUTY"],
+                "sequence": 40,
+                "legal_reference": item.get("legal_reference"),
+                "source_id": item.get("source_id"),
+                "effective_from": item.get("effective_from", "1900-01-01"),
+            }
+        )
+    for table, label in (
+        ("import_declaration_fee", "IDF"),
+        ("railway_development_levy", "RDL"),
+        ("export_and_investment_promotion_levy", "EXPORT_INVESTMENT_PROMOTION_LEVY"),
+        ("sugar_development_levy", "SUGAR_DEVELOPMENT_LEVY"),
+        ("other_import_levies", "OTHER_IMPORT_LEVY"),
+    ):
+        item = fiscal_store.percentage_measure(table, on_date, hs_code)
+        if item:
+            rows.append(
+                {
+                    "tax_id": item["record_id"],
+                    "country_iso3": "KEN",
+                    "code": label,
+                    "name": label,
+                    "rate_pct": _pct(item.get("rate")),
+                    "basis": "CUSTOMS_VALUE",
+                    "sequence": 50,
+                    "legal_reference": item.get("legal_reference"),
+                    "source_id": item.get("source_id"),
+                    "effective_from": item.get("effective_from", "1900-01-01"),
+                }
+            )
+    vat = fiscal_store.vat_rate(on_date, hs_code)
+    if vat:
+        rows.append(
+            {
+                "tax_id": vat["record_id"],
+                "country_iso3": "KEN",
+                "code": "VAT",
+                "name": "Value Added Tax",
+                "rate_pct": _pct(vat.get("rate")),
+                "basis": "CIF_PLUS_INCLUDED",
+                "basis_includes": ["CUSTOMS_DUTY", *excise_codes],
+                "sequence": 90,
+                "legal_reference": vat.get("legal_reference"),
+                "source_id": vat.get("source_id"),
+                "effective_from": vat.get("effective_from", "1900-01-01"),
+            }
+        )
+    return rows
+
+
+def calculate_kenya_customs(
+    *,
+    hs_code: str,
+    on_date: date,
+    customs_value: float,
+    base_cet_rate: float,
+    measures: Iterable[LegalOverrideMeasure],
+    fiscal_store: KenyaFiscalStore,
+    context: Optional[OverrideContext] = None,
+    coverage_complete: bool = False,
+    currency_code: str = "KES",
+) -> dict:
+    """Compatibility facade over :func:`calculate_import_charges`.
+
+    The Kenya-specific fiscal JSON remains an injected national provider; the
+    regional override resolution and tax sequencing are shared with all other
+    importing countries.
+    """
+    from engine.import_charges import calculate_import_charges
+
+    context = context or OverrideContext(jurisdiction="KEN", regional_blocs=["EAC"])
+    tax_rows = _kenya_tax_rows(fiscal_store, on_date, hs_code)
+    result = calculate_import_charges(
+        importing_country="KEN",
+        exporting_country=context.origin or "",
+        hs6=hs_code[:6],
+        national_code=hs_code,
+        customs_value=customs_value,
+        calculation_date=on_date,
+        importer_profile={
+            "regional_blocs": context.regional_blocs or ["EAC"],
+            "beneficiary": context.beneficiary,
+            "import_purpose": context.import_purpose,
+            "quantity": context.quantity,
+            "origin": context.origin,
+        },
+        authorizations={
+            "remission_eligibility": context.remission_eligibility,
+            "authorization_reference": context.authorization_reference,
+            "authorization_effective_from": context.authorization_effective_from,
+            "authorization_effective_to": context.authorization_effective_to,
+            "authorization_hs_codes": context.authorization_hs_codes,
+            "authorization_goods": context.authorization_goods,
+        },
+        base_rate=base_cet_rate,
+        regional_measures=measures,
+        national_taxes=tax_rows,
+        regional_coverage_complete=coverage_complete,
+        national_coverage_complete=True,
+        currency_code=currency_code,
+    )
+    if not any(item.get("code", "").upper() == "VAT" for item in result["taxes"]):
+        result["missing_elements"].append("No verified VAT measure matched the product and date.")
+        result["calculation_status"] = "VERIFIED_PARTIAL"
+    result["customs_value"] = customs_value
+    result["base_cet_rate"] = base_cet_rate
+    result["display_warning"] = (
+        f"Droits et taxes vérifiés : {result['verified_total']:,.2f} {currency_code}. "
+        "Résultat partiel : une mesure régionale ou nationale reste à vérifier. "
+        "Le total ne doit pas être utilisé pour une déclaration en douane."
+        if result["calculation_status"] == "VERIFIED_PARTIAL"
+        else None
+    )
+    return result
