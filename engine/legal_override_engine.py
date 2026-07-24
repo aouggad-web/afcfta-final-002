@@ -196,7 +196,7 @@ class LegalOverrideResolver:
         )
         status = "VERIFIED_COMPLETE" if coverage_complete else "VERIFIED_PARTIAL"
         if not self.regional_coverage_complete:
-            missing.append(f"{",".join(context.regional_blocs) or "regional"} gazette coverage is not complete for the requested date.")
+            missing.append("Regional gazette coverage is not complete for the requested date.")
         if not self.national_coverage_complete:
             missing.append(
                 f"{context.jurisdiction} national-measure coverage is not complete for the requested date."
