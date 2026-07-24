@@ -80,3 +80,17 @@ engine/sources/*
 !engine/sources/README_sources.md
 # Données sources brutes FAOSTAT/USGS (téléchargées par build_production_faostat_usgs.py)
 backend/engine/sources/*
+
+# Sorties generees par backend/scripts/smoke_opportunites.py
+test_reports/
+
+# Yarn install state can be generated in nested workspaces
+**/.yarn/install-state.gz
+
+# Local Yarn settings generated during ad hoc installs
+.yarnrc.yml
+**/.yarnrc.yml
+
+# Disk-backed cache tier (services/cache_service.py) — persisted OEC/API
+# responses for cold-start resilience without Redis, never source of truth
+backend/data/_cache/

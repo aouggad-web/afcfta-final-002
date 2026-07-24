@@ -47,7 +47,8 @@ export default function SmartHSSearch({
       excluded: "Exclu",
       regionalContent: "Contenu régional",
       useCode: "Utiliser ce code",
-      viewDetails: "Voir les détails"
+      viewDetails: "Voir les détails",
+      alternativeRule: "Règle alternative"
     },
     en: {
       searchPlaceholder: "Search by code or keyword (e.g.: car, 870323, coffee)",
@@ -65,7 +66,8 @@ export default function SmartHSSearch({
       excluded: "Excluded",
       regionalContent: "Regional content",
       useCode: "Use this code",
-      viewDetails: "View details"
+      viewDetails: "View details",
+      alternativeRule: "Alternative rule"
     }
   };
 
@@ -138,17 +140,26 @@ export default function SmartHSSearch({
         }
       });
       setSuggestions(response.data);
-      
-      // Also load rule of origin
-      const ruleResponse = await axios.get(`${API}/hs6/rule-of-origin/${hsCode}`, {
-        params: { language }
+    } catch (error) {
+      console.error('Error loading suggestions:', error);
+    }
+
+    // Load rule of origin in its own try/catch so a failure here
+    // does not leave stale data displayed and always notifies the caller.
+    setRuleOfOrigin(null);
+    if (onRuleOfOriginLoad) {
+      onRuleOfOriginLoad(null);
+    }
+    try {
+      const ruleResponse = await axios.get(`${API}/rules-of-origin/${hsCode}`, {
+        params: { lang: language }
       });
       setRuleOfOrigin(ruleResponse.data);
       if (onRuleOfOriginLoad) {
         onRuleOfOriginLoad(ruleResponse.data);
       }
     } catch (error) {
-      console.error('Error loading suggestions:', error);
+      console.error('Error loading rule of origin:', error);
     }
   };
 
@@ -440,22 +451,34 @@ export default function SmartHSSearch({
               )}
 
               {/* Rule of Origin */}
-              {ruleOfOrigin && (
+              {ruleOfOrigin && ruleOfOrigin.rule && ruleOfOrigin.rules && (
                 <div>
                   <Separator className="my-3" />
                   <h4 className="text-xs font-semibold text-gray-600 mb-2">{t.ruleOfOrigin}</h4>
-                  <div className="bg-white p-3 rounded border">
-                    <div className="flex items-center justify-between mb-2">
+                  <div className="bg-white p-3 rounded border space-y-2">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
                       <Badge variant="outline" className="text-xs">
-                        {ruleOfOrigin.type === 'wholly_obtained' ? 'Entièrement obtenu' : 
-                         ruleOfOrigin.type === 'double_transformation' ? 'Double transformation' :
-                         'Transformation substantielle'}
+                        {ruleOfOrigin.rules.primary_rule?.name || ruleOfOrigin.rules.primary_rule?.code}
                       </Badge>
-                      <Badge className="bg-yellow-500 text-white">
-                        {t.regionalContent}: {ruleOfOrigin.regional_content}%
-                      </Badge>
+                      {ruleOfOrigin.rules.regional_content != null && (
+                        <Badge className="bg-yellow-500 text-white">
+                          {t.regionalContent}: {ruleOfOrigin.rules.regional_content}%
+                        </Badge>
+                      )}
+                      {ruleOfOrigin.status === 'YTB' && (
+                        <Badge className="bg-orange-500 text-white">
+                          {language === 'fr' ? 'En cours de négociation' : 'Yet to be agreed'}
+                        </Badge>
+                      )}
                     </div>
-                    <p className="text-sm text-gray-700">{ruleOfOrigin.requirement}</p>
+                    {ruleOfOrigin.rules.primary_rule?.explanation && (
+                      <p className="text-sm text-gray-700">{ruleOfOrigin.rules.primary_rule.explanation}</p>
+                    )}
+                    {ruleOfOrigin.rules.alternative_rule && (
+                      <p className="text-xs text-gray-500">
+                        {t.alternativeRule}: {ruleOfOrigin.rules.alternative_rule.name}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}

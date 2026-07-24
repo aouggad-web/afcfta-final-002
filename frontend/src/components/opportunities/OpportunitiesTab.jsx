@@ -1,12 +1,14 @@
 /**
  * Opportunities Tab — main container
- * 5 sub-tabs: Analyse IA · Substitution · Chaînes de Valeur · Par Produit · Comparaison
+ * 8 sub-tabs: Analyse IA · Substitution · Simulateur ZLECAf · Comparateur
+ * bilatéral · Vue d'ensemble · Chaînes de Valeur · Par Produit · Comparaison
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Sparkles, ArrowLeftRight, Layers, Package, BarChart3, Scale, Calculator } from 'lucide-react';
+import { Sparkles, ArrowLeftRight, Layers, Package, BarChart3, Scale, Calculator, TrendingUp } from 'lucide-react';
 
 import AIAnalysis from './AIAnalysis';
+import StrategicFlows from './StrategicFlows';
 import SubstitutionAnalysis from './SubstitutionAnalysis';
 import ValueChains from './ValueChains';
 import ProductAnalysisView from './ProductAnalysisView';
@@ -18,6 +20,7 @@ import BilateralTariffComparator from './BilateralTariffComparator';
 const TABS = {
   fr: [
     { id: 'ai',           label: 'Analyse IA',         icon: Sparkles },
+    { id: 'strategic',    label: 'Flux stratégiques',   icon: TrendingUp },
     { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
     { id: 'simulator',    label: 'Simulateur ZLECAf',   icon: Calculator },
     { id: 'bilateral',    label: 'Comparateur bilatéral', icon: Scale },
@@ -28,6 +31,7 @@ const TABS = {
   ],
   en: [
     { id: 'ai',           label: 'AI Analysis',         icon: Sparkles },
+    { id: 'strategic',    label: 'Strategic Flows',      icon: TrendingUp },
     { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
     { id: 'simulator',    label: 'AfCFTA Simulator',    icon: Calculator },
     { id: 'bilateral',    label: 'Bilateral comparator', icon: Scale },
@@ -42,13 +46,33 @@ export default function OpportunitiesTab({ language = 'fr' }) {
   const { i18n } = useTranslation();
   const lang = i18n.language || language;
   const [active, setActive] = useState('ai');
+  const [handoffCountry, setHandoffCountry] = useState(null);
+
+  // Handoff inter-modules : le module Statistiques dépose {country, hsCode}
+  // dans sessionStorage puis navigue ici (voir CountryHS6History.jsx) — on
+  // ouvre directement le sous-module Substitution pré-rempli avec ce pays.
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem('zlecaf_opportunites_handoff');
+      if (!raw) return;
+      sessionStorage.removeItem('zlecaf_opportunites_handoff');
+      const h = JSON.parse(raw);
+      if (h && h.country) {
+        setHandoffCountry({ iso3: h.country, k: h.k || Date.now() });
+        setActive('substitution');
+      }
+    } catch {
+      /* handoff illisible : ignorer */
+    }
+  }, []);
 
   const tabs = TABS[lang] || TABS.fr;
 
   const renderContent = () => {
     switch (active) {
       case 'ai':           return <AIAnalysis language={lang} />;
-      case 'substitution': return <SubstitutionAnalysis language={lang} />;
+      case 'strategic':    return <StrategicFlows language={lang} initialCountry={handoffCountry} />;
+      case 'substitution': return <SubstitutionAnalysis language={lang} initialCountry={handoffCountry} />;
       case 'simulator':    return <ZlecafImpactSimulator language={lang} />;
       case 'bilateral':    return <BilateralTariffComparator language={lang} />;
       case 'summary':      return <OpportunitySummary language={lang} />;

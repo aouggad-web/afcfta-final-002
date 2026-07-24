@@ -15,6 +15,10 @@ from etl.hs6_database import (
     get_sub_position_suggestions,
     search_hs6_codes,
 )
+from etl.hs6_supplementary_units import (
+    get_supplementary_unit,
+    get_unit_label,
+)
 from etl.hs_codes_data import (
     get_hs6_code,
     get_hs_chapters,
@@ -153,13 +157,14 @@ async def get_single_hs_code(
     hs_code: str, language: str = Query("fr", description="Language: fr or en")
 ):
     """
-    Get a specific HS6 code with its label from complete database
+    Get a specific HS6 code with its label and supplementary unit from complete database
     """
     # Try complete database first
     if hs_code in HS6_DATABASE:
         data = HS6_DATABASE[hs_code]
         desc_key = "description_fr" if language == "fr" else "description_en"
         chapters = get_hs_chapters()
+        unit = get_supplementary_unit(hs_code)
         return {
             "code": hs_code,
             "label": data.get(desc_key, data.get("description_fr", "")),
@@ -167,12 +172,18 @@ async def get_single_hs_code(
             "chapter_name": chapters.get(hs_code[:2], {}).get(language, ""),
             "category": data.get("category", ""),
             "sensitivity": data.get("sensitivity", "normal"),
+            "supplementary_unit": unit,
+            "supplementary_unit_label": get_unit_label(unit, language) if unit else None,
         }
 
     # Fallback to old database for backwards compatibility
     result = get_hs6_code(hs_code, language)
     if not result:
         raise HTTPException(status_code=404, detail=f"HS code {hs_code} not found")
+    # Add supplementary unit to fallback result
+    unit = get_supplementary_unit(hs_code)
+    result["supplementary_unit"] = unit
+    result["supplementary_unit_label"] = get_unit_label(unit, language) if unit else None
     return result
 
 
@@ -183,7 +194,8 @@ async def search_hs_codes_endpoint(
     limit: int = Query(20, ge=1, le=100, description="Maximum results"),
 ):
     """
-    Search HS codes by code or label keyword using complete database (5800+ codes)
+    Search HS codes by code or label keyword using complete database (5800+ codes).
+    Returns results with supplementary units (unite complementaire) when applicable.
     """
     # Use search_hs6_codes from hs6_database.py which has accent-insensitive search
     raw_results = search_hs6_codes(q, language, limit)
@@ -194,6 +206,7 @@ async def search_hs_codes_endpoint(
     for r in raw_results:
         code = r["code"]
         chapter = code[:2]
+        unit = get_supplementary_unit(code)
         results.append(
             {
                 "code": code,
@@ -202,6 +215,8 @@ async def search_hs_codes_endpoint(
                 "chapter_name": chapters.get(chapter, {}).get(language, ""),
                 "category": r.get("category", ""),
                 "sensitivity": r.get("sensitivity", "normal"),
+                "supplementary_unit": unit,
+                "supplementary_unit_label": get_unit_label(unit, language) if unit else None,
             }
         )
 
@@ -275,7 +290,8 @@ async def get_hs_codes_by_chapter(
     chapter: str, language: str = Query("fr", description="Language: fr or en")
 ):
     """
-    Get all HS6 codes for a specific chapter (2-digit code) from complete database
+    Get all HS6 codes for a specific chapter (2-digit code) from complete database,
+    with supplementary units (unite complementaire) included
     """
     chapters = get_hs_chapters()
     if len(chapter) != 2 or chapter not in chapters:
@@ -286,6 +302,7 @@ async def get_hs_codes_by_chapter(
     desc_key = "description_fr" if language == "fr" else "description_en"
     for code, data in HS6_DATABASE.items():
         if code[:2] == chapter:
+            unit = get_supplementary_unit(code)
             codes.append(
                 {
                     "code": code,
@@ -293,6 +310,8 @@ async def get_hs_codes_by_chapter(
                     "chapter": chapter,
                     "category": data.get("category", ""),
                     "sensitivity": data.get("sensitivity", "normal"),
+                    "supplementary_unit": unit,
+                    "supplementary_unit_label": get_unit_label(unit, language) if unit else None,
                 }
             )
 

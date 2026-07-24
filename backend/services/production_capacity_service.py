@@ -69,16 +69,216 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("1510", "agri", "Olives"),
     ("4001", "agri", "Rubber"),
     ("3301", "agri", "Ylang-ylang"),
+    # ── Agriculture : produits déjà présents dans les données FAOSTAT mais
+    #    sans correspondance HS jusqu'ici (résolus désormais par le module
+    #    Opportunités). Codes HS6 spécifiques d'abord (préfixe le plus long gagne).
+    ("080390", "agri", "Bananas"),  # bananes (hors plantains 080310)
+    ("080430", "agri", "Pineapples"),  # ananas (0804=dattes en repli)
+    ("070310", "agri", "Onions"),  # oignons et échalotes
+    ("0702", "agri", "Tomatoes"),  # tomates
+    ("1201", "agri", "Soybeans"),  # fèves de soja
+    ("1206", "agri", "Sunflower seed"),  # graines de tournesol
+    ("071430", "agri", "Yam"),  # ignames
+    ("071333", "agri", "Beans"),  # haricots (Phaseolus)
+    ("5201", "agri", "Seed cotton"),  # coton (fibre) — proxy coton graine
+    ("0603", "agri", "Cut flowers"),  # fleurs coupées
+    ("130120", "agri", "Gum arabic"),  # gomme arabique
+    ("0910", "agri", "Ginger"),  # gingembre/épices
+    ("0708", "agri", "Beans"),  # légumineuses à cosse fraîches
+    # ── Cultures ajoutées (importées au prochain build FAOSTAT ; HS spécifiques) ──
+    ("080450", "agri", "Mangoes"),  # mangues, goyaves
+    ("080440", "agri", "Avocados"),  # avocats
+    ("0806", "agri", "Grapes"),  # raisins
+    ("080711", "agri", "Watermelons"),  # pastèques
+    ("080720", "agri", "Papayas"),  # papayes
+    ("070320", "agri", "Garlic"),  # ail
+    ("071420", "agri", "Sweet potatoes"),  # patates douces
+    ("0704", "agri", "Cabbages"),  # choux
+    ("070410", "agri", "Cauliflowers"),  # choux-fleurs et brocolis (12 pays)
+    ("070610", "agri", "Carrots"),  # carottes
+    ("070930", "agri", "Eggplants"),  # aubergines
+    ("070960", "agri", "Chillies and peppers"),  # piments/poivrons frais (37 pays)
+    ("070970", "agri", "Spinach"),  # épinards
+    ("070999", "agri", "Okra"),  # gombo
+    ("0707", "agri", "Cucumbers"),  # concombres
+    ("0705", "agri", "Lettuce"),  # laitue
+    ("080550", "agri", "Lemons and limes"),  # citrons et limes (sous-position de 0805)
+    ("071340", "agri", "Lentils"),  # lentilles
+    ("071320", "agri", "Chickpeas"),  # pois chiches
+    ("071310", "agri", "Peas"),  # pois secs
+    ("071360", "agri", "Pigeon peas"),  # pois d'Angole
+    ("1205", "agri", "Rapeseed"),  # colza
+    ("1204", "agri", "Linseed"),  # lin
+    ("120799", "agri", "Shea nuts"),  # karité
+    ("080270", "agri", "Kola nuts"),  # noix de kola
+    ("0904", "agri", "Pepper"),  # poivre/piments
+    ("080211", "agri", "Almonds"),  # amandes
+    ("080810", "agri", "Apples"),  # pommes
+    ("1004", "agri", "Oats"),  # avoine
+    ("080510", "agri", "Oranges"),  # oranges (sous-position de 0805 Citrus)
+    ("0401", "agri", "Cattle milk"),  # lait de vache
+    ("0407", "agri", "Hen eggs"),  # œufs
+    ("0201", "agri", "Cattle meat"),  # viande bovine
+    ("0202", "agri", "Cattle meat"),
+    ("0207", "agri", "Chicken meat"),  # viande de volaille
+    # ── Industrie : positions HS4 spécifiques vers secteurs UNIDO ──
+    ("2523", "manufacturing", "Manufacture of other non-metallic mineral products"),  # ciment
+    ("3105", "manufacturing", "Manufacture of chemicals"),  # engrais composés
+    ("3102", "manufacturing", "Manufacture of chemicals"),  # engrais azotés
+    ("3103", "manufacturing", "Manufacture of chemicals"),  # engrais phosphatés
+    # ── Industrie manufacturière : expansion des codes HS4 pour résolution fine ──
+    # Plutôt que de tomber au niveau chapitre HS2 (qui retournerait le même besoin
+    # pour tous les produits d'un chapitre), on capture maintenant des commodités
+    # spécifiques à HS4. Cela améliore la résolution du mapping et prépare le terrain
+    # pour des données de production plus granulaires. NOTE: Aujourd'hui, la plupart
+    # des secteurs manufacturiers (pharma, chimie, électronique, etc.) ne disposent
+    # que d'UNE seule valeur de production continentale par secteur UNIDO. L'amélioration
+    # réelle du calcul L3 (suppression des doublons au sein d'un chapitre) nécessitera
+    # une expansion des données production_africaine.json avec des commodity_label
+    # distinctes par HS4, pas seulement une meilleure résolution du code.
+    # Chimie & pharmaceutiques (HS28-34, 38)
+    ("2801", "manufacturing", "Manufacture of chemicals"),  # éléments chimiques non métalliques
+    ("2802", "manufacturing", "Manufacture of chemicals"),  # sulfure de carbone, phosphore blanc
+    ("2804", "manufacturing", "Manufacture of chemicals"),  # hydrogène, gaz rares
+    ("2807", "manufacturing", "Manufacture of chemicals"),  # acide sulfurique
+    ("2808", "manufacturing", "Manufacture of chemicals"),  # acide nitrique
+    ("2809", "manufacturing", "Manufacture of chemicals"),  # pentoxyde de phosphore
+    ("2815", "manufacturing", "Manufacture of chemicals"),  # hydroxyde de sodium
+    ("2825", "manufacturing", "Manufacture of chemicals"),  # chlore
+    ("2901", "manufacturing", "Manufacture of chemicals"),  # hydrocarbures acycliques
+    ("2902", "manufacturing", "Manufacture of chemicals"),  # hydrocarbures cycliques
+    ("2905", "manufacturing", "Manufacture of chemicals"),  # alcools acycliques
+    ("2915", "manufacturing", "Manufacture of chemicals"),  # acides gras
+    ("2916", "manufacturing", "Manufacture of chemicals"),  # acides monocarboxyliques
+    ("2930", "manufacturing", "Manufacture of chemicals"),  # composés organosulfurés
+    ("3001", "manufacturing", "Produits pharmaceutiques"),  # principes pharmaceutiques
+    ("3002", "manufacturing", "Produits pharmaceutiques"),  # antisérum et vaccins
+    ("3003", "manufacturing", "Produits pharmaceutiques"),  # médicaments dosés
+    ("3004", "manufacturing", "Produits pharmaceutiques"),  # médicaments non dosés
+    ("3201", "manufacturing", "Manufacture of chemicals"),  # matières tannantes
+    ("3301", "manufacturing", "Manufacture of chemicals"),  # huiles essentielles
+    ("3401", "manufacturing", "Manufacture of chemicals"),  # savons et détergents
+    # Caoutchouc & plastiques (HS39-40)
+    ("3901", "manufacturing", "Caoutchouc et plastiques"),  # polymères linéaires d'éthylène
+    ("3902", "manufacturing", "Caoutchouc et plastiques"),  # polymères de propylène
+    ("3903", "manufacturing", "Caoutchouc et plastiques"),  # polystyrène
+    ("3904", "manufacturing", "Caoutchouc et plastiques"),  # polychlorure de vinyle
+    ("3907", "manufacturing", "Caoutchouc et plastiques"),  # polyéthers, polyesters
+    ("4001", "manufacturing", "Caoutchouc et plastiques"),  # caoutchouc naturel
+    ("4002", "manufacturing", "Caoutchouc et plastiques"),  # caoutchouc synthétique
+    # Textiles (HS50-63)
+    ("5001", "manufacturing", "Manufacture of textiles"),  # soies brutes
+    ("5101", "manufacturing", "Manufacture of textiles"),  # laine brute
+    ("5201", "manufacturing", "Manufacture of textiles"),  # coton brut
+    ("5301", "manufacturing", "Manufacture of textiles"),  # lin brut
+    ("5401", "manufacturing", "Manufacture of textiles"),  # fibres synthétiques filées
+    ("5501", "manufacturing", "Manufacture of textiles"),  # fibrilles de polyester
+    ("5601", "manufacturing", "Manufacture of textiles"),  # filés de filaments synthétiques
+    ("5801", "manufacturing", "Manufacture of textiles"),  # tulles, dentelles
+    ("5901", "manufacturing", "Manufacture of textiles"),  # textiles enduits
+    ("6001", "manufacturing", "Manufacture of textiles"),  # velours
+    ("6101", "manufacturing", "Articles d'habillement"),  # chandails, tricots
+    ("6201", "manufacturing", "Articles d'habillement"),  # vêtements de laine/poil
+    ("6301", "manufacturing", "Articles d'habillement"),  # tissus de ouate, linge
+    # Métaux (HS72-79, 82-83)
+    ("7201", "manufacturing", "Manufacture of basic metals"),  # fontes brutes
+    ("7202", "manufacturing", "Manufacture of basic metals"),  # ferro-alliages
+    ("7208", "manufacturing", "Manufacture of basic metals"),  # produits laminés fer
+    ("7301", "manufacturing", "Manufacture of basic metals"),  # produits en fer
+    ("7402", "manufacturing", "Manufacture of basic metals"),  # cuivre affiné
+    ("7502", "manufacturing", "Manufacture of basic metals"),  # nickel affiné
+    ("7601", "manufacturing", "Manufacture of basic metals"),  # aluminium non allié
+    ("7801", "manufacturing", "Manufacture of basic metals"),  # plomb affiné
+    ("7901", "manufacturing", "Manufacture of basic metals"),  # zinc affiné
+    ("8101", "manufacturing", "Manufacture of basic metals"),  # tungstène
+    ("8206", "manufacturing", "Manufacture of basic metals"),  # outils à main
+    ("8307", "manufacturing", "Manufacture of basic metals"),  # tuyaux flexibles
+    # Électronique — ISIC 26 (HS85 : téléphones, semiconducteurs, supports)
+    ("8517", "manufacturing", "Produits électroniques"),  # téléphones
+    ("8523", "manufacturing", "Produits électroniques"),  # supports d'enregistrement
+    ("8528", "manufacturing", "Produits électroniques"),  # moniteurs, téléviseurs
+    ("8541", "manufacturing", "Produits électroniques"),  # semiconducteurs
+    ("8542", "manufacturing", "Produits électroniques"),  # circuits intégrés
+    # Équipements électriques — ISIC 27 (HS85 : moteurs, groupes électrogènes,
+    # transformateurs, piles, câblage) : secteur UNIDO distinct de l'électronique
+    # (ISIC 26) — les deux libellés existent séparément dans production_africaine.json,
+    # fusionner les deux sous "Produits électroniques" comme avant faussait le besoin
+    # estimé pour les produits de ce sous-secteur.
+    ("8501", "manufacturing", "Équipements électriques"),  # moteurs électriques
+    ("8502", "manufacturing", "Équipements électriques"),  # groupes électrogènes
+    ("8503", "manufacturing", "Équipements électriques"),  # pièces de moteurs/génératrices
+    ("8504", "manufacturing", "Équipements électriques"),  # transformateurs électriques
+    ("8506", "manufacturing", "Équipements électriques"),  # piles électriques
+    ("8507", "manufacturing", "Équipements électriques"),  # accumulateurs électriques
+    ("8535", "manufacturing", "Équipements électriques"),  # appareillage électrique >1kV
+    ("8536", "manufacturing", "Équipements électriques"),  # appareillage électrique <=1kV
+    ("8537", "manufacturing", "Équipements électriques"),  # tableaux de commande électrique
+    ("8544", "manufacturing", "Équipements électriques"),  # fils et câbles isolés
+    # Véhicules automobiles (HS87)
+    ("8701", "manufacturing", "Manufacture of motor vehicles"),  # tracteurs
+    ("8702", "manufacturing", "Manufacture of motor vehicles"),  # autobus/autocars
+    ("8703", "manufacturing", "Manufacture of motor vehicles"),  # voitures particulières
+    ("8704", "manufacturing", "Manufacture of motor vehicles"),  # véhicules de transport
+    ("8705", "manufacturing", "Manufacture of motor vehicles"),  # véhicules à usage spécial
+    ("8706", "manufacturing", "Manufacture of motor vehicles"),  # châssis de véhicules
+    ("8708", "manufacturing", "Manufacture of motor vehicles"),  # pièces détachées
+    ("8711", "manufacturing", "Manufacture of motor vehicles"),  # motocycles
+    # Minéraux non métalliques (HS68-70)
+    ("6801", "manufacturing", "Manufacture of other non-metallic mineral products"),  # ardoises
+    ("6902", "manufacturing", "Manufacture of other non-metallic mineral products"),  # céramiques
+    (
+        "6903",
+        "manufacturing",
+        "Manufacture of other non-metallic mineral products",
+    ),  # briques et tuiles
+    ("7001", "manufacturing", "Manufacture of other non-metallic mineral products"),  # verres bruts
+    (
+        "7007",
+        "manufacturing",
+        "Manufacture of other non-metallic mineral products",
+    ),  # verres de sécurité
+    (
+        "7008",
+        "manufacturing",
+        "Manufacture of other non-metallic mineral products",
+    ),  # verres laminés
+    # Agro-industrie : produits alimentaires (HS16, 19-21, 23)
+    ("1601", "manufacturing", "Manufacture of food products"),  # saucisses et charcuterie
+    ("1602", "manufacturing", "Manufacture of food products"),  # viande préparée
+    ("1605", "manufacturing", "Manufacture of food products"),  # crustacés préparés
+    ("1901", "manufacturing", "Manufacture of food products"),  # préparations de céréales
+    ("1902", "manufacturing", "Manufacture of food products"),  # pâtes alimentaires
+    ("1905", "manufacturing", "Manufacture of food products"),  # pain et biscuits
+    ("2001", "manufacturing", "Manufacture of food products"),  # légumes préparés
+    ("2005", "manufacturing", "Manufacture of food products"),  # légumes cuits
+    ("2009", "manufacturing", "Manufacture of food products"),  # jus de fruits
+    ("2106", "manufacturing", "Manufacture of food products"),  # préparations alimentaires
+    ("2301", "manufacturing", "Manufacture of food products"),  # aliments pour animaux
+    ("2207", "manufacturing", "Manufacture of beverages"),  # alcool éthylique
+    ("2208", "manufacturing", "Manufacture of beverages"),  # alcools et spiritueux
+    # Tabac transformé (cigarettes/cigares, ISIC 12) — distinct du tabac brut en
+    # feuilles (chapitre 24 entier, repli agri "Tobacco" ci-dessous) : préfixe
+    # 4 chiffres plus spécifique, prioritaire sur le repli de chapitre.
+    ("2402", "manufacturing", "Manufacture of tobacco products"),  # cigarettes, cigares
+    # ── Raffinage pétrolier (UNIDO) ──
+    # 2710 = huiles de pétrole RAFFINÉES (essence, diesel, kérosène...), pas du brut :
+    # rattaché à la valeur ajoutée UNIDO "Manufacture of coke and refined petroleum
+    # products" (donnée réelle disponible), plutôt que confondu avec la production
+    # minière de brut USGS ci-dessous — l'ancien mapping masquait cette distinction.
+    ("2710", "manufacturing", "Manufacture of coke and refined petroleum products"),
     # ── Hydrocarbures & Mines (USGS) ──
-    ("2709", "mining", "Crude oil"),
-    ("2710", "mining", "Crude oil"),
+    ("2709", "mining", "Crude oil"),  # pétrole brut
     ("2711", "mining", "Natural gas"),
     ("2701", "mining", "Coal"),
     ("2702", "mining", "Coal"),
     ("7108", "mining", "Gold"),
-    ("7106", "mining", "Salt"),  # (placeholder rarely hit)
-    ("7102", "mining", "Diamonds"),
-    ("7103", "mining", "Diamonds"),
+    ("7102", "mining", "Diamonds"),  # diamants bruts
+    ("7103", "mining", "Diamonds"),  # pierres gemmes brutes
+    # 7113 = joaillerie/bijouterie (diamants taillés, sertis) : valeur ajoutée de
+    # transformation (taille, sertissage), pas de la production minière brute —
+    # rattaché au libellé UNIDO "Autres industries (diamants)" plutôt qu'à "Diamonds"
+    # (USGS, qui ne mesure que l'extraction).
+    ("7113", "manufacturing", "Autres industries (diamants)"),  # bijouterie/joaillerie
     ("7110", "mining", "Platinum"),
     ("2510", "mining", "Phosphate"),
     ("2603", "mining", "Copper"),
@@ -108,21 +308,75 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("2614", "mining", "Ilmenite"),
 ]
 
-# Repli par chapitre HS (2 chiffres) — moins précis mais utile pour couverture large
+# Repli par chapitre HS (2 chiffres) — moins précis mais utile pour couverture large.
+# Couvre les grands secteurs manufacturiers (UNIDO, valeur ajoutée) et agro/mines.
 HS_CHAPTER_FALLBACK: Dict[str, Tuple[str, str]] = {
     "09": ("agri", "Coffee"),
     "10": ("agri", "Maize (corn)"),
     "18": ("agri", "Cocoa beans"),
     "27": ("mining", "Crude oil"),
     "71": ("mining", "Gold"),
+    # Métallurgie de base (UNIDO)
     "72": ("manufacturing", "Manufacture of basic metals"),
     "73": ("manufacturing", "Manufacture of basic metals"),
     "74": ("manufacturing", "Manufacture of basic metals"),
+    "75": ("manufacturing", "Manufacture of basic metals"),
     "76": ("manufacturing", "Manufacture of basic metals"),
+    "78": ("manufacturing", "Manufacture of basic metals"),
+    "79": ("manufacturing", "Manufacture of basic metals"),
+    # Agro-alimentaire (UNIDO)
     "16": ("manufacturing", "Manufacture of food products"),
     "19": ("manufacturing", "Manufacture of food products"),
     "20": ("manufacturing", "Manufacture of food products"),
     "21": ("manufacturing", "Manufacture of food products"),
+    "22": ("manufacturing", "Manufacture of beverages"),
+    # Chimie & pharmacie (UNIDO)
+    "28": ("manufacturing", "Manufacture of chemicals"),
+    "29": ("manufacturing", "Manufacture of chemicals"),
+    "30": ("manufacturing", "Produits pharmaceutiques"),
+    "31": ("manufacturing", "Manufacture of chemicals"),
+    "32": ("manufacturing", "Manufacture of chemicals"),
+    "33": ("manufacturing", "Manufacture of chemicals"),
+    "34": ("manufacturing", "Manufacture of chemicals"),
+    "38": ("manufacturing", "Manufacture of chemicals"),
+    # Caoutchouc & plastiques (UNIDO)
+    "39": ("manufacturing", "Caoutchouc et plastiques"),
+    "40": ("manufacturing", "Caoutchouc et plastiques"),
+    # Textiles & habillement (UNIDO)
+    "50": ("manufacturing", "Manufacture of textiles"),
+    "51": ("manufacturing", "Manufacture of textiles"),
+    "52": ("manufacturing", "Manufacture of textiles"),
+    "53": ("manufacturing", "Manufacture of textiles"),
+    "54": ("manufacturing", "Manufacture of textiles"),
+    "55": ("manufacturing", "Manufacture of textiles"),
+    "56": ("manufacturing", "Manufacture of textiles"),
+    "57": ("manufacturing", "Manufacture of textiles"),
+    "58": ("manufacturing", "Manufacture of textiles"),
+    "59": ("manufacturing", "Manufacture of textiles"),
+    "60": ("manufacturing", "Manufacture of textiles"),
+    "61": ("manufacturing", "Articles d'habillement"),
+    "62": ("manufacturing", "Articles d'habillement"),
+    "63": ("manufacturing", "Articles d'habillement"),
+    # Électronique & équipements électriques (UNIDO)
+    "85": ("manufacturing", "Produits électroniques"),
+    # Véhicules automobiles (UNIDO)
+    "87": ("manufacturing", "Manufacture of motor vehicles"),
+    # Minéraux non métalliques : ciment, verre, céramique (UNIDO — 18 pays)
+    "68": ("manufacturing", "Manufacture of other non-metallic mineral products"),
+    "69": ("manufacturing", "Manufacture of other non-metallic mineral products"),
+    "70": ("manufacturing", "Manufacture of other non-metallic mineral products"),
+    # Agro-industrie complémentaire : farines, huiles, aliments pour animaux
+    "11": ("manufacturing", "Manufacture of food products"),
+    "15": ("manufacturing", "Manufacture of food products"),
+    "17": ("agri", "Sugarcane"),
+    "23": ("manufacturing", "Manufacture of food products"),
+    "24": ("agri", "Tobacco"),
+    # Ouvrages en métaux (outillage, coutellerie)
+    "82": ("manufacturing", "Manufacture of basic metals"),
+    "83": ("manufacturing", "Manufacture of basic metals"),
+    # Bois, papier (UNIDO ISIC 16-17)
+    "44": ("manufacturing", "Manufacture of wood and wood products"),
+    "48": ("manufacturing", "Manufacture of paper and paper products"),
 }
 
 DATASET_KEY = {
@@ -130,6 +384,29 @@ DATASET_KEY = {
     "mining": "mining_usgs",
     "manufacturing": "manufacturing_unido",
 }
+
+# En-deçà de ce nombre de pays ayant une valeur pour l'année de classement,
+# un "rang #1" / "part continentale" n'est PAS un signal de leadership réel —
+# c'est un artefact de couverture incomplète de l'ingestion (ex. seule Maurice
+# capturée pour "Produits pharmaceutiques" UNIDO alors que l'Égypte, le Maroc,
+# l'Afrique du Sud et la Tunisie ont des industries pharmaceutiques réelles
+# non encore ingérées). En dessous du seuil, `coverage_caveat` est renseigné
+# et DOIT être affiché — jamais silencieusement masqué en aval.
+_MIN_RELIABLE_COVERAGE_COUNTRIES = 3
+
+
+def _coverage_caveat(dataset: str, label: str, n_countries: int) -> Optional[str]:
+    if n_countries >= _MIN_RELIABLE_COVERAGE_COUNTRIES:
+        return None
+    institution = SOURCE_META[dataset]["institution"]
+    return (
+        f"Couverture {institution} limitée à {n_countries} pays africain(s) pour "
+        f"« {label} » dans notre base actuelle — un rang ou une part continentale "
+        "calculé sur si peu de pays NE reflète PAS un leadership réel : d'autres "
+        "producteurs africains existent très probablement mais ne sont pas encore "
+        "ingérés. À traiter comme une donnée partielle, pas comme un classement fiable."
+    )
+
 
 SOURCE_META = {
     "agri": {
@@ -154,6 +431,35 @@ SOURCE_META = {
         "unit": "USD",
     },
 }
+
+# ── Proxy d'exportation (repli quand FAO/USGS/UNIDO ne couvrent pas le produit) ──
+# Les exportations SH6/SH4 (OEC/BACI) servent d'INDICE de capacité productive
+# UNIQUEMENT là où le référentiel production n'a rien. Ce n'est jamais une mesure
+# de production : une exportation observée en est une BORNE BASSE (la part
+# consommée sur le marché intérieur n'est pas exportée) et peut inclure des
+# réexportations — lesquelles n'attestent d'AUCUNE production locale.
+_EXPORT_PROXY_SOURCE = {
+    "institution": "OEC / BACI (CEPII)",
+    "dataset": "BACI — flux commerciaux bilatéraux (HS Rev. 2017)",
+    "url": "https://oec.world/",
+    "measure": "Exportations (proxy de capacité de production)",
+    "unit": "USD",
+}
+
+_EXPORT_PROXY_CAVEAT = (
+    "PROXY — les exportations ne mesurent PAS la production : elles en sont une "
+    "BORNE BASSE (la production consommée sur le marché intérieur n'est pas "
+    "exportée) et peuvent inclure des réexportations. À lire comme un indice de "
+    "capacité productive en l'absence de données FAO/USGS/UNIDO, jamais comme un "
+    "chiffre de production."
+)
+
+_EXPORT_PROXY_REEXPORT_CAVEAT = (
+    "Ce pays est un hub de réexportation : une part des exportations peut être de "
+    "la marchandise réexportée depuis une zone franche, qui n'atteste d'aucune "
+    "production locale et n'acquiert pas l'origine ZLECAf. Le proxy peut donc "
+    "surestimer nettement la capacité de production réelle."
+)
 
 
 def _normalize_hs(hs_code: Optional[str]) -> str:
@@ -326,6 +632,18 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
         "url": (ref_rec.get("source_url") if ref_rec else None) or meta["url"],
     }
 
+    # Sous le seuil de couverture fiable, un rang, une part ou un « leader »
+    # continental est un artefact d'ingestion (ex. Maurice seule ingérée pour
+    # « Produits pharmaceutiques » UNIDO → « 1/1, 100 % ») : on n'émet AUCUN de
+    # ces champs — seuls la valeur réelle du pays et le garde-fou subsistent.
+    coverage_caveat = _coverage_caveat(dataset, label, len(year_recs))
+    if coverage_caveat:
+        rank = None
+        country_share = None
+        leader = None
+        continental_total = None
+        top_producers = [{**p, "share_pct": None} for p in top_producers]
+
     scenarios = {}
     if latest_val:
         scenarios = _build_scenarios(
@@ -366,8 +684,92 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
                 else None
             ),
             "top_producers": top_producers,
+            "coverage_caveat": coverage_caveat,
         },
         "integration_scenarios": scenarios,
+    }
+
+
+def list_tracked_products() -> List[Dict]:
+    """
+    Univers des produits traçables par le référentiel production (FAOSTAT /
+    USGS / UNIDO) : un représentant HS par (dataset, commodity), uniquement
+    ceux qui ont des enregistrements réels. Sert de liste de candidats au
+    scénario S4 (opportunités d'importation par pays) du module Opportunités.
+    """
+    seen = set()
+    products: List[Dict] = []
+    for prefix, dataset, label in HS_TO_COMMODITY:
+        key = (dataset, label)
+        if key in seen:
+            continue
+        seen.add(key)
+        if not _records_for(dataset, label):
+            continue
+        products.append({"hs_code": prefix, "dataset": dataset, "commodity": label})
+    return products
+
+
+def get_country_profile(country_iso3: str, top_n: int = 20) -> Dict:
+    """
+    Vue pays : ce que le pays produit RÉELLEMENT selon le référentiel
+    production (FAOSTAT / USGS / UNIDO), avec rang continental et part
+    africaine sur la dernière année disponible de chaque produit. Sert de
+    bloc d'ancrage aux prompts IA du module Opportunités : le LLM choisit
+    ses opportunités parmi ces produits vérifiés au lieu de sa mémoire.
+    """
+    iso3 = (country_iso3 or "").strip().upper()
+    seen = set()
+    products: List[Dict] = []
+    for prefix, dataset, label in HS_TO_COMMODITY:
+        key = (dataset, label)
+        if key in seen:
+            continue
+        seen.add(key)
+        all_recs = _records_for(dataset, label)
+        if not all_recs:
+            continue
+        latest_year = max(r["year"] for r in all_recs)
+        year_recs = sorted(
+            [r for r in all_recs if r.get("year") == latest_year and r.get("value")],
+            key=lambda r: r["value"],
+            reverse=True,
+        )
+        rank, country_rec = next(
+            ((i + 1, r) for i, r in enumerate(year_recs) if r.get("country_iso3") == iso3),
+            (None, None),
+        )
+        if country_rec is None:
+            continue
+        total = sum(r["value"] for r in year_recs)
+        meta = SOURCE_META[dataset]
+        # Même règle que get_capacity : rang/part jamais émis sous le seuil de
+        # couverture (ils alimenteraient les prompts avec un faux leadership).
+        caveat = _coverage_caveat(dataset, label, len(year_recs))
+        products.append(
+            {
+                "hs_code": prefix,
+                "commodity": label,
+                "dataset": dataset,
+                "measure": meta["measure"],
+                "unit": country_rec.get("unit") or meta["unit"],
+                "institution": country_rec.get("source_institution") or meta["institution"],
+                "year": latest_year,
+                "value": country_rec["value"],
+                "rank": None if caveat else rank,
+                "total_countries": len(year_recs),
+                "share_pct": (
+                    round(country_rec["value"] / total * 100.0, 1) if total and not caveat else None
+                ),
+                "coverage_caveat": caveat,
+            }
+        )
+    products.sort(key=lambda p: (p["share_pct"] or 0.0), reverse=True)
+    return {
+        "available": bool(products),
+        "country_iso3": iso3,
+        "products": products[:top_n],
+        "total_tracked": len(products),
     }
 
 
@@ -400,6 +802,11 @@ def get_continental_producers(hs_code: str) -> Dict:
         "dataset": (ref_rec.get("source_dataset") if ref_rec else None) or meta["dataset"],
         "url": (ref_rec.get("source_url") if ref_rec else None) or meta["url"],
     }
+    # Sous le seuil de couverture, une « part africaine » calculée sur 1-2 pays
+    # est un artefact (100 % pour l'unique pays ingéré) — jamais émise. Le
+    # continental_total reste fourni (borne basse réelle, consommée par
+    # l'estimation de demande qui relaie déjà le garde-fou).
+    coverage_caveat = _coverage_caveat(dataset, label, len(year_recs))
     return {
         "available": True,
         "hs_code": hs_code,
@@ -416,11 +823,167 @@ def get_continental_producers(hs_code: str) -> Dict:
                 "country_iso3": r["country_iso3"],
                 "country_name": r.get("country_name", r["country_iso3"]),
                 "value": r["value"],
-                "share_pct": round(r["value"] / total * 100.0, 1) if total else None,
+                "share_pct": (
+                    round(r["value"] / total * 100.0, 1) if total and not coverage_caveat else None
+                ),
             }
             for r in year_recs[:10]
         ],
+        "coverage_caveat": coverage_caveat,
     }
+
+
+def get_regional_producers(hs_code: str, iso3_set) -> Dict:
+    """
+    Vue SOUS-RÉGIONALE (Afrique du Nord / Ouest / Est / Centrale / Australe) :
+    production réelle des pays de la région pour ce code HS, dernière année
+    disponible. Sert de référence per-capita RÉGIONALE au module Opportunités
+    (besoin national) : une moyenne CONTINENTALE mélange des régimes
+    alimentaires très différents (blé/thé dominants en Afrique du Nord, riz/
+    manioc en Afrique de l'Ouest...) — la référence régionale capte mieux le
+    profil de consommation typique du pays évalué que la moyenne panafricaine.
+    """
+    match = _match_commodity(hs_code)
+    if not match:
+        return {"available": False, "reason": "no_mapping", "hs_code": hs_code}
+    dataset, label, match_level = match
+    all_recs = _records_for(dataset, label)
+    if not all_recs:
+        return {"available": False, "reason": "no_data", "commodity": label, "hs_code": hs_code}
+
+    latest_year = max(r["year"] for r in all_recs)
+    region_recs = sorted(
+        (
+            r
+            for r in all_recs
+            if r.get("year") == latest_year and r.get("value") and r.get("country_iso3") in iso3_set
+        ),
+        key=lambda r: r["value"],
+        reverse=True,
+    )
+    total = sum(r["value"] for r in region_recs)
+    return {
+        "available": bool(region_recs),
+        "hs_code": hs_code,
+        "match_level": match_level,
+        "commodity": label,
+        "year": latest_year,
+        "region_total": round(total, 1) if total else None,
+        "producer_count": len(region_recs),
+        "top_producers": [
+            {
+                "country_iso3": r["country_iso3"],
+                "country_name": r.get("country_name", r["country_iso3"]),
+                "value": r["value"],
+            }
+            for r in region_recs[:5]
+        ],
+    }
+
+
+def _export_series_stats(
+    exports: Optional[List[Dict]],
+) -> Tuple[Optional[float], Optional[int], Optional[float], List[Dict]]:
+    """
+    (dernière_valeur, dernière_année, CAGR %, série) depuis la série
+    d'exportations OEC. Ignore les années `no_data` et les valeurs nulles.
+    """
+    series = [
+        {
+            "year": e["year"],
+            "value": e.get("trade_value") or 0.0,
+            "quantity": e.get("quantity") or 0.0,
+        }
+        for e in (exports or [])
+        if not e.get("no_data") and (e.get("trade_value") or 0) > 0
+    ]
+    series.sort(key=lambda r: r["year"])
+    if not series:
+        return None, None, None, []
+    latest = series[-1]
+    cagr = None
+    if len(series) >= 2:
+        cagr = _cagr(
+            series[0]["value"], series[-1]["value"], series[-1]["year"] - series[0]["year"]
+        )
+    return latest["value"], latest["year"], cagr, series
+
+
+def build_export_proxy_capacity(
+    hs_code: str, oec_history: Optional[Dict], is_reexport_hub: bool = False
+) -> Dict:
+    """
+    Construit un bloc « capacité » de REPLI à partir de l'historique
+    d'EXPORTATIONS OEC/BACI (correspondance SH6 → SH4 → SH2), à utiliser
+    lorsque FAO / USGS / UNIDO ne couvrent pas le produit.
+
+    Fonction pure (aucune I/O) : reçoit la réponse déjà récupérée de
+    `oec_service.get_country_hs6_history`. Étiquetage strict — `is_proxy=True`,
+    `basis="exports_proxy"`, et un `proxy_caveat` obligatoire rappelant qu'une
+    exportation est une borne basse de la production, jamais une mesure (avec un
+    caveat réexport supplémentaire pour les hubs type Maurice/Togo/Djibouti).
+    """
+    if not oec_history or oec_history.get("error") or not oec_history.get("has_data"):
+        return {"available": False, "reason": "no_export_data", "hs_code": hs_code}
+
+    latest_val, latest_year, cagr_pct, series = _export_series_stats(oec_history.get("exports"))
+    if latest_val is None:
+        return {"available": False, "reason": "no_export_data", "hs_code": hs_code}
+
+    level = str(oec_history.get("match_level") or oec_history.get("level") or "").lower()
+    level_label = {"hs6": "HS6", "hs4": "HS4", "hs2": "HS2 (chapitre)"}.get(level, level or None)
+
+    caveats = [_EXPORT_PROXY_CAVEAT]
+    if is_reexport_hub:
+        caveats.append(_EXPORT_PROXY_REEXPORT_CAVEAT)
+
+    return {
+        "available": True,
+        "is_proxy": True,
+        "basis": "exports_proxy",
+        "hs_code": oec_history.get("hs_code") or hs_code,
+        "hs4_code": oec_history.get("hs4_code"),
+        "match_level": level_label,
+        "measure": _EXPORT_PROXY_SOURCE["measure"],
+        "unit": _EXPORT_PROXY_SOURCE["unit"],
+        "source": {
+            "institution": _EXPORT_PROXY_SOURCE["institution"],
+            "dataset": _EXPORT_PROXY_SOURCE["dataset"],
+            "url": _EXPORT_PROXY_SOURCE["url"],
+        },
+        "country_iso3": oec_history.get("country_iso3"),
+        "latest_value": round(latest_val, 2),
+        "latest_year": latest_year,
+        "cagr_pct": round(cagr_pct, 2) if cagr_pct is not None else None,
+        "timeseries": [
+            {
+                "year": s["year"],
+                "value": round(s["value"], 2),
+                "quantity": round(s["quantity"], 2),
+                "unit": "USD",
+            }
+            for s in series
+        ],
+        "is_reexport_hub": is_reexport_hub,
+        "proxy_caveat": " ".join(caveats),
+        "currency": oec_history.get("currency", "USD"),
+    }
+
+
+def capacity_is_reliable(cap: Optional[Dict]) -> bool:
+    """
+    True si un bloc `production_capacity` mesuré peut être présenté tel quel :
+    disponible ET couverture continentale fiable. Un bloc disponible mais sous
+    le seuil de couverture (`coverage_caveat` renseigné — ex. Maurice seule
+    ingérée pour les produits pharmaceutiques UNIDO) est trop mince pour ancrer
+    seul l'affichage : le module Opportunités lui adjoint alors le proxy
+    d'exportations OEC/BACI, plus spécifique au produit.
+    """
+    if not cap or not cap.get("available"):
+        return False
+    if cap.get("is_proxy"):
+        return True
+    return not (cap.get("continental") or {}).get("coverage_caveat")
 
 
 def enrich_opportunities(opportunities: List[Dict], country_iso3: str) -> List[Dict]:

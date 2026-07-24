@@ -1,3 +1,5 @@
+import { csrfFetch } from './csrf';
+
 const API_BASE = import.meta.env.VITE_BACKEND_URL || '';
 
 /**
@@ -13,7 +15,7 @@ async function apiFetch(path, options = {}, timeoutMs = DEFAULT_TIMEOUT_MS) {
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    const response = await fetch(`${API_BASE}${path}`, {
+    const response = await csrfFetch(`${API_BASE}${path}`, {
       headers: { 'Content-Type': 'application/json', ...options.headers },
       signal: controller.signal,
       ...options,

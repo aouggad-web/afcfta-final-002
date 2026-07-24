@@ -12,11 +12,12 @@ POST /api/exchange-rates/refresh             – Force refresh rates from provid
 
 import logging
 from datetime import datetime, timezone
-from typing import Dict, Optional
+from typing import Annotated, Dict, Optional
 
+from auth import require_admin
 from exchange_rates import ConversionRequest, ConversionResult, RateBundle, get_service
 from exchange_rates.models import RateAlert
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/exchange-rates")
@@ -118,7 +119,10 @@ def convert_currency(request: ConversionRequest):
 
 
 @router.post("/refresh")
-def refresh_rates(base: str = Query("USD", description="Base currency code (ISO 4217)")):
+def refresh_rates(
+    base: str = Query("USD", description="Base currency code (ISO 4217)"),
+    key_doc: Annotated[dict, Depends(require_admin)] = None,
+):
     """Manually trigger a rate refresh from the provider chain."""
     svc = get_service()
     bundle = svc.update_rates(base)

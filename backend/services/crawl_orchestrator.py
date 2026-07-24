@@ -27,6 +27,21 @@ class CrawlJob:
         self.started_at: Optional[datetime] = None
         self.completed_at: Optional[datetime] = None
         self.country_results: Dict[str, Dict[str, Any]] = {}
+        self.country_progress: Dict[str, Dict[str, Any]] = {
+            code: {
+                "iso3": code,
+                "step": idx + 1,
+                "status": "pending",
+                "started_at": None,
+                "completed_at": None,
+                "records_scraped": 0,
+                "records_validated": 0,
+                "records_saved": 0,
+                "error": None,
+            }
+            for idx, code in enumerate(country_codes)
+        }
+        self.current_country: Optional[str] = None
         self.error: Optional[str] = None
 
     @property
@@ -41,6 +56,10 @@ class CrawlJob:
         succeeded = sum(1 for r in self.country_results.values() if r.get("success"))
         failed = sum(1 for r in self.country_results.values() if not r.get("success"))
         pending = len(self.country_codes) - len(self.country_results)
+        completed = succeeded + failed
+        progress_pct = (
+            round((completed / len(self.country_codes)) * 100, 1) if self.country_codes else 100.0
+        )
 
         return {
             "job_id": self.job_id,
@@ -49,6 +68,8 @@ class CrawlJob:
             "succeeded": succeeded,
             "failed": failed,
             "pending": pending,
+            "current_country": self.current_country,
+            "progress_pct": progress_pct,
             "created_at": self.created_at.isoformat(),
             "started_at": self.started_at.isoformat() if self.started_at else None,
             "completed_at": self.completed_at.isoformat() if self.completed_at else None,
@@ -62,6 +83,7 @@ class CrawlJob:
             "country_codes": self.country_codes,
             "options": self.options,
             "country_results": self.country_results,
+            "progress_steps": [self.country_progress[c] for c in self.country_codes],
         }
 
 
@@ -80,6 +102,7 @@ class CrawlOrchestrator:
         region: Optional[str] = None,
         block: Optional[str] = None,
         force_generic: bool = False,
+        country_by_country: bool = True,
     ) -> CrawlJob:
         from crawlers.all_countries_registry import (
             AFRICAN_COUNTRIES_REGISTRY,
@@ -118,17 +141,20 @@ class CrawlOrchestrator:
                 "priority": priority,
                 "region": region,
                 "block": block,
+                "country_by_country": country_by_country,
             },
         )
         self.jobs[job_id] = job
 
-        task = asyncio.create_task(self._run_job(job, force_generic))
+        task = asyncio.create_task(self._run_job(job, force_generic, country_by_country))
         self._running_tasks[job_id] = task
 
         logger.info(f"Crawl job {job_id} created for {len(codes)} countries")
         return job
 
-    async def _run_job(self, job: CrawlJob, force_generic: bool = False):
+    async def _run_job(
+        self, job: CrawlJob, force_generic: bool = False, country_by_country: bool = True
+    ):
         from crawlers.scraper_factory import ScraperFactory
 
         job.status = JobStatus.RUNNING
@@ -146,11 +172,16 @@ class CrawlOrchestrator:
             except Exception as e:
                 logger.warning(f"Failed to send start notification: {e}")
 
-        semaphore = asyncio.Semaphore(self.max_concurrency)
+        concurrency = 1 if country_by_country else self.max_concurrency
+        semaphore = asyncio.Semaphore(concurrency)
 
         async def crawl_country(country_code: str):
             async with semaphore:
                 try:
+                    job.current_country = country_code
+                    job.country_progress[country_code].update(
+                        {"status": "running", "started_at": datetime.utcnow().isoformat()}
+                    )
                     scraper = ScraperFactory.get_scraper(
                         country_code,
                         db_client=self.db_client,
@@ -169,6 +200,16 @@ class CrawlOrchestrator:
                         ),
                         "error": result.error,
                     }
+                    job.country_progress[country_code].update(
+                        {
+                            "status": "done" if result.success else "failed",
+                            "completed_at": datetime.utcnow().isoformat(),
+                            "records_scraped": result.records_scraped,
+                            "records_validated": result.records_validated,
+                            "records_saved": result.records_saved,
+                            "error": result.error,
+                        }
+                    )
                 except Exception as e:
                     logger.error(f"Crawl failed for {country_code}: {e}")
                     job.country_results[country_code] = {
@@ -176,6 +217,13 @@ class CrawlOrchestrator:
                         "error": str(e),
                         "records_scraped": 0,
                     }
+                    job.country_progress[country_code].update(
+                        {
+                            "status": "failed",
+                            "completed_at": datetime.utcnow().isoformat(),
+                            "error": str(e),
+                        }
+                    )
 
         try:
             tasks = [crawl_country(code) for code in job.country_codes]
@@ -198,6 +246,7 @@ class CrawlOrchestrator:
 
         finally:
             job.completed_at = datetime.utcnow()
+            job.current_country = None
             self._running_tasks.pop(job.job_id, None)
 
             if self.notification_manager:

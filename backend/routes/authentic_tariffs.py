@@ -259,8 +259,14 @@ async def calculate_taxes_endpoint(
             authorization_reference=authorization_reference,
             authorization_effective_from=authorization_valid_from,
             authorization_effective_to=authorization_valid_to,
-            authorization_hs_codes=(authorization_hs_codes or "").split(","),
-            authorization_goods=(authorization_goods or "").split(","),
+            authorization_hs_codes=[
+                value.strip()
+                for value in (authorization_hs_codes or "").split(",")
+                if value.strip()
+            ],
+            authorization_goods=[
+                value.strip() for value in (authorization_goods or "").split(",") if value.strip()
+            ],
             beneficiary=beneficiary,
             import_purpose=import_purpose,
             quantity=quantity,

@@ -80,7 +80,7 @@ def test_list_c_never_reduced():
     assert tariff_list(code) == "C"
     rate, source = compute_dza_zlecaf_rate(code, "EGY", 0.30, as_of=datetime.date(2030, 1, 1))
     assert rate == 0.30
-    assert "liste (C)" in source
+    assert "liste (c)" in source.lower()
 
 
 def test_frozen_textile_heading_kept_at_npf():

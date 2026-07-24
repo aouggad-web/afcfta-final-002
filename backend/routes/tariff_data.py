@@ -5,15 +5,16 @@ import logging
 import os
 import re
 import zipfile
-from typing import List, Optional
+from typing import Annotated, List, Optional
 
+from auth import require_admin
 from etl.hs_sections_headings import (
     get_hs4_heading,
     get_rangee_number,
     get_section_for_chapter,
     get_utilization_group,
 )
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 from services.tariff_data_collector import get_collector
@@ -32,7 +33,9 @@ class CollectRequest(BaseModel):
 
 
 @router.post("/collect")
-async def collect_tariff_data(request: CollectRequest):
+async def collect_tariff_data(
+    request: CollectRequest, key_doc: Annotated[dict, Depends(require_admin)] = None
+):
     collector = get_collector()
 
     if request.all_countries:
@@ -48,7 +51,9 @@ async def collect_tariff_data(request: CollectRequest):
 
 
 @router.post("/collect/{country_code}")
-async def collect_single_country(country_code: str):
+async def collect_single_country(
+    country_code: str, key_doc: Annotated[dict, Depends(require_admin)] = None
+):
     collector = get_collector()
     try:
         result = await collector.collect_and_save_country(country_code.upper())

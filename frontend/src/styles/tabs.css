@@ -105,13 +105,15 @@
 .tabs-list-boxed.cols-4 { @apply grid-cols-4; }
 .tabs-list-boxed.cols-5 { @apply grid-cols-5; }
 .tabs-list-boxed.cols-6 { @apply grid-cols-6; }
+.tabs-list-boxed.cols-7 { @apply grid-cols-7; }
 
 @media (max-width: 768px) {
   .tabs-list-boxed.cols-4,
   .tabs-list-boxed.cols-5 {
     @apply grid-cols-2;
   }
-  .tabs-list-boxed.cols-6 {
+  .tabs-list-boxed.cols-6,
+  .tabs-list-boxed.cols-7 {
     @apply grid-cols-3;
   }
 }

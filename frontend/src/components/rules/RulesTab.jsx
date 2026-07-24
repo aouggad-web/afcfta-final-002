@@ -7,7 +7,7 @@ import { Badge } from '../ui/badge';
 import { Progress } from '../ui/progress';
 import { Separator } from '../ui/separator';
 import { HSCodeSearch, HSCodeBrowser } from '../HSCodeSelector';
-import { FileText, ChevronDown, ChevronUp, Globe, CheckCircle } from 'lucide-react';
+import { FileText, ChevronDown, ChevronUp, Globe, CheckCircle, AlertTriangle, Info } from 'lucide-react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -38,7 +38,11 @@ export default function RulesTab({ language = 'fr' }) {
       browseHS: "Parcourir les codes HS",
       hideHSBrowser: "Masquer le navigateur",
       searchOrBrowse: "Recherchez ou parcourez les codes SH6 pour voir les règles d'origine applicables",
-      loadingRules: "Chargement des règles..."
+      loadingRules: "Chargement des règles...",
+      explanation: "Ce que cela implique",
+      alternativeRule: "Règle alternative",
+      ytbWarning: "Cette règle est encore en cours de négociation (statut À Déterminer) entre les États membres",
+      source: "Source"
     },
     en: {
       title: "AfCFTA Rules of Origin",
@@ -59,7 +63,11 @@ export default function RulesTab({ language = 'fr' }) {
       browseHS: "Browse HS codes",
       hideHSBrowser: "Hide browser",
       searchOrBrowse: "Search or browse HS6 codes to view applicable rules of origin",
-      loadingRules: "Loading rules..."
+      loadingRules: "Loading rules...",
+      explanation: "What this means",
+      alternativeRule: "Alternative rule",
+      ytbWarning: "This rule is still under negotiation (Yet To Be agreed) between member states",
+      source: "Source"
     }
   };
 
@@ -185,20 +193,49 @@ export default function RulesTab({ language = 'fr' }) {
                 ⚠️ {rulesOfOrigin.warning}
               </div>
             )}
-            
+
+            {rulesOfOrigin.status === 'YTB' && (
+              <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 flex items-start gap-2 text-sm text-orange-800">
+                <AlertTriangle className="w-4 h-4 mt-0.5 shrink-0" />
+                <span>{t.ytbWarning}</span>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                 <h4 className="font-semibold mb-2 text-gray-700">{t.ruleType}</h4>
                 <Badge variant="secondary" className="text-base px-4 py-2 bg-orange-100 text-orange-800">
-                  {rulesOfOrigin.rule.category || rulesOfOrigin.match_type}
+                  {rulesOfOrigin.rules?.primary_rule?.name || rulesOfOrigin.rule.category || rulesOfOrigin.match_type}
                 </Badge>
               </div>
-              
+
               <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                 <h4 className="font-semibold mb-2 text-gray-700">{t.requirement}</h4>
                 <p className="text-sm font-medium text-gray-800">{rulesOfOrigin.rule.psr}</p>
               </div>
             </div>
+
+            {rulesOfOrigin.rules?.primary_rule?.explanation && (
+              <div className="bg-amber-50 p-4 rounded-lg border border-amber-200 flex items-start gap-2">
+                <Info className="w-4 h-4 mt-0.5 text-amber-700 shrink-0" />
+                <div>
+                  <h4 className="font-semibold mb-1 text-amber-800">{t.explanation}</h4>
+                  <p className="text-sm text-amber-800">{rulesOfOrigin.rules.primary_rule.explanation}</p>
+                </div>
+              </div>
+            )}
+
+            {rulesOfOrigin.rules?.alternative_rule && (
+              <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                <h4 className="font-semibold mb-2 text-gray-700">{t.alternativeRule}</h4>
+                <Badge variant="outline" className="text-sm px-3 py-1">
+                  {rulesOfOrigin.rules.alternative_rule.name}
+                </Badge>
+                {rulesOfOrigin.rules.alternative_rule.explanation && (
+                  <p className="text-sm text-gray-600 mt-2">{rulesOfOrigin.rules.alternative_rule.explanation}</p>
+                )}
+              </div>
+            )}
 
             <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-200">
               <h4 className="font-semibold mb-3 text-green-800">{t.minRegionalContent}</h4>
@@ -223,6 +260,10 @@ export default function RulesTab({ language = 'fr' }) {
                   <p className="text-sm text-blue-700">{rulesOfOrigin.rule.notes}</p>
                 </div>
               </>
+            )}
+
+            {rulesOfOrigin.source && (
+              <p className="text-xs text-gray-400 text-right">{t.source}: {rulesOfOrigin.source}</p>
             )}
           </CardContent>
         </Card>

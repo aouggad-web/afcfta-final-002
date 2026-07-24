@@ -1,0 +1,19 @@
+{
+  "MDG": {
+    "country_name": "Madagascar",
+    "source_status": "SOURCE_FOUND_PDF",
+    "source_name": "Tarif des Douanes Madagascar 2026",
+    "source_url": "https://www.douanes.gov.mg/srcs/uploads/2026/01/TARIF-DES-DOUANES-2026.pdf",
+    "source_page": "https://www.douanes.gov.mg/tarifs-des-douanes/",
+    "source_type": "PDF",
+    "official_source_owner": "Direction Générale des Douanes de Madagascar",
+    "edition": "Janvier 2026",
+    "hs_base": "SH 2022",
+    "pages": 292,
+    "local_source_path": "engine/audits/official_sources/MDG/TARIF-DES-DOUANES-2026.pdf",
+    "parser": "backend/scripts/parse_mdg_tariff_pdf.py",
+    "coverage_status": "SOURCE_FOUND_PARSER_READY",
+    "next_action": "Télécharger le PDF officiel dans local_source_path puis exécuter le parser pour générer backend/data/crawled/MDG_tariffs.json.",
+    "notes": "L'API eTariff svc.esupplychainportal.com est bloquée par proxy dans l'environnement actuel ; le PDF officiel est le chemin de déblocage reproductible."
+  }
+}

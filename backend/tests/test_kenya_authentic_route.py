@@ -36,8 +36,8 @@ def test_kenya_endpoint_passes_authorization_to_legal_layer(monkeypatch):
             authorization_reference="AUTH/2026/1",
             authorization_valid_from=date(2026, 7, 1),
             authorization_valid_to=date(2027, 6, 30),
-            authorization_hs_codes="10019910,10019990",
-            authorization_goods="wheat input",
+            authorization_hs_codes="10019910, 10019990,, ",
+            authorization_goods=" wheat input, , animal-feed input ",
             beneficiary=None,
             import_purpose=None,
             quantity=None,
@@ -45,6 +45,7 @@ def test_kenya_endpoint_passes_authorization_to_legal_layer(monkeypatch):
     )
     assert result["kenya_legal_calculation"]["remission_eligibility_status"] == "ELIGIBLE_VERIFIED"
     assert captured["authorization_hs_codes"] == ["10019910", "10019990"]
+    assert captured["authorization_goods"] == ["wheat input", "animal-feed input"]
     assert captured["base_cet_rate"] == 35
 
 

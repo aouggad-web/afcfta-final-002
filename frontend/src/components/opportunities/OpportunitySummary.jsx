@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 import { 
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
   CartesianGrid, Tooltip, PieChart, Pie, Cell 
@@ -111,11 +113,16 @@ export default function OpportunitySummary({ language = 'fr' }) {
           setData({
             totalOpportunities: aiData.overview?.total_opportunities_identified || 5387,
             totalPotentialValue: (aiData.overview?.total_african_trade_billion_usd || 1650) * 1e9,
-            intraAfricanTrade: (aiData.overview?.intra_african_trade_billion_usd || 186) * 1e9,
+            // Real values only: when the backend has no sourced figure (null) we
+            // show "—" rather than a fabricated fallback.
+            intraAfricanTrade: aiData.overview?.intra_african_trade_billion_usd != null
+              ? aiData.overview.intra_african_trade_billion_usd * 1e9
+              : null,
             afcftaCountries: aiData.overview?.afcfta_countries || 54,
             topPartners: (aiData.top_trading_countries || []).map(c => ({
               name: c.name,
-              value: Math.round(c.trade_volume_billion * 10) || c.rank * 20,
+              // Real trade volume in billions USD (no opaque scaling)
+              value: Math.round((c.trade_volume_billion || 0) * 10) / 10,
               iso3: c.iso3
             })).slice(0, 8).reverse(),
             topProducts: (aiData.top_sectors || []).map(s => ({
@@ -124,9 +131,10 @@ export default function OpportunitySummary({ language = 'fr' }) {
               count: s.opportunities_count || Math.round(s.value_billion * 10),
               value: s.value_billion
             })).slice(0, 8),
-            yearlyGrowth: aiData.growth_metrics?.yoy_growth_percent 
-              ? `+${aiData.growth_metrics.yoy_growth_percent}%` 
-              : '+12.3%',
+            // 0 is a valid growth value; only treat null/undefined as missing
+            yearlyGrowth: aiData.growth_metrics?.yoy_growth_percent != null
+              ? `+${aiData.growth_metrics.yoy_growth_percent}%`
+              : null,
             sources: aiData.sources || ['IMF DOTS 2024', 'UNCTAD'],
             dataYear: aiData.overview?.year || 2024
           });
@@ -206,7 +214,9 @@ export default function OpportunitySummary({ language = 'fr' }) {
       topPartners: "Principaux Partenaires",
       topProducts: "Secteurs Clés",
       opportunities: "opportunités",
-      aiGenerated: "Données générées par IA",
+      tradeVolume: "Commerce (Md$)",
+      aiGenerated: "Données réelles",
+      sectorsUnavailable: "Données sectorielles continentales indisponibles",
       source: "Sources: IMF DOTS 2024, UNCTAD 2024, Base de données ZLECAf"
     },
     en: {
@@ -219,7 +229,9 @@ export default function OpportunitySummary({ language = 'fr' }) {
       topPartners: "Top Partners",
       topProducts: "Key Sectors",
       opportunities: "opportunities",
-      aiGenerated: "AI-generated data",
+      tradeVolume: "Trade (B$)",
+      aiGenerated: "Real data",
+      sectorsUnavailable: "Continental sector data unavailable",
       source: "Sources: IMF DOTS 2024, UNCTAD 2024, AfCFTA Database"
     }
   };
@@ -248,6 +260,47 @@ export default function OpportunitySummary({ language = 'fr' }) {
 
   if (!data) return null;
 
+  // Rapport PDF de la vue d'ensemble : KPIs + top partenaires + top secteurs.
+  const buildPdfSpec = () => {
+    const fr = language !== 'en';
+    return {
+      badge: fr ? "VUE D'ENSEMBLE" : 'OVERVIEW',
+      title: txt.title,
+      subtitle: txt.subtitle,
+      kpis: [
+        { label: txt.totalOpportunities, value: data.totalOpportunities?.toLocaleString() ?? '—', sub: data.yearlyGrowth || undefined, accent: 'gold' },
+        { label: txt.totalPotentialValue, value: formatValue(data.totalPotentialValue), accent: 'green' },
+        { label: txt.intraAfricanTrade || (fr ? 'Commerce intra-africain' : 'Intra-African trade'), value: data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—', accent: 'terra' },
+        { label: fr ? 'Pays ZLECAf' : 'AfCFTA countries', value: String(data.afcftaCountries ?? '—'), accent: 'gold' },
+      ],
+      sections: [
+        data.topPartners?.length && {
+          title: fr ? 'Premiers pays commerçants (Md$)' : 'Top trading countries ($B)',
+          table: {
+            columns: [
+              { key: 'name', label: fr ? 'Pays' : 'Country', width: 2.5 },
+              { key: 'value', label: fr ? 'Volume (Md$)' : 'Volume ($B)', align: 'right', width: 1 },
+            ],
+            rows: [...data.topPartners].reverse(),
+          },
+        },
+        data.topProducts?.length && {
+          title: fr ? 'Secteurs prioritaires' : 'Priority sectors',
+          table: {
+            columns: [
+              { key: 'code', label: 'SH2', width: 0.6 },
+              { key: 'name', label: fr ? 'Secteur' : 'Sector', width: 2.5 },
+              { key: 'value', label: fr ? 'Valeur (Md$)' : 'Value ($B)', align: 'right', width: 1 },
+            ],
+            rows: data.topProducts,
+          },
+        },
+      ].filter(Boolean),
+      source: data.sources ? data.sources.join(', ') : txt.source,
+      filename: opportunityPdfFilename('VueEnsemble'),
+    };
+  };
+
   return (
     <div className="space-y-8" data-testid="opportunity-summary">
       {/* Header */}
@@ -256,12 +309,15 @@ export default function OpportunitySummary({ language = 'fr' }) {
           {txt.title}
         </h2>
         <p className="text-slate-500 mt-2">{txt.subtitle}</p>
-        {isAiGenerated && (
-          <Badge className="mt-2 bg-purple-100 text-purple-700 border-purple-200">
-            <Sparkles className="h-3 w-3 mr-1" />
-            {txt.aiGenerated}
-          </Badge>
-        )}
+        <div className="mt-2 flex items-center justify-center gap-3 flex-wrap">
+          {isAiGenerated && (
+            <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">
+              <Sparkles className="h-3 w-3 mr-1" />
+              {txt.aiGenerated}
+            </Badge>
+          )}
+          <OpportunityPdfExport getSpec={buildPdfSpec} language={language} />
+        </div>
       </div>
 
       {/* Stats Grid */}
@@ -281,7 +337,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
         />
         <StatCard
           title={txt.intraAfricanTrade}
-          value={formatValue(data.intraAfricanTrade)}
+          value={data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—'}
           icon={Globe}
           color="purple"
         />
@@ -318,7 +374,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
                   width={90} 
                   interval={0} 
                 />
-                <Tooltip content={<CustomTooltip valueLabel={txt.opportunities} />} cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }} />
+                <Tooltip content={<CustomTooltip valueLabel={txt.tradeVolume} />} cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }} />
                 <Bar dataKey="value" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
               </BarChart>
             </ResponsiveContainer>
@@ -333,27 +389,33 @@ export default function OpportunitySummary({ language = 'fr' }) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-4">
-              {data.topProducts.map((product, index) => (
-                <li 
-                  key={product.name} 
-                  className="flex justify-between items-center text-sm border-b border-slate-100 pb-3 last:border-0"
-                >
-                  <span className="text-slate-700 truncate pr-4 font-medium flex items-center gap-3">
-                    <span className="font-black text-slate-300 w-6">
-                      {String(index + 1).padStart(2, '0')}
+            {data.topProducts.length > 0 ? (
+              <ul className="space-y-4">
+                {data.topProducts.map((product, index) => (
+                  <li
+                    key={product.name}
+                    className="flex justify-between items-center text-sm border-b border-slate-100 pb-3 last:border-0"
+                  >
+                    <span className="text-slate-700 truncate pr-4 font-medium flex items-center gap-3">
+                      <span className="font-black text-slate-300 w-6">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <Badge variant="outline" className="font-mono text-xs mr-2">
+                        {product.code}
+                      </Badge>
+                      {product.name}
                     </span>
-                    <Badge variant="outline" className="font-mono text-xs mr-2">
-                      {product.code}
-                    </Badge>
-                    {product.name}
-                  </span>
-                  <span className="font-black text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded-md uppercase whitespace-nowrap">
-                    {product.count} {txt.opportunities}
-                  </span>
-                </li>
-              ))}
-            </ul>
+                    <span className="font-black text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded-md uppercase whitespace-nowrap">
+                      {product.count} {txt.opportunities}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="flex items-center justify-center h-[260px] text-sm text-slate-400 text-center px-6">
+                {txt.sectorsUnavailable}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

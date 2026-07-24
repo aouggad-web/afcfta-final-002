@@ -18,6 +18,16 @@ A comprehensive tariff calculator and trade information system for the African C
 - **Data Export**: Export tariff data in CSV and Excel formats (NEW)
 - **Notifications**: Email and Slack notifications for system events (NEW)
 
+
+## 🔒 Doctrine tarifaire : re-collecte officielle uniquement
+
+La priorité du chantier tarifaire est de **re-collecter les tarifs des pays africains depuis des bases officielles vérifiables** afin d'éliminer les erreurs, approximations et hallucinations précédentes. Le pipeline doit donc :
+
+- refuser les lignes estimées, synthétiques, générées ou répliquées par chapitre ;
+- exiger une `source` et une `source_url` vérifiable pour tout fichier pays servi ;
+- signaler explicitement les pays non encore recrawlés au lieu de fabriquer des données ;
+- valider chaque fichier pays avec `backend/scripts/crawl_all_countries.py --validate-file ISO3` avant publication.
+
 ## 🧭 Tariff Data Flow (PostgreSQL-First)
 
 The app-facing tariff layer now follows this provider priority:
@@ -330,6 +340,17 @@ The docker-compose setup includes:
 See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 
 ## 🔍 Quick Start
+
+### Local backend setup
+
+Create a virtual environment and install the backend dependencies from the
+repository root:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r backend/requirements.txt
+```
 
 ### Check API Health
 
