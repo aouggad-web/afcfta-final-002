@@ -10,6 +10,30 @@ from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field, field_validator
 
 
+# Closed vocabularies for documentary quality.
+QUALITY_DIMENSION_KEYS = (
+    "source",
+    "temporal_validity",
+    "classification",
+    "taxes_and_levies",
+    "preference_and_origin",
+    "formalities",
+)
+QUALITY_DIMENSION_VALUES = frozenset(
+    {"DOCUMENTED", "PARTIAL", "UNVERIFIED", "NOT_AVAILABLE", "NOT_APPLICABLE"}
+)
+OVERALL_STATUS_ALIASES = {
+    "BLOCKED_BASE_TARIFF": "CALCULATION_UNAVAILABLE",
+    "UNVERIFIED_SOURCE": "REVIEW_REQUIRED",
+    "CONFLICT_REVIEW": "REVIEW_REQUIRED",
+    "VERIFIED_COMPLETE": "INFORMATIVE_COMPLETE",
+    "VERIFIED_PARTIAL": "INFORMATIVE_PARTIAL",
+}
+OVERALL_STATUS_VALUES = frozenset(
+    {"INFORMATIVE_COMPLETE", "INFORMATIVE_PARTIAL", "CALCULATION_UNAVAILABLE", "REVIEW_REQUIRED"}
+)
+
+
 class CountryInfo(BaseModel):
     """Country information model"""
 
@@ -124,6 +148,78 @@ class TariffCalculationResponse(BaseModel):
     fiscal_advantages: Optional[List[Dict[str, Any]]] = None
     administrative_formalities: Optional[List[Dict[str, Any]]] = None
     data_source: Optional[str] = None
+    # Enveloppe de qualité documentaire : ces champs décrivent la portée de
+    # l'information disponible et ne constituent pas une garantie juridique.
+    informational_only: bool = True
+    legally_binding: bool = False
+    overall_status: str = "INFORMATIVE_PARTIAL"
+    quality_dimensions: Dict[str, str] = Field(default_factory=lambda: {
+        "source": "PARTIAL",
+        "temporal_validity": "PARTIAL",
+        "classification": "DOCUMENTED",
+        "taxes_and_levies": "PARTIAL",
+        "preference_and_origin": "UNVERIFIED",
+        "formalities": "NOT_AVAILABLE",
+    })
+    known_data_gaps: List[str] = Field(default_factory=list)
+    administrative_confirmation_recommended: bool = True
+    administrative_confirmation_required: bool = True
+    disclaimer: Dict[str, Any] = Field(default_factory=lambda: {
+        "informational_only": True,
+        "legally_binding": False,
+        "message": "Simulation informative fondée sur les données disponibles.",
+    })
+    technical_validation_status: Optional[str] = None
+    source_authority: Optional[str] = None
+    source_title: Optional[str] = None
+    source_date: Optional[str] = None
+    effective_date: Optional[str] = None
+    completeness_status: Optional[str] = None
+
+    @field_validator("quality_dimensions", mode="before")
+    @classmethod
+    def validate_quality_dimensions(cls, value: Any) -> Dict[str, str]:
+        """Normalize legacy payloads while enforcing the six-value vocabulary."""
+        defaults = {
+            "source": "PARTIAL",
+            "temporal_validity": "PARTIAL",
+            "classification": "DOCUMENTED",
+            "taxes_and_levies": "PARTIAL",
+            "preference_and_origin": "UNVERIFIED",
+            "formalities": "NOT_AVAILABLE",
+        }
+        if value is None:
+            return defaults
+        if not isinstance(value, dict):
+            raise TypeError("quality_dimensions must be an object")
+        unknown = set(value) - set(QUALITY_DIMENSION_KEYS)
+        if unknown:
+            raise ValueError(f"Unknown quality dimension(s): {sorted(unknown)}")
+        invalid = {key: item for key, item in value.items() if item not in QUALITY_DIMENSION_VALUES}
+        if invalid:
+            raise ValueError(f"Invalid quality dimension value(s): {invalid}")
+        return {**defaults, **value}
+
+    @field_validator("overall_status", mode="before")
+    @classmethod
+    def validate_overall_status(cls, value: Any) -> str:
+        token = str(value or "INFORMATIVE_PARTIAL").strip().upper()
+        token = OVERALL_STATUS_ALIASES.get(token, token)
+        if token not in OVERALL_STATUS_VALUES:
+            raise ValueError(f"Invalid overall_status: {value}")
+        return token
+
+    @field_validator("informational_only", mode="before")
+    @classmethod
+    def force_informational_only(cls, value: Any) -> bool:
+        # Normalize legacy false payloads without breaking their consumers.
+        return True
+
+    @field_validator("legally_binding", mode="before")
+    @classmethod
+    def force_non_binding(cls, value: Any) -> bool:
+        # Normalize legacy true payloads at the response boundary.
+        return False
     # Règles d'origine
     rules_of_origin: Dict[str, Any]
     # Top producteurs africains

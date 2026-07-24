@@ -83,4 +83,26 @@ describe('CSVExportButton', () => {
     const body = csvContent.replace(/^﻿/, '').split('\n')[1];
     expect(body).toBe(',');
   });
+
+  it('ajoute la notice et les métadonnées informatives lorsqu’elles sont fournies', async () => {
+    render(<CSVExportButton
+      rows={[{ country: 'KEN' }]}
+      columns={[{ key: 'country', label: 'Pays' }]}
+      exportMetadata={{
+        simulation_generated_at: '2026-07-24T12:00:00Z',
+        importer_country: 'KEN',
+        exporter_country: 'UGA',
+        product_code: '10019910',
+        assumptions: 'CIF déclaré',
+        scope: 'CET + taxes disponibles',
+        sources: 'Kenya Law',
+        known_data_gaps: 'Gazettes EAC',
+      }}
+    />);
+    await userEvent.click(screen.getByRole('button'));
+    expect(csvContent).toContain('Simulation informative des droits et taxes à l’importation');
+    expect(csvContent).toContain('Simulation informative — non opposable à l’administration douanière.');
+    expect(csvContent).toContain('2026-07-24T12:00:00Z');
+  });
+
 });

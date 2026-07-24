@@ -33,7 +33,7 @@ def measure(measure_id, measure_type, rate, start="2025-07-01", end="2026-06-30"
         base_rate=10,
         override_rate=rate,
         rate_unit="%",
-        verification_status=kw.pop("verification_status", "VERIFIED_OFFICIAL_EXTRACT"),
+        verification_status=kw.pop("verification_status", "SOURCE_ARCHIVED"),
         requires_human_review=kw.pop("requires_human_review", False),
         **kw,
     )
@@ -52,7 +52,7 @@ def test_cet_without_override():
     result = resolve([])
     assert result["applicable_customs_rate"] == 10
     assert result["override_rate"] is None
-    assert result["calculation_status"] == "VERIFIED_COMPLETE"
+    assert result["calculation_status"] == "INFORMATIVE_COMPLETE"
 
 
 def test_stay_of_application():
@@ -71,7 +71,7 @@ def test_conditional_remission_requires_matching_facts():
     )
     unresolved = resolve([remission])
     assert unresolved["applicable_customs_rate"] == 10
-    assert unresolved["calculation_status"] == "VERIFIED_PARTIAL"
+    assert unresolved["calculation_status"] == "INFORMATIVE_PARTIAL"
     applied = resolve(
         [remission],
         context=OverrideContext(
@@ -94,7 +94,7 @@ def test_non_eligible_beneficiary_keeps_normal_cet():
     )
     assert result["applicable_customs_rate"] == 10
     assert result["remission_eligibility_status"] == "NOT_ELIGIBLE"
-    assert result["calculation_status"] == "VERIFIED_COMPLETE"
+    assert result["calculation_status"] == "INFORMATIVE_COMPLETE"
 
 
 def test_claimed_eligibility_without_authorization_is_partial():
@@ -106,7 +106,7 @@ def test_claimed_eligibility_without_authorization_is_partial():
     assert result["applicable_customs_rate"] == 10
     assert result["remission_eligibility_status"] == "AUTHORIZATION_REQUIRED"
     assert result["requires_eligibility_input"] is True
-    assert result["calculation_status"] == "VERIFIED_PARTIAL"
+    assert result["calculation_status"] == "INFORMATIVE_PARTIAL"
 
 
 def test_authorization_must_cover_exact_tariff_line():
@@ -215,7 +215,7 @@ def test_missing_source_verification_forces_partial():
     pending = measure("pending", "STAY_OF_APPLICATION", 35, verification_status="SOURCE_PENDING")
     result = resolve([pending])
     assert result["applicable_customs_rate"] == 35
-    assert result["calculation_status"] == "VERIFIED_PARTIAL"
+    assert result["calculation_status"] == "INFORMATIVE_PARTIAL"
 
 
 def test_same_code_at_two_dates_uses_temporal_measure():
@@ -234,5 +234,5 @@ def test_discontinuous_hs_list_does_not_become_a_range():
 
 def test_incomplete_gazette_coverage_never_becomes_complete():
     result = resolve([], complete=False)
-    assert result["calculation_status"] == "VERIFIED_PARTIAL"
+    assert result["calculation_status"] == "INFORMATIVE_PARTIAL"
     assert result["missing_elements"]

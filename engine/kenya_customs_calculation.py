@@ -109,11 +109,24 @@ def _calculate_kenya_customs_legacy(
         excise_lines.append(
             {
                 "record_id": row["record_id"],
+                "component_type": "EXCISE",
+                "source_rate": rate,
                 "rate": rate,
+                "rate_type": "AD_VALOREM",
+                "taxable_base": basis,
+                "calculated_amount": amount,
+                "currency": currency_code,
                 "basis": basis,
                 "amount": amount,
                 "legal_reference": row["legal_reference"],
                 "source_id": row["source_id"],
+                "source_authority": row.get("source_authority"),
+                "source_title": row.get("source_title"),
+                "effective_from": row.get("effective_from"),
+                "effective_to": row.get("effective_to"),
+                "documentation_status": "PARTIAL",
+                "assumptions": ["ad valorem excise applied to customs value plus duty"],
+                "data_gaps": ["official archive and independent comparison pending"],
             }
         )
 
@@ -129,10 +142,23 @@ def _calculate_kenya_customs_legacy(
         if row:
             rate = _pct(row["rate"])
             levy_amounts[label] = {
+                "component_type": label.upper(),
+                "source_rate": rate,
                 "rate": rate,
+                "rate_type": "AD_VALOREM",
+                "taxable_base": customs_value,
+                "calculated_amount": round(customs_value * rate / 100, 2),
+                "currency": currency_code,
                 "amount": round(customs_value * rate / 100, 2),
                 "legal_reference": row["legal_reference"],
                 "source_id": row["source_id"],
+                "source_authority": row.get("source_authority"),
+                "source_title": row.get("source_title"),
+                "effective_from": row.get("effective_from"),
+                "effective_to": row.get("effective_to"),
+                "documentation_status": "PARTIAL",
+                "assumptions": ["ad valorem levy applied to customs value"],
+                "data_gaps": ["official archive and independent comparison pending"],
             }
         else:
             levy_amounts[label] = None
@@ -147,8 +173,31 @@ def _calculate_kenya_customs_legacy(
     known_levies = sum(entry["amount"] for entry in levy_amounts.values() if entry is not None)
     verified_total = round(customs_duty + excise + (vat or 0) + known_levies, 2)
     status = override["calculation_status"]
-    if missing and status != "CONFLICT_REVIEW":
-        status = "VERIFIED_PARTIAL"
+    if not coverage_complete:
+        status = "UNVERIFIED_SOURCE"
+        missing.append("Kenya CET source, HS version, or legal effective date is not sufficiently verified.")
+    elif missing and status != "CONFLICT_REVIEW":
+        status = "INFORMATIVE_PARTIAL"
+    # Keep the legacy path compatible, but expose the same canonical global
+    # status and closed quality vocabulary as the shared calculator.
+    legacy_quality_dimensions = {
+        "source": "PARTIAL" if coverage_complete else "UNVERIFIED",
+        "temporal_validity": "PARTIAL",
+        "classification": "DOCUMENTED" if len(hs_code) >= 6 else "UNVERIFIED",
+        "taxes_and_levies": "DOCUMENTED" if vat_row else "PARTIAL",
+        "preference_and_origin": "UNVERIFIED",
+        "formalities": "NOT_AVAILABLE",
+    }
+    from engine.import_charges import aggregate_overall_status
+    legacy_overall_status = aggregate_overall_status(
+        legacy_quality_dimensions,
+        base_available=coverage_complete and status != "BLOCKED_BASE_TARIFF",
+        determinant_unverified=(
+            status in {"UNVERIFIED_SOURCE", "CONFLICT_REVIEW"}
+            or any(value == "UNVERIFIED" for value in legacy_quality_dimensions.values())
+        ),
+    )
+    payable_total = verified_total if legacy_overall_status not in {"CALCULATION_UNAVAILABLE", "REVIEW_REQUIRED"} else None
     sources = set(override["sources_used"])
     sources.update(r["source_id"] for r in excise_lines)
     if vat_row:
@@ -158,17 +207,40 @@ def _calculate_kenya_customs_legacy(
             sources.add(entry["source_id"])
 
     warning = None
-    if status == "VERIFIED_PARTIAL":
+    if status == "UNVERIFIED_SOURCE":
         warning = (
-            f"Droits et taxes vérifiés : {verified_total:,.2f} {currency_code}. "
+            f"Simulation non vérifiée : {verified_total:,.2f} {currency_code}. "
+            "La source, la version SH ou la date d’effet du CET Kenya doit être documentée et recoupée."
+        )
+    elif status == "INFORMATIVE_PARTIAL":
+        warning = (
+            f"Montant informatif : {verified_total:,.2f} {currency_code}. "
             "Résultat partiel : une dérogation tarifaire EAC ou une condition "
-            "susceptible d’affecter ce produit reste à vérifier. "
-            "Le total ne doit pas être utilisé pour une déclaration en douane."
+            "susceptible d’affecter ce produit doit être confirmée. "
+            "Ne pas utiliser ce montant comme référence administrative."
         )
     national_layer = dict(override["legal_layers"]["NATIONAL_COUNTRY"])
     national_layer["taxes_and_levies"] = {
         "vat": (
-            {"rate": vat_rate, "amount": vat, "source_id": vat_row["source_id"]}
+            {
+                "component_type": "VAT",
+                "source_rate": vat_rate,
+                "rate": vat_rate,
+                "rate_type": "AD_VALOREM",
+                "taxable_base": vat_basis,
+                "calculated_amount": vat,
+                "currency": currency_code,
+                "amount": vat,
+                "source_id": vat_row["source_id"],
+                "source_authority": vat_row.get("source_authority"),
+                "source_title": vat_row.get("source_title"),
+                "legal_reference": vat_row.get("legal_reference"),
+                "effective_from": vat_row.get("effective_from"),
+                "effective_to": vat_row.get("effective_to"),
+                "documentation_status": "PARTIAL",
+                "assumptions": ["VAT applied to customs value plus duty and excise"],
+                "data_gaps": [] if vat_row else ["VAT measure unavailable"],
+            }
             if vat_row
             else None
         ),
@@ -199,7 +271,26 @@ def _calculate_kenya_customs_legacy(
             for key, value in levy_amounts.items()
             if key not in {"idf", "rdl"} and value is not None
         },
-        "verified_total": verified_total,
+        "verified_total": payable_total,
+        "simulated_total": verified_total,
+        "total_payable": payable_total,
+        "status": status,
+        "overall_status": legacy_overall_status,
+        "technical_validation_status": "CALCULATION_VALIDATED" if legacy_overall_status in {"INFORMATIVE_COMPLETE", "INFORMATIVE_PARTIAL"} else legacy_overall_status,
+        "completeness_status": legacy_overall_status,
+        "known_data_gaps": list(dict.fromkeys(missing)),
+        "legal_reliance_allowed": False,
+        "simulation_only": legacy_overall_status == "REVIEW_REQUIRED",
+        "informational_only": True,
+        "legally_binding": False,
+        "administrative_confirmation_recommended": True,
+        "quality_dimensions": legacy_quality_dimensions,
+        "disclaimer": {
+            "informational_only": True,
+            "legally_binding": False,
+            "message": "Simulation informative fondée sur les données disponibles.",
+        },
+        "amount_display_allowed": legacy_overall_status != "CALCULATION_UNAVAILABLE",
         "missing_elements": list(dict.fromkeys(missing)),
         "calculation_status": status,
         "sources_used": sorted(sources),
@@ -326,23 +417,48 @@ def calculate_kenya_customs(
             "authorization_hs_codes": context.authorization_hs_codes,
             "authorization_goods": context.authorization_goods,
         },
-        base_rate=base_cet_rate,
+        # A CET rate without an archived, dated and verified source is not an
+        # applicable base for Kenya.  Keep the supplied rate in the request
+        # context, but withhold it from the generic calculator in that case.
+        base_rate=base_cet_rate if coverage_complete else None,
         regional_measures=measures,
         national_taxes=tax_rows,
         regional_coverage_complete=coverage_complete,
-        national_coverage_complete=True,
+        national_coverage_complete=coverage_complete,
         currency_code=currency_code,
     )
     if not any(item.get("code", "").upper() == "VAT" for item in result["taxes"]):
         result["missing_elements"].append("No verified VAT measure matched the product and date.")
-        result["calculation_status"] = "VERIFIED_PARTIAL"
+        if result.get("calculation_status") != "BLOCKED_BASE_TARIFF":
+            result["calculation_status"] = "INFORMATIVE_PARTIAL"
+            result["status"] = "INFORMATIVE_PARTIAL"
+        result["overall_status"] = "CALCULATION_UNAVAILABLE"
+        result["verified_total"] = None
+        result["total_payable"] = None
+        result["amount_display_allowed"] = False
+        result["simulation_only"] = False
     result["customs_value"] = customs_value
     result["base_cet_rate"] = base_cet_rate
-    result["display_warning"] = (
-        f"Droits et taxes vérifiés : {result['verified_total']:,.2f} {currency_code}. "
-        "Résultat partiel : une mesure régionale ou nationale reste à vérifier. "
-        "Le total ne doit pas être utilisé pour une déclaration en douane."
-        if result["calculation_status"] == "VERIFIED_PARTIAL"
-        else None
-    )
+    # The generic engine already computed the canonical global status. Keep it
+    # intact; only the missing-VAT guard above can upgrade it to unavailable.
+    result["administrative_confirmation_recommended"] = True
+    result["disclaimer"] = {
+        "informational_only": True,
+        "legally_binding": False,
+        "message": "Simulation informative fondée sur les données disponibles.",
+    }
+    if result.get("overall_status") == "CALCULATION_UNAVAILABLE":
+        result["display_warning"] = (
+            "Donnée indispensable manquante : aucun total n'est affiché."
+        )
+    elif result.get("overall_status") == "REVIEW_REQUIRED":
+        simulated = result.get("simulated_total")
+        amount = f"{simulated:,.2f}" if isinstance(simulated, (int, float)) else "—"
+        result["display_warning"] = (
+            f"Simulation à confirmer : {amount} {currency_code}. "
+            "Une donnée déterminante de source, date ou condition doit être revue. "
+            "Ne pas utiliser ce montant comme référence administrative."
+        )
+    else:
+        result["display_warning"] = None
     return result

@@ -33,6 +33,224 @@ def _iso(value: Any) -> str:
     return str(value or "").strip().upper()
 
 
+_VERIFIED_STATUS_PREFIXES = (
+    "VERIFIED",
+    "OFFICIAL_SOURCE_IDENTIFIED",
+    "SOURCE_ARCHIVED",
+    "EFFECTIVE_DATE_DOCUMENTED",
+    "CALCULATION_VALIDATED",
+    "DOCUMENTED_SCOPE_READY",
+)
+_UNVERIFIED_STATUS_TOKENS = {
+    "AVAILABLE_UNVERIFIED",
+    "UNVERIFIED_SOURCE",
+    "SOURCE_PENDING",
+    "PENDING",
+    "PARTIAL",
+    "NOT_AVAILABLE",
+    "UNKNOWN",
+    "STRUCTURE_VALIDATED",
+    "INGESTED",
+}
+
+QUALITY_DIMENSION_KEYS = (
+    "source",
+    "temporal_validity",
+    "classification",
+    "taxes_and_levies",
+    "preference_and_origin",
+    "formalities",
+)
+QUALITY_DIMENSION_VALUES = frozenset({
+    "DOCUMENTED",
+    "PARTIAL",
+    "UNVERIFIED",
+    "NOT_AVAILABLE",
+    "NOT_APPLICABLE",
+})
+OVERALL_STATUS_VALUES = frozenset({
+    "INFORMATIVE_COMPLETE",
+    "INFORMATIVE_PARTIAL",
+    "CALCULATION_UNAVAILABLE",
+    "REVIEW_REQUIRED",
+})
+OVERALL_STATUS_ALIASES = {
+    "BLOCKED_BASE_TARIFF": "CALCULATION_UNAVAILABLE",
+    "UNVERIFIED_SOURCE": "REVIEW_REQUIRED",
+    "CONFLICT_REVIEW": "REVIEW_REQUIRED",
+    "VERIFIED_COMPLETE": "INFORMATIVE_COMPLETE",
+    "VERIFIED_PARTIAL": "INFORMATIVE_PARTIAL",
+}
+
+
+def validate_quality_dimensions(dimensions: Mapping[str, Any], *, require_all: bool = False) -> dict[str, str]:
+    """Validate the closed vocabulary used by the six quality dimensions."""
+    if not isinstance(dimensions, Mapping):
+        raise TypeError("quality_dimensions must be a mapping")
+    unknown_keys = set(dimensions) - set(QUALITY_DIMENSION_KEYS)
+    if unknown_keys:
+        raise ValueError(f"Unknown quality dimension(s): {sorted(unknown_keys)}")
+    invalid = {
+        key: value for key, value in dimensions.items()
+        if value not in QUALITY_DIMENSION_VALUES
+    }
+    if invalid:
+        raise ValueError(f"Invalid quality dimension value(s): {invalid}")
+    if require_all:
+        missing_keys = set(QUALITY_DIMENSION_KEYS) - set(dimensions)
+        if missing_keys:
+            raise ValueError(f"Missing quality dimension(s): {sorted(missing_keys)}")
+    return {key: dimensions[key] for key in dimensions}
+
+
+def aggregate_overall_status(
+    dimensions: Mapping[str, Any],
+    *,
+    base_available: bool = True,
+    determinant_unverified: bool = False,
+) -> str:
+    """Aggregate quality dimensions without scores or compensating averages."""
+    values = validate_quality_dimensions(dimensions, require_all=True)
+    if not base_available or any(
+        values[key] == "NOT_AVAILABLE"
+        for key in ("source", "temporal_validity", "classification", "taxes_and_levies")
+    ):
+        return "CALCULATION_UNAVAILABLE"
+    if determinant_unverified or any(value == "UNVERIFIED" for value in values.values()):
+        return "REVIEW_REQUIRED"
+    if all(value in {"DOCUMENTED", "NOT_APPLICABLE"} for value in values.values()):
+        return "INFORMATIVE_COMPLETE"
+    if any(value in {"DOCUMENTED", "PARTIAL"} for value in values.values()) and any(
+        value in {"PARTIAL", "UNVERIFIED", "NOT_AVAILABLE"} for value in values.values()
+    ):
+        return "INFORMATIVE_PARTIAL"
+    return "REVIEW_REQUIRED"
+
+
+def _is_verified_status(value: Any) -> bool:
+    normalized = str(value or "").strip().upper()
+    return bool(normalized) and normalized.startswith(_VERIFIED_STATUS_PREFIXES)
+
+
+def _component_status(row: Mapping[str, Any], *, default_verified: bool = False) -> str:
+    """Normalize adapter certification labels to VERIFIED/UNVERIFIED.
+
+    Legacy fixtures that provide a source id and an effective date are treated
+    as verified for compatibility. Production providers should pass an
+    explicit verification_status or certification level from the tariff
+    manifest.
+    """
+    raw = row.get(
+        "verification_status",
+        row.get("certification_status", row.get("certification_level")),
+    )
+    if raw is not None:
+        token = str(raw).strip().upper()
+        if _is_verified_status(token):
+            if row.get("_require_provenance") and not (
+                row.get("source_id") and row.get("hs_version") and row.get("effective_from")
+            ):
+                return "UNVERIFIED"
+            return "VERIFIED"
+        if token in _UNVERIFIED_STATUS_TOKENS or token:
+            return "UNVERIFIED"
+    if row.get("source_id") and row.get("effective_from") and (
+        not row.get("_require_provenance") or row.get("hs_version")
+    ):
+        return "VERIFIED"
+    return "VERIFIED" if default_verified else "UNVERIFIED"
+
+
+def _base_metadata(profile: Mapping[str, Any]) -> dict[str, Any]:
+    for key in ("base_tariff", "base_tariff_metadata", "tariff_metadata"):
+        value = profile.get(key)
+        if isinstance(value, Mapping):
+            return dict(value)
+    return {}
+
+
+def _documentation_status(status: str) -> str:
+    if status in {"VERIFIED", "SOURCE_ARCHIVED", "OFFICIAL_SOURCE_IDENTIFIED", "EFFECTIVE_DATE_DOCUMENTED"}:
+        return "DOCUMENTED"
+    if status in {"MISSING", "UNVERIFIED", "UNVERIFIED_SOURCE"}:
+        return "UNVERIFIED"
+    return "PARTIAL"
+
+
+def _quality_dimensions(
+    profile: Mapping[str, Any],
+    *,
+    base_status: str,
+    base_component: Mapping[str, Any],
+    tax_lines: list[Mapping[str, Any]],
+    national_coverage_complete: bool,
+    hs6_digits: str,
+    preference_status: str,
+) -> dict[str, str]:
+    source = (
+        "DOCUMENTED"
+        if (
+            base_status == "VERIFIED"
+            and base_component.get("source_id")
+            and base_component.get("source_hash")
+            and (base_component.get("source_authority") or base_component.get("source_title") or base_component.get("source_url"))
+        )
+        else "PARTIAL" if base_component.get("source_id") else "UNVERIFIED"
+    )
+    temporal = "DOCUMENTED" if base_component.get("effective_from") else "PARTIAL"
+    classification = "DOCUMENTED" if len(hs6_digits) == 6 else "UNVERIFIED"
+    if tax_lines:
+        taxes = "DOCUMENTED" if all(
+            item.get("verification_status") == "VERIFIED"
+            and item.get("source_hash")
+            and (item.get("source_authority") or item.get("source_title"))
+            for item in tax_lines
+        ) else "PARTIAL"
+    else:
+        # A missing national provider is a partial fiscal layer when the
+        # customs duty itself is available; the global status remains
+        # informative-partial rather than hiding the verified component.
+        taxes = "DOCUMENTED" if national_coverage_complete else "PARTIAL"
+    preference = {
+        "NO_PREFERENCE_REQUESTED": "NOT_APPLICABLE",
+        "VERIFIED_APPLICABLE": "DOCUMENTED",
+        "NOT_APPLICABLE": "NOT_APPLICABLE",
+        "EXPIRED": "PARTIAL",
+    }.get(preference_status, "UNVERIFIED")
+    if "administrative_formalities" not in profile:
+        formalities = "NOT_APPLICABLE"
+    elif profile.get("administrative_formalities"):
+        formalities = "DOCUMENTED" if all(
+            isinstance(item, Mapping)
+            and item.get("source_hash")
+            and (item.get("source_authority") or item.get("source_title"))
+            for item in profile.get("administrative_formalities", [])
+        ) else "PARTIAL"
+    else:
+        formalities = "NOT_AVAILABLE"
+    provided = validate_quality_dimensions(profile.get("quality_dimensions") or {})
+    # Callers may annotate a dimension as partial/unverified, but cannot turn
+    # absent source/date evidence into DOCUMENTED.
+    for key in ("classification", "taxes_and_levies", "preference_and_origin", "formalities"):
+        value = provided.get(key)
+        if value in {"DOCUMENTED", "PARTIAL", "UNVERIFIED", "NOT_AVAILABLE", "NOT_APPLICABLE"}:
+            # A caller may lower a dimension to PARTIAL/UNVERIFIED, but may
+            # not promote an internal assertion to DOCUMENTED here.
+            if value != "DOCUMENTED":
+                if key == "classification": classification = value
+                elif key == "taxes_and_levies": taxes = value
+                elif key == "preference_and_origin": preference = value
+                elif key == "formalities": formalities = value
+    return {
+        "source": source,
+        "temporal_validity": temporal,
+        "classification": classification,
+        "taxes_and_levies": taxes,
+        "preference_and_origin": preference,
+        "formalities": formalities,
+    }
+
+
 def _date(value: Any) -> date:
     if value is None:
         return date.today()
@@ -145,12 +363,19 @@ def calculate_import_charges(
     regional_coverage_complete: bool = False,
     national_coverage_complete: bool = False,
     currency_code: str = "LOCAL",
+    base_rate_status: Optional[str] = None,
+    base_tariff_verification_status: Optional[str] = None,
+    base_source_id: Optional[str] = None,
+    base_source_hash: Optional[str] = None,
+    base_hs_version: Optional[str] = None,
+    base_effective_from: Any = None,
+    base_effective_to: Any = None,
 ) -> dict[str, Any]:
     """Calculate a dated import line using one common regional layer and one
     national destination layer.
 
     Regional and national records are injected by providers.  If a provider
-    cannot establish a legal fact, the result is ``VERIFIED_PARTIAL`` and the
+    cannot establish a source or date fact, the result is ``INFORMATIVE_PARTIAL`` and the
     missing fact is returned instead of a guessed rate.
     """
     profile = dict(importer_profile or {})
@@ -166,17 +391,63 @@ def calculate_import_charges(
     if territory and territory not in blocs:
         blocs.insert(0, territory)
 
+    base_meta = _base_metadata(profile)
     if base_rate is None:
         for key in ("base_rate", "base_tariff_rate", "regional_tariff_rate", "national_tariff_rate"):
             if profile.get(key) is not None:
                 base_rate = float(profile[key])
                 break
+    base_missing = base_rate is None
+    explicit_base_status = (
+        base_rate_status
+        or base_tariff_verification_status
+        or base_meta.get("verification_status")
+        or base_meta.get("certification_status")
+        or profile.get("base_tariff_verification_status")
+        or profile.get("base_rate_status")
+    )
+    explicit_base_provenance = bool(
+        explicit_base_status
+        or base_source_id
+        or base_source_hash
+        or base_hs_version
+        or base_effective_from
+        or base_meta
+    )
+    # Complete coverage is the backwards-compatible fixture contract. In
+    # production, providers should pass an explicit manifest status.
+    if explicit_base_status is None and not base_missing:
+        # A tariff attached to a customs territory requires verified regional
+        # coverage. National coverage may infer verification only for a
+        # national-only destination with no regional bloc selected.
+        regional_scope = bool(territory or blocs)
+        inferred_verified = (
+            regional_coverage_complete if regional_scope else national_coverage_complete
+        )
+        explicit_base_status = "VERIFIED" if inferred_verified else "UNVERIFIED_SOURCE"
+    base_component = {
+        "verification_status": explicit_base_status or "MISSING",
+        "source_id": base_source_id or base_meta.get("source_id") or profile.get("base_source_id"),
+        "source_hash": base_source_hash or base_meta.get("source_hash") or profile.get("base_source_hash"),
+        "source_authority": base_meta.get("source_authority") or profile.get("source_authority"),
+        "source_title": base_meta.get("source_title") or profile.get("source_title"),
+        "source_url": base_meta.get("source_url") or profile.get("source_url"),
+        "legal_reference": base_meta.get("legal_reference") or profile.get("legal_reference"),
+        "source_date": base_meta.get("source_date") or profile.get("source_date"),
+        "hs_version": base_hs_version or base_meta.get("hs_version") or profile.get("base_hs_version"),
+        "effective_from": base_effective_from or base_meta.get("effective_from") or profile.get("base_effective_from"),
+        "effective_to": base_effective_to or base_meta.get("effective_to") or profile.get("base_effective_to"),
+        "_require_provenance": explicit_base_provenance,
+    }
+    base_status = "MISSING" if base_missing else _component_status(base_component)
     missing: list[str] = []
     if territory is None and len(blocs) > 1:
         missing.append("Multiple customs territories are applicable; tariff authority priority requires review.")
-    if base_rate is None:
+    if base_missing:
         base_rate = 0.0
-        missing.append("No dated regional or national base tariff rate was supplied.")
+        missing.append("No dated verified regional or national base tariff rate was supplied.")
+    elif base_status != "VERIFIED":
+        missing.append("Base tariff rate is present but its source, HS version, or effective date is not sufficiently verified.")
 
     auth = _authorization_context(authorizations)
     context = OverrideContext(
@@ -217,6 +488,9 @@ def calculate_import_charges(
     for tax in sorted(taxes, key=lambda item: int(item.get("sequence", 100))):
         rate = tax.get("rate_pct", tax.get("rate"))
         code = str(tax.get("code", tax.get("tax_type", tax.get("tax_id", "TAX"))))
+        tax_status = _component_status(tax)
+        if tax_status != "VERIFIED":
+            missing.append(f"{code}: source, version, or effective date is not sufficiently verified.")
         if rate is None:
             missing.append(f"{code}: no computable verified rate supplied.")
             continue
@@ -239,7 +513,34 @@ def calculate_import_charges(
             continue
         amount = round(basis_amount * float(rate) / 100.0, 2)
         computed[code] = amount
-        tax_lines.append({"code": code, "name": tax.get("name", code), "rate": float(rate), "basis": basis_amount, "amount": amount, "legal_reference": tax.get("legal_reference"), "source_id": tax.get("source_id")})
+        tax_lines.append({
+            "component_type": code,
+            "code": code,
+            "name": tax.get("name", code),
+            "source_rate": rate,
+            "rate": float(rate),
+            "rate_type": tax.get("rate_type", "AD_VALOREM"),
+            "taxable_base": basis_amount,
+            "calculated_amount": amount,
+            "currency": currency_code,
+            "basis": basis_amount,
+            "amount": amount,
+            "legal_reference": tax.get("legal_reference"),
+            "source_id": tax.get("source_id"),
+            "source_hash": tax.get("source_hash"),
+            "effective_from": tax.get("effective_from", tax.get("valid_from")),
+            "effective_to": tax.get("effective_to", tax.get("valid_to")),
+            "hs_version": tax.get("hs_version"),
+            "verification_status": tax_status,
+            "status": tax_status,
+            "components_included": list(includes),
+            "components_missing": [],
+            "source_authority": tax.get("source_authority"),
+            "source_title": tax.get("source_title"),
+            "documentation_status": _documentation_status(tax_status),
+            "assumptions": list(tax.get("assumptions", [])),
+            "data_gaps": [],
+        })
 
     preference_rate, preference_missing, preference_status = _preference(profile, destination, origin, hs6_digits, on_date)
     if preference_missing:
@@ -249,6 +550,11 @@ def calculate_import_charges(
         customs_duty = round(value * customs_rate / 100.0, 2)
         computed["CUSTOMS_DUTY"] = computed["DD"] = customs_duty
 
+    quality_dimensions = _quality_dimensions(
+        profile, base_status=base_status, base_component=base_component,
+        tax_lines=tax_lines, national_coverage_complete=national_coverage_complete,
+        hs6_digits=hs6_digits, preference_status=preference_status,
+    )
     formalities = []
     for item in profile.get("administrative_formalities", []):
         row = _row(item)
@@ -260,8 +566,57 @@ def calculate_import_charges(
     excise_lines = [item for code, item in by_code.items() if "EXCISE" in code or code in {"ED", "ET"}]
     levy_lines = [item for code, item in by_code.items() if item not in excise_lines and item is not vat_line]
     status = override["calculation_status"]
-    if missing and status != "CONFLICT_REVIEW":
-        status = "VERIFIED_PARTIAL"
+    if base_missing:
+        status = "BLOCKED_BASE_TARIFF"
+    elif base_status != "VERIFIED":
+        status = "UNVERIFIED_SOURCE"
+    elif status != "CONFLICT_REVIEW" and (missing or any(value not in {"DOCUMENTED", "NOT_APPLICABLE"} for value in quality_dimensions.values())):
+        # Compatibility status retained for existing consumers.
+        status = "INFORMATIVE_PARTIAL"
+    elif status != "CONFLICT_REVIEW":
+        status = "INFORMATIVE_COMPLETE"
+    overall_status = aggregate_overall_status(
+        quality_dimensions,
+        base_available=not base_missing,
+        determinant_unverified=(
+            status == "CONFLICT_REVIEW"
+            or base_status != "VERIFIED"
+            or any(value == "UNVERIFIED" for value in quality_dimensions.values())
+            or any(item.get("verification_status") == "UNVERIFIED" for item in tax_lines)
+        ),
+    )
+    customs_component = {
+        "component_type": "CUSTOMS_DUTY",
+        "code": "CUSTOMS_DUTY",
+        "source_rate": base_rate if not base_missing else None,
+        "rate": base_rate if not base_missing else None,
+        "rate_type": "AD_VALOREM",
+        "taxable_base": value,
+        "calculated_amount": customs_duty,
+        "currency": currency_code,
+        "amount": customs_duty,
+        "verification_status": "BLOCKED_BASE_TARIFF" if base_missing else base_status,
+        "status": "BLOCKED_BASE_TARIFF" if base_missing else base_status,
+        "source_id": base_component.get("source_id"),
+        "source_hash": base_component.get("source_hash"),
+        "effective_from": base_component.get("effective_from"),
+        "effective_to": base_component.get("effective_to"),
+        "hs_version": base_component.get("hs_version"),
+        "components_included": ["CUSTOMS_VALUE", "BASE_TARIFF", "APPLICABLE_OVERRIDES"],
+        "components_missing": (["BASE_TARIFF"] if base_missing else []),
+        "source_authority": base_component.get("source_authority"),
+        "source_title": base_component.get("source_title"),
+        "legal_reference": base_component.get("legal_reference"),
+        "documentation_status": _documentation_status("MISSING" if base_missing else base_status),
+        "assumptions": ["ad valorem base applied to customs value"],
+        "data_gaps": (["base tariff"] if base_missing else []),
+    }
+    component_statuses = {
+        "base_tariff": dict(base_component, status=base_status),
+        "customs_duty": customs_component,
+        "taxes": tax_lines,
+    }
+    payable_total = None if overall_status in {"CALCULATION_UNAVAILABLE", "REVIEW_REQUIRED"} else total
     return {
         "importing_country": destination,
         "exporting_country": origin,
@@ -271,6 +626,11 @@ def calculate_import_charges(
         "currency_code": currency_code,
         "customs_territory": territory,
         "base_tariff_rate": base_rate,
+        "base_tariff_verification_status": base_status,
+        "base_tariff_source_id": base_component.get("source_id"),
+        "base_tariff_effective_from": base_component.get("effective_from"),
+        "base_tariff_effective_to": base_component.get("effective_to"),
+        "base_tariff_hs_version": base_component.get("hs_version"),
         "override_applied": override["override_rate"],
         "applicable_customs_rate": customs_rate,
         "customs_duty": customs_duty,
@@ -282,9 +642,42 @@ def calculate_import_charges(
         "idf": next((item for code, item in by_code.items() if code == "IDF"), None),
         "rdl": next((item for code, item in by_code.items() if code == "RDL"), None),
         "other_levies": {item["code"]: item for item in levy_lines if item["code"].upper() not in {"IDF", "RDL"}},
-        "verified_total": total,
+        "verified_total": payable_total,
+        "simulated_total": total,
+        "total_payable": payable_total,
+        "component_statuses": component_statuses,
+        "amounts": [customs_component, *tax_lines],
+        "components_included": ["CUSTOMS_DUTY", *[item["code"] for item in tax_lines]],
+        "components_missing": list(dict.fromkeys(missing)),
         "missing_elements": list(dict.fromkeys(missing)),
         "calculation_status": status,
+        "status": status,
+        "overall_status": overall_status,
+        "technical_validation_status": "CALCULATION_VALIDATED" if status in {"INFORMATIVE_COMPLETE", "INFORMATIVE_PARTIAL"} else status,
+        "informational_only": True,
+        "legally_binding": False,
+        "administrative_confirmation_required": True,
+        "source_authority": base_component.get("source_authority") or base_component.get("source_id"),
+        "source_date": base_component.get("source_date"),
+        "effective_date": base_component.get("effective_from"),
+        "completeness_status": overall_status,
+        "quality_dimensions": quality_dimensions,
+        "known_data_gaps": list(dict.fromkeys(missing)),
+        "legal_reliance_allowed": False,
+        "simulation_only": overall_status == "REVIEW_REQUIRED",
+        "amount_display_allowed": overall_status != "CALCULATION_UNAVAILABLE",
+        "base_tariff": {
+            "rate": base_rate if not base_missing else None,
+            "status": base_status,
+            "source_id": base_component.get("source_id"),
+            "source_hash": base_component.get("source_hash"),
+            "source_authority": base_component.get("source_authority"),
+            "source_date": base_component.get("source_date"),
+            "hs_version": base_component.get("hs_version"),
+            "effective_from": base_component.get("effective_from"),
+            "effective_to": base_component.get("effective_to"),
+        },
+        "monetary_components": [customs_component, *tax_lines],
         "preference_status": preference_status,
         "preference_rate": preference_rate,
         "legal_justification": override["trace"],
@@ -295,4 +688,10 @@ def calculate_import_charges(
         "sources_used": override["sources_used"],
         "remission_eligibility_status": override["remission_eligibility_status"],
         "requires_eligibility_input": override["requires_eligibility_input"],
+        "administrative_confirmation_recommended": True,
+        "disclaimer": {
+            "informational_only": True,
+            "legally_binding": False,
+            "message": "Simulation informative fondée sur les données disponibles.",
+        },
     }

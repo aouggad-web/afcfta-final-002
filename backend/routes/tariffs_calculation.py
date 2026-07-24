@@ -61,6 +61,20 @@ class TariffCalculationResponse(BaseModel):
     computation_order_ref: Optional[str] = None
     last_verified: Optional[str] = None
     confidence_level: str = "medium"
+    informational_only: bool = True
+    legally_binding: bool = False
+    overall_status: str = "INFORMATIVE_PARTIAL"
+    quality_dimensions: Optional[Dict[str, Any]] = None
+    known_data_gaps: Optional[List[str]] = None
+    administrative_confirmation_recommended: bool = True
+    administrative_confirmation_required: bool = True
+    disclaimer: Optional[Dict[str, Any]] = None
+    technical_validation_status: Optional[str] = None
+    source_authority: Optional[str] = None
+    source_title: Optional[str] = None
+    source_date: Optional[str] = None
+    effective_date: Optional[str] = None
+    completeness_status: Optional[str] = None
 
 
 # Helper functions

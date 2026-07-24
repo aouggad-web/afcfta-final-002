@@ -194,7 +194,7 @@ class LegalOverrideResolver:
         coverage_complete = (
             self.regional_coverage_complete and self.national_coverage_complete
         )
-        status = "VERIFIED_COMPLETE" if coverage_complete else "VERIFIED_PARTIAL"
+        status = "INFORMATIVE_COMPLETE" if coverage_complete else "INFORMATIVE_PARTIAL"
         if not self.regional_coverage_complete:
             missing.append("Regional gazette coverage is not complete for the requested date.")
         if not self.national_coverage_complete:
@@ -395,13 +395,51 @@ class LegalOverrideResolver:
                 missing.append(f"{measure.measure_id}: administrative condition unresolved.")
 
         if missing and status != "CONFLICT_REVIEW":
-            status = "VERIFIED_PARTIAL"
+            status = "INFORMATIVE_PARTIAL"
         serialized_trace = [step.model_dump() for step in trace]
+        relevant_sources = [m for m in candidates if m.publication_url]
+        source_documented = bool(relevant_sources) and all(
+            m.source_hash and m.verification_status in {"SOURCE_ARCHIVED", "OFFICIAL_SOURCE_IDENTIFIED"}
+            for m in relevant_sources
+        )
+        quality_dimensions = {
+            "source": "DOCUMENTED" if source_documented else ("PARTIAL" if sources else "UNVERIFIED"),
+            "temporal_validity": "PARTIAL",
+            "classification": "DOCUMENTED" if len(str(hs_code)) >= 6 else "UNVERIFIED",
+            "taxes_and_levies": "DOCUMENTED" if self.national_coverage_complete else "PARTIAL",
+            "preference_and_origin": "UNVERIFIED",
+            "formalities": "DOCUMENTED" if requirements or restrictions else "NOT_APPLICABLE",
+        }
+        if status == "CONFLICT_REVIEW":
+            overall_status = "REVIEW_REQUIRED"
+        elif any(value == "NOT_AVAILABLE" for value in quality_dimensions.values()):
+            overall_status = "CALCULATION_UNAVAILABLE"
+        elif any(value == "UNVERIFIED" for value in quality_dimensions.values()):
+            overall_status = "REVIEW_REQUIRED"
+        elif all(value in {"DOCUMENTED", "NOT_APPLICABLE"} for value in quality_dimensions.values()):
+            overall_status = "INFORMATIVE_COMPLETE"
+        else:
+            overall_status = "INFORMATIVE_PARTIAL"
         return {
             "base_rate": base_rate,
             "override_rate": current_rate if current_rate != base_rate else None,
             "applicable_customs_rate": current_rate,
             "calculation_status": status,
+            "status": status,
+            "overall_status": overall_status,
+            "technical_validation_status": "CALCULATION_VALIDATED" if status in {"INFORMATIVE_COMPLETE", "INFORMATIVE_PARTIAL"} else status,
+            "informational_only": True,
+            "legally_binding": False,
+            "administrative_confirmation_required": True,
+            "administrative_confirmation_recommended": True,
+            "completeness_status": overall_status,
+            "quality_dimensions": quality_dimensions,
+            "known_data_gaps": list(dict.fromkeys(missing)),
+            "disclaimer": {
+                "informational_only": True,
+                "legally_binding": False,
+                "message": "Simulation informative fondée sur les données disponibles.",
+            },
             "trace": serialized_trace,
             "missing_elements": list(dict.fromkeys(missing)),
             "restrictions": restrictions,

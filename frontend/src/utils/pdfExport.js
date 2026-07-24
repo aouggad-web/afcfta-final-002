@@ -16,7 +16,8 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
     title = '',
     subtitle = '',
     showDate = true,
-    language = 'fr'
+    language = 'fr',
+    informationalNotice = true
   } = options;
 
   try {
@@ -62,6 +63,19 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
           : `Generated on ${new Date().toLocaleDateString('en-US')}`;
         pdf.text(dateText, margin, yOffset + 5);
         yOffset += 10;
+      }
+
+      if (informationalNotice) {
+        pdf.setFontSize(9);
+        pdf.setTextColor(180, 90, 20);
+        pdf.text(
+          language === 'fr'
+            ? 'Simulation informative des droits et taxes à l’importation'
+            : 'Informative simulation of import duties and taxes',
+          margin,
+          yOffset + 5
+        );
+        yOffset += 8;
       }
 
       // Add separator line
@@ -119,6 +133,18 @@ export const exportToPDF = async (element, filename = 'report.pdf', options = {}
     const totalPages = pdf.internal.getNumberOfPages();
     for (let i = 1; i <= totalPages; i++) {
       pdf.setPage(i);
+      if (informationalNotice) {
+        pdf.setFontSize(7);
+        pdf.setTextColor(180, 90, 20);
+        pdf.text(
+          language === 'fr'
+            ? 'Simulation informative — non opposable à l’administration douanière.'
+            : 'Informative estimate — not binding on customs administration.',
+          pageWidth / 2,
+          pageHeight - 9,
+          { align: 'center' }
+        );
+      }
       pdf.setFontSize(8);
       pdf.setTextColor(150, 150, 150);
       const footerText = language === 'fr' 
