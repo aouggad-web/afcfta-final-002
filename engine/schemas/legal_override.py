@@ -24,6 +24,13 @@ class LegalMeasureType(str, Enum):
     ADMINISTRATIVE_REQUIREMENT = "ADMINISTRATIVE_REQUIREMENT"
 
 
+class RemissionEligibility(str, Enum):
+    ELIGIBLE_VERIFIED = "ELIGIBLE_VERIFIED"
+    NOT_ELIGIBLE = "NOT_ELIGIBLE"
+    ELIGIBILITY_UNKNOWN = "ELIGIBILITY_UNKNOWN"
+    AUTHORIZATION_REQUIRED = "AUTHORIZATION_REQUIRED"
+
+
 class LegalOverrideMeasure(BaseModel):
     measure_id: str
     jurisdiction: str
@@ -86,6 +93,12 @@ class OverrideContext(BaseModel):
     beneficiary: Optional[str] = None
     import_purpose: Optional[str] = None
     quantity: Optional[float] = Field(None, ge=0)
+    remission_eligibility: RemissionEligibility = RemissionEligibility.ELIGIBILITY_UNKNOWN
+    authorization_reference: Optional[str] = None
+    authorization_effective_from: Optional[date] = None
+    authorization_effective_to: Optional[date] = None
+    authorization_hs_codes: List[str] = Field(default_factory=list)
+    authorization_goods: List[str] = Field(default_factory=list)
 
 
 class OverrideTraceStep(BaseModel):

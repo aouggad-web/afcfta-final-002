@@ -26,6 +26,7 @@ import RegulatoryDetailsPanel from './RegulatoryDetailsPanel';
 import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
 import ProductKeywordSearch from './ProductKeywordSearch';
+import KenyaRemissionAuthorization from './KenyaRemissionAuthorization';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -82,6 +83,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
   const [regulatorySelectedPos, setRegulatorySelectedPos] = useState(null);
   const [regulatorySelectedPosDesc, setRegulatorySelectedPosDesc] = useState(null);
   const [searchResetKey, setSearchResetKey] = useState(0);
+  const [kenyaRemission, setKenyaRemission] = useState({
+    answer: 'unknown',
+    reference: '',
+    validFrom: '',
+    validTo: '',
+    authorizedTariffLines: '',
+    authorizedGoods: '',
+  });
   const profileRequestRef = useRef(0);
 
   const fetchCountryTariffProfile = useCallback(async (countryCode) => {
@@ -314,6 +323,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     setLoadingProfile(false);
     profileRequestRef.current++;
     setSearchResetKey((k) => k + 1);
+    setKenyaRemission({
+      answer: 'unknown', reference: '', validFrom: '', validTo: '',
+      authorizedTariffLines: '', authorizedGoods: '',
+    });
   };
 
   const calculateTariff = async () => {
@@ -360,8 +373,26 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       let useAuthenticData = false;
       
       try {
+        const remissionEligibility = kenyaRemission.answer === 'no'
+          ? 'NOT_ELIGIBLE'
+          : kenyaRemission.answer === 'yes'
+            ? 'ELIGIBLE_VERIFIED'
+            : 'ELIGIBILITY_UNKNOWN';
         const authenticResponse = await axios.get(
-          `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}&origin=${originISO3}`
+          `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}`,
+          {
+            params: {
+              value: parseFloat(value),
+              language,
+              origin: originISO3,
+              remission_eligibility: remissionEligibility,
+              authorization_reference: kenyaRemission.reference || undefined,
+              authorization_valid_from: kenyaRemission.validFrom || undefined,
+              authorization_valid_to: kenyaRemission.validTo || undefined,
+              authorization_hs_codes: kenyaRemission.authorizedTariffLines || undefined,
+              authorization_goods: kenyaRemission.authorizedGoods || undefined,
+            },
+          },
         );
         authenticResult = authenticResponse.data;
         useAuthenticData = true;
@@ -505,7 +536,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           
           computation_order_ref: `Données tarifaires officielles ${destISO3} - Format enhanced_v2`,
           last_verified: authenticResult.generated_at ? new Date(authenticResult.generated_at).toISOString().split('T')[0] : '2025-02',
-          confidence_level: 'very_high'
+          confidence_level: 'very_high',
+          kenya_legal_calculation: authenticResult.kenya_legal_calculation || null
         };
         
         setResult(transformedResult);
@@ -955,6 +987,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             />
           )}
 
+          {['KEN', 'KE'].includes(destinationCountry) && (
+            <KenyaRemissionAuthorization
+              value={kenyaRemission}
+              onChange={setKenyaRemission}
+            />
+          )}
+
           {/* Boutons Calculer / Réinitialiser */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Button 
@@ -1073,6 +1112,45 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                     </p>
                     <p className="text-amber-200/80 text-sm mt-1">{result.zlecaf_note}</p>
                   </div>
+                </div>
+              )}
+
+              {result.kenya_legal_calculation && (
+                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl">
+                  <p className="text-amber-300 font-semibold text-sm">
+                    Couche juridique EAC/Kenya — {result.kenya_legal_calculation.calculation_status}
+                  </p>
+                  <p className="text-amber-100/80 text-sm mt-1">
+                    Éligibilité remission : {result.kenya_legal_calculation.remission_eligibility_status || 'Aucune remission conditionnelle identifiée'}
+                  </p>
+                  <div className="mt-3 grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-4">
+                    <span>
+                      CET de base : <strong>{result.kenya_legal_calculation.base_cet_rate}%</strong>
+                    </span>
+                    <span>
+                      Taux applicable : <strong>{result.kenya_legal_calculation.applicable_customs_rate}%</strong>
+                    </span>
+                    <span>
+                      Override :{' '}
+                      <strong>
+                        {result.kenya_legal_calculation.override_applied == null
+                          ? 'Aucun'
+                          : `${result.kenya_legal_calculation.override_applied}%`}
+                      </strong>
+                    </span>
+                    <span>
+                      Total vérifié :{' '}
+                      <strong>
+                        {result.kenya_legal_calculation.verified_total}{' '}
+                        {result.kenya_legal_calculation.currency_code}
+                      </strong>
+                    </span>
+                  </div>
+                  {result.kenya_legal_calculation.display_warning && (
+                    <p className="text-amber-100/80 text-sm mt-2">
+                      {result.kenya_legal_calculation.display_warning}
+                    </p>
+                  )}
                 </div>
               )}
 

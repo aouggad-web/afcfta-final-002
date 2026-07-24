@@ -225,6 +225,7 @@ async def search_product_index(
     intitulé technique officiel pour lever toute ambiguïté.
     """
     from services import omd_hs_index_service as omd
+    from services.wco_index_adapter import get_wco_index_metadata
 
     found = omd.search(q, limit=limit)
     chapters = get_hs_chapters()
@@ -264,6 +265,7 @@ async def search_product_index(
         "count": found["count"],
         "results": results,
         "source": found.get("source"),
+        "metadata": get_wco_index_metadata(),
         "language": language,
     }
 

@@ -5,6 +5,7 @@ detailed taxes, fiscal advantages, and administrative formalities
 """
 
 import logging
+from datetime import date
 from typing import Optional
 
 from fastapi import APIRouter, HTTPException, Query
@@ -14,7 +15,10 @@ from services.authentic_tariff_service import (
     get_fiscal_advantages,
     get_taxes_detail,
 )
+from services.kenya_legal_calculation_service import calculate_kenya_legal_layer
 from services.tariff_provider_service import get_tariff_provider_service
+
+from engine.schemas.legal_override import RemissionEligibility
 
 logger = logging.getLogger(__name__)
 
@@ -198,6 +202,23 @@ async def calculate_taxes_endpoint(
     cif_value: float = Query(..., description="CIF value in USD"),
     language: str = Query("fr", description="Language: fr or en"),
     origin: str = Query(None, description="Origin country ISO3 (gates ZLECAf eligibility)"),
+    calculation_date: Optional[date] = Query(None, description="Legal calculation date"),
+    remission_eligibility: RemissionEligibility = Query(
+        RemissionEligibility.ELIGIBILITY_UNKNOWN,
+        description="Eligibility for a conditional EAC duty remission",
+    ),
+    authorization_reference: Optional[str] = Query(None),
+    authorization_valid_from: Optional[date] = Query(None),
+    authorization_valid_to: Optional[date] = Query(None),
+    authorization_hs_codes: Optional[str] = Query(
+        None, description="Comma-separated exact tariff lines in the authorization"
+    ),
+    authorization_goods: Optional[str] = Query(
+        None, description="Comma-separated authorized-goods descriptions for audit"
+    ),
+    beneficiary: Optional[str] = Query(None),
+    import_purpose: Optional[str] = Query(None),
+    quantity: Optional[float] = Query(None, ge=0),
 ):
     """
     Calculer les taxes d'importation avec données authentiques
@@ -227,6 +248,25 @@ async def calculate_taxes_endpoint(
     if "error" in result:
         raise HTTPException(status_code=404, detail=result["error"])
 
+    if country_iso3.upper() == "KEN":
+        result["kenya_legal_calculation"] = calculate_kenya_legal_layer(
+            hs_code=hs_code,
+            on_date=calculation_date or date.today(),
+            customs_value=cif_value,
+            base_cet_rate=float(result.get("rates", {}).get("dd_rate_pct", 0) or 0),
+            origin=(origin or "").upper() or None,
+            remission_eligibility=remission_eligibility,
+            authorization_reference=authorization_reference,
+            authorization_effective_from=authorization_valid_from,
+            authorization_effective_to=authorization_valid_to,
+            authorization_hs_codes=(authorization_hs_codes or "").split(","),
+            authorization_goods=(authorization_goods or "").split(","),
+            beneficiary=beneficiary,
+            import_purpose=import_purpose,
+            quantity=quantity,
+            currency_code="USD",
+        )
+
     return result
 
 
@@ -237,6 +277,16 @@ async def calculate_taxes_get_endpoint(
     value: float = Query(10000, description="CIF value in USD"),
     language: str = Query("fr", description="Language: fr or en"),
     origin: str = Query(None, description="Origin country ISO3 (gates ZLECAf eligibility)"),
+    calculation_date: Optional[date] = Query(None, description="Legal calculation date"),
+    remission_eligibility: RemissionEligibility = Query(RemissionEligibility.ELIGIBILITY_UNKNOWN),
+    authorization_reference: Optional[str] = Query(None),
+    authorization_valid_from: Optional[date] = Query(None),
+    authorization_valid_to: Optional[date] = Query(None),
+    authorization_hs_codes: Optional[str] = Query(None),
+    authorization_goods: Optional[str] = Query(None),
+    beneficiary: Optional[str] = Query(None),
+    import_purpose: Optional[str] = Query(None),
+    quantity: Optional[float] = Query(None, ge=0),
 ):
     """
     Version GET du calculateur (pour tests rapides)
@@ -247,6 +297,16 @@ async def calculate_taxes_get_endpoint(
         cif_value=value,
         language=language,
         origin=origin,
+        calculation_date=calculation_date,
+        remission_eligibility=remission_eligibility,
+        authorization_reference=authorization_reference,
+        authorization_valid_from=authorization_valid_from,
+        authorization_valid_to=authorization_valid_to,
+        authorization_hs_codes=authorization_hs_codes,
+        authorization_goods=authorization_goods,
+        beneficiary=beneficiary,
+        import_purpose=import_purpose,
+        quantity=quantity,
     )
 
 

@@ -2,7 +2,7 @@
 
 Date de l’inspection : **24 juillet 2026**
 
-Statut : **FOUND_IN_OTHER_BRANCH**
+Statut : **INTEGRATED_ON_FEATURE_BRANCH**
 
 ## Conclusion
 
@@ -14,10 +14,11 @@ L’index recherché a été retrouvé dans Git, sur `origin/main`, dans le comm
 feat(hs): recherche « nom de marchandise → code SH » (index OMD) (#303)
 ```
 
-Il n’est pas présent dans le HEAD local inspecté
-`9afd9c5a343dc9e896cba75134d0b8bb288ae3ed`. Le HEAD local est un ancêtre de
-`origin/main` (`955072453019e467577c77a01923feb2b6ba7c52`) et ne contient donc
-pas encore le commit OMD. Le même commit est contenu dans :
+Après sauvegarde des travaux Kenya/EAC dans `6cd4c255`, ce commit autonome a
+été intégré sans conflit sur `feat/kenya-overrides-omd-integration` par un
+cherry-pick ciblé, devenu localement `f9f8cc1f`. Aucun pull, reset, force push
+ou écrasement des fichiers Kenya/EAC n’a été effectué. Le commit source est
+également contenu dans :
 
 - `origin/main` et `origin/HEAD` ;
 - `origin/automated-bulk-freight` ;
@@ -266,26 +267,25 @@ téléchargée ou exportée.
 
 ## Adaptateur unique
 
-Aucun nouvel adaptateur n’est créé dans le HEAD local pour les raisons
-suivantes :
+`backend/services/wco_index_adapter.py` expose maintenant :
 
-1. la source et son service sont absents du HEAD local ;
-2. recopier le JSON ou les volumes depuis `origin/main` créerait précisément le
-   corpus parallèle interdit ;
-3. un adaptateur importé maintenant serait inopérant dans cette branche ;
-4. le service existant constitue déjà l’accès unique au corpus et a été testé
-   directement.
+```python
+search_wco_index(query, hs_version="HS2022", language=None, limit=20)
+```
 
-Après synchronisation contrôlée du HEAD local avec le commit OMD, l’interface
-`search_wco_index(query, hs_version="HS2022", language=None, limit=20)` doit
-être un adaptateur mince au-dessus de
-`backend.services.omd_hs_index_service.search`. Elle doit ajouter la version
-explicite et un score textuel sans recopier le corpus, puis être testée avant
-toute connexion à `product_mapping`.
+L’adaptateur appelle exclusivement le service canonique
+`omd_hs_index_service.search`, rejette toute version autre que HS2022 et ajoute
+les niveaux SH2/SH4/SH6 explicites, le score textuel et les métadonnées. Il ne
+recopie ni le JSON ni l’algorithme. Le moteur reçoit cette fonction par
+injection dans `WCOIndexCandidateMapper`, ce qui évite toute dépendance de
+`engine` vers `backend`.
 
-La synchronisation n’a pas été effectuée pendant cette mission : l’arbre local
-contient déjà des modifications non liées, et une mise à jour de branche
-dépasserait une inspection sans consentement explicite.
+Les métadonnées sont conservées dans
+`backend/data/omd_hs_index.metadata.json`. Le corpus canonique reste inchangé
+et son SHA-256 demeure
+`c84ea861a183b0c25a16ae343f7f4c3e04fac439822ca62930e09355175f2c87`.
+La route existante expose ces métadonnées avec les résultats, mais aucune API
+ne permet l’export intégral des 6 344 entrées.
 
 ## Six mesures `END_USE_MEASURE`
 
@@ -316,11 +316,11 @@ marchandises individuelles à classer. L’index OMD devra être appliqué aux
 composants ou matières détaillés d’une annexe officielle, jamais à ces
 catégories globales.
 
-## Validations exécutées
+## Validations exécutées avant intégration
 
 ### Index OMD du commit retrouvé
 
-Les fichiers OMD du commit ont été extraits uniquement dans un répertoire
+Lors de l’inspection initiale, les fichiers OMD du commit ont été extraits dans un répertoire
 temporaire hors dépôt, puis le test direct du service a été exécuté :
 
 ```text
@@ -366,20 +366,22 @@ Pytest a seulement signalé qu’il ne pouvait pas écrire son cache dans
 
 ## Données et accès encore manquants
 
-Avant une connexion sûre aux mappings EAC/Kenya, il manque :
+Après intégration, il manque encore :
 
-1. la synchronisation contrôlée du HEAD local avec le commit OMD ;
-2. la preuve d’origine, d’acquisition et de licence des deux volumes ;
-3. un champ de version SH explicite dans les métadonnées du corpus ;
-4. les RGI, Notes de Section, Notes de Chapitre et sources de classement
+1. la preuve d’origine, d’acquisition et de licence des deux volumes ;
+2. les RGI, Notes de Section, Notes de Chapitre et sources de classement
    nécessaires à la validation d’un candidat ;
-5. les annexes détaillées des six remissions `END_USE_MEASURE` ;
-6. un accès configuré à PostgreSQL si le contenu de la base d’exécution doit
+3. les annexes détaillées des six remissions `END_USE_MEASURE` ;
+4. un accès configuré à PostgreSQL si le contenu de la base d’exécution doit
    être audité ;
-7. un accès réseau fonctionnel à l’environnement de production actuel pour
+5. un accès réseau fonctionnel à l’environnement de production actuel pour
    comparer la réponse déployée ;
-8. un test d’intégration non simulé de l’adaptateur futur contre le corpus du
-   même commit.
+6. la couverture exhaustive des gazettes, corrigenda, autorisations et
+   dérogations EAC/Kenya.
+
+Les validations post-intégration sont détaillées dans
+`reports/OMD_KENYA_INTEGRATION.md` : 52 tests ciblés réussis et build Vite
+réussi.
 
 Tant que ces éléments manquent, l’index peut aider à la recherche et à la revue
 humaine, mais ne doit ni créer une attribution SH6 certaine ni déclencher une

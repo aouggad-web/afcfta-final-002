@@ -15,8 +15,8 @@ from engine.schemas.legal_override import (
     LegalOverrideMeasure,
     OverrideContext,
     OverrideTraceStep,
+    RemissionEligibility,
 )
-
 
 RATE_STAGES = (
     LegalMeasureType.EAC_CET_AMENDMENT,
@@ -50,14 +50,71 @@ class LegalOverrideResolver:
         allowed = {part.strip().upper() for part in value.split(",")}
         return "MATCH" if actual.strip().upper() in allowed else "NO_MATCH"
 
-    def _context_result(
-        self, measure: LegalOverrideMeasure, context: OverrideContext
-    ) -> str:
+    def _context_result(self, measure: LegalOverrideMeasure, context: OverrideContext) -> str:
         checks = (
             self._condition(measure.origin_scope, context.origin),
             self._condition(measure.beneficiary, context.beneficiary),
             self._condition(measure.import_purpose, context.import_purpose),
         )
+        if "NO_MATCH" in checks:
+            return "NO_MATCH"
+        if measure.quantity_limit is not None:
+            if context.quantity is None:
+                return "UNKNOWN"
+            if context.quantity > measure.quantity_limit:
+                return "NO_MATCH"
+        return "UNKNOWN" if "UNKNOWN" in checks else "MATCH"
+
+    @staticmethod
+    def _is_conditional_remission(measure: LegalOverrideMeasure) -> bool:
+        return measure.measure_type == LegalMeasureType.DUTY_REMISSION and bool(
+            measure.beneficiary
+            or measure.import_purpose
+            or measure.quantity_limit is not None
+            or measure.condition_text
+        )
+
+    @staticmethod
+    def _authorization_result(
+        context: OverrideContext, hs_code: str, on_date: date
+    ) -> tuple[str, str]:
+        status = context.remission_eligibility
+        if status == RemissionEligibility.NOT_ELIGIBLE:
+            return "NOT_ELIGIBLE", "The importer states that it is not an authorized beneficiary."
+        if status == RemissionEligibility.ELIGIBILITY_UNKNOWN:
+            return "ELIGIBILITY_UNKNOWN", "Importer eligibility is unknown."
+        if status == RemissionEligibility.AUTHORIZATION_REQUIRED:
+            return "AUTHORIZATION_REQUIRED", "An official authorization or allocation is required."
+        if not context.authorization_reference:
+            return "AUTHORIZATION_REQUIRED", "The authorization reference is missing."
+        if not context.authorization_effective_from or not context.authorization_effective_to:
+            return "AUTHORIZATION_REQUIRED", "The authorization validity period is incomplete."
+        if not (
+            context.authorization_effective_from <= on_date <= context.authorization_effective_to
+        ):
+            return (
+                "NOT_ELIGIBLE",
+                "The supplied authorization is not effective on the calculation date.",
+            )
+        requested = "".join(ch for ch in hs_code if ch.isdigit())
+        authorized = {
+            "".join(ch for ch in code if ch.isdigit()) for code in context.authorization_hs_codes
+        }
+        if not requested or requested not in authorized:
+            return (
+                "AUTHORIZATION_REQUIRED",
+                "The exact requested tariff line is absent from the authorized-goods list.",
+            )
+        return (
+            "ELIGIBLE_VERIFIED",
+            "The dated authorization expressly covers the requested tariff line.",
+        )
+
+    def _authorized_context_result(
+        self, measure: LegalOverrideMeasure, context: OverrideContext
+    ) -> str:
+        """Authorization proves beneficiary/purpose; origin and quantity remain factual gates."""
+        checks = (self._condition(measure.origin_scope, context.origin),)
         if "NO_MATCH" in checks:
             return "NO_MATCH"
         if measure.quantity_limit is not None:
@@ -88,6 +145,8 @@ class LegalOverrideResolver:
         ]
         missing: List[str] = []
         sources = set()
+        eligibility_status = None
+        requires_eligibility_input = False
         status = "VERIFIED_COMPLETE" if self.coverage_complete else "VERIFIED_PARTIAL"
         if not self.coverage_complete:
             missing.append("EAC gazette coverage is not complete for the requested date.")
@@ -127,8 +186,44 @@ class LegalOverrideResolver:
         for stage in RATE_STAGES:
             matched: List[LegalOverrideMeasure] = []
             for measure in (m for m in candidates if m.measure_type == stage):
-                condition = self._context_result(measure, context)
                 sources.add(measure.publication_url)
+                condition = self._context_result(measure, context)
+                if self._is_conditional_remission(measure):
+                    eligibility, eligibility_reason = self._authorization_result(
+                        context, hs_code, on_date
+                    )
+                    eligibility_status = eligibility
+                    if eligibility in {"ELIGIBILITY_UNKNOWN", "AUTHORIZATION_REQUIRED"}:
+                        requires_eligibility_input = True
+                        missing.append(f"{measure.measure_id}: {eligibility_reason}")
+                        trace.append(
+                            OverrideTraceStep(
+                                stage=stage.value,
+                                measure_id=measure.measure_id,
+                                outcome=eligibility,
+                                rate_before=current_rate,
+                                rate_after=current_rate,
+                                legal_reference=measure.legal_reference,
+                                publication_url=measure.publication_url,
+                                reason=eligibility_reason,
+                            )
+                        )
+                        continue
+                    if eligibility == "NOT_ELIGIBLE":
+                        trace.append(
+                            OverrideTraceStep(
+                                stage=stage.value,
+                                measure_id=measure.measure_id,
+                                outcome="NOT_ELIGIBLE",
+                                rate_before=current_rate,
+                                rate_after=current_rate,
+                                legal_reference=measure.legal_reference,
+                                publication_url=measure.publication_url,
+                                reason=eligibility_reason,
+                            )
+                        )
+                        continue
+                    condition = self._authorized_context_result(measure, context)
                 if not measure.verification_status.startswith("VERIFIED"):
                     missing.append(
                         f"{measure.measure_id}: official source or extraction is not fully verified."
@@ -146,7 +241,8 @@ class LegalOverrideResolver:
                             rate_after=current_rate,
                             legal_reference=measure.legal_reference,
                             publication_url=measure.publication_url,
-                            reason=measure.condition_text or "Conditional measure requires more facts.",
+                            reason=measure.condition_text
+                            or "Conditional measure requires more facts.",
                         )
                     )
                 elif condition == "MATCH":
@@ -173,8 +269,7 @@ class LegalOverrideResolver:
             if len(rates) > 1:
                 status = "CONFLICT_REVIEW"
                 missing.append(
-                    f"{stage.value}: contradictory applicable override rates "
-                    f"{sorted(rates)}."
+                    f"{stage.value}: contradictory applicable override rates " f"{sorted(rates)}."
                 )
                 for measure in matched:
                     trace.append(
@@ -240,4 +335,6 @@ class LegalOverrideResolver:
             "restrictions": restrictions,
             "administrative_requirements": requirements,
             "sources_used": sorted(sources),
+            "remission_eligibility_status": eligibility_status,
+            "requires_eligibility_input": requires_eligibility_input,
         }

@@ -31,7 +31,9 @@ def _active(rows, on_date: date):
 def _hs_match(row, hs_code: str) -> bool:
     clean = re.sub(r"\D", "", hs_code)
     explicit = [re.sub(r"\D", "", x) for x in row.get("hs_codes_explicit", [])]
-    return not explicit or any(clean.startswith(code) or code.startswith(clean) for code in explicit)
+    return not explicit or any(
+        clean.startswith(code) or code.startswith(clean) for code in explicit
+    )
 
 
 class KenyaFiscalStore:
@@ -79,6 +81,7 @@ def calculate_kenya_customs(
     fiscal_store: KenyaFiscalStore,
     context: Optional[OverrideContext] = None,
     coverage_complete: bool = False,
+    currency_code: str = "KES",
 ) -> dict:
     resolver = LegalOverrideResolver(measures, coverage_complete=coverage_complete)
     override = resolver.resolve(
@@ -96,7 +99,9 @@ def calculate_kenya_customs(
     for row in fiscal_store.excise_rates(on_date, hs_code):
         rate = _pct(row.get("rate"))
         if rate is None:
-            missing.append(f"{row['record_id']}: specific or mixed excise needs quantity/unit data.")
+            missing.append(
+                f"{row['record_id']}: specific or mixed excise needs quantity/unit data."
+            )
             continue
         basis = customs_value + customs_duty
         amount = round(basis * rate / 100, 2)
@@ -139,9 +144,7 @@ def calculate_kenya_customs(
     if not vat_row:
         missing.append("No verified VAT measure matched the product and date.")
 
-    known_levies = sum(
-        entry["amount"] for entry in levy_amounts.values() if entry is not None
-    )
+    known_levies = sum(entry["amount"] for entry in levy_amounts.values() if entry is not None)
     verified_total = round(customs_duty + excise + (vat or 0) + known_levies, 2)
     status = override["calculation_status"]
     if missing and status != "CONFLICT_REVIEW":
@@ -157,7 +160,7 @@ def calculate_kenya_customs(
     warning = None
     if status == "VERIFIED_PARTIAL":
         warning = (
-            f"Droits et taxes vérifiés : {verified_total:,.2f} KES. "
+            f"Droits et taxes vérifiés : {verified_total:,.2f} {currency_code}. "
             "Résultat partiel : une dérogation tarifaire EAC ou une condition "
             "susceptible d’affecter ce produit reste à vérifier. "
             "Le total ne doit pas être utilisé pour une déclaration en douane."
@@ -166,15 +169,18 @@ def calculate_kenya_customs(
         "hs_code": hs_code,
         "calculation_date": on_date.isoformat(),
         "customs_value": customs_value,
+        "currency_code": currency_code,
         "base_cet_rate": base_cet_rate,
         "override_applied": override["override_rate"],
         "applicable_customs_rate": customs_rate,
         "legal_justification": override["trace"],
         "customs_duty": customs_duty,
         "vat_basis": vat_basis,
-        "vat": {"rate": vat_rate, "amount": vat, "source_id": vat_row["source_id"]}
-        if vat_row
-        else None,
+        "vat": (
+            {"rate": vat_rate, "amount": vat, "source_id": vat_row["source_id"]}
+            if vat_row
+            else None
+        ),
         "excise": {"amount": round(excise, 2), "lines": excise_lines},
         "idf": levy_amounts["idf"],
         "rdl": levy_amounts["rdl"],
@@ -190,4 +196,6 @@ def calculate_kenya_customs(
         "restrictions": override["restrictions"],
         "administrative_requirements": override["administrative_requirements"],
         "display_warning": warning,
+        "remission_eligibility_status": override["remission_eligibility_status"],
+        "requires_eligibility_input": override["requires_eligibility_input"],
     }

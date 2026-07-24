@@ -1,7 +1,11 @@
 from datetime import date
 
 from engine.legal_override_engine import LegalOverrideResolver
-from engine.schemas.legal_override import LegalOverrideMeasure, OverrideContext
+from engine.schemas.legal_override import (
+    LegalOverrideMeasure,
+    OverrideContext,
+    RemissionEligibility,
+)
 
 
 def measure(measure_id, measure_type, rate, start="2025-07-01", end="2026-06-30", **kw):
@@ -66,10 +70,70 @@ def test_conditional_remission_requires_matching_facts():
     applied = resolve(
         [remission],
         context=OverrideContext(
-            beneficiary="MANUFACTURER", import_purpose="MANUFACTURE_OF_CRANES"
+            remission_eligibility=RemissionEligibility.ELIGIBLE_VERIFIED,
+            authorization_reference="AUTH/2025/1",
+            authorization_effective_from="2025-07-01",
+            authorization_effective_to="2026-06-30",
+            authorization_hs_codes=["87012190"],
         ),
     )
     assert applied["applicable_customs_rate"] == 0
+    assert applied["remission_eligibility_status"] == "ELIGIBLE_VERIFIED"
+
+
+def test_non_eligible_beneficiary_keeps_normal_cet():
+    remission = measure("remission-no", "DUTY_REMISSION", 0, beneficiary="MANUFACTURER")
+    result = resolve(
+        [remission],
+        context=OverrideContext(remission_eligibility=RemissionEligibility.NOT_ELIGIBLE),
+    )
+    assert result["applicable_customs_rate"] == 10
+    assert result["remission_eligibility_status"] == "NOT_ELIGIBLE"
+    assert result["calculation_status"] == "VERIFIED_COMPLETE"
+
+
+def test_claimed_eligibility_without_authorization_is_partial():
+    remission = measure("remission-missing-auth", "DUTY_REMISSION", 0, beneficiary="MANUFACTURER")
+    result = resolve(
+        [remission],
+        context=OverrideContext(remission_eligibility=RemissionEligibility.ELIGIBLE_VERIFIED),
+    )
+    assert result["applicable_customs_rate"] == 10
+    assert result["remission_eligibility_status"] == "AUTHORIZATION_REQUIRED"
+    assert result["requires_eligibility_input"] is True
+    assert result["calculation_status"] == "VERIFIED_PARTIAL"
+
+
+def test_authorization_must_cover_exact_tariff_line():
+    remission = measure("remission-wrong-line", "DUTY_REMISSION", 0, beneficiary="MANUFACTURER")
+    result = resolve(
+        [remission],
+        context=OverrideContext(
+            remission_eligibility=RemissionEligibility.ELIGIBLE_VERIFIED,
+            authorization_reference="AUTH/2025/2",
+            authorization_effective_from="2025-07-01",
+            authorization_effective_to="2026-06-30",
+            authorization_hs_codes=["870121"],
+        ),
+    )
+    assert result["applicable_customs_rate"] == 10
+    assert result["remission_eligibility_status"] == "AUTHORIZATION_REQUIRED"
+
+
+def test_expired_authorization_keeps_normal_cet():
+    remission = measure("remission-expired-auth", "DUTY_REMISSION", 0, beneficiary="MANUFACTURER")
+    result = resolve(
+        [remission],
+        context=OverrideContext(
+            remission_eligibility=RemissionEligibility.ELIGIBLE_VERIFIED,
+            authorization_reference="AUTH/2024/1",
+            authorization_effective_from="2024-07-01",
+            authorization_effective_to="2025-06-30",
+            authorization_hs_codes=["87012190"],
+        ),
+    )
+    assert result["applicable_customs_rate"] == 10
+    assert result["remission_eligibility_status"] == "NOT_ELIGIBLE"
 
 
 def test_national_exemption():
@@ -94,9 +158,7 @@ def test_contradictory_instruments_require_review():
 
 
 def test_missing_source_verification_forces_partial():
-    pending = measure(
-        "pending", "STAY_OF_APPLICATION", 35, verification_status="SOURCE_PENDING"
-    )
+    pending = measure("pending", "STAY_OF_APPLICATION", 35, verification_status="SOURCE_PENDING")
     result = resolve([pending])
     assert result["applicable_customs_rate"] == 35
     assert result["calculation_status"] == "VERIFIED_PARTIAL"
@@ -104,9 +166,7 @@ def test_missing_source_verification_forces_partial():
 
 def test_same_code_at_two_dates_uses_temporal_measure():
     first = measure("first", "STAY_OF_APPLICATION", 35)
-    second = measure(
-        "second", "STAY_OF_APPLICATION", 25, start="2026-07-01", end="2027-06-30"
-    )
+    second = measure("second", "STAY_OF_APPLICATION", 25, start="2026-07-01", end="2027-06-30")
     assert resolve([first, second], when="2026-06-30")["applicable_customs_rate"] == 35
     assert resolve([first, second], when="2026-07-01")["applicable_customs_rate"] == 25
 
@@ -114,9 +174,7 @@ def test_same_code_at_two_dates_uses_temporal_measure():
 def test_discontinuous_hs_list_does_not_become_a_range():
     listed = measure("listed", "STAY_OF_APPLICATION", 35, hs_codes=["87012190", "87012990"])
     resolver = LegalOverrideResolver([listed], coverage_complete=True)
-    result = resolver.resolve(
-        hs_code="87012590", on_date=date(2025, 8, 1), base_rate=10
-    )
+    result = resolver.resolve(hs_code="87012590", on_date=date(2025, 8, 1), base_rate=10)
     assert result["applicable_customs_rate"] == 10
 
 

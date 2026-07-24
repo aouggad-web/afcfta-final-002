@@ -95,6 +95,88 @@ class ExistingTariffIndexMapper:
         return list(found.values())
 
 
+class WCOIndexCandidateMapper:
+    """Inject the canonical WCO adapter without importing backend from engine.
+
+    An END_USE measure is searched only when the caller supplies detailed goods
+    from an official authorization or annex.  The broad industrial-use wording
+    is never used as a classification shortcut.
+    """
+
+    def __init__(self, search_wco_index: Callable[..., Dict]):
+        self.search_wco_index = search_wco_index
+
+    def enrich(
+        self,
+        mapping: GazetteProductMapping,
+        *,
+        detailed_goods: Optional[Iterable[str]] = None,
+        language: Optional[str] = None,
+        limit: int = 20,
+    ) -> GazetteProductMapping:
+        terms = list(dict.fromkeys(t.strip() for t in (detailed_goods or []) if t.strip()))
+        if mapping.classification_status != ClassificationStatus.END_USE_MEASURE and not terms:
+            terms = [mapping.normalized_product_name]
+        if not terms:
+            return mapping.model_copy(
+                update={
+                    "classification_reasoning": (
+                        mapping.classification_reasoning
+                        + " No WCO search was run: detailed authorized goods are required "
+                        "for an END_USE measure."
+                    ),
+                    "requires_human_review": True,
+                    "selected_hs6": None,
+                }
+            )
+
+        matches: List[Dict] = []
+        hs4 = set(mapping.hs4_candidates)
+        hs6 = set(mapping.hs6_candidates)
+        for term in terms:
+            result = self.search_wco_index(
+                term,
+                hs_version=mapping.hs_version,
+                language=language,
+                limit=limit,
+            )
+            for match in result.get("matches", []):
+                matches.append(match)
+                for candidate in match.get("candidate_positions", []):
+                    code = re.sub(r"\D", "", str(candidate.get("code", "")))
+                    if len(code) == 4:
+                        hs4.add(code)
+                    elif len(code) == 6:
+                        hs6.add(code)
+
+        candidate_count = len(hs4) + len(hs6)
+        confidence = 0 if not matches else (70 if candidate_count == 1 else 45)
+        status = mapping.classification_status
+        if status != ClassificationStatus.END_USE_MEASURE:
+            status = (
+                ClassificationStatus.MULTIPLE_HS_CANDIDATES
+                if candidate_count > 1
+                else ClassificationStatus.HUMAN_REVIEW_REQUIRED
+            )
+        return mapping.model_copy(
+            update={
+                "index_terms_used": terms,
+                "wco_index_matches": matches,
+                "hs4_candidates": sorted(hs4),
+                "hs6_candidates": sorted(hs6),
+                "selected_hs6": None,
+                "classification_status": status,
+                "confidence_score": confidence,
+                "requires_human_review": True,
+                "classification_reasoning": (
+                    mapping.classification_reasoning
+                    + " WCO alphabetical-index hits are candidates only; legal notes and "
+                    "the detailed authorization remain to be reviewed."
+                ),
+            }
+        )
+
+
 def automatic_overlay_hs6(mapping: GazetteProductMapping, target_hs_version="HS2022"):
     """Return a usable HS6 only when every automatic-classification gate passes."""
     return mapping.selected_hs6 if mapping.is_automatic(target_hs_version) else None

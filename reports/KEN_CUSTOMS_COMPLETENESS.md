@@ -6,7 +6,12 @@
 
 L’inspection a montré que le modèle canonique v4 représentait les taux et leur séquence, mais pas leur période d’effet ni les conditions d’une dérogation. `engine/calculation.py` appliquait les mesures par ordre numérique sans comparer date, origine, bénéficiaire, usage ou quantité. L’adaptateur EAC chargeait un CET de base sans registre de gazettes, sans stays/remissions datés et sans détection de conflit. Les fichiers Kenya validés étaient séparés du calcul historique. Aucun mécanisme d’overlay juridique, aucun statut `CONFLICT_REVIEW` et aucune trace consolidée CET → override → taxes nationales n’existaient.
 
-Le dépôt contient une table `commodities` (HS6, libellés FR/EN, chapitre) avec recherche plein texte, des index HS6 générés et `search_tariff_lines`. Aucun fichier autonome d’index alphabétique OMD, aucun dictionnaire de synonymes/renvois et aucune collection locale de notes de section, chapitre ou sous-position n’a été trouvé. Le contenu PostgreSQL runtime n’était pas accessible pendant la collecte. Cette absence est traitée comme une lacune, pas remplacée par un nouvel index parallèle.
+Lors de l’inspection initiale, le HEAD local ne contenait que la table
+`commodities`, les index HS6 générés et `search_tariff_lines`. L’index
+alphabétique OMD retrouvé ensuite dans le commit `9fdb130e` est désormais
+intégré comme source unique de candidats, sans corpus parallèle. Les notes de
+section, chapitre et sous-position restent absentes, et le contenu PostgreSQL
+runtime n’était pas accessible pendant la collecte.
 
 ## Couche ajoutée
 
@@ -68,6 +73,6 @@ Le tarif Kenya existant annonce 5 984 positions. Au 24-07-2026 :
 4. Stays ponctuels et modifications CET publiés hors des deux numéros annuels intégrés.
 5. Listes de bénéficiaires, allocations quantitatives et autorisations administratives des duty remission schemes.
 6. Dérogations et exemptions nationales Kenya, ainsi que leurs instruments d’exécution, non encore reliées aux codes SH.
-7. Index alphabétique OMD runtime, synonymes/renvois et notes légales nécessaires à la validation SH6 des six descriptions génériques.
+7. Preuve de licence/provenance OMD et notes légales nécessaires à la validation SH6 ; l’index runtime est intégré, mais ne classe pas les six descriptions génériques.
 
 Tant que ces lacunes subsistent, le total retourné ne doit pas être utilisé pour une déclaration en douane.

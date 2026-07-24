@@ -135,8 +135,9 @@ def search(query: str, limit: int = 20) -> Dict:
             "codes_display": e.get("codes_display"),
             "is_range": e.get("is_range", False),
             "see_also": e.get("see_also"),
+            "text_score": score,
         }
-        for _, e in scored[: max(0, limit)]
+        for score, e in scored[: max(0, limit)]
     ]
     return {
         "query": query,
