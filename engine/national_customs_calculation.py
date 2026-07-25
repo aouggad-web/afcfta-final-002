@@ -98,6 +98,59 @@ class NationalFiscalStore:
         standard = [r for r in rows if r["record_id"].startswith("VAT-RATE-STANDARD")]
         return next((r for r in specific + standard if _pct(r.get("rate")) is not None), None)
 
+    def vat_treatment(self, on_date: date, hs_code: str) -> Optional[dict]:
+        """Résout le régime TVA effectif d'une ligne.
+
+        Une exonération ou un taux zéro explicitement listés par code SH
+        priment sur le taux standard : sans ce contrôle, un bien
+        légalement exonéré serait facturé au taux plein (ex. sperme bovin
+        0511.10.00, TVA Act, Annexe 1 partie I, para 1 — Kenya). Les
+        exonérations à description seule, sans code SH explicite, ne sont
+        jamais appliquées automatiquement : les rattacher à une ligne
+        précise exige une revue humaine, comme pour toute mesure sans
+        correspondance HS vérifiable ailleurs dans le moteur.
+        """
+        exempt = [
+            r
+            for r in _active(self.vat.get("vat_exemptions", []), on_date)
+            if r.get("hs_codes_explicit") and _hs_match(r, hs_code)
+        ]
+        if exempt:
+            r = exempt[0]
+            return {
+                "record_id": r["record_id"],
+                "rate_pct": 0.0,
+                "treatment": "EXEMPT",
+                "legal_reference": r["legal_reference"],
+                "source_id": r["source_id"],
+            }
+        zero_rated = [
+            r
+            for r in _active(self.vat.get("vat_zero_rated", []), on_date)
+            if r.get("hs_codes_explicit") and _hs_match(r, hs_code)
+        ]
+        if zero_rated:
+            r = zero_rated[0]
+            return {
+                "record_id": r["record_id"],
+                "rate_pct": 0.0,
+                "treatment": "ZERO_RATED",
+                "legal_reference": r["legal_reference"],
+                "source_id": r["source_id"],
+            }
+        standard = self.vat_rate(on_date, hs_code)
+        if standard:
+            rate = _pct(standard["rate"])
+            if rate is not None:
+                return {
+                    "record_id": standard["record_id"],
+                    "rate_pct": rate,
+                    "treatment": "STANDARD",
+                    "legal_reference": standard["legal_reference"],
+                    "source_id": standard["source_id"],
+                }
+        return None
+
     def excise_rates(self, on_date: date, hs_code: str):
         return [
             r
@@ -168,9 +221,9 @@ def calculate_national_customs(
         else:
             levy_amounts[label] = None
 
-    vat_row = fiscal_store.vat_rate(on_date, hs_code)
+    vat_row = fiscal_store.vat_treatment(on_date, hs_code)
     vat_basis = round(customs_value + customs_duty + excise, 2)
-    vat_rate = _pct(vat_row["rate"]) if vat_row else None
+    vat_rate = vat_row["rate_pct"] if vat_row else None
     vat = round(vat_basis * vat_rate / 100, 2) if vat_rate is not None else None
     if not vat_row:
         missing.append("No verified VAT measure matched the product and date.")
@@ -209,7 +262,13 @@ def calculate_national_customs(
         "customs_duty": customs_duty,
         "vat_basis": vat_basis,
         "vat": (
-            {"rate": vat_rate, "amount": vat, "source_id": vat_row["source_id"]}
+            {
+                "rate": vat_rate,
+                "amount": vat,
+                "treatment": vat_row["treatment"],
+                "legal_reference": vat_row["legal_reference"],
+                "source_id": vat_row["source_id"],
+            }
             if vat_row
             else None
         ),
