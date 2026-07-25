@@ -1,39 +1,32 @@
-# Ouganda — collecte initiale
+# Ouganda — collecte (accises vérifiées ; TVA taux standard non vérifiable)
 
 Consultation : 2026-07-25 (Africa/Algiers).
 
-Première collecte, délibérément restante : vérification de l'accessibilité des sources officielles et localisation des instruments clés. **Aucune donnée n'a encore été téléchargée ni archivée.**
+**Correction de collecte.** Une première passe sur cette branche avait enregistré `data/uganda/vat_measures.json` avec un statut `PENDING_OFFICIAL_CONSOLIDATION`, un SHA-256 `pending_collection`, et une référence légale fictive (« Value Added Tax Act 1997, Act No. 106 of 1997 »). L'Ouganda n'a pas de « VAT Act 1997 » — la loi en vigueur est la **Value Added Tax Act, Chapitre 349**, adoptée en 1996 (entrée en vigueur le 1er juillet 1996). Ce cycle remplace ces données par une collecte vérifiée sur texte primaire, et ajoute les accises.
 
-## Sources localisées
+## Ce qui a été vérifié sur texte primaire
 
-L'Ouganda publie ses textes législatifs consolidés via **ULII** (Uganda Legal Information Institute), du même écosystème AfricanLII que le Kenya et la Tanzanie.
+**Accises** — Excise Duty Act, Cap. 336 (consolidée au 31 décembre 2023, la version la plus récente disponible) :
+- Imposition : Section 3(1), renvoyant au barème du Schedule 2.
+- 5 lignes représentatives transcrites (cigarettes soft cap locales/importées, bière de malt, spiritueux à base de matières premières importées, boissons non alcoolisées hors jus), avec référence exacte au Schedule 2.
 
-| Acte | Source | État |
-|---|---|---|
-| VAT Act 1997 | https://www.ulii.org/ug/legislation/consolidated-act/106 | accessible |
-| Excise Duty Act 2007 | https://www.ulii.org/ug/legislation/consolidated-act/107 | accessible |
-| Finance Act 2026 | https://www.ulii.org/ug/legislation/act/2026/4 | accessible |
-| Customs Tariff Guide 2026 | https://www.ura.go.ug/services/tariff | à confirmer |
+**TVA — mécanisme, pas le taux** — Value Added Tax Act, Cap. 349 :
+- Taux zéro sur les exportations : Section 24(4) et Third Schedule, clause 1(a).
 
-## Faits vérifiés
+## Ce qui n'a PAS été vérifié — et pourquoi
 
-- **TVA standard** : 18%, Value Added Tax Act 1997 (Act No. 106 of 1997), effectif 1er juillet 1997. Aucun changement de taux signalé depuis.
-- **Accises** : couvertes par Excise Duty Act 2007 ; texte consolidé accessible via ULII.
-- **Prélèvements** : Finance Act 2026 enactée 2026-06-15, effectif année fiscale 2026/27.
+**Le taux standard de la TVA n'est PAS enregistré.** L'article 24(3) de la loi renvoie le taux à « the rate of tax shall be as specified in section 78(2) », et l'article 78(2) délègue la fixation du taux à un arrêté ministériel (« statutory order »), soumis à confirmation parlementaire. Le pourcentage lui-même n'apparaît donc **nulle part dans le texte de loi obtenu** — ni dans la copie `media.ulii.org` (consolidation au 31 décembre 2000), ni dans le miroir Laws.Africa republié par `tradebarriers.org` (même consolidation de base). La page `ulii.org/akn/ug/act/statute/1996/8/eng@2023-12-31` — qui indique dans les résultats de recherche couvrir les amendements jusqu'à 2023 — est protégée par un challenge Cloudflare qui bloque l'accès automatisé et WebFetch (HTTP 403 « Just a moment... »).
+
+L'Uganda Revenue Authority (URA) rapporte publiquement un taux de 18% sur son site, mais sans citer l'arrêté ministériel précis (numéro, date). Conformément à la règle de sincérité (précédent Gabon, PR #311) : un taux répété par l'autorité fiscale elle-même mais sans lecture directe de l'instrument légal qui le fixe n'est pas enregistré comme vérifié — `VAT-RATE-STANDARD` est absent de `vat_measures.json`.
+
+**Schedule 2 non exhaustif** : couvre bien plus de catégories (vins, autres spiritueux, carburants, mobile money, immatriculation de véhicules, sucre…) que les 5 lignes transcrites ce cycle.
 
 ## Ce qui reste à collecter
 
-- Archives HTML : VAT Act, Excise Act, Finance Act (téléchargement et hachage SHA-256)
-- Tariff Guide : vérifier accessibilité et formats disponibles auprès de l'URA
-- ZLECAf (niveau 2) : l'existence et localisation de l'offre nationale ougandaise doivent être confirmées auprès de l'East African Community Secretariat
-
-## Règles d'archivage
-
-Même politique que le Kenya, la Tanzanie et l'Afrique du Sud :
-- Archives HTML : texte consolidé, petit volume → archivé directement
-- PDF lourds (> 5 Mo) : exemption décrite dans inventory.csv
-- SHA-256 recalculé à chaque re-téléchargement pour détection d'altération
+- L'arrêté ministériel (statutory order) fixant le taux TVA actuel, avec numéro et date.
+- Consolidation post-2023-12-31 de la VAT Act (contourner ou re-tenter le challenge Cloudflare de ulii.org).
+- Finance Act 2026, Customs Tariff Guide URA : URLs localisées lors d'une passe antérieure, non re-vérifiées ce cycle.
 
 ## État de l'enregistrement
 
-Juridiction UGA : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` (`backend/services/national_legal_calculation_service.py`) — source VAT seule, pas de couche complète. ZLECAf : **pas** d'offre nationale encore registrée dans `NATIONAL_OFFER_REGISTRY`.
+Juridiction UGA : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — taux standard TVA non vérifié, accises non exhaustives, pas de Finance Act, pas de TEC. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.

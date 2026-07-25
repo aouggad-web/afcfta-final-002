@@ -1,39 +1,27 @@
-# Rwanda — collecte initiale
+# Rwanda — collecte (TVA + accises vérifiées)
 
 Consultation : 2026-07-25 (Africa/Algiers).
 
-Première collecte, délibérément restante : vérification de l'accessibilité des sources officielles et localisation des instruments clés. **Aucune donnée n'a encore été téléchargée ni archivée.**
+**Correction de collecte.** Une première passe sur cette branche avait enregistré `data/rwanda/vat_measures.json` avec un statut `PENDING_OFFICIAL_CONSOLIDATION`, un SHA-256 `pending_collection`, et une référence légale incorrecte (« Value Added Tax Law 2018, Law No. 28/2018 of 13/02/2018 »). La loi TVA réellement en vigueur est la **Loi n°049/2023 du 05/09/2023 portant TVA**, publiée au Journal Officiel du 14/09/2023, qui abroge la Loi n°37/2012. Ce cycle remplace ces données par une collecte vérifiée sur texte primaire, archivée et hachée, et ajoute les accises.
 
-## Sources localisées
+## Ce qui a été vérifié sur texte primaire
 
-Le Rwanda publie ses textes législatifs consolidés via **RwandaLII** (Rwanda Legal Information Institute), du même écosystème AfricanLII que le Kenya, la Tanzanie et l'Ouganda.
+**TVA** — Loi n°049/2023 du 05/09/2023, téléchargée directement depuis le portail de la Rwanda Revenue Authority (`rra.gov.rw`, source primaire directe, texte trilingue kinyarwanda/anglais/français) :
+- **Taux standard 18%** et **taux zéro** — Article 4 : « (a) 0% [...] taux de zéro tels que prévus par la présente loi ; (b) ou de 18% pour les autres biens et services fournis au Rwanda ou importés. »
+- **Taux zéro — liste** — Article 7(1) : exportations de biens et services (a, b), minerais vendus sur le marché intérieur (c), transport international (d), etc. 3 postes transcrits.
 
-| Acte | Source | État |
-|---|---|---|
-| VAT Law 2018 | https://www.rwandalii.org/rw/legislation/law/vat-2018 | accessible |
-| Excise Duty Law 2018 | https://www.rwandalii.org/rw/legislation/law/excise-2018 | accessible |
-| Finance Law 2026 | https://www.rwandalii.org/rw/legislation/law/finance-2026 | accessible |
-| Customs Tariff Guide 2026 | https://www.rra.gov.rw/tariff | à confirmer |
+**Accises** — Loi n°011/2025 du 27/05/2025 portant instauration du droit d'accise, publiée au Journal Officiel n° Spécial du 29/05/2025 et téléchargée depuis le portail du Ministère de la Justice (source primaire gouvernementale directe). Cette loi **abroge et remplace** la précédente loi d'accise (Loi n°050/2023 du 05/09/2023) :
+- Imposition : article liminaire de la loi.
+- Annexe (barème par ligne SH) : 7 postes représentatifs transcrits (bière, vin, cigarettes, essence, gasoil, véhicules <1500cc).
 
-## Faits vérifiés
+**Note sur la TVA amendée en 2025** — Le même Journal Officiel du 29/05/2025 contient la Loi n°009/2025 du 27/05/2025 modifiant la Loi n°049/2023. Vérification faite : cette modification ne touche que l'Article 8 (exonérations), pas les articles de taux (4, 7) cités ci-dessus — le taux standard 18% et le mécanisme taux zéro restent donc à jour.
 
-- **TVA standard** : 18%, Value Added Tax Law 2018 (Law No. 28/2018 of 13/02/2018), effectif 13 février 2018. Aucun changement de taux signalé depuis.
-- **Accises** : couvertes par Excise Duty Law 2018 ; texte consolidé accessible via RwandaLII.
-- **Prélèvements** : Finance Law 2026 enactée 2026-06-20, effectif année fiscale 2026/27.
+## Ce qui n'a PAS été vérifié — et pourquoi
 
-## Ce qui reste à collecter
-
-- Archives HTML : VAT Law, Excise Law, Finance Law (téléchargement et hachage SHA-256)
-- Tariff Guide : vérifier accessibilité et formats disponibles auprès de l'RRA
-- ZLECAf (niveau 2) : l'existence et localisation de l'offre nationale rwandaise doivent être confirmées auprès de l'East African Community Secretariat
-
-## Règles d'archivage
-
-Même politique que le Kenya, la Tanzanie, l'Ouganda et l'Afrique du Sud :
-- Archives HTML : texte consolidé, petit volume → archivé directement
-- PDF lourds (> 5 Mo) : exemption décrite dans inventory.csv
-- SHA-256 recalculé à chaque re-téléchargement pour détection d'altération
+- **Annexe de la loi d'accise non exhaustive** : la liste complète couvre environ 27 catégories de produits/services (jus, sodas, sirops aromatisés, bière, vin, spiritueux, cigarettes, cigarettes électroniques, carburants, lubrifiants, véhicules par cylindrée, cosmétiques, télécommunications, frais de transfert d'argent…) ; seules 7 lignes ont été transcrites ce cycle.
+- **Finance Law 2026** et **Customs Tariff Guide (RRA)** : URLs localisées lors d'une passe antérieure, non re-téléchargées ni re-vérifiées ce cycle.
+- **TEC EAC** : déjà archivé pour le Kenya, non relié ici sans vérification d'applicabilité identique.
 
 ## État de l'enregistrement
 
-Juridiction RWA : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` (`backend/services/national_legal_calculation_service.py`) — source VAT seule, pas de couche complète. ZLECAf : **pas** d'offre nationale encore registrée dans `NATIONAL_OFFER_REGISTRY`.
+Juridiction RWA : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — accises non exhaustives, pas de Finance Law, pas de TEC. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.
