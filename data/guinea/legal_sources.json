@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "country": "GIN",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "GIN-DGI-CGI-2023",
+      "title": "Code Général des Impôts (General Tax Code), consolidated 2023",
+      "institution": "Direction Générale des Impôts (DGI) / Ministry of Economy and Finance",
+      "legal_date": "2023-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.dgi.gov.gn/",
+      "local_file": "official/gin-cgi-2023.pdf",
+      "sha256": "pending_collection",
+      "coverage": "VAT standard rate; reduced rates; exemptions; import VAT",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Official DGI source; consolidated text. Awaiting PDF download and SHA-256 verification."
+    }
+  ]
+}
