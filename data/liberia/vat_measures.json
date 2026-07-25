@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0",
+  "country": "LBR",
+  "as_of": "2026-07-25",
+  "vat_rates": [
+    {
+      "record_id": "LBR-VAT-GOODS-TAX-STANDARD-20200801",
+      "legal_product_description": "Standard rate of goods tax on taxable supplies of goods by a registered manufacturer, and on taxable imports.",
+      "normalized_product_description": "standard rate of goods tax on domestic manufacture and imports",
+      "rate": "10%",
+      "rate_basis": "taxable amount of the supply, import, or export (Section 1004)",
+      "effective_from": "2020-08-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "LBR-LRA-REVENUE-CODE-2020",
+      "legal_reference": "Liberia Revenue Code As Amended, Section 1000(b)(3): « The rate of goods tax is 10 percent of the Section 1004 taxable amount, except that if the supply is an export of goods, the rate of tax is zero (0) percent. » NOTE: possibly superseded by unverified 2024/2025 amendments — see data/sources/liberia/README.md.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "LBR-VAT-SERVICES-TAX-STANDARD-20200801",
+      "legal_product_description": "Standard rate of services tax on taxable supplies of services by a registered services provider.",
+      "normalized_product_description": "standard rate of services tax",
+      "rate": "10%",
+      "rate_basis": "taxable amount described in Section 1025",
+      "effective_from": "2020-08-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "LBR-LRA-REVENUE-CODE-2020",
+      "legal_reference": "Liberia Revenue Code As Amended, Section 1021(b)(1): « The rate of services tax is 10 percent of the taxable amount described in Section 1025. » NOTE: possibly superseded by unverified 2024/2025 amendments — see data/sources/liberia/README.md.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "LBR-VAT-SERVICES-TAX-TELECOM-SURTAX-20200801",
+      "legal_product_description": "Additional surtax on telecommunications services",
+      "normalized_product_description": "telecommunications services surtax (on top of standard services tax)",
+      "rate": "5%",
+      "rate_basis": "taxable amount, additional to the 10% standard services tax rate (combined 15% on telecom)",
+      "effective_from": "2020-08-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "LBR-LRA-REVENUE-CODE-2020",
+      "legal_reference": "Liberia Revenue Code As Amended, Section 1021(b)(2): « An additional 5 percent surtax applies to telecommunications services specified in Section 1022(a)(2). » NOTE: possibly superseded by unverified 2024/2025 amendments — see data/sources/liberia/README.md.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ],
+  "vat_exemptions": [],
+  "vat_zero_rated": [
+    {
+      "record_id": "LBR-VAT-GOODS-TAX-ZERO-EXPORTS-20200801",
+      "legal_product_description": "Export of goods",
+      "normalized_product_description": "exports of goods",
+      "rate": "0%",
+      "rate_basis": "consideration",
+      "effective_from": "2020-08-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "LBR-LRA-REVENUE-CODE-2020",
+      "legal_reference": "Liberia Revenue Code As Amended, Section 1000(b)(3).",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ]
+}
