@@ -4,21 +4,22 @@
   "as_of": "2026-07-25",
   "vat_rates": [
     {
-      "record_id": "CIV-VAT-RATE-STANDARD-20120101",
-      "legal_product_description": "Standard rate of Value-Added Tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "normalized_product_description": "standard rate of value-added tax on the supply of goods and services by registered vendors, and on the importation of goods.",
+      "record_id": "CIV-VAT-RATE-STANDARD-20251219",
+      "legal_product_description": "\"le taux de droit commun de TVA de 18%\" — common-law (standard) rate applied, per this Finance Law annex, to operations previously exempt (jute/sisal fibres, animal feed and inputs, fertiliser inputs) and confirmed as the rate against which those exemptions were rationalised.",
+      "normalized_product_description": "standard rate of value added tax",
       "rate": "18%",
-      "rate_basis": "customs value plus duty (import); consideration (domestic)",
-      "effective_from": "2012-01-01",
+      "rate_basis": "valeur imposable",
+      "effective_from": "2025-12-19",
       "effective_to": null,
       "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
       "supersedes_record_id": null,
-      "source_id": "CIV-JOURNAL-OFFICIEL-CGI",
-      "legal_reference": "Code Général des Impôts, enacted 2012-01-01 (Journal Officiel); UEMOA harmonization rate (18%). Rate confirmed current as of June 2026.",
-      "verification_status": "PENDING_OFFICIAL_CONSOLIDATION",
+      "source_id": "CIV-DGBF-ANNEXE-FISCALE-2026",
+      "legal_reference": "Annexe fiscale à la loi de Finances n°2025-987 du 19/12/2025, Article 6 (amending Code Général des Impôts, Article 355 series)",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
       "hs_codes_explicit": []
     }
   ],
   "vat_exemptions": [],
-  "vat_zero_rated": []
+  "vat_zero_rated": [],
+  "notes": "The base rate-setting article of the CGI itself (reported by secondary/aggregator sources as Article 359) was NOT independently read this cycle — only its confirmation via the 2026 Finance Law annex (which explicitly states 'le taux de droit commun de TVA de 18%' while amending downstream exemption articles) was verified on primary text. effective_from is set to the Finance Law's enactment date as the most recent primary-text confirmation, not the CGI's original enactment date (which was not independently verified)."
 }

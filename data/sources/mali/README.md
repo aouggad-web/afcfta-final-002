@@ -1,39 +1,21 @@
-# Mali — collecte initiale UEMOA
+# Mali — collecte (TVA vérifiée)
 
 Consultation : 2026-07-25 (Africa/Algiers).
 
-Première collecte, délibérément restante : vérification de l'accessibilité des sources officielles. **Aucune donnée n'a encore été téléchargée ni archivée.**
+**Correction de collecte.** Une passe antérieure avait enregistré `data/mali/vat_measures.json` avec un statut `PENDING_OFFICIAL_CONSOLIDATION`, un `sha256` `pending_collection`, aucun fichier archivé, et une référence légale générique non vérifiée (« Code Général des Impôts, enacted 1999-06-01 ; UEMOA harmonization rate »), avec une URL fictive (`armp.mali.org/documents/legislation`, domaine qui ne semble pas correspondre à l'ARMP du Mali). Ce cycle remplace ces données par une collecte vérifiée sur texte primaire.
 
-## Sources localisées
+## Ce qui a été vérifié sur texte primaire
 
-Le Mali publie son Code Général des Impôts et les lois de finances via l'ARMP et le ministère des Finances.
+Portail officiel de la Direction Générale des Impôts (`dgi.gouv.ml/CGI/`), téléchargé directement (source primaire gouvernementale) :
+- **Article 229** (Loi n°11-078) : « Les taux de la TVA sont fixés ainsi qu'il suit : 5% pour les produits visés au point D de la sous-section 1 [...] ; 18% pour les autres produits et les services non exonérés. »
 
-| Acte | Source | État |
-|---|---|---|
-| Code Général des Impôts | https://www.armp.mali.org/documents/legislation | à confirmer |
-| Loi de Finances 2026 | https://www.finances.gouv.ml/ | à confirmer |
-| Tariff Guide 2026 | https://www.douanes.mali.org/tarif | à confirmer |
+## Ce qui n'a PAS été vérifié — et pourquoi
 
-## Faits vérifiés
-
-- **TVA standard** : 18%, Code Général des Impôts, effectif 1er juin 1999.
-  Harmonisation UEMOA : taux commun à tous les États membres (18%).
-  Aucun changement de taux signalé depuis.
-
-## Ce qui reste à collecter
-
-- Archives HTML : Code Général, Loi de Finances 2026 (téléchargement et hachage SHA-256)
-- Tariff Guide : vérifier accessibilité auprès de la Direction Nationale des Douanes
-- Prélèvements spéciaux : PCS, PCC, RS, TSI (Douanes, Finance Act)
-- ZLECAf (niveau 2) : localisation de l'offre nationale malienne
-
-## Règles d'archivage
-
-Même politique que Kenya, EAC trio, Afrique du Sud, Sénégal, Bénin :
-- Archives HTML : texte consolidé, petit volume → archivé directement
-- PDF lourds : exemption décrite dans inventory.csv
-- SHA-256 recalculé à chaque re-téléchargement
+- La date d'entrée en vigueur exacte de la Loi n°11-078 n'est pas indiquée sur la page consultée ; `effective_from` a été fixé à la date de collecte plutôt qu'à une date législative non confirmée.
+- La liste précise des produits visés au « point D » (taux réduit 5%) n'a pas été transcrite ce cycle.
+- Loi de Finances 2026 et Tariff Guide douanier : URLs localisées lors d'une passe antérieure, non re-téléchargées ni re-vérifiées ce cycle.
+- Accises, prélèvements spéciaux : non abordés dans ce cycle.
 
 ## État de l'enregistrement
 
-Juridiction MLI : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — source VAT seule, pas de couche complète (pas d'accises/prélèvements/formalities ingérées). ZLECAf : **pas** d'offre nationale enregistrée.
+Juridiction MLI : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — TVA seule, pas d'accises, pas de Loi de Finances. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.
