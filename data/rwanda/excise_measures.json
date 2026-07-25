@@ -16,7 +16,8 @@
       "source_id": "RWA-MININJUST-OG-2025-05-29",
       "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annex, item 5",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["2203.00.10", "2203.00.90"]
+      "hs_codes_explicit": [],
+      "notes": "hs_codes_explicit intentionally left empty (per Copilot review on PR #312): HS 2203.00.10/2203.00.90 cover both this and RWA-EXCISE-BEER-OTHER at a different rate (40% vs 65%); the distinguishing criterion (≥70% local raw material content by weight) is not representable by HS code alone, and applying both entries to the same HS line would double-count."
     },
     {
       "record_id": "RWA-EXCISE-BEER-OTHER",
@@ -31,7 +32,8 @@
       "source_id": "RWA-MININJUST-OG-2025-05-29",
       "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annex, item 6",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["2203.00.10", "2203.00.90"]
+      "hs_codes_explicit": [],
+      "notes": "hs_codes_explicit intentionally left empty (per Copilot review on PR #312): same HS codes as RWA-EXCISE-BEER-LOCAL-RAWMAT at a different rate; the distinguishing criterion (≥70% local raw material content) is not representable by HS code alone."
     },
     {
       "record_id": "RWA-EXCISE-WINE-OTHER",

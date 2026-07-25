@@ -136,20 +136,14 @@ def test_uga_readme_documents_delegated_rate_gap():
 
 def test_uga_not_registered_as_supported_jurisdiction():
     """Garde-fou : UGA n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "UGA" not in SUPPORTED_JURISDICTIONS
 
 
 def test_uga_has_no_fabricated_afcfta_offer():
     """Garde-fou : UGA n'a pas d'offre nationale ZLECAf fictive."""
-    pytest = __import__("pytest")
-    afcfta_national_offers = pytest.importorskip("etl.afcfta_national_offers")
-    NATIONAL_OFFER_REGISTRY = afcfta_national_offers.NATIONAL_OFFER_REGISTRY
-    check_conformity = afcfta_national_offers.check_conformity
+    from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
 
     assert "UGA" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("UGA")["status"] == "NO_NATIONAL_OFFER_REGISTERED"

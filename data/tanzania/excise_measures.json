@@ -16,7 +16,8 @@
       "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
       "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019), Section 124(1), Fourth Schedule, heading 20.09",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["2009.11.00", "2009.12.00", "2009.19.00", "2009.21.00", "2009.29.00"]
+      "hs_codes_explicit": [],
+      "notes": "hs_codes_explicit intentionally left empty: the rate depends on whether the juice is manufactured domestically from domestic fruit, a criterion not derivable from the HS code alone (heading 20.09 covers both this and TZA-EXCISE-2009-FRUIT-VEG-JUICE-OTHER at a different rate). See heading 20.09 sub-positions in the source for the full code list."
     },
     {
       "record_id": "TZA-EXCISE-2009-FRUIT-VEG-JUICE-OTHER",
@@ -31,7 +32,8 @@
       "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
       "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019), Section 124(1), Fourth Schedule, heading 20.09",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["2009.11.00", "2009.12.00", "2009.19.00"]
+      "hs_codes_explicit": [],
+      "notes": "hs_codes_explicit intentionally left empty: same heading 20.09 as TZA-EXCISE-2009-FRUIT-VEG-JUICE-LOCAL at a different rate; the distinguishing criterion (local manufacture from domestic fruit) is not representable by HS code alone."
     },
     {
       "record_id": "TZA-EXCISE-2201-MINERAL-WATER-LOCAL",
@@ -46,7 +48,8 @@
       "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
       "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019), Section 124(1), Fourth Schedule, heading 22.01",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["2201.10.00", "2201.90.00"]
+      "hs_codes_explicit": [],
+      "notes": "hs_codes_explicit intentionally left empty: heading 22.01 covers both this and TZA-EXCISE-2201-MINERAL-WATER-IMPORTED at a different rate; the distinguishing criterion (locally produced vs imported) is not representable by HS code alone."
     },
     {
       "record_id": "TZA-EXCISE-2201-MINERAL-WATER-IMPORTED",
@@ -61,7 +64,8 @@
       "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
       "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019), Section 124(1), Fourth Schedule, heading 22.01",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["2201.10.00", "2201.90.00"]
+      "hs_codes_explicit": [],
+      "notes": "hs_codes_explicit intentionally left empty: same heading 22.01 as TZA-EXCISE-2201-MINERAL-WATER-LOCAL at a different rate; the distinguishing criterion (locally produced vs imported) is not representable by HS code alone."
     },
     {
       "record_id": "TZA-EXCISE-0501-HUMAN-HAIR-LOCAL",
@@ -76,7 +80,8 @@
       "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
       "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019), Section 124(1), Fourth Schedule, heading 05.01",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["0501.00.00"]
+      "hs_codes_explicit": [],
+      "notes": "hs_codes_explicit intentionally left empty (per Copilot review on PR #312): heading 05.01/HS code 0501.00.00 covers both this and TZA-EXCISE-0501-HUMAN-HAIR-IMPORTED at a different rate; the distinguishing criterion (locally manufactured vs imported) is not representable by HS code alone, and applying both entries to the same HS line would double-count."
     },
     {
       "record_id": "TZA-EXCISE-0501-HUMAN-HAIR-IMPORTED",
@@ -91,7 +96,8 @@
       "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
       "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019), Section 124(1), Fourth Schedule, heading 05.01",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["0501.00.00"]
+      "hs_codes_explicit": [],
+      "notes": "hs_codes_explicit intentionally left empty (per Copilot review on PR #312): same heading 05.01/0501.00.00 as TZA-EXCISE-0501-HUMAN-HAIR-LOCAL at a different rate; the distinguishing criterion (locally manufactured vs imported) is not representable by HS code alone."
     }
   ],
   "notes": "The Fourth Schedule to the Excise (Management and Tariff) Act covers dozens of HS headings (tobacco, alcoholic beverages, fuels, motor vehicles, telecommunications, etc.). Only 6 representative headings were transcribed and verified on primary text this cycle; the schedule is NOT exhaustively captured. TanzLII also flags outstanding 2020-2024 amendments not yet applied to this Cap.147 R.E. 2019 consolidation, so effective_to fields may need revision once a more current consolidation is located."

@@ -134,20 +134,14 @@ def test_tza_excise_measures_schema():
 
 def test_tza_not_registered_as_supported_jurisdiction():
     """Garde-fou : TZA n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "TZA" not in SUPPORTED_JURISDICTIONS
 
 
 def test_tza_has_no_fabricated_afcfta_offer():
     """Garde-fou : TZA n'a pas d'offre nationale ZLECAf fictive."""
-    pytest = __import__("pytest")
-    afcfta_national_offers = pytest.importorskip("etl.afcfta_national_offers")
-    NATIONAL_OFFER_REGISTRY = afcfta_national_offers.NATIONAL_OFFER_REGISTRY
-    check_conformity = afcfta_national_offers.check_conformity
+    from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
 
     assert "TZA" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("TZA")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
