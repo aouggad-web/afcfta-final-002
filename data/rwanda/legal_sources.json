@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "country": "RWA",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "RWA-RWANDALII-VAT-ACT-20260725",
+      "title": "Value Added Tax Law, 2018 (as amended)",
+      "institution": "RwandaLII (Rwanda Legal Information Institute)",
+      "legal_date": "2018-02-13",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.rwandalii.org/rw/legislation/law/vat-2018",
+      "local_file": "official/rw-vat-law-2018-amended.html",
+      "sha256": "pending_collection",
+      "coverage": "standard VAT rate (18%); exemptions; zero-rated supplies; import VAT",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text; all amendments through June 2026. Source accessible via RwandaLII."
+    },
+    {
+      "source_id": "RWA-RWANDALII-EXCISE-ACT-20260725",
+      "title": "Excise Duty Law, 2018 (as amended)",
+      "institution": "RwandaLII (Rwanda Legal Information Institute)",
+      "legal_date": "2018-02-13",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.rwandalii.org/rw/legislation/law/excise-2018",
+      "local_file": "official/rw-excise-law-2018-amended.html",
+      "sha256": "pending_collection",
+      "coverage": "excise rates by category; exemptions; administration",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text; amendments through June 2026."
+    },
+    {
+      "source_id": "RWA-RWANDALII-FINANCE-LAW-2026",
+      "title": "Finance Law, 2026",
+      "institution": "RwandaLII (Rwanda Legal Information Institute)",
+      "legal_date": "2026-06-20",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.rwandalii.org/rw/legislation/law/finance-2026",
+      "local_file": "official/rw-finance-law-2026.html",
+      "sha256": "pending_collection",
+      "coverage": "fiscal year 2026/27 tax rates and measures; VAT/excise changes",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Enacted 2026-06-20; effective July 2026."
+    },
+    {
+      "source_id": "RWA-RRA-TARIFF-GUIDE-2026",
+      "title": "Rwanda Revenue Authority Customs Tariff Guide 2026",
+      "institution": "Rwanda Revenue Authority (RRA)",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.rra.gov.rw/tariff",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Awaiting confirmation of public accessibility and consolidated text availability."
+    }
+  ]
+}

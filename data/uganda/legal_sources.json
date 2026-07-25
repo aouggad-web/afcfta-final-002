@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "country": "UGA",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "UGA-ULII-VAT-ACT-20260725",
+      "title": "Value Added Tax Act, 1997 (as amended)",
+      "institution": "ULII (Uganda Legal Information Institute)",
+      "legal_date": "1997-07-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.ulii.org/ug/legislation/consolidated-act/106",
+      "local_file": "official/ug-vat-act-1997-amended.html",
+      "sha256": "pending_collection",
+      "coverage": "standard VAT rate (18%); exemptions; zero-rated supplies; import VAT",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text; all amendments through June 2026. Source accessible via ULII."
+    },
+    {
+      "source_id": "UGA-ULII-EXCISE-ACT-20260725",
+      "title": "Excise Duty Act, 2007 (as amended)",
+      "institution": "ULII (Uganda Legal Information Institute)",
+      "legal_date": "2007-07-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.ulii.org/ug/legislation/consolidated-act/107",
+      "local_file": "official/ug-excise-duty-act-2007-amended.html",
+      "sha256": "pending_collection",
+      "coverage": "excise rates by category; exemptions; administration",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text; amendments through June 2026."
+    },
+    {
+      "source_id": "UGA-ULII-FINANCE-ACT-2026",
+      "title": "Finance Act, 2026",
+      "institution": "ULII (Uganda Legal Information Institute)",
+      "legal_date": "2026-06-15",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.ulii.org/ug/legislation/act/2026/4",
+      "local_file": "official/ug-finance-act-2026.html",
+      "sha256": "pending_collection",
+      "coverage": "fiscal year 2026/27 tax rates and measures; VAT/excise changes",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Enacted 2026-06-15; effective July 2026."
+    },
+    {
+      "source_id": "UGA-URA-TARIFF-GUIDE-2026",
+      "title": "Uganda Revenue Authority Customs Tariff Guide 2026",
+      "institution": "Uganda Revenue Authority (URA)",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.ura.go.ug/services/tariff",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Awaiting confirmation of public accessibility and consolidated text availability."
+    }
+  ]
+}
