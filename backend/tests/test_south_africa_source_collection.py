@@ -23,7 +23,9 @@ def _sha256(path: Path) -> str:
 
 def test_vat_measures_standard_rate_is_fifteen_percent():
     data = json.loads((_ZAF_DATA / "vat_measures.json").read_text(encoding="utf-8"))
-    standard = next(r for r in data["vat_rates"] if r["record_id"].startswith("ZAF-VAT-RATE-STANDARD"))
+    standard = next(
+        r for r in data["vat_rates"] if r["record_id"].startswith("ZAF-VAT-RATE-STANDARD")
+    )
     assert standard["rate"] == "15%"
     assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
     assert standard["source_id"]
@@ -35,7 +37,9 @@ def test_legal_sources_reference_valid_source_ids():
     vat = json.loads((_ZAF_DATA / "vat_measures.json").read_text(encoding="utf-8"))
     vat_source_ids = {r["source_id"] for r in vat["vat_rates"]}
     registered_ids = {s["source_id"] for s in sources}
-    assert vat_source_ids <= registered_ids, "chaque source_id cité en données doit être dans le registre"
+    assert (
+        vat_source_ids <= registered_ids
+    ), "chaque source_id cité en données doit être dans le registre"
 
 
 def test_archived_html_files_match_recorded_hashes():
@@ -44,7 +48,9 @@ def test_archived_html_files_match_recorded_hashes():
     toute altération ou erreur de transcription."""
     sources = {
         s["source_id"]: s
-        for s in json.loads((_ZAF_DATA / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
+        for s in json.loads((_ZAF_DATA / "legal_sources.json").read_text(encoding="utf-8"))[
+            "sources"
+        ]
     }
     html_files = {
         "ZAF-SARS-VAT-GUIDE-20260725": "sars-types-of-tax-vat.html",
@@ -61,7 +67,9 @@ def test_afcfta_agreement_excerpt_exists_and_is_small():
     citation légale l'est, conformément à la politique de poids."""
     excerpt = _ZAF_SOURCES / "extracted" / "sars-schedule10-part8-afcfta-agreement-excerpt.txt"
     assert excerpt.exists()
-    assert excerpt.stat().st_size < 20_000, "l'extrait doit rester une citation, pas le texte intégral"
+    assert (
+        excerpt.stat().st_size < 20_000
+    ), "l'extrait doit rester une citation, pas le texte intégral"
     text = excerpt.read_text(encoding="utf-8")
     assert "1 January 2021" in text
     assert "AFRICAN CONTINENTAL FREE TRADE AREA" in text
@@ -71,12 +79,23 @@ def test_inventory_csv_has_required_columns_and_pending_row():
     with open(_ZAF_SOURCES / "inventory.csv", encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     required_columns = {
-        "id", "institution", "title", "legal_date", "accessed_at", "url",
-        "local_file", "sha256", "coverage", "status", "notes",
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
     }
     assert required_columns <= set(rows[0].keys())
     pending = [r for r in rows if r["status"] == "source_pending_collection"]
-    assert pending, "le barème ligne à ligne ZLECAf (Schedule 1 Part 1) doit être marqué PENDING, pas absent"
+    assert (
+        pending
+    ), "le barème ligne à ligne ZLECAf (Schedule 1 Part 1) doit être marqué PENDING, pas absent"
 
 
 def test_zaf_is_not_registered_as_a_supported_jurisdiction_yet():

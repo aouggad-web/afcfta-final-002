@@ -45,6 +45,7 @@ def _country_dirs(iso3: str) -> tuple:
 # Individual country tests (quick checks per country)
 # ============================================================================
 
+
 def test_cpv_vat_standard_rate():
     """Cape Verde : taux VAT standard 15%."""
     data_dir, _ = _country_dirs("CPV")
@@ -114,12 +115,15 @@ def test_mrt_vat_standard_rate():
 # Honesty guards (all 8 countries not registered)
 # ============================================================================
 
+
 def test_cedeao_new_countries_not_registered():
     """Garde-fou : aucun nouveau pays CEDEAO n'est enregistré comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
 
     for iso3 in ["CPV", "GMB", "GHA", "GIN", "LBR", "NGA", "SLE", "MRT"]:
-        assert iso3 not in SUPPORTED_JURISDICTIONS, f"{iso3} should not be in SUPPORTED_JURISDICTIONS"
+        assert (
+            iso3 not in SUPPORTED_JURISDICTIONS
+        ), f"{iso3} should not be in SUPPORTED_JURISDICTIONS"
 
 
 def test_cedeao_new_countries_no_fabricated_offers():
@@ -127,13 +131,16 @@ def test_cedeao_new_countries_no_fabricated_offers():
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
 
     for iso3 in ["CPV", "GMB", "GHA", "GIN", "LBR", "NGA", "SLE", "MRT"]:
-        assert iso3 not in NATIONAL_OFFER_REGISTRY, f"{iso3} should not be in NATIONAL_OFFER_REGISTRY"
+        assert (
+            iso3 not in NATIONAL_OFFER_REGISTRY
+        ), f"{iso3} should not be in NATIONAL_OFFER_REGISTRY"
         assert check_conformity(iso3)["status"] == "NO_NATIONAL_OFFER_REGISTERED"
 
 
 # ============================================================================
 # Source structure validation (sample countries)
 # ============================================================================
+
 
 def test_cedeao_sample_inventory_structure():
     """Inventaire CSV conforme pour pays échantillon."""
@@ -142,8 +149,17 @@ def test_cedeao_sample_inventory_structure():
         with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
             rows = list(csv.DictReader(f))
         required_columns = {
-            "id", "institution", "title", "legal_date", "accessed_at", "url",
-            "local_file", "sha256", "coverage", "status", "notes",
+            "id",
+            "institution",
+            "title",
+            "legal_date",
+            "accessed_at",
+            "url",
+            "local_file",
+            "sha256",
+            "coverage",
+            "status",
+            "notes",
         }
         assert required_columns <= set(rows[0].keys()), f"{iso3} inventory missing columns"
         pending = [r for r in rows if r["status"] == "source_pending_collection"]
@@ -153,6 +169,7 @@ def test_cedeao_sample_inventory_structure():
 # ============================================================================
 # Cross-country consistency
 # ============================================================================
+
 
 def test_cedeao_vat_rates_vary_appropriately():
     """Les taux VAT CEDEAO reflètent les différences nationales : 7.5% (NGA), 10% (LBR), 15% (4 pays), 16% (MRT), 18% (GIN)."""

@@ -88,9 +88,7 @@ def test_dismantlement_schedule_uses_canvas_by_default_for_dza():
 
 def test_dismantlement_schedule_prefers_national_offer_when_precise_code_given():
     code = _a_list_b_code()
-    result = get_dismantlement_schedule(
-        "DZA", code[:6], npf_rate=30.0, hs_code_precise=code
-    )
+    result = get_dismantlement_schedule("DZA", code[:6], npf_rate=30.0, hs_code_precise=code)
     assert result["classification_source"] == CLASSIFICATION_SOURCE_NATIONAL
     assert result["category"] == "B"
     assert result["national_offer"]["source_id"] == NATIONAL_OFFER_REGISTRY["DZA"].source_id

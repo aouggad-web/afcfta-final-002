@@ -44,7 +44,9 @@ class NationalOfferAdapter:
 
     iso3: str
     hs_precision: int  # précision (nb de chiffres) à laquelle l'offre est publiée
-    classify: Callable[[str], Optional[str]]  # code complet (>= hs_precision chiffres) -> "A"/"B"/"C"
+    classify: Callable[
+        [str], Optional[str]
+    ]  # code complet (>= hs_precision chiffres) -> "A"/"B"/"C"
     legal_reference: str
     source_id: str
     publication_url: Optional[str] = None

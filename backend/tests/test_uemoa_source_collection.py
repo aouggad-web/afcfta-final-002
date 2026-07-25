@@ -65,8 +65,17 @@ def test_sen_inventory_csv_structure():
     with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     required_columns = {
-        "id", "institution", "title", "legal_date", "accessed_at", "url",
-        "local_file", "sha256", "coverage", "status", "notes",
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
     }
     assert required_columns <= set(rows[0].keys())
     pending = [r for r in rows if r["status"] == "source_pending_collection"]
@@ -76,12 +85,14 @@ def test_sen_inventory_csv_structure():
 def test_sen_not_registered_as_supported_jurisdiction():
     """Garde-fou : SEN n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "SEN" not in SUPPORTED_JURISDICTIONS
 
 
 def test_sen_has_no_fabricated_afcfta_offer():
     """Garde-fou : SEN n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+
     assert "SEN" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("SEN")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
 
@@ -118,8 +129,17 @@ def test_ben_inventory_csv_structure():
     with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     required_columns = {
-        "id", "institution", "title", "legal_date", "accessed_at", "url",
-        "local_file", "sha256", "coverage", "status", "notes",
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
     }
     assert required_columns <= set(rows[0].keys())
     pending = [r for r in rows if r["status"] == "source_pending_collection"]
@@ -129,12 +149,14 @@ def test_ben_inventory_csv_structure():
 def test_ben_not_registered_as_supported_jurisdiction():
     """Garde-fou : BEN n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "BEN" not in SUPPORTED_JURISDICTIONS
 
 
 def test_ben_has_no_fabricated_afcfta_offer():
     """Garde-fou : BEN n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+
     assert "BEN" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("BEN")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
 
@@ -171,8 +193,17 @@ def test_mli_inventory_csv_structure():
     with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     required_columns = {
-        "id", "institution", "title", "legal_date", "accessed_at", "url",
-        "local_file", "sha256", "coverage", "status", "notes",
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
     }
     assert required_columns <= set(rows[0].keys())
     pending = [r for r in rows if r["status"] == "source_pending_collection"]
@@ -182,12 +213,14 @@ def test_mli_inventory_csv_structure():
 def test_mli_not_registered_as_supported_jurisdiction():
     """Garde-fou : MLI n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "MLI" not in SUPPORTED_JURISDICTIONS
 
 
 def test_mli_has_no_fabricated_afcfta_offer():
     """Garde-fou : MLI n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+
     assert "MLI" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("MLI")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
 
@@ -233,6 +266,7 @@ def test_civ_vat_measures_standard_rate():
 def test_civ_not_registered_as_supported_jurisdiction():
     """Garde-fou : CIV n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "CIV" not in SUPPORTED_JURISDICTIONS
 
 
@@ -253,6 +287,7 @@ def test_bfa_vat_measures_standard_rate():
 def test_bfa_not_registered_as_supported_jurisdiction():
     """Garde-fou : BFA n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "BFA" not in SUPPORTED_JURISDICTIONS
 
 
@@ -273,6 +308,7 @@ def test_tgo_vat_measures_standard_rate():
 def test_tgo_not_registered_as_supported_jurisdiction():
     """Garde-fou : TGO n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "TGO" not in SUPPORTED_JURISDICTIONS
 
 
@@ -293,6 +329,7 @@ def test_ner_vat_measures_standard_rate():
 def test_ner_not_registered_as_supported_jurisdiction():
     """Garde-fou : NER n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "NER" not in SUPPORTED_JURISDICTIONS
 
 
@@ -313,6 +350,7 @@ def test_gnb_vat_measures_standard_rate():
 def test_gnb_not_registered_as_supported_jurisdiction():
     """Garde-fou : GNB n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "GNB" not in SUPPORTED_JURISDICTIONS
 
 

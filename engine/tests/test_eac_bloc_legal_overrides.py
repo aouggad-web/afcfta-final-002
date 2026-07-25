@@ -70,18 +70,26 @@ def test_uganda_tiles_stay_differs_from_tanzania_rate():
     deux mesures doivent être isolées l'une de l'autre."""
     resolver = _resolver()
     tza = resolver.resolve(
-        hs_code="68021000", on_date=date(2026, 8, 1), base_rate=25,
+        hs_code="68021000",
+        on_date=date(2026, 8, 1),
+        base_rate=25,
         context=OverrideContext(jurisdiction="TZA"),
     )
     uga = resolver.resolve(
-        hs_code="68021000", on_date=date(2026, 8, 1), base_rate=25,
+        hs_code="68021000",
+        on_date=date(2026, 8, 1),
+        base_rate=25,
         context=OverrideContext(jurisdiction="UGA"),
     )
     assert tza["applicable_customs_rate"] == 35
     assert uga["applicable_customs_rate"] == 35
     measures = load_legal_measures(_EAC_OVERRIDES)
-    tza_measure = next(m for m in measures if m.measure_id == "EAC-160-2026-STAY-68021000-68029900-TZA")
-    uga_measure = next(m for m in measures if m.measure_id == "EAC-160-2026-STAY-68021000-68029900-UGA")
+    tza_measure = next(
+        m for m in measures if m.measure_id == "EAC-160-2026-STAY-68021000-68029900-TZA"
+    )
+    uga_measure = next(
+        m for m in measures if m.measure_id == "EAC-160-2026-STAY-68021000-68029900-UGA"
+    )
     assert "2/SQM" in tza_measure.rate_unit
     assert "3/SQM" in uga_measure.rate_unit
 
@@ -89,11 +97,15 @@ def test_uganda_tiles_stay_differs_from_tanzania_rate():
 def test_rwanda_electric_vehicle_and_motorcycle_zero_rate():
     resolver = _resolver()
     vehicle = resolver.resolve(
-        hs_code="87034090", on_date=date(2026, 8, 1), base_rate=25,
+        hs_code="87034090",
+        on_date=date(2026, 8, 1),
+        base_rate=25,
         context=OverrideContext(jurisdiction="RWA"),
     )
     motorcycle = resolver.resolve(
-        hs_code="87116000", on_date=date(2026, 8, 1), base_rate=25,
+        hs_code="87116000",
+        on_date=date(2026, 8, 1),
+        base_rate=25,
         context=OverrideContext(jurisdiction="RWA"),
     )
     assert vehicle["applicable_customs_rate"] == 0
@@ -103,7 +115,9 @@ def test_rwanda_electric_vehicle_and_motorcycle_zero_rate():
 def test_burundi_wire_rods_zero_rate():
     resolver = _resolver()
     result = resolver.resolve(
-        hs_code="72139900", on_date=date(2026, 8, 1), base_rate=10,
+        hs_code="72139900",
+        on_date=date(2026, 8, 1),
+        base_rate=10,
         context=OverrideContext(jurisdiction="BDI"),
     )
     assert result["applicable_customs_rate"] == 0

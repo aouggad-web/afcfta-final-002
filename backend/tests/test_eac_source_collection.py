@@ -60,8 +60,17 @@ def test_tza_inventory_csv_structure():
     with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     required_columns = {
-        "id", "institution", "title", "legal_date", "accessed_at", "url",
-        "local_file", "sha256", "coverage", "status", "notes",
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
     }
     assert required_columns <= set(rows[0].keys())
     pending = [r for r in rows if r["status"] == "source_pending_collection"]
@@ -71,12 +80,14 @@ def test_tza_inventory_csv_structure():
 def test_tza_not_registered_as_supported_jurisdiction():
     """Garde-fou : TZA n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "TZA" not in SUPPORTED_JURISDICTIONS
 
 
 def test_tza_has_no_fabricated_afcfta_offer():
     """Garde-fou : TZA n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+
     assert "TZA" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("TZA")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
 
@@ -113,8 +124,17 @@ def test_uga_inventory_csv_structure():
     with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     required_columns = {
-        "id", "institution", "title", "legal_date", "accessed_at", "url",
-        "local_file", "sha256", "coverage", "status", "notes",
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
     }
     assert required_columns <= set(rows[0].keys())
     pending = [r for r in rows if r["status"] == "source_pending_collection"]
@@ -124,12 +144,14 @@ def test_uga_inventory_csv_structure():
 def test_uga_not_registered_as_supported_jurisdiction():
     """Garde-fou : UGA n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "UGA" not in SUPPORTED_JURISDICTIONS
 
 
 def test_uga_has_no_fabricated_afcfta_offer():
     """Garde-fou : UGA n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+
     assert "UGA" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("UGA")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
 
@@ -166,8 +188,17 @@ def test_rwa_inventory_csv_structure():
     with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     required_columns = {
-        "id", "institution", "title", "legal_date", "accessed_at", "url",
-        "local_file", "sha256", "coverage", "status", "notes",
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
     }
     assert required_columns <= set(rows[0].keys())
     pending = [r for r in rows if r["status"] == "source_pending_collection"]
@@ -177,12 +208,14 @@ def test_rwa_inventory_csv_structure():
 def test_rwa_not_registered_as_supported_jurisdiction():
     """Garde-fou : RWA n'est pas enregistrée comme juridiction supportée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "RWA" not in SUPPORTED_JURISDICTIONS
 
 
 def test_rwa_has_no_fabricated_afcfta_offer():
     """Garde-fou : RWA n'a pas d'offre nationale ZLECAf fictive."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+
     assert "RWA" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("RWA")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
 
