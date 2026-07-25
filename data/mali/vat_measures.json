@@ -4,21 +4,37 @@
   "as_of": "2026-07-25",
   "vat_rates": [
     {
-      "record_id": "MLI-VAT-RATE-STANDARD-19990601",
-      "legal_product_description": "Standard rate of Value-Added Tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "normalized_product_description": "standard rate of value-added tax on the supply of goods and services by registered vendors, and on the importation of goods.",
+      "record_id": "MLI-VAT-RATE-STANDARD",
+      "legal_product_description": "18% pour les autres produits et les services non exonérés en application des dispositions du présent Code.",
+      "normalized_product_description": "standard rate for goods and services not otherwise exempt or reduced",
       "rate": "18%",
-      "rate_basis": "customs value plus duty (import); consideration (domestic)",
-      "effective_from": "1999-06-01",
+      "rate_basis": "valeur imposable",
+      "effective_from": "2026-07-25",
       "effective_to": null,
       "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
       "supersedes_record_id": null,
-      "source_id": "MLI-ARMP-CGI-CODE-20260725",
-      "legal_reference": "Code Général des Impôts (General Tax Code), enacted 1999-06-01; UEMOA harmonization rate (18%). Rate confirmed current as of June 2026 (no published change notice to date).",
-      "verification_status": "PENDING_OFFICIAL_CONSOLIDATION",
+      "source_id": "MLI-DGI-CGI",
+      "legal_reference": "Code Général des Impôts, Article 229 (Loi n°11-078)",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "MLI-VAT-RATE-REDUCED",
+      "legal_product_description": "5% pour les produits visés au point D de la sous-section 1 de la section 1 du chapitre 1 du titre 2 du CGI.",
+      "normalized_product_description": "reduced rate for a specified list of goods (point D, subsection 1)",
+      "rate": "5%",
+      "rate_basis": "valeur imposable",
+      "effective_from": "2026-07-25",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "MLI-DGI-CGI",
+      "legal_reference": "Code Général des Impôts, Article 229 (Loi n°11-078)",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
       "hs_codes_explicit": []
     }
   ],
   "vat_exemptions": [],
-  "vat_zero_rated": []
+  "vat_zero_rated": [],
+  "notes": "The DGI portal text obtained does not date the current consolidation (only the amending Loi n°11-078 is cited in-article); effective_from is therefore set to the collection date, not a legislative date, pending confirmation of when Loi n°11-078 itself entered into force. The specific list of goods under 'point D' (5% rate) was not independently transcribed this cycle — only the rate itself and its article reference are recorded."
 }

@@ -4,18 +4,18 @@
   "as_of": "2026-07-25",
   "sources": [
     {
-      "source_id": "SEN-ARMP-CGI-CODE-20260725",
-      "title": "Code Général des Impôts (General Tax Code), as amended",
-      "institution": "Agence de Régulation des Marchés Publics (ARMP) / Ministry of Finance",
-      "legal_date": "2012-01-01",
+      "source_id": "SEN-CGI-2019",
+      "title": "Code Général des Impôts (édition juillet 2019, à jour au 27 mars 2019)",
+      "institution": "ONES / cabinet fiscal (republication du texte officiel du Code Général des Impôts)",
+      "legal_date": "2019-03-27",
       "accessed_at": "2026-07-25",
-      "url": "https://www.armp.sn/textes-legaux/code-general-impots",
-      "local_file": "official/sen-cgi-consolidated.html",
-      "sha256": "pending_collection",
-      "coverage": "VAT standard rate (18%); exemptions; zero-rated supplies; import VAT",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Consolidated text; all amendments through June 2026. Source accessible via ARMP."
+      "url": "https://kof-experts.sn/wp-content/uploads/2024/04/CGI-JUILLET-2019-date-du-27-mars-2019.pdf",
+      "local_file": "official/sen-cgi-2019.pdf",
+      "sha256": "92a978887bdad2bd48dbd81579f1c97c2131c15a0b230ad048736dc446f7f75d",
+      "coverage": "standard VAT rate (Article 369); reduced rate for tourist accommodation (Article 369); export deduction right (Article 380)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "387-page republication of the CGI carrying article numbering and the amending law citations in-text (e.g. Loi n°2015-06 du 23 mars 2015 for Article 369, Loi n°2018-10 du 30 mars 2018 for Article 380). The official DGID portal (dgid.sn) was unreachable from this environment (TLS certificate error) at collection time; this is a text-verified secondary republication, not the primary government portal itself. Amendments after March 2019 may not be reflected."
     },
     {
       "source_id": "SEN-DOUANES-TARIFF-2026",
@@ -29,21 +29,21 @@
       "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
       "status": "source_pending_collection",
       "verification_status": "PENDING_COLLECTION",
-      "notes": "Awaiting confirmation of public accessibility and consolidated text availability."
+      "notes": "Not downloaded, not archived, not used for any rate in this collection."
     },
     {
       "source_id": "SEN-DGID-FINANCE-2026",
       "title": "Finance Law 2026 (Loi de Finances 2026)",
-      "institution": "Direction Générale des Impôts et des Douanes (DGID)",
+      "institution": "Direction Générale des Impôts et des Domaines (DGID)",
       "legal_date": "2025-12-30",
       "accessed_at": "2026-07-25",
       "url": "https://www.dgid.sn/lois-finances",
-      "local_file": "official/sen-finance-law-2026.html",
-      "sha256": "pending_collection",
+      "local_file": null,
+      "sha256": null,
       "coverage": "fiscal year 2026 tax measures; VAT/excise changes; special levies",
       "status": "source_pending_collection",
       "verification_status": "PENDING_COLLECTION",
-      "notes": "Enacted December 2025; effective January 2026."
+      "notes": "Not downloaded, not archived, not used for any rate in this collection. URL not re-verified this cycle."
     }
   ]
 }
