@@ -87,20 +87,14 @@ def test_civ_readme_documents_base_article_gap():
 
 def test_civ_not_registered_as_supported_jurisdiction():
     """Garde-fou : CIV n'est pas enregistrée comme juridiction supportée."""
-    pytest = __import__("pytest")
-    national_legal_calculation_service = pytest.importorskip(
-        "services.national_legal_calculation_service"
-    )
-    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
     assert "CIV" not in SUPPORTED_JURISDICTIONS
 
 
 def test_civ_has_no_fabricated_afcfta_offer():
     """Garde-fou : CIV n'a pas d'offre nationale ZLECAf fictive."""
-    pytest = __import__("pytest")
-    afcfta_national_offers = pytest.importorskip("etl.afcfta_national_offers")
-    NATIONAL_OFFER_REGISTRY = afcfta_national_offers.NATIONAL_OFFER_REGISTRY
-    check_conformity = afcfta_national_offers.check_conformity
+    from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
 
     assert "CIV" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("CIV")["status"] == "NO_NATIONAL_OFFER_REGISTERED"

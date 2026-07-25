@@ -12,10 +12,11 @@
       "url": "https://www.dgbf.ci/wp-content/uploads/2025/12/Annexe-1-Annexe-Fiscale-2026.pdf",
       "local_file": "official/civ-annexe-fiscale-2026-excerpt.txt",
       "sha256": "60fdb566315fd407d08443f5957fa5fa85356b06c4e2258a6ec0edd720d285b2",
+      "source_document_sha256": "389d981c6b7e46f1b42b13450149147a2bd5a81d51c2b06d5d67477b7f814765",
       "coverage": "confirms standard VAT rate (\"taux de droit commun de TVA de 18%\") via Article 6 (rationalisation des exonérations) amending Article 355 of the Code Général des Impôts",
       "status": "official_downloaded",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "notes": "Full PDF is 10.5 MB (over the ~5 MB direct-archive threshold); only the operative excerpt covering Article 6 (pages ~8-11) was extracted and archived as text, with the SHA-256 of that excerpt recorded. The SHA-256 of the full original PDF, for independent re-verification, is 389d981c6b7e46f1b42b13450149147a2bd5a81d51c2b06d5d67477b7f814765 (not committed to the repository). This Finance Law annex references the CGI's Article 355 series (355-17, 355-27, 355-28, 355-30) as being brought up to the common-law rate; it does NOT itself contain the base rate-setting article of the CGI (reported by secondary sources as Article 359, not independently verified in this document)."
+      "notes": "Full PDF is 10.5 MB (over the ~5 MB direct-archive threshold); only the operative excerpt covering Article 6 (pages ~8-11) was extracted and archived as text, with the SHA-256 of that excerpt recorded under sha256. The SHA-256 of the full original PDF, for independent re-verification by re-download, is recorded under source_document_sha256 (not committed to the repository, per the Cameroon precedent). This Finance Law annex references the CGI's Article 355 series (355-17, 355-27, 355-28, 355-30) as being brought up to the common-law rate; it does NOT itself contain the base rate-setting article of the CGI (reported by secondary sources as Article 359, not independently verified in this document)."
     },
     {
       "source_id": "CIV-DGDI-IMPOTS-GUIDE",
