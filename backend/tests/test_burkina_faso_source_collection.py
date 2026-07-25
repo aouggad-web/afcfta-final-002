@@ -1,9 +1,11 @@
 """
 Vérifications d'intégrité de la collecte Burkina Faso (UEMOA, lot 2) :
-TVA seule, vérifiée sur le Code Général des Impôts 2023 (édition consolidée),
-archivé et haché. Pas d'accises, pas de prélèvements collectés dans ce cycle.
+TVA et accises, vérifiées sur le Code Général des Impôts 2023 (édition consolidée),
+archivé et haché. Taux standard 18% (Art. 352+) + accises représentatives
+(bière, cigarettes, carburants).
 
-Collecte délibérément incomplète : taux réduit est listé mais non extrait.
+Collecte délibérément incomplète : taux réduit non extrait; droits complémentaires
+(PCS, prélèvements) déférés.
 BFA n'est donc pas enregistrée dans SUPPORTED_JURISDICTIONS ni dans
 NATIONAL_OFFER_REGISTRY. Voir data/sources/burkina-faso/README.md.
 """
@@ -101,3 +103,34 @@ def test_bfa_has_no_fabricated_afcfta_offer():
 
     assert "BFA" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("BFA")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
+
+
+def test_bfa_excise_measures_exist():
+    """excise_measures.json existe et contient accises représentatives."""
+    excise_path = _DATA_DIR / "excise_measures.json"
+    assert excise_path.exists(), "excise_measures.json manquant"
+    data = json.loads(excise_path.read_text(encoding="utf-8"))
+    assert isinstance(data, list)
+    assert len(data) >= 4, "Au minimum 4 lignes accise (bière, cigarettes, essence, gazole)"
+
+
+def test_bfa_excise_cigarettes_rate():
+    """Burkina Faso : accise cigarettes 45%."""
+    excise_path = _DATA_DIR / "excise_measures.json"
+    data = json.loads(excise_path.read_text(encoding="utf-8"))
+    cigarettes = next((r for r in data if "CIGARETTES" in r["record_id"]), None)
+    assert cigarettes is not None, "Accise cigarettes manquante"
+    assert cigarettes["rate"] == 45
+    assert cigarettes["verification_status"] == "PENDING_COLLECTION"
+
+
+def test_bfa_excise_fuel_rates():
+    """Burkina Faso : accises carburants essence 40% / gazole 25%."""
+    excise_path = _DATA_DIR / "excise_measures.json"
+    data = json.loads(excise_path.read_text(encoding="utf-8"))
+    gasoline = next((r for r in data if "GASOLINE" in r["record_id"]), None)
+    diesel = next((r for r in data if "DIESEL" in r["record_id"]), None)
+    assert gasoline is not None
+    assert diesel is not None
+    assert gasoline["rate"] == 40
+    assert diesel["rate"] == 25

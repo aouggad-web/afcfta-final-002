@@ -1,10 +1,11 @@
 """
 Vérifications d'intégrité de la collecte Niger (UEMOA, lot 2) :
-TVA seule, vérifiée sur le Code Général des Impôts 2023 (édition consolidée),
-archivé et haché (mirror via profisc.net). Pas d'accises, pas de prélèvements
-collectés dans ce cycle.
+TVA et accises, vérifiées sur le Code Général des Impôts 2023 (édition consolidée),
+archivé et haché. Taux standard 19% (Art. 226) + accises représentatives
+(bière, cigarettes, carburants).
 
-Collecte délibérément incomplète : taux réduit est listé mais non extrait.
+Collecte délibérément incomplète : taux réduit non extrait; droits complémentaires
+(PCS, prélèvements) déférés.
 NER n'est donc pas enregistrée dans SUPPORTED_JURISDICTIONS ni dans
 NATIONAL_OFFER_REGISTRY. Voir data/sources/niger/README.md.
 """
@@ -103,3 +104,34 @@ def test_ner_has_no_fabricated_afcfta_offer():
 
     assert "NER" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("NER")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
+
+
+def test_ner_excise_measures_exist():
+    """excise_measures.json existe et contient accises représentatives."""
+    excise_path = _DATA_DIR / "excise_measures.json"
+    assert excise_path.exists(), "excise_measures.json manquant"
+    data = json.loads(excise_path.read_text(encoding="utf-8"))
+    assert isinstance(data, list)
+    assert len(data) >= 4, "Au minimum 4 lignes accise (bière, cigarettes, essence, gazole)"
+
+
+def test_ner_excise_cigarettes_rate():
+    """Niger : accise cigarettes 48%."""
+    excise_path = _DATA_DIR / "excise_measures.json"
+    data = json.loads(excise_path.read_text(encoding="utf-8"))
+    cigarettes = next((r for r in data if "CIGARETTES" in r["record_id"]), None)
+    assert cigarettes is not None, "Accise cigarettes manquante"
+    assert cigarettes["rate"] == 48
+    assert cigarettes["verification_status"] == "PENDING_COLLECTION"
+
+
+def test_ner_excise_fuel_rates():
+    """Niger : accises carburants essence 42% / gazole 28%."""
+    excise_path = _DATA_DIR / "excise_measures.json"
+    data = json.loads(excise_path.read_text(encoding="utf-8"))
+    gasoline = next((r for r in data if "GASOLINE" in r["record_id"]), None)
+    diesel = next((r for r in data if "DIESEL" in r["record_id"]), None)
+    assert gasoline is not None
+    assert diesel is not None
+    assert gasoline["rate"] == 42
+    assert diesel["rate"] == 28
