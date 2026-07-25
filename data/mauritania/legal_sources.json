@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "country": "MRT",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "MRT-DGI-CGI-2023",
+      "title": "Code Général des Impôts (General Tax Code), official 2023 edition",
+      "institution": "Ministère des Finances / Direction Générale des Impôts (DGI)",
+      "legal_date": "2019-04-29",
+      "accessed_at": "2026-07-25",
+      "url": "https://finances.gov.mr/sites/default/files/2023-03/CGI-Fr-2023.pdf",
+      "local_file": "official/mrt-cgi-2023.pdf",
+      "sha256": "2972be620009381468a05ee21295c8b5b01cdebc15e4a7692c1fcdf861edd71f",
+      "coverage": "VAT standard rate (Art. 230); zero-rated exports; consumption tax (taxe de consommation) on 10 product categories with explicit HS codes for several (Art. 258, 261-265)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Adopted by law n°2019-018 of 29 April 2019, official version January 2023, incorporating amendments through Loi de Finances 2022 (LFI.2022). Downloaded directly from the official Ministère des Finances portal (finances.gov.mr), text-based PDF (168 pages, not scanned)."
+    }
+  ]
+}
