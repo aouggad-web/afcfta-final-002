@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "country": "GIN",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "GIN-JOURNAL-CGI",
+      "title": "General Tax Code / VAT Act, as amended",
+      "institution": "Journal Officiel de la République de Guinée / Ministry of Finance",
+      "legal_date": "2012-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.impots.gouv.gn/",
+      "local_file": "official/gin-tax-code-consolidated.html",
+      "sha256": "pending_collection",
+      "coverage": "VAT standard rate (18%); excises; exemptions; zero-rated supplies",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text via Journal Officiel de la République de Guinée. All amendments through June 2026."
+    },
+    {
+      "source_id": "GIN-FINANCE-LAW-2026",
+      "title": "Finance Law 2026",
+      "institution": "Ministry of Finance",
+      "legal_date": "2025-12-31",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.impots.gouv.gn/",
+      "local_file": "official/gin-finance-law-2026.html",
+      "sha256": "pending_collection",
+      "coverage": "fiscal year 2026 tax rates; special levies; import duties",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Enacted December 2025; effective January 2026."
+    }
+  ]
+}
