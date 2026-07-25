@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "country": "BEN",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "BEN-JUTAB-CGI-CODE-20260725",
+      "title": "Code Général des Impôts (General Tax Code), as amended",
+      "institution": "JUTAB (Journal Officiel de la République du Bénin) / Ministry of Finance",
+      "legal_date": "1992-12-09",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.jutab.gouv.bj/",
+      "local_file": "official/ben-cgi-consolidated.html",
+      "sha256": "pending_collection",
+      "coverage": "VAT standard rate (18%); exemptions; zero-rated supplies; import VAT",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text; all amendments through June 2026. Published via JUTAB official gazette."
+    },
+    {
+      "source_id": "BEN-DOUANES-TARIFF-2026",
+      "title": "Customs Tariff Guide 2026",
+      "institution": "Benin Customs Authority (Direction des Douanes)",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.douanes.gouv.bj/tarif",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Awaiting confirmation of public accessibility and consolidated text availability."
+    },
+    {
+      "source_id": "BEN-FINANCE-LAW-2026",
+      "title": "Finance Law 2026 (Loi de Finances 2026)",
+      "institution": "Ministry of Finance",
+      "legal_date": "2025-12-28",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.jutab.gouv.bj/decrets-lois",
+      "local_file": "official/ben-finance-law-2026.html",
+      "sha256": "pending_collection",
+      "coverage": "fiscal year 2026 tax measures; VAT/excise changes; special levies",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Enacted December 2025; effective January 2026."
+    }
+  ]
+}
