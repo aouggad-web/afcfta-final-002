@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "country": "CPV",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "CPV-JOURNAL-CGI",
+      "title": "General Tax Code / VAT Act, as amended",
+      "institution": "Boletim Oficial da República / Ministry of Finance",
+      "legal_date": "2004-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.dgci.cv/",
+      "local_file": "official/cpv-tax-code-consolidated.html",
+      "sha256": "pending_collection",
+      "coverage": "VAT standard rate (15%); excises; exemptions; zero-rated supplies",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text via Boletim Oficial da República. All amendments through June 2026."
+    },
+    {
+      "source_id": "CPV-FINANCE-LAW-2026",
+      "title": "Finance Law 2026",
+      "institution": "Ministry of Finance",
+      "legal_date": "2025-12-31",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.dgci.cv/",
+      "local_file": "official/cpv-finance-law-2026.html",
+      "sha256": "pending_collection",
+      "coverage": "fiscal year 2026 tax rates; special levies; import duties",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Enacted December 2025; effective January 2026."
+    }
+  ]
+}

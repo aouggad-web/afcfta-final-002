@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "country": "SEN",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "SEN-ARMP-CGI-CODE-20260725",
+      "title": "Code Général des Impôts (General Tax Code), as amended",
+      "institution": "Agence de Régulation des Marchés Publics (ARMP) / Ministry of Finance",
+      "legal_date": "2012-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.armp.sn/textes-legaux/code-general-impots",
+      "local_file": "official/sen-cgi-consolidated.html",
+      "sha256": "pending_collection",
+      "coverage": "VAT standard rate (18%); exemptions; zero-rated supplies; import VAT",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text; all amendments through June 2026. Source accessible via ARMP."
+    },
+    {
+      "source_id": "SEN-DOUANES-TARIFF-2026",
+      "title": "Customs Tariff Guide 2026",
+      "institution": "Senegal Customs Authority (Direction de la Douane)",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.douanes.sn/documents/tarif",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Awaiting confirmation of public accessibility and consolidated text availability."
+    },
+    {
+      "source_id": "SEN-DGID-FINANCE-2026",
+      "title": "Finance Law 2026 (Loi de Finances 2026)",
+      "institution": "Direction Générale des Impôts et des Douanes (DGID)",
+      "legal_date": "2025-12-30",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.dgid.sn/lois-finances",
+      "local_file": "official/sen-finance-law-2026.html",
+      "sha256": "pending_collection",
+      "coverage": "fiscal year 2026 tax measures; VAT/excise changes; special levies",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Enacted December 2025; effective January 2026."
+    }
+  ]
+}

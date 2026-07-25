@@ -1,0 +1,4 @@
+id,institution,title,legal_date,accessed_at,url,local_file,sha256,coverage,status,notes
+CIV-JOURNAL-OFFICIEL-CGI,Journal Officiel de la République / Ministry of Finance,Code Général des Impôts (consolidated),2012-01-01,2026-07-25,https://www.jo.gouv.ci/,official/civ-cgi-consolidated.html,,standard VAT 18%; excises; exemptions,source_pending_collection,Localisée via Journal Officiel. HTML consolidé attendu.
+CIV-DGDI-IMPOTS-GUIDE,Direction Générale Des Douanes et Impôts,Tax Administration Guide 2026,2026-01-01,2026-07-25,https://www.dgdi.gouv.ci/guides,,,VAT procedures; excise rates; customs; formalities,source_pending_collection,Guide administratif. Format et accessibilité à confirmer.
+CIV-FINANCE-LAW-2026,Ministry of Finance / Journal Officiel,Loi de Finances 2026,2025-12-31,2026-07-25,https://www.jo.gouv.ci/decrets-lois,official/civ-finance-law-2026.html,,fiscal year 2026 tax rates and measures,source_pending_collection,Enactée décembre 2025. HTML attendu.
