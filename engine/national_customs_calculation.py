@@ -95,7 +95,9 @@ class NationalFiscalStore:
     def vat_rate(self, on_date: date, hs_code: str):
         rows = _active(self.vat["vat_rates"], on_date)
         specific = [r for r in rows if r.get("hs_codes_explicit") and _hs_match(r, hs_code)]
-        standard = [r for r in rows if r["record_id"].startswith("VAT-RATE-STANDARD")]
+        standard = [
+            r for r in rows if "VAT-RATE-STANDARD" in r["record_id"]
+        ]  # Flexible: allows country-prefixed IDs (e.g., TZA-VAT-RATE-STANDARD-…)
         return next((r for r in specific + standard if _pct(r.get("rate")) is not None), None)
 
     def vat_treatment(self, on_date: date, hs_code: str) -> Optional[dict]:
@@ -173,6 +175,14 @@ def calculate_national_customs(
     currency_code: str = "USD",
     levy_tables: Tuple[Tuple[str, str], ...] = DEFAULT_LEVY_TABLES,
 ) -> dict:
+    # Ensure context jurisdiction matches the input jurisdiction to prevent
+    # accidental application of another jurisdiction's measures (e.g., Kenya
+    # defaults being used for Tanzania).
+    if context is None:
+        context = OverrideContext(jurisdiction=jurisdiction)
+    elif context.jurisdiction != jurisdiction:
+        context = context.model_copy(update={"jurisdiction": jurisdiction})
+
     resolver = LegalOverrideResolver(measures, coverage_complete=coverage_complete)
     override = resolver.resolve(
         hs_code=hs_code,
