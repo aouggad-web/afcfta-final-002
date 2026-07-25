@@ -14,11 +14,11 @@ from datetime import date
 from pathlib import Path
 from typing import Iterable, Optional
 
-from engine.national_customs_calculation import (
+from engine.national_customs_calculation import _pct  # noqa: F401 — ré-exporté pour compatibilité
+from engine.national_customs_calculation import (  # noqa: F401 — ré-exporté pour compatibilité
     NationalFiscalStore,
-    _active,  # noqa: F401 — ré-exporté pour compatibilité
-    _hs_match,  # noqa: F401 — ré-exporté pour compatibilité
-    _pct,  # noqa: F401 — ré-exporté pour compatibilité
+    _active,
+    _hs_match,
     calculate_national_customs,
 )
 from engine.schemas.legal_override import LegalOverrideMeasure, OverrideContext
