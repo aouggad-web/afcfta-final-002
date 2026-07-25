@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "country": "GAB",
+  "as_of": "2026-07-25",
+  "vat_rates": [
+    {
+      "record_id": "GAB-VAT-RATE-REDUCED-ARTICLE221-20250120",
+      "legal_product_description": "Taux réduit de 5% applicable aux opérations de production et de vente portant sur : eau minérale produite au Gabon ; lessive ; fer à béton ; ordinateurs fixes et portables bureautiques ; conserves de légumes secs et de légumes verts ; conserves de fruits ; fourniture d'eau et d'électricité sur la consommation des compteurs sociaux et classiques ; ciment.",
+      "normalized_product_description": "reduced 5% rate on production and sale of: locally produced mineral water; laundry detergent; rebar; office desktop and laptop computers; canned dried and green vegetables; canned fruit; water and electricity supply on social and standard meters; cement.",
+      "rate": "5%",
+      "rate_basis": "consideration (domestic production and sale operations)",
+      "effective_from": "2025-01-20",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "GAB-JO-LOI-FINANCES-2025",
+      "legal_reference": "Loi n°033/2024 du 30 décembre 2024 déterminant les ressources et les charges de l'État pour l'année 2025 (Journal Officiel de la République Gabonaise, n°51 Bis Spécial du 20 janvier 2025), Livre II, Titre 1, Chapitre 2, Section 3, Article 221 nouveau.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [],
+      "notes": "Sans code SH explicite dans le texte : la liste est par désignation de produit, pas par position tarifaire. Ne sera donc jamais sélectionné automatiquement par vat_rate()/vat_treatment() sans mappage HS ajouté séparément et vérifié. Le TAUX NORMAL (standard) de la TVA gabonaise n'a PAS pu être vérifié sur texte primaire dans ce cycle — voir data/sources/gabon/README.md. Des sources secondaires (non faisant autorité) rapportent 18%, mais aucune entrée VAT-RATE-STANDARD n'est créée tant que l'Article correspondant (rapporté par des tiers comme étant l'Article 221, à distinguer du 221 nouveau ci-dessus qui ne couvre que le taux réduit) n'a pas été lu directement."
+    }
+  ],
+  "vat_exemptions": [
+    {
+      "record_id": "GAB-VAT-EXEMPT-PECHE-ARTISANALE-PETROLE-20250120",
+      "legal_product_description": "Ventes de pétrole destinées aux activités de la pêche artisanale, sous conditions cumulatives (autorisation administrative, autorisation de pêche artisanale en cours de validité, obligations fiscales et sociales à jour).",
+      "normalized_product_description": "sales of fuel for artisanal fishing activities, subject to cumulative conditions.",
+      "rate": "0%",
+      "effective_from": "2025-01-20",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "GAB-JO-LOI-FINANCES-2025",
+      "legal_reference": "Loi n°033/2024 du 30 décembre 2024, Journal Officiel n°51 Bis Spécial du 20 janvier 2025, Livre II, Titre 1, Chapitre 1, Section 3, Article 210 nouveau, alinéa 21.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ],
+  "vat_zero_rated": []
+}
