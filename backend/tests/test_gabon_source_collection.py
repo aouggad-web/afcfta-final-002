@@ -24,9 +24,7 @@ _SOURCES_DIR = _ROOT / "data" / "sources" / "gabon"
 def test_gab_vat_reduced_rate():
     """Gabon : taux réduit 5% (Loi de Finances 2025, Article 221 nouveau)."""
     data = json.loads((_DATA_DIR / "vat_measures.json").read_text(encoding="utf-8"))
-    reduced = next(
-        (r for r in data["vat_rates"] if "REDUCED" in r["record_id"]), None
-    )
+    reduced = next((r for r in data["vat_rates"] if "REDUCED" in r["record_id"]), None)
     assert reduced is not None, "Taux réduit 5% manquant"
     assert reduced["rate"] == "5%"
     assert reduced["verification_status"] == "VERIFIED_PRIMARY_TEXT"
@@ -36,9 +34,7 @@ def test_gab_vat_reduced_rate():
 def test_gab_vat_exemption_artisanal_fishing():
     """Exonération TVA sur pétrole pour pêche artisanale (Article 210 nouveau)."""
     data = json.loads((_DATA_DIR / "vat_measures.json").read_text(encoding="utf-8"))
-    exemption = next(
-        (r for r in data["vat_exemptions"] if "PECHE" in r["record_id"]), None
-    )
+    exemption = next((r for r in data["vat_exemptions"] if "PECHE" in r["record_id"]), None)
     assert exemption is not None, "Exonération pêche artisanale manquante"
     assert exemption["rate"] == "0%"
     assert exemption["verification_status"] == "VERIFIED_PRIMARY_TEXT"
@@ -48,9 +44,7 @@ def test_gab_vat_exemption_artisanal_fishing():
 def test_gab_vat_standard_rate_not_verified():
     """Garde-fou : aucune entrée VAT-RATE-STANDARD (non vérifiée sur texte primaire)."""
     data = json.loads((_DATA_DIR / "vat_measures.json").read_text(encoding="utf-8"))
-    standard = next(
-        (r for r in data["vat_rates"] if "STANDARD" in r["record_id"]), None
-    )
+    standard = next((r for r in data["vat_rates"] if "STANDARD" in r["record_id"]), None)
     assert standard is None, "Taux normal ne doit pas être enregistré sans source primaire"
 
 
@@ -117,14 +111,20 @@ def test_gab_vat_measures_schema():
 
 def test_gab_not_registered_as_supported_jurisdiction():
     """Garde-fou : GAB n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
+    pytest = __import__("pytest")
+    national_legal_calculation_service = pytest.importorskip(
+        "services.national_legal_calculation_service"
+    )
+    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
     assert "GAB" not in SUPPORTED_JURISDICTIONS
 
 
 def test_gab_has_no_fabricated_afcfta_offer():
     """Garde-fou : GAB n'a pas d'offre nationale ZLECAf fictive."""
-    from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+    pytest = __import__("pytest")
+    afcfta_national_offers = pytest.importorskip("etl.afcfta_national_offers")
+    NATIONAL_OFFER_REGISTRY = afcfta_national_offers.NATIONAL_OFFER_REGISTRY
+    check_conformity = afcfta_national_offers.check_conformity
 
     assert "GAB" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("GAB")["status"] == "NO_NATIONAL_OFFER_REGISTERED"

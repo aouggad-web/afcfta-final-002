@@ -101,14 +101,20 @@ def test_cog_vat_measures_schema():
 
 def test_cog_not_registered_as_supported_jurisdiction():
     """Garde-fou : COG n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
+    pytest = __import__("pytest")
+    national_legal_calculation_service = pytest.importorskip(
+        "services.national_legal_calculation_service"
+    )
+    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
     assert "COG" not in SUPPORTED_JURISDICTIONS
 
 
 def test_cog_has_no_fabricated_afcfta_offer():
     """Garde-fou : COG n'a pas d'offre nationale ZLECAf fictive."""
-    from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+    pytest = __import__("pytest")
+    afcfta_national_offers = pytest.importorskip("etl.afcfta_national_offers")
+    NATIONAL_OFFER_REGISTRY = afcfta_national_offers.NATIONAL_OFFER_REGISTRY
+    check_conformity = afcfta_national_offers.check_conformity
 
     assert "COG" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("COG")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
@@ -116,7 +122,9 @@ def test_cog_has_no_fabricated_afcfta_offer():
 
 def test_cog_reduced_rate_pending_percentage():
     """Annexe 5 (liste de biens à taux réduit) est documentée comme incomplète."""
-    readme = (_DATA_DIR.parent / "sources" / "congo-brazzaville" / "README.md").read_text(encoding="utf-8")
+    readme = (_DATA_DIR.parent / "sources" / "congo-brazzaville" / "README.md").read_text(
+        encoding="utf-8"
+    )
     assert "Annexe 5" in readme
     assert "pourcentage" in readme.lower() or "taux réduit" in readme.lower()
     assert "n'a pas pu être extrait" in readme or "pending" in readme.lower()

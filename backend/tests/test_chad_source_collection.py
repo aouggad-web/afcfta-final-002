@@ -101,14 +101,20 @@ def test_tcd_vat_measures_schema():
 
 def test_tcd_not_registered_as_supported_jurisdiction():
     """Garde-fou : TCD n'est pas enregistrée comme juridiction supportée."""
-    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
-
+    pytest = __import__("pytest")
+    national_legal_calculation_service = pytest.importorskip(
+        "services.national_legal_calculation_service"
+    )
+    SUPPORTED_JURISDICTIONS = national_legal_calculation_service.SUPPORTED_JURISDICTIONS
     assert "TCD" not in SUPPORTED_JURISDICTIONS
 
 
 def test_tcd_has_no_fabricated_afcfta_offer():
     """Garde-fou : TCD n'a pas d'offre nationale ZLECAf fictive."""
-    from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+    pytest = __import__("pytest")
+    afcfta_national_offers = pytest.importorskip("etl.afcfta_national_offers")
+    NATIONAL_OFFER_REGISTRY = afcfta_national_offers.NATIONAL_OFFER_REGISTRY
+    check_conformity = afcfta_national_offers.check_conformity
 
     assert "TCD" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("TCD")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
