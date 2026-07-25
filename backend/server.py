@@ -21,7 +21,7 @@ if str(_backend_dir) not in sys.path:
 # with ``cd backend && uvicorn server:app`` (start.sh, scripts/start.sh, .replit).
 _repo_root = _backend_dir.parent
 if str(_repo_root) not in sys.path:
-    sys.path.append(str(_repo_root))
+    sys.path.insert(1, str(_repo_root))
 
 import logging
 import logging.config

@@ -26,4 +26,4 @@ La source qui permettrait de lever ce doute est identifiée : `dgi.ga/787-proced
 
 ## État de l'enregistrement
 
-Juridiction GAB : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — aucun taux TVA standard vérifié, seules deux mesures ponctuelles (taux réduit 5% sans code SH, exonération conditionnelle) le sont. ZLECAf : **pas** d'offre nationale encore registrée dans `NATIONAL_OFFER_REGISTRY`.
+Juridiction GAB : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — aucun taux TVA standard vérifié, seules deux mesures ponctuelles (taux réduit 5% sans code SH, exonération conditionnelle) le sont. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.

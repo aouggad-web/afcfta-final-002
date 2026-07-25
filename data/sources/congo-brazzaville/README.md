@@ -27,4 +27,4 @@ PDF de 2,7 Mo, sous le seuil de poids toléré : archivé intégralement.
 
 ## État de l'enregistrement
 
-Juridiction COG : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — seule la TVA (taux normal et zéro) est vérifiée ; il manque `excise_measures.json`, `import_levies.json` et le TEC CEMAC. ZLECAf : **pas** d'offre nationale encore registrée dans `NATIONAL_OFFER_REGISTRY`.
+Juridiction COG : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — seule la TVA (taux normal et zéro) est vérifiée ; il manque `excise_measures.json`, `import_levies.json` et le TEC CEMAC. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.

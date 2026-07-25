@@ -1,5 +1,5 @@
 """
-Vérifications d'intégrité de la collecte Tchad (second pays CEMAC, EAC adjacent) :
+Vérifications d'intégrité de la collecte Tchad (second pays CEMAC) :
 TVA seule, vérifiée sur le Code Général des Impôts 2016 (Article 238(1)),
 archivé et haché. Pas d'accises, pas de prélèvements collectés dans ce cycle.
 
