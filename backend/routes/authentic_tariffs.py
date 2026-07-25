@@ -15,7 +15,11 @@ from services.authentic_tariff_service import (
     get_fiscal_advantages,
     get_taxes_detail,
 )
-from services.kenya_legal_calculation_service import calculate_kenya_legal_layer
+from services.national_legal_calculation_service import (
+    SUPPORTED_JURISDICTIONS,
+    calculate_kenya_legal_layer,
+    calculate_national_legal_layer,
+)
 from services.tariff_provider_service import get_tariff_provider_service
 
 from engine.schemas.legal_override import RemissionEligibility
@@ -248,7 +252,17 @@ async def calculate_taxes_endpoint(
     if "error" in result:
         raise HTTPException(status_code=404, detail=result["error"])
 
-    if country_iso3.upper() == "KEN":
+    country = country_iso3.upper()
+    parsed_authorization_hs_codes = [
+        value.strip() for value in (authorization_hs_codes or "").split(",") if value.strip()
+    ]
+    parsed_authorization_goods = [
+        value.strip() for value in (authorization_goods or "").split(",") if value.strip()
+    ]
+
+    if country == "KEN":
+        # Alias historique conservé pour compatibilité (frontend, tests) —
+        # voir aussi la clé générique ``national_legal_calculation`` ci-dessous.
         result["kenya_legal_calculation"] = calculate_kenya_legal_layer(
             hs_code=hs_code,
             on_date=calculation_date or date.today(),
@@ -259,18 +273,31 @@ async def calculate_taxes_endpoint(
             authorization_reference=authorization_reference,
             authorization_effective_from=authorization_valid_from,
             authorization_effective_to=authorization_valid_to,
-            authorization_hs_codes=[
-                value.strip()
-                for value in (authorization_hs_codes or "").split(",")
-                if value.strip()
-            ],
-            authorization_goods=[
-                value.strip() for value in (authorization_goods or "").split(",") if value.strip()
-            ],
+            authorization_hs_codes=parsed_authorization_hs_codes,
+            authorization_goods=parsed_authorization_goods,
             beneficiary=beneficiary,
             import_purpose=import_purpose,
             quantity=quantity,
             currency_code="USD",
+        )
+        result["national_legal_calculation"] = result["kenya_legal_calculation"]
+    elif country in SUPPORTED_JURISDICTIONS:
+        result["national_legal_calculation"] = calculate_national_legal_layer(
+            jurisdiction=country,
+            hs_code=hs_code,
+            on_date=calculation_date or date.today(),
+            customs_value=cif_value,
+            base_cet_rate=float(result.get("rates", {}).get("dd_rate_pct", 0) or 0),
+            origin=(origin or "").upper() or None,
+            remission_eligibility=remission_eligibility,
+            authorization_reference=authorization_reference,
+            authorization_effective_from=authorization_valid_from,
+            authorization_effective_to=authorization_valid_to,
+            authorization_hs_codes=parsed_authorization_hs_codes,
+            authorization_goods=parsed_authorization_goods,
+            beneficiary=beneficiary,
+            import_purpose=import_purpose,
+            quantity=quantity,
         )
 
     return result
