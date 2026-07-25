@@ -64,8 +64,17 @@ def test_ben_inventory_csv_structure():
     with open(_SOURCES_DIR / "inventory.csv", encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     required_columns = {
-        "id", "institution", "title", "legal_date", "accessed_at", "url",
-        "local_file", "sha256", "coverage", "status", "notes"
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
     }
     assert required_columns <= set(rows[0].keys())
     assert len(rows) >= 1
