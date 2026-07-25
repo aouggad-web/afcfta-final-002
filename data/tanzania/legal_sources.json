@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "country": "TZA",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "TZA-TANZLII-VAT-ACT-20260725",
+      "title": "Value Added Tax Act, 2021 (as amended)",
+      "institution": "TanzLII (Tanzania Legal Information Institute)",
+      "legal_date": "2021-07-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.tanzlii.org/akn/tz/act/2021/8",
+      "local_file": "official/tz-vat-act-2021-amended.html",
+      "sha256": "pending_collection",
+      "coverage": "standard VAT rate (18%); exemptions; zero-rated supplies; import VAT",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text; all amendments through June 2026. Source accessible via TanzLII."
+    },
+    {
+      "source_id": "TZA-TANZLII-EXCISE-ACT-20260725",
+      "title": "Excise Duty Act, 2015 (as amended)",
+      "institution": "TanzLII (Tanzania Legal Information Institute)",
+      "legal_date": "2015-06-15",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.tanzlii.org/akn/tz/act/2015/8",
+      "local_file": "official/tz-excise-duty-act-2015-amended.html",
+      "sha256": "pending_collection",
+      "coverage": "excise rates by category; exemptions; administration",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text; amendments through June 2026."
+    },
+    {
+      "source_id": "TZA-TANZLII-FINANCE-ACT-2026",
+      "title": "Finance Act, 2026",
+      "institution": "TanzLII (Tanzania Legal Information Institute)",
+      "legal_date": "2026-06-30",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.tanzlii.org/akn/tz/act/2026/finance",
+      "local_file": "official/tz-finance-act-2026.html",
+      "sha256": "pending_collection",
+      "coverage": "fiscal year 2026/27 tax rates and measures; potential VAT/excise changes",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Enacted 2026-06-30; effective July 2026."
+    },
+    {
+      "source_id": "TZA-TRA-TARIFF-GUIDE-2026",
+      "title": "Customs Tariff and Import Duty Guide 2026",
+      "institution": "Tanzania Revenue Authority (TRA)",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.tra.go.tz/en/tariff-guide",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Awaiting confirmation of public accessibility and consolidated text availability."
+    }
+  ]
+}

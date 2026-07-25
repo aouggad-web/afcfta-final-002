@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "country": "CIV",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "CIV-JOURNAL-OFFICIEL-CGI",
+      "title": "Code Général des Impôts (General Tax Code), as amended",
+      "institution": "Journal Officiel de la République de Côte d'Ivoire / Ministry of Finance",
+      "legal_date": "2012-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.jo.gouv.ci/",
+      "local_file": "official/civ-cgi-consolidated.html",
+      "sha256": "pending_collection",
+      "coverage": "VAT standard rate (18%); excises; exemptions; zero-rated supplies; import VAT",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text via official journal. All amendments through June 2026."
+    },
+    {
+      "source_id": "CIV-DGDI-IMPOTS-GUIDE",
+      "title": "Tax Administration Guide 2026 (Direction Générale Des Douanes et Impôts)",
+      "institution": "Côte d'Ivoire Tax Authority (DGDI)",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.dgdi.gouv.ci/guides",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "VAT procedures; excise rates; customs duties; formalities; electronic filing",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Administrative guide for tax procedures. Consolidates VAT, excise, and customs provisions."
+    },
+    {
+      "source_id": "CIV-FINANCE-LAW-2026",
+      "title": "Finance Law 2026 (Loi de Finances 2026)",
+      "institution": "Ministry of Finance / Journal Officiel",
+      "legal_date": "2025-12-31",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.jo.gouv.ci/decrets-lois",
+      "local_file": "official/civ-finance-law-2026.html",
+      "sha256": "pending_collection",
+      "coverage": "fiscal year 2026 tax rates; special levies; excise tariffs; import duties",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Enacted December 2025; effective January 2026. Defines annual tax measures."
+    }
+  ]
+}

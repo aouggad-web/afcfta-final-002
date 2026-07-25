@@ -5,7 +5,6 @@ import { Button } from '../ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Badge } from '../ui/badge';
 import { toast } from '../../hooks/use-toast';
-import AITradeSummary from './AITradeSummary';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -478,14 +477,6 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                 </div>
               )}
 
-              {/* AI Trade Analysis Section */}
-              <div className="mb-4">
-                <AITradeSummary 
-                  countryName={countryProfile.country_name}
-                  language={language}
-                />
-              </div>
-
               {/* Gold Reserves & GAI 2025 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 {/* Gold Reserves */}
@@ -544,6 +535,13 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                          `➡️ ${t.stable}`}
                       </span>
                     </div>
+                    {(countryProfile.projections.gai_2025_category_fr || countryProfile.projections.gai_2025_category_en) && (
+                      <p className="text-sm font-semibold text-indigo-700 mb-2">
+                        {language === 'fr'
+                          ? countryProfile.projections.gai_2025_category_fr
+                          : countryProfile.projections.gai_2025_category_en}
+                      </p>
+                    )}
                     <div className="flex gap-3 text-xs">
                       <span className="bg-indigo-200 text-indigo-800 px-2 py-1 rounded font-semibold">
                         🌍 {t.africa}: #{countryProfile.projections.gai_2025_rank_africa}
@@ -555,6 +553,67 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                   </div>
                 )}
               </div>
+
+              {/* SECTION: Perspectives FMI (croissance + inflation pluriannuelles) */}
+              {countryProfile.projections?.imf_gdp_growth && (() => {
+                const growth = countryProfile.projections.imf_gdp_growth || {};
+                const inflation = countryProfile.projections.imf_inflation || {};
+                const nowY = new Date().getFullYear();
+                // Union des années des DEUX séries (une année peut n'exister que
+                // pour l'inflation), sur tout l'horizon WEO disponible (réalisé
+                // récent + projections, ~2024→2031).
+                const years = Array.from(
+                  new Set([...Object.keys(growth), ...Object.keys(inflation)])
+                )
+                  .map(Number)
+                  .filter((y) => y >= nowY - 2 && y <= nowY + 5)
+                  .sort((a, b) => a - b);
+                if (!years.length) return null;
+                return (
+                  <div className="mb-6">
+                    <h3 className="text-lg font-bold text-amber-400 mb-4 flex items-center gap-2 border-b border-amber-500/30 pb-2">
+                      <span className="text-2xl">🔮</span>
+                      {language === 'fr' ? 'Perspectives FMI' : 'IMF Outlook'}
+                    </h3>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm border-collapse">
+                        <thead>
+                          <tr>
+                            <th className="text-left p-2 text-gray-400 font-semibold">{language === 'fr' ? 'Indicateur' : 'Indicator'}</th>
+                            {years.map((y) => (
+                              <th key={y} className={`p-2 text-center font-bold ${y <= nowY ? 'text-gray-300' : 'text-amber-300'}`}>
+                                {y}{y > nowY ? ' *' : ''}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="border-t border-gray-700">
+                            <td className="p-2 text-teal-300 font-semibold">📈 {language === 'fr' ? 'Croissance PIB' : 'GDP growth'}</td>
+                            {years.map((y) => (
+                              <td key={y} className="p-2 text-center text-white font-bold">
+                                {growth[y] != null ? `${growth[y].toFixed(1)}%` : '—'}
+                              </td>
+                            ))}
+                          </tr>
+                          <tr className="border-t border-gray-700">
+                            <td className="p-2 text-orange-300 font-semibold">💰 {language === 'fr' ? 'Inflation' : 'Inflation'}</td>
+                            {years.map((y) => (
+                              <td key={y} className="p-2 text-center text-white font-bold">
+                                {inflation[y] != null ? `${inflation[y].toFixed(1)}%` : '—'}
+                              </td>
+                            ))}
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      {language === 'fr' ? '* projection · ' : '* projection · '}
+                      {countryProfile.projections.imf_source || 'FMI — WEO'}
+                    </p>
+                  </div>
+                );
+              })()}
 
               {/* Section Perspectives & Projets Structurants (Nouveau) */}
               {countryProfile.ongoing_projects && countryProfile.ongoing_projects.length > 0 && (
@@ -823,106 +882,6 @@ export default function CountryProfilesTab({ language = 'fr' }) {
                     </CardContent>
                   </Card>
                 </div>
-              )}
-
-              {/* Customs Administration Section */}
-              {countryProfile.customs && countryProfile.customs.administration && (
-                <Card className="shadow-2xl border-0 bg-gradient-to-br from-gray-900 to-gray-800">
-                  <CardHeader className="bg-gradient-to-r from-teal-900/50 via-cyan-900/30 to-blue-900/30 border-b border-teal-500/30">
-                    <CardTitle className="text-xl font-bold text-teal-400 flex items-center gap-2">
-                      <span>🛃</span>
-                      <span>{t.customsTitle}</span>
-                    </CardTitle>
-                    <CardDescription className="font-semibold text-gray-300">
-                      {t.customsSubtitle}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-6 bg-gray-900/50">
-                    {/* Official info row */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                      <div className="bg-gradient-to-br from-teal-900/60 to-cyan-800/40 p-4 rounded-xl border border-teal-500/40">
-                        <p className="text-xs font-bold text-teal-300 mb-2 uppercase tracking-wide">🏛️ {t.customsAdministration}</p>
-                        <p className="text-sm font-semibold text-white leading-snug">{countryProfile.customs.administration}</p>
-                      </div>
-                      <div className="bg-gradient-to-br from-cyan-900/60 to-blue-800/40 p-4 rounded-xl border border-cyan-500/40">
-                        <p className="text-xs font-bold text-cyan-300 mb-2 uppercase tracking-wide">📍 {t.customsAddress}</p>
-                        <p className="text-sm text-white leading-snug">{countryProfile.customs.adresse || '—'}</p>
-                      </div>
-                      <div className="bg-gradient-to-br from-blue-900/60 to-indigo-800/40 p-4 rounded-xl border border-blue-500/40">
-                        <p className="text-xs font-bold text-blue-300 mb-2 uppercase tracking-wide">🌐 {t.customsWebsite}</p>
-                        {countryProfile.customs.website && countryProfile.customs.website !== 'N/A' ? (
-                          <a
-                            href={countryProfile.customs.website}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-blue-400 hover:text-blue-200 hover:underline break-all"
-                          >
-                            {countryProfile.customs.website}
-                          </a>
-                        ) : (
-                          <p className="text-sm text-gray-400 italic">N/A</p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Bureaux row */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="bg-gray-800/60 p-4 rounded-xl border border-blue-500/30">
-                        <p className="text-xs font-bold text-blue-300 mb-3 uppercase tracking-wide flex items-center gap-1">
-                          <span>⚓</span> {t.customsPortOffices}
-                        </p>
-                        {hasOfficeData(countryProfile.customs.bureaux_portuaires) ? (
-                          <ul className="space-y-1">
-                            {countryProfile.customs.bureaux_portuaires.split(';').map((b, i) => (
-                              <li key={i} className="text-xs text-gray-300 flex items-start gap-1">
-                                <span className="text-blue-400 mt-0.5">•</span>
-                                <span>{b.trim()}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="text-xs text-gray-500 italic">{countryProfile.customs.bureaux_portuaires || '—'}</p>
-                        )}
-                      </div>
-
-                      <div className="bg-gray-800/60 p-4 rounded-xl border border-sky-500/30">
-                        <p className="text-xs font-bold text-sky-300 mb-3 uppercase tracking-wide flex items-center gap-1">
-                          <span>✈️</span> {t.customsAirOffices}
-                        </p>
-                        {hasOfficeData(countryProfile.customs.bureaux_aeriens) ? (
-                          <ul className="space-y-1">
-                            {countryProfile.customs.bureaux_aeriens.split(';').map((b, i) => (
-                              <li key={i} className="text-xs text-gray-300 flex items-start gap-1">
-                                <span className="text-sky-400 mt-0.5">•</span>
-                                <span>{b.trim()}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="text-xs text-gray-500 italic">—</p>
-                        )}
-                      </div>
-
-                      <div className="bg-gray-800/60 p-4 rounded-xl border border-emerald-500/30">
-                        <p className="text-xs font-bold text-emerald-300 mb-3 uppercase tracking-wide flex items-center gap-1">
-                          <span>🚧</span> {t.customsLandOffices}
-                        </p>
-                        {hasOfficeData(countryProfile.customs.bureaux_terrestres) ? (
-                          <ul className="space-y-1">
-                            {countryProfile.customs.bureaux_terrestres.split(';').map((b, i) => (
-                              <li key={i} className="text-xs text-gray-300 flex items-start gap-1">
-                                <span className="text-emerald-400 mt-0.5">•</span>
-                                <span>{b.trim()}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className="text-xs text-gray-500 italic">{countryProfile.customs.bureaux_terrestres || '—'}</p>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
               )}
 
               {/* Infrastructure Section (AIDI 2025 & LPI 2023) */}

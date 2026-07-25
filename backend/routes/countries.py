@@ -6,8 +6,9 @@ Countries routes - Country profiles, lists and economic data
 import json
 import logging
 import unicodedata
+from functools import lru_cache
 from pathlib import Path
-from typing import Optional
+from typing import Dict, Optional
 
 from constants import AFRICAN_COUNTRIES
 from country_data import REAL_COUNTRY_DATA, get_country_data
@@ -19,6 +20,45 @@ from projects_data import get_country_ongoing_projects
 from translations import translate_country_name, translate_region
 
 router = APIRouter()
+
+
+@lru_cache(maxsize=1)
+def _gdp_africa_ranks() -> Dict[str, int]:
+    """
+    Rang PIB intra-africain calculé depuis le PIB nominal BM le PLUS RÉCENT de
+    chaque pays (``worldbank_data_latest.json``), afin que le rang reste toujours
+    cohérent avec la valeur de PIB affichée — plutôt qu'un rang curé figé qui
+    dérive dès qu'une nouvelle année (ex. 2025) rebat les positions (l'Algérie
+    passe #3 -> #4 derrière l'Afrique du Sud, l'Égypte et le Nigeria). Repli
+    silencieux (dict vide -> on retombe sur le rang curé) si le fichier BM est
+    indisponible.
+    """
+    try:
+        path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "data"
+            / "json"
+            / "worldbank_data_latest.json"
+        )
+        data = json.loads(path.read_text(encoding="utf-8")).get("data", {})
+        gdp_by_iso: Dict[str, float] = {}
+        for iso, info in data.items():
+            series = (info.get("indicators", {}) or {}).get("GDP", {})
+            # Comparaison NUMÉRIQUE de l'année (pas lexicographique sur des clés
+            # string, qui casserait si le format des clés changeait).
+            year_keys = [y for y in series if str(y).isdigit()]
+            if year_keys:
+                latest_year = max(year_keys, key=int)
+                if series[latest_year] is not None:
+                    gdp_by_iso[iso] = float(series[latest_year])
+        ranks: Dict[str, int] = {}
+        for i, (iso, _v) in enumerate(
+            sorted(gdp_by_iso.items(), key=lambda kv: kv[1], reverse=True), 1
+        ):
+            ranks[iso] = i
+        return ranks
+    except Exception:  # pragma: no cover - le profil ne doit jamais casser là-dessus
+        return {}
 
 
 @router.get("/countries")
@@ -163,17 +203,24 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
     # development_index de REAL_COUNTRY_DATA = IDH (PNUD) — était exposé
     # uniquement dans projections, jamais dans le champ hdi du modèle.
     profile.hdi = real_data.get("development_index")
+    profile.hdi_rank = real_data.get("hdi_rank")
 
     profile.inflation_rate = _wb("inflation_percent") or real_data.get("inflation_rate_2024")
     profile.unemployment_rate = _wb("unemployment_percent") or real_data.get(
         "unemployment_rate_2024"
     )
 
-    # Croissance 2024 : la BM publie une croissance RÉALISÉE (historique) —
-    # on la préfère à la valeur curée quand disponible. 2025/2026 restent des
-    # PROJECTIONS (FMI WEO) : la BM ne publie pas de prévisions, donc ces deux
-    # champs restent sur le dataset curé.
-    growth_2024_wb = _wb("gdp_growth_percent")
+    # Croissance 2024 : la tuile est labellisée « 2024 ». On préfère la
+    # croissance RÉALISÉE BM UNIQUEMENT si son année est bien 2024 ; depuis que
+    # l'ETL récupère 2025, ``_wb`` renvoie la dernière année (2025) — l'afficher
+    # sous une étiquette 2024 serait faux, on retombe alors sur la valeur curée
+    # 2024 (FMI Art. IV). Les projections 2025/2026 restent sur le dataset curé.
+    growth_entry = wb.get("gdp_growth_percent")
+    growth_2024_wb = (
+        growth_entry.get("value")
+        if growth_entry and str(growth_entry.get("year")) == "2024"
+        else None
+    )
     growth_2024_display = (
         f"{growth_2024_wb:.1f}%"
         if growth_2024_wb is not None
@@ -185,8 +232,28 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         "gdp_growth_projection_2025": real_data.get("growth_projection_2025", "3.2%"),
         "gdp_growth_projection_2026": real_data.get("growth_projection_2026", "3.5%"),
         "development_index": real_data.get("development_index", 0.500),
-        "africa_rank": real_data.get("africa_rank", 25),
+        # Rang PIB recalculé sur le PIB BM le plus récent (cohérent avec le PIB
+        # affiché) ; repli sur le rang curé si le calcul est indisponible.
+        "africa_rank": _gdp_africa_ranks().get(iso3_code) or real_data.get("africa_rank", 25),
     }
+
+    # Projections FMI (WEO) : croissance + inflation PLURIANNUELLES (que la BM ne
+    # publie pas). Les projections de croissance 2025/2026 du FMI priment sur les
+    # valeurs curées (source unique, auto-actualisable) ; le bloc complet
+    # (jusqu'à ~2031) alimente la vue détaillée « Perspectives FMI » de la fiche.
+    from services import imf_projections_service as imf_svc
+
+    imf_proj = imf_svc.get_projections(iso3_code)
+    if imf_proj:
+        imf_growth = imf_proj.get("gdp_growth") or {}
+        imf_inflation = imf_proj.get("inflation") or {}
+        if imf_growth.get("2025") is not None:
+            profile.projections["gdp_growth_projection_2025"] = f"{imf_growth['2025']:.1f}%"
+        if imf_growth.get("2026") is not None:
+            profile.projections["gdp_growth_projection_2026"] = f"{imf_growth['2026']:.1f}%"
+        profile.projections["imf_gdp_growth"] = imf_growth
+        profile.projections["imf_inflation"] = imf_inflation
+        profile.projections["imf_source"] = imf_svc.source_label()
 
     # Indicateurs sociaux. Pour chacun, on prend la DERNIÈRE année réellement
     # disponible à la Banque Mondiale (API auto-actualisée) et on affiche CETTE
@@ -240,6 +307,10 @@ async def get_country_profile(country_code: str) -> CountryEconomicProfile:
         profile.projections["gai_2025_rank_africa"] = gai_data.get("rank_africa")
         profile.projections["gai_2025_rank_global"] = gai_data.get("rank_global")
         profile.projections["gai_2025_rating"] = gai_data.get("rating")
+        # Catégorie descriptive (un grade-lettre « A » seul, pour un score de
+        # 30/100, induisait en erreur) : libellé bilingue « Modérément attractif ».
+        profile.projections["gai_2025_category_fr"] = gai_data.get("category_fr")
+        profile.projections["gai_2025_category_en"] = gai_data.get("category_en")
         profile.projections["gai_2025_trend"] = gai_data.get("trend")
 
     # Notations réelles (S&P/Moody's/Fitch/Scope) présentes dans le dataset

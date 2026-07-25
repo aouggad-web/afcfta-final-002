@@ -66,11 +66,18 @@ def mock_oec(monkeypatch):
         }
 
     async def fake_get_oec_exports(iso3, year=2022, limit=100, hs_level="HS4"):
-        # Facteur 4 (historique d'export réel, voir _export_history_hs4) : par
-        # défaut aucun historique, pour rester hermétique. get_strategic_flows
-        # l'appelle inconditionnellement dès qu'un candidat tiers 3 existe — un
-        # test qui ne le stub pas atteindrait sinon le service OEC réel (jusqu'à
-        # son délai d'attente HTTP) même en environnement hors-réseau.
+        # Facteur 4 (historique d'export réel, voir _export_history_hs4) et
+        # position nette (facteur 5, voir _national_net_position) : par défaut
+        # aucun flux, pour rester hermétique. get_strategic_flows peut les
+        # appeler selon le flux d'exécution (dès qu'un candidat tiers 2/3
+        # existe) — un test qui ne les stub pas atteindrait sinon le service
+        # OEC réel (jusqu'à son délai d'attente HTTP) même hors-réseau.
+        return []
+
+    async def fake_get_oec_imports(iso3, year=2022, limit=100, hs_level="HS4"):
+        # Facteur 5 (position nette, voir _national_net_position) : aucun
+        # import par défaut -> le garde-fou « besoin national » ne bloque rien
+        # tant qu'un test ne simule pas explicitement un déficit.
         return []
 
     monkeypatch.setattr(
@@ -84,6 +91,7 @@ def mock_oec(monkeypatch):
         fake_import_index,
     )
     monkeypatch.setattr(mod.real_trade_service, "get_oec_exports", fake_get_oec_exports)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_imports", fake_get_oec_imports)
     # Lead time is corridor logistics — keep the test offline.
     monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 12)
 
@@ -139,7 +147,8 @@ def test_unido_discovered_flow_from_capacity():
 
 def test_self_market_is_excluded():
     res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
-    sugar_markets = [f["to"]["iso3"] for f in res["flows"] if f["hs_code"] == "170199"]
+    sugar = next(f for f in res["flows"] if f["hs_code"] == "170199")
+    sugar_markets = [m["iso3"] for m in sugar["markets"]]
     assert "DZA" not in sugar_markets  # exporter must never be its own market
 
 
@@ -150,9 +159,12 @@ def test_enrichment_fields_populated():
     # Tariff edge = chapter-17 MFN proxy (15%) minus AfCFTA preferential (0).
     assert adv["afcfta_tariff_edge"]["edge_pct"] == 15.0
     assert adv["rules_of_origin"] is not None  # RoO resolved (lazy-loaded)
-    assert adv["lead_time_days"] == 12
-    # 5-year demand trajectory has 5 points.
-    assert len(sugar["growth_trajectory"]["points"]) == 5
+    # Un flux = un produit, avec ses marchés importateurs listés (lead time par
+    # marché) — plus de carte dupliquée par destination, ni de graphe de demande.
+    assert sugar["markets"], "le produit doit lister ses marchés importateurs"
+    assert all(m["lead_time_days"] == 12 for m in sugar["markets"])
+    assert all(m["import_usd"] > 0 for m in sugar["markets"])
+    assert "growth_trajectory" not in sugar
 
 
 def test_summary_aggregation():
@@ -199,6 +211,87 @@ def test_no_fictitious_dairy_flow_for_burundi(monkeypatch):
 
     res = run(mod.get_strategic_flows("BDI", year=2024, lang="fr", limit=50))
     assert not any(f["hs_code"] == "040210" for f in res["flows"])
+
+
+def test_national_demand_excludes_dza_milk_powder_despite_real_capacity(monkeypatch):
+    """
+    Régression du cas signalé : l'Algérie ressortait comme exportatrice de
+    lait en poudre (SH 040210) alors qu'elle en IMPORTE plus d'1 Md$/an. Sa
+    production laitière est réelle (le facteur 2 « intrant corroboré » est
+    satisfait — même avec le projet Baladna, ~300 000 vaches) : le bug n'est
+    donc PAS un défaut de capacité de production, mais l'absence de contrôle
+    du besoin national. Le garde-fou « position nette » (facteur 5) doit
+    écarter ce flux même quand la capacité de production est authentique.
+    """
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Algérie"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        return {"040210": [{"iso3": "EGY", "value": 60_000_000, "quantity": 0}]}
+
+    async def fake_imports(iso3, year=2022, limit=100, hs_level="HS4"):
+        # Position nette DZA sur 040210 : grosse demande d'import réelle,
+        # aucun export en face -> importateur net flagrant.
+        return [{"hs_code": "040210", "product_name": "Milk powder", "trade_value": 1_050_000_000}]
+
+    async def fake_exports(iso3, year=2022, limit=100, hs_level="HS4"):
+        return []
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_imports", fake_imports)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_exports", fake_exports)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 15)
+    # Force la corroboration d'intrant laitier (facteur 2) à passer, pour
+    # isoler le garde-fou testé (facteur 5) — sans ce force, le SH4 laitier
+    # serait déjà exclu en amont par le facteur 2, et le test ne prouverait
+    # rien sur le nouveau garde-fou.
+    from services import unido_discovery_service as disco
+
+    monkeypatch.setattr(disco, "_input_corroborated", lambda iso3, hs4: True)
+
+    res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
+    assert not any(
+        f["hs_code"] == "040210" for f in res["flows"]
+    ), "l'Algérie ne doit jamais ressortir exportatrice d'un produit qu'elle importe massivement"
+
+
+def test_national_net_position_does_not_block_genuine_surplus_export(monkeypatch):
+    """
+    Contre-épreuve : un pays qui EXPORTE déjà largement plus qu'il n'importe
+    un produit (excédent réel) ne doit pas être bloqué par le garde-fou —
+    celui-ci cible spécifiquement le déficit nettement en faveur des imports.
+    """
+
+    async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
+        return {
+            "exporter": {"iso3": iso3, "name": "Algérie"},
+            "data_source": "TEST",
+            "opportunities": [],
+        }
+
+    async def fake_idx(year, hs_level="HS6", limit=100):
+        return {"170199": [{"iso3": "SEN", "value": 120_000_000, "quantity": 0}]}
+
+    async def fake_imports(iso3, year=2022, limit=100, hs_level="HS4"):
+        return [{"hs_code": "170199", "product_name": "Refined sugar", "trade_value": 2_000_000}]
+
+    async def fake_exports(iso3, year=2022, limit=100, hs_level="HS4"):
+        return [{"hs_code": "170199", "product_name": "Refined sugar", "trade_value": 80_000_000}]
+
+    monkeypatch.setattr(mod.real_substitution_service, "find_export_opportunities", fake_find)
+    monkeypatch.setattr(mod.real_substitution_service, "_build_african_import_index", fake_idx)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_imports", fake_imports)
+    monkeypatch.setattr(mod.real_trade_service, "get_oec_exports", fake_exports)
+    monkeypatch.setattr(mod, "_lead_time_days", lambda *a, **k: 12)
+
+    res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
+    assert any(f["hs_code"] == "170199" for f in res["flows"])
 
 
 def test_discovered_flow_potential_capped_by_sector_value_added(monkeypatch):
@@ -341,13 +434,13 @@ def test_no_duplicate_product_titles_across_champion_sh6_basket(monkeypatch):
     assert "151190" not in all_hs
 
 
-def test_discovered_flow_rationale_varies_by_market_not_templated(monkeypatch):
+def test_discovered_flow_lists_markets_in_one_card_not_duplicated(monkeypatch):
     """
-    Signalé en production : la rationale d'un flux découvert (tiers 3) était
-    un modèle unique où seuls le secteur/la VA/le produit variaient — deux
-    marchés du MÊME produit affichaient un paragraphe identique, sans mention
-    du marché ni de son volume réel. Chaque flux doit désormais porter sa
-    propre rationale (marché + demande réelle + niveau de confiance).
+    Méthode retenue : au lieu d'une carte par (produit × marché), UN flux par
+    produit qui LISTE ses marchés importateurs avec leur volume d'import réel.
+    Deux marchés du même produit (acier plat 720851) ne produisent donc plus
+    deux cartes, mais une seule carte à deux entrées de marché. La rationale
+    reste spécifique (premier marché + demande totale), jamais un modèle copié.
     """
 
     async def fake_find(iso3, year=2022, min_market_size=0, lang="fr"):
@@ -371,12 +464,16 @@ def test_discovered_flow_rationale_varies_by_market_not_templated(monkeypatch):
 
     res = run(mod.get_strategic_flows("DZA", year=2024, lang="fr", limit=50))
     steel = [f for f in res["flows"] if f["hs_code"] == "720851"]
-    assert len(steel) == 2
-    rationales = {f["strategic_rationale"] for f in steel}
-    assert len(rationales) == 2, "chaque marché doit porter une rationale distincte"
-    egy = next(f for f in steel if f["to"]["iso3"] == "EGY")
-    tun = next(f for f in steel if f["to"]["iso3"] == "TUN")
-    assert "Égypte" in egy["strategic_rationale"]
-    assert "Tunisie" in tun["strategic_rationale"]
-    assert "300 M$" in egy["strategic_rationale"]
-    assert "50 M$" in tun["strategic_rationale"]
+    assert len(steel) == 1, "un seul flux (carte) par produit, marchés listés dedans"
+    flow = steel[0]
+    markets = {m["iso3"]: m for m in flow["markets"]}
+    assert set(markets) == {"EGY", "TUN"}
+    assert markets["EGY"]["import_usd"] == 300_000_000
+    assert markets["TUN"]["import_usd"] == 50_000_000
+    # Marchés triés par volume d'import décroissant.
+    assert flow["markets"][0]["iso3"] == "EGY"
+    # Rationale spécifique : premier marché nommé + cadrage multi-marchés + volume.
+    rat = flow["strategic_rationale"]
+    assert "Égypte" in rat
+    assert "2 marchés" in rat
+    assert "300 M$" in rat

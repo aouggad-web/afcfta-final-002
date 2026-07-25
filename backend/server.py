@@ -15,6 +15,24 @@ _backend_dir = Path(__file__).parent
 if str(_backend_dir) not in sys.path:
     sys.path.insert(0, str(_backend_dir))
 
+# Ensure the repository root is on sys.path as well: backend services import the
+# top-level ``engine`` package (legal overrides, customs calculation), which is a
+# sibling of ``backend/`` and therefore invisible when the server is started with
+# ``cd backend && uvicorn server:app`` (start.sh, scripts/start.sh, .replit).
+#
+# Appended rather than inserted, deliberately. Position is irrelevant to
+# resolving ``engine``: neither ``engine/`` nor ``backend/engine/`` carries an
+# ``__init__.py``, so both are PEP 420 namespace portions that merge into one
+# ``engine.__path__`` whatever their order (and a regular ``engine`` package
+# installed in site-packages would win over both from any position, so moving
+# this entry earlier would not guard against that either). Appending does keep
+# the repository root behind site-packages, which matters: the root exposes
+# generically named directories (tests, data, docs, scripts, reports, ...) that
+# would shadow installed packages if they came first.
+_repo_root = _backend_dir.parent
+if str(_repo_root) not in sys.path:
+    sys.path.append(str(_repo_root))
+
 import logging
 import logging.config
 

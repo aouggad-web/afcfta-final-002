@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "country": "ZAF",
+  "generated_at": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "ZAF-SARS-VAT-GUIDE-20260725",
+      "official_title": "Value-Added Tax — types-of-tax guide page",
+      "institution": "South African Revenue Service (SARS)",
+      "text_number_and_year": "Value-Added Tax Act, 1991 (Act 89 of 1991), cited by the guide",
+      "html_url": "https://www.sars.gov.za/types-of-tax/value-added-tax/",
+      "pdf_url": null,
+      "publication_date": null,
+      "commencement_date": null,
+      "consolidation_date": "2026-07-25",
+      "sha256": "55642c16ad323d72418354b0c16614a6ad16e6da01b982b8c77a28114f9d1f7e",
+      "source_tier": "OFFICIAL_ADMINISTRATIVE_GUIDE",
+      "notes": "Page administrative (guide), pas le texte consolidé de la loi elle-même — même distinction que le statut guide_stale_rate_warning utilisé pour le Kenya. Le taux de 15% est cependant confirmé courant par plusieurs annonces datées sur la même page (12 mars 2025, 25 avril 2025, 27 avril 2025) relatant l'annulation de la hausse à 15.5%/16% initialement annoncée pour mai 2025/avril 2026. Le texte intégral de la loi (Value-Added Tax Act, 1991) n'a pas été localisé sur un portail public interrogeable dans le cadre de cette collecte."
+    },
+    {
+      "source_id": "ZAF-SARS-SCHEDULES-INDEX-20260725",
+      "official_title": "Schedules to the Customs and Excise Act, 1964 — index page",
+      "institution": "South African Revenue Service (SARS)",
+      "text_number_and_year": "Customs and Excise Act, 1964",
+      "html_url": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+      "pdf_url": null,
+      "publication_date": null,
+      "commencement_date": null,
+      "consolidation_date": "2026-07-23",
+      "sha256": "4ce515034f6263c387bd16078c15574e8da3ec57098d167e88ad84caa1271f71",
+      "source_tier": "OFFICIAL_INDEX",
+      "notes": "Confirme l'existence de Schedule No. 10 Part 8 (Accord ZLECAf, effectif 1er janvier 2021) et de Schedule No. 1 Part 1 (Ordinary Customs Duty, chapitres 1-99, mis à jour 24 juillet 2026 — la 'colonne AfCFTA' mentionnée en note (c) de Part 8 y figure, contenant les taux préférentiels ligne à ligne). Schedule No. 1 Part 1 n'a pas été téléchargé ni extrait dans cette collecte : c'est l'intégralité du tarif douanier national (99 chapitres), une extraction ligne à ligne fiable dépasse le périmètre de cette itération."
+    },
+    {
+      "source_id": "ZAF-SARS-SCH10-PART8-AFCFTA-20201231",
+      "official_title": "Agreement Establishing the African Continental Free Trade Area — Schedule No. 10 Part 8",
+      "institution": "South African Revenue Service (SARS) / National Treasury",
+      "text_number_and_year": "Government Notice No. R. 1433, Government Gazette No. 44049",
+      "html_url": "https://www.sars.gov.za/legal-lprim-ce-sch10p8-schedule-no-10-part-8/",
+      "pdf_url": "https://www.sars.gov.za/legal-lprim-ce-sch10p8-schedule-no-10-part-8/",
+      "publication_date": "2020-12-31",
+      "commencement_date": "2021-01-01",
+      "consolidation_date": "2020-12-31",
+      "sha256": "8b27435187a9429eb136fb21370095de34726e06c7904dd9fbe90220922fa570",
+      "source_tier": "OFFICIAL_GAZETTE_INSTRUMENT",
+      "notes": "PDF officiel de 12 Mo (texte intégral de l'Accord ZLECAf inséré au Schedule 10). Non archivé tel quel dans le dépôt (politique de poids — voir data/sources/south_africa/README.md) ; extrait de 80 lignes (page de couverture + citation légale) conservé sous extracted/. Le hash SHA-256 permet de vérifier une ré-collecte future. Ce document est le texte de l'Accord lui-même, PAS le barème de concessions ligne à ligne (voir Schedule No. 1 Part 1, non collecté)."
+    }
+  ]
+}
