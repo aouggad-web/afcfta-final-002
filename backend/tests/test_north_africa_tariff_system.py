@@ -15,8 +15,13 @@ import sys
 
 import pytest
 
-# Ensure backend is in path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+# Ensure backend is in path. os.path.normpath() résout le ".." AVANT insertion :
+# un chemin lexical non normalisé (".../backend/tests/..") ferait passer les
+# modules important __file__ à travers ce composant restant, faisant croire à
+# certains calculs de racine (ex. data_loader.ROOT_DIR = Path(__file__).parent.
+# parent) que la racine du dépôt est backend/tests plutôt que backend/.. —
+# cf. commit data_loader.py qui corrige ce même risque côté application.
+sys.path.insert(0, os.path.normpath(os.path.join(os.path.dirname(__file__), "..")))
 
 
 # ==================== Config Tests ====================

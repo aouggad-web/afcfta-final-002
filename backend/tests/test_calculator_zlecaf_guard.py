@@ -64,16 +64,28 @@ def test_response_exposes_honesty_status_fields(client):
     assert data["duty_status"] in ("PAYABLE", "INDICATIVE_MFN", "UNAVAILABLE")
 
 
-def test_customs_union_pair_is_zero_via_central_guard(client):
-    """Paire intra-union douanière (SACU) : droit ZLECAf 0 % et régime
-    CUSTOMS_UNION — résolu par le garde-fou central, pas un chemin parallèle."""
-    data = _calc(client, "BWA", "ZAF")
+def test_customs_union_eligibility_with_zero_npf_line(client):
+    """Éligibilité juridique : paire intra-union douanière (SACU) sur une
+    ligne déjà à 0 % NPF (chevaux vivants). Régime et taux garantis par le
+    garde-fou, mais 0 %→0 % n'est pas une réduction effective."""
+    data = _calc(client, "BWA", "ZAF", hs_code="010121")
     assert data["trade_regime"] == "CUSTOMS_UNION"
     assert data["trade_regime_code"] == "SACU"
     assert data["zlecaf_tariff_rate"] == 0.0
-    # preference_applied dépend de l'existence d'un droit NPF > 0 à réduire pour
-    # cette ligne (0→0 = rien à appliquer) : on ne l'assert pas ici, seul le
-    # régime CUSTOMS_UNION + le taux 0 % garantis par le garde-fou comptent.
+    assert data["normal_tariff_rate"] == 0.0
+    assert data["zlecaf_preference_applied"] is False  # rien à réduire
+
+
+def test_customs_union_reduction_with_nonzero_npf_line(client):
+    """Réduction économique effective : même union douanière (SACU), mais sur
+    une ligne à droit NPF non nul (corbillards, 20 % — donnée statique
+    sars.gov.za, stable quel que soit l'ordre d'exécution des tests)."""
+    data = _calc(client, "BWA", "ZAF", hs_code="870323")
+    assert data["trade_regime"] == "CUSTOMS_UNION"
+    assert data["trade_regime_code"] == "SACU"
+    assert data["normal_tariff_rate"] == pytest.approx(0.20)
+    assert data["zlecaf_tariff_rate"] == 0.0
+    assert data["zlecaf_preference_applied"] is True
 
 
 def test_non_ratified_origin_gets_no_preference(client):
