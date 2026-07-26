@@ -4,21 +4,52 @@
   "as_of": "2026-07-25",
   "vat_rates": [
     {
-      "record_id": "SLE-VAT-RATE-STANDARD-20100101",
-      "legal_product_description": "Standard rate of Value-Added Tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "normalized_product_description": "standard rate of value-added tax on the supply of goods and services by registered vendors, and on the importation of goods.",
+      "record_id": "SLE-VAT-RATE-STANDARD-20090901",
+      "legal_product_description": "Standard rate of Goods and Services Tax (GST — Sierra Leone's VAT-equivalent) on the supply of goods and services by registered vendors, and on the importation of goods.",
+      "normalized_product_description": "standard rate of goods and services tax on the supply of goods and services by registered vendors, and on the importation of goods.",
       "rate": "15%",
-      "rate_basis": "customs value plus duty (import); consideration (domestic)",
-      "effective_from": "2010-01-01",
+      "rate_basis": "GST-exclusive value of the taxable supply or import",
+      "effective_from": "2009-09-01",
       "effective_to": null,
       "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
       "supersedes_record_id": null,
-      "source_id": "SLE-JOURNAL-CGI",
-      "legal_reference": "General Tax Code, enacted 2010-01-01 (Official Gazette of the Republic of Sierra Leone). Rate confirmed current as of June 2026.",
-      "verification_status": "PENDING_OFFICIAL_CONSOLIDATION",
+      "source_id": "SLE-GOV-GST-ACT-2009",
+      "legal_reference": "Goods and Services Tax Act 2009, Section 14(3): « The rate of GST applicable to a taxable supply or import is— (a) if the supply or import is zero-rated under the First Schedule, zero per cent; (b) in any other case, 15 per cent. »",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
       "hs_codes_explicit": []
     }
   ],
   "vat_exemptions": [],
-  "vat_zero_rated": []
+  "vat_zero_rated": [
+    {
+      "record_id": "SLE-VAT-RATE-ZERO-EXPORTS-20090901",
+      "legal_product_description": "Export of goods excluding rutile and its by-products, iron ore, bauxite, gold, diamonds and other minerals",
+      "normalized_product_description": "exports of goods, excluding certain minerals",
+      "rate": "0%",
+      "rate_basis": "consideration",
+      "effective_from": "2009-09-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "SLE-GOV-GST-ACT-2009",
+      "legal_reference": "Goods and Services Tax Act 2009, First Schedule, item 1.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "SLE-VAT-RATE-ZERO-VESSEL-STORES-20090901",
+      "legal_product_description": "Goods shipped as stores on vessels and aircraft leaving Sierra Leone",
+      "normalized_product_description": "goods shipped as vessel/aircraft stores leaving the country",
+      "rate": "0%",
+      "rate_basis": "consideration",
+      "effective_from": "2009-09-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "SLE-GOV-GST-ACT-2009",
+      "legal_reference": "Goods and Services Tax Act 2009, First Schedule, item 2.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ]
 }

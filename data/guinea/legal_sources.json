@@ -4,32 +4,18 @@
   "as_of": "2026-07-25",
   "sources": [
     {
-      "source_id": "GIN-JOURNAL-CGI",
-      "title": "General Tax Code / VAT Act, as amended",
-      "institution": "Journal Officiel de la République de Guinée / Ministry of Finance",
-      "legal_date": "2012-01-01",
+      "source_id": "GIN-DGI-CGI-2022-2023",
+      "title": "Code Général des Impôts (General Tax Code), consolidated with 2023 Finance Law amendments",
+      "institution": "Ministère du Budget / Direction Générale des Impôts (DGI)",
+      "legal_date": "2022-01-01",
       "accessed_at": "2026-07-25",
-      "url": "https://www.impots.gouv.gn/",
-      "local_file": "official/gin-tax-code-consolidated.html",
-      "sha256": "pending_collection",
-      "coverage": "VAT standard rate (18%); excises; exemptions; zero-rated supplies",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Consolidated text via Journal Officiel de la République de Guinée. All amendments through June 2026."
-    },
-    {
-      "source_id": "GIN-FINANCE-LAW-2026",
-      "title": "Finance Law 2026",
-      "institution": "Ministry of Finance",
-      "legal_date": "2025-12-31",
-      "accessed_at": "2026-07-25",
-      "url": "https://www.impots.gouv.gn/",
-      "local_file": "official/gin-finance-law-2026.html",
-      "sha256": "pending_collection",
-      "coverage": "fiscal year 2026 tax rates; special levies; import duties",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Enacted December 2025; effective January 2026."
+      "url": "https://mbudget.gov.gn/wp-content/uploads/2022/05/Code-General-des-Impots-2022-2.pdf",
+      "local_file": "official/gin-cgi-2023.pdf",
+      "sha256": "0b29ebac94c892f385d4ed97c834d4a01f05ecc07678bcd3248f7aec92a2fe48",
+      "coverage": "VAT standard rate (Art. 373); zero-rated exports (Art. 373-II); VAT exemptions (Art. 362); excise duties on 16 product categories (Art. 435)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Adopted by law n°L/2021/032/AN of 4 July 2021, applicable since 1 January 2022, updated with the rectifying finance law of 24 September 2022 and the 2023 finance law of 28 December 2022. Downloaded directly from the official Ministère du Budget portal (mbudget.gov.gn), text-based PDF (not scanned)."
     }
   ]
 }

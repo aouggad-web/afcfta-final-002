@@ -4,32 +4,32 @@
   "as_of": "2026-07-25",
   "sources": [
     {
-      "source_id": "CPV-JOURNAL-CGI",
-      "title": "General Tax Code / VAT Act, as amended",
-      "institution": "Boletim Oficial da República / Ministry of Finance",
-      "legal_date": "2004-01-01",
+      "source_id": "CPV-MF-IVA-LEI-21-VI-2003",
+      "title": "Lei nº 21/VI/2003 de 14 de Julho — Regulamento do Imposto sobre o Valor Acrescentado (IVA)",
+      "institution": "Ministério das Finanças / Direção Nacional das Receitas de Estado",
+      "legal_date": "2003-07-14",
       "accessed_at": "2026-07-25",
-      "url": "https://www.dgci.cv/",
-      "local_file": "official/cpv-tax-code-consolidated.html",
-      "sha256": "pending_collection",
-      "coverage": "VAT standard rate (15%); excises; exemptions; zero-rated supplies",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Consolidated text via Boletim Oficial da República. All amendments through June 2026."
+      "url": "https://www.mf.gov.cv/documents/54571/591130/IVA.pdf",
+      "local_file": "official/cpv-iva-law-2003.pdf",
+      "sha256": "0c59c9208fd75ad1c213d898f64c052987a6a7fa2c2a895754f35c93f64412d4",
+      "coverage": "IVA standard rate (Art. 17); export/international transport exemptions with right to deduction (Art. 13)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Approved by the National Assembly 24 April 2003, promulgated 3 July 2003, in force since 1 January 2004. Downloaded directly from the official Ministério das Finanças portal (mf.gov.cv), text-based PDF (59 pages, not scanned)."
     },
     {
-      "source_id": "CPV-FINANCE-LAW-2026",
-      "title": "Finance Law 2026",
-      "institution": "Ministry of Finance",
-      "legal_date": "2025-12-31",
+      "source_id": "CPV-IGAE-ICE-LEI-22-VI-2003",
+      "title": "Lei nº 22/VI/2003 de 14 de Julho — Regulamento do Imposto sobre Consumos Especiais (ICE)",
+      "institution": "Instituto de Gestão da Administração Estatal (IGAE) / Ministério das Finanças",
+      "legal_date": "2003-07-14",
       "accessed_at": "2026-07-25",
-      "url": "https://www.dgci.cv/",
-      "local_file": "official/cpv-finance-law-2026.html",
-      "sha256": "pending_collection",
-      "coverage": "fiscal year 2026 tax rates; special levies; import duties",
-      "status": "source_pending_collection",
+      "url": "http://igae.cv/igae/wp-content/uploads/2019/04/Lei-22-VI-2003-de-14-de-Jul.-Regulamento-do-Imposto-sobre-Consumos-Especiais-2-Versões-Consolidadas.pdf",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "Unknown — download blocked",
+      "status": "source_blocked",
       "verification_status": "PENDING_COLLECTION",
-      "notes": "Enacted December 2025; effective January 2026."
+      "notes": "Cape Verde's excise-equivalent instrument (ICE), enacted the same day as the IVA law (Lei 21/VI/2003). The host igae.cv is not in this collection environment's network allowlist ('Host not in allowlist: igae.cv'), and mf.gov.cv does not appear to mirror this specific document. Deferred to a future collection cycle with a different network configuration."
     }
   ]
 }

@@ -4,32 +4,18 @@
   "as_of": "2026-07-25",
   "sources": [
     {
-      "source_id": "SLE-JOURNAL-CGI",
-      "title": "General Tax Code / VAT Act, as amended",
-      "institution": "Official Gazette of the Republic of Sierra Leone / Ministry of Finance",
-      "legal_date": "2010-01-01",
+      "source_id": "SLE-GOV-GST-ACT-2009",
+      "title": "The Goods and Services Tax Act, 2009 (No. 6 of 2009)",
+      "institution": "Government of Sierra Leone / Sierra Leone Gazette",
+      "legal_date": "2009-08-20",
       "accessed_at": "2026-07-25",
-      "url": "https://www.nra.org.sl/",
-      "local_file": "official/sle-tax-code-consolidated.html",
-      "sha256": "pending_collection",
-      "coverage": "VAT standard rate (15%); excises; exemptions; zero-rated supplies",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Consolidated text via Official Gazette of the Republic of Sierra Leone. All amendments through June 2026."
-    },
-    {
-      "source_id": "SLE-FINANCE-LAW-2026",
-      "title": "Finance Law 2026",
-      "institution": "Ministry of Finance",
-      "legal_date": "2025-12-31",
-      "accessed_at": "2026-07-25",
-      "url": "https://www.nra.org.sl/",
-      "local_file": "official/sle-finance-law-2026.html",
-      "sha256": "pending_collection",
-      "coverage": "fiscal year 2026 tax rates; special levies; import duties",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Enacted December 2025; effective January 2026."
+      "url": "https://www.sierra-leone.org/Laws/2009-06.pdf",
+      "local_file": "official/sle-gst-act-2009.pdf",
+      "sha256": "92ae099655fdf7ab7d96f88883f8f272ea08ff966690e5da094f196328c4bc27",
+      "coverage": "GST standard rate (Section 14); zero-rated exports and vessel/aircraft stores (First Schedule); exempt supplies (Second Schedule)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Published as Supplement to the Sierra Leone Gazette Vol. CXL, No. 37, dated 20 August 2009. Full text (Act No. 6 of 2009), text-based PDF, not scanned. Sierra Leone's VAT-equivalent instrument is named 'Goods and Services Tax' (GST), not 'VAT'."
     }
   ]
 }

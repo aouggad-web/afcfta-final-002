@@ -1,8 +1,14 @@
 """
 Vérifications d'intégrité de la collecte CEDEAO (8 nouveaux pays) :
 Cape Verde, Gambia, Ghana, Guinea, Liberia, Nigeria, Sierra Leone, Mauritania.
-Sources officielles localisées, taux de TVA enregistrés. Collecte délibérément
-partielle (VAT seule) — voir data/sources/{cpv,gmb,gha,gin,lbr,nga,sle,mrt}/README.md.
+
+Cape Verde, Guinea, Liberia, Sierra Leone et Mauritania ont depuis été vérifiés
+sur texte primaire officiel (archivé, SHA-256) dans des fichiers de test dédiés
+(test_cape_verde_source_collection.py, test_guinea_source_collection.py,
+test_liberia_source_collection.py, test_sierra_leone_source_collection.py,
+test_mauritania_source_collection.py) — même pattern que PR #312 pour l'EAC.
+Ce fichier ne couvre donc plus que les 3 pays encore en collecte placeholder :
+Gambia, Ghana, Nigeria — voir data/sources/{gmb,gha,nga}/README.md.
 """
 
 import csv
@@ -42,17 +48,9 @@ def _country_dirs(iso3: str) -> tuple:
 
 
 # ============================================================================
-# Individual country tests (quick checks per country)
+# Individual country tests (only countries still in placeholder collection —
+# CPV/GIN/LBR/SLE/MRT have dedicated verified test files, see module docstring)
 # ============================================================================
-
-
-def test_cpv_vat_standard_rate():
-    """Cape Verde : taux VAT standard 15%."""
-    data_dir, _ = _country_dirs("CPV")
-    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
-    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
-    assert standard["rate"] == _VAT_RATES["CPV"]
-    assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
 
 
 def test_gmb_vat_standard_rate():
@@ -71,44 +69,12 @@ def test_gha_vat_standard_rate():
     assert standard["rate"] == _VAT_RATES["GHA"]
 
 
-def test_gin_vat_standard_rate():
-    """Guinea : taux VAT standard 18%."""
-    data_dir, _ = _country_dirs("GIN")
-    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
-    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
-    assert standard["rate"] == _VAT_RATES["GIN"]
-
-
-def test_lbr_vat_standard_rate():
-    """Liberia : taux VAT standard 10%."""
-    data_dir, _ = _country_dirs("LBR")
-    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
-    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
-    assert standard["rate"] == _VAT_RATES["LBR"]
-
-
 def test_nga_vat_standard_rate():
     """Nigeria : taux VAT standard 7.5%."""
     data_dir, _ = _country_dirs("NGA")
     data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
     standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
     assert standard["rate"] == _VAT_RATES["NGA"]
-
-
-def test_sle_vat_standard_rate():
-    """Sierra Leone : taux VAT standard 15%."""
-    data_dir, _ = _country_dirs("SLE")
-    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
-    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
-    assert standard["rate"] == _VAT_RATES["SLE"]
-
-
-def test_mrt_vat_standard_rate():
-    """Mauritania : taux VAT standard 16%."""
-    data_dir, _ = _country_dirs("MRT")
-    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
-    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
-    assert standard["rate"] == _VAT_RATES["MRT"]
 
 
 # ============================================================================
@@ -185,9 +151,9 @@ def test_cedeao_vat_rates_vary_appropriately():
     assert "7.5%" in rates_found, "Nigeria 7.5% VAT should be present"
 
 
-def test_cedeao_all_pending_collection():
-    """Tous les nouveaux pays CEDEAO en statut PENDING_COLLECTION."""
-    for iso3 in ["CPV", "GMB", "GHA", "GIN", "LBR", "NGA", "SLE", "MRT"]:
+def test_cedeao_remaining_pending_collection():
+    """Les 3 pays CEDEAO non encore vérifiés restent en statut PENDING_COLLECTION."""
+    for iso3 in ["GMB", "GHA", "NGA"]:
         _, sources_dir = _country_dirs(iso3)
         with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
             rows = list(csv.DictReader(f))

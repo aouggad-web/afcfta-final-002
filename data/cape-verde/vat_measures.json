@@ -5,20 +5,36 @@
   "vat_rates": [
     {
       "record_id": "CPV-VAT-RATE-STANDARD-20040101",
-      "legal_product_description": "Standard rate of Value-Added Tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "normalized_product_description": "standard rate of value-added tax on the supply of goods and services by registered vendors, and on the importation of goods.",
+      "legal_product_description": "Standard rate of Imposto sobre o Valor Acrescentado (IVA) on the supply of goods and services, and on the importation of goods.",
+      "normalized_product_description": "standard rate of value-added tax on the supply of goods and services and on imports.",
       "rate": "15%",
-      "rate_basis": "customs value plus duty (import); consideration (domestic)",
+      "rate_basis": "consideration (domestic); customs value (import)",
       "effective_from": "2004-01-01",
       "effective_to": null,
       "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
       "supersedes_record_id": null,
-      "source_id": "CPV-JOURNAL-CGI",
-      "legal_reference": "General Tax Code, enacted 2004-01-01 (Boletim Oficial da República). Rate confirmed current as of June 2026.",
-      "verification_status": "PENDING_OFFICIAL_CONSOLIDATION",
+      "source_id": "CPV-MF-IVA-LEI-21-VI-2003",
+      "legal_reference": "Regulamento do IVA (Lei nº 21/VI/2003), Artigo 17º (Taxa do imposto): « A taxa do imposto é de 15%. »",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
       "hs_codes_explicit": []
     }
   ],
   "vat_exemptions": [],
-  "vat_zero_rated": []
+  "vat_zero_rated": [
+    {
+      "record_id": "CPV-VAT-RATE-ZERO-EXPORTS-20040101",
+      "legal_product_description": "Transmissões de bens expedidos ou transportados com destino ao estrangeiro (exports of goods dispatched or transported abroad)",
+      "normalized_product_description": "exports of goods dispatched or transported abroad",
+      "rate": "0%",
+      "rate_basis": "consideration",
+      "effective_from": "2004-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CPV-MF-IVA-LEI-21-VI-2003",
+      "legal_reference": "Regulamento do IVA (Lei nº 21/VI/2003), Artigo 13º-1(a) e (b): isenção com direito a dedução (exemption with right to deduction, i.e. zero-rating) para exportações.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ]
 }
