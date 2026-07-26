@@ -19,7 +19,11 @@
     "data_status": "PARTIAL",
     "reliability": "B",
     "source_name": "East African Community — EAC Common External Tariff 2022",
-    "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
+    "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+    "dd_source_id": "KE-KRA-EAC-CET-2022-30JUN",
+    "dd_source_sha256": "4c5acc8b4c0be2f0841d116064429381ba362e66b5c720b8bff16a4af7a53b49",
+    "dd_source_archive_file": "data/sources/kenya/official/kra-eac-cet-2022-30june.pdf",
+    "dd_source_verification_note": "Document source (EAC CET 2022, Legal Notice EAC/117/2022) archivé et haché le 2026-07-26 ; voir data/kenya/legal_sources.json. L'archivage documente le texte légal source, mais chaque taux DD individuel (par position SH6) n'a pas été re-vérifié ligne par ligne contre ce texte dans cette itération."
   },
   "tariff_lines": [
     {
