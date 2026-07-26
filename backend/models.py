@@ -97,6 +97,25 @@ class TariffCalculationResponse(BaseModel):
     tariff_precision: str = "chapter"  # sub_position, hs6_country, chapter
     sub_position_used: Optional[str] = None  # Code 8-12 chiffres si utilisé
     sub_position_description: Optional[str] = None
+    # ── Champs de statut d'honnêteté (additifs, ne cassent pas le contrat) ──
+    # Statut du droit de douane servi :
+    #   PAYABLE        → droit exigible issu d'une position tarifaire.
+    #   INDICATIVE_MFN → agrégat WITS/UNCTAD-TRAINS (moyenne MFN SH6, niveau 3) :
+    #                    information seulement, JAMAIS un droit exigible ni une
+    #                    base d'économie ZLECAf.
+    #   UNAVAILABLE    → aucun droit de douane trouvé dans la source officielle ;
+    #                    la valeur 0 affichée n'est PAS un taux vérifié (absence
+    #                    de donnée, pas un 0 % réel).
+    duty_status: str = "PAYABLE"
+    duty_notice: Optional[str] = None
+    dd_available: bool = True  # False = droit absent de la source (≠ 0 % vérifié)
+    # Régime commercial préférentiel effectivement appliqué, résolu par le
+    # garde-fou central (services.authentic_tariff_service.resolve_zlecaf_context) :
+    # CUSTOMS_UNION | ZLECAF | FTA_CONDITIONAL | NPF.
+    trade_regime: Optional[str] = None
+    trade_regime_code: Optional[str] = None  # SACU, UEMOA, ECOWAS, ZLECAF…
+    zlecaf_preference_applied: bool = False  # une préférence réduit-elle le droit ?
+    zlecaf_note: Optional[str] = None
     has_varying_sub_positions: bool = False  # Si d'autres taux existent pour ce HS6
     available_sub_positions_count: int = 0
     # WARNING: Taux variables selon sous-positions

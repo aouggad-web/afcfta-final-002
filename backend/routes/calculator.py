@@ -13,10 +13,8 @@ from etl.country_hs6_detailed import get_all_sub_positions, get_sub_position_rat
 from etl.country_hs6_tariffs import get_country_hs6_tariff
 from etl.country_tariffs_complete import (
     get_other_taxes_for_country,
-    get_product_category,
     get_tariff_rate_for_country,
     get_vat_rate_for_country,
-    get_zlecaf_reduction_factor,
 )
 from fastapi import APIRouter, HTTPException
 from models import TariffCalculationRequest, TariffCalculationResponse
@@ -189,6 +187,17 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     sub_position_description = None
     data_source = "etl_fallback"
 
+    # Valeurs par défaut sûres + champs de statut d'honnêteté (points 1 & 2).
+    normal_rate = 0.0
+    npf_source = "Aucune source tarifaire disponible"
+    vat_rate = 0.0
+    vat_source = ""
+    zlecaf_rate = 0.0
+    zlecaf_source = ""
+    dd_available = True  # False → droit absent de la source (≠ 0 % vérifié)
+    duty_status = "PAYABLE"  # PAYABLE | INDICATIVE_MFN | UNAVAILABLE
+    duty_notice = None
+
     collected_taxes_detail = []
     collected_fiscal_advantages = []
     collected_admin_formalities = []
@@ -210,6 +219,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             data_source = (
                 "crawled_partial_mfn_average" if is_partial_mfn_aggregate else "crawled_authentic"
             )
+            if is_partial_mfn_aggregate:
+                # WITS/TRAINS = agrégat MFN SH6 de niveau 3 → information seulement.
+                duty_status = "INDICATIVE_MFN"
             sub_position_used = crawled_result["code_raw"]
             sub_position_description = crawled_result["designation"]
             tariff_precision = (
@@ -249,7 +261,10 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             if dd_tax and dd_tax.get("rate_pct") is not None:
                 normal_rate = dd_tax["rate_pct"] / 100.0
             else:
+                # Aucun droit de douane dans la source officielle : ne PAS
+                # fabriquer un 0 % vérifié — signaler l'absence de donnée.
                 normal_rate = 0.0
+                dd_available = False
             if is_partial_mfn_aggregate:
                 npf_source = (
                     f"{crawled_result['source']} — moyenne MFN au niveau SH6, "
@@ -311,11 +326,6 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
                 for t in crawled_raw_taxes
             ]
 
-            product_category = get_product_category(hs6_code)
-            reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
-            zlecaf_rate = normal_rate * reduction_factor
-            zlecaf_source = f"ZLECAf ({product_category})"
-
     # ============================================================
     # PRIORITY 2: Collected ETL enriched data
     # ============================================================
@@ -335,15 +345,6 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             collected_taxes_detail = tariff_info.get("taxes_detail", [])
             collected_fiscal_advantages = tariff_info.get("fiscal_advantages", [])
             collected_admin_formalities = tariff_info.get("administrative_formalities", [])
-
-            zlecaf_rate_val, zlecaf_source = tariff_service.get_zlecaf_rate(dest_iso3, hs6_code)
-            if zlecaf_rate_val is not None:
-                zlecaf_rate = zlecaf_rate_val
-            else:
-                product_category = get_product_category(hs6_code)
-                reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
-                zlecaf_rate = normal_rate * reduction_factor
-                zlecaf_source = f"ZLECAf ({product_category})"
 
             vat_rate, vat_source = tariff_service.get_vat_rate(dest_iso3)
 
@@ -397,68 +398,71 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
                 normal_rate, npf_source = get_tariff_rate_for_country(dest_iso3, hs6_code)
                 tariff_precision = "chapter"
 
-        product_category = get_product_category(hs6_code)
-        reduction_factor = get_zlecaf_reduction_factor(dest_iso3, product_category)
-        zlecaf_rate = normal_rate * reduction_factor
-        zlecaf_source = f"ZLECAf ({product_category})"
-
         vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
         other_taxes_rate, other_taxes_detail = get_other_taxes_for_country(dest_iso3)
 
     # ============================================================
-    # DZA : calendrier de démantèlement ZLECAf authentique (circulaire DGD
-    # 482/2024) — remplace le facteur générique : dépend de la liste (A/B/C)
-    # du produit ET du régime appliqué au pays partenaire (seuls 9 pays ont
-    # déclenché l'application effective avec l'Algérie à ce jour).
+    # GARDE-FOU CENTRAL ZLECAf — SOURCE UNIQUE DE VÉRITÉ.
+    # Toutes les préférences ZLECAf passent désormais par
+    # resolve_zlecaf_context (services.authentic_tariff_service), qui encapsule
+    # dans un seul point de décision :
+    #   - offre nationale   : calendrier de démantèlement authentique (Algérie,
+    #                         circulaire DGD 482/2024) ;
+    #   - mise en œuvre     : ratification continentale (origine ET destination)
+    #                         + preuve d'application réelle du barème (implémenteurs
+    #                         actifs), une ratification seule ne suffisant pas ;
+    #   - réciprocité       : activation bilatérale (partenaires actifs DZA/ZAF)
+    #                         et unions douanières (SACU/EAC/CEMAC/UEMOA, 0 %) ;
+    #   - origine           : pays d'origine requis (certificat) — sinon NPF.
+    # Remplace les anciens chemins parallèles (DZA/ZAF/ratification traités en
+    # ligne) qui contournaient ce garde-fou (audit §4.4 / §8.1).
+    #
+    # Aucun taux ZLECAf générique n'est fabriqué : on ne transmet PAS de barème
+    # préférentiel par ligne non vérifié. Quand l'éligibilité est acquise mais
+    # qu'aucun barème par ligne n'est prouvé, le taux NPF est conservé et
+    # l'éligibilité est signalée (zlecaf_note), au lieu de transformer une
+    # donnée absente en 0 % (fallback interdit — point 1).
     # ============================================================
-    if dest_iso3 == "DZA":
-        from services.zlecaf_schedule_dza import compute_dza_zlecaf_rate
+    from services.authentic_tariff_service import resolve_zlecaf_context
 
-        _dza_rate, _dza_source = compute_dza_zlecaf_rate(
-            hs_code_clean, origin_country.get("iso3", ""), normal_rate
-        )
-        if _dza_rate is not None:
-            zlecaf_rate = _dza_rate
-            zlecaf_source = _dza_source
+    _zctx = resolve_zlecaf_context(
+        dest_iso3,
+        origin_country.get("iso3", "") if origin_country else "",
+        hs_code_clean,
+        round(normal_rate * 100, 6),
+        None,
+    )
+    _eff_dd_pct = _zctx["dd_rate_pct"]
+    if _eff_dd_pct is None:
+        _eff_dd_pct = round(normal_rate * 100, 6)
+    zlecaf_rate = _eff_dd_pct / 100.0
+    trade_regime = _zctx["trade_regime"]
+    trade_regime_code = _zctx["trade_regime_code"]
+    zlecaf_preference_applied = bool(_zctx["preference_applied"])
+    zlecaf_note = _zctx["trade_regime_note"] or _zctx["zlecaf_note"]
+    zlecaf_source = zlecaf_note or f"Régime {trade_regime}"
 
-    # ============================================================
-    # ZAF : partenaires ayant effectivement déclenché l'échange de
-    # préférences ZLECAf à l'importation en Afrique du Sud (hors SACU, qui
-    # relève d'un autre régime) — newsletter dtic/SARS, mars 2026.
-    # ============================================================
-    if dest_iso3 == "ZAF":
-        from services.zlecaf_schedule_zaf import zaf_partner_active
-
-        if not zaf_partner_active(origin_country.get("iso3", "")):
-            zlecaf_rate = normal_rate
-            zlecaf_source = (
-                f"ZLECAf ratifié mais échanges préférentiels pas encore activés "
-                f"avec l'Afrique du Sud (newsletter AfCFTA dtic/SARS, mars 2026) "
-                f"— taux NPF appliqué"
-            )
-
-    # ============================================================
-    # Statut de ratification continental (newsletter dtic/SARS, mars 2026) :
-    # un pays n'ayant pas ratifié l'Accord ZLECAf ne peut bénéficier d'aucune
-    # préférence, quel que soit le calendrier/facteur générique par ailleurs
-    # appliqué pour sa destination.
-    # ============================================================
-    from services.zlecaf_membership_status import STATUS_RATIFIED, ratification_status
-
-    _origin_status = ratification_status(origin_country.get("iso3", ""))
-    _dest_status = ratification_status(dest_country.get("iso3", ""))
-    if _origin_status != STATUS_RATIFIED or _dest_status != STATUS_RATIFIED:
-        _non_ratified_iso3 = (
-            origin_country.get("iso3", "")
-            if _origin_status != STATUS_RATIFIED
-            else dest_country.get("iso3", "")
-        )
-        _non_ratified_status = _origin_status if _origin_status != STATUS_RATIFIED else _dest_status
+    # WITS/UNCTAD-TRAINS : agrégat MFN de niveau 3 — information seulement. Un
+    # tel agrégat ne peut JAMAIS produire un droit exigible ni une économie
+    # ZLECAf calculée : on neutralise toute préférence sur cette base (point 2).
+    if duty_status == "INDICATIVE_MFN":
         zlecaf_rate = normal_rate
-        zlecaf_source = (
-            f"ZLECAf non applicable : {_non_ratified_iso3} "
-            f"({'non signataire' if _non_ratified_status == 'NOT_SIGNED' else 'signataire, non encore ratifié'}) "
-            f"— taux NPF appliqué"
+        zlecaf_preference_applied = False
+        zlecaf_note = (
+            "Base WITS/UNCTAD-TRAINS (moyenne MFN au niveau SH6, source de "
+            "niveau 3) : information seulement — aucun droit exigible ni "
+            "économie ZLECAf calculée."
+        )
+        zlecaf_source = zlecaf_note
+
+    # Droit de douane absent de la source : la valeur 0 n'est pas un taux
+    # vérifié — signaler explicitement l'absence de donnée (point 1).
+    if not dd_available:
+        duty_status = "UNAVAILABLE"
+        duty_notice = (
+            "Aucun droit de douane trouvé dans la source officielle pour cette "
+            "position : la valeur 0 affichée traduit une absence de donnée, non "
+            "un taux 0 % vérifié."
         )
 
     # Source for display — "Tarif officiel" ne doit jamais qualifier un agrégat
@@ -868,6 +872,14 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             collected_admin_formalities if collected_admin_formalities else None
         ),
         data_source=data_source,
+        # Champs de statut d'honnêteté (points 1-3)
+        duty_status=duty_status,
+        duty_notice=duty_notice,
+        dd_available=dd_available,
+        trade_regime=trade_regime,
+        trade_regime_code=trade_regime_code,
+        zlecaf_preference_applied=zlecaf_preference_applied,
+        zlecaf_note=zlecaf_note,
         rules_of_origin=rules,
         top_african_producers=top_producers,
         origin_country_data=wb_data.get(origin_country["wb_code"], {}),
