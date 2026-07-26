@@ -37,6 +37,43 @@ def load_crawled_position_index(country_iso3: str) -> dict:
             code = sp.get("hs_code", "").replace(".", "").replace(" ", "")
             if code:
                 index[code] = sp
+
+        # Second schema (SACU/ZAF-style crawl): top-level "positions", codes in
+        # code_clean/code_raw, taxes as a LIST of {code, name, rate_pct, ...}
+        # rather than sub_positions/hs_code/dict-of-code taxes (DZA-style
+        # above). Normalise into the same {code: {rate, name, source}} shape
+        # so downstream lookups (calculate_import_taxes) don't need to know
+        # which schema produced the entry.
+        for pos in data.get("positions", []):
+            code = (
+                (pos.get("code_clean") or pos.get("code_raw", "")).replace(".", "").replace(" ", "")
+            )
+            if not code or code in index:
+                continue
+            raw_taxes = pos.get("taxes", [])
+            normalized_taxes = {}
+            if isinstance(raw_taxes, list):
+                for t in raw_taxes:
+                    tax_code = t.get("code", "")
+                    if not tax_code:
+                        continue
+                    normalized_taxes[tax_code] = {
+                        "rate": t.get("rate_pct", 0),
+                        "name": t.get("name", tax_code),
+                        "source": t.get("source", data.get("source", "")),
+                    }
+            elif isinstance(raw_taxes, dict):
+                normalized_taxes = raw_taxes
+            index[code] = {
+                "hs_code": code,
+                "name": pos.get("designation", ""),
+                "description": pos.get("designation", ""),
+                "taxes": normalized_taxes,
+                "advantages": pos.get("fiscal_advantages", []),
+                "formalities": pos.get("administrative_formalities", []),
+                "source": pos.get("source", data.get("source", "")),
+            }
+
         _crawled_index_cache[country_iso3] = index
         logger.info(f"Loaded crawled position index for {country_iso3}: {len(index)} entries")
         return index
@@ -1215,10 +1252,16 @@ def calculate_import_taxes(
 
     if len(hs_code_clean) > 6:
         if crawled_sp_entry:
-            # Use crawled per-position DD rate (authentic, sourced from douane.gov.dz)
+            # Use crawled per-position DD rate (authentic, sourced per country).
+            # Match by canonical code (not the literal "DD" key) so aliases
+            # such as ZAF's "GENERAL" customs duty column are recognised too.
             crawled_taxes = crawled_sp_entry.get("taxes", {})
-            if "DD" in crawled_taxes:
-                dd_rate_pct = float(crawled_taxes["DD"].get("rate", dd_rate_pct))
+            _dd_key = next(
+                (k for k in crawled_taxes if _canonical_tax_code(k) == "DD"),
+                None,
+            )
+            if _dd_key:
+                dd_rate_pct = float(crawled_taxes[_dd_key].get("rate", dd_rate_pct))
         else:
             # Fall back to ETL tariff_lines sub_positions
             for sp in line.get("sub_positions", []):
