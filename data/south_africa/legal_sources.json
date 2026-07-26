@@ -44,6 +44,20 @@
       "sha256": "8b27435187a9429eb136fb21370095de34726e06c7904dd9fbe90220922fa570",
       "source_tier": "OFFICIAL_GAZETTE_INSTRUMENT",
       "notes": "PDF officiel de 12 Mo (texte intégral de l'Accord ZLECAf inséré au Schedule 10). Non archivé tel quel dans le dépôt (politique de poids — voir data/sources/south_africa/README.md) ; extrait de 80 lignes (page de couverture + citation légale) conservé sous extracted/. Le hash SHA-256 permet de vérifier une ré-collecte future. Ce document est le texte de l'Accord lui-même, PAS le barème de concessions ligne à ligne (voir Schedule No. 1 Part 1, non collecté)."
+    },
+    {
+      "source_id": "ZAF-SARS-SCH1P1-AFCFTA-COLUMN",
+      "official_title": "Schedule No. 1 Part 1 — Chapters 1 to 99 (Ordinary Customs Duty, including AfCFTA preferential column)",
+      "institution": "South African Revenue Service (SARS)",
+      "text_number_and_year": "Customs and Excise Act, 1964",
+      "html_url": "https://www.sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99-schedule-no-1-part-1-chapters-1-to-99/",
+      "pdf_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P1Chpt1-to-99-Schedule-No-1-Part-1-Chapters-1-to-99.pdf",
+      "publication_date": "2026-07-24",
+      "commencement_date": null,
+      "consolidation_date": "2026-07-24",
+      "sha256": "a5f331640c66d62fe75057658afc2532030e10bb9c8ecb0387a230c85f385bb9",
+      "source_tier": "OFFICIAL_GAZETTE_INSTRUMENT",
+      "notes": "PDF officiel (2.85 Mo) téléchargé et archivé intégralement le 2026-07-26 sous data/sources/south_africa/official/sars-schedule1-part1-chapters1-99.pdf. C'est le barème douanier ordinaire complet (99 chapitres) incluant la colonne de taux préférentiels AfCFTA ligne par ligne. Ce document est maintenant la preuve documentaire primaire pour le droit de douane sud-africain et pour l'offre nationale ZLECAf de niveau 2 (Tier 2). L'extraction structurée des ~5619 positions SH6 n'a PAS été réalisée dans cette itération — voir ZAF-SARS-SCH1P1-LINE-EXTRACTION dans data/sources/south_africa/inventory.csv. Tant que cette extraction n'existe pas, ZAF-SARS-SCH1P1-AFCFTA-COLUMN ne doit pas être cité comme source_id d'un enregistrement de taux dans vat_measures.json ou tout fichier équivalent."
     }
   ]
 }

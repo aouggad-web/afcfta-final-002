@@ -62,6 +62,27 @@ def test_archived_html_files_match_recorded_hashes():
         assert _sha256(path) == sources[source_id]["sha256"]
 
 
+def test_schedule1_part1_pdf_matches_recorded_hash():
+    """Le barème Schedule No. 1 Part 1 (droit de douane ordinaire + colonne
+    AfCFTA, 99 chapitres) archivé le 2026-07-26 doit correspondre exactement
+    au hash consigné dans le registre. Ce PDF est la preuve documentaire
+    primaire du CET sud-africain, mais son contenu n'est pas encore extrait
+    ligne à ligne (voir test_inventory_csv_has_required_columns_and_pending_row)."""
+    sources = {
+        s["source_id"]: s
+        for s in json.loads((_ZAF_DATA / "legal_sources.json").read_text(encoding="utf-8"))[
+            "sources"
+        ]
+    }
+    source = sources["ZAF-SARS-SCH1P1-AFCFTA-COLUMN"]
+    path = _ZAF_SOURCES / "official" / "sars-schedule1-part1-chapters1-99.pdf"
+    assert path.exists(), f"archive manquante : {path}"
+    assert _sha256(path) == source["sha256"]
+    assert (
+        path.stat().st_size > 1_000_000
+    ), "le PDF archivé doit être le document complet, pas un extrait"
+
+
 def test_afcfta_agreement_excerpt_exists_and_is_small():
     """Le PDF officiel (12 Mo) n'est pas archivé — seul un extrait de
     citation légale l'est, conformément à la politique de poids."""
