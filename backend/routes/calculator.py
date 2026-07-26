@@ -201,10 +201,20 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     if crawled_service.is_loaded():
         crawled_result = crawled_service.lookup(dest_iso3, hs_code_clean)
         if crawled_result:
-            data_source = "crawled_authentic"
+            # WITS/UNCTAD-TRAINS n'est qu'une source de niveau 3 (agrégat MFN
+            # SimpleAverage au SH6, pas une position tarifaire nationale) :
+            # ne jamais l'étiqueter comme un crawl national officiel vérifié.
+            is_partial_mfn_aggregate = (
+                crawled_result.get("source_quality") == "crawled_authentic_partial_national"
+            )
+            data_source = (
+                "crawled_partial_mfn_average" if is_partial_mfn_aggregate else "crawled_authentic"
+            )
             sub_position_used = crawled_result["code_raw"]
             sub_position_description = crawled_result["designation"]
-            tariff_precision = "national_position"
+            tariff_precision = (
+                "sh6_mfn_average_unverified" if is_partial_mfn_aggregate else "national_position"
+            )
             crawled_raw_taxes = crawled_result["taxes"]
             raw_advantages = crawled_result.get("fiscal_advantages", [])
             collected_fiscal_advantages = [
@@ -240,7 +250,14 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
                 normal_rate = dd_tax["rate_pct"] / 100.0
             else:
                 normal_rate = 0.0
-            npf_source = f"Source officielle: {crawled_result['source']}"
+            if is_partial_mfn_aggregate:
+                npf_source = (
+                    f"{crawled_result['source']} — moyenne MFN au niveau SH6, "
+                    f"source de niveau 3 (agrégateur), non une position tarifaire "
+                    f"nationale vérifiée"
+                )
+            else:
+                npf_source = f"Source officielle: {crawled_result['source']}"
 
             vat_tax = next(
                 (
@@ -257,6 +274,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             if vat_tax and vat_tax.get("rate_pct") is not None:
                 vat_rate = vat_tax["rate_pct"] / 100.0
                 vat_source = f"{vat_tax['name']} ({crawled_result['source']})"
+                vat_note = vat_tax.get("note", "")
+                if vat_note:
+                    vat_source = f"{vat_source} — {vat_note}"
             else:
                 vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
 
@@ -299,7 +319,10 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # ============================================================
     # PRIORITY 2: Collected ETL enriched data
     # ============================================================
-    if data_source != "crawled_authentic" and tariff_service.is_loaded():
+    if (
+        data_source not in ("crawled_authentic", "crawled_partial_mfn_average")
+        and tariff_service.is_loaded()
+    ):
         tariff_info = tariff_service.get_tariff_precision_info(dest_iso3, hs_code_clean)
         if tariff_info:
             normal_rate = tariff_info["rate"]
@@ -350,7 +373,11 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # ============================================================
     # PRIORITY 3: ETL modules (fallback)
     # ============================================================
-    if data_source not in ("crawled_authentic", "collected_verified"):
+    if data_source not in (
+        "crawled_authentic",
+        "crawled_partial_mfn_average",
+        "collected_verified",
+    ):
         if len(hs_code_clean) > 6:
             rate, description, source = get_sub_position_rate(dest_iso3, hs_code_clean)
             if rate is not None:
@@ -434,8 +461,12 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             f"— taux NPF appliqué"
         )
 
-    # Source for display
-    rate_source = f"Tarif officiel {dest_iso3} - {npf_source}"
+    # Source for display — "Tarif officiel" ne doit jamais qualifier un agrégat
+    # de niveau 3 (WITS/TRAINS) : npf_source porte déjà l'avertissement dans ce cas.
+    if data_source == "crawled_partial_mfn_average":
+        rate_source = npf_source
+    else:
+        rate_source = f"Tarif officiel {dest_iso3} - {npf_source}"
 
     # Transition period by sector
     tariff_corrections = get_tariff_corrections()

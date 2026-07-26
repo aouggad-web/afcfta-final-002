@@ -98,10 +98,14 @@ class CrawledDataService:
             code_idx = {}
             hs6_idx = {}
 
+            file_source_quality = data.get("source_quality", "")
+
             for pos in positions:
                 normalized = self._normalize_position(country_code, pos)
                 if not normalized:
                     continue
+
+                normalized["source_quality"] = file_source_quality
 
                 code_clean = normalized["code_clean"]
                 code_idx[code_clean] = normalized
