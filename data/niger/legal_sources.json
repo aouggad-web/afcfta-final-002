@@ -4,32 +4,32 @@
   "as_of": "2026-07-25",
   "sources": [
     {
-      "source_id": "NER-JOURNAL-CGI",
-      "title": "Code Général des Impôts (General Tax Code), as amended",
-      "institution": "Journal Officiel du Niger / Ministry of Finance",
-      "legal_date": "2012-01-01",
+      "source_id": "NER-DGI-CGI-2023",
+      "title": "Code Général des Impôts (General Tax Code) — Edition 2023",
+      "institution": "Direction Générale des Impôts (DGI) — République du Niger",
+      "legal_date": "2023-01-01",
       "accessed_at": "2026-07-25",
-      "url": "https://www.impots.ner/",
-      "local_file": "official/ner-cgi-consolidated.html",
-      "sha256": "pending_collection",
-      "coverage": "VAT standard rate (18%); excises; exemptions; zero-rated supplies",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Consolidated text via Journal Officiel du Niger. All amendments through June 2026."
+      "url": "https://www.dgi.ne/code-general-impots",
+      "local_file": "official/ner-cgi-2023.pdf",
+      "sha256": "8ec137bffded7f6f2c3372418fd1ca958c120013e2e82799c51d5f30ce818082",
+      "coverage": "VAT standard rate (19%); reduced rates; exemptions; zero-rated supplies; import VAT",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "PDF 4.7 MB, downloaded 2026-07-25 from profisc.net mirror (official DGI portal injoignable 2026-07-25). Consolidated text effective 2023. VAT standard rate at Article 226. Excise duties not extracted in this cycle. Secondary mirror eregulations.org also available (SHA-256: fb5fb8af7db7994f59a4434952c625582c2807c23d0263b1712a7fa6e84bf750) for verification."
     },
     {
-      "source_id": "NER-FINANCE-LAW-2026",
-      "title": "Finance Law 2026",
-      "institution": "Ministry of Finance",
-      "legal_date": "2025-12-31",
+      "source_id": "NER-DOUANES-TARIFF-2026",
+      "title": "Customs Tariff Guide 2026",
+      "institution": "Direction Générale des Douanes — République du Niger",
+      "legal_date": "2026-01-01",
       "accessed_at": "2026-07-25",
-      "url": "https://www.finances.ner/",
-      "local_file": "official/ner-finance-law-2026.html",
-      "sha256": "pending_collection",
-      "coverage": "fiscal year 2026 tax rates; special levies; import duties",
+      "url": "https://www.douanes.ne/tarif",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
       "status": "source_pending_collection",
       "verification_status": "PENDING_COLLECTION",
-      "notes": "Enacted December 2025; effective January 2026."
+      "notes": "Awaiting confirmation of public accessibility and consolidated text availability."
     }
   ]
 }

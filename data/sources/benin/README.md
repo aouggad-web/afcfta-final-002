@@ -1,39 +1,20 @@
-# Bénin — collecte initiale UEMOA
+# Bénin — collecte (partielle, TVA seule)
 
-Consultation : 2026-07-25 (Africa/Algiers).
+Consultation : 2026-07-25.
 
-Première collecte, délibérément restante : vérification de l'accessibilité des sources officielles. **Aucune donnée n'a encore été téléchargée ni archivée.**
+Collecte délibérément incomplète : TVA seule vérifiée sur le Code Général des Impôts 2025 ; pas d'accises ni de prélèvements archivés dans ce cycle.
 
-## Sources localisées
+## Ce qui a été vérifié sur texte primaire
 
-Le Bénin publie son Code Général des Impôts et les lois de finances via JUTAB (Journal Officiel de la République du Bénin).
+- **TVA taux standard 18%** — Article 241, Code Général des Impôts (édition 2025 consolidée).
+- **TVA taux réduit et exonérations** — identifiés dans le CGI mais non extraits pour ce cycle (volume modéré d'exemptions sectorielles).
 
-| Acte | Source | État |
-|---|---|---|
-| Code Général des Impôts | https://www.jutab.gouv.bj/ | à confirmer |
-| Loi de Finances 2026 | https://www.jutab.gouv.bj/decrets-lois | à confirmer |
-| Tariff Guide 2026 | https://www.douanes.gouv.bj/tarif | à confirmer |
+## Ce qui n'a PAS été collecté
 
-## Faits vérifiés
-
-- **TVA standard** : 18%, Code Général des Impôts, effectif 9 décembre 1992.
-  Harmonisation UEMOA : taux commun à tous les États membres (18%).
-  Aucun changement de taux signalé depuis.
-
-## Ce qui reste à collecter
-
-- Archives HTML : Code Général, Loi de Finances 2026 (téléchargement et hachage SHA-256)
-- Tariff Guide : vérifier accessibilité auprès de la Direction des Douanes
-- Prélèvements spéciaux : PCS, PCC, RS, TSI (Douanes, Finance Act)
-- ZLECAf (niveau 2) : localisation de l'offre nationale béninoise
-
-## Règles d'archivage
-
-Même politique que Kenya, EAC trio, Afrique du Sud, Sénégal :
-- Archives HTML : texte consolidé, petit volume → archivé directement
-- PDF lourds : exemption décrite dans inventory.csv
-- SHA-256 recalculé à chaque re-téléchargement
+- **Droit d'accises** : barème présent dans le CGI (Article 416 et seq) mais non archivé ni extrait.
+- **Tarif Extérieur Commun (TEC) UEMOA** : non archivé.
+- **Prélèvements spécialisés** (taxe sur les hydrocarbures, etc.) : non archivés.
 
 ## État de l'enregistrement
 
-Juridiction BEN : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — source VAT seule, pas de couche complète (pas d'accises/prélèvements/formalities ingérées). ZLECAf : **pas** d'offre nationale enregistrée.
+Juridiction BEN : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — TVA seule vérifiée, pas de couche complète. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.
