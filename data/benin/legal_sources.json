@@ -12,10 +12,10 @@
       "url": "https://www.impots.bj/code-general-impots",
       "local_file": "official/ben-cgi-2025.pdf",
       "sha256": "c34a3539c25e4aab577508a2e7e95076360b2ebca6cc2403026d315805f4b0ba",
-      "coverage": "VAT standard rate (18%); reduced rates; exemptions; zero-rated supplies; import VAT; excise duties (partial — barème by product category)",
+      "coverage": "VAT standard rate (18%); reduced rates; exemptions; zero-rated supplies; import VAT",
       "status": "official_downloaded",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "notes": "PDF 1.1 MB, downloaded 2026-07-25 from official DGI portal. Consolidated text effective 2025. Article 403 et seq (VAT rates), Article 416 et seq (excise duties)."
+      "notes": "PDF 1.1 MB, downloaded 2026-07-25 from official DGI portal. Consolidated text effective 2025. VAT standard rate at Article 241. Excise duties not extracted in this cycle."
     },
     {
       "source_id": "BEN-DOUANES-TARIFF-2026",

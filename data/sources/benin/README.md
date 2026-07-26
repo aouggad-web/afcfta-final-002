@@ -17,4 +17,4 @@ Collecte délibérément incomplète : TVA seule vérifiée sur le Code Généra
 
 ## État de l'enregistrement
 
-Juridiction BEN : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — TVA seule vérifiée, pas de couche complète. ZLECAf : **pas** d'offre nationale encore registrée dans `NATIONAL_OFFER_REGISTRY`.
+Juridiction BEN : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — TVA seule vérifiée, pas de couche complète. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.

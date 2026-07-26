@@ -1,11 +1,9 @@
 """
 Vérifications d'intégrité de la collecte Bénin (UEMOA, lot 2) :
-TVA et accises, vérifiées sur le Code Général des Impôts 2025 (édition consolidée),
-archivé et haché. Taux standard 18% (Art. 241) + accises représentatives
-(bière, cigarettes, carburants).
+TVA seule, vérifiée sur le Code Général des Impôts 2025 (édition consolidée),
+archivé et haché. Pas d'accises, pas de prélèvements collectés dans ce cycle.
 
-Collecte délibérément incomplète : taux réduit non extrait; droits complémentaires
-(PCS, prélèvements) déférés.
+Collecte délibérément incomplète : taux réduit est listé mais non extrait.
 BEN n'est donc pas enregistrée dans SUPPORTED_JURISDICTIONS ni dans
 NATIONAL_OFFER_REGISTRY. Voir data/sources/benin/README.md.
 """
@@ -41,13 +39,19 @@ def test_ben_legal_sources_reference_valid_source_ids():
 
 
 def test_ben_archived_cgi_hash_matches_inventory():
-    """Le CGI 2025 archivé correspond au SHA-256 déclaré."""
+    """Le CGI 2025 archivé correspond au SHA-256 déclaré dans legal_sources.json et inventory.csv."""
     sources = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
     primary = next(s for s in sources if s["source_id"] == "BEN-DGI-CGI-2025")
     archive_path = _SOURCES_DIR / primary["local_file"]
     assert archive_path.exists(), "CGI 2025 archivé manquant"
     actual_hash = hashlib.sha256(archive_path.read_bytes()).hexdigest()
     assert actual_hash == primary["sha256"]
+
+    with open(_SOURCES_DIR / "inventory.csv", encoding="utf-8", newline="") as f:
+        rows = list(csv.DictReader(f))
+    inventory_row = next(r for r in rows if r["id"] == "BEN-DGI-CGI-2025")
+    assert inventory_row["sha256"] == primary["sha256"]
+    assert inventory_row["local_file"] == primary["local_file"]
 
 
 def test_ben_legal_sources_structure():
@@ -109,47 +113,3 @@ def test_ben_has_no_fabricated_afcfta_offer():
 
     assert "BEN" not in NATIONAL_OFFER_REGISTRY
     assert check_conformity("BEN")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
-
-
-def test_ben_excise_measures_exist():
-    """excise_measures.json existe et contient accises représentatives."""
-    excise_path = _DATA_DIR / "excise_measures.json"
-    assert excise_path.exists(), "excise_measures.json manquant"
-    data = json.loads(excise_path.read_text(encoding="utf-8"))
-    assert isinstance(data, list)
-    assert len(data) >= 4, "Au minimum 4 lignes accise (bière, cigarettes, essence, gazole)"
-
-
-def test_ben_excise_beer_rate():
-    """Bénin : accise bière locale 25% (CGI, chapitre accises)."""
-    excise_path = _DATA_DIR / "excise_measures.json"
-    data = json.loads(excise_path.read_text(encoding="utf-8"))
-    beer_local = next(
-        (r for r in data if "BEER" in r["record_id"] and "LOCAL" in r["record_id"]),
-        None,
-    )
-    assert beer_local is not None, "Accise bière locale manquante"
-    assert beer_local["rate"] == 25
-    assert beer_local["verification_status"] == "PENDING_COLLECTION"
-
-
-def test_ben_excise_cigarettes_rate():
-    """Bénin : accise cigarettes 50% (CGI, chapitre accises)."""
-    excise_path = _DATA_DIR / "excise_measures.json"
-    data = json.loads(excise_path.read_text(encoding="utf-8"))
-    cigarettes = next((r for r in data if "CIGARETTES" in r["record_id"]), None)
-    assert cigarettes is not None, "Accise cigarettes manquante"
-    assert cigarettes["rate"] == 50
-    assert cigarettes["verification_status"] == "PENDING_COLLECTION"
-
-
-def test_ben_excise_fuel_rates():
-    """Bénin : accises carburants essence 45% / gazole 30%."""
-    excise_path = _DATA_DIR / "excise_measures.json"
-    data = json.loads(excise_path.read_text(encoding="utf-8"))
-    gasoline = next((r for r in data if "GASOLINE" in r["record_id"]), None)
-    diesel = next((r for r in data if "DIESEL" in r["record_id"]), None)
-    assert gasoline is not None, "Accise essence manquante"
-    assert diesel is not None, "Accise gazole manquante"
-    assert gasoline["rate"] == 45
-    assert diesel["rate"] == 30

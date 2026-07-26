@@ -21,4 +21,4 @@ Portail DGI officiel (dgi.ne) injoignable (403 timeout) lors de la collecte (202
 
 ## État de l'enregistrement
 
-Juridiction NER : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — TVA seule vérifiée, pas de couche complète. ZLECAf : **pas** d'offre nationale encore registrée dans `NATIONAL_OFFER_REGISTRY`.
+Juridiction NER : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — TVA seule vérifiée, pas de couche complète. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.

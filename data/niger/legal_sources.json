@@ -12,10 +12,10 @@
       "url": "https://www.dgi.ne/code-general-impots",
       "local_file": "official/ner-cgi-2023.pdf",
       "sha256": "8ec137bffded7f6f2c3372418fd1ca958c120013e2e82799c51d5f30ce818082",
-      "coverage": "VAT standard rate (19%); reduced rates; exemptions; zero-rated supplies; import VAT; excise duties (barème by product category and origin)",
+      "coverage": "VAT standard rate (19%); reduced rates; exemptions; zero-rated supplies; import VAT",
       "status": "official_downloaded",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "notes": "PDF 4.7 MB, downloaded 2026-07-25 from profisc.net mirror (official DGI portal injoignable 2026-07-25). Consolidated text effective 2023. Article 521 et seq (VAT rates), Article 603 et seq (excise duties). Secondary mirror eregulations.org also available (SHA-256: fb5fb8af7db7994f59a4434952c625582c2807c23d0263b1712a7fa6e84bf750) for verification."
+      "notes": "PDF 4.7 MB, downloaded 2026-07-25 from profisc.net mirror (official DGI portal injoignable 2026-07-25). Consolidated text effective 2023. VAT standard rate at Article 226. Excise duties not extracted in this cycle. Secondary mirror eregulations.org also available (SHA-256: fb5fb8af7db7994f59a4434952c625582c2807c23d0263b1712a7fa6e84bf750) for verification."
     },
     {
       "source_id": "NER-DOUANES-TARIFF-2026",
