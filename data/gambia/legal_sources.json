@@ -1,21 +1,21 @@
 {
   "schema_version": "1.0",
   "country": "GMB",
-  "as_of": "2026-07-25",
+  "as_of": "2026-07-26",
   "sources": [
     {
-      "source_id": "GMB-JOURNAL-CGI",
-      "title": "General Tax Code / VAT Act, as amended",
-      "institution": "Official Gazette of the Republic of The Gambia / Ministry of Finance",
-      "legal_date": "2011-01-01",
-      "accessed_at": "2026-07-25",
-      "url": "https://www.gra.gm/",
-      "local_file": "official/gmb-tax-code-consolidated.html",
-      "sha256": "pending_collection",
-      "coverage": "VAT standard rate (15%); excises; exemptions; zero-rated supplies",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Consolidated text via Official Gazette of the Republic of The Gambia. All amendments through June 2026."
+      "source_id": "GMB-GRA-VAT-BROCHURE",
+      "title": "Value Added Tax Brochure (FAQ)",
+      "institution": "Gambia Revenue Authority (GRA)",
+      "legal_date": "2013-01-01",
+      "accessed_at": "2026-07-26",
+      "url": "https://www.gra.gm/download-file/8d0cfa28-d217-11ed-9b31-029254d29bb1",
+      "local_file": "official/gmb-gra-vat-brochure.pdf",
+      "sha256": "e4c9a393e8ac62851d32c170c244685b986cd3c520495bd3227e1da6d2937cfd",
+      "coverage": "VAT standard rate 15%; zero-rating on exports; registration thresholds; exempt supplies list; filing obligations",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_OFFICIAL_GUIDE",
+      "notes": "3-page official brochure downloaded 2026-07-26 from gra.gm (official GRA domain). Names the governing Act (\"Income and Value Added Tax Act 2012\") but does not cite a specific section number for the rate itself — an agency-published guide, not the raw statute text (same category as ZAF-SARS-VAT-GUIDE precedent). Full primary statute text not located/archived in this cycle (National Assembly of The Gambia and gambialii.org were unreachable from this environment — proxy tunnel failures, not confirmed server-side blocks). Corrects a prior placeholder that fabricated a 2011-01-01 date and cited a nonexistent generic \"General Tax Code\"."
     },
     {
       "source_id": "GMB-FINANCE-LAW-2026",
@@ -23,13 +23,13 @@
       "institution": "Ministry of Finance",
       "legal_date": "2025-12-31",
       "accessed_at": "2026-07-25",
-      "url": "https://www.gra.gm/",
-      "local_file": "official/gmb-finance-law-2026.html",
-      "sha256": "pending_collection",
+      "url": null,
+      "local_file": null,
+      "sha256": null,
       "coverage": "fiscal year 2026 tax rates; special levies; import duties",
       "status": "source_pending_collection",
       "verification_status": "PENDING_COLLECTION",
-      "notes": "Enacted December 2025; effective January 2026."
+      "notes": "Not located in this cycle (previous URL, gra.gm generic root, was not a real citation for this specific instrument)."
     }
   ]
 }

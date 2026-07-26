@@ -1,21 +1,21 @@
 {
   "schema_version": "1.0",
   "country": "TGO",
-  "as_of": "2026-07-25",
+  "as_of": "2026-07-26",
   "vat_rates": [
     {
-      "record_id": "TGO-VAT-RATE-STANDARD-20120101",
-      "legal_product_description": "Standard rate of Value-Added Tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "normalized_product_description": "standard rate of value-added tax on the supply of goods and services by registered vendors, and on the importation of goods.",
+      "record_id": "TGO-VAT-RATE-STANDARD-20170101",
+      "legal_product_description": "Standard rate of Taxe sur la Valeur Ajoutée (TVA) applicable to all activities and products, except those exempted by Article 311 of the Code Général des Impôts.",
+      "normalized_product_description": "standard rate of taxe sur la valeur ajoutee (tva) applicable to all activities and products, except those exempted by article 311 of the code general des impots.",
       "rate": "18%",
       "rate_basis": "customs value plus duty (import); consideration (domestic)",
-      "effective_from": "2012-01-01",
+      "effective_from": "2017-01-01",
       "effective_to": null,
       "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
       "supersedes_record_id": null,
-      "source_id": "TGO-JOURNAL-CGI",
-      "legal_reference": "Code Général des Impôts (General Tax Code), enacted 2012-01-01 (Journal Officiel de la République); UEMOA harmonization rate (18%). Rate confirmed current as of June 2026.",
-      "verification_status": "PENDING_OFFICIAL_CONSOLIDATION",
+      "source_id": "TGO-OTR-CAHIER-FISCAL-2017",
+      "legal_reference": "Code Général des Impôts, Article 323 : « Le taux de la taxe sur la valeur ajoutée est un taux de 18% applicable à toutes les activités et à tous [les produits], à l'exception de ceux exonérés en vertu de l'article 311. »",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
       "hs_codes_explicit": []
     }
   ],

@@ -4,18 +4,18 @@
   "as_of": "2026-07-25",
   "sources": [
     {
-      "source_id": "GHA-JOURNAL-CGI",
-      "title": "General Tax Code / VAT Act, as amended",
-      "institution": "Ghana Official Gazette / Ministry of Finance",
-      "legal_date": "2007-03-01",
-      "accessed_at": "2026-07-25",
-      "url": "https://www.gra.gov.gh/",
-      "local_file": "official/gha-tax-code-consolidated.html",
-      "sha256": "pending_collection",
-      "coverage": "VAT standard rate (15%); excises; exemptions; zero-rated supplies",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Consolidated text via Ghana Official Gazette. All amendments through June 2026."
+      "source_id": "GHA-GRA-VAT-ACT-870-2013",
+      "title": "Value Added Tax Act, 2013 (Act 870)",
+      "institution": "Ghana Revenue Authority (GRA)",
+      "legal_date": "2013-12-31",
+      "accessed_at": "2026-07-26",
+      "url": "https://gra.gov.gh/wp-content/uploads/2020/09/vat_act_870.pdf",
+      "local_file": "official/gha-vat-act-2013-act870-gra.pdf",
+      "sha256": "32aa74aad647b525288e899a4c1a7084e38ad89040e0928b41be4b9f65a46408",
+      "coverage": "VAT standard rate (15%, Section 3); full Act text (registration, exemptions, zero-rating, administration)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "PDF downloaded 2026-07-26 directly from gra.gov.gh (official GRA domain). Full Act text extracted and confirmed by pdftotext. This corrects a prior placeholder that fabricated a domain-independent \"Ghana Official Gazette\" citation with sha256=pending_collection and a wrong effective date (2007-03-01)."
     },
     {
       "source_id": "GHA-FINANCE-LAW-2026",

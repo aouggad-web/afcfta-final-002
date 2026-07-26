@@ -1,35 +1,35 @@
 {
   "schema_version": "1.0",
   "country": "NGA",
-  "as_of": "2026-07-25",
+  "as_of": "2026-07-26",
   "sources": [
     {
-      "source_id": "NGA-JOURNAL-CGI",
-      "title": "General Tax Code / VAT Act, as amended",
-      "institution": "Federal Gazette of Nigeria / Ministry of Finance",
-      "legal_date": "2020-02-01",
-      "accessed_at": "2026-07-25",
-      "url": "https://firs.gov.ng/",
-      "local_file": "official/nga-tax-code-consolidated.html",
-      "sha256": "pending_collection",
-      "coverage": "VAT standard rate (7.5%); excises; exemptions; zero-rated supplies",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Consolidated text via Federal Gazette of Nigeria. All amendments through June 2026."
+      "source_id": "NGA-NASS-TAX-ACT-2025",
+      "title": "Nigeria Tax Act, 2025 (Act No. 7)",
+      "institution": "National Assembly of the Federal Republic of Nigeria / Federal Government Printer",
+      "legal_date": "2025-06-26",
+      "accessed_at": "2026-07-26",
+      "url": "https://nass.gov.ng/documents/download/11249",
+      "local_file": "official/nga-tax-act-2025-official-gazette.pdf",
+      "sha256": "41abf6887bc58a3c97116fd9a048aa91ad49c1cab156f39065a58401c0fce94f",
+      "coverage": "VAT standard rate 7.5% (Section 147); full Act text (Companies Income Tax, Personal Income Tax, VAT, Capital Gains Tax, Petroleum profits, administration)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Federal Republic of Nigeria Official Gazette No. 117, Vol. 112, Lagos, published as supplement dated 26 June 2025 (date printed on the Gazette cover; Act signed by the President the same day per contemporaneous reporting). Commencement clause on the Act itself reads \"[1st January, 2026]\". This is a wholesale tax-code reform: the Nigeria Tax Act, 2025 repeals and consolidates several prior statutes, including the Value Added Tax Act, Cap V1 LFN 2004 (as amended). Downloaded 2026-07-26 directly from nass.gov.ng (National Assembly official domain). This corrects a prior placeholder that fabricated a \"General Tax Code\" citation (sha256=pending_collection) against a repealed instrument."
     },
     {
-      "source_id": "NGA-FINANCE-LAW-2026",
-      "title": "Finance Law 2026",
-      "institution": "Ministry of Finance",
-      "legal_date": "2025-12-31",
-      "accessed_at": "2026-07-25",
-      "url": "https://firs.gov.ng/",
-      "local_file": "official/nga-finance-law-2026.html",
-      "sha256": "pending_collection",
-      "coverage": "fiscal year 2026 tax rates; special levies; import duties",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Enacted December 2025; effective January 2026."
+      "source_id": "NGA-VAT-ACT-2004-REPEALED",
+      "title": "Value Added Tax Act, Cap V1, Laws of the Federation of Nigeria 2004 (as amended by the Finance Act 2019) — REPEALED",
+      "institution": "Federal Government of Nigeria",
+      "legal_date": "2004-01-01",
+      "accessed_at": "2026-07-26",
+      "url": null,
+      "local_file": null,
+      "sha256": null,
+      "coverage": "former VAT standard rate 7.5% (as amended 2020); superseded, not independently re-archived in this cycle",
+      "status": "superseded_not_archived",
+      "verification_status": "VERIFIED_HISTORICAL",
+      "notes": "Repealed by the Nigeria Tax Act, 2025, effective 2026-01-01 (see NGA-NASS-TAX-ACT-2025). Not archived here since it is no longer the operative text; retained as a historical reference only for the pre-2026 record."
     }
   ]
 }

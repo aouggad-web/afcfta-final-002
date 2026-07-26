@@ -1,35 +1,35 @@
 {
   "schema_version": "1.0",
   "country": "GNB",
-  "as_of": "2026-07-25",
+  "as_of": "2026-07-26",
   "sources": [
     {
-      "source_id": "GNB-JOURNAL-CGI",
-      "title": "Code Général des Impôts (General Tax Code), as amended",
-      "institution": "Boletim Oficial da República / Ministry of Finance",
-      "legal_date": "2015-07-01",
-      "accessed_at": "2026-07-25",
-      "url": "https://www.impots.gnb/",
-      "local_file": "official/gnb-cgi-consolidated.html",
-      "sha256": "pending_collection",
-      "coverage": "VAT standard rate (18%); excises; exemptions; zero-rated supplies",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Consolidated text via Boletim Oficial da República. All amendments through June 2026."
+      "source_id": "GNB-ALFANDEGAS-IVA-PAGE",
+      "title": "Imposto sobre Valor Acrescentado (IVA) — explanatory page",
+      "institution": "Alfândegas da Guiné-Bissau (Direção-Geral das Alfândegas, Ministério da Economia e Finanças)",
+      "legal_date": "2022-02-25",
+      "accessed_at": "2026-07-26",
+      "url": "https://alfandegas.mef.gw/imposto-sobre-valor-acrescentado-iva/",
+      "local_file": "official/gnb-alfandegas-mef-iva-page.html",
+      "sha256": "c2b65848e9623bb2cd3ef551d6c5206ca09eb8047e9e94fa02666eec95ff0688",
+      "coverage": "IVA import rates (19% standard, 10% Annex I, 0% export — Art. 18º); taxable base (Art. 17º); non-declarant surcharge (Art. 6º); deduction rules (Art. 19º); payment on customs clearance (Art. 26º)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_OFFICIAL_GUIDE",
+      "notes": "Official page of the Guinea-Bissau customs authority (Alfândegas, under the Ministério da Economia e Finanças), directly quoting article numbers of the Código do IVA (Lei nº 4/22 de 25 de fevereiro). Downloaded 2026-07-26. This is the customs authority's own explanatory page, not the raw statute PDF itself — no full consolidated Código do IVA text was located/archived in this cycle. Corrects a prior placeholder that fabricated an 18% rate and a nonexistent \"impots.gnb\" domain (Guinea-Bissau's real ccTLD is .gw, not .gnb) — the verified rate is 19% standard / 10% (Annex I) / 0% (exports), not the UEMOA-uniform 18% assumed by the prior placeholder."
     },
     {
-      "source_id": "GNB-FINANCE-LAW-2026",
-      "title": "Finance Law 2026",
-      "institution": "Ministry of Finance",
-      "legal_date": "2025-12-31",
-      "accessed_at": "2026-07-25",
-      "url": "https://www.finances.gnb/",
-      "local_file": "official/gnb-finance-law-2026.html",
-      "sha256": "pending_collection",
-      "coverage": "fiscal year 2026 tax rates; special levies; import duties",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Enacted December 2025; effective January 2026."
+      "source_id": "GNB-IVA-COMMENCEMENT-2025",
+      "title": "IVA commencement announcement (1 January 2025)",
+      "institution": "Ministério da Economia e Finanças (Direção-Geral das Contribuições e Impostos)",
+      "legal_date": "2024-12-01",
+      "accessed_at": "2026-07-26",
+      "url": "https://mef.gw/noticias/informacao-importante-iva",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "commencement date of the IVA regime (1 January 2025), replacing the former Imposto Geral sobre Vendas (IGV)",
+      "status": "source_blocked",
+      "verification_status": "VERIFIED_HISTORICAL",
+      "notes": "The Código do IVA was approved by Lei nº 4/22 (25 February 2022) but only entered into force on 1 January 2025, per multiple independent press reports citing an announcement by the Director-General of Contributions and Taxes (24noticias.sapo.pt, e-global.pt, forbesafricalusofona.com, ang.gw, all dated around December 2024/January 2025). The Ministry of Finance's own announcement page (mef.gw) could not be fetched directly in this environment (connection reset — same class of failure as other .gw government domains); the 2025-01-01 commencement date used in vat_measures.json is corroborated by these independent secondary reports, not by direct archival of the primary announcement itself."
     }
   ]
 }

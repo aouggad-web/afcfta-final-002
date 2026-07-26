@@ -1,24 +1,55 @@
 {
   "schema_version": "1.0",
   "country": "GNB",
-  "as_of": "2026-07-25",
+  "as_of": "2026-07-26",
   "vat_rates": [
     {
-      "record_id": "GNB-VAT-RATE-STANDARD-20150701",
-      "legal_product_description": "Standard rate of Value-Added Tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "normalized_product_description": "standard rate of value-added tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "rate": "18%",
-      "rate_basis": "customs value plus duty (import); consideration (domestic)",
-      "effective_from": "2015-07-01",
+      "record_id": "GNB-VAT-RATE-STANDARD-20250101",
+      "legal_product_description": "Standard rate of Imposto sobre o Valor Acrescentado (IVA) applicable to imports not covered by Annex I of the IVA Code, and, per Article 18º-1 as cited, to the tax generally.",
+      "normalized_product_description": "standard rate of imposto sobre o valor acrescentado (iva) applicable to imports not covered by annex i of the iva code, and, per article 18-1 as cited, to the tax generally.",
+      "rate": "19%",
+      "rate_basis": "customs value plus duties, taxes and accessory costs (commissions, packaging, transport, insurance), excluding IVA itself (Art. 17º-1/2 of the IVA Code)",
+      "effective_from": "2025-01-01",
       "effective_to": null,
       "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
       "supersedes_record_id": null,
-      "source_id": "GNB-JOURNAL-CGI",
-      "legal_reference": "Code Général des Impôts (General Tax Code), enacted 2015-07-01 (Boletim Oficial da República); UEMOA harmonization rate (18%). Rate confirmed current as of June 2026.",
-      "verification_status": "PENDING_OFFICIAL_CONSOLIDATION",
+      "source_id": "GNB-ALFANDEGAS-IVA-PAGE",
+      "legal_reference": "Código do Imposto sobre o Valor Acrescentado (IVA), aprovado pela Lei nº 4/22 de 25 de fevereiro, Artigo 18º-1: \"As taxas do imposto são as seguintes: para as importações constantes do Anexo I do código do IVA, a taxa é 10%; para as restantes importações, a taxa é 19%; e para as exportações, a taxa é 0%.\"",
+      "verification_status": "VERIFIED_OFFICIAL_GUIDE",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "GNB-VAT-RATE-REDUCED-ANNEX1-20250101",
+      "legal_product_description": "Reduced rate of IVA on imports of goods listed in Annex I of the IVA Code (specific product list not independently extracted in this cycle).",
+      "normalized_product_description": "reduced rate of iva on imports of goods listed in annex i of the iva code (specific product list not independently extracted in this cycle).",
+      "rate": "10%",
+      "rate_basis": "customs value plus duties, taxes and accessory costs, excluding IVA itself (Art. 17º of the IVA Code)",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "GNB-ALFANDEGAS-IVA-PAGE",
+      "legal_reference": "Código do IVA, Lei nº 4/22, Artigo 18º-1, referencing Annex I of the Code. Annex I product list not extracted in this cycle — no HS codes attached.",
+      "verification_status": "VERIFIED_OFFICIAL_GUIDE",
       "hs_codes_explicit": []
     }
   ],
   "vat_exemptions": [],
-  "vat_zero_rated": []
+  "vat_zero_rated": [
+    {
+      "record_id": "GNB-VAT-ZERO-EXPORTS-20250101",
+      "legal_product_description": "Exports of goods.",
+      "normalized_product_description": "exports of goods.",
+      "rate": "0%",
+      "rate_basis": "n/a",
+      "effective_from": "2025-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "GNB-ALFANDEGAS-IVA-PAGE",
+      "legal_reference": "Código do IVA, Lei nº 4/22, Artigo 18º-1: \"para as exportações, a taxa é 0%.\"",
+      "verification_status": "VERIFIED_OFFICIAL_GUIDE",
+      "hs_codes_explicit": []
+    }
+  ]
 }
