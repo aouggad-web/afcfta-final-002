@@ -1,5 +1,5 @@
 """
-Vérifications d'intégrité de la collecte Liberia (UEMOA, lot 3) :
+Vérifications d'intégrité de la collecte Liberia (CEDEAO, lot 3) :
 Goods tax / services tax (équivalent TVA), vérifiées sur le Liberia Revenue
 Code As Amended (consolidation 2020), archivé et haché.
 

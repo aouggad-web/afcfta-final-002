@@ -1,5 +1,5 @@
 """
-Vérifications d'intégrité de la collecte Cabo Verde (UEMOA, lot 3) :
+Vérifications d'intégrité de la collecte Cabo Verde (CEDEAO, lot 3) :
 IVA seule, vérifiée sur le Regulamento do IVA (Lei nº 21/VI/2003 de 14 de
 Julho), archivé et haché. L'ICE (Imposto sobre Consumos Especiais,
 équivalent accises, Lei nº 22/VI/2003) n'a pas pu être collecté : le seul

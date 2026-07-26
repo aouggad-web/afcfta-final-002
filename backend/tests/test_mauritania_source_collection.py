@@ -1,5 +1,5 @@
 """
-Vérifications d'intégrité de la collecte Mauritanie (UEMOA, lot 3) :
+Vérifications d'intégrité de la collecte Mauritanie (CEDEAO, lot 3) :
 TVA et taxe de consommation (équivalent accises), vérifiées sur le Code
 Général des Impôts (version officielle janvier 2023, Loi n°2019-018 du
 29 avril 2019), archivé et haché.
@@ -57,7 +57,7 @@ def test_mrt_legal_sources_reference_valid_source_ids():
     used_ids = {r["source_id"] for r in vat["vat_rates"]}
     used_ids |= {r["source_id"] for r in vat.get("vat_zero_rated", [])}
     excise = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
-    used_ids |= {r["source_id"] for r in excise}
+    used_ids |= {r["source_id"] for r in excise["excise_rates"]}
     assert used_ids <= registered_ids
 
 
@@ -109,7 +109,10 @@ def test_mrt_vat_measures_schema():
 
 def test_mrt_excise_measures_exist():
     """excise_measures.json contient le barème de la taxe de consommation (10 catégories, 22 lignes)."""
-    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
+    wrapper = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
+    assert wrapper["schema_version"] == "1.0"
+    assert wrapper["country"] == "MRT"
+    data = wrapper["excise_rates"]
     assert isinstance(data, list)
     assert (
         len(data) == 22
@@ -121,7 +124,9 @@ def test_mrt_excise_measures_exist():
 
 def test_mrt_excise_spirits_highest_rate():
     """Mauritanie : spiritueux (whisky/vodka/rhum/gin) portent le taux le plus élevé du barème (294%)."""
-    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
+    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))[
+        "excise_rates"
+    ]
     spirits = next(r for r in data if "SPIRITS" in r["record_id"])
     assert spirits["rate"] == 294
     ad_valorem_rates = [r["rate"] for r in data if "percentage" in r["rate_basis"]]
@@ -130,7 +135,9 @@ def test_mrt_excise_spirits_highest_rate():
 
 def test_mrt_excise_hs_codes_for_dairy_and_construction():
     """Mauritanie : produits laitiers, fer à béton, ciment, téléphonie portent des codes SH explicites."""
-    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
+    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))[
+        "excise_rates"
+    ]
     rebar = next(r for r in data if "REBAR" in r["record_id"])
     cement = next(r for r in data if "CEMENT" in r["record_id"])
     uht_milk = next(r for r in data if "UHT-MILK" in r["record_id"])
@@ -141,7 +148,9 @@ def test_mrt_excise_hs_codes_for_dairy_and_construction():
 
 def test_mrt_excise_specific_duty_petroleum():
     """Mauritanie : les produits pétroliers sont taxés en droits spécifiques (Ouguiya/litre), pas ad valorem."""
-    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
+    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))[
+        "excise_rates"
+    ]
     petrol = next(r for r in data if "PETROL-REGULAR" in r["record_id"])
     assert "Ouguiya per liter" in petrol["rate_basis"]
     assert petrol["rate"] == 5.7

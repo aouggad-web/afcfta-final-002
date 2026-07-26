@@ -1,5 +1,5 @@
 """
-Vérifications d'intégrité de la collecte Sierra Leone (UEMOA, lot 3) :
+Vérifications d'intégrité de la collecte Sierra Leone (CEDEAO, lot 3) :
 GST (Goods and Services Tax, équivalent TVA) seule, vérifiée sur le Goods
 and Services Tax Act 2009 (Act No. 6 of 2009), publié au Sierra Leone
 Gazette, archivé et haché. Pas d'accises collectées dans ce cycle (régime

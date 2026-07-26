@@ -1,5 +1,5 @@
 """
-Vérifications d'intégrité de la collecte Guinée (UEMOA, lot 3) :
+Vérifications d'intégrité de la collecte Guinée (CEDEAO, lot 3) :
 TVA et accises sur la production intérieure, vérifiées sur le Code Général
 des Impôts (édition 2022, amendée par la loi de finances 2023), archivé et
 haché.
@@ -49,7 +49,7 @@ def test_gin_legal_sources_reference_valid_source_ids():
     used_ids |= {r["source_id"] for r in vat.get("vat_zero_rated", [])}
     used_ids |= {r["source_id"] for r in vat.get("vat_exemptions", [])}
     excise = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
-    used_ids |= {r["source_id"] for r in excise}
+    used_ids |= {r["source_id"] for r in excise["excise_rates"]}
     assert used_ids <= registered_ids
 
 
@@ -105,7 +105,10 @@ def test_gin_vat_measures_schema():
 
 def test_gin_excise_measures_exist():
     """excise_measures.json contient le barème complet de 16 catégories (Art. 435-I)."""
-    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
+    wrapper = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
+    assert wrapper["schema_version"] == "1.0"
+    assert wrapper["country"] == "GIN"
+    data = wrapper["excise_rates"]
     assert isinstance(data, list)
     assert len(data) == 16, "Le barème Article 435-I compte 16 catégories de produits"
     for record in data:
@@ -115,7 +118,9 @@ def test_gin_excise_measures_exist():
 
 def test_gin_excise_tobacco_rate():
     """Guinée : accise tabac 35% (Art. 435-I-a), le taux le plus élevé du barème."""
-    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
+    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))[
+        "excise_rates"
+    ]
     tobacco = next(r for r in data if "TOBACCO" in r["record_id"])
     assert tobacco["rate"] == 35
     assert all(r["rate"] <= 35 for r in data), "Le tabac doit porter le taux le plus élevé"
@@ -123,7 +128,9 @@ def test_gin_excise_tobacco_rate():
 
 def test_gin_excise_zero_rated_categories():
     """Guinée : jus de fruits, eaux sucrées, boissons énergisantes et fruits/légumes importés à 0%."""
-    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
+    data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))[
+        "excise_rates"
+    ]
     zero_rated_ids = {"FRUIT-JUICE", "SWEETENED-WATER", "ENERGY-DRINKS", "IMPORTED-FRUIT-VEG"}
     zero_records = [r for r in data if any(z in r["record_id"] for z in zero_rated_ids)]
     assert len(zero_records) == 4
