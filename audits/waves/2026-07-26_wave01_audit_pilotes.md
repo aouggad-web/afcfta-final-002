@@ -10,6 +10,65 @@ aucun test n'a été modifié — seul ce document d'audit a été créé/modifi
 
 ---
 
+## 0. Principe directeur du SaaS — cadrage impératif de cette révision
+
+Le produit audité est un **outil d'information et de simulation commerciale**,
+**non juridique et non opposable** à l'administration douanière. Il n'a pas
+vocation à certifier juridiquement les tarifs ni à se substituer aux
+autorités compétentes.
+
+**Règle centrale** : une donnée **traçable** (origine identifiable — fichier
+source, portail officiel, champ nommé, mécanisme d'extraction ou de calcul
+inspectable) peut être affichée **à titre informatif**, même lorsque sa
+valeur juridique ou sa date d'effet n'est pas certifiée. En revanche, toute
+donnée **simulée, inventée, extrapolée, mockée, ou dont l'origine n'est pas
+identifiable** est strictement interdite dans le SaaS, sous quelque forme
+que ce soit — stockage, moteur de calcul, API, interface, ou fallback.
+
+**Trois notions à ne jamais confondre** :
+
+1. **Absence de certification juridique** : la donnée reste exploitable à
+   titre informatif si son origine est identifiable — ce n'est **pas** un
+   motif de blocage.
+2. **Absence de traçabilité** : la donnée est **interdite** dans le SaaS —
+   c'est le seul motif d'exclusion du flux actif.
+3. **Absence d'un taux indispensable** : seul le **calcul concerné** devient
+   indisponible (`CALCULATION_UNAVAILABLE`) — pas nécessairement toute la
+   ligne tarifaire, qui peut rester affichable pour ses autres composantes.
+
+**Statuts applicables** (vocabulaire unique à utiliser pour toute donnée) :
+
+| Statut | Signification |
+|---|---|
+| `DOCUMENTED` | Source identifiable, documentation suffisante |
+| `PARTIAL` | Donnée traçable, mais documentation incomplète |
+| `UNVERIFIED` | Origine identifiable, mais contrôle insuffisant |
+| `NOT_AVAILABLE` | Aucune donnée traçable exploitable |
+| `NOT_APPLICABLE` | Élément non applicable à ce cas |
+
+`CALCULATION_UNAVAILABLE` est réservé aux cas où un **taux indispensable au
+calcul** est réellement absent. L'absence d'archive officielle, de hash
+indépendant, ou de date d'effet juridiquement certifiée **ne suffit pas, à
+elle seule**, à interdire un calcul informatif à partir d'une donnée par
+ailleurs traçable.
+
+**Mention obligatoire, visible sur toute simulation** :
+> « Simulation informative — non opposable à l'administration douanière.
+> Vérifiez les taux, conditions préférentielles et formalités auprès des
+> autorités compétentes avant toute opération. »
+
+Ce cadrage régit désormais l'interprétation de l'intégralité du présent
+document. Les sections suivantes ont été revues pour appliquer cette
+distinction : les données présentant un **marqueur de fabrication confirmé**
+(texte générique appliqué uniformément, sans origine par ligne identifiable)
+restent interdites de tout usage — c'est le cas de KEN et DZA (§4.2, §4.6).
+Les données dont l'origine est identifiable mais dont seule la certification
+juridique ou la portée par partenaire est incomplète (ZAF, EGY, TUN, MAR)
+sont **reclassées** de « à ne pas afficher » vers « affichable à titre
+informatif avec statut `PARTIAL`/`UNVERIFIED` » — voir le tableau révisé §3.
+
+---
+
 ## 1. Résumé exécutif
 
 Cet audit reproduit, avec commande exacte et population totale pour chaque
@@ -105,14 +164,14 @@ $ git rev-parse origin/main
 
 ## 3. Tableau de synthèse par pays
 
-| Pays | Fichier | Source déclarée | Positions | Statut fabrication | Statut ZLECAf recommandé |
+| Pays | Fichier | Source déclarée | Positions | Statut fabrication | Statut d'affichage informatif |
 |---|---:|---|---:|---|---|
-| ZAF | `ZAF_tariffs.json` | sars.gov.za | 8 589 | Aucun marqueur trivial ; portée par partenaire absente | `INFORMATIVE_PARTIAL` (taux disponible ≠ applicabilité prouvée) |
-| KEN | `KEN_tariffs.json` | EAC CET 2022 (kra.go.ke) | 5 984 | **Fabriqué** : texte générique 100 % des lignes | `NOT_AVAILABLE` pour la composante ZLECAf (CET/IDF/RDL/VAT restent valides) |
-| TUN | `TUN_tariffs.json` | douane.gov.tn/tarifweb2025 | 17 512 | Aucun marqueur ; structure hétérogène par pays/produit, plausiblement authentique | `INFORMATIVE_PARTIAL` |
-| MAR | `MAR_tariffs.json` | douane.gov.ma/adil | 13 114 | **Faux positif infirmé** : les éléments techniques rendent l'hypothèse du padding artificiel peu probable, mais ne constituent pas une preuve documentaire officielle que tous les suffixes `00` sont natifs d'ADIL (statut `PARTIAL`) | `NOT_AVAILABLE` (aucune donnée ZLECAf dans ce fichier) |
-| EGY | `EGY_tariffs.json` | customs.gov.eg | 8 746 | **Fabrication partielle non écartée** : 5 357 lignes `zlecaf_rate=0.0` avec DD>0 sans preuve de portée | `NOT_AVAILABLE` jusqu'à confirmation par produit |
-| DZA | `DZA_tariffs.json` | conformepro.dz (agrégateur secondaire) | 17 061 | **Fabriqué** : texte générique identique sur 4 119 lignes ; source elle-même `PARTIAL/B` | `PENDING` (aucune URL officielle de publication de la circulaire 482/2024 enregistrée dans le dépôt — statut `SOURCE_BLOCKED`) |
+| ZAF | `ZAF_tariffs.json` | sars.gov.za | 8 589 | Aucun marqueur ; origine identifiable (colonne AfCFTA du barème SARS) | `PARTIAL` — affichable à titre informatif ; portée par partenaire et certification juridique non établies |
+| KEN | `KEN_tariffs.json` | EAC CET 2022 (kra.go.ke) | 5 984 | **Interdit** : texte générique sans origine par ligne, 100 % des positions | `NOT_AVAILABLE` pour la composante ZLECAf uniquement — à **exclure du flux actif** ; CET/IDF/RDL/VAT restent `DOCUMENTED` |
+| TUN | `TUN_tariffs.json` | douane.gov.tn/tarifweb2025 | 17 512 | Aucun marqueur ; structure hétérogène par pays/produit, origine identifiable | `PARTIAL` — affichable à titre informatif ; régime juridique (GAFTA/ZLECAf) non distingué par ligne |
+| MAR | `MAR_tariffs.json` | douane.gov.ma/adil | 13 114 | **Faux positif infirmé** : les éléments techniques rendent l'hypothèse du padding artificiel peu probable ; DI/TPI/TVA d'origine identifiable | `NOT_AVAILABLE` pour ZLECAf (aucun champ n'existe dans ce fichier — rien à afficher, ce n'est pas une donnée bannie) ; DI/TPI/TVA `PARTIAL` |
+| EGY | `EGY_tariffs.json` | customs.gov.eg | 8 746 | Aucune fabrication : `zlecaf_rate` est **calculé par règle** sur notes officielles réelles ; reproductibilité **démontrée empiriquement** (0 divergence/6 417) — voir §4.5 | Scindé : **6 417 lignes `PARTIAL`** (note AfCFTA confirmée, chaîne reproductible) ; **2 276 lignes `UNVERIFIED`** (copie du DD sans note, `zlecaf_source` discriminant non persisté) ; **53 lignes `NOT_AVAILABLE`** (`null`, correct) |
+| DZA | `DZA_tariffs.json` | conformepro.dz (agrégateur secondaire) | 17 061 | **Interdit** : texte générique identique sans origine par ligne, 4 119 positions ; source elle-même `PARTIAL` | `NOT_AVAILABLE` pour cette composante — à **exclure du flux actif** ; reste du fichier `PARTIAL` (source secondaire). Circulaire 482/2024 : `NOT_AVAILABLE` (aucune copie exploitable collectée — voir §4.6) |
 
 ---
 
@@ -160,28 +219,42 @@ Population = 8 589. Résultat : `rate_pct=0.0 & raw_value="free"` = **4 654** ;
 observée : 4,0 % ×790, 6,0 % ×684, 8,0 % ×528, 10,0 % ×227, 8,8 % ×218,
 20,0 % ×201...).
 
-**Analyse — trois affirmations à statut distinct, à ne pas fusionner.**
+**Analyse — trois constats à statut distinct, à ne pas fusionner.**
 
-- `VERIFIED` : 4 654 lignes du fichier contiennent une valeur `AfCFTA`
-  égale à `rate_pct=0.0` avec `raw_value="free"` (comptage direct,
-  reproductible, voir Comptage 2 ci-dessus).
-- `VERIFIED` : ces structures ne comportent **aucun** champ définissant les
-  partenaires admissibles. La structure de l'objet `taxes[i]` est
-  strictement `{code, name, rate_pct, raw_value}` (vérifié par inspection
-  directe des clés : `p["taxes"][0].keys()` =
-  `dict_keys(['code', 'name', 'rate_pct', 'raw_value'])`) — aucun
-  `applicable_partners`, aucune date d'effet, aucune règle d'origine.
-- `UNVERIFIED`/`PARTIAL` : l'authenticité juridique et l'applicabilité
-  produit-partenaire de ces taux. Leur seule présence dans le JSON prouve
-  qu'une valeur a été extraite d'une colonne nommée « AfCFTA » du barème
-  SARS — **pas** qu'elle est actuellement opposable à un envoi donné. Cela
-  dépendrait du partenaire d'origine, de sa propre mise en œuvre effective
-  de la ZLECAf, et de la règle d'origine du produit — aucun de ces trois
-  éléments n'est présent ligne à ligne dans ce fichier, et la source
-  officielle SARS correspondante (Schedule 1 Part 1) n'est pas ingérée ni
-  reliée à ces lignes (voir statut `SOURCE_PENDING_COLLECTION` ci-dessous).
-  Ces taux ne doivent donc pas être qualifiés de « réels » au sens
-  juridique sur la seule base de leur présence dans le fichier.
+Sous le principe directeur du §0 (une donnée traçable est affichable à
+titre informatif même sans certification juridique), ces trois constats se
+combinent en un statut d'affichage unique `PARTIAL` — mais chacun répond à
+une question différente et doit rester distingué :
+
+1. **Fait comptable (confirmé)** : 4 654 lignes du fichier contiennent une
+   valeur `AfCFTA` égale à `rate_pct=0.0` avec `raw_value="free"` (comptage
+   direct, reproductible, voir Comptage 2 ci-dessus). Ceci est un fait sur
+   le contenu du fichier, pas une affirmation sur la portée juridique du
+   taux.
+2. **Traçabilité de l'origine (confirmée)** : ces structures ne
+   comportent **aucun** champ définissant les partenaires admissibles. La
+   structure de l'objet `taxes[i]` est strictement
+   `{code, name, rate_pct, raw_value}` (vérifié par inspection directe des
+   clés : `p["taxes"][0].keys()` =
+   `dict_keys(['code', 'name', 'rate_pct', 'raw_value'])`) — aucun
+   `applicable_partners`, aucune date d'effet, aucune règle d'origine.
+   L'origine de la valeur elle-même (colonne AfCFTA du barème SARS) reste
+   cependant identifiable — c'est ce qui rend la donnée affichable à titre
+   informatif (`PARTIAL`), et non `NOT_AVAILABLE`.
+3. **Certification juridique et applicabilité produit-partenaire : `PARTIAL`,
+   pas `NOT_AVAILABLE`.** Leur seule présence dans le JSON prouve qu'une
+   valeur a été extraite d'une colonne nommée « AfCFTA » du barème SARS —
+   **pas** qu'elle est actuellement opposable à un envoi donné. Cela
+   dépendrait du partenaire d'origine, de sa propre mise en œuvre effective
+   de la ZLECAf, et de la règle d'origine du produit — aucun de ces trois
+   éléments n'est présent ligne à ligne dans ce fichier, et la source
+   officielle SARS correspondante (Schedule 1 Part 1) n'est pas ingérée ni
+   reliée à ces lignes (voir statut `SOURCE_PENDING_COLLECTION` ci-dessous).
+   Ces taux ne doivent donc pas être qualifiés de « certifiés » ou
+   « opposables » sur la seule base de leur présence dans le fichier — mais
+   ils **peuvent** être affichés à titre informatif, avec la mention de
+   portée §0, tant que leur statut `PARTIAL` (et non `DOCUMENTED`) reste
+   visible.
 
 **Croisement avec la documentation déjà archivée**
 (`docs/data-sources/ZAF_SOURCE_REGISTER.md:13,26-35`, statut confirmé par
@@ -237,13 +310,25 @@ pas d'échantillonnage) :
  "conditions": "AfCFTA Certificate of Origin required"}
 ```
 
-**Verdict** : ce texte ne porte ni taux, ni calendrier, ni partenaire admis,
-ni date d'effet — c'est un gabarit narratif appliqué uniformément, pas une
-donnée tarifaire. Aucune offre nationale kényane officiellement publiée et
+**Verdict — ceci n'est pas un cas « traçable mais non certifié », c'est un
+cas d'origine non identifiable, donc interdit.** Ce texte ne porte ni taux,
+ni calendrier, ni partenaire admis, ni date d'effet — c'est un gabarit
+narratif **identique sur 100 % des lignes**, sans aucune variation
+produit par produit. Contrairement à ZAF (§4.1) ou EGY (§4.5), où la valeur
+varie ligne à ligne et peut être reliée à un champ ou un mécanisme de calcul
+identifiable, rien ici ne distingue une ligne d'une autre : il n'y a pas
+d'origine par ligne à tracer. Sous le principe directeur du §0, cette
+absence de traçabilité — pas l'absence de certification — est le motif
+d'exclusion. **Statut : `NOT_AVAILABLE` pour cette composante, à exclure du
+flux actif** (stockage, calcul, API, interface, fallback).
+
+Par ailleurs, aucune offre nationale kényane officiellement publiée et
 exploitable n'a été retrouvée dans les sources consultées pendant cet audit
 (recherché sur kra.go.ke, Kenya Law, National Treasury — aucun document
 trouvé décrivant un calendrier de démantèlement kényan). **Cette absence de
-résultat ne constitue pas une preuve d'inexistence.** Statut : `SOURCE_BLOCKED`.
+résultat ne constitue pas une preuve d'inexistence.** Statut de cette
+recherche de source : `SOURCE_BLOCKED` (concept distinct du statut
+d'affichage de la donnée elle-même, ci-dessus).
 Confirmé côté code : `NATIONAL_OFFER_REGISTRY`
 (`backend/etl/afcfta_national_offers.py:82-93`) **ne contient pas** KEN.
 
@@ -268,7 +353,10 @@ soit 4 taxes/position en moyenne). Résultat : `rate=None` = **48** (régime
 « sensitive item », cohérent avec le régime EAC) ; distribution non-nulle :
 0 % ×2 234, 25 % ×1 962, 10 % ×1 169, 35 % ×493, 50 % ×19, 60 % ×15, 6 % ×1.
 **Ce comptage est authentique** — pas de marqueur de fabrication sur le CET,
-l'IDF (3,5 %), le RDL (2,0 %) ni la VAT (16 %).
+l'IDF (3,5 %), le RDL (2,0 %) ni la VAT (16 %). Statut : `DOCUMENTED` — ces
+composantes restent pleinement affichables, y compris après exclusion de la
+composante ZLECAf ci-dessus (l'interdiction porte sur *cette* composante
+précise, pas sur la ligne tarifaire entière).
 
 **Distinction imposée** : *existence d'un taux CET* (réel, sourcé EAC) ≠
 *éligibilité à une préférence ZLECAf* (aucune preuve) ≠ *partenaire admis*
@@ -281,7 +369,7 @@ associé à ce texte — c'est une description, pas une donnée).
 
 | Source | Institution | Titre | URL | Date consultation | Statut |
 |---|---|---|---|---|---|
-| `KE-EAC-CET-2022-JUN2025` | East African Community | EAC CET — 2022, version actualisée juin 2025 | archivée (`data/sources/kenya/official/`) | 2026-07-25 (inventaire existant) | `VERIFIED` pour le CET/IDF/RDL/VAT — **pas** pour la composante ZLECAf |
+| `KE-EAC-CET-2022-JUN2025` | East African Community | EAC CET — 2022, version actualisée juin 2025 | archivée (`data/sources/kenya/official/`) | 2026-07-25 (inventaire existant) | `DOCUMENTED` pour le CET/IDF/RDL/VAT — `NOT_AVAILABLE` pour la composante ZLECAf |
 | Offre ZLECAf nationale KEN | — | — | — | recherché, non trouvé dans cette vague | `SOURCE_BLOCKED` (aucun document identifié ; absence de résultat ≠ preuve d'inexistence, mais aucune source ne peut être citée) |
 
 ### 4.3 TUN — Tunisie
@@ -371,11 +459,14 @@ non plus de confirmer que les taux à 0 % pour MAROC/ALGERIE/EGYPTE
 proviennent de la ZLECAf plutôt que de GAFTA.
 
 **Verdict** : structure `preferences` **plausiblement authentique**
-(hétérogénéité croisée forte), mais **le régime juridique associé à chaque
-taux n'est pas déterminable depuis ce fichier seul**. Statut recommandé :
-`INFORMATIVE_PARTIAL` — conservé tel quel, aucune donnée à supprimer, mais
-aucune préférence ZLECAf ne doit être déclarée applicable à partir de cette
-seule colonne tant que le régime (GAFTA vs ZLECAf) n'est pas distingué.
+(hétérogénéité croisée forte, origine identifiable — tarifweb.tn), mais
+**le régime juridique associé à chaque taux n'est pas déterminable depuis
+ce fichier seul**. Statut : `PARTIAL` — affichable à titre informatif,
+conservé tel quel, aucune donnée à supprimer ; mais aucune préférence
+ZLECAf ne doit être déclarée juridiquement **applicable** (opposable) à
+partir de cette seule colonne tant que le régime (GAFTA vs ZLECAf) n'est
+pas distingué. La distinction affichage informatif / applicabilité
+juridique (§0) s'applique ici explicitement.
 
 **Statut de source** :
 
@@ -468,7 +559,11 @@ sémantique du suffixe consultée dans cette vague.
 
 **Ce fichier ne porte aucune donnée ZLECAf** (aucun champ `zlecaf_rate`,
 `preferences` ou `advantages` lié à la ZLECAf n'existe dans MAR — vérifié :
-`'zlecaf_rate' in p` = 0/13 114). Statut ZLECAf : `NOT_AVAILABLE`.
+`'zlecaf_rate' in p` = 0/13 114). Statut ZLECAf : `NOT_AVAILABLE` — au sens
+strict « aucune donnée traçable exploitable », et non « donnée bannie » :
+il n'y a simplement rien à afficher, aucune interdiction ne s'applique ici.
+Les composantes DI/TPI/TVA, elles, sont d'origine identifiable (portail
+ADIL) et affichables à titre informatif : statut `PARTIAL`.
 
 **Statut de source** :
 
@@ -550,16 +645,119 @@ Population = 8 746. Résultat : **2 373** lignes à `zlecaf_rate` non nul
 spécifique mal étiqueté ou un taux composé) suggère que le champ
 `zlecaf_rate` **n'est pas systématiquement une valeur par défaut à 0**, mais
 son origine documentaire (quel texte égyptien fixe ces taux, à quelle date,
-pour quels partenaires) **n'est pas tracée dans le fichier**. Aucun champ
-`source_id`, `legal_reference` ou `effective_from` n'accompagne
-`zlecaf_rate`. Sans cette traçabilité, ni les 5 357 lignes à 0 % avec DD>0,
-ni les 2 373 lignes à taux non nul, ne peuvent être qualifiées `VERIFIED`.
+pour quels partenaires) **n'est pas tracée au niveau de la ligne active du
+fichier**. Aucun champ `source_id`, `legal_reference` ou `effective_from`
+n'accompagne `zlecaf_rate` dans `EGY_tariffs.json`.
+
+**Découverte du mécanisme de calcul (inspection de code, pas de nouvelle
+collecte)** : `backend/scripts/build_egy_tariffs_v2.py:73-110`
+(fonction `afcfta_advantages`) montre que `zlecaf_rate` n'est **pas une
+valeur arbitraire** — elle est **calculée par une règle** à partir des
+notes réglementaires officielles égyptiennes réelles, scannées et
+présentes dans le fichier sous `official_instructions` (texte arabe brut,
+ex. « ر6790 », « ر6791 »). Le docstring du script (lignes 5-12) cite ces
+codes explicitement :
+```
+ر6790 — AfCFTA Group [A]: 100% DD reduction  (→ 0%)
+ر6791 — AfCFTA Group [B]:  60% DD reduction  (→ DD × 0.4)
+ر6792 / ر6793 — category-based AfCFTA rates
+```
+Chaque branche de la règle porte une `legal_ref` explicite (ex. « Tarif
+douanier égyptien — note ر6790 ; AfCFTA Protocol on Trade in Goods »,
+`build_egy_tariffs_v2.py:89,100`). **Cette richesse (regime, legal_ref,
+condition_fr) est calculée, mais volontairement non recopiée sur la ligne
+`sub_position` du fichier `EGY_tariffs.json` chargé au runtime** — le
+commentaire du script l'explicite (`build_egy_tariffs_v2.py:218-221`) :
+« Canonical sub_position is kept lean: the AfCFTA treatment is already
+captured in zlecaf_rate / fiscal_advantages. The verbatim official Arabic
+instructions (source evidence) are preserved once, in the crawled evidence
+file. » Autrement dit : l'évidence brute (`official_instructions`) **est**
+présente dans le fichier actif à côté du taux calculé, mais pas
+l'explication de la règle qui l'a produit.
+
+**Test empirique de reproductibilité (exigé avant toute qualification
+`PARTIAL`)** — la seule inspection du code ne suffit pas à démontrer que la
+chaîne est reproductible : il faut la ré-exécuter sur les données réelles et
+comparer au résultat stocké. Réimplémentation fidèle de la fonction
+(constantes `AFCFTA_A_100="ر6790"`, `AFCFTA_B_60="ر6791"`,
+`AFCFTA_A_CAT="ر6792"`, `AFCFTA_B_CAT="ر6793"`, logique
+`build_egy_tariffs_v2.py:73-123`), exécutée sur les 8 746 `official_instructions`
+et `zlecaf_rate` réellement stockés dans `EGY_tariffs.json` :
+
+```python
+def _has(instructions, code):
+    return any(i.startswith(code) for i in instructions)
+
+def afcfta_zlecaf_rate(dd_rate, instructions):
+    if _has(instructions, "ر6790"): return 0.0
+    if _has(instructions, "ر6791") and dd_rate is not None:
+        return round(dd_rate * 0.4, 3)
+    if (_has(instructions, "ر6792") or _has(instructions, "ر6793")):
+        return dd_rate
+    return None  # aucune note AfCFTA identifiée
+
+match = mismatch = 0
+for p in positions:
+    dd = p["taxes"]["DD"]["rate"]; instr = p["official_instructions"]
+    recomputed = afcfta_zlecaf_rate(dd, instr)
+    if recomputed is None: continue
+    if p["zlecaf_rate"] == recomputed: match += 1
+    else: mismatch += 1
+print(match, mismatch)
+```
+Population = 8 746. Résultat : **6 417** lignes portent une note AfCFTA
+réelle (`ر6790`/`ر6791`/`ر6792`/`ر6793`) — **concordance exacte 6 417/6 417,
+0 divergence**. La chaîne règle→notes→calcul→valeur stockée est intégralement
+démontrée et reproductible pour ce sous-ensemble.
+
+**Découverte critique sur le sous-ensemble restant** — inspection de
+`build_egy_tariffs_v2.py:115-123` (branche finale de la fonction) :
+```python
+# No AfCFTA note → excluded / sensitive list, MFN rate maintained
+return dd_rate, "Hors démantèlement ZLECAf — taux NPF maintenu (liste d'exclusion)", advantages
+```
+Quand **aucune** note AfCFTA n'est identifiée, la fonction retourne quand
+même une valeur (`dd_rate`, pas `None`) accompagnée d'un `zlecaf_source`
+explicite signalant l'absence de traitement ZLECAf. **Ce `zlecaf_source`
+est calculé mais jamais persisté dans le fichier runtime** : la ligne
+d'assemblage `crawled_subs.append(...)` (`build_egy_tariffs_v2.py:349-362`)
+ne retient que `zlecaf_rate`, pas le second élément du triplet retourné
+(`c_zlecaf, _, _ = afcfta_advantages(...)`, `_` = valeur explicitement
+écartée, ligne 327). Vérifié sur les données réelles : **2 276 lignes**
+n'ont aucune note AfCFTA et ont `zlecaf_rate == DD` dans **100 % des cas**
+(2 276/2 276) — confirmant que ce sous-ensemble n'est pas une préférence
+ZLECAf réelle, mais une **copie du taux NPF sous un nom de champ ZLECAf**,
+sans le label qui permettrait de le distinguer d'une vraie réduction.
+
+**Conséquence pour le statut — qualification scindée, pas monolithique** :
+- **6 417 lignes** (note AfCFTA confirmée, chaîne reproductible démontrée
+  empiriquement) : `PARTIAL` — traçable, reproductible, préférence réelle ;
+  documentation incomplète au niveau de la ligne (`legal_ref`/`regime` non
+  recopiés), mais aucune ambiguïté sur la nature de la donnée.
+- **2 276 lignes** (aucune note, `zlecaf_rate` = copie du DD) : **`UNVERIFIED`**,
+  pas `PARTIAL`. L'origine du mécanisme est identifiable (code cité
+  ci-dessus), mais le fichier runtime ne permet pas de distinguer cette
+  copie d'une préférence réelle sans relire le code source — c'est
+  exactement le « contrôle insuffisant » que `UNVERIFIED` est censé
+  signaler. Présenter ce champ comme une donnée ZLECAf sans cette
+  distinction serait trompeur, même si la valeur elle-même n'est pas
+  fabriquée.
+- **53 lignes** `zlecaf_rate = null` : traitement correct, `NOT_AVAILABLE`
+  au sens strict (absence non convertie en zéro).
+
+Ni les 6 417, ni les 2 276 ne peuvent être qualifiées `DOCUMENTED`. Aucune
+des deux ne relève de l'interdiction absolue au sens de KEN (§4.2) et DZA
+(§4.6) — il ne s'agit pas d'un texte générique sans origine, mais de deux
+sous-populations d'un même mécanisme, dont l'une nécessite un
+enrichissement (`legal_ref`) et l'autre une correction de fond (persister
+`zlecaf_source` ou exclure le champ pour ces lignes) avant de pouvoir
+prétendre à un statut supérieur.
 
 **Statut de source** :
 
 | Source | Institution | Titre | URL | Date consultation | Statut |
 |---|---|---|---|---|---|
-| customs.gov.eg/Services/Tarif | Egyptian Customs Authority | Service tarifaire, DD/TVA + champ zlecaf_rate | customs.gov.eg/Services/Tarif | non consignée (`extracted_at` absent du fichier, champ `null`) | `UNVERIFIED` pour la composante `zlecaf_rate` — DD/TVA `PARTIAL` (source plausible mais date de consultation manquante) |
+| customs.gov.eg/Services/Tarif | Egyptian Customs Authority | Service tarifaire, DD/TVA + champ zlecaf_rate | customs.gov.eg/Services/Tarif | non consignée (`extracted_at` absent du fichier, champ `null`) | `PARTIAL` pour la composante `zlecaf_rate` (mécanisme de calcul et évidence brute identifiables, `legal_ref` non recopiée par ligne — voir §4.5) ; DD/TVA `PARTIAL` (source plausible mais date de consultation manquante) |
 
 ### 4.6 DZA — Algérie
 
@@ -622,17 +820,25 @@ cet audit. Le commentaire adjacent (lignes 75-81 du même fichier) précise :
 > de la citation détaillée par article/partie déjà consignée dans
 > `services/zlecaf_schedule_dza.py`. »
 
-**Analyse** : les 4 119 lignes `advantages[ZLECAf]` du fichier
-`DZA_tariffs.json` (chargé par `crawled_data_service.py`) portent un texte
-**générique et non daté**, distinct du calendrier détaillé par
-article/partie mentionné dans `zlecaf_schedule_dza.py` (non audité dans
-cette vague — fichier séparé, pas dans le chemin de chargement
-`crawled_service`). Il y a donc, comme pour ZAF, une **divergence entre
-deux générations/chemins de données algériennes** : le fichier brut
-`crawled` (source secondaire, texte générique) et un service séparé
-`zlecaf_schedule_dza.py` qui prétend porter un calendrier plus précis, mais
-sourcé sur une circulaire dont ni le contenu ni la portée n'ont été
-vérifiés directement dans cette vague.
+**Analyse — comme KEN (§4.2), ceci est un cas d'origine non identifiable,
+donc interdit, pas un cas de certification manquante.** Les 4 119 lignes
+`advantages[ZLECAf]` du fichier `DZA_tariffs.json` (chargé par
+`crawled_data_service.py`) portent un texte **générique et non daté,
+identique sur les 4 119 lignes**, sans aucune variation produit par
+produit — contrairement à EGY (§4.5), où le taux est calculé par une règle
+inspectable et varie ligne à ligne. Il n'y a ici aucune origine par ligne à
+tracer. **Statut : `NOT_AVAILABLE` pour cette composante, à exclure du flux
+actif.** Le reste du fichier (taxes DD/TCS/PRCT/TVA) reste `PARTIAL` (source
+secondaire `conformepro.dz`, non fabriquée — voir tableau ci-dessous).
+
+Il existe par ailleurs, comme pour ZAF, une **divergence entre deux
+générations/chemins de données algériennes** : le fichier brut `crawled`
+(source secondaire, texte générique interdit ci-dessus) et un service
+séparé `zlecaf_schedule_dza.py` qui prétend porter un calendrier plus
+précis par article/partie, mais sourcé sur une circulaire dont ni le
+contenu ni la portée n'ont été vérifiés directement dans cette vague (non
+audité — fichier séparé, pas dans le chemin de chargement
+`crawled_service`).
 
 Une URL a été communiquée en cours d'audit
 (`douane.gov.dz/IMG/pdf/circulaire_no_482_dgd_du_22-10-2024_mise_en_oeuvre_zlecaf.pdf`).
@@ -661,14 +867,14 @@ source **ne doit déclencher aucun calcul préférentiel**. Statut inchangé :
 
 ## 5. Marqueurs suspects — tableau consolidé
 
-| Pays | Marqueur | Champ | Population | Résultat | Nature confirmée |
-|---|---|---|---:|---:|---|
-| ZAF | `AfCFTA.rate_pct=0.0 & raw_value="free"` sans partenaire | `positions[].taxes[]` | 8 589 | 4 654 | Taux réel (colonne SARS), portée juridique non prouvée par ligne |
-| KEN | Texte générique `AfCFTA Tariff Concession` | `positions[].fiscal_advantages[]` | 5 984 | 5 984 (100 %) | **Fabriqué** — narration sans taux ni portée |
-| TUN | Colonne `preferences` par pays | `sub_positions[].preferences[]` | 17 512 | n/a (hétérogène) | Plausiblement authentique, régime juridique (GAFTA/ZLECAf) non distingué |
-| MAR | Codes se terminant par `00` | `sub_positions[].code` | 13 114 | 6 616 | **Faux positif infirmé** — notation ADIL native, pas de padding |
-| EGY | `zlecaf_rate=0.0` avec DD>0 | `sub_positions[].zlecaf_rate` | 8 746 | 5 357 (sous-ensemble de 6 320) | Taux présent mais sans traçabilité documentaire (source/date/portée) |
-| DZA | Texte générique « Exonération DD » ZLECAf | `sub_positions[].advantages[]` | 17 061 | 4 119 (24,1 %) | **Fabriqué** — narration générique, source elle-même secondaire (`PARTIAL/B`) |
+| Pays | Marqueur | Champ | Population | Résultat | Nature confirmée | Statut d'affichage |
+|---|---|---|---:|---:|---|---|
+| ZAF | `AfCFTA.rate_pct=0.0 & raw_value="free"` sans partenaire | `positions[].taxes[]` | 8 589 | 4 654 | Origine identifiable (colonne SARS), portée juridique non prouvée par ligne | `PARTIAL` |
+| KEN | Texte générique `AfCFTA Tariff Concession` | `positions[].fiscal_advantages[]` | 5 984 | 5 984 (100 %) | **Origine non identifiable** — narration uniforme sans taux ni variation par ligne | `NOT_AVAILABLE` (interdit) |
+| TUN | Colonne `preferences` par pays | `sub_positions[].preferences[]` | 17 512 | n/a (hétérogène) | Origine identifiable, hétérogène par pays/produit ; régime juridique (GAFTA/ZLECAf) non distingué | `PARTIAL` |
+| MAR | Codes se terminant par `00` | `sub_positions[].code` | 13 114 | 6 616 | **Faux positif infirmé** — notation ADIL native, pas de padding | `PARTIAL` (DI/TPI/TVA) |
+| EGY | `zlecaf_rate=0.0` avec DD>0 | `sub_positions[].zlecaf_rate` | 8 746 | 5 357 (sous-ensemble de 6 320) | Scindé par test empirique (§4.5) : préférence réelle si note AfCFTA présente, copie du DD sinon | `PARTIAL` (6 417 avec note) / `UNVERIFIED` (2 276 sans note) |
+| DZA | Texte générique « Exonération DD » ZLECAf | `sub_positions[].advantages[]` | 17 061 | 4 119 (24,1 %) | **Origine non identifiable** — narration uniforme, source du fichier elle-même secondaire | `NOT_AVAILABLE` (interdit) |
 
 ---
 
@@ -706,15 +912,24 @@ source **ne doit déclencher aucun calcul préférentiel**. Statut inchangé :
    porte pas de `rate`, donc il ne peut pas directement fabriquer un montant
    erroné, mais il peut induire en erreur un affichage UI listant les
    « avantages » disponibles).
-2. **EGY** : si `zlecaf_rate` est utilisé tel quel pour calculer une
-   économie ZLECAf, 5 357 lignes produiraient un montant d'économie chiffré
-   **sans aucune preuve de portée** (partenaire, date, règle d'origine).
-   Risque : **élevé** — c'est un champ numérique directement exploitable
-   par un calcul, contrairement au texte KEN.
-3. **DZA** : risque symétrique à EGY sur 4 119 lignes, avec `rate: 0.0`
-   directement exploitable. Risque : **élevé**, mais partiellement atténué
-   par le statut `PARTIAL/B` déjà documenté au niveau de l'adaptateur (si le
-   calculateur respecte ce statut en amont).
+2. **EGY** : risque scindé, désormais démontré empiriquement (§4.5). Pour
+   les **6 417 lignes à note AfCFTA confirmée** (`PARTIAL`), le risque est
+   un affichage sans mention de portée (§0), pas une fabrication — risque
+   **moyen**. Pour les **2 276 lignes sans note** (`UNVERIFIED`), le risque
+   est **plus sérieux** : `zlecaf_rate` y est une copie exacte du DD, sans
+   le `zlecaf_source` qui signalerait « hors démantèlement ZLECAf, taux NPF
+   maintenu ». Un calcul qui afficherait ce champ comme une préférence
+   ZLECAf produirait une **fausse impression de traitement préférentiel là
+   où il n'y en a aucun**. Risque : **élevé** pour ce sous-ensemble tant que
+   `zlecaf_source` n'est pas persisté ou que le champ n'est pas exclu pour
+   ces lignes.
+3. **DZA** : les 4 119 lignes `advantages[ZLECAf]` restent, elles,
+   interdites (§4.6 — aucune origine par ligne identifiable, contrairement
+   à EGY). Risque : **élevé** si `rate: 0.0` est utilisé tel quel — c'est un
+   champ numérique directement exploitable par un calcul, sans aucune
+   traçabilité par ligne, partiellement atténué par le statut `PARTIAL`
+   déjà documenté au niveau de l'adaptateur (si le calculateur respecte ce
+   statut en amont).
 4. **ZAF** : 3 750 lignes à taux AfCFTA non nul, réelles mais sans portée
    par partenaire — un calcul qui appliquerait ce taux à *tout* partenaire
    ZLECAf sans vérifier son admissibilité individuelle produirait une
@@ -735,11 +950,11 @@ source **ne doit déclencher aucun calcul préférentiel**. Statut inchangé :
 
 | Pays | Correction proposée | Portée | Pourquoi non appliquée ici |
 |---|---|---|---|
-| KEN | Retirer les 5 984 entrées `fiscal_advantages[AfCFTA Tariff Concession]` du fichier `KEN_tariffs.json`, ou les marquer explicitement `status: NOT_AVAILABLE` côté consommateur | 1 fichier JSON | Interdiction absolue de cette vague : « ne modifier aucun JSON pays » |
-| EGY | Convertir les 5 357 `zlecaf_rate` (0.0 avec DD>0) en `null` + `NOT_AVAILABLE` jusqu'à confirmation par produit ; conserver les 963 (0→0) tels quels (cohérents, aucune réduction possible par construction) | 1 fichier JSON | Idem |
-| DZA | Retirer les 4 119 `advantages[ZLECAf]` génériques ou les relier explicitement au calendrier détaillé de `zlecaf_schedule_dza.py` si celui-ci est jugé plus fiable (à auditer séparément) | 1 fichier JSON + 1 service séparé | Idem |
-| ZAF | Ajouter un champ `applicable_partners` par ligne AfCFTA, dérivé de l'offre nationale ZAF une fois le PDF Schedule 1 Part 1 complet ingéré (déjà `SOURCE_PENDING_COLLECTION`) | 1 fichier JSON, nécessite re-collecte | Re-collecte hors périmètre de cette vague (audit seul) |
-| TUN | Ajouter un champ `regime` (`GAFTA` / `ZLECAF` / `BILATERAL` / `UNKNOWN`) par entrée de `preferences`, après recherche du texte juridique associé à chaque accord | 1 fichier JSON, nécessite recherche complémentaire | Idem |
+| KEN | Retirer les 5 984 entrées `fiscal_advantages[AfCFTA Tariff Concession]` du fichier `KEN_tariffs.json` (origine non identifiable — interdiction absolue, pas un cas `PARTIAL`), ou les marquer explicitement `status: NOT_AVAILABLE` côté consommateur | 1 fichier JSON | Interdiction absolue de cette vague : « ne modifier aucun JSON pays » |
+| EGY | Pour les 6 417 lignes à note AfCFTA confirmée : **ne pas supprimer** `zlecaf_rate` (`PARTIAL`), recopier `legal_ref`/`regime`/`condition_fr` (déjà calculés par `afcfta_advantages`) sur la ligne active. Pour les 2 276 lignes sans note : persister le `zlecaf_source` actuellement écarté (`_`, ligne 327 du script) ou exposer `zlecaf_rate: null` pour ces lignes tant que la distinction n'est pas visible côté données (`UNVERIFIED` → viser `PARTIAL` après correction) | 1 fichier JSON (enrichissement pour l'un, correction de fond pour l'autre) | Modification de JSON pays interdite dans cette vague |
+| DZA | Retirer les 4 119 `advantages[ZLECAf]` génériques (origine non identifiable — interdiction absolue) ou les relier explicitement au calendrier détaillé de `zlecaf_schedule_dza.py` si celui-ci est jugé plus fiable (à auditer séparément) | 1 fichier JSON + 1 service séparé | Interdiction absolue de cette vague : « ne modifier aucun JSON pays » |
+| ZAF | Ajouter un champ `applicable_partners` par ligne AfCFTA, dérivé de l'offre nationale ZAF une fois le PDF Schedule 1 Part 1 complet ingéré (déjà `SOURCE_PENDING_COLLECTION`) — la donnée reste affichable `PARTIAL` en attendant | 1 fichier JSON, nécessite re-collecte | Re-collecte hors périmètre de cette vague (audit seul) |
+| TUN | Ajouter un champ `regime` (`GAFTA` / `ZLECAF` / `BILATERAL` / `UNKNOWN`) par entrée de `preferences`, après recherche du texte juridique associé à chaque accord — la donnée reste affichable `PARTIAL` en attendant | 1 fichier JSON, nécessite recherche complémentaire | Idem |
 | MAR | Aucune correction de données requise ; documenter la sémantique du suffixe `00` auprès d'une source ADIL explicite si trouvée dans une vague future | Documentation seule | Recherche complémentaire non menée ici |
 
 Ces corrections **ne doivent être exécutées que dans une itération
@@ -754,8 +969,11 @@ non-régression avant tout push.
   texte est identique sur plus de N % des positions d'un pays sans qu'un
   champ `rate` numérique daté et sourcé l'accompagne (couvrirait KEN et
   DZA).
-- Test interdisant `zlecaf_rate` (ou équivalent) non nul sans `source_id`
-  et `effective_from` associés (couvrirait EGY).
+- Test garantissant qu'un champ `zlecaf_rate` (ou équivalent) traçable mais
+  incomplètement documenté (pas de `source_id`/`effective_from` au niveau
+  de la ligne) est exposé avec un statut `PARTIAL` explicite côté API,
+  jamais présenté comme `DOCUMENTED`/certifié (couvrirait EGY — sans
+  bannir la donnée, conformément au principe directeur §0).
 - Test de cohérence croisée `NATIONAL_OFFER_REGISTRY` / `SUPPORTED_JURISDICTIONS`
   vs les pays exposant des champs ZLECAf dans `backend/data/crawled/*.json`
   — actuellement KEN, EGY, DZA, ZAF exposent des données ZLECAf dans leurs
@@ -776,12 +994,12 @@ non-régression avant tout push.
 |---|---|---|---|---|---|---|---|---|
 | `ZAF-SARS-SCH1P1-AFCFTA-COLUMN` | ZAF | SARS | Schedule No. 1 Part 1, colonne AfCFTA | sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99... | 2026-07-25 (tentative confirmée HTTP 200 en curl direct) | 2026-07-24 | 99 chapitres | `SOURCE_PENDING_COLLECTION` |
 | `ZAF_tariffs.json` (interne) | ZAF | sars.gov.za (déclaré) | SARS Customs & Excise Tariff (SACU) | non consignée | 2026-02-17 | inconnue | 8 589 positions | `PARTIAL` |
-| `KE-EAC-CET-2022-JUN2025` | KEN | EAC | CET 2022, actualisé juin 2025 | archivé localement | 2026-07-25 | 2025-06 | tarif complet | `VERIFIED` (hors composante ZLECAf) |
+| `KE-EAC-CET-2022-JUN2025` | KEN | EAC | CET 2022, actualisé juin 2025 | archivé localement | 2026-07-25 | 2025-06 | tarif complet | `DOCUMENTED` (hors composante ZLECAf, elle-même `NOT_AVAILABLE`) |
 | Offre ZLECAf KEN | KEN | — | — | recherchée, non trouvée | 2026-07-27 | — | — | `SOURCE_BLOCKED` |
 | tarifweb 2025 | TUN | Douane tunisienne | Tarif intégré + préférences | douane.gov.tn/tarifweb2025 | 2026-02-11 | 2025 | 17 512 positions | `PARTIAL` |
 | ADIL | MAR | ADII | Positions tarifaires nationales | douane.gov.ma/adil | 2026-02-11 | inconnue | 13 114 positions | `PARTIAL` |
-| Service tarifaire | EGY | Egyptian Customs Authority | DD/TVA + zlecaf_rate | customs.gov.eg/Services/Tarif | non consignée | inconnue | 8 746 positions | `UNVERIFIED` (composante zlecaf) |
-| conformepro.dz | DZA | agrégateur privé | Tarif intégré algérien | conformepro.dz | 2026-06-17 | inconnue | 17 061 positions | `PARTIAL/B` |
+| Service tarifaire | EGY | Egyptian Customs Authority | DD/TVA + zlecaf_rate | customs.gov.eg/Services/Tarif | non consignée | inconnue | 8 746 positions | Scindé : `PARTIAL` (6 417, note AfCFTA confirmée) / `UNVERIFIED` (2 276, copie du DD sans note) — voir §4.5 |
+| conformepro.dz | DZA | agrégateur privé | Tarif intégré algérien | conformepro.dz | 2026-06-17 | inconnue | 17 061 positions | `PARTIAL` (le code cite en interne « PARTIAL/B », terminologie propre à l'adaptateur — statut canonique de ce rapport : `PARTIAL`) |
 | Circulaire 482/2024 | DZA | DGD | Traitement tarifaire ZLECAf à l'importation | `douane.gov.dz/IMG/pdf/circulaire_no_482_dgd_du_22-10-2024_mise_en_oeuvre_zlecaf.pdf` (communiquée, non vérifiée) | tentée le 2026-07-27, non aboutie (HTTP 403 puis chaîne TLS incomplète côté serveur, non contournée) | 2024-10-22 (date du texte, contenu non vérifié) | inconnue | `SOURCE_BLOCKED` — aucune copie exploitable collectée ; ne prouve ni publication ni absence de publication ; ne déclenche aucun calcul préférentiel |
 
 ---
@@ -847,9 +1065,30 @@ GitHub elle-même plutôt qu'à ces empreintes de branche.
 
 ---
 
-**Rappel de portée** : ce document est un audit. Il ne constitue ni une
-certification juridique des taux ZLECAf, ni une autorisation d'ajouter un
-pays à `SUPPORTED_JURISDICTIONS` ou `NATIONAL_OFFER_REGISTRY`. Toute
-préférence ZLECAf pour les 6 pays pilotes reste, à l'issue de cet audit,
-soit `NOT_AVAILABLE`, soit `PENDING`, soit `INFORMATIVE_PARTIAL` selon le
-tableau §3 — jamais `VERIFIED` ni appliquée par défaut.
+**Rappel de portée** : ce document est un audit d'un outil d'information et
+de simulation, non juridique et non opposable à l'administration douanière
+(§0). Il ne constitue ni une certification juridique des taux ZLECAf, ni
+une autorisation d'ajouter un pays à `SUPPORTED_JURISDICTIONS` ou
+`NATIONAL_OFFER_REGISTRY`. Toute préférence ZLECAf pour les 6 pays pilotes
+reste, à l'issue de cet audit :
+- `NOT_AVAILABLE`, pour la composante ZLECAf de KEN et DZA (texte générique
+  sans origine par ligne identifiable — interdit, à exclure du flux actif) ;
+- `PARTIAL`, pour ZAF, TUN, et le sous-ensemble EGY à note AfCFTA confirmée
+  (6 417/8 746 lignes — origine identifiable, chaîne reproductible
+  démontrée empiriquement §4.5, certification juridique incomplète,
+  affichable à titre informatif) ;
+- `UNVERIFIED`, pour le sous-ensemble EGY sans note AfCFTA (2 276/8 746
+  lignes — mécanisme identifiable mais `zlecaf_source` discriminant non
+  persisté, ambiguïté entre préférence réelle et copie du DD) ;
+- `NOT_AVAILABLE`, pour MAR (aucun champ ZLECAf présent — rien à afficher).
+
+Aucune n'est `DOCUMENTED` ni appliquée par défaut comme réduction opposable.
+
+**Principe d'interdiction** : toute donnée simulée, inventée, extrapolée,
+mockée, artificiellement générée ou dont l'origine n'est pas identifiable
+est strictement interdite dans le SaaS, sous quelque forme que ce soit.
+
+Toute simulation produite à partir de ces données doit porter la mention :
+> « Simulation informative — non opposable à l'administration douanière.
+> Vérifiez les taux, conditions préférentielles et formalités auprès des
+> autorités compétentes avant toute opération. »
