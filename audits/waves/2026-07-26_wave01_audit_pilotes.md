@@ -4,9 +4,9 @@
 **Base** : `origin/main` @ `1be67b6d`
 **Ordre d'audit** : ZAF → KEN → TUN → MAR → EGY → DZA
 **Date de la vague** : 2026-07-26 (révision contradictoire)
-**Portée de cette révision** : audit exclusivement en lecture. Aucun fichier
-JSON pays, aucun calculateur, aucun moteur, aucun test n'a été modifié.
-Aucun commit, aucun push. Seul ce document a été créé/modifié.
+**Portée de cette révision** : audit exclusivement en lecture sur le code et
+les données. Aucun fichier JSON pays, aucun calculateur, aucun moteur,
+aucun test n'a été modifié — seul ce document d'audit a été créé/modifié.
 
 ---
 
@@ -788,15 +788,20 @@ non-régression avant tout push.
 
 ## 11. Limites de cet audit
 
-- Aucune requête réseau sortante n'a été effectuée pendant cette révision
-  (audit fondé exclusivement sur les fichiers déjà présents dans le dépôt
-  et sur le code source existant, conformément à l'interdiction de
-  contourner une source inaccessible et à la portée strictement « audit,
-  pas collecte » de cette tâche).
+- Aucune **collecte de nouvelle donnée pays** n'a été effectuée pendant
+  cette révision, et aucun contournement de vérification TLS n'a eu lieu à
+  aucun moment. Une seule tentative de **vérification d'une source déjà
+  communiquée** a été menée (URL de la circulaire DZA 482/2024, voir §4.6) :
+  un fetch applicatif standard (HTTP 403) puis une vérification directe
+  (`openssl s_client`) ayant révélé une chaîne de certificat incomplète
+  côté serveur — vérification TLS non contournée, aucune copie officielle
+  collectée. Cette tentative n'a produit **aucune nouvelle donnée ingérée**
+  dans les comptages ou statuts de ce rapport.
 - Le statut `SOURCE_PENDING_COLLECTION` (ZAF, Schedule 1 Part 1) et
-  `SOURCE_BLOCKED` (offre KEN, circulaire DZA 482/2024) reflètent l'état
-  documenté dans le dépôt au moment de l'audit, pas une nouvelle tentative
-  d'accès réseau menée dans cette révision.
+  `SOURCE_BLOCKED` (offre KEN ; circulaire DZA 482/2024, dont l'unique
+  tentative de vérification est documentée en §4.6) reflètent l'état
+  documenté dans le dépôt et le résultat de cette tentative — aucune
+  collecte de contenu nouveau n'en résulte.
 - L'hypothèse retenue pour MAR (suffixe `00` = notation ADIL native) est
   la mieux étayée par les preuves disponibles (absence de marqueurs de
   fabrication, code source du crawler, coexistence intra-en-tête), mais
@@ -822,20 +827,23 @@ non-régression avant tout push.
 $ git branch --show-current
 claude/official-data-wave-01
 
-$ git log -1 --format='%H %ai %an <%ae>'
-940cd33bd94bbf80d6f0d2e4b5a19e5a3388da4d 2026-07-27 09:48:22 +0000 Claude <noreply@anthropic.com>
-
 $ git rev-parse origin/main
 1be67b6da14e0a03c731ab3d82b23b4180107bb6
 
 $ git log --oneline origin/main..HEAD
+7b337bb4 docs(audit): document official-data wave 01 findings
 940cd33b docs(wave01): audit factuel des 6 pays pilotes ZAF/KEN/TUN/MAR/EGY/DZA
 ```
 
-Cette révision (celle que vous lisez) modifie uniquement ce fichier —
-aucun autre fichier du dépôt n'a été touché. Aucun commit n'a été créé pour
-cette révision ; l'état exact avant/après est visible via `git status
---short` et `git diff --stat` reproduits en fin de tâche.
+Ce fichier est le seul modifié par les deux commits de la branche :
+`940cd33b` (première version de l'audit) et `7b337bb4` (validation
+contradictoire et corrections). **Avertissement de fragilité** : ces SHA
+identifient l'état de la branche `claude/official-data-wave-01`, pas
+l'historique final de `main`. La PR associée (#319) doit être fusionnée
+exclusivement par *Squash and merge* — après fusion, aucun de ces deux SHA
+n'existera dans `main` ; c'est le SHA du commit de squash qui fera foi.
+Pour retrouver l'état exact ayant produit ce document, se référer à la PR
+GitHub elle-même plutôt qu'à ces empreintes de branche.
 
 ---
 
