@@ -627,7 +627,11 @@ def get_tariff_line(country_iso3, hs_code):
                     "description_fr": regulatory.get("description", ""),
                     "description_en": regulatory.get("description", ""),
                     "dd_rate": float(regulatory.get("taxes", {}).get("dd_rate", 0) or 0),
-                    "zlecaf_rate": float(regulatory.get("taxes", {}).get("zlecaf_rate", 0) or 0),
+                    "zlecaf_rate": (
+                        float(regulatory.get("taxes", {}).get("zlecaf_rate"))
+                        if regulatory.get("taxes", {}).get("zlecaf_rate") is not None
+                        else None
+                    ),
                     "vat_rate": float(country_info.get("vat_rate", 0) or 0),
                     "other_taxes_rate": other_taxes_rate,
                     "taxes_detail": taxes_detail,
@@ -787,7 +791,7 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                         "description_fr": r.get("description", ""),
                         "description_en": r.get("description", ""),
                         "dd_rate": r.get("dd_rate", 0),
-                        "zlecaf_rate": r.get("zlecaf_rate", 0),
+                        "zlecaf_rate": r.get("zlecaf_rate"),
                         "source": "postgres",
                     }
                     for r in pg_results
@@ -1252,7 +1256,7 @@ def calculate_import_taxes(
     # taxes_detail ci-dessous, gardé par `vat_rate_pct == 0`, est désactivé).
     vat_rate_pct = line.get("vat_rate", 0) or 0
     other_taxes_pct = line.get("other_taxes_rate", 0) or 0
-    zlecaf_rate_pct = line.get("zlecaf_rate", 0) or 0
+    zlecaf_rate_pct = line.get("zlecaf_rate") or 0
 
     # Extract DAPS and other individual taxes:
     # If crawled entry has per-position taxes, use them as primary source;

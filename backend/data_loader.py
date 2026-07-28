@@ -8,7 +8,14 @@ from typing import Dict, List, Optional
 
 import pandas as pd
 
-ROOT_DIR = Path(__file__).parent.parent
+# .resolve() normalise le chemin AVANT de remonter de deux niveaux : sans lui,
+# un import via une entrée sys.path non normalisée (ex. certains tests font
+# sys.path.insert(0, ".../backend/tests/..")) donne __file__ =
+# ".../backend/tests/../data_loader.py", et Path(...).parent.parent se replie
+# alors sur ".../backend/tests" (pathlib traite ".." comme un composant),
+# repointant TOUTES les données du dépôt vers backend/tests pour le reste de la
+# session de tests (500 sur /calculate-tariff, FileNotFoundError ailleurs).
+ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data"
 
 
