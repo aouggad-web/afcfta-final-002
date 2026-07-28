@@ -511,8 +511,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
 
     # Statut de la préférence ZLECAf elle-même : DOCUMENTED uniquement quand
     # une source tracée et datée a produit le taux exposé côté API
-    # (zlecaf_response_rate non nul) ; NOT_AVAILABLE sinon — jamais déduit
-    # d'un 0 % ou d'un taux NPF recopié.
+    # (zlecaf_response_rate is not None — 0.0 est un taux valide, ex. union
+    # douanière à 0 %, et ne doit pas être confondu avec une absence) ;
+    # NOT_AVAILABLE sinon — jamais déduit d'un 0 % ou d'un taux NPF recopié.
     zlecaf_status = "DOCUMENTED" if zlecaf_response_rate is not None else "NOT_AVAILABLE"
 
     # Droit de douane absent de la source : la valeur 0 n'est pas un taux

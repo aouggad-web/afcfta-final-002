@@ -301,12 +301,14 @@ def test_tariff_data_service_rejects_synthetic_marker_all_54_files_exhaustive(cl
     non intercepté par une simple vérification `rate == 0.0`) produirait une
     fausse préférence ZLECAf pour tout pays actif implémentateur dont la
     couverture crawled (PRIORITY 1) ne couvre pas une ligne donnée."""
-    import glob
     import json
 
-    from services.tariff_data_service import tariff_service
+    # Réutilise DATA_DIR de tariff_data_service (source unique de vérité pour
+    # ce chemin) plutôt qu'un chemin absolu codé en dur — robuste à tout
+    # emplacement de checkout (CI, autre poste).
+    from services.tariff_data_service import DATA_DIR, tariff_service
 
-    files = sorted(glob.glob("/home/user/afcfta-final-002/backend/data/tariffs/*.json"))
+    files = sorted(DATA_DIR.glob("*_tariffs.json"))
     assert len(files) == 54, f"précondition invalidée : {len(files)} fichiers trouvés, 54 attendus"
 
     tariff_service.load()
@@ -316,7 +318,7 @@ def test_tariff_data_service_rejects_synthetic_marker_all_54_files_exhaustive(cl
     observed_sources = set()
 
     for path in files:
-        country_code = path.split("/")[-1].replace("_tariffs.json", "")
+        country_code = path.name.replace("_tariffs.json", "")
         with open(path, "r", encoding="utf-8") as fh:
             raw = json.load(fh)
         for line in raw.get("tariff_lines", []):
