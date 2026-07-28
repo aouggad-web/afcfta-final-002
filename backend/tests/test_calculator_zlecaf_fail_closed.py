@@ -270,8 +270,7 @@ def test_gha_synthetic_zero_rate_rejected(client):
     raw = crawled_service.lookup("GHA", "010121")
     assert raw is not None
     assert raw.get("zlecaf_rate") is None, (
-        "régression : GHA_tariffs.json porte de nouveau un zlecaf_rate "
-        "fabriqué sur cette ligne"
+        "régression : GHA_tariffs.json porte de nouveau un zlecaf_rate " "fabriqué sur cette ligne"
     )
     assert not raw.get("zlecaf_source"), (
         "régression : GHA_tariffs.json porte de nouveau un zlecaf_source "
@@ -309,12 +308,10 @@ def test_gha_crawled_file_physically_clean_of_synthetic_zlecaf_pair():
             lines_missing_npf += 1
 
     assert lines_with_zlecaf_key == 0, (
-        f"{lines_with_zlecaf_key} ligne(s) portent encore une clé zlecaf_* — "
-        "nettoyage incomplet"
+        f"{lines_with_zlecaf_key} ligne(s) portent encore une clé zlecaf_* — " "nettoyage incomplet"
     )
     assert lines_missing_npf == 0, (
-        f"{lines_missing_npf} ligne(s) ont perdu leurs champs NPF/fiscalité "
-        "pendant le nettoyage"
+        f"{lines_missing_npf} ligne(s) ont perdu leurs champs NPF/fiscalité " "pendant le nettoyage"
     )
 
 
