@@ -458,7 +458,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         line_zlecaf_rate_pct,
     )
     _eff_dd_pct = _zctx["dd_rate_pct"]
-    _preference_rate_verified = _eff_dd_pct is not None  # Flag pour détecter si une préférence vérifiée existe
+    _preference_rate_verified = (
+        _eff_dd_pct is not None
+    )  # Flag pour détecter si une préférence vérifiée existe
     zlecaf_preference_applied = bool(_zctx["preference_applied"])
     trade_regime = _zctx["trade_regime"]
     trade_regime_code = _zctx["trade_regime_code"]

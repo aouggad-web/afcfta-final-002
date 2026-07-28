@@ -335,9 +335,9 @@ def test_tariff_data_service_rejects_synthetic_marker_all_54_files_exhaustive(cl
             )
             assert returned_source == ""
 
-    assert total_lines_checked > 250_000, (
-        f"précondition invalidée : seulement {total_lines_checked} lignes lues sur 54 fichiers"
-    )
+    assert (
+        total_lines_checked > 250_000
+    ), f"précondition invalidée : seulement {total_lines_checked} lignes lues sur 54 fichiers"
     assert total_fabricated_found == total_lines_checked, (
         f"{total_lines_checked - total_fabricated_found} ligne(s) sur "
         f"{total_lines_checked} n'ont pas de zlecaf_source fabriqué connu — "

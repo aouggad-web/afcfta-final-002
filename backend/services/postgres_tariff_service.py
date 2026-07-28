@@ -198,7 +198,9 @@ class PostgresTariffService:
             "description_fr": line.get("description_fr", ""),
             "description_en": line.get("description_en") or line.get("description_fr", ""),
             "dd_rate": float(line.get("dd_rate") or 0),
-            "zlecaf_rate": float(line.get("zlecaf_rate")) if line.get("zlecaf_rate") is not None else None,
+            "zlecaf_rate": (
+                float(line.get("zlecaf_rate")) if line.get("zlecaf_rate") is not None else None
+            ),
             "savings_pct": float(line.get("savings_pct") or 0),
             "sub_positions": sub_positions,
             "sub_position_count": int(line.get("sub_position_count") or len(sub_positions)),
