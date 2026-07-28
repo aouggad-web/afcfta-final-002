@@ -1256,7 +1256,12 @@ def calculate_import_taxes(
     # taxes_detail ci-dessous, gardé par `vat_rate_pct == 0`, est désactivé).
     vat_rate_pct = line.get("vat_rate", 0) or 0
     other_taxes_pct = line.get("other_taxes_rate", 0) or 0
-    zlecaf_rate_pct = line.get("zlecaf_rate") or 0
+    # PAS de `or 0` ici : `zlecaf_rate` absent (aucune préférence tracée sur
+    # cette ligne) doit rester `None`, pas devenir un taux préférentiel 0 %
+    # fabriqué. `_resolve_zlecaf_context` gère déjà `None` explicitement
+    # (`eff_dd is not None and eff_dd < dd_rate_pct`) — aucune régression sur
+    # ce chemin, seulement la suppression du repli silencieux vers 0.
+    zlecaf_rate_pct = line.get("zlecaf_rate")
 
     # Extract DAPS and other individual taxes:
     # If crawled entry has per-position taxes, use them as primary source;
@@ -1420,6 +1425,7 @@ def calculate_import_taxes(
     zlecaf_note = _zctx["zlecaf_note"]
 
     zlecaf_taxes = dict(taxes_for_cascade)
+    _eff_dd = None
     if _preferential:
         _eff_dd = _zctx["dd_rate_pct"]
         # DD : remplacé par le taux préférentiel ZLECAf (uniquement s'il réduit).
@@ -1434,12 +1440,27 @@ def calculate_import_taxes(
     # Non éligible : zlecaf_taxes == NPF → aucune préférence, économies = 0.
     zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3)
 
-    savings_amount = round(npf_cascade["total_to_pay"] - zlecaf_cascade["total_to_pay"], 2)
-    savings_pct = (
-        round(savings_amount / npf_cascade["total_to_pay"] * 100, 2)
-        if npf_cascade["total_to_pay"] > 0
-        else 0
-    )
+    # Traçabilité : un régime ZLECAf peut être éligible (`_preferential`) sans
+    # qu'un taux préférentiel réel soit connu pour CETTE ligne (ex. Afrique du
+    # Sud / autres implémenteurs actifs : `_eff_dd` vient directement de
+    # `zlecaf_rate_pct`, absent de la source → None). Dans ce cas précis,
+    # l'absence de donnée ne doit jamais s'afficher comme une économie de 0 %
+    # (zéro vérifié) : elle est INCONNUE. Les autres régimes (union douanière,
+    # calendrier DZA, NPF strict) retournent toujours un `dd_rate_pct`
+    # numérique concret, jamais None — `zlecaf_status` reste `DOCUMENTED`.
+    zlecaf_rate_untraceable = _preferential and trade_regime == "ZLECAF" and _eff_dd is None
+    zlecaf_status = "NOT_AVAILABLE" if zlecaf_rate_untraceable else "DOCUMENTED"
+
+    if zlecaf_rate_untraceable:
+        savings_amount = None
+        savings_pct = None
+    else:
+        savings_amount = round(npf_cascade["total_to_pay"] - zlecaf_cascade["total_to_pay"], 2)
+        savings_pct = (
+            round(savings_amount / npf_cascade["total_to_pay"] * 100, 2)
+            if npf_cascade["total_to_pay"] > 0
+            else 0
+        )
 
     all_sub_positions = get_sub_positions(country_iso3, hs6)
     desc_key = "description_fr" if language == "fr" else "description_en"
@@ -1608,6 +1629,7 @@ def calculate_import_taxes(
         "zlecaf_eligible": zlecaf_eligible,
         "zlecaf_preference_applied": zlecaf_preference_applied,
         "zlecaf_note": zlecaf_note,
+        "zlecaf_status": zlecaf_status,  # DOCUMENTED | NOT_AVAILABLE
         "cif_value": cif_value,
         "generated_at": country_data.get("generated_at", "") if country_data else "",
         "rates": {

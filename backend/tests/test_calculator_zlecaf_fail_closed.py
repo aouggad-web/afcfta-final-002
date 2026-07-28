@@ -279,28 +279,28 @@ def test_gha_synthetic_zero_rate_rejected(client):
     assert data["savings"] is None
 
 
-def test_tariff_data_service_rejects_synthetic_marker_all_54_files_exhaustive(client):
-    """Vérification EXHAUSTIVE (100 % des fichiers, 100 % des lignes, pas un
-    échantillon) : les 54 fichiers `backend/data/tariffs/*.json` — chemin
-    PRIORITY 2, servi par `tariff_data_service.py`, distinct des 53 fichiers
-    actifs `backend/data/crawled/*.json` (PRIORITY 1, dont GHA fait partie ;
-    les deux jeux de fichiers ne se recouvrent pas et sont neutralisés par
-    des garde-fous séparés — celui-ci et le garde-fou GHA testé plus haut).
+_FABRICATED_ZLECAF_MARKERS = {
+    "ZLECAf",
+    "ZLECAf (produit normal)",
+    "ZLECAf (produit sensible)",
+}
 
-    Recensement exhaustif (audit complet, pas un sondage) : sur la totalité
-    des lignes de ces 54 fichiers, `zlecaf_source` ne prend jamais que 3
-    valeurs, aucune sourcée légalement :
-      - `"ZLECAf"` (littéral, apparié à `zlecaf_rate=0.0`) — même fabrication
-        que GHA (`backend/data/crawled/GHA_tariffs.json`).
-      - `"ZLECAf (produit normal)"` / `"ZLECAf (produit sensible)"` — le
-        facteur générique par catégorie de `get_zlecaf_reduction_factor`
-        (supprimé de calculator.py), ici pré-calculé DANS la donnée avec un
-        taux non nul (ratios observés : 0.1 à 1.0 selon "catégorie") plutôt
-        qu'au moment du calcul — fabrication identique, seul l'endroit change.
-    Sans le garde-fou de `get_zlecaf_rate`, ce second marqueur (rate≠0, donc
-    non intercepté par une simple vérification `rate == 0.0`) produirait une
-    fausse préférence ZLECAf pour tout pays actif implémentateur dont la
-    couverture crawled (PRIORITY 1) ne couvre pas une ligne donnée."""
+
+def test_tariffs_54_files_physically_clean_of_synthetic_zlecaf_markers(client):
+    """Vérification EXHAUSTIVE post-assainissement (100 % des fichiers, 100 %
+    des lignes, pas un sondage) : les 54 fichiers `backend/data/tariffs/*.json`
+    — chemin PRIORITY 2, servi par `tariff_data_service.py`, distinct des 53
+    fichiers actifs `backend/data/crawled/*.json` (PRIORITY 1, dont GHA fait
+    partie ; les deux jeux de fichiers ne se recouvrent pas) — ne portent plus
+    AUCUN des 3 marqueurs fabriqués historiquement présents sur 100 % de leurs
+    ~293 000 lignes (`"ZLECAf"`, `"ZLECAf (produit normal)"`,
+    `"ZLECAf (produit sensible)"` — cf. branche
+    `claude/tariffs-zlecaf-synthetic-cleanup`) : ni `zlecaf_rate`, ni
+    `zlecaf_source`, ni `zlecaf_total_taxes` ne doivent plus exister sur
+    aucune ligne. Aucun champ non-ZLECAf n'a été touché par ce nettoyage
+    (dd_rate, vat_rate, taxes_detail, sous-positions, etc. strictement
+    préservés — vérifié séparément par hash structurel avant/après lors du
+    nettoyage, hors périmètre de ce test qui porte sur l'état final)."""
     import json
 
     # Réutilise DATA_DIR de tariff_data_service (source unique de vérité pour
@@ -314,8 +314,8 @@ def test_tariff_data_service_rejects_synthetic_marker_all_54_files_exhaustive(cl
     tariff_service.load()
 
     total_lines_checked = 0
-    total_fabricated_found = 0
-    observed_sources = set()
+    lines_with_any_zlecaf_key = 0
+    lines_with_known_marker = 0
 
     for path in files:
         country_code = path.name.replace("_tariffs.json", "")
@@ -324,33 +324,51 @@ def test_tariff_data_service_rejects_synthetic_marker_all_54_files_exhaustive(cl
         for line in raw.get("tariff_lines", []):
             total_lines_checked += 1
             hs6 = line.get("hs6", "")
-            source = line.get("zlecaf_source")
-            if source is None:
-                continue
-            observed_sources.add(source)
-            total_fabricated_found += 1
-            rate, returned_source = tariff_service.get_zlecaf_rate(country_code, hs6)
-            assert rate is None, (
-                f"{country_code}/{hs6} : source fabriquée {source!r} "
-                f"(zlecaf_rate brut={line.get('zlecaf_rate')}) acceptée comme "
-                f"taux réel par get_zlecaf_rate (rate={rate})"
-            )
-            assert returned_source == ""
+            if any(k in line for k in ("zlecaf_rate", "zlecaf_source", "zlecaf_total_taxes")):
+                lines_with_any_zlecaf_key += 1
+            if line.get("zlecaf_source") in _FABRICATED_ZLECAF_MARKERS:
+                lines_with_known_marker += 1
+            # Le chemin runtime (get_zlecaf_rate) ne doit jamais renvoyer un
+            # taux pour une ligne qui n'a plus de zlecaf_rate en source.
+            rate, source = tariff_service.get_zlecaf_rate(country_code, hs6)
+            assert (
+                rate is None
+            ), f"{country_code}/{hs6} : taux inattendu après nettoyage (rate={rate})"
+            assert source == ""
 
     assert (
         total_lines_checked > 250_000
     ), f"précondition invalidée : seulement {total_lines_checked} lignes lues sur 54 fichiers"
-    assert total_fabricated_found == total_lines_checked, (
-        f"{total_lines_checked - total_fabricated_found} ligne(s) sur "
-        f"{total_lines_checked} n'ont pas de zlecaf_source fabriqué connu — "
-        f"un nouveau marqueur est peut-être apparu, à qualifier avant d'ajouter "
-        f"une exception à ce garde-fou"
+    assert lines_with_any_zlecaf_key == 0, (
+        f"{lines_with_any_zlecaf_key} ligne(s) sur {total_lines_checked} portent encore "
+        f"une clé zlecaf_rate/zlecaf_source/zlecaf_total_taxes — nettoyage incomplet"
     )
-    assert observed_sources == {
-        "ZLECAf",
-        "ZLECAf (produit normal)",
-        "ZLECAf (produit sensible)",
-    }, f"précondition invalidée : sources observées = {observed_sources}"
+    assert lines_with_known_marker == 0
+
+
+def test_tariff_data_service_still_rejects_marker_if_reintroduced(client):
+    """Test anti-réintroduction : le garde-fou runtime de
+    `tariff_data_service.get_zlecaf_rate` (ajouté sur
+    `claude/zlecaf-fail-closed-guard`, PR #321) doit continuer de rejeter les
+    3 marqueurs fabriqués connus même après l'assainissement physique des
+    données — deuxième ligne de défense si un futur script de régénération
+    (ex. `upgrade_to_enhanced_v2.py`, déjà identifié comme fabricateur)
+    réintroduisait accidentellement l'un de ces marqueurs sur une ligne."""
+    from services.tariff_data_service import tariff_service
+
+    tariff_service.load()
+    for marker in _FABRICATED_ZLECAF_MARKERS:
+        line = {"zlecaf_rate": 12.5, "zlecaf_source": marker}
+        # Simule get_tariff_line() en injectant directement une ligne dans
+        # l'index pour isoler la logique de rejet de get_zlecaf_rate, sans
+        # dépendre d'une ligne réelle du dataset (qui n'en porte plus aucune).
+        tariff_service._hs6_index.setdefault("_TEST_REINTRODUCTION", {})["999999"] = line
+        rate, source = tariff_service.get_zlecaf_rate("_TEST_REINTRODUCTION", "999999")
+        del tariff_service._hs6_index["_TEST_REINTRODUCTION"]
+        assert (
+            rate is None
+        ), f"marqueur {marker!r} réintroduit accepté comme taux réel (rate={rate})"
+        assert source == ""
 
 
 # ==================== 9. Réciprocité / garde-fous existants non contournés ====================
@@ -373,3 +391,78 @@ def test_zaf_partner_not_active_stays_npf(client):
     assert data["zlecaf_tariff_rate"] is None
     assert data["zlecaf_status"] == "NOT_AVAILABLE"
     assert data["savings"] is None
+
+
+# ==================== 10. authentic_tariff_service.calculate_import_taxes ====================
+# Chemin runtime DISTINCT de routes/calculator.py : consommé par
+# routes/authentic_tariffs.py et routes/postgres_tariffs.py (POST
+# /postgres-tariffs/calculate). Lit backend/data/{ISO3}_tariffs.json (miroir
+# plat, pas backend/data/tariffs/) via authentic_tariff_service.DATA_DIR.
+# Après le nettoyage des marqueurs zlecaf_* fabriqués sur ce miroir, une
+# ligne éligible ZLECAf (régime "ZLECAf", implémenteur actif) mais sans taux
+# préférentiel tracé ne doit produire NI erreur NI un repli silencieux vers 0
+# (`or 0`, corrigé) — les économies doivent rester `None`, jamais `0.0`.
+
+
+def test_authentic_tariff_service_untraceable_zlecaf_line_has_null_savings():
+    """Afrique du Sud, partenaire ZLECAf actif (hors SACU), ligne sans taux
+    préférentiel tracé dans la source : la préférence est NON_AVAILABLE et
+    les économies sont `None`, pas un 0 % fabriqué par un ancien repli
+    `line.get("zlecaf_rate") or 0`."""
+    from services.authentic_tariff_service import get_tariff_line
+    from services.zlecaf_schedule_zaf import zaf_partner_active
+
+    assert zaf_partner_active("MAR"), (
+        "précondition invalidée : MAR n'est plus un partenaire ZLECAf actif "
+        "pour l'Afrique du Sud — choisir un autre partenaire actif"
+    )
+    line = get_tariff_line("ZAF", "020110")
+    assert line is not None and (line.get("dd_rate") or 0) > 0, (
+        "précondition invalidée : besoin d'une ligne ZAF avec dd_rate > 0 et "
+        "sans zlecaf_rate traçable (nettoyage des marqueurs fabriqués)"
+    )
+    assert "zlecaf_rate" not in line, (
+        "précondition invalidée : cette ligne porte encore un zlecaf_rate "
+        "(le nettoyage du miroir plat a-t-il régressé ?)"
+    )
+
+    from services.authentic_tariff_service import calculate_import_taxes
+
+    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="MAR")
+
+    assert result["trade_regime"] == "ZLECAF"
+    assert result["zlecaf_eligible"] is True
+    assert result["zlecaf_preference_applied"] is False
+    assert result["zlecaf_status"] == "NOT_AVAILABLE"
+    assert result["savings"]["amount"] is None
+    assert result["savings"]["percentage"] is None
+    # Le droit reste au taux NPF réel de la source — aucune exonération
+    # fabriquée (pas de 0.0 silencieux).
+    assert result["rates"]["dd_rate_pct"] == line["dd_rate"]
+
+
+def test_authentic_tariff_service_customs_union_savings_stay_documented():
+    """Contrôle négatif : un régime structurellement vérifié (union
+    douanière SACU) ne doit pas être requalifié en NOT_AVAILABLE — il
+    produit un taux et des économies concrets, traçables par construction."""
+    from services.authentic_tariff_service import calculate_import_taxes
+
+    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="BWA")
+
+    assert result["trade_regime"] == "CUSTOMS_UNION"
+    assert result["zlecaf_status"] == "DOCUMENTED"
+    assert result["savings"]["amount"] is not None
+    assert result["savings"]["amount"] > 0
+
+
+def test_authentic_tariff_service_no_origin_is_documented_zero_not_null():
+    """Contrôle négatif : sans pays d'origine, le régime NPF est une
+    conclusion déterministe (pas une donnée manquante) — économies
+    vérifiées à 0, jamais `None`."""
+    from services.authentic_tariff_service import calculate_import_taxes
+
+    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country=None)
+
+    assert result["trade_regime"] == "NPF"
+    assert result["zlecaf_status"] == "DOCUMENTED"
+    assert result["savings"]["amount"] == 0.0
