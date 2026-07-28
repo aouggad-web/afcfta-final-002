@@ -284,12 +284,13 @@ def test_gha_synthetic_zero_rate_rejected(client):
     assert data["savings"] is None
 
 
-def test_gha_crawled_file_physically_clean_of_synthetic_zlecaf_pair():
+def test_gha_crawled_file_physically_clean_of_any_zlecaf_key():
     """Balayage exhaustif des 5 387 lignes de
-    `backend/data/crawled/GHA_tariffs.json` : zéro `zlecaf_rate`/
-    `zlecaf_source` restant, quelle que soit la valeur (pas seulement la
-    paire 0.0/"ZLECAf" connue) — et les champs NPF/fiscalité (dd_rate,
-    dd_source, vat_rate, taxes_detail) restent présents et non vides."""
+    `backend/data/crawled/GHA_tariffs.json` : zéro clé `zlecaf_rate`/
+    `zlecaf_source`/`zlecaf_total_taxes` restante, quelle que soit la valeur
+    (pas seulement la paire 0.0/"ZLECAf" connue) — et les champs
+    NPF/fiscalité (dd_rate, dd_source, vat_rate, taxes_detail) restent
+    présents et non vides."""
     import json
 
     from services.crawled_data_service import CRAWLED_DIR
@@ -304,7 +305,12 @@ def test_gha_crawled_file_physically_clean_of_synthetic_zlecaf_pair():
     for line in lines:
         if any(k in line for k in ("zlecaf_rate", "zlecaf_source", "zlecaf_total_taxes")):
             lines_with_zlecaf_key += 1
-        if line.get("dd_rate") is None or not line.get("dd_source") or not line.get("taxes_detail"):
+        if (
+            line.get("dd_rate") is None
+            or not line.get("dd_source")
+            or line.get("vat_rate") is None
+            or not line.get("taxes_detail")
+        ):
             lines_missing_npf += 1
 
     assert lines_with_zlecaf_key == 0, (
