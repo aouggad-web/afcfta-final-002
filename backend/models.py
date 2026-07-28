@@ -63,9 +63,9 @@ class TariffCalculationResponse(BaseModel):
     # Tarifs normaux (hors ZLECAf)
     normal_tariff_rate: float
     normal_tariff_amount: float
-    # Tarifs ZLECAf
-    zlecaf_tariff_rate: float
-    zlecaf_tariff_amount: float
+    # Tarifs ZLECAf (None si aucune préférence vérifiée disponible)
+    zlecaf_tariff_rate: Optional[float] = None
+    zlecaf_tariff_amount: Optional[float] = None
     # TVA et autres taxes - Normal
     normal_vat_rate: float
     normal_vat_amount: float
@@ -82,11 +82,12 @@ class TariffCalculationResponse(BaseModel):
     zlecaf_ecowas_levy: float
     zlecaf_other_taxes_total: float
     zlecaf_total_cost: float
-    # Économies
-    savings: float
-    savings_percentage: float
-    total_savings_with_taxes: float
-    total_savings_percentage: float
+    # Économies (None si aucune préférence ZLECAf traçable : un 0 numérique
+    # affirmerait à tort qu'un calcul préférentiel a été effectué)
+    savings: Optional[float] = None
+    savings_percentage: Optional[float] = None
+    total_savings_with_taxes: Optional[float] = None
+    total_savings_percentage: Optional[float] = None
     # Journal de calcul et traçabilité
     normal_calculation_journal: List[Dict[str, Any]]
     zlecaf_calculation_journal: List[Dict[str, Any]]
@@ -97,6 +98,33 @@ class TariffCalculationResponse(BaseModel):
     tariff_precision: str = "chapter"  # sub_position, hs6_country, chapter
     sub_position_used: Optional[str] = None  # Code 8-12 chiffres si utilisé
     sub_position_description: Optional[str] = None
+    # ── Champs de statut d'honnêteté (additifs, ne cassent pas le contrat) ──
+    # Statut du droit de douane servi :
+    #   PAYABLE        → droit exigible issu d'une position tarifaire.
+    #   INDICATIVE_MFN → agrégat WITS/UNCTAD-TRAINS (moyenne MFN SH6, niveau 3) :
+    #                    information seulement, JAMAIS un droit exigible ni une
+    #                    base d'économie ZLECAf.
+    #   UNAVAILABLE    → aucun droit de douane trouvé dans la source officielle ;
+    #                    la valeur 0 affichée n'est PAS un taux vérifié (absence
+    #                    de donnée, pas un 0 % réel).
+    duty_status: str = "PAYABLE"
+    duty_notice: Optional[str] = None
+    dd_available: bool = True  # False = droit absent de la source (≠ 0 % vérifié)
+    # Régime commercial préférentiel effectivement appliqué, résolu par le
+    # garde-fou central (services.authentic_tariff_service.resolve_zlecaf_context) :
+    # CUSTOMS_UNION | ZLECAF | FTA_CONDITIONAL | NPF.
+    trade_regime: Optional[str] = None
+    trade_regime_code: Optional[str] = None  # SACU, UEMOA, ECOWAS, ZLECAF…
+    zlecaf_preference_applied: bool = False  # une préférence réduit-elle le droit ?
+    zlecaf_note: Optional[str] = None
+    # Statut de la préférence ZLECAf elle-même (distinct de duty_status, qui
+    # porte sur le droit NPF) :
+    #   DOCUMENTED    → taux préférentiel résolu à partir d'une source tracée
+    #                    et datée (union douanière, calendrier DZA/ZAF, taux
+    #                    réel de ligne + preuve d'application).
+    #   NOT_AVAILABLE → aucune préférence traçable : zlecaf_tariff_rate=null,
+    #                    zlecaf_tariff_amount=null, savings=null.
+    zlecaf_status: str = "NOT_AVAILABLE"
     has_varying_sub_positions: bool = False  # Si d'autres taux existent pour ce HS6
     available_sub_positions_count: int = 0
     # WARNING: Taux variables selon sous-positions

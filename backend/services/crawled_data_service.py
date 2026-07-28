@@ -98,10 +98,14 @@ class CrawledDataService:
             code_idx = {}
             hs6_idx = {}
 
+            file_source_quality = data.get("source_quality", "")
+
             for pos in positions:
                 normalized = self._normalize_position(country_code, pos)
                 if not normalized:
                     continue
+
+                normalized["source_quality"] = file_source_quality
 
                 code_clean = normalized["code_clean"]
                 code_idx[code_clean] = normalized
@@ -181,9 +185,10 @@ class CrawledDataService:
                 "taxes": taxes,
                 "dd_rate": dd_rate,
                 "vat_rate": vat_rate,
-                "zlecaf_rate": line.get("zlecaf_rate", 0),
+                "zlecaf_rate": line.get("zlecaf_rate"),
+                "zlecaf_source": line.get("zlecaf_source", ""),
                 "total_taxes_pct": line.get("total_taxes_pct", 0),
-                "zlecaf_total_taxes": line.get("zlecaf_total_taxes", 0),
+                "zlecaf_total_taxes": line.get("zlecaf_total_taxes"),
                 "fiscal_advantages": line.get("fiscal_advantages", []),
                 "administrative_formalities": line.get("administrative_formalities", []),
                 "source": line.get("dd_source", ""),
@@ -220,7 +225,7 @@ class CrawledDataService:
                     "taxes": sp_taxes,
                     "dd_rate": sp_dd,
                     "vat_rate": vat_rate,
-                    "zlecaf_rate": line.get("zlecaf_rate", 0),
+                    "zlecaf_rate": line.get("zlecaf_rate"),
                     "fiscal_advantages": line.get("fiscal_advantages", []),
                     "administrative_formalities": line.get("administrative_formalities", []),
                     "source": sp.get("source", ""),
@@ -349,9 +354,10 @@ class CrawledDataService:
             "taxes": pos.get("taxes", []),
             "dd_rate": pos.get("dd_rate", 0),
             "vat_rate": pos.get("vat_rate", 0),
-            "zlecaf_rate": pos.get("zlecaf_rate", 0),
+            "zlecaf_rate": pos.get("zlecaf_rate"),
+            "zlecaf_source": pos.get("zlecaf_source", ""),
             "total_taxes_pct": pos.get("total_taxes_pct", 0),
-            "zlecaf_total_taxes": pos.get("zlecaf_total_taxes", 0),
+            "zlecaf_total_taxes": pos.get("zlecaf_total_taxes"),
             "fiscal_advantages": pos.get("fiscal_advantages", []),
             "administrative_formalities": pos.get("administrative_formalities", []),
             "source": pos.get("source", ""),
@@ -439,9 +445,6 @@ class CrawledDataService:
             elif tax_code in ("TVA", "VAT"):
                 vat_rate = rate
 
-        # ZLECAf rate (DD = 0% with certificate of origin)
-        zlecaf_rate = 0.0
-
         return {
             "code_raw": raw_code,
             "code_clean": code_clean,
@@ -458,9 +461,9 @@ class CrawledDataService:
             "dd_rate": dd_rate,
             "daps_rate": daps_rate,
             "vat_rate": vat_rate,
-            "zlecaf_rate": zlecaf_rate,
+            "zlecaf_rate": None,
             "total_taxes_pct": total_taxes,
-            "zlecaf_total_taxes": total_taxes - dd_rate + zlecaf_rate,
+            "zlecaf_total_taxes": total_taxes,
             "fiscal_advantages": pos.get("advantages", []),
             "administrative_formalities": pos.get("formalities", []),
             "source": pos.get("source", "conformepro.dz"),

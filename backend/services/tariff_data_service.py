@@ -94,11 +94,40 @@ class TariffDataService:
             return (dd_pct / 100.0, source)
         return (None, "")
 
-    def get_zlecaf_rate(self, country_code: str, hs6_code: str) -> Tuple[float, str]:
+    # Marqueurs de source connus pour être fabriqués (aucune référence légale
+    # datée derrière) : recensés exhaustivement sur les 54 fichiers
+    # `backend/data/tariffs/*.json` — 100 % de leurs ~300 000 lignes portent
+    # l'une de ces 3 valeurs, jamais une source réelle (ex. "Circulaire DGD
+    # 482/2024"). `"ZLECAf (produit normal)"` / `"ZLECAf (produit sensible)"`
+    # sont le même facteur générique par catégorie que celui supprimé de
+    # calculator.py (get_zlecaf_reduction_factor), ici pré-calculé dans la
+    # donnée elle-même plutôt qu'au moment du calcul — la fabrication est
+    # identique, seul l'endroit change.
+    _FABRICATED_ZLECAF_SOURCES = {
+        "ZLECAf",
+        "ZLECAf (produit normal)",
+        "ZLECAf (produit sensible)",
+    }
+
+    def get_zlecaf_rate(self, country_code: str, hs6_code: str) -> Tuple[Optional[float], str]:
+        """Taux ZLECAf réellement présent sur cette ligne. Ne fabrique jamais
+        un 0 % : si le champ est absent (≠ explicitement 0), retourne None
+        pour laisser l'appelant (garde-fou central) décider — jamais un
+        facteur générique de repli.
+
+        Rejette aussi tout marqueur de source connu pour être fabriqué (cf.
+        `_FABRICATED_ZLECAF_SOURCES`) — présent sur la totalité des 54
+        fichiers `backend/data/tariffs/*.json`, même fabrication que celle
+        neutralisée pour GHA côté crawled_data_service, ici généralisée
+        puisque `get_tariff_line` sert ces mêmes 54 pays en PRIORITY 2 du
+        calculateur. Nettoyage physique des fichiers prévu séparément (hors
+        périmètre de ce garde-fou runtime)."""
         line = self.get_tariff_line(country_code, hs6_code)
-        if line:
-            zlecaf_pct = line.get("zlecaf_rate", 0)
+        if line and line.get("zlecaf_rate") is not None:
+            zlecaf_pct = line["zlecaf_rate"]
             source = line.get("zlecaf_source", f"ZLECAf {country_code}")
+            if source in self._FABRICATED_ZLECAF_SOURCES:
+                return (None, "")
             return (zlecaf_pct / 100.0, source)
         return (None, "")
 
