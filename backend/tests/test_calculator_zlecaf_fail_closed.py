@@ -257,26 +257,65 @@ def test_non_active_dza_partner_stays_npf_not_zlecaf(client):
 
 
 def test_gha_synthetic_zero_rate_rejected(client):
-    """Ghana : `backend/data/crawled/GHA_tariffs.json` porte, sur 100 % de ses
-    5 387 lignes, la paire synthétique `zlecaf_rate=0.0`/`zlecaf_source="ZLECAf"`
-    — fabriquée, non sourcée. Le garde-fou provisoire de calculator.py doit la
-    rejeter : aucune préférence ne doit être produite à partir de cette paire,
-    même pour un pays par ailleurs ratifié. (Nettoyage physique du fichier
-    prévu séparément sur `claude/ghana-zlecaf-neutralization`.)"""
+    """Ghana : `backend/data/crawled/GHA_tariffs.json` portait, sur 100 % de
+    ses 5 387 lignes, la paire synthétique `zlecaf_rate=0.0`/
+    `zlecaf_source="ZLECAf"` — fabriquée, non sourcée. Nettoyée physiquement
+    (branche `claude/ghana-crawled-zlecaf-cleanup`) : la paire ne doit plus
+    exister sur le fichier, et le garde-fou de calculator.py (toujours en
+    place, seconde ligne de défense) doit continuer à ne produire aucune
+    préférence à partir de cette absence, même pour un pays par ailleurs
+    ratifié."""
     from services.crawled_data_service import crawled_service
 
     raw = crawled_service.lookup("GHA", "010121")
     assert raw is not None
-    assert raw.get("zlecaf_rate") == 0.0, "précondition invalidée : GHA_tariffs.json a changé"
-    assert (
-        raw.get("zlecaf_source") == "ZLECAf"
-    ), "précondition invalidée : GHA_tariffs.json a changé"
+    assert raw.get("zlecaf_rate") is None, (
+        "régression : GHA_tariffs.json porte de nouveau un zlecaf_rate "
+        "fabriqué sur cette ligne"
+    )
+    assert not raw.get("zlecaf_source"), (
+        "régression : GHA_tariffs.json porte de nouveau un zlecaf_source "
+        "fabriqué sur cette ligne"
+    )
 
     data = _calc(client, "EGY", "GHA")
     assert data["zlecaf_preference_applied"] is False
     assert data["zlecaf_tariff_rate"] is None
     assert data["zlecaf_status"] == "NOT_AVAILABLE"
     assert data["savings"] is None
+
+
+def test_gha_crawled_file_physically_clean_of_synthetic_zlecaf_pair():
+    """Balayage exhaustif des 5 387 lignes de
+    `backend/data/crawled/GHA_tariffs.json` : zéro `zlecaf_rate`/
+    `zlecaf_source` restant, quelle que soit la valeur (pas seulement la
+    paire 0.0/"ZLECAf" connue) — et les champs NPF/fiscalité (dd_rate,
+    dd_source, vat_rate, taxes_detail) restent présents et non vides."""
+    import json
+
+    from services.crawled_data_service import CRAWLED_DIR
+
+    path = CRAWLED_DIR / "GHA_tariffs.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    lines = data["tariff_lines"]
+    assert len(lines) == 5387, f"précondition invalidée : {len(lines)} lignes trouvées"
+
+    lines_with_zlecaf_key = 0
+    lines_missing_npf = 0
+    for line in lines:
+        if any(k in line for k in ("zlecaf_rate", "zlecaf_source", "zlecaf_total_taxes")):
+            lines_with_zlecaf_key += 1
+        if line.get("dd_rate") is None or not line.get("dd_source") or not line.get("taxes_detail"):
+            lines_missing_npf += 1
+
+    assert lines_with_zlecaf_key == 0, (
+        f"{lines_with_zlecaf_key} ligne(s) portent encore une clé zlecaf_* — "
+        "nettoyage incomplet"
+    )
+    assert lines_missing_npf == 0, (
+        f"{lines_missing_npf} ligne(s) ont perdu leurs champs NPF/fiscalité "
+        "pendant le nettoyage"
+    )
 
 
 _FABRICATED_ZLECAF_MARKERS = {
