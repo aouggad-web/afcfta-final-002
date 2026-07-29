@@ -99,7 +99,8 @@ def test_registry_contains_no_numeric_tax_or_preference_rate_fallback():
 
 
 def test_only_source_bound_countries_expose_required_documents():
-    for country in EXPECTED_COUNTRIES - {"KEN", "COD"}:
+    source_bound = {"KEN", "COD", "SSD", "BWA", "LSO", "NAM", "SWZ"}
+    for country in EXPECTED_COUNTRIES - source_bound:
         enrichment = get_country_enrichment(country)
         assert enrichment["required_documents"] == []
         assert enrichment["required_documents_status"] == "NOT_AVAILABLE"
@@ -125,6 +126,54 @@ def test_known_data_conflicts_are_exposed_not_silently_resolved():
     registry = _registry()["countries"]
     for country in {"BDI", "SSD", "UGA", "TCD", "GAB", "GNQ"}:
         assert registry[country]["anomalies"], country
+
+
+def test_priority_08_consumption_taxes_are_country_specific_and_fail_closed():
+    expected_vat = {
+        "BDI": 18.0,
+        "BWA": 14.0,
+        "LSO": 15.0,
+        "NAM": 15.0,
+        "SWZ": 15.0,
+        "CAF": 19.0,
+        "GNQ": 15.0,
+    }
+    for country, expected_rate in expected_vat.items():
+        enrichment = get_country_enrichment(country)
+        assert enrichment["consumption_tax"]["tax_type"] == "VAT"
+        assert enrichment["consumption_tax"]["standard_rate"] == expected_rate
+        assert enrichment["traceability_sources"]
+
+    south_sudan = get_country_enrichment("SSD")["consumption_tax"]
+    assert south_sudan["tax_type"] == "IMPORT_SALES_TAX"
+    assert south_sudan["status"] == "NOT_AVAILABLE"
+    assert south_sudan["standard_rate"] is None
+    assert south_sudan["historical_record"]["rate"] == 20.0
+    assert south_sudan["historical_record"]["status"] == "HISTORICAL_NOT_CURRENT"
+
+
+def test_unmapped_reduced_rates_are_not_presented_as_hs_specific():
+    for country in {"CAF", "GNQ"}:
+        tax = get_country_enrichment(country)["consumption_tax"]
+        assert tax["status"] == "PARTIAL"
+        assert all(item["hs_mapping_status"] == "NOT_AVAILABLE" for item in tax["reduced_rates"])
+
+
+def test_no_priority_08_country_invents_pre_shipment_inspection():
+    for country in {"BDI", "SSD", "BWA", "LSO", "NAM", "SWZ", "CAF", "GNQ"}:
+        inspection = get_country_enrichment(country)["inspection_before_shipment"]
+        assert inspection == {"status": "NOT_AVAILABLE"}
+
+
+def test_priority_08_documents_are_general_or_conditionally_scoped_not_hs_mapped():
+    for country in {"SSD", "BWA", "LSO", "NAM", "SWZ"}:
+        enrichment = get_country_enrichment(country)
+        assert enrichment["required_documents"]
+        assert enrichment["required_documents_are_hs_specific"] is False
+        assert all(
+            item["source_id"] and item["status"] == "DOCUMENTED"
+            for item in enrichment["required_documents"]
+        )
 
 
 def test_unknown_country_has_no_synthetic_enrichment():

@@ -67,16 +67,16 @@ class TariffCalculationResponse(BaseModel):
     zlecaf_tariff_rate: Optional[float] = None
     zlecaf_tariff_amount: Optional[float] = None
     # TVA et autres taxes - Normal
-    normal_vat_rate: float
-    normal_vat_amount: float
+    normal_vat_rate: Optional[float] = None
+    normal_vat_amount: Optional[float] = None
     normal_statistical_fee: float
     normal_community_levy: float
     normal_ecowas_levy: float
     normal_other_taxes_total: float
     normal_total_cost: float
     # TVA et autres taxes - ZLECAf
-    zlecaf_vat_rate: float
-    zlecaf_vat_amount: float
+    zlecaf_vat_rate: Optional[float] = None
+    zlecaf_vat_amount: Optional[float] = None
     zlecaf_statistical_fee: float
     zlecaf_community_levy: float
     zlecaf_ecowas_levy: float

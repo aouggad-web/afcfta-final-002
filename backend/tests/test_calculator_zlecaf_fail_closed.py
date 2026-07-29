@@ -78,6 +78,19 @@ def test_response_exposes_honesty_status_fields(client):
     assert data["duty_status"] in ("PAYABLE", "INDICATIVE_MFN", "UNAVAILABLE")
     assert data["zlecaf_status"] in ("DOCUMENTED", "NOT_AVAILABLE")
     assert data["country_enrichment"]["country_iso3"] == "KEN"
+
+
+def test_south_sudan_does_not_expose_legacy_estimated_vat(client):
+    data = _calc(client, "KEN", "SSD")
+    assert data["normal_vat_rate"] is None
+    assert data["normal_vat_amount"] is None
+    assert data["zlecaf_vat_rate"] is None
+    assert data["zlecaf_vat_amount"] is None
+    assert not any(item.get("code") in {"TVA", "VAT"} for item in (data.get("taxes_detail") or []))
+    consumption_tax = data["country_enrichment"]["consumption_tax"]
+    assert consumption_tax["tax_type"] == "IMPORT_SALES_TAX"
+    assert consumption_tax["status"] == "NOT_AVAILABLE"
+    assert consumption_tax["standard_rate"] is None
     assert data["country_enrichment"]["required_documents_status"] == "DOCUMENTED"
 
 

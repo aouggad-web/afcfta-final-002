@@ -47,14 +47,15 @@
       "region": "EAC",
       "national_extension_status": "NOT_AVAILABLE",
       "vat_status": "PARTIAL",
-      "other_taxes_status": "UNVERIFIED",
+      "other_taxes_status": "NOT_AVAILABLE",
       "calculation_order_status": "PARTIAL",
       "afcfta_status": "NOT_AVAILABLE",
       "regulatory_status": "NOT_AVAILABLE",
       "required_documents_status": "NOT_AVAILABLE",
-      "source_paths": [],
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
       "required_document_records": [],
-      "anomalies": ["Le taux de TVA runtime ne dispose pas encore d'une source fiscale nationale archivée."]
+      "anomalies": ["TVA 18 % documentée par l'OBR, mais fraîcheur 2025/26 non entièrement contrôlée."]
     },
     "COD": {
       "region": "EAC",
@@ -112,15 +113,19 @@
     "SSD": {
       "region": "EAC",
       "national_extension_status": "NOT_AVAILABLE",
-      "vat_status": "UNVERIFIED",
+      "vat_status": "NOT_APPLICABLE",
       "other_taxes_status": "NOT_AVAILABLE",
       "calculation_order_status": "NOT_AVAILABLE",
       "afcfta_status": "NOT_AVAILABLE",
-      "regulatory_status": "NOT_AVAILABLE",
-      "required_documents_status": "NOT_AVAILABLE",
-      "source_paths": [],
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
       "required_document_records": [],
-      "anomalies": ["La TVA runtime est explicitement décrite comme estimée ; elle ne doit pas être présentée comme documentée."]
+      "anomalies": [
+        "Le régime est une taxe sur les ventes à l'importation, pas une TVA.",
+        "Le taux 20 % est historique (FY 2023/24) ; le taux courant reste NOT_AVAILABLE."
+      ]
     },
     "TZA": {
       "region": "EAC",
@@ -175,54 +180,61 @@
     "BWA": {
       "region": "SACU",
       "national_extension_status": "NOT_AVAILABLE",
-      "vat_status": "UNVERIFIED",
+      "vat_status": "DOCUMENTED",
       "other_taxes_status": "NOT_AVAILABLE",
       "calculation_order_status": "NOT_AVAILABLE",
       "afcfta_status": "NOT_AVAILABLE",
-      "regulatory_status": "NOT_AVAILABLE",
-      "required_documents_status": "NOT_AVAILABLE",
-      "source_paths": [],
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
       "required_document_records": [],
-      "anomalies": ["Aucune source fiscale nationale archivée ; ne pas déduire la TVA à partir du tarif commun SACU."]
+      "anomalies": ["La base de TVA à l'importation reste PARTIAL faute de référence d'article extraite."]
     },
     "LSO": {
       "region": "SACU",
       "national_extension_status": "NOT_AVAILABLE",
-      "vat_status": "UNVERIFIED",
-      "other_taxes_status": "NOT_AVAILABLE",
-      "calculation_order_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "DOCUMENTED",
+      "calculation_order_status": "DOCUMENTED",
       "afcfta_status": "NOT_AVAILABLE",
-      "regulatory_status": "NOT_AVAILABLE",
-      "required_documents_status": "NOT_AVAILABLE",
-      "source_paths": [],
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
       "required_document_records": [],
-      "anomalies": ["Aucune source fiscale nationale archivée ; ne pas déduire la TVA à partir du tarif commun SACU."]
+      "anomalies": ["Le TAPL est produit-spécifique et ne doit jamais être appliqué hors tabac/alcool."]
     },
     "NAM": {
       "region": "SACU",
       "national_extension_status": "NOT_AVAILABLE",
-      "vat_status": "UNVERIFIED",
+      "vat_status": "DOCUMENTED",
       "other_taxes_status": "NOT_AVAILABLE",
-      "calculation_order_status": "NOT_AVAILABLE",
+      "calculation_order_status": "DOCUMENTED",
       "afcfta_status": "NOT_AVAILABLE",
-      "regulatory_status": "NOT_AVAILABLE",
-      "required_documents_status": "NOT_AVAILABLE",
-      "source_paths": [],
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
       "required_document_records": [],
-      "anomalies": ["Aucune source fiscale nationale archivée ; ne pas déduire la TVA à partir du tarif commun SACU."]
+      "anomalies": ["Aucune inspection avant expédition générale n'est documentée."]
     },
     "SWZ": {
       "region": "SACU",
       "national_extension_status": "NOT_AVAILABLE",
-      "vat_status": "UNVERIFIED",
-      "other_taxes_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "PARTIAL",
       "calculation_order_status": "NOT_AVAILABLE",
       "afcfta_status": "NOT_AVAILABLE",
-      "regulatory_status": "NOT_AVAILABLE",
-      "required_documents_status": "NOT_AVAILABLE",
-      "source_paths": [],
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
       "required_document_records": [],
-      "anomalies": ["Aucune source fiscale nationale archivée ; ne pas déduire la TVA à partir du tarif commun SACU."]
+      "anomalies": [
+        "La base de TVA import reste NOT_AVAILABLE.",
+        "Le prélèvement alcool/tabac de 2019 doit être revalidé pour son maintien en 2026."
+      ]
     },
     "CMR": {
       "region": "CEMAC",
@@ -245,15 +257,19 @@
     "CAF": {
       "region": "CEMAC",
       "national_extension_status": "NOT_AVAILABLE",
-      "vat_status": "UNVERIFIED",
-      "other_taxes_status": "NOT_AVAILABLE",
-      "calculation_order_status": "PARTIAL",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "DOCUMENTED",
       "afcfta_status": "NOT_AVAILABLE",
       "regulatory_status": "NOT_AVAILABLE",
       "required_documents_status": "NOT_AVAILABLE",
-      "source_paths": [],
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
       "required_document_records": [],
-      "anomalies": ["Aucune source fiscale nationale archivée pour valider les prélèvements propres à la RCA."]
+      "anomalies": [
+        "Le taux réduit de 5 % et les exonérations ne sont pas mappés aux codes SH.",
+        "La base TVA runtime CIF + DD + TCI ne correspond pas à la formule documentée."
+      ]
     },
     "TCD": {
       "region": "CEMAC",
@@ -306,15 +322,19 @@
     "GNQ": {
       "region": "CEMAC",
       "national_extension_status": "NOT_AVAILABLE",
-      "vat_status": "UNVERIFIED",
+      "vat_status": "PARTIAL",
       "other_taxes_status": "NOT_AVAILABLE",
-      "calculation_order_status": "NOT_AVAILABLE",
+      "calculation_order_status": "DOCUMENTED",
       "afcfta_status": "NOT_AVAILABLE",
       "regulatory_status": "NOT_AVAILABLE",
       "required_documents_status": "NOT_AVAILABLE",
-      "source_paths": [],
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
       "required_document_records": [],
-      "anomalies": ["Des libellés et bases camerounais sont réutilisés dans le runtime ; une source nationale équato-guinéenne est requise."]
+      "anomalies": [
+        "Les taux temporaires 2026 à 0 % et 5 % sont décrits sans codes SH et ne sont pas appliqués automatiquement.",
+        "La base TVA runtime CIF + DD + TCI ne correspond pas à la formule nationale documentée."
+      ]
     }
   }
 }
