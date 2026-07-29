@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "country": "COD",
+  "as_of": "2026-07-29",
+  "measure_type": "import_regulatory_compliance",
+  "notes": "Premier lot réglementaire République Démocratique du Congo : formalités et contrôles obligatoires à l'importation, distincts des taux fiscaux (TVA couverte par vat_measures.json). Aucune de ces mesures n'a pu être archivée sur texte primaire ce cycle : les portails officiels (segucerdc.com, commerce.gouv.cd, occ.cd, ogefremsite.org) renvoient HTTP 403 sur WebFetch. Statuts canoniques appliqués : PARTIAL = source officielle identifiable mais non archivée ; UNVERIFIED = information recoupée uniquement par sources secondaires ; pending_primary_archive = true tant que l'extrait primaire daté n'est pas téléchargé et haché. Tous les frais/tarifs sont laissés à null (NOT_AVAILABLE) : aucun montant issu de source secondaire n'entre dans le calculateur. BIVAC (Bureau Veritas) figure comme opérateur mandaté sous la mesure OCC/CBCA, et non comme mesure réglementaire autonome, avec sa propre fiche d'acteur (mandated_actors) : statut juridique, autorité mandante, mission, base du mandat, durée, frais autorisés, document délivré. Un prestataire privé mandaté reste un acteur officiel d'exécution dans la limite de son mandat.",
+  "regulatory_measures": [
+    {
+      "record_id": "COD-SEGUCE-SINGLE-WINDOW",
+      "measure_name": "Guichet Unique Intégral du Commerce Extérieur (GUICE / SEGUCE RDC)",
+      "measure_category": "single_window",
+      "scope": "Plateforme électronique nationale obligatoire centralisant les formalités du commerce extérieur (import, export, transit) : dépôt dématérialisé des déclarations et documents, paiement des droits et redevances, interconnexion des administrations et opérateurs portuaires.",
+      "products": "Toutes marchandises faisant l'objet d'une opération de commerce extérieur (portée générale).",
+      "transport": "Tous modes ; principalement fret maritime via le port de Matadi et les postes frontaliers terrestres.",
+      "conditions": "Passage obligatoire par le guichet unique pour les opérations de commerce extérieur. Concession de service public confiée à SEGUCE RDC SA par le décret n°14/020 du 2 août 2014 ; caractère obligatoire et généralisé confirmé par le décret n°019/15 du 14 octobre 2015.",
+      "exemptions": "NOT_AVAILABLE",
+      "documents": [
+        "déclaration en douane dématérialisée",
+        "documents préalables à l'importation",
+        "titres de transport"
+      ],
+      "authority": "SEGUCE RDC SA, sous tutelle du Ministère du Commerce Extérieur.",
+      "platform": "https://www.segucerdc.com/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "COD-SEGUCE-DECRET-14-020",
+      "legal_reference": "Décret n°14/020 du 2 août 2014 (concession du guichet unique à SEGUCE RDC SA) et décret n°019/15 du 14 octobre 2015 (caractère obligatoire nationwide) — références identifiées via le portail gouvernemental commerce.gouv.cd/seguce, textes non lus directement ce cycle.",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "COD-OCC-CBCA",
+      "measure_name": "Contrôle de conformité et de qualité à l'importation (OCC / programme CBCA)",
+      "measure_category": "conformity_assessment",
+      "scope": "Contrôle obligatoire de la qualité, de la conformité et de la quantité des marchandises importées, avant embarquement au pays d'origine, sanctionné par une attestation exigée au dédouanement (programme de type CBCA — Certificat de Conformité avant embarquement / Attestation de Vérification).",
+      "products": "Marchandises importées soumises au contrôle de qualité (liste des produits et seuils non vérifiée sur texte primaire ce cycle).",
+      "transport": "Tous modes ; contrôle réalisé au pays d'origine avant embarquement, avec vérification à destination.",
+      "conditions": "Inspection avant embarquement par un opérateur mandaté au port de chargement ; délivrance d'une attestation de conformité exigée pour le dédouanement.",
+      "exemptions": "NOT_AVAILABLE",
+      "mandated_actors": [
+        {
+          "actor_name": "BIVAC (Bureau Veritas)",
+          "actor_type": "MANDATED_SERVICE_PROVIDER",
+          "legal_status": "Prestataire privé mandaté — reste un acteur officiel d'exécution dans la limite de son mandat ; n'est pas une autorité réglementaire et n'a pas de pouvoir réglementaire propre.",
+          "mandating_authority": "Office Congolais de Contrôle (OCC).",
+          "mission": "Vérification avant embarquement (VOC — Vérification de la Conformité) des marchandises importées, pour le compte de l'OCC, dans le cadre d'un dispositif de type CBCA (« Consignment Based Conformity Assessment », terminologie Bureau Veritas/IFIA ; usage spécifique au contexte RDC identifié seulement par extrait de recherche, non lu en texte intégral).",
+          "mandate_basis": "Partenariat OCC-Bureau Veritas/BIVAC annoncé le 24 mai 2019 (occ.cd) ; deux volets rapportés par la Primature en 2025 : CEGUS (guichet unique) et VOC (mandat OCC). Convention/contrat non lu directement ce cycle (portails HTTP 403).",
+          "mandate_status": "CONFIRMED_TIME_LIMITED",
+          "mandate_status_notes": "Un partenariat actif est corroboré par plusieurs sources secondaires datées (mandate_evidence). Il n'est PAS présenté comme permanent : le 14e Comité de Pilotage (8-9 janvier 2026) désigne explicitement l'exercice en cours comme « dernière année contractuelle », échéance rapportée en novembre 2026. Un appel d'offres concurrentiel est rapporté (Intertek, mai 2026), le Ministre du Commerce étant cité comme peu favorable à la continuité de BIVAC. Le statut au-delà de novembre 2026 est UNVERIFIED — jamais présenté comme 'actif' sans réserve.",
+          "mandate_duration": "Partenariat rapporté depuis mai 2019 (occ.cd) ; échéance contractuelle rapportée : novembre 2026 (14e COPIL, janvier 2026). La Primature (avril 2025) le qualifie de partenariat « vieux de 20 ans », formulation non recoupée avec la date de 2019 — incohérence non résolue ce cycle, signalée telle quelle plutôt que silencieusement arbitrée.",
+          "mandate_evidence": [
+            {"date": "2019-05-24", "title": "Partenariat OCC-Bureau Veritas/BIVAC BV", "publisher": "OCC (occ.cd)", "url": "http://occ.cd/2019/05/24/partenariat-occ-bureau-veritas-bivac-bv/"},
+            {"date": "2025-04-14", "title": "Guichet unique et conformité des marchandises : Bureau Veritas détaille les avancées à la Cheffe du Gouvernement", "publisher": "Primature RDC", "url": "https://www.primature.gouv.cd/2025/04/14/guichet-unique-et-conformite-des-marchandises-bureau-veritas-detaille-les-avancees-a-la-cheffe-du-gouvernement/"},
+            {"date": "2026-01-09", "title": "Contrat OCC-BIVAC : le 14e Comité de Pilotage fait le point à l'aube de la dernière année contractuelle", "publisher": "Kinshasa Magazine", "url": "https://kinshasamagazine.cd/contrat-occ-bivac-le-14-eme-comite-de-pilotage-fait-le-point-a-laube-de-la-derniere-annee-contractuelle/"},
+            {"date": "2026-05", "title": "RDC : Intertek et Bureau Veritas se disputent le marché du contrôle de l'import-export", "publisher": "Agence Ecofin", "url": "https://www.agenceecofin.com/actualites/1305-138436-rdc-intertek-et-bureau-veritas-se-disputent-le-marche-du-controle-de-l-import-export"}
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Attestation de Vérification (AV) — document du programme de vérification avant embarquement (VOC). Distincte du « Certificat de Conformité », qui relève d'un programme OCC différent (certification/marque de conformité de la production locale), où le rôle de BIVAC se limite à un appui technique (ex. formation ISO/IEC 17065 des agents OCC, novembre 2023) et non à la délivrance du certificat lui-même.",
+          "verification_status": "PARTIAL",
+          "pending_primary_archive": true,
+          "notes": "BIVAC n'est PAS une mesure réglementaire autonome : c'est le prestataire d'exécution du contrôle institué par l'OCC, restant lié à la mesure COD-OCC-CBCA. Toutes les preuves de mandate_evidence sont des recoupements de sources secondaires datées (presse, communiqués institutionnels) : aucun texte primaire (convention/contrat OCC-Bureau Veritas) n'a pu être lu directement ce cycle (HTTP 403)."
+        }
+      ],
+      "documents": [
+        "Attestation de Vérification (AV) — programme VOC de pré-embarquement",
+        "rapports d'inspection / d'essai",
+        "facture commerciale"
+      ],
+      "authority": "Office Congolais de Contrôle (OCC), établissement public.",
+      "platform": "https://www.occ.cd/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "COD-OCC-ORDONNANCE-LOI-74-013",
+      "legal_reference": "Ordonnance-loi n°74/013 du 10 janvier 1974 (création de l'OCC) et ordonnance-loi n°74/219 du 14 juillet 1974, complétées par le décret-loi n°09/42 — références identifiées via le portail officiel occ.cd, textes non lus directement ce cycle.",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "COD-OGEFREM-FERI",
+      "measure_name": "Fiche Électronique de Renseignement à l'Importation / Exportation (FERI / FERE)",
+      "measure_category": "cargo_tracking_note",
+      "scope": "Document électronique obligatoire de renseignement et de suivi des cargaisons à destination (FERI) ou en provenance (FERE) de la RDC, à établir avant l'embarquement, permettant le suivi statistique et le contrôle du fret.",
+      "products": "Marchandises importées (FERI) ou exportées (FERE) par voie maritime et acheminées vers/depuis les ports desservant la RDC.",
+      "transport": "Fret maritime (cargaisons transitant notamment par le port de Matadi et les ports de transit régionaux).",
+      "conditions": "Établissement obligatoire avant embarquement au port d'origine ; validation avant l'arrivée. Géré par l'Office de Gestion du Fret Multimodal (OGEFREM).",
+      "exemptions": "NOT_AVAILABLE",
+      "documents": [
+        "connaissement (bill of lading)",
+        "facture commerciale",
+        "déclaration d'exportation du pays d'origine"
+      ],
+      "authority": "Office de Gestion du Fret Multimodal (OGEFREM).",
+      "platform": "https://www.ogefremsite.org/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "COD-OGEFREM-FERI-CIRCULAIRE-2021",
+      "legal_reference": "Circulaire DG n°003/05/2021 et Décision n°004/2023 de l'OGEFREM (dispositif FERI/FERE) — références identifiées via le portail officiel ogefremsite.org, textes non lus directement ce cycle.",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    }
+  ]
+}

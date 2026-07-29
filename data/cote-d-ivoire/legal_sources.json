@@ -31,6 +31,66 @@
       "status": "source_pending_collection",
       "verification_status": "PENDING_COLLECTION",
       "notes": "Not downloaded, not archived, not used for any rate in this collection."
+    },
+    {
+      "source_id": "CIV-GUCE-DECRET-2023-168",
+      "title": "Décret n°2023-168 du 22 mars 2023 portant transformation du Guichet Unique du Commerce Extérieur (GUCE-CI) en société d'État",
+      "institution": "Présidence de la République / Ministère du Commerce et de l'Industrie, Côte d'Ivoire",
+      "legal_date": "2023-03-22",
+      "accessed_at": "2026-07-29",
+      "url": "https://www.presidence.ci/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "statut de société d'État du GUCE-CI ; obligation de passage par la plateforme pour les formalités du commerce extérieur",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "notes": "Source officielle identifiable (Communiqué du Conseil des Ministres du 22 mars 2023, presidence.ci ; portails guce.gouv.ci et dgpe.gouv.ci) mais non archivée : les portails officiels renvoient HTTP 403 sur WebFetch. Aucune archive ni SHA-256 ce cycle. Utilisée uniquement pour la mesure réglementaire CIV-GUCE-SINGLE-WINDOW (aucun taux/frais)."
+    },
+    {
+      "source_id": "CIV-DOUANES-RFCV-DECRET-2025-418",
+      "title": "Dispositif du Rapport Final de Classification et de Valeur (RFCV) et de la déclaration anticipée d'importation (Décret n°2025-418)",
+      "institution": "Direction Générale des Douanes de Côte d'Ivoire (DGD)",
+      "legal_date": "2025-01-01",
+      "accessed_at": "2026-07-29",
+      "url": "https://www.douanes.ci/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "obligation du RFCV comme document préalable de classification tarifaire et de valeur en douane",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "notes": "Référence de décret identifiée via le portail officiel douanes.ci, non lue sur texte primaire (HTTP 403). legal_date approximative (année du dispositif) : la date exacte du décret n'a pas été confirmée sur texte. Aucune archive ni SHA-256. Utilisée uniquement pour CIV-DOUANES-RFCV (aucun frais renseigné)."
+    },
+    {
+      "source_id": "CIV-OIC-BSC-DECRET-95-820",
+      "title": "Décret n°95-820 du 29 septembre 1995 portant institution du Bordereau de Suivi des Cargaisons (BSC) et circulaire d'application n°1317",
+      "institution": "Office Ivoirien des Chargeurs (OIC)",
+      "legal_date": "1995-09-29",
+      "accessed_at": "2026-07-29",
+      "url": "https://www.oic.ci/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "obligation du Bordereau de Suivi des Cargaisons pour le fret maritime importé",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "notes": "Références (décret 95-820 + circulaire 1317) identifiées via le portail officiel oic.ci, non lues sur texte primaire (HTTP 403). Aucune archive ni SHA-256. Utilisée uniquement pour CIV-OIC-BSC (aucun frais renseigné)."
+    },
+    {
+      "source_id": "CIV-COMMERCE-VOC-PROGRAMME",
+      "title": "Programme de vérification de conformité aux normes (VOC / PVoC) à l'importation",
+      "institution": "Ministère du Commerce et de l'Industrie, Côte d'Ivoire",
+      "legal_date": null,
+      "accessed_at": "2026-07-29",
+      "url": "https://www.commerce.gouv.ci/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "contrôle de conformité obligatoire avant embarquement ; Certificat de Conformité exigé au dédouanement",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "notes": "Cadre réglementaire (décrets et arrêtés d'application) identifié via le portail commerce.gouv.ci mais non lu : les PDF officiels renvoient HTTP 403. legal_date laissée nulle faute de confirmation du texte instituant le programme. Aucune archive ni SHA-256. Utilisée uniquement pour CIV-COMMERCE-VOC (aucun frais renseigné)."
     }
   ]
 }

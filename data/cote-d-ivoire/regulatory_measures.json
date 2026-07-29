@@ -1,0 +1,129 @@
+{
+  "schema_version": "1.0",
+  "country": "CIV",
+  "as_of": "2026-07-29",
+  "measure_type": "import_regulatory_compliance",
+  "notes": "Premier lot réglementaire Côte d'Ivoire : formalités et contrôles obligatoires à l'importation, distincts des taux fiscaux (TVA/accises couverts par vat_measures.json). Aucune de ces mesures n'a pu être archivée sur texte primaire ce cycle : les portails officiels (guce.gouv.ci, douanes.ci, commerce.gouv.ci, oic.ci) renvoient HTTP 403 sur WebFetch. Statuts canoniques appliqués : PARTIAL = source officielle identifiable mais non archivée ; UNVERIFIED = information recoupée uniquement par sources secondaires ; pending_primary_archive = true tant que l'extrait primaire daté n'est pas téléchargé et haché. Tous les frais/tarifs sont laissés à null (NOT_AVAILABLE) : aucun montant issu de source secondaire n'entre dans le calculateur.",
+  "regulatory_measures": [
+    {
+      "record_id": "CIV-GUCE-SINGLE-WINDOW",
+      "measure_name": "Guichet Unique du Commerce Extérieur (GUCE-CI)",
+      "measure_category": "single_window",
+      "scope": "Plateforme électronique nationale obligatoire par laquelle transitent les formalités du commerce extérieur (import, export, transit) : dépôt et traitement dématérialisés des déclarations, documents préalables, redevances et échanges entre opérateurs et administrations (douanes, commerce, banques, transitaires).",
+      "products": "Toutes marchandises faisant l'objet d'une opération de commerce extérieur, sans restriction sectorielle (portée générale).",
+      "transport": "Tous modes ; principalement fret maritime via les ports d'Abidjan et de San-Pédro, ainsi que fret aérien et terrestre.",
+      "conditions": "Passage obligatoire par la plateforme pour toute déclaration de commerce extérieur. GUCE-CI est devenue société d'État à capitaux 100% publics par le décret n°2023-168 du 22 mars 2023 (rachat par l'État de la participation de 30% de l'opérateur privé Webb Fontaine ; structure créée en 2019 comme société d'économie mixte).",
+      "exemptions": "NOT_AVAILABLE",
+      "mandated_actors": [
+        {
+          "actor_name": "Webb Fontaine",
+          "actor_type": "TECHNICAL_OPERATOR",
+          "legal_status": "Ancien opérateur technique / actionnaire minoritaire (30%) de GUCE-CI jusqu'au rachat de sa participation par l'État le 22 mars 2023 ; aucun rôle contractuel actif confirmé depuis — classé opérateur technique historique, PAS prestataire mandaté en exercice.",
+          "mandating_authority": "État de Côte d'Ivoire (Ministère du Commerce, Ministère du Budget) — contrat de concession de service initial (2013) ; GUCE-CI (société d'économie mixte puis société d'État) ensuite.",
+          "mission": "Conception, financement, développement, déploiement, maintenance, exploitation et gestion de la plateforme GUCE, sous contrat de concession de service. Rôle opérationnel direct remplacé par GUCE-CI (nouvelle société à capitaux mixtes) à compter du 1er juillet 2019 ; Webb Fontaine a conservé 30% du capital de GUCE-CI de 2019 à 2023.",
+          "mandate_basis": "Contrat de concession de service signé en juillet 2013 entre l'État de Côte d'Ivoire et Webb Fontaine Group ; création de GUCE-CI en 2019 (remplacement opérationnel, 1er juillet 2019) ; rachat de la participation de 30% par l'État — Décret n°2023-168 du 22 mars 2023.",
+          "mandate_status": "TERMINATED",
+          "mandate_status_notes": "La participation/le mandat de Webb Fontaine est confirmé terminé le 22 mars 2023 (rachat de ses 30% par l'État, décret n°2023-168, corroboré par communiqué officiel et presse). Aucune source datée n'a été trouvée confirmant OU infirmant un rôle technique résiduel après cette date : le statut post-2023 reste UNVERIFIED/NOT_AVAILABLE — jamais présenté comme actif.",
+          "mandate_duration": "2013-07 (signature du contrat de concession) à 2023-03-22 (rachat de la participation de 30% par l'État, fin confirmée du lien capitalistique). Rôle opérationnel direct déjà remplacé par GUCE-CI dès le 2019-07-01.",
+          "mandate_evidence": [
+            {"date": "2019-07-01", "title": "Gestion du commerce extérieur ivoirien : GUCE-CI remplace Webb Fontaine dès le 1er juillet", "publisher": "Educarriere.ci / APA News", "url": "https://news.educarriere.ci/news-29298-gestion-du-commerce-exterieur-ivoirien-guce-ci-remplace-webb-fontaine-des-le-1er-juillet.html"},
+            {"date": "2023-03-22", "title": "Communiqué du Conseil des Ministres du mercredi 22 mars 2023", "publisher": "Présidence de la République de Côte d'Ivoire", "url": "https://www.presidence.ci/communique-du-conseil-des-ministres-du-mercredi-22-mars-2023/"},
+            {"date": "2023-03-22", "title": "Côte d'Ivoire : L'État rachète les actions de Webb Fontaine et transforme le Guichet Unique du Commerce Extérieur en Société d'État", "publisher": "KOACI", "url": "https://www.koaci.com/article/2023/03/22/cote-divoire/politique/cote-divoire-letat-rachete-les-actions-de-webb-fontaine-et-transforme-le-guichet-unique-du-commerce-exterieur-en-societe-detat_168087.html"}
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "NOT_AVAILABLE — aucun document délivré directement aux opérateurs économiques n'est attribué à Webb Fontaine en propre (rôle d'exploitant technique / actionnaire de la plateforme, pas d'organisme délivrant un document réglementaire distinct).",
+          "verification_status": "PARTIAL",
+          "pending_primary_archive": true,
+          "notes": "Toutes les preuves de mandate_evidence sont des recoupements de sources secondaires datées (presse, communiqué institutionnel) : le texte du contrat de concession de 2013 et le texte intégral du décret n°2023-168 n'ont pas pu être lus directement ce cycle (HTTP 403 sur presidence.ci)."
+        }
+      ],
+      "documents": [
+        "déclaration en douane dématérialisée",
+        "documents préalables à l'importation (selon la marchandise)",
+        "titres de transport"
+      ],
+      "authority": "Guichet Unique du Commerce Extérieur de Côte d'Ivoire (GUCE-CI), société d'État sous tutelle du Ministère du Commerce et de l'Industrie.",
+      "platform": "https://www.guce.gouv.ci/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "CIV-GUCE-DECRET-2023-168",
+      "legal_reference": "Décret n°2023-168 du 22 mars 2023 portant transformation du Guichet Unique du Commerce Extérieur en société d'État (Communiqué du Conseil des Ministres du 22 mars 2023, presidence.ci).",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "CIV-DOUANES-RFCV",
+      "measure_name": "Rapport Final de Classification et de Valeur (RFCV)",
+      "measure_category": "import_valuation_risk_assessment",
+      "scope": "Document préalable obligatoire attestant, avant l'arrivée de la marchandise, de la classification tarifaire (position SH) et de la valeur en douane, sur la base d'une déclaration anticipée d'importation. Il conditionne l'établissement de la déclaration en douane.",
+      "products": "Marchandises importées à titre commercial ; seuils et exclusions non vérifiés sur texte primaire ce cycle.",
+      "transport": "Tous modes ; opération liée à l'importation via les bureaux de douane ivoiriens.",
+      "conditions": "Émission du RFCV après dépôt de la déclaration anticipée d'importation et contrôle documentaire/valeur par l'administration douanière (dispositif géré via la plateforme douanière et le GUCE).",
+      "exemptions": "NOT_AVAILABLE",
+      "documents": [
+        "déclaration anticipée d'importation",
+        "facture commerciale",
+        "documents de transport"
+      ],
+      "authority": "Direction Générale des Douanes de Côte d'Ivoire (DGD).",
+      "platform": "https://www.douanes.ci/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "CIV-DOUANES-RFCV-DECRET-2025-418",
+      "legal_reference": "Décret n°2025-418 (dispositif RFCV / déclaration anticipée d'importation) — référence identifiée via sources officielles douanières, texte non lu directement ce cycle.",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "CIV-OIC-BSC",
+      "measure_name": "Bordereau de Suivi des Cargaisons (BSC)",
+      "measure_category": "cargo_tracking_note",
+      "scope": "Document obligatoire de suivi et de traçabilité des cargaisons à destination des ports ivoiriens, à établir avant l'embarquement au port de chargement. Il permet le suivi statistique et sécuritaire du fret maritime importé.",
+      "products": "Marchandises importées par voie maritime (fret conteneurisé et conventionnel).",
+      "transport": "Fret maritime exclusivement (embarquement au port d'origine à destination d'Abidjan ou San-Pédro).",
+      "conditions": "Établissement obligatoire avant embarquement ; validation avant l'arrivée au port de déchargement. Géré par l'Office Ivoirien des Chargeurs (OIC).",
+      "exemptions": "NOT_AVAILABLE",
+      "documents": [
+        "connaissement (bill of lading)",
+        "facture commerciale",
+        "déclaration d'exportation du pays d'origine"
+      ],
+      "authority": "Office Ivoirien des Chargeurs (OIC).",
+      "platform": "https://www.oic.ci/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "CIV-OIC-BSC-DECRET-95-820",
+      "legal_reference": "Décret n°95-820 du 29 septembre 1995 (institution du Bordereau de Suivi des Cargaisons) et circulaire d'application n°1317 — références identifiées via sources officielles OIC, textes non lus directement ce cycle.",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "CIV-COMMERCE-VOC",
+      "measure_name": "Programme de Vérification de Conformité (VOC / PVoC)",
+      "measure_category": "conformity_assessment",
+      "scope": "Contrôle de conformité obligatoire des marchandises réglementées aux normes ivoiriennes (sécurité, santé, qualité) avant embarquement, sanctionné par un Certificat de Conformité (CoC) exigé au dédouanement.",
+      "products": "Produits réglementés soumis à évaluation de conformité (liste de produits concernés non vérifiée sur texte primaire ce cycle) ; ne concerne pas l'ensemble des marchandises.",
+      "transport": "Tous modes ; contrôle réalisé au pays d'origine avant embarquement.",
+      "conditions": "Inspection / test / évaluation par un organisme mandaté au port de chargement ; délivrance d'un Certificat de Conformité exigé pour le dédouanement.",
+      "exemptions": "NOT_AVAILABLE",
+      "documents": [
+        "Certificat de Conformité (CoC)",
+        "rapports d'essai / de test",
+        "facture commerciale"
+      ],
+      "authority": "Ministère du Commerce et de l'Industrie de Côte d'Ivoire (programme de contrôle de conformité).",
+      "platform": "https://www.commerce.gouv.ci/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "CIV-COMMERCE-VOC-PROGRAMME",
+      "legal_reference": "Programme de vérification de conformité (VOC/PVoC) — cadre réglementaire identifié via le portail du Ministère du Commerce (décrets et arrêtés d'application non lus directement ce cycle en raison de l'inaccessibilité HTTP 403 des PDF officiels).",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    }
+  ]
+}
