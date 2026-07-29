@@ -192,16 +192,36 @@ def get_country_enrichment(country_iso3: str) -> Optional[Dict[str, Any]]:
     result["tariff"] = copy.deepcopy(registry["regions"][configured["region"]]["tariff"])
     result["traceability_sources"] = _compact_legal_sources(configured["source_paths"])
 
+    national_measure_path = configured.get("national_measure_path")
+    national_data = None
+    if national_measure_path:
+        national_data = _read_json(national_measure_path)["countries"].get(country)
+        if national_data is None:
+            raise ValueError(
+                f"National enrichment record missing for {country}: {national_measure_path}"
+            )
+        for field in (
+            "consumption_tax",
+            "other_import_taxes",
+            "national_tariff_extension",
+            "inspection_before_shipment",
+        ):
+            result[field] = copy.deepcopy(national_data.get(field))
+        result["traceability_sources"].extend(copy.deepcopy(national_data.get("sources", [])))
+
     if country == "KEN":
         required_documents = _kenya_required_documents(configured["required_document_records"])
     elif country == "COD":
         required_documents = _cod_required_documents(configured["required_document_records"])
+    elif national_data is not None:
+        required_documents = copy.deepcopy(national_data.get("required_documents", []))
     else:
         required_documents = []
 
     result["required_documents"] = required_documents
     result["required_documents_are_hs_specific"] = any(
-        item["hs_level_requirement"] for item in required_documents
+        bool(item.get("hs_level_requirement") or item.get("hs_codes_explicit"))
+        for item in required_documents
     )
     result["disclaimer"] = registry["disclaimer"]
     return result
