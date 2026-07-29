@@ -204,6 +204,14 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     crawled_raw_taxes = []
     other_taxes_detail = {}
 
+    # South Sudan applies an import sales tax, not VAT. Its current rate
+    # is not verified from the applicable Finance Act, so the legacy
+    # estimated 18% VAT fallback must never enter the calculation.
+    vat_is_available = dest_iso3 != "SSD"
+    if not vat_is_available:
+        vat_rate = 0.0
+        vat_source = "NOT_AVAILABLE — current South Sudan import sales tax"
+
     # ============================================================
     # PRIORITY 1: Authentic crawled data (official sources)
     # ============================================================
@@ -596,15 +604,16 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
                     "source": npf_source,
                 }
             )
-        _engine_lines.append(
-            {
-                "code": "TVA",
-                "name": "Taxe sur la valeur ajoutée",
-                "rate_pct": round(vat_rate * 100, 4),
-                "base": "",
-                "source": vat_source,
-            }
-        )
+        if vat_is_available:
+            _engine_lines.append(
+                {
+                    "code": "TVA",
+                    "name": "Taxe sur la valeur ajoutée",
+                    "rate_pct": round(vat_rate * 100, 4),
+                    "base": "",
+                    "source": vat_source,
+                }
+            )
 
     if not _engine_lines:
         _engine_lines.append(
@@ -898,15 +907,15 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         normal_tariff_amount=round(normal_customs, 2),
         zlecaf_tariff_rate=zlecaf_response_rate,
         zlecaf_tariff_amount=round(zlecaf_customs, 2) if zlecaf_response_rate is not None else None,
-        normal_vat_rate=vat_rate,
-        normal_vat_amount=round(normal_vat_amount, 2),
+        normal_vat_rate=vat_rate if vat_is_available else None,
+        normal_vat_amount=round(normal_vat_amount, 2) if vat_is_available else None,
         normal_statistical_fee=_normal_tax_amounts.get("rs", 0),
         normal_community_levy=_normal_tax_amounts.get("pcs", 0),
         normal_ecowas_levy=_normal_tax_amounts.get("cedeao", 0),
         normal_other_taxes_total=round(other_taxes_amount, 2),
         normal_total_cost=round(normal_total, 2),
-        zlecaf_vat_rate=vat_rate,
-        zlecaf_vat_amount=round(zlecaf_vat_amount, 2),
+        zlecaf_vat_rate=vat_rate if vat_is_available else None,
+        zlecaf_vat_amount=round(zlecaf_vat_amount, 2) if vat_is_available else None,
         zlecaf_statistical_fee=_zlecaf_tax_amounts.get("rs", 0),
         zlecaf_community_levy=_zlecaf_tax_amounts.get("pcs", 0),
         zlecaf_ecowas_levy=_zlecaf_tax_amounts.get("cedeao", 0),
