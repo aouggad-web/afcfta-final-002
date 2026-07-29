@@ -15,6 +15,7 @@ def _load_registry() -> Dict[str, Any]:
     return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
 
 
+@lru_cache(maxsize=None)
 def _read_json(relative_path: str) -> Dict[str, Any]:
     return json.loads((REPO_ROOT / relative_path).read_text(encoding="utf-8"))
 
@@ -77,11 +78,21 @@ def _kenya_required_documents(record_ids: List[str]) -> List[Dict[str, Any]]:
             "scope": "General import-clearance package; conditional documents apply only where relevant",
         },
     }
+    missing_records = sorted(set(record_ids) - set(records))
+    if missing_records:
+        raise ValueError(
+            "Kenya required-document records missing from "
+            f"administrative_formalities.json: {', '.join(missing_records)}"
+        )
+    missing_metadata = sorted(set(record_ids) - set(metadata))
+    if missing_metadata:
+        raise ValueError(
+            "Kenya required-document metadata missing for: " f"{', '.join(missing_metadata)}"
+        )
+
     documents: List[Dict[str, Any]] = []
     for record_id in record_ids:
-        record = records.get(record_id)
-        if not record:
-            continue
+        record = records[record_id]
         document = dict(metadata[record_id])
         document.update(
             {
@@ -109,10 +120,12 @@ def _cod_required_documents(record_ids: List[str]) -> List[Dict[str, Any]]:
         "cargo_tracking_note": "Before shipment and before cargo arrival",
     }
     documents: List[Dict[str, Any]] = []
+    found_record_ids = set()
     for measure in data.get("regulatory_measures", []):
         record_id = measure.get("record_id")
         if record_id not in record_ids:
             continue
+        found_record_ids.add(record_id)
         for index, title in enumerate(measure.get("documents", []), start=1):
             documents.append(
                 {
@@ -141,6 +154,12 @@ def _cod_required_documents(record_ids: List[str]) -> List[Dict[str, Any]]:
                     "source_record_path": "data/drc/regulatory_measures.json",
                 }
             )
+    missing_records = sorted(set(record_ids) - found_record_ids)
+    if missing_records:
+        raise ValueError(
+            "DRC required-document measures missing from regulatory_measures.json: "
+            f"{', '.join(missing_records)}"
+        )
     return documents
 
 

@@ -87,5 +87,5 @@ Aucun de ces conflits n'est arbitré par une valeur par défaut.
 - chemins de sources enregistrés : tous existants ;
 - taux numérique ajouté au registre : 0 ;
 - documents génériques affectés aux 16 pays sans source : 0 ;
-- tests ciblés : 30 réussis ;
+- tests ciblés : 33 réussis ;
 - `black`, `isort`, `flake8` et `git diff --check` : conformes.

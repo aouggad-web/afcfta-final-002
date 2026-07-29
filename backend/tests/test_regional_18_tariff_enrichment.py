@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+import pytest
+import services.tariff_enrichment_service as enrichment_service
 from services.tariff_enrichment_service import (
     get_country_enrichment,
     get_supported_enrichment_countries,
@@ -127,3 +129,32 @@ def test_known_data_conflicts_are_exposed_not_silently_resolved():
 
 def test_unknown_country_has_no_synthetic_enrichment():
     assert get_country_enrichment("XXX") is None
+
+
+def test_static_source_json_is_cached_on_hot_api_paths():
+    enrichment_service._read_json.cache_clear()
+    get_country_enrichment("KEN")
+    first = enrichment_service._read_json.cache_info()
+    get_country_enrichment("KEN")
+    second = enrichment_service._read_json.cache_info()
+    assert second.hits > first.hits
+
+
+def test_kenya_document_registry_drift_fails_fast(monkeypatch):
+    monkeypatch.setattr(
+        enrichment_service,
+        "_read_json",
+        lambda _path: {"administrative_formalities": []},
+    )
+    with pytest.raises(ValueError, match="FORM-TPA-44A"):
+        enrichment_service._kenya_required_documents(["FORM-TPA-44A"])
+
+
+def test_drc_document_registry_drift_fails_fast(monkeypatch):
+    monkeypatch.setattr(
+        enrichment_service,
+        "_read_json",
+        lambda _path: {"regulatory_measures": []},
+    )
+    with pytest.raises(ValueError, match="COD-OCC-CBCA"):
+        enrichment_service._cod_required_documents(["COD-OCC-CBCA"])
