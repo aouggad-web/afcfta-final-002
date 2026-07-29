@@ -19,11 +19,14 @@ def _load_registry() -> Dict[str, Any]:
     registries = [
         json.loads(path.read_text(encoding="utf-8")) for path in REGISTRY_PATHS if path.is_file()
     ]
+    if not registries:
+        raise FileNotFoundError("No tariff enrichment registry file was found")
+
     merged: Dict[str, Any] = {
         "as_of": max(item["as_of"] for item in registries),
         "regions": {},
         "countries": {},
-        "disclaimer": registries[0]["disclaimer"],
+        "country_disclaimers": {},
     }
     for registry in registries:
         overlap = set(merged["countries"]) & set(registry["countries"])
@@ -33,6 +36,9 @@ def _load_registry() -> Dict[str, Any]:
             )
         merged["regions"].update(copy.deepcopy(registry["regions"]))
         merged["countries"].update(copy.deepcopy(registry["countries"]))
+        merged["country_disclaimers"].update(
+            {country: registry["disclaimer"] for country in registry["countries"]}
+        )
     return merged
 
 
@@ -260,5 +266,5 @@ def get_country_enrichment(country_iso3: str) -> Optional[Dict[str, Any]]:
         bool(item.get("hs_level_requirement") or item.get("hs_codes_explicit"))
         for item in required_documents
     )
-    result["disclaimer"] = registry["disclaimer"]
+    result["disclaimer"] = registry["country_disclaimers"][country]
     return result
