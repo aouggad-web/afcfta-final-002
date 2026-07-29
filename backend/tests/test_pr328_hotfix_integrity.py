@@ -28,7 +28,8 @@ def test_priority_08_source_references_resolve_to_country_source_records():
     for country in ("BDI", "GNQ"):
         enrichment = get_country_enrichment(country)
         source_ids = {
-            source["source_id"] for source in enrichment["traceability_sources"]
+            source["source_id"]
+            for source in enrichment["traceability_sources"]
         }
         tax = enrichment["consumption_tax"]
 
