@@ -18,6 +18,28 @@ Le PDF complet fait 10,5 Mo (au-dessus du seuil de 5 Mo pour archivage direct) :
 - Accises, prélèvements spéciaux (PCS, PCC, RS, TSI) : **non vérifiés** — l'affirmation précédente qu'ils étaient « couverts par le Code Général des Impôts » n'était pas fondée sur une lecture de texte.
 - Guide d'administration fiscale DGI (procédures, formalités) : URL localisée, non téléchargée ni re-vérifiée ce cycle.
 
+## Lot réglementaire (2026-07-29) — formalités et contrôles à l'importation
+
+Ce cycle ajoute `data/cote-d-ivoire/regulatory_measures.json` : quatre mesures réglementaires obligatoires à l'importation, distinctes des taux fiscaux (GUCE, RFCV, BSC, VOC/PVoC).
+
+**Statuts canoniques de vérification** appliqués à ce lot (aucune archive n'a pu être produite ce cycle) :
+- `PARTIAL` : source officielle identifiable (portail gouvernemental / parastatal, référence de décret) mais **non archivée** sur texte primaire ;
+- `UNVERIFIED` : information recoupée uniquement par des sources secondaires (aucune mesure de ce lot n'est en `UNVERIFIED` — un portail officiel a été identifié pour chacune) ;
+- `pending_primary_archive: true` : drapeau maintenu tant que l'extrait primaire daté n'est pas téléchargé et haché.
+
+**Pourquoi aucune archive.** Les portails officiels (`guce.gouv.ci`, `douanes.ci`, `oic.ci`, `commerce.gouv.ci`, `presidence.ci`) renvoient **HTTP 403 Forbidden** sur récupération automatique (WebFetch). Aucun contournement n'a été tenté. Les références de décrets ont été identifiées par recoupement de sources officielles, sans lecture directe du texte primaire — d'où `PARTIAL` et non `VERIFIED_PRIMARY_TEXT`.
+
+**Frais / tarifs.** Tous les champs `fees` sont laissés à `null` (`fees_status: NOT_AVAILABLE`). **Aucun montant issu de source secondaire n'est renseigné** : conformément au principe fail-closed, aucun frais n'entre dans le calculateur tant qu'une source officielle actuelle ne le confirme pas.
+
+**Webb Fontaine — fiche d'acteur.** Rattaché à la mesure GUCE-CI (`CIV-GUCE-SINGLE-WINDOW`) via `mandated_actors[]`, classé `TECHNICAL_OPERATOR` (rôle historique d'exploitant technique de la plateforme jusqu'au rachat par l'État en 2023, décret n°2023-168) : statut juridique, autorité mandante, mission, base du mandat, durée, frais autorisés (`null`) et document délivré documentés. Un rôle actif post-2023 n'est pas confirmé sur texte primaire.
+
+| Mesure | Autorité | Statut |
+|---|---|---|
+| GUCE-CI (guichet unique) | GUCE-CI (société d'État) | PARTIAL |
+| RFCV (classification/valeur) | Direction Générale des Douanes | PARTIAL |
+| BSC (suivi des cargaisons) | Office Ivoirien des Chargeurs | PARTIAL |
+| VOC/PVoC (conformité) | Ministère du Commerce et de l'Industrie | PARTIAL |
+
 ## État de l'enregistrement
 
-Juridiction CIV : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — TVA seule (et via un texte d'application, pas l'article de base du CGI), pas d'accises, pas de prélèvements. ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.
+Juridiction CIV : **non** enregistrée dans `SUPPORTED_JURISDICTIONS` — TVA seule (et via un texte d'application, pas l'article de base du CGI), pas d'accises, pas de prélèvements ; les mesures réglementaires ci-dessus sont documentaires (aucun taux/frais exploitable). ZLECAf : **pas** d'offre nationale encore enregistrée dans `NATIONAL_OFFER_REGISTRY`.

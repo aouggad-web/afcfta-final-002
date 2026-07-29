@@ -72,6 +72,51 @@
       "status": "source_pending_collection",
       "verification_status": "PENDING_COLLECTION",
       "notes": "Site accessible (HTTP 200 vérifié 2026-07-25) mais non explorée en profondeur pour ce cycle de collecte ; page d'accueil uniquement. RDC applique le CET EAC (adhésion 2022) : source CET commune déjà archivée sous data/sources/kenya/official/eac-cet-2022-updated-june-2025.pdf."
+    },
+    {
+      "source_id": "COD-SEGUCE-DECRET-14-020",
+      "title": "Décret n°14/020 du 2 août 2014 (concession du guichet unique du commerce extérieur à SEGUCE RDC SA) et décret n°019/15 du 14 octobre 2015 (obligation généralisée)",
+      "institution": "Ministère du Commerce Extérieur / SEGUCE RDC SA",
+      "legal_date": "2014-08-02",
+      "accessed_at": "2026-07-29",
+      "url": "https://www.commerce.gouv.cd/seguce",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "guichet unique électronique obligatoire pour les formalités du commerce extérieur (import/export/transit)",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "notes": "Sources officielles identifiables (portail gouvernemental commerce.gouv.cd/seguce ; portail opérateur segucerdc.com) mais non archivées : HTTP 403 sur WebFetch. Aucune archive ni SHA-256 ce cycle. Utilisée uniquement pour la mesure réglementaire COD-SEGUCE-SINGLE-WINDOW (aucun frais renseigné)."
+    },
+    {
+      "source_id": "COD-OCC-ORDONNANCE-LOI-74-013",
+      "title": "Ordonnance-loi n°74/013 du 10 janvier 1974 (création de l'Office Congolais de Contrôle) et ordonnance-loi n°74/219 du 14 juillet 1974, complétées par le décret-loi n°09/42",
+      "institution": "Office Congolais de Contrôle (OCC)",
+      "legal_date": "1974-01-10",
+      "accessed_at": "2026-07-29",
+      "url": "https://www.occ.cd/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "contrôle obligatoire de qualité/conformité/quantité des marchandises importées ; programme de contrôle avant embarquement (CBCA) ; BIVAC/Bureau Veritas comme opérateur mandaté",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "notes": "Références identifiées via le portail officiel occ.cd (y compris communiqué OCC sur le mandat Bureau Veritas/BIVAC), non lues sur texte primaire (HTTP 403). Aucune archive ni SHA-256. Utilisée uniquement pour COD-OCC-CBCA (aucun frais renseigné) ; BIVAC y figure comme opérateur mandaté, pas comme mesure autonome."
+    },
+    {
+      "source_id": "COD-OGEFREM-FERI-CIRCULAIRE-2021",
+      "title": "Circulaire DG n°003/05/2021 et Décision n°004/2023 de l'OGEFREM (dispositif FERI / FERE)",
+      "institution": "Office de Gestion du Fret Multimodal (OGEFREM)",
+      "legal_date": "2021-05-01",
+      "accessed_at": "2026-07-29",
+      "url": "https://www.ogefremsite.org/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "Fiche Électronique de Renseignement à l'Importation/Exportation obligatoire pour le suivi du fret",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "notes": "Références identifiées via le portail officiel ogefremsite.org, non lues sur texte primaire (HTTP 403). legal_date approximative (mois exact de la circulaire 2021 non confirmé sur texte). Aucune archive ni SHA-256. Utilisée uniquement pour COD-OGEFREM-FERI (aucun frais renseigné)."
     }
   ]
 }
