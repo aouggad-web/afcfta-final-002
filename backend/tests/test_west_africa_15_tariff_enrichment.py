@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
 
+import pytest
+from services import tariff_enrichment_service
 from services.tariff_enrichment_service import (
     get_country_enrichment,
     get_supported_enrichment_countries,
@@ -110,3 +112,25 @@ def test_no_documents_or_afcfta_preferences_are_invented_for_wave():
         assert enrichment["required_documents"] == []
         assert enrichment["required_documents_status"] == "NOT_AVAILABLE"
         assert enrichment["afcfta_status"] == "NOT_AVAILABLE"
+
+
+def test_registry_loader_fails_clearly_when_no_registry_exists(monkeypatch):
+    monkeypatch.setattr(tariff_enrichment_service, "REGISTRY_PATHS", ())
+    tariff_enrichment_service._load_registry.cache_clear()
+    with pytest.raises(FileNotFoundError, match="No tariff enrichment registry"):
+        tariff_enrichment_service._load_registry()
+    tariff_enrichment_service._load_registry.cache_clear()
+
+
+def test_each_country_keeps_its_wave_disclaimer():
+    regional = get_country_enrichment("KEN")
+    west_africa = get_country_enrichment("GHA")
+    assert (
+        regional["disclaimer"]
+        == json.loads(
+            (REPO_ROOT / "data" / "regional-18" / "tariff_enrichment_registry.json").read_text(
+                encoding="utf-8"
+            )
+        )["disclaimer"]
+    )
+    assert west_africa["disclaimer"] == _registry()["disclaimer"]
