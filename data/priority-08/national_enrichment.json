@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "as_of": "2026-07-29",
+  "as_of": "2026-07-30",
   "disclaimer": "Données informatives et non opposables. Une absence de preuve est exposée comme NOT_AVAILABLE; aucune valeur n'est estimée.",
   "countries": {
     "BDI": {
@@ -8,10 +8,11 @@
         "tax_type": "VAT",
         "status": "PARTIAL",
         "standard_rate": 18.0,
+        "standard_rate_source_id": "BDI-OBR-VAT-AMEND-2020",
         "rate_effective_from": null,
-        "import_base": "customs_value",
-        "base_status": "DOCUMENTED",
-        "notes": "Le taux et la base sont établis par les lois TVA OBR; la loi budgétaire 2025/26 n'a pas été entièrement extraite pour exclure une modification plus récente."
+        "import_base": null,
+        "base_status": "NOT_AVAILABLE",
+        "notes": "Le taux standard de 18 % est documenté par les textes OBR archivés. L'assiette à l'importation reste NOT_AVAILABLE: le registre indiquait customs_value alors que le moteur runtime utilise CIF + droit de douane. Ce conflit doit être résolu par extraction article par article avant tout calcul présenté comme documenté; la loi budgétaire 2025/26 n'a pas été entièrement extraite pour exclure une modification plus récente."
       },
       "national_tariff_extension": {"status": "NOT_AVAILABLE", "digits": null},
       "other_import_taxes": [],
@@ -351,15 +352,33 @@
         "tax_type": "VAT",
         "status": "PARTIAL",
         "standard_rate": 15.0,
+        "standard_rate_source_id": "GNQ-TAX-LAW-4-2004",
         "reduced_rates": [
-          {"rate": 6.0, "hs_mapping_status": "NOT_AVAILABLE"},
-          {"rate": 5.0, "temporary_year": 2026, "hs_mapping_status": "NOT_AVAILABLE"},
-          {"rate": 0.0, "temporary_year": 2026, "hs_mapping_status": "NOT_AVAILABLE"}
+          {
+            "rate": 6.0,
+            "hs_mapping_status": "NOT_AVAILABLE",
+            "source_id": "GNQ-TAX-LAW-4-2004"
+          },
+          {
+            "rate": 5.0,
+            "temporary_year": 2026,
+            "effective_from": "2026-01-01",
+            "hs_mapping_status": "NOT_AVAILABLE",
+            "source_id": "GNQ-BUDGET-LAW-9-2025"
+          },
+          {
+            "rate": 0.0,
+            "temporary_year": 2026,
+            "effective_from": "2026-01-01",
+            "hs_mapping_status": "NOT_AVAILABLE",
+            "source_id": "GNQ-BUDGET-LAW-9-2025"
+          }
         ],
         "rate_effective_from": null,
         "import_base": "cemac_customs_value_plus_customs_duty_plus_applicable_derecho_especial",
+        "import_base_source_id": "GNQ-TAX-LAW-4-2004",
         "base_status": "DOCUMENTED",
-        "notes": "Les catégories temporaires 2026 sont décrites sans codes SH; aucun taux réduit n'est donc appliqué automatiquement."
+        "notes": "Les catégories temporaires 2026 sont décrites sans codes SH; aucun taux réduit n'est donc appliqué automatiquement. Chaque taux est désormais lié au texte juridique qui le supporte."
       },
       "national_tariff_extension": {"status": "NOT_AVAILABLE", "digits": null},
       "other_import_taxes": [],
