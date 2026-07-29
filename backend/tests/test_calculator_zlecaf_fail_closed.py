@@ -99,6 +99,15 @@ def test_unverified_west_africa_vat_is_not_calculated(client, destination):
     data = _calc(client, "GHA", destination)
     assert data["normal_vat_rate"] is None
     assert data["normal_vat_amount"] is None
+    assert data["zlecaf_vat_rate"] is None
+    assert data["zlecaf_vat_amount"] is None
+    assert not any(
+        item.get("code", "").upper() in {"TVA", "VAT", "GST"}
+        or "TVA" in item.get("name", "").upper()
+        or "VAT" in item.get("name", "").upper()
+        or "GST" in item.get("name", "").upper()
+        for item in (data.get("taxes_detail") or [])
+    )
     assert data["country_enrichment"]["vat_status"] == "NOT_AVAILABLE"
     assert data["country_enrichment"]["consumption_tax"]["rates"] == []
 
