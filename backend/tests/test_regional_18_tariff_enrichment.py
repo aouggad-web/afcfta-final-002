@@ -140,6 +140,12 @@ def test_static_source_json_is_cached_on_hot_api_paths():
     assert second.hits > first.hits
 
 
+def test_source_path_traversal_is_rejected():
+    enrichment_service._read_json.cache_clear()
+    with pytest.raises(ValueError, match="outside repository"):
+        enrichment_service._read_json("../outside.json")
+
+
 def test_kenya_document_registry_drift_fails_fast(monkeypatch):
     monkeypatch.setattr(
         enrichment_service,

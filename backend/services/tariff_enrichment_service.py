@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+RESOLVED_REPO_ROOT = REPO_ROOT.resolve()
 REGISTRY_PATH = REPO_ROOT / "data" / "regional-18" / "tariff_enrichment_registry.json"
 
 
@@ -17,7 +18,14 @@ def _load_registry() -> Dict[str, Any]:
 
 @lru_cache(maxsize=None)
 def _read_json(relative_path: str) -> Dict[str, Any]:
-    return json.loads((REPO_ROOT / relative_path).read_text(encoding="utf-8"))
+    source_path = (RESOLVED_REPO_ROOT / relative_path).resolve()
+    try:
+        source_path.relative_to(RESOLVED_REPO_ROOT)
+    except ValueError as exc:
+        raise ValueError(
+            f"Enrichment source path resolves outside repository: {relative_path}"
+        ) from exc
+    return json.loads(source_path.read_text(encoding="utf-8"))
 
 
 def _compact_legal_sources(source_paths: List[str]) -> List[Dict[str, Any]]:
