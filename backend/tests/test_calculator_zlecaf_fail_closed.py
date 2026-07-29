@@ -94,6 +94,15 @@ def test_south_sudan_does_not_expose_legacy_estimated_vat(client):
     assert data["country_enrichment"]["required_documents_status"] == "DOCUMENTED"
 
 
+@pytest.mark.parametrize("destination", ["GNB", "TGO"])
+def test_unverified_west_africa_vat_is_not_calculated(client, destination):
+    data = _calc(client, "GHA", destination)
+    assert data["normal_vat_rate"] is None
+    assert data["normal_vat_amount"] is None
+    assert data["country_enrichment"]["vat_status"] == "NOT_AVAILABLE"
+    assert data["country_enrichment"]["consumption_tax"]["rates"] == []
+
+
 # ==================== 1. Une donnée NPF seule ne génère jamais de préférence ====================
 
 
