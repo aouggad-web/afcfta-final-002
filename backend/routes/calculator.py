@@ -27,6 +27,25 @@ logger = logging.getLogger(__name__)
 router = APIRouter(tags=["Calculator"])
 
 
+def _is_vat_tax(tax: Dict[str, Any]) -> bool:
+    """Identify VAT-like lines consistently across crawled and computed paths."""
+
+    code = str(tax.get("code", "")).upper()
+    name = str(tax.get("name", tax.get("tax", ""))).upper()
+    return (
+        code in {"TVA", "TVA/APTAXE", "VAT", "GST"}
+        or "TVA" in code
+        or "VAT" in code
+        or "GST" in code
+        or "TVA" in name
+        or "VAT" in name
+        or "GST" in name
+        or "VALEUR AJOUTÉE" in name
+        or "VALEUR AJOUTEE" in name
+        or "VALUE ADDED TAX" in name
+    )
+
+
 # API Clients for external data
 class WorldBankAPIClient:
     def __init__(self):
@@ -213,7 +232,11 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     )
     if not vat_is_available:
         vat_rate = 0.0
-        vat_source = "NOT_AVAILABLE — current South Sudan import sales tax"
+        vat_source = (
+            "NOT_AVAILABLE — current South Sudan import sales tax"
+            if dest_iso3 == "SSD"
+            else f"NOT_AVAILABLE — current VAT rate not consolidated for {dest_iso3}"
+        )
 
     # ============================================================
     # PRIORITY 1: Authentic crawled data (official sources)
@@ -284,22 +307,11 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             else:
                 npf_source = f"Source officielle: {crawled_result['source']}"
 
-            vat_tax = next(
-                (
-                    t
-                    for t in crawled_raw_taxes
-                    if t["code"] in ("TVA", "TVA/APTAXE", "VAT")
-                    or "TVA" in t.get("name", "").upper()
-                    or "VAT" in t.get("name", "").upper()
-                    or "Valeur Ajoutée" in t.get("name", "")
-                    or "Value Added Tax" in t.get("name", "")
-                ),
-                None,
-            )
-            if vat_tax and vat_tax.get("rate_pct") is not None:
+            vat_tax = next((t for t in crawled_raw_taxes if _is_vat_tax(t)), None)
+            if vat_is_available and vat_tax and vat_tax.get("rate_pct") is not None:
                 vat_rate = vat_tax["rate_pct"] / 100.0
                 vat_source = f"{vat_tax['name']} ({crawled_result['source']})"
-            else:
+            elif vat_is_available:
                 vat_rate, vat_source = get_vat_rate_for_country(dest_iso3)
 
             other_taxes_rate = 0.0
@@ -310,13 +322,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
                     or "Import Duty" in t.get("name", "")
                     or "Customs Duty" in t.get("name", "")
                 )
-                is_vat = (
-                    t["code"] in ("TVA", "TVA/APTAXE", "VAT")
-                    or "TVA" in t.get("code", "").upper()
-                    or "VAT" in t.get("name", "").upper()
-                    or "Valeur Ajoutée" in t.get("name", "")
-                    or "Value Added Tax" in t.get("name", "")
-                )
+                is_vat = _is_vat_tax(t)
                 is_preferential = t.get("is_preferential", False)
                 if not is_dd and not is_vat and not is_preferential:
                     if t.get("rate_pct") is not None:
@@ -558,10 +564,20 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # ============================================================
     from services.tax_computation import build_journal, compute_dual_breakdown
 
+    if not vat_is_available:
+        vat_rate = 0.0
+        vat_source = (
+            "NOT_AVAILABLE — current South Sudan import sales tax"
+            if dest_iso3 == "SSD"
+            else f"NOT_AVAILABLE — current VAT rate not consolidated for {dest_iso3}"
+        )
+
     _engine_lines: List[Dict[str, Any]] = []
     if crawled_raw_taxes:
         for t in crawled_raw_taxes:
             if t.get("rate_pct") is None:
+                continue
+            if not vat_is_available and _is_vat_tax(t):
                 continue
             _engine_lines.append(
                 {
@@ -575,6 +591,8 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     elif collected_taxes_detail:
         for t in collected_taxes_detail:
             if t.get("rate") is None:
+                continue
+            if not vat_is_available and _is_vat_tax(t):
                 continue
             _engine_lines.append(
                 {
