@@ -28,9 +28,9 @@ _EXPECTED_RECORD_IDS = {
 
 
 def _load_measures():
-    return json.loads(
-        (_DATA_DIR / "regulatory_measures.json").read_text(encoding="utf-8")
-    )["regulatory_measures"]
+    return json.loads((_DATA_DIR / "regulatory_measures.json").read_text(encoding="utf-8"))[
+        "regulatory_measures"
+    ]
 
 
 def test_civ_regulatory_measures_present():
@@ -93,9 +93,7 @@ def test_civ_webb_fontaine_classified_with_actor_fiche():
     """Webb Fontaine est rattaché à GUCE-CI avec une fiche d'acteur complète,
     classé selon son rôle exact (opérateur technique, pas prestataire
     mandaté en exercice faute de confirmation post-2023)."""
-    guce = next(
-        m for m in _load_measures() if m["record_id"] == "CIV-GUCE-SINGLE-WINDOW"
-    )
+    guce = next(m for m in _load_measures() if m["record_id"] == "CIV-GUCE-SINGLE-WINDOW")
     actors = guce.get("mandated_actors", [])
     wf = next(a for a in actors if "WEBB FONTAINE" in a["actor_name"].upper())
     assert wf["actor_type"] in {"TECHNICAL_OPERATOR", "MANDATED_SERVICE_PROVIDER"}
@@ -112,9 +110,7 @@ def test_civ_webb_fontaine_classified_with_actor_fiche():
 
 def test_civ_regulatory_source_ids_registered():
     """Chaque source_id cité doit exister dans legal_sources.json."""
-    sources = json.loads(
-        (_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8")
-    )["sources"]
+    sources = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
     registered = {s["source_id"] for s in sources}
     used = {m["source_id"] for m in _load_measures()}
     assert used <= registered
@@ -123,9 +119,7 @@ def test_civ_regulatory_source_ids_registered():
 def test_civ_partial_sources_have_no_fabricated_archive():
     """Une source PARTIAL non archivée ne doit pas prétendre un fichier local
     ou un SHA-256 : local_file et sha256 restent null."""
-    sources = json.loads(
-        (_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8")
-    )["sources"]
+    sources = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
     used = {m["source_id"] for m in _load_measures()}
     for s in sources:
         if s["source_id"] in used:

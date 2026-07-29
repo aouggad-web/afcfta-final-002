@@ -27,9 +27,9 @@ _EXPECTED_RECORD_IDS = {
 
 
 def _load_measures():
-    return json.loads(
-        (_DATA_DIR / "regulatory_measures.json").read_text(encoding="utf-8")
-    )["regulatory_measures"]
+    return json.loads((_DATA_DIR / "regulatory_measures.json").read_text(encoding="utf-8"))[
+        "regulatory_measures"
+    ]
 
 
 def test_cod_regulatory_measures_present():
@@ -90,8 +90,7 @@ def test_cod_bivac_is_mandated_actor_not_standalone_measure():
         if m["record_id"] == "COD-OCC-CBCA":
             continue
         assert not any(
-            "BIVAC" in a.get("actor_name", "").upper()
-            for a in m.get("mandated_actors", [])
+            "BIVAC" in a.get("actor_name", "").upper() for a in m.get("mandated_actors", [])
         )
 
 
@@ -99,12 +98,8 @@ def test_cod_bivac_mandate_status_never_bare_active():
     """Le mandat BIVAC est daté et prouvé, mais explicitement limité dans le
     temps (échéance rapportée nov. 2026, appel d'offres concurrentiel) :
     jamais un statut 'active' nu, toujours accompagné de dates et preuves."""
-    occ = next(
-        m for m in _load_measures() if m["record_id"] == "COD-OCC-CBCA"
-    )
-    bivac = next(
-        a for a in occ["mandated_actors"] if "BIVAC" in a["actor_name"].upper()
-    )
+    occ = next(m for m in _load_measures() if m["record_id"] == "COD-OCC-CBCA")
+    bivac = next(a for a in occ["mandated_actors"] if "BIVAC" in a["actor_name"].upper())
     assert bivac["mandate_status"] not in _FORBIDDEN_BARE_STATUS
     assert len(bivac["mandate_evidence"]) >= 1
     for ev in bivac["mandate_evidence"]:
@@ -115,16 +110,15 @@ def test_cod_bivac_delivered_document_is_precise():
     """Le document délivré par BIVAC doit être distingué précisément :
     Attestation de Vérification (programme VOC), pas un terme ambigu
     mêlant Attestation de Vérification et Certificat de Conformité."""
-    occ = next(
-        m for m in _load_measures() if m["record_id"] == "COD-OCC-CBCA"
-    )
-    bivac = next(
-        a for a in occ["mandated_actors"] if "BIVAC" in a["actor_name"].upper()
-    )
+    occ = next(m for m in _load_measures() if m["record_id"] == "COD-OCC-CBCA")
+    bivac = next(a for a in occ["mandated_actors"] if "BIVAC" in a["actor_name"].upper())
     assert "Attestation de Vérification" in bivac["delivered_document"]
     # distinction explicite du Certificat de Conformité (programme différent)
     assert "Certificat de Conformité" in bivac["delivered_document"]
-    assert "Distincte" in bivac["delivered_document"] or "distinct" in bivac["delivered_document"].lower()
+    assert (
+        "Distincte" in bivac["delivered_document"]
+        or "distinct" in bivac["delivered_document"].lower()
+    )
 
 
 def test_cod_regulatory_measures_have_required_fields():
@@ -146,18 +140,14 @@ def test_cod_regulatory_measures_have_required_fields():
 
 
 def test_cod_regulatory_source_ids_registered():
-    sources = json.loads(
-        (_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8")
-    )["sources"]
+    sources = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
     registered = {s["source_id"] for s in sources}
     used = {m["source_id"] for m in _load_measures()}
     assert used <= registered
 
 
 def test_cod_partial_sources_have_no_fabricated_archive():
-    sources = json.loads(
-        (_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8")
-    )["sources"]
+    sources = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
     used = {m["source_id"] for m in _load_measures()}
     for s in sources:
         if s["source_id"] in used:
