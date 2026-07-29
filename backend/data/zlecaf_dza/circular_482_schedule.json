@@ -1,0 +1,62 @@
+{
+  "source_id": "DZA-DGD-CIRC-482-2024",
+  "official_title": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 portant mise en œuvre de la ZLECAf",
+  "issuing_authority": "Direction générale des douanes algériennes",
+  "legal_date": "2024-10-22",
+  "official_page_url": "https://www.douane.gov.dz/spip.php?article805=",
+  "official_pdf_url": "https://douane.gov.dz/IMG/pdf/circulaire_no_482_dgd_du_22-10-2024_mise_en_oeuvre_zlecaf.pdf",
+  "provided_extract_sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+  "provided_extract_scope": "Schéma général du traitement tarifaire à l’importation, page 24 de la circulaire",
+  "verification_status": "DOCUMENTED",
+  "tariff_line_counts": {
+    "total": 17322,
+    "list_a": 15703,
+    "list_a_frozen_for_missing_origin_rules": 1136,
+    "list_b": 1163,
+    "list_b_frozen_for_missing_origin_rules": 322,
+    "list_c": 456
+  },
+  "standard_schedule": {
+    "list_a_remaining_factor": {
+      "2021": 0.8,
+      "2022": 0.6,
+      "2023": 0.4,
+      "2024": 0.2
+    },
+    "list_a_zero_from": 2025,
+    "list_b_reduction_from": 2026,
+    "list_b_remaining_factor": {
+      "2026": 0.8,
+      "2027": 0.6,
+      "2028": 0.4,
+      "2029": 0.2
+    },
+    "list_b_zero_from": 2030
+  },
+  "reciprocity_schedule": {
+    "list_a_remaining_factor": {
+      "2021": 0.9,
+      "2022": 0.8,
+      "2023": 0.7,
+      "2024": 0.6,
+      "2025": 0.5,
+      "2026": 0.4,
+      "2027": 0.3,
+      "2028": 0.2,
+      "2029": 0.1
+    },
+    "list_a_zero_from": 2030,
+    "list_b_reduction_from": 2026,
+    "list_b_remaining_factor": {
+      "2026": 0.875,
+      "2027": 0.75,
+      "2028": 0.625,
+      "2029": 0.5,
+      "2030": 0.375,
+      "2031": 0.25,
+      "2032": 0.125
+    },
+    "list_b_zero_from": 2033
+  },
+  "scope_note": "Les facteurs concernent uniquement le droit de douane à l’importation en Algérie. La liste des partenaires actifs et le classement ligne par ligne restent contrôlés séparément."
+}
