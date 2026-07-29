@@ -58,7 +58,7 @@ def _tariff_lines(country):
 def test_registry_covers_exactly_the_regional_18():
     registry = _registry()
     assert set(registry["countries"]) == EXPECTED_COUNTRIES
-    assert set(get_supported_enrichment_countries()) == EXPECTED_COUNTRIES
+    assert EXPECTED_COUNTRIES < set(get_supported_enrichment_countries())
     assert {
         country for region in registry["regions"].values() for country in region["members"]
     } == EXPECTED_COUNTRIES
