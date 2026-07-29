@@ -1,4 +1,4 @@
-"""Traceable tariff, fiscal and regulatory coverage for the regional 18-country wave."""
+"""Traceable tariff, fiscal and regulatory coverage across enrichment waves."""
 
 import copy
 import json
@@ -8,12 +8,38 @@ from typing import Any, Dict, List, Optional
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RESOLVED_REPO_ROOT = REPO_ROOT.resolve()
-REGISTRY_PATH = REPO_ROOT / "data" / "regional-18" / "tariff_enrichment_registry.json"
+REGISTRY_PATHS = (
+    REPO_ROOT / "data" / "regional-18" / "tariff_enrichment_registry.json",
+    REPO_ROOT / "data" / "west-africa-15" / "tariff_enrichment_registry.json",
+)
 
 
 @lru_cache(maxsize=1)
 def _load_registry() -> Dict[str, Any]:
-    return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
+    registries = [
+        json.loads(path.read_text(encoding="utf-8")) for path in REGISTRY_PATHS if path.is_file()
+    ]
+    if not registries:
+        raise FileNotFoundError("No tariff enrichment registry file was found")
+
+    merged: Dict[str, Any] = {
+        "as_of": max(item["as_of"] for item in registries),
+        "regions": {},
+        "countries": {},
+        "country_disclaimers": {},
+    }
+    for registry in registries:
+        overlap = set(merged["countries"]) & set(registry["countries"])
+        if overlap:
+            raise ValueError(
+                "Duplicate enrichment countries across registries: " + ", ".join(sorted(overlap))
+            )
+        merged["regions"].update(copy.deepcopy(registry["regions"]))
+        merged["countries"].update(copy.deepcopy(registry["countries"]))
+        merged["country_disclaimers"].update(
+            {country: registry["disclaimer"] for country in registry["countries"]}
+        )
+    return merged
 
 
 @lru_cache(maxsize=None)
@@ -172,7 +198,7 @@ def _cod_required_documents(record_ids: List[str]) -> List[Dict[str, Any]]:
 
 
 def get_supported_enrichment_countries() -> List[str]:
-    """Return the exact ISO3 coverage of this wave."""
+    """Return the exact ISO3 coverage of all published enrichment waves."""
 
     return sorted(_load_registry()["countries"])
 
@@ -191,6 +217,23 @@ def get_country_enrichment(country_iso3: str) -> Optional[Dict[str, Any]]:
     result["as_of"] = registry["as_of"]
     result["tariff"] = copy.deepcopy(registry["regions"][configured["region"]]["tariff"])
     result["traceability_sources"] = _compact_legal_sources(configured["source_paths"])
+
+    vat_measure_path = configured.get("vat_measure_path")
+    if vat_measure_path:
+        vat_data = _read_json(vat_measure_path)
+        vat_is_available = configured["vat_status"] != "NOT_AVAILABLE"
+        result["consumption_tax"] = {
+            "tax_type": "VAT_OR_GST",
+            "status": configured["vat_status"],
+            "rates": copy.deepcopy(vat_data.get("vat_rates", [])) if vat_is_available else [],
+            "exemptions": (
+                copy.deepcopy(vat_data.get("vat_exemptions", [])) if vat_is_available else []
+            ),
+            "zero_rated": (
+                copy.deepcopy(vat_data.get("vat_zero_rated", [])) if vat_is_available else []
+            ),
+            "source_record_path": vat_measure_path,
+        }
 
     national_measure_path = configured.get("national_measure_path")
     national_data = None
@@ -223,5 +266,5 @@ def get_country_enrichment(country_iso3: str) -> Optional[Dict[str, Any]]:
         bool(item.get("hs_level_requirement") or item.get("hs_codes_explicit"))
         for item in required_documents
     )
-    result["disclaimer"] = registry["disclaimer"]
+    result["disclaimer"] = registry["country_disclaimers"][country]
     return result
