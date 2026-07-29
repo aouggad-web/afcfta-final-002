@@ -204,10 +204,13 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     crawled_raw_taxes = []
     other_taxes_detail = {}
 
-    # South Sudan applies an import sales tax, not VAT. Its current rate
-    # is not verified from the applicable Finance Act, so the legacy
-    # estimated 18% VAT fallback must never enter the calculation.
-    vat_is_available = dest_iso3 != "SSD"
+    # Fail closed whenever the source-bound enrichment explicitly states
+    # that no current VAT rate is available. South Sudan is also excluded:
+    # it applies an import sales tax, not VAT.
+    country_enrichment = get_country_enrichment(dest_iso3)
+    vat_is_available = dest_iso3 != "SSD" and (
+        country_enrichment is None or country_enrichment.get("vat_status") != "NOT_AVAILABLE"
+    )
     if not vat_is_available:
         vat_rate = 0.0
         vat_source = "NOT_AVAILABLE — current South Sudan import sales tax"
@@ -956,7 +959,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         administrative_formalities=(
             collected_admin_formalities if collected_admin_formalities else None
         ),
-        country_enrichment=get_country_enrichment(dest_iso3),
+        country_enrichment=country_enrichment,
         data_source=data_source,
         duty_status=duty_status,
         duty_notice=duty_notice,
