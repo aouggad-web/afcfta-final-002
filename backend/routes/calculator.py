@@ -20,6 +20,7 @@ from fastapi import APIRouter, HTTPException
 from models import TariffCalculationRequest, TariffCalculationResponse
 from services.crawled_data_service import crawled_service
 from services.tariff_data_service import tariff_service
+from services.tariff_enrichment_service import get_country_enrichment
 
 logger = logging.getLogger(__name__)
 
@@ -946,6 +947,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         administrative_formalities=(
             collected_admin_formalities if collected_admin_formalities else None
         ),
+        country_enrichment=get_country_enrichment(dest_iso3),
         data_source=data_source,
         duty_status=duty_status,
         duty_notice=duty_notice,

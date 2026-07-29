@@ -151,6 +151,10 @@ class TariffCalculationResponse(BaseModel):
     currency: Optional[Dict[str, Any]] = None
     fiscal_advantages: Optional[List[Dict[str, Any]]] = None
     administrative_formalities: Optional[List[Dict[str, Any]]] = None
+    # Couverture tarifaire, fiscale, documentaire et réglementaire traçable.
+    # Les lacunes restent explicitement NOT_AVAILABLE ; aucune valeur de
+    # remplacement n'est générée par ce bloc.
+    country_enrichment: Optional[Dict[str, Any]] = None
     data_source: Optional[str] = None
     # Règles d'origine
     rules_of_origin: Dict[str, Any]
