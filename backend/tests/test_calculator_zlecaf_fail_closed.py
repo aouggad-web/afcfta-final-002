@@ -77,6 +77,8 @@ def test_response_exposes_honesty_status_fields(client):
         assert field in data, f"champ de statut manquant : {field}"
     assert data["duty_status"] in ("PAYABLE", "INDICATIVE_MFN", "UNAVAILABLE")
     assert data["zlecaf_status"] in ("DOCUMENTED", "NOT_AVAILABLE")
+    assert data["country_enrichment"]["country_iso3"] == "KEN"
+    assert data["country_enrichment"]["required_documents_status"] == "DOCUMENTED"
 
 
 # ==================== 1. Une donnée NPF seule ne génère jamais de préférence ====================

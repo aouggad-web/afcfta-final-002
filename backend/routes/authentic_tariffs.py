@@ -20,6 +20,10 @@ from services.national_legal_calculation_service import (
     calculate_kenya_legal_layer,
     calculate_national_legal_layer,
 )
+from services.tariff_enrichment_service import (
+    get_country_enrichment,
+    get_supported_enrichment_countries,
+)
 from services.tariff_provider_service import get_tariff_provider_service
 
 from engine.schemas.legal_override import RemissionEligibility
@@ -31,6 +35,27 @@ router = APIRouter(prefix="/authentic-tariffs", tags=["Authentic Tariffs"])
 
 def get_provider():
     return get_tariff_provider_service()
+
+
+@router.get("/enrichment/countries")
+async def list_enrichment_countries():
+    """Liste exacte des pays couverts par la vague d'enrichissement."""
+
+    countries = get_supported_enrichment_countries()
+    return {"success": True, "total": len(countries), "countries": countries}
+
+
+@router.get("/country/{country_iso3}/enrichment")
+async def get_country_enrichment_endpoint(country_iso3: str):
+    """Couverture tarifaire, fiscale, documentaire et réglementaire traçable."""
+
+    enrichment = get_country_enrichment(country_iso3)
+    if enrichment is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No enrichment registry found for country {country_iso3.upper()}",
+        )
+    return {"success": True, "country_iso3": country_iso3.upper(), "enrichment": enrichment}
 
 
 @router.get("/countries")
@@ -253,6 +278,7 @@ async def calculate_taxes_endpoint(
         raise HTTPException(status_code=404, detail=result["error"])
 
     country = country_iso3.upper()
+    result["country_enrichment"] = get_country_enrichment(country)
     parsed_authorization_hs_codes = [
         value.strip() for value in (authorization_hs_codes or "").split(",") if value.strip()
     ]
