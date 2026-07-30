@@ -4,6 +4,7 @@ These tests replace historical assertions that required generic document codes o
 minimum document coverage without a source bound to each tariff line. They do
 not add or infer any formality. Empty coverage remains an acceptable and
 explicitly honest state until official, line-scoped evidence is available.
+Each replacement is a guardrail, not evidence that a document exists.
 """
 
 import json
