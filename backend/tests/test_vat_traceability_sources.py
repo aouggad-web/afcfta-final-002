@@ -46,7 +46,7 @@ def test_published_vat_records_expose_their_traceability_source_ids():
         }, country
         checked += 1
 
-    assert checked == 18
+    assert checked == 23
 
 
 def test_unavailable_vat_does_not_expose_unpublished_measure_sources():
