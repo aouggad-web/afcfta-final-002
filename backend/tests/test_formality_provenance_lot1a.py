@@ -16,9 +16,7 @@ CRAWLED_ROOT = REPO_ROOT / "backend" / "data" / "crawled"
 
 
 def _lines(country: str) -> list[dict]:
-    payload = json.loads(
-        (CRAWLED_ROOT / f"{country}_tariffs.json").read_text(encoding="utf-8")
-    )
+    payload = json.loads((CRAWLED_ROOT / f"{country}_tariffs.json").read_text(encoding="utf-8"))
     for key in ("positions", "sub_positions", "tariff_lines"):
         value = payload.get(key)
         if isinstance(value, list):
@@ -31,8 +29,7 @@ def _assert_entry_is_source_bound(country: str, entry: dict) -> None:
     missing = {field for field in required if not entry.get(field)}
     code = entry.get("code", "?")
     message = (
-        f"{country}/{code}: published formality lacks source binding fields "
-        f"{sorted(missing)}"
+        f"{country}/{code}: published formality lacks source binding fields " f"{sorted(missing)}"
     )
     assert not missing, message
 
