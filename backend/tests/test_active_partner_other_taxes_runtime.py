@@ -59,6 +59,9 @@ def test_cameroon_locally_produced_excise_is_not_published_as_import_tax():
     assert "excise_domestic_production_reference_only" not in {
         record["collection"] for record in inventory["measures"]
     }
+    assert "CMR-EXCISE-SPECIFIQUE-VINS-SPIRITUEUX-LOCAUX" not in {
+        record["record_id"] for record in inventory["measures"]
+    }
     locally_produced = [
         record
         for record in inventory["measures"]
