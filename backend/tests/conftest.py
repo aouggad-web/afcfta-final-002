@@ -66,6 +66,20 @@ _RETIRED_UNSOURCED_AFRICA_TESTS = {
     "backend/tests/test_north_africa_tariff_system.py::TestAllAfricaFormalities::test_gab_other_taxes_rate_non_zero",
 }
 
+_RETIRED_UNSOURCED_IMPDEC_PLATFORM_TESTS = {
+    "backend/tests/test_north_africa_tariff_system.py::TestNoMockedData::test_eth_crawled_no_mocked_910",
+    "backend/tests/test_north_africa_tariff_system.py::TestNoMockedData::test_sdn_crawled_no_mocked_910",
+    "backend/tests/test_north_africa_tariff_system.py::TestNoMockedData::test_stp_crawled_no_mocked_910",
+    "backend/tests/test_north_africa_tariff_system.py::TestNoMockedData::test_nga_crawled_no_mocked_910",
+    "backend/tests/test_north_africa_tariff_system.py::TestNoMockedData::test_ken_crawled_no_mocked_910",
+    "backend/tests/test_north_africa_tariff_system.py::TestNoMockedData::test_zaf_crawled_no_mocked_910",
+    "backend/tests/test_north_africa_tariff_system.py::TestNoMockedData::test_all_crawled_countries_have_impdec",
+    "backend/tests/test_north_africa_tariff_system.py::TestNoMockedData::test_dza_910_is_legitimate",
+    "backend/tests/test_north_africa_tariff_system.py::TestNoMockedData::test_mar_910_is_legitimate",
+    "backend/tests/test_north_africa_tariff_system.py::TestNoMockedData::test_tun_910_is_legitimate",
+    "backend/tests/test_north_africa_tariff_system.py::TestCustomsPlatform::test_formality_codes_are_platform_agnostic",
+}
+
 _FORMALITY_REPLACEMENT_REASON = (
     "Assertion historique retirée : elle imposait une couverture documentaire ou un "
     "code sans preuve source par ligne. Remplacée par les tests fail-closed et de "
@@ -76,6 +90,12 @@ _AFRICA_REPLACEMENT_REASON = (
     "Assertion africaine retirée : elle généralisait un document, une autorité, une "
     "observation ou un taux sans preuve officielle liée à la ligne. Remplacée par les "
     "29 contrats fail-closed de test_formality_provenance_lot1b.py."
+)
+
+_IMPDEC_PLATFORM_REPLACEMENT_REASON = (
+    "Assertion retirée : elle imposait ou légitimait IMPDEC/910 sur la seule base du "
+    "pays ou de la plateforme douanière. Remplacée par les 11 contrats de provenance "
+    "de test_formality_provenance_lot1c.py."
 )
 
 
@@ -129,6 +149,7 @@ _live_module_cache: dict = {}
 def pytest_collection_modifyitems(config, items):
     retired_lot1a = pytest.mark.skip(reason=_FORMALITY_REPLACEMENT_REASON)
     retired_lot1b = pytest.mark.skip(reason=_AFRICA_REPLACEMENT_REASON)
+    retired_lot1c = pytest.mark.skip(reason=_IMPDEC_PLATFORM_REPLACEMENT_REASON)
     live_server_missing = pytest.mark.skip(
         reason="Aucun serveur backend joignable (REACT_APP_BACKEND_URL / "
         "localhost:8001 / localhost:8000) — test d'intégration live skippé, "
@@ -140,6 +161,8 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(retired_lot1a)
         if item.nodeid in _RETIRED_UNSOURCED_AFRICA_TESTS:
             item.add_marker(retired_lot1b)
+        if item.nodeid in _RETIRED_UNSOURCED_IMPDEC_PLATFORM_TESTS:
+            item.add_marker(retired_lot1c)
 
         if BACKEND_REACHABLE:
             continue
