@@ -97,6 +97,18 @@ def _measure_source_ids(measures: Dict[str, Any]) -> List[str]:
     )
 
 
+def _active_measure_records(records: List[Dict[str, Any]], as_of: str) -> List[Dict[str, Any]]:
+    """Publish only measures demonstrably effective on the registry date."""
+
+    return [
+        copy.deepcopy(record)
+        for record in records
+        if (not record.get("effective_from") or record["effective_from"] <= as_of)
+        and (not record.get("effective_to") or as_of <= record["effective_to"])
+        and record.get("legal_status") not in {"REPEALED", "EXPIRED"}
+    ]
+
+
 def _kenya_required_documents(record_ids: List[str]) -> List[Dict[str, Any]]:
     data = _read_json("data/kenya/administrative_formalities.json")
     records = {
@@ -236,17 +248,23 @@ def get_country_enrichment(country_iso3: str) -> Optional[Dict[str, Any]]:
     if vat_measure_path:
         vat_data = _read_json(vat_measure_path)
         vat_is_available = configured["vat_status"] != "NOT_AVAILABLE"
+        active_vat_data = {
+            collection: _active_measure_records(vat_data.get(collection, []), registry["as_of"])
+            for collection in ("vat_rates", "vat_exemptions", "vat_zero_rated")
+        }
+        omitted_historical_records = sum(
+            len(vat_data.get(collection, [])) - len(active_vat_data[collection])
+            for collection in active_vat_data
+        )
         result["consumption_tax"] = {
             "tax_type": "VAT_OR_GST",
             "status": configured["vat_status"],
-            "rates": copy.deepcopy(vat_data.get("vat_rates", [])) if vat_is_available else [],
-            "exemptions": (
-                copy.deepcopy(vat_data.get("vat_exemptions", [])) if vat_is_available else []
-            ),
-            "zero_rated": (
-                copy.deepcopy(vat_data.get("vat_zero_rated", [])) if vat_is_available else []
-            ),
-            "source_ids": _measure_source_ids(vat_data) if vat_is_available else [],
+            "as_of": registry["as_of"],
+            "rates": active_vat_data["vat_rates"] if vat_is_available else [],
+            "exemptions": (active_vat_data["vat_exemptions"] if vat_is_available else []),
+            "zero_rated": (active_vat_data["vat_zero_rated"] if vat_is_available else []),
+            "source_ids": (_measure_source_ids(active_vat_data) if vat_is_available else []),
+            "omitted_historical_records": (omitted_historical_records if vat_is_available else 0),
             "source_record_path": vat_measure_path,
         }
 

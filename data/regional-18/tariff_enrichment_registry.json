@@ -90,6 +90,7 @@
         "data/kenya/import_levies.json",
         "data/kenya/administrative_formalities.json"
       ],
+      "vat_measure_path": "data/kenya/vat_measures.json",
       "required_document_records": ["FORM-TPA-44A", "FORM-KRA-CLEARANCE-DOCS"],
       "anomalies": ["Le CET est documenté ; les concessions ZLECAf par ligne restent NOT_AVAILABLE."]
     },
@@ -107,6 +108,7 @@
         "data/rwanda/vat_measures.json",
         "data/rwanda/excise_measures.json"
       ],
+      "vat_measure_path": "data/rwanda/vat_measures.json",
       "required_document_records": [],
       "anomalies": []
     },
@@ -141,6 +143,7 @@
         "data/tanzania/vat_measures.json",
         "data/tanzania/excise_measures.json"
       ],
+      "vat_measure_path": "data/tanzania/vat_measures.json",
       "required_document_records": [],
       "anomalies": []
     },
@@ -174,6 +177,7 @@
         "data/south_africa/legal_sources.json",
         "data/south_africa/vat_measures.json"
       ],
+      "vat_measure_path": "data/south_africa/vat_measures.json",
       "required_document_records": [],
       "anomalies": ["La préférence ZLECAf n'est affichable que sur les lignes SARS où la colonne AfCFTA est réellement renseignée."]
     },
@@ -251,6 +255,7 @@
         "data/cameroon/excise_measures.json",
         "data/cameroon/import_levies.json"
       ],
+      "vat_measure_path": "data/cameroon/vat_measures.json",
       "required_document_records": [],
       "anomalies": []
     },
