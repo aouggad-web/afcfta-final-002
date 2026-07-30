@@ -84,6 +84,19 @@ def _compact_legal_sources(source_paths: List[str]) -> List[Dict[str, Any]]:
     return compact
 
 
+def _measure_source_ids(measures: Dict[str, Any]) -> List[str]:
+    """Return the stable source identifiers used by published tax records."""
+
+    return sorted(
+        {
+            source_id
+            for collection in ("vat_rates", "vat_exemptions", "vat_zero_rated")
+            for record in measures.get(collection, [])
+            if (source_id := record.get("source_id"))
+        }
+    )
+
+
 def _kenya_required_documents(record_ids: List[str]) -> List[Dict[str, Any]]:
     data = _read_json("data/kenya/administrative_formalities.json")
     records = {
@@ -233,6 +246,7 @@ def get_country_enrichment(country_iso3: str) -> Optional[Dict[str, Any]]:
             "zero_rated": (
                 copy.deepcopy(vat_data.get("vat_zero_rated", [])) if vat_is_available else []
             ),
+            "source_ids": _measure_source_ids(vat_data) if vat_is_available else [],
             "source_record_path": vat_measure_path,
         }
 
