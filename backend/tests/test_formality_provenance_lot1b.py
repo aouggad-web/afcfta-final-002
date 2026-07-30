@@ -83,9 +83,8 @@ def _assert_source_bound(country: str, claim: dict) -> None:
         f"fields {sorted(missing)}"
     )
     status = claim["verification_status"]
-    assert status in VALID_STATUSES, (
-        f"{country}/{code}: invalid verification_status {status}"
-    )
+    status_message = f"{country}/{code}: invalid verification_status {status}"
+    assert status in VALID_STATUSES, status_message
 
 
 def _iter_formalities(country: str):
@@ -96,9 +95,8 @@ def _iter_formalities(country: str):
             f"{country}: administrative_formalities must be a list when present"
         )
         for entry in entries:
-            assert isinstance(entry, dict), (
-                f"{country}: formality entry must be an object"
-            )
+            entry_message = f"{country}: formality entry must be an object"
+            assert isinstance(entry, dict), entry_message
             yield entry
 
 
