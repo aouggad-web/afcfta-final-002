@@ -16,8 +16,9 @@ Les exécutions CI précédant et accompagnant la PR #332 montrent une baseline 
 
 - run #1158 : 91 failed, 1536 passed, 255 skipped ;
 - run #1162 : 91 failed, 1539 passed, 255 skipped ;
+- run #1175 : 91 failed, 1544 passed, 255 skipped ;
 - les trois tests ajoutés par la PR #332 passent ;
-- la différence de trois tests réussis correspond aux tests d’intégrité BDI/GNQ ajoutés par #332 ;
+- la différence de tests réussis correspond aux tests ajoutés depuis la baseline, sans réduction des 91 échecs historiques ;
 - les 91 échecs sont donc antérieurs à #332.
 
 Le workflow actuel exécute :
@@ -46,9 +47,9 @@ Fichiers principalement concernés :
 - `backend/tests/test_code_quality_refactoring.py` ;
 - `backend/tests/test_regional_data.py`.
 
-Décision attendue : remplacer les hypothèses de migration globale par les statuts de preuve actuels (`DOCUMENTED`, `PARTIAL`, `NOT_AVAILABLE`, etc.) et tester les données réellement disponibles par pays.
+Décision attendue : déterminer d’abord si la migration a été abandonnée ou laissée inachevée, puis remplacer les hypothèses globales par les statuts de preuve actuels (`DOCUMENTED`, `PARTIAL`, `NOT_AVAILABLE`, etc.) et tester les données réellement disponibles par pays.
 
-### B. Tests de formalités administratives fondés sur des données fabriquées ou anciennes
+### B. Tests de formalités administratives fondés sur des données non prouvées ou anciennes
 
 Symptômes observés :
 
@@ -61,7 +62,7 @@ Fichier principalement concerné :
 
 - `backend/tests/test_north_africa_tariff_system.py`.
 
-Décision attendue : supprimer les assertions qui imposent des formalités non sourcées. Une absence de preuve doit rester `NOT_AVAILABLE`, jamais être convertie en document supposé.
+Décision attendue : supprimer ou réécrire les assertions qui imposent des formalités non sourcées. Une absence de preuve doit rester `NOT_AVAILABLE`, jamais être convertie en document supposé.
 
 ### C. Tests non hermétiques dépendant du réseau ou de l’état externe
 
@@ -82,7 +83,7 @@ Décision attendue : isoler les fournisseurs externes par injection/mocks déter
 Symptômes observés :
 
 - année OEC attendue à 2024 alors qu’une route conserve 2018 ;
-- Niger attendu à 18 % de TVA alors que le registre courant expose 19 % ;
+- Niger attendu à 18 % de TVA alors que le registre national documenté expose 19 % ;
 - statuts de collecte UEMOA attendus `pending` alors que certaines sources ont été traitées.
 
 Fichiers concernés :
@@ -90,7 +91,7 @@ Fichiers concernés :
 - `backend/tests/test_oec_default_year.py` ;
 - `backend/tests/test_uemoa_source_collection.py`.
 
-Décision attendue : vérifier la source officielle et la date d’effet avant de modifier le test ou la donnée. Aucun test ne doit imposer une valeur ancienne par simple héritage.
+Décision attendue : vérifier la source officielle et la date d’effet avant de modifier le test ou la donnée. Le cas Niger doit être présenté comme une situation nationale distincte, jamais comme un taux harmonisé UEMOA de 19 %.
 
 ### E. Contrats applicatifs possiblement rompus
 
@@ -109,9 +110,34 @@ Fichiers concernés :
 
 Décision attendue : comparer le comportement actuel au contrat produit avant de choisir entre correction du code et mise à jour du test.
 
+### F. Dépendances d’environnement et compatibilité du banc de test
+
+Copilot a reproduit localement des défauts supplémentaires impliquant `bs4`, `redis` et une incompatibilité `motor` / `pymongo`. Ces observations ne figurent pas dans les 91 échecs du run CI #1175 et sont suivies séparément pour ne pas les confondre avec la baseline métier.
+
+Décision attendue : verrouiller les versions, inventorier les dépendances optionnelles et ajouter un contrôle d’import/compatibilité distinct.
+
+## Matrice exhaustive livrée
+
+La liste complète des 91 tests, leur catégorie et l’action proposée est disponible dans :
+
+- `audits/ci/2026-07-30_backend_test_failures_matrix.csv`.
+
+La synthèse révisée intégrant les remarques Copilot est disponible dans :
+
+- `audits/ci/2026-07-30_backend_test_failures_classification_v2.md`.
+
+Répartition :
+
+- A : 31 tests ;
+- B : 48 tests ;
+- C : 3 tests ;
+- D : 5 tests ;
+- E : 4 tests ;
+- total : 91 tests.
+
 ## Méthode de traitement
 
-1. Produire la liste exhaustive des 91 tests avec catégorie, cause racine, propriétaire logique et décision proposée.
+1. Produire la liste exhaustive des 91 tests avec catégorie, cause racine, propriétaire logique et décision proposée. **Terminé.**
 2. Exécuter chaque groupe de tests de manière isolée pour détecter les dépendances d’ordre et les effets de singleton/cache.
 3. Séparer :
    - tests obsolètes à réécrire ;
@@ -131,16 +157,18 @@ Décision attendue : comparer le comportement actuel au contrat produit avant de
 - ne pas rendre un test vert en affaiblissant une exigence juridique valide ;
 - documenter tout test supprimé ou remplacé avec sa justification.
 
-## Livrables prévus
+## Livrables
 
-- matrice exhaustive des 91 échecs ;
-- lots de correction indépendants par catégorie ;
-- séparation tests unitaires / intégration / données officielles ;
-- CI affichant explicitement le nombre réel d’échecs ;
-- suppression finale de `continue-on-error` après validation.
+- matrice exhaustive des 91 échecs : **livrée** ;
+- classification révisée après revue Copilot : **livrée** ;
+- lots de correction indépendants par catégorie : à exécuter ;
+- séparation tests unitaires / intégration / données officielles : à exécuter ;
+- CI affichant explicitement le nombre réel d’échecs : à exécuter ;
+- suppression finale de `continue-on-error` après validation : à exécuter.
 
-## Statut initial
+## Statut
 
 - PR #332 : fusionnée ;
 - dette backend : confirmée comme préexistante ;
-- chantier : ouvert en audit, sans changement fonctionnel à ce stade.
+- matrice des 91 échecs : complète ;
+- prochaine phase : exécution isolée et correction du lot 1 sans changement de données non sourcé.
