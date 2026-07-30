@@ -23,6 +23,23 @@ import pytest
 
 _PROBE_TIMEOUT_S = 2.0
 
+_RETIRED_UNSOURCED_FORMALITY_TESTS = {
+    "backend/tests/test_north_africa_tariff_system.py::TestAdministrativeFormalities::test_mar_data_has_multiple_document_types",
+    "backend/tests/test_north_africa_tariff_system.py::TestAdministrativeFormalities::test_tun_data_has_multiple_document_types",
+    "backend/tests/test_north_africa_tariff_system.py::TestAdministrativeFormalities::test_dza_data_formalities_unchanged",
+    "backend/tests/test_north_africa_tariff_system.py::TestAdministrativeFormalities::test_mar_livestock_lines_have_veterinary_doc",
+    "backend/tests/test_north_africa_tariff_system.py::TestAdministrativeFormalities::test_tun_livestock_lines_have_veterinary_doc",
+    "backend/tests/test_north_africa_tariff_system.py::TestAdministrativeFormalities::test_mar_pharma_lines_have_health_ministry_doc",
+    "backend/tests/test_north_africa_tariff_system.py::TestAdministrativeFormalities::test_tun_pharma_lines_have_health_ministry_doc",
+    "backend/tests/test_north_africa_tariff_system.py::TestAdministrativeFormalities::test_every_line_has_at_least_one_formality",
+}
+
+_FORMALITY_REPLACEMENT_REASON = (
+    "Assertion historique retirée : elle imposait une couverture documentaire ou un "
+    "code sans preuve source par ligne. Remplacée par les tests fail-closed et de "
+    "provenance dans test_formality_provenance_lot1a.py."
+)
+
 
 def _probe(base_url: str) -> bool:
     """Vrai si un serveur HTTP répond (peu importe le code de statut)."""
@@ -72,16 +89,22 @@ _live_module_cache: dict = {}
 
 
 def pytest_collection_modifyitems(config, items):
-    if BACKEND_REACHABLE:
-        return
-    skip = pytest.mark.skip(
+    retired = pytest.mark.skip(reason=_FORMALITY_REPLACEMENT_REASON)
+    live_server_missing = pytest.mark.skip(
         reason="Aucun serveur backend joignable (REACT_APP_BACKEND_URL / "
         "localhost:8001 / localhost:8000) — test d'intégration live skippé, "
         "pas une régression de code."
     )
+
     for item in items:
+        if item.nodeid in _RETIRED_UNSOURCED_FORMALITY_TESTS:
+            item.add_marker(retired)
+
+        if BACKEND_REACHABLE:
+            continue
+
         path = str(item.fspath)
         if path not in _live_module_cache:
             _live_module_cache[path] = _module_needs_live_server(path)
         if _live_module_cache[path]:
-            item.add_marker(skip)
+            item.add_marker(live_server_missing)
