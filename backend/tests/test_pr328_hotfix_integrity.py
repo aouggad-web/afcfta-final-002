@@ -27,19 +27,22 @@ def test_equatorial_guinea_tax_claims_are_bound_to_specific_sources():
 def test_priority_08_source_references_resolve_to_country_source_records():
     for country in ("BDI", "GNQ"):
         enrichment = get_country_enrichment(country)
-        source_ids = {source["source_id"] for source in enrichment["traceability_sources"]}
-        tax = enrichment["consumption_tax"]
 
-        claim_source_ids = {
-            value
-            for key, value in tax.items()
-            if key.endswith("_source_id") and value is not None
-        }
-        claim_source_ids.update(
-            item["source_id"]
-            for item in tax.get("reduced_rates", [])
-            if item.get("source_id")
-        )
+        source_ids = set()
+        for source in enrichment["traceability_sources"]:
+            source_ids.add(source["source_id"])
+
+        tax = enrichment["consumption_tax"]
+        claim_source_ids = set()
+
+        for key, value in tax.items():
+            if key.endswith("_source_id") and value is not None:
+                claim_source_ids.add(value)
+
+        for item in tax.get("reduced_rates", []):
+            source_id = item.get("source_id")
+            if source_id:
+                claim_source_ids.add(source_id)
 
         assert claim_source_ids
         assert claim_source_ids <= source_ids
