@@ -248,6 +248,8 @@
       "legal_product_description": "Produits finis de tabac importés : le droit d'accises résultant du taux de 25 % ne peut être inférieur à 5 000 F CFA pour 1000 tiges de cigarettes.",
       "rate": "5000 XAF per 1000 sticks (plancher)",
       "rate_basis": "specific floor; requires quantity in sticks",
+      "calculable": false,
+      "missing_elements": ["quantity_in_sticks"],
       "effective_from": "2021-01-01",
       "effective_to": null,
       "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
@@ -264,6 +266,8 @@
       "legal_product_description": "Bières : droit d'accises additionnel spécifique de 75 F CFA pour les bières de 65 centilitres et 37,5 F CFA pour les bières de 33 centilitres, en sus du taux de 25 %.",
       "rate": "75 XAF per 65cl bottle; 37.5 XAF per 33cl bottle",
       "rate_basis": "specific, additional to ad valorem; requires quantity and container size",
+      "calculable": false,
+      "missing_elements": ["quantity_in_bottles", "container_size_cl"],
       "effective_from": "2021-01-01",
       "effective_to": null,
       "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
@@ -274,12 +278,16 @@
         "2203.00.00"
       ],
       "notes": "Droit spécifique : non calculable sans donnée de quantité et de contenance."
-    },
+    }
+  ],
+  "excise_domestic_production_reference_only": [
     {
       "record_id": "CMR-EXCISE-SPECIFIQUE-VINS-SPIRITUEUX-LOCAUX",
       "legal_product_description": "Vins, spiritueux, whiskies et champagnes produits localement : 2 F CFA par centilitre pour les spiritueux dits alcools mix et pour les vins ; 8 F CFA par centilitre pour les whiskies ; 25 F CFA par centilitre pour les champagnes.",
       "rate": "2 XAF/cl (alcools mix, vins); 8 XAF/cl (whiskies); 25 XAF/cl (champagnes)",
       "rate_basis": "specific per centilitre, additional to ad valorem; locally produced",
+      "calculable": false,
+      "missing_elements": ["volume_cl", "product_subcategory", "import_rate_not_extracted"],
       "effective_from": "2021-01-01",
       "effective_to": null,
       "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
@@ -291,7 +299,7 @@
         "2205",
         "2208"
       ],
-      "notes": "Droit spécifique : non calculable sans volume. Les taux applicables aux vins et spiritueux importés diffèrent et n'ont pas été extraits intégralement du texte ; à compléter."
+      "notes": "Taux applicable aux produits localement fabriqués uniquement ; le taux correspondant pour les spiritueux et vins importés est différent et n'a pas encore été extrait. Ce dossier ne doit pas être publié comme mesure d'import."
     }
   ]
 }

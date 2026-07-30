@@ -1,7 +1,7 @@
 from services.tariff_enrichment_service import get_country_enrichment
 
 EXPECTED_MEASURE_COUNTS = {
-    "CMR": 17,
+    "CMR": 16,
     "KEN": 144,
     "RWA": 7,
     "TZA": 6,
@@ -51,3 +51,35 @@ def test_kenya_export_reference_table_is_not_published_as_import_tax():
         }
         for record in inventory["measures"]
     )
+
+
+def test_cameroon_locally_produced_excise_is_not_published_as_import_tax():
+    inventory = get_country_enrichment("CMR")["other_import_taxes"]
+
+    assert "excise_domestic_production_reference_only" not in {
+        record["collection"] for record in inventory["measures"]
+    }
+    locally_produced = [
+        record
+        for record in inventory["measures"]
+        if "locally produced" in record.get("rate_basis", "")
+    ]
+    assert (
+        locally_produced == []
+    ), "Locally-produced excise rates must not appear in the import tax inventory: " + str(
+        [r["record_id"] for r in locally_produced]
+    )
+
+
+def test_specific_duties_pending_quantity_data_are_flagged_non_calculable():
+    measures = get_country_enrichment("CMR")["other_import_taxes"]["measures"]
+    specific_duties = [
+        m for m in measures if m.get("collection") == "excise_specific_duties_pending_quantity_data"
+    ]
+    assert specific_duties, "Expected at least one specific-duty record for CMR"
+    assert all(
+        m.get("calculable") is False for m in specific_duties
+    ), "All specific-duty records must carry calculable=false"
+    assert all(
+        m.get("missing_elements") for m in specific_duties
+    ), "All specific-duty records must list their missing_elements"
