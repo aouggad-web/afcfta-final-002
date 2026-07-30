@@ -109,6 +109,41 @@ def _active_measure_records(records: List[Dict[str, Any]], as_of: str) -> List[D
     ]
 
 
+def _other_tax_inventory(
+    path_specs: List[Dict[str, Any]], status: str, as_of: str
+) -> Dict[str, Any]:
+    measures: List[Dict[str, Any]] = []
+    omitted_historical_records = 0
+    for spec in path_specs:
+        data = _read_json(spec["path"])
+        for collection in spec["collections"]:
+            raw_records = data.get(collection, [])
+            active_records = _active_measure_records(raw_records, as_of)
+            omitted_historical_records += len(raw_records) - len(active_records)
+            for record in active_records:
+                record["collection"] = collection
+                record["source_record_path"] = spec["path"]
+                record["automatic_product_specific_hs_attachment_allowed"] = bool(
+                    record.get("hs_codes_explicit")
+                )
+                measures.append(record)
+
+    return {
+        "status": status,
+        "as_of": as_of,
+        "measures": measures,
+        "source_ids": sorted(
+            {record["source_id"] for record in measures if record.get("source_id")}
+        ),
+        "omitted_historical_records": omitted_historical_records,
+        "application_guard": (
+            "A description-only measure is informational and must not be attached "
+            "as product-specific. General levies require their separately verified "
+            "legal scope."
+        ),
+    }
+
+
 def _kenya_required_documents(record_ids: List[str]) -> List[Dict[str, Any]]:
     data = _read_json("data/kenya/administrative_formalities.json")
     records = {
@@ -267,6 +302,14 @@ def get_country_enrichment(country_iso3: str) -> Optional[Dict[str, Any]]:
             "omitted_historical_records": (omitted_historical_records if vat_is_available else 0),
             "source_record_path": vat_measure_path,
         }
+
+    other_tax_measure_paths = configured.get("other_tax_measure_paths", [])
+    if other_tax_measure_paths:
+        result["other_import_taxes"] = _other_tax_inventory(
+            other_tax_measure_paths,
+            configured["other_taxes_status"],
+            registry["as_of"],
+        )
 
     national_measure_path = configured.get("national_measure_path")
     national_data = None
