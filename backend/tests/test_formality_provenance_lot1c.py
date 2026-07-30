@@ -77,6 +77,7 @@ def _iter_code_entries(country: str, code: str):
                 yield entry
 
 
+# Prevent empty or unreadable country files from making live checks vacuous.
 def _assert_live_lines(country: str) -> None:
     assert _lines(country), f"{country}: expected non-empty crawled tariff lines"
 
