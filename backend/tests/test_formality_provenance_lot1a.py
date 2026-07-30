@@ -9,6 +9,8 @@ explicitly honest state until official, line-scoped evidence is available.
 import json
 from pathlib import Path
 
+import pytest
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 CRAWLED_ROOT = REPO_ROOT / "backend" / "data" / "crawled"
 
@@ -24,72 +26,78 @@ def _lines(country: str) -> list[dict]:
     raise AssertionError(f"{country}: no supported tariff-line collection")
 
 
-def _formalities(country: str):
-    for line in _lines(country):
+def _assert_entry_is_source_bound(country: str, entry: dict) -> None:
+    required = {"source_id", "legal_reference", "verification_status"}
+    missing = {field for field in required if not entry.get(field)}
+    code = entry.get("code", "?")
+    message = (
+        f"{country}/{code}: published formality lacks source binding fields "
+        f"{sorted(missing)}"
+    )
+    assert not missing, message
+
+
+def _assert_country_formality_contract(country: str) -> None:
+    lines = _lines(country)
+    assert lines, f"{country}: tariff data must remain readable"
+
+    for line in lines:
+        assert isinstance(line, dict), f"{country}: tariff line must be an object"
         entries = line.get("administrative_formalities", [])
-        assert isinstance(entries, list), (
-            f"{country}: administrative_formalities must be a list when present"
-        )
+        message = f"{country}: administrative_formalities must be a list when present"
+        assert isinstance(entries, list), message
         for entry in entries:
             assert isinstance(entry, dict), f"{country}: formality entry must be an object"
-            yield entry
+            _assert_entry_is_source_bound(country, entry)
 
 
-def _assert_all_published_formalities_are_source_bound(country: str) -> None:
-    required = {"source_id", "legal_reference", "verification_status"}
-    for entry in _formalities(country):
-        missing = {field for field in required if not entry.get(field)}
-        assert not missing, (
-            f"{country}/{entry.get('code', '?')}: published formality lacks "
-            f"source binding fields {sorted(missing)}"
-        )
+def _assert_code_contract(country: str, code: str) -> None:
+    """Exercise the rejection contract even when the live dataset has no such code."""
 
+    with pytest.raises(AssertionError, match="source_id"):
+        _assert_entry_is_source_bound(country, {"code": code})
 
-def _assert_code_is_source_bound_if_present(country: str, code: str) -> None:
-    for entry in _formalities(country):
-        if entry.get("code") != code:
-            continue
-        assert entry.get("source_id"), f"{country}/{code}: missing source_id"
-        assert entry.get("legal_reference"), f"{country}/{code}: missing legal_reference"
-        assert entry.get("verification_status"), (
-            f"{country}/{code}: missing verification_status"
-        )
+    for line in _lines(country):
+        for entry in line.get("administrative_formalities", []):
+            if entry.get("code") == code:
+                _assert_entry_is_source_bound(country, entry)
 
 
 def test_mar_published_formalities_are_source_bound_or_absent():
-    _assert_all_published_formalities_are_source_bound("MAR")
+    _assert_country_formality_contract("MAR")
 
 
 def test_tun_published_formalities_are_source_bound_or_absent():
-    _assert_all_published_formalities_are_source_bound("TUN")
+    _assert_country_formality_contract("TUN")
 
 
 def test_dza_published_formalities_are_source_bound_or_absent():
-    _assert_all_published_formalities_are_source_bound("DZA")
+    _assert_country_formality_contract("DZA")
 
 
 def test_mar_veterinary_code_is_not_accepted_without_source_binding():
-    _assert_code_is_source_bound_if_present("MAR", "C01")
+    # Contract test: C01 is rejected unless a future official record is source-bound.
+    _assert_code_contract("MAR", "C01")
 
 
 def test_tun_veterinary_code_is_not_accepted_without_source_binding():
-    _assert_code_is_source_bound_if_present("TUN", "102")
+    # Contract test: 102 is rejected unless a future official record is source-bound.
+    _assert_code_contract("TUN", "102")
 
 
 def test_mar_pharma_code_is_not_accepted_without_source_binding():
-    _assert_code_is_source_bound_if_present("MAR", "C04")
+    # Contract test: C04 is rejected unless a future official record is source-bound.
+    _assert_code_contract("MAR", "C04")
 
 
 def test_tun_pharma_code_is_not_accepted_without_source_binding():
-    _assert_code_is_source_bound_if_present("TUN", "103")
+    # Contract test: 103 is rejected unless a future official record is source-bound.
+    _assert_code_contract("TUN", "103")
 
 
 def test_formality_absence_is_schema_safe_and_never_replaced_by_a_placeholder():
     for country in ("MAR", "TUN", "DZA"):
-        lines = _lines(country)
-        assert lines, f"{country}: tariff data must remain readable"
-        for line in lines:
-            assert isinstance(line, dict), f"{country}: tariff line must be an object"
+        for line in _lines(country):
             entries = line.get("administrative_formalities", [])
             assert isinstance(entries, list)
             assert all(entry not in (None, "", 0) for entry in entries)
