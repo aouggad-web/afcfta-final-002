@@ -24,6 +24,16 @@ VALID_STATUSES = {
 }
 
 
+# Discover files dynamically so new country datasets inherit the same guard.
+@lru_cache(maxsize=1)
+def _countries() -> tuple[str, ...]:
+    return tuple(
+        sorted(
+            path.name.removesuffix("_tariffs.json") for path in CRAWLED_ROOT.glob("*_tariffs.json")
+        )
+    )
+
+
 @lru_cache(maxsize=None)
 def _lines(country: str) -> list[dict]:
     path = CRAWLED_ROOT / f"{country}_tariffs.json"
@@ -40,15 +50,6 @@ def _lines(country: str) -> list[dict]:
         if isinstance(value, list):
             return value
     return []
-
-
-@lru_cache(maxsize=1)
-def _countries() -> tuple[str, ...]:
-    return tuple(
-        sorted(
-            path.name.removesuffix("_tariffs.json") for path in CRAWLED_ROOT.glob("*_tariffs.json")
-        )
-    )
 
 
 def _assert_source_bound(country: str, claim: dict) -> None:
