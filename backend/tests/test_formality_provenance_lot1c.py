@@ -27,8 +27,7 @@ VALID_STATUSES = {
 def _countries() -> tuple[str, ...]:
     return tuple(
         sorted(
-            path.name.removesuffix("_tariffs.json")
-            for path in CRAWLED_ROOT.glob("*_tariffs.json")
+            path.name.removesuffix("_tariffs.json") for path in CRAWLED_ROOT.glob("*_tariffs.json")
         )
     )
 
@@ -59,31 +58,30 @@ def _assert_source_bound(country: str, entry: dict) -> None:
     missing = {field for field in SOURCE_FIELDS if not entry.get(field)}
     code = entry.get("code", "?")
     assert not missing, (
-        f"{country}/{code}: published formality lacks source binding fields "
-        f"{sorted(missing)}"
+        f"{country}/{code}: published formality lacks source binding fields " f"{sorted(missing)}"
     )
     status = entry["verification_status"]
-    assert status in VALID_STATUSES, (
-        f"{country}/{code}: invalid verification_status {status}"
-    )
+    assert status in VALID_STATUSES, f"{country}/{code}: invalid verification_status {status}"
 
 
 def _iter_code_entries(country: str, code: str):
     for line in _lines(country):
         assert isinstance(line, dict), f"{country}: tariff line must be an object"
         formalities = line.get("administrative_formalities", [])
-        assert isinstance(formalities, list), (
-            f"{country}: administrative_formalities must be a list when present"
-        )
+        assert isinstance(
+            formalities, list
+        ), f"{country}: administrative_formalities must be a list when present"
         for entry in formalities:
-            assert isinstance(entry, dict), (
-                f"{country}: formality entry must be an object"
-            )
+            assert isinstance(entry, dict), f"{country}: formality entry must be an object"
             if entry.get("code") == code:
                 yield entry
 
 
-def _assert_code_contract(countries, code: str) -> None:
+def _assert_live_lines(country: str) -> None:
+    assert _lines(country), f"{country}: expected non-empty crawled tariff lines"
+
+
+def _assert_code_contract(countries, code: str, *, require_live_lines: bool = False) -> None:
     label = ",".join(countries)
     with pytest.raises(AssertionError, match="source_id"):
         _assert_source_bound(label, {"code": code})
@@ -99,13 +97,15 @@ def _assert_code_contract(countries, code: str) -> None:
     )
 
     for country in countries:
+        if require_live_lines:
+            _assert_live_lines(country)
         for entry in _iter_code_entries(country, code):
             _assert_source_bound(country, entry)
 
 
 def _assert_country_code_pair(country: str) -> None:
-    _assert_code_contract((country,), "910")
-    _assert_code_contract((country,), "IMPDEC")
+    _assert_code_contract((country,), "910", require_live_lines=True)
+    _assert_code_contract((country,), "IMPDEC", require_live_lines=True)
 
 
 # 01-06 — neither 910 nor IMPDEC is inferred from the country alone.
@@ -135,20 +135,22 @@ def test_zaf_910_and_impdec_are_source_bound_if_present():
 
 # 07 — IMPDEC is not a universal default across crawled country files.
 def test_all_crawled_impdec_entries_are_source_bound_or_absent():
-    _assert_code_contract(_countries(), "IMPDEC")
+    countries = _countries()
+    assert countries, "expected crawled country tariff files"
+    _assert_code_contract(countries, "IMPDEC")
 
 
 # 08-10 — national code 910 is not legitimised without official evidence.
 def test_dza_910_is_source_bound_if_present():
-    _assert_code_contract(("DZA",), "910")
+    _assert_code_contract(("DZA",), "910", require_live_lines=True)
 
 
 def test_mar_910_is_source_bound_if_present():
-    _assert_code_contract(("MAR",), "910")
+    _assert_code_contract(("MAR",), "910", require_live_lines=True)
 
 
 def test_tun_910_is_source_bound_if_present():
-    _assert_code_contract(("TUN",), "910")
+    _assert_code_contract(("TUN",), "910", require_live_lines=True)
 
 
 # 11 — a software platform label is metadata, not regulatory provenance.
@@ -163,4 +165,4 @@ def test_customs_platform_metadata_does_not_prove_impdec_applicability():
         )
 
     non_asycuda = ("GHA", "NGA", "KEN", "TZA", "ZAF")
-    _assert_code_contract(non_asycuda, "IMPDEC")
+    _assert_code_contract(non_asycuda, "IMPDEC", require_live_lines=True)
