@@ -23,39 +23,6 @@ VALID_STATUSES = {
     "NOT_APPLICABLE",
 }
 
-AFRICA_SAMPLE_COUNTRIES = (
-    "NGA",
-    "KEN",
-    "ZAF",
-    "ETH",
-    "GHA",
-    "CMR",
-    "SEN",
-    "TZA",
-    "UGA",
-    "RWA",
-    "AGO",
-    "MOZ",
-    "ZMB",
-    "ZWE",
-    "MUS",
-    "MDG",
-    "COD",
-    "BDI",
-    "EGY",
-    "LBY",
-    "MRT",
-    "SDN",
-    "DJI",
-    "ERI",
-    "SOM",
-    "STP",
-    "CPV",
-    "BWA",
-    "LSO",
-    "NAM",
-)
-
 
 @lru_cache(maxsize=None)
 def _lines(country: str) -> list[dict]:
@@ -75,6 +42,15 @@ def _lines(country: str) -> list[dict]:
     return []
 
 
+@lru_cache(maxsize=1)
+def _countries() -> tuple[str, ...]:
+    return tuple(
+        sorted(
+            path.name.removesuffix("_tariffs.json") for path in CRAWLED_ROOT.glob("*_tariffs.json")
+        )
+    )
+
+
 def _assert_source_bound(country: str, claim: dict) -> None:
     missing = {field for field in SOURCE_FIELDS if not claim.get(field)}
     code = claim.get("code") or claim.get("tax") or "?"
@@ -91,9 +67,9 @@ def _iter_formalities(country: str):
     for line in _lines(country):
         assert isinstance(line, dict), f"{country}: tariff line must be an object"
         entries = line.get("administrative_formalities", [])
-        assert isinstance(entries, list), (
-            f"{country}: administrative_formalities must be a list when present"
-        )
+        assert isinstance(
+            entries, list
+        ), f"{country}: administrative_formalities must be a list when present"
         for entry in entries:
             entry_message = f"{country}: formality entry must be an object"
             assert isinstance(entry, dict), entry_message
@@ -103,6 +79,18 @@ def _iter_formalities(country: str):
 def _assert_country_formality_contract(country: str) -> None:
     for entry in _iter_formalities(country):
         _assert_source_bound(country, entry)
+
+
+def _iter_structured_tax_claims(country: str):
+    for line in _lines(country):
+        assert isinstance(line, dict), f"{country}: tariff line must be an object"
+        entries = line.get("taxes", [])
+        if not isinstance(entries, list):
+            continue
+        for entry in entries:
+            assert isinstance(entry, dict), f"{country}: tax entry must be an object"
+            if "tax" in entry:
+                yield entry
 
 
 def _assert_code_contract(countries, code: str) -> None:
@@ -120,6 +108,10 @@ def _assert_regulatory_claim_contract(country: str, claim_code: str) -> None:
     with pytest.raises(AssertionError, match="source_id"):
         _assert_source_bound(country, {"tax": claim_code})
 
+    for entry in _iter_structured_tax_claims(country):
+        if entry.get("tax") == claim_code:
+            _assert_source_bound(country, entry)
+
     _assert_source_bound(
         country,
         {
@@ -133,7 +125,7 @@ def _assert_regulatory_claim_contract(country: str, claim_code: str) -> None:
 
 # 01 — replaces universal multi-document coverage.
 def test_africa_published_formalities_are_source_bound_or_absent():
-    for country in AFRICA_SAMPLE_COUNTRIES:
+    for country in _countries():
         _assert_country_formality_contract(country)
 
 
