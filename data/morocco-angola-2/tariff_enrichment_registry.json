@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "as_of": "2026-08-01",
+  "as_of": "2026-07-29",
   "disclaimer": "Simulation informative — non opposable à l'administration douanière. Les taux, documents et préférences absents ou insuffisamment prouvés restent NOT_AVAILABLE.",
   "regions": {
     "MAR_NATIONAL": {
@@ -50,6 +50,7 @@
       "required_document_records": [],
       "anomalies": [
         "Le taux TVA standard de 20 % et la réforme 2026 (Loi de finances n° 50-25) sont rapportés de façon concordante par plusieurs sources secondaires citant le CGI, mais le texte primaire du CGI n'a pas pu être atteint directement sur le portail de la DGI (tax.gov.ma) ce cycle.",
+        "Des exonérations sectorielles à l'importation sont rapportées par la Loi de finances n° 50-25 (2026) — pâtes courtes, engrais, sang et dérivés, bovins/camélidés dans des quantités plafonnées — mais, faute de texte primaire lu et de portée HS précise par produit, elles ne sont pas publiées en vat_zero_rated (fail-closed) ; vat_zero_rated reste vide.",
         "La Taxe Parafiscale à l'Importation (0,25 %) est présente ligne par ligne dans le runtime ADIL mais n'est pas encore normalisée en fiche other_taxes distincte.",
         "Aucune mesure réglementaire (guichet unique, contrôle de conformité) n'a été collectée pour ce lot."
       ]

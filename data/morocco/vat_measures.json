@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "country": "MAR",
-  "as_of": "2026-08-01",
+  "as_of": "2026-07-29",
   "vat_rates": [
     {
       "record_id": "MAR-VAT-RATE-STANDARD-20260101",
@@ -11,7 +11,7 @@
       "rate_basis": "valeur en douane (CAF) majorée du Droit d'Importation et de la Taxe Parafiscale à l'Importation (0,25 %)",
       "effective_from": "2026-01-01",
       "effective_to": null,
-      "legal_status": "CURRENT_PARTIALLY_SOURCED",
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
       "supersedes_record_id": null,
       "source_id": "MAR-CGI-TVA-STANDARD-20260101-PARTIAL",
       "legal_reference": "Code Général des Impôts, Titre III (TVA), articles 96-116 et 121 ; Loi de finances n° 50-25 pour l'exercice 2026 (simplification à 3 taux 0/10/20 %, suppression du taux de 14 %)",
@@ -20,21 +20,5 @@
     }
   ],
   "vat_exemptions": [],
-  "vat_zero_rated": [
-    {
-      "record_id": "MAR-VAT-ZERO-RATE-EXAMPLE-20260101",
-      "legal_product_description": "Exonérations sectorielles à l'importation introduites par la Loi de finances n° 50-25 (2026) : pâtes courtes, engrais, sang et dérivés, bovins/camélidés dans des quantités plafonnées.",
-      "normalized_product_description": "sector-specific 2026 import exemptions",
-      "rate": "0%",
-      "rate_basis": null,
-      "effective_from": "2026-01-01",
-      "effective_to": null,
-      "legal_status": "PARTIAL",
-      "supersedes_record_id": null,
-      "source_id": "MAR-CGI-TVA-STANDARD-20260101-PARTIAL",
-      "legal_reference": "Loi de finances n° 50-25 pour l'exercice 2026",
-      "verification_status": "PARTIAL",
-      "hs_codes_explicit": []
-    }
-  ]
+  "vat_zero_rated": []
 }
