@@ -12,6 +12,7 @@ REGISTRY_PATHS = (
     REPO_ROOT / "data" / "regional-18" / "tariff_enrichment_registry.json",
     REPO_ROOT / "data" / "west-africa-15" / "tariff_enrichment_registry.json",
     REPO_ROOT / "data" / "algeria-active-3" / "tariff_enrichment_registry.json",
+    REPO_ROOT / "data" / "morocco-angola-2" / "tariff_enrichment_registry.json",
 )
 
 

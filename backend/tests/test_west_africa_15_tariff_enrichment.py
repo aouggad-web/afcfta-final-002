@@ -48,6 +48,7 @@ REGIONAL_18 = {
     "ZAF",
 }
 ALGERIA_ACTIVE_3 = {"EGY", "MUS", "TUN"}
+MOROCCO_ANGOLA_2 = {"MAR", "AGO"}
 CANONICAL_STATUSES = {
     "DOCUMENTED",
     "PARTIAL",
@@ -70,10 +71,10 @@ def _tariff_lines(country):
     return next(data[key] for key in ("positions", "sub_positions", "tariff_lines") if key in data)
 
 
-def test_west_africa_registry_remains_exact_and_combined_api_covers_36_countries():
+def test_west_africa_registry_remains_exact_and_combined_api_covers_38_countries():
     assert set(_registry()["countries"]) == WEST_AFRICA_15
     assert set(get_supported_enrichment_countries()) == (
-        REGIONAL_18 | WEST_AFRICA_15 | ALGERIA_ACTIVE_3
+        REGIONAL_18 | WEST_AFRICA_15 | ALGERIA_ACTIVE_3 | MOROCCO_ANGOLA_2
     )
 
 

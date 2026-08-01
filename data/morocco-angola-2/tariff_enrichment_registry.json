@@ -1,0 +1,79 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-08-01",
+  "disclaimer": "Simulation informative — non opposable à l'administration douanière. Les taux, documents et préférences absents ou insuffisamment prouvés restent NOT_AVAILABLE.",
+  "regions": {
+    "MAR_NATIONAL": {
+      "members": [
+        "MAR"
+      ],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 13114,
+        "national_line_digits": [
+          10
+        ],
+        "source_name": "Administration des Douanes et Impôts Indirects (ADII) — portail ADIL",
+        "scope_note": "Tarif national à 10 chiffres directement extrait du simulateur douanier officiel (douane.gov.ma/adil), avec Droit d'Importation, Taxe Parafiscale à l'Importation et TVA par position."
+      }
+    },
+    "AGO_MFN": {
+      "members": [
+        "AGO"
+      ],
+      "tariff": {
+        "status": "PARTIAL",
+        "line_count_per_country": 5388,
+        "national_line_digits": [
+          6
+        ],
+        "source_name": "WITS / UNCTAD-TRAINS — NPF appliqué SH6",
+        "scope_note": "Référentiel NPF SH6 indicatif ; aucun tarif national intégré (AGT) n'a été ingéré et aucune extension nationale n'est déduite."
+      }
+    }
+  },
+  "countries": {
+    "MAR": {
+      "region": "MAR_NATIONAL",
+      "national_extension_status": "DOCUMENTED",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "DOCUMENTED",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/morocco/legal_sources.json",
+        "data/morocco/vat_measures.json"
+      ],
+      "vat_measure_path": "data/morocco/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": [
+        "Le taux TVA standard de 20 % et la réforme 2026 (Loi de finances n° 50-25) sont rapportés de façon concordante par plusieurs sources secondaires citant le CGI, mais le texte primaire du CGI n'a pas pu être atteint directement sur le portail de la DGI (tax.gov.ma) ce cycle.",
+        "La Taxe Parafiscale à l'Importation (0,25 %) est présente ligne par ligne dans le runtime ADIL mais n'est pas encore normalisée en fiche other_taxes distincte.",
+        "Aucune mesure réglementaire (guichet unique, contrôle de conformité) n'a été collectée pour ce lot."
+      ]
+    },
+    "AGO": {
+      "region": "AGO_MFN",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/angola/legal_sources.json",
+        "data/angola/vat_measures.json"
+      ],
+      "vat_measure_path": "data/angola/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": [
+        "Le fichier runtime est limité au SH6 WITS/TRAINS ; le tarif intégré national (AGT/ASYCUDA World) doit être collecté séparément.",
+        "L'ordre de calcul (IVA sur la valeur CIF majorée des droits de douane) est rapporté par des sources secondaires citant l'AGT, non confirmé sur une page de calcul officielle indépendante ce cycle — statut PARTIAL.",
+        "Des taux dérogatoires sont rapportés par des sources secondaires (2 % Cabinda, 3 % régime transitoire, 7 % régime simplifié, 5 % équipement industriel) mais aucun n'a pu être confirmé sur une page AGT officielle précise ce cycle ; ils ne sont donc pas publiés (vat_exemptions/vat_zero_rated restent vides)."
+      ]
+    }
+  }
+}

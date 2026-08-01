@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "country": "AGO",
+  "as_of": "2026-08-01",
+  "sources": [
+    {
+      "source_id": "AGO-WITS-MFN-RUNTIME-20260705",
+      "official_title": "WITS / UNCTAD-TRAINS MFN applied tariff extract",
+      "institution": "World Bank WITS / UNCTAD-TRAINS",
+      "legal_date": null,
+      "url": null,
+      "sha256": "2a178e2c978c14a248f9a740a9c408374cf196a44bd84087e60384c207e84fb3",
+      "verification_status": "PARTIAL_RUNTIME_DATASET",
+      "registry_path": "backend/data/crawled/AGO_tariffs.json",
+      "notes": "Empreinte du fichier runtime SH6 (5 388 positions, extrait le 2026-07-05) ; agrégat de niveau 3 (moyenne MFN au niveau SH6), ne constitue pas le tarif national intégré angolais (AGT)."
+    },
+    {
+      "source_id": "AGO-MINFIN-PORTAL-CONTRIBUINTE-IVA",
+      "official_title": "Portal do Contribuinte — Imposto sobre o Valor Acrescentado (IVA)",
+      "institution": "Administração Geral Tributária (AGT) / Ministério das Finanças (MINFIN)",
+      "legal_date": null,
+      "url": "https://portaldocontribuinte.minfin.gov.ao/impostos-e-taxas/imposto-sobre-valor-acrescentado",
+      "sha256": null,
+      "verification_status": "VERIFIED_OFFICIAL_GUIDE",
+      "notes": "Portail officiel du Ministère des Finances angolais (domaine minfin.gov.ao) confirmant le taux standard de l'IVA à 14 %."
+    },
+    {
+      "source_id": "AGO-LEI-7-19-IVA-20190424",
+      "official_title": "Lei n.º 7/19, de 24 de abril de 2019 — Código do Imposto sobre o Valor Acrescentado (IVA), alterada pela Lei n.º 17/19, de 13 de agosto de 2019",
+      "institution": "Assembleia Nacional de Angola (publiée au Diário da República Iª Série n.º 55)",
+      "legal_date": "2019-04-24",
+      "url": "https://lex.ao/docs/assembleia-nacional/2019/lei-n-o-7-19-de-24-de-abril/",
+      "sha256": null,
+      "verification_status": "VERIFIED_TEXT_SECONDARY_HOST",
+      "notes": "Texte de la loi consulté via LEX.AO (base juridique privée reproduisant le texte officiel du Diário da República) ; aucune archive directe sur un domaine .gov.ao trouvée pour ce cycle. Cette loi remplace le Regulamento do Imposto de Consumo (Decreto Legislativo Presidencial n.º 3-A/14)."
+    }
+  ]
+}
