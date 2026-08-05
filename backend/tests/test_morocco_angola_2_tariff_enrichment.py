@@ -45,6 +45,15 @@ def test_registry_covers_morocco_and_angola():
     } == EXPECTED_COUNTRIES
 
 
+def test_registry_dates_remain_scoped_to_their_own_countries():
+    """A newer MAR/AGO snapshot must not retimestamp prior country waves."""
+
+    assert get_country_enrichment("MAR")["as_of"] == "2026-08-05"
+    assert get_country_enrichment("AGO")["as_of"] == "2026-08-05"
+    assert get_country_enrichment("KEN")["as_of"] == "2026-07-29"
+    assert get_country_enrichment("KEN")["consumption_tax"]["as_of"] == "2026-07-29"
+
+
 def test_statuses_are_canonical_and_missing_preferences_fail_closed():
     for country, configured in _registry()["countries"].items():
         for key, value in configured.items():
