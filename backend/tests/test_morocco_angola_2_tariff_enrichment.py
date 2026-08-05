@@ -50,6 +50,8 @@ def test_registry_dates_remain_scoped_to_their_own_countries():
 
     assert get_country_enrichment("MAR")["as_of"] == "2026-08-05"
     assert get_country_enrichment("AGO")["as_of"] == "2026-08-05"
+    assert get_country_enrichment("MAR")["consumption_tax"]["as_of"] == "2026-08-05"
+    assert get_country_enrichment("AGO")["consumption_tax"]["as_of"] == "2026-08-05"
     assert get_country_enrichment("KEN")["as_of"] == "2026-07-29"
     assert get_country_enrichment("KEN")["consumption_tax"]["as_of"] == "2026-07-29"
 
