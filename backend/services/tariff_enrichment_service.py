@@ -28,6 +28,7 @@ def _load_registry() -> Dict[str, Any]:
         "as_of": max(item["as_of"] for item in registries),
         "regions": {},
         "countries": {},
+        "country_as_of": {},
         "country_disclaimers": {},
     }
     for registry in registries:
@@ -38,6 +39,9 @@ def _load_registry() -> Dict[str, Any]:
             )
         merged["regions"].update(copy.deepcopy(registry["regions"]))
         merged["countries"].update(copy.deepcopy(registry["countries"]))
+        merged["country_as_of"].update(
+            {country: registry["as_of"] for country in registry["countries"]}
+        )
         merged["country_disclaimers"].update(
             {country: registry["disclaimer"] for country in registry["countries"]}
         )
@@ -239,9 +243,10 @@ def get_country_enrichment(country_iso3: str) -> Optional[Dict[str, Any]]:
     if configured is None:
         return None
 
+    country_as_of = registry["country_as_of"][country]
     result = copy.deepcopy(configured)
     result["country_iso3"] = country
-    result["as_of"] = registry["as_of"]
+    result["as_of"] = country_as_of
     result["tariff"] = copy.deepcopy(registry["regions"][configured["region"]]["tariff"])
     result["traceability_sources"] = _compact_legal_sources(configured["source_paths"])
 
@@ -250,7 +255,7 @@ def get_country_enrichment(country_iso3: str) -> Optional[Dict[str, Any]]:
         vat_data = _read_json(vat_measure_path)
         vat_is_available = configured["vat_status"] != "NOT_AVAILABLE"
         active_vat_data = {
-            collection: _active_measure_records(vat_data.get(collection, []), registry["as_of"])
+            collection: _active_measure_records(vat_data.get(collection, []), country_as_of)
             for collection in ("vat_rates", "vat_exemptions", "vat_zero_rated")
         }
         omitted_historical_records = sum(
@@ -260,7 +265,7 @@ def get_country_enrichment(country_iso3: str) -> Optional[Dict[str, Any]]:
         result["consumption_tax"] = {
             "tax_type": "VAT_OR_GST",
             "status": configured["vat_status"],
-            "as_of": registry["as_of"],
+            "as_of": country_as_of,
             "rates": active_vat_data["vat_rates"] if vat_is_available else [],
             "exemptions": (active_vat_data["vat_exemptions"] if vat_is_available else []),
             "zero_rated": (active_vat_data["vat_zero_rated"] if vat_is_available else []),
