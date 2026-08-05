@@ -84,6 +84,7 @@ def _compact_legal_sources(source_paths: List[str]) -> List[Dict[str, Any]]:
                         or source.get("status")
                     ),
                     "registry_path": relative_path,
+                    "notes": source.get("notes"),
                 }
             )
     return compact
