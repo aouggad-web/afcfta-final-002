@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "country": "AGO",
-  "as_of": "2026-07-29",
+  "as_of": "2026-08-05",
   "sources": [
     {
       "source_id": "AGO-WITS-MFN-RUNTIME-20260705",
@@ -22,7 +22,7 @@
       "url": "https://portaldocontribuinte.minfin.gov.ao/impostos-e-taxas/imposto-sobre-valor-acrescentado",
       "sha256": null,
       "verification_status": "VERIFIED_OFFICIAL_GUIDE",
-      "notes": "Portail officiel du Ministère des Finances angolais (domaine minfin.gov.ao) confirmant le taux standard de l'IVA à 14 %."
+      "notes": "Portail officiel du Ministère des Finances angolais confirmant l'application de l'IVA aux importations, le taux général de 14 %, le taux territorial de 2 % à Cabinda ainsi qu'une liste d'exonérations à l'importation. Les mesures territoriales et exonérations ne sont pas encore structurées comme calculables faute de portée géographique et de correspondance SH explicites dans le modèle courant."
     },
     {
       "source_id": "AGO-LEI-7-19-IVA-20190424",
@@ -32,7 +32,7 @@
       "url": "https://lex.ao/docs/assembleia-nacional/2019/lei-n-o-7-19-de-24-de-abril/",
       "sha256": null,
       "verification_status": "VERIFIED_TEXT_SECONDARY_HOST",
-      "notes": "Texte de la loi consulté via LEX.AO (base juridique privée reproduisant le texte officiel du Diário da República) ; aucune archive directe sur un domaine .gov.ao trouvée pour ce cycle. Cette loi remplace le Regulamento do Imposto de Consumo (Decreto Legislativo Presidencial n.º 3-A/14)."
+      "notes": "Texte de la loi consulté via LEX.AO (base juridique privée reproduisant le texte officiel du Diário da República). Le portail officiel MINFIN fournit par ailleurs une page de synthèse et une rubrique législation listant les Lois n.º 7/19 et n.º 17/19."
     }
   ]
 }
