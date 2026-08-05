@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "as_of": "2026-07-29",
+  "as_of": "2026-08-05",
   "disclaimer": "Simulation informative — non opposable à l'administration douanière. Les taux, documents et préférences absents ou insuffisamment prouvés restent NOT_AVAILABLE.",
   "regions": {
     "MAR_NATIONAL": {
@@ -58,7 +58,7 @@
     "AGO": {
       "region": "AGO_MFN",
       "national_extension_status": "NOT_AVAILABLE",
-      "vat_status": "DOCUMENTED",
+      "vat_status": "PARTIAL",
       "other_taxes_status": "NOT_AVAILABLE",
       "calculation_order_status": "PARTIAL",
       "afcfta_status": "NOT_AVAILABLE",
@@ -73,7 +73,7 @@
       "anomalies": [
         "Le fichier runtime est limité au SH6 WITS/TRAINS ; le tarif intégré national (AGT/ASYCUDA World) doit être collecté séparément.",
         "L'ordre de calcul (IVA sur la valeur CIF majorée des droits de douane) est rapporté par des sources secondaires citant l'AGT, non confirmé sur une page de calcul officielle indépendante ce cycle — statut PARTIAL.",
-        "Des taux dérogatoires sont rapportés par des sources secondaires (2 % Cabinda, 3 % régime transitoire, 7 % régime simplifié, 5 % équipement industriel) mais aucun n'a pu être confirmé sur une page AGT officielle précise ce cycle ; ils ne sont donc pas publiés (vat_exemptions/vat_zero_rated restent vides)."
+        "Le portail officiel MINFIN/AGT confirme le taux général de 14 %, un taux territorial de 2 % à Cabinda et plusieurs exonérations à l'importation. Seul le taux général est actuellement normalisé ; faute de modèle de portée géographique et de correspondance HS explicite, les mesures Cabinda et les exonérations ne sont pas publiées comme calculables et vat_status reste PARTIAL."
       ]
     }
   }
