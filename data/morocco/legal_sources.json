@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "country": "MAR",
+  "as_of": "2026-07-29",
+  "sources": [
+    {
+      "source_id": "MAR-DOUANE-ADIL-TARIFF-CRAWL-20260211",
+      "official_title": "ADIL — Aide à la Décision pour l'Import et l'Export (tarif douanier national)",
+      "institution": "Administration des Douanes et Impôts Indirects (ADII)",
+      "legal_date": null,
+      "url": "https://www.douane.gov.ma",
+      "sha256": "8a8671685c7736965c1d9e38d19f9b77725f583f152df2f5d372f62b0ccc1368",
+      "verification_status": "VERIFIED_RUNTIME_DATASET",
+      "registry_path": "backend/data/crawled/MAR_tariffs.json",
+      "notes": "Empreinte du fichier runtime collecté le 11 février 2026 via le portail officiel ADIL de l'ADII ; 13 114 positions nationales à 10 chiffres, chacune avec ses taux Droit d'Importation / Taxe Parafiscale à l'Importation / TVA tels qu'affichés par le simulateur douanier officiel."
+    },
+    {
+      "source_id": "MAR-ADII-CODE-DOUANES-BASE-IMPOSABLE",
+      "official_title": "Code des Douanes et Impôts Indirects — assiette et ordre de calcul des droits et taxes à l'importation",
+      "institution": "Administration des Douanes et Impôts Indirects (ADII)",
+      "legal_date": null,
+      "url": "https://www.douane.gov.ma/code/Code_339_F.htm",
+      "sha256": null,
+      "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
+      "notes": "Confirme que la valeur en douane (CAF) est majorée du Droit d'Importation puis de la Taxe Parafiscale à l'Importation (0,25 %) avant application de la TVA sur cette assiette cumulée — ordre de calcul DD + TPI, puis TVA."
+    },
+    {
+      "source_id": "MAR-CGI-TVA-STANDARD-20260101-PARTIAL",
+      "official_title": "Code Général des Impôts — Titre III (Taxe sur la Valeur Ajoutée), articles 96-116 et 121 ; Loi de finances n° 50-25 pour l'exercice 2026",
+      "institution": "Direction Générale des Impôts (DGI) / Parlement du Royaume du Maroc",
+      "legal_date": "2026-01-01",
+      "url": null,
+      "sha256": null,
+      "verification_status": "PARTIAL",
+      "notes": "Le taux normal de 20 % (et la simplification à 3 taux 0/10/20 %, suppression du taux de 14 %, entrée en vigueur le 1er janvier 2026) est rapporté de façon concordante par plusieurs synthèses fiscales secondaires citant ces articles et cette loi de finances. Le texte primaire du CGI n'a pas pu être atteint directement sur le portail de la DGI (tax.gov.ma) au cours de ce cycle de collecte (url=null) ; à vérifier et archiver séparément."
+    }
+  ]
+}
