@@ -112,30 +112,38 @@ def test_morocco_national_tariff_is_documented_but_vat_stays_partial():
 
 
 def test_angola_hs6_is_not_misrepresented_as_a_national_extension():
-    """AGO n'a qu'un référentiel WITS/TRAINS SH6 (agrégat de niveau 3) : la
-    TVA (IVA 14 %, source officielle MINFIN) est DOCUMENTED indépendamment
-    du tarif douanier lui-même, qui reste PARTIAL et sans extension
-    nationale déduite."""
+    """AGO n'a qu'un référentiel WITS/TRAINS SH6. Le taux général d'IVA à
+    14 % est officiellement documenté, mais la couverture TVA globale reste
+    PARTIAL tant que le taux territorial de Cabinda et les exonérations
+    officielles à l'importation ne sont pas structurés dans le modèle."""
     enrichment = get_country_enrichment("AGO")
     assert enrichment["tariff"]["status"] == "PARTIAL"
     assert enrichment["national_extension_status"] == "NOT_AVAILABLE"
     assert enrichment["tariff"]["national_line_digits"] == [6]
-    assert enrichment["vat_status"] == "DOCUMENTED"
+    assert enrichment["vat_status"] == "PARTIAL"
     assert enrichment["consumption_tax"]["rates"][0]["rate"] == "14%"
     assert enrichment["consumption_tax"]["rates"][0]["source_id"]
     assert enrichment["consumption_tax"]["rates"][0]["hs_codes_explicit"] == []
 
 
 def test_angola_reduced_rates_are_not_fabricated():
-    """Des taux dérogatoires angolais (Cabinda 2 %, régime simplifié 7 %,
-    équipement industriel 5 %) sont rapportés par des sources secondaires
-    mais n'ont pas été confirmés sur une page AGT officielle précise ce
-    cycle : ils ne doivent apparaître ni en vat_exemptions ni en
-    vat_zero_rated — fail-closed, pas de taux inventé."""
+    """Le portail officiel confirme 2 % à Cabinda et des exonérations à
+    l'importation. Faute de portée géographique et de correspondance SH
+    normalisées, elles restent non calculables et le statut global demeure
+    PARTIAL plutôt que d'inventer une application nationale ou produit."""
     enrichment = get_country_enrichment("AGO")
+    assert enrichment["vat_status"] == "PARTIAL"
+    assert [rate["rate"] for rate in enrichment["consumption_tax"]["rates"]] == ["14%"]
     assert enrichment["consumption_tax"]["exemptions"] == []
     assert enrichment["consumption_tax"]["zero_rated"] == []
     assert any("Cabinda" in anomaly for anomaly in enrichment["anomalies"])
+    official_sources = [
+        source
+        for source in enrichment["traceability_sources"]
+        if source["source_id"] == "AGO-MINFIN-PORTAL-CONTRIBUINTE-IVA"
+    ]
+    assert len(official_sources) == 1
+    assert "Cabinda" in official_sources[0]["notes"]
 
 
 def test_morocco_calculation_order_is_documented_from_customs_code():
