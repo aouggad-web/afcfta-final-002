@@ -1,7 +1,6 @@
 """Runtime contracts for special formalities and government-mandated providers."""
 
 import pytest
-
 from routes.regulatory_compliance import router
 from services.regulatory_compliance_service import (
     get_country_regulatory_compliance,
@@ -36,9 +35,7 @@ def test_cod_bivac_is_exposed_as_a_mandated_actor_not_an_authority():
     assert bivac["authorized_fees_status"] == "NOT_AVAILABLE"
     assert bivac["mandate_status"] == "CONFIRMED_TIME_LIMITED"
     assert "Attestation de Vérification" in bivac["delivered_document"]
-    assert not any(
-        "BIVAC" in measure["record_id"].upper() for measure in compliance["measures"]
-    )
+    assert not any("BIVAC" in measure["record_id"].upper() for measure in compliance["measures"])
 
 
 def test_civ_webb_fontaine_is_exposed_as_terminated_historical_operator():
