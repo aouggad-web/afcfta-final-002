@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://afcfta-zlecaf.com/schemas/regulatory-country-registry-1.0.json",
+  "title": "AfCFTA regulatory compliance country registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "as_of", "country_count", "disclaimer", "countries"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "as_of": {"type": "string", "format": "date"},
+    "country_count": {"const": 54},
+    "disclaimer": {"type": "string", "minLength": 1},
+    "countries": {
+      "type": "object",
+      "minProperties": 54,
+      "maxProperties": 54,
+      "propertyNames": {"pattern": "^[A-Z]{3}$"},
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "regulatory_coverage_status",
+          "mandate_status",
+          "fees_status",
+          "products_hs_status",
+          "exemptions_status",
+          "transport_status",
+          "platform_status",
+          "delivered_document_status",
+          "dataset_path",
+          "source_paths",
+          "notes"
+        ],
+        "properties": {
+          "regulatory_coverage_status": {"$ref": "#/$defs/status"},
+          "mandate_status": {"$ref": "#/$defs/status"},
+          "fees_status": {"$ref": "#/$defs/status"},
+          "products_hs_status": {"$ref": "#/$defs/status"},
+          "exemptions_status": {"$ref": "#/$defs/status"},
+          "transport_status": {"$ref": "#/$defs/status"},
+          "platform_status": {"$ref": "#/$defs/status"},
+          "delivered_document_status": {"$ref": "#/$defs/status"},
+          "dataset_path": {
+            "type": ["string", "null"],
+            "pattern": "^data/.+\\.json$"
+          },
+          "source_paths": {
+            "type": "array",
+            "items": {"type": "string", "pattern": "^data/"}
+          },
+          "notes": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "DOCUMENTED",
+        "PARTIAL",
+        "UNVERIFIED",
+        "NOT_AVAILABLE",
+        "NOT_APPLICABLE",
+        "REVIEW_REQUIRED"
+      ]
+    }
+  }
+}
