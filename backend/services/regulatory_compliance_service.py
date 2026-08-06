@@ -54,15 +54,24 @@ def _read_json(relative_path: str) -> Dict[str, Any]:
     try:
         path.relative_to(RESOLVED_REPO_ROOT)
     except ValueError as exc:
-        raise ValueError(f"Regulatory source path resolves outside repository: {relative_path}") from exc
+        raise ValueError(
+            f"Regulatory source path resolves outside repository: {relative_path}"
+        ) from exc
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _require_non_empty(record: Dict[str, Any], fields: set, context: str) -> None:
+def _require_non_empty(
+    record: Dict[str, Any], fields: set, context: str, allow_empty: Optional[set] = None
+) -> None:
     missing = sorted(field for field in fields if field not in record)
     if missing:
         raise ValueError(f"{context} is missing required fields: {', '.join(missing)}")
-    empty = sorted(field for field in fields if record.get(field) in (None, ""))
+    nullable_fields = allow_empty or set()
+    empty = sorted(
+        field
+        for field in fields
+        if field not in nullable_fields and record.get(field) in (None, "")
+    )
     if empty:
         raise ValueError(f"{context} has empty required fields: {', '.join(empty)}")
 
@@ -71,7 +80,7 @@ def _normalize_actor(
     actor: Dict[str, Any], measure: Dict[str, Any], source_record_path: str
 ) -> Dict[str, Any]:
     context = f"Mandated actor {actor.get('actor_name') or '<unknown>'}"
-    _require_non_empty(actor, _ACTOR_REQUIRED_FIELDS, context)
+    _require_non_empty(actor, _ACTOR_REQUIRED_FIELDS, context, allow_empty={"authorized_fees"})
 
     if str(actor["mandate_status"]).casefold() == "active":
         raise ValueError(f"{context} uses an undated bare ACTIVE mandate status")
@@ -132,7 +141,10 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
             _MEASURE_REQUIRED_FIELDS,
             f"Regulatory measure {raw_measure.get('record_id') or '<unknown>'}",
         )
-        if raw_measure.get("fees") is not None and raw_measure.get("fees_status") == "NOT_AVAILABLE":
+        if (
+            raw_measure.get("fees") is not None
+            and raw_measure.get("fees_status") == "NOT_AVAILABLE"
+        ):
             raise ValueError(
                 f"Regulatory measure {raw_measure['record_id']} publishes fees with NOT_AVAILABLE status"
             )
