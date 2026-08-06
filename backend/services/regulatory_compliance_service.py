@@ -60,6 +60,14 @@ def _read_json(relative_path: str) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _is_empty_value(value: Any) -> bool:
+    if value is None or value == "":
+        return True
+    if isinstance(value, (list, dict)) and not value:
+        return True
+    return False
+
+
 def _require_non_empty(
     record: Dict[str, Any], fields: set, context: str, allow_empty: Optional[set] = None
 ) -> None:
@@ -70,7 +78,7 @@ def _require_non_empty(
     empty = sorted(
         field
         for field in fields
-        if field not in nullable_fields and record.get(field) in (None, "")
+        if field not in nullable_fields and _is_empty_value(record.get(field))
     )
     if empty:
         raise ValueError(f"{context} has empty required fields: {', '.join(empty)}")
@@ -157,7 +165,7 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
         measure["mandated_actors"] = normalized_actors
         measure["source_record_path"] = source_record_path
         measures.append(measure)
-        mandated_actors.extend(copy.deepcopy(normalized_actors))
+        mandated_actors.extend(normalized_actors)
 
     return {
         "country_iso3": country,

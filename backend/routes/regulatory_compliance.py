@@ -6,11 +6,11 @@ from services.regulatory_compliance_service import (
     get_supported_regulatory_countries,
 )
 
-router = APIRouter(prefix="/regulatory-compliance", tags=["Regulatory Compliance"])
+router = APIRouter(prefix="/regulatory-compliance")
 
 
 @router.get("/countries")
-async def list_regulatory_compliance_countries():
+def list_regulatory_compliance_countries():
     """List countries with a source-bound regulatory-compliance dataset."""
 
     countries = get_supported_regulatory_countries()
@@ -18,7 +18,7 @@ async def list_regulatory_compliance_countries():
 
 
 @router.get("/country/{country_iso3}")
-async def get_regulatory_compliance_endpoint(country_iso3: str):
+def get_regulatory_compliance_endpoint(country_iso3: str):
     """Return import formalities and government-mandated execution actors."""
 
     compliance = get_country_regulatory_compliance(country_iso3)

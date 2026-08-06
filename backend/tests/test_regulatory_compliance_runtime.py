@@ -11,11 +11,17 @@ from services.regulatory_compliance_service import (
 def _actor(country: str, name_fragment: str):
     compliance = get_country_regulatory_compliance(country)
     assert compliance is not None
-    return next(
-        actor
-        for actor in compliance["mandated_actors"]
-        if name_fragment.upper() in actor["actor_name"].upper()
+    match = next(
+        (
+            actor
+            for actor in compliance["mandated_actors"]
+            if name_fragment.upper() in actor["actor_name"].upper()
+        ),
+        None,
     )
+    if match is None:
+        pytest.fail(f"No mandated actor matching {name_fragment!r} found for country {country!r}")
+    return match
 
 
 def test_regulatory_runtime_supports_exact_pilot_countries():
