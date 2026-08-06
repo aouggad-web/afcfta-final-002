@@ -154,6 +154,14 @@ except ImportError:
     REGULATORY_ENGINE_AVAILABLE = False
 
 try:
+    from .regulatory_compliance import router as regulatory_compliance_router
+
+    REGULATORY_COMPLIANCE_AVAILABLE = True
+except ImportError:
+    regulatory_compliance_router = None
+    REGULATORY_COMPLIANCE_AVAILABLE = False
+
+try:
     from .search import router as search_router
 
     SEARCH_AVAILABLE = True
@@ -430,6 +438,10 @@ def register_routes(api_router: APIRouter):
     if REGULATORY_ENGINE_AVAILABLE:
         api_router.include_router(
             regulatory_engine_router, tags=["Regulatory Engine v3"], dependencies=_auth
+        )
+    if REGULATORY_COMPLIANCE_AVAILABLE:
+        api_router.include_router(
+            regulatory_compliance_router, tags=["Regulatory Compliance"], dependencies=_auth
         )
     if SEARCH_AVAILABLE:
         api_router.include_router(search_router, tags=["Text Search"], dependencies=_auth)
