@@ -433,7 +433,16 @@ class TestCacheServiceUtilities:
 
     def test_cache_get_returns_none_when_no_redis(self):
         """cache_get must return None (not raise) when Redis is unavailable."""
-        from services.cache_service import cache_get
+        import hashlib
+
+        from services.cache_service import _DISK_CACHE_DIR, cache_get
+
+        # Remove any stale disk-cache entry for the test key so the assertion
+        # is deterministic regardless of prior test runs.
+        digest = hashlib.sha256(b"zlecaf:non_existent_key_xyz").hexdigest()
+        stale = _DISK_CACHE_DIR / f"{digest}.json"
+        if stale.exists():
+            stale.unlink()
 
         # In a test environment without Redis, this should return None gracefully
         result = cache_get("zlecaf:non_existent_key_xyz")

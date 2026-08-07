@@ -120,6 +120,46 @@ def load_algeria_nomenclature():
     return None
 
 
+def get_tariff_line(country: str, hs6: str) -> Optional[dict]:
+    """Return basic tariff line data for a 6-digit HS code and country.
+
+    Returns a dict with at least ``hs6`` or ``None`` when not found.
+    """
+    try:
+        engine = get_search_engine()
+        results = engine.search(query=hs6, country=country, limit=1)
+        if results:
+            r = results[0]
+            return {"hs6": hs6, "description": r.get("description", ""), "country": country}
+    except Exception:
+        pass
+    return None
+
+
+def get_sub_positions(country: str, hs6: str) -> list:
+    """Return sub-positions (8- or 10-digit codes) for a 6-digit HS code and country."""
+    try:
+        engine = get_search_engine()
+        results = engine.search(query=hs6, country=country, limit=200)
+        sub = []
+        for r in results:
+            code = str(r.get("hs_code", ""))
+            if len(code) > 6 and code.startswith(hs6):
+                sub.append(
+                    {
+                        "code": code,
+                        "digits": len(code),
+                        "dd_rate": r.get("duty_rate_pct", 0.0),
+                        "description_fr": r.get("description_fr") or r.get("description", ""),
+                        "description_en": r.get("description_en") or r.get("description", ""),
+                        "source": "search_engine",
+                    }
+                )
+        return sub
+    except Exception:
+        return []
+
+
 @router.get("/smart-search")
 async def smart_search_hs6(
     q: Optional[str] = Query(default=None, min_length=2),
@@ -133,25 +173,44 @@ async def smart_search_hs6(
     Smart HS6 search powered by the optimized TariffSearchEngine.
     Provides complete denominations (buffered) and real-time data loading.
     Special handling for DZA (Algeria) with nomenclature_map lookup for extended codes.
+
+    Accepts ``q`` or ``query`` (alias) as the search term.  Returns results
+    enriched with ``chapter_name``, ``full_position``, ``from_authentic`` and
+    optionally ``sub_positions``.
     """
+    effective_q = q or query
+    if not effective_q:
+        raise HTTPException(status_code=422, detail="Query parameter 'q' or 'query' is required")
+    if len(effective_q) < 2:
+        raise HTTPException(status_code=422, detail="Query must be at least 2 characters")
+
     try:
         # Special case for long numeric codes (potentially Algeria extended sub-positions)
         # Check Algeria nomenclature if query is a long numeric code (8+ digits)
-        if q.isdigit() and len(q) >= 8:
+        if effective_q.isdigit() and len(effective_q) >= 8:
             dza_nomenclature = load_algeria_nomenclature()
-            if dza_nomenclature and q in dza_nomenclature:
-                # Found exact match in Algeria nomenclature
-                logger.info(f"Found {q} in Algeria nomenclature_map")
+            if dza_nomenclature and effective_q in dza_nomenclature:
+                logger.info(f"Found {effective_q} in Algeria nomenclature_map")
+                chapter = effective_q[:2]
+                chapter_name = CHAPTER_NAMES.get(language, CHAPTER_NAMES.get("fr", {})).get(
+                    chapter, ""
+                )
                 return {
-                    "query": q,
+                    "query": effective_q,
+                    "count": 1,
                     "results": [
                         {
-                            "code": q,
-                            "description": dza_nomenclature[q],
+                            "code": effective_q,
+                            "description": dza_nomenclature[effective_q],
                             "country": "DZA",
                             "duty_rate_pct": 0.0,
                             "unit": "",
-                            "chapter": q[:2],
+                            "chapter": chapter,
+                            "chapter_name": chapter_name,
+                            "full_position": (
+                                f"{chapter} - {chapter_name}" if chapter_name else chapter
+                            ),
+                            "from_authentic": True,
                             "match_type": "exact_nomenclature",
                             "source": "algeria_nomenclature_map",
                         }
@@ -161,30 +220,80 @@ async def smart_search_hs6(
                 }
 
         engine = get_search_engine()
-        # The new engine provides a unified search method
-        raw_results = engine.search(query=q, country=country_code, limit=limit)
+        raw_results = engine.search(query=effective_q, country=country_code, limit=limit)
 
-        # Map results to the format expected by the frontend
-        results = []
+        # Separate 6-digit tariff lines from sub-positions (longer codes).
+        # Sub-positions found in the main search are kept in embedded_sub and
+        # used as the primary source; get_sub_positions() is called only when
+        # the main search returned no sub-positions for a given hs6 code.
+        top_level = []
+        embedded_sub: dict = {}
         for r in raw_results:
-            results.append(
-                {
-                    "code": str(r.get("hs_code", "")),
-                    "description": r.get("description", ""),
-                    "country": r.get("country", ""),
-                    "duty_rate_pct": r.get("duty_rate_pct"),
-                    "unit": r.get("unit", ""),
-                    "chapter": str(r.get("hs_code", ""))[:2],
-                    "match_type": "hybrid",
-                }
-            )
+            code = str(r.get("hs_code", ""))
+            if len(code) <= 6:
+                top_level.append(r)
+            else:
+                hs6 = code[:6]
+                embedded_sub.setdefault(hs6, []).append(r)
+
+        results = []
+        for r in top_level:
+            code = str(r.get("hs_code", ""))
+            chapter = code[:2]
+            chapter_name = CHAPTER_NAMES.get(language, CHAPTER_NAMES.get("fr", {})).get(chapter, "")
+            full_position = f"{chapter} - {chapter_name}" if chapter_name else chapter
+            entry = {
+                "code": code,
+                "description": r.get("description", ""),
+                "country": r.get("country", ""),
+                "duty_rate_pct": r.get("duty_rate_pct"),
+                "unit": r.get("unit", ""),
+                "chapter": chapter,
+                "chapter_name": chapter_name,
+                "full_position": full_position,
+                "from_authentic": True,
+                "match_type": "hybrid",
+            }
+            if include_sub_positions:
+                # Use sub-positions already fetched in the main search; fall
+                # back to a dedicated get_sub_positions() lookup only when none
+                # were embedded, avoiding a redundant second engine call.
+                embedded = embedded_sub.get(code, [])
+                if embedded:
+                    raw_subs = [
+                        {
+                            "code": str(s.get("hs_code", "")),
+                            "digits": len(str(s.get("hs_code", ""))),
+                            "dd_rate": s.get("duty_rate_pct", 0.0),
+                            "description_fr": s.get("description_fr") or s.get("description", ""),
+                            "description_en": s.get("description_en") or s.get("description", ""),
+                            "source": "search_engine",
+                        }
+                        for s in embedded
+                    ]
+                else:
+                    raw_subs = get_sub_positions(country_code or r.get("country", ""), code)
+                entry["sub_positions"] = [
+                    {
+                        "code": sp.get("code", ""),
+                        "digits": sp.get("digits", 0),
+                        "dd": sp.get("dd_rate", 0.0),
+                        "description": sp.get("description_fr") or sp.get("description_en", ""),
+                        "source": sp.get("source", ""),
+                    }
+                    for sp in raw_subs
+                ]
+            results.append(entry)
 
         return {
-            "query": q,
+            "query": effective_q,
+            "count": len(results),
             "results": results,
             "total": len(results),
             "source": "optimized_tariff_engine",
         }
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Smart search error: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail="Internal server error")
