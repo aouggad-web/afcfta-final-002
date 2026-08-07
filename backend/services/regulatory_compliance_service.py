@@ -33,6 +33,7 @@ _MEASURE_REQUIRED_FIELDS = {
     "authority",
     "platform",
     "exemptions",
+    "fees",
     "fees_status",
     "source_id",
     "legal_reference",
@@ -168,8 +169,12 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
             raw_measure,
             _MEASURE_REQUIRED_FIELDS,
             f"Regulatory measure {raw_measure.get('record_id') or '<unknown>'}",
+            allow_empty={"fees"},
         )
-        if raw_measure["fees"] is None and raw_measure["fees_status"] != "NOT_AVAILABLE":
+        if (
+            _is_empty_value(raw_measure.get("fees"))
+            and raw_measure["fees_status"] != "NOT_AVAILABLE"
+        ):
             raise ValueError(
                 f"Regulatory measure {raw_measure['record_id']} omits fees without NOT_AVAILABLE status"
             )
