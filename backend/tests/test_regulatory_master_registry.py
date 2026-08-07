@@ -3,10 +3,12 @@
 import json
 from pathlib import Path
 
+import pytest
 from services.regulatory_master_registry_service import (
     AFRICAN_COUNTRY_ISO3,
     CANONICAL_STATUSES,
     DIMENSION_STATUS_FIELDS,
+    _validate_country_entry,
     get_all_regulatory_countries,
     get_published_regulatory_countries,
     get_regulatory_country_entry,
@@ -88,3 +90,50 @@ def test_registry_service_returns_defensive_copies():
 
 def test_unknown_country_remains_unavailable():
     assert get_regulatory_country_entry("FRA") is None
+
+
+def _valid_civ_entry():
+    entry = get_regulatory_country_entry("CIV")
+    assert entry is not None
+    return entry
+
+
+def test_entry_with_unexpected_extra_field_is_rejected():
+    entry = _valid_civ_entry()
+    entry["rate"] = 0.18
+    with pytest.raises(ValueError, match="unexpected fields"):
+        _validate_country_entry("CIV", entry)
+
+
+def test_entry_referencing_another_countrys_dataset_is_rejected():
+    civ_entry = _valid_civ_entry()
+    cod_entry = get_regulatory_country_entry("COD")
+    assert cod_entry is not None
+    civ_entry["dataset_path"] = cod_entry["dataset_path"]
+    with pytest.raises(ValueError, match="belongs to COD"):
+        _validate_country_entry("CIV", civ_entry)
+
+
+def test_documented_dimension_under_not_available_coverage_is_rejected():
+    entry = {
+        "regulatory_coverage_status": "NOT_AVAILABLE",
+        "mandate_status": "NOT_AVAILABLE",
+        "fees_status": "DOCUMENTED",
+        "products_hs_status": "NOT_AVAILABLE",
+        "exemptions_status": "NOT_AVAILABLE",
+        "transport_status": "NOT_AVAILABLE",
+        "platform_status": "NOT_AVAILABLE",
+        "delivered_document_status": "NOT_AVAILABLE",
+        "dataset_path": None,
+        "source_paths": [],
+        "notes": [],
+    }
+    with pytest.raises(ValueError, match="fees_status"):
+        _validate_country_entry("KEN", entry)
+
+
+def test_notes_as_string_instead_of_list_is_rejected():
+    entry = _valid_civ_entry()
+    entry["notes"] = "not a list"
+    with pytest.raises(ValueError, match="notes must be a list"):
+        _validate_country_entry("CIV", entry)

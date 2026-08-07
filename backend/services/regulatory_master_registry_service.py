@@ -87,11 +87,30 @@ DIMENSION_STATUS_FIELDS = (
 )
 
 
+def _check_path_country_field(country: str, label: str, relative_path: str) -> None:
+    """Reject a source-bound JSON file whose own 'country' field mismatches the registry key."""
+
+    if not relative_path.endswith(".json"):
+        return
+    try:
+        payload = json.loads((REPO_ROOT / relative_path).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise ValueError(f"{country} {label} {relative_path} is not readable JSON") from exc
+    declared_country = payload.get("country") if isinstance(payload, dict) else None
+    if declared_country is not None and declared_country != country:
+        raise ValueError(
+            f"{country} {label} {relative_path} belongs to {declared_country}, not {country}"
+        )
+
+
 def _validate_country_entry(country: str, entry: Dict[str, Any]) -> None:
     required = set(DIMENSION_STATUS_FIELDS) | {"dataset_path", "source_paths", "notes"}
     missing = sorted(required - set(entry))
     if missing:
         raise ValueError(f"{country} registry entry missing fields: {', '.join(missing)}")
+    extra = sorted(set(entry) - required)
+    if extra:
+        raise ValueError(f"{country} registry entry has unexpected fields: {', '.join(extra)}")
 
     for field in DIMENSION_STATUS_FIELDS:
         if entry[field] not in CANONICAL_STATUSES:
@@ -113,15 +132,25 @@ def _validate_country_entry(country: str, entry: Dict[str, Any]) -> None:
     if coverage == "NOT_AVAILABLE":
         if dataset_path is not None or source_paths:
             raise ValueError(f"{country} publishes paths while coverage is NOT_AVAILABLE")
+        undocumented = [
+            field for field in DIMENSION_STATUS_FIELDS if entry[field] != "NOT_AVAILABLE"
+        ]
+        if undocumented:
+            raise ValueError(
+                f"{country} claims {', '.join(undocumented)} while overall coverage is "
+                "NOT_AVAILABLE"
+            )
         return
 
     if not dataset_path or not source_paths:
         raise ValueError(f"{country} claims coverage without dataset and source paths")
     if not (REPO_ROOT / dataset_path).is_file():
         raise ValueError(f"{country} dataset path does not exist: {dataset_path}")
+    _check_path_country_field(country, "dataset_path", dataset_path)
     for source_path in source_paths:
         if not (REPO_ROOT / source_path).is_file():
             raise ValueError(f"{country} source path does not exist: {source_path}")
+        _check_path_country_field(country, "source_path", source_path)
 
 
 def _require_non_empty_string(registry: Dict[str, Any], field: str) -> None:
