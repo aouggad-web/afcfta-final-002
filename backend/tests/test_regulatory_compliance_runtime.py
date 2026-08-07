@@ -116,3 +116,44 @@ def test_actor_with_bare_active_status_is_rejected(monkeypatch):
     monkeypatch.setattr(service, "_read_json", lambda _path: altered)
     with pytest.raises(ValueError, match="bare ACTIVE"):
         service.get_country_regulatory_compliance("COD")
+
+
+def test_measure_without_fee_status_is_rejected(monkeypatch):
+    from services import regulatory_compliance_service as service
+
+    source = service._read_json("data/drc/regulatory_measures.json")
+    altered = {
+        **source,
+        "regulatory_measures": [dict(measure) for measure in source["regulatory_measures"]],
+    }
+    altered["regulatory_measures"][0].pop("fees_status")
+
+    monkeypatch.setattr(service, "_read_json", lambda _path: altered)
+    with pytest.raises(ValueError, match="missing required fields: fees_status"):
+        service.get_country_regulatory_compliance("COD")
+
+
+def test_measure_without_fees_field_is_rejected(monkeypatch):
+    from services import regulatory_compliance_service as service
+
+    source = service._read_json("data/drc/regulatory_measures.json")
+    altered = {
+        **source,
+        "regulatory_measures": [dict(measure) for measure in source["regulatory_measures"]],
+    }
+    altered["regulatory_measures"][0].pop("fees")
+
+    monkeypatch.setattr(service, "_read_json", lambda _path: altered)
+    with pytest.raises(ValueError, match="missing required fields: fees"):
+        service.get_country_regulatory_compliance("COD")
+
+
+def test_empty_regulatory_measure_registry_is_rejected(monkeypatch):
+    from services import regulatory_compliance_service as service
+
+    source = service._read_json("data/drc/regulatory_measures.json")
+    altered = {**source, "regulatory_measures": []}
+
+    monkeypatch.setattr(service, "_read_json", lambda _path: altered)
+    with pytest.raises(ValueError, match="has no regulatory measures"):
+        service.get_country_regulatory_compliance("COD")

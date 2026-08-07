@@ -248,7 +248,7 @@ class TestExchangeRateService:
         mock_backup.fetch_rates.return_value = {"NGN": 1500.0}
         mock_backup.name = "mock_backup"
 
-        svc._providers = [mock_primary, mock_backup]
+        svc._primary_providers = [mock_primary, mock_backup]
         bundle = svc.update_rates("USD")
 
         assert bundle is not None
@@ -258,7 +258,7 @@ class TestExchangeRateService:
     def test_all_providers_fail_returns_none(self):
         """When all providers fail, update_rates() returns None."""
         svc = ExchangeRateService()
-        for provider in svc._providers:
+        for provider in svc._primary_providers:
             provider.fetch_rates = MagicMock(return_value=None)
 
         bundle = svc.update_rates("USD")
