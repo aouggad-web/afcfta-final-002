@@ -150,8 +150,8 @@ def get_sub_positions(country: str, hs6: str) -> list:
                         "code": code,
                         "digits": len(code),
                         "dd_rate": r.get("duty_rate_pct", 0.0),
-                        "description_fr": r.get("description", ""),
-                        "description_en": r.get("description", ""),
+                        "description_fr": r.get("description_fr") or r.get("description", ""),
+                        "description_en": r.get("description_en") or r.get("description", ""),
                         "source": "search_engine",
                     }
                 )
@@ -222,7 +222,10 @@ async def smart_search_hs6(
         engine = get_search_engine()
         raw_results = engine.search(query=effective_q, country=country_code, limit=limit)
 
-        # Separate 6-digit tariff lines from sub-positions (longer codes)
+        # Separate 6-digit tariff lines from sub-positions (longer codes).
+        # Sub-positions found in the main search are kept in embedded_sub and
+        # used as the primary source; get_sub_positions() is called only when
+        # the main search returned no sub-positions for a given hs6 code.
         top_level = []
         embedded_sub: dict = {}
         for r in raw_results:
@@ -252,17 +255,24 @@ async def smart_search_hs6(
                 "match_type": "hybrid",
             }
             if include_sub_positions:
-                raw_subs = get_sub_positions(country_code or r.get("country", ""), code) or [
-                    {
-                        "code": s.get("hs_code", ""),
-                        "digits": len(str(s.get("hs_code", ""))),
-                        "dd_rate": s.get("duty_rate_pct", 0.0),
-                        "description_fr": s.get("description", ""),
-                        "description_en": s.get("description", ""),
-                        "source": "search_engine",
-                    }
-                    for s in embedded_sub.get(code, [])
-                ]
+                # Use sub-positions already fetched in the main search; fall
+                # back to a dedicated get_sub_positions() lookup only when none
+                # were embedded, avoiding a redundant second engine call.
+                embedded = embedded_sub.get(code, [])
+                if embedded:
+                    raw_subs = [
+                        {
+                            "code": str(s.get("hs_code", "")),
+                            "digits": len(str(s.get("hs_code", ""))),
+                            "dd_rate": s.get("duty_rate_pct", 0.0),
+                            "description_fr": s.get("description_fr") or s.get("description", ""),
+                            "description_en": s.get("description_en") or s.get("description", ""),
+                            "source": "search_engine",
+                        }
+                        for s in embedded
+                    ]
+                else:
+                    raw_subs = get_sub_positions(country_code or r.get("country", ""), code)
                 entry["sub_positions"] = [
                     {
                         "code": sp.get("code", ""),
