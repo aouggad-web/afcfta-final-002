@@ -97,9 +97,19 @@ def _validate_country_entry(country: str, entry: Dict[str, Any]) -> None:
         if entry[field] not in CANONICAL_STATUSES:
             raise ValueError(f"{country}.{field} uses non-canonical status {entry[field]}")
 
-    coverage = entry["regulatory_coverage_status"]
     dataset_path = entry["dataset_path"]
     source_paths = entry["source_paths"]
+    notes = entry["notes"]
+    if dataset_path is not None and not isinstance(dataset_path, str):
+        raise ValueError(f"{country}.dataset_path must be a string or null")
+    if not isinstance(source_paths, list) or not all(
+        isinstance(item, str) for item in source_paths
+    ):
+        raise ValueError(f"{country}.source_paths must be a list of strings")
+    if not isinstance(notes, list) or not all(isinstance(item, str) for item in notes):
+        raise ValueError(f"{country}.notes must be a list of strings")
+
+    coverage = entry["regulatory_coverage_status"]
     if coverage == "NOT_AVAILABLE":
         if dataset_path is not None or source_paths:
             raise ValueError(f"{country} publishes paths while coverage is NOT_AVAILABLE")
@@ -114,12 +124,24 @@ def _validate_country_entry(country: str, entry: Dict[str, Any]) -> None:
             raise ValueError(f"{country} source path does not exist: {source_path}")
 
 
+def _require_non_empty_string(registry: Dict[str, Any], field: str) -> None:
+    value = registry.get(field)
+    if not isinstance(value, str) or not value:
+        raise ValueError(f"Master registry {field} must be a non-empty string")
+
+
 @lru_cache(maxsize=1)
 def _load_registry() -> Dict[str, Any]:
     registry = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
-    countries = registry.get("countries", {})
+    if registry.get("schema_version") != "1.0":
+        raise ValueError("Master registry schema_version must be '1.0'")
+    _require_non_empty_string(registry, "as_of")
+    _require_non_empty_string(registry, "disclaimer")
     if registry.get("country_count") != 54:
         raise ValueError("Master registry country_count must remain 54")
+    countries = registry.get("countries")
+    if not isinstance(countries, dict):
+        raise ValueError("Master registry countries must be an object")
     if set(countries) != set(AFRICAN_COUNTRY_ISO3):
         raise ValueError("Master registry must contain exactly the 54 African ISO3 codes")
     for country, entry in countries.items():
