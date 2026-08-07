@@ -247,6 +247,8 @@ def test_backend_missing_file_falls_back_to_static():
 
 
 def test_multiplier_scales_modeled_rate():
+    saved = dict(bulk._FREIGHT_OVERRIDES)
+    bulk._FREIGHT_OVERRIDES.clear()
     base = bulk.model_bulk_freight_usd_per_t(4000, "capesize")
     bulk._FREIGHT_OVERRIDES["capesize"] = {"multiplier": 1.5, "as_of": "2026-07-14"}
     try:
@@ -254,7 +256,8 @@ def test_multiplier_scales_modeled_rate():
         assert scaled > base
         assert scaled == pytest.approx(base * 1.5, rel=0.02)
     finally:
-        del bulk._FREIGHT_OVERRIDES["capesize"]
+        bulk._FREIGHT_OVERRIDES.clear()
+        bulk._FREIGHT_OVERRIDES.update(saved)
 
 
 def test_backend_neutral_live_factor_still_dates_tariff():

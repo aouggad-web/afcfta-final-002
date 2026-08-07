@@ -83,10 +83,15 @@ def test_general_cargo_stays_out_of_the_bulk_table():
 
 
 def test_model_within_30pct_of_every_calibration_benchmark():
-    for b in bulk._CALIBRATION_BENCHMARKS:
-        modeled = bulk.model_bulk_freight_usd_per_t(b["distance_nm"], b["vessel_class"])
-        deviation = abs(modeled - b["usd_per_t"]) / b["usd_per_t"]
-        assert deviation <= 0.30, f"{b['name']}: modèle {modeled} vs benchmark {b['usd_per_t']}"
+    saved = dict(bulk._FREIGHT_OVERRIDES)
+    bulk._FREIGHT_OVERRIDES.clear()
+    try:
+        for b in bulk._CALIBRATION_BENCHMARKS:
+            modeled = bulk.model_bulk_freight_usd_per_t(b["distance_nm"], b["vessel_class"])
+            deviation = abs(modeled - b["usd_per_t"]) / b["usd_per_t"]
+            assert deviation <= 0.30, f"{b['name']}: modèle {modeled} vs benchmark {b['usd_per_t']}"
+    finally:
+        bulk._FREIGHT_OVERRIDES.update(saved)
 
 
 def test_every_calibration_benchmark_is_sourced_and_dated():
