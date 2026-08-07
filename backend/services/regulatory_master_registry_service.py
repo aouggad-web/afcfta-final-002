@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+RESOLVED_REPO_ROOT = REPO_ROOT.resolve()
 REGISTRY_PATH = REPO_ROOT / "data" / "regulatory-compliance" / "country_registry.json"
 
 AFRICAN_COUNTRY_ISO3 = (
@@ -87,19 +88,30 @@ DIMENSION_STATUS_FIELDS = (
 )
 
 
-def _check_path_country_field(country: str, label: str, relative_path: str) -> None:
+def _resolve_repo_path(country: str, label: str, relative_path: str) -> Path:
+    """Resolve a registry-declared path, rejecting absolute paths and traversal outside the repo."""
+
+    resolved = (REPO_ROOT / relative_path).resolve()
+    try:
+        resolved.relative_to(RESOLVED_REPO_ROOT)
+    except ValueError as exc:
+        raise ValueError(f"{country} {label} resolves outside repository: {relative_path}") from exc
+    return resolved
+
+
+def _check_path_country_field(country: str, label: str, resolved_path: Path) -> None:
     """Reject a source-bound JSON file whose own 'country' field mismatches the registry key."""
 
-    if not relative_path.endswith(".json"):
+    if resolved_path.suffix != ".json":
         return
     try:
-        payload = json.loads((REPO_ROOT / relative_path).read_text(encoding="utf-8"))
+        payload = json.loads(resolved_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        raise ValueError(f"{country} {label} {relative_path} is not readable JSON") from exc
+        raise ValueError(f"{country} {label} {resolved_path} is not readable JSON") from exc
     declared_country = payload.get("country") if isinstance(payload, dict) else None
     if declared_country is not None and declared_country != country:
         raise ValueError(
-            f"{country} {label} {relative_path} belongs to {declared_country}, not {country}"
+            f"{country} {label} {resolved_path} belongs to {declared_country}, not {country}"
         )
 
 
@@ -144,13 +156,15 @@ def _validate_country_entry(country: str, entry: Dict[str, Any]) -> None:
 
     if not dataset_path or not source_paths:
         raise ValueError(f"{country} claims coverage without dataset and source paths")
-    if not (REPO_ROOT / dataset_path).is_file():
+    resolved_dataset_path = _resolve_repo_path(country, "dataset_path", dataset_path)
+    if not resolved_dataset_path.is_file():
         raise ValueError(f"{country} dataset path does not exist: {dataset_path}")
-    _check_path_country_field(country, "dataset_path", dataset_path)
+    _check_path_country_field(country, "dataset_path", resolved_dataset_path)
     for source_path in source_paths:
-        if not (REPO_ROOT / source_path).is_file():
+        resolved_source_path = _resolve_repo_path(country, "source_path", source_path)
+        if not resolved_source_path.is_file():
             raise ValueError(f"{country} source path does not exist: {source_path}")
-        _check_path_country_field(country, "source_path", source_path)
+        _check_path_country_field(country, "source_path", resolved_source_path)
 
 
 def _require_non_empty_string(registry: Dict[str, Any], field: str) -> None:

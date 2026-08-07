@@ -66,6 +66,13 @@ def test_schema_status_enum_matches_runtime_contract():
     assert set(schema["$defs"]["status"]["enum"]) == CANONICAL_STATUSES
 
 
+def test_schema_country_enum_matches_runtime_contract():
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    property_names = schema["properties"]["countries"]["propertyNames"]["enum"]
+    assert set(property_names) == set(AFRICAN_COUNTRY_ISO3)
+    assert len(property_names) == len(set(property_names)) == 54
+
+
 def test_registry_does_not_publish_numeric_rates_or_fees():
     forbidden = {"rate", "fee", "fees", "authorized_fees"}
 
@@ -136,4 +143,18 @@ def test_notes_as_string_instead_of_list_is_rejected():
     entry = _valid_civ_entry()
     entry["notes"] = "not a list"
     with pytest.raises(ValueError, match="notes must be a list"):
+        _validate_country_entry("CIV", entry)
+
+
+def test_dataset_path_traversal_outside_repo_is_rejected():
+    entry = _valid_civ_entry()
+    entry["dataset_path"] = "../outside-repo-secret.json"
+    with pytest.raises(ValueError, match="resolves outside repository"):
+        _validate_country_entry("CIV", entry)
+
+
+def test_absolute_dataset_path_is_rejected():
+    entry = _valid_civ_entry()
+    entry["dataset_path"] = "/etc/passwd"
+    with pytest.raises(ValueError, match="resolves outside repository"):
         _validate_country_entry("CIV", entry)
