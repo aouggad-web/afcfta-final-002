@@ -14,6 +14,13 @@ COUNTRY_REGULATORY_PATHS = {
     "COD": "data/drc/regulatory_measures.json",
 }
 
+_DATASET_REQUIRED_FIELDS = {
+    "country",
+    "as_of",
+    "measure_type",
+    "regulatory_measures",
+}
+
 _MEASURE_REQUIRED_FIELDS = {
     "record_id",
     "measure_name",
@@ -24,6 +31,10 @@ _MEASURE_REQUIRED_FIELDS = {
     "conditions",
     "documents",
     "authority",
+    "platform",
+    "exemptions",
+    "fees",
+    "fees_status",
     "source_id",
     "legal_reference",
     "verification_status",
@@ -134,21 +145,39 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
         return None
 
     dataset = _read_json(source_record_path)
+    _require_non_empty(
+        dataset,
+        _DATASET_REQUIRED_FIELDS,
+        f"Regulatory dataset {country}",
+        allow_empty={"regulatory_measures"},
+    )
     if dataset.get("country") != country:
         raise ValueError(
             f"Regulatory dataset country mismatch: expected {country}, got {dataset.get('country')}"
         )
+    if not isinstance(dataset["regulatory_measures"], list):
+        raise ValueError(f"Regulatory dataset {country} has a non-list regulatory_measures field")
+    if not dataset["regulatory_measures"]:
+        raise ValueError(f"Regulatory dataset {country} has no regulatory measures")
 
     measures: List[Dict[str, Any]] = []
     mandated_actors: List[Dict[str, Any]] = []
-    for raw_measure in dataset.get("regulatory_measures", []):
+    for raw_measure in dataset["regulatory_measures"]:
         if not isinstance(raw_measure, dict):
             raise ValueError(f"Regulatory measure for {country} is not an object")
         _require_non_empty(
             raw_measure,
             _MEASURE_REQUIRED_FIELDS,
             f"Regulatory measure {raw_measure.get('record_id') or '<unknown>'}",
+            allow_empty={"fees"},
         )
+        if (
+            _is_empty_value(raw_measure.get("fees"))
+            and raw_measure["fees_status"] != "NOT_AVAILABLE"
+        ):
+            raise ValueError(
+                f"Regulatory measure {raw_measure['record_id']} omits fees without NOT_AVAILABLE status"
+            )
         if (
             raw_measure.get("fees") is not None
             and raw_measure.get("fees_status") == "NOT_AVAILABLE"
