@@ -312,7 +312,7 @@
       "mandate_status": "PARTIAL",
       "fees_status": "NOT_AVAILABLE",
       "products_hs_status": "NOT_AVAILABLE",
-      "exemptions_status": "PARTIAL",
+      "exemptions_status": "NOT_AVAILABLE",
       "transport_status": "PARTIAL",
       "platform_status": "PARTIAL",
       "delivered_document_status": "PARTIAL",
