@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "country": "CMR",
-  "as_of": "2026-07-25",
+  "as_of": "2026-08-08",
   "sources": [
     {
       "source_id": "CMR-DGI-CGI-2021",
@@ -62,17 +62,17 @@
     },
     {
       "source_id": "CMR-PVI-INSTRUCTION-2016",
-      "title": "Instruction Ministérielle N°000625/MINFI/CAB et Circulaire N°006024/MINFI/CAB du 30 novembre 2016",
-      "institution": "Ministère des Finances (MINFI) — République du Cameroun",
+      "title": "Guide de l'Importateur SGS Cameroun (novembre 2021), citant l'Instruction Ministérielle N°000625/MINFI/CAB et la Circulaire N°006024/MINFI/CAB du 30 novembre 2016 (source secondaire, textes MINFI non lus)",
+      "institution": "SGS Cameroun S.A. (citant le Ministère des Finances — MINFI — République du Cameroun)",
       "legal_date": "2016-11-30",
       "accessed_at": "2026-08-08",
       "url": "https://www.sgs.com/fr-cm/-/media/SGSCorp/Documents/Corporate/Technical-Documents/Technical-Guidelines-and-Policies/Guide-des-Importateurs-Cameroun-FR.cdn.fr-cm.pdf",
       "local_file": null,
       "sha256": null,
-      "coverage": "PVI — mandat SGS, seuil FOB, exemptions",
+      "coverage": "PVI (mandat SGS, seuil FOB, exemptions) et CIVIC (identification des véhicules importés, mandat SGS)",
       "status": "source_pending_collection",
       "verification_status": "PARTIAL",
-      "notes": "Référence légale citée dans le guide de l'importateur SGS (novembre 2021) ; texte primaire MINFI non archivé ce cycle."
+      "notes": "Référence légale citée dans le guide de l'importateur SGS (novembre 2021), pas le texte primaire MINFI lui-même ; texte primaire MINFI non archivé ce cycle. Ce guide est aussi la source de la mesure CIVIC."
     },
     {
       "source_id": "CMR-CNCC-BESC-PORTAL",
