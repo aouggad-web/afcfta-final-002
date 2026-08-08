@@ -33,6 +33,7 @@ import RegulatoryComplianceView, {
   hasActiveMandatedProvider,
   hasUnpricedActiveProviderFees,
 } from '../regulatory/RegulatoryComplianceView';
+import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -1575,12 +1576,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             </Card>
           )}
 
-          {/* ── BLOC SÉPARÉ — Frais des prestataires mandatés (INFORMATIF, HORS TOTAL) ──
-              Nature distincte des droits et taxes : coût opérationnel privé, jamais
-              additionné au coût douanier ci-dessus. Alimenté par le registre conforme
-              fail-closed (result.regulatory_compliance). Affiché UNIQUEMENT pour les
-              pays utilisant réellement un prestataire mandaté actif (jamais pour une
-              formalité opérée directement par l'administration ni un mandat expiré). */}
+          {/* Composition du coût réglementaire : droits & taxes publics + frais de
+              formalité et de prestataire (lignes séparées). Les frais documentés
+              chiffrés entrent dans le coût total ; les frais existants non chiffrés
+              sont signalés « montant à confirmer », jamais valués à zéro. */}
+          <RegulatoryCostBreakdown result={result} language={language} />
+
+          {/* ── BLOC DÉTAILLÉ — Formalités & prestataires mandatés (registre conforme) ──
+              Détail sourcé et daté (mission, mandat, preuves). Affiché UNIQUEMENT
+              pour les pays utilisant réellement un prestataire mandaté actif (jamais
+              pour une formalité opérée directement par l'administration ni un mandat
+              expiré). Distinct des droits et taxes. */}
           {hasActiveMandatedProvider(result.regulatory_compliance) && (
             <Card className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 border border-amber-500/30">
               <CardHeader className="pb-3">
@@ -1591,13 +1597,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <div>
                     <CardTitle className="text-lg text-white">
                       {language === 'fr'
-                        ? 'Frais des prestataires mandatés & formalités'
-                        : 'Mandated-provider fees & formalities'}
+                        ? 'Détail des formalités & prestataires mandatés'
+                        : 'Formalities & mandated providers — detail'}
                     </CardTitle>
                     <CardDescription className="text-slate-400">
                       {language === 'fr'
-                        ? `${getCountryName(result.destination_country)} — coût opérationnel distinct, hors total douanier`
-                        : `${getCountryName(result.destination_country)} — separate operational cost, outside customs total`}
+                        ? `${getCountryName(result.destination_country)} — mission, mandat, preuves datées et sources officielles`
+                        : `${getCountryName(result.destination_country)} — mission, mandate, dated evidence and official sources`}
                     </CardDescription>
                   </div>
                 </div>
@@ -1607,8 +1613,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
                   <p className="text-sm text-amber-200/90">
                     {language === 'fr'
-                      ? "Ces frais relèvent de prestataires officiellement mandatés (contrôle de conformité, guichet unique…). Ils sont d'une nature différente des droits et taxes exigibles et ne sont donc JAMAIS ajoutés au coût total douanier. Un montant chiffré n'est affiché que lorsqu'il est prouvé et sourcé ; sinon il reste NOT_AVAILABLE (jamais fabriqué)."
-                      : 'These fees are charged by officially mandated providers (conformity control, single window…). They are of a different nature from payable duties and taxes and are therefore NEVER added to the customs total. A figure is shown only when proven and sourced; otherwise it stays NOT_AVAILABLE (never fabricated).'}
+                      ? "Les frais du prestataire mandaté sont séparés des droits et taxes publics (voir « Composition du coût réglementaire » ci-dessus). Un montant n'est chiffré et intégré que lorsqu'il est prouvé et sourcé ; sinon il reste à confirmer (jamais fabriqué, jamais valué à zéro)."
+                      : 'Mandated-provider fees are separate from public duties and taxes (see “Regulatory cost composition” above). An amount is quantified and included only when proven and sourced; otherwise it stays to be confirmed (never fabricated, never valued at zero).'}
                   </p>
                 </div>
                 <RegulatoryComplianceView

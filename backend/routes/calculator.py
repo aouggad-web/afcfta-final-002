@@ -20,12 +20,35 @@ from fastapi import APIRouter, HTTPException
 from models import TariffCalculationRequest, TariffCalculationResponse
 from services.crawled_data_service import crawled_service
 from services.regulatory_compliance_service import get_country_regulatory_compliance
+from services.regulatory_fee_service import build_regulatory_cost
 from services.tariff_data_service import tariff_service
 from services.tariff_enrichment_service import get_country_enrichment
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Calculator"])
+
+
+def _merge_regulatory_cost(
+    cost_import: Optional[Dict[str, Any]], cost_export: Optional[Dict[str, Any]]
+) -> Optional[Dict[str, Any]]:
+    """Fusionne les ventilations de frais import et export en un seul bloc.
+
+    Concatène les lignes (chacune conserve son ``side``) et re-agrège les drapeaux
+    de complétude via le sommateur du service, pour ne jamais additionner de
+    devises hétérogènes. Renvoie None si les deux côtés sont vides.
+    """
+    from services.regulatory_fee_service import _summarise
+
+    sides = [c for c in (cost_import, cost_export) if c]
+    if not sides:
+        return None
+    if len(sides) == 1:
+        return sides[0]
+    merged_items: List[Dict[str, Any]] = []
+    for side in sides:
+        merged_items.extend(side.get("line_items", []))
+    return _summarise(merged_items)
 
 
 def _is_vat_tax(tax: Dict[str, Any]) -> bool:
@@ -196,7 +219,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
 
     # Use ISO3 for calculations
     dest_iso3 = dest_country["iso3"]
-    # origin_iso3 available if needed for bilateral calculations
+    origin_iso3 = origin_country["iso3"]
 
     # Clean and normalize HS code
     hs_code_clean = request.hs_code.replace(".", "").replace(" ", "")
@@ -923,15 +946,30 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # au coût douanier. Fail-closed : toute erreur de données ou pays non couvert
     # laisse le champ à None sans jamais interrompre le calcul tarifaire.
     regulatory_compliance = None
+    regulatory_cost = None
     try:
         regulatory_compliance = get_country_regulatory_compliance(dest_iso3)
+        # Ventilation des frais de formalité/prestataire pour l'import (pays de
+        # destination) ET l'export (pays d'origine), fusionnée. L'assiette FOB par
+        # défaut est la valeur déclarée. Ne produit des lignes que pour les pays à
+        # prestataire mandaté actif ; sinon None (pas de rubrique vide).
+        cost_import = build_regulatory_cost(
+            regulatory_compliance, fob_value=request.value, side="import"
+        )
+        origin_compliance = get_country_regulatory_compliance(origin_iso3)
+        cost_export = build_regulatory_cost(
+            origin_compliance, fob_value=request.value, side="export"
+        )
+        regulatory_cost = _merge_regulatory_cost(cost_import, cost_export)
     except Exception as exc:  # pragma: no cover - garde-fou fail-closed
         logging.warning(
-            "Regulatory-compliance lookup failed for %s (calcul tarifaire non affecté): %s",
+            "Regulatory-compliance/fee lookup failed for %s->%s (calcul tarifaire non affecté): %s",
+            origin_iso3,
             dest_iso3,
             exc,
         )
         regulatory_compliance = None
+        regulatory_cost = None
 
     result = TariffCalculationResponse(
         origin_country=request.origin_country,
@@ -994,6 +1032,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             collected_admin_formalities if collected_admin_formalities else None
         ),
         regulatory_compliance=regulatory_compliance,
+        regulatory_cost=regulatory_cost,
         country_enrichment=country_enrichment,
         data_source=data_source,
         duty_status=duty_status,
