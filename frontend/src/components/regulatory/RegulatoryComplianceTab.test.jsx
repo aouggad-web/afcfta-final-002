@@ -36,6 +36,7 @@ const CIV_COMPLIANCE = {
       legal_reference: 'Décret n°2023-168 du 22 mars 2023',
       verification_status: 'PARTIAL',
       hs_codes_explicit: [],
+      mandated_actor_status: 'NOT_AVAILABLE',
       mandated_actors: [
         {
           actor_name: 'Webb Fontaine',
@@ -72,6 +73,7 @@ const CIV_COMPLIANCE = {
       legal_reference: 'Décret n°95-820 du 29 septembre 1995',
       verification_status: 'PARTIAL',
       hs_codes_explicit: [],
+      mandated_actor_status: 'NOT_APPLICABLE',
       mandated_actors: [],
     },
   ],
@@ -137,6 +139,25 @@ describe('RegulatoryComplianceTab', () => {
     expect(screen.getByText(/Mandats terminés/)).toBeInTheDocument();
     expect(screen.queryByText('Prestataires mandatés')).not.toBeInTheDocument();
     expect(screen.getByText('Webb Fontaine')).toBeInTheDocument();
+  });
+
+  it('distingue NOT_AVAILABLE (prestataire non documenté) de NOT_APPLICABLE (aucun prestataire, confirmé)', async () => {
+    render(<RegulatoryComplianceTab language="fr" />);
+    await waitFor(() => expect(regulatoryApi.getSupportedCountries).toHaveBeenCalled());
+    await userEvent.click(screen.getByRole('combobox', { name: /choisir un pays/i }));
+    await userEvent.click(await screen.findByText(/Côte d'Ivoire/));
+
+    await screen.findByText('Guichet Unique du Commerce Extérieur (GUCE-CI)');
+    // GUCE (mandated_actor_status NOT_AVAILABLE) : le mandat Webb Fontaine est
+    // terminé, mais l'absence de tout prestataire n'est pas confirmée pour autant.
+    expect(
+      screen.getByText(/prestataire actuellement actif confirmé par une source/)
+    ).toBeInTheDocument();
+    // BSC (mandated_actor_status NOT_APPLICABLE) : source confirmant une
+    // exploitation directe par l'autorité, jamais présumée par défaut.
+    expect(
+      screen.getByText(/administration opère cette formalité directement/)
+    ).toBeInTheDocument();
   });
 
   it('filtre les mesures par mode de transport', async () => {

@@ -55,6 +55,31 @@ _MEASURE_REQUIRED_FIELDS = {
 # actor.
 _MANDATED_ACTOR_STATUSES = {"DOCUMENTED", "NOT_APPLICABLE", "NOT_AVAILABLE"}
 
+# mandate_status values that constitute a confirmed, currently active mandate.
+# A measure only counts as DOCUMENTED when at least one actor is in this set —
+# a TERMINATED actor (mandate confirmed ended) or an UNVERIFIED one (no source
+# confirms it's still active) is retained in mandated_actors as history, but
+# never by itself forces the measure-level status to DOCUMENTED. This lets a
+# measure whose source now confirms direct administration operation report
+# NOT_APPLICABLE/NOT_AVAILABLE while still keeping the historical actor record
+# (e.g. GHA-GSA-EASYPASS, taken back in-house by the GSA from 1 July 2026,
+# retains Bureau Veritas/Intertek as historical entries without contradicting
+# its NOT_APPLICABLE status).
+_ACTIVE_MANDATE_STATUSES = {"CONFIRMED_TIME_LIMITED", "CONFIRMED_UNDATED_END"}
+
+# Diplomatic framing surfaced whenever a country's dataset carries at least one
+# documented mandated actor. Confiding part of the execution of a formality to
+# a mandated provider is presented as a punctual, capacity-support arrangement
+# accompanying the administration's own modernization — never as a comment on
+# that administration's competence, and never implying the delegation is
+# permanent where sources don't say so.
+_MANDATED_ACTOR_DELEGATION_NOTE = (
+    "Le recours à un prestataire mandaté est une mesure d’exécution ponctuelle, "
+    "mise en œuvre en appui à l’administration mandante le temps que celle-ci "
+    "achève ses propres réformes et sa modernisation — l’administration demeure "
+    "seule détentrice de la mission réglementaire et du pouvoir de décision."
+)
+
 _ACTOR_REQUIRED_FIELDS = {
     "actor_name",
     "actor_type",
@@ -249,6 +274,7 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
 
     measures: List[Dict[str, Any]] = []
     mandated_actors: List[Dict[str, Any]] = []
+    has_documented_delegation = False
     for raw_measure in dataset["regulatory_measures"]:
         if not isinstance(raw_measure, dict):
             raise ValueError(f"Regulatory measure for {country} is not an object")
@@ -287,26 +313,45 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
                 f"Regulatory measure {raw_measure['record_id']} has a non-list mandated_actors "
                 f"({type(raw_actors).__name__})"
             )
-        has_actors = bool(raw_actors)
-        if actor_status == "DOCUMENTED" and not has_actors:
-            raise ValueError(
-                f"Regulatory measure {raw_measure['record_id']} mandated_actor_status is "
-                "DOCUMENTED without any mandated_actors"
-            )
-        if actor_status != "DOCUMENTED" and has_actors:
-            raise ValueError(
-                f"Regulatory measure {raw_measure['record_id']} has mandated_actors but "
-                f"mandated_actor_status is {actor_status!r}, not DOCUMENTED"
-            )
 
-        measure = copy.deepcopy(raw_measure)
+        # Normalize (and structurally validate, e.g. rejecting a bare ACTIVE
+        # mandate_status) each actor before the measure-level consistency
+        # check below, so a malformed actor surfaces its own specific error
+        # rather than being masked by the coarser DOCUMENTED/active check.
         normalized_actors = [
             _normalize_actor(actor, raw_measure, source_record_path) for actor in raw_actors
         ]
+        has_confirmed_active_actor = any(
+            actor.get("mandate_status") in _ACTIVE_MANDATE_STATUSES for actor in normalized_actors
+        )
+        if actor_status == "DOCUMENTED" and not has_confirmed_active_actor:
+            raise ValueError(
+                f"Regulatory measure {raw_measure['record_id']} mandated_actor_status is "
+                "DOCUMENTED without any confirmed-active mandated_actors"
+            )
+        if actor_status != "DOCUMENTED" and has_confirmed_active_actor:
+            raise ValueError(
+                f"Regulatory measure {raw_measure['record_id']} has a confirmed-active mandated "
+                f"actor but mandated_actor_status is {actor_status!r}, not DOCUMENTED"
+            )
+
+        if actor_status == "DOCUMENTED":
+            has_documented_delegation = True
+
+        measure = copy.deepcopy(raw_measure)
         measure["mandated_actors"] = normalized_actors
         measure["source_record_path"] = source_record_path
         measures.append(measure)
         mandated_actors.extend(normalized_actors)
+
+    disclaimer = (
+        "Simulation informative — non opposable à l’administration douanière. "
+        "Un prestataire privé est présenté uniquement comme acteur d’exécution dans la limite "
+        "d’un mandat documenté. Les frais, seuils, exemptions et portées SH non prouvés restent "
+        "NOT_AVAILABLE."
+    )
+    if has_documented_delegation:
+        disclaimer += " " + _MANDATED_ACTOR_DELEGATION_NOTE
 
     return {
         "country_iso3": country,
@@ -318,10 +363,5 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
         "mandated_actors": mandated_actors,
         "source_record_path": source_record_path,
         "notes": dataset.get("notes"),
-        "disclaimer": (
-            "Simulation informative — non opposable à l’administration douanière. "
-            "Un prestataire privé est présenté uniquement comme acteur d’exécution dans la limite "
-            "d’un mandat documenté. Les frais, seuils, exemptions et portées SH non prouvés restent "
-            "NOT_AVAILABLE."
-        ),
+        "disclaimer": disclaimer,
     }
