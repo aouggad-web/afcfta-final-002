@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "country": "CIV",
-  "as_of": "2026-07-29",
+  "as_of": "2026-08-08",
   "measure_type": "import_regulatory_compliance",
   "notes": "Premier lot réglementaire Côte d'Ivoire : formalités et contrôles obligatoires à l'importation, distincts des taux fiscaux (TVA couverte par vat_measures.json ; les accises ne sont couvertes par aucun fichier de ce dépôt à ce jour — pas d'excise_measures.json pour la CIV). Aucune de ces mesures n'a pu être archivée sur texte primaire ce cycle : les portails officiels (guce.gouv.ci, douanes.ci, commerce.gouv.ci, oic.ci) renvoient HTTP 403 sur WebFetch. Statuts canoniques appliqués : PARTIAL = source officielle identifiable mais non archivée ; UNVERIFIED = information recoupée uniquement par sources secondaires ; pending_primary_archive = true tant que l'extrait primaire daté n'est pas téléchargé et haché. Tous les frais/tarifs sont laissés à null (NOT_AVAILABLE) : aucun montant issu de source secondaire n'entre dans le calculateur.",
   "regulatory_measures": [
@@ -26,16 +26,32 @@
           "mandate_status_notes": "La participation/le mandat de Webb Fontaine est confirmé terminé le 22 mars 2023 (rachat de ses 30% par l'État, décret n°2023-168, corroboré par communiqué officiel et presse). Aucune source datée n'a été trouvée confirmant OU infirmant un rôle technique résiduel après cette date : le statut post-2023 reste UNVERIFIED/NOT_AVAILABLE — jamais présenté comme actif.",
           "mandate_duration": "2013-07 (signature du contrat de concession) à 2023-03-22 (rachat de la participation de 30% par l'État, fin confirmée du lien capitalistique). Rôle opérationnel direct déjà remplacé par GUCE-CI dès le 2019-07-01.",
           "mandate_evidence": [
-            {"date": "2019-07-01", "title": "Gestion du commerce extérieur ivoirien : GUCE-CI remplace Webb Fontaine dès le 1er juillet", "publisher": "Educarriere.ci / APA News", "url": "https://news.educarriere.ci/news-29298-gestion-du-commerce-exterieur-ivoirien-guce-ci-remplace-webb-fontaine-des-le-1er-juillet.html"},
-            {"date": "2023-03-22", "title": "Communiqué du Conseil des Ministres du mercredi 22 mars 2023", "publisher": "Présidence de la République de Côte d'Ivoire", "url": "https://www.presidence.ci/communique-du-conseil-des-ministres-du-mercredi-22-mars-2023/"},
-            {"date": "2023-03-22", "title": "Côte d'Ivoire : L'État rachète les actions de Webb Fontaine et transforme le Guichet Unique du Commerce Extérieur en Société d'État", "publisher": "KOACI", "url": "https://www.koaci.com/article/2023/03/22/cote-divoire/politique/cote-divoire-letat-rachete-les-actions-de-webb-fontaine-et-transforme-le-guichet-unique-du-commerce-exterieur-en-societe-detat_168087.html"}
+            {
+              "date": "2019-07-01",
+              "title": "Gestion du commerce extérieur ivoirien : GUCE-CI remplace Webb Fontaine dès le 1er juillet",
+              "publisher": "Educarriere.ci / APA News",
+              "url": "https://news.educarriere.ci/news-29298-gestion-du-commerce-exterieur-ivoirien-guce-ci-remplace-webb-fontaine-des-le-1er-juillet.html"
+            },
+            {
+              "date": "2023-03-22",
+              "title": "Communiqué du Conseil des Ministres du mercredi 22 mars 2023",
+              "publisher": "Présidence de la République de Côte d'Ivoire",
+              "url": "https://www.presidence.ci/communique-du-conseil-des-ministres-du-mercredi-22-mars-2023/"
+            },
+            {
+              "date": "2023-03-22",
+              "title": "Côte d'Ivoire : L'État rachète les actions de Webb Fontaine et transforme le Guichet Unique du Commerce Extérieur en Société d'État",
+              "publisher": "KOACI",
+              "url": "https://www.koaci.com/article/2023/03/22/cote-divoire/politique/cote-divoire-letat-rachete-les-actions-de-webb-fontaine-et-transforme-le-guichet-unique-du-commerce-exterieur-en-societe-detat_168087.html"
+            }
           ],
           "authorized_fees": null,
           "authorized_fees_status": "NOT_AVAILABLE",
           "delivered_document": "NOT_AVAILABLE — aucun document délivré directement aux opérateurs économiques n'est attribué à Webb Fontaine en propre (rôle d'exploitant technique / actionnaire de la plateforme, pas d'organisme délivrant un document réglementaire distinct).",
           "verification_status": "PARTIAL",
           "pending_primary_archive": true,
-          "notes": "Toutes les preuves de mandate_evidence sont des recoupements de sources secondaires datées (presse, communiqué institutionnel) : le texte du contrat de concession de 2013 et le texte intégral du décret n°2023-168 n'ont pas pu être lus directement ce cycle (HTTP 403 sur presidence.ci)."
+          "notes": "Toutes les preuves de mandate_evidence sont des recoupements de sources secondaires datées (presse, communiqué institutionnel) : le texte du contrat de concession de 2013 et le texte intégral du décret n°2023-168 n'ont pas pu être lus directement ce cycle (HTTP 403 sur presidence.ci).",
+          "fee_category": "PROVIDER_FEE"
         }
       ],
       "documents": [
@@ -51,7 +67,22 @@
       "legal_reference": "Décret n°2023-168 du 22 mars 2023 portant transformation du Guichet Unique du Commerce Extérieur en société d'État (Communiqué du Conseil des Ministres du 22 mars 2023, presidence.ci).",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "scope_type": "GENERAL",
+      "transport_modes": [
+        "MULTIMODAL"
+      ],
+      "hs_codes_status": "NOT_AVAILABLE",
+      "thresholds_and_exclusions": {
+        "text": null,
+        "status": "NOT_AVAILABLE"
+      },
+      "procedure": {
+        "steps": null,
+        "official_delay": null,
+        "status": "NOT_AVAILABLE"
+      },
+      "fee_category": "REGULATORY_FEE"
     },
     {
       "record_id": "CIV-DOUANES-RFCV",
@@ -75,7 +106,22 @@
       "legal_reference": "Décret n°2025-418 (dispositif RFCV / déclaration anticipée d'importation) — référence identifiée via sources officielles douanières, texte non lu directement ce cycle.",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "scope_type": "GENERAL",
+      "transport_modes": [
+        "MULTIMODAL"
+      ],
+      "hs_codes_status": "NOT_AVAILABLE",
+      "thresholds_and_exclusions": {
+        "text": null,
+        "status": "NOT_AVAILABLE"
+      },
+      "procedure": {
+        "steps": null,
+        "official_delay": null,
+        "status": "NOT_AVAILABLE"
+      },
+      "fee_category": "REGULATORY_FEE"
     },
     {
       "record_id": "CIV-OIC-BSC",
@@ -99,7 +145,22 @@
       "legal_reference": "Décret n°95-820 du 29 septembre 1995 (institution du Bordereau de Suivi des Cargaisons) et circulaire d'application n°1317 — références identifiées via sources officielles OIC, textes non lus directement ce cycle.",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "scope_type": "GENERAL",
+      "transport_modes": [
+        "MARITIME"
+      ],
+      "hs_codes_status": "NOT_AVAILABLE",
+      "thresholds_and_exclusions": {
+        "text": null,
+        "status": "NOT_AVAILABLE"
+      },
+      "procedure": {
+        "steps": null,
+        "official_delay": null,
+        "status": "NOT_AVAILABLE"
+      },
+      "fee_category": "REGULATORY_FEE"
     },
     {
       "record_id": "CIV-COMMERCE-VOC",
@@ -123,7 +184,22 @@
       "legal_reference": "Programme de vérification de conformité (VOC/PVoC) — cadre réglementaire identifié via le portail du Ministère du Commerce (décrets et arrêtés d'application non lus directement ce cycle en raison de l'inaccessibilité HTTP 403 des PDF officiels).",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "scope_type": "SECTORAL",
+      "transport_modes": [
+        "MULTIMODAL"
+      ],
+      "hs_codes_status": "NOT_AVAILABLE",
+      "thresholds_and_exclusions": {
+        "text": null,
+        "status": "NOT_AVAILABLE"
+      },
+      "procedure": {
+        "steps": null,
+        "official_delay": null,
+        "status": "NOT_AVAILABLE"
+      },
+      "fee_category": "REGULATORY_FEE"
     }
   ]
 }
