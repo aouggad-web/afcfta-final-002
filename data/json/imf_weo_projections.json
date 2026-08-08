@@ -1,7 +1,7 @@
 {
   "metadata": {
     "source": "IMF World Economic Outlook (DataMapper API)",
-    "updated_at": "2026-07-22T23:56:27.806157+00:00",
+    "updated_at": "2026-08-08T02:39:01.701192+00:00",
     "indicators": {
       "gdp_growth": "NGDP_RPCH — croissance PIB réel (%)",
       "inflation": "PCPIPCH — inflation prix à la consommation (%)"
