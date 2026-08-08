@@ -118,7 +118,7 @@ describe('RegulatoryComplianceTab', () => {
     render(<RegulatoryComplianceTab language="fr" />);
     await waitFor(() => expect(regulatoryApi.getSupportedCountries).toHaveBeenCalled());
 
-    await userEvent.click(screen.getByRole('combobox', { name: '' }) || screen.getAllByRole('combobox')[0]);
+    await userEvent.click(screen.getByRole('combobox', { name: /choisir un pays/i }));
     const option = await screen.findByText(/Côte d'Ivoire/);
     await userEvent.click(option);
 
@@ -130,7 +130,7 @@ describe('RegulatoryComplianceTab', () => {
   it("n'affiche jamais un mandat TERMINATED dans la section active", async () => {
     render(<RegulatoryComplianceTab language="fr" />);
     await waitFor(() => expect(regulatoryApi.getSupportedCountries).toHaveBeenCalled());
-    await userEvent.click(screen.getAllByRole('combobox')[0]);
+    await userEvent.click(screen.getByRole('combobox', { name: /choisir un pays/i }));
     await userEvent.click(await screen.findByText(/Côte d'Ivoire/));
 
     await screen.findByText('Guichet Unique du Commerce Extérieur (GUCE-CI)');
@@ -142,7 +142,7 @@ describe('RegulatoryComplianceTab', () => {
   it('filtre les mesures par mode de transport', async () => {
     render(<RegulatoryComplianceTab language="fr" />);
     await waitFor(() => expect(regulatoryApi.getSupportedCountries).toHaveBeenCalled());
-    await userEvent.click(screen.getAllByRole('combobox')[0]);
+    await userEvent.click(screen.getByRole('combobox', { name: /choisir un pays/i }));
     await userEvent.click(await screen.findByText(/Côte d'Ivoire/));
     await screen.findByText('Guichet Unique du Commerce Extérieur (GUCE-CI)');
 
@@ -157,7 +157,7 @@ describe('RegulatoryComplianceTab', () => {
   it('filtre par texte de recherche (nom de prestataire)', async () => {
     render(<RegulatoryComplianceTab language="fr" />);
     await waitFor(() => expect(regulatoryApi.getSupportedCountries).toHaveBeenCalled());
-    await userEvent.click(screen.getAllByRole('combobox')[0]);
+    await userEvent.click(screen.getByRole('combobox', { name: /choisir un pays/i }));
     await userEvent.click(await screen.findByText(/Côte d'Ivoire/));
     await screen.findByText('Guichet Unique du Commerce Extérieur (GUCE-CI)');
 

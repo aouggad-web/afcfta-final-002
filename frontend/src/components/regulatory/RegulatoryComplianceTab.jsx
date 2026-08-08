@@ -274,7 +274,10 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
           </Alert>
 
           <Select value={selectedCountry} onValueChange={handleSelectCountry}>
-            <SelectTrigger className="text-lg font-semibold border border-[rgba(212,175,55,0.25)] focus:border-[rgba(212,175,55,0.5)]">
+            <SelectTrigger
+              aria-label={t.selectPlaceholder}
+              className="text-lg font-semibold border border-[rgba(212,175,55,0.25)] focus:border-[rgba(212,175,55,0.5)]"
+            >
               <SelectValue placeholder={t.selectPlaceholder} />
             </SelectTrigger>
             <SelectContent>
