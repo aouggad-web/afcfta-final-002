@@ -10,6 +10,12 @@ import { regulatoryApi } from '../../services/api-v2';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { toast } from '../../hooks/use-toast';
 
+// Mirrors backend _ACTIVE_MANDATE_STATUSES (regulatory_compliance_service.py):
+// only these mandate_status values are a confirmed, currently active mandate.
+// TERMINATED and UNVERIFIED are both non-active — an unresolved status is not
+// evidence of an active provider, so it must not render as one.
+const ACTIVE_MANDATE_STATUSES = new Set(['CONFIRMED_TIME_LIMITED', 'CONFIRMED_UNDATED_END']);
+
 // Statuts canoniques (issue #359/#361) → couleur distincte, jamais confondue
 // avec une donnée active/vérifiée quand elle ne l'est pas.
 const STATUS_STYLES = {
@@ -75,7 +81,7 @@ const TEXTS = {
     fees: 'Frais réglementaires',
     feesNotAvailable: 'Non disponible (non fabriqué)',
     mandatedActors: 'Prestataires mandatés',
-    historicalActors: 'Mandats terminés / remplacés (historique)',
+    historicalActors: 'Mandats non actifs — terminés ou non confirmés (historique)',
     mandatingAuthority: 'Autorité mandante',
     mandateStatus: 'Statut du mandat',
     mandateDuration: 'Durée',
@@ -127,7 +133,7 @@ const TEXTS = {
     fees: 'Regulatory fees',
     feesNotAvailable: 'Not available (never fabricated)',
     mandatedActors: 'Mandated providers',
-    historicalActors: 'Terminated / replaced mandates (history)',
+    historicalActors: 'Non-active mandates — terminated or unconfirmed (history)',
     mandatingAuthority: 'Mandating authority',
     mandateStatus: 'Mandate status',
     mandateDuration: 'Duration',
@@ -383,11 +389,11 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
           )}
 
           {filteredMeasures.map((measure) => {
-            const activeActors = (measure.mandated_actors || []).filter(
-              (a) => a.mandate_status !== 'TERMINATED'
+            const activeActors = (measure.mandated_actors || []).filter((a) =>
+              ACTIVE_MANDATE_STATUSES.has(a.mandate_status)
             );
             const historicalActors = (measure.mandated_actors || []).filter(
-              (a) => a.mandate_status === 'TERMINATED'
+              (a) => !ACTIVE_MANDATE_STATUSES.has(a.mandate_status)
             );
 
             return (

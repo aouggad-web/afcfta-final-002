@@ -136,7 +136,7 @@ describe('RegulatoryComplianceTab', () => {
     await userEvent.click(await screen.findByText(/Côte d'Ivoire/));
 
     await screen.findByText('Guichet Unique du Commerce Extérieur (GUCE-CI)');
-    expect(screen.getByText(/Mandats terminés/)).toBeInTheDocument();
+    expect(screen.getByText(/Mandats non actifs/)).toBeInTheDocument();
     expect(screen.queryByText('Prestataires mandatés')).not.toBeInTheDocument();
     expect(screen.getByText('Webb Fontaine')).toBeInTheDocument();
   });
@@ -158,6 +158,67 @@ describe('RegulatoryComplianceTab', () => {
     expect(
       screen.getByText(/administration opère cette formalité directement/)
     ).toBeInTheDocument();
+  });
+
+  it("un acteur UNVERIFIED ne s'affiche jamais comme prestataire actif (régression revue codex PR #373)", async () => {
+    regulatoryApi.getCountryCompliance.mockResolvedValue({
+      success: true,
+      country_iso3: 'GHA',
+      regulatory_compliance: {
+        ...CIV_COMPLIANCE,
+        measures: [
+          {
+            ...CIV_COMPLIANCE.measures[0],
+            record_id: 'GHA-GSA-EASYPASS',
+            measure_name: 'EasyPASS',
+            mandated_actor_status: 'NOT_APPLICABLE',
+            mandated_actors: [
+              {
+                actor_name: 'Bureau Veritas',
+                actor_type: 'TECHNICAL_OPERATOR',
+                mandating_authority: 'Ghana Standards Authority (GSA)',
+                mandate_status: 'TERMINATED',
+                mandate_duration: 'Juillet 2019 au 30 juin 2026.',
+                delivered_document: 'Certificat de Conformité',
+                mandate_evidence: [
+                  { date: '2026-07-01', title: 'GSA clarify', publisher: 'GSA', url: 'https://gsa.gov.gh/' },
+                ],
+              },
+              {
+                actor_name: 'Intertek',
+                actor_type: 'TECHNICAL_OPERATOR',
+                mandating_authority: 'Ghana Standards Authority (GSA)',
+                mandate_status: 'UNVERIFIED',
+                mandate_duration: 'Depuis juin 2019 ; statut après juillet 2026 non confirmé.',
+                delivered_document: 'Certificat de Conformité, statut non confirmé.',
+                mandate_evidence: [
+                  { date: '2026-08-08', title: 'Intertek Ghana', publisher: 'Intertek', url: 'https://www.intertek.com/' },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    render(<RegulatoryComplianceTab language="fr" />);
+    await waitFor(() => expect(regulatoryApi.getSupportedCountries).toHaveBeenCalled());
+    await userEvent.click(screen.getByRole('combobox', { name: /choisir un pays/i }));
+    await userEvent.click(await screen.findByText(/Côte d'Ivoire/));
+    await screen.findByText('EasyPASS');
+
+    // Un acteur UNVERIFIED (Intertek) ne doit jamais apparaître sous la
+    // section "Prestataires mandatés" (réservée aux mandats confirmés actifs).
+    expect(screen.queryByText('Prestataires mandatés')).not.toBeInTheDocument();
+    // Le texte explicatif NOT_APPLICABLE doit être affiché malgré la présence
+    // d'un acteur UNVERIFIED dans mandated_actors.
+    expect(
+      screen.getByText(/administration opère cette formalité directement/)
+    ).toBeInTheDocument();
+    // Intertek et Bureau Veritas restent visibles, mais dans la section historique.
+    expect(screen.getByText(/Mandats non actifs/)).toBeInTheDocument();
+    expect(screen.getByText('Intertek')).toBeInTheDocument();
+    expect(screen.getByText('Bureau Veritas')).toBeInTheDocument();
   });
 
   it('filtre les mesures par mode de transport', async () => {
