@@ -49,9 +49,11 @@ beforeEach(() => {
 });
 
 describe('RegulatoryQAPanel', () => {
-  it("n'appelle pas les endpoints QA avant expansion du panneau", () => {
+  it("n'appelle aucun des trois endpoints QA avant expansion du panneau", () => {
     render(<RegulatoryQAPanel language="fr" />);
     expect(regulatoryApi.getQACoverageReport).not.toHaveBeenCalled();
+    expect(regulatoryApi.getQAContradictions).not.toHaveBeenCalled();
+    expect(regulatoryApi.getQAStaleCountries).not.toHaveBeenCalled();
   });
 
   it('charge le rapport à l\'ouverture et affiche le résumé de couverture', async () => {
@@ -109,5 +111,35 @@ describe('RegulatoryQAPanel', () => {
     await userEvent.click(screen.getByText('Qualité des données réglementaires'));
 
     expect(await screen.findByText('1 pays avec dataset périmé')).toBeInTheDocument();
+  });
+
+  it("ne plante pas si le rapport de couverture est renvoyé sans champ countries", async () => {
+    regulatoryApi.getQACoverageReport.mockResolvedValue({
+      success: true,
+      report: { total_tracked_countries: 54, published_country_count: 0 },
+    });
+
+    render(<RegulatoryQAPanel language="fr" />);
+    await userEvent.click(screen.getByText('Qualité des données réglementaires'));
+
+    expect(
+      await screen.findByText('Aucune contradiction et aucun dataset périmé détecté.')
+    ).toBeInTheDocument();
+  });
+
+  it('affiche correctement le pluriel pour plusieurs pays périmés', async () => {
+    regulatoryApi.getQAStaleCountries.mockResolvedValue({
+      success: true,
+      total: 2,
+      stale_countries: [
+        { country_iso3: 'CIV', as_of: '2020-01-01', reason: 'older_than_threshold' },
+        { country_iso3: 'COD', as_of: '2020-01-01', reason: 'older_than_threshold' },
+      ],
+    });
+
+    render(<RegulatoryQAPanel language="fr" />);
+    await userEvent.click(screen.getByText('Qualité des données réglementaires'));
+
+    expect(await screen.findByText('2 pays avec datasets périmés')).toBeInTheDocument();
   });
 });

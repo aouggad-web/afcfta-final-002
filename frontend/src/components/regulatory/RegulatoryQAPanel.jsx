@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
+import { Card, CardContent, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Alert, AlertTitle, AlertDescription } from '../ui/alert';
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '../ui/collapsible';
@@ -18,7 +18,7 @@ const TEXTS = {
     contradictionsTitle: (n) => `${n} contradiction${n > 1 ? 's' : ''} détectée${n > 1 ? 's' : ''}`,
     contradictionsDesc:
       "Une mesure revendique plus de confiance que la source légale qu'elle cite — à corriger.",
-    staleTitle: (n) => `${n} pays avec dataset périmé`,
+    staleTitle: (n) => `${n} pays avec dataset${n > 1 ? 's' : ''} périmé${n > 1 ? 's' : ''}`,
     staleDesc: "Le seuil de péremption est dépassé — à revérifier, jamais renouvelé automatiquement.",
     country: 'Pays',
     asOf: 'Situation au',
@@ -36,7 +36,7 @@ const TEXTS = {
     contradictionsTitle: (n) => `${n} contradiction${n > 1 ? 's' : ''} detected`,
     contradictionsDesc:
       'A measure claims more confidence than the legal source it cites — needs a fix.',
-    staleTitle: (n) => `${n} countr${n > 1 ? 'ies' : 'y'} with a stale dataset`,
+    staleTitle: (n) => `${n} countr${n > 1 ? 'ies' : 'y'} with a stale dataset${n > 1 ? 's' : ''}`,
     staleDesc: 'The staleness threshold is exceeded — flagged for re-verification, never auto-renewed.',
     country: 'Country',
     asOf: 'As of',
@@ -90,28 +90,29 @@ export default function RegulatoryQAPanel({ language = 'fr' }) {
   return (
     <Card className="border border-slate-700 bg-slate-900/40">
       <Collapsible open={open} onOpenChange={setOpen}>
-        <CollapsibleTrigger asChild>
-          <CardHeader className="cursor-pointer select-none flex flex-row items-center justify-between gap-2">
-            <div>
-              <CardTitle className="text-base text-slate-200 flex items-center gap-2">
-                {open ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
-                {t.title}
-              </CardTitle>
-              <CardDescription className="text-xs text-slate-500">{t.subtitle}</CardDescription>
-            </div>
-            {loaded && coverage && (
-              <Badge
-                variant="outline"
-                className={
-                  hasIssues
-                    ? 'bg-red-600/20 text-red-300 border-red-500/40'
-                    : 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40'
-                }
-              >
-                {t.publishedOf(coverage.published_country_count, coverage.total_tracked_countries)}
-              </Badge>
-            )}
-          </CardHeader>
+        <CollapsibleTrigger
+          className="w-full text-left cursor-pointer select-none flex flex-row items-center justify-between gap-2 p-6 rounded-t-xl"
+          style={{ background: 'linear-gradient(135deg, rgba(193,122,43,0.15), rgba(212,175,55,0.08))' }}
+        >
+          <div>
+            <CardTitle className="text-base text-slate-200 flex items-center gap-2">
+              {open ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              {t.title}
+            </CardTitle>
+            <CardDescription className="text-xs text-slate-500">{t.subtitle}</CardDescription>
+          </div>
+          {loaded && coverage && (
+            <Badge
+              variant="outline"
+              className={
+                hasIssues
+                  ? 'bg-red-600/20 text-red-300 border-red-500/40'
+                  : 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40'
+              }
+            >
+              {t.publishedOf(coverage.published_country_count, coverage.total_tracked_countries)}
+            </Badge>
+          )}
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CardContent className="space-y-4 text-sm">
@@ -169,7 +170,7 @@ export default function RegulatoryQAPanel({ language = 'fr' }) {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {coverage.countries.map((c) => (
+                  {(coverage.countries || []).map((c) => (
                     <TableRow key={c.country_iso3}>
                       <TableCell className="font-medium">{c.country_iso3}</TableCell>
                       <TableCell>{c.as_of}</TableCell>
