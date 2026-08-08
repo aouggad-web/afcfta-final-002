@@ -10,6 +10,12 @@ import { regulatoryApi } from '../../services/api-v2';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { toast } from '../../hooks/use-toast';
 
+// Mirrors backend _ACTIVE_MANDATE_STATUSES (regulatory_compliance_service.py):
+// only these mandate_status values are a confirmed, currently active mandate.
+// TERMINATED and UNVERIFIED are both non-active — an unresolved status is not
+// evidence of an active provider, so it must not render as one.
+const ACTIVE_MANDATE_STATUSES = new Set(['CONFIRMED_TIME_LIMITED', 'CONFIRMED_UNDATED_END']);
+
 // Statuts canoniques (issue #359/#361) → couleur distincte, jamais confondue
 // avec une donnée active/vérifiée quand elle ne l'est pas.
 const STATUS_STYLES = {
@@ -75,7 +81,7 @@ const TEXTS = {
     fees: 'Frais réglementaires',
     feesNotAvailable: 'Non disponible (non fabriqué)',
     mandatedActors: 'Prestataires mandatés',
-    historicalActors: 'Mandats terminés / remplacés (historique)',
+    historicalActors: 'Mandats non actifs — terminés ou non confirmés (historique)',
     mandatingAuthority: 'Autorité mandante',
     mandateStatus: 'Statut du mandat',
     mandateDuration: 'Durée',
@@ -87,12 +93,18 @@ const TEXTS = {
     scope: 'Portée',
     products: 'Produits',
     transport: 'Transport',
+    mandatedActorStatus: 'Prestataire mandaté',
+    mandatedActorStatusNotApplicable:
+      "Aucun prestataire mandaté à ce jour : la source confirme que l'administration opère cette formalité directement.",
+    mandatedActorStatusNotAvailable:
+      "Aucun prestataire actuellement actif confirmé par une source — l'absence de prestataire n'est pas établie pour autant.",
     csvColumns: {
       country: 'Pays',
       record_id: 'Identifiant',
       measure_name: 'Mesure',
       scope_type: 'Type de portée',
       verification_status: 'Statut',
+      mandated_actor_status: 'Prestataire mandaté',
       authority: 'Autorité',
       transport: 'Transport',
     },
@@ -121,7 +133,7 @@ const TEXTS = {
     fees: 'Regulatory fees',
     feesNotAvailable: 'Not available (never fabricated)',
     mandatedActors: 'Mandated providers',
-    historicalActors: 'Terminated / replaced mandates (history)',
+    historicalActors: 'Non-active mandates — terminated or unconfirmed (history)',
     mandatingAuthority: 'Mandating authority',
     mandateStatus: 'Mandate status',
     mandateDuration: 'Duration',
@@ -133,12 +145,18 @@ const TEXTS = {
     scope: 'Scope',
     products: 'Products',
     transport: 'Transport',
+    mandatedActorStatus: 'Mandated provider',
+    mandatedActorStatusNotApplicable:
+      'No mandated provider to date: the source confirms the administration operates this formality directly.',
+    mandatedActorStatusNotAvailable:
+      "No currently active provider confirmed by a source — the absence of a provider isn't established either.",
     csvColumns: {
       country: 'Country',
       record_id: 'Record ID',
       measure_name: 'Measure',
       scope_type: 'Scope type',
       verification_status: 'Status',
+      mandated_actor_status: 'Mandated provider',
       authority: 'Authority',
       transport: 'Transport',
     },
@@ -263,6 +281,7 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
         measure_name: m.measure_name,
         scope_type: m.scope_type || 'NOT_AVAILABLE',
         verification_status: m.verification_status,
+        mandated_actor_status: m.mandated_actor_status || 'NOT_AVAILABLE',
         authority: m.authority,
         transport: (m.transport_modes || []).join(' / ') || m.transport,
       })),
@@ -370,11 +389,11 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
           )}
 
           {filteredMeasures.map((measure) => {
-            const activeActors = (measure.mandated_actors || []).filter(
-              (a) => a.mandate_status !== 'TERMINATED'
+            const activeActors = (measure.mandated_actors || []).filter((a) =>
+              ACTIVE_MANDATE_STATUSES.has(a.mandate_status)
             );
             const historicalActors = (measure.mandated_actors || []).filter(
-              (a) => a.mandate_status === 'TERMINATED'
+              (a) => !ACTIVE_MANDATE_STATUSES.has(a.mandate_status)
             );
 
             return (
@@ -398,6 +417,10 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
                     <div>
                       <span className="font-semibold text-slate-400">{t.products}: </span>
                       {measure.products}
+                    </div>
+                    <div>
+                      <span className="font-semibold text-slate-400">{t.mandatedActorStatus}: </span>
+                      <StatusBadge status={measure.mandated_actor_status} />
                     </div>
                     <div>
                       <span className="font-semibold text-slate-400">{t.transport}: </span>
@@ -449,6 +472,18 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
                         <ActorCard key={actor.actor_name} actor={actor} t={t} />
                       ))}
                     </div>
+                  )}
+
+                  {!activeActors.length && measure.mandated_actor_status === 'NOT_APPLICABLE' && (
+                    <p className="border-t border-slate-700 pt-3 text-xs text-slate-400 italic">
+                      {t.mandatedActorStatusNotApplicable}
+                    </p>
+                  )}
+
+                  {!activeActors.length && measure.mandated_actor_status === 'NOT_AVAILABLE' && (
+                    <p className="border-t border-slate-700 pt-3 text-xs text-slate-400 italic">
+                      {t.mandatedActorStatusNotAvailable}
+                    </p>
                   )}
 
                   {!!historicalActors.length && (

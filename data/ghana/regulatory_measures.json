@@ -134,7 +134,7 @@
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
       "hs_codes_explicit": [],
-      "mandated_actor_status": "DOCUMENTED"
+      "mandated_actor_status": "NOT_APPLICABLE"
     }
   ]
 }
