@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "country": "KEN",
+  "as_of": "2026-08-08",
+  "measure_type": "import_regulatory_compliance",
+  "notes": "Premier lot réglementaire Kenya : formalités et contrôles obligatoires à l'importation, distincts des taux fiscaux (vat_measures.json/excise_measures.json). Le programme PVoC (Pre-Export Verification of Conformity, KEBS) a connu une rupture documentée : les contrats des prestataires pour les marchandises générales ont expiré le 8 février 2026 (avis officiel KEBS lu intégralement), avec une période de transition en inspection à destination (frais 0,6% de la valeur en douane, DOCUMENTED), puis un nouveau cycle de 3 ans a démarré le 19 février 2026 avec 9 sociétés d'inspection selon la presse — mais la liste exacte n'a pas pu être confirmée sur le PDF officiel KEBS (fichier illisible lors de l'extraction) et n'est donc PAS reprise ici comme mandat confirmé ; seul le prestataire QISJ (véhicules d'occasion/pièces détachées), dont le mandat n'a pas été affecté par l'expiration de février 2026, est documenté sur source primaire. Une Advance Cargo Declaration (ACD) est devenue obligatoire le 3 août 2026 pour le fret conteneurisé, opérée directement par la Kenya Revenue Authority (KRA), sans prestataire privé identifié.",
+  "regulatory_measures": [
+    {
+      "record_id": "KEN-KEBS-PVOC",
+      "measure_name": "Pre-Export Verification of Conformity (PVoC)",
+      "measure_category": "conformity_assessment",
+      "scope": "Contrôle obligatoire de conformité des marchandises importées avant expédition, sanctionné par un Certificat de Conformité (CoC) exigé au dédouanement ; en l'absence de CoC valide, inspection à destination au port d'entrée.",
+      "products": "Marchandises générales (\"general goods\") soumises à des normes kenyanes obligatoires ou spécifications approuvées ; véhicules d'occasion, engins mobiles et pièces détachées sous régime séparé (CoC/Certificate of Roadworthiness — CoR).",
+      "transport": "Tous modes ; contrôle réalisé au pays d'origine avant expédition, avec inspection à destination en cas d'absence de certificat.",
+      "conditions": "Cadre PVoC géré par le Kenya Bureau of Standards (KEBS) sous le Standards Act, CAP. 496. Les contrats des prestataires pour marchandises générales (cycle de 3 ans) ont expiré le 8 février 2026 ; nouveau cycle annoncé à compter du 19 février 2026. Un frais d'inspection à destination de 0,6% de la valeur en douane a été documenté (avis officiel KEBS du 5 février 2026) uniquement pour la période transitoire sans certificat valide (9-19 février 2026) — non applicable de façon certaine en dehors de cette fenêtre.",
+      "exemptions": "Matières premières des fabricants enregistrés ; produits déjà certifiés Diamond Mark ; projets nationaux exemptés par le gouvernement ; marchandises en provenance des États membres de l'East African Community (EAC), traitées sous le régime EAC SQMT Act 2006.",
+      "mandated_actors": [
+        {
+          "actor_name": "Quality Inspection Services Inc. (QISJ)",
+          "actor_type": "MANDATED_SERVICE_PROVIDER",
+          "legal_status": "Prestataire privé mandaté — acteur d'exécution technique, sans pouvoir réglementaire propre.",
+          "mandating_authority": "Kenya Bureau of Standards (KEBS).",
+          "mission": "Inspection et certification de conformité/aptitude à la route des véhicules d'occasion, engins mobiles et pièces détachées importés au Kenya, pour le compte de KEBS.",
+          "mandate_basis": "Contrat spécifique confirmé dans l'avis officiel KEBS du 8 février 2026 comme non affecté par l'expiration des contrats PVoC marchandises générales.",
+          "mandate_status": "CONFIRMED_UNDATED_END",
+          "mandate_status_notes": "Mandat confirmé actif au 8 février 2026 par l'avis officiel KEBS lui-même, explicitement distinct et non affecté par la rupture du cycle marchandises générales. Aucune date d'expiration propre trouvée.",
+          "mandate_duration": "Confirmé actif au 8 février 2026 ; échéance propre non trouvée.",
+          "mandate_evidence": [
+            {
+              "date": "2026-02-05",
+              "title": "Public Notice on Expiry of PVoC Contracts for General Goods and Incidental Arrangements Thereof",
+              "publisher": "Kenya Bureau of Standards (KEBS)",
+              "url": "https://www.kebs.org/wp-content/uploads/2026/02/PUBLIC-NOTICE-ON-EXPIRY-OF-PVOC-CONTRACTS-FOR-GENERAL-GOODS-AND-INCIDENTAL-ARRANGEMENTS-THEREOF-05_02-Edit-1.pdf"
+            }
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Certificate of Conformity (CoC) / Certificate of Roadworthiness (CoR) pour véhicules d'occasion, engins mobiles et pièces détachées.",
+          "verification_status": "DOCUMENTED",
+          "pending_primary_archive": true,
+          "notes": ""
+        }
+      ],
+      "documents": [
+        "Certificate of Conformity (CoC)",
+        "Non-Conformity Report (NCR)"
+      ],
+      "authority": "Kenya Bureau of Standards (KEBS), organisme statutaire (Standards Act, CAP. 496).",
+      "platform": "https://www.kebs.org/pre-export-verification-of-conformity/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "KEN-KEBS-PVOC-NOTICE-20260205",
+      "legal_reference": "Standards Act, CAP. 496, Laws of Kenya ; Legal Notice No. 78 of April 2020 (cadre CoC/CoR).",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "KEN-KRA-ACD",
+      "measure_name": "Advance Cargo Declaration (ACD) — cargaisons conteneurisées",
+      "measure_category": "cargo_tracking_note",
+      "scope": "Déclaration préalable obligatoire de la cargaison conteneurisée avant chargement, avec attribution d'un code de référence ACD à faire figurer sur le connaissement.",
+      "products": "Cargaisons conteneurisées à destination des ports kenyans.",
+      "transport": "Fret maritime conteneurisé uniquement.",
+      "conditions": "Plateforme opérée directement par la Kenya Revenue Authority (KRA) — Customs and Border Control, en vigueur depuis le 3 août 2026. Documents requis pour obtenir le code : projet de connaissement, facture commerciale, facture de fret, déclaration d'exportation.",
+      "exemptions": "NOT_AVAILABLE",
+      "documents": [
+        "Code de référence Advance Cargo Declaration (ACD)"
+      ],
+      "authority": "Kenya Revenue Authority (KRA), Customs and Border Control.",
+      "platform": "https://acd.kra.go.ke/home",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "KEN-KRA-ACD-NOTICE-20260714",
+      "legal_reference": "Avis public KRA « Advance Cargo Declaration (ACD) Platform for Containerized Cargo », daté du 14 juillet 2026, entrée en vigueur le 3 août 2026.",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    }
+  ]
+}
