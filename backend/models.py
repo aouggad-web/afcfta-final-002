@@ -151,6 +151,15 @@ class TariffCalculationResponse(BaseModel):
     currency: Optional[Dict[str, Any]] = None
     fiscal_advantages: Optional[List[Dict[str, Any]]] = None
     administrative_formalities: Optional[List[Dict[str, Any]]] = None
+    # Formalités d'importation et prestataires/mandataires du pays de destination
+    # (source : services.regulatory_compliance_service — registre fail-closed,
+    # sourcé et daté). Bloc STRICTEMENT SÉPARÉ des droits et taxes : il n'entre
+    # JAMAIS dans normal_total_cost / zlecaf_total_cost / taxes_summary. Les
+    # frais autorisés des prestataires y figurent à titre informatif — chiffrés
+    # + sourcés lorsque prouvés, sinon NOT_AVAILABLE — et ne sont jamais additionnés
+    # au coût douanier (nature distincte : coût opérationnel privé ≠ droit exigible).
+    # None quand le pays de destination n'a pas encore de registre conforme.
+    regulatory_compliance: Optional[Dict[str, Any]] = None
     # Couverture tarifaire, fiscale, documentaire et réglementaire traçable.
     # Les lacunes restent explicitement NOT_AVAILABLE ; aucune valeur de
     # remplacement n'est générée par ce bloc.

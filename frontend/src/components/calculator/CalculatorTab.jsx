@@ -29,6 +29,7 @@ import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import KenyaRemissionAuthorization from './KenyaRemissionAuthorization';
+import RegulatoryComplianceView from '../regulatory/RegulatoryComplianceView';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -1555,14 +1556,91 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </CardContent>
             </Card>
           )}
+
+          {/* ── BLOC SÉPARÉ — Frais des prestataires mandatés (INFORMATIF, HORS TOTAL) ──
+              Nature distincte des droits et taxes : coût opérationnel privé, jamais
+              additionné au coût douanier ci-dessus. Alimenté par le registre conforme
+              fail-closed (result.regulatory_compliance) pour le pays de destination. */}
+          {result.regulatory_compliance && (result.regulatory_compliance.measures || []).length > 0 && (
+            <Card className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 border border-amber-500/30">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                    <ClipboardList className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg text-white">
+                      {language === 'fr'
+                        ? 'Frais des prestataires mandatés & formalités'
+                        : 'Mandated-provider fees & formalities'}
+                    </CardTitle>
+                    <CardDescription className="text-slate-400">
+                      {language === 'fr'
+                        ? `${getCountryName(result.destination_country)} — coût opérationnel distinct, hors total douanier`
+                        : `${getCountryName(result.destination_country)} — separate operational cost, outside customs total`}
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                  <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <p className="text-sm text-amber-200/90">
+                    {language === 'fr'
+                      ? "Ces frais relèvent de prestataires officiellement mandatés (contrôle de conformité, guichet unique…). Ils sont d'une nature différente des droits et taxes exigibles et ne sont donc JAMAIS ajoutés au coût total douanier. Un montant chiffré n'est affiché que lorsqu'il est prouvé et sourcé ; sinon il reste NOT_AVAILABLE (jamais fabriqué)."
+                      : 'These fees are charged by officially mandated providers (conformity control, single window…). They are of a different nature from payable duties and taxes and are therefore NEVER added to the customs total. A figure is shown only when proven and sourced; otherwise it stays NOT_AVAILABLE (never fabricated).'}
+                  </p>
+                </div>
+                <RegulatoryComplianceView
+                  compliance={result.regulatory_compliance}
+                  language={language}
+                  showFilters={false}
+                />
+              </CardContent>
+            </Card>
+          )}
         </div>
       )}
           </div>
       </TabsContent>
-        
+
         {/* Onglet Réglementation - Moteur Réglementaire v3 */}
         <TabsContent value="regulatory">
           <div className="space-y-6">
+            {/* Formalités & prestataires mandatés — registre CONFORME fail-closed
+                (source-bound, daté). Affiché en priorité sur le Moteur v3 ci-dessous
+                dès qu'un calcul a été lancé pour un pays de destination couvert. */}
+            {result?.regulatory_compliance && (result.regulatory_compliance.measures || []).length > 0 && (
+              <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border border-amber-500/30">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                      <ClipboardList className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl text-white">
+                        {language === 'fr'
+                          ? 'Formalités particulières & prestataires mandatés'
+                          : 'Special formalities & mandated providers'}
+                      </CardTitle>
+                      <CardDescription className="text-slate-400">
+                        {language === 'fr'
+                          ? `${getCountryName(result.destination_country)} — registre sourcé et daté, distinct du calcul de droits et taxes`
+                          : `${getCountryName(result.destination_country)} — source-bound dated registry, distinct from the duties/taxes computation`}
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <RegulatoryComplianceView
+                    compliance={result.regulatory_compliance}
+                    language={language}
+                    showFilters
+                  />
+                </CardContent>
+              </Card>
+            )}
+
             {/* Header avec recherche */}
             <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 overflow-hidden">
               <div className="absolute top-0 left-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>
