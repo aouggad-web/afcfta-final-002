@@ -62,6 +62,73 @@ _ACTOR_REQUIRED_FIELDS = {
 
 _EVIDENCE_REQUIRED_FIELDS = {"date", "title", "publisher", "url"}
 
+# LOT 4 (issue #359): optional structured fields layered on top of the free-text
+# scope/transport/exemptions fields above. Optional (not in _MEASURE_REQUIRED_FIELDS)
+# so datasets that predate this structuring keep validating unchanged; validated for
+# internal consistency whenever a country's dataset opts in by including them.
+_SCOPE_TYPES = {"GENERAL", "SECTORAL", "CONDITIONAL", "NOT_AVAILABLE"}
+_TRANSPORT_MODES = {"MARITIME", "AERIEN", "ROUTIER", "FERROVIAIRE", "MULTIMODAL"}
+_STRUCTURED_FIELD_STATUSES = {"DOCUMENTED", "NOT_AVAILABLE"}
+_PROCEDURE_STATUSES = {"DOCUMENTED", "PARTIAL", "NOT_AVAILABLE"}
+
+
+def _validate_structured_scope_fields(measure: Dict[str, Any], context: str) -> None:
+    if "scope_type" in measure and measure["scope_type"] not in _SCOPE_TYPES:
+        raise ValueError(f"{context} has non-canonical scope_type {measure['scope_type']!r}")
+
+    if "transport_modes" in measure:
+        modes = measure["transport_modes"]
+        if not isinstance(modes, list) or not modes:
+            raise ValueError(f"{context} transport_modes must be a non-empty list")
+        invalid = [mode for mode in modes if mode not in _TRANSPORT_MODES]
+        if invalid:
+            raise ValueError(f"{context} has non-canonical transport_modes: {invalid}")
+
+    if "hs_codes_status" in measure:
+        status = measure["hs_codes_status"]
+        if status not in _STRUCTURED_FIELD_STATUSES:
+            raise ValueError(f"{context} has non-canonical hs_codes_status {status!r}")
+        has_codes = bool(measure.get("hs_codes_explicit"))
+        if status == "DOCUMENTED" and not has_codes:
+            raise ValueError(f"{context} hs_codes_status is DOCUMENTED without hs_codes_explicit")
+        if status == "NOT_AVAILABLE" and has_codes:
+            raise ValueError(
+                f"{context} hs_codes_status is NOT_AVAILABLE while hs_codes_explicit is populated"
+            )
+
+    if "thresholds_and_exclusions" in measure:
+        block = measure["thresholds_and_exclusions"]
+        if not isinstance(block, dict) or {"text", "status"} - set(block):
+            raise ValueError(f"{context} thresholds_and_exclusions must have text and status")
+        status = block["status"]
+        if status not in _STRUCTURED_FIELD_STATUSES:
+            raise ValueError(
+                f"{context} thresholds_and_exclusions has non-canonical status {status!r}"
+            )
+        if status == "DOCUMENTED" and not block["text"]:
+            raise ValueError(f"{context} thresholds_and_exclusions is DOCUMENTED without text")
+        if status == "NOT_AVAILABLE" and block["text"] is not None:
+            raise ValueError(
+                f"{context} thresholds_and_exclusions is NOT_AVAILABLE but text is populated"
+            )
+
+    if "procedure" in measure:
+        block = measure["procedure"]
+        if not isinstance(block, dict) or {"steps", "official_delay", "status"} - set(block):
+            raise ValueError(f"{context} procedure must have steps, official_delay and status")
+        status = block["status"]
+        if status not in _PROCEDURE_STATUSES:
+            raise ValueError(f"{context} procedure has non-canonical status {status!r}")
+        if status == "NOT_AVAILABLE" and (block["steps"] or block["official_delay"]):
+            raise ValueError(
+                f"{context} procedure is NOT_AVAILABLE but steps/official_delay populated"
+            )
+        if status != "NOT_AVAILABLE" and not block["steps"]:
+            raise ValueError(f"{context} procedure status {status!r} requires non-empty steps")
+
+    if "fee_category" in measure and measure["fee_category"] != "REGULATORY_FEE":
+        raise ValueError(f"{context} fee_category must be REGULATORY_FEE when present on a measure")
+
 
 @lru_cache(maxsize=None)
 def _read_json(relative_path: str) -> Dict[str, Any]:
@@ -118,6 +185,9 @@ def _normalize_actor(
 
     if actor["authorized_fees"] is not None and actor["authorized_fees_status"] == "NOT_AVAILABLE":
         raise ValueError(f"{context} publishes fees while their status is NOT_AVAILABLE")
+
+    if "fee_category" in actor and actor["fee_category"] != "PROVIDER_FEE":
+        raise ValueError(f"{context} fee_category must be PROVIDER_FEE when present on an actor")
 
     normalized = copy.deepcopy(actor)
     normalized.update(
@@ -189,6 +259,9 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
             raise ValueError(
                 f"Regulatory measure {raw_measure['record_id']} publishes fees with NOT_AVAILABLE status"
             )
+        _validate_structured_scope_fields(
+            raw_measure, f"Regulatory measure {raw_measure['record_id']}"
+        )
 
         measure = copy.deepcopy(raw_measure)
         normalized_actors = [

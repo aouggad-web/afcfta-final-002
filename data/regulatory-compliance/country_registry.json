@@ -156,9 +156,9 @@
       "regulatory_coverage_status": "PARTIAL",
       "mandate_status": "PARTIAL",
       "fees_status": "NOT_AVAILABLE",
-      "products_hs_status": "PARTIAL",
+      "products_hs_status": "NOT_AVAILABLE",
       "exemptions_status": "NOT_AVAILABLE",
-      "transport_status": "PARTIAL",
+      "transport_status": "DOCUMENTED",
       "platform_status": "PARTIAL",
       "delivered_document_status": "PARTIAL",
       "dataset_path": "data/drc/regulatory_measures.json",
@@ -168,7 +168,8 @@
       ],
       "notes": [
         "Pilote réglementaire existant; sources primaires encore partiellement non archivées.",
-        "Les frais restent NOT_AVAILABLE."
+        "Les frais restent NOT_AVAILABLE.",
+        "LOT 4 : scope_type, transport_modes, hs_codes_status, thresholds_and_exclusions, procedure et fee_category structurés par mesure ; aucun code SH, seuil ou délai officiel n'a pu être confirmé sur source primaire (transport_status passe à DOCUMENTED, products_hs_status corrigé à NOT_AVAILABLE pour refléter l'absence réelle de code SH sourcé)."
       ]
     },
     "COG": {
@@ -188,9 +189,9 @@
       "regulatory_coverage_status": "PARTIAL",
       "mandate_status": "PARTIAL",
       "fees_status": "NOT_AVAILABLE",
-      "products_hs_status": "PARTIAL",
+      "products_hs_status": "NOT_AVAILABLE",
       "exemptions_status": "NOT_AVAILABLE",
-      "transport_status": "PARTIAL",
+      "transport_status": "DOCUMENTED",
       "platform_status": "PARTIAL",
       "delivered_document_status": "PARTIAL",
       "dataset_path": "data/cote-d-ivoire/regulatory_measures.json",
@@ -200,7 +201,8 @@
       ],
       "notes": [
         "Pilote réglementaire existant; sources primaires encore partiellement non archivées.",
-        "Les frais restent NOT_AVAILABLE."
+        "Les frais restent NOT_AVAILABLE.",
+        "LOT 4 : scope_type, transport_modes, hs_codes_status, thresholds_and_exclusions, procedure et fee_category structurés par mesure ; aucun code SH, seuil ou délai officiel n'a pu être confirmé sur source primaire (transport_status passe à DOCUMENTED, products_hs_status corrigé à NOT_AVAILABLE pour refléter l'absence réelle de code SH sourcé)."
       ]
     },
     "DJI": {
