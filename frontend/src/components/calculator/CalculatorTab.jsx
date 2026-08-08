@@ -29,7 +29,10 @@ import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import KenyaRemissionAuthorization from './KenyaRemissionAuthorization';
-import RegulatoryComplianceView from '../regulatory/RegulatoryComplianceView';
+import RegulatoryComplianceView, {
+  hasActiveMandatedProvider,
+  hasUnpricedActiveProviderFees,
+} from '../regulatory/RegulatoryComplianceView';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -1282,6 +1285,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <p className="text-blue-400/60 text-xs mt-1">{language === 'fr' ? 'Sur votre valeur' : 'On your value'}</p>
                 </div>
               </div>
+
+              {/* Point 4 — signalement d'incomplétude : le total ci-dessus couvre les
+                  droits et taxes exigibles, mais un prestataire mandaté actif facture
+                  des frais dont le montant n'est pas chiffré dans les sources. Le coût
+                  total réel de dédouanement est donc INCOMPLET — signalé, jamais estimé. */}
+              {hasUnpricedActiveProviderFees(result.regulatory_compliance) && (
+                <div className="mt-4 flex items-start gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                  <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <p className="text-sm text-amber-200/90">
+                    {language === 'fr'
+                      ? "Calcul incomplet : ces totaux couvrent les droits et taxes exigibles, mais un prestataire mandaté actif perçoit des frais dont le montant n'est pas publié dans les sources (NOT_AVAILABLE). Le coût total de dédouanement est donc supérieur — voir le bloc « Frais des prestataires mandatés » ci-dessous. Aucun montant n'est estimé."
+                      : 'Incomplete calculation: these totals cover payable duties and taxes, but an active mandated provider charges fees whose amount is not published in the sources (NOT_AVAILABLE). The total clearance cost is therefore higher — see the “Mandated-provider fees” block below. No amount is estimated.'}
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -1560,8 +1578,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           {/* ── BLOC SÉPARÉ — Frais des prestataires mandatés (INFORMATIF, HORS TOTAL) ──
               Nature distincte des droits et taxes : coût opérationnel privé, jamais
               additionné au coût douanier ci-dessus. Alimenté par le registre conforme
-              fail-closed (result.regulatory_compliance) pour le pays de destination. */}
-          {result.regulatory_compliance && (result.regulatory_compliance.measures || []).length > 0 && (
+              fail-closed (result.regulatory_compliance). Affiché UNIQUEMENT pour les
+              pays utilisant réellement un prestataire mandaté actif (jamais pour une
+              formalité opérée directement par l'administration ni un mandat expiré). */}
+          {hasActiveMandatedProvider(result.regulatory_compliance) && (
             <Card className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 border border-amber-500/30">
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-3">
@@ -1608,9 +1628,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         <TabsContent value="regulatory">
           <div className="space-y-6">
             {/* Formalités & prestataires mandatés — registre CONFORME fail-closed
-                (source-bound, daté). Affiché en priorité sur le Moteur v3 ci-dessous
-                dès qu'un calcul a été lancé pour un pays de destination couvert. */}
-            {result?.regulatory_compliance && (result.regulatory_compliance.measures || []).length > 0 && (
+                (source-bound, daté). Affiché en priorité sur le Moteur v3 ci-dessous,
+                et UNIQUEMENT pour un pays de destination utilisant réellement un
+                prestataire mandaté actif. */}
+            {hasActiveMandatedProvider(result?.regulatory_compliance) && (
               <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border border-amber-500/30">
                 <CardHeader>
                   <div className="flex items-center gap-3">

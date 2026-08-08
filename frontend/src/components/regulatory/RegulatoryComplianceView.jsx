@@ -15,7 +15,35 @@ import { Alert, AlertTitle, AlertDescription } from '../ui/alert';
 
 // Miroir du backend _ACTIVE_MANDATE_STATUSES (regulatory_compliance_service.py) :
 // seuls ces statuts constituent un mandat confirmé et actuellement actif.
+// TERMINATED / UNVERIFIED (mandat expiré ou non confirmé) n'y figurent pas :
+// ils ne sont jamais traités comme un prestataire actif.
 const ACTIVE_MANDATE_STATUSES = new Set(['CONFIRMED_TIME_LIMITED', 'CONFIRMED_UNDATED_END']);
+
+// Un pays « utilise réellement un prestataire » uniquement si au moins une mesure
+// porte un prestataire mandaté au mandat CONFIRMÉ ET ACTIF. Une mesure opérée
+// directement par l'administration (NOT_APPLICABLE) ou dont le seul acteur est
+// historique/expiré ne compte pas. Sert à limiter le volet réglementation aux
+// pays concernés (et rien d'autre — jamais une valeur inférée).
+export function hasActiveMandatedProvider(compliance) {
+  const measures = compliance?.measures || [];
+  return measures.some((m) =>
+    (m.mandated_actors || []).some((a) => ACTIVE_MANDATE_STATUSES.has(a.mandate_status))
+  );
+}
+
+// Vrai s'il existe au moins un prestataire actif dont les frais autorisés ne sont
+// pas chiffrés (NOT_AVAILABLE) : le coût prestataire réel est alors inconnu, donc
+// le total douanier seul est incomplet et doit le signaler explicitement.
+export function hasUnpricedActiveProviderFees(compliance) {
+  const measures = compliance?.measures || [];
+  return measures.some((m) =>
+    (m.mandated_actors || []).some(
+      (a) =>
+        ACTIVE_MANDATE_STATUSES.has(a.mandate_status) &&
+        (!a.authorized_fees || a.authorized_fees_status === 'NOT_AVAILABLE')
+    )
+  );
+}
 
 const STATUS_STYLES = {
   DOCUMENTED: 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40',

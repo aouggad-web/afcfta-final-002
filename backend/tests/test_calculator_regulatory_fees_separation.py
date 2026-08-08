@@ -84,3 +84,60 @@ def test_uncovered_destination_country_is_fail_closed_none():
     # Un pays sans registre conforme publié ne fabrique aucune donnée.
     assert "DZA" not in get_supported_regulatory_countries()
     assert get_country_regulatory_compliance("DZA") is None
+
+
+# Miroir du backend/frontend : seuls ces statuts constituent un mandat confirmé,
+# actuellement actif. TERMINATED / UNVERIFIED en sont exclus (mandat expiré ou
+# non confirmé).
+_ACTIVE = {"CONFIRMED_TIME_LIMITED", "CONFIRMED_UNDATED_END"}
+
+
+def _actors(compliance):
+    return compliance["mandated_actors"] if compliance else []
+
+
+def test_state_active_provider_fees_unknown_are_fail_closed():
+    # État « frais inconnus » : le Cameroun a des prestataires au mandat actif,
+    # dont les frais restent NOT_AVAILABLE — jamais un montant ni un zéro fabriqué.
+    compliance = get_country_regulatory_compliance("CMR")
+    active = [a for a in _actors(compliance) if a["mandate_status"] in _ACTIVE]
+    assert active, "CMR doit exposer au moins un prestataire mandaté actif"
+    for a in active:
+        if a.get("authorized_fees_status") == "NOT_AVAILABLE":
+            assert a.get("authorized_fees") in (None, "")
+
+
+def test_state_expired_mandate_is_never_treated_as_active():
+    # État « expiré » : le seul acteur de la Côte d'Ivoire (Webb Fontaine) est
+    # TERMINATED — la CIV n'utilise donc réellement AUCUN prestataire actif, et un
+    # mandat expiré n'entre jamais dans un calcul.
+    compliance = get_country_regulatory_compliance("CIV")
+    actors = _actors(compliance)
+    assert actors, "CIV doit conserver l'acteur historique (traçabilité)"
+    assert all(a["mandate_status"] not in _ACTIVE for a in actors)
+
+
+def test_state_not_applicable_measure_has_no_active_actor():
+    # État « non applicable » : au moins une mesure du Ghana est opérée
+    # directement par l'administration (mandated_actor_status NOT_APPLICABLE),
+    # sans aucun prestataire actif rattaché.
+    compliance = get_country_regulatory_compliance("GHA")
+    na_measures = [
+        m for m in compliance["measures"] if m.get("mandated_actor_status") == "NOT_APPLICABLE"
+    ]
+    assert na_measures, "GHA doit comporter une mesure NOT_APPLICABLE"
+    for m in na_measures:
+        assert not [a for a in (m.get("mandated_actors") or []) if a["mandate_status"] in _ACTIVE]
+
+
+def test_no_fabricated_fees_anywhere_in_published_registries():
+    # Aucune donnée simulée : sur l'ensemble des pays publiés, un frais marqué
+    # NOT_AVAILABLE n'est jamais accompagné d'une valeur, et une valeur n'est
+    # jamais marquée NOT_AVAILABLE.
+    for iso3 in get_supported_regulatory_countries():
+        compliance = get_country_regulatory_compliance(iso3)
+        for a in _actors(compliance):
+            if a.get("authorized_fees_status") == "NOT_AVAILABLE":
+                assert a.get("authorized_fees") in (None, "")
+            if a.get("authorized_fees") not in (None, ""):
+                assert a.get("authorized_fees_status") != "NOT_AVAILABLE"
