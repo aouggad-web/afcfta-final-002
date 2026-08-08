@@ -42,7 +42,18 @@ _MEASURE_REQUIRED_FIELDS = {
     "source_id",
     "legal_reference",
     "verification_status",
+    "mandated_actor_status",
 }
+
+# Distinguishes, for a measure with no mandated_actors, whether that's because
+# no private/mandated provider is involved (NOT_APPLICABLE — the regulatory
+# authority operates the formality directly, confirmed by source text) or
+# because a provider is known or suspected to exist but hasn't been
+# identified/documented yet (NOT_AVAILABLE). Never inferred silently: a
+# measure only gets NOT_APPLICABLE when a source explicitly describes direct
+# operation by the authority, not merely from the absence of a documented
+# actor.
+_MANDATED_ACTOR_STATUSES = {"DOCUMENTED", "NOT_APPLICABLE", "NOT_AVAILABLE"}
 
 _ACTOR_REQUIRED_FIELDS = {
     "actor_name",
@@ -264,6 +275,23 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
         _validate_structured_scope_fields(
             raw_measure, f"Regulatory measure {raw_measure['record_id']}"
         )
+        actor_status = raw_measure["mandated_actor_status"]
+        if actor_status not in _MANDATED_ACTOR_STATUSES:
+            raise ValueError(
+                f"Regulatory measure {raw_measure['record_id']} has non-canonical "
+                f"mandated_actor_status {actor_status!r}"
+            )
+        has_actors = bool(raw_measure.get("mandated_actors"))
+        if actor_status == "DOCUMENTED" and not has_actors:
+            raise ValueError(
+                f"Regulatory measure {raw_measure['record_id']} mandated_actor_status is "
+                "DOCUMENTED without any mandated_actors"
+            )
+        if actor_status != "DOCUMENTED" and has_actors:
+            raise ValueError(
+                f"Regulatory measure {raw_measure['record_id']} has mandated_actors but "
+                f"mandated_actor_status is {actor_status!r}, not DOCUMENTED"
+            )
 
         measure = copy.deepcopy(raw_measure)
         normalized_actors = [

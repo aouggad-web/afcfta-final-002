@@ -53,7 +53,8 @@
       "legal_reference": "Standards Act, CAP. 496, Laws of Kenya ; Legal Notice No. 78 of April 2020 (cadre CoC/CoR).",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "DOCUMENTED"
     },
     {
       "record_id": "KEN-KRA-ACD",
@@ -75,7 +76,8 @@
       "legal_reference": "Avis public KRA « Advance Cargo Declaration (ACD) Platform for Containerized Cargo », daté du 14 juillet 2026, entrée en vigueur le 3 août 2026.",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "NOT_APPLICABLE"
     }
   ]
 }
