@@ -20,7 +20,7 @@ _FORBIDDEN_BARE_STATUS = {"active", "ACTIVE", "Active"}
 _COUNTRIES = {
     "CMR": {
         "dir": "cameroon",
-        "record_ids": {"CMR-ANOR-PECAE", "CMR-MINFI-PVI", "CMR-CNCC-BESC"},
+        "record_ids": {"CMR-ANOR-PECAE", "CMR-MINFI-PVI", "CMR-CIVIC-VEHICLES", "CMR-CNCC-BESC"},
     },
     "GHA": {
         "dir": "ghana",

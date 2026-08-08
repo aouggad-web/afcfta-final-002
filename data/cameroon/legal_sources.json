@@ -48,7 +48,7 @@
     },
     {
       "source_id": "CMR-PECAE-DECRETS-2015-2021",
-      "title": "Décrets n°2015/1875/PM et n°2021/3306/PM instituant et étendant le PECAE",
+      "title": "Communiqué ANOR référençant les décrets n°2015/1875/PM et n°2021/3306/PM instituant et étendant le PECAE (source secondaire, textes des décrets non lus)",
       "institution": "Agence des Normes et de la Qualité (ANOR) / Primature du Cameroun",
       "legal_date": "2021-05-31",
       "accessed_at": "2026-08-08",
@@ -58,7 +58,7 @@
       "coverage": "PECAE — mandats Intertek/SGS/TÜV Rheinland, produits concernés, exemptions",
       "status": "source_pending_collection",
       "verification_status": "PARTIAL",
-      "notes": "Décrets identifiés via articles ANOR et presse économique ; textes primaires non archivés ce cycle."
+      "notes": "Décrets identifiés via articles ANOR et presse économique (communiqué, pas le texte des décrets lui-même) ; textes primaires des décrets non archivés ce cycle."
     },
     {
       "source_id": "CMR-PVI-INSTRUCTION-2016",
@@ -76,11 +76,11 @@
     },
     {
       "source_id": "CMR-CNCC-BESC-PORTAL",
-      "title": "Portail officiel du Conseil National des Chargeurs du Cameroun (CNCC) — BESC",
+      "title": "Plateforme officielle BESC du Conseil National des Chargeurs du Cameroun (CNCC)",
       "institution": "Conseil National des Chargeurs du Cameroun (CNCC)",
       "legal_date": null,
       "accessed_at": "2026-08-08",
-      "url": "https://www.cncc.cm/en",
+      "url": "https://besc.cncc.cm",
       "local_file": null,
       "sha256": null,
       "coverage": "BESC — autorité, plateforme, entrée en vigueur BESC 3.0",

@@ -162,6 +162,56 @@
       "hs_codes_explicit": []
     },
     {
+      "record_id": "CMR-CIVIC-VEHICLES",
+      "measure_name": "Contrôle d'Identification des Véhicules Importés au Cameroun (CIVIC)",
+      "measure_category": "other",
+      "scope": "Contrôle obligatoire d'identification des véhicules importés au Cameroun, sanctionné par une Fiche d'Identification CIVIC, dans un objectif d'optimisation des recettes sur véhicules importés.",
+      "products": "Véhicules importés (y compris d'occasion).",
+      "transport": "Routier ; contrôle réalisé lors du dédouanement du véhicule.",
+      "conditions": "Initiation via la plateforme e-GUCE/E-Force ; paiement par Orange Money via E-Force ou en espèces à la Banque CA SCB Cameroun.",
+      "exemptions": "NOT_AVAILABLE",
+      "mandated_actors": [
+        {
+          "actor_name": "SGS Cameroun S.A.",
+          "actor_type": "MANDATED_SERVICE_PROVIDER",
+          "legal_status": "Prestataire privé mandaté — acteur d'exécution technique, sans pouvoir réglementaire propre.",
+          "mandating_authority": "État camerounais (objectif d'optimisation des recettes sur véhicules importés).",
+          "mission": "Identification et contrôle des véhicules importés au Cameroun pour le compte de l'État, dans le cadre du CIVIC.",
+          "mandate_basis": "Mandat confirmé par document primaire SGS (guide de l'importateur, novembre 2021) ; ex-CIVIO (Contrôle d'Identification des Véhicules d'Occasion).",
+          "mandate_status": "CONFIRMED_UNDATED_END",
+          "mandate_status_notes": "Mandat confirmé par source primaire SGS ; non revérifié pour une version plus récente 2025-2026.",
+          "mandate_duration": "Non trouvée.",
+          "mandate_evidence": [
+            {
+              "date": "2021-11-01",
+              "title": "Guide de l'Importateur — Trade Facilitation Services (TFS)",
+              "publisher": "SGS Cameroun S.A.",
+              "url": "https://www.sgs.com/fr-cm/-/media/SGSCorp/Documents/Corporate/Technical-Documents/Technical-Guidelines-and-Policies/Guide-des-Importateurs-Cameroun-FR.cdn.fr-cm.pdf"
+            }
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Fiche d'Identification Provisoire / Fiche d'Identification CIVIC.",
+          "verification_status": "PARTIAL",
+          "pending_primary_archive": true,
+          "notes": "Un frais de 25 000 FCFA par véhicule est documenté dans le guide SGS de novembre 2021, mais non repris ici (fees=NOT_AVAILABLE) car non revérifié pour 2025-2026, par cohérence avec le traitement des frais PECAE/PVI dans ce même lot."
+        }
+      ],
+      "documents": [
+        "Fiche d'Identification Provisoire",
+        "Fiche d'Identification CIVIC"
+      ],
+      "authority": "État camerounais, via le dispositif administré conjointement avec le Guichet Unique.",
+      "platform": "e-GUCE / E-Force",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "CMR-PVI-INSTRUCTION-2016",
+      "legal_reference": "Référence légale précise non trouvée dans les sources consultées ; dispositif documenté dans le guide de l'importateur SGS (novembre 2021).",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    },
+    {
       "record_id": "CMR-CNCC-BESC",
       "measure_name": "Bordereau Électronique de Suivi des Cargaisons (BESC)",
       "measure_category": "cargo_tracking_note",
