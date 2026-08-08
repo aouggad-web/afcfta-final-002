@@ -98,25 +98,41 @@ def compute_fee(
 
     if method not in CALCULATION_METHODS:
         # Existence/source connues mais méthode non exploitable → partiel.
-        return {**base_result, "fee_status": "PARTIAL", "calculated_amount": None,
-                "reason": "unknown_or_missing_calculation_method"}
+        return {
+            **base_result,
+            "fee_status": "PARTIAL",
+            "calculated_amount": None,
+            "reason": "unknown_or_missing_calculation_method",
+        }
 
     if method == "FIXED_AMOUNT":
         amount = fee_detail.get("fixed_amount")
         if amount is None or currency is None:
-            return {**base_result, "fee_status": "PARTIAL", "calculated_amount": None,
-                    "reason": "fixed_amount_or_currency_missing"}
-        return {**base_result, "fee_status": "DOCUMENTED_FIXED_AMOUNT",
-                "calculated_amount": round(float(amount), 2)}
+            return {
+                **base_result,
+                "fee_status": "PARTIAL",
+                "calculated_amount": None,
+                "reason": "fixed_amount_or_currency_missing",
+            }
+        return {
+            **base_result,
+            "fee_status": "DOCUMENTED_FIXED_AMOUNT",
+            "calculated_amount": round(float(amount), 2),
+        }
 
     # Méthodes en pourcentage — assiette obligatoire (règle 3).
     rate = fee_detail.get("rate")
     base_value = fob_value if method == "PERCENTAGE_OF_FOB" else cif_value
     base_label = "FOB" if method == "PERCENTAGE_OF_FOB" else "CIF"
     if rate is None or base_value is None or currency is None:
-        return {**base_result, "fee_status": "PARTIAL", "calculated_amount": None,
-                "rate": rate, "base_label": base_label,
-                "reason": "rate_base_or_currency_missing"}
+        return {
+            **base_result,
+            "fee_status": "PARTIAL",
+            "calculated_amount": None,
+            "rate": rate,
+            "base_label": base_label,
+            "reason": "rate_base_or_currency_missing",
+        }
 
     amount = float(rate) * float(base_value)
     minimum = fee_detail.get("minimum_amount")
@@ -161,7 +177,8 @@ def build_regulatory_cost(
     line_items: List[Dict[str, Any]] = []
     for measure in compliance.get("measures", []):
         active_actors = [
-            a for a in (measure.get("mandated_actors") or [])
+            a
+            for a in (measure.get("mandated_actors") or [])
             if a.get("mandate_status") in _ACTIVE_MANDATE_STATUSES
         ]
         if not active_actors:
@@ -174,19 +191,21 @@ def build_regulatory_cost(
             cif_value=cif_value,
             fee_exists=_fee_exists_for_measure(measure),
         )
-        line_items.append({
-            "scope": "formality",
-            "measure_name": measure.get("measure_name"),
-            "measure_step": measure.get("procedure_step") or measure.get("scope_type"),
-            "mandating_authority": measure.get("authority"),
-            "actor_name": None,
-            "products": measure.get("products"),
-            "transport": measure.get("transport"),
-            "legal_reference": measure.get("legal_reference"),
-            "as_of": compliance.get("as_of"),
-            "side": side,
-            **formality_fee,
-        })
+        line_items.append(
+            {
+                "scope": "formality",
+                "measure_name": measure.get("measure_name"),
+                "measure_step": measure.get("procedure_step") or measure.get("scope_type"),
+                "mandating_authority": measure.get("authority"),
+                "actor_name": None,
+                "products": measure.get("products"),
+                "transport": measure.get("transport"),
+                "legal_reference": measure.get("legal_reference"),
+                "as_of": compliance.get("as_of"),
+                "side": side,
+                **formality_fee,
+            }
+        )
 
         # Frais de chaque prestataire mandaté actif (perçu privé).
         for actor in active_actors:
@@ -196,19 +215,21 @@ def build_regulatory_cost(
                 cif_value=cif_value,
                 fee_exists=True,  # prestataire actif → un frais est réputé exister
             )
-            line_items.append({
-                "scope": "provider",
-                "measure_name": measure.get("measure_name"),
-                "measure_step": measure.get("procedure_step") or measure.get("scope_type"),
-                "mandating_authority": actor.get("mandating_authority"),
-                "actor_name": actor.get("actor_name"),
-                "service": actor.get("mission"),
-                "contact": _actor_contact(actor, measure),
-                "mandate_status": actor.get("mandate_status"),
-                "as_of": compliance.get("as_of"),
-                "side": side,
-                **provider_fee,
-            })
+            line_items.append(
+                {
+                    "scope": "provider",
+                    "measure_name": measure.get("measure_name"),
+                    "measure_step": measure.get("procedure_step") or measure.get("scope_type"),
+                    "mandating_authority": actor.get("mandating_authority"),
+                    "actor_name": actor.get("actor_name"),
+                    "service": actor.get("mission"),
+                    "contact": _actor_contact(actor, measure),
+                    "mandate_status": actor.get("mandate_status"),
+                    "as_of": compliance.get("as_of"),
+                    "side": side,
+                    **provider_fee,
+                }
+            )
 
     if not line_items:
         return None
@@ -268,5 +289,7 @@ def _summarise(line_items: List[Dict[str, Any]]) -> Dict[str, Any]:
         "regulatory_cost_currency": regulatory_total_currency,
         "complete": not is_incomplete,
         "has_unpriced_fees": has_unpriced,
-        "statuses_present": sorted({i.get("fee_status") for i in line_items if i.get("fee_status")}),
+        "statuses_present": sorted(
+            {i.get("fee_status") for i in line_items if i.get("fee_status")}
+        ),
     }

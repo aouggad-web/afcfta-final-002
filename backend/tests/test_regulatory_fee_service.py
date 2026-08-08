@@ -42,7 +42,12 @@ def test_calculable_percentage_of_fob_with_minimum():
 
 def test_documented_fixed_amount():
     r = compute_fee(
-        {"calculation_method": "FIXED_AMOUNT", "fixed_amount": 100, "currency": "USD", "source": _SRC},
+        {
+            "calculation_method": "FIXED_AMOUNT",
+            "fixed_amount": 100,
+            "currency": "USD",
+            "source": _SRC,
+        },
         fee_exists=True,
     )
     assert r["fee_status"] == "DOCUMENTED_FIXED_AMOUNT"
@@ -62,7 +67,12 @@ def test_no_source_never_produces_a_cost():
 def test_percentage_without_base_is_partial_never_zero():
     # Règle 3 : pas de pourcentage sans assiette explicite.
     r = compute_fee(
-        {"calculation_method": "PERCENTAGE_OF_CIF", "rate": 0.005, "currency": "USD", "source": _SRC},
+        {
+            "calculation_method": "PERCENTAGE_OF_CIF",
+            "rate": 0.005,
+            "currency": "USD",
+            "source": _SRC,
+        },
         fob_value=100000,  # CIF non fourni → pas d'assiette pour la méthode CIF
         fee_exists=True,
     )
@@ -87,9 +97,27 @@ def test_all_returned_statuses_are_canonical():
     samples = [
         compute_fee(None, fee_exists=True),
         compute_fee(None, fee_exists=False),
-        compute_fee({"calculation_method": "FIXED_AMOUNT", "fixed_amount": 1, "currency": "USD", "source": _SRC}),
-        compute_fee({"calculation_method": "PERCENTAGE_OF_FOB", "rate": 0.01, "currency": "USD", "source": _SRC}, fob_value=100),
-        compute_fee({"calculation_method": "PERCENTAGE_OF_FOB", "currency": "USD", "source": _SRC}, fob_value=None),
+        compute_fee(
+            {
+                "calculation_method": "FIXED_AMOUNT",
+                "fixed_amount": 1,
+                "currency": "USD",
+                "source": _SRC,
+            }
+        ),
+        compute_fee(
+            {
+                "calculation_method": "PERCENTAGE_OF_FOB",
+                "rate": 0.01,
+                "currency": "USD",
+                "source": _SRC,
+            },
+            fob_value=100,
+        ),
+        compute_fee(
+            {"calculation_method": "PERCENTAGE_OF_FOB", "currency": "USD", "source": _SRC},
+            fob_value=None,
+        ),
     ]
     for r in samples:
         assert r["fee_status"] in FEE_STATUSES
@@ -97,10 +125,13 @@ def test_all_returned_statuses_are_canonical():
 
 # ── build_regulatory_cost sur données réelles (fail-closed) ────────────────────
 
+
 def test_active_provider_country_yields_unpriced_incomplete_block():
     # CMR : prestataires actifs, aucun frais chiffré publié → bloc présent mais
     # incomplet, tous FEE_EXISTS_AMOUNT_NOT_AVAILABLE, total None (jamais 0).
-    rc = build_regulatory_cost(get_country_regulatory_compliance("CMR"), fob_value=50000, side="import")
+    rc = build_regulatory_cost(
+        get_country_regulatory_compliance("CMR"), fob_value=50000, side="import"
+    )
     assert rc is not None
     assert rc["complete"] is False
     assert rc["has_unpriced_fees"] is True
@@ -114,7 +145,9 @@ def test_country_without_active_provider_has_no_cost_block():
 
 
 def test_provider_and_formality_fees_are_bucketed_separately():
-    rc = build_regulatory_cost(get_country_regulatory_compliance("CMR"), fob_value=50000, side="import")
+    rc = build_regulatory_cost(
+        get_country_regulatory_compliance("CMR"), fob_value=50000, side="import"
+    )
     scopes = {li["scope"] for li in rc["line_items"]}
     assert "provider" in scopes  # au moins une ligne prestataire
     # Chaque ligne est étiquetée soit formality soit provider, jamais fusionnée.
