@@ -22,7 +22,7 @@ Configuration (environment variables)
   SAAS_SMTP_PASSWORD     SMTP password
   SAAS_SMTP_USE_TLS      STARTTLS (default: true)
   SAAS_EMAIL_FROM        From header (default: AfCFTA ZLECAf <noreply@afcfta-zlecaf.com>)
-  SAAS_EMAIL_REPLY_TO    Reply-To header (default: support@afcfta-zlecaf.com)
+  SAAS_EMAIL_REPLY_TO    Reply-To header (default: contact@afcfta-zlecaf.com)
   SAAS_APP_BASE_URL      Base URL used to build links (default: https://afcfta-zlecaf.com)
 
 Usage
@@ -89,12 +89,7 @@ class TransactionalEmailService:
 
     def is_enabled(self) -> bool:
         """True only when sending is enabled AND minimally configured."""
-        return bool(
-            self.enabled
-            and AIOSMTPLIB_AVAILABLE
-            and self.smtp_host
-            and self.smtp_user
-        )
+        return bool(self.enabled and AIOSMTPLIB_AVAILABLE and self.smtp_host and self.smtp_user)
 
     # ------------------------------------------------------------------ #
     # Low-level send                                                      #
