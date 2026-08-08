@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "as_of": "2026-08-06",
+  "as_of": "2026-08-08",
   "country_count": 54,
   "disclaimer": "Simulation informative — non opposable à l’administration douanière. Toute dimension non prouvée reste NOT_AVAILABLE; aucune valeur absente n’est remplacée par zéro ou par une extrapolation.",
   "countries": {
@@ -96,17 +96,22 @@
       "notes": []
     },
     "CMR": {
-      "regulatory_coverage_status": "NOT_AVAILABLE",
-      "mandate_status": "NOT_AVAILABLE",
+      "regulatory_coverage_status": "PARTIAL",
+      "mandate_status": "PARTIAL",
       "fees_status": "NOT_AVAILABLE",
       "products_hs_status": "NOT_AVAILABLE",
-      "exemptions_status": "NOT_AVAILABLE",
-      "transport_status": "NOT_AVAILABLE",
-      "platform_status": "NOT_AVAILABLE",
-      "delivered_document_status": "NOT_AVAILABLE",
-      "dataset_path": null,
-      "source_paths": [],
-      "notes": []
+      "exemptions_status": "PARTIAL",
+      "transport_status": "PARTIAL",
+      "platform_status": "PARTIAL",
+      "delivered_document_status": "PARTIAL",
+      "dataset_path": "data/cameroon/regulatory_measures.json",
+      "source_paths": [
+        "data/cameroon/legal_sources.json"
+      ],
+      "notes": [
+        "PECAE (3 prestataires confirmés : Intertek, SGS, TÜV Rheinland), PVI (SGS), BESC (CNCC).",
+        "Les frais restent NOT_AVAILABLE ou non repris (rate SGS 2021 non revérifié)."
+      ]
     },
     "CAF": {
       "regulatory_coverage_status": "NOT_AVAILABLE",
@@ -303,17 +308,22 @@
       "notes": []
     },
     "GHA": {
-      "regulatory_coverage_status": "NOT_AVAILABLE",
-      "mandate_status": "NOT_AVAILABLE",
+      "regulatory_coverage_status": "PARTIAL",
+      "mandate_status": "PARTIAL",
       "fees_status": "NOT_AVAILABLE",
       "products_hs_status": "NOT_AVAILABLE",
-      "exemptions_status": "NOT_AVAILABLE",
-      "transport_status": "NOT_AVAILABLE",
-      "platform_status": "NOT_AVAILABLE",
-      "delivered_document_status": "NOT_AVAILABLE",
-      "dataset_path": null,
-      "source_paths": [],
-      "notes": []
+      "exemptions_status": "PARTIAL",
+      "transport_status": "PARTIAL",
+      "platform_status": "PARTIAL",
+      "delivered_document_status": "PARTIAL",
+      "dataset_path": "data/ghana/regulatory_measures.json",
+      "source_paths": [
+        "data/ghana/legal_sources.json"
+      ],
+      "notes": [
+        "ICUMS (Ghana Link Network Services) ; EasyPASS repris en direct par la GSA depuis juillet 2026, fin du mandat Bureau Veritas.",
+        "Smart Port Note (équivalent CTN) reporté sine die depuis janvier 2026, non inclus comme mesure active."
+      ]
     },
     "GIN": {
       "regulatory_coverage_status": "NOT_AVAILABLE",
@@ -342,17 +352,22 @@
       "notes": []
     },
     "KEN": {
-      "regulatory_coverage_status": "NOT_AVAILABLE",
-      "mandate_status": "NOT_AVAILABLE",
+      "regulatory_coverage_status": "PARTIAL",
+      "mandate_status": "PARTIAL",
       "fees_status": "NOT_AVAILABLE",
       "products_hs_status": "NOT_AVAILABLE",
-      "exemptions_status": "NOT_AVAILABLE",
-      "transport_status": "NOT_AVAILABLE",
-      "platform_status": "NOT_AVAILABLE",
-      "delivered_document_status": "NOT_AVAILABLE",
-      "dataset_path": null,
-      "source_paths": [],
-      "notes": []
+      "exemptions_status": "PARTIAL",
+      "transport_status": "PARTIAL",
+      "platform_status": "PARTIAL",
+      "delivered_document_status": "PARTIAL",
+      "dataset_path": "data/kenya/regulatory_measures.json",
+      "source_paths": [
+        "data/kenya/legal_sources.json"
+      ],
+      "notes": [
+        "PVoC (KEBS) — rupture de contrats le 8 février 2026, nouveau cycle annoncé le 19 février 2026 mais liste des 9 prestataires non confirmée sur source primaire, non incluse.",
+        "Advance Cargo Declaration (ACD) obligatoire depuis le 3 août 2026, opérée directement par la KRA."
+      ]
     },
     "LSO": {
       "regulatory_coverage_status": "NOT_AVAILABLE",
@@ -511,17 +526,22 @@
       "notes": []
     },
     "NGA": {
-      "regulatory_coverage_status": "NOT_AVAILABLE",
-      "mandate_status": "NOT_AVAILABLE",
+      "regulatory_coverage_status": "PARTIAL",
+      "mandate_status": "PARTIAL",
       "fees_status": "NOT_AVAILABLE",
       "products_hs_status": "NOT_AVAILABLE",
-      "exemptions_status": "NOT_AVAILABLE",
-      "transport_status": "NOT_AVAILABLE",
-      "platform_status": "NOT_AVAILABLE",
-      "delivered_document_status": "NOT_AVAILABLE",
-      "dataset_path": null,
-      "source_paths": [],
-      "notes": []
+      "exemptions_status": "PARTIAL",
+      "transport_status": "PARTIAL",
+      "platform_status": "PARTIAL",
+      "delivered_document_status": "PARTIAL",
+      "dataset_path": "data/nigeria/regulatory_measures.json",
+      "source_paths": [
+        "data/nigeria/legal_sources.json"
+      ],
+      "notes": [
+        "SONCAP (SON) — listes de prestataires partiellement contradictoires entre deux pages officielles ; seul COTECNA confirmé sur les deux.",
+        "ICTN/CTN annoncé depuis 2019 mais NON EN VIGUEUR au 08/08/2026 — non inclus comme mesure active."
+      ]
     },
     "RWA": {
       "regulatory_coverage_status": "NOT_AVAILABLE",

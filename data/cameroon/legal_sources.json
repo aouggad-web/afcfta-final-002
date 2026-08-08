@@ -45,6 +45,48 @@
       "status": "source_pending_collection",
       "verification_status": "PENDING_COLLECTION",
       "notes": "Le Cameroun applique le Tarif Extérieur Commun de la CEMAC, non encore archivé dans ce dépôt. Le TEC CEMAC est requis avant tout calcul douanier de bout en bout pour le Cameroun."
+    },
+    {
+      "source_id": "CMR-PECAE-DECRETS-2015-2021",
+      "title": "Décrets n°2015/1875/PM et n°2021/3306/PM instituant et étendant le PECAE",
+      "institution": "Agence des Normes et de la Qualité (ANOR) / Primature du Cameroun",
+      "legal_date": "2021-05-31",
+      "accessed_at": "2026-08-08",
+      "url": "https://anor.cm/articles/tuv-rheinland-3eme-prestataire-mandate-par-le-gouvernement-du-cameroun-pour-les-operations-devaluation-de-la-conformite-des-produits-soumis-au-peca",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "PECAE — mandats Intertek/SGS/TÜV Rheinland, produits concernés, exemptions",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "notes": "Décrets identifiés via articles ANOR et presse économique ; textes primaires non archivés ce cycle."
+    },
+    {
+      "source_id": "CMR-PVI-INSTRUCTION-2016",
+      "title": "Instruction Ministérielle N°000625/MINFI/CAB et Circulaire N°006024/MINFI/CAB du 30 novembre 2016",
+      "institution": "Ministère des Finances (MINFI) — République du Cameroun",
+      "legal_date": "2016-11-30",
+      "accessed_at": "2026-08-08",
+      "url": "https://www.sgs.com/fr-cm/-/media/SGSCorp/Documents/Corporate/Technical-Documents/Technical-Guidelines-and-Policies/Guide-des-Importateurs-Cameroun-FR.cdn.fr-cm.pdf",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "PVI — mandat SGS, seuil FOB, exemptions",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "notes": "Référence légale citée dans le guide de l'importateur SGS (novembre 2021) ; texte primaire MINFI non archivé ce cycle."
+    },
+    {
+      "source_id": "CMR-CNCC-BESC-PORTAL",
+      "title": "Portail officiel du Conseil National des Chargeurs du Cameroun (CNCC) — BESC",
+      "institution": "Conseil National des Chargeurs du Cameroun (CNCC)",
+      "legal_date": null,
+      "accessed_at": "2026-08-08",
+      "url": "https://www.cncc.cm/en",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "BESC — autorité, plateforme, entrée en vigueur BESC 3.0",
+      "status": "source_pending_collection",
+      "verification_status": "UNVERIFIED",
+      "notes": "Base légale (arrêté n°00557/MINT du 11/07/2006) identifiée uniquement via source secondaire, non lue sur texte officiel primaire."
     }
   ]
 }

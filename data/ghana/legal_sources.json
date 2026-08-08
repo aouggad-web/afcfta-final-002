@@ -30,6 +30,34 @@
       "status": "source_pending_collection",
       "verification_status": "PENDING_COLLECTION",
       "notes": "Enacted December 2025; effective January 2026."
+    },
+    {
+      "source_id": "GHA-GRA-ICUMS-PORTAL",
+      "title": "ICUMS — Integrated Customs Management System",
+      "institution": "Ghana Revenue Authority (GRA)",
+      "legal_date": "2018-03-29",
+      "accessed_at": "2026-08-08",
+      "url": "https://gra.gov.gh/customs/icums/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "ICUMS — mandat Ghana Link Network Services, remplacement de GCNet/West Blue",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "notes": "Page officielle GRA lue directement ; base légale précise (texte de loi/décret) non trouvée."
+    },
+    {
+      "source_id": "GHA-GSA-EASYPASS-PORTAL",
+      "title": "EasyPASS — GSA, GUTA Clarify New EasyPASS Directive",
+      "institution": "Ghana Standards Authority (GSA)",
+      "legal_date": "2026-07-01",
+      "accessed_at": "2026-08-08",
+      "url": "https://gsa.gov.gh/2026/07/gsa-guta-clarify-new-easypass-directive/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "EasyPASS — reprise en gestion directe par la GSA depuis le 1er juillet 2026, fin du mandat Bureau Veritas",
+      "status": "source_pending_collection",
+      "verification_status": "DOCUMENTED",
+      "notes": "Clarification officielle GSA lue directement ; statut résiduel d'Intertek non confirmé."
     }
   ]
 }

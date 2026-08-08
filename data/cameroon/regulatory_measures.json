@@ -1,0 +1,187 @@
+{
+  "schema_version": "1.0",
+  "country": "CMR",
+  "as_of": "2026-08-08",
+  "measure_type": "import_regulatory_compliance",
+  "notes": "Premier lot réglementaire Cameroun : formalités et contrôles obligatoires à l'importation, distincts des taux fiscaux (TVA/accises couvertes par vat_measures.json/excise_measures.json). Le Cameroun applique le PECAE (contrôle de conformité avant embarquement, avec 3 prestataires mandatés confirmés — Intertek, SGS, TÜV Rheinland), le PVI (contrôle de valeur/classement, SGS), le CIVIC (identification des véhicules importés, SGS) et le BESC (bordereau électronique de suivi des cargaisons, opéré par le CNCC). Sources : articles de presse économique camerounaise (investiraucameroun.com), pages officielles ANOR et CNCC, guide de l'importateur SGS Cameroun (novembre 2021, non revérifié pour une édition 2025-2026 plus récente). Tous les frais non confirmés sur une source primaire actualisée restent NOT_AVAILABLE.",
+  "regulatory_measures": [
+    {
+      "record_id": "CMR-ANOR-PECAE",
+      "measure_name": "Programme d'Évaluation de la Conformité Avant Embarquement (PECAE)",
+      "measure_category": "conformity_assessment",
+      "scope": "Contrôle obligatoire de la conformité des produits importés avant leur embarquement au pays d'origine, sanctionné par une Attestation de Conformité convertie en Certificat de Conformité par l'ANOR, exigé au dédouanement.",
+      "products": "Tous les produits importés depuis l'extension du dispositif par le décret n°2021/3306/PM du 31 mai 2021 (initialement 20% des produits sous le décret de 2015), sous réserve de la liste d'exemptions officielle (envois de faible valeur, dons d'État à État, effets diplomatiques, déménagements, métaux de récupération, presse périodique, etc.).",
+      "transport": "Tous modes ; contrôle réalisé au pays d'origine avant embarquement.",
+      "conditions": "Initiation via le portail ANOR (anorcameroun.info/pecae) puis redirection vers le portail du prestataire d'inspection choisi par l'importateur parmi les 3 prestataires mandatés.",
+      "exemptions": "Envois de valeur inférieure à 2 000 000 FCFA ; armes/munitions ; dons d'État à État ; effets diplomatiques ; déménagements/héritages ; trousseaux ; objets d'art et pierres précieuses ; métaux de récupération ; journaux et périodiques courants (liste non exhaustive, aucun code SH explicite publié dans les sources consultées).",
+      "mandated_actors": [
+        {
+          "actor_name": "Intertek International Limited",
+          "actor_type": "MANDATED_SERVICE_PROVIDER",
+          "legal_status": "Prestataire privé mandaté par convention avec l'État camerounais — reste un acteur d'exécution technique, sans pouvoir réglementaire propre.",
+          "mandating_authority": "Agence des Normes et de la Qualité (ANOR).",
+          "mission": "Évaluation de la conformité des produits importés avant embarquement pour le compte de l'ANOR, dans le cadre du PECAE.",
+          "mandate_basis": "Mandat initial 2015, renouvelé en 2018 et 2021 ; dernier renouvellement signé le 28 mars 2025 pour une durée de 3 ans (ministre par intérim des Mines, de l'Industrie et du Développement technologique, Fuh Calistus Gentry, et Marcel Compaoré, directeur régional Afrique centrale et de l'Ouest d'Intertek).",
+          "mandate_status": "CONFIRMED_TIME_LIMITED",
+          "mandate_status_notes": "Mandat confirmé actif jusqu'à échéance rapportée ~mars 2028 (renouvellement du 28 mars 2025, durée 3 ans). Non présenté comme permanent.",
+          "mandate_duration": "Renouvellement du 28 mars 2025, durée 3 ans (~jusqu'en 2028).",
+          "mandate_evidence": [
+            {
+              "date": "2025-04-02",
+              "title": "Importation : le Cameroun confie pour la 3e fois au Britannique Intertek le contrôle de conformité des marchandises",
+              "publisher": "Investir au Cameroun",
+              "url": "https://www.investiraucameroun.com/gestion-publique/0204-21850-importation-le-cameroun-confie-pour-la-3e-fois-au-britannique-intertek-le-controle-de-conformite-des-marchandises"
+            }
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Attestation de Conformité (AC), convertie par l'ANOR en Certificat de Conformité (CoC).",
+          "verification_status": "DOCUMENTED",
+          "pending_primary_archive": true,
+          "notes": "Rôle exact réparti entre Intertek, SGS et TÜV Rheinland (zones géographiques ou catégories de produits assignées à chacun) non trouvé dans les sources consultées."
+        },
+        {
+          "actor_name": "SGS S.A. (Société Générale de Surveillance)",
+          "actor_type": "MANDATED_SERVICE_PROVIDER",
+          "legal_status": "Prestataire privé mandaté — acteur d'exécution technique, sans pouvoir réglementaire propre.",
+          "mandating_authority": "Agence des Normes et de la Qualité (ANOR).",
+          "mission": "Évaluation de la conformité des produits importés avant embarquement pour le compte de l'ANOR, dans le cadre du PECAE.",
+          "mandate_basis": "Mandaté depuis la phase pilote (31 août 2016 selon ANOR) ; toujours actif en 2021 selon le guide de l'importateur SGS.",
+          "mandate_status": "CONFIRMED_UNDATED_END",
+          "mandate_status_notes": "Mandat confirmé par source primaire SGS (guide de l'importateur, novembre 2021) et par l'ANOR (avril 2022) ; aucune date d'expiration ou de renouvellement plus récente trouvée — à ne pas présenter comme mandat permanent sans réserve.",
+          "mandate_duration": "Depuis le 31 août 2016 (phase pilote) ; échéance non trouvée.",
+          "mandate_evidence": [
+            {
+              "date": "2022-04-11",
+              "title": "PECAE : rencontre avec les opérateurs économiques du Littoral",
+              "publisher": "ANOR",
+              "url": "https://anor.cm/articles/programme-devaluation-de-la-conformite-avant-embarquement-des-marchandises-importes-en-republique-du-cameroun-pecae-rencontre-avec-les-operateurs"
+            },
+            {
+              "date": "2021-11-01",
+              "title": "Guide de l'Importateur — Trade Facilitation Services (TFS)",
+              "publisher": "SGS Cameroun S.A.",
+              "url": "https://www.sgs.com/fr-cm/-/media/SGSCorp/Documents/Corporate/Technical-Documents/Technical-Guidelines-and-Policies/Guide-des-Importateurs-Cameroun-FR.cdn.fr-cm.pdf"
+            }
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Attestation de Conformité (AC), convertie par l'ANOR en Certificat de Conformité (CoC).",
+          "verification_status": "PARTIAL",
+          "pending_primary_archive": true,
+          "notes": "Frais publiés dans le guide SGS de novembre 2021 (route A : 0,45% ad valorem, min. 300€/max. 7000€ ; route B : 0,40% ; route C : 0,27% ; enregistrement produit 375€ pour 15 premiers articles) — non repris ici car non revérifiés pour 2025-2026 et susceptibles d'avoir changé ; laissés NOT_AVAILABLE par prudence."
+        },
+        {
+          "actor_name": "TÜV Rheinland",
+          "actor_type": "MANDATED_SERVICE_PROVIDER",
+          "legal_status": "Prestataire privé mandaté — acteur d'exécution technique, sans pouvoir réglementaire propre.",
+          "mandating_authority": "Agence des Normes et de la Qualité (ANOR).",
+          "mission": "Évaluation de la conformité des produits importés avant embarquement pour le compte de l'ANOR, dans le cadre du PECAE — présenté par l'ANOR comme le 3e prestataire mandaté.",
+          "mandate_basis": "Mandat annoncé par l'ANOR le 13 septembre 2023.",
+          "mandate_status": "CONFIRMED_UNDATED_END",
+          "mandate_status_notes": "Mandat confirmé par communiqué officiel ANOR ; aucune durée ou date d'expiration publiée dans la source consultée.",
+          "mandate_duration": "Depuis le 13 septembre 2023 ; échéance non trouvée.",
+          "mandate_evidence": [
+            {
+              "date": "2023-09-13",
+              "title": "TÜV RHEINLAND : 3ème prestataire mandaté par le gouvernement du Cameroun pour le PECAE",
+              "publisher": "ANOR",
+              "url": "https://anor.cm/articles/tuv-rheinland-3eme-prestataire-mandate-par-le-gouvernement-du-cameroun-pour-les-operations-devaluation-de-la-conformite-des-produits-soumis-au-peca"
+            }
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Attestation de Conformité (AC), convertie par l'ANOR en Certificat de Conformité (CoC).",
+          "verification_status": "DOCUMENTED",
+          "pending_primary_archive": true,
+          "notes": ""
+        }
+      ],
+      "documents": [
+        "Attestation de Conformité (AC)",
+        "Certificat de Conformité (CoC)"
+      ],
+      "authority": "Agence des Normes et de la Qualité (ANOR), sous tutelle du ministère en charge de l'Industrie.",
+      "platform": "https://anorcameroun.info/pecae",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "CMR-PECAE-DECRETS-2015-2021",
+      "legal_reference": "Décret n°2015/1875/PM du 1er juillet 2015 (institution du PECAE, 20% des produits importés) et décret n°2021/3306/PM du 31 mai 2021 (extension à tous les produits importés, avec liste d'exemptions).",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "CMR-MINFI-PVI",
+      "measure_name": "Programme de Vérification des Importations (PVI)",
+      "measure_category": "valuation_control",
+      "scope": "Contrôle obligatoire de la valeur en douane et du classement tarifaire des marchandises importées, sanctionné par un Rapport sur la Valeur et le Classement Tarifaire (RVC) exigé au dédouanement.",
+      "products": "Toute importation dont la valeur FOB est supérieure ou égale à 2 000 000 FCFA, sous réserve d'une liste d'exemptions officielle.",
+      "transport": "Tous modes.",
+      "conditions": "Déclaration d'Importation (DI) initiée sur la plateforme e-GUCE du Guichet Unique ; régularisations sur la plateforme E-Force ; taxe de vérification versée par virement bancaire au compte du Ministère des Finances.",
+      "exemptions": "Dons ; missions diplomatiques ; déménagements ; médicaments ; pétrole brut ; animaux vivants (liste non exhaustive, selon la circulaire N°006024/MINFI/CAB du 30 novembre 2016).",
+      "mandated_actors": [
+        {
+          "actor_name": "SGS Cameroun S.A.",
+          "actor_type": "MANDATED_SERVICE_PROVIDER",
+          "legal_status": "Prestataire privé mandaté — acteur d'exécution technique, sans pouvoir réglementaire propre.",
+          "mandating_authority": "Ministère des Finances (MINFI).",
+          "mission": "Vérification de la valeur en douane et du classement tarifaire des importations pour le compte du MINFI, dans le cadre du PVI.",
+          "mandate_basis": "Instruction Ministérielle N°000625/MINFI/CAB du 30 novembre 2016 ; Circulaire N°006024/MINFI/CAB du 30 novembre 2016.",
+          "mandate_status": "CONFIRMED_UNDATED_END",
+          "mandate_status_notes": "Mandat confirmé par document primaire SGS (guide de l'importateur, novembre 2021) ; non revérifié pour une version plus récente 2025-2026.",
+          "mandate_duration": "Depuis l'instruction du 30 novembre 2016 ; échéance non trouvée.",
+          "mandate_evidence": [
+            {
+              "date": "2021-11-01",
+              "title": "Guide de l'Importateur — Trade Facilitation Services (TFS)",
+              "publisher": "SGS Cameroun S.A.",
+              "url": "https://www.sgs.com/fr-cm/-/media/SGSCorp/Documents/Corporate/Technical-Documents/Technical-Guidelines-and-Policies/Guide-des-Importateurs-Cameroun-FR.cdn.fr-cm.pdf"
+            }
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Rapport sur la Valeur et le Classement Tarifaire (RVC).",
+          "verification_status": "PARTIAL",
+          "pending_primary_archive": true,
+          "notes": "Le PVI comporte une taxe étatique de vérification distincte des honoraires du prestataire (rapportée à 0,95% de la valeur FOB dans le guide SGS de 2021) — non reprise ici car il s'agit d'une taxe publique et non des frais du prestataire, et non revérifiée pour 2025-2026."
+        }
+      ],
+      "documents": [
+        "Déclaration d'Importation (DI)",
+        "Rapport sur la Valeur et le Classement Tarifaire (RVC)"
+      ],
+      "authority": "Ministère des Finances (MINFI), via le Ministère du Commerce pour l'inscription au fichier des importateurs.",
+      "platform": "e-GUCE (Guichet Unique des Opérations du Commerce Extérieur)",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "CMR-PVI-INSTRUCTION-2016",
+      "legal_reference": "Instruction Ministérielle N°000625/MINFI/CAB du 30 novembre 2016 ; Circulaire N°006024/MINFI/CAB du 30 novembre 2016 (liste des marchandises non soumises au PVI).",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "CMR-CNCC-BESC",
+      "measure_name": "Bordereau Électronique de Suivi des Cargaisons (BESC)",
+      "measure_category": "cargo_tracking_note",
+      "scope": "Document électronique obligatoire de suivi des cargaisons pour tout transport maritime à destination ou en provenance du Cameroun, à valider 48h avant l'arrivée du navire.",
+      "products": "Marchandises transportées par voie maritime à destination/en provenance du Cameroun.",
+      "transport": "Fret maritime.",
+      "conditions": "Émission via la plateforme du CNCC (besc.cncc.cm, version BESC 3.0). Depuis le 1er décembre 2024, plus d'émission pour le fret groupé (consolidé).",
+      "exemptions": "NOT_AVAILABLE",
+      "documents": [
+        "Bordereau Électronique de Suivi des Cargaisons (BESC/ECTN)"
+      ],
+      "authority": "Conseil National des Chargeurs du Cameroun (CNCC), établissement public administratif.",
+      "platform": "https://besc.cncc.cm",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "CMR-CNCC-BESC-PORTAL",
+      "legal_reference": "Arrêté du Ministre des Transports n°00557/MINT du 11 juillet 2006, modifié par l'arrêté n°000289/MINT du 25 mars 2007 — références identifiées uniquement via source secondaire, non lues sur texte officiel primaire.",
+      "verification_status": "UNVERIFIED",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    }
+  ]
+}

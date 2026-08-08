@@ -25,7 +25,7 @@ def _actor(country: str, name_fragment: str):
 
 
 def test_regulatory_runtime_supports_exact_pilot_countries():
-    assert get_supported_regulatory_countries() == ["CIV", "COD"]
+    assert get_supported_regulatory_countries() == ["CIV", "CMR", "COD", "GHA", "KEN", "NGA"]
 
 
 def test_cod_bivac_is_exposed_as_a_mandated_actor_not_an_authority():

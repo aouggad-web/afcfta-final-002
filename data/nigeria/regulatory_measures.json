@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "country": "NGA",
+  "as_of": "2026-08-08",
+  "measure_type": "import_regulatory_compliance",
+  "notes": "Premier lot réglementaire Nigeria : formalités et contrôles obligatoires à l'importation, distincts des taux fiscaux (vat_measures.json). Le programme SONCAP (Standards Organisation of Nigeria) est confirmé, mais les deux pages officielles son.gov.ng consultées donnent des listes de prestataires (IAF) partiellement contradictoires — seuls les prestataires apparaissant sur les DEUX listes sont repris ici comme mandatés confirmés. Le programme NAFDAC CRIA (Clean Report of Inspection and Analysis) existe mais la liste actuelle des agents n'a pas pu être extraite d'une source primaire. Point important : l'International Cargo Tracking Note (ICTN), annoncée depuis 2019 et approuvée politiquement à plusieurs reprises (2023, 2024, 2025), n'était TOUJOURS PAS EN VIGUEUR au moment de cette recherche (08/08/2026) — elle n'est donc pas incluse comme formalité active. Les sites commerciaux revendiquant un « ICTN Nigeria obligatoire » ne sont pas des sources officielles et ne doivent pas être suivis.",
+  "regulatory_measures": [
+    {
+      "record_id": "NGA-SON-SONCAP",
+      "measure_name": "Standards Organisation of Nigeria Conformity Assessment Programme (SONCAP)",
+      "measure_category": "conformity_assessment",
+      "scope": "Contrôle obligatoire de conformité des produits réglementés importés au Nigeria, sanctionné par un SONCAP Certificate (SC) exigé au dédouanement.",
+      "products": "Produits réglementés importés au Nigeria, à l'exception explicite des aliments, médicaments, dispositifs médicaux, produits chimiques bruts destinés aux fabricants, équipements militaires, contrebande, et produits d'occasion (sauf automobiles).",
+      "transport": "Tous modes.",
+      "conditions": "Product Certificate (PC1/PC2/PC3) puis Certificate of Conformity (CoC) délivré par un organisme d'inspection accrédité (IAF), puis SONCAP Certificate délivré par SON.",
+      "exemptions": "Aliments, médicaments, dispositifs médicaux (relevant de NAFDAC) ; produits chimiques bruts destinés aux fabricants ; équipements militaires ; produits d'occasion (sauf automobiles).",
+      "mandated_actors": [
+        {
+          "actor_name": "COTECNA Inspection Services SA / COTECNA Verification Services Nigeria LTD",
+          "actor_type": "MANDATED_SERVICE_PROVIDER",
+          "legal_status": "Prestataire privé mandaté (Independent Accredited Firm — IAF) — acteur d'exécution technique, sans pouvoir réglementaire propre.",
+          "mandating_authority": "Standards Organisation of Nigeria (SON).",
+          "mission": "Vérification de conformité des produits importés au Nigeria pour le compte de SON, dans le cadre du SONCAP.",
+          "mandate_basis": "Accréditation confirmée sur les deux pages officielles SON consultées (soncapservice et soncap-faq).",
+          "mandate_status": "CONFIRMED_UNDATED_END",
+          "mandate_status_notes": "Mandat confirmé par deux pages officielles son.gov.ng concordantes sur ce prestataire précis (malgré des divergences sur d'autres prestataires entre les deux pages) ; aucune date d'expiration publiée.",
+          "mandate_duration": "Non trouvée.",
+          "mandate_evidence": [
+            {
+              "date": "2026-08-08",
+              "title": "SONCAP",
+              "publisher": "Standards Organisation of Nigeria (SON)",
+              "url": "https://son.gov.ng/soncapservice/"
+            },
+            {
+              "date": "2026-08-08",
+              "title": "SONCAP FAQ",
+              "publisher": "Standards Organisation of Nigeria (SON)",
+              "url": "https://son.gov.ng/soncap-faq/"
+            }
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Certificate of Conformity (CoC), converti en SONCAP Certificate (SC) par SON.",
+          "verification_status": "PARTIAL",
+          "pending_primary_archive": true,
+          "notes": "D'autres prestataires (Bureau Veritas, Intertek/Intertek GTS International Nigeria, SGS) apparaissent sur des sources partielles ou contradictoires et ne sont pas repris ici comme mandat confirmé sans recoupement supplémentaire."
+        }
+      ],
+      "documents": [
+        "Product Certificate (PC1/PC2/PC3)",
+        "Certificate of Conformity (CoC)",
+        "SONCAP Certificate (SC)"
+      ],
+      "authority": "Standards Organisation of Nigeria (SON).",
+      "platform": "https://son.gov.ng/soncapservice/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "NGA-SON-SONCAP-PORTAL",
+      "legal_reference": "Référence légale précise (texte réglementaire, numéro de décret/loi) non trouvée dans les sources consultées ; SON opère sous ISO 9001:2015.",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "NGA-NAFDAC-CRIA",
+      "measure_name": "Clean Report of Inspection and Analysis (CRIA)",
+      "measure_category": "conformity_assessment",
+      "scope": "Contrôle avant expédition des produits réglementés par NAFDAC (alimentaire, pharmaceutique, cosmétique), sanctionné par un Clean Report of Inspection and Analysis (CRIA).",
+      "products": "Produits réglementés par NAFDAC importés notamment de Chine et d'Inde.",
+      "transport": "Tous modes.",
+      "conditions": "Programme distinct du SONCAP, opéré via des « Pre-Shipment Inspection and Testing Agents » accrédités par NAFDAC.",
+      "exemptions": "NOT_AVAILABLE",
+      "documents": [
+        "Clean Report of Inspection and Analysis (CRIA)"
+      ],
+      "authority": "National Agency for Food and Drug Administration and Control (NAFDAC).",
+      "platform": "https://nafdac.gov.ng/regulatory-resources/pre-shipment-inspection-and-testing-agents/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "NGA-NAFDAC-CRIA-PORTAL",
+      "legal_reference": "Référence légale précise non identifiée dans les sources consultées.",
+      "verification_status": "UNVERIFIED",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": []
+    }
+  ]
+}
