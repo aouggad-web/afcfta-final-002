@@ -3,6 +3,11 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from routes.regulatory_qa import router
+from services.regulatory_master_registry_service import get_regulatory_registry
+
+# Anchored to the master registry's own as_of rather than the wall clock so
+# this test stays deterministic regardless of when CI happens to run.
+_REGISTRY_AS_OF = get_regulatory_registry()["as_of"]
 
 
 def _client():
@@ -31,9 +36,20 @@ def test_contradictions_endpoint_is_currently_empty():
 
 
 def test_stale_countries_endpoint_is_currently_empty():
-    response = _client().get("/regulatory-qa/stale-countries")
+    response = _client().get(
+        "/regulatory-qa/stale-countries", params={"reference_date": _REGISTRY_AS_OF}
+    )
     assert response.status_code == 200
     payload = response.json()
     assert payload["success"] is True
     assert payload["total"] == 0
     assert payload["stale_countries"] == []
+
+
+def test_stale_countries_endpoint_accepts_no_reference_date():
+    """Default behavior (no query param) still works — production monitoring
+    uses the wall clock; only the regression test above is anchored."""
+
+    response = _client().get("/regulatory-qa/stale-countries")
+    assert response.status_code == 200
+    assert response.json()["success"] is True

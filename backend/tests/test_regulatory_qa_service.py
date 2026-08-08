@@ -8,11 +8,14 @@ that introduces a real contradiction or lets a dataset go stale cannot pass
 silently.
 """
 
-from datetime import date
+from datetime import date, datetime
 
 import pytest
 from services.regulatory_compliance_service import COUNTRY_REGULATORY_PATHS
-from services.regulatory_master_registry_service import AFRICAN_COUNTRY_ISO3
+from services.regulatory_master_registry_service import (
+    AFRICAN_COUNTRY_ISO3,
+    get_regulatory_registry,
+)
 from services.regulatory_qa_service import (
     _VERIFICATION_STATUS_SCHEMA_COUNTRIES,
     find_stale_countries,
@@ -20,6 +23,12 @@ from services.regulatory_qa_service import (
     get_regulatory_coverage_report,
     get_regulatory_qa_report,
 )
+
+# Anchored to the master registry's own as_of rather than the wall clock
+# (date.today()) so these assertions stay deterministic regardless of when
+# CI happens to run — a real "the data is currently clean" check, not one
+# that quietly starts failing once enough real time passes.
+_REGISTRY_AS_OF = datetime.strptime(get_regulatory_registry()["as_of"], "%Y-%m-%d").date()
 
 
 def test_coverage_report_accounts_for_every_tracked_country_exactly_once():
@@ -96,7 +105,7 @@ def test_contradiction_detector_flags_a_measure_overclaiming_its_source(monkeypa
 
 
 def test_no_country_is_currently_stale():
-    assert find_stale_countries() == []
+    assert find_stale_countries(reference_date=_REGISTRY_AS_OF) == []
 
 
 def test_staleness_detector_flags_an_old_as_of_date(monkeypatch):
@@ -138,7 +147,7 @@ def test_staleness_detector_flags_an_unparseable_as_of_date(monkeypatch):
 
 
 def test_full_qa_report_bundles_all_three_controls():
-    report = get_regulatory_qa_report()
+    report = get_regulatory_qa_report(reference_date=_REGISTRY_AS_OF)
     assert set(report.keys()) == {
         "coverage",
         "verification_status_contradictions",

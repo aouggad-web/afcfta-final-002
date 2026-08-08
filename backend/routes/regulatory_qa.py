@@ -2,7 +2,10 @@
 coverage reporting, verification-status contradiction detection, and dataset
 staleness detection."""
 
-from fastapi import APIRouter
+from datetime import date
+from typing import Optional
+
+from fastapi import APIRouter, Query
 from services.regulatory_qa_service import (
     find_stale_countries,
     find_verification_status_contradictions,
@@ -35,9 +38,19 @@ def get_contradictions_endpoint():
 
 
 @router.get("/stale-countries")
-def get_stale_countries_endpoint():
+def get_stale_countries_endpoint(
+    reference_date: Optional[date] = Query(
+        default=None,
+        description=(
+            "Snapshot date to evaluate staleness against (defaults to today). "
+            "Pass a fixed date for deterministic, reproducible checks — e.g. "
+            "against the master registry's as_of — instead of the wall clock."
+        ),
+    )
+):
     """Published countries whose dataset `as_of` is older than the default
-    staleness threshold — flagged for re-verification, never auto-renewed."""
+    staleness threshold relative to reference_date — flagged for
+    re-verification, never auto-renewed."""
 
-    stale = find_stale_countries()
+    stale = find_stale_countries(reference_date=reference_date)
     return {"success": True, "total": len(stale), "stale_countries": stale}

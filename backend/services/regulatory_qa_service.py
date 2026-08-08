@@ -95,7 +95,7 @@ def find_verification_status_contradictions() -> List[Dict[str, Any]]:
     contradictions: List[Dict[str, Any]] = []
     for iso3 in sorted(_VERIFICATION_STATUS_SCHEMA_COUNTRIES & set(COUNTRY_REGULATORY_PATHS)):
         compliance = get_country_regulatory_compliance(iso3)
-        sources_by_id = {s["source_id"]: s for s in _load_legal_sources(iso3)}
+        sources_by_id = {s["source_id"]: s for s in _load_legal_sources(iso3) if s.get("source_id")}
         for measure in compliance["measures"]:
             source = sources_by_id.get(measure["source_id"])
             if source is None or "verification_status" not in source:
@@ -160,11 +160,11 @@ def find_stale_countries(
     return stale
 
 
-def get_regulatory_qa_report() -> Dict[str, Any]:
+def get_regulatory_qa_report(reference_date: Optional[date] = None) -> Dict[str, Any]:
     """Convenience aggregate of all three QA controls for a single call."""
 
     return {
         "coverage": get_regulatory_coverage_report(),
         "verification_status_contradictions": find_verification_status_contradictions(),
-        "stale_countries": find_stale_countries(),
+        "stale_countries": find_stale_countries(reference_date=reference_date),
     }
