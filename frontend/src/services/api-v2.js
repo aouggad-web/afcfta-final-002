@@ -109,4 +109,10 @@ export const regulatoryApi = {
 
   getMasterRegistryCountry: (countryIso3) =>
     apiFetch(`/api/regulatory-master-registry/country/${encodeURIComponent(countryIso3)}`),
+
+  getQACoverageReport: () => apiFetch('/api/regulatory-qa/coverage-report'),
+
+  getQAContradictions: () => apiFetch('/api/regulatory-qa/contradictions'),
+
+  getQAStaleCountries: () => apiFetch('/api/regulatory-qa/stale-countries'),
 };

@@ -5,6 +5,7 @@ import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
 import { Alert, AlertTitle, AlertDescription } from '../ui/alert';
 import { CSVExportButton, JSONExportButton } from '../common/ExportTools';
+import RegulatoryQAPanel from './RegulatoryQAPanel';
 import { regulatoryApi } from '../../services/api-v2';
 import { AFRICAN_COUNTRIES } from '../../utils/countryCodes';
 import { toast } from '../../hooks/use-toast';
@@ -272,6 +273,8 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
 
   return (
     <div className="space-y-6">
+      <RegulatoryQAPanel language={language} />
+
       <Card className="shadow-xl border border-[rgba(212,175,55,0.2)] bg-gradient-to-br from-slate-800 to-slate-900">
         <CardHeader className="bg-gradient-to-r from-[#1B232C] to-[#15202A] border-b border-[rgba(212,175,55,0.14)]">
           <CardTitle className="text-2xl font-bold text-amber-400 flex items-center gap-2">
