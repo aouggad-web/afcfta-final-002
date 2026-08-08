@@ -91,3 +91,22 @@ export const apiV2 = {
       `/api/v2/mobile/lookup?hs_code=${encodeURIComponent(hsCode)}&country=${encodeURIComponent(country)}`
     ),
 };
+
+/**
+ * Regulatory compliance API (LOT 5, issue #360) — special import formalities and
+ * government-mandated service providers. Informational only: never mixed with
+ * the ZLECAf/MFN tariff calculator, never computes fees for unproven amounts.
+ */
+export const regulatoryApi = {
+  getSupportedCountries: () => apiFetch('/api/regulatory-compliance/countries'),
+
+  getCountryCompliance: (countryIso3) =>
+    apiFetch(`/api/regulatory-compliance/country/${encodeURIComponent(countryIso3)}`),
+
+  getMasterRegistryCountries: () => apiFetch('/api/regulatory-master-registry/countries'),
+
+  getMasterRegistry: () => apiFetch('/api/regulatory-master-registry/registry'),
+
+  getMasterRegistryCountry: (countryIso3) =>
+    apiFetch(`/api/regulatory-master-registry/country/${encodeURIComponent(countryIso3)}`),
+};
