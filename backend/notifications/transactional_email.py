@@ -10,7 +10,7 @@ domain.
 
 Official identity (all overridable via environment variables):
   - Sender  : "AfCFTA ZLECAf <noreply@afcfta-zlecaf.com>"
-  - Reply-To: support@afcfta-zlecaf.com
+  - Reply-To: contact@afcfta-zlecaf.com
   - App URL : https://afcfta-zlecaf.com
 
 Configuration (environment variables)
@@ -57,7 +57,7 @@ logger = logging.getLogger(__name__)
 
 # Official SaaS identity — used as safe defaults when env vars are unset.
 DEFAULT_FROM = "AfCFTA ZLECAf <noreply@afcfta-zlecaf.com>"
-DEFAULT_REPLY_TO = "support@afcfta-zlecaf.com"
+DEFAULT_REPLY_TO = "contact@afcfta-zlecaf.com"
 DEFAULT_APP_BASE_URL = "https://afcfta-zlecaf.com"
 BRAND_NAME = "AfCFTA ZLECAf"
 
