@@ -109,7 +109,8 @@
       "legal_reference": "Décret n°2015/1875/PM du 1er juillet 2015 (institution du PECAE, 20% des produits importés) et décret n°2021/3306/PM du 31 mai 2021 (extension à tous les produits importés, avec liste d'exemptions).",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "DOCUMENTED"
     },
     {
       "record_id": "CMR-MINFI-PVI",
@@ -159,7 +160,8 @@
       "legal_reference": "Instruction Ministérielle N°000625/MINFI/CAB du 30 novembre 2016 ; Circulaire N°006024/MINFI/CAB du 30 novembre 2016 (liste des marchandises non soumises au PVI).",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "DOCUMENTED"
     },
     {
       "record_id": "CMR-CIVIC-VEHICLES",
@@ -209,7 +211,8 @@
       "legal_reference": "Référence légale précise non trouvée dans les sources consultées ; dispositif documenté dans le guide de l'importateur SGS (novembre 2021).",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "DOCUMENTED"
     },
     {
       "record_id": "CMR-CNCC-BESC",
@@ -231,7 +234,8 @@
       "legal_reference": "Arrêté du Ministre des Transports n°00557/MINT du 11 juillet 2006, modifié par l'arrêté n°000289/MINT du 25 mars 2007 — références identifiées uniquement via source secondaire, non lues sur texte officiel primaire.",
       "verification_status": "UNVERIFIED",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "NOT_AVAILABLE"
     }
   ]
 }

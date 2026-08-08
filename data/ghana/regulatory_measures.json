@@ -52,7 +52,8 @@
       "legal_reference": "Accord gouvernemental du 29 mars 2018 (Ministère du Commerce et de l'Industrie / Ghana Link Services) — base légale précise non trouvée.",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "DOCUMENTED"
     },
     {
       "record_id": "GHA-GSA-EASYPASS",
@@ -132,7 +133,8 @@
       "legal_reference": "Standards Authority Act, 1973 (compétence générale de la GSA en évaluation de la conformité) ; aucun texte réglementaire spécifique nommant EasyPASS identifié.",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "DOCUMENTED"
     }
   ]
 }

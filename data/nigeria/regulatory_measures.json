@@ -60,7 +60,8 @@
       "legal_reference": "Référence légale précise (texte réglementaire, numéro de décret/loi) non trouvée dans les sources consultées ; SON opère sous ISO 9001:2015.",
       "verification_status": "PARTIAL",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "DOCUMENTED"
     },
     {
       "record_id": "NGA-NAFDAC-CRIA",
@@ -82,7 +83,8 @@
       "legal_reference": "Référence légale précise non identifiée dans les sources consultées.",
       "verification_status": "UNVERIFIED",
       "pending_primary_archive": true,
-      "hs_codes_explicit": []
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "NOT_AVAILABLE"
     }
   ]
 }

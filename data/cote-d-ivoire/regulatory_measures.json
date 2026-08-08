@@ -82,7 +82,8 @@
         "official_delay": null,
         "status": "NOT_AVAILABLE"
       },
-      "fee_category": "REGULATORY_FEE"
+      "fee_category": "REGULATORY_FEE",
+      "mandated_actor_status": "DOCUMENTED"
     },
     {
       "record_id": "CIV-DOUANES-RFCV",
@@ -121,7 +122,8 @@
         "official_delay": null,
         "status": "NOT_AVAILABLE"
       },
-      "fee_category": "REGULATORY_FEE"
+      "fee_category": "REGULATORY_FEE",
+      "mandated_actor_status": "NOT_AVAILABLE"
     },
     {
       "record_id": "CIV-OIC-BSC",
@@ -160,7 +162,8 @@
         "official_delay": null,
         "status": "NOT_AVAILABLE"
       },
-      "fee_category": "REGULATORY_FEE"
+      "fee_category": "REGULATORY_FEE",
+      "mandated_actor_status": "NOT_AVAILABLE"
     },
     {
       "record_id": "CIV-COMMERCE-VOC",
@@ -199,7 +202,8 @@
         "official_delay": null,
         "status": "NOT_AVAILABLE"
       },
-      "fee_category": "REGULATORY_FEE"
+      "fee_category": "REGULATORY_FEE",
+      "mandated_actor_status": "NOT_AVAILABLE"
     }
   ]
 }
