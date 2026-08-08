@@ -281,7 +281,13 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
                 f"Regulatory measure {raw_measure['record_id']} has non-canonical "
                 f"mandated_actor_status {actor_status!r}"
             )
-        has_actors = bool(raw_measure.get("mandated_actors"))
+        raw_actors = raw_measure.get("mandated_actors", [])
+        if not isinstance(raw_actors, list):
+            raise ValueError(
+                f"Regulatory measure {raw_measure['record_id']} has a non-list mandated_actors "
+                f"({type(raw_actors).__name__})"
+            )
+        has_actors = bool(raw_actors)
         if actor_status == "DOCUMENTED" and not has_actors:
             raise ValueError(
                 f"Regulatory measure {raw_measure['record_id']} mandated_actor_status is "
@@ -295,8 +301,7 @@ def get_country_regulatory_compliance(country_iso3: str) -> Optional[Dict[str, A
 
         measure = copy.deepcopy(raw_measure)
         normalized_actors = [
-            _normalize_actor(actor, raw_measure, source_record_path)
-            for actor in raw_measure.get("mandated_actors", [])
+            _normalize_actor(actor, raw_measure, source_record_path) for actor in raw_actors
         ]
         measure["mandated_actors"] = normalized_actors
         measure["source_record_path"] = source_record_path

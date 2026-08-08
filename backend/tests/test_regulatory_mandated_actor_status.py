@@ -130,3 +130,23 @@ def test_mandated_actor_status_is_required_on_every_measure(monkeypatch):
     monkeypatch.setattr(service, "_read_json", lambda _path: altered)
     with pytest.raises(ValueError, match="missing required fields"):
         service.get_country_regulatory_compliance("CIV")
+
+
+def test_mandated_actors_non_list_value_is_rejected(monkeypatch):
+    """A dataset mistake setting mandated_actors to a dict/string must fail
+    closed with a clear error, not silently pass has_actors and crash later
+    while normalizing actors."""
+    from services import regulatory_compliance_service as service
+
+    source = service._read_json("data/cote-d-ivoire/regulatory_measures.json")
+    altered_measure = dict(source["regulatory_measures"][1])
+    altered_measure["mandated_actors"] = "BIVAC"
+    altered = {
+        **source,
+        "regulatory_measures": [source["regulatory_measures"][0], altered_measure]
+        + [dict(measure) for measure in source["regulatory_measures"][2:]],
+    }
+
+    monkeypatch.setattr(service, "_read_json", lambda _path: altered)
+    with pytest.raises(ValueError, match="non-list mandated_actors"):
+        service.get_country_regulatory_compliance("CIV")
