@@ -167,4 +167,44 @@ describe('RegulatoryComplianceTab', () => {
     expect(screen.getByText('Guichet Unique du Commerce Extérieur (GUCE-CI)')).toBeInTheDocument();
     expect(screen.queryByText('Bordereau de Suivi des Cargaisons (BSC)')).not.toBeInTheDocument();
   });
+
+  it('ne rend jamais un lien cliquable pour un schéma non http(s) (javascript:/data:)', async () => {
+    regulatoryApi.getCountryCompliance.mockResolvedValue({
+      success: true,
+      country_iso3: 'CIV',
+      regulatory_compliance: {
+        ...CIV_COMPLIANCE,
+        measures: [
+          {
+            ...CIV_COMPLIANCE.measures[0],
+            platform: 'javascript:alert(1)',
+            mandated_actors: [
+              {
+                ...CIV_COMPLIANCE.measures[0].mandated_actors[0],
+                mandate_evidence: [
+                  {
+                    date: '2023-03-22',
+                    title: 'Preuve malveillante',
+                    publisher: 'Test',
+                    url: 'javascript:alert(1)',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    render(<RegulatoryComplianceTab language="fr" />);
+    await waitFor(() => expect(regulatoryApi.getSupportedCountries).toHaveBeenCalled());
+    await userEvent.click(screen.getByRole('combobox', { name: /choisir un pays/i }));
+    await userEvent.click(await screen.findByText(/Côte d'Ivoire/));
+    await screen.findByText('Guichet Unique du Commerce Extérieur (GUCE-CI)');
+
+    // Le texte doit rester visible mais jamais dans un <a href="javascript:...">
+    expect(screen.getByText('javascript:alert(1)')).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /javascript:alert/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Preuve malveillante/ })).not.toBeInTheDocument();
+  });
 });

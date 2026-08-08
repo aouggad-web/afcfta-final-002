@@ -116,7 +116,9 @@ export function CSVExportButton({
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // Différé au tick suivant : révoquer immédiatement peut interrompre le
+    // téléchargement sur certains navigateurs avant qu'il n'ait démarré.
+    setTimeout(() => URL.revokeObjectURL(url), 0);
   };
 
   return (
@@ -168,7 +170,9 @@ export function JSONExportButton({
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // Différé au tick suivant : révoquer immédiatement peut interrompre le
+    // téléchargement sur certains navigateurs avant qu'il n'ait démarré.
+    setTimeout(() => URL.revokeObjectURL(url), 0);
   };
 
   return (

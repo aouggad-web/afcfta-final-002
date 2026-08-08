@@ -57,6 +57,7 @@ const TEXTS = {
     disclaimer:
       "Simulation informative — non opposable à l'administration douanière. Un prestataire privé est présenté uniquement comme acteur d'exécution dans la limite d'un mandat documenté.",
     selectPlaceholder: '🔍 Choisir un pays',
+    selectAriaLabel: 'Choisir un pays',
     unavailableCountries: (n) =>
       `${n} pays supplémentaires suivis par le registre maître mais sans dataset encore publié (NOT_AVAILABLE).`,
     loadError: 'Impossible de charger les données réglementaires',
@@ -102,6 +103,7 @@ const TEXTS = {
     disclaimer:
       'Informative simulation — not opposable to customs administration. A private provider is presented only as an execution actor within the limit of a documented mandate.',
     selectPlaceholder: '🔍 Choose a country',
+    selectAriaLabel: 'Choose a country',
     unavailableCountries: (n) =>
       `${n} additional countries tracked by the master registry but with no dataset published yet (NOT_AVAILABLE).`,
     loadError: 'Unable to load regulatory-compliance data',
@@ -146,6 +148,19 @@ function countryLabel(iso3, language) {
   const entry = AFRICAN_COUNTRIES[iso3];
   if (!entry) return iso3;
   return `${entry.flag} ${language === 'fr' ? entry.name_fr : entry.name_en}`;
+}
+
+// N'autorise que http(s) pour tout lien externe rendu depuis des données
+// sourcées : évite qu'une URL malformée (javascript:, data:) dans un JSON de
+// données ne devienne un vecteur XSS.
+function safeHref(url) {
+  if (!url) return undefined;
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? url : undefined;
+  } catch {
+    return undefined;
+  }
 }
 
 function matchesSearch(measure, query) {
@@ -275,7 +290,7 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
 
           <Select value={selectedCountry} onValueChange={handleSelectCountry}>
             <SelectTrigger
-              aria-label={t.selectPlaceholder}
+              aria-label={t.selectAriaLabel}
               className="text-lg font-semibold border border-[rgba(212,175,55,0.25)] focus:border-[rgba(212,175,55,0.5)]"
             >
               <SelectValue placeholder={t.selectPlaceholder} />
@@ -397,14 +412,18 @@ export default function RegulatoryComplianceTab({ language = 'fr' }) {
                   {measure.platform && (
                     <div>
                       <span className="font-semibold text-slate-400">{t.platform}: </span>
-                      <a
-                        href={measure.platform}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-amber-400 underline"
-                      >
-                        {measure.platform}
-                      </a>
+                      {safeHref(measure.platform) ? (
+                        <a
+                          href={safeHref(measure.platform)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-amber-400 underline"
+                        >
+                          {measure.platform}
+                        </a>
+                      ) : (
+                        measure.platform
+                      )}
                     </div>
                   )}
 
@@ -472,14 +491,20 @@ function ActorCard({ actor, t }) {
           {actor.mandate_evidence.map((ev, idx) => (
             <React.Fragment key={ev.url || idx}>
               {idx > 0 && ' · '}
-              <a
-                href={ev.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-amber-400 underline"
-              >
-                {ev.date} — {ev.title}
-              </a>
+              {safeHref(ev.url) ? (
+                <a
+                  href={safeHref(ev.url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-400 underline"
+                >
+                  {ev.date} — {ev.title}
+                </a>
+              ) : (
+                <span>
+                  {ev.date} — {ev.title}
+                </span>
+              )}
             </React.Fragment>
           ))}
         </div>
