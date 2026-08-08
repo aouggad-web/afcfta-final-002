@@ -35,9 +35,12 @@ def test_lot4_every_civ_cod_measure_has_canonical_transport_modes():
             assert set(modes) <= _TRANSPORT_MODES, measure["record_id"]
 
 
-def test_lot4_maritime_only_measures_are_flagged_conditional_by_transport():
-    """BSC (CIV) et FERI (COD) ne s'appliquent qu'au fret maritime : ce ne sont pas
-    des mesures multimodales générales, contrairement au guichet unique."""
+def test_lot4_maritime_only_measures_have_a_single_maritime_transport_mode():
+    """BSC (CIV) et FERI (COD) ne s'appliquent qu'au fret maritime : leur
+    transport_modes est restreint à MARITIME, contrairement au guichet unique
+    multimodal. Leur scope_type reste GENERAL (aucune restriction sectorielle
+    de produit) : seul le mode de transport est restreint, pas le champ
+    d'application produits."""
     civ_bsc = next(m for m in _measures("CIV") if m["record_id"] == "CIV-OIC-BSC")
     cod_feri = next(m for m in _measures("COD") if m["record_id"] == "COD-OGEFREM-FERI")
     assert civ_bsc["transport_modes"] == ["MARITIME"]

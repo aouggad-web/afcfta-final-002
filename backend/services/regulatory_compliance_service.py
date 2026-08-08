@@ -119,9 +119,11 @@ def _validate_structured_scope_fields(measure: Dict[str, Any], context: str) -> 
         status = block["status"]
         if status not in _PROCEDURE_STATUSES:
             raise ValueError(f"{context} procedure has non-canonical status {status!r}")
-        if status == "NOT_AVAILABLE" and (block["steps"] or block["official_delay"]):
+        if status == "NOT_AVAILABLE" and (
+            block["steps"] is not None or block["official_delay"] is not None
+        ):
             raise ValueError(
-                f"{context} procedure is NOT_AVAILABLE but steps/official_delay populated"
+                f"{context} procedure is NOT_AVAILABLE but steps/official_delay is not null"
             )
         if status != "NOT_AVAILABLE" and not block["steps"]:
             raise ValueError(f"{context} procedure status {status!r} requires non-empty steps")
