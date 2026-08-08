@@ -170,6 +170,14 @@ except ImportError:
     REGULATORY_MASTER_REGISTRY_AVAILABLE = False
 
 try:
+    from .regulatory_qa import router as regulatory_qa_router
+
+    REGULATORY_QA_AVAILABLE = True
+except ImportError:
+    regulatory_qa_router = None
+    REGULATORY_QA_AVAILABLE = False
+
+try:
     from .search import router as search_router
 
     SEARCH_AVAILABLE = True
@@ -457,6 +465,8 @@ def register_routes(api_router: APIRouter):
             tags=["Regulatory Master Registry"],
             dependencies=_auth,
         )
+    if REGULATORY_QA_AVAILABLE:
+        api_router.include_router(regulatory_qa_router, tags=["Regulatory QA"], dependencies=_auth)
     if SEARCH_AVAILABLE:
         api_router.include_router(search_router, tags=["Text Search"], dependencies=_auth)
     if CACHE_ROUTER_AVAILABLE:
