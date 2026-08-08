@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   LayoutDashboard, Calculator, BarChart3, Factory, Ship,
   Landmark, Wrench, FileCheck, Globe2, ChevronLeft, ChevronRight,
-  Moon, Sun, TrendingUp,
+  Moon, Sun, TrendingUp, ShieldCheck,
 } from "lucide-react";
 
 const NAV_ITEMS = (isFrench) => [
@@ -15,6 +15,7 @@ const NAV_ITEMS = (isFrench) => [
   { id: "tools",      label: isFrench ? "Outils"          : "Tools",           icon: Wrench },
   { id: "roo",        label: isFrench ? "R. d'Origine"   : "Rules of Origin", icon: FileCheck },
   { id: "profiles",   label: isFrench ? "Profils"         : "Profiles",        icon: Globe2 },
+  { id: "regulatory", label: isFrench ? "Réglementation"  : "Regulatory",      icon: ShieldCheck },
   { id: "reports",    label: isFrench ? "Opportunités"    : "Opportunities",   icon: TrendingUp },
 ];
 

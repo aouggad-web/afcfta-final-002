@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { CSVExportButton } from './ExportTools';
+import { CSVExportButton, JSONExportButton } from './ExportTools';
 
 // Capture le contenu CSV directement via le constructeur Blob (jsdom n'expose
 // pas Blob.text() de façon fiable). On neutralise aussi createObjectURL et le
@@ -82,5 +82,32 @@ describe('CSVExportButton', () => {
 
     const body = csvContent.replace(/^﻿/, '').split('\n')[1];
     expect(body).toBe(',');
+  });
+});
+
+describe('JSONExportButton', () => {
+  it('est désactivé sans données', () => {
+    render(<JSONExportButton data={null} />);
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
+
+  it('est désactivé pour un tableau vide', () => {
+    render(<JSONExportButton data={[]} />);
+    expect(screen.getByRole('button')).toBeDisabled();
+  });
+
+  it('affiche le libellé localisé', () => {
+    const { rerender } = render(<JSONExportButton data={{ a: 1 }} language="fr" />);
+    expect(screen.getByRole('button')).toHaveTextContent('Exporter JSON');
+    rerender(<JSONExportButton data={{ a: 1 }} language="en" />);
+    expect(screen.getByRole('button')).toHaveTextContent('Export JSON');
+  });
+
+  it('sérialise les données en JSON indenté', async () => {
+    const data = { country: 'CIV', measures: [{ record_id: 'CIV-GUCE-SINGLE-WINDOW' }] };
+    render(<JSONExportButton data={data} />);
+    await userEvent.click(screen.getByRole('button'));
+
+    expect(JSON.parse(csvContent)).toEqual(data);
   });
 });

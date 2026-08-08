@@ -135,6 +135,58 @@ export function CSVExportButton({
 }
 
 /**
+ * JSONExportButton - Export client-side d'un objet/tableau de données en JSON.
+ *
+ * Props:
+ *   - data: objet ou tableau sérialisable en JSON
+ *   - filename: nom de base du fichier (sans extension)
+ *   - language: 'fr' | 'en'
+ */
+export function JSONExportButton({
+  data,
+  filename = 'export',
+  language = 'fr',
+  className = '',
+  ...buttonProps
+}) {
+  const texts = {
+    fr: { export: 'Exporter JSON' },
+    en: { export: 'Export JSON' },
+  };
+  const t = texts[language] || texts.fr;
+
+  const isEmpty = data == null || (Array.isArray(data) && data.length === 0);
+
+  const handleExport = () => {
+    if (isEmpty) return;
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${filename}_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <Button
+      onClick={handleExport}
+      disabled={isEmpty}
+      variant="outline"
+      size="sm"
+      className={`gap-2 ${className}`}
+      {...buttonProps}
+    >
+      <Download className="w-4 h-4" />
+      {t.export}
+    </Button>
+  );
+}
+
+/**
  * ChartExportButton - Bouton pour exporter un graphique en image
  */
 export function ChartExportButton({ 
@@ -285,4 +337,11 @@ export function ExportToolbar({
   );
 }
 
-export default { PDFExportButton, CSVExportButton, ChartExportButton, ZoomableChart, ExportToolbar };
+export default {
+  PDFExportButton,
+  CSVExportButton,
+  JSONExportButton,
+  ChartExportButton,
+  ZoomableChart,
+  ExportToolbar,
+};
