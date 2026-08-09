@@ -77,6 +77,7 @@ import auth as _auth_module
 # Import routes module for modular endpoint registration
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
+from routes.billing import set_database as set_billing_db
 from routes.calculator import set_database as set_calculator_db
 from routes.contact import set_database as set_contact_db
 from routes.substitution import register_routes as register_substitution_routes
@@ -219,6 +220,9 @@ try:
             "/api/tariff-data/collect",
             "/api/crawl",
             "/api/crawl/start",
+            # Webhook Stripe : appel serveur-à-serveur signé, sans cookie ni
+            # jeton CSRF — authentifié par la signature Stripe elle-même.
+            "/api/billing/webhook",
         ],
     )
     app.add_middleware(RateLimitMiddleware, requests_per_minute=120, burst_limit=20)
@@ -366,8 +370,17 @@ async def startup_load_tariff_data():
     _auth_module.set_database(db)
     set_user_auth_db(db)
     set_contact_db(db)
+    set_billing_db(db)
     await _seed_admin_account()
     set_calculator_db(db)
+
+    # Idempotence des webhooks Stripe : un event rejoué ne doit être traité
+    # qu'une fois (Stripe garantit une livraison at-least-once).
+    if db is not None:
+        try:
+            await db.payment_events.create_index("event_id", unique=True)
+        except Exception as e:
+            logger.warning(f"Index payment_events.event_id non créé: {e}")
 
     # Load crawled data
     try:

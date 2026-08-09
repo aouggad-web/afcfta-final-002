@@ -1,0 +1,109 @@
+"""
+Tests de la couche facturation (Stripe) — Phase 1.
+
+Hermétiques : aucun appel réseau à Stripe ni base Mongo réelle. On vérifie la
+résolution des prix (autorité serveur), la vérification de signature du webhook,
+et le comportement des routes (auth requise, routage Algérie → 501, webhook non
+signé → 400) via un mini-app FastAPI montant uniquement le routeur billing.
+"""
+
+import sys
+from pathlib import Path
+
+import pytest
+from fastapi import FastAPI, HTTPException
+from fastapi.testclient import TestClient
+
+backend_path = Path(__file__).parent.parent
+if str(backend_path) not in sys.path:
+    sys.path.insert(0, str(backend_path))
+
+from routes import billing, user_auth  # noqa: E402
+from services import stripe_service  # noqa: E402
+
+
+class _FakeDB:
+    """Base non-None suffisante pour franchir les gardes _require_db()."""
+
+
+@pytest.fixture
+def client(monkeypatch):
+    # Câble une base factice pour billing et user_auth (get_current_user).
+    billing.set_database(_FakeDB())
+    user_auth.set_database(_FakeDB())
+    app = FastAPI()
+    app.include_router(billing.router)
+    return TestClient(app)
+
+
+# ── Autorité serveur sur les prix ───────────────────────────────────────────
+
+
+def test_resolve_price_id_reads_env(monkeypatch):
+    monkeypatch.setenv("STRIPE_PRICE_PRO_M", "price_pro_monthly_123")
+    assert stripe_service.resolve_price_id("pro", "monthly") == "price_pro_monthly_123"
+
+
+def test_resolve_price_id_unknown_plan_is_400():
+    with pytest.raises(HTTPException) as exc:
+        stripe_service.resolve_price_id("enterprise", "monthly")
+    assert exc.value.status_code == 400
+
+
+def test_resolve_price_id_missing_env_is_503(monkeypatch):
+    monkeypatch.delenv("STRIPE_PRICE_BUSINESS_Y", raising=False)
+    with pytest.raises(HTTPException) as exc:
+        stripe_service.resolve_price_id("business", "annual")
+    assert exc.value.status_code == 503
+
+
+# ── Vérification de signature du webhook ────────────────────────────────────
+
+
+def test_construct_event_without_secret_raises(monkeypatch):
+    monkeypatch.delenv("STRIPE_WEBHOOK_SECRET", raising=False)
+    with pytest.raises(ValueError):
+        stripe_service.construct_event(b"{}", "sig")
+
+
+def test_construct_event_without_signature_raises(monkeypatch):
+    monkeypatch.setenv("STRIPE_WEBHOOK_SECRET", "whsec_test")
+    with pytest.raises(ValueError):
+        stripe_service.construct_event(b"{}", None)
+
+
+# ── Routes ──────────────────────────────────────────────────────────────────
+
+
+def test_checkout_requires_authentication(client):
+    # Aucun cookie de session → get_current_user lève 401.
+    resp = client.post("/billing/checkout", json={"plan": "pro", "cycle": "monthly"})
+    assert resp.status_code == 401
+
+
+def test_checkout_algeria_returns_501(client, monkeypatch):
+    async def _fake_user(_request):
+        return {"_id": "000000000000000000000001", "email": "u@example.com", "name": "U"}
+
+    monkeypatch.setattr(billing, "get_current_user", _fake_user)
+    resp = client.post(
+        "/billing/checkout",
+        json={"plan": "pro", "cycle": "monthly", "billing_country": "DZ"},
+    )
+    assert resp.status_code == 501
+
+
+def test_checkout_missing_price_config_is_503(client, monkeypatch):
+    async def _fake_user(_request):
+        return {"_id": "000000000000000000000001", "email": "u@example.com", "name": "U"}
+
+    monkeypatch.setattr(billing, "get_current_user", _fake_user)
+    monkeypatch.delenv("STRIPE_PRICE_PRO_M", raising=False)
+    resp = client.post("/billing/checkout", json={"plan": "pro", "cycle": "monthly"})
+    assert resp.status_code == 503
+
+
+def test_webhook_unsigned_returns_400(client, monkeypatch):
+    monkeypatch.setenv("STRIPE_WEBHOOK_SECRET", "whsec_test")
+    resp = client.post("/billing/webhook", content=b"{}")
+    assert resp.status_code == 400
