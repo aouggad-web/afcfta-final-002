@@ -15,7 +15,11 @@ import {
   TrendingUp,
   ShieldCheck,
   X,
+  Mail,
+  User,
+  LogOut,
 } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 /* ─── Flat nav items ─────────────────────────────────────────── */
 const NAV_ITEMS = (isFrench) => [
@@ -30,14 +34,16 @@ const NAV_ITEMS = (isFrench) => [
   { id: "profiles",   label: isFrench ? "Profils"         : "Profiles",       icon: Globe2 },
   { id: "regulatory", label: isFrench ? "Réglementation"  : "Regulatory",     icon: ShieldCheck },
   { id: "reports",    label: isFrench ? "Opportunités"    : "Opportunities",  icon: TrendingUp },
+  { id: "contact",    label: isFrench ? "Contact"         : "Contact",        icon: Mail },
 ];
 
 /* ─── Horizontal topbar component ───────────────────────────── */
-export default function AfcftaTopbar({ active = "dashboard", onTabChange, language = "fr", theme = "dark", onThemeToggle }) {
+export default function AfcftaTopbar({ active = "dashboard", onTabChange, language = "fr", theme = "dark", onThemeToggle, onOpenAuth }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isFrench = language === "fr";
   const isLight = theme === "light";
   const items = NAV_ITEMS(isFrench);
+  const { user, logout } = useAuth() || {};
 
   const handleTab = (id) => {
     onTabChange && onTabChange("tab", id);
@@ -69,6 +75,26 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
         </button>
 
         <div className="afcfta-topHeader__lang">
+          {user ? (
+            <button
+              className="afcfta-btn-sm afcfta-btn-secondary"
+              onClick={logout}
+              title={isFrench ? "Se déconnecter" : "Log out"}
+              data-testid="topbar-logout-btn"
+              style={{ display: "flex", alignItems: "center", gap: 6 }}
+            >
+              <LogOut size={14} /> {user.name}
+            </button>
+          ) : (
+            <button
+              className="afcfta-btn-sm afcfta-btn-secondary"
+              onClick={onOpenAuth}
+              data-testid="topbar-login-btn"
+              style={{ display: "flex", alignItems: "center", gap: 6 }}
+            >
+              <User size={14} /> {isFrench ? "Connexion" : "Login"}
+            </button>
+          )}
           {onThemeToggle && (
             <button
               className="afcfta-themeToggle"

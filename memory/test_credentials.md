@@ -25,7 +25,32 @@ curl -H "X-API-Key: zlecaf-frontend-public-key" \
 ## Admin endpoints
 Admin-tier endpoints (e.g., `/api/admin/keys`) require an admin API key — none seeded yet. Generate one via the admin keys route once an authenticated admin is present, or directly in MongoDB with `tier: "admin"`.
 
+## SaaS user accounts (email/password + JWT cookie session) — NEW
+- Endpoints: `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/logout`, `GET /api/auth/me`
+- Session: JWT in httpOnly cookie `access_token` (7-day TTL, `SameSite=Lax`)
+- CSRF: all mutating requests (POST) require header `X-CSRF-Token` matching the `csrf_token` cookie — obtained by first calling `GET /api/health` (sets the cookie + returns the token in the `X-CSRF-Token` response header). The frontend handles this automatically via `frontend/src/services/csrf.js` (already wired into the global axios instance).
+- Brute-force protection: 5 failed login attempts per email → 429 lockout for 15 minutes (`login_attempts` collection, keyed by email).
+- Seeded admin account (from `/app/backend/.env` — `ADMIN_EMAIL` / `ADMIN_PASSWORD`):
+  - Email: `admin@afcfta-zlecaf.com`
+  - Password: **not stored here** — see `ADMIN_PASSWORD` in the pod's `/app/backend/.env`
+    (rotated after this file's first draft leaked a placeholder test value; never
+    commit the real value — the backend re-syncs the hash from `.env` on restart).
+  - Role: `admin`
+- Test user account created during manual testing:
+  - Email: `aminata.test@example.com`
+  - Password: **rotate before reuse** — this account was created with a
+    throwaway password during testing; treat it as compromised since it was
+    briefly committed here, and change it (or delete the account) before
+    relying on it again.
+  - Role: `user`
+
+## Contact form — NEW
+- `POST /api/contact` — `{name, email, message}` — stores in `contact_messages` collection and emails the admin mailbox (`SAAS_SMTP_USER`) via background task.
+
+## SaaS transactional email (SMTP — Zoho Mail)
+- Configured in `/app/backend/.env`: `SAAS_EMAIL_ENABLED=true`, `SAAS_SMTP_HOST=smtp.zoho.com`, `SAAS_SMTP_PORT=587`, `SAAS_SMTP_USER=noreply@afcfta-zlecaf.com`, `SAAS_SMTP_PASSWORD` (Zoho app password), `SAAS_SMTP_USE_TLS=true`.
+- Verified working: welcome email on signup + admin notification on contact form (see backend logs `services.email_service: Email sent to ...`).
+- Manual test script: `cd /app/backend && python scripts/test_saas_email.py <recipient_email>`
+
 ## Other integrations (not configured)
-- `EMERGENT_LLM_KEY` — for Gemini AI analysis routes (not set)
-- SMTP — for email notifications (not set)
 - Slack webhook — for Slack notifications (not set)

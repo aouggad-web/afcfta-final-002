@@ -23,6 +23,9 @@ import RegulatoryComplianceTab from './components/regulatory/RegulatoryComplianc
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import FinanceTab from './components/finance/FinanceTab';
 import OpportunityReportTab from './components/reports/OpportunityReportTab';
+import ContactTab from './components/contact/ContactTab';
+import AuthModal from './components/auth/AuthModal';
+import { AuthProvider } from './context/AuthContext';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -77,6 +80,7 @@ function App() {
 
   // ── Gestion du thème (sombre / clair) ──
   const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   useEffect(() => {
     const root = document.documentElement;
     if (theme === 'light') {
@@ -121,6 +125,7 @@ function App() {
         profiles: 'profiles',
         regulatory: 'regulatory',
         reports: 'reports',
+        contact: 'contact',
       };
       setActiveTab(tabMapping[value] || value);
     } else if (type === 'language') {
@@ -141,6 +146,7 @@ function App() {
       profiles: 'profiles',
       regulatory: 'regulatory',
       reports: 'reports',
+      contact: 'contact',
     };
     return reverseMapping[activeTab] || activeTab;
   };
@@ -372,6 +378,23 @@ function App() {
           </div>
         );
 
+      case 'contact':
+        return (
+          <div className="afcfta-section afcfta-fadeIn">
+            <SectionHeader
+              title={language === 'fr' ? 'Contact' : 'Contact'}
+              subtitle={
+                language === 'fr'
+                  ? 'Une question, une suggestion ? Écrivez-nous.'
+                  : 'A question, a suggestion? Write to us.'
+              }
+              dotColor="success"
+            />
+            <div style={{ height: 20 }} />
+            <ContactTab language={language} />
+          </div>
+        );
+
       default:
         return null;
     }
@@ -382,6 +405,7 @@ function App() {
       <div className="kente-band" />
       <div className="afcfta-layout-v2">
         <Toaster />
+        <AuthModal open={authModalOpen} onClose={() => setAuthModalOpen(false)} language={language} />
 
         {/* Desktop sidebar — hidden on mobile via CSS */}
         <AfcftaSidebar
@@ -390,6 +414,7 @@ function App() {
           language={language}
           theme={theme}
           onThemeToggle={toggleTheme}
+          onOpenAuth={() => setAuthModalOpen(true)}
         />
 
         {/* Horizontal top navigation (mobile + tablet) */}
@@ -399,6 +424,7 @@ function App() {
           language={language}
           theme={theme}
           onThemeToggle={toggleTheme}
+          onOpenAuth={() => setAuthModalOpen(true)}
         />
 
       {/* Main content area */}
@@ -445,4 +471,10 @@ function App() {
   );
 }
 
-export default App;
+export default function AppWithAuth() {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}
