@@ -62,6 +62,9 @@ typer==0.19.2
 markdown-it-py==4.0.0
 dulwich
 
+# Payments
+stripe>=9.0.0
+
 # AI providers
 anthropic>=0.40.0
 google-genai>=2.3.0
