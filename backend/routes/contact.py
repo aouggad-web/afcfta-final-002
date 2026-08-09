@@ -5,7 +5,6 @@ from datetime import datetime, timezone
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
-
 from services.email_service import send_contact_admin_email
 
 logger = logging.getLogger(__name__)

@@ -11,7 +11,6 @@ from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, Response, status
 from pydantic import BaseModel, EmailStr, Field
 from pymongo import ReturnDocument
-
 from services.email_service import send_welcome_email
 from services.user_auth_service import (
     create_access_token,
