@@ -15,6 +15,11 @@ export default function AuthModal({ open, onClose, language = 'fr' }) {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [registerForm, setRegisterForm] = useState({ name: '', email: '', password: '' });
 
+  const handleClose = () => {
+    setTab('login');
+    onClose();
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -55,11 +60,19 @@ export default function AuthModal({ open, onClose, language = 'fr' }) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="sm:max-w-md" data-testid="auth-modal">
+    <Dialog open={open} onOpenChange={(o) => !o && handleClose()}>
+      <DialogContent
+        className="sm:max-w-md"
+        data-testid="auth-modal"
+        style={{
+          background: 'var(--afcfta-card)',
+          color: 'var(--text)',
+          border: '1px solid var(--afcfta-border)',
+        }}
+      >
         <DialogHeader>
-          <DialogTitle>{isFr ? 'Mon compte' : 'My account'}</DialogTitle>
-          <DialogDescription>
+          <DialogTitle style={{ color: 'var(--text)' }}>{isFr ? 'Mon compte' : 'My account'}</DialogTitle>
+          <DialogDescription style={{ color: 'var(--afcfta-muted)' }}>
             {isFr ? 'Connectez-vous ou créez un compte pour continuer.' : 'Sign in or create an account to continue.'}
           </DialogDescription>
         </DialogHeader>
