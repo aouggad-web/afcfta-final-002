@@ -1,9 +1,9 @@
-# Plan technique — Intégration paiement Stripe / Chargely
+# Plan technique — Intégration paiement Stripe / Chargily
 
 > **Statut** : proposition à valider avant développement.
 > **Contexte** : compte Stripe **en cours de vérification** — le mode test est
 > déjà utilisable ; le mode live (clés `sk_live_…`) et les virements (payouts)
-> s'activeront à la fin de la vérification. Chargely (Algérie, CIB/Edahabia)
+> s'activeront à la fin de la vérification. Chargily (Algérie, CIB/Edahabia)
 > arrive dans un second temps.
 
 Ce document décrit l'architecture cible, les objets Stripe à créer, les routes
@@ -40,7 +40,7 @@ Navigateur (pricing.html / React)
 FastAPI  backend/routes/billing.py
    │  2. Résout le prix selon le PAYS de facturation :
    │        - hors Algérie → Stripe
-   │        - Algérie      → Chargely (phase 2 ; stub en phase 1)
+   │        - Algérie      → Chargily (phase 2 ; stub en phase 1)
    │  3. Crée/retrouve le Customer Stripe (stripe_customer_id sur le user)
    │  4. Crée une Checkout Session (mode=subscription)
    ▼
@@ -59,13 +59,13 @@ Accès plateforme mis à jour
 `success_url` pour accorder l'accès. L'accès est accordé **uniquement** par le
 webhook signé. La `success_url` sert seulement à afficher un message.
 
-### Routage par pays (Stripe vs Chargely)
+### Routage par pays (Stripe vs Chargily)
 
 - Détection du pays : champ explicite choisi par l'utilisateur au checkout
   (sélecteur pays), **pas** de géo-IP silencieuse (cf. remarque de review sur la
   page statique : on ne promet pas de « sélection automatique »).
-- `pays == DZ` → flux Chargely. Sinon → flux Stripe.
-- Phase 1 : la branche Chargely renvoie un `501 Not Implemented` propre + un
+- `pays == DZ` → flux Chargily. Sinon → flux Stripe.
+- Phase 1 : la branche Chargily renvoie un `501 Not Implemented` propre + un
   message « paiement local bientôt disponible », de façon à livrer Stripe seul
   sans casser l'UX algérienne.
 
@@ -103,7 +103,7 @@ subscription_status     : "active" | "past_due" | "canceled" | "trialing" | null
 subscription_id         : str | null   (sub_… Stripe)
 subscription_current_end: datetime | null
 billing_country         : str (ISO-2)
-payment_provider        : "stripe" | "chargely" | null
+payment_provider        : "stripe" | "chargily" | null
 ```
 
 **Collection `payment_events`** (idempotence + audit) :
@@ -174,10 +174,10 @@ STRIPE_PRICE_BUSINESS_Y=price_...
 BILLING_SUCCESS_URL=https://afcfta-zlecaf.com/merci
 BILLING_CANCEL_URL=https://afcfta-zlecaf.com/tarifs
 
-# --- Chargely (phase 2) ---
-CHARGELY_API_KEY=
-CHARGELY_WEBHOOK_SECRET=
-CHARGELY_ENABLED=false
+# --- Chargily (phase 2) ---
+CHARGILY_API_KEY=
+CHARGILY_WEBHOOK_SECRET=
+CHARGILY_ENABLED=false
 ```
 
 Dépendance Python : `stripe` (SDK officiel) à ajouter dans `requirements.txt`.
@@ -213,8 +213,8 @@ Dépendance Python : `stripe` (SDK officiel) à ajouter dans `requirements.txt`.
 5. Emails reçu / échec / annulation via `email_service`.
 6. Tests : signature webhook, idempotence, transitions de tier (mode test + Stripe CLI `stripe listen`).
 
-**Phase 2 — Chargely (Algérie)**
-7. `backend/services/chargely_service.py` symétrique + webhook Chargely.
+**Phase 2 — Chargily (Algérie)**
+7. `backend/services/chargily_service.py` symétrique + webhook Chargily.
 8. Activer le branchement `pays == DZ` (retirer le stub `501`).
 9. Facturation en DZD, emails localisés.
 

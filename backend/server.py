@@ -220,9 +220,10 @@ try:
             "/api/tariff-data/collect",
             "/api/crawl",
             "/api/crawl/start",
-            # Webhook Stripe : appel serveur-à-serveur signé, sans cookie ni
-            # jeton CSRF — authentifié par la signature Stripe elle-même.
+            # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
+            # ni jeton CSRF — authentifiés par leur propre signature.
             "/api/billing/webhook",
+            "/api/billing/chargily/webhook",
         ],
     )
     app.add_middleware(RateLimitMiddleware, requests_per_minute=120, burst_limit=20)

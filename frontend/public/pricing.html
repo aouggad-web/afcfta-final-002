@@ -59,6 +59,10 @@ h1 em{font-style:italic;color:var(--gold)}
 .toggle-thumb{width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:.2s}
 .toggle-track.on .toggle-thumb{left:18px}
 .save-badge{background:var(--grn-bg);color:var(--grn);font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid var(--grn-b);font-weight:500}
+.country-picker{margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+.country-picker label{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.country-picker select{background:var(--ink2);color:var(--txt);border:1px solid var(--b2);border-radius:8px;padding:8px 12px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer}
+.country-picker select:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 /* plans grid */
 .plans{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1180px;margin:48px auto 0;padding:0 24px}
@@ -230,7 +234,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 <div class="hero">
   <div class="hero-eyebrow">Tarifs & Plans</div>
   <h1>Le commerce africain<br><em>commence ici</em></h1>
-  <p class="hero-sub">Commencez gratuitement. Évoluez quand votre business grandit. Accédez aux données tarifaires de 54 pays AfCFTA en temps réel. Paiement par carte partout dans le monde, et par Chargely (CIB / Edahabia) en Algérie.</p>
+  <p class="hero-sub">Commencez gratuitement. Évoluez quand votre business grandit. Accédez aux données tarifaires de 54 pays AfCFTA en temps réel. Paiement par carte partout dans le monde, et par Chargily (CIB / Edahabia) en Algérie.</p>
   <div class="billing-toggle" role="switch" tabindex="0" aria-checked="false" aria-label="Facturation annuelle" id="billing-switch" onclick="toggleBilling()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBilling();}">
     <span id="bill-monthly" style="color:var(--txt);font-weight:500">Mensuel</span>
     <div class="toggle-track" id="toggle-track">
@@ -238,6 +242,13 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     </div>
     <span id="bill-annual" style="color:var(--muted)">Annuel</span>
     <span class="save-badge">jusqu'à −22%</span>
+  </div>
+  <div class="country-picker">
+    <label for="billing-country">Pays de facturation</label>
+    <select id="billing-country" aria-label="Pays de facturation">
+      <option value="">Hors Algérie — paiement par carte (Stripe)</option>
+      <option value="DZ">Algérie — CIB / Edahabia (Chargily)</option>
+    </select>
   </div>
 </div>
 
@@ -260,7 +271,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
       <div class="plan-item no">Alertes tarifaires</div>
       <div class="plan-item no">Accès API</div>
     </div>
-    <button class="plan-btn secondary" onclick="alert('Inscription gratuite — intégration Stripe / Chargely à venir')">Commencer gratuitement</button>
+    <button class="plan-btn secondary" onclick="alert('Inscription gratuite — intégration Stripe / Chargily à venir')">Commencer gratuitement</button>
   </div>
 
   <div class="plan">
@@ -426,7 +437,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
   <div class="section-title">Données sectorielles AfCFTA</div>
   <p class="section-sub">Rapports PDF approfondis sur les opportunités commerciales par secteur. Générés à partir des données live de votre plateforme.</p>
   <div class="reports-grid">
-    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargely — à configurer')">
+    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')">
       <div class="report-icon">🌾</div>
       <div class="report-meta">
         <div class="report-name">Rapport Agriculture & Agroalimentaire</div>
@@ -437,7 +448,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargely — à configurer')">
+    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')">
       <div class="report-icon">🧵</div>
       <div class="report-meta">
         <div class="report-name">Rapport Textile & Habillement</div>
@@ -448,7 +459,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargely — à configurer')">
+    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')">
       <div class="report-icon">💊</div>
       <div class="report-meta">
         <div class="report-name">Rapport Pharmaceutique & Santé</div>
@@ -459,7 +470,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         </div>
       </div>
     </div>
-    <div class="report-card" onclick="alert('Abonnement mensuel via Stripe / Chargely — à configurer')">
+    <div class="report-card" onclick="alert('Abonnement mensuel via Stripe / Chargily — à configurer')">
       <div class="report-icon">📧</div>
       <div class="report-meta">
         <div class="report-name">Newsletter — Veille tarifaire mensuelle</div>
@@ -470,7 +481,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
         </div>
       </div>
     </div>
-    <div class="report-card bundle" onclick="alert('Achat one-shot via Stripe / Chargely — à configurer')" style="grid-column:1/-1">
+    <div class="report-card bundle" onclick="alert('Achat one-shot via Stripe / Chargily — à configurer')" style="grid-column:1/-1">
       <div class="report-icon">📦</div>
       <div class="report-meta">
         <div class="report-name">Pack 4 rapports sectoriels — l'année complète</div>
@@ -506,7 +517,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
       <div class="cert-price-old">199$</div>
       <div class="cert-price-val">129$</div>
       <div class="cert-price-per">accès à vie</div>
-      <button class="cert-btn" onclick="alert('Paiement Stripe / Chargely — à configurer')">M'inscrire</button>
+      <button class="cert-btn" onclick="alert('Paiement Stripe / Chargily — à configurer')">M'inscrire</button>
     </div>
   </div>
 </div>
@@ -549,7 +560,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <div class="pay-card">
       <div class="pay-flag">🇩🇿</div>
       <div>
-        <h4>Algérie — Chargely</h4>
+        <h4>Algérie — Chargily</h4>
         <p>Cartes CIB et Edahabia, facturation en dinars algériens (DZD) au taux du jour. Solution locale conforme à la réglementation des changes.</p>
         <span class="tag">Phase de lancement</span>
       </div>
@@ -584,13 +595,13 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     </div>
     <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Comment fonctionne le paiement ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">Les paiements sont sécurisés. Partout dans le monde (hors Algérie), ils sont traités via Stripe : cartes Visa, Mastercard, American Express, facturation en dollars US. En Algérie, dans un premier temps, les paiements sont traités via Chargely : cartes CIB et Edahabia, facturation en dinars algériens (DZD), conformément à la réglementation locale des changes. Le moyen de paiement proposé dépend de votre pays de facturation.</div>
+      <div class="faq-a">Les paiements sont sécurisés. Partout dans le monde (hors Algérie), ils sont traités via Stripe : cartes Visa, Mastercard, American Express, facturation en dollars US. En Algérie, dans un premier temps, les paiements sont traités via Chargily : cartes CIB et Edahabia, facturation en dinars algériens (DZD), conformément à la réglementation locale des changes. Le moyen de paiement proposé dépend de votre pays de facturation.</div>
     </div>
   </div>
 </div>
 
 <div class="stripe-note">
-  <p><strong>Paiements sécurisés via Stripe (international) et Chargely (Algérie)</strong> · SSL 256-bit · Aucun stockage de données de carte sur nos serveurs · Remboursement sous 14 jours si non satisfait</p>
+  <p><strong>Paiements sécurisés via Stripe (international) et Chargily (Algérie)</strong> · SSL 256-bit · Aucun stockage de données de carte sur nos serveurs · Remboursement sous 14 jours si non satisfait</p>
 </div>
 
 <footer>
@@ -617,6 +628,10 @@ function toggleFaq(el) {
 // Le cycle suit le toggle mensuel/annuel. Les prix sont résolus côté serveur.
 async function startCheckout(plan) {
   const cycle = annual ? 'annual' : 'monthly';
+  // Pays choisi explicitement par l'utilisateur : "DZ" route vers Chargily
+  // (CIB/Edahabia, en dinars), sinon Stripe. Pas de détection silencieuse.
+  const countryEl = document.getElementById('billing-country');
+  const country = countryEl ? countryEl.value : '';
   try {
     // Amorce le jeton CSRF (cookie + en-tête) exigé par le backend.
     const primer = await fetch('/api/health', { credentials: 'include' });
@@ -629,7 +644,7 @@ async function startCheckout(plan) {
         { 'Content-Type': 'application/json' },
         csrf ? { 'X-CSRF-Token': csrf } : {}
       ),
-      body: JSON.stringify({ plan: plan, cycle: cycle })
+      body: JSON.stringify({ plan: plan, cycle: cycle, billing_country: country })
     });
 
     if (res.status === 401) {

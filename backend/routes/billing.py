@@ -1,16 +1,19 @@
 """
-Routes de facturation — abonnements Stripe (Phase 1)
-====================================================
+Routes de facturation — abonnements Stripe (international) et Chargily (Algérie)
+================================================================================
 
 Monté sous `api_router` (préfixe `/api`), donc URLs effectives :
-  POST /api/billing/checkout      — crée une Checkout Session (auth session JWT)
-  POST /api/billing/portal        — ouvre le Customer Portal (auth session JWT)
-  GET  /api/billing/subscription  — état de l'abonnement courant (auth session JWT)
-  POST /api/billing/webhook       — événements Stripe (auth par signature, pas de JWT)
+  POST /api/billing/checkout          — crée un paiement (auth session JWT)
+  POST /api/billing/portal            — ouvre le Customer Portal Stripe (auth session JWT)
+  GET  /api/billing/subscription      — état de l'abonnement courant (auth session JWT)
+  POST /api/billing/webhook           — événements Stripe (auth par signature, pas de JWT)
+  POST /api/billing/chargily/webhook  — événements Chargily (auth par signature HMAC)
 
 L'accès n'est **jamais** accordé sur la redirection de succès : seul le webhook
-signé fait foi. Le routage par pays réserve l'Algérie à Chargely (Phase 2) et
-renvoie pour l'instant un 501 explicite sur cette branche.
+signé fait foi. Le routage par pays est explicite (choix de l'utilisateur, pas
+de géo-IP) : `billing_country == "DZ"` part vers Chargily (CIB/Edahabia, DZD),
+tout le reste vers Stripe (USD). Si Chargily n'est pas activé
+(`CHARGILY_ENABLED`), la branche algérienne répond 501.
 """
 
 from __future__ import annotations
@@ -24,7 +27,7 @@ from bson import ObjectId
 from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel
 from pymongo.errors import DuplicateKeyError
-from services import stripe_service
+from services import chargily_service, stripe_service
 from services.email_service import send_email
 from starlette.concurrency import run_in_threadpool
 
@@ -61,7 +64,7 @@ def _cancel_url() -> str:
 class CheckoutPayload(BaseModel):
     plan: Literal["starter", "pro", "business"]
     cycle: Literal["monthly", "annual"] = "monthly"
-    billing_country: Optional[str] = None  # ISO-2 ; "DZ" → Chargely (Phase 2)
+    billing_country: Optional[str] = None  # ISO-2 ; "DZ" → Chargily (Phase 2)
 
 
 @router.post("/checkout")
@@ -72,11 +75,7 @@ async def create_checkout(payload: CheckoutPayload, request: Request):
 
     country = (payload.billing_country or "").strip().upper()
     if country == "DZ":
-        # Phase 1 : le paiement local algérien (Chargely) n'est pas encore câblé.
-        raise HTTPException(
-            status_code=status.HTTP_501_NOT_IMPLEMENTED,
-            detail="Paiement local (Algérie) bientôt disponible via Chargely.",
-        )
+        return await _checkout_chargily(db, user, payload)
 
     price_id = stripe_service.resolve_price_id(payload.plan, payload.cycle)
 
@@ -106,6 +105,35 @@ async def create_checkout(payload: CheckoutPayload, request: Request):
             client_reference_id=str(user["_id"]),
             metadata=metadata,
         )
+    )
+    return {"url": checkout_url}
+
+
+async def _checkout_chargily(db, user, payload: "CheckoutPayload"):
+    """Branche Algérie : paiement local via Chargily (CIB / Edahabia, DZD)."""
+    if not chargily_service.is_enabled():
+        raise HTTPException(
+            status_code=status.HTTP_501_NOT_IMPLEMENTED,
+            detail="Paiement local (Algérie) bientôt disponible via Chargily.",
+        )
+    amount_dzd = chargily_service.resolve_amount_dzd(payload.plan, payload.cycle)
+    metadata = {
+        "user_id": str(user["_id"]),
+        "plan": payload.plan,
+        "cycle": payload.cycle,
+    }
+    checkout_url = await run_in_threadpool(
+        lambda: chargily_service.create_checkout(
+            amount_dzd=amount_dzd,
+            success_url=_success_url(),
+            failure_url=_cancel_url(),
+            description=f"Abonnement ZLECAf {payload.plan} ({payload.cycle})",
+            metadata=metadata,
+        )
+    )
+    await db.users.update_one(
+        {"_id": user["_id"]},
+        {"$set": {"payment_provider": "chargily", "billing_country": "DZ"}},
     )
     return {"url": checkout_url}
 
@@ -253,5 +281,68 @@ async def stripe_webhook(request: Request):
             data_obj.get("customer", ""),
             {"subscription_status": "past_due"},
         )
+
+    return {"status": "ok"}
+
+
+@router.post("/chargily/webhook")
+async def chargily_webhook(request: Request):
+    """Webhook Chargily (Algérie) — signature HMAC vérifiée, idempotent.
+
+    Chargily fonctionne par paiements ponctuels : un paiement réussi active le
+    plan pour la période achetée. Le renouvellement se fait par un nouveau
+    paiement (pas d'abonnement récurrent côté passerelle).
+    """
+    db = _require_db()
+    payload = await request.body()
+    signature = request.headers.get("signature")
+
+    try:
+        event = chargily_service.verify_and_parse(payload, signature)
+    except ValueError as exc:
+        logger.warning("Webhook Chargily rejeté: %s", exc)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc))
+
+    event_id = event.get("id") or ""
+    event_type = event.get("type") or ""
+    data_obj = event.get("data") or {}
+
+    try:
+        await db.payment_events.insert_one(
+            {
+                "event_id": f"chargily:{event_id}",
+                "type": event_type,
+                "received_at": datetime.now(timezone.utc),
+            }
+        )
+    except DuplicateKeyError:
+        return {"status": "already_processed"}
+
+    meta = data_obj.get("metadata") or {}
+    # metadata peut revenir sous forme de liste selon la version de l'API.
+    if isinstance(meta, list):
+        meta = meta[0] if meta and isinstance(meta[0], dict) else {}
+    user_id = meta.get("user_id", "")
+
+    if event_type == "checkout.paid":
+        await _update_user_by_id(
+            user_id,
+            {
+                "subscription_tier": meta.get("plan", "free"),
+                "subscription_status": "active",
+                "subscription_cycle": meta.get("cycle"),
+                "payment_provider": "chargily",
+                "billing_country": "DZ",
+            },
+        )
+        await _email_user(
+            user_id,
+            "Votre abonnement ZLECAf est actif",
+            "Merci — votre paiement a été confirmé et votre abonnement est actif.",
+        )
+
+    elif event_type in ("checkout.failed", "checkout.canceled", "checkout.expired"):
+        # Aucun accès accordé : on journalise sans dégrader un abonnement déjà actif.
+        logger.info("Chargily: paiement non abouti (%s) pour user_id=%s", event_type, user_id)
 
     return {"status": "ok"}

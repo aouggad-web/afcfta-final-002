@@ -19,7 +19,7 @@ if str(backend_path) not in sys.path:
     sys.path.insert(0, str(backend_path))
 
 from routes import billing, user_auth  # noqa: E402
-from services import stripe_service  # noqa: E402
+from services import chargily_service, stripe_service  # noqa: E402
 
 
 class _FakeDB:
@@ -81,11 +81,14 @@ def test_checkout_requires_authentication(client):
     assert resp.status_code == 401
 
 
-def test_checkout_algeria_returns_501(client, monkeypatch):
+def test_checkout_algeria_disabled_returns_501(client, monkeypatch):
+    """Chargily non activé : la branche algérienne annonce clairement 501."""
+
     async def _fake_user(_request):
         return {"_id": "000000000000000000000001", "email": "u@example.com", "name": "U"}
 
     monkeypatch.setattr(billing, "get_current_user", _fake_user)
+    monkeypatch.setenv("CHARGILY_ENABLED", "false")
     resp = client.post(
         "/billing/checkout",
         json={"plan": "pro", "cycle": "monthly", "billing_country": "DZ"},
@@ -106,4 +109,55 @@ def test_checkout_missing_price_config_is_503(client, monkeypatch):
 def test_webhook_unsigned_returns_400(client, monkeypatch):
     monkeypatch.setenv("STRIPE_WEBHOOK_SECRET", "whsec_test")
     resp = client.post("/billing/webhook", content=b"{}")
+    assert resp.status_code == 400
+
+
+# ── Chargily (Algérie) ──────────────────────────────────────────────────────
+
+
+def test_chargily_amount_reads_env(monkeypatch):
+    monkeypatch.setenv("CHARGILY_PRICE_PRO_M", "2500")
+    assert chargily_service.resolve_amount_dzd("pro", "monthly") == 2500
+
+
+def test_chargily_amount_unknown_plan_is_400():
+    with pytest.raises(HTTPException) as exc:
+        chargily_service.resolve_amount_dzd("enterprise", "monthly")
+    assert exc.value.status_code == 400
+
+
+def test_chargily_amount_missing_env_is_503(monkeypatch):
+    monkeypatch.delenv("CHARGILY_PRICE_STARTER_M", raising=False)
+    with pytest.raises(HTTPException) as exc:
+        chargily_service.resolve_amount_dzd("starter", "monthly")
+    assert exc.value.status_code == 503
+
+
+def test_chargily_amount_below_minimum_is_503(monkeypatch):
+    monkeypatch.setenv("CHARGILY_PRICE_STARTER_M", "10")  # < 75 DZD
+    with pytest.raises(HTTPException) as exc:
+        chargily_service.resolve_amount_dzd("starter", "monthly")
+    assert exc.value.status_code == 503
+
+
+def test_chargily_signature_valid_parses_event(monkeypatch):
+    import hashlib
+    import hmac
+
+    monkeypatch.setenv("CHARGILY_WEBHOOK_SECRET", "sec_test")
+    body = b'{"id":"evt_1","type":"checkout.paid"}'
+    sig = hmac.new(b"sec_test", body, hashlib.sha256).hexdigest()
+    event = chargily_service.verify_and_parse(body, sig)
+    assert event["type"] == "checkout.paid"
+
+
+def test_chargily_signature_invalid_raises(monkeypatch):
+    monkeypatch.setenv("CHARGILY_WEBHOOK_SECRET", "sec_test")
+    with pytest.raises(ValueError):
+        chargily_service.verify_and_parse(b'{"id":"evt_1"}', "deadbeef")
+
+
+def test_chargily_webhook_unsigned_returns_400(client, monkeypatch):
+    monkeypatch.setenv("CHARGILY_WEBHOOK_SECRET", "sec_test")
+    resp = client.post("/billing/chargily/webhook", content=b"{}")
     assert resp.status_code == 400

@@ -7,7 +7,7 @@ transite par notre backend : on crée des sessions Stripe Checkout hébergées e
 on réagit aux webhooks signés.
 
 La clé API est lue **au moment de l'appel** (pas à l'import) pour que les routes
-qui ne parlent pas à Stripe (branche Chargely 501, refus d'auth 401, signature
+qui ne parlent pas à Stripe (branche Chargily 501, refus d'auth 401, signature
 de webhook invalide) restent testables sans configuration.
 
 Grille (source de vérité côté serveur) : les identifiants de prix `price_…`
