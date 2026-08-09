@@ -27,7 +27,9 @@ def send_email(to: str, subject: str, body: str) -> None:
     working even without SMTP credentials configured.
     """
     if not _enabled():
-        logger.info(f"Email sending disabled (SAAS_EMAIL_ENABLED != true) — skipped to {to}: {subject}")
+        logger.info(
+            f"Email sending disabled (SAAS_EMAIL_ENABLED != true) — skipped to {to}: {subject}"
+        )
         return
 
     host = os.environ["SAAS_SMTP_HOST"]

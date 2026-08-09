@@ -32,11 +32,16 @@ Admin-tier endpoints (e.g., `/api/admin/keys`) require an admin API key — none
 - Brute-force protection: 5 failed login attempts per email → 429 lockout for 15 minutes (`login_attempts` collection, keyed by email).
 - Seeded admin account (from `/app/backend/.env` — `ADMIN_EMAIL` / `ADMIN_PASSWORD`):
   - Email: `admin@afcfta-zlecaf.com`
-  - Password: `ZlecafAdmin2026!`
+  - Password: **not stored here** — see `ADMIN_PASSWORD` in the pod's `/app/backend/.env`
+    (rotated after this file's first draft leaked a placeholder test value; never
+    commit the real value — the backend re-syncs the hash from `.env` on restart).
   - Role: `admin`
 - Test user account created during manual testing:
   - Email: `aminata.test@example.com`
-  - Password: `SecurePass123`
+  - Password: **rotate before reuse** — this account was created with a
+    throwaway password during testing; treat it as compromised since it was
+    briefly committed here, and change it (or delete the account) before
+    relying on it again.
   - Role: `user`
 
 ## Contact form — NEW

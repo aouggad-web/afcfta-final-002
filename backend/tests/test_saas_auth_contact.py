@@ -38,8 +38,12 @@ def _read_public_backend_url() -> str:
 
 BASE_URL = _read_public_backend_url()
 
-ADMIN_EMAIL = "admin@afcfta-zlecaf.com"
-ADMIN_PASSWORD = "ZlecafAdmin2026!"
+# Never hardcode the real admin password here — it lives only in the pod's
+# .env (ADMIN_EMAIL / ADMIN_PASSWORD) and is rotated independently of this
+# test suite. Set TEST_ADMIN_PASSWORD in the test environment to exercise
+# test_admin_login_works; otherwise it is skipped.
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@afcfta-zlecaf.com")
+ADMIN_PASSWORD = os.environ.get("TEST_ADMIN_PASSWORD")
 
 
 def _unique_email():
@@ -129,7 +133,9 @@ class TestLoginLogout:
     def test_login_wrong_password_returns_401(self, session):
         email, _password = self._register(session)
         resp = session.post(
-            f"{BASE_URL}/api/auth/login", json={"email": email, "password": "WrongPassword999"}, timeout=15
+            f"{BASE_URL}/api/auth/login",
+            json={"email": email, "password": "WrongPassword999"},
+            timeout=15,
         )
         assert resp.status_code == 401
         assert "detail" in resp.json()
@@ -143,8 +149,12 @@ class TestLoginLogout:
         assert me.status_code == 401
 
     def test_admin_login_works(self, session):
+        if not ADMIN_PASSWORD:
+            pytest.skip("TEST_ADMIN_PASSWORD not set — skipping live admin-login check")
         resp = session.post(
-            f"{BASE_URL}/api/auth/login", json={"email": ADMIN_EMAIL, "password": ADMIN_PASSWORD}, timeout=15
+            f"{BASE_URL}/api/auth/login",
+            json={"email": ADMIN_EMAIL, "password": ADMIN_PASSWORD},
+            timeout=15,
         )
         assert resp.status_code == 200
         data = resp.json()
@@ -202,7 +212,9 @@ class TestContactForm:
 class TestCSRFEnforcement:
     def test_post_without_csrf_token_is_rejected(self):
         s = requests.Session()
-        s.get(f"{BASE_URL}/api/health", timeout=15)  # primes the csrf cookie, but we don't send header
+        s.get(
+            f"{BASE_URL}/api/health", timeout=15
+        )  # primes the csrf cookie, but we don't send header
         resp = s.post(
             f"{BASE_URL}/api/auth/login",
             json={"email": "nobody@example.com", "password": "irrelevant"},

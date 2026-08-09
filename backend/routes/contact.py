@@ -28,7 +28,10 @@ class ContactPayload(BaseModel):
 @router.post("")
 async def submit_contact(payload: ContactPayload, background_tasks: BackgroundTasks):
     if _db is None:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Formulaire de contact indisponible")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Formulaire de contact indisponible",
+        )
 
     doc = {
         "name": payload.name.strip(),

@@ -45,7 +45,9 @@ def main():
         body="Ceci est un email de test envoyé depuis le script scripts/test_saas_email.py.\n\nSi vous recevez ce message, la configuration SMTP SAAS_SMTP_* fonctionne correctement.",
     )
 
-    print("Done. Check the logs above for 'Email sent' (success) or 'SMTP delivery failed' (error).")
+    print(
+        "Done. Check the logs above for 'Email sent' (success) or 'SMTP delivery failed' (error)."
+    )
 
 
 if __name__ == "__main__":

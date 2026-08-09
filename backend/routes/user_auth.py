@@ -13,7 +13,12 @@ from pydantic import BaseModel, EmailStr, Field
 from pymongo import ReturnDocument
 
 from services.email_service import send_welcome_email
-from services.user_auth_service import create_access_token, decode_access_token, hash_password, verify_password
+from services.user_auth_service import (
+    create_access_token,
+    decode_access_token,
+    hash_password,
+    verify_password,
+)
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["User Authentication"])
@@ -33,7 +38,8 @@ def set_database(database) -> None:
 def _require_db():
     if _db is None:
         raise HTTPException(
-            status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Comptes utilisateurs indisponibles (base de données non configurée)"
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Comptes utilisateurs indisponibles (base de données non configurée)",
         )
     return _db
 
@@ -77,7 +83,9 @@ async def register(payload: RegisterPayload, response: Response, background_task
 
     existing = await db.users.find_one({"email": email}, {"_id": 1})
     if existing:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Un compte existe déjà avec cet email")
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Un compte existe déjà avec cet email"
+        )
 
     user_doc = {
         "name": payload.name.strip(),
@@ -140,9 +148,16 @@ async def login(payload: LoginPayload, response: Response):
         if updated and updated.get("count", 0) >= MAX_FAILED_ATTEMPTS:
             await db.login_attempts.update_one(
                 {"identifier": identifier},
-                {"$set": {"locked_until": datetime.now(timezone.utc) + timedelta(minutes=LOCKOUT_MINUTES)}},
+                {
+                    "$set": {
+                        "locked_until": datetime.now(timezone.utc)
+                        + timedelta(minutes=LOCKOUT_MINUTES)
+                    }
+                },
             )
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Email ou mot de passe incorrect")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Email ou mot de passe incorrect"
+        )
 
     await db.login_attempts.delete_one({"identifier": identifier})
 
@@ -169,13 +184,17 @@ async def get_current_user(request: Request) -> dict:
 
     payload = decode_access_token(token)
     if not payload:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Session invalide ou expirée")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Session invalide ou expirée"
+        )
 
     from bson import ObjectId
 
     user_doc = await db.users.find_one({"_id": ObjectId(payload["sub"])})
     if not user_doc:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Utilisateur introuvable")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Utilisateur introuvable"
+        )
     return user_doc
 
 

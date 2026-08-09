@@ -311,7 +311,9 @@ async def _setup_database_indexes():
         )
         # SaaS user accounts + login brute-force tracking
         await db["users"].create_indexes([IndexModel([("email", ASCENDING)], unique=True)])
-        await db["login_attempts"].create_indexes([IndexModel([("identifier", ASCENDING)], unique=True)])
+        await db["login_attempts"].create_indexes(
+            [IndexModel([("identifier", ASCENDING)], unique=True)]
+        )
         logger.info("MongoDB indexes created successfully")
     except Exception as e:
         logger.warning(f"MongoDB index creation skipped: {e}")
