@@ -6,8 +6,10 @@ X-API-Key tiered system in `auth.py`, which governs the public trade-data API.
 """
 
 import logging
+import os
 from datetime import datetime, timedelta, timezone
 
+from bson.errors import InvalidId
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, Response, status
 from pydantic import BaseModel, EmailStr, Field
 from pymongo import ReturnDocument
@@ -27,6 +29,24 @@ _db = None
 MAX_FAILED_ATTEMPTS = 5
 LOCKOUT_MINUTES = 15
 COOKIE_MAX_AGE = 7 * 24 * 3600
+# Same flag the CSRF/security-headers middlewares use to decide the Secure
+# cookie attribute — keep the session cookie usable in HTTP dev/internal
+# environments instead of silently never being sent back by the browser.
+_COOKIE_SECURE = os.environ.get("HTTPS_ENABLED", "false").lower() == "true"
+
+
+def _issue_session_token(user_id: str, email: str) -> str:
+    """create_access_token() reads JWT_SECRET from the environment and raises
+    KeyError if it's unset — turn that into a clear 503 instead of an opaque
+    500 when the JWT signing config is missing."""
+    try:
+        return create_access_token(user_id, email)
+    except KeyError:
+        logger.error("JWT_SECRET is not configured — cannot issue session tokens")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Comptes utilisateurs indisponibles (configuration JWT manquante)",
+        )
 
 
 def set_database(database) -> None:
@@ -68,7 +88,7 @@ def _set_session_cookie(response: Response, token: str) -> None:
         key="access_token",
         value=token,
         httponly=True,
-        secure=True,
+        secure=_COOKIE_SECURE,
         samesite="lax",
         max_age=COOKIE_MAX_AGE,
         path="/",
@@ -96,7 +116,7 @@ async def register(payload: RegisterPayload, response: Response, background_task
     result = await db.users.insert_one(user_doc)
     user_doc["_id"] = result.inserted_id
 
-    token = create_access_token(str(user_doc["_id"]), email)
+    token = _issue_session_token(str(user_doc["_id"]), email)
     _set_session_cookie(response, token)
 
     background_tasks.add_task(send_welcome_email, email, user_doc["name"])
@@ -160,7 +180,7 @@ async def login(payload: LoginPayload, response: Response):
 
     await db.login_attempts.delete_one({"identifier": identifier})
 
-    token = create_access_token(str(user_doc["_id"]), email)
+    token = _issue_session_token(str(user_doc["_id"]), email)
     _set_session_cookie(response, token)
     return _public_user(user_doc)
 
@@ -189,7 +209,14 @@ async def get_current_user(request: Request) -> dict:
 
     from bson import ObjectId
 
-    user_doc = await db.users.find_one({"_id": ObjectId(payload["sub"])})
+    try:
+        user_id = ObjectId(payload["sub"])
+    except (InvalidId, TypeError):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Session invalide ou expirée"
+        )
+
+    user_doc = await db.users.find_one({"_id": user_id})
     if not user_doc:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Utilisateur introuvable"

@@ -568,6 +568,9 @@ def register_routes(api_router: APIRouter):
         )
 
     # SaaS layer: user accounts (JWT session, separate from the X-API-Key
-    # tiered access above) and the public contact form.
-    api_router.include_router(user_auth_router, dependencies=_auth)
-    api_router.include_router(contact_router, dependencies=_auth)
+    # tiered access above) and the public contact form. No `_auth` dependency:
+    # these have their own auth (JWT cookie / open contact form) and must stay
+    # reachable even when PUBLIC_DATA_ACCESS=false requires an API key for the
+    # trade-data routers.
+    api_router.include_router(user_auth_router)
+    api_router.include_router(contact_router)

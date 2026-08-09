@@ -48,5 +48,8 @@ def decode_access_token(token: str) -> Optional[dict]:
         if payload.get("type") != "access":
             return None
         return payload
-    except jwt.PyJWTError:
+    except (jwt.PyJWTError, KeyError):
+        # KeyError: JWT_SECRET missing from the environment — treat exactly
+        # like an invalid/undecodable token rather than raising a 500 out of
+        # every authenticated endpoint.
         return None

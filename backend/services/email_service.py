@@ -75,6 +75,12 @@ def send_welcome_email(recipient: str, name: str) -> None:
 
 def send_contact_admin_email(name: str, email: str, message: str) -> None:
     admin_email = os.environ.get("SAAS_SMTP_USER", "")
+    if not admin_email:
+        logger.warning(
+            "Contact-form admin notification skipped: SAAS_SMTP_USER is not configured "
+            f"(message from {email} was still stored in MongoDB)"
+        )
+        return
     send_email(
         admin_email,
         f"Nouveau message de contact — {name}",
