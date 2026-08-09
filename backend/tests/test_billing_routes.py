@@ -19,7 +19,7 @@ if str(backend_path) not in sys.path:
     sys.path.insert(0, str(backend_path))
 
 from routes import billing, user_auth  # noqa: E402
-from services import chargily_service, stripe_service  # noqa: E402
+from services import chargily_service, geo_service, stripe_service  # noqa: E402
 
 
 class _FakeDB:
@@ -161,3 +161,89 @@ def test_chargily_webhook_unsigned_returns_400(client, monkeypatch):
     monkeypatch.setenv("CHARGILY_WEBHOOK_SECRET", "sec_test")
     resp = client.post("/billing/chargily/webhook", content=b"{}")
     assert resp.status_code == 400
+
+
+# ── Détection de pays et routage ────────────────────────────────────────────
+
+
+def _request_with(headers: dict):
+    """Fabrique une Request Starlette minimale portant les en-têtes donnés."""
+    from starlette.requests import Request as StarletteRequest
+
+    raw = [(k.lower().encode(), v.encode()) for k, v in headers.items()]
+    return StarletteRequest({"type": "http", "headers": raw, "client": ("10.0.0.1", 1234)})
+
+
+def test_client_ip_trusts_rightmost_forwarded_entry():
+    # La valeur de gauche est fournie par le client : elle ne doit pas gagner.
+    req = _request_with({"x-forwarded-for": "1.2.3.4, 41.100.0.9"})
+    assert geo_service.client_ip(req) == "41.100.0.9"
+
+
+def test_client_ip_ignores_private_addresses():
+    req = _request_with({"x-forwarded-for": "192.168.1.10"})
+    assert geo_service.client_ip(req) is None
+
+
+def test_country_from_cloudflare_header():
+    req = _request_with({"cf-ipcountry": "dz"})
+    assert geo_service.country_from_request(req) == "DZ"
+
+
+def test_country_unknown_when_no_source():
+    req = _request_with({})
+    assert geo_service.country_from_request(req) is None
+
+
+def test_algerian_ip_forces_chargily_and_locks():
+    req = _request_with({"cf-ipcountry": "DZ"})
+    ctx = billing.resolve_provider(req, {}, None)
+    assert ctx["provider"] == "chargily"
+    assert ctx["locked"] is True
+
+
+def test_algerian_ip_beats_declared_foreign_country():
+    """Propriété de sécurité : le pays déclaré par le client ne peut pas
+    contourner une IP algérienne détectée."""
+    req = _request_with({"cf-ipcountry": "DZ"})
+    ctx = billing.resolve_provider(req, {}, "FR")
+    assert ctx["provider"] == "chargily"
+    assert ctx["locked"] is True
+
+
+def test_exemption_releases_the_lock():
+    req = _request_with({"cf-ipcountry": "DZ"})
+    ctx = billing.resolve_provider(req, {"billing_stripe_exemption": True}, None)
+    assert ctx["provider"] == "stripe"
+    assert ctx["locked"] is False
+
+
+def test_declared_algeria_without_geo_uses_chargily_unlocked():
+    req = _request_with({})
+    ctx = billing.resolve_provider(req, {}, "DZ")
+    assert ctx["provider"] == "chargily"
+    assert ctx["locked"] is False
+
+
+def test_unknown_country_falls_back_to_stripe():
+    req = _request_with({})
+    ctx = billing.resolve_provider(req, {}, None)
+    assert ctx["provider"] == "stripe"
+    assert ctx["locked"] is False
+
+
+def test_checkout_from_algerian_ip_routes_to_chargily(client, monkeypatch):
+    """Bout en bout : IP algérienne + pays déclaré vide → branche Chargily
+    (ici désactivée, donc 501) au lieu de partir vers Stripe."""
+
+    async def _fake_user(_request):
+        return {"_id": "000000000000000000000001", "email": "u@example.com", "name": "U"}
+
+    monkeypatch.setattr(billing, "get_current_user", _fake_user)
+    monkeypatch.setenv("CHARGILY_ENABLED", "false")
+    resp = client.post(
+        "/billing/checkout",
+        json={"plan": "pro", "cycle": "monthly"},
+        headers={"CF-IPCountry": "DZ"},
+    )
+    assert resp.status_code == 501

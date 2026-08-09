@@ -27,7 +27,7 @@ from bson import ObjectId
 from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel
 from pymongo.errors import DuplicateKeyError
-from services import chargily_service, stripe_service
+from services import chargily_service, geo_service, stripe_service
 from services.email_service import send_email
 from starlette.concurrency import run_in_threadpool
 
@@ -67,15 +67,77 @@ class CheckoutPayload(BaseModel):
     billing_country: Optional[str] = None  # ISO-2 ; "DZ" → Chargily (Phase 2)
 
 
+def resolve_provider(request: Request, user: dict, declared_country: Optional[str]) -> dict:
+    """Décide du prestataire de paiement et dit si le choix est verrouillé.
+
+    Règle : une IP détectée en Algérie impose Chargily (contrôle des changes),
+    quel que soit le pays déclaré par le navigateur — la valeur envoyée par le
+    client n'est qu'une préférence, jamais une autorité.
+
+    Dérogation : `billing_stripe_exemption: true` sur le document utilisateur
+    (posée manuellement par le support) rend la main à l'utilisateur, pour les
+    cas légitimes — Algérien en déplacement, expatrié, VPN d'entreprise.
+
+    Si le pays n'est pas détectable (aucune source géo configurée, IP privée),
+    on retombe sur le choix explicite de l'utilisateur plutôt que de bloquer.
+    """
+    detected = geo_service.country_from_request(request)
+    declared = (declared_country or "").strip().upper() or None
+    exempt = bool(user.get("billing_stripe_exemption"))
+
+    if detected == "DZ" and not exempt:
+        return {"provider": "chargily", "country": "DZ", "locked": True, "detected": detected}
+    if declared == "DZ":
+        return {"provider": "chargily", "country": "DZ", "locked": False, "detected": detected}
+    return {
+        "provider": "stripe",
+        "country": declared or detected,
+        "locked": False,
+        "detected": detected,
+    }
+
+
+@router.get("/payment-context")
+async def payment_context(request: Request):
+    """Contexte de paiement pour l'interface : prestataire imposé ou non.
+
+    Permet au front de pré-sélectionner — et de verrouiller — le bon moyen de
+    paiement avant même que l'utilisateur clique.
+    """
+    user = {}
+    try:
+        user = await get_current_user(request)
+    except HTTPException:
+        pass  # Visiteur non connecté : on renvoie quand même le contexte géo.
+    ctx = resolve_provider(request, user, None)
+    return {
+        "provider": ctx["provider"],
+        "country": ctx["country"],
+        "locked": ctx["locked"],
+        "currency": "DZD" if ctx["provider"] == "chargily" else "USD",
+    }
+
+
 @router.post("/checkout")
 async def create_checkout(payload: CheckoutPayload, request: Request):
-    """Crée une session Stripe Checkout pour l'utilisateur connecté."""
+    """Crée un paiement pour l'utilisateur connecté (Stripe ou Chargily)."""
     db = _require_db()
     user = await get_current_user(request)
 
-    country = (payload.billing_country or "").strip().upper()
-    if country == "DZ":
-        return await _checkout_chargily(db, user, payload)
+    ctx = resolve_provider(request, user, payload.billing_country)
+    signals = geo_service.collect_signals(request, user)
+    logger.info(
+        "Checkout: user=%s plan=%s provider=%s locked=%s detected=%s mismatch=%s",
+        user.get("_id"),
+        payload.plan,
+        ctx["provider"],
+        ctx["locked"],
+        signals.get("detected_country"),
+        signals.get("country_mismatch"),
+    )
+
+    if ctx["provider"] == "chargily":
+        return await _checkout_chargily(db, user, payload, signals)
 
     price_id = stripe_service.resolve_price_id(payload.plan, payload.cycle)
 
@@ -106,10 +168,34 @@ async def create_checkout(payload: CheckoutPayload, request: Request):
             metadata=metadata,
         )
     )
+    await _record_attempt(db, user, payload, "stripe", signals)
     return {"url": checkout_url}
 
 
-async def _checkout_chargily(db, user, payload: "CheckoutPayload"):
+async def _record_attempt(db, user, payload, provider: str, signals: dict) -> None:
+    """Trace la tentative de paiement et ses signaux géo, pour audit.
+
+    Best-effort : une écriture d'audit ne doit jamais faire échouer un paiement.
+    Les IP sont des données personnelles — prévoir une purge périodique de cette
+    collection selon votre politique de rétention.
+    """
+    try:
+        await db.payment_attempts.insert_one(
+            {
+                "user_id": user.get("_id"),
+                "plan": payload.plan,
+                "cycle": payload.cycle,
+                "provider": provider,
+                "declared_country": (payload.billing_country or "").strip().upper() or None,
+                "created_at": datetime.now(timezone.utc),
+                **signals,
+            }
+        )
+    except Exception as exc:  # pragma: no cover - best effort
+        logger.warning("Audit tentative de paiement non enregistré: %s", exc)
+
+
+async def _checkout_chargily(db, user, payload: "CheckoutPayload", signals: dict):
     """Branche Algérie : paiement local via Chargily (CIB / Edahabia, DZD)."""
     if not chargily_service.is_enabled():
         raise HTTPException(
@@ -135,6 +221,7 @@ async def _checkout_chargily(db, user, payload: "CheckoutPayload"):
         {"_id": user["_id"]},
         {"$set": {"payment_provider": "chargily", "billing_country": "DZ"}},
     )
+    await _record_attempt(db, user, payload, "chargily", signals)
     return {"url": checkout_url}
 
 

@@ -61,13 +61,39 @@ webhook signé. La `success_url` sert seulement à afficher un message.
 
 ### Routage par pays (Stripe vs Chargily)
 
-- Détection du pays : champ explicite choisi par l'utilisateur au checkout
-  (sélecteur pays), **pas** de géo-IP silencieuse (cf. remarque de review sur la
-  page statique : on ne promet pas de « sélection automatique »).
-- `pays == DZ` → flux Chargily. Sinon → flux Stripe.
-- Phase 1 : la branche Chargily renvoie un `501 Not Implemented` propre + un
-  message « paiement local bientôt disponible », de façon à livrer Stripe seul
-  sans casser l'UX algérienne.
+Le contrôle des changes algérien impose qu'un résident paie localement, en
+dinars. Le routage repose donc sur le **pays détecté depuis l'IP**, et non sur
+une simple déclaration du navigateur — qui serait triviale à contourner.
+
+- **Détection** (`backend/services/geo_service.py`) : en-tête `CF-IPCountry`
+  si Cloudflare est en frontal, sinon base MaxMind GeoLite2 locale via
+  `GEOIP_DB_PATH`. Aucune source configurée → pays indéterminé.
+- **Autorité** : l'IP prime sur le pays déclaré. Une IP algérienne impose
+  Chargily et **verrouille** le sélecteur, même si le client déclare « FR ».
+- **Dérogation** : `billing_stripe_exemption: true` sur le document utilisateur
+  (posée par le support) rend la main — pour les Algériens en déplacement,
+  expatriés et VPN d'entreprise, qui sont des cas légitimes fréquents sur une
+  plateforme B2B de commerce international.
+- **Repli** : pays indéterminable → on retombe sur le choix explicite de
+  l'utilisateur. On ne bloque jamais un paiement sur une donnée absente.
+- **Transparence** : le verrou est affiché à l'utilisateur avec le motif et le
+  contact pour demander une dérogation — ce n'est donc pas une « détection
+  silencieuse ».
+
+Limites assumées, à ne pas survendre :
+
+- L'IP la plus à gauche de `X-Forwarded-For` est fournie par le client ; seule
+  la plus à droite (posée par le proxy de confiance) est lue.
+- **Aucune détection de VPN/proxy** n'est faite : elle exige un service
+  commercial (MaxMind Anonymous IP, IPQualityScore, IPinfo). On se limite à
+  **enregistrer les signaux** (IP, pays détecté, IP d'inscription, incohérence)
+  dans `payment_attempts` pour un audit humain a posteriori.
+
+### Devises hors Algérie
+
+Stripe **Adaptive Pricing** (activation dans le dashboard) affiche et encaisse
+dans la devise locale du client à partir des prix USD — pas de conversion
+maison, donc pas d'écart de taux ni de casse-tête de réconciliation comptable.
 
 ---
 
