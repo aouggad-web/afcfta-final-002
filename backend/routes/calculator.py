@@ -19,12 +19,43 @@ from etl.country_tariffs_complete import (
 from fastapi import APIRouter, HTTPException
 from models import TariffCalculationRequest, TariffCalculationResponse
 from services.crawled_data_service import crawled_service
+from services.regulatory_compliance_service import get_country_regulatory_compliance
+from services.regulatory_fee_service import (
+    build_regulatory_cost,
+    build_verified_provider_costs,
+)
+from services.regulatory_reported_service import build_reported_layer
 from services.tariff_data_service import tariff_service
 from services.tariff_enrichment_service import get_country_enrichment
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Calculator"])
+
+
+def _merge_regulatory_cost(
+    cost_import: Optional[Dict[str, Any]],
+    cost_export: Optional[Dict[str, Any]],
+    verified_items: Optional[List[Dict[str, Any]]] = None,
+) -> Optional[Dict[str, Any]]:
+    """Fusionne registre conforme (import/export) et frais vérifiés en un bloc.
+
+    Concatène toutes les lignes (chacune conserve son ``side``) et re-agrège les
+    drapeaux de complétude et les totaux (bornés min/max) via le sommateur du
+    service, sans jamais additionner de devises hétérogènes. Renvoie None si tout
+    est vide.
+    """
+    from services.regulatory_fee_service import _summarise
+
+    merged_items: List[Dict[str, Any]] = []
+    for side in (cost_import, cost_export):
+        if side:
+            merged_items.extend(side.get("line_items", []))
+    if verified_items:
+        merged_items.extend(verified_items)
+    if not merged_items:
+        return None
+    return _summarise(merged_items)
 
 
 def _is_vat_tax(tax: Dict[str, Any]) -> bool:
@@ -195,7 +226,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
 
     # Use ISO3 for calculations
     dest_iso3 = dest_country["iso3"]
-    # origin_iso3 available if needed for bilateral calculations
+    origin_iso3 = origin_country["iso3"]
 
     # Clean and normalize HS code
     hs_code_clean = request.hs_code.replace(".", "").replace(" ", "")
@@ -917,6 +948,46 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         sub_positions_details = sub_positions_available
 
     # Create complete response with all taxes
+    # ── Formalités d'importation et prestataires mandatés (pays de destination) ──
+    # Bloc informatif STRICTEMENT SÉPARÉ des droits et taxes : jamais additionné
+    # au coût douanier. Fail-closed : toute erreur de données ou pays non couvert
+    # laisse le champ à None sans jamais interrompre le calcul tarifaire.
+    regulatory_compliance = None
+    regulatory_cost = None
+    regulatory_reported = None
+    try:
+        regulatory_compliance = get_country_regulatory_compliance(dest_iso3)
+        # Ventilation des frais de formalité/prestataire pour l'import (pays de
+        # destination) ET l'export (pays d'origine), fusionnée. L'assiette FOB par
+        # défaut est la valeur déclarée. Ne produit des lignes que pour les pays à
+        # prestataire mandaté actif ; sinon None (pas de rubrique vide).
+        cost_import = build_regulatory_cost(
+            regulatory_compliance, fob_value=request.value, side="import"
+        )
+        origin_compliance = get_country_regulatory_compliance(origin_iso3)
+        cost_export = build_regulatory_cost(
+            origin_compliance, fob_value=request.value, side="export"
+        )
+        # Frais VÉRIFIÉS sur source primaire (ex. VOC Côte d'Ivoire) — autoritaires,
+        # ajoutés indépendamment du registre conforme, pour import et export.
+        verified_items = build_verified_provider_costs(
+            dest_iso3, fob_value=request.value, side="import"
+        ) + build_verified_provider_costs(origin_iso3, fob_value=request.value, side="export")
+        regulatory_cost = _merge_regulatory_cost(cost_import, cost_export, verified_items)
+        # Couche d'indications secondaires (non vérifiée) pour les pays pas
+        # encore couverts par le registre conforme — purement informative.
+        regulatory_reported = build_reported_layer(dest_iso3, origin_iso3)
+    except Exception as exc:  # pragma: no cover - garde-fou fail-closed
+        logging.warning(
+            "Regulatory-compliance/fee lookup failed for %s->%s (calcul tarifaire non affecté): %s",
+            origin_iso3,
+            dest_iso3,
+            exc,
+        )
+        regulatory_compliance = None
+        regulatory_cost = None
+        regulatory_reported = None
+
     result = TariffCalculationResponse(
         origin_country=request.origin_country,
         destination_country=request.destination_country,
@@ -977,6 +1048,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         administrative_formalities=(
             collected_admin_formalities if collected_admin_formalities else None
         ),
+        regulatory_compliance=regulatory_compliance,
+        regulatory_cost=regulatory_cost,
+        regulatory_reported=regulatory_reported,
         country_enrichment=country_enrichment,
         data_source=data_source,
         duty_status=duty_status,

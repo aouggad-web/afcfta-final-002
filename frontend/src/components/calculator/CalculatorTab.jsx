@@ -29,6 +29,12 @@ import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import KenyaRemissionAuthorization from './KenyaRemissionAuthorization';
+import RegulatoryComplianceView, {
+  hasActiveMandatedProvider,
+  hasUnpricedActiveProviderFees,
+} from '../regulatory/RegulatoryComplianceView';
+import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
+import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -1281,6 +1287,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <p className="text-blue-400/60 text-xs mt-1">{language === 'fr' ? 'Sur votre valeur' : 'On your value'}</p>
                 </div>
               </div>
+
+              {/* Point 4 — signalement d'incomplétude : le total ci-dessus couvre les
+                  droits et taxes exigibles, mais un prestataire mandaté actif facture
+                  des frais dont le montant n'est pas chiffré dans les sources. Le coût
+                  total réel de dédouanement est donc INCOMPLET — signalé, jamais estimé. */}
+              {hasUnpricedActiveProviderFees(result.regulatory_compliance) && (
+                <div className="mt-4 flex items-start gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                  <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <p className="text-sm text-amber-200/90">
+                    {language === 'fr'
+                      ? "Calcul incomplet : ces totaux couvrent les droits et taxes exigibles, mais un prestataire mandaté actif perçoit des frais dont le montant n'est pas publié dans les sources (NOT_AVAILABLE). Le coût total de dédouanement est donc supérieur — voir le bloc « Frais des prestataires mandatés » ci-dessous. Aucun montant n'est estimé."
+                      : 'Incomplete calculation: these totals cover payable duties and taxes, but an active mandated provider charges fees whose amount is not published in the sources (NOT_AVAILABLE). The total clearance cost is therefore higher — see the “Mandated-provider fees” block below. No amount is estimated.'}
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
@@ -1555,14 +1576,103 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </CardContent>
             </Card>
           )}
+
+          {/* Composition du coût réglementaire : droits & taxes publics + frais de
+              formalité et de prestataire (lignes séparées). Les frais documentés
+              chiffrés entrent dans le coût total ; les frais existants non chiffrés
+              sont signalés « montant à confirmer », jamais valués à zéro. */}
+          <RegulatoryCostBreakdown result={result} language={language} />
+
+          {/* ── BLOC DÉTAILLÉ — Formalités & prestataires mandatés (registre conforme) ──
+              Détail sourcé et daté (mission, mandat, preuves). Affiché UNIQUEMENT
+              pour les pays utilisant réellement un prestataire mandaté actif (jamais
+              pour une formalité opérée directement par l'administration ni un mandat
+              expiré). Distinct des droits et taxes. */}
+          {hasActiveMandatedProvider(result.regulatory_compliance) && (
+            <Card className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 border border-amber-500/30">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                    <ClipboardList className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg text-white">
+                      {language === 'fr'
+                        ? 'Détail des formalités & prestataires mandatés'
+                        : 'Formalities & mandated providers — detail'}
+                    </CardTitle>
+                    <CardDescription className="text-slate-400">
+                      {language === 'fr'
+                        ? `${getCountryName(result.destination_country)} — mission, mandat, preuves datées et sources officielles`
+                        : `${getCountryName(result.destination_country)} — mission, mandate, dated evidence and official sources`}
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                  <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <p className="text-sm text-amber-200/90">
+                    {language === 'fr'
+                      ? "Les frais du prestataire mandaté sont séparés des droits et taxes publics (voir « Composition du coût réglementaire » ci-dessus). Un montant n'est chiffré et intégré que lorsqu'il est prouvé et sourcé ; sinon il reste à confirmer (jamais fabriqué, jamais valué à zéro)."
+                      : 'Mandated-provider fees are separate from public duties and taxes (see “Regulatory cost composition” above). An amount is quantified and included only when proven and sourced; otherwise it stays to be confirmed (never fabricated, never valued at zero).'}
+                  </p>
+                </div>
+                <RegulatoryComplianceView
+                  compliance={result.regulatory_compliance}
+                  language={language}
+                  showFilters={false}
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Couche « indications secondaires » (non vérifiée) — pays hors registre
+              conforme. Rendu distinct, jamais sommé, tout « à confirmer ». */}
+          <RegulatoryReportedIndications result={result} language={language} />
         </div>
       )}
           </div>
       </TabsContent>
-        
+
         {/* Onglet Réglementation - Moteur Réglementaire v3 */}
         <TabsContent value="regulatory">
           <div className="space-y-6">
+            {/* Formalités & prestataires mandatés — registre CONFORME fail-closed
+                (source-bound, daté). Affiché en priorité sur le Moteur v3 ci-dessous,
+                et UNIQUEMENT pour un pays de destination utilisant réellement un
+                prestataire mandaté actif. */}
+            {hasActiveMandatedProvider(result?.regulatory_compliance) && (
+              <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border border-amber-500/30">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                      <ClipboardList className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl text-white">
+                        {language === 'fr'
+                          ? 'Formalités particulières & prestataires mandatés'
+                          : 'Special formalities & mandated providers'}
+                      </CardTitle>
+                      <CardDescription className="text-slate-400">
+                        {language === 'fr'
+                          ? `${getCountryName(result.destination_country)} — registre sourcé et daté, distinct du calcul de droits et taxes`
+                          : `${getCountryName(result.destination_country)} — source-bound dated registry, distinct from the duties/taxes computation`}
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <RegulatoryComplianceView
+                    compliance={result.regulatory_compliance}
+                    language={language}
+                    showFilters
+                  />
+                </CardContent>
+              </Card>
+            )}
+
             {/* Header avec recherche */}
             <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 overflow-hidden">
               <div className="absolute top-0 left-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>

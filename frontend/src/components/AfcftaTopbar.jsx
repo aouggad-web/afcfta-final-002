@@ -13,7 +13,6 @@ import {
   Moon,
   Sun,
   TrendingUp,
-  ShieldCheck,
   X,
   Mail,
   User,
@@ -32,7 +31,6 @@ const NAV_ITEMS = (isFrench) => [
   { id: "tools",      label: isFrench ? "Outils"          : "Tools",          icon: Wrench },
   { id: "roo",        label: isFrench ? "R. d'Origine"    : "Rules of Origin",icon: FileCheck },
   { id: "profiles",   label: isFrench ? "Profils"         : "Profiles",       icon: Globe2 },
-  { id: "regulatory", label: isFrench ? "Réglementation"  : "Regulatory",     icon: ShieldCheck },
   { id: "reports",    label: isFrench ? "Opportunités"    : "Opportunities",  icon: TrendingUp },
   { id: "contact",    label: isFrench ? "Contact"         : "Contact",        icon: Mail },
 ];

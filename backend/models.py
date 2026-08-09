@@ -151,6 +151,31 @@ class TariffCalculationResponse(BaseModel):
     currency: Optional[Dict[str, Any]] = None
     fiscal_advantages: Optional[List[Dict[str, Any]]] = None
     administrative_formalities: Optional[List[Dict[str, Any]]] = None
+    # Formalités d'importation et prestataires/mandataires du pays de destination
+    # (source : services.regulatory_compliance_service — registre fail-closed,
+    # sourcé et daté). Bloc STRICTEMENT SÉPARÉ des droits et taxes : il n'entre
+    # JAMAIS dans normal_total_cost / zlecaf_total_cost / taxes_summary. Les
+    # frais autorisés des prestataires y figurent à titre informatif — chiffrés
+    # + sourcés lorsque prouvés, sinon NOT_AVAILABLE — et ne sont jamais additionnés
+    # au coût douanier (nature distincte : coût opérationnel privé ≠ droit exigible).
+    # None quand le pays de destination n'a pas encore de registre conforme.
+    regulatory_compliance: Optional[Dict[str, Any]] = None
+    # Ventilation calculée des frais de formalité et de prestataire mandaté
+    # (services.regulatory_fee_service), pour le pays d'import ET/OU d'export dès
+    # qu'un prestataire mandaté ACTIF est confirmé. Chaque ligne porte un statut
+    # canonique (CALCULABLE, DOCUMENTED_FIXED_AMOUNT, DOCUMENTED_PERCENTAGE,
+    # FEE_EXISTS_AMOUNT_NOT_AVAILABLE, PARTIAL, NOT_AVAILABLE, NOT_APPLICABLE).
+    # Les frais du prestataire (perçu privé) sont rangés séparément des frais de
+    # formalité (perçu public) et TOUS restent distincts des droits et taxes.
+    # `complete=False` signale un coût total encore partiel ; un montant inconnu
+    # reste None (jamais 0). None quand aucun prestataire actif n'est confirmé.
+    regulatory_cost: Optional[Dict[str, Any]] = None
+    # Couche « indications secondaires » (services.regulatory_reported_service) :
+    # prestataires et frais REPORTÉS par une synthèse secondaire non vérifiée, pour
+    # les pays pas encore couverts par le registre conforme. Purement informatif,
+    # étiqueté « à confirmer », JAMAIS sommé à un total ni marqué CALCULABLE, jamais
+    # présenté comme officiel. Strictement distinct de regulatory_compliance/cost.
+    regulatory_reported: Optional[Dict[str, Any]] = None
     # Couverture tarifaire, fiscale, documentaire et réglementaire traçable.
     # Les lacunes restent explicitement NOT_AVAILABLE ; aucune valeur de
     # remplacement n'est générée par ce bloc.

@@ -1,0 +1,401 @@
+{
+  "schema_version": "1.0",
+  "dataset": "private_customs_missions_africa_2016_2026",
+  "as_of": "2026-08-09",
+  "purpose": "Backlog de recherche pour la collecte de sources PRIMAIRES sur les prestataires douaniers/maritimes mandatés en Afrique (2016-2026). Alimente le registre de conformité et, à terme, le moteur de frais du calculateur — UNIQUEMENT après vérification primaire de chaque montant.",
+  "source_provenance": {
+    "source_type": "SECONDARY_AI_SYNTHESIS",
+    "origin": "Synthèse générée par Google Gemini (conversation utilisateur), importée le 2026-08-09.",
+    "reliability": "UNVERIFIED",
+    "caveats": [
+      "Montants exprimés en fourchettes approximatives (« env. », « ~», « 0,30 % à 0,45 % ») — non opposables.",
+      "Aucune référence primaire (journal officiel, décret, grille tarifaire du prestataire) fournie pour la plupart des montants.",
+      "Le document souligne lui-même la faible traçabilité (contrats de gré à gré, clauses de confidentialité).",
+      "À NE PAS injecter comme fee calculable/documenté dans le calculateur sans source primaire vérifiée (règles fail-closed #1 et #9)."
+    ]
+  },
+  "usage_rules": {
+    "fee_status_on_ingestion": "FEE_EXISTS_AMOUNT_NOT_AVAILABLE ou PARTIAL — jamais CALCULABLE/DOCUMENTED tant que la source primaire n'est pas archivée.",
+    "amount_field": "reported_fee_structure est INFORMATIF (secondaire). Ne jamais copier reported_range dans authorized_fees_detail.rate/fixed_amount sans vérification primaire.",
+    "promotion_path": "reported → (recherche source primaire) → verified_primary → authorized_fees_detail structuré + source → CALCULABLE."
+  },
+  "provider_taxonomy": {
+    "TIC_inspection_certification": ["SGS", "Bureau Veritas / BIVAC", "Cotecna", "Intertek", "TÜV Rheinland"],
+    "trade_facilitation_it": ["Webb Fontaine", "CUPIA (UNIPASS / Ghana Link)", "SOGET", "PortNet S.A.", "Global Customs Compliance"],
+    "maritime_cargo_tracking": ["Antaser", "Bureau Veritas (BSC/ECTN)", "Phoenix Europe / OGEFREM (FERI)", "SOGET (PCS)", "Webb Fontaine (module maritime)"]
+  },
+  "records": [
+    {
+      "record_id": "CIV-VOC-2018",
+      "country_iso3": "CIV",
+      "country_name": "Côte d'Ivoire",
+      "program": "VOC (Vérification de la Conformité)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["Bureau Veritas", "Cotecna", "Intertek", "SGS"],
+      "period": {"start": "2018", "end": "en cours"},
+      "mission": "Vérification de conformité aux normes dans le pays d'exportation avant délivrance du Certificat de Conformité (CoC).",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "0,30% à 0,45% de la valeur FOB selon la route d'inspection (A/B/C)",
+        "reported_min": "~255 EUR",
+        "reported_max": "~4100 EUR",
+        "currency": "EUR"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Renouvellements réguliers d'agréments des 4 prestataires.",
+      "verification_status": "PROMOTED_TO_VERIFIED",
+      "promotion": {
+        "date": "2026-08-09",
+        "target": "data/regulatory-compliance/verified_provider_fees.json#CIV-VOC-HONORAIRES",
+        "sources": [
+          "https://www.douanes.ci/node/40794",
+          "https://www.tresor.economie.gouv.fr/Articles/2019/02/07/point-info-voc-verification-de-la-conformite-aux-normes-des-marchandises-importees-en-cote-d-ivoire"
+        ],
+        "note": "Taux 0,30%-0,45% FOB confirmé (fourchette route-dépendante) ; planchers/plafonds/seuil en FCFA conservés en conditions. Désormais CALCULABLE (fourchette ad valorem) dans le calculateur."
+      }
+    },
+    {
+      "record_id": "CIV-GUCE-2013",
+      "country_iso3": "CIV",
+      "country_name": "Côte d'Ivoire",
+      "program": "GUCE (Guichet Unique du Commerce Extérieur)",
+      "formality_type": "SINGLE_WINDOW",
+      "providers": ["Webb Fontaine"],
+      "period": {"start": "2013", "end": "transfert vers GUCE-CI (70% État) acté 2019"},
+      "mission": "Conception et exploitation du Guichet Unique et de l'analyse des risques ; module maritime (manifeste, delivery order).",
+      "payer": "IMPORTER_OR_FORWARDER",
+      "reported_fee_structure": {
+        "method": "FIXED_AMOUNT_PER_FILE",
+        "reported_range": "Redevance forfaitaire par dossier/déclaration (FDI), env. 15 000 à 20 000 FCFA",
+        "currency": "XOF"
+      },
+      "mandate_status_reported": "ACTIVE_TRANSFERRED_TO_STATE",
+      "traceability": "Convention de concession signée le 28 février 2013 ; avenant Ruling Center 1er juillet 2018 ; Conseil des Ministres du 12 juin 2019 ; Décision Douanes n°036/SEPMBPE/DGD du 12 avril 2019.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "NGA-NICIS-2017",
+      "country_iso3": "NGA",
+      "country_name": "Nigeria",
+      "program": "Informatisation douanière (NICIS II, Trade Portal)",
+      "formality_type": "CUSTOMS_IT_SINGLE_WINDOW",
+      "providers": ["Webb Fontaine"],
+      "period": {"start": "2017", "end": "en cours (avenants successifs)"},
+      "mission": "Portail d'échange, gestion des risques, interconnexion du Nigeria Customs Service.",
+      "payer": "IMPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "Part de la redevance CISS (Comprehensive Import Supervision Scheme), prélevée à 1% FOB",
+        "reported_rate": "0.01",
+        "currency": "USD_OR_NGN"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Virement direct compte Banque Centrale (CBN) avant émission de la déclaration.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "SEN-SCANNER-2017",
+      "country_iso3": "SEN",
+      "country_name": "Sénégal",
+      "program": "Inspection non intrusive (Scanners) + tracking COTRACK",
+      "formality_type": "NON_INTRUSIVE_INSPECTION",
+      "providers": ["Cotecna"],
+      "period": {"start": "2017", "end": "en cours (PPP exclusif Port de Dakar)"},
+      "mission": "Fourniture et exploitation des scanners à rayons X ; suivi électronique.",
+      "payer": "IMPORTER_OR_DECLARANT",
+      "reported_fee_structure": {
+        "method": "FIXED_AMOUNT_PER_CONTAINER",
+        "reported_range": "RUS (Redevance d'Utilisation de Scanner) : 20 000 FCFA (conteneur 20') / 45 000 FCFA (40')",
+        "currency": "XOF"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "RUS intégrée au Code des Douanes sénégalais et au système GAINDE.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "SEN-BESC-COSEC",
+      "country_iso3": "SEN",
+      "country_name": "Sénégal",
+      "program": "BESC (pour le compte du COSEC)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Antaser"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Émission du Bordereau Électronique de Suivi de Cargaison.",
+      "payer": "SHIPPER_EXPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL_PLUS_VARIABLE",
+        "reported_range": "≈50-100 EUR / BL + 15-50 EUR / conteneur (barème Antaser régional)",
+        "currency": "EUR"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Mandat d'exploitation COSEC.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "TZA-PVOC-2015",
+      "country_iso3": "TZA",
+      "country_name": "Tanzanie",
+      "program": "PVoC (Pre-Export Verification of Conformity)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["SGS", "Bureau Veritas", "Intertek"],
+      "period": {"start": "2015", "end": "en cours (renouvellements trisannuels)"},
+      "mission": "Vérification de conformité avant export, délivrance CoC.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "0,25% à 0,50% FOB",
+        "reported_min": "250 USD",
+        "reported_max": "5000 USD",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Renouvellements trisannuels.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "KEN-UGA-ECTS-2017",
+      "country_iso3": "KEN",
+      "country_name": "Kenya / Ouganda",
+      "program": "Tracking électronique du fret en transit (ECTS)",
+      "formality_type": "ELECTRONIC_CARGO_TRACKING",
+      "providers": ["SGS", "BIVAC"],
+      "period": {"start": "2017", "end": "en cours"},
+      "mission": "Location et pose de balises GPS, suivi des cargaisons en transit (corridors Afrique de l'Est).",
+      "payer": "TRANSPORTER_OR_FORWARDER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_TRIP",
+        "reported_range": "≈30-50 USD par scellé/pose et par voyage",
+        "currency": "USD",
+        "payment_channel": "Mobile Money (M-Pesa) ou virement local"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Contrats corridors EAC.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "GHA-ICUMS-2020",
+      "country_iso3": "GHA",
+      "country_name": "Ghana",
+      "program": "ICUMS / UNIPASS (Système intégré de dédouanement)",
+      "formality_type": "CUSTOMS_IT_SINGLE_WINDOW",
+      "providers": ["CUPIA (Korea Customs)", "Ghana Link Network Services"],
+      "period": {"start": "2020-06-01", "end": "2030 (contrat décennal)"},
+      "mission": "Système intégré de gestion douanière, remplaçant GCNet et West Blue.",
+      "payer": "IMPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_CIF",
+        "reported_range": "≈0,75% de la valeur CAF/CIF",
+        "reported_rate": "0.0075",
+        "currency": "GHS_OR_USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Accord Gouvernement du Ghana / Ghana Link Network Services ; déploiement achevé 1er juin 2020 (GRA).",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-09",
+          "method": "web_search + fetch page officielle GRA",
+          "finding": "Le frais existe et tourne autour de 0,75%, mais l'ASSIETTE est contestée : le document Gemini indique 0,75% du CIF, une source de facilitation tierce indique 0,75% du FOB. La page officielle GRA (gra.gov.gh/customs/icums) ne publie AUCUN taux.",
+          "sources_checked": [
+            "https://gra.gov.gh/customs/icums/",
+            "https://www.ccifrance-ghana.com/news/n/news/trade-facilitation-revenue-mobilisation-icums-is-ghanas-best-bet.html"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Assiette FOB vs CIF non tranchée par une source primaire ; taux non publié officiellement. Reste FEE_EXISTS_AMOUNT_NOT_AVAILABLE (règle #3)."
+        }
+      ]
+    },
+    {
+      "record_id": "COD-PCEC-2021",
+      "country_iso3": "COD",
+      "country_name": "R.D. Congo",
+      "program": "PCEC / VOC (Contrôle avant embarquement de conformité)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["Cotecna", "Bureau Veritas"],
+      "period": {"start": "2021", "end": "en cours"},
+      "mission": "Vérification de conformité, % ad valorem FOB + frais de dossier.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "% ad valorem FOB (route A/B/C) + frais fixes d'émission du certificat",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Redémarrage strict des contrôles 2021.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "COD-FERI-OGEFREM",
+      "country_iso3": "COD",
+      "country_name": "R.D. Congo",
+      "program": "FERI (Fiche Électronique de Renseignement à l'Importation)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Antaser", "OGEFREM (mandant)", "Phoenix Europe (mandataire)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Contrôle des flux maritimes, statistiques, sûreté ; établissement du FERI en devise forte.",
+      "payer": "SHIPPER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_CERTIFICATE",
+        "reported_range": "Frais d'établissement du certificat en EUR/USD (similaire BESC)",
+        "currency": "EUR_OR_USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Application stricte toutes routes maritimes vers la RDC (OGEFREM).",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "GIN-GUCEG-2020",
+      "country_iso3": "GIN",
+      "country_name": "Guinée",
+      "program": "Guichet Unique (GUCEG) + Tracking & évaluation en douane",
+      "formality_type": "CUSTOMS_IT_SINGLE_WINDOW",
+      "providers": ["Webb Fontaine"],
+      "period": {"start": "2020", "end": "2030 (concession 10 ans)"},
+      "mission": "Traitement documentaire, tracking des transits, évaluation en douane.",
+      "payer": "IMPORTER_OR_DECLARANT",
+      "reported_fee_structure": {
+        "method": "FIXED_PLUS_TRACKING",
+        "reported_range": "Redevance de traitement documentaire + redevance de tracking sur transits",
+        "currency": "GNF"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Concession décennale débutée opérationnellement 2020.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "BEN-CED-2021",
+      "country_iso3": "BEN",
+      "country_name": "Bénin",
+      "program": "Centre d'Expertise Douanière (classification tarifaire, gestion des risques) — remplacement du PVI",
+      "formality_type": "CUSTOMS_VALUATION_CLASSIFICATION",
+      "providers": ["Webb Fontaine"],
+      "period": {"start": "2021", "end": "en cours"},
+      "mission": "Expertise douanière, classification tarifaire, gestion des risques.",
+      "payer": "IMPORTER",
+      "reported_fee_structure": {
+        "method": "NOT_REPORTED",
+        "reported_range": null,
+        "currency": null
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Contrat de partenariat technique 2021.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "BEN-SEGUB",
+      "country_iso3": "BEN",
+      "country_name": "Bénin",
+      "program": "SEGUB (Société d'Exploitation du Guichet Unique du Bénin)",
+      "formality_type": "PORT_SINGLE_WINDOW",
+      "providers": ["SOGET", "Bureau Veritas (BIVAC)"],
+      "period": {"start": "2011", "end": "conventions révisées ensuite"},
+      "mission": "Guichet Unique portuaire (PCS).",
+      "payer": "FORWARDER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "PER_BL_OR_TEU",
+        "reported_range": "Redevance PCS au connaissement / à l'EVP",
+        "currency": "XOF"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Concession 10 ans (70% groupement BV/SOGET, 30% État), 2011 ; rapport DTIS Banque Mondiale 2015.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "TGO-SEGUCE-2014",
+      "country_iso3": "TGO",
+      "country_name": "Togo",
+      "program": "SEGUCE Togo (Guichet Unique pour le Commerce Extérieur)",
+      "formality_type": "PORT_SINGLE_WINDOW",
+      "providers": ["SOGET", "Bureau Veritas"],
+      "period": {"start": "2014", "end": "phase de transfert vers l'État après 10 ans"},
+      "mission": "Guichet unique, PCS (S-One / AP+).",
+      "payer": "FORWARDER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "PER_BL_OR_TEU",
+        "reported_range": "Redevance de passage portuaire au connaissement / EVP (ex. ~35 000 FCFA/conteneur)",
+        "currency": "XOF"
+      },
+      "mandate_status_reported": "ACTIVE_TRANSITION",
+      "traceability": "Contrat concession 10 ans attribué début 2014 (~6 Mds FCFA) ; Examen Politiques Commerciales OMC 2019.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "CMR-PECAE",
+      "country_iso3": "CMR",
+      "country_name": "Cameroun",
+      "program": "PECAE (Programme d'Évaluation de la Conformité)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["SGS", "Intertek", "Bureau Veritas"],
+      "period": {"start": "2016", "end": "en cours"},
+      "mission": "Évaluation de la conformité des produits importés.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "% FOB (standard PVoC/VOC régional)",
+        "currency": "XAF"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Programme consolidé et actif.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "MAR-PORTNET",
+      "country_iso3": "MAR",
+      "country_name": "Maroc",
+      "program": "PortNet (Guichet Unique du Commerce Extérieur / logistique portuaire)",
+      "formality_type": "PORT_SINGLE_WINDOW",
+      "providers": ["PortNet S.A.", "SOGET (PPP)", "ANP Maroc"],
+      "period": {"start": "2011", "end": "en cours (société anonyme nationale)"},
+      "mission": "Escales navires, dématérialisation des bons à délivrer (BAD), rendez-vous transporteurs.",
+      "payer": "LOGISTICS_ACTORS",
+      "reported_fee_structure": {
+        "method": "ANNUAL_SUBSCRIPTION_PLUS_ACCESS",
+        "reported_range": "Abonnement annuel opérateurs (~3600 MAD/an) + facturation d'accès consignataires",
+        "currency": "MAD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "PPP ANP Maroc & SOGET, déploiement 2011-2026.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "AGO-CNCA-FERI",
+      "country_iso3": "AGO",
+      "country_name": "Angola",
+      "program": "CNCA / Certificat de débarquement (FERI-like)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Phoenix Europe", "OGEFREM (réseau)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Contrôle des flux maritimes, statistiques État du pavillon, certificat de débarquement.",
+      "payer": "SHIPPER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_CERTIFICATE",
+        "reported_range": "Frais d'établissement en devise forte (EUR/USD)",
+        "currency": "EUR_OR_USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "CNCA Angola.",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "record_id": "COG-MLI-MDG-BSC-BIVAC",
+      "country_iso3": "COG",
+      "country_name": "Congo-Brazzaville / Mali / Madagascar",
+      "program": "BESC / BSC (Bordereau de Suivi de Cargaison) — Madagascar via GasyNet",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Bureau Veritas (BIVAC)", "GasyNet (MDG)"],
+      "period": {"start": "2007", "end": "en cours (2016-2026)"},
+      "mission": "Sûreté maritime, vérification des taux de fret, lutte contre la minoration des valeurs au manifeste.",
+      "payer": "EXPORTER_AGENT",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL_PLUS_CONTAINER",
+        "reported_range": "≈40-80 EUR / BL + coût unitaire par conteneur",
+        "currency": "EUR"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Contrats BSC/GasyNet.",
+      "verification_status": "UNVERIFIED",
+      "note": "Regroupe plusieurs pays sous une même ligne source — à éclater par pays lors de la vérification primaire."
+    }
+  ]
+}

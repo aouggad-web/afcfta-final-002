@@ -19,7 +19,6 @@ import LogisticsTab from './components/logistics/LogisticsTab';
 import ToolsTab from './components/tools/ToolsTab';
 import RulesTab from './components/rules/RulesTab';
 import CountryProfilesTab from './components/profiles/CountryProfilesTab';
-import RegulatoryComplianceTab from './components/regulatory/RegulatoryComplianceTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import FinanceTab from './components/finance/FinanceTab';
 import OpportunityReportTab from './components/reports/OpportunityReportTab';
@@ -123,7 +122,6 @@ function App() {
         tools: 'tools',
         roo: 'rules',
         profiles: 'profiles',
-        regulatory: 'regulatory',
         reports: 'reports',
         contact: 'contact',
       };
@@ -144,7 +142,6 @@ function App() {
       tools: 'tools',
       rules: 'roo',
       profiles: 'profiles',
-      regulatory: 'regulatory',
       reports: 'reports',
       contact: 'contact',
     };
@@ -332,29 +329,6 @@ function App() {
             <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <CountryProfilesTab language={language} />
-            </div>
-          </div>
-        );
-
-      case 'regulatory':
-        return (
-          <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader
-              title={
-                language === 'fr'
-                  ? 'Formalités particulières et prestataires mandatés'
-                  : 'Special formalities & mandated providers'
-              }
-              subtitle={
-                language === 'fr'
-                  ? 'Contrôles obligatoires à l\'importation, distincts du calcul tarifaire'
-                  : 'Mandatory import controls, distinct from the tariff calculator'
-              }
-              dotColor="warning"
-            />
-            <div style={{ height: 20 }} />
-            <div className="afcfta-card">
-              <RegulatoryComplianceTab language={language} />
             </div>
           </div>
         );
