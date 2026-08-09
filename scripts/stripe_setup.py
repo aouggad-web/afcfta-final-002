@@ -46,22 +46,22 @@ PLANS = [
         "slug": "starter",
         "name": "ZLECAf Starter",
         "description": "Calculs illimités, 54 pays, export CSV — indépendants et petits importateurs/exportateurs.",
-        "monthly_cents": 900,     # 9 $/mois
-        "annual_cents": 8400,     # 7 $/mois × 12 = 84 $/an
+        "monthly_cents": 900,  # 9 $/mois
+        "annual_cents": 8400,  # 7 $/mois × 12 = 84 $/an
     },
     {
         "slug": "pro",
         "name": "ZLECAf Pro",
         "description": "Export CSV+Excel+PDF, profils complets, alertes tarifaires — exportateurs, traders, consultants.",
-        "monthly_cents": 1900,    # 19 $/mois
-        "annual_cents": 18000,    # 15 $/mois × 12 = 180 $/an
+        "monthly_cents": 1900,  # 19 $/mois
+        "annual_cents": 18000,  # 15 $/mois × 12 = 180 $/an
     },
     {
         "slug": "business",
         "name": "ZLECAf Business",
         "description": "Tout Pro + API REST, rapports automatisés, 5 utilisateurs — entreprises et plateformes.",
-        "monthly_cents": 5900,    # 59 $/mois
-        "annual_cents": 58800,    # 49 $/mois × 12 = 588 $/an
+        "monthly_cents": 5900,  # 59 $/mois
+        "annual_cents": 58800,  # 49 $/mois × 12 = 588 $/an
     },
 ]
 
@@ -105,10 +105,14 @@ def ensure_price(product, plan: dict, cycle: str, dry_run: bool):
 
     existing = find_price_by_lookup(lookup_key)
     if existing:
-        print(f"  Price     ✓ existant  {existing.id}  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}")
+        print(
+            f"  Price     ✓ existant  {existing.id}  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}"
+        )
         return existing.id
     if dry_run:
-        print(f"  Price     + à créer    (dry-run)  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}")
+        print(
+            f"  Price     + à créer    (dry-run)  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}"
+        )
         return None
     if product is None:
         print(f"  Price     ! ignoré (product non créé)  [{lookup_key}]")
@@ -122,13 +126,17 @@ def ensure_price(product, plan: dict, cycle: str, dry_run: bool):
         transfer_lookup_key=True,  # réassigne la lookup_key si un ancien prix la portait
         metadata={"app": APP_TAG, "plan": plan["slug"], "cycle": cycle},
     )
-    print(f"  Price     + créé       {price.id}  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}")
+    print(
+        f"  Price     + créé       {price.id}  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}"
+    )
     return price.id
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Crée les Products/Prices Stripe ZLECAf.")
-    parser.add_argument("--dry-run", action="store_true", help="N'écrit rien côté Stripe, montre le plan d'action.")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="N'écrit rien côté Stripe, montre le plan d'action."
+    )
     args = parser.parse_args()
 
     key = os.environ.get("STRIPE_SECRET_KEY")
@@ -138,7 +146,9 @@ def main() -> int:
 
     mode = "TEST" if key.startswith("sk_test_") else "LIVE"
     if mode == "LIVE":
-        print("⚠️  Clé LIVE détectée. Ce script est prévu pour le mode TEST pendant la vérification.")
+        print(
+            "⚠️  Clé LIVE détectée. Ce script est prévu pour le mode TEST pendant la vérification."
+        )
         if not args.dry_run and os.environ.get("STRIPE_ALLOW_LIVE") != "true":
             return _fail("Refus par sécurité. Pour forcer le live : export STRIPE_ALLOW_LIVE=true")
 
