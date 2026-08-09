@@ -26,6 +26,7 @@ Sources supportées, par ordre de priorité :
 
 from __future__ import annotations
 
+import hmac
 import ipaddress
 import logging
 import os
@@ -45,6 +46,20 @@ def client_ip(request: Request) -> Optional[str]:
     Retourne None si l'IP est absente, privée ou illisible — l'appelant doit
     traiter ce cas comme « pays inconnu », pas comme une fraude.
     """
+    # Cloudflare prouvé : `CF-Connecting-IP` porte l'IP client réelle et est
+    # posé par l'edge, donc plus sûr que de dénouer X-Forwarded-For.
+    if cloudflare_is_trusted(request):
+        cf_ip = request.headers.get("cf-connecting-ip")
+        if cf_ip:
+            try:
+                parsed_cf = ipaddress.ip_address(cf_ip.strip())
+            except ValueError:
+                parsed_cf = None
+            if parsed_cf and not (
+                parsed_cf.is_private or parsed_cf.is_loopback or parsed_cf.is_reserved
+            ):
+                return str(parsed_cf)
+
     forwarded = request.headers.get("x-forwarded-for")
     raw = None
     if forwarded:
@@ -85,13 +100,40 @@ def _geoip_reader():
     return _reader
 
 
+def cloudflare_is_trusted(request: Request) -> bool:
+    """Dit si les en-têtes `CF-*` de cette requête peuvent être crus.
+
+    Cloudflare écrase bien `CF-IPCountry` pour le trafic qui passe par son
+    edge — mais rien n'empêche quelqu'un d'appeler l'origine **directement** en
+    forgeant l'en-tête. Le faire confiance sans preuve reviendrait à laisser
+    n'importe qui déclarer son pays, et donc à contourner le verrou Algérie.
+
+    Deux preuves acceptées, par ordre de robustesse :
+
+    1. `CLOUDFLARE_EDGE_SECRET` : un secret partagé injecté par une Transform
+       Rule Cloudflare dans l'en-tête `X-Edge-Secret`. Recommandé — il ne
+       dépend d'aucune liste d'IP à tenir à jour.
+    2. `TRUST_CLOUDFLARE_HEADERS=true` : à n'utiliser que si l'origine est
+       réellement inaccessible hors de Cloudflare (pare-feu / Tunnel), car
+       cette option fait confiance à l'en-tête sans le vérifier.
+
+    Sans l'une des deux, les en-têtes `CF-*` sont ignorés : le pays devient
+    indéterminé et l'on retombe sur le choix explicite de l'utilisateur.
+    """
+    secret = os.environ.get("CLOUDFLARE_EDGE_SECRET")
+    if secret:
+        provided = request.headers.get("x-edge-secret")
+        return bool(provided) and hmac.compare_digest(provided, secret)
+    return os.environ.get("TRUST_CLOUDFLARE_HEADERS", "false").lower() == "true"
+
+
 def country_from_request(request: Request) -> Optional[str]:
     """Code pays ISO-2 en majuscules, ou None si indéterminable."""
-    # 1. Cloudflare en frontal : en-tête posé par l'edge, non falsifiable par
-    #    le client (Cloudflare écrase toute valeur entrante).
-    cf = request.headers.get("cf-ipcountry")
-    if cf and cf.upper() not in ("XX", "T1"):  # XX = inconnu, T1 = Tor
-        return cf.upper()
+    # 1. Cloudflare en frontal — uniquement si la provenance est prouvée.
+    if cloudflare_is_trusted(request):
+        cf = request.headers.get("cf-ipcountry")
+        if cf and cf.upper() not in ("XX", "T1"):  # XX = inconnu, T1 = Tor
+            return cf.upper()
 
     # 2. Base MaxMind locale, si configurée.
     reader = _geoip_reader()
@@ -120,5 +162,5 @@ def collect_signals(request: Request, user: dict) -> dict:
         "signup_ip": user.get("signup_ip"),
         "signup_country": signup_country,
         "country_mismatch": bool(detected and signup_country and detected != signup_country),
-        "via_cloudflare": bool(request.headers.get("cf-ipcountry")),
+        "via_cloudflare": cloudflare_is_trusted(request),
     }

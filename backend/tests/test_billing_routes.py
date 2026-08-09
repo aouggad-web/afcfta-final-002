@@ -27,6 +27,14 @@ class _FakeDB:
 
 
 @pytest.fixture
+def trusted_edge(monkeypatch):
+    """Simule une origine réellement protégée derrière Cloudflare, pour les
+    tests qui portent sur le routage plutôt que sur la preuve de provenance."""
+    monkeypatch.delenv("CLOUDFLARE_EDGE_SECRET", raising=False)
+    monkeypatch.setenv("TRUST_CLOUDFLARE_HEADERS", "true")
+
+
+@pytest.fixture
 def client(monkeypatch):
     # Câble une base factice pour billing et user_auth (get_current_user).
     billing.set_database(_FakeDB())
@@ -185,9 +193,44 @@ def test_client_ip_ignores_private_addresses():
     assert geo_service.client_ip(req) is None
 
 
-def test_country_from_cloudflare_header():
+def test_cloudflare_header_ignored_when_unproven(monkeypatch):
+    """Sans preuve de provenance, l'en-tête CF est ignoré : sinon n'importe qui
+    pourrait déclarer son pays en ligne de commande et contourner le verrou."""
+    monkeypatch.delenv("CLOUDFLARE_EDGE_SECRET", raising=False)
+    monkeypatch.delenv("TRUST_CLOUDFLARE_HEADERS", raising=False)
     req = _request_with({"cf-ipcountry": "dz"})
+    assert geo_service.country_from_request(req) is None
+
+
+def test_country_from_cloudflare_header_when_secret_matches(monkeypatch):
+    monkeypatch.setenv("CLOUDFLARE_EDGE_SECRET", "s3cr3t")
+    req = _request_with({"cf-ipcountry": "dz", "x-edge-secret": "s3cr3t"})
     assert geo_service.country_from_request(req) == "DZ"
+
+
+def test_forged_edge_secret_is_rejected(monkeypatch):
+    monkeypatch.setenv("CLOUDFLARE_EDGE_SECRET", "s3cr3t")
+    req = _request_with({"cf-ipcountry": "FR", "x-edge-secret": "wrong"})
+    assert geo_service.country_from_request(req) is None
+
+
+def test_trust_flag_allows_cloudflare_header(monkeypatch):
+    monkeypatch.delenv("CLOUDFLARE_EDGE_SECRET", raising=False)
+    monkeypatch.setenv("TRUST_CLOUDFLARE_HEADERS", "true")
+    req = _request_with({"cf-ipcountry": "DZ"})
+    assert geo_service.country_from_request(req) == "DZ"
+
+
+def test_connecting_ip_used_when_cloudflare_trusted(monkeypatch):
+    monkeypatch.setenv("CLOUDFLARE_EDGE_SECRET", "s3cr3t")
+    req = _request_with(
+        {
+            "x-edge-secret": "s3cr3t",
+            "cf-connecting-ip": "41.100.0.9",
+            "x-forwarded-for": "1.2.3.4",
+        }
+    )
+    assert geo_service.client_ip(req) == "41.100.0.9"
 
 
 def test_country_unknown_when_no_source():
@@ -195,14 +238,14 @@ def test_country_unknown_when_no_source():
     assert geo_service.country_from_request(req) is None
 
 
-def test_algerian_ip_forces_chargily_and_locks():
+def test_algerian_ip_forces_chargily_and_locks(trusted_edge):
     req = _request_with({"cf-ipcountry": "DZ"})
     ctx = billing.resolve_provider(req, {}, None)
     assert ctx["provider"] == "chargily"
     assert ctx["locked"] is True
 
 
-def test_algerian_ip_beats_declared_foreign_country():
+def test_algerian_ip_beats_declared_foreign_country(trusted_edge):
     """Propriété de sécurité : le pays déclaré par le client ne peut pas
     contourner une IP algérienne détectée."""
     req = _request_with({"cf-ipcountry": "DZ"})
@@ -211,7 +254,7 @@ def test_algerian_ip_beats_declared_foreign_country():
     assert ctx["locked"] is True
 
 
-def test_exemption_releases_the_lock():
+def test_exemption_releases_the_lock(trusted_edge):
     req = _request_with({"cf-ipcountry": "DZ"})
     ctx = billing.resolve_provider(req, {"billing_stripe_exemption": True}, None)
     assert ctx["provider"] == "stripe"
@@ -232,7 +275,7 @@ def test_unknown_country_falls_back_to_stripe():
     assert ctx["locked"] is False
 
 
-def test_checkout_from_algerian_ip_routes_to_chargily(client, monkeypatch):
+def test_checkout_from_algerian_ip_routes_to_chargily(client, monkeypatch, trusted_edge):
     """Bout en bout : IP algérienne + pays déclaré vide → branche Chargily
     (ici désactivée, donc 501) au lieu de partir vers Stripe."""
 
