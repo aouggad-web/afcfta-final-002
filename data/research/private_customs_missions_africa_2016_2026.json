@@ -182,7 +182,20 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "Accord Gouvernement du Ghana / Ghana Link Network Services ; déploiement achevé 1er juin 2020 (GRA).",
-      "verification_status": "PARTIAL"
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-09",
+          "method": "web_search + fetch page officielle GRA",
+          "finding": "Le frais existe et tourne autour de 0,75%, mais l'ASSIETTE est contestée : le document Gemini indique 0,75% du CIF, une source de facilitation tierce indique 0,75% du FOB. La page officielle GRA (gra.gov.gh/customs/icums) ne publie AUCUN taux.",
+          "sources_checked": [
+            "https://gra.gov.gh/customs/icums/",
+            "https://www.ccifrance-ghana.com/news/n/news/trade-facilitation-revenue-mobilisation-icums-is-ghanas-best-bet.html"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Assiette FOB vs CIF non tranchée par une source primaire ; taux non publié officiellement. Reste FEE_EXISTS_AMOUNT_NOT_AVAILABLE (règle #3)."
+        }
+      ]
     },
     {
       "record_id": "COD-PCEC-2021",

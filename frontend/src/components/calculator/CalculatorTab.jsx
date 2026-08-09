@@ -34,6 +34,7 @@ import RegulatoryComplianceView, {
   hasUnpricedActiveProviderFees,
 } from '../regulatory/RegulatoryComplianceView';
 import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
+import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -1625,6 +1626,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </CardContent>
             </Card>
           )}
+
+          {/* Couche « indications secondaires » (non vérifiée) — pays hors registre
+              conforme. Rendu distinct, jamais sommé, tout « à confirmer ». */}
+          <RegulatoryReportedIndications result={result} language={language} />
         </div>
       )}
           </div>

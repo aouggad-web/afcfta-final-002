@@ -170,6 +170,12 @@ class TariffCalculationResponse(BaseModel):
     # `complete=False` signale un coût total encore partiel ; un montant inconnu
     # reste None (jamais 0). None quand aucun prestataire actif n'est confirmé.
     regulatory_cost: Optional[Dict[str, Any]] = None
+    # Couche « indications secondaires » (services.regulatory_reported_service) :
+    # prestataires et frais REPORTÉS par une synthèse secondaire non vérifiée, pour
+    # les pays pas encore couverts par le registre conforme. Purement informatif,
+    # étiqueté « à confirmer », JAMAIS sommé à un total ni marqué CALCULABLE, jamais
+    # présenté comme officiel. Strictement distinct de regulatory_compliance/cost.
+    regulatory_reported: Optional[Dict[str, Any]] = None
     # Couverture tarifaire, fiscale, documentaire et réglementaire traçable.
     # Les lacunes restent explicitement NOT_AVAILABLE ; aucune valeur de
     # remplacement n'est générée par ce bloc.

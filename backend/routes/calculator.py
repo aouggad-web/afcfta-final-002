@@ -21,6 +21,7 @@ from models import TariffCalculationRequest, TariffCalculationResponse
 from services.crawled_data_service import crawled_service
 from services.regulatory_compliance_service import get_country_regulatory_compliance
 from services.regulatory_fee_service import build_regulatory_cost
+from services.regulatory_reported_service import build_reported_layer
 from services.tariff_data_service import tariff_service
 from services.tariff_enrichment_service import get_country_enrichment
 
@@ -947,6 +948,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # laisse le champ à None sans jamais interrompre le calcul tarifaire.
     regulatory_compliance = None
     regulatory_cost = None
+    regulatory_reported = None
     try:
         regulatory_compliance = get_country_regulatory_compliance(dest_iso3)
         # Ventilation des frais de formalité/prestataire pour l'import (pays de
@@ -961,6 +963,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
             origin_compliance, fob_value=request.value, side="export"
         )
         regulatory_cost = _merge_regulatory_cost(cost_import, cost_export)
+        # Couche d'indications secondaires (non vérifiée) pour les pays pas
+        # encore couverts par le registre conforme — purement informative.
+        regulatory_reported = build_reported_layer(dest_iso3, origin_iso3)
     except Exception as exc:  # pragma: no cover - garde-fou fail-closed
         logging.warning(
             "Regulatory-compliance/fee lookup failed for %s->%s (calcul tarifaire non affecté): %s",
@@ -970,6 +975,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         )
         regulatory_compliance = None
         regulatory_cost = None
+        regulatory_reported = None
 
     result = TariffCalculationResponse(
         origin_country=request.origin_country,
@@ -1033,6 +1039,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         ),
         regulatory_compliance=regulatory_compliance,
         regulatory_cost=regulatory_cost,
+        regulatory_reported=regulatory_reported,
         country_enrichment=country_enrichment,
         data_source=data_source,
         duty_status=duty_status,
