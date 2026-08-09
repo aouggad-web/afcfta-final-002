@@ -78,9 +78,12 @@ import auth as _auth_module
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
 from routes.calculator import set_database as set_calculator_db
+from routes.contact import set_database as set_contact_db
 from routes.substitution import register_routes as register_substitution_routes
+from routes.user_auth import set_database as set_user_auth_db
 from services.crawled_data_service import crawled_service
 from services.tariff_data_service import tariff_service
+from services.user_auth_service import hash_password, verify_password
 
 try:
     from notifications import NotificationManager
@@ -306,9 +309,44 @@ async def _setup_database_indexes():
                 IndexModel([("active", ASCENDING), ("tier", ASCENDING)]),
             ]
         )
+        # SaaS user accounts + login brute-force tracking
+        await db["users"].create_indexes([IndexModel([("email", ASCENDING)], unique=True)])
+        await db["login_attempts"].create_indexes([IndexModel([("identifier", ASCENDING)], unique=True)])
         logger.info("MongoDB indexes created successfully")
     except Exception as e:
         logger.warning(f"MongoDB index creation skipped: {e}")
+
+
+async def _seed_admin_account():
+    """Create (or refresh) the SaaS admin account from .env credentials."""
+    if db is None:
+        return
+    admin_email = os.environ.get("ADMIN_EMAIL")
+    admin_password = os.environ.get("ADMIN_PASSWORD")
+    if not admin_email or not admin_password:
+        return
+    try:
+        from datetime import datetime, timezone
+
+        existing = await db["users"].find_one({"email": admin_email})
+        if existing is None:
+            await db["users"].insert_one(
+                {
+                    "name": "Admin",
+                    "email": admin_email,
+                    "password_hash": hash_password(admin_password),
+                    "role": "admin",
+                    "created_at": datetime.now(timezone.utc),
+                }
+            )
+            logger.info(f"Seeded admin account: {admin_email}")
+        elif not verify_password(admin_password, existing.get("password_hash", "")):
+            await db["users"].update_one(
+                {"email": admin_email}, {"$set": {"password_hash": hash_password(admin_password)}}
+            )
+            logger.info(f"Admin password re-synced from .env: {admin_email}")
+    except Exception as e:
+        logger.warning(f"Admin account seeding skipped: {e}")
 
 
 @app.on_event("startup")
@@ -320,6 +358,9 @@ async def startup_load_tariff_data():
 
     # Wire database into auth and calculator
     _auth_module.set_database(db)
+    set_user_auth_db(db)
+    set_contact_db(db)
+    await _seed_admin_account()
     set_calculator_db(db)
 
     # Load crawled data
