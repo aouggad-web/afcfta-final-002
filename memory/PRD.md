@@ -17,6 +17,21 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### August 9, 2026 — Couche SaaS : comptes utilisateurs + formulaire de contact + emails transactionnels
+- Nouveau système d'authentification JWT (cookie httpOnly, 7 jours) : `POST /api/auth/register`, `/login`, `/logout`, `GET /api/auth/me` (fichiers `backend/routes/user_auth.py`, `backend/services/user_auth_service.py`).
+- Protection anti-brute-force : 5 échecs de connexion par email → verrouillage 429 pendant 15 min (`login_attempts`, clé = email ; corrigé d'un bug d'IP instable derrière l'ingress).
+- Compte admin auto-seedé au démarrage depuis `.env` (`ADMIN_EMAIL`/`ADMIN_PASSWORD`).
+- Formulaire de contact (`POST /api/contact`) → stocke en base (`contact_messages`) + notifie l'admin par email.
+- Emails transactionnels réels via SMTP Zoho Mail (`backend/services/email_service.py`, vars `SAAS_SMTP_*` dans `.env`) : email de bienvenue à l'inscription + notification admin sur contact. Script de test manuel : `backend/scripts/test_saas_email.py`.
+- Frontend : `AuthContext.jsx`, `AuthModal.jsx` (connexion/inscription, thème sombre cohérent avec l'app), `ContactTab.jsx`, nouvel onglet "Contact" + bouton Connexion/Déconnexion dans la sidebar et la topbar mobile.
+- Testé via `testing_agent_v4_fork` : 11/11 tests pytest backend + tests UI Playwright, 100% de réussite, aucune régression sur le reste du dashboard (S1-S6 Opportunités inclus). Deux bugs réels trouvés et corrigés pendant le développement (comparaison de dates naïve/avec-fuseau, identifiant IP instable pour le brute-force) + un défaut visuel (modale au thème clair) corrigé après le rapport de test.
+- Identifiants : voir `/app/memory/test_credentials.md`.
+
+### July 21 – August 9, 2026 — Synchronisations GitHub multiples (`sync_emergent.sh`)
+- Import successif de PR #293 à PR #373 (dépôt `aouggad-web/afcfta-final-002`), incluant : module « Flux stratégiques » (nouvel onglet **S6**, capacité industrielle — `strategic_trade_service.py`, endpoint `/api/strategic/flows/{iso3}`), recherche nom de marchandise → code SH (index OMD), fiches pays WB/FMI 2025, garde-fou fail-closed sur mesures ZLECAf non traçables (DZA/TUN/MAR), vérification massive de données fiscales/TVA par pays (UEMOA, CEMAC, EAC, Egypte, Maurice, Tunisie...), dissociation des acteurs réglementaires historiques.
+- Bug connu (non-bloquant) : l'étape 4 (auto-test) du script `sync_emergent.sh` échoue parfois avec `ModuleNotFoundError: No module named 'engine'` car elle n'ajoute pas la racine du dépôt au PYTHONPATH — le backend réel fonctionne correctement malgré cet échec ; il faut simplement relancer `cd frontend && yarn build && sudo supervisorctl restart frontend` manuellement si l'étape 5 a été sautée.
+- Découverte importante : le backend tourne via `uvicorn --workers 2` **sans** `--reload` — tout changement de code backend nécessite un `sudo supervisorctl restart backend` explicite (pas de hot-reload automatique).
+
 ### June 7, 2026 — Recherche SH2/SH4/SH6 + Intitulé (Statistiques → Par Pays & SH6)
 - Sous-module « Par Pays & SH6 » : recherche en **onglets séparés Chapitre (SH2) / Position (SH4) / Sous-position (SH6)**, chacun avec agrégation correcte (SH2 = tout le chapitre, SH4 = toute la position, SH6 = sous-position exacte).
 - Nouvel **onglet « Intitulé »** affichant le libellé officiel OMD du code SH sélectionné (FR/EN, chapitre, position, catégorie).

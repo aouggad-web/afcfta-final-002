@@ -400,6 +400,9 @@ except ImportError as e:
     REPORTS_AVAILABLE = False
     _logger.warning(f"Premium reports route unavailable: {e}")
 
+from .contact import router as contact_router
+from .user_auth import router as user_auth_router
+
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -563,3 +566,11 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(
             reports_router, tags=["Premium Opportunity Reports"], dependencies=_auth
         )
+
+    # SaaS layer: user accounts (JWT session, separate from the X-API-Key
+    # tiered access above) and the public contact form. No `_auth` dependency:
+    # these have their own auth (JWT cookie / open contact form) and must stay
+    # reachable even when PUBLIC_DATA_ACCESS=false requires an API key for the
+    # trade-data routers.
+    api_router.include_router(user_auth_router)
+    api_router.include_router(contact_router)
