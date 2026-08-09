@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Tarifs — ZLECAf Trade Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --ink:#08090d;--ink2:#0f1018;--ink3:#161820;
+  --b:rgba(255,255,255,0.06);--b2:rgba(255,255,255,0.11);--b3:rgba(255,255,255,0.18);
+  --txt:#e2e6f8;--muted:#5a5f7a;--dim:#252840;
+  --gold:#d4a336;--gold2:#f0bf5a;--gold-bg:rgba(212,163,54,0.08);--gold-b:rgba(212,163,54,0.25);
+  --grn:#22c97a;--grn-bg:rgba(34,201,122,0.08);--grn-b:rgba(34,201,122,0.22);
+  --blu:#4a8eff;--blu-bg:rgba(74,142,255,0.08);--blu-b:rgba(74,142,255,0.22);
+  --pur:#9a64ff;--pur-bg:rgba(154,100,255,0.08);--pur-b:rgba(154,100,255,0.22);
+  --red:#ff5566;
+  --r:14px;--rsm:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--ink);color:var(--txt);min-height:100vh;overflow-x:hidden}
+
+/* top gradient line */
+.stripe{height:2px;background:linear-gradient(90deg,var(--gold),#f0bf5a,var(--grn));width:100%}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:62px;border-bottom:1px solid var(--b2);background:rgba(8,9,13,0.92);backdrop-filter:blur(12px);position:sticky;top:2px;z-index:100}
+.nav-logo{font-family:'Fraunces',serif;font-size:17px;font-weight:700;color:#fff;text-decoration:none;display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--gold),#8b5e1c);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:#fff;font-style:italic}
+.nav-link{font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;padding:6px 14px;border-radius:7px;border:none;background:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s}
+.nav-link:hover{color:var(--txt);background:var(--b)}
+.nav-cta{background:var(--gold);color:var(--ink);padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s}
+.nav-cta:hover{background:var(--gold2)}
+
+/* hero */
+.hero{text-align:center;padding:72px 24px 56px;position:relative}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(212,163,54,0.08),transparent);pointer-events:none}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:var(--gold-bg);border:1px solid var(--gold-b);border-radius:100px}
+h1{font-family:'Fraunces',serif;font-size:clamp(32px,5vw,52px);font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.08;margin-bottom:16px}
+h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:16px;font-weight:300;color:var(--muted);max-width:540px;margin:0 auto 32px;line-height:1.7}
+.billing-toggle{display:inline-flex;align-items:center;gap:12px;background:var(--ink2);border:1px solid var(--b2);border-radius:100px;padding:5px 18px;font-size:13px;color:var(--muted);cursor:pointer;user-select:none}
+.billing-toggle input{position:absolute;opacity:0;width:0;height:0}
+.toggle-track{width:34px;height:18px;background:var(--b2);border-radius:9px;position:relative;transition:.2s;cursor:pointer}
+.toggle-track.on{background:var(--gold)}
+.toggle-thumb{width:14px;height:14px;background:#fff;border-radius:50%;position:absolute;top:2px;left:2px;transition:.2s}
+.toggle-track.on .toggle-thumb{left:18px}
+.save-badge{background:var(--grn-bg);color:var(--grn);font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid var(--grn-b);font-weight:500}
+
+/* plans grid */
+.plans{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:1180px;margin:48px auto 0;padding:0 24px}
+.plan{background:var(--ink2);border:1px solid var(--b);border-radius:var(--r);padding:22px;position:relative;overflow:hidden;transition:border-color .2s}
+.plan:hover{border-color:var(--b2)}
+.plan.featured{border:1.5px solid var(--gold-b);background:linear-gradient(160deg,rgba(212,163,54,0.06) 0%,var(--ink2) 50%)}
+.plan-pop-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--ink);font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:1px;padding:3px 14px;border-radius:0 0 8px 8px}
+.plan-name{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:12px;margin-top:10px}
+.plan-price{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:#fff;letter-spacing:-2px;line-height:1;margin-bottom:4px}
+.plan-price span{font-size:16px;font-weight:400;color:var(--muted);letter-spacing:0}
+.plan-per{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:8px}
+.annual-price{font-size:12px;color:var(--grn);height:18px;transition:.2s}
+.plan-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin:14px 0 20px;border-top:1px solid var(--b);padding-top:14px}
+.plan-items{display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+.plan-item{font-size:12.5px;display:flex;gap:9px;align-items:flex-start;line-height:1.5}
+.plan-item.ok{color:var(--txt)}.plan-item.ok::before{content:'✓';color:var(--grn);flex-shrink:0;font-weight:600}
+.plan-item.no{color:var(--muted);opacity:.5}.plan-item.no::before{content:'–';flex-shrink:0}
+.plan-btn{width:100%;height:44px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:.15s;letter-spacing:.2px}
+.plan-btn.primary{background:var(--gold);color:var(--ink)}.plan-btn.primary:hover{background:var(--gold2);transform:translateY(-1px)}
+.plan-btn.secondary{background:transparent;color:var(--txt);border:1px solid var(--b2)}.plan-btn.secondary:hover{background:var(--b);border-color:var(--b3)}
+
+/* section wrappers */
+.section{max-width:1180px;margin:0 auto;padding:64px 24px 0}
+.section-eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.section-title{font-family:'Fraunces',serif;font-size:clamp(24px,3.5vw,36px);font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:8px}
+.section-sub{font-size:14px;color:var(--muted);line-height:1.7;max-width:600px;margin-bottom:36px}
+
+/* API section */
+.api-plans{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.api-card{background:var(--ink2);border:1px solid var(--b);border-radius:var(--r);padding:22px;transition:border-color .18s}
+.api-card:hover{border-color:var(--b2)}
+.api-tag{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:10px}
+.api-price{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:3px}
+.api-per{font-size:12px;color:var(--muted);margin-bottom:14px}
+.api-specs{display:flex;flex-direction:column;gap:7px}
+.api-spec{font-size:12px;color:var(--muted);display:flex;gap:7px}
+.api-spec::before{content:'→';color:var(--dim);flex-shrink:0}
+.api-spec strong{color:var(--txt)}
+.api-cta{display:block;width:100%;height:38px;margin-top:16px;background:var(--blu-bg);border:1px solid var(--blu-b);border-radius:7px;color:var(--blu);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:.15s}
+.api-cta:hover{background:rgba(74,142,255,0.14)}
+
+/* add-ons */
+.addon-plans{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.addon-plans .api-card{padding:18px}
+.addon-plans .api-price{font-size:22px}
+
+/* reports section */
+.reports-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.report-card{background:var(--ink2);border:1px solid var(--b);border-radius:var(--r);padding:20px 22px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:border-color .18s}
+.report-card:hover{border-color:var(--b2)}
+.report-card.bundle{border-color:var(--grn-b);background:linear-gradient(135deg,rgba(34,201,122,0.06),var(--ink2))}
+.report-icon{width:44px;height:44px;border-radius:10px;background:var(--gold-bg);border:1px solid var(--gold-b);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.report-meta{flex:1}
+.report-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:3px}
+.report-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:8px}
+.report-footer{display:flex;align-items:center;justify-content:space-between}
+.report-price{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--gold)}
+.report-price s{color:var(--muted);font-weight:400;margin-right:6px}
+.report-buy{padding:4px 12px;background:var(--gold-bg);border:1px solid var(--gold-b);border-radius:5px;color:var(--gold);font-size:11px;font-weight:600;cursor:pointer;transition:.15s}
+.report-buy:hover{background:rgba(212,163,54,0.15)}
+
+/* certification */
+.cert-card{background:linear-gradient(135deg,rgba(154,100,255,0.08),rgba(34,201,122,0.05));border:1px solid var(--pur-b);border-radius:var(--r);padding:32px;margin-top:0;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.cert-eyebrow{font-family:'DM Mono',monospace;font-size:10px;color:var(--pur);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+.cert-title{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:#fff;letter-spacing:-.5px;margin-bottom:8px}
+.cert-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px;max-width:480px}
+.cert-features{display:flex;gap:10px;flex-wrap:wrap}
+.cert-feat{font-size:12px;padding:4px 10px;background:var(--pur-bg);border:1px solid var(--pur-b);border-radius:5px;color:var(--pur)}
+.cert-price-box{text-align:center;padding:20px 28px;background:var(--pur-bg);border:1px solid var(--pur-b);border-radius:var(--rsm);min-width:160px}
+.cert-price-label{font-size:11px;color:var(--muted);margin-bottom:6px}
+.cert-price-val{font-family:'Fraunces',serif;font-size:36px;font-weight:900;color:var(--pur);letter-spacing:-1px;line-height:1;margin-bottom:3px}
+.cert-price-old{font-size:13px;color:var(--muted);text-decoration:line-through;margin-bottom:2px}
+.cert-price-per{font-size:11px;color:var(--muted);margin-bottom:12px}
+.cert-btn{width:100%;height:38px;background:var(--pur);color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s}
+.cert-btn:hover{background:#8a54ef}
+
+/* affiliate */
+.affiliate-strip{background:var(--ink2);border:1px solid var(--grn-b);border-radius:var(--r);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:28px}
+.aff-left h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:4px}
+.aff-left p{font-size:13px;color:var(--muted);line-height:1.6}
+.aff-stat{text-align:center;padding:0 16px;border-left:1px solid var(--b2)}
+.aff-stat-val{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:var(--grn)}
+.aff-stat-label{font-size:11px;color:var(--muted)}
+.aff-cta{padding:10px 22px;background:var(--grn-bg);border:1px solid var(--grn-b);border-radius:8px;color:var(--grn);font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--grn-b);font-family:'DM Sans',sans-serif;white-space:nowrap;transition:.15s;flex-shrink:0}
+.aff-cta:hover{background:rgba(34,201,122,0.15)}
+
+/* FAQ */
+.faq{display:flex;flex-direction:column;gap:8px;margin-top:0}
+.faq-item{background:var(--ink2);border:1px solid var(--b);border-radius:var(--rsm);overflow:hidden}
+.faq-q{padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:14px;font-weight:500;color:var(--txt)}
+.faq-q:hover{background:rgba(255,255,255,0.02)}
+.faq-chevron{color:var(--muted);transition:transform .2s;flex-shrink:0}
+.faq-item.open .faq-chevron{transform:rotate(180deg)}
+.faq-a{display:none;padding:0 18px 16px;font-size:13px;color:var(--muted);line-height:1.75;border-top:1px solid var(--b)}
+.faq-item.open .faq-a{display:block}
+
+/* payments */
+.pay-methods{max-width:1180px;margin:40px auto 0;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pay-card{background:var(--ink2);border:1px solid var(--b);border-radius:var(--r);padding:22px;display:flex;align-items:center;gap:16px}
+.pay-flag{font-size:26px;flex-shrink:0}
+.pay-card h4{font-size:14px;color:#fff;margin-bottom:4px}
+.pay-card p{font-size:12px;color:var(--muted);line-height:1.6}
+.pay-card .tag{display:inline-block;margin-top:8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);background:var(--gold-bg);border:1px solid var(--gold-b);padding:2px 8px;border-radius:4px}
+
+/* stripe note */
+.stripe-note{max-width:1180px;margin:24px auto 0;padding:0 24px;text-align:center}
+.stripe-note p{font-size:12px;color:var(--dim)}
+.stripe-note strong{color:var(--muted)}
+
+footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:flex;justify-content:space-between;align-items:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);flex-wrap:wrap;gap:8px}
+
+@media(max-width:1000px){
+  .plans{grid-template-columns:repeat(2,1fr)}
+  .addon-plans{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:800px){
+  nav{padding:0 16px}.plans,.api-plans,.addon-plans{grid-template-columns:1fr}
+  .reports-grid{grid-template-columns:1fr}
+  .cert-card{grid-template-columns:1fr}
+  .pay-methods{grid-template-columns:1fr}
+  .affiliate-strip{flex-direction:column;align-items:flex-start}
+  .aff-stat{padding:12px 0;border-left:none;border-top:1px solid var(--b2);width:100%;text-align:left}
+  footer{padding:24px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="stripe"></div>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">Zf</div>
+    ZLECAf
+  </a>
+  <div style="display:flex;gap:4px;align-items:center">
+    <button class="nav-link" onclick="window.location.href='https://afcfta-zlecaf.com'">Calculateur</button>
+    <button class="nav-link">API</button>
+    <button class="nav-link">Rapports</button>
+    <button class="nav-cta">Commencer gratuitement</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Tarifs & Plans</div>
+  <h1>Le commerce africain<br><em>commence ici</em></h1>
+  <p class="hero-sub">Commencez gratuitement. Évoluez quand votre business grandit. Accédez aux données tarifaires de 54 pays AfCFTA en temps réel. Paiement par carte partout dans le monde, et par Chargely (CIB / Edahabia) en Algérie.</p>
+  <label class="billing-toggle" onclick="toggleBilling()">
+    <span id="bill-monthly" style="color:var(--txt);font-weight:500">Mensuel</span>
+    <div class="toggle-track" id="toggle-track">
+      <div class="toggle-thumb" id="toggle-thumb"></div>
+    </div>
+    <span id="bill-annual" style="color:var(--muted)">Annuel</span>
+    <span class="save-badge">jusqu'à −22%</span>
+  </label>
+</div>
+
+<!-- PLANS -->
+<div class="plans">
+
+  <div class="plan">
+    <div class="plan-name">Free</div>
+    <div class="plan-price">0$<span>/mois</span></div>
+    <div class="plan-per">pour toujours · sans carte</div>
+    <div class="annual-price" id="annual-free"></div>
+    <div class="plan-desc">Idéal pour découvrir les opportunités commerciales AfCFTA et faire vos premiers calculs.</div>
+    <div class="plan-items">
+      <div class="plan-item ok">5 calculs de tarifs par jour</div>
+      <div class="plan-item ok">54 pays membres AfCFTA</div>
+      <div class="plan-item ok">Règles d'origine basiques</div>
+      <div class="plan-item ok">Profil de 3 pays par mois</div>
+      <div class="plan-item no">Export CSV / Excel</div>
+      <div class="plan-item no">Calculs illimités</div>
+      <div class="plan-item no">Alertes tarifaires</div>
+      <div class="plan-item no">Accès API</div>
+    </div>
+    <button class="plan-btn secondary" onclick="alert('Inscription gratuite — intégration Stripe / Chargely à venir')">Commencer gratuitement</button>
+  </div>
+
+  <div class="plan">
+    <div class="plan-name">Starter</div>
+    <div class="plan-price" id="price-starter">9$<span>/mois</span></div>
+    <div class="plan-per" id="per-starter">facturé mensuellement</div>
+    <div class="annual-price" id="annual-starter"></div>
+    <div class="plan-desc">Pour les indépendants et petits importateurs/exportateurs qui veulent des calculs illimités.</div>
+    <div class="plan-items">
+      <div class="plan-item ok">Calculs illimités</div>
+      <div class="plan-item ok">54 pays membres AfCFTA</div>
+      <div class="plan-item ok">Règles d'origine complètes</div>
+      <div class="plan-item ok">10 profils pays par mois</div>
+      <div class="plan-item ok">Export CSV</div>
+      <div class="plan-item no">Export Excel + PDF</div>
+      <div class="plan-item no">Alertes tarifaires</div>
+      <div class="plan-item no">Accès API</div>
+    </div>
+    <button class="plan-btn secondary" onclick="alert('Redirection vers Stripe / Chargely Checkout — à configurer')">Démarrer Starter</button>
+  </div>
+
+  <div class="plan featured">
+    <div class="plan-pop-badge">POPULAIRE</div>
+    <div class="plan-name">Pro</div>
+    <div class="plan-price" id="price-pro">19$<span>/mois</span></div>
+    <div class="plan-per" id="per-pro">facturé mensuellement</div>
+    <div class="annual-price" id="annual-pro"></div>
+    <div class="plan-desc">Pour les exportateurs, traders et consultants qui ont besoin de données illimitées et d'exports.</div>
+    <div class="plan-items">
+      <div class="plan-item ok">Calculs illimités</div>
+      <div class="plan-item ok">Export CSV + Excel + PDF</div>
+      <div class="plan-item ok">54 profils économiques complets</div>
+      <div class="plan-item ok">Statistiques commerciales avancées</div>
+      <div class="plan-item ok">Alertes email sur changements tarifaires</div>
+      <div class="plan-item ok">Données logistiques (ports, corridors)</div>
+      <div class="plan-item ok">Support par email 48h</div>
+      <div class="plan-item no">Accès API REST</div>
+    </div>
+    <button class="plan-btn primary" onclick="alert('Redirection vers Stripe / Chargely Checkout — à configurer')">Démarrer Pro</button>
+  </div>
+
+  <div class="plan">
+    <div class="plan-name">Business</div>
+    <div class="plan-price" id="price-biz">59$<span>/mois</span></div>
+    <div class="plan-per" id="per-biz">facturé mensuellement</div>
+    <div class="annual-price" id="annual-biz"></div>
+    <div class="plan-desc">Pour les entreprises, cabinets de conseil et plateformes qui intègrent les données ZLECAf dans leurs outils.</div>
+    <div class="plan-items">
+      <div class="plan-item ok">Tout du plan Pro</div>
+      <div class="plan-item ok">API REST — 1 000 req/mois</div>
+      <div class="plan-item ok">Rapports PDF automatisés</div>
+      <div class="plan-item ok">Comparaison multi-routes commerciales</div>
+      <div class="plan-item ok">Données mises à jour en temps réel</div>
+      <div class="plan-item ok">5 utilisateurs inclus</div>
+      <div class="plan-item ok">Support prioritaire 24h</div>
+      <div class="plan-item ok">Intégration webhook</div>
+    </div>
+    <button class="plan-btn secondary" onclick="alert('Redirection vers Stripe / Chargely Checkout — à configurer')">Démarrer Business</button>
+  </div>
+
+</div>
+
+<!-- API B2B -->
+<div class="section" style="margin-top:80px">
+  <div class="section-eyebrow">API Commerce</div>
+  <div class="section-title">Intégrez les données ZLECAf dans vos outils</div>
+  <p class="section-sub">Votre ERP, plateforme e-commerce ou solution logistique peut accéder directement aux données tarifaires de 54 pays via notre API REST documentée.</p>
+  <div class="api-plans">
+    <div class="api-card">
+      <div class="api-tag">Starter API</div>
+      <div class="api-price">29$</div>
+      <div class="api-per">/ mois · 5 000 requêtes</div>
+      <div class="api-specs">
+        <div class="api-spec"><strong>5 000 requêtes / mois</strong></div>
+        <div class="api-spec">JSON · REST · HTTPS</div>
+        <div class="api-spec">SLA 99.5% · Doc complète</div>
+        <div class="api-spec">Clé API dédiée</div>
+        <div class="api-spec">Support communauté</div>
+      </div>
+      <button class="api-cta">Obtenir une clé API</button>
+    </div>
+    <div class="api-card" style="border-color:var(--blu-b)">
+      <div class="api-tag">Business API</div>
+      <div class="api-price">99$</div>
+      <div class="api-per">/ mois · 50 000 requêtes</div>
+      <div class="api-specs">
+        <div class="api-spec"><strong>50 000 requêtes / mois</strong></div>
+        <div class="api-spec">Webhooks · Batch export</div>
+        <div class="api-spec">SLA 99.9% · Support dédié</div>
+        <div class="api-spec">IP whitelist · Logs avancés</div>
+        <div class="api-spec">Intégration Postman incluse</div>
+      </div>
+      <button class="api-cta">Démarrer Business API</button>
+    </div>
+    <div class="api-card">
+      <div class="api-tag">Enterprise API</div>
+      <div class="api-price">Sur devis</div>
+      <div class="api-per">Contrat annuel · illimité</div>
+      <div class="api-specs">
+        <div class="api-spec"><strong>Requêtes illimitées</strong></div>
+        <div class="api-spec">SLA 99.99% · On-premise</div>
+        <div class="api-spec">Intégration sur mesure</div>
+        <div class="api-spec">Banques · Institutions AfCFTA</div>
+        <div class="api-spec">Account manager dédié</div>
+      </div>
+      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com'">Contacter les ventes</button>
+    </div>
+  </div>
+</div>
+
+<!-- OPTIONS ADDITIONNELLES -->
+<div class="section">
+  <div class="section-eyebrow">Options à la carte</div>
+  <div class="section-title">Ajoutez ce dont vous avez besoin</div>
+  <p class="section-sub">Complétez votre abonnement Pro ou Business avec des options ponctuelles, sans changer de plan.</p>
+  <div class="addon-plans">
+    <div class="api-card">
+      <div class="api-tag">Utilisateur supplémentaire</div>
+      <div class="api-price">5$</div>
+      <div class="api-per">/ mois / utilisateur</div>
+      <div class="api-specs">
+        <div class="api-spec">Plan Business uniquement</div>
+        <div class="api-spec">Accès complet à la plateforme</div>
+      </div>
+      <button class="api-cta">Ajouter des utilisateurs</button>
+    </div>
+    <div class="api-card">
+      <div class="api-tag">Pack requêtes API</div>
+      <div class="api-price">19$</div>
+      <div class="api-per">+ 20 000 requêtes / mois</div>
+      <div class="api-specs">
+        <div class="api-spec">Cumulable avec tout plan API</div>
+        <div class="api-spec">Activation immédiate</div>
+      </div>
+      <button class="api-cta">Ajouter le pack</button>
+    </div>
+    <div class="api-card">
+      <div class="api-tag">Support prioritaire</div>
+      <div class="api-price">15$</div>
+      <div class="api-per">/ mois · réponse &lt; 4h</div>
+      <div class="api-specs">
+        <div class="api-spec">Chat + email + téléphone</div>
+        <div class="api-spec">Disponible sur Pro & Starter</div>
+      </div>
+      <button class="api-cta">Activer le support</button>
+    </div>
+    <div class="api-card">
+      <div class="api-tag">Formation équipe</div>
+      <div class="api-price">99$</div>
+      <div class="api-per">webinar dédié · one-shot</div>
+      <div class="api-specs">
+        <div class="api-spec">2h en direct, jusqu'à 10 pers.</div>
+        <div class="api-spec">Support de formation inclus</div>
+      </div>
+      <button class="api-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Formation équipe'">Réserver une session</button>
+    </div>
+  </div>
+</div>
+
+<!-- RAPPORTS -->
+<div class="section">
+  <div class="section-eyebrow">Rapports & Intelligence</div>
+  <div class="section-title">Données sectorielles AfCFTA</div>
+  <p class="section-sub">Rapports PDF approfondis sur les opportunités commerciales par secteur. Générés à partir des données live de votre plateforme.</p>
+  <div class="reports-grid">
+    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargely — à configurer')">
+      <div class="report-icon">🌾</div>
+      <div class="report-meta">
+        <div class="report-name">Rapport Agriculture & Agroalimentaire</div>
+        <div class="report-desc">Tarifs, règles d'origine et opportunités pour 15 secteurs agricoles entre 54 pays. 40 pages. Mis à jour trimestriellement.</div>
+        <div class="report-footer">
+          <span class="report-price">59$</span>
+          <button class="report-buy">Acheter →</button>
+        </div>
+      </div>
+    </div>
+    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargely — à configurer')">
+      <div class="report-icon">🧵</div>
+      <div class="report-meta">
+        <div class="report-name">Rapport Textile & Habillement</div>
+        <div class="report-desc">Double transformation, règles d'origine et corridors logistiques pour le textile. Focus : Éthiopie, Maroc, Tunisie.</div>
+        <div class="report-footer">
+          <span class="report-price">59$</span>
+          <button class="report-buy">Acheter →</button>
+        </div>
+      </div>
+    </div>
+    <div class="report-card" onclick="alert('Achat one-shot via Stripe / Chargely — à configurer')">
+      <div class="report-icon">💊</div>
+      <div class="report-meta">
+        <div class="report-name">Rapport Pharmaceutique & Santé</div>
+        <div class="report-desc">Tarifs préférentiels et listes de produits exemptés dans le secteur pharma AfCFTA. Critique pour l'accès aux médicaments.</div>
+        <div class="report-footer">
+          <span class="report-price">89$</span>
+          <button class="report-buy">Acheter →</button>
+        </div>
+      </div>
+    </div>
+    <div class="report-card" onclick="alert('Abonnement mensuel via Stripe / Chargely — à configurer')">
+      <div class="report-icon">📧</div>
+      <div class="report-meta">
+        <div class="report-name">Newsletter — Veille tarifaire mensuelle</div>
+        <div class="report-desc">Bulletin mensuel : nouveaux accords, changements de tarifs, opportunités commerciales détectées automatiquement. Abonnement.</div>
+        <div class="report-footer">
+          <span class="report-price">9$ / mois</span>
+          <button class="report-buy">S'abonner →</button>
+        </div>
+      </div>
+    </div>
+    <div class="report-card bundle" onclick="alert('Achat one-shot via Stripe / Chargely — à configurer')" style="grid-column:1/-1">
+      <div class="report-icon">📦</div>
+      <div class="report-meta">
+        <div class="report-name">Pack 4 rapports sectoriels — l'année complète</div>
+        <div class="report-desc">Les 4 rapports (Agriculture, Textile, Pharma + 1 rapport bonus au choix) livrés dès leur mise à jour trimestrielle.</div>
+        <div class="report-footer">
+          <span class="report-price"><s>266$</s> 179$</span>
+          <button class="report-buy">Acheter le pack →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CERTIFICATION -->
+<div class="section">
+  <div class="section-eyebrow">Formation & Certification</div>
+  <div class="section-title">Devenez Expert AfCFTA certifié</div>
+  <div class="cert-card">
+    <div>
+      <div class="cert-eyebrow">Nouveau · Certificat numérique</div>
+      <div class="cert-title">Certification Expert Commerce AfCFTA</div>
+      <p class="cert-desc">Programme de formation en ligne sur le commerce intra-africain, les règles d'origine ZLECAf et les stratégies d'exportation. Certificat numérique partageable sur LinkedIn. Accréditation en partenariat avec des chambres de commerce africaines.</p>
+      <div class="cert-features">
+        <span class="cert-feat">12h de formation</span>
+        <span class="cert-feat">Certificat LinkedIn</span>
+        <span class="cert-feat">6 modules</span>
+        <span class="cert-feat">Quiz + examen final</span>
+        <span class="cert-feat">Accès à vie</span>
+      </div>
+    </div>
+    <div class="cert-price-box">
+      <div class="cert-price-label">Tarif lancement</div>
+      <div class="cert-price-old">199$</div>
+      <div class="cert-price-val">129$</div>
+      <div class="cert-price-per">accès à vie</div>
+      <button class="cert-btn" onclick="alert('Paiement Stripe / Chargely — à configurer')">M'inscrire</button>
+    </div>
+  </div>
+</div>
+
+<!-- AFFILIATION -->
+<div class="section" style="padding-bottom:0">
+  <div class="section-eyebrow">Programme Partenaires</div>
+  <div class="affiliate-strip">
+    <div class="aff-left">
+      <h3>Gagnez 25% de commission à vie</h3>
+      <p>Recommandez ZLECAf à vos clients, contacts ou abonnés. Percevez 25% de commission récurrente sur chaque abonnement apporté, tant que le client reste actif.</p>
+    </div>
+    <div style="display:flex;gap:0;align-items:center">
+      <div class="aff-stat">
+        <div class="aff-stat-val">25%</div>
+        <div class="aff-stat-label">commission récurrente</div>
+      </div>
+      <div class="aff-stat">
+        <div class="aff-stat-val">∞</div>
+        <div class="aff-stat-label">durée</div>
+      </div>
+    </div>
+    <button class="aff-cta" onclick="window.location.href='mailto:contact@afcfta-zlecaf.com?subject=Programme affiliation'">Devenir partenaire →</button>
+  </div>
+</div>
+
+<!-- MOYENS DE PAIEMENT -->
+<div class="section" style="padding-bottom:0">
+  <div class="section-eyebrow">Moyens de paiement</div>
+  <div class="section-title" style="margin-bottom:24px">Un paiement adapté à votre pays</div>
+  <div class="pay-methods">
+    <div class="pay-card">
+      <div class="pay-flag">🌍</div>
+      <div>
+        <h4>International — Stripe</h4>
+        <p>Cartes Visa, Mastercard, American Express. Facturation en dollars US ($). Paiement instantané, renouvellement automatique, résiliation en 1 clic.</p>
+        <span class="tag">Hors Algérie</span>
+      </div>
+    </div>
+    <div class="pay-card">
+      <div class="pay-flag">🇩🇿</div>
+      <div>
+        <h4>Algérie — Chargely</h4>
+        <p>Cartes CIB et Edahabia, facturation en dinars algériens (DZD) au taux du jour. Solution locale conforme à la réglementation des changes.</p>
+        <span class="tag">Phase de lancement</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section" style="padding-bottom:0">
+  <div class="section-eyebrow">Questions fréquentes</div>
+  <div class="section-title" style="margin-bottom:24px">Tout ce que vous devez savoir</div>
+  <div class="faq">
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Comment fonctionne le plan Free ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Le plan Free donne accès à 5 calculs de tarifs par jour sans limite de durée, sans carte de crédit. Vous pouvez consulter les règles d'origine et les profils de base de 3 pays par mois. Parfait pour explorer la plateforme avant de vous engager.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Puis-je annuler à tout moment ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Oui. Tous les plans sont sans engagement. Vous pouvez annuler votre abonnement à tout moment depuis votre tableau de bord. Vous gardez l'accès jusqu'à la fin de la période en cours, et aucun frais n'est prélevé ensuite.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">D'où proviennent les données tarifaires ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Les données proviennent de sources officielles : World Bank, WTO, OEC, AfDB, FMI et le Secrétariat de l'AfCFTA. Elles sont mises à jour automatiquement chaque jour à 2h00 UTC via notre pipeline de données. Les règles d'origine couvrent 97 secteurs HS2.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">L'API est-elle disponible immédiatement après souscription ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Oui. Après souscription au plan Business ou à un plan API, votre clé est générée immédiatement dans votre tableau de bord. La documentation complète avec exemples en Python, JavaScript et cURL est disponible sur docs.afcfta-zlecaf.com.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Proposez-vous des tarifs spéciaux pour les institutions africaines ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Oui. Nous proposons des contrats institutionnels spéciaux pour les gouvernements, banques de développement (Afreximbank, AfDB), universités et organisations régionales africaines. Contactez-nous à contact@afcfta-zlecaf.com pour discuter d'un partenariat.</div>
+    </div>
+    <div class="faq-item" onclick="this.classList.toggle('open')">
+      <div class="faq-q">Comment fonctionne le paiement ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
+      <div class="faq-a">Les paiements sont sécurisés. Partout dans le monde (hors Algérie), ils sont traités via Stripe : cartes Visa, Mastercard, American Express, facturation en dollars US. En Algérie, dans un premier temps, les paiements sont traités via Chargely : cartes CIB et Edahabia, facturation en dinars algériens (DZD), conformément à la réglementation locale des changes. Le moyen de paiement proposé s'adapte automatiquement selon votre pays de facturation.</div>
+    </div>
+  </div>
+</div>
+
+<div class="stripe-note">
+  <p><strong>Paiements sécurisés via Stripe (international) et Chargely (Algérie)</strong> · SSL 256-bit · Aucun stockage de données de carte sur nos serveurs · Remboursement sous 14 jours si non satisfait</p>
+</div>
+
+<footer>
+  <span>© 2026 ZLECAf Trade Calculator · afcfta-zlecaf.com</span>
+  <span>contact@afcfta-zlecaf.com · MIT License</span>
+  <span>54 pays · 97 secteurs HS2 · Mis à jour quotidiennement</span>
+</footer>
+
+<script>
+let annual = false;
+const prices = {
+  starter: { m: 9,  a: 7  },
+  pro:     { m: 19, a: 15 },
+  biz:     { m: 59, a: 49 }
+};
+
+function toggleBilling() {
+  annual = !annual;
+  const track = document.getElementById('toggle-track');
+  track.classList.toggle('on', annual);
+  document.getElementById('bill-monthly').style.color = annual ? 'var(--muted)' : 'var(--txt)';
+  document.getElementById('bill-annual').style.color  = annual ? 'var(--txt)' : 'var(--muted)';
+
+  const pStarter = document.getElementById('price-starter');
+  const perStarter = document.getElementById('per-starter');
+  const annStarter = document.getElementById('annual-starter');
+
+  const pPro = document.getElementById('price-pro');
+  const perPro = document.getElementById('per-pro');
+  const annPro = document.getElementById('annual-pro');
+
+  const pBiz = document.getElementById('price-biz');
+  const perBiz = document.getElementById('per-biz');
+  const annBiz = document.getElementById('annual-biz');
+
+  if (annual) {
+    pStarter.innerHTML = prices.starter.a + '$<span>/mois</span>';
+    perStarter.textContent = 'facturé ' + (prices.starter.a * 12) + '$ / an';
+    annStarter.innerHTML = '<span style="color:var(--grn);font-size:12px">✓ Économisez ' + ((prices.starter.m - prices.starter.a) * 12) + '$ vs mensuel</span>';
+
+    pPro.innerHTML = prices.pro.a + '$<span>/mois</span>';
+    perPro.textContent = 'facturé ' + (prices.pro.a * 12) + '$ / an';
+    annPro.innerHTML = '<span style="color:var(--grn);font-size:12px">✓ Économisez ' + ((prices.pro.m - prices.pro.a) * 12) + '$ vs mensuel</span>';
+
+    pBiz.innerHTML = prices.biz.a + '$<span>/mois</span>';
+    perBiz.textContent = 'facturé ' + (prices.biz.a * 12) + '$ / an';
+    annBiz.innerHTML = '<span style="color:var(--grn);font-size:12px">✓ Économisez ' + ((prices.biz.m - prices.biz.a) * 12) + '$ vs mensuel</span>';
+  } else {
+    pStarter.innerHTML = prices.starter.m + '$<span>/mois</span>';
+    perStarter.textContent = 'facturé mensuellement';
+    annStarter.innerHTML = '';
+
+    pPro.innerHTML = prices.pro.m + '$<span>/mois</span>';
+    perPro.textContent = 'facturé mensuellement';
+    annPro.innerHTML = '';
+
+    pBiz.innerHTML = prices.biz.m + '$<span>/mois</span>';
+    perBiz.textContent = 'facturé mensuellement';
+    annBiz.innerHTML = '';
+  }
+}
+</script>
+</body>
+</html>
