@@ -145,7 +145,10 @@ def verify_and_parse(payload: bytes, signature_header: str | None) -> dict:
     """
     secret = os.environ.get("CHARGILY_WEBHOOK_SECRET") or os.environ.get("CHARGILY_SECRET_KEY")
     if not secret:
-        raise ValueError("CHARGILY_WEBHOOK_SECRET non configurée.")
+        raise ValueError(
+            "Aucun secret de signature : renseignez CHARGILY_WEBHOOK_SECRET "
+            "(ou à défaut CHARGILY_SECRET_KEY)."
+        )
     if not signature_header:
         raise ValueError("En-tête signature manquant.")
     expected = hmac.new(secret.encode(), payload, hashlib.sha256).hexdigest()

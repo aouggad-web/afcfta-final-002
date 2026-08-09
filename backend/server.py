@@ -381,7 +381,16 @@ async def startup_load_tariff_data():
         try:
             await db.payment_events.create_index("event_id", unique=True)
         except Exception as e:
-            logger.warning(f"Index payment_events.event_id non créé: {e}")
+            # Sans cet index, la déduplication des webhooks ne tient plus : les
+            # rejeux Stripe/Chargily (livraison at-least-once) seraient traités
+            # plusieurs fois — emails en double, états d'abonnement incohérents.
+            # On ne bloque pas le démarrage, mais ceci doit remonter en alerte.
+            logger.error(
+                "CRITIQUE: index unique payment_events.event_id non créé (%s) — "
+                "l'idempotence des webhooks de paiement n'est PLUS garantie. "
+                "Créez l'index manuellement avant d'encaisser des paiements.",
+                e,
+            )
 
     # Load crawled data
     try:

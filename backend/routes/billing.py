@@ -217,10 +217,10 @@ async def _checkout_chargily(db, user, payload: "CheckoutPayload", signals: dict
             metadata=metadata,
         )
     )
-    await db.users.update_one(
-        {"_id": user["_id"]},
-        {"$set": {"payment_provider": "chargily", "billing_country": "DZ"}},
-    )
+    # Aucune écriture sur le document utilisateur ici : tant que le paiement
+    # n'est pas confirmé, rien n'est acquis. `payment_provider` et
+    # `billing_country` sont posés par le webhook sur `checkout.paid`, comme
+    # côté Stripe. La tentative reste tracée dans `payment_attempts`.
     await _record_attempt(db, user, payload, "chargily", signals)
     return {"url": checkout_url}
 

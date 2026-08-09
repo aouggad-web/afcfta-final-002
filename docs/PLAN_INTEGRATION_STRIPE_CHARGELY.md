@@ -200,11 +200,19 @@ STRIPE_PRICE_BUSINESS_Y=price_...
 BILLING_SUCCESS_URL=https://afcfta-zlecaf.com/merci
 BILLING_CANCEL_URL=https://afcfta-zlecaf.com/tarifs
 
-# --- Chargily (phase 2) ---
-CHARGILY_API_KEY=
-CHARGILY_WEBHOOK_SECRET=
+# --- Chargily (Algérie) ---
 CHARGILY_ENABLED=false
+CHARGILY_SECRET_KEY=
+CHARGILY_WEBHOOK_SECRET=
+CHARGILY_API_BASE=https://pay.chargily.net/api/v2
+# Montants en DZD (entiers, min. 75) — voir .env.example pour la grille complète.
+CHARGILY_PRICE_PRO_M=2500
+
+# --- Détection du pays (routage Stripe / Chargily) ---
+GEOIP_DB_PATH=
 ```
+
+> `.env.example` fait foi pour la liste exhaustive et les valeurs par défaut.
 
 Dépendance Python : `stripe` (SDK officiel) à ajouter dans `requirements.txt`.
 
