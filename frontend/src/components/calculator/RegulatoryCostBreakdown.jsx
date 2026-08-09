@@ -67,12 +67,44 @@ function T(language) {
     separatedNote: fr
       ? 'Les frais du prestataire sont distincts des droits et taxes publics et ne sont jamais confondus avec eux.'
       : 'Provider fees are distinct from public duties and taxes and never merged with them.',
+    verified: fr ? 'VÉRIFIÉ (source primaire)' : 'VERIFIED (primary source)',
+    adValoremUnit: fr ? "dans l'unité de la valeur saisie" : 'in the entered value unit',
+    conditions: fr ? 'Conditions' : 'Conditions',
+    source: fr ? 'Source' : 'Source',
+    between: fr ? 'entre' : 'between',
+    and: fr ? 'et' : 'and',
+    ofFob: fr ? 'du FOB' : 'of FOB',
   };
+}
+
+function rangeText(item, t) {
+  // Fourchette de montants (route-dépendante). Ad valorem → pas de devise imposée.
+  const lo = fmt(item.calculated_amount_min, item.ad_valorem ? '' : item.currency);
+  const hi = fmt(item.calculated_amount_max, item.ad_valorem ? '' : item.currency);
+  if (lo == null || hi == null) return null;
+  return `${t.between} ${lo} ${t.and} ${hi}`;
+}
+
+function pct(rate) {
+  if (rate == null) return null;
+  // Évite les artefacts de virgule flottante (0.0045*100 = 0.4500…07).
+  return (rate * 100)
+    .toFixed(4)
+    .replace(/\.?0+$/, '')
+    .replace('.', ',');
+}
+
+function rateBracket(item, t) {
+  const rmin = pct(item.rate_min);
+  const rmax = pct(item.rate_max);
+  if (rmin == null || rmax == null) return null;
+  return `${rmin}%–${rmax}% ${t.ofFob}`;
 }
 
 function FeeLine({ item, t, language }) {
   const computed = COMPUTED.has(item.fee_status);
-  const amount = computed ? fmt(item.calculated_amount, item.currency) : null;
+  const amount = computed && !item.is_range ? fmt(item.calculated_amount, item.ad_valorem ? '' : item.currency) : null;
+  const range = computed && item.is_range ? rangeText(item, t) : null;
   const href = safeHref(item.contact);
   return (
     <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700 text-sm">
@@ -98,21 +130,41 @@ function FeeLine({ item, t, language }) {
               </a>
             </p>
           )}
+          {item.conditions && (
+            <p className="text-slate-500 text-[11px] mt-1 italic">
+              {t.conditions}: {item.conditions}
+            </p>
+          )}
         </div>
         <div className="text-right shrink-0">
-          <Badge
-            variant="outline"
-            className={FEE_STATUS_STYLES[item.fee_status] || FEE_STATUS_STYLES.NOT_AVAILABLE}
-          >
-            {item.side === 'export' ? t.sideExport : t.sideImport}
-          </Badge>
+          <div className="flex flex-col items-end gap-1">
+            <Badge
+              variant="outline"
+              className={FEE_STATUS_STYLES[item.fee_status] || FEE_STATUS_STYLES.NOT_AVAILABLE}
+            >
+              {item.side === 'export' ? t.sideExport : t.sideImport}
+            </Badge>
+            {item.tier === 'VERIFIED_PRIMARY' && (
+              <Badge variant="outline" className="bg-emerald-600/15 text-emerald-300 border-emerald-500/40 text-[9px]">
+                {t.verified}
+              </Badge>
+            )}
+          </div>
           <p className="mt-1 font-semibold">
-            {amount ? (
+            {range ? (
+              <span className="text-emerald-300">{range}</span>
+            ) : amount ? (
               <span className="text-emerald-300">{amount}</span>
             ) : (
               <span className="text-amber-300 italic">{t.toConfirm}</span>
             )}
           </p>
+          {item.is_range && rateBracket(item, t) && (
+            <p className="text-[10px] text-slate-400">{rateBracket(item, t)}</p>
+          )}
+          {item.ad_valorem && (range || amount) && (
+            <p className="text-[10px] text-slate-500">{t.adValoremUnit}</p>
+          )}
           <p className="text-[10px] text-slate-500 font-mono mt-0.5">{item.fee_status}</p>
         </div>
       </div>

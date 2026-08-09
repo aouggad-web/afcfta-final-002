@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "dataset": "verified_provider_fees",
+  "as_of": "2026-08-09",
+  "tier": "AUTHORITATIVE_PRIMARY_SOURCED",
+  "purpose": "Frais de prestataires mandatés VÉRIFIÉS sur source primaire/gouvernementale, exploitables par le moteur de calcul (fee_status CALCULABLE). Distinct du backlog secondaire (data/research/…). Chaque entrée cite ses sources et sa date de vérification.",
+  "fees": [
+    {
+      "fee_id": "CIV-VOC-HONORAIRES",
+      "country_iso3": "CIV",
+      "side": "import",
+      "program": "VOC — Vérification de la Conformité aux normes",
+      "scope": "Produits soumis au programme dont la valeur FOB ≥ 1 000 000 FCFA (seuil de qualification).",
+      "providers": ["Bureau Veritas (BIVAC)", "COTECNA", "INTERTEK", "SGS"],
+      "mandating_authority": "Ministère du Commerce, de l'Artisanat et de la Promotion des PME (Côte d'Ivoire)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0030,
+        "rate_max": 0.0045,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond/seuil ci-dessous en FCFA (XOF), NON appliqués automatiquement pour éviter toute conversion de devise fabriquée.",
+        "floor_currency": "XOF",
+        "floor_min_xof": 167450,
+        "floor_max_xof": 197000,
+        "cap_min_xof": 2281400,
+        "cap_max_xof": 2684000,
+        "threshold_fob_xof": 1000000,
+        "conditions": "Taux 0,30% à 0,45% de la valeur FOB selon la route (A/B/C). Honoraire minimum de 167 450 à 197 000 FCFA et maximum de 2 281 400 à 2 684 000 FCFA selon la route. Ne s'applique qu'au-delà d'un seuil FOB de 1 000 000 FCFA. Plancher/plafond exprimés en FCFA (non convertis automatiquement).",
+        "effective_date": "2018-03-01"
+      },
+      "verification": {
+        "date": "2026-08-09",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Douanes ivoiriennes", "url": "https://www.douanes.ci/node/40794", "confirms": "Prestataires mandatés, seuil FOB 1 000 000 FCFA, routes A/B/C, paiement par l'exportateur."},
+          {"publisher": "Direction générale du Trésor (Gouvernement français)", "url": "https://www.tresor.economie.gouv.fr/Articles/2019/02/07/point-info-voc-verification-de-la-conformite-aux-normes-des-marchandises-importees-en-cote-d-ivoire", "confirms": "Taux 0,30%-0,45% FOB ; minimum 167 450-197 000 FCFA ; maximum 2 281 400-2 684 000 FCFA ; seuil 1 M FCFA."},
+          {"publisher": "Bureau Veritas / Verigates", "url": "https://verigates.bureauveritas.com/programmes/cote-divoire", "confirms": "Opérateur mandaté du programme VOC Côte d'Ivoire."}
+        ],
+        "notes": "La ventilation exacte du taux et des planchers/plafonds PAR route (A/B/C) n'est pas publiée : le frais est donc exprimé en FOURCHETTE bornée, jamais comme un montant unique."
+      }
+    }
+  ]
+}

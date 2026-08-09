@@ -20,7 +20,10 @@ from fastapi import APIRouter, HTTPException
 from models import TariffCalculationRequest, TariffCalculationResponse
 from services.crawled_data_service import crawled_service
 from services.regulatory_compliance_service import get_country_regulatory_compliance
-from services.regulatory_fee_service import build_regulatory_cost
+from services.regulatory_fee_service import (
+    build_regulatory_cost,
+    build_verified_provider_costs,
+)
 from services.regulatory_reported_service import build_reported_layer
 from services.tariff_data_service import tariff_service
 from services.tariff_enrichment_service import get_country_enrichment
@@ -31,24 +34,27 @@ router = APIRouter(tags=["Calculator"])
 
 
 def _merge_regulatory_cost(
-    cost_import: Optional[Dict[str, Any]], cost_export: Optional[Dict[str, Any]]
+    cost_import: Optional[Dict[str, Any]],
+    cost_export: Optional[Dict[str, Any]],
+    verified_items: Optional[List[Dict[str, Any]]] = None,
 ) -> Optional[Dict[str, Any]]:
-    """Fusionne les ventilations de frais import et export en un seul bloc.
+    """Fusionne registre conforme (import/export) et frais vérifiés en un bloc.
 
-    Concatène les lignes (chacune conserve son ``side``) et re-agrège les drapeaux
-    de complétude via le sommateur du service, pour ne jamais additionner de
-    devises hétérogènes. Renvoie None si les deux côtés sont vides.
+    Concatène toutes les lignes (chacune conserve son ``side``) et re-agrège les
+    drapeaux de complétude et les totaux (bornés min/max) via le sommateur du
+    service, sans jamais additionner de devises hétérogènes. Renvoie None si tout
+    est vide.
     """
     from services.regulatory_fee_service import _summarise
 
-    sides = [c for c in (cost_import, cost_export) if c]
-    if not sides:
-        return None
-    if len(sides) == 1:
-        return sides[0]
     merged_items: List[Dict[str, Any]] = []
-    for side in sides:
-        merged_items.extend(side.get("line_items", []))
+    for side in (cost_import, cost_export):
+        if side:
+            merged_items.extend(side.get("line_items", []))
+    if verified_items:
+        merged_items.extend(verified_items)
+    if not merged_items:
+        return None
     return _summarise(merged_items)
 
 
@@ -962,7 +968,12 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         cost_export = build_regulatory_cost(
             origin_compliance, fob_value=request.value, side="export"
         )
-        regulatory_cost = _merge_regulatory_cost(cost_import, cost_export)
+        # Frais VÉRIFIÉS sur source primaire (ex. VOC Côte d'Ivoire) — autoritaires,
+        # ajoutés indépendamment du registre conforme, pour import et export.
+        verified_items = build_verified_provider_costs(
+            dest_iso3, fob_value=request.value, side="import"
+        ) + build_verified_provider_costs(origin_iso3, fob_value=request.value, side="export")
+        regulatory_cost = _merge_regulatory_cost(cost_import, cost_export, verified_items)
         # Couche d'indications secondaires (non vérifiée) pour les pays pas
         # encore couverts par le registre conforme — purement informative.
         regulatory_reported = build_reported_layer(dest_iso3, origin_iso3)

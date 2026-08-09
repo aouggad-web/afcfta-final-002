@@ -44,7 +44,16 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "Renouvellements réguliers d'agréments des 4 prestataires.",
-      "verification_status": "UNVERIFIED"
+      "verification_status": "PROMOTED_TO_VERIFIED",
+      "promotion": {
+        "date": "2026-08-09",
+        "target": "data/regulatory-compliance/verified_provider_fees.json#CIV-VOC-HONORAIRES",
+        "sources": [
+          "https://www.douanes.ci/node/40794",
+          "https://www.tresor.economie.gouv.fr/Articles/2019/02/07/point-info-voc-verification-de-la-conformite-aux-normes-des-marchandises-importees-en-cote-d-ivoire"
+        ],
+        "note": "Taux 0,30%-0,45% FOB confirmé (fourchette route-dépendante) ; planchers/plafonds/seuil en FCFA conservés en conditions. Désormais CALCULABLE (fourchette ad valorem) dans le calculateur."
+      }
     },
     {
       "record_id": "CIV-GUCE-2013",

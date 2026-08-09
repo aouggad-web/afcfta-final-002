@@ -82,6 +82,33 @@ describe('RegulatoryCostBreakdown', () => {
     expect(screen.queryByText(/0 USD|0,00/)).toBeNull();
   });
 
+  it('affiche une fourchette vérifiée ad valorem avec badge VÉRIFIÉ et conditions', () => {
+    const VERIFIED_RANGE = {
+      scope: 'provider',
+      measure_name: 'VOC — Vérification de la Conformité',
+      actor_name: 'Bureau Veritas, COTECNA, INTERTEK, SGS',
+      mandating_authority: 'Ministère du Commerce (CIV)',
+      side: 'import',
+      fee_status: 'CALCULABLE',
+      is_range: true,
+      ad_valorem: true,
+      rate_min: 0.003,
+      rate_max: 0.0045,
+      calculated_amount_min: 300,
+      calculated_amount_max: 450,
+      currency: null,
+      tier: 'VERIFIED_PRIMARY',
+      contact: 'https://www.douanes.ci/node/40794',
+      conditions: 'Taux 0,30% à 0,45% de la valeur FOB ; seuil 1 000 000 FCFA.',
+    };
+    const result = costBlock([VERIFIED_RANGE], { complete: true });
+    render(<RegulatoryCostBreakdown result={result} language="fr" />);
+    expect(screen.getByText(/entre\s*300\s*et\s*450/i)).toBeInTheDocument();
+    expect(screen.getByText(/VÉRIFIÉ \(source primaire\)/)).toBeInTheDocument();
+    expect(screen.getByText(/0,3%–0,45% du FOB/)).toBeInTheDocument();
+    expect(screen.getByText(/Taux 0,30% à 0,45% de la valeur FOB/)).toBeInTheDocument();
+  });
+
   it('affiche un lien de contact cliquable quand disponible', () => {
     const result = costBlock([CALCULABLE_ITEM], {
       complete: true,

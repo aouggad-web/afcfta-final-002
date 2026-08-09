@@ -4,6 +4,7 @@ from services.regulatory_compliance_service import get_country_regulatory_compli
 from services.regulatory_fee_service import (
     FEE_STATUSES,
     build_regulatory_cost,
+    build_verified_provider_costs,
     compute_fee,
 )
 
@@ -158,3 +159,50 @@ def test_expired_only_country_is_excluded_from_calculation():
     # Un mandat expiré n'entre jamais dans le calcul (règle 5) : CIV n'a aucun
     # actif, donc aucun de ses acteurs historiques ne génère de ligne de coût.
     assert build_regulatory_cost(get_country_regulatory_compliance("CIV"), fob_value=1) is None
+
+
+# ── Fourchette de taux (route-dépendante) ─────────────────────────────────────
+
+
+def test_rate_range_produces_bounded_min_max_amounts():
+    r = compute_fee(
+        {
+            "calculation_method": "PERCENTAGE_OF_FOB",
+            "rate_min": 0.0030,
+            "rate_max": 0.0045,
+            "source": _SRC,
+        },
+        fob_value=100000,
+        fee_exists=True,
+    )
+    assert r["fee_status"] == "CALCULABLE"
+    assert r["is_range"] is True
+    assert r["calculated_amount"] is None
+    assert r["calculated_amount_min"] == 300.0
+    assert r["calculated_amount_max"] == 450.0
+    # Ad valorem sans devise imposée : l'unité est celle de la valeur saisie.
+    assert r["ad_valorem"] is True
+
+
+# ── Frais VÉRIFIÉS sur source primaire (VOC Côte d'Ivoire) ────────────────────
+
+
+def test_verified_voc_civ_is_calculable_range_with_sources():
+    items = build_verified_provider_costs("CIV", fob_value=100000, side="import")
+    assert len(items) == 1
+    voc = items[0]
+    assert voc["fee_status"] == "CALCULABLE"
+    assert voc["is_range"] is True
+    assert voc["tier"] == "VERIFIED_PRIMARY"
+    assert voc["calculated_amount_min"] == 300.0
+    assert voc["calculated_amount_max"] == 450.0
+    # Source primaire obligatoire (règle 1) réellement présente.
+    assert voc["source"] and voc["source"].startswith("http")
+    assert voc["verification_sources"]
+    # Seuil et conditions FCFA transmis (non appliqués numériquement — anti-FX).
+    assert voc["threshold_fob_xof"] == 1000000
+    assert "0,30%" in (voc["conditions"] or "")
+
+
+def test_verified_costs_absent_for_uncovered_country():
+    assert build_verified_provider_costs("DZA", fob_value=100000, side="import") == []
