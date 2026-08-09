@@ -17,6 +17,8 @@ export default function AuthModal({ open, onClose, language = 'fr' }) {
 
   const handleClose = () => {
     setTab('login');
+    setLoginForm({ email: '', password: '' });
+    setRegisterForm({ name: '', email: '', password: '' });
     onClose();
   };
 
@@ -26,6 +28,7 @@ export default function AuthModal({ open, onClose, language = 'fr' }) {
     try {
       await login(loginForm.email, loginForm.password);
       toast({ title: isFr ? 'Connecté' : 'Logged in', description: isFr ? 'Bienvenue !' : 'Welcome back!' });
+      setLoginForm({ email: '', password: '' });
       onClose();
     } catch (err) {
       toast({
@@ -47,6 +50,7 @@ export default function AuthModal({ open, onClose, language = 'fr' }) {
         title: isFr ? 'Compte créé' : 'Account created',
         description: isFr ? 'Bienvenue sur ZLECAf Intelligence !' : 'Welcome to ZLECAf Intelligence!',
       });
+      setRegisterForm({ name: '', email: '', password: '' });
       onClose();
     } catch (err) {
       toast({

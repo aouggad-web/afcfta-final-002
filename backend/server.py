@@ -327,6 +327,10 @@ async def _seed_admin_account():
     admin_password = os.environ.get("ADMIN_PASSWORD")
     if not admin_email or not admin_password:
         return
+    # /api/auth/login always lowercases the submitted email before querying;
+    # normalize the same way here so a stray uppercase letter or surrounding
+    # whitespace in ADMIN_EMAIL doesn't seed an account login can never find.
+    admin_email = admin_email.strip().lower()
     try:
         from datetime import datetime, timezone
 

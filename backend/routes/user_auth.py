@@ -11,8 +11,9 @@ from datetime import datetime, timedelta, timezone
 
 from bson.errors import InvalidId
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, Response, status
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from pymongo import ReturnDocument
+from pymongo.errors import DuplicateKeyError
 from services.email_service import send_welcome_email
 from services.user_auth_service import (
     create_access_token,
@@ -20,6 +21,7 @@ from services.user_auth_service import (
     hash_password,
     verify_password,
 )
+from starlette.concurrency import run_in_threadpool
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/auth", tags=["User Authentication"])
@@ -68,6 +70,19 @@ class RegisterPayload(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
 
+    @field_validator("password")
+    @classmethod
+    def _password_fits_bcrypt(cls, value: str) -> str:
+        # bcrypt silently ignores bytes past the 72nd, so two different
+        # passwords sharing the first 72 UTF-8 bytes would hash identically —
+        # reject up front instead of accepting a password that doesn't fully
+        # matter for authentication.
+        if len(value.encode("utf-8")) > 72:
+            raise ValueError(
+                "Le mot de passe est trop long (72 octets maximum une fois encodé en UTF-8)."
+            )
+        return value
+
 
 class LoginPayload(BaseModel):
     email: EmailStr
@@ -106,14 +121,27 @@ async def register(payload: RegisterPayload, response: Response, background_task
             status_code=status.HTTP_409_CONFLICT, detail="Un compte existe déjà avec cet email"
         )
 
+    # bcrypt is CPU-bound and takes ~100-300ms at this cost factor — run it
+    # off the event loop so a burst of signups doesn't stall every other
+    # request this worker is handling.
+    password_hash = await run_in_threadpool(hash_password, payload.password)
     user_doc = {
         "name": payload.name.strip(),
         "email": email,
-        "password_hash": hash_password(payload.password),
+        "password_hash": password_hash,
         "role": "user",
         "created_at": datetime.now(timezone.utc),
     }
-    result = await db.users.insert_one(user_doc)
+    try:
+        result = await db.users.insert_one(user_doc)
+    except DuplicateKeyError:
+        # Two concurrent registrations for the same email both passed the
+        # find_one check above; the unique index on users.email catches the
+        # second insert. Surface the same 409 as the normal duplicate path
+        # instead of letting this bubble up as an unhandled 500.
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Un compte existe déjà avec cet email"
+        )
     user_doc["_id"] = result.inserted_id
 
     token = _issue_session_token(str(user_doc["_id"]), email)
@@ -138,7 +166,17 @@ async def _is_locked_out(db, identifier: str) -> bool:
     # as UTC-aware on both sides to avoid a TypeError.
     if locked_until.tzinfo is None:
         locked_until = locked_until.replace(tzinfo=timezone.utc)
-    return datetime.now(timezone.utc) < locked_until
+    if datetime.now(timezone.utc) < locked_until:
+        return True
+    # Lockout window has elapsed: reset the counter instead of leaving a
+    # stale count >= MAX_FAILED_ATTEMPTS in place. Without this, a single
+    # fresh bad guess right after expiry immediately re-locks the account —
+    # letting anyone who knows the victim's email keep it locked out
+    # indefinitely with one guess every LOCKOUT_MINUTES, even though they
+    # never learn the correct password. Deleting means a new lockout again
+    # requires MAX_FAILED_ATTEMPTS fresh failures, not just one.
+    await db.login_attempts.delete_one({"identifier": identifier})
+    return False
 
 
 @router.post("/login")
@@ -157,7 +195,14 @@ async def login(payload: LoginPayload, response: Response):
         )
 
     user_doc = await db.users.find_one({"email": email})
-    if not user_doc or not verify_password(payload.password, user_doc.get("password_hash", "")):
+    password_ok = False
+    if user_doc:
+        # Same threadpool offload as registration — bcrypt verification is
+        # just as CPU-bound as hashing and must not block the event loop.
+        password_ok = await run_in_threadpool(
+            verify_password, payload.password, user_doc.get("password_hash", "")
+        )
+    if not user_doc or not password_ok:
         updated = await db.login_attempts.find_one_and_update(
             {"identifier": identifier},
             {"$inc": {"count": 1}},

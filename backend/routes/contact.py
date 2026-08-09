@@ -4,7 +4,7 @@ import logging
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, BackgroundTasks, HTTPException, status
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from services.email_service import send_contact_admin_email
 
 logger = logging.getLogger(__name__)
@@ -23,6 +23,17 @@ class ContactPayload(BaseModel):
     email: EmailStr
     message: str = Field(min_length=1, max_length=5000)
 
+    @field_validator("name", "message")
+    @classmethod
+    def _not_blank_after_strip(cls, value: str) -> str:
+        # min_length=1 is checked before this runs, so a whitespace-only
+        # value (e.g. "   ") would otherwise pass validation, get stored,
+        # and be emailed as an empty message while the UI reports success.
+        stripped = value.strip()
+        if not stripped:
+            raise ValueError("Ce champ ne peut pas être vide.")
+        return stripped
+
 
 @router.post("")
 async def submit_contact(payload: ContactPayload, background_tasks: BackgroundTasks):
@@ -33,9 +44,9 @@ async def submit_contact(payload: ContactPayload, background_tasks: BackgroundTa
         )
 
     doc = {
-        "name": payload.name.strip(),
+        "name": payload.name,
         "email": payload.email.lower(),
-        "message": payload.message.strip(),
+        "message": payload.message,
         "created_at": datetime.now(timezone.utc),
     }
     await _db.contact_messages.insert_one(doc)
