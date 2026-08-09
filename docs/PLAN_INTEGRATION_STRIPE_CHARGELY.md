@@ -18,11 +18,11 @@ découpage en phases. Aucun code n'est encore écrit : les boutons de
 | Élément | Existant | À construire |
 |---|---|---|
 | Page tarifs | `frontend/public/pricing.html` (statique, boutons `alert()`) | Boutons → appels API Checkout |
-| Comptes utilisateurs | `routes/user_auth.py` — JWT en cookie httpOnly, MongoDB | Lien user ↔ client Stripe + abonnement |
-| Système clés API | `auth.py` — tiers free/basic/pro/admin | Attribution automatique du tier après paiement |
+| Comptes utilisateurs | `backend/routes/user_auth.py` — JWT en cookie httpOnly, MongoDB | Lien user ↔ client Stripe + abonnement |
+| Système clés API | `backend/auth.py` — tiers free/basic/pro/admin | Attribution automatique du tier après paiement |
 | Base de données | MongoDB (motor async), injectée via `set_database()` | Collections `subscriptions`, `payment_events` |
-| Emails | `services/email_service.py` (transactionnel) | Emails reçu / échec / annulation |
-| Backend | FastAPI, routeurs via `api_router.include_router()` | `routes/billing.py` (+ `services/stripe_service.py`) |
+| Emails | `backend/services/email_service.py` (transactionnel) | Emails reçu / échec / annulation |
+| Backend | FastAPI, routeurs centralisés dans `backend/routes/__init__.py` via `register_routes(api_router)` ; `api_router` a le préfixe `/api` | `backend/routes/billing.py` (+ `backend/services/stripe_service.py`) |
 
 **Décision structurante** : le tier d'abonnement (Free/Starter/Pro/Business)
 devient la **source de vérité de l'accès**. Après un paiement réussi, on met à
@@ -35,9 +35,9 @@ jour le tier de l'utilisateur, qui pilote à la fois l'accès à la plateforme
 
 ```
 Navigateur (pricing.html / React)
-   │  1. POST /billing/checkout  {plan, cycle}     (cookie session JWT)
+   │  1. POST /api/billing/checkout  {plan, cycle}  (cookie session JWT)
    ▼
-FastAPI  routes/billing.py
+FastAPI  backend/routes/billing.py
    │  2. Résout le prix selon le PAYS de facturation :
    │        - hors Algérie → Stripe
    │        - Algérie      → Chargely (phase 2 ; stub en phase 1)
@@ -47,7 +47,7 @@ FastAPI  routes/billing.py
 Stripe Checkout (page hébergée par Stripe — aucune donnée carte chez nous)
    │  5. Paiement → redirection success_url / cancel_url
    ▼
-Stripe → Webhook  POST /billing/webhook
+Stripe → Webhook  POST /api/billing/webhook
    │  6. Vérifie la signature (STRIPE_WEBHOOK_SECRET)
    │  7. checkout.session.completed / customer.subscription.updated|deleted
    │  8. Met à jour MongoDB (subscription) + tier user + envoie l'email
@@ -65,7 +65,7 @@ webhook signé. La `success_url` sert seulement à afficher un message.
   (sélecteur pays), **pas** de géo-IP silencieuse (cf. remarque de review sur la
   page statique : on ne promet pas de « sélection automatique »).
 - `pays == DZ` → flux Chargely. Sinon → flux Stripe.
-- Phase 1 : le branche Chargely renvoie un `501 Not Implemented` propre + un
+- Phase 1 : la branche Chargely renvoie un `501 Not Implemented` propre + un
   message « paiement local bientôt disponible », de façon à livrer Stripe seul
   sans casser l'UX algérienne.
 
@@ -119,19 +119,36 @@ L'index unique sur `event_id` garantit qu'un webhook rejoué par Stripe
 
 ---
 
-## 5. Routes backend (`routes/billing.py`)
+## 5. Routes backend (`backend/routes/billing.py`)
 
-| Méthode | Route | Auth | Rôle |
+Le routeur `billing` (défini avec `APIRouter(prefix="/billing")`) est monté sur
+`api_router`, lui-même préfixé par `/api` dans `server.py`. Les URLs effectives
+sont donc préfixées par `/api` :
+
+| Méthode | Route effective | Auth | Rôle |
 |---|---|---|---|
-| POST | `/billing/checkout` | session JWT requise | Crée la Checkout Session, renvoie l'URL de redirection |
-| POST | `/billing/portal` | session JWT requise | Crée une session du **Customer Portal** Stripe (gérer/annuler l'abo, changer de carte) |
-| GET | `/billing/subscription` | session JWT requise | Renvoie l'abonnement courant de l'utilisateur (pour le dashboard) |
-| POST | `/billing/webhook` | **signature Stripe** (pas de JWT) | Reçoit et vérifie les événements, met à jour l'état |
+| POST | `/api/billing/checkout` | session JWT requise | Crée la Checkout Session, renvoie l'URL de redirection |
+| POST | `/api/billing/portal` | session JWT requise | Crée une session du **Customer Portal** Stripe (gérer/annuler l'abo, changer de carte) |
+| GET | `/api/billing/subscription` | session JWT requise | Renvoie l'abonnement courant de l'utilisateur (pour le dashboard) |
+| POST | `/api/billing/webhook` | **signature Stripe** (pas de JWT) | Reçoit et vérifie les événements, met à jour l'état |
 
-Enregistrement, comme les autres routeurs, dans `server.py` :
-`from routes.billing import router as billing_router, set_database as set_billing_db`
-puis `api_router.include_router(billing_router)` et `set_billing_db(db)` au
-démarrage (à côté de `set_user_auth_db(db)`).
+**Enregistrement** — suivre le pattern existant, centralisé dans
+`backend/routes/__init__.py` (fonction `register_routes(api_router)`), et non un
+`include_router()` direct dans `server.py`. Le routeur billing relève de la
+**couche SaaS** (comptes JWT), donc à ajouter à côté de `user_auth_router` /
+`contact_router`, **sans** la dépendance `_auth` (clé API) :
+
+```python
+# backend/routes/__init__.py, section SaaS
+from .billing import router as billing_router
+...
+api_router.include_router(billing_router)   # à côté de user_auth_router / contact_router
+```
+
+L'injection de la base se fait au démarrage dans `server.py`, à côté de
+`set_user_auth_db(db)` :
+`from routes.billing import set_database as set_billing_db` puis
+`set_billing_db(db)`.
 
 ### Événements webhook traités
 - `checkout.session.completed` → rattache `subscription_id` + `customer_id`, passe le tier, email « bienvenue / reçu ».
@@ -172,9 +189,10 @@ Dépendance Python : `stripe` (SDK officiel) à ajouter dans `requirements.txt`.
 - **Aucune donnée de carte** ne transite ni n'est stockée chez nous : Stripe
   Checkout est une page hébergée par Stripe → conformité PCI simplifiée (SAQ A).
 - **Webhook signé** : vérification obligatoire de `Stripe-Signature` avec
-  `STRIPE_WEBHOOK_SECRET`. Rejet `400` si invalide. La route `/billing/webhook`
-  doit être **exemptée de la protection CSRF** (appel serveur-à-serveur, pas de
-  cookie) — à ajouter à la liste d'exemptions du middleware CSRF existant.
+  `STRIPE_WEBHOOK_SECRET`. Rejet `400` si invalide. La route (chemin effectif
+  `/api/billing/webhook`) doit être **exemptée de la protection CSRF** (appel
+  serveur-à-serveur, pas de cookie) — à ajouter à la liste d'exemptions du
+  middleware CSRF existant en visant bien le chemin préfixé `/api`.
 - **Idempotence** : index unique sur `payment_events.event_id`.
 - **Autorité serveur sur les prix** : le front n'envoie jamais de montant.
 - **Clés secrètes** uniquement côté backend (jamais dans le bundle React /
@@ -188,15 +206,15 @@ Dépendance Python : `stripe` (SDK officiel) à ajouter dans `requirements.txt`.
 ## 8. Découpage en phases
 
 **Phase 1 — Stripe abonnements (mode test)**
-1. `services/stripe_service.py` (SDK, création customer/session/portal, vérif signature).
-2. `routes/billing.py` (4 routes) + enregistrement dans `server.py`.
+1. `backend/services/stripe_service.py` (SDK, création customer/session/portal, vérif signature).
+2. `backend/routes/billing.py` (4 routes) + enregistrement dans `backend/routes/__init__.py`.
 3. Champs `users` + collection `payment_events`.
 4. Brancher les 3 boutons de plan de `pricing.html` sur `/billing/checkout`.
 5. Emails reçu / échec / annulation via `email_service`.
 6. Tests : signature webhook, idempotence, transitions de tier (mode test + Stripe CLI `stripe listen`).
 
 **Phase 2 — Chargely (Algérie)**
-7. `services/chargely_service.py` symétrique + webhook Chargely.
+7. `backend/services/chargely_service.py` symétrique + webhook Chargely.
 8. Activer le branchement `pays == DZ` (retirer le stub `501`).
 9. Facturation en DZD, emails localisés.
 
@@ -205,7 +223,7 @@ Dépendance Python : `stripe` (SDK officiel) à ajouter dans `requirements.txt`.
 11. Add-ons récurrents (utilisateurs, packs API, support).
 
 **Passage en live** : à la fin de la vérification Stripe, remplacer les clés
-`sk_test_…`/`pk_test_…` par les clés live et recréer le endpoint webhook live —
+`sk_test_…`/`pk_test_…` par les clés live et recréer l'endpoint webhook live —
 le code ne change pas.
 
 ---
