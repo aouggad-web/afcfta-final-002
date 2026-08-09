@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Tarifs — ZLECAf Trade Calculator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -176,6 +177,7 @@ h1 em{font-style:italic;color:var(--gold)}
 .faq-item.open .faq-chevron{transform:rotate(180deg)}
 .faq-a{display:none;padding:0 18px 16px;font-size:13px;color:var(--muted);line-height:1.75;border-top:1px solid var(--b)}
 .faq-item.open .faq-a{display:block}
+.faq-item:focus-visible,.billing-toggle:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 /* payments */
 .pay-methods{max-width:1180px;margin:40px auto 0;padding:0 24px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -229,14 +231,14 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
   <div class="hero-eyebrow">Tarifs & Plans</div>
   <h1>Le commerce africain<br><em>commence ici</em></h1>
   <p class="hero-sub">Commencez gratuitement. Évoluez quand votre business grandit. Accédez aux données tarifaires de 54 pays AfCFTA en temps réel. Paiement par carte partout dans le monde, et par Chargely (CIB / Edahabia) en Algérie.</p>
-  <label class="billing-toggle" onclick="toggleBilling()">
+  <div class="billing-toggle" role="switch" tabindex="0" aria-checked="false" aria-label="Facturation annuelle" id="billing-switch" onclick="toggleBilling()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBilling();}">
     <span id="bill-monthly" style="color:var(--txt);font-weight:500">Mensuel</span>
     <div class="toggle-track" id="toggle-track">
       <div class="toggle-thumb" id="toggle-thumb"></div>
     </div>
     <span id="bill-annual" style="color:var(--muted)">Annuel</span>
     <span class="save-badge">jusqu'à −22%</span>
-  </label>
+  </div>
 </div>
 
 <!-- PLANS -->
@@ -560,29 +562,29 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
   <div class="section-eyebrow">Questions fréquentes</div>
   <div class="section-title" style="margin-bottom:24px">Tout ce que vous devez savoir</div>
   <div class="faq">
-    <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Comment fonctionne le plan Free ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Le plan Free donne accès à 5 calculs de tarifs par jour sans limite de durée, sans carte de crédit. Vous pouvez consulter les règles d'origine et les profils de base de 3 pays par mois. Parfait pour explorer la plateforme avant de vous engager.</div>
     </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Puis-je annuler à tout moment ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Oui. Tous les plans sont sans engagement. Vous pouvez annuler votre abonnement à tout moment depuis votre tableau de bord. Vous gardez l'accès jusqu'à la fin de la période en cours, et aucun frais n'est prélevé ensuite.</div>
     </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">D'où proviennent les données tarifaires ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Les données proviennent de sources officielles : World Bank, WTO, OEC, AfDB, FMI et le Secrétariat de l'AfCFTA. Elles sont mises à jour automatiquement chaque jour à 2h00 UTC via notre pipeline de données. Les règles d'origine couvrent 97 secteurs HS2.</div>
     </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">L'API est-elle disponible immédiatement après souscription ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Oui. Après souscription au plan Business ou à un plan API, votre clé est générée immédiatement dans votre tableau de bord. La documentation complète avec exemples en Python, JavaScript et cURL est disponible sur docs.afcfta-zlecaf.com.</div>
     </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Proposez-vous des tarifs spéciaux pour les institutions africaines ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
       <div class="faq-a">Oui. Nous proposons des contrats institutionnels spéciaux pour les gouvernements, banques de développement (Afreximbank, AfDB), universités et organisations régionales africaines. Contactez-nous à contact@afcfta-zlecaf.com pour discuter d'un partenariat.</div>
     </div>
-    <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-item" role="button" tabindex="0" aria-expanded="false" onclick="toggleFaq(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleFaq(this);}">
       <div class="faq-q">Comment fonctionne le paiement ? <svg class="faq-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
-      <div class="faq-a">Les paiements sont sécurisés. Partout dans le monde (hors Algérie), ils sont traités via Stripe : cartes Visa, Mastercard, American Express, facturation en dollars US. En Algérie, dans un premier temps, les paiements sont traités via Chargely : cartes CIB et Edahabia, facturation en dinars algériens (DZD), conformément à la réglementation locale des changes. Le moyen de paiement proposé s'adapte automatiquement selon votre pays de facturation.</div>
+      <div class="faq-a">Les paiements sont sécurisés. Partout dans le monde (hors Algérie), ils sont traités via Stripe : cartes Visa, Mastercard, American Express, facturation en dollars US. En Algérie, dans un premier temps, les paiements sont traités via Chargely : cartes CIB et Edahabia, facturation en dinars algériens (DZD), conformément à la réglementation locale des changes. Le moyen de paiement proposé dépend de votre pays de facturation.</div>
     </div>
   </div>
 </div>
@@ -605,10 +607,17 @@ const prices = {
   biz:     { m: 59, a: 49 }
 };
 
+function toggleFaq(el) {
+  const open = el.classList.toggle('open');
+  el.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
 function toggleBilling() {
   annual = !annual;
   const track = document.getElementById('toggle-track');
   track.classList.toggle('on', annual);
+  const sw = document.getElementById('billing-switch');
+  if (sw) sw.setAttribute('aria-checked', annual ? 'true' : 'false');
   document.getElementById('bill-monthly').style.color = annual ? 'var(--muted)' : 'var(--txt)';
   document.getElementById('bill-annual').style.color  = annual ? 'var(--txt)' : 'var(--muted)';
 
