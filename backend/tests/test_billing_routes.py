@@ -290,3 +290,103 @@ def test_checkout_from_algerian_ip_routes_to_chargily(client, monkeypatch, trust
         headers={"CF-IPCountry": "DZ"},
     )
     assert resp.status_code == 501
+
+
+# ── Idempotence et sûreté au crash des webhooks ─────────────────────────────
+
+
+class _FakeCollection:
+    """Collection Mongo minimale : dédup par event_id, insert/delete/find/update."""
+
+    def __init__(self):
+        self.docs = []
+        self._unique = set()
+
+    async def insert_one(self, doc):
+        from pymongo.errors import DuplicateKeyError
+
+        eid = doc.get("event_id")
+        if eid is not None:
+            if eid in self._unique:
+                raise DuplicateKeyError("dup")
+            self._unique.add(eid)
+        self.docs.append(doc)
+        return type("R", (), {"inserted_id": "x"})()
+
+    async def delete_one(self, query):
+        eid = query.get("event_id")
+        self._unique.discard(eid)
+        self.docs = [d for d in self.docs if d.get("event_id") != eid]
+
+    async def find_one(self, query, projection=None):
+        return None
+
+    async def update_one(self, query, update):
+        return None
+
+
+class _FakeDB2:
+    def __init__(self):
+        self.payment_events = _FakeCollection()
+        self.users = _FakeCollection()
+        self.payment_attempts = _FakeCollection()
+
+
+_STRIPE_EVENT = {
+    "id": "evt_1",
+    "type": "checkout.session.completed",
+    "data": {
+        "object": {
+            "metadata": {"user_id": "000000000000000000000001", "plan": "pro", "cycle": "monthly"},
+            "subscription": "sub_1",
+            "customer": "cus_1",
+        }
+    },
+}
+
+
+@pytest.fixture
+def webhook_client(monkeypatch):
+    fake = _FakeDB2()
+    billing.set_database(fake)
+    monkeypatch.setattr(stripe_service, "construct_event", lambda payload, sig: _STRIPE_EVENT)
+    app = FastAPI()
+    app.include_router(billing.router)
+    return TestClient(app, raise_server_exceptions=False), fake
+
+
+def test_webhook_releases_reservation_when_handler_fails(webhook_client, monkeypatch):
+    """Propriété critique : si le traitement échoue, la réservation est libérée
+    pour que le rejeu Stripe refasse le travail — un paiement n'est jamais perdu."""
+    client, fake = webhook_client
+
+    async def _boom(*a, **k):
+        raise RuntimeError("db indisponible")
+
+    monkeypatch.setattr(billing, "_update_user_by_id", _boom)
+    resp = client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
+    assert resp.status_code == 500
+    assert "evt_1" not in fake.payment_events._unique  # réservation libérée
+
+    # Rejeu : le handler réussit désormais → l'événement est bien traité.
+    async def _ok(*a, **k):
+        return None
+
+    monkeypatch.setattr(billing, "_update_user_by_id", _ok)
+    replay = client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
+    assert replay.status_code == 200
+    assert replay.json()["status"] == "ok"
+
+
+def test_webhook_is_idempotent_on_replay(webhook_client, monkeypatch):
+    """Deux livraisons du même événement → traité une seule fois."""
+    client, fake = webhook_client
+
+    async def _ok(*a, **k):
+        return None
+
+    monkeypatch.setattr(billing, "_update_user_by_id", _ok)
+    first = client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
+    second = client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
+    assert first.json()["status"] == "ok"
+    assert second.json()["status"] == "already_processed"

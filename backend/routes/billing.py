@@ -298,6 +298,45 @@ async def _email_user(user_id: Optional[str], subject: str, body: str) -> None:
             logger.warning("Webhook: envoi email échoué: %s", exc)
 
 
+async def _claim_event(db, event_key: str, event_type: str) -> bool:
+    """Réserve un événement pour traitement unique. False s'il est déjà pris.
+
+    L'index unique sur `event_id` transforme deux livraisons concurrentes du même
+    événement en une seule réservation gagnante — les autres reçoivent
+    DuplicateKeyError et sont ignorées.
+    """
+    try:
+        await db.payment_events.insert_one(
+            {
+                "event_id": event_key,
+                "type": event_type,
+                "received_at": datetime.now(timezone.utc),
+            }
+        )
+        return True
+    except DuplicateKeyError:
+        return False
+
+
+async def _release_event(db, event_key: str) -> None:
+    """Annule la réservation d'un événement dont le traitement a échoué.
+
+    Sans cela, un handler qui lève après la réservation marquerait l'événement
+    « traité » à tort : le rejeu du fournisseur (livraison at-least-once)
+    tomberait sur « déjà traité » et l'utilisateur qui a payé ne serait jamais
+    activé. En libérant la réservation, on laisse le rejeu refaire le travail.
+    """
+    try:
+        await db.payment_events.delete_one({"event_id": event_key})
+    except Exception as exc:  # pragma: no cover - best effort
+        logger.error(
+            "CRITIQUE: réservation d'événement %s non libérée après échec (%s) — "
+            "l'événement pourrait ne jamais être rejoué.",
+            event_key,
+            exc,
+        )
+
+
 @router.post("/webhook")
 async def stripe_webhook(request: Request):
     """Reçoit les événements Stripe (signature vérifiée, idempotent)."""
@@ -316,58 +355,56 @@ async def stripe_webhook(request: Request):
     data_obj = event["data"]["object"]
 
     # Idempotence : l'index unique sur event_id absorbe les rejeux Stripe.
-    try:
-        await db.payment_events.insert_one(
-            {
-                "event_id": event_id,
-                "type": event_type,
-                "received_at": datetime.now(timezone.utc),
-            }
-        )
-    except DuplicateKeyError:
+    if not await _claim_event(db, event_id, event_type):
         return {"status": "already_processed"}
 
-    if event_type == "checkout.session.completed":
-        meta = data_obj.get("metadata") or {}
-        await _update_user_by_id(
-            meta.get("user_id", ""),
-            {
-                "subscription_tier": meta.get("plan", "free"),
-                "subscription_status": "active",
-                "subscription_cycle": meta.get("cycle"),
-                "subscription_id": data_obj.get("subscription"),
-                "stripe_customer_id": data_obj.get("customer"),
-                "payment_provider": "stripe",
-            },
-        )
-        await _email_user(
-            meta.get("user_id"),
-            "Votre abonnement ZLECAf est actif",
-            "Merci — votre abonnement est désormais actif. "
-            "Vous pouvez le gérer à tout moment depuis votre tableau de bord.",
-        )
+    # En cas d'échec du traitement, on libère la réservation pour que le rejeu
+    # Stripe refasse le travail au lieu de le sauter en « déjà traité ».
+    try:
+        if event_type == "checkout.session.completed":
+            meta = data_obj.get("metadata") or {}
+            await _update_user_by_id(
+                meta.get("user_id", ""),
+                {
+                    "subscription_tier": meta.get("plan", "free"),
+                    "subscription_status": "active",
+                    "subscription_cycle": meta.get("cycle"),
+                    "subscription_id": data_obj.get("subscription"),
+                    "stripe_customer_id": data_obj.get("customer"),
+                    "payment_provider": "stripe",
+                },
+            )
+            await _email_user(
+                meta.get("user_id"),
+                "Votre abonnement ZLECAf est actif",
+                "Merci — votre abonnement est désormais actif. "
+                "Vous pouvez le gérer à tout moment depuis votre tableau de bord.",
+            )
 
-    elif event_type == "customer.subscription.updated":
-        meta = data_obj.get("metadata") or {}
-        fields = {
-            "subscription_status": data_obj.get("status"),
-            "subscription_current_end": _period_end(data_obj),
-        }
-        if meta.get("plan"):
-            fields["subscription_tier"] = meta["plan"]
-        await _update_user_by_customer(data_obj.get("customer", ""), fields)
+        elif event_type == "customer.subscription.updated":
+            meta = data_obj.get("metadata") or {}
+            fields = {
+                "subscription_status": data_obj.get("status"),
+                "subscription_current_end": _period_end(data_obj),
+            }
+            if meta.get("plan"):
+                fields["subscription_tier"] = meta["plan"]
+            await _update_user_by_customer(data_obj.get("customer", ""), fields)
 
-    elif event_type == "customer.subscription.deleted":
-        await _update_user_by_customer(
-            data_obj.get("customer", ""),
-            {"subscription_tier": "free", "subscription_status": "canceled"},
-        )
+        elif event_type == "customer.subscription.deleted":
+            await _update_user_by_customer(
+                data_obj.get("customer", ""),
+                {"subscription_tier": "free", "subscription_status": "canceled"},
+            )
 
-    elif event_type == "invoice.payment_failed":
-        await _update_user_by_customer(
-            data_obj.get("customer", ""),
-            {"subscription_status": "past_due"},
-        )
+        elif event_type == "invoice.payment_failed":
+            await _update_user_by_customer(
+                data_obj.get("customer", ""),
+                {"subscription_status": "past_due"},
+            )
+    except Exception:
+        await _release_event(db, event_id)
+        raise
 
     return {"status": "ok"}
 
@@ -394,42 +431,40 @@ async def chargily_webhook(request: Request):
     event_type = event.get("type") or ""
     data_obj = event.get("data") or {}
 
-    try:
-        await db.payment_events.insert_one(
-            {
-                "event_id": f"chargily:{event_id}",
-                "type": event_type,
-                "received_at": datetime.now(timezone.utc),
-            }
-        )
-    except DuplicateKeyError:
+    # Événements Chargily préfixés pour ne jamais collisionner avec ceux de Stripe.
+    event_key = f"chargily:{event_id}"
+    if not await _claim_event(db, event_key, event_type):
         return {"status": "already_processed"}
 
-    meta = data_obj.get("metadata") or {}
-    # metadata peut revenir sous forme de liste selon la version de l'API.
-    if isinstance(meta, list):
-        meta = meta[0] if meta and isinstance(meta[0], dict) else {}
-    user_id = meta.get("user_id", "")
+    try:
+        meta = data_obj.get("metadata") or {}
+        # metadata peut revenir sous forme de liste selon la version de l'API.
+        if isinstance(meta, list):
+            meta = meta[0] if meta and isinstance(meta[0], dict) else {}
+        user_id = meta.get("user_id", "")
 
-    if event_type == "checkout.paid":
-        await _update_user_by_id(
-            user_id,
-            {
-                "subscription_tier": meta.get("plan", "free"),
-                "subscription_status": "active",
-                "subscription_cycle": meta.get("cycle"),
-                "payment_provider": "chargily",
-                "billing_country": "DZ",
-            },
-        )
-        await _email_user(
-            user_id,
-            "Votre abonnement ZLECAf est actif",
-            "Merci — votre paiement a été confirmé et votre abonnement est actif.",
-        )
+        if event_type == "checkout.paid":
+            await _update_user_by_id(
+                user_id,
+                {
+                    "subscription_tier": meta.get("plan", "free"),
+                    "subscription_status": "active",
+                    "subscription_cycle": meta.get("cycle"),
+                    "payment_provider": "chargily",
+                    "billing_country": "DZ",
+                },
+            )
+            await _email_user(
+                user_id,
+                "Votre abonnement ZLECAf est actif",
+                "Merci — votre paiement a été confirmé et votre abonnement est actif.",
+            )
 
-    elif event_type in ("checkout.failed", "checkout.canceled", "checkout.expired"):
-        # Aucun accès accordé : on journalise sans dégrader un abonnement déjà actif.
-        logger.info("Chargily: paiement non abouti (%s) pour user_id=%s", event_type, user_id)
+        elif event_type in ("checkout.failed", "checkout.canceled", "checkout.expired"):
+            # Aucun accès accordé : on journalise sans dégrader un abonnement actif.
+            logger.info("Chargily: paiement non abouti (%s) pour user_id=%s", event_type, user_id)
+    except Exception:
+        await _release_event(db, event_key)
+        raise
 
     return {"status": "ok"}
