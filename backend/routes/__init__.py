@@ -400,6 +400,7 @@ except ImportError as e:
     REPORTS_AVAILABLE = False
     _logger.warning(f"Premium reports route unavailable: {e}")
 
+from .billing import router as billing_router
 from .contact import router as contact_router
 from .user_auth import router as user_auth_router
 
@@ -574,3 +575,6 @@ def register_routes(api_router: APIRouter):
     # trade-data routers.
     api_router.include_router(user_auth_router)
     api_router.include_router(contact_router)
+    # Billing (abonnements Stripe) : couche SaaS, auth par session JWT ou
+    # signature de webhook — pas de dépendance clé API.
+    api_router.include_router(billing_router)

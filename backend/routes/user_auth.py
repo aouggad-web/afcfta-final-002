@@ -111,7 +111,12 @@ def _set_session_cookie(response: Response, token: str) -> None:
 
 
 @router.post("/register")
-async def register(payload: RegisterPayload, response: Response, background_tasks: BackgroundTasks):
+async def register(
+    payload: RegisterPayload,
+    request: Request,
+    response: Response,
+    background_tasks: BackgroundTasks,
+):
     db = _require_db()
     email = payload.email.lower()
 
@@ -125,12 +130,18 @@ async def register(payload: RegisterPayload, response: Response, background_task
     # off the event loop so a burst of signups doesn't stall every other
     # request this worker is handling.
     password_hash = await run_in_threadpool(hash_password, payload.password)
+    # IP et pays d'inscription : signal de référence pour l'audit des paiements
+    # (une incohérence ultérieure se voit, sans jamais bloquer automatiquement).
+    from services import geo_service
+
     user_doc = {
         "name": payload.name.strip(),
         "email": email,
         "password_hash": password_hash,
         "role": "user",
         "created_at": datetime.now(timezone.utc),
+        "signup_ip": geo_service.client_ip(request),
+        "signup_country": geo_service.country_from_request(request),
     }
     try:
         result = await db.users.insert_one(user_doc)

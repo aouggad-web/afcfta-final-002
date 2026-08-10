@@ -77,6 +77,7 @@ import auth as _auth_module
 # Import routes module for modular endpoint registration
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
+from routes.billing import set_database as set_billing_db
 from routes.calculator import set_database as set_calculator_db
 from routes.contact import set_database as set_contact_db
 from routes.substitution import register_routes as register_substitution_routes
@@ -219,6 +220,10 @@ try:
             "/api/tariff-data/collect",
             "/api/crawl",
             "/api/crawl/start",
+            # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
+            # ni jeton CSRF — authentifiés par leur propre signature.
+            "/api/billing/webhook",
+            "/api/billing/chargily/webhook",
         ],
     )
     app.add_middleware(RateLimitMiddleware, requests_per_minute=120, burst_limit=20)
@@ -366,8 +371,26 @@ async def startup_load_tariff_data():
     _auth_module.set_database(db)
     set_user_auth_db(db)
     set_contact_db(db)
+    set_billing_db(db)
     await _seed_admin_account()
     set_calculator_db(db)
+
+    # Idempotence des webhooks Stripe : un event rejoué ne doit être traité
+    # qu'une fois (Stripe garantit une livraison at-least-once).
+    if db is not None:
+        try:
+            await db.payment_events.create_index("event_id", unique=True)
+        except Exception as e:
+            # Sans cet index, la déduplication des webhooks ne tient plus : les
+            # rejeux Stripe/Chargily (livraison at-least-once) seraient traités
+            # plusieurs fois — emails en double, états d'abonnement incohérents.
+            # On ne bloque pas le démarrage, mais ceci doit remonter en alerte.
+            logger.error(
+                "CRITIQUE: index unique payment_events.event_id non créé (%s) — "
+                "l'idempotence des webhooks de paiement n'est PLUS garantie. "
+                "Créez l'index manuellement avant d'encaisser des paiements.",
+                e,
+            )
 
     # Load crawled data
     try:
