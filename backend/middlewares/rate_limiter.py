@@ -1,4 +1,5 @@
 import logging
+import os
 import time
 from collections import defaultdict
 
@@ -8,21 +9,79 @@ from starlette.responses import JSONResponse
 
 logger = logging.getLogger(__name__)
 
+# Chemins exemptés — comparaison EXACTE, jamais par préfixe.
+#
+# Un préfixe "/api/" exempterait toute l'application, puisque chaque route est
+# montée sous ce préfixe : c'est le défaut qui neutralisait silencieusement ce
+# middleware. La comparaison exacte évite que la liste se remette à tout couvrir.
+DEFAULT_EXEMPT_PATHS = frozenset(
+    {
+        "/api/",  # index de l'API
+        "/api/health",  # sondes de disponibilité (monitoring, orchestrateur)
+        "/api/docs",
+        "/api/redoc",
+        "/api/openapi.json",
+        # Webhooks de paiement : les prestataires livrent en rafale et rejouent
+        # ce qui échoue. Un 429 ici ferait perdre des événements de paiement —
+        # ils sont authentifiés par signature, pas par volume.
+        "/api/billing/webhook",
+        "/api/billing/chargily/webhook",
+    }
+)
+
+# Endpoints où la force brute est le risque réel : quota par IP nettement plus
+# serré. On ne vise que l'authentification proprement dite — /auth/me est appelé
+# à chaque chargement de page par l'interface et doit rester sur le quota normal.
+SENSITIVE_AUTH_PATHS = frozenset({"/api/auth/login", "/api/auth/register"})
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.environ.get(name, default))
+    except (TypeError, ValueError):
+        logger.warning("%s invalide, valeur par défaut %s utilisée", name, default)
+        return default
+
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
     def __init__(
         self,
         app,
-        requests_per_minute: int = 60,
-        burst_limit: int = 10,
+        requests_per_minute: int | None = None,
+        burst_limit: int | None = None,
         exempt_paths: list | None = None,
+        auth_requests_per_minute: int | None = None,
     ):
         super().__init__(app)
-        self.requests_per_minute = requests_per_minute
-        self.burst_limit = burst_limit
-        self.exempt_paths = exempt_paths or ["/api/health", "/api/"]
+        # Réglages pilotables par l'environnement : si le quota s'avère trop
+        # serré en production, on l'ajuste (ou on coupe) sans redéployer.
+        self.enabled = os.environ.get("RATE_LIMIT_ENABLED", "true").lower() == "true"
+        self.requests_per_minute = (
+            requests_per_minute
+            if requests_per_minute is not None
+            else _env_int("RATE_LIMIT_PER_MINUTE", 120)
+        )
+        self.burst_limit = (
+            burst_limit if burst_limit is not None else _env_int("RATE_LIMIT_BURST", 20)
+        )
+        self.auth_requests_per_minute = (
+            auth_requests_per_minute
+            if auth_requests_per_minute is not None
+            else _env_int("RATE_LIMIT_AUTH_PER_MINUTE", 10)
+        )
+        self.exempt_paths = frozenset(exempt_paths) if exempt_paths else DEFAULT_EXEMPT_PATHS
         self._buckets: dict[str, list[float]] = defaultdict(list)
         self._last_cleanup = time.time()
+
+        if not self.enabled:
+            logger.warning("Rate limiting DÉSACTIVÉ (RATE_LIMIT_ENABLED=false)")
+        else:
+            logger.info(
+                "Rate limiting actif : %s req/min, rafale %s, auth %s req/min",
+                self.requests_per_minute,
+                self.burst_limit,
+                self.auth_requests_per_minute,
+            )
 
     def _get_client_ip(self, request: Request) -> str:
         forwarded = request.headers.get("x-forwarded-for")
@@ -49,18 +108,29 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
     async def dispatch(self, request: Request, call_next):
         path = request.url.path
-        if any(path.startswith(p) for p in self.exempt_paths):
+        # Comparaison exacte : un préfixe rendrait le middleware inopérant.
+        if not self.enabled or path in self.exempt_paths:
             return await call_next(request)
 
         now = time.time()
         self._cleanup_old_entries(now)
 
         client_ip = self._get_client_ip(request)
-        bucket_key = f"{client_ip}:{path.split('/')[2] if len(path.split('/')) > 2 else 'root'}"
+        is_sensitive_auth = path in SENSITIVE_AUTH_PATHS
+        limit = self.auth_requests_per_minute if is_sensitive_auth else self.requests_per_minute
+
+        # Les endpoints d'authentification ont leur propre compteur : sinon un
+        # quota partagé avec le reste de la section laisserait passer les
+        # tentatives de connexion tant que le trafic normal reste faible.
+        if is_sensitive_auth:
+            bucket_key = f"{client_ip}:auth-sensitive"
+        else:
+            segments = path.split("/")
+            bucket_key = f"{client_ip}:{segments[2] if len(segments) > 2 else 'root'}"
 
         self._buckets[bucket_key] = [t for t in self._buckets[bucket_key] if t > now - 60]
 
-        if len(self._buckets[bucket_key]) >= self.requests_per_minute:
+        if len(self._buckets[bucket_key]) >= limit:
             retry_after = int(60 - (now - self._buckets[bucket_key][0]))
             logger.warning(f"Rate limit exceeded for {client_ip} on {path}")
             return JSONResponse(
@@ -80,8 +150,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self._buckets[bucket_key].append(now)
 
         response = await call_next(request)
-        remaining = self.requests_per_minute - len(self._buckets[bucket_key])
-        response.headers["X-RateLimit-Limit"] = str(self.requests_per_minute)
+        remaining = limit - len(self._buckets[bucket_key])
+        response.headers["X-RateLimit-Limit"] = str(limit)
         response.headers["X-RateLimit-Remaining"] = str(max(0, remaining))
         response.headers["X-RateLimit-Reset"] = str(int(now + 60))
         return response

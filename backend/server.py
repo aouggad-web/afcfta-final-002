@@ -226,7 +226,9 @@ try:
             "/api/billing/chargily/webhook",
         ],
     )
-    app.add_middleware(RateLimitMiddleware, requests_per_minute=120, burst_limit=20)
+    # Quotas et liste d'exemptions : voir backend/middlewares/rate_limiter.py.
+    # Pilotables par RATE_LIMIT_* (dont RATE_LIMIT_ENABLED pour couper vite).
+    app.add_middleware(RateLimitMiddleware)
     logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
 except ImportError as e:
     logger.warning(f"Security middlewares not loaded: {e}")
