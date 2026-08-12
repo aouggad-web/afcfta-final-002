@@ -18,6 +18,7 @@ tout le reste vers Stripe (USD). Si Chargily n'est pas activé
 
 from __future__ import annotations
 
+import ipaddress
 import logging
 import os
 from datetime import datetime, timezone
@@ -107,6 +108,19 @@ async def geo_diagnostic(request: Request):
     l'appelant lui-même.
     """
     xff = request.headers.get("x-forwarded-for", "")
+
+    # L'adresse vue par la couche ASGI est une IP d'infrastructure (pod, ingress).
+    # Seul son *caractère* privé/public a une valeur de diagnostic — savoir si la
+    # couche réseau voit un hop interne plutôt que le client. On expose donc ce
+    # booléen et jamais l'adresse elle-même, qui renseignerait sur la topologie.
+    asgi_host = request.client.host if request.client else None
+    asgi_is_private = None
+    if asgi_host:
+        try:
+            asgi_is_private = ipaddress.ip_address(asgi_host).is_private
+        except ValueError:
+            asgi_is_private = None
+
     return {
         "client_ip": geo_service.client_ip(request),
         "detected_country": geo_service.country_from_request(request),
@@ -118,7 +132,7 @@ async def geo_diagnostic(request: Request):
             "x_edge_secret": request.headers.get("x-edge-secret") is not None,
             "x_forwarded_for_hops": len([h for h in xff.split(",") if h.strip()]),
         },
-        "asgi_client": request.client.host if request.client else None,
+        "asgi_client_is_private": asgi_is_private,
     }
 
 

@@ -76,17 +76,33 @@ def main() -> int:
         return 1
 
     # L'archive contient GeoLite2-Country_YYYYMMDD/GeoLite2-Country.mmdb
+    # Écriture atomique : on écrit à côté puis on remplace d'un seul coup, pour
+    # qu'une interruption ne laisse jamais un .mmdb tronqué que le backend
+    # chargerait au démarrage suivant.
+    staging = dest_file.with_suffix(".mmdb.part")
     extracted = False
-    with tarfile.open(tmp_path, "r:gz") as tar:
-        for member in tar.getmembers():
-            if member.name.endswith("GeoLite2-Country.mmdb"):
-                member_file = tar.extractfile(member)
-                if member_file is None:
-                    continue
-                dest_file.write_bytes(member_file.read())
-                extracted = True
-                break
-    os.unlink(tmp_path)
+    try:
+        with tarfile.open(tmp_path, "r:gz") as tar:
+            for member in tar.getmembers():
+                if member.name.endswith("GeoLite2-Country.mmdb"):
+                    member_file = tar.extractfile(member)
+                    if member_file is None:
+                        continue
+                    staging.write_bytes(member_file.read())
+                    extracted = True
+                    break
+        if extracted:
+            os.replace(staging, dest_file)
+    except (tarfile.TarError, OSError) as exc:
+        print(f"Erreur d'extraction : {exc}", file=sys.stderr)
+        return 1
+    finally:
+        # Nettoyage systématique, y compris si l'extraction a échoué.
+        for leftover in (tmp_path, staging):
+            try:
+                os.unlink(leftover)
+            except OSError:
+                pass
 
     if not extracted:
         print("Erreur : .mmdb introuvable dans l'archive téléchargée.", file=sys.stderr)

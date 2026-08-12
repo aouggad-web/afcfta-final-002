@@ -96,18 +96,17 @@ contournement décrit plus haut.
 
 ---
 
-## Étape 3 — Laisser passer les en-têtes de proxy
+## Étape 3 — En-têtes de proxy : ne pas élargir sans raison
 
-Le conteneur lance uvicorn avec `--proxy-headers --forwarded-allow-ips`. Par
-défaut, seul `127.0.0.1` est accepté, donc l'IP réelle du client serait perdue.
-Dans `.env` :
+Le conteneur lance uvicorn avec `--proxy-headers --forwarded-allow-ips`, dont le
+défaut est `127.0.0.1`. **Gardez ce défaut** : la détection de pays lit
+`X-Forwarded-For` directement dans la requête et ne dépend pas de ce réglage,
+qui ne gouverne que la réécriture de `request.client` par uvicorn.
 
-```
-UVICORN_FORWARDED_ALLOW_IPS=*      # correct derrière un Tunnel ou un pare-feu fermé
-```
-
-Avec `*`, ne laissez **jamais** l'origine ouverte à l'Internet public : la
-combinaison des deux permettrait d'usurper `X-Forwarded-For`.
+Ne passez à `UVICORN_FORWARDED_ALLOW_IPS=*` que si l'origine est **strictement
+fermée** (Cloudflare Tunnel, ou pare-feu limité aux plages Cloudflare). Sur une
+origine joignable publiquement, `*` permet à n'importe qui de forger
+`X-Forwarded-For` — exactement le contournement que l'étape 2 vise à empêcher.
 
 ---
 
@@ -187,7 +186,7 @@ curl -s https://<votre-domaine>/api/billing/geo-diagnostic | jq
     "x_edge_secret": false,
     "x_forwarded_for_hops": 2
   },
-  "asgi_client": "10.42.0.1"
+  "asgi_client_is_private": true
 }
 ```
 
