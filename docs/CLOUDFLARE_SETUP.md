@@ -96,18 +96,17 @@ contournement décrit plus haut.
 
 ---
 
-## Étape 3 — Laisser passer les en-têtes de proxy
+## Étape 3 — En-têtes de proxy : ne pas élargir sans raison
 
-Le conteneur lance uvicorn avec `--proxy-headers --forwarded-allow-ips`. Par
-défaut, seul `127.0.0.1` est accepté, donc l'IP réelle du client serait perdue.
-Dans `.env` :
+Le conteneur lance uvicorn avec `--proxy-headers --forwarded-allow-ips`, dont le
+défaut est `127.0.0.1`. **Gardez ce défaut** : la détection de pays lit
+`X-Forwarded-For` directement dans la requête et ne dépend pas de ce réglage,
+qui ne gouverne que la réécriture de `request.client` par uvicorn.
 
-```
-UVICORN_FORWARDED_ALLOW_IPS=*      # correct derrière un Tunnel ou un pare-feu fermé
-```
-
-Avec `*`, ne laissez **jamais** l'origine ouverte à l'Internet public : la
-combinaison des deux permettrait d'usurper `X-Forwarded-For`.
+Ne passez à `UVICORN_FORWARDED_ALLOW_IPS=*` que si l'origine est **strictement
+fermée** (Cloudflare Tunnel, ou pare-feu limité aux plages Cloudflare). Sur une
+origine joignable publiquement, `*` permet à n'importe qui de forger
+`X-Forwarded-For` — exactement le contournement que l'étape 2 vise à empêcher.
 
 ---
 
@@ -138,18 +137,72 @@ depuis un VPN sortant en Algérie, ou posez temporairement
 
 ---
 
-## Sans Cloudflare
+## Sans Cloudflare — base MaxMind locale
 
-L'alternative est une base **MaxMind GeoLite2** locale (compte gratuit) :
+C'est la voie **recommandée quand l'hébergeur ne garantit pas le passage des
+en-têtes personnalisés** jusqu'au backend (cas d'Emergent, dont l'ingress n'est
+pas documenté sur ce point). Elle ne dépend d'aucun en-tête : la géolocalisation
+se fait dans le backend, à partir de l'IP client.
 
+```bash
+# 1. Compte gratuit : https://www.maxmind.com/en/geolite2/signup
+#    puis My Account > Manage License Keys
+export MAXMIND_LICENSE_KEY=votre_clé
+
+# 2. Télécharger la base (~9 Mo)
+python scripts/geoip_update.py --dest /app/data/geoip
+
+# 3. Dans .env
+GEOIP_DB_PATH=/app/data/geoip/GeoLite2-Country.mmdb
 ```
-pip install geoip2
-GEOIP_DB_PATH=/chemin/vers/GeoLite2-Country.mmdb
-```
 
-Elle se met à jour manuellement (ou par cron) et fonctionne sans dépendance
-externe à l'exécution. Le backend l'utilise automatiquement dès que le chemin
-est renseigné, en repli des en-têtes Cloudflare.
+Le paquet `geoip2` est déjà dans `requirements.txt`. Le backend charge la base
+au premier appel et l'utilise en repli des en-têtes Cloudflare. MaxMind la met à
+jour deux fois par semaine : un cron hebdomadaire relançant le script suffit.
 
 Si **aucune** des deux sources n'est configurée, rien ne casse : le pays reste
-indéterminé et le sélecteur manuel fait foi — c'est le comportement actuel.
+indéterminé et le sélecteur manuel fait foi.
+
+---
+
+## Diagnostiquer ce que l'ingress laisse passer
+
+Plutôt que de deviner ce que votre hébergeur transmet au backend, mesurez-le.
+Depuis l'extérieur :
+
+```bash
+curl -s https://<votre-domaine>/api/billing/geo-diagnostic | jq
+```
+
+```json
+{
+  "client_ip": "41.100.0.9",
+  "detected_country": "DZ",
+  "cloudflare_trusted": false,
+  "geoip_db_configured": true,
+  "headers_seen": {
+    "cf_ipcountry": false,
+    "cf_connecting_ip": false,
+    "x_edge_secret": false,
+    "x_forwarded_for_hops": 2
+  },
+  "asgi_client_is_private": true
+}
+```
+
+Comment lire le résultat :
+
+- **`client_ip` correspond à votre IP publique réelle** → la géolocalisation
+  MaxMind fonctionnera. C'est la condition essentielle.
+- **`client_ip` est `null`** ou vaut une adresse interne → l'ingress masque l'IP
+  d'origine ; augmentez `UVICORN_FORWARDED_ALLOW_IPS` et vérifiez
+  `x_forwarded_for_hops`. Sans IP réelle, **aucune** méthode de géolocalisation
+  ne peut fonctionner.
+- **`headers_seen.cf_ipcountry` est `true`** → l'ingress laisse bien passer les
+  en-têtes Cloudflare ; vous pouvez utiliser la voie Cloudflare ci-dessus.
+- **`x_edge_secret` est `true` mais `cloudflare_trusted` est `false`** → la
+  Transform Rule fonctionne mais `CLOUDFLARE_EDGE_SECRET` ne correspond pas
+  (ou n'est pas chargé côté serveur).
+
+Cette route ne divulgue que des informations sur la requête de l'appelant
+lui-même — aucune donnée d'un autre utilisateur.

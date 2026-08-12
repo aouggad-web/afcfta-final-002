@@ -378,6 +378,25 @@ def test_webhook_releases_reservation_when_handler_fails(webhook_client, monkeyp
     assert replay.json()["status"] == "ok"
 
 
+def test_geo_diagnostic_reports_what_backend_sees(client, monkeypatch):
+    """Le diagnostic reflète fidèlement la requête : en-têtes vus, IP, pays."""
+    monkeypatch.delenv("CLOUDFLARE_EDGE_SECRET", raising=False)
+    monkeypatch.delenv("TRUST_CLOUDFLARE_HEADERS", raising=False)
+    monkeypatch.delenv("GEOIP_DB_PATH", raising=False)
+    resp = client.get(
+        "/billing/geo-diagnostic",
+        headers={"CF-IPCountry": "DZ", "X-Forwarded-For": "1.2.3.4, 41.100.0.9"},
+    )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["client_ip"] == "41.100.0.9"
+    assert body["detected_country"] is None  # en-tête CF non prouvé → ignoré
+    assert body["cloudflare_trusted"] is False
+    assert body["geoip_db_configured"] is False
+    assert body["headers_seen"]["cf_ipcountry"] is True
+    assert body["headers_seen"]["x_forwarded_for_hops"] == 2
+
+
 def test_webhook_is_idempotent_on_replay(webhook_client, monkeypatch):
     """Deux livraisons du même événement → traité une seule fois."""
     client, fake = webhook_client

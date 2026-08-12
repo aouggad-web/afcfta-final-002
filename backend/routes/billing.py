@@ -18,6 +18,7 @@ tout le reste vers Stripe (USD). Si Chargily n'est pas activé
 
 from __future__ import annotations
 
+import ipaddress
 import logging
 import os
 from datetime import datetime, timezone
@@ -94,6 +95,44 @@ def resolve_provider(request: Request, user: dict, declared_country: Optional[st
         "country": declared or detected,
         "locked": False,
         "detected": detected,
+    }
+
+
+@router.get("/geo-diagnostic")
+async def geo_diagnostic(request: Request):
+    """Diagnostic de la détection de pays, vu du backend.
+
+    Répond à la question « que laisse passer l'ingress de l'hébergeur ? » sans
+    attendre le support : appelez cette route depuis l'extérieur et lisez ce que
+    le backend voit réellement. Ne révèle que des informations sur la requête de
+    l'appelant lui-même.
+    """
+    xff = request.headers.get("x-forwarded-for", "")
+
+    # L'adresse vue par la couche ASGI est une IP d'infrastructure (pod, ingress).
+    # Seul son *caractère* privé/public a une valeur de diagnostic — savoir si la
+    # couche réseau voit un hop interne plutôt que le client. On expose donc ce
+    # booléen et jamais l'adresse elle-même, qui renseignerait sur la topologie.
+    asgi_host = request.client.host if request.client else None
+    asgi_is_private = None
+    if asgi_host:
+        try:
+            asgi_is_private = ipaddress.ip_address(asgi_host).is_private
+        except ValueError:
+            asgi_is_private = None
+
+    return {
+        "client_ip": geo_service.client_ip(request),
+        "detected_country": geo_service.country_from_request(request),
+        "cloudflare_trusted": geo_service.cloudflare_is_trusted(request),
+        "geoip_db_configured": bool(os.environ.get("GEOIP_DB_PATH")),
+        "headers_seen": {
+            "cf_ipcountry": request.headers.get("cf-ipcountry") is not None,
+            "cf_connecting_ip": request.headers.get("cf-connecting-ip") is not None,
+            "x_edge_secret": request.headers.get("x-edge-secret") is not None,
+            "x_forwarded_for_hops": len([h for h in xff.split(",") if h.strip()]),
+        },
+        "asgi_client_is_private": asgi_is_private,
     }
 
 

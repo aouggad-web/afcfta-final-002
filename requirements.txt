@@ -64,6 +64,8 @@ dulwich
 
 # Payments
 stripe>=9.0.0
+# Géolocalisation IP (routage Stripe/Chargily) — base MaxMind GeoLite2 locale
+geoip2>=4.8.0
 
 # AI providers
 anthropic>=0.40.0
