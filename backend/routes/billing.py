@@ -97,6 +97,31 @@ def resolve_provider(request: Request, user: dict, declared_country: Optional[st
     }
 
 
+@router.get("/geo-diagnostic")
+async def geo_diagnostic(request: Request):
+    """Diagnostic de la détection de pays, vu du backend.
+
+    Répond à la question « que laisse passer l'ingress de l'hébergeur ? » sans
+    attendre le support : appelez cette route depuis l'extérieur et lisez ce que
+    le backend voit réellement. Ne révèle que des informations sur la requête de
+    l'appelant lui-même.
+    """
+    xff = request.headers.get("x-forwarded-for", "")
+    return {
+        "client_ip": geo_service.client_ip(request),
+        "detected_country": geo_service.country_from_request(request),
+        "cloudflare_trusted": geo_service.cloudflare_is_trusted(request),
+        "geoip_db_configured": bool(os.environ.get("GEOIP_DB_PATH")),
+        "headers_seen": {
+            "cf_ipcountry": request.headers.get("cf-ipcountry") is not None,
+            "cf_connecting_ip": request.headers.get("cf-connecting-ip") is not None,
+            "x_edge_secret": request.headers.get("x-edge-secret") is not None,
+            "x_forwarded_for_hops": len([h for h in xff.split(",") if h.strip()]),
+        },
+        "asgi_client": request.client.host if request.client else None,
+    }
+
+
 @router.get("/payment-context")
 async def payment_context(request: Request):
     """Contexte de paiement pour l'interface : prestataire imposé ou non.
