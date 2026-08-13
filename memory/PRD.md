@@ -17,6 +17,15 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### August 13, 2026 (session 3) — Import PR #392 (fiabilisation inscription/connexion)
+- PR déjà mergé sur GitHub (`main` avait avancé sans que le repo local soit resynchronisé, `git remote` absent dans ce pod) : récupéré via l'API publique GitHub (diff + fichier brut) et appliqué manuellement (playbook `.agents/memory/importing-github-prs.md`).
+- Backend (`backend/routes/user_auth.py`) : normalisation email (trim + lowercase) et nom (espaces multiples réduits) via `field_validator` Pydantic sur `RegisterPayload`/`LoginPayload`.
+- Frontend (`AuthModal.jsx`, `AuthContext.jsx`) : champ « Confirmer le mot de passe » à l'inscription, message d'erreur inline dans la modale (pas seulement en toast), attributs `autoComplete`/`maxLength` sur les champs, `aria-busy` sur les boutons.
+- Note : `AuthModal.jsx` local avait divergé de la base du PR (pas de prop `onAuthenticated`) — fichier remplacé en entier par la version GitHub (rétrocompatible avec `onClose` seul, donc `App.js` inchangé).
+- Tests ajoutés : `backend/tests/test_user_auth_validation.py` (4/4 passés), `AuthModal.test.jsx` + `AuthContext.test.jsx` (5/5 passés côté vitest).
+- Vérifié en direct par curl (`POST /api/auth/register` avec espaces/majuscules dans nom+email → normalisé correctement) et via le bundle Vite reconstruit (confirmé `confirmPassword` présent dans le JS servi sur le port 3000).
+- ⚠️ Vérification UI complète via l'URL preview externe non finalisée : celle-ci affichait un état "Frontend Preview Only — Please wake servers" (bandeau plateforme, absent du code source de l'app) au moment du test, probablement lié à une pause/reprise de session ; l'utilisateur a demandé d'arrêter les captures d'écran avant résolution. Le code est validé côté build local + tests automatisés.
+
 ### August 13, 2026 (session 2) — Ré-import complet depuis GitHub (branche `main`)
 - Environnement pod réinitialisé (repo vide) ; réimporté la branche `main` du dépôt `aouggad-web/afcfta-final-002` (commit `7f279018`, la plus récente parmi ~150 branches).
 - Dépendances backend réinstallées (`pip install -r backend/requirements.txt`) — conflit de versions corrigé (`aiohttp==3.13.3` incompatible avec `geoip2==5.3.0` qui exige `aiohttp>=3.14.1` → assoupli en `aiohttp>=3.14.1`).
