@@ -400,7 +400,24 @@ except ImportError as e:
     REPORTS_AVAILABLE = False
     _logger.warning(f"Premium reports route unavailable: {e}")
 
-from .billing import router as billing_router
+# Billing importé en défaut mou : le module dépend du SDK Stripe (paquet
+# `stripe`). S'il manque à l'installation, l'ancienne version faisait échouer
+# TOUTE l'API au démarrage — c'est ce qui a laissé le pod en 404 sur `/api/*`
+# alors que le paiement n'est même pas encore encaissé. On dégrade au lieu
+# d'écraser.
+try:
+    from .billing import router as billing_router
+
+    BILLING_AVAILABLE = True
+except ImportError as e:
+    billing_router = None
+    BILLING_AVAILABLE = False
+    _logger.error(
+        "CRITIQUE: routes de facturation indisponibles (%s). "
+        "Installez la dépendance manquante et redémarrez : le paiement est HORS SERVICE.",
+        e,
+    )
+
 from .contact import router as contact_router
 from .user_auth import router as user_auth_router
 
@@ -577,4 +594,5 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(contact_router)
     # Billing (abonnements Stripe) : couche SaaS, auth par session JWT ou
     # signature de webhook — pas de dépendance clé API.
-    api_router.include_router(billing_router)
+    if BILLING_AVAILABLE:
+        api_router.include_router(billing_router)

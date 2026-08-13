@@ -80,6 +80,25 @@ function App() {
   // ── Gestion du thème (sombre / clair) ──
   const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
   const [authModalOpen, setAuthModalOpen] = useState(false);
+
+  // Le lien "Démarrer un plan" de pricing.html renvoie ici avec
+  // `#auth=login&next=<écran>` quand le visiteur n'est pas connecté. On lit ce
+  // fragment au chargement pour ouvrir la modale et mémoriser la destination
+  // post-connexion — sans introduire de routage par URL dans une app qui n'en
+  // a pas et sans exiger d'écran /login (qui renverrait un 404).
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const raw = window.location.hash.replace(/^#/, '');
+    if (!raw) return;
+    const params = new URLSearchParams(raw);
+    if (params.get('auth') === 'login') {
+      setAuthModalOpen(true);
+      const next = params.get('next');
+      if (next) sessionStorage.setItem('zlecaf_post_login_target', next);
+      // Efface le fragment pour ne pas rouvrir la modale au moindre reload.
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }, []);
   useEffect(() => {
     const root = document.documentElement;
     if (theme === 'light') {
@@ -379,7 +398,22 @@ function App() {
       <div className="kente-band" />
       <div className="afcfta-layout-v2">
         <Toaster />
-        <AuthModal open={authModalOpen} onClose={() => setAuthModalOpen(false)} language={language} />
+        <AuthModal
+          open={authModalOpen}
+          onClose={() => {
+            setAuthModalOpen(false);
+            // Après une connexion réussie, l'AuthContext met à jour user ;
+            // AuthModal ferme la modale. On saisit ce moment pour rebasculer
+            // vers la page qui avait déclenché la connexion (typiquement
+            // pricing.html quand l'utilisateur venait cliquer "Démarrer Pro").
+            const target = sessionStorage.getItem('zlecaf_post_login_target');
+            if (target === 'pricing') {
+              sessionStorage.removeItem('zlecaf_post_login_target');
+              window.location.href = '/pricing.html';
+            }
+          }}
+          language={language}
+        />
 
         {/* Desktop sidebar — hidden on mobile via CSS */}
         <AfcftaSidebar
