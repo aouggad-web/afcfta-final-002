@@ -7,7 +7,7 @@ import { Button } from '../ui/button';
 import { useAuth, formatApiErrorDetail } from '../../context/AuthContext';
 import { toast } from '../../hooks/use-toast';
 
-export default function AuthModal({ open, onClose, language = 'fr' }) {
+export default function AuthModal({ open, onClose, onAuthenticated, language = 'fr' }) {
   const { login, register } = useAuth();
   const isFr = language === 'fr';
   const [tab, setTab] = useState('login');
@@ -15,11 +15,24 @@ export default function AuthModal({ open, onClose, language = 'fr' }) {
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
   const [registerForm, setRegisterForm] = useState({ name: '', email: '', password: '' });
 
-  const handleClose = () => {
+  const resetForms = () => {
     setTab('login');
     setLoginForm({ email: '', password: '' });
     setRegisterForm({ name: '', email: '', password: '' });
+  };
+
+  const handleClose = () => {
+    resetForms();
     onClose();
+  };
+
+  const handleAuthenticated = () => {
+    resetForms();
+    if (onAuthenticated) {
+      onAuthenticated();
+    } else {
+      onClose();
+    }
   };
 
   const handleLogin = async (e) => {
@@ -28,8 +41,7 @@ export default function AuthModal({ open, onClose, language = 'fr' }) {
     try {
       await login(loginForm.email, loginForm.password);
       toast({ title: isFr ? 'Connecté' : 'Logged in', description: isFr ? 'Bienvenue !' : 'Welcome back!' });
-      setLoginForm({ email: '', password: '' });
-      onClose();
+      handleAuthenticated();
     } catch (err) {
       toast({
         title: isFr ? 'Erreur de connexion' : 'Login error',
@@ -50,8 +62,7 @@ export default function AuthModal({ open, onClose, language = 'fr' }) {
         title: isFr ? 'Compte créé' : 'Account created',
         description: isFr ? 'Bienvenue sur ZLECAf Intelligence !' : 'Welcome to ZLECAf Intelligence!',
       });
-      setRegisterForm({ name: '', email: '', password: '' });
-      onClose();
+      handleAuthenticated();
     } catch (err) {
       toast({
         title: isFr ? 'Erreur d\'inscription' : 'Registration error',

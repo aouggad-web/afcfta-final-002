@@ -218,6 +218,9 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 </head>
 <body>
 
+<!-- Bannière affichée au retour du checkout Stripe. Reste vide autrement. -->
+<div id="checkout-banner" role="status" style="display:none;max-width:1180px;margin:14px auto 0;padding:14px 20px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px"></div>
+
 <div class="stripe"></div>
 
 <nav>
@@ -656,6 +659,34 @@ async function loadPaymentContext() {
 }
 document.addEventListener('DOMContentLoaded', loadPaymentContext);
 
+// Retour du checkout Stripe : ?checkout=success ou ?checkout=cancel. Affiche
+// une bannière d'état, puis nettoie l'URL pour ne pas la rejouer au reload.
+document.addEventListener('DOMContentLoaded', function () {
+  var params = new URLSearchParams(window.location.search);
+  var status = params.get('checkout');
+  if (!status) return;
+  var el = document.getElementById('checkout-banner');
+  if (!el) return;
+  if (status === 'success') {
+    el.style.background = 'var(--grn-bg)';
+    el.style.border = '1px solid var(--grn-b)';
+    el.style.color = 'var(--grn)';
+    el.textContent = '✓ Paiement enregistré. L\'activation de votre abonnement se fait via notre webhook — vous recevrez un email de confirmation dans quelques secondes.';
+  } else if (status === 'cancel') {
+    el.style.background = 'var(--gold-bg)';
+    el.style.border = '1px solid var(--gold-b)';
+    el.style.color = 'var(--gold)';
+    el.textContent = 'Paiement annulé. Vous pouvez reprendre à tout moment ci-dessous.';
+  }
+  el.style.display = 'block';
+  // Nettoyage ciblé : on ne retire QUE `checkout`, pour préserver d'éventuels
+  // paramètres de suivi (utm_*, gclid…) que le client viendrait de traverser.
+  params.delete('checkout');
+  var qs = params.toString();
+  var clean = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
+  window.history.replaceState(null, '', clean);
+});
+
 // Lance le paiement Stripe Checkout pour le plan choisi.
 // Nécessite une session (cookie JWT) : sinon, redirection vers la connexion.
 // Le cycle suit le toggle mensuel/annuel. Les prix sont résolus côté serveur.
@@ -681,8 +712,10 @@ async function startCheckout(plan) {
     });
 
     if (res.status === 401) {
-      // Pas connecté : rediriger vers la connexion puis revenir aux tarifs.
-      window.location.href = '/login?next=/tarifs';
+      // Pas connecté : renvoyer vers l'app avec un fragment qui ouvrira la
+      // modale d'authentification. On utilise un hash (jamais 404) plutôt
+      // qu'une route dédiée, l'app n'ayant pas de routage par URL.
+      window.location.href = '/#auth=login&next=pricing';
       return;
     }
     if (!res.ok) {

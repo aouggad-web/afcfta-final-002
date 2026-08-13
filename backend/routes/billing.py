@@ -55,11 +55,22 @@ def _require_db():
 
 
 def _success_url() -> str:
-    return os.environ.get("BILLING_SUCCESS_URL", "https://afcfta-zlecaf.com/merci")
+    # Retour post-paiement : par défaut on renvoie sur pricing.html avec un
+    # marqueur, plutôt que sur des routes /merci /tarifs qui n'existent pas
+    # côté frontend (SPA sans routage par URL → 404 au rafraîchissement).
+    # Un paramètre de requête fonctionne toujours et laisse la page afficher
+    # le bon message d'état.
+    return os.environ.get(
+        "BILLING_SUCCESS_URL",
+        "https://afcfta-zlecaf.com/pricing.html?checkout=success",
+    )
 
 
 def _cancel_url() -> str:
-    return os.environ.get("BILLING_CANCEL_URL", "https://afcfta-zlecaf.com/tarifs")
+    return os.environ.get(
+        "BILLING_CANCEL_URL",
+        "https://afcfta-zlecaf.com/pricing.html?checkout=cancel",
+    )
 
 
 class CheckoutPayload(BaseModel):

@@ -77,11 +77,21 @@ import auth as _auth_module
 # Import routes module for modular endpoint registration
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
-from routes.billing import set_database as set_billing_db
 from routes.calculator import set_database as set_calculator_db
 from routes.contact import set_database as set_contact_db
 from routes.substitution import register_routes as register_substitution_routes
 from routes.user_auth import set_database as set_user_auth_db
+
+# Billing en défaut mou UNIQUEMENT quand la dépendance externe `stripe` manque
+# à l'installation. Une régression interne à billing.py (import cassé, cycle,
+# `cannot import name ...`) doit remonter — sinon le paiement resterait
+# silencieusement désactivé malgré un environnement correct.
+try:
+    from routes.billing import set_database as set_billing_db
+except ModuleNotFoundError as e:
+    if e.name != "stripe":
+        raise
+    set_billing_db = None
 from services.crawled_data_service import crawled_service
 from services.tariff_data_service import tariff_service
 from services.user_auth_service import hash_password, verify_password
@@ -373,7 +383,8 @@ async def startup_load_tariff_data():
     _auth_module.set_database(db)
     set_user_auth_db(db)
     set_contact_db(db)
-    set_billing_db(db)
+    if set_billing_db is not None:
+        set_billing_db(db)
     await _seed_admin_account()
     set_calculator_db(db)
 
