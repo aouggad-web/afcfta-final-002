@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
   const register = async (name, email, password) => {
     const { data } = await axios.post(
       `${API}/auth/register`,
-      { name, email, password },
+      { name: name.trim().replace(/\s+/g, ' '), email: email.trim().toLowerCase(), password },
       { withCredentials: true }
     );
     setUser(data);
@@ -36,7 +36,7 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     const { data } = await axios.post(
       `${API}/auth/login`,
-      { email, password },
+      { email: email.trim().toLowerCase(), password },
       { withCredentials: true }
     );
     setUser(data);
@@ -44,8 +44,13 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
-    setUser(null);
+    try {
+      await axios.post(`${API}/auth/logout`, {}, { withCredentials: true });
+    } finally {
+      // L'interface ne doit jamais conserver une identité affichée si la
+      // déconnexion réseau échoue ; le cookie expirera côté serveur/navigateur.
+      setUser(null);
+    }
   };
 
   return (
@@ -59,8 +64,11 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-export function formatApiErrorDetail(detail) {
-  if (detail == null) return 'Une erreur est survenue. Veuillez réessayer.';
+export function formatApiErrorDetail(
+  detail,
+  fallback = 'Une erreur est survenue. Veuillez réessayer.'
+) {
+  if (detail == null) return fallback;
   if (typeof detail === 'string') return detail;
   if (Array.isArray(detail)) {
     return detail
