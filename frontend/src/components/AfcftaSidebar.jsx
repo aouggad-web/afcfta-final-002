@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   LayoutDashboard, Calculator, BarChart3, Factory, Ship,
   Landmark, Wrench, FileCheck, Globe2, ChevronLeft, ChevronRight,
-  Moon, Sun, TrendingUp,
+  Moon, Sun, TrendingUp, Mail, User, LogOut, Tag,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -71,6 +71,17 @@ export default function AfcftaSidebar({
 
       {/* Footer */}
       <div className="afcfta-sidebar-footer">
+        {/* Pricing */}
+        <a
+          href="/pricing.html"
+          className="afcfta-nav-item"
+          style={{ marginBottom: 8, width: "100%", textDecoration: "none" }}
+          data-testid="sidebar-pricing-link"
+        >
+          <span className="afcfta-nav-icon"><Tag size={16} strokeWidth={1.7} /></span>
+          <span className="afcfta-nav-label">{isFrench ? "Tarifs" : "Pricing"}</span>
+        </a>
+
         {/* Account */}
         {user ? (
           <div className="afcfta-nav-item" style={{ marginBottom: 8, cursor: "default" }} data-testid="sidebar-user-info">

@@ -17,6 +17,15 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### August 13, 2026 — Stripe (abonnements SaaS) + sécurité (rate-limiting, GeoIP)
+- **Stripe** : sandbox de test réclamable provisionné (Flow A officiel Emergent), catalogue créé (Starter 9$/Pro 19$/Business 59$ mensuel + annuel), fiscalité automatique Stripe activée (Managed Payments/SMP, compte DE). Checkout, webhook, portail client et page `pricing.html` (déjà câblée en amont par un PR upstream) testés de bout en bout avec de vrais paiements test (carte 4242...). 2 bugs critiques trouvés par l'agent de test et corrigés : URL du webhook Stripe mal configurée (`/api/stripe/webhook` → `/api/billing/webhook`) et `BILLING_SUCCESS_URL`/`BILLING_CANCEL_URL` non définies (404 après paiement). Lien "Tarifs" ajouté à la sidebar/topbar. Chargily (Algérie/DZD) reste en stub par défaut (`CHARGILY_ENABLED=false`, Phase 2).
+- **MaxMind GeoIP local** : base `GeoLite2-Country.mmdb` téléchargée (mirroir communautaire, sans compte MaxMind), `GEOIP_DB_PATH` configuré, `geoip2` installé. Testé : IP algérienne → verrou Chargily/DZD actif ; IP US → Stripe/USD. Vérifié en local (localhost:8001) car l'ingress externe réécrit `X-Forwarded-For` avec la vraie chaîne (empêche l'usurpation, comportement sain).
+- **Détection IP client fiable** : `TRUSTED_PROXY_HOPS=3` câblé dans `geo_service.py`, vérifié via `/api/billing/geo-diagnostic` = IP réelle (confirmé avec `api.ipify.org`).
+- **Rate-limiting** : bug trouvé (exemption par défaut matchant toutes les routes, rate-limiter inactif depuis l'origine) corrigé indépendamment à la fois localement et par un PR upstream parallèle (`claude/rate-limit-fix`) — les deux convergent, actif et vérifié (429 déclenché au-delà de 10/min sur `/api/auth/*`, 120/min ailleurs).
+- **Bug récurrent (4 occurrences)** : `AfcftaSidebar.jsx` perd ses imports lucide-react (`Mail/User/LogOut/Tag`) à chaque `git reset --hard origin/main` car jamais poussé sur GitHub — réappliqué à chaque fois, l'utilisateur a été prévenu d'utiliser "Save to Github" pour stopper la récidive.
+- Identifiants Stripe/test : voir `/app/memory/test_credentials.md`.
+
+
 ### August 9, 2026 — Couche SaaS : comptes utilisateurs + formulaire de contact + emails transactionnels
 - Nouveau système d'authentification JWT (cookie httpOnly, 7 jours) : `POST /api/auth/register`, `/login`, `/logout`, `GET /api/auth/me` (fichiers `backend/routes/user_auth.py`, `backend/services/user_auth_service.py`).
 - Protection anti-brute-force : 5 échecs de connexion par email → verrouillage 429 pendant 15 min (`login_attempts`, clé = email ; corrigé d'un bug d'IP instable derrière l'ingress).
