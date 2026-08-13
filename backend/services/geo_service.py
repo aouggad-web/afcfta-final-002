@@ -124,7 +124,23 @@ def _geoip_reader():
         return _reader
     _reader_loaded = True
     path = os.environ.get("GEOIP_DB_PATH")
-    if not path or not os.path.exists(path):
+    if not path:
+        # Aucune source géo voulue : silence normal, le sélecteur manuel prend
+        # le relais.
+        return None
+    if not os.path.exists(path):
+        # Intention explicite mais fichier absent : c'est une PANNE, pas une
+        # configuration par défaut. Sans base, le pays retombe sur la valeur
+        # déclarée par le client et le verrou Algérie devient contournable.
+        # Cas typique : base téléchargée hors du dépôt puis effacée par le
+        # `git clean` d'un déploiement.
+        logger.error(
+            "CRITIQUE: GEOIP_DB_PATH=%s est configurée mais le fichier est INTROUVABLE. "
+            "La détection de pays est inactive : le verrou Algérie ne s'applique plus "
+            "et le pays déclaré par le client fait foi. "
+            "Réinstallez la base : python scripts/geoip_update.py --dest <dossier>",
+            path,
+        )
         return None
     try:
         import geoip2.database
@@ -132,7 +148,11 @@ def _geoip_reader():
         _reader = geoip2.database.Reader(path)
         logger.info("GeoIP: base chargée depuis %s", path)
     except Exception as exc:
-        logger.warning("GeoIP: base non chargée (%s) — détection pays désactivée", exc)
+        logger.error(
+            "CRITIQUE: base GeoIP présente mais illisible (%s) — détection de pays "
+            "inactive, le verrou Algérie ne s'applique plus.",
+            exc,
+        )
         _reader = None
     return _reader
 

@@ -10,6 +10,7 @@ import json
 import os
 import re
 from datetime import datetime, timedelta
+from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -271,6 +272,13 @@ RSS_FEEDS = {
 }
 
 # Projets structurants algériens - Mise à jour Février 2025
+#
+# Date de publication FIXE : ces fiches sont statiques, seule leur date de
+# dernière révision documentaire fait sens. Les horodater avec `datetime.now()`
+# à chaque régénération du cache faisait apparaître des projets de 2024-2025
+# comme publiés aujourd'hui, l'interface affichant ce champ en date relative.
+ALGERIA_STRUCTURAL_PROJECTS_PUBLISHED_AT = "2025-02-01T00:00:00"
+
 ALGERIA_STRUCTURAL_PROJECTS = [
     {
         "id": "gara-djebilet",
@@ -683,6 +691,22 @@ def detect_region(text: str) -> str:
     return "Afrique"  # Défaut si aucune région détectée
 
 
+@lru_cache(maxsize=512)
+def _keyword_pattern(keyword: str):
+    """Motif « mot entier » pour un mot-clé de catégorie.
+
+    `\\b` traite les lettres accentuées comme des caractères de mot, donc
+    « énergie » reste détecté, tandis que « or » ne matche plus au milieu
+    d'« Ambassador ».
+
+    Le `s?` final préserve les pluriels : sans lui, exiger le mot entier ferait
+    perdre « banques », « tarifs » ou « mines » que la recherche de sous-chaîne
+    captait — on corrigerait les faux positifs en créant des faux négatifs.
+    Compilé une fois par mot-clé.
+    """
+    return re.compile(rf"\b{re.escape(keyword)}s?\b")
+
+
 def detect_category(text: str, feed_category: str = "") -> str:
     """Détecter la catégorie de l'article"""
     text_lower = text.lower()
@@ -709,10 +733,13 @@ def detect_category(text: str, feed_category: str = "") -> str:
     if feed_category and feed_category.lower() in category_map:
         return category_map[feed_category.lower()]
 
-    # Sinon, détecter par mots-clés
+    # Sinon, détecter par mots-clés, en exigeant des MOTS ENTIERS.
+    # Une recherche de sous-chaîne classait « Ambassador » et « corridor » en
+    # Mines (à cause de « or »), et « offer »/« transfer » de même (« fer ») :
+    # des articles santé ou logistique se retrouvaient badgés Mines.
     for category, keywords in CATEGORY_KEYWORDS.items():
         for keyword in keywords:
-            if keyword in text_lower:
+            if _keyword_pattern(keyword).search(text_lower):
                 return category
 
     return "Économie"  # Défaut
@@ -1199,7 +1226,9 @@ async def fetch_all_news() -> List[Dict]:
                 "source": project["source"],
                 "category": project["category"],
                 "region": project["region"],
-                "published_at": datetime.now().isoformat(),
+                # Date de révision documentaire, stable d'une régénération à
+                # l'autre ; seul `fetched_at` suit l'heure du cache.
+                "published_at": ALGERIA_STRUCTURAL_PROJECTS_PUBLISHED_AT,
                 "fetched_at": datetime.now().isoformat(),
                 "is_structural_project": True,
                 "country": "DZA",

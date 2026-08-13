@@ -17,6 +17,7 @@ import {
   Mail,
   User,
   LogOut,
+  Tag,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
@@ -73,6 +74,15 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
         </button>
 
         <div className="afcfta-topHeader__lang">
+          <a
+            href="/pricing.html"
+            className="afcfta-btn-sm afcfta-btn-secondary"
+            data-testid="topbar-pricing-link"
+            style={{ display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}
+          >
+            <Tag size={14} />
+            <span className="afcfta-pricing-label">{isFrench ? "Tarifs" : "Pricing"}</span>
+          </a>
           {user ? (
             <button
               className="afcfta-btn-sm afcfta-btn-secondary"

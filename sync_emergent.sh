@@ -48,13 +48,21 @@ git fetch origin "$BRANCH"
 git checkout "$BRANCH"
 # Aligne les fichiers suivis exactement sur l'origine, puis supprime les
 # fichiers non suivis périmés (caches .pyc, artefacts de build obsolètes...).
-# Les exclusions protègent uniquement la config d'environnement et les
-# dépendances installées — jamais du code applicatif.
+# Les exclusions protègent uniquement la config d'environnement, les dépendances
+# installées et les données téléchargées sur le serveur — jamais du code
+# applicatif.
+#
+# `data/geoip` : la base MaxMind n'est pas versionnée (binaire volumineux,
+# licence restrictive) mais elle est téléchargée sur le pod. Sans cette
+# exclusion, chaque déploiement l'effacerait et la détection de pays
+# retomberait silencieusement sur le pays déclaré par le client — le verrou
+# Algérie serait alors contournable.
 git reset --hard "origin/$BRANCH"
 git clean -fd \
   -e .env -e "*.env" -e .emergent \
   -e node_modules -e frontend/node_modules \
-  -e venv -e .venv
+  -e venv -e .venv \
+  -e data/geoip -e backend/data/geoip
 echo "  ✓ Arbre aligné sur origin/$BRANCH ($(git rev-parse --short HEAD))"
 
 echo "── 2/6 · Vérification des modules critiques (anti copie-partielle) ──"
