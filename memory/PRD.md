@@ -17,6 +17,11 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### August 13, 2026 (session 5) — Fix bug : erreur réseau à l'inscription
+- Cause racine : tout le frontend Vite lit `import.meta.env.VITE_BACKEND_URL` (20+ fichiers dont `csrf.js`/`AuthContext.jsx`), mais `frontend/.env` ne définissait que `REACT_APP_BACKEND_URL` (convention CRA héritée d'avant la migration Vite, cf. `.agents/memory/vite-migration.md`) → `BACKEND_URL` valait `''` partout, fragilisant les appels API (URLs relatives).
+- Fix : ajout de `VITE_BACKEND_URL` dans `frontend/.env` (même valeur que `REACT_APP_BACKEND_URL`, conservée), rebuild Vite + restart frontend.
+- Vérifié par `auto_frontend_testing_agent` : 3 inscriptions consécutives réussies sans erreur réseau, connexion/déconnexion OK, mauvais mot de passe affiche bien « Email ou mot de passe incorrect » (pas le message générique réseau).
+
 ### August 13, 2026 (session 4) — Import PR #394 + #395 (fiabilisation CSRF)
 - Les deux PR étaient déjà mergées sur `main` (394 puis 395, séquentielles sur le même fichier) : plutôt que patcher deux diffs successifs, récupéré directement le fichier final `frontend/src/services/csrf.js` (+ `csrf.test.js`) à la HEAD `main` (commit `c2f97d0`) et écrasé les fichiers locaux — API exportée identique (`getCsrfToken`, `csrfFetch`, `installAxiosCsrf`), donc aucun changement requis côté consommateur (`AdminProjectsPage.jsx`).
 - PR #394 : synchronise le jeton lisible renvoyé par le header `X-CSRF-Token` de `/api/health` avec le cookie double-submit (`persistReadableToken`), ajoute un paramètre anti-cache `_csrf=<timestamp>`, et un **retry automatique** sur 403 `CSRF token missing/invalid` (rafraîchit le token puis rejoue la requête une seule fois, intercepteur axios).
