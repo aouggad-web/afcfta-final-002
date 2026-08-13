@@ -679,7 +679,11 @@ document.addEventListener('DOMContentLoaded', function () {
     el.textContent = 'Paiement annulé. Vous pouvez reprendre à tout moment ci-dessous.';
   }
   el.style.display = 'block';
-  var clean = window.location.pathname;
+  // Nettoyage ciblé : on ne retire QUE `checkout`, pour préserver d'éventuels
+  // paramètres de suivi (utm_*, gclid…) que le client viendrait de traverser.
+  params.delete('checkout');
+  var qs = params.toString();
+  var clean = window.location.pathname + (qs ? '?' + qs : '') + window.location.hash;
   window.history.replaceState(null, '', clean);
 });
 

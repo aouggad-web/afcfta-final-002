@@ -93,8 +93,18 @@ function App() {
     const params = new URLSearchParams(raw);
     if (params.get('auth') === 'login') {
       setAuthModalOpen(true);
+      // Whitelist explicite des destinations post-connexion : stocker « next »
+      // brut laisserait la clé indéfiniment dans sessionStorage si la valeur ne
+      // correspond à aucun handler, avec des ouvertures ultérieures de la modale
+      // pouvant déclencher une navigation surprise. On limite aux cibles
+      // effectivement gérées, et on purge sinon pour repartir propre.
+      const POST_LOGIN_TARGETS = ['pricing'];
       const next = params.get('next');
-      if (next) sessionStorage.setItem('zlecaf_post_login_target', next);
+      if (next && POST_LOGIN_TARGETS.includes(next)) {
+        sessionStorage.setItem('zlecaf_post_login_target', next);
+      } else {
+        sessionStorage.removeItem('zlecaf_post_login_target');
+      }
       // Efface le fragment pour ne pas rouvrir la modale au moindre reload.
       window.history.replaceState(null, '', window.location.pathname + window.location.search);
     }

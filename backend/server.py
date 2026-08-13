@@ -82,11 +82,15 @@ from routes.contact import set_database as set_contact_db
 from routes.substitution import register_routes as register_substitution_routes
 from routes.user_auth import set_database as set_user_auth_db
 
-# Billing en défaut mou : sans le SDK Stripe (paquet `stripe`), l'ancienne
-# version faisait tomber toute l'API au démarrage. Voir routes/__init__.py.
+# Billing en défaut mou UNIQUEMENT quand la dépendance externe `stripe` manque
+# à l'installation. Une régression interne à billing.py (import cassé, cycle,
+# `cannot import name ...`) doit remonter — sinon le paiement resterait
+# silencieusement désactivé malgré un environnement correct.
 try:
     from routes.billing import set_database as set_billing_db
-except ImportError:
+except ModuleNotFoundError as e:
+    if e.name != "stripe":
+        raise
     set_billing_db = None
 from services.crawled_data_service import crawled_service
 from services.tariff_data_service import tariff_service
