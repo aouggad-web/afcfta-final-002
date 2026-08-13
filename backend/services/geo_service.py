@@ -59,7 +59,12 @@ def trusted_proxy_hops() -> int:
 
 
 def client_ip(request: Request) -> Optional[str]:
-    """IP client réelle, en ne faisant confiance qu'au dernier proxy.
+    """IP client réelle, en ne faisant confiance qu'aux relais en frontal.
+
+    L'adresse est lue à `TRUSTED_PROXY_HOPS` positions de la fin de
+    `X-Forwarded-For` — et non systématiquement à la dernière, qui n'est la
+    bonne que derrière un unique relais. Voir `trusted_proxy_hops()` pour
+    calibrer ce nombre.
 
     Retourne None si l'IP est absente, privée ou illisible — l'appelant doit
     traiter ce cas comme « pays inconnu », pas comme une fraude.

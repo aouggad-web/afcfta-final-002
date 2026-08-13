@@ -118,12 +118,22 @@ def test_invalid_env_falls_back_to_default(monkeypatch):
     assert middleware.requests_per_minute == 120
 
 
-@pytest.mark.parametrize("path", ["/api/", "/api/docs", "/api/openapi.json"])
+@pytest.mark.parametrize("path", ["/api/", "/api/health", "/api/billing/webhook"])
 def test_exempt_paths_match_exactly_not_by_prefix(path):
     """`/api/` reste exempt en tant que chemin exact, sans exempter ses enfants."""
     middleware = RateLimitMiddleware(FastAPI())
     assert path in middleware.exempt_paths
     assert "/api/countries" not in middleware.exempt_paths
+
+
+@pytest.mark.parametrize("path", ["/docs", "/redoc", "/openapi.json"])
+def test_docs_exempt_at_their_real_root_paths(path):
+    """FastAPI sert la documentation à la racine, pas sous /api : des entrées
+    « /api/docs » ne correspondraient à aucune route et laisseraient les vraies
+    pages soumises au quota."""
+    middleware = RateLimitMiddleware(FastAPI())
+    assert path in middleware.exempt_paths
+    assert f"/api{path}" not in middleware.exempt_paths
 
 
 # ── Résolution de l'IP derrière plusieurs relais ────────────────────────────

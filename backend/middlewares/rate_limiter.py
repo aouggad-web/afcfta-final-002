@@ -18,9 +18,14 @@ DEFAULT_EXEMPT_PATHS = frozenset(
     {
         "/api/",  # index de l'API
         "/api/health",  # sondes de disponibilité (monitoring, orchestrateur)
-        "/api/docs",
-        "/api/redoc",
-        "/api/openapi.json",
+        # Documentation interactive : FastAPI la sert à la RACINE, pas sous
+        # /api (server.py passe docs_url="/docs", redoc_url="/redoc",
+        # openapi_url="/openapi.json"). Des entrées "/api/docs" ne
+        # correspondraient à aucune route et laisseraient les vraies pages
+        # soumises au quota. Désactivées en production via APP_ENV.
+        "/docs",
+        "/redoc",
+        "/openapi.json",
         # Webhooks de paiement : les prestataires livrent en rafale et rejouent
         # ce qui échoue. Un 429 ici ferait perdre des événements de paiement —
         # ils sont authentifiés par signature, pas par volume.
