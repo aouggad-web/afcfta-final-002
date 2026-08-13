@@ -17,6 +17,14 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### August 13, 2026 (session 4) — Import PR #394 + #395 (fiabilisation CSRF)
+- Les deux PR étaient déjà mergées sur `main` (394 puis 395, séquentielles sur le même fichier) : plutôt que patcher deux diffs successifs, récupéré directement le fichier final `frontend/src/services/csrf.js` (+ `csrf.test.js`) à la HEAD `main` (commit `c2f97d0`) et écrasé les fichiers locaux — API exportée identique (`getCsrfToken`, `csrfFetch`, `installAxiosCsrf`), donc aucun changement requis côté consommateur (`AdminProjectsPage.jsx`).
+- PR #394 : synchronise le jeton lisible renvoyé par le header `X-CSRF-Token` de `/api/health` avec le cookie double-submit (`persistReadableToken`), ajoute un paramètre anti-cache `_csrf=<timestamp>`, et un **retry automatique** sur 403 `CSRF token missing/invalid` (rafraîchit le token puis rejoue la requête une seule fois, intercepteur axios).
+- PR #395 : retire l'en-tête `Cache-Control: no-cache` de l'amorce CSRF (non-"simple", déclenchait un préflight CORS inutile/refusé cross-origin) — le anti-cache reste assuré par `fetch(..., {cache: 'no-store'})` + le paramètre `_csrf`.
+- Tests : `csrf.test.js` réécrit (10/10 passés en vitest).
+- Vérifié en direct par curl : `GET /api/health` renvoie bien le header + cookie `csrf_token`, et `POST /api/auth/register` avec ce token réussit (201, utilisateur créé).
+- Frontend rebuild (`vite build` + restart supervisor) confirmé opérationnel (HTTP 200).
+
 ### August 13, 2026 (session 3) — Import PR #392 (fiabilisation inscription/connexion)
 - PR déjà mergé sur GitHub (`main` avait avancé sans que le repo local soit resynchronisé, `git remote` absent dans ce pod) : récupéré via l'API publique GitHub (diff + fichier brut) et appliqué manuellement (playbook `.agents/memory/importing-github-prs.md`).
 - Backend (`backend/routes/user_auth.py`) : normalisation email (trim + lowercase) et nom (espaces multiples réduits) via `field_validator` Pydantic sur `RegisterPayload`/`LoginPayload`.
