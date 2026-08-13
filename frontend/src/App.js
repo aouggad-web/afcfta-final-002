@@ -412,13 +412,16 @@ function App() {
           open={authModalOpen}
           onClose={() => {
             setAuthModalOpen(false);
-            // Après une connexion réussie, l'AuthContext met à jour user ;
-            // AuthModal ferme la modale. On saisit ce moment pour rebasculer
-            // vers la page qui avait déclenché la connexion (typiquement
-            // pricing.html quand l'utilisateur venait cliquer "Démarrer Pro").
+            // Fermeture volontaire : annule toujours la destination différée.
+            sessionStorage.removeItem('zlecaf_post_login_target');
+          }}
+          onAuthenticated={() => {
+            setAuthModalOpen(false);
+            // Seule une authentification réussie peut déclencher la navigation
+            // différée. La clé est purgée dans tous les cas.
             const target = sessionStorage.getItem('zlecaf_post_login_target');
+            sessionStorage.removeItem('zlecaf_post_login_target');
             if (target === 'pricing') {
-              sessionStorage.removeItem('zlecaf_post_login_target');
               window.location.href = '/pricing.html';
             }
           }}

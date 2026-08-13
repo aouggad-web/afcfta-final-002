@@ -141,9 +141,12 @@ _extract_env() {
   # que `source .env` (qui échouerait sur les caractères spéciaux avec set -e).
   local key="$1"
   local envfile="backend/.env"
-  [ -f "$envfile" ] || return 1
-  grep -E "^\s*${key}\s*=" "$envfile" | tail -1 \
-    | sed -E "s/^\s*${key}\s*=\s*//; s/^['\"]//; s/['\"]\s*\$//"
+  # L'absence du fichier ou de la clé est un cas normal : la fonction doit
+  # toujours réussir pour rester compatible avec `set -euo pipefail`.
+  [ -f "$envfile" ] || return 0
+  grep -E "^[[:space:]]*${key}[[:space:]]*=" "$envfile" | tail -1 \
+    | sed -E "s/^[[:space:]]*${key}[[:space:]]*=[[:space:]]*//; s/^['\"]//; s/['\"][[:space:]]*$//" \
+    || true
 }
 GEOIP_TARGET="${GEOIP_DB_PATH:-$(_extract_env GEOIP_DB_PATH)}"
 GEOIP_TARGET="${GEOIP_TARGET:-/app/data/geoip/GeoLite2-Country.mmdb}"
