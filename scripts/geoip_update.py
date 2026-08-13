@@ -47,7 +47,9 @@ def main() -> int:
         default="data/geoip",
         help="Répertoire de destination du .mmdb (défaut: data/geoip)",
     )
-    parser.add_argument(
+    # Sources alternatives : en fournir deux serait ambigu, argparse tranche.
+    source = parser.add_mutually_exclusive_group()
+    source.add_argument(
         "--url",
         help=(
             "URL d'archive .tar.gz à utiliser à la place de la clé de licence. "
@@ -57,7 +59,7 @@ def main() -> int:
             "donc préférez MAXMIND_LICENSE_KEY pour les mises à jour régulières."
         ),
     )
-    parser.add_argument(
+    source.add_argument(
         "--from-file",
         help="Archive .tar.gz déjà téléchargée localement (aucun réseau requis).",
     )
@@ -84,22 +86,33 @@ def main() -> int:
     # effacer l'archive fournie par l'utilisateur serait une surprise.
     downloaded = False
     if args.from_file:
-        tmp_path = args.from_file
-        if not os.path.exists(tmp_path):
-            print(f"Erreur : archive introuvable ({tmp_path})", file=sys.stderr)
+        # expanduser : « ~/GeoLite2.tar.gz » est une saisie naturelle en ligne de
+        # commande. isfile plutôt qu'exists : un répertoire passerait le test et
+        # échouerait plus loin sur un message d'extraction bien moins parlant.
+        tmp_path = os.path.expanduser(args.from_file)
+        if not os.path.isfile(tmp_path):
+            print(f"Erreur : archive introuvable ou non lisible ({tmp_path})", file=sys.stderr)
             return 1
         print(f"Lecture de l'archive locale {tmp_path}…")
     else:
         url = args.url or DOWNLOAD_URL.format(key=key)
-        source = "le lien fourni" if args.url else "MaxMind"
-        print(f"Téléchargement de GeoLite2-Country depuis {source}…")
+        origin = "le lien fourni" if args.url else "MaxMind"
+        print(f"Téléchargement de GeoLite2-Country depuis {origin}…")
+        # tmp_path est fixé AVANT le téléchargement : si urlopen échoue, le
+        # fichier temporaire existe déjà (delete=False) et doit être supprimé.
+        # Sans cela, un cron qui échoue régulièrement accumule des fichiers vides.
+        tmp_fd = tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False)
+        tmp_path = tmp_fd.name
         try:
-            with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tmp:
+            with tmp_fd as tmp:
                 with urllib.request.urlopen(url, timeout=120) as resp:
                     tmp.write(resp.read())
-                tmp_path = tmp.name
             downloaded = True
         except Exception as exc:
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
             print(f"Erreur de téléchargement : {exc}", file=sys.stderr)
             if args.url:
                 print(
