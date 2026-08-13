@@ -66,17 +66,46 @@ jobs:
         run: |
           git diff --quiet || echo "changes=true" >> $GITHUB_OUTPUT
           git diff --name-only
-      
+
+      # Les données sont le produit : une sortie corrompue ne doit jamais
+      # atteindre une PR. Comme la CI ne se déclenche pas sur les PR ouvertes
+      # par GITHUB_TOKEN (voir la note sur `token` ci-dessous), cette
+      # vérification est parfois la seule qui s'exécutera.
+      - name: Validate updated JSON
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          set -e
+          FAILED=0
+          for f in $(git diff --name-only -- '*.json'); do
+            if ! python -c "import json,sys; json.load(open('$f'))"; then
+              echo "::error file=$f::JSON invalide après mise à jour"
+              FAILED=1
+            fi
+          done
+          exit $FAILED
+
       - name: Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'
         continue-on-error: true
         uses: peter-evans/create-pull-request@v7
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # GitHub ne déclenche AUCUN workflow sur les événements produits par
+          # GITHUB_TOKEN (garde-fou anti-boucle). Une PR ouverte avec ce jeton
+          # n'exécute donc jamais ci.yml : elle reste sans aucun check, donc
+          # « unstable », et personne ne la fusionne — c'est ce qui a laissé
+          # une trentaine de PR de données s'accumuler.
+          # Renseignez le secret DATA_BOT_TOKEN (PAT à portée `repo`, ou jeton
+          # d'application GitHub) pour que la CI s'exécute normalement.
+          token: ${{ secrets.DATA_BOT_TOKEN || secrets.GITHUB_TOKEN }}
           commit-message: "chore(data): automated data update - ${{ github.run_number }}"
           committer: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
           author: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
-          branch: automated-data-update-${{ github.run_number }}
+          # Branche FIXE, volontairement. Un nom incluant le numéro de run
+          # créait une branche et une PR par jour, sans jamais refermer les
+          # précédentes. Avec une branche stable, create-pull-request met à
+          # jour la PR existante : une seule PR roulante, toujours porteuse des
+          # données les plus fraîches.
+          branch: automated-data-update
           delete-branch: true
           title: "chore(data): automated data update - run ${{ github.run_number }}"
           body: |
@@ -93,10 +122,19 @@ jobs:
             - Updated OEC data
             - Updated production data
 
-            Please review and merge if all checks pass.
+            Le JSON produit a été validé (parsing) avant l'ouverture de cette PR.
 
-            > **Note:** To enable automatic PR creation, go to Settings > Actions > General
-            > and enable "Allow GitHub Actions to create and approve pull requests".
+            Cette PR est **roulante** : chaque exécution quotidienne la met à
+            jour au lieu d'en ouvrir une nouvelle. Fusionnez-la quand vous le
+            souhaitez, elle repartira des données suivantes.
+
+            > **Checks absents ?** GitHub n'exécute aucun workflow sur les
+            > événements produits par `GITHUB_TOKEN`. Renseignez le secret
+            > `DATA_BOT_TOKEN` (PAT à portée `repo`) pour que la CI s'exécute
+            > sur cette PR.
+            >
+            > **PR non créée ?** Settings > Actions > General > activez
+            > « Allow GitHub Actions to create and approve pull requests ».
           labels: |
             automated
             data-update
