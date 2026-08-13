@@ -47,6 +47,11 @@ describe('CSRF request integration', () => {
     await csrfFetch('/api/auth/register', { method: 'POST' });
 
     expect(document.cookie).toContain('csrf_token=fresh-token');
+    const [healthUrl, healthOptions] = fetch.mock.calls[0];
+    expect(healthUrl).toContain('_csrf=');
+    expect(healthOptions.cache).toBe('no-store');
+    expect(new Headers(healthOptions.headers).has('Cache-Control')).toBe(false);
+
     const [, options] = fetch.mock.calls[1];
     expect(options.headers.get('X-CSRF-Token')).toBe('fresh-token');
   });
