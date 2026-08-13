@@ -80,7 +80,8 @@ export default function AfcftaTopbar({ active = "dashboard", onTabChange, langua
             data-testid="topbar-pricing-link"
             style={{ display: "flex", alignItems: "center", gap: 6, textDecoration: "none" }}
           >
-            <Tag size={14} /> {isFrench ? "Tarifs" : "Pricing"}
+            <Tag size={14} />
+            <span className="afcfta-pricing-label">{isFrench ? "Tarifs" : "Pricing"}</span>
           </a>
           {user ? (
             <button

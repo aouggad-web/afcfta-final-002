@@ -94,3 +94,11 @@ test_reports/
 # Disk-backed cache tier (services/cache_service.py) — persisted OEC/API
 # responses for cold-start resilience without Redis, never source of truth
 backend/data/_cache/
+
+# Base GeoIP MaxMind (détection du pays de facturation).
+# JAMAIS committée : binaire de ~8 Mo republié deux fois par semaine (l'historique
+# git enflerait durablement) et la licence GeoLite2 restreint la redistribution.
+# Elle s'installe sur le serveur via `python scripts/geoip_update.py`.
+*.mmdb
+data/geoip/
+backend/data/geoip/
