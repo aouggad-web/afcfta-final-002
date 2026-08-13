@@ -70,6 +70,21 @@ class RegisterPayload(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
 
+    @field_validator("name", mode="before")
+    @classmethod
+    def _normalize_name(cls, value):
+        if not isinstance(value, str):
+            return value
+        normalized = " ".join(value.split())
+        if not normalized:
+            raise ValueError("Le nom ne peut pas être vide.")
+        return normalized
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def _normalize_email(cls, value):
+        return value.strip().lower() if isinstance(value, str) else value
+
     @field_validator("password")
     @classmethod
     def _password_fits_bcrypt(cls, value: str) -> str:
@@ -87,6 +102,11 @@ class RegisterPayload(BaseModel):
 class LoginPayload(BaseModel):
     email: EmailStr
     password: str = Field(min_length=1, max_length=128)
+
+    @field_validator("email", mode="before")
+    @classmethod
+    def _normalize_email(cls, value):
+        return value.strip().lower() if isinstance(value, str) else value
 
 
 def _public_user(doc: dict) -> dict:
@@ -118,7 +138,7 @@ async def register(
     background_tasks: BackgroundTasks,
 ):
     db = _require_db()
-    email = payload.email.lower()
+    email = str(payload.email)
 
     existing = await db.users.find_one({"email": email}, {"_id": 1})
     if existing:
@@ -193,7 +213,7 @@ async def _is_locked_out(db, identifier: str) -> bool:
 @router.post("/login")
 async def login(payload: LoginPayload, response: Response):
     db = _require_db()
-    email = payload.email.lower()
+    email = str(payload.email)
     # Keyed by email only (not IP): behind this app's ingress, the proxy hop
     # seen as request.client.host varies between requests from the same
     # browser, which would make an IP-based identifier unreliable.
