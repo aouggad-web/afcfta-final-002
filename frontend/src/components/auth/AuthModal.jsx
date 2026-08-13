@@ -223,7 +223,7 @@ export default function AuthModal({ open, onClose, onAuthenticated, language = '
                 <Input
                   id="register-password"
                   type="password"
-                  name="new-password"
+                  name="password"
                   autoComplete="new-password"
                   required
                   minLength={8}

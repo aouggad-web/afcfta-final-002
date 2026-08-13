@@ -70,9 +70,11 @@ class RegisterPayload(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=128)
 
-    @field_validator("name")
+    @field_validator("name", mode="before")
     @classmethod
-    def _normalize_name(cls, value: str) -> str:
+    def _normalize_name(cls, value):
+        if not isinstance(value, str):
+            return value
         normalized = " ".join(value.split())
         if not normalized:
             raise ValueError("Le nom ne peut pas être vide.")

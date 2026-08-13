@@ -69,13 +69,17 @@ export function formatApiErrorDetail(
   fallback = 'Une erreur est survenue. Veuillez réessayer.'
 ) {
   if (detail == null) return fallback;
-  if (typeof detail === 'string') return detail;
+  if (typeof detail === 'string') return detail.trim() || fallback;
   if (Array.isArray(detail)) {
-    return detail
+    const message = detail
       .map((e) => (e && typeof e.msg === 'string' ? e.msg : JSON.stringify(e)))
       .filter(Boolean)
-      .join(' ');
+      .join(' ')
+      .trim();
+    return message || fallback;
   }
-  if (detail && typeof detail.msg === 'string') return detail.msg;
+  if (detail && typeof detail.msg === 'string') {
+    return detail.msg.trim() || fallback;
+  }
   return String(detail);
 }

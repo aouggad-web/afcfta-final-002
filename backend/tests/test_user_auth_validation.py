@@ -14,6 +14,16 @@ def test_register_payload_normalizes_name_and_email():
     assert str(payload.email) == "alice@example.com"
 
 
+def test_register_payload_applies_length_limit_after_normalization():
+    payload = RegisterPayload(
+        name=f'{" " * 200}Alice{" " * 200}',
+        email="alice@example.com",
+        password="SecurePass123",
+    )
+
+    assert payload.name == "Alice"
+
+
 def test_register_payload_rejects_blank_name():
     with pytest.raises(ValidationError):
         RegisterPayload(
