@@ -52,7 +52,6 @@ export async function getCsrfToken({ forceRefresh = false } = {}) {
     tokenRequest = fetch(healthUrl, {
       credentials: 'include',
       cache: 'no-store',
-      headers: { 'Cache-Control': 'no-cache' },
     })
       .then((response) => {
         if (!response.ok) {
