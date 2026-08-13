@@ -1,6 +1,5 @@
 import pytest
 from pydantic import ValidationError
-
 from routes.user_auth import LoginPayload, RegisterPayload
 
 
