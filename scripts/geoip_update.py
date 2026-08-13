@@ -47,14 +47,30 @@ def main() -> int:
         default="data/geoip",
         help="Répertoire de destination du .mmdb (défaut: data/geoip)",
     )
+    parser.add_argument(
+        "--url",
+        help=(
+            "URL d'archive .tar.gz à utiliser à la place de la clé de licence. "
+            "Le portail MaxMind propose un lien de téléchargement à jeton "
+            "(« Download GZIP ») : collez-le ici, entre guillemets. Pratique "
+            "quand aucune clé de licence n'a été générée — mais le jeton expire, "
+            "donc préférez MAXMIND_LICENSE_KEY pour les mises à jour régulières."
+        ),
+    )
+    parser.add_argument(
+        "--from-file",
+        help="Archive .tar.gz déjà téléchargée localement (aucun réseau requis).",
+    )
     args = parser.parse_args()
 
     key = os.environ.get("MAXMIND_LICENSE_KEY")
-    if not key:
+    if not (key or args.url or args.from_file):
         print(
-            "Erreur : MAXMIND_LICENSE_KEY manquante.\n"
-            "Créez un compte gratuit sur maxmind.com/en/geolite2/signup puis :\n"
-            "  export MAXMIND_LICENSE_KEY=votre_clé",
+            "Erreur : aucune source indiquée. Trois possibilités :\n"
+            "  1. export MAXMIND_LICENSE_KEY=votre_clé   (recommandé, réutilisable)\n"
+            '  2. --url "<lien Download GZIP du portail MaxMind>"\n'
+            "  3. --from-file GeoLite2-Country.tar.gz    (archive déjà récupérée)\n"
+            "Compte gratuit : maxmind.com/en/geolite2/signup",
             file=sys.stderr,
         )
         return 1
@@ -63,17 +79,37 @@ def main() -> int:
     dest_dir.mkdir(parents=True, exist_ok=True)
     dest_file = dest_dir / "GeoLite2-Country.mmdb"
 
-    url = DOWNLOAD_URL.format(key=key)
-    print("Téléchargement de GeoLite2-Country depuis MaxMind…")
-    try:
-        with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tmp:
-            with urllib.request.urlopen(url, timeout=120) as resp:
-                tmp.write(resp.read())
-            tmp_path = tmp.name
-    except Exception as exc:
-        print(f"Erreur de téléchargement : {exc}", file=sys.stderr)
-        print("Vérifiez la clé de licence et la connectivité réseau.", file=sys.stderr)
-        return 1
+    # Archive locale : rien à télécharger, on la lit sur place. `downloaded`
+    # distingue les deux cas pour ne supprimer que ce que le script a créé —
+    # effacer l'archive fournie par l'utilisateur serait une surprise.
+    downloaded = False
+    if args.from_file:
+        tmp_path = args.from_file
+        if not os.path.exists(tmp_path):
+            print(f"Erreur : archive introuvable ({tmp_path})", file=sys.stderr)
+            return 1
+        print(f"Lecture de l'archive locale {tmp_path}…")
+    else:
+        url = args.url or DOWNLOAD_URL.format(key=key)
+        source = "le lien fourni" if args.url else "MaxMind"
+        print(f"Téléchargement de GeoLite2-Country depuis {source}…")
+        try:
+            with tempfile.NamedTemporaryFile(suffix=".tar.gz", delete=False) as tmp:
+                with urllib.request.urlopen(url, timeout=120) as resp:
+                    tmp.write(resp.read())
+                tmp_path = tmp.name
+            downloaded = True
+        except Exception as exc:
+            print(f"Erreur de téléchargement : {exc}", file=sys.stderr)
+            if args.url:
+                print(
+                    "Le jeton du lien MaxMind a pu expirer : régénérez-le depuis "
+                    "le portail, ou utilisez une clé de licence.",
+                    file=sys.stderr,
+                )
+            else:
+                print("Vérifiez la clé de licence et la connectivité réseau.", file=sys.stderr)
+            return 1
 
     # L'archive contient GeoLite2-Country_YYYYMMDD/GeoLite2-Country.mmdb
     # Écriture atomique : on écrit à côté puis on remplace d'un seul coup, pour
@@ -97,8 +133,12 @@ def main() -> int:
         print(f"Erreur d'extraction : {exc}", file=sys.stderr)
         return 1
     finally:
-        # Nettoyage systématique, y compris si l'extraction a échoué.
-        for leftover in (tmp_path, staging):
+        # Nettoyage systématique, y compris si l'extraction a échoué. L'archive
+        # fournie via --from-file appartient à l'utilisateur : on n'y touche pas.
+        leftovers = [staging]
+        if downloaded:
+            leftovers.append(tmp_path)
+        for leftover in leftovers:
             try:
                 os.unlink(leftover)
             except OSError:
