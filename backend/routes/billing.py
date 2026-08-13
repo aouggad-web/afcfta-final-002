@@ -126,6 +126,10 @@ async def geo_diagnostic(request: Request):
         "detected_country": geo_service.country_from_request(request),
         "cloudflare_trusted": geo_service.cloudflare_is_trusted(request),
         "geoip_db_configured": bool(os.environ.get("GEOIP_DB_PATH")),
+        # Relais de confiance pris en compte pour extraire l'IP du visiteur.
+        # Si `client_ip` ci-dessus ne correspond pas à votre adresse publique
+        # réelle, ajustez TRUSTED_PROXY_HOPS et rappelez cette route.
+        "trusted_proxy_hops": geo_service.trusted_proxy_hops(),
         "headers_seen": {
             "cf_ipcountry": request.headers.get("cf-ipcountry") is not None,
             "cf_connecting_ip": request.headers.get("cf-connecting-ip") is not None,

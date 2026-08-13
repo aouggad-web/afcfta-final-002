@@ -409,3 +409,38 @@ def test_webhook_is_idempotent_on_replay(webhook_client, monkeypatch):
     second = client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
     assert first.json()["status"] == "ok"
     assert second.json()["status"] == "already_processed"
+
+
+# ── Résolution de l'IP derrière plusieurs relais ────────────────────────────
+
+
+def test_client_ip_honours_trusted_hop_count(monkeypatch):
+    """Avec 3 relais en frontal, l'IP du visiteur est à 3 positions de la fin."""
+    monkeypatch.setenv("TRUSTED_PROXY_HOPS", "3")
+    req = _request_with({"x-forwarded-for": "41.100.0.9, 10.0.0.1, 10.0.0.2"})
+    assert geo_service.client_ip(req) == "41.100.0.9"
+
+
+def test_client_ip_default_single_hop_takes_rightmost(monkeypatch):
+    monkeypatch.delenv("TRUSTED_PROXY_HOPS", raising=False)
+    req = _request_with({"x-forwarded-for": "1.2.3.4, 81.200.5.4"})
+    assert geo_service.client_ip(req) == "81.200.5.4"
+
+
+def test_client_cannot_promote_itself_by_lengthening_the_chain(monkeypatch):
+    """Un client qui préfixe la chaîne pour se désigner échoue : l'index est
+    borné, donc sa valeur forgée reste à gauche de la position retenue."""
+    monkeypatch.setenv("TRUSTED_PROXY_HOPS", "3")
+    req = _request_with({"x-forwarded-for": "6.6.6.6, 41.100.0.9, 10.0.0.1, 10.0.0.2"})
+    assert geo_service.client_ip(req) == "41.100.0.9"
+
+
+def test_hop_count_larger_than_chain_is_clamped(monkeypatch):
+    monkeypatch.setenv("TRUSTED_PROXY_HOPS", "9")
+    req = _request_with({"x-forwarded-for": "41.100.0.9"})
+    assert geo_service.client_ip(req) == "41.100.0.9"
+
+
+def test_invalid_hop_count_falls_back_to_one(monkeypatch):
+    monkeypatch.setenv("TRUSTED_PROXY_HOPS", "beaucoup")
+    assert geo_service.trusted_proxy_hops() == 1

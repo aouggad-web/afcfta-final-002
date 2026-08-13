@@ -124,3 +124,25 @@ def test_exempt_paths_match_exactly_not_by_prefix(path):
     middleware = RateLimitMiddleware(FastAPI())
     assert path in middleware.exempt_paths
     assert "/api/countries" not in middleware.exempt_paths
+
+
+# ── Résolution de l'IP derrière plusieurs relais ────────────────────────────
+
+
+def test_multi_hop_buckets_are_per_visitor_not_shared(monkeypatch):
+    """Derrière 3 relais, deux visiteurs distincts ne doivent PAS partager le
+    même compteur — sinon un seul utilisateur actif bloque tout le monde."""
+    monkeypatch.setenv("TRUSTED_PROXY_HOPS", "3")
+    client = _make_app(requests_per_minute=2, burst_limit=100)
+
+    # Chaîne réaliste : <visiteur>, <relais1>, <relais2>
+    def call(visitor_ip):
+        return client.get(
+            "/api/countries",
+            headers={"X-Forwarded-For": f"{visitor_ip}, 10.0.0.1, 10.0.0.2"},
+        ).status_code
+
+    assert call("41.100.0.9") == 200
+    assert call("41.100.0.9") == 200
+    assert call("41.100.0.9") == 429  # quota du premier visiteur épuisé
+    assert call("81.200.5.4") == 200  # un autre visiteur reste servi

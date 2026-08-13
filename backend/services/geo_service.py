@@ -40,6 +40,24 @@ _reader = None
 _reader_loaded = False
 
 
+def trusted_proxy_hops() -> int:
+    """Nombre de relais de confiance placés devant l'application.
+
+    Détermine quelle entrée de `X-Forwarded-For` porte l'IP du visiteur. La
+    valeur dépend de l'hébergement et se règle **empiriquement** :
+    appelez `/api/billing/geo-diagnostic` et comparez le `client_ip` renvoyé à
+    votre adresse publique réelle (par ex. via api.ipify.org), en incrémentant
+    `TRUSTED_PROXY_HOPS` jusqu'à ce que les deux coïncident.
+
+    Défaut 1 : un seul relais, cas des déploiements simples.
+    """
+    try:
+        return max(1, int(os.environ.get("TRUSTED_PROXY_HOPS", "1")))
+    except (TypeError, ValueError):
+        logger.warning("TRUSTED_PROXY_HOPS invalide — valeur 1 utilisée")
+        return 1
+
+
 def client_ip(request: Request) -> Optional[str]:
     """IP client réelle, en ne faisant confiance qu'au dernier proxy.
 
@@ -63,9 +81,23 @@ def client_ip(request: Request) -> Optional[str]:
     forwarded = request.headers.get("x-forwarded-for")
     raw = None
     if forwarded:
-        # La plus à droite est posée par le proxy de confiance ; celles de
-        # gauche sont contrôlées par le client et ne doivent pas être crues.
-        raw = forwarded.split(",")[-1].strip()
+        # Chaque proxy traversé ajoute à droite l'adresse dont il a reçu la
+        # requête. Avec N relais de confiance en frontal, l'IP du visiteur est
+        # donc à N positions de la fin — et non à la dernière, qui n'est la
+        # bonne que s'il y a exactement un relais.
+        #
+        # Prendre systématiquement la dernière sur un hébergement à plusieurs
+        # relais (cas d'Emergent, 3 hops) renvoie une adresse d'infrastructure,
+        # identique pour tous les visiteurs : la géolocalisation devient fausse
+        # et le compteur de débit se retrouve partagé par tout le monde.
+        #
+        # Les entrées à gauche de cette position sont fournies par le client et
+        # ne doivent jamais être crues : l'index est borné pour qu'un client qui
+        # rallonge la chaîne ne puisse pas se désigner lui-même.
+        entries = [part.strip() for part in forwarded.split(",") if part.strip()]
+        if entries:
+            index = max(0, len(entries) - trusted_proxy_hops())
+            raw = entries[index]
     elif request.client:
         raw = request.client.host
 
