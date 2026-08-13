@@ -74,19 +74,42 @@ jobs:
       - name: Validate updated JSON
         if: steps.check_changes.outputs.changes == 'true'
         run: |
-          set -e
-          FAILED=0
-          for f in $(git diff --name-only -- '*.json'); do
-            if ! python -c "import json,sys; json.load(open('$f'))"; then
-              echo "::error file=$f::JSON invalide après mise à jour"
-              FAILED=1
-            fi
-          done
-          exit $FAILED
+          python - <<'PY'
+          import json
+          import subprocess
+          import sys
 
+          # Liste NUL-séparée et lue depuis Python : un nom de fichier contenant
+          # une espace ou une apostrophe casserait une boucle shell, et
+          # interpoler ce nom dans du code Python ouvrirait une injection.
+          out = subprocess.run(
+              ["git", "diff", "--name-only", "-z", "--", "*.json"],
+              capture_output=True,
+              text=True,
+              check=True,
+          ).stdout
+          paths = [p for p in out.split("\0") if p]
+
+          invalid = []
+          for path in paths:
+              try:
+                  with open(path, encoding="utf-8") as fh:
+                      json.load(fh)
+              except (OSError, ValueError) as exc:
+                  print(f"::error file={path}::JSON invalide après mise à jour : {exc}")
+                  invalid.append(path)
+
+          print(f"{len(paths) - len(invalid)}/{len(paths)} fichier(s) JSON valides")
+          sys.exit(1 if invalid else 0)
+          PY
+
+      # Pas de `continue-on-error` : produire la PR EST la finalité de ce
+      # workflow. Un échec silencieux (permissions Actions désactivées, jeton
+      # invalide, quota atteint) afficherait un run vert sans qu'aucune PR
+      # n'existe — exactement le type de panne muette qui a laissé les données
+      # ne plus remonter pendant un mois.
       - name: Create Pull Request
         if: steps.check_changes.outputs.changes == 'true'
-        continue-on-error: true
         uses: peter-evans/create-pull-request@v7
         with:
           # GitHub ne déclenche AUCUN workflow sur les événements produits par
