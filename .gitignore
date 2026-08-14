@@ -102,3 +102,12 @@ backend/data/_cache/
 *.mmdb
 data/geoip/
 backend/data/geoip/
+
+# Emergent pod-runtime artefacts (régénérés à chaque déploiement, polluent
+# l'historique — visibles dans les commits « Auto-generated changes »).
+# job_id et created_at changent à chaque redéploiement, ils ne doivent pas
+# être versionnés.
+.emergent/emergent.yml
+.emergent/cron/webhook-crons
+.emergent/cron/applied.hash
+.emergent/markers/
