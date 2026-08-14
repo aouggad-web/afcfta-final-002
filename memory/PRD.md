@@ -17,6 +17,13 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
+### August 14, 2026 (session 6) — Fix bug (2e occurrence) : URL backend périmée dans .env
+- Après le fix session 5 (ajout VITE_BACKEND_URL), le bug d'inscription "Vérifiez votre accès réseau" est réapparu. Cause réelle trouvée : `frontend/.env` contenait une URL de pod PÉRIMÉE (`github-dev-sync.preview.emergentagent.com`), alors que l'URL réelle du pod (variable `APP_URL` injectée dans l'environnement du process backend par la plateforme) est `https://179aadb8-8837-44c3-9417-5ef9bb7609e0.preview.emergentagent.com`. Décalage domaine → appels API/cookies CSRF réellement cross-origin côté navigateur réel → échec (non reproductible par un agent de test qui, lui, navigue directement vers l'URL indiquée dans .env, donc toujours "cohérente" avec elle-même).
+- Découverte secondaire : Cloudflare (en amont) renvoie `Access-Control-Allow-Origin: *` + `Access-Control-Allow-Credentials: true` simultanément (combinaison invalide/rejetée par les navigateurs pour les requêtes cross-origin avec cookies) — non corrigée (hors contrôle applicatif direct, mitigée par le fait que le fix d'URL rend les requêtes same-origin).
+- Fix : `REACT_APP_BACKEND_URL`/`VITE_BACKEND_URL` mis à jour vers l'URL réelle du pod, rebuild frontend, `HTTPS_ENABLED=true` ajouté dans `backend/.env` (cookies `Secure` cohérents avec le HTTPS réel, absent par défaut auparavant).
+- Vérifié par `auto_frontend_testing_agent` sur l'URL correcte : inscription réussie (toast "Compte créé", connexion automatique), aucune erreur réseau/CORS/console.
+- ⚠️ Point de vigilance pour l'avenir : si le pod redémarre et que la plateforme assigne une nouvelle URL de preview, ce même décalage peut réapparaître — vérifier `APP_URL` (env du process backend via supervisor) contre `frontend/.env` en cas de nouveau signalement similaire.
+
 ### August 13, 2026 (session 5) — Fix bug : erreur réseau à l'inscription
 - Cause racine : tout le frontend Vite lit `import.meta.env.VITE_BACKEND_URL` (20+ fichiers dont `csrf.js`/`AuthContext.jsx`), mais `frontend/.env` ne définissait que `REACT_APP_BACKEND_URL` (convention CRA héritée d'avant la migration Vite, cf. `.agents/memory/vite-migration.md`) → `BACKEND_URL` valait `''` partout, fragilisant les appels API (URLs relatives).
 - Fix : ajout de `VITE_BACKEND_URL` dans `frontend/.env` (même valeur que `REACT_APP_BACKEND_URL`, conservée), rebuild Vite + restart frontend.
