@@ -10,7 +10,6 @@ from pathlib import Path
 
 import requests
 
-
 BACKEND_URL = os.getenv("TEST_BACKEND_URL", "http://localhost:8000/api").rstrip("/")
 API_KEY = os.getenv("TEST_API_KEY")
 ADMIN_EMAIL = os.getenv("TEST_ADMIN_EMAIL", "admin@afcfta-zlecaf.com")
@@ -46,7 +45,13 @@ def log_test(name, passed=None, details=None, error=None):
     """Record and print a pass, failure, or explicit skip."""
     status = "skipped" if passed is None else ("passed" if passed else "failed")
     results["tests"].append(
-        {"test": name, "status": status, "passed": passed, "details": details, "error": error}
+        {
+            "test": name,
+            "status": status,
+            "passed": passed,
+            "details": details,
+            "error": error,
+        }
     )
     label = {"passed": "PASS", "failed": "FAIL", "skipped": "SKIP"}[status]
     print(f"\n{label}: {name}")
@@ -107,7 +112,9 @@ def test_countries():
         )
         if not valid:
             count = len(data) if isinstance(data, list) else "non-list"
-            log_test(name, False, error=f"Unexpected countries payload (count: {count})")
+            log_test(
+                name, False, error=f"Unexpected countries payload (count: {count})"
+            )
             return
         log_test(name, True, f"Returned {len(data)} countries")
     except Exception as exc:
@@ -240,7 +247,9 @@ def check_backend_logs():
         )
         if completed.returncode != 0:
             message = completed.stderr.strip() or "tail returned a non-zero exit status"
-            log_test(name, False, error=f"Could not read {BACKEND_LOG}: {message[:200]}")
+            log_test(
+                name, False, error=f"Could not read {BACKEND_LOG}: {message[:200]}"
+            )
             return
 
         keywords = (
@@ -256,7 +265,9 @@ def check_backend_logs():
             if "WARNING" not in line and any(keyword in line for keyword in keywords)
         ]
         if critical_errors:
-            log_test(name, False, error=f"Found {len(critical_errors)} potential errors")
+            log_test(
+                name, False, error=f"Found {len(critical_errors)} potential errors"
+            )
             for line in critical_errors[-5:]:
                 print(f"    {line}")
             return
@@ -267,7 +278,9 @@ def check_backend_logs():
 
 def save_results():
     RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
-    RESULTS_PATH.write_text(json.dumps(results, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    RESULTS_PATH.write_text(
+        json.dumps(results, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
 
 
 def main():
