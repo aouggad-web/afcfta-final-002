@@ -38,11 +38,19 @@ class CSRFMiddleware(BaseHTTPMiddleware):
             token = request.cookies.get(CSRF_COOKIE)
             if not token:
                 token = secrets.token_urlsafe(32)
+                # SameSite=None (not Strict): this app can be viewed inside the
+                # Emergent preview iframe, where the top-level document is a
+                # different site (app.emergent.sh) — a Strict/Lax cookie would
+                # never reach our own origin's fetches in that nested context.
+                # Safe here because double-submit CSRF protection relies on
+                # same-origin JS being the only reader/writer of this cookie
+                # and header, not on SameSite blocking cross-site sending.
+                # SameSite=None requires Secure, hence tied to _HTTPS.
                 response.set_cookie(
                     CSRF_COOKIE,
                     token,
                     httponly=False,
-                    samesite="strict",
+                    samesite="none" if _HTTPS else "lax",
                     secure=_HTTPS,
                     max_age=3600,
                 )

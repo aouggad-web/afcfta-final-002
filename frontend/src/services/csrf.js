@@ -19,10 +19,16 @@ function readCookie(name) {
 }
 
 function persistReadableToken(token) {
-  const secure = window.location.protocol === 'https:' ? '; Secure' : '';
+  // SameSite=None (not Strict): the app can be viewed inside the Emergent
+  // preview iframe, where the top-level document is a different site — a
+  // Strict cookie would be dropped for our own origin's fetches there.
+  // SameSite=None requires Secure, so it only applies over HTTPS; plain HTTP
+  // (local dev) falls back to Lax, which still works same-site.
+  const isHttps = window.location.protocol === 'https:';
+  const attrs = isHttps ? 'SameSite=None; Secure' : 'SameSite=Lax';
   document.cookie =
     `${encodeURIComponent(CSRF_COOKIE)}=${encodeURIComponent(token)}` +
-    `; Path=/; SameSite=Strict; Max-Age=3600${secure}`;
+    `; Path=/; ${attrs}; Max-Age=3600`;
 }
 
 function setCsrfHeader(config, token) {
