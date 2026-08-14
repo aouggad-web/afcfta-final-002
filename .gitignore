@@ -102,3 +102,6 @@ backend/data/_cache/
 *.mmdb
 data/geoip/
 backend/data/geoip/
+
+# Local backend smoke-test output
+backend_test_results.json

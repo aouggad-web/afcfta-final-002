@@ -17,14 +17,6 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 
 ## What's Been Implemented
 
-### August 13, 2026 (session 2) — Ré-import complet depuis GitHub (branche `main`)
-- Environnement pod réinitialisé (repo vide) ; réimporté la branche `main` du dépôt `aouggad-web/afcfta-final-002` (commit `7f279018`, la plus récente parmi ~150 branches).
-- Dépendances backend réinstallées (`pip install -r backend/requirements.txt`) — conflit de versions corrigé (`aiohttp==3.13.3` incompatible avec `geoip2==5.3.0` qui exige `aiohttp>=3.14.1` → assoupli en `aiohttp>=3.14.1`).
-- Dépendances frontend réinstallées (`yarn install`, `node_modules` absent après réimport).
-- Backend + frontend + MongoDB relancés via supervisor et vérifiés opérationnels (compte admin re-seedé automatiquement depuis `.env`).
-- Vérifié via smoke test : `/api/health`, `/api/countries`, `/api/statistics`, `/api/rules-of-origin` et le dashboard complet répondent correctement (accès public sans clé API, conforme à `auth.py` / `PUBLIC_DATA_ACCESS=true`). L'agent de test a signalé de faux 401/403 en envoyant manuellement un en-tête `X-API-Key` invalide — non représentatif du comportement réel du frontend, qui n'envoie jamais cet en-tête.
-- Aucune régression de code introduite ; import fidèle à l'état du dépôt GitHub.
-
 ### August 13, 2026 — Stripe (abonnements SaaS) + sécurité (rate-limiting, GeoIP)
 - **Stripe** : sandbox de test réclamable provisionné (Flow A officiel Emergent), catalogue créé (Starter 9$/Pro 19$/Business 59$ mensuel + annuel), fiscalité automatique Stripe activée (Managed Payments/SMP, compte DE). Checkout, webhook, portail client et page `pricing.html` (déjà câblée en amont par un PR upstream) testés de bout en bout avec de vrais paiements test (carte 4242...). 2 bugs critiques trouvés par l'agent de test et corrigés : URL du webhook Stripe mal configurée (`/api/stripe/webhook` → `/api/billing/webhook`) et `BILLING_SUCCESS_URL`/`BILLING_CANCEL_URL` non définies (404 après paiement). Lien "Tarifs" ajouté à la sidebar/topbar. Chargily (Algérie/DZD) reste en stub par défaut (`CHARGILY_ENABLED=false`, Phase 2).
 - **MaxMind GeoIP local** : base `GeoLite2-Country.mmdb` téléchargée (mirroir communautaire, sans compte MaxMind), `GEOIP_DB_PATH` configuré, `geoip2` installé. Testé : IP algérienne → verrou Chargily/DZD actif ; IP US → Stripe/USD. Vérifié en local (localhost:8001) car l'ingress externe réécrit `X-Forwarded-For` avec la vraie chaîne (empêche l'usurpation, comportement sain).

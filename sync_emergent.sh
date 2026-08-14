@@ -124,6 +124,49 @@ fi
 echo "── 3/6 · Dépendances backend (Python) ──"
 pip install -r backend/requirements.txt --quiet --no-input
 
+echo "── 3bis/6 · Base GeoIP (facultatif — verrou pays de facturation) ──"
+# Détection : GEOIP_DB_PATH est le chemin cible ; s'il pointe déjà vers un
+# fichier présent, rien à faire — la base précédente a survécu au `git clean`
+# (protection ajoutée à l'étape 1). Sinon on la retélécharge SI on a une clé
+# de licence MaxMind, en défaut mou : la panne d'un téléchargement ne doit pas
+# planter le déploiement. Sans base, le sélecteur pays manuel prend le relais
+# et le backend écrit un logger.error explicite.
+#
+# On lit ces deux variables directement dans le .env du pod plutôt que
+# l'environnement shell : ce script n'est pas invoqué via `dotenv`, or
+# c'est backend/.env qui porte la configuration runtime.
+_extract_env() {
+  # $1 = nom de variable ; imprime la valeur (ligne KEY=... du .env), sans
+  # espaces ni guillemets superflus. Aucune interprétation shell : plus sûr
+  # que `source .env` (qui échouerait sur les caractères spéciaux avec set -e).
+  local key="$1"
+  local envfile="backend/.env"
+  # L'absence du fichier ou de la clé est un cas normal : la fonction doit
+  # toujours réussir pour rester compatible avec `set -euo pipefail`.
+  [ -f "$envfile" ] || return 0
+  grep -E "^[[:space:]]*${key}[[:space:]]*=" "$envfile" | tail -1 \
+    | sed -E "s/^[[:space:]]*${key}[[:space:]]*=[[:space:]]*//; s/^['\"]//; s/['\"][[:space:]]*$//" \
+    || true
+}
+GEOIP_TARGET="${GEOIP_DB_PATH:-$(_extract_env GEOIP_DB_PATH)}"
+GEOIP_TARGET="${GEOIP_TARGET:-/app/data/geoip/GeoLite2-Country.mmdb}"
+MAXMIND_KEY="${MAXMIND_LICENSE_KEY:-$(_extract_env MAXMIND_LICENSE_KEY)}"
+
+if [ -s "$GEOIP_TARGET" ]; then
+  echo "  ✓ base déjà présente : $GEOIP_TARGET"
+elif [ -n "$MAXMIND_KEY" ]; then
+  GEOIP_DIR="$(dirname "$GEOIP_TARGET")"
+  mkdir -p "$GEOIP_DIR"
+  if MAXMIND_LICENSE_KEY="$MAXMIND_KEY" python scripts/geoip_update.py --dest "$GEOIP_DIR" 2>&1 | sed 's/^/    /'; then
+    echo "  ✓ base téléchargée dans $GEOIP_DIR"
+  else
+    echo "  ⚠ téléchargement échoué — le verrou Algérie sera inactif jusqu'à réparation"
+  fi
+else
+  echo "  ⏭ MAXMIND_LICENSE_KEY absente : téléchargement automatique désactivé."
+  echo "     Pour installer manuellement : python scripts/geoip_update.py --from-file <archive>"
+fi
+
 echo "── 4/6 · Contrôle d'import + données de la copie appliquée ──"
 ( cd backend && python -c "
 import importlib

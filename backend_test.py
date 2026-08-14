@@ -1,402 +1,303 @@
 #!/usr/bin/env python3
-"""
-Backend API Smoke Test for ZLECAf Trade Calculator
-Tests core endpoints after fresh import from GitHub
-"""
+"""Environment-driven smoke tests for the ZLECAf backend API."""
 
-import os
-import sys
-import requests
 import json
-from datetime import datetime
+import os
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
 
-# Backend URL from frontend .env
-BACKEND_URL = "https://github-dev-sync.preview.emergentagent.com/api"
-API_KEY = "zlecaf-frontend-public-key"
-
-# Admin credentials from backend .env
-ADMIN_EMAIL = "admin@afcfta-zlecaf.com"
-ADMIN_PASSWORD = "P__07Ae3tMFI-wq1sse9ON7X"
-
-# Test results
-results = {"timestamp": datetime.now().isoformat(), "backend_url": BACKEND_URL, "tests": []}
+import requests
 
 
-def log_test(name, passed, details=None, error=None):
-    """Log test result"""
-    result = {"test": name, "passed": passed, "details": details, "error": error}
-    results["tests"].append(result)
+BACKEND_URL = os.getenv("TEST_BACKEND_URL", "http://localhost:8000/api").rstrip("/")
+API_KEY = os.getenv("TEST_API_KEY")
+ADMIN_EMAIL = os.getenv("TEST_ADMIN_EMAIL", "admin@afcfta-zlecaf.com")
+ADMIN_PASSWORD = os.getenv("TEST_ADMIN_PASSWORD")
+BACKEND_LOG = os.getenv("TEST_BACKEND_LOG", "/var/log/supervisor/backend.err.log")
+RESULTS_PATH = Path(os.getenv("TEST_RESULTS_PATH", "backend_test_results.json"))
+REQUEST_TIMEOUT = float(os.getenv("TEST_REQUEST_TIMEOUT", "15"))
 
-    status = "✅ PASS" if passed else "❌ FAIL"
-    print(f"\n{status}: {name}")
+session = requests.Session()
+results = {
+    "timestamp": datetime.now(timezone.utc).isoformat(),
+    "backend_url": BACKEND_URL,
+    "tests": [],
+}
+
+
+def env_flag(name, default=False):
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.strip().lower() in {"1", "true", "yes", "on"}
+
+
+def api_headers(extra=None):
+    """Return request headers, adding the API key only when configured."""
+    headers = dict(extra or {})
+    if API_KEY:
+        headers["X-API-Key"] = API_KEY
+    return headers
+
+
+def log_test(name, passed=None, details=None, error=None):
+    """Record and print a pass, failure, or explicit skip."""
+    status = "skipped" if passed is None else ("passed" if passed else "failed")
+    results["tests"].append(
+        {"test": name, "status": status, "passed": passed, "details": details, "error": error}
+    )
+    label = {"passed": "PASS", "failed": "FAIL", "skipped": "SKIP"}[status]
+    print(f"\n{label}: {name}")
     if details:
         print(f"  Details: {details}")
     if error:
         print(f"  Error: {error}")
 
 
-def test_health():
-    """Test GET /api/health"""
-    try:
-        response = requests.get(f"{BACKEND_URL}/health", timeout=10)
+def response_error(response):
+    return f"HTTP {response.status_code}: {response.text[:200]}"
 
-        if response.status_code == 200:
-            data = response.json()
-            if data.get("status") == "healthy":
-                log_test("GET /api/health", True, f"Status: {data.get('status')}")
-                return True
-            else:
-                log_test("GET /api/health", False, error=f"Unexpected status: {data.get('status')}")
-                return False
-        else:
-            log_test(
-                "GET /api/health",
-                False,
-                error=f"HTTP {response.status_code}: {response.text[:200]}",
-            )
-            return False
-    except Exception as e:
-        log_test("GET /api/health", False, error=str(e))
-        return False
+
+def csrf_headers():
+    """Initialize CSRF state on the shared session and return the matching header."""
+    response = session.get(
+        f"{BACKEND_URL}/health", headers=api_headers(), timeout=REQUEST_TIMEOUT
+    )
+    response.raise_for_status()
+    token = response.headers.get("X-CSRF-Token")
+    if not token:
+        raise RuntimeError("The health endpoint did not return an X-CSRF-Token header")
+    return api_headers({"X-CSRF-Token": token})
+
+
+def test_health():
+    name = "GET /api/health"
+    try:
+        response = session.get(
+            f"{BACKEND_URL}/health", headers=api_headers(), timeout=REQUEST_TIMEOUT
+        )
+        if response.status_code != 200:
+            log_test(name, False, error=response_error(response))
+            return
+        data = response.json()
+        if data.get("status") != "healthy":
+            log_test(name, False, error=f"Unexpected status: {data.get('status')}")
+            return
+        log_test(name, True, f"Status: {data['status']}")
+    except Exception as exc:
+        log_test(name, False, error=str(exc))
 
 
 def test_countries():
-    """Test GET /api/countries"""
+    name = "GET /api/countries"
     try:
-        response = requests.get(
-            f"{BACKEND_URL}/countries", headers={"X-API-Key": API_KEY}, timeout=10
+        response = session.get(
+            f"{BACKEND_URL}/countries", headers=api_headers(), timeout=REQUEST_TIMEOUT
         )
-
-        if response.status_code == 200:
-            data = response.json()
-            if isinstance(data, list) and len(data) == 54:
-                # Check structure of first country
-                first = data[0]
-                if "code" in first and "name" in first and "region" in first:
-                    log_test("GET /api/countries", True, f"Returned {len(data)} countries")
-                    return True
-                else:
-                    log_test(
-                        "GET /api/countries", False, error="Missing expected fields in country data"
-                    )
-                    return False
-            else:
-                log_test(
-                    "GET /api/countries",
-                    False,
-                    error=f"Expected 54 countries, got {len(data) if isinstance(data, list) else 'non-list'}",
-                )
-                return False
-        else:
-            log_test(
-                "GET /api/countries",
-                False,
-                error=f"HTTP {response.status_code}: {response.text[:200]}",
-            )
-            return False
-    except Exception as e:
-        log_test("GET /api/countries", False, error=str(e))
-        return False
+        if response.status_code != 200:
+            log_test(name, False, error=response_error(response))
+            return
+        data = response.json()
+        valid = (
+            isinstance(data, list)
+            and len(data) == 54
+            and all(field in data[0] for field in ("code", "name", "region"))
+        )
+        if not valid:
+            count = len(data) if isinstance(data, list) else "non-list"
+            log_test(name, False, error=f"Unexpected countries payload (count: {count})")
+            return
+        log_test(name, True, f"Returned {len(data)} countries")
+    except Exception as exc:
+        log_test(name, False, error=str(exc))
 
 
-def test_country_profile():
-    """Test GET /api/country-profile/{country_code}"""
-    test_codes = ["KEN", "DZA"]
-
-    for code in test_codes:
+def test_country_profiles():
+    for code in ("KEN", "DZA"):
+        name = f"GET /api/country-profile/{code}"
         try:
-            response = requests.get(
-                f"{BACKEND_URL}/country-profile/{code}", headers={"X-API-Key": API_KEY}, timeout=10
+            response = session.get(
+                f"{BACKEND_URL}/country-profile/{code}",
+                headers=api_headers(),
+                timeout=REQUEST_TIMEOUT,
             )
-
-            if response.status_code == 200:
-                data = response.json()
-                if "country_code" in data and "country_name" in data:
-                    log_test(
-                        f"GET /api/country-profile/{code}",
-                        True,
-                        f"Country: {data.get('country_name')}",
-                    )
-                else:
-                    log_test(
-                        f"GET /api/country-profile/{code}", False, error="Missing expected fields"
-                    )
-                    return False
-            else:
-                log_test(
-                    f"GET /api/country-profile/{code}",
-                    False,
-                    error=f"HTTP {response.status_code}: {response.text[:200]}",
-                )
-                return False
-        except Exception as e:
-            log_test(f"GET /api/country-profile/{code}", False, error=str(e))
-            return False
-
-    return True
+            if response.status_code != 200:
+                log_test(name, False, error=response_error(response))
+                continue
+            data = response.json()
+            if not all(field in data for field in ("country_code", "country_name")):
+                log_test(name, False, error="Missing expected fields")
+                continue
+            log_test(name, True, f"Country: {data['country_name']}")
+        except Exception as exc:
+            log_test(name, False, error=str(exc))
 
 
 def test_calculate_tariff():
-    """Test POST /api/calculate-tariff"""
+    name = "POST /api/calculate-tariff"
+    payload = {
+        "origin_country": "KEN",
+        "destination_country": "DZA",
+        "hs_code": "080300",
+        "value": 10000,
+    }
     try:
-        payload = {
-            "origin_country": "KEN",
-            "destination_country": "DZA",
-            "hs_code": "080300",
-            "value": 10000,
-        }
-
-        response = requests.post(
+        response = session.post(
             f"{BACKEND_URL}/calculate-tariff",
-            headers={"X-API-Key": API_KEY, "Content-Type": "application/json"},
+            headers=csrf_headers(),
             json=payload,
-            timeout=15,
+            timeout=REQUEST_TIMEOUT,
         )
-
-        if response.status_code == 200:
-            data = response.json()
-            if "normal_tariff_rate" in data and "hs_code" in data:
-                log_test(
-                    "POST /api/calculate-tariff",
-                    True,
-                    f"Tariff calculated: {data.get('normal_tariff_rate')*100:.2f}% for HS {data.get('hs_code')}",
-                )
-                return True
-            else:
-                log_test(
-                    "POST /api/calculate-tariff", False, error="Missing expected fields in response"
-                )
-                return False
-        else:
-            log_test(
-                "POST /api/calculate-tariff",
-                False,
-                error=f"HTTP {response.status_code}: {response.text[:200]}",
-            )
-            return False
-    except Exception as e:
-        log_test("POST /api/calculate-tariff", False, error=str(e))
-        return False
+        if response.status_code != 200:
+            log_test(name, False, error=response_error(response))
+            return
+        data = response.json()
+        if not all(field in data for field in ("normal_tariff_rate", "hs_code")):
+            log_test(name, False, error="Missing expected fields")
+            return
+        log_test(name, True, f"Tariff calculated for HS {data['hs_code']}")
+    except Exception as exc:
+        log_test(name, False, error=str(exc))
 
 
 def test_rules_of_origin():
-    """Test GET /api/rules-of-origin/{hs_code}"""
-    test_codes = ["080300", "620342"]
-
-    for hs_code in test_codes:
+    for hs_code in ("080300", "620342"):
+        name = f"GET /api/rules-of-origin/{hs_code}"
         try:
-            response = requests.get(
+            response = session.get(
                 f"{BACKEND_URL}/rules-of-origin/{hs_code}",
-                headers={"X-API-Key": API_KEY},
-                timeout=10,
+                headers=api_headers(),
+                timeout=REQUEST_TIMEOUT,
             )
-
-            if response.status_code == 200:
-                data = response.json()
-                if "hs_code" in data and "status" in data:
-                    log_test(
-                        f"GET /api/rules-of-origin/{hs_code}",
-                        True,
-                        f"Status: {data.get('status')}, Chapter: {data.get('chapter')}",
-                    )
-                else:
-                    log_test(
-                        f"GET /api/rules-of-origin/{hs_code}",
-                        False,
-                        error="Missing expected fields",
-                    )
-                    return False
-            else:
-                log_test(
-                    f"GET /api/rules-of-origin/{hs_code}",
-                    False,
-                    error=f"HTTP {response.status_code}: {response.text[:200]}",
-                )
-                return False
-        except Exception as e:
-            log_test(f"GET /api/rules-of-origin/{hs_code}", False, error=str(e))
-            return False
-
-    return True
+            if response.status_code != 200:
+                log_test(name, False, error=response_error(response))
+                continue
+            data = response.json()
+            if not all(field in data for field in ("hs_code", "status")):
+                log_test(name, False, error="Missing expected fields")
+                continue
+            log_test(name, True, f"Status: {data['status']}")
+        except Exception as exc:
+            log_test(name, False, error=str(exc))
 
 
 def test_statistics():
-    """Test GET /api/statistics"""
+    name = "GET /api/statistics"
     try:
-        response = requests.get(
-            f"{BACKEND_URL}/statistics", headers={"X-API-Key": API_KEY}, timeout=10
+        response = session.get(
+            f"{BACKEND_URL}/statistics", headers=api_headers(), timeout=REQUEST_TIMEOUT
         )
-
-        if response.status_code == 200:
-            data = response.json()
-            if "overview" in data and "top_exporters_2024" in data:
-                overview = data.get("overview", {})
-                log_test(
-                    "GET /api/statistics",
-                    True,
-                    f"African countries: {overview.get('african_countries_members')}, GDP: ${overview.get('estimated_combined_gdp', 0)/1e12:.2f}T",
-                )
-                return True
-            else:
-                log_test("GET /api/statistics", False, error="Missing expected fields")
-                return False
-        else:
-            log_test(
-                "GET /api/statistics",
-                False,
-                error=f"HTTP {response.status_code}: {response.text[:200]}",
-            )
-            return False
-    except Exception as e:
-        log_test("GET /api/statistics", False, error=str(e))
-        return False
+        if response.status_code != 200:
+            log_test(name, False, error=response_error(response))
+            return
+        data = response.json()
+        if not all(field in data for field in ("overview", "top_exporters_2024")):
+            log_test(name, False, error="Missing expected fields")
+            return
+        log_test(name, True, "Statistics payload is complete")
+    except Exception as exc:
+        log_test(name, False, error=str(exc))
 
 
 def test_admin_login():
-    """Test POST /api/auth/login with admin credentials"""
+    name = "POST /api/auth/login (admin)"
+    if not ADMIN_PASSWORD:
+        log_test(name, None, details="Set TEST_ADMIN_PASSWORD to enable this test")
+        return
     try:
-        # First get CSRF token from health endpoint
-        health_response = requests.get(f"{BACKEND_URL}/health", timeout=10)
-        csrf_token = health_response.headers.get("X-CSRF-Token")
-        cookies = health_response.cookies
-
-        payload = {"email": ADMIN_EMAIL, "password": ADMIN_PASSWORD}
-
-        headers = {"Content-Type": "application/json"}
-
-        if csrf_token:
-            headers["X-CSRF-Token"] = csrf_token
-
-        response = requests.post(
-            f"{BACKEND_URL}/auth/login", headers=headers, json=payload, cookies=cookies, timeout=10
+        response = session.post(
+            f"{BACKEND_URL}/auth/login",
+            headers=csrf_headers(),
+            json={"email": ADMIN_EMAIL, "password": ADMIN_PASSWORD},
+            timeout=REQUEST_TIMEOUT,
         )
-
-        if response.status_code == 200:
-            data = response.json()
-            if "email" in data and data.get("email") == ADMIN_EMAIL.lower():
-                log_test(
-                    "POST /api/auth/login (admin)",
-                    True,
-                    f"Admin logged in: {data.get('name')} ({data.get('role')})",
-                )
-                return True
-            else:
-                log_test(
-                    "POST /api/auth/login (admin)", False, error="Unexpected response structure"
-                )
-                return False
-        else:
-            log_test(
-                "POST /api/auth/login (admin)",
-                False,
-                error=f"HTTP {response.status_code}: {response.text[:200]}",
-            )
-            return False
-    except Exception as e:
-        log_test("POST /api/auth/login (admin)", False, error=str(e))
-        return False
+        if response.status_code != 200:
+            log_test(name, False, error=response_error(response))
+            return
+        data = response.json()
+        if data.get("email", "").lower() != ADMIN_EMAIL.lower():
+            log_test(name, False, error="Unexpected response structure")
+            return
+        log_test(name, True, f"Authenticated role: {data.get('role', 'unknown')}")
+    except Exception as exc:
+        log_test(name, False, error=str(exc))
 
 
 def check_backend_logs():
-    """Check backend logs for errors"""
+    name = "Backend Logs Check"
+    if env_flag("TEST_SKIP_LOG_CHECK"):
+        log_test(name, None, details="Disabled by TEST_SKIP_LOG_CHECK")
+        return
     try:
-        import subprocess
-
-        result = subprocess.run(
-            ["tail", "-n", "100", "/var/log/supervisor/backend.err.log"],
+        completed = subprocess.run(
+            ["tail", "-n", "100", BACKEND_LOG],
             capture_output=True,
             text=True,
             timeout=5,
+            check=False,
         )
+        if completed.returncode != 0:
+            message = completed.stderr.strip() or "tail returned a non-zero exit status"
+            log_test(name, False, error=f"Could not read {BACKEND_LOG}: {message[:200]}")
+            return
 
-        log_content = result.stdout
-
-        # Check for critical errors
-        critical_errors = []
-        error_keywords = [
+        keywords = (
             "ModuleNotFoundError",
             "ImportError",
             "500 Internal Server Error",
             "Traceback",
             "ERROR",
+        )
+        critical_errors = [
+            line.strip()
+            for line in completed.stdout.splitlines()
+            if "WARNING" not in line and any(keyword in line for keyword in keywords)
         ]
-
-        for line in log_content.split("\n"):
-            for keyword in error_keywords:
-                if keyword in line and "WARNING" not in line:
-                    critical_errors.append(line.strip())
-                    break
-
         if critical_errors:
-            log_test(
-                "Backend Logs Check",
-                False,
-                error=f"Found {len(critical_errors)} potential errors in logs",
-            )
-            print("\n  Recent errors:")
-            for err in critical_errors[-5:]:  # Show last 5 errors
-                print(f"    {err}")
-            return False
-        else:
-            log_test("Backend Logs Check", True, "No critical errors found in recent logs")
-            return True
-    except Exception as e:
-        log_test("Backend Logs Check", False, error=f"Could not check logs: {str(e)}")
-        return False
+            log_test(name, False, error=f"Found {len(critical_errors)} potential errors")
+            for line in critical_errors[-5:]:
+                print(f"    {line}")
+            return
+        log_test(name, True, "No critical errors found in recent logs")
+    except Exception as exc:
+        log_test(name, False, error=f"Could not check logs: {exc}")
+
+
+def save_results():
+    RESULTS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    RESULTS_PATH.write_text(json.dumps(results, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def main():
-    """Run all smoke tests"""
     print("=" * 80)
     print("ZLECAf Trade Calculator - Backend Smoke Test")
-    print("=" * 80)
     print(f"Backend URL: {BACKEND_URL}")
-    print(f"Test started: {results['timestamp']}")
     print("=" * 80)
 
-    # Run all tests
     test_health()
     test_countries()
-    test_country_profile()
+    test_country_profiles()
     test_calculate_tariff()
     test_rules_of_origin()
     test_statistics()
     test_admin_login()
     check_backend_logs()
 
-    # Summary
+    save_results()
+    counts = {
+        status: sum(test["status"] == status for test in results["tests"])
+        for status in ("passed", "failed", "skipped")
+    }
     print("\n" + "=" * 80)
-    print("TEST SUMMARY")
-    print("=" * 80)
-
-    passed = sum(1 for t in results["tests"] if t["passed"])
-    total = len(results["tests"])
-
-    print(f"Total Tests: {total}")
-    print(f"Passed: {passed}")
-    print(f"Failed: {total - passed}")
-    print(f"Success Rate: {(passed/total)*100:.1f}%")
-
-    # List failed tests
-    failed_tests = [t for t in results["tests"] if not t["passed"]]
-    if failed_tests:
-        print("\nFailed Tests:")
-        for test in failed_tests:
-            print(f"  ❌ {test['test']}")
-            if test.get("error"):
-                print(f"     Error: {test['error']}")
-
-    print("=" * 80)
-
-    # Save results to file
-    with open("/app/backend_test_results.json", "w") as f:
-        json.dump(results, f, indent=2)
-
-    print(f"\nDetailed results saved to: /app/backend_test_results.json")
-
-    # Exit with appropriate code
-    sys.exit(0 if passed == total else 1)
+    print(
+        f"Tests: {len(results['tests'])} | Passed: {counts['passed']} | "
+        f"Failed: {counts['failed']} | Skipped: {counts['skipped']}"
+    )
+    print(f"Results: {RESULTS_PATH}")
+    return 1 if counts["failed"] else 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
