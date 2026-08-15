@@ -24,8 +24,10 @@ function persistReadableToken(token) {
   // Strict cookie would be dropped for our own origin's fetches there.
   // SameSite=None requires Secure, so it only applies over HTTPS; plain HTTP
   // (local dev) falls back to Lax, which still works same-site.
+  // Partitioned (CHIPS) is also required in that iframe case: Chrome's
+  // third-party cookie phase-out drops SameSite=None cookies without it.
   const isHttps = window.location.protocol === 'https:';
-  const attrs = isHttps ? 'SameSite=None; Secure' : 'SameSite=Lax';
+  const attrs = isHttps ? 'SameSite=None; Secure; Partitioned' : 'SameSite=Lax';
   document.cookie =
     `${encodeURIComponent(CSRF_COOKIE)}=${encodeURIComponent(token)}` +
     `; Path=/; ${attrs}; Max-Age=3600`;
