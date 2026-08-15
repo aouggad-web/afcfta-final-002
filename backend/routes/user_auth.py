@@ -118,16 +118,36 @@ def _public_user(doc: dict) -> dict:
     }
 
 
+def _add_partitioned_attribute(response: Response, cookie_name: str) -> None:
+    """Starlette 0.37.2 has no `partitioned` param on set_cookie()/delete_cookie() —
+    append the attribute to the raw Set-Cookie header instead. Chrome's CHIPS
+    requires it for a SameSite=None; Secure cookie to survive in a cross-site
+    third-party context (e.g. the Emergent preview iframe); without it the
+    cookie is silently dropped there even though SameSite=None; Secure is set.
+    """
+    for i, (name, value) in enumerate(response.raw_headers):
+        if name == b"set-cookie" and value.startswith(f"{cookie_name}=".encode()):
+            response.raw_headers[i] = (name, value + b"; Partitioned")
+            break
+
+
 def _set_session_cookie(response: Response, token: str) -> None:
     response.set_cookie(
         key="access_token",
         value=token,
         httponly=True,
         secure=_COOKIE_SECURE,
-        samesite="lax",
+        # SameSite=None (not Lax): the app can be viewed inside the Emergent
+        # preview iframe, where the top-level document is a different site —
+        # a Lax cookie is never sent on our own fetches in that nested
+        # context, so authenticated requests fail there despite a successful
+        # login. SameSite=None requires Secure, hence tied to _COOKIE_SECURE.
+        samesite="none" if _COOKIE_SECURE else "lax",
         max_age=COOKIE_MAX_AGE,
         path="/",
     )
+    if _COOKIE_SECURE:
+        _add_partitioned_attribute(response, "access_token")
 
 
 @router.post("/register")
@@ -263,7 +283,18 @@ async def login(payload: LoginPayload, response: Response):
 
 @router.post("/logout")
 async def logout(response: Response):
-    response.delete_cookie("access_token", path="/")
+    # Must match the attributes _set_session_cookie() used to write the
+    # cookie (SameSite/Secure/Partitioned): a CHIPS-partitioned cookie lives
+    # in a separate jar from the unpartitioned one, so a mismatched deletion
+    # would silently miss it and leave the session cookie in place.
+    response.delete_cookie(
+        "access_token",
+        path="/",
+        secure=_COOKIE_SECURE,
+        samesite="none" if _COOKIE_SECURE else "lax",
+    )
+    if _COOKIE_SECURE:
+        _add_partitioned_attribute(response, "access_token")
     return {"message": "Déconnecté"}
 
 
