@@ -131,7 +131,7 @@ describe('CSRF cookie SameSite attribute', () => {
     await getCsrfToken({ forceRefresh: true }).catch(() => {});
 
     const written = cookieSetter.mock.calls.map(([value]) => value).join(' | ');
-    expect(written).toContain('SameSite=None; Secure');
+    expect(written).toContain('SameSite=None; Secure; Partitioned');
   });
 
   it('writes SameSite=Lax without Secure over plain HTTP (local dev)', async () => {
