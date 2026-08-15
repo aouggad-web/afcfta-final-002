@@ -295,14 +295,30 @@ def test_verified_congo_brazzaville_pcec_bracket():
     assert pcec["source"] and pcec["source"].startswith("http")
 
 
-def test_drc_cod_has_no_verified_fee():
-    # La R.D. Congo (COD) n'a PAS de frais vérifié (à ne pas confondre avec COG).
-    assert build_verified_provider_costs("COD", fob_value=100000, side="import") == []
+def test_verified_drc_occ_needs_cif_base_and_is_calculable_with_it():
+    # OCC RDC = 2% de la valeur CIF. Sans assiette CIF → PARTIAL (fail-closed, on ne
+    # substitue jamais le FOB au CIF). Avec CIF → montant unique 2% CIF.
+    no_cif = build_verified_provider_costs("COD", fob_value=100000, side="import")[0]
+    assert no_cif["fee_status"] == "PARTIAL"
+    assert no_cif["calculated_amount"] is None
+    with_cif = build_verified_provider_costs(
+        "COD", fob_value=100000, cif_value=100000, side="import"
+    )[0]
+    assert with_cif["fee_status"] == "CALCULABLE"
+    assert with_cif["is_range"] is False
+    assert with_cif["calculated_amount"] == 2000.0
+    assert with_cif["base_label"] == "CIF"
+    # Split BIVAC/OCC et avertissement taxe santé documentés.
+    assert "0,75%" in (with_cif["conditions"] or "")
+    assert "santé" in (with_cif["conditions"] or "").lower()
 
 
 def test_every_verified_fee_carries_a_primary_source():
-    # Règle 1 : chaque frais vérifié exploitable cite au moins une source.
-    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE", "GAB", "COG"):
-        for item in build_verified_provider_costs(iso, fob_value=100000, side="import"):
+    # Règle 1 : chaque frais vérifié exploitable cite au moins une source (y
+    # compris les frais à assiette CIF, d'où le cif_value fourni).
+    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE", "GAB", "COG", "COD"):
+        for item in build_verified_provider_costs(
+            iso, fob_value=100000, cif_value=100000, side="import"
+        ):
             assert item["source"] and item["source"].startswith("http")
             assert item["verification_sources"]

@@ -270,6 +270,35 @@
         ],
         "notes": "Taux route-dépendant (0,27%-0,53%) → FOURCHETTE bornée. Plancher/plafond/seuil en EUR/FCFA conservés en conditions, non appliqués cross-devise. COG (Brazzaville) distinct de COD (RDC)."
       }
+    },
+    {
+      "fee_id": "COD-OCC-REDEVANCE",
+      "country_iso3": "COD",
+      "side": "import",
+      "program": "Redevance de contrôle OCC (Office Congolais de Contrôle) — vérification exécutée par BIVAC/Bureau Veritas",
+      "scope": "Contrôle de conformité/qualité des marchandises importées en R.D. Congo (COD). À NE PAS confondre avec le Congo-Brazzaville (COG).",
+      "providers": ["OCC (Office Congolais de Contrôle, organisme public)", "BIVAC / Bureau Veritas (prestataire mandaté, exécution)"],
+      "mandating_authority": "Office Congolais de Contrôle (OCC), R.D. Congo",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_CIF",
+        "rate": 0.02,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur CIF saisie (assiette = valeur déclarée traitée comme CIF).",
+        "split": "0,75% pour le compte de BIVAC/Bureau Veritas (prestataire mandaté) + 1,25% pour le compte de l'OCC.",
+        "conditions": "Redevance de contrôle OCC = 2% de la valeur CIF, répartie 0,75% BIVAC/Bureau Veritas + 1,25% OCC. Assiette CIF (≠ FOB). NB : distincte de la « taxe santé » de 2% à l'importation instaurée séparément en RDC — ne pas cumuler par erreur.",
+        "effective_date": "2016-01-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Bureau Veritas / Verigates — datasheet R.D. Congo (Rev 22)", "url": "https://verigates.bureauveritas.com/sites/verigates/files/2020-12/CONGO%20(Rep%20Democratic%20of)%20%20FR%20Datasheet%20Rev%2022_1.pdf", "confirms": "BIVAC/Bureau Veritas prestataire mandaté du contrôle à l'importation en RDC sous l'OCC."},
+          {"publisher": "OMC — Examen des politiques commerciales (WT/TPR/S/240)", "url": "https://www.wto.org/french/tratop_f/tpr_f/s240-03_f.doc", "confirms": "Redevance OCC de 2% de la valeur CIF, répartie 0,75% BIVAC + 1,25% OCC."},
+          {"publisher": "OCC — Office Congolais de Contrôle (site officiel)", "url": "https://www.occ.cd/qui-sommes-nous/", "confirms": "OCC, organisme public de contrôle des importations en RDC."}
+        ],
+        "notes": "Taux FIXE (2% CIF, non route-dépendant) → montant unique. Assiette CIF supportée par le moteur (le calculateur transmet la valeur déclarée comme CIF). Split BIVAC/OCC documenté ; taxe santé distincte signalée."
+      }
     }
   ]
 }

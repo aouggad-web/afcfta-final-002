@@ -281,6 +281,18 @@
           ],
           "outcome": "NOT_PROMOTED_TO_CALCULABLE",
           "reason": "Taux OCC non confirmé par une source primaire lisible + assiette CIF (≠ FOB du calculateur). À reprendre avec un arrêté/tarif OCC officiel et un support CIF dans le calculateur."
+        },
+        {
+          "date": "2026-08-15",
+          "method": "confirmation datasheet Bureau Veritas/Verigates RDC (Rev 22) + Examen OMC (.doc lisible)",
+          "finding": "Redevance OCC confirmée à 2% de la valeur CIF (0,75% BIVAC/Bureau Veritas + 1,25% OCC) par le datasheet officiel de l'opérateur mandaté et l'Examen OMC. Le moteur supporte désormais l'assiette CIF (le calculateur transmet la valeur déclarée comme CIF).",
+          "sources_checked": [
+            "https://verigates.bureauveritas.com/sites/verigates/files/2020-12/CONGO%20(Rep%20Democratic%20of)%20%20FR%20Datasheet%20Rev%2022_1.pdf",
+            "https://www.wto.org/french/tratop_f/tpr_f/s240-03_f.doc"
+          ],
+          "outcome": "PROMOTED_TO_VERIFIED",
+          "target": "data/regulatory-compliance/verified_provider_fees.json#COD-OCC-REDEVANCE",
+          "reason": "Taux (2% CIF) confirmé + assiette CIF supportée → CALCULABLE. Taxe santé 2% distincte signalée pour éviter tout double comptage."
         }
       ]
     },
