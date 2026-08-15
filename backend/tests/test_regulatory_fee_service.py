@@ -308,6 +308,10 @@ def test_verified_drc_occ_needs_cif_base_and_is_calculable_with_it():
     assert with_cif["is_range"] is False
     assert with_cif["calculated_amount"] == 2000.0
     assert with_cif["base_label"] == "CIF"
+    # OCC est un organisme ÉTATIQUE : le prélèvement est classé perçu PUBLIC
+    # (formalité), pas frais de prestataire privé.
+    assert with_cif["scope"] == "formality"
+    assert with_cif["collector_type"] == "STATE_BODY"
     # Split BIVAC/OCC et avertissement taxe santé documentés.
     assert "0,75%" in (with_cif["conditions"] or "")
     assert "santé" in (with_cif["conditions"] or "").lower()

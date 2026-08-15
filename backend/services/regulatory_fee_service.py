@@ -319,11 +319,17 @@ def build_verified_provider_costs(
         # convertit pas de devise ; le seuil est appliqué uniquement si l'assiette
         # est exprimée dans la même devise que le seuil (prudence anti-FX).
         computed = compute_fee(detail, fob_value=fob_value, cif_value=cif_value, fee_exists=True)
+        # Nature du percepteur : "provider" (prestataire privé mandaté) par défaut,
+        # ou "formality" quand le frais est un prélèvement PUBLIC/étatique (ex. la
+        # redevance de l'OCC, organisme d'État de la RDC), même si une part est
+        # exécutée par un prestataire mandaté. L'entrée peut le déclarer via "scope".
+        scope = entry.get("scope_kind") or "provider"
         line = {
-            "scope": "provider",
+            "scope": scope,
             "measure_name": entry.get("program"),
             "mandating_authority": entry.get("mandating_authority"),
             "actor_name": ", ".join(entry.get("providers", [])) or None,
+            "collector_type": entry.get("collector_type"),
             "service": entry.get("scope"),
             "payer": entry.get("payer"),
             "contact": sources[0].get("url") if sources else None,

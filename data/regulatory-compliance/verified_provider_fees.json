@@ -275,10 +275,12 @@
       "fee_id": "COD-OCC-REDEVANCE",
       "country_iso3": "COD",
       "side": "import",
-      "program": "Redevance de contrôle OCC (Office Congolais de Contrôle) — vérification exécutée par BIVAC/Bureau Veritas",
-      "scope": "Contrôle de conformité/qualité des marchandises importées en R.D. Congo (COD). À NE PAS confondre avec le Congo-Brazzaville (COG).",
-      "providers": ["OCC (Office Congolais de Contrôle, organisme public)", "BIVAC / Bureau Veritas (prestataire mandaté, exécution)"],
-      "mandating_authority": "Office Congolais de Contrôle (OCC), R.D. Congo",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Redevance de contrôle OCC (Office Congolais de Contrôle, organisme ÉTATIQUE de la RDC) — part d'exécution déléguée à BIVAC/Bureau Veritas",
+      "scope": "Contrôle de conformité/qualité des marchandises importées en R.D. Congo (COD). Prélèvement PUBLIC opéré par l'OCC, établissement public de l'État congolais. À NE PAS confondre avec le Congo-Brazzaville (COG).",
+      "providers": ["OCC (Office Congolais de Contrôle — établissement public de l'État, RDC)", "BIVAC / Bureau Veritas (prestataire mandaté, part d'exécution 0,75%)"],
+      "mandating_authority": "Office Congolais de Contrôle (OCC) — organisme étatique de la R.D. Congo",
       "payer": "IMPORTER",
       "fee_detail": {
         "calculation_method": "PERCENTAGE_OF_CIF",
@@ -286,7 +288,7 @@
         "currency": null,
         "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur CIF saisie (assiette = valeur déclarée traitée comme CIF).",
         "split": "0,75% pour le compte de BIVAC/Bureau Veritas (prestataire mandaté) + 1,25% pour le compte de l'OCC.",
-        "conditions": "Redevance de contrôle OCC = 2% de la valeur CIF, répartie 0,75% BIVAC/Bureau Veritas + 1,25% OCC. Assiette CIF (≠ FOB). NB : distincte de la « taxe santé » de 2% à l'importation instaurée séparément en RDC — ne pas cumuler par erreur.",
+        "conditions": "Prélèvement PUBLIC de l'OCC (organisme étatique de la RDC) = 2% de la valeur CIF, réparti 0,75% pour BIVAC/Bureau Veritas (prestataire mandaté exécutant) + 1,25% pour l'OCC. Assiette CIF (≠ FOB). Classé comme perçu public (formalité), non comme frais de prestataire privé. NB : distinct de la « taxe santé » de 2% à l'importation instaurée séparément en RDC — ne pas cumuler par erreur.",
         "effective_date": "2016-01-01"
       },
       "verification": {
