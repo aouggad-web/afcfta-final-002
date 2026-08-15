@@ -235,6 +235,41 @@
         ],
         "notes": "Taux route-dépendant (0,27%-0,53%) → FOURCHETTE bornée. Plancher/plafond en EUR conservés en conditions, non appliqués cross-devise."
       }
+    },
+    {
+      "fee_id": "COG-PCEC-HONORAIRES",
+      "country_iso3": "COG",
+      "side": "import",
+      "program": "PCEC — Programme Congolais d'Évaluation de la Conformité (ACONOQ) — République du Congo (Brazzaville)",
+      "scope": "Marchandises réglementées importées en République du Congo (Brazzaville) dont la valeur FOB ≥ 1 000 000 FCFA. À NE PAS confondre avec la R.D. Congo (COD).",
+      "providers": ["COTECNA", "Bureau Veritas", "TÜV Rheinland"],
+      "mandating_authority": "Agence Congolaise de Normalisation et de la Qualité (ACONOQ)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0027,
+        "rate_max": 0.0053,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond/seuil ci-dessous en EUR/FCFA, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "EUR",
+        "floor_eur_min": 220,
+        "floor_eur_max": 300,
+        "cap_eur": 7000,
+        "threshold_fob_xaf": 1000000,
+        "legal_basis": "Arrêté interministériel instituant/renforçant le PCEC (République du Congo)",
+        "conditions": "Route A 0,53%, Route B 0,45%, Route C 0,27% de la valeur FOB. Minimum 300 EUR (220 EUR pour la Route C), maximum 7000 EUR. Ne s'applique qu'au-delà d'un seuil FOB de 1 000 000 FCFA (~1524 EUR). Frais d'enregistrement distincts (375 EUR pour 15 produits + 20 EUR/produit supplémentaire).",
+        "effective_date": "2023-01-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Bureau Veritas / Verigates — datasheet PCEC République du Congo (Brazzaville) Rev 1.3", "url": "https://verigates.bureauveritas.com/sites/verigates/files/2023-06/REPUBLIC%20OF%20THE%20CONGO%20(PCEC)%20(BRAZAVILLE)%20%20Rev%201.3%20FR_0.pdf", "confirms": "Routes A/B/C 0,53%/0,45%/0,27% FOB ; min 300 EUR (220 EUR route C) ; max 7000 EUR ; seuil FOB 1 000 000 FCFA."},
+          {"publisher": "Cotecna — application officielle du PCEC au Congo", "url": "https://www.cotecna.com/fr/medias/actualites/mise-a-jour-importante-application-officielle-du-pcec-au-congo/", "confirms": "PCEC opéré par Cotecna sous mandat ACONOQ ; barème et seuil FOB."},
+          {"publisher": "Journal de Brazza — TÜV Rheinland autorisé par l'ACONOQ (PCEC)", "url": "https://www.journaldebrazza.com/tuv-rheinland-est-autorise-par-laconoq-a-fournir-des-services-devaluation-de-la-conformite-dans-le-cadre-du-programme-congolais-devaluation-de-la-conformite-pcec/", "confirms": "Programme PCEC officiel (ACONOQ) et organismes mandatés."}
+        ],
+        "notes": "Taux route-dépendant (0,27%-0,53%) → FOURCHETTE bornée. Plancher/plafond/seuil en EUR/FCFA conservés en conditions, non appliqués cross-devise. COG (Brazzaville) distinct de COD (RDC)."
+      }
     }
   ]
 }

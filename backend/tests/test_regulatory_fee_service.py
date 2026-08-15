@@ -283,9 +283,26 @@ def test_verified_gabon_progec_bracket():
     assert progec["source"] and progec["source"].startswith("http")
 
 
+def test_verified_congo_brazzaville_pcec_bracket():
+    # COG (Brazzaville) — distinct de COD (RDC).
+    items = build_verified_provider_costs("COG", fob_value=100000, side="import")
+    assert len(items) == 1
+    pcec = items[0]
+    assert pcec["fee_status"] == "CALCULABLE"
+    assert pcec["is_range"] is True
+    assert pcec["calculated_amount_min"] == 270.0
+    assert pcec["calculated_amount_max"] == 530.0
+    assert pcec["source"] and pcec["source"].startswith("http")
+
+
+def test_drc_cod_has_no_verified_fee():
+    # La R.D. Congo (COD) n'a PAS de frais vérifié (à ne pas confondre avec COG).
+    assert build_verified_provider_costs("COD", fob_value=100000, side="import") == []
+
+
 def test_every_verified_fee_carries_a_primary_source():
     # Règle 1 : chaque frais vérifié exploitable cite au moins une source.
-    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE", "GAB"):
+    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE", "GAB", "COG"):
         for item in build_verified_provider_costs(iso, fob_value=100000, side="import"):
             assert item["source"] and item["source"].startswith("http")
             assert item["verification_sources"]

@@ -270,6 +270,17 @@
           ],
           "outcome": "NOT_PROMOTED_TO_CALCULABLE",
           "reason": "Barème RDC non chiffré par une source primaire ; risque de confusion COD/COG. Reste en indication secondaire."
+        },
+        {
+          "date": "2026-08-15",
+          "method": "web_search OCC (Office Congolais de Contrôle) redevance CIF",
+          "finding": "L'OCC prélèverait ~2% de la valeur CIF (réparti 0,75% BIVAC + 1,25% OCC) selon plusieurs sources, une autre indiquant 1,5% ; le PDF de l'Examen OMC (WT/TPR/S/240) n'est pas exploitable (binaire). Deux incertitudes : (1) taux non tranché (2% vs 1,5%), (2) assiette CIF alors que le calculateur transmet le FOB.",
+          "sources_checked": [
+            "https://www.occ.cd/qui-sommes-nous/",
+            "https://docsonline.wto.org/dol2fe/Pages/SS/directdoc.aspx?filename=R%3A%2FWT%2FTPR%2FS240-04.pdf"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux OCC non confirmé par une source primaire lisible + assiette CIF (≠ FOB du calculateur). À reprendre avec un arrêté/tarif OCC officiel et un support CIF dans le calculateur."
         }
       ]
     },
