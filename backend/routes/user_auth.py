@@ -124,9 +124,16 @@ def _add_partitioned_attribute(response: Response, cookie_name: str) -> None:
     requires it for a SameSite=None; Secure cookie to survive in a cross-site
     third-party context (e.g. the Emergent preview iframe); without it the
     cookie is silently dropped there even though SameSite=None; Secure is set.
+
+    Patches the LAST matching Set-Cookie header, not the first: logout()
+    emits two Set-Cookie headers for the same cookie name (one legacy
+    unpartitioned deletion, one partitioned deletion) and only the second
+    one should gain the attribute.
     """
-    for i, (name, value) in enumerate(response.raw_headers):
-        if name == b"set-cookie" and value.startswith(f"{cookie_name}=".encode()):
+    prefix = f"{cookie_name}=".encode()
+    for i in range(len(response.raw_headers) - 1, -1, -1):
+        name, value = response.raw_headers[i]
+        if name == b"set-cookie" and value.startswith(prefix):
             response.raw_headers[i] = (name, value + b"; Partitioned")
             break
 
@@ -283,17 +290,27 @@ async def login(payload: LoginPayload, response: Response):
 
 @router.post("/logout")
 async def logout(response: Response):
-    # Must match the attributes _set_session_cookie() used to write the
-    # cookie (SameSite/Secure/Partitioned): a CHIPS-partitioned cookie lives
-    # in a separate jar from the unpartitioned one, so a mismatched deletion
-    # would silently miss it and leave the session cookie in place.
+    # A CHIPS-partitioned cookie lives in a separate jar from an unpartitioned
+    # one — deleting only one shape leaves the other active. Sessions issued
+    # before the Partitioned rollout (#400) are unpartitioned SameSite=Lax;
+    # sessions issued after are SameSite=None; Secure; Partitioned. Emit both
+    # deletions so either shape of pre-existing session cookie is cleared,
+    # regardless of when it was issued. Browsers accept multiple Set-Cookie
+    # headers for the same name/path when their Partitioned status differs —
+    # that distinction is exactly what CHIPS uses to pick the jar.
     response.delete_cookie(
         "access_token",
         path="/",
         secure=_COOKIE_SECURE,
-        samesite="none" if _COOKIE_SECURE else "lax",
+        samesite="lax",
     )
     if _COOKIE_SECURE:
+        response.delete_cookie(
+            "access_token",
+            path="/",
+            secure=_COOKIE_SECURE,
+            samesite="none",
+        )
         _add_partitioned_attribute(response, "access_token")
     return {"message": "Déconnecté"}
 
