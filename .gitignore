@@ -111,3 +111,10 @@ backend/data/geoip/
 .emergent/cron/webhook-crons
 .emergent/cron/applied.hash
 .emergent/markers/
+
+# Notes de session locales au pod (identifiants de test, URLs de preview
+# éphémères) — jamais de valeur en clair depuis le nettoyage du 2026-08-14,
+# mais toujours à tenir hors du dépôt par principe : ce fichier n'a de sens
+# que pour la session pod en cours, et son contenu se périme à chaque
+# redéploiement (nouvelle URL, nouveau compte de test).
+memory/test_credentials.md
