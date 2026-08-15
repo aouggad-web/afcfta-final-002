@@ -50,3 +50,16 @@ def test_ghana_carries_verification_attempt_note():
     attempts = ghana_icums.get("verification_attempts", [])
     assert attempts, "Ghana ICUMS doit porter une tentative de vérification"
     assert attempts[0]["outcome"] == "NOT_PROMOTED_TO_CALCULABLE"
+
+
+def test_central_african_republic_reported_but_not_calculable():
+    # RCA (CAF) : conformité SGS + BESC Groupe Albatros, prestataires privés, mais
+    # taux/montant non publiés → indications secondaires, jamais calculables.
+    items = get_reported_missions("CAF")
+    assert len(items) >= 2
+    programs = " ".join(r.get("program", "") for r in items)
+    assert "conformité" in programs.lower() and "BESC" in programs
+    layer = build_reported_layer("CAF", "DZA")
+    assert layer is not None
+    for it in layer["items"]:
+        assert it["fee_status"] == "FEE_EXISTS_AMOUNT_NOT_AVAILABLE"

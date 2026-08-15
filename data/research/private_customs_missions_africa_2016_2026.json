@@ -483,6 +483,73 @@
       "traceability": "Contrats BSC/GasyNet.",
       "verification_status": "UNVERIFIED",
       "note": "Regroupe plusieurs pays sous une même ligne source — à éclater par pays lors de la vérification primaire."
+    },
+    {
+      "record_id": "CAF-CONFORMITE-2021",
+      "country_iso3": "CAF",
+      "country_name": "République Centrafricaine",
+      "program": "Vérification préalable de la conformité des marchandises importées",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["SGS (mandataire exclusif)"],
+      "period": {"start": "2021-03-01", "end": "en cours"},
+      "mission": "Contrôle documentaire, inspection (marquage/étiquetage), délivrance du certificat de conformité, pour le compte du Ministère du Commerce.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "Taux ad valorem FOB NON publié officiellement (barème SGS non rendu public).",
+        "reported_min": null,
+        "reported_max": null,
+        "currency": null,
+        "exemption": "Expéditions commerciales de valeur FOB < 1 500 USD (3 000 USD pour les expéditions personnelles) exemptées."
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "SGS mandataire exclusif depuis le 1er mars 2021, pour le Ministère du Commerce de la RCA.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search + fetch page SGS RCA",
+          "finding": "Programme confirmé (SGS exclusif, seuil d'exemption FOB 1 500 USD commercial / 3 000 USD personnel), MAIS le TAUX ad valorem n'est pas publié officiellement. Les taux des voisins CEMAC (Cameroun 0,27-0,45%, Gabon/Congo 0,27-0,53%) ne peuvent PAS être transposés (généralisation interdite, règle #4).",
+          "sources_checked": [
+            "https://www.sgs.com/fr-fr/services/republique-centrafricaine-rca-verification-prealable-de-la-conformite-des-marchandises-importees",
+            "https://corbeaunews-centrafrique.org/rca-mise-en-place-du-systeme-de-verification-de-la-conformite-des-importations/"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux non publié par une source officielle. Reste en indication secondaire (à confirmer) jusqu'à obtention de l'arrêté/barème RCA."
+        }
+      ]
+    },
+    {
+      "record_id": "CAF-BESC-2023",
+      "country_iso3": "CAF",
+      "country_name": "République Centrafricaine",
+      "program": "BESC — Bordereau Électronique de Suivi des Cargaisons (import/export/transit)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Groupe Albatros (mandataire exclusif, société centrafricaine)", "K-Polygone Multinational (appui technique)"],
+      "period": {"start": "2023-05-30", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons, sécurisation des flux financiers, recouvrement des droits liés au transport ; BESC obligatoire validé par le Conseil Centrafricain des Chargeurs.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "Redevance par bordereau/connaissement — montant officiel non publié dans les sources consultées.",
+        "currency": null
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Lancement officiel le 30 mai 2023 à Douala ; Groupe Albatros mandataire exclusif du gouvernement centrafricain.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search BESC RCA / Groupe Albatros",
+          "finding": "BESC RCA confirmé (Groupe Albatros mandataire exclusif depuis mai 2023) mais montant de la redevance non publié dans les sources consultées.",
+          "sources_checked": [
+            "https://www.economieducameroun.info/echanges-commerciaux-la-rca-et-le-cameroun-elaborent-un-bordereau-electronique-de-suivi-des-cargaisons-de-marchandises-entre-les-deux-pays/",
+            "https://www.capresse.net/besc-et-redevance-armatoriale-la-rca-engage-la-bataille-de-la-tracabilite/"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Montant de la redevance BESC non publié officiellement. Reste en indication secondaire (à confirmer)."
+        }
+      ]
     }
   ]
 }
