@@ -102,8 +102,15 @@
             "https://son.gov.ng/helpie_faq/how-much-does-it-cost-to-apply-for-soncap-product-certificate/",
             "https://son.gov.ng/soncap-faq/"
           ],
-          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
-          "reason": "Structure de frais hétérogène (fixes par produit + par expédition) non réductible à une fourchette ad valorem ; CISS à vérifier séparément sur source primaire (SON/CBN/Douanes)."
+          "outcome": "PARTIALLY_PROMOTED",
+          "reason": "Structure hétérogène : seule la composante par expédition est promue.",
+          "followup": {
+            "date": "2026-08-15",
+            "method": "SON — SONCAP FAQ officielle (son.gov.ng)",
+            "finding": "Le SONCAP Certificate (SC) est un montant FIXE de 350 USD par expédition, délivré par des organismes privés (Bureau Veritas, Cotecna, Intertek, CCIC…). Promu en DOCUMENTED_FIXED_AMOUNT. Les Product Certificates (PC1 500 / PC2 1000 / PC3 2000 USD) sont par produit (one-time) et la CISS (1% FOB) est un dispositif douanier séparé — tous deux hors de la ligne calculée.",
+            "sources": ["https://son.gov.ng/soncap-faq/"],
+            "target": "data/regulatory-compliance/verified_provider_fees.json#NGA-SONCAP-SC"
+          }
         }
       ]
     },

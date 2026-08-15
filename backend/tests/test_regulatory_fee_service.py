@@ -317,10 +317,24 @@ def test_verified_drc_occ_needs_cif_base_and_is_calculable_with_it():
     assert "santé" in (with_cif["conditions"] or "").lower()
 
 
+def test_verified_nigeria_soncap_sc_fixed_amount():
+    # SONCAP Certificate (SC) = montant FIXE par expédition (350 USD), délivré par
+    # des organismes privés mandatés par la SON.
+    items = build_verified_provider_costs("NGA", fob_value=100000, cif_value=100000, side="import")
+    assert len(items) == 1
+    sc = items[0]
+    assert sc["fee_status"] == "DOCUMENTED_FIXED_AMOUNT"
+    assert sc["calculated_amount"] == 350.0
+    assert sc["currency"] == "USD"
+    assert sc["scope"] == "provider"
+    # PC (par produit) et CISS (douane) explicitement hors de cette ligne.
+    assert "PC1" in (sc["conditions"] or "") and "CISS" in (sc["conditions"] or "")
+
+
 def test_every_verified_fee_carries_a_primary_source():
     # Règle 1 : chaque frais vérifié exploitable cite au moins une source (y
     # compris les frais à assiette CIF, d'où le cif_value fourni).
-    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE", "GAB", "COG", "COD"):
+    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE", "GAB", "COG", "COD", "NGA"):
         for item in build_verified_provider_costs(
             iso, fob_value=100000, cif_value=100000, side="import"
         ):

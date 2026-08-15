@@ -301,6 +301,33 @@
         ],
         "notes": "Taux FIXE (2% CIF, non route-dépendant) → montant unique. Assiette CIF supportée par le moteur (le calculateur transmet la valeur déclarée comme CIF). Split BIVAC/OCC documenté ; taxe santé distincte signalée."
       }
+    },
+    {
+      "fee_id": "NGA-SONCAP-SC",
+      "country_iso3": "NGA",
+      "side": "import",
+      "scope_kind": "provider",
+      "program": "SONCAP — SONCAP Certificate (SC), par expédition (organismes privés mandatés par la SON)",
+      "scope": "Certificat SONCAP exigé par expédition de produits réglementés importés au Nigeria. Délivré par des organismes d'évaluation privés (IAF) mandatés par la Standards Organisation of Nigeria (SON).",
+      "providers": ["Bureau Veritas", "COTECNA Verification Services Nigeria", "Intertek / Intersip Quality Solutions", "China Certification and Inspection Group (CCIC)", "TÜV Rheinland"],
+      "mandating_authority": "Standards Organisation of Nigeria (SON)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "FIXED_AMOUNT",
+        "fixed_amount": 350,
+        "currency": "USD",
+        "conditions": "SONCAP Certificate (SC) = 350 USD par certificat (par expédition). Distinct des Certificats Produit (PC), facturés une fois par produit : PC1 500 USD / PC2 1000 USD / PC3 2000 USD (non inclus ici car non liés à l'expédition). La CISS (1% FOB) est un dispositif douanier séparé — ne pas cumuler.",
+        "effective_date": "2013-01-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Standards Organisation of Nigeria (SON) — SONCAP FAQ (site officiel)", "url": "https://son.gov.ng/soncap-faq/", "confirms": "SONCAP Certificate (SC) : 350 USD par certificat ; Product Certificate PC1/PC2/PC3 : 500/1000/2000 USD ; organismes IAF mandatés (Bureau Veritas, Cotecna, Intertek, CCIC…)."},
+          {"publisher": "SON — coût du SONCAP Product Certificate (FAQ)", "url": "https://son.gov.ng/helpie_faq/how-much-does-it-cost-to-apply-for-soncap-product-certificate/", "confirms": "Grille officielle des frais SONCAP (SC et PC) en USD."}
+        ],
+        "notes": "Frais FIXE par expédition (montant unique en USD) → DOCUMENTED_FIXED_AMOUNT. Les PC (par produit) et la CISS (1% FOB, douane) restent hors de cette ligne."
+      }
     }
   ]
 }
