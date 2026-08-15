@@ -136,6 +136,40 @@
         ],
         "notes": "Taux route-dépendant (0,25%-0,50%) → FOURCHETTE bornée. Plancher/plafond/seuil USD en conditions, non appliqués cross-devise."
       }
+    },
+    {
+      "fee_id": "CMR-PECAE-HONORAIRES",
+      "country_iso3": "CMR",
+      "side": "import",
+      "program": "PECAE — Programme d'Évaluation de la Conformité Avant Embarquement (ANOR)",
+      "scope": "Marchandises réglementées importées au Cameroun (FOB ≥ 2 000 000 XAF ; en deçà, exemption).",
+      "providers": ["SGS", "INTERTEK", "Bureau Veritas"],
+      "mandating_authority": "Agence des Normes et de la Qualité (ANOR), Cameroun",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0027,
+        "rate_max": 0.0045,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond/seuil ci-dessous en FCFA (XAF), NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "XAF",
+        "floor_xaf": 175218,
+        "cap_xaf": 4088420,
+        "threshold_fob_xaf": 2000000,
+        "legal_basis": "Décret n° 2015/1875/PM du 1er juillet 2015 instituant le PECAE",
+        "conditions": "Méthode A 0,45%, B 0,40%, C 0,27% de la valeur FOB. Plancher 175 218 XAF, plafond 4 088 420 XAF. Exemption si FOB < 2 000 000 XAF. Base légale : Décret n° 2015/1875/PM du 1er juillet 2015.",
+        "effective_date": "2015-07-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Osidimbea (encyclopédie du Cameroun) — fiche ANOR/PECAE", "url": "https://www.osidimbea.cm/entreprises/a-capitaux-publics/anor-pecae/", "confirms": "Méthodes A/B/C 0,45%/0,40%/0,27% FOB ; plancher 175 218 XAF ; plafond 4 088 420 XAF ; exemption FOB < 2 000 000 XAF ; base légale Décret n° 2015/1875/PM du 1er juillet 2015."},
+          {"publisher": "ANOR — plateforme PECAE", "url": "https://www.anor.cm/pecae", "confirms": "Programme PECAE officiel et organismes d'évaluation mandatés (ANOR)."},
+          {"publisher": "SGS — PECAE Cameroun", "url": "https://www.sgs.com/fr-fr/services/cameroun-evaluation-de-la-conformite-des-produits-avant-l-expedition-pecae", "confirms": "SGS organisme mandaté du PECAE Cameroun."}
+        ],
+        "notes": "Taux route-dépendant (0,27%-0,45%) → FOURCHETTE bornée. Plancher/plafond/seuil en XAF conservés en conditions, non appliqués cross-devise. Base légale (décret) citée."
+      }
     }
   ]
 }

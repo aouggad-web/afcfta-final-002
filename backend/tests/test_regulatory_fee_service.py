@@ -246,9 +246,22 @@ def test_verified_uganda_pvoc_bracket_from_unbs():
     assert "235 USD" in (pvoc["conditions"] or "")
 
 
+def test_verified_cameroon_pecae_bracket_with_legal_basis():
+    items = build_verified_provider_costs("CMR", fob_value=100000, side="import")
+    assert len(items) == 1
+    pecae = items[0]
+    assert pecae["fee_status"] == "CALCULABLE"
+    assert pecae["is_range"] is True
+    # 0,27%-0,45% de 100000 = 270-450.
+    assert pecae["calculated_amount_min"] == 270.0
+    assert pecae["calculated_amount_max"] == 450.0
+    # Base légale (décret) citée dans les conditions.
+    assert "Décret" in (pecae["conditions"] or "")
+
+
 def test_every_verified_fee_carries_a_primary_source():
     # Règle 1 : chaque frais vérifié exploitable cite au moins une source.
-    for iso in ("CIV", "KEN", "TZA", "UGA"):
+    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR"):
         for item in build_verified_provider_costs(iso, fob_value=100000, side="import"):
             assert item["source"] and item["source"].startswith("http")
             assert item["verification_sources"]

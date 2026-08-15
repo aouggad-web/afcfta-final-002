@@ -258,7 +258,20 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "Redémarrage strict des contrôles 2021.",
-      "verification_status": "UNVERIFIED"
+      "verification_status": "UNVERIFIED",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search PCEC RDC / Bureau Veritas / Cotecna",
+          "finding": "Les résultats se rapportent majoritairement au Congo-Brazzaville (COG), pas à la RDC (COD) : à ne pas confondre. Aucun barème chiffré officiel (taux FOB, plancher/plafond) trouvé pour la RDC.",
+          "sources_checked": [
+            "https://verigates.bureauveritas.com/programmes/congo",
+            "https://www.cotecna.com/fr/services/verification-de-la-conformite/congo"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Barème RDC non chiffré par une source primaire ; risque de confusion COD/COG. Reste en indication secondaire."
+        }
+      ]
     },
     {
       "record_id": "COD-FERI-OGEFREM",
@@ -372,7 +385,16 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "Programme consolidé et actif.",
-      "verification_status": "UNVERIFIED"
+      "verification_status": "PROMOTED_TO_VERIFIED",
+      "promotion": {
+        "date": "2026-08-15",
+        "target": "data/regulatory-compliance/verified_provider_fees.json#CMR-PECAE-HONORAIRES",
+        "sources": [
+          "https://www.osidimbea.cm/entreprises/a-capitaux-publics/anor-pecae/",
+          "https://www.anor.cm/pecae"
+        ],
+        "note": "Barème réel confirmé (Décret n° 2015/1875/PM du 1er juillet 2015) : Méthode A 0,45% / B 0,40% / C 0,27% FOB ; plancher 175 218 XAF ; plafond 4 088 420 XAF ; exemption FOB < 2 000 000 XAF. Le taux « 0,95% » de certains agrégateurs est ERRONÉ. Désormais CALCULABLE (fourchette 0,27%-0,45%)."
+      }
     },
     {
       "record_id": "MAR-PORTNET",
