@@ -331,6 +331,17 @@ def test_verified_nigeria_soncap_sc_fixed_amount():
     assert "PC1" in (sc["conditions"] or "") and "CISS" in (sc["conditions"] or "")
 
 
+def test_stage_separates_export_upstream_from_import_downstream():
+    # Conformité payée par l'exportateur → étape EXPORT (amont). OCC/SONCAP payés
+    # par l'importateur → étape IMPORT (aval).
+    civ = build_verified_provider_costs("CIV", fob_value=100000, side="import")[0]
+    ken = build_verified_provider_costs("KEN", fob_value=100000, side="import")[0]
+    cod = build_verified_provider_costs("COD", fob_value=100000, cif_value=100000, side="import")[0]
+    nga = build_verified_provider_costs("NGA", fob_value=100000, side="import")[0]
+    assert civ["stage"] == "export" and ken["stage"] == "export"
+    assert cod["stage"] == "import" and nga["stage"] == "import"
+
+
 def test_every_verified_fee_carries_a_primary_source():
     # Règle 1 : chaque frais vérifié exploitable cite au moins une source (y
     # compris les frais à assiette CIF, d'où le cif_value fourni).

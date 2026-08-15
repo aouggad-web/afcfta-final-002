@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { AlertTriangle, Landmark, Building2, Info } from 'lucide-react';
+import { AlertTriangle, Landmark, Info, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 
 // Composition du coût réglementaire — présente, en lignes distinctes, les droits
 // et taxes PUBLICS puis les frais de formalité et de prestataire mandaté, et
@@ -74,7 +74,63 @@ function T(language) {
     between: fr ? 'entre' : 'between',
     and: fr ? 'et' : 'and',
     ofFob: fr ? 'du FOB' : 'of FOB',
+    // Volets import / export
+    exportStageTitle: fr
+      ? "Formalités à l'export (amont — pays d'origine)"
+      : 'Export-side formalities (upstream — country of origin)',
+    exportStageDesc: fr
+      ? "Accomplies avant embarquement dans le pays d'origine, à la charge de l'exportateur."
+      : 'Completed before shipment in the country of origin, borne by the exporter.',
+    importStageTitle: fr
+      ? "Formalités à l'import (aval — pays de destination)"
+      : 'Import-side formalities (downstream — country of destination)',
+    importStageDesc: fr
+      ? "Acquittées à l'arrivée dans le pays de destination, à la charge de l'importateur."
+      : 'Paid on arrival in the destination country, borne by the importer.',
+    publicScope: fr ? 'perçu public' : 'public levy',
+    providerScope: fr ? 'prestataire privé' : 'private provider',
+    explainTitle: fr ? "Import vs export : comment lire ces frais" : 'Import vs export: how to read these fees',
+    explainBody: fr
+      ? "Les formalités déléguées se répartissent en deux étapes de l'opération. À l'EXPORT (amont), les programmes de conformité (VOC, PVoC, CBCA, PECAE, PROGEC, PCEC) sont exécutés dans le pays d'origine AVANT l'embarquement et payés par l'exportateur — même s'ils sont exigés par le pays de destination. À l'IMPORT (aval), d'autres frais sont acquittés à destination par l'importateur (ex. redevance OCC en RDC, certificat SONCAP au Nigeria). Les frais du prestataire PRIVÉ restent distincts des perçus PUBLICS (organismes d'État)."
+      : "Delegated formalities split into two stages of the operation. On the EXPORT side (upstream), conformity programmes (VOC, PVoC, CBCA, PECAE, PROGEC, PCEC) are carried out in the country of origin BEFORE shipment and paid by the exporter — even though required by the destination country. On the IMPORT side (downstream), other fees are paid at destination by the importer (e.g. OCC levy in DRC, SONCAP certificate in Nigeria). PRIVATE-provider fees remain distinct from PUBLIC levies (state bodies).",
   };
+}
+
+function ScopeTag({ item, t }) {
+  const isPublic = item.scope === 'formality' || item.collector_type === 'STATE_BODY';
+  return (
+    <span
+      className={`text-[9px] px-1.5 py-0.5 rounded border ${
+        isPublic
+          ? 'bg-slate-600/20 text-slate-300 border-slate-500/40'
+          : 'bg-indigo-500/15 text-indigo-300 border-indigo-500/40'
+      }`}
+    >
+      {isPublic ? t.publicScope : t.providerScope}
+    </span>
+  );
+}
+
+function StageBlock({ title, desc, icon: Icon, items, t, language }) {
+  if (!items.length) return null;
+  return (
+    <div className="space-y-2">
+      <div>
+        <p className="text-sm font-semibold text-amber-300 flex items-center gap-2">
+          <Icon className="w-4 h-4" /> {title}
+        </p>
+        <p className="text-[11px] text-slate-500 ml-6">{desc}</p>
+      </div>
+      {items.map((item, idx) => (
+        <div key={idx} className="relative">
+          <div className="absolute right-3 top-3 z-10">
+            <ScopeTag item={item} t={t} />
+          </div>
+          <FeeLine item={item} t={t} language={language} />
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function rangeText(item, t) {
@@ -187,8 +243,9 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
     (Number(result?.normal_other_taxes_total) || 0);
   const publicSubtotal = Number(result?.normal_total_cost) || duty + vat + other;
 
-  const formalityLines = rc.line_items.filter((i) => i.scope === 'formality');
-  const providerLines = rc.line_items.filter((i) => i.scope === 'provider');
+  // Regroupement par ÉTAPE logistique : export (amont) vs import (aval).
+  const exportLines = rc.line_items.filter((i) => i.stage === 'export');
+  const importLines = rc.line_items.filter((i) => i.stage !== 'export');
 
   const regTotal = rc.regulatory_cost_total;
   const regCcy = rc.regulatory_cost_currency;
@@ -224,35 +281,37 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
           <Row label={t.publicSubtotal} value={fmt(publicSubtotal, '')} strong />
         </div>
 
-        {/* Séparation explicite (règle 7) */}
-        <div className="flex items-start gap-2 text-xs text-slate-400">
-          <Info className="w-4 h-4 text-slate-500 shrink-0 mt-0.5" />
-          <span>{t.separatedNote}</span>
+        {/* Encadré explicatif import vs export */}
+        <div className="rounded-lg border border-sky-500/30 bg-sky-500/5 p-3">
+          <p className="text-sm font-semibold text-sky-200 flex items-center gap-2">
+            <Info className="w-4 h-4" /> {t.explainTitle}
+          </p>
+          <p className="text-xs text-slate-300/90 mt-1">{t.explainBody}</p>
+          <p className="text-[11px] text-slate-400 mt-2 flex items-start gap-2">
+            <Info className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" />
+            <span>{t.separatedNote}</span>
+          </p>
         </div>
 
-        {/* Frais de formalités obligatoires */}
-        {formalityLines.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-sm font-semibold text-amber-300 flex items-center gap-2">
-              <Landmark className="w-4 h-4" /> {t.formalityFees}
-            </p>
-            {formalityLines.map((item, idx) => (
-              <FeeLine key={`f-${idx}`} item={item} t={t} language={language} />
-            ))}
-          </div>
-        )}
+        {/* Volet EXPORT (amont, pays d'origine) */}
+        <StageBlock
+          title={t.exportStageTitle}
+          desc={t.exportStageDesc}
+          icon={ArrowUpRight}
+          items={exportLines}
+          t={t}
+          language={language}
+        />
 
-        {/* Frais du prestataire mandaté */}
-        {providerLines.length > 0 && (
-          <div className="space-y-2">
-            <p className="text-sm font-semibold text-amber-300 flex items-center gap-2">
-              <Building2 className="w-4 h-4" /> {t.providerFees}
-            </p>
-            {providerLines.map((item, idx) => (
-              <FeeLine key={`p-${idx}`} item={item} t={t} language={language} />
-            ))}
-          </div>
-        )}
+        {/* Volet IMPORT (aval, pays de destination) */}
+        <StageBlock
+          title={t.importStageTitle}
+          desc={t.importStageDesc}
+          icon={ArrowDownLeft}
+          items={importLines}
+          t={t}
+          language={language}
+        />
 
         {/* Coût réglementaire total */}
         <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">

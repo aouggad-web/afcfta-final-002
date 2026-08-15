@@ -197,6 +197,18 @@ def _fee_exists_for_measure(measure: Dict[str, Any]) -> bool:
     return measure.get("fees_status") not in (None, "NOT_APPLICABLE")
 
 
+def _stage_for(payer: Optional[str]) -> str:
+    """Étape logistique d'une formalité, dérivée du payeur.
+
+    « export » (amont, pays d'origine) quand l'exportateur en supporte la charge :
+    typiquement les programmes de conformité (VOC/PVoC/…) accomplis AVANT
+    embarquement dans le pays d'origine, bien qu'exigés par le pays de destination.
+    « import » (aval, pays de destination) sinon : frais à la charge de
+    l'importateur, acquittés à destination (ex. redevance OCC, SONCAP).
+    """
+    return "export" if payer == "EXPORTER" else "import"
+
+
 def build_regulatory_cost(
     compliance: Optional[Dict[str, Any]],
     *,
@@ -243,6 +255,7 @@ def build_regulatory_cost(
                 "legal_reference": measure.get("legal_reference"),
                 "as_of": compliance.get("as_of"),
                 "side": side,
+                "stage": side,
                 **formality_fee,
             }
         )
@@ -267,6 +280,7 @@ def build_regulatory_cost(
                     "mandate_status": actor.get("mandate_status"),
                     "as_of": compliance.get("as_of"),
                     "side": side,
+                    "stage": side,
                     **provider_fee,
                 }
             )
@@ -324,6 +338,7 @@ def build_verified_provider_costs(
         # redevance de l'OCC, organisme d'État de la RDC), même si une part est
         # exécutée par un prestataire mandaté. L'entrée peut le déclarer via "scope".
         scope = entry.get("scope_kind") or "provider"
+        payer = entry.get("payer")
         line = {
             "scope": scope,
             "measure_name": entry.get("program"),
@@ -331,7 +346,8 @@ def build_verified_provider_costs(
             "actor_name": ", ".join(entry.get("providers", [])) or None,
             "collector_type": entry.get("collector_type"),
             "service": entry.get("scope"),
-            "payer": entry.get("payer"),
+            "payer": payer,
+            "stage": _stage_for(payer),
             "contact": sources[0].get("url") if sources else None,
             "verification_status": verification.get("status"),
             "verification_sources": sources,

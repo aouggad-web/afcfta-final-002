@@ -33,6 +33,8 @@ const CALCULABLE_ITEM = {
   actor_name: 'COTECNA',
   mandating_authority: 'Ministère du Commerce',
   side: 'import',
+  stage: 'export',
+  payer: 'EXPORTER',
   fee_status: 'CALCULABLE',
   calculated_amount: 500,
   currency: 'USD',
@@ -45,6 +47,8 @@ const UNPRICED_ITEM = {
   actor_name: 'SGS',
   mandating_authority: 'Douanes',
   side: 'export',
+  stage: 'export',
+  payer: 'EXPORTER',
   fee_status: 'FEE_EXISTS_AMOUNT_NOT_AVAILABLE',
   calculated_amount: null,
   currency: null,
@@ -67,9 +71,35 @@ describe('RegulatoryCostBreakdown', () => {
     expect(screen.getAllByText(/500 USD/).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/Coût réglementaire total/)).toBeInTheDocument();
     expect(screen.getByText(/Complet/)).toBeInTheDocument();
-    // Les frais prestataires sont séparés des droits & taxes.
-    expect(screen.getByText(/Frais du prestataire mandaté/)).toBeInTheDocument();
     expect(screen.getByText(/Droits de douane/)).toBeInTheDocument();
+    // Volet EXPORT (le frais est payé par l'exportateur) + tag prestataire privé.
+    expect(screen.getByText(/Formalités à l'export/)).toBeInTheDocument();
+    expect(screen.getByText(/prestataire privé/)).toBeInTheDocument();
+  });
+
+  it('affiche un encadré explicatif import vs export', () => {
+    const result = costBlock([CALCULABLE_ITEM], { complete: true });
+    render(<RegulatoryCostBreakdown result={result} language="fr" />);
+    expect(screen.getByText(/Import vs export : comment lire ces frais/)).toBeInTheDocument();
+    expect(screen.getByText(/à l'IMPORT \(aval\)/i)).toBeInTheDocument();
+  });
+
+  it('sépare les volets export (amont) et import (aval)', () => {
+    const importItem = {
+      ...CALCULABLE_ITEM,
+      measure_name: 'Redevance OCC',
+      stage: 'import',
+      payer: 'IMPORTER',
+      collector_type: 'STATE_BODY',
+      scope: 'formality',
+    };
+    const result = costBlock([CALCULABLE_ITEM, importItem], { complete: true });
+    render(<RegulatoryCostBreakdown result={result} language="fr" />);
+    expect(screen.getByText(/Formalités à l'export/)).toBeInTheDocument();
+    expect(screen.getByText(/Formalités à l'import/)).toBeInTheDocument();
+    expect(screen.getByText(/Redevance OCC/)).toBeInTheDocument();
+    // Le perçu public (OCC) porte le tag « perçu public ».
+    expect(screen.getByText(/perçu public/)).toBeInTheDocument();
   });
 
   it('signale « montant à confirmer » et le message quand un frais existe mais est inconnu', () => {
