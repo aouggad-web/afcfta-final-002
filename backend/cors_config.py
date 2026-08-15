@@ -17,18 +17,23 @@ DEFAULT_ORIGINS = [
     "https://www.afcfta.trade",
 ]
 
-# Emergent's preview URL is a random subdomain assigned on every pod
-# restart/redeploy (multiple different ones have been observed within a
-# single afternoon). A static ALLOWED_ORIGINS/FRONTEND_URL entry inevitably
-# goes stale and silently breaks CORS for credentialed requests (no
-# Access-Control-Allow-Origin at all, since the origin isn't in the static
-# list) until someone notices and updates the .env by hand. Always allow the
-# whole subdomain family instead, so a redeploy never breaks auth.
-EMERGENT_PREVIEW_REGEX = r"https://[a-z0-9-]+\.preview\.emergentagent\.com"
+# Env var names Emergent has been observed to expose with this pod's own
+# public preview URL. Checked in order; the first one present wins.
+_EMERGENT_PREVIEW_ENV_VARS = ("PREVIEW_ENDPOINT", "preview_endpoint")
 
 
 def resolve_cors_origins(env: dict) -> list[str]:
-    """Static origin allowlist from ALLOWED_ORIGINS / FRONTEND_URL / Replit env vars."""
+    """Static origin allowlist from ALLOWED_ORIGINS / FRONTEND_URL / Replit /
+    Emergent env vars.
+
+    Deliberately an exact-origin allowlist, not a subdomain-family pattern:
+    *.preview.emergentagent.com is a multi-tenant domain — reflecting
+    Access-Control-Allow-Origin for the whole family (as an earlier version
+    of this function did via a regex) combined with allow_credentials=True
+    would let ANY other Emergent-hosted preview read authenticated responses
+    from this API using a victim user's browser-held session cookie. Only
+    this pod's own resolved origin is safe to add automatically.
+    """
     env_origins = env.get("ALLOWED_ORIGINS", "")
     origins = (
         [o.strip() for o in env_origins.split(",") if o.strip()]
@@ -46,17 +51,30 @@ def resolve_cors_origins(env: dict) -> list[str]:
         if replit_origin not in origins:
             origins.append(replit_origin)
 
+    # Emergent's preview URL is a random subdomain assigned on every pod
+    # restart/redeploy (multiple different ones have been observed within a
+    # single afternoon) — a static ALLOWED_ORIGINS/FRONTEND_URL entry
+    # inevitably goes stale and silently breaks CORS for credentialed
+    # requests until someone notices and updates the .env by hand. Emergent
+    # exposes the pod's own current public URL as an env var; add exactly
+    # that one origin (never the whole subdomain family — see the docstring)
+    # so a redeploy can't break auth without also being able to fix it.
+    for var_name in _EMERGENT_PREVIEW_ENV_VARS:
+        preview_endpoint = env.get(var_name, "").strip()
+        if preview_endpoint and preview_endpoint not in origins:
+            origins.append(preview_endpoint)
+            break
+
     return origins
 
 
-def resolve_cors_origin_regex(env: dict) -> str:
-    """Combined regex: always matches Emergent preview subdomains, plus the
-    Replit app domain when configured. Starlette's CORSMiddleware applies
-    this with re.fullmatch, so no anchors are needed here."""
-    patterns = [EMERGENT_PREVIEW_REGEX]
-
+def resolve_cors_origin_regex(env: dict) -> str | None:
+    """Regex for the Replit app domain, when configured. Starlette's
+    CORSMiddleware applies this with re.fullmatch, so no anchors are needed
+    here. Returns None (no regex) when no such domain is configured — origin
+    matching then relies entirely on the exact-origin allowlist above."""
     replit_app_domain = env.get("REPLIT_APP_DOMAIN", "")
-    if replit_app_domain:
-        patterns.append(rf"https://{re.escape(replit_app_domain)}")
+    if not replit_app_domain:
+        return None
 
-    return "|".join(patterns)
+    return rf"https://{re.escape(replit_app_domain)}"

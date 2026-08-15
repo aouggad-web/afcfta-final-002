@@ -44,24 +44,49 @@ def test_resolve_cors_origins_appends_replit_dev_domain():
     assert "https://my-repl.replit.dev" in origins
 
 
-def test_resolve_cors_origin_regex_always_matches_emergent_preview_subdomains():
-    import re
+def test_resolve_cors_origins_appends_emergent_preview_endpoint_uppercase():
+    env = {
+        "ALLOWED_ORIGINS": "https://a.example.com",
+        "PREVIEW_ENDPOINT": "https://179aadb8-8837.preview.emergentagent.com",
+    }
 
-    pattern = re.compile(resolve_cors_origin_regex({}))
+    origins = resolve_cors_origins(env)
 
-    assert pattern.fullmatch(
-        "https://179aadb8-8837-44c3-9417-5ef9bb7609e0.preview.emergentagent.com"
-    )
-    assert pattern.fullmatch("https://github-dev-sync.preview.emergentagent.com")
-    assert not pattern.fullmatch("https://evil.com/https://x.preview.emergentagent.com")
-    assert not pattern.fullmatch("https://notpreview.emergentagent.com.evil.com")
+    assert origins == [
+        "https://a.example.com",
+        "https://179aadb8-8837.preview.emergentagent.com",
+    ]
 
 
-def test_resolve_cors_origin_regex_includes_replit_app_domain_when_set():
+def test_resolve_cors_origins_appends_emergent_preview_endpoint_lowercase():
+    # Observed in the wild as lowercase on at least one pod — support both.
+    env = {"preview_endpoint": "https://github-dev-sync.preview.emergentagent.com"}
+
+    origins = resolve_cors_origins(env)
+
+    assert "https://github-dev-sync.preview.emergentagent.com" in origins
+
+
+def test_resolve_cors_origins_does_not_trust_other_emergent_tenants():
+    """The allowlist must never accept an arbitrary *.preview.emergentagent.com
+    origin just because it matches the platform's domain family — only this
+    pod's own resolved preview_endpoint. Anything else is a different,
+    unrelated tenant's deployment."""
+    env = {"PREVIEW_ENDPOINT": "https://my-own-pod.preview.emergentagent.com"}
+
+    origins = resolve_cors_origins(env)
+
+    assert "https://some-other-tenant.preview.emergentagent.com" not in origins
+
+
+def test_resolve_cors_origin_regex_is_none_without_replit_app_domain():
+    assert resolve_cors_origin_regex({}) is None
+
+
+def test_resolve_cors_origin_regex_matches_replit_app_domain_when_set():
     import re
 
     pattern = re.compile(resolve_cors_origin_regex({"REPLIT_APP_DOMAIN": "myapp.repl.co"}))
 
     assert pattern.fullmatch("https://myapp.repl.co")
-    # Emergent pattern must still be present alongside it.
-    assert pattern.fullmatch("https://foo.preview.emergentagent.com")
+    assert not pattern.fullmatch("https://evil.com/https://myapp.repl.co")
