@@ -36,6 +36,11 @@ Admin-tier endpoints (e.g., `/api/admin/keys`) require an admin API key — none
     (rotated after this file's first draft leaked a placeholder test value; never
     commit the real value — the backend re-syncs the hash from `.env` on restart).
   - Role: `admin`
+  - **Rotated Aug 15, 2026**: password regenerated (32-char random) directly in MongoDB then
+    mirrored into `backend/.env` `ADMIN_PASSWORD` so it survives backend restarts (confirmed via
+    logs: no "Admin password re-synced" line after restart = DB and .env now match). Backup of
+    the pre-rotation `.env` saved as `backend/.env.bak.<timestamp>`. Real value known only to the
+    user (printed once in chat, not persisted in this file).
 - Test user account created during manual testing:
   - Email: `aminata.test@example.com`
   - Password: **rotate before reuse** — this account was created with a
