@@ -111,7 +111,20 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "RUS intégrée au Code des Douanes sénégalais et au système GAINDE.",
-      "verification_status": "PARTIAL"
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-09",
+          "method": "web_search douanes.sn / eRegulations / Cotecna",
+          "finding": "Un montant de 35 560 FCFA par conteneur 20' est référencé (portail eRegulations Corridor Dakar-Bamako) mais il porte sur le « relevage »/manutention, distinct de la RUS scanner ; les 20 000/45 000 FCFA de la synthèse ne sont pas confirmés par une grille officielle des douanes.",
+          "sources_checked": [
+            "https://www.douanes.sn/ndn722/",
+            "https://corridor.eregulations.org/procedure/print/102/108/step/0?l=fr"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Montant exact de la RUS scanner non tranché par une source officielle (confusion possible relevage vs scanner). Reste en indication secondaire."
+        }
+      ]
     },
     {
       "record_id": "SEN-BESC-COSEC",
@@ -151,7 +164,16 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "Renouvellements trisannuels.",
-      "verification_status": "UNVERIFIED"
+      "verification_status": "PROMOTED_TO_VERIFIED",
+      "promotion": {
+        "date": "2026-08-09",
+        "target": "data/regulatory-compliance/verified_provider_fees.json#TZA-PVOC-HONORAIRES",
+        "sources": [
+          "https://trade.tanzania.go.tz/media/PVoC_HARMONISED_PR0CEDURE_(SUMMARISED)_1.pdf",
+          "https://www.tbs.go.tz/pages/inspection"
+        ],
+        "note": "Barème TBS confirmé : Route A 0,53% / B 0,45% / C 0,25% FOB ; min 250 USD ; max 5000 USD. Désormais CALCULABLE (fourchette ad valorem)."
+      }
     },
     {
       "record_id": "KEN-UGA-ECTS-2017",

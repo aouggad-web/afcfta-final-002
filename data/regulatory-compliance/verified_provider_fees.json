@@ -39,6 +39,70 @@
         ],
         "notes": "La ventilation exacte du taux et des planchers/plafonds PAR route (A/B/C) n'est pas publiée : le frais est donc exprimé en FOURCHETTE bornée, jamais comme un montant unique."
       }
+    },
+    {
+      "fee_id": "KEN-PVOC-HONORAIRES",
+      "country_iso3": "KEN",
+      "side": "import",
+      "program": "PVoC — Pre-Export Verification of Conformity (KEBS)",
+      "scope": "Marchandises réglementées importées au Kenya, contrôlées avant embarquement dans le pays d'exportation.",
+      "providers": ["Bureau Veritas", "COTECNA", "INTERTEK", "SGS", "QISJ (Quality Inspection Services Japan)"],
+      "mandating_authority": "Kenya Bureau of Standards (KEBS)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0050,
+        "rate_max": 0.0060,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond ci-dessous en USD, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "USD",
+        "floor_usd": 300,
+        "cap_usd": 3500,
+        "conditions": "Route A 0,60%, Route B 0,55%, Route C 0,50% de la valeur FOB. Minimum 300 USD, maximum 3500 USD par certificat, quelle que soit la route. Couvre vérification documentaire, inspection physique et échantillonnage.",
+        "effective_date": "2026-02-19"
+      },
+      "verification": {
+        "date": "2026-08-09",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Kenya Bureau of Standards (KEBS)", "url": "https://www.kebs.org/wp-content/uploads/2026/02/PVOC-MANUAL-VERSION-15.pdf", "confirms": "Grille officielle : Route A 0,60% / B 0,55% / C 0,50% FOB ; min 300 USD ; max 3500 USD (PVoC Manual v15, 19 fév. 2026)."},
+          {"publisher": "KEBS — page PVoC", "url": "https://www.kebs.org/pre-export-verification-of-conformity/", "confirms": "Programme PVoC officiel et organismes d'évaluation mandatés."},
+          {"publisher": "Cotecna", "url": "https://www.cotecna.com/en/media/news/cotecna-is-officially-contracted-as-a-conformity-assessment-body-for-the-kenya-pvoc-programme", "confirms": "Cotecna organisme d'évaluation contractuellement mandaté pour le PVoC Kenya."}
+        ],
+        "notes": "Taux route-dépendant (0,50%-0,60%) → FOURCHETTE bornée. Planchers/plafonds en USD conservés en conditions, non appliqués cross-devise."
+      }
+    },
+    {
+      "fee_id": "TZA-PVOC-HONORAIRES",
+      "country_iso3": "TZA",
+      "side": "import",
+      "program": "PVoC — Pre-Export Verification of Conformity (TBS)",
+      "scope": "Marchandises réglementées importées en Tanzanie, contrôlées avant embarquement dans le pays d'exportation.",
+      "providers": ["SGS", "Bureau Veritas", "INTERTEK", "TÜV Rheinland"],
+      "mandating_authority": "Tanzania Bureau of Standards (TBS)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0025,
+        "rate_max": 0.0053,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond ci-dessous en USD, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "USD",
+        "floor_usd": 250,
+        "cap_usd": 5000,
+        "conditions": "Route A 0,53%, Route B 0,45%, Route C 0,25% de la valeur FOB. Minimum 250 USD, maximum 5000 USD par certificat, quelle que soit la route.",
+        "effective_date": "2015-01-01"
+      },
+      "verification": {
+        "date": "2026-08-09",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Tanzania Trade Portal (Gouvernement de Tanzanie)", "url": "https://trade.tanzania.go.tz/media/PVoC_HARMONISED_PR0CEDURE_(SUMMARISED)_1.pdf", "confirms": "Procédure PVoC harmonisée TBS : routes et barème ad valorem FOB."},
+          {"publisher": "Tanzania Bureau of Standards (TBS)", "url": "https://www.tbs.go.tz/pages/inspection", "confirms": "Programme PVoC officiel et organismes mandatés."},
+          {"publisher": "SGS", "url": "https://www.sgs.com/en/services/tanzania-product-conformity-assessment-pca", "confirms": "Barème : Route A 0,53% / B 0,45% / C 0,25% FOB ; min 250 USD ; max 5000 USD."}
+        ],
+        "notes": "Taux route-dépendant (0,25%-0,53%) → FOURCHETTE bornée. Planchers/plafonds en USD conservés en conditions, non appliqués cross-devise."
+      }
     }
   ]
 }

@@ -206,3 +206,36 @@ def test_verified_voc_civ_is_calculable_range_with_sources():
 
 def test_verified_costs_absent_for_uncovered_country():
     assert build_verified_provider_costs("DZA", fob_value=100000, side="import") == []
+
+
+def test_verified_kenya_pvoc_bracket_from_kebs():
+    items = build_verified_provider_costs("KEN", fob_value=100000, side="import")
+    assert len(items) == 1
+    pvoc = items[0]
+    assert pvoc["fee_status"] == "CALCULABLE"
+    assert pvoc["is_range"] is True
+    # 0,50%-0,60% de 100000 = 500-600 (bornes ad valorem).
+    assert pvoc["calculated_amount_min"] == 500.0
+    assert pvoc["calculated_amount_max"] == 600.0
+    assert pvoc["source"] and "kebs.org" in pvoc["source"]
+    assert "300 USD" in (pvoc["conditions"] or "")
+
+
+def test_verified_tanzania_pvoc_bracket_from_tbs():
+    items = build_verified_provider_costs("TZA", fob_value=100000, side="import")
+    assert len(items) == 1
+    pvoc = items[0]
+    assert pvoc["fee_status"] == "CALCULABLE"
+    assert pvoc["is_range"] is True
+    # 0,25%-0,53% de 100000 = 250-530.
+    assert pvoc["calculated_amount_min"] == 250.0
+    assert pvoc["calculated_amount_max"] == 530.0
+    assert pvoc["source"] and pvoc["source"].startswith("http")
+
+
+def test_every_verified_fee_carries_a_primary_source():
+    # Règle 1 : chaque frais vérifié exploitable cite au moins une source.
+    for iso in ("CIV", "KEN", "TZA"):
+        for item in build_verified_provider_costs(iso, fob_value=100000, side="import"):
+            assert item["source"] and item["source"].startswith("http")
+            assert item["verification_sources"]
