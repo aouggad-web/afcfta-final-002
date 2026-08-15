@@ -73,6 +73,7 @@ logging.config.dictConfig(
 logger = logging.getLogger(__name__)
 
 import auth as _auth_module
+from cors_config import resolve_cors_origin_regex, resolve_cors_origins
 
 # Import routes module for modular endpoint registration
 from routes import register_routes
@@ -181,38 +182,10 @@ app = FastAPI(
     ],
 )
 
-# CORS middleware — origins controlled via ALLOWED_ORIGINS env variable
-_default_origins = [
-    "http://localhost:3000",
-    "http://localhost:5000",
-    "http://localhost:8000",
-    "https://afcfta.trade",
-    "https://www.afcfta.trade",
-]
-
-_env_origins = os.environ.get("ALLOWED_ORIGINS", "")
-if _env_origins:
-    _cors_origins = [o.strip() for o in _env_origins.split(",") if o.strip()]
-else:
-    _cors_origins = _default_origins
-
-_frontend_url = os.environ.get("FRONTEND_URL", "")
-if _frontend_url and _frontend_url not in _cors_origins:
-    _cors_origins.append(_frontend_url)
-
-_replit_dev_domain = os.environ.get("REPLIT_DEV_DOMAIN", "")
-if _replit_dev_domain:
-    _replit_origin = f"https://{_replit_dev_domain}"
-    if _replit_origin not in _cors_origins:
-        _cors_origins.append(_replit_origin)
-
-_replit_app_domain = os.environ.get("REPLIT_APP_DOMAIN", "")
-_allow_origin_regex = None
-if _replit_app_domain:
-    import re as _re
-
-    _escaped = _re.escape(_replit_app_domain)
-    _allow_origin_regex = rf"https://{_escaped}"
+# CORS middleware — origins controlled via ALLOWED_ORIGINS env variable, plus
+# a regex covering Emergent preview subdomains (see cors_config.py for why).
+_cors_origins = resolve_cors_origins(os.environ)
+_allow_origin_regex = resolve_cors_origin_regex(os.environ)
 
 # Security middlewares (optional)
 try:
