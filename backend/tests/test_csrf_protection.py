@@ -99,9 +99,7 @@ def test_csrf_cookie_samesite_matches_https_flag(
     importlib.reload(csrf_protection_module)
     try:
         app = FastAPI()
-        app.add_middleware(
-            csrf_protection_module.CSRFMiddleware, exempt_paths=["/api/health"]
-        )
+        app.add_middleware(csrf_protection_module.CSRFMiddleware, exempt_paths=["/api/health"])
 
         @app.get("/api/health")
         async def health():
