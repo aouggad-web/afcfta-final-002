@@ -170,6 +170,39 @@
         ],
         "notes": "Taux route-dépendant (0,27%-0,45%) → FOURCHETTE bornée. Plancher/plafond/seuil en XAF conservés en conditions, non appliqués cross-devise. Base légale (décret) citée."
       }
+    },
+    {
+      "fee_id": "ZWE-CBCA-HONORAIRES",
+      "country_iso3": "ZWE",
+      "side": "import",
+      "program": "CBCA — Consignment Based Conformity Assessment (general goods)",
+      "scope": "Marchandises réglementées importées au Zimbabwe (general goods).",
+      "providers": ["Bureau Veritas"],
+      "mandating_authority": "Ministry of Industry & Commerce (Zimbabwe)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0025,
+        "rate_max": 0.0050,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond ci-dessous en USD, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "USD",
+        "floor_usd": 240,
+        "cap_usd": 2675,
+        "legal_basis": "Statutory Instrument 35 of 2024 (Control of Goods — CBCA Notice)",
+        "conditions": "General goods : Route A 0,50%, Route B 0,45%, Route C 0,25% de la valeur FOB. Minimum 240 USD, maximum 2675 USD. Consolidated goods soumis à un barème distinct (Route A 0,65% ; min 245 / max 2650 USD). Base légale : S.I. 35 of 2024.",
+        "effective_date": "2024-01-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Bureau Veritas / Verigates — grille CBCA Zimbabwe (general & consolidated goods)", "url": "https://verigates.bureauveritas.com/sites/verigates/files/2023-10/ZIMBABWE%20(CBCA)%20General%20Goods%20%20Consolidated%20goods%20Rev%2010.pdf", "confirms": "Routes A/B/C 0,50%/0,45%/0,25% FOB (general goods) ; min 240 USD ; max 2675 USD."},
+          {"publisher": "Veritas Zimbabwe — Statutory Instrument 35 of 2024 (CBCA Notice)", "url": "https://www.veritaszim.net/sites/veritas_d/files/SI%202024-035%20Control%20of%20Goods%20(Open%20General%20Import%20Licence)%20Standards%20Assessment%E2%80%93Consignment%20Based%20Conformity%20Assessment%20(CBCA)%20Notice,%202024.pdf", "confirms": "Base légale du programme CBCA (S.I. 35 of 2024)."},
+          {"publisher": "tralac — Pre-shipment inspection for goods exported to Zimbabwe", "url": "https://www.tralac.org/discussions/article/8087-pre-shipment-inspection-for-certain-goods-exported-to-zimbabwe-adding-to-the-cost-of-doing-business.html", "confirms": "Programme CBCA opéré par Bureau Veritas pour le Ministère de l'Industrie et du Commerce."}
+        ],
+        "notes": "Taux route-dépendant (0,25%-0,50%, general goods) → FOURCHETTE bornée. Plancher/plafond USD en conditions, non appliqués cross-devise. Base légale (S.I.) citée."
+      }
     }
   ]
 }

@@ -259,9 +259,21 @@ def test_verified_cameroon_pecae_bracket_with_legal_basis():
     assert "Décret" in (pecae["conditions"] or "")
 
 
+def test_verified_zimbabwe_cbca_bracket_with_statutory_instrument():
+    items = build_verified_provider_costs("ZWE", fob_value=100000, side="import")
+    assert len(items) == 1
+    cbca = items[0]
+    assert cbca["fee_status"] == "CALCULABLE"
+    assert cbca["is_range"] is True
+    # 0,25%-0,50% de 100000 = 250-500 (general goods).
+    assert cbca["calculated_amount_min"] == 250.0
+    assert cbca["calculated_amount_max"] == 500.0
+    assert "S.I. 35" in (cbca["conditions"] or "")
+
+
 def test_every_verified_fee_carries_a_primary_source():
     # Règle 1 : chaque frais vérifié exploitable cite au moins une source.
-    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR"):
+    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE"):
         for item in build_verified_provider_costs(iso, fob_value=100000, side="import"):
             assert item["source"] and item["source"].startswith("http")
             assert item["verification_sources"]
