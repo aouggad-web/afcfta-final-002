@@ -54,6 +54,20 @@ class CSRFMiddleware(BaseHTTPMiddleware):
                     secure=_HTTPS,
                     max_age=3600,
                 )
+                if _HTTPS:
+                    # Starlette's set_cookie() has no `partitioned` param yet.
+                    # Without it, Chrome's third-party cookie phase-out drops
+                    # this cookie entirely inside the Emergent preview iframe
+                    # (cross-site from the top document's point of view) even
+                    # though SameSite=None; Secure is set — CHIPS requires the
+                    # explicit Partitioned attribute for that case.
+                    for i, (name, value) in enumerate(response.raw_headers):
+                        if name == b"set-cookie" and value.startswith(f"{CSRF_COOKIE}=".encode()):
+                            response.raw_headers[i] = (
+                                name,
+                                value + b"; Partitioned",
+                            )
+                            break
             response.headers[CSRF_HEADER] = token
             return response
 
