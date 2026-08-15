@@ -550,6 +550,82 @@
           "reason": "Montant de la redevance BESC non publié officiellement. Reste en indication secondaire (à confirmer)."
         }
       ]
+    },
+    {
+      "record_id": "BEN-BESC-CNCB",
+      "country_iso3": "BEN",
+      "country_name": "Bénin",
+      "program": "BESC / ECTN — Bordereau Électronique de Suivi des Cargaisons (Conseil National des Chargeurs du Bénin)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le CNCB / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Suivi et traçabilité des cargaisons à destination/en transit du Bénin (corridor Cotonou vers Niger/Burkina) ; validation anticipée des données de fret.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement (fourchette d'agents commerciaux — NON officielle ; barème du Conseil des Chargeurs non publié).",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil National des Chargeurs du Bénin (CNCB), organisme public mandant ; émission déléguée à des opérateurs/agents privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "TGO-ECTN-CNCT",
+      "country_iso3": "TGO",
+      "country_name": "Togo",
+      "program": "ECTN / BESC — Bordereau Électronique de Suivi des Cargaisons (Conseil National des Chargeurs du Togo)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le CNCT / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons entrant à Lomé ou en transit vers le Burkina, le Niger, le Mali.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement (fourchette d'agents commerciaux — NON officielle).",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil National des Chargeurs du Togo (CNCT), organisme public mandant ; émission déléguée à des opérateurs privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "NER-BSC-CNUT",
+      "country_iso3": "NER",
+      "country_name": "Niger",
+      "program": "BSC / ECTN — Bordereau de Suivi des Cargaisons (pays enclavé ; Conseil Nigérien des Utilisateurs des Transports)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le CNUT / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons du Niger transitant par Cotonou, Lomé ou Lagos ; sécurisation des données de fret. Un BSC transit + un BSC destination peuvent être requis.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement, potentiellement doublé pour l'enclavement (transit + destination) — fourchette d'agents commerciaux, NON officielle.",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil Nigérien des Utilisateurs des Transports Publics (CNUT), organisme public mandant ; émission déléguée à des opérateurs privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "CMR-BESC-CNCC",
+      "country_iso3": "CMR",
+      "country_name": "Cameroun",
+      "program": "BESC — Bordereau Électronique de Suivi des Cargaisons (Conseil National des Chargeurs du Cameroun)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le CNCC / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons entrant à Douala/Kribi ou en transit vers le Tchad et la RCA ; contrôle des taux de fret.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement (fourchette d'agents commerciaux — NON officielle).",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil National des Chargeurs du Cameroun (CNCC), organisme public mandant ; émission déléguée à des opérateurs privés. NB : distinct du PECAE (conformité), déjà vérifié et calculable.",
+      "verification_status": "PARTIAL"
     }
   ]
 }
