@@ -271,9 +271,21 @@ def test_verified_zimbabwe_cbca_bracket_with_statutory_instrument():
     assert "S.I. 35" in (cbca["conditions"] or "")
 
 
+def test_verified_gabon_progec_bracket():
+    items = build_verified_provider_costs("GAB", fob_value=100000, side="import")
+    assert len(items) == 1
+    progec = items[0]
+    assert progec["fee_status"] == "CALCULABLE"
+    assert progec["is_range"] is True
+    # 0,27%-0,53% de 100000 = 270-530.
+    assert progec["calculated_amount_min"] == 270.0
+    assert progec["calculated_amount_max"] == 530.0
+    assert progec["source"] and progec["source"].startswith("http")
+
+
 def test_every_verified_fee_carries_a_primary_source():
     # Règle 1 : chaque frais vérifié exploitable cite au moins une source.
-    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE"):
+    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE", "GAB"):
         for item in build_verified_provider_costs(iso, fob_value=100000, side="import"):
             assert item["source"] and item["source"].startswith("http")
             assert item["verification_sources"]

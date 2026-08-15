@@ -203,6 +203,38 @@
         ],
         "notes": "Taux route-dépendant (0,25%-0,50%, general goods) → FOURCHETTE bornée. Plancher/plafond USD en conditions, non appliqués cross-devise. Base légale (S.I.) citée."
       }
+    },
+    {
+      "fee_id": "GAB-PROGEC-HONORAIRES",
+      "country_iso3": "GAB",
+      "side": "import",
+      "program": "PROGEC — Programme Gabonais d'Évaluation de la Conformité (AGANOR)",
+      "scope": "Marchandises réglementées importées au Gabon.",
+      "providers": ["SGS", "INTERTEK", "COTECNA", "Bureau Veritas"],
+      "mandating_authority": "Agence Gabonaise de Normalisation (AGANOR)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0027,
+        "rate_max": 0.0053,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond ci-dessous en EUR, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "EUR",
+        "floor_eur": 300,
+        "cap_eur": 7000,
+        "conditions": "Route A 0,53%, Route B 0,45%, Route C 0,27% de la valeur FOB. Minimum 300 EUR, maximum 7000 EUR par certificat, nets de taxes. Couvrent vérification documentaire, inspection physique (si applicable) et conclusion (CoC ou NCR).",
+        "effective_date": "2016-05-20"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Bureau Veritas / Verigates — datasheet PROGEC Gabon", "url": "https://verigates.bureauveritas.com/sites/verigates/files/2022-02/GABON%20(PROGEC)%20Datasheet%20EN%20Rev%2013.pdf", "confirms": "Routes A/B/C 0,53%/0,45%/0,27% FOB ; min 300 EUR ; max 7000 EUR."},
+          {"publisher": "SGS — Programme Gabonais d'Évaluation de la Conformité (PROGEC)", "url": "https://www.sgs.com/-/media/sgscorp/documents/corporate/flyers-and-leaflets/sgsgispca-gabon-trypticha4fr1503web.cdn.fr-MA.pdf", "confirms": "Barème PROGEC ad valorem FOB par route (organisme mandaté SGS)."},
+          {"publisher": "SGS — Gabon PROGEC (page programme)", "url": "https://www.sgs.com/en/services/gabon-product-conformity-assessment-pca", "confirms": "PROGEC AGANOR, organismes mandatés (SGS, Intertek, Cotecna, Bureau Veritas)."}
+        ],
+        "notes": "Taux route-dépendant (0,27%-0,53%) → FOURCHETTE bornée. Plancher/plafond en EUR conservés en conditions, non appliqués cross-devise."
+      }
     }
   ]
 }
