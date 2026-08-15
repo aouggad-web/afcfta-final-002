@@ -26,6 +26,10 @@ credentials.json
 # Secrets
 .github/secrets/
 
+# Agent memory: credentials file (kept locally for testing/fork agents,
+# never pushed — contains account emails/passwords for this pod)
+memory/test_credentials.md
+
 # Generated tariff data (large files — regenerate with engine/migrate_all.py)
 backend/data/tariffs/
 engine/output/*.jsonl
