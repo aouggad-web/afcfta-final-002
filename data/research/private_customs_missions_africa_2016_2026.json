@@ -92,7 +92,20 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "Virement direct compte Banque Centrale (CBN) avant émission de la déclaration.",
-      "verification_status": "UNVERIFIED"
+      "verification_status": "UNVERIFIED",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search SON SONCAP / CISS",
+          "finding": "Le programme SONCAP (SON) n'est PAS un ad valorem unique : barème multi-composant (Product Certificate à montant fixe selon le nombre de modèles, SONCAP Certificate ~350 USD/expédition) ; la CISS (1% FOB) est un dispositif distinct de supervision à l'import. Aucune fourchette ad valorem unique exploitable.",
+          "sources_checked": [
+            "https://son.gov.ng/helpie_faq/how-much-does-it-cost-to-apply-for-soncap-product-certificate/",
+            "https://son.gov.ng/soncap-faq/"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Structure de frais hétérogène (fixes par produit + par expédition) non réductible à une fourchette ad valorem ; CISS à vérifier séparément sur source primaire (SON/CBN/Douanes)."
+        }
+      ]
     },
     {
       "record_id": "SEN-SCANNER-2017",

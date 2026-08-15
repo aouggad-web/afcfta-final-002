@@ -233,9 +233,22 @@ def test_verified_tanzania_pvoc_bracket_from_tbs():
     assert pvoc["source"] and pvoc["source"].startswith("http")
 
 
+def test_verified_uganda_pvoc_bracket_from_unbs():
+    items = build_verified_provider_costs("UGA", fob_value=100000, side="import")
+    assert len(items) == 1
+    pvoc = items[0]
+    assert pvoc["fee_status"] == "CALCULABLE"
+    assert pvoc["is_range"] is True
+    # 0,25%-0,50% de 100000 = 250-500.
+    assert pvoc["calculated_amount_min"] == 250.0
+    assert pvoc["calculated_amount_max"] == 500.0
+    assert pvoc["source"] and pvoc["source"].startswith("http")
+    assert "235 USD" in (pvoc["conditions"] or "")
+
+
 def test_every_verified_fee_carries_a_primary_source():
     # Règle 1 : chaque frais vérifié exploitable cite au moins une source.
-    for iso in ("CIV", "KEN", "TZA"):
+    for iso in ("CIV", "KEN", "TZA", "UGA"):
         for item in build_verified_provider_costs(iso, fob_value=100000, side="import"):
             assert item["source"] and item["source"].startswith("http")
             assert item["verification_sources"]

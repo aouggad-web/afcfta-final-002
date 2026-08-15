@@ -103,6 +103,39 @@
         ],
         "notes": "Taux route-dépendant (0,25%-0,53%) → FOURCHETTE bornée. Planchers/plafonds en USD conservés en conditions, non appliqués cross-devise."
       }
+    },
+    {
+      "fee_id": "UGA-PVOC-HONORAIRES",
+      "country_iso3": "UGA",
+      "side": "import",
+      "program": "PVoC — Pre-Export Verification of Conformity (UNBS)",
+      "scope": "Marchandises réglementées importées en Ouganda (FOB > 2000 USD ; en deçà, inspection à destination par l'UNBS).",
+      "providers": ["SGS", "Bureau Veritas", "INTERTEK", "TÜV Rheinland"],
+      "mandating_authority": "Uganda National Bureau of Standards (UNBS)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0025,
+        "rate_max": 0.0050,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond/seuil ci-dessous en USD, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "USD",
+        "floor_usd": 235,
+        "cap_usd": 3000,
+        "threshold_fob_usd": 2000,
+        "conditions": "Route A 0,50%, Route B 0,45%, Route C 0,25% de la valeur FOB. Minimum 235 USD, maximum 3000 USD par certificat. Envois de valeur FOB ≤ 2000 USD exemptés du PVoC (inspection à destination). Hors essais laboratoire, scellés, enregistrement/licence facturés en sus.",
+        "effective_date": "2018-01-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "SGS — Uganda PCA datasheet", "url": "https://www.sgs.com/en/services/uganda-product-conformity-assessment-pca", "confirms": "Routes A/B/C 0,50%/0,45%/0,25% FOB ; min 235 USD ; max 3000 USD ; exemption FOB ≤ 2000 USD."},
+          {"publisher": "Intertek — Uganda regulated product list & fees update", "url": "https://www.intertek.com/government/export-import/regulatory-news-updates/news-uganda/update-to-uganda-regulated-product-list-and-fees/", "confirms": "Barème de frais PVoC Ouganda et liste des produits réglementés (UNBS)."},
+          {"publisher": "PVoC Exporter & Importer Guidelines (export2uganda)", "url": "http://www.export2uganda.com/resourcelibrary/managed/808cb1e9-b5e8-43aa-bdca-271554539d5b.pdf", "confirms": "Routes de certification et seuil d'exemption FOB 2000 USD (UNBS)."}
+        ],
+        "notes": "Taux route-dépendant (0,25%-0,50%) → FOURCHETTE bornée. Plancher/plafond/seuil USD en conditions, non appliqués cross-devise."
+      }
     }
   ]
 }
