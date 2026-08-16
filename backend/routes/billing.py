@@ -499,12 +499,12 @@ async def chargily_webhook(request: Request):
 
         if event_type == "checkout.paid":
             cycle = meta.get("cycle")
-            # Chargily has no recurring subscription concept (see docstring
-            # above) — a paid checkout only covers the period actually
-            # bought. Without an explicit end date, entitlements.py's
-            # resolver treats a missing subscription_current_end as "still
-            # ongoing" and would grant paid access indefinitely from a
-            # single payment.
+            # Chargily n'a pas de notion d'abonnement récurrent (cf. docstring
+            # ci-dessus) — un paiement ne couvre que la période réellement
+            # achetée. Sans date de fin explicite, le resolver
+            # d'entitlements.py traiterait une subscription_current_end
+            # absente comme « toujours en cours » et accorderait un accès
+            # payant permanent depuis un seul paiement.
             paid_days = 365 if cycle == "annual" else 30
             await _update_user_by_id(
                 user_id,

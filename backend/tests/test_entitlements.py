@@ -125,6 +125,26 @@ def test_period_end_naive_datetime_is_treated_as_utc():
     assert resolve_entitlements(user, now=now).tier == "pro"
 
 
+@pytest.mark.parametrize(
+    "days_from_period_end, expected_tier",
+    [(-1, "pro"), (1, "free")],
+)
+def test_naive_now_is_treated_as_utc_without_raising(days_from_period_end, expected_tier):
+    """A caller-supplied `now` can be naive (e.g. datetime.now() without a
+    tz) while subscription_current_end is always normalized to UTC-aware —
+    comparing the two directly would raise TypeError, breaking the "never
+    raises" guarantee."""
+    period_end = datetime(2026, 8, 15, tzinfo=timezone.utc)
+    naive_now = (period_end + timedelta(days=days_from_period_end)).replace(tzinfo=None)
+    user = {
+        "subscription_tier": "pro",
+        "subscription_status": "active",
+        "subscription_current_end": period_end,
+    }
+
+    assert resolve_entitlements(user, now=naive_now).tier == expected_tier
+
+
 def test_missing_period_end_does_not_block_active_subscription():
     """Right after checkout, before the webhook has populated
     subscription_current_end, an active subscription must still grant its
