@@ -405,8 +405,8 @@ class CrawledDataService:
         FULL_NAMES = {
             "DD": "Droit de Douane",
             "TVA": "Taxe sur la Valeur Ajoutée",
-            "TCS": "Taxe Conjoncturelle de Sauvegarde",
-            "PRCT": "Prélèvement à la Compensation du Transport",
+            "TCS": "Taxe de Contribution de Solidarité",
+            "PRCT": "Précompte sur Impôt",
             "DAPS": "Droit Additionnel Provisoire de Sauvegarde",
         }
 

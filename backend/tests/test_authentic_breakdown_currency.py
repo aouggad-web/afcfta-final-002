@@ -122,8 +122,8 @@ _DZA_LINE = {
     "other_taxes_rate": 0.0,
     "taxes_detail": {
         "DAPS": {"rate": 30.0, "label": "Droit Additionnel Provisoire de Sauvegarde"},
-        "TCS": {"rate": 3.0, "label": "Taxe Complémentaire de Sauvegarde"},
-        "PRCT": {"rate": 2.0, "label": "Précompte (PRCT)"},
+        "TCS": {"rate": 3.0, "label": "Taxe de Contribution de Solidarité"},
+        "PRCT": {"rate": 2.0, "label": "Précompte sur Impôt"},
     },
     "description_fr": "Viande bovine",
     "description_en": "Bovine meat",
@@ -165,13 +165,13 @@ def test_dza_daps_treated_as_customs_duty_and_reduced_under_zlecaf(dza_calc):
 
 
 def test_dza_precompte_label_base_and_order(dza_calc):
-    """PRCT = « Précompte (PRCT) », 2%, calculé après la TVA sur la valeur
+    """PRCT = « Précompte sur Impôt », 2%, calculé après la TVA sur la valeur
     globale TVA incluse mais HORS DAPS = CIF + DD + TCS + TVA."""
     result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}
 
     prct = by_code["PRCT"]
-    assert prct["name"] == "Précompte (PRCT)"
+    assert prct["name"] == "Précompte sur Impôt"
     assert prct["category"] == "autre_taxe"
     assert prct["base_expr"] == "CIF + DD + TCS + TVA"
     # NPF : 2% de (10000 + 3000 + 300 + 3040) = 326.80
@@ -205,7 +205,7 @@ def test_dza_daps_exempt_under_zlecaf_even_when_dd_is_zero(monkeypatch):
     line["zlecaf_rate"] = 0.0
     line["taxes_detail"] = {
         "DAPS": {"rate": 30.0, "label": "Droit Additionnel Provisoire de Sauvegarde"},
-        "TCS": {"rate": 3.0, "label": "Taxe Complémentaire de Sauvegarde"},
+        "TCS": {"rate": 3.0, "label": "Taxe de Contribution de Solidarité"},
         "TVA": {"rate": 19.0, "label": "Taxe sur la Valeur Ajoutée"},
     }
     monkeypatch.setattr(svc, "_get_postgres_provider", lambda: None)
@@ -308,9 +308,9 @@ def test_dza_precompte_label_normalized_in_legacy_fields(dza_calc):
 
     result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
 
-    assert result["taxes_detail"]["PRCT"]["label"] == "Précompte (PRCT)"
+    assert result["taxes_detail"]["PRCT"]["label"] == "Précompte sur Impôt"
     prct_ind = next(t for t in result["individual_taxes"] if t["code"] == "PRCT")
-    assert prct_ind["label"] == "Précompte (PRCT)"
+    assert prct_ind["label"] == "Précompte sur Impôt"
 
 
 def test_summary_totals_match_breakdown_rows(synthetic_calc):
