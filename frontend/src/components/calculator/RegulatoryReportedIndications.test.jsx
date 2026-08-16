@@ -42,4 +42,33 @@ describe('RegulatoryReportedIndications', () => {
     expect(screen.getAllByText(/à confirmer/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/Cotecna/)).toBeInTheDocument();
   });
+
+  it('sépare les volets export (amont) et import (aval) avec un encadré explicatif', () => {
+    const layer = {
+      ...LAYER,
+      items: [
+        ...LAYER.items,
+        {
+          side: 'export',
+          country_iso3: 'ETH',
+          country_name: 'Éthiopie',
+          program: 'COC / PVoC — Certificate of Conformity',
+          providers: ['SGS', 'Intertek'],
+          mission: 'Vérification de conformité avant expédition.',
+          payer: 'EXPORTER',
+          period: { start: 'avant 2021', end: 'en cours' },
+          reported_fee_range: null,
+          traceability: 'Organismes mandatés.',
+          verification_status: 'PARTIAL',
+          fee_status: 'FEE_EXISTS_AMOUNT_NOT_AVAILABLE',
+        },
+      ],
+    };
+    render(<RegulatoryReportedIndications result={{ regulatory_reported: layer }} language="fr" />);
+    expect(screen.getByText(/Import vs export : comment lire ces indications/)).toBeInTheDocument();
+    expect(screen.getByText(/Formalités à l'export/)).toBeInTheDocument();
+    expect(screen.getByText(/Formalités à l'import/)).toBeInTheDocument();
+    expect(screen.getByText(/Éthiopie/)).toBeInTheDocument();
+    expect(screen.getByText(/Sénégal/)).toBeInTheDocument();
+  });
 });

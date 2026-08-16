@@ -64,6 +64,26 @@ def test_sahel_freight_tracking_reported_not_calculable():
             assert it["fee_status"] == "FEE_EXISTS_AMOUNT_NOT_AVAILABLE"
 
 
+def test_horn_of_africa_and_somalia_reported_not_calculable():
+    # Corne de l'Afrique : Djibouti (ECTN), Soudan du Sud (PVoC), Éthiopie
+    # (COC/PVoC) et Somalie (ECTN + VOC Somaliland) — prestataires privés,
+    # barèmes non publiés → indications secondaires uniquement.
+    for iso in ("DJI", "SSD", "ETH", "SOM"):
+        items = get_reported_missions(iso)
+        assert items, f"{iso} doit avoir une indication reportée"
+        layer = build_reported_layer(iso, "DZA")
+        assert layer is not None
+        for it in layer["items"]:
+            assert it["fee_status"] == "FEE_EXISTS_AMOUNT_NOT_AVAILABLE"
+
+
+def test_somalia_has_both_ectn_and_somaliland_voc_records():
+    items = get_reported_missions("SOM")
+    programs = " ".join(r.get("program", "") for r in items)
+    assert "ECTN" in programs
+    assert "Somaliland" in programs
+
+
 def test_central_african_republic_reported_but_not_calculable():
     # RCA (CAF) : conformité SGS + BESC Groupe Albatros, prestataires privés, mais
     # taux/montant non publiés → indications secondaires, jamais calculables.

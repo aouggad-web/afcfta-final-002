@@ -713,6 +713,145 @@
       "mandate_status_reported": "ACTIVE",
       "traceability": "Conseil des Chargeurs mauritanien, organisme public mandant ; émission déléguée à des opérateurs privés.",
       "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "DJI-ECTN-2023",
+      "country_iso3": "DJI",
+      "country_name": "Djibouti",
+      "program": "ECTN — Electronic Cargo Tracking Note (Autorité des Ports et Zones Franches de Djibouti)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["CTN Djibouti (opérateur privé mandaté)"],
+      "period": {"start": "2023-06-15", "end": "en cours"},
+      "mission": "Suivi électronique obligatoire de toutes les cargaisons vers les ports et la zone franche de Djibouti (hub d'entrée de l'Éthiopie) ; ECTN obtenu au port de chargement, reporté sur le connaissement.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement (fourchette d'agents commerciaux — NON officielle).",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Djibouti Ports & Free Zone Authority, mandant public ; ECTN obligatoire effectif au 15 juin 2023 ; émission par l'opérateur privé CTN Djibouti.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "SSD-PVOC-2022",
+      "country_iso3": "SSD",
+      "country_name": "Soudan du Sud",
+      "program": "PVoC — Pre-Export Verification of Conformity (SSNBS)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["SGS (mandataire, contrat 5 ans avec le SSNBS)"],
+      "period": {"start": "2022", "end": "en cours"},
+      "mission": "Vérification de conformité avant embarquement des marchandises importées au Soudan du Sud (valeur > 2000 USD), délivrance du certificat de conformité.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "Routes A/B/C existantes mais taux ad valorem NON publié officiellement.",
+        "currency": null,
+        "exemption": "Marchandises de valeur ≤ 2000 USD non concernées."
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "SGS mandataire du South Sudan National Bureau of Standards (SSNBS), contrat de 5 ans.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search + fetch brochure SGS South Sudan",
+          "finding": "Programme confirmé (SGS, seuil 2000 USD, routes A/B/C) mais taux ad valorem non publié ; la brochure SGS PDF n'est pas exploitable (binaire). Les taux d'autres programmes SGS ne peuvent PAS être transposés (règle #4).",
+          "sources_checked": [
+            "https://www.sgs.com/en/services/south-sudan-product-conformity-assessment-pca",
+            "https://ssnbs.gov.ss/pvoc-2/"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux non publié par une source officielle lisible. Reste en indication secondaire."
+        }
+      ]
+    },
+    {
+      "record_id": "ETH-COC-2021",
+      "country_iso3": "ETH",
+      "country_name": "Éthiopie",
+      "program": "COC / PVoC — Certificate of Conformity (Ethiopian Standards/Conformity Assessment)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["SGS", "Intertek", "Bureau Veritas", "TÜV Rheinland"],
+      "period": {"start": "avant 2021", "end": "en cours"},
+      "mission": "Vérification de conformité avant expédition de certains produits importés en Éthiopie, délivrance d'un certificat de conformité.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "Taux ad valorem NON publié officiellement (barème des organismes non rendu public).",
+        "currency": null
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Organismes d'évaluation mandatés (SGS, Intertek, Bureau Veritas, TÜV) ; barème non publié.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search COC Éthiopie",
+          "finding": "Programme COC confirmé (organismes privés) mais aucun barème de frais publié dans les sources consultées.",
+          "sources_checked": ["https://www.intertek.com/government/product-conformity/ethiopia/"],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux non publié officiellement. Reste en indication secondaire."
+        }
+      ]
+    },
+    {
+      "record_id": "SOM-ECTN-2025",
+      "country_iso3": "SOM",
+      "country_name": "Somalie",
+      "program": "ECTN — Electronic Cargo Tracking Note (CTN Somalia, réseau GlobalCTN)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["CTN Somalia (ctnsomalia.com — opérateur privé mandaté)"],
+      "period": {"start": "2025-10-14", "end": "en cours"},
+      "mission": "Suivi électronique obligatoire de toutes les cargaisons (conteneurs et vrac) à destination des ports de Mogadiscio, Berbera et Kismayo ; ECTN à obtenir avant chargement, numéro reporté sur le connaissement — introduit en février 2023, généralisé et rendu contraignant à tous les ports fédéraux le 14 octobre 2025.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "Barème publié sur une page dédiée du prestataire (« ECTN Fees ») mais montant exact non extrait des sources consultées — NON officiel/NON confirmé.",
+        "currency": null
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Gouvernement fédéral somalien (autorité portuaire), mandant public ; émission par l'opérateur privé CTN Somalia ; obligation étendue au port de Berbera (Somaliland) dans un contexte de différend territorial.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-16",
+          "method": "web_search ECTN Somalia + ctnsomalia.com ECTN fees",
+          "finding": "Obligation ECTN confirmée (effective 14/10/2025, tous ports) et page tarifaire du prestataire identifiée, mais montant en USD par connaissement non extrait des résultats — sujet à variation selon type/taille de cargaison.",
+          "sources_checked": ["https://ctnsomalia.com/electronic-cargo-tracking-number-ectn-requirement-effective-14-october-2025/", "https://ctnsomalia.com/ectn-fees/", "https://www.ecofinagency.com/news-digital/2611-50839-somalia-enforces-mandatory-digital-tracking-for-all-cargo-at-its-ports"],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Montant non confirmé sur une source primaire archivable. Reste en indication secondaire."
+        }
+      ]
+    },
+    {
+      "record_id": "SOM-SOMALILAND-VOC-2022",
+      "country_iso3": "SOM",
+      "country_name": "Somalie (Somaliland — territoire non reconnu, régime douanier distinct)",
+      "program": "VOC — Verification of Conformity (Ministère du Commerce et du Tourisme du Somaliland, opérateur Cotecna)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["Cotecna"],
+      "period": {"start": "2022-04-16", "end": "en cours"},
+      "mission": "Vérification de conformité aux normes avant expédition de produits réglementés exportés vers le port de Berbera (Somaliland) ; Cotecna mandaté par le Ministère du Commerce et du Tourisme pour délivrer les certificats de conformité.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "UNKNOWN",
+        "reported_range": "Barème non publié dans les sources consultées (fiche produit Cotecna sans grille tarifaire publique).",
+        "currency": null
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Ministère du Commerce et du Tourisme du Somaliland ; opérateur Cotecna depuis le 16/04/2022.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-16",
+          "method": "web_search Cotecna Somaliland verification of conformity fee rate",
+          "finding": "Programme confirmé (Cotecna mandaté, CoC obligatoire depuis avril 2022) mais aucun taux/montant publié dans les sources consultées.",
+          "sources_checked": ["https://www.cotecna.com/en/services/verification-of-conformity/somaliland", "https://www.cotecna.com/media/dsbppmgc/somaliland-voc-infosheet.pdf"],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux non publié officiellement. Reste en indication secondaire."
+        }
+      ]
     }
   ]
 }
