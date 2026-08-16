@@ -52,6 +52,18 @@ def test_ghana_carries_verification_attempt_note():
     assert attempts[0]["outcome"] == "NOT_PROMOTED_TO_CALCULABLE"
 
 
+def test_sahel_freight_tracking_reported_not_calculable():
+    # Pays du Sahel (enclavés) : BSC/ECTN/PVI délégués à des privés, barèmes
+    # officiels non publiés → indications secondaires, jamais calculables.
+    for iso in ("MLI", "BFA", "TCD", "MRT", "NER"):
+        items = get_reported_missions(iso)
+        assert items, f"{iso} doit avoir une indication de suivi du fret"
+        layer = build_reported_layer(iso, "DZA")
+        assert layer is not None
+        for it in layer["items"]:
+            assert it["fee_status"] == "FEE_EXISTS_AMOUNT_NOT_AVAILABLE"
+
+
 def test_central_african_republic_reported_but_not_calculable():
     # RCA (CAF) : conformité SGS + BESC Groupe Albatros, prestataires privés, mais
     # taux/montant non publiés → indications secondaires, jamais calculables.

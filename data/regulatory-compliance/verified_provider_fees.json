@@ -328,6 +328,40 @@
         ],
         "notes": "Frais FIXE par expédition (montant unique en USD) → DOCUMENTED_FIXED_AMOUNT. Les PC (par produit) et la CISS (1% FOB, douane) restent hors de cette ligne."
       }
+    },
+    {
+      "fee_id": "MAR-VOC-HONORAIRES",
+      "country_iso3": "MAR",
+      "side": "import",
+      "scope_kind": "provider",
+      "program": "Programme de Vérification de la Conformité des produits industriels (Maroc)",
+      "scope": "Produits industriels réglementés importés au Maroc, contrôlés avant embarquement dans le pays d'exportation.",
+      "providers": ["Bureau Veritas", "SGS", "Applus", "TÜV Rheinland"],
+      "mandating_authority": "Ministère de l'Industrie et du Commerce (MCINET), Royaume du Maroc",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate": 0.0045,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond ci-dessous en USD, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "USD",
+        "floor_usd_min": 218,
+        "floor_usd_max": 315,
+        "cap_usd_min": 2400,
+        "cap_usd_max": 2500,
+        "conditions": "0,45% de la valeur FOB pour toutes les routes (A/B/C). Minimum 218 à 315 USD et maximum 2400 à 2500 USD selon la route. Hors taxes ; couvre vérification documentaire, inspection (si applicable) et conclusion (CoC ou NCR). Obligatoire depuis le 1er février 2020.",
+        "effective_date": "2020-02-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Bureau Veritas / Verigates — datasheet VoC Maroc (Rev 2.5)", "url": "https://verigates.bureauveritas.com/sites/verigates/files/2024-02/MAROC%20(Voc)%20FR%20Datasheet%20Rev.2.5.pdf", "confirms": "0,45% FOB (routes A/B/C) ; min 218-315 USD ; max 2400-2500 USD."},
+          {"publisher": "SGS — datasheet PCA Maroc", "url": "https://www.sgs.com/fr/-/media/sgscorp/documents/corporate/technical-documents/technical-datasheets/sgsgispcamarocdatasheeta4fr21v1.cdn.en.pdf", "confirms": "Barème du programme de vérification de la conformité Maroc (organisme mandaté SGS)."},
+          {"publisher": "TÜV Rheinland — Vérification de la conformité Maroc", "url": "https://www.tuv.com/market-access-services/fr/certification-filter/verification-of-conformity-morocco/", "confirms": "Programme MCINET, organismes mandatés (BV, SGS, Applus, TÜV), obligatoire depuis le 1er février 2020."}
+        ],
+        "notes": "Taux unique 0,45% FOB (identique toutes routes) → montant unique. Plancher/plafond USD (variables par route) conservés en conditions, non appliqués cross-devise."
+      }
     }
   ]
 }

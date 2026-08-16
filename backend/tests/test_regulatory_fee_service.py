@@ -331,6 +331,18 @@ def test_verified_nigeria_soncap_sc_fixed_amount():
     assert "PC1" in (sc["conditions"] or "") and "CISS" in (sc["conditions"] or "")
 
 
+def test_verified_morocco_voc_single_rate():
+    # Maroc : taux unique 0,45% FOB (identique toutes routes) → montant unique.
+    items = build_verified_provider_costs("MAR", fob_value=100000, side="import")
+    assert len(items) == 1
+    voc = items[0]
+    assert voc["fee_status"] == "CALCULABLE"
+    assert voc["is_range"] is False
+    assert voc["calculated_amount"] == 450.0
+    assert voc["stage"] == "export"
+    assert voc["source"] and voc["source"].startswith("http")
+
+
 def test_stage_separates_export_upstream_from_import_downstream():
     # Conformité payée par l'exportateur → étape EXPORT (amont). OCC/SONCAP payés
     # par l'importateur → étape IMPORT (aval).
@@ -345,7 +357,7 @@ def test_stage_separates_export_upstream_from_import_downstream():
 def test_every_verified_fee_carries_a_primary_source():
     # Règle 1 : chaque frais vérifié exploitable cite au moins une source (y
     # compris les frais à assiette CIF, d'où le cif_value fourni).
-    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE", "GAB", "COG", "COD", "NGA"):
+    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE", "GAB", "COG", "COD", "NGA", "MAR"):
         for item in build_verified_provider_costs(
             iso, fob_value=100000, cif_value=100000, side="import"
         ):

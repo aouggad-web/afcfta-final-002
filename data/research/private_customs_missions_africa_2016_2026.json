@@ -626,6 +626,93 @@
       "mandate_status_reported": "ACTIVE",
       "traceability": "Conseil National des Chargeurs du Cameroun (CNCC), organisme public mandant ; émission déléguée à des opérateurs privés. NB : distinct du PECAE (conformité), déjà vérifié et calculable.",
       "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "MLI-BSC-CMC",
+      "country_iso3": "MLI",
+      "country_name": "Mali",
+      "program": "BSC / ECTN — Bordereau de Suivi des Cargaisons (pays enclavé ; Conseil Malien des Chargeurs)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le CMC / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons du Mali transitant par Dakar, Abidjan, Lomé, Cotonou, Tema ; sécurisation des données de fret.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement, potentiellement doublé pour l'enclavement (transit + destination) — fourchette d'agents commerciaux, NON officielle.",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil Malien des Chargeurs (CMC), organisme public mandant ; émission déléguée à des opérateurs privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "BFA-PVI-BSC",
+      "country_iso3": "BFA",
+      "country_name": "Burkina Faso",
+      "program": "PVI (Programme de Vérification des Importations, Cotecna) + BSC (Conseil Burkinabè des Chargeurs)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["COTECNA (PVI, prestataire mandaté)", "Opérateur BSC mandaté par le CBC (privé)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Inspection avant embarquement des importations (> 1 000 000 FCFA) par Cotecna ; bordereau de suivi des cargaisons (traçabilité) pour ce pays enclavé.",
+      "payer": "IMPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "Inspection avant embarquement Cotecna au-delà d'un seuil FOB de 1 000 000 FCFA ; taux ad valorem NON publié officiellement. BSC : redevance par connaissement (non publiée).",
+        "currency": null,
+        "threshold": "FOB ≥ 1 000 000 FCFA (~1565 USD) pour le PVI."
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Convention État du Burkina Faso / SGS ; PVI opéré par Cotecna (source trade.gov). BSC via le Conseil Burkinabè des Chargeurs (CBC).",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search PVI Burkina Faso / Cotecna",
+          "finding": "PVI confirmé (Cotecna, seuil 1 000 000 FCFA) mais taux ad valorem non publié officiellement.",
+          "sources_checked": ["https://trade.gov/country-commercial-guides/burkina-faso-import-requirements-documentation"],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux non publié. Reste en indication secondaire."
+        }
+      ]
+    },
+    {
+      "record_id": "TCD-BESC-CTT",
+      "country_iso3": "TCD",
+      "country_name": "Tchad",
+      "program": "BESC — Bordereau Électronique de Suivi des Cargaisons (pays enclavé, CEMAC)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le Conseil des Chargeurs tchadien / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons du Tchad transitant principalement par Douala (Cameroun) ; sécurisation des données de fret.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement, potentiellement doublé (transit + destination) — fourchette d'agents commerciaux, NON officielle.",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil des Chargeurs tchadien, organisme public mandant ; émission déléguée à des opérateurs privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "MRT-BSC",
+      "country_iso3": "MRT",
+      "country_name": "Mauritanie",
+      "program": "BSC / ECTN — Bordereau de Suivi des Cargaisons",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le Conseil des Chargeurs mauritanien / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons à destination de Nouakchott/Nouadhibou ; sécurisation des données de fret.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement (fourchette d'agents commerciaux, NON officielle).",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil des Chargeurs mauritanien, organisme public mandant ; émission déléguée à des opérateurs privés.",
+      "verification_status": "PARTIAL"
     }
   ]
 }
