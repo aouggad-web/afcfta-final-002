@@ -163,6 +163,32 @@ def test_provider_and_formality_fees_are_bucketed_separately():
     assert scopes.issubset({"provider", "formality"})
 
 
+def test_registry_stage_reflects_logistics_step_not_side():
+    # `side` = axe origine/destination du registre consulté ; `stage` = étape
+    # logistique réelle (amont export / aval import). Un contrôle de
+    # conformité (PECAE) ou un suivi de cargaison (BESC), quoique consultés
+    # via le registre de DESTINATION (side="import"), sont accomplis avant
+    # embarquement dans le pays d'origine → stage="export", jamais copié
+    # depuis side. Un guichet unique ou un contrôle de valeur (RFCV/CIVIC),
+    # eux, restent une procédure de dédouanement à destination → stage=side.
+    rc = build_regulatory_cost(
+        get_country_regulatory_compliance("CMR"), fob_value=50000, side="import"
+    )
+    by_name = {li["measure_name"]: li["stage"] for li in rc["line_items"]}
+    assert by_name["Programme d'Évaluation de la Conformité Avant Embarquement (PECAE)"] == "export"
+    assert by_name["Bordereau Électronique de Suivi des Cargaisons (BESC)"] == "export"
+    assert (
+        by_name["Contrôle d'Identification des Véhicules Importés au Cameroun (CIVIC)"] == "import"
+    )
+
+    civ_rc = build_regulatory_cost(
+        get_country_regulatory_compliance("CIV"), fob_value=50000, side="import"
+    )
+    civ_by_name = {li["measure_name"]: li["stage"] for li in civ_rc["line_items"]}
+    assert civ_by_name["Bordereau de Suivi des Cargaisons (BSC)"] == "export"
+    assert civ_by_name["Guichet Unique du Commerce Extérieur (GUCE-CI)"] == "import"
+
+
 def test_expired_only_country_never_yields_a_provider_line():
     # Un mandat expiré n'entre jamais dans le calcul (règle 5) : CIV n'a aucun
     # acteur actif, donc aucun de ses acteurs historiques ne génère de ligne
