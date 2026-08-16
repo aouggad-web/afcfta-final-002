@@ -1,20 +1,21 @@
 {
   "total_countries": 54,
-  "authentic_countries": 36,
+  "authentic_countries": 51,
   "needs_recrawl": 0,
-  "no_data": 18,
+  "no_data": 3,
   "by_provenance": {
-    "none": 18,
-    "regional_cet_official": 32,
-    "national_crawl": 4
+    "regional_cet_official": 46,
+    "none": 3,
+    "national_crawl": 5
   },
   "countries": [
     {
       "iso3": "AGO",
       "file_exists": true,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": "SGA Alfândegas de Angola",
+      "positions": 5388,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Angola",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -121,9 +122,10 @@
     {
       "iso3": "COM",
       "file_exists": true,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": "Agence Nationale des Douanes des Comores (AGID)",
+      "positions": 5388,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Comores",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -152,11 +154,10 @@
     {
       "iso3": "DZA",
       "file_exists": true,
-      "positions": 17115,
+      "positions": 17061,
       "effective_provenance": "national_crawl",
       "source": "conformepro.dz (données douane.gov.dz)",
-      "estimated_positions": 11978,
-      "contaminated": true,
+      "estimated_positions": 0,
       "name_fr": "Algérie",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -184,10 +185,11 @@
     },
     {
       "iso3": "ETH",
-      "file_exists": false,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": null,
+      "file_exists": true,
+      "positions": 6296,
+      "effective_provenance": "national_crawl",
+      "source": "customs.erca.gov.et (portail douanier officiel)",
+      "estimated_positions": 0,
       "name_fr": "Éthiopie",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -205,10 +207,11 @@
     },
     {
       "iso3": "GHA",
-      "file_exists": false,
-      "positions": 0,
-      "effective_provenance": "none",
+      "file_exists": true,
+      "positions": 5387,
+      "effective_provenance": "regional_cet_official",
       "source": null,
+      "estimated_positions": 0,
       "name_fr": "Ghana",
       "target_primary": "national_crawl",
       "regional_tariff": "TEC CEDEAO"
@@ -281,10 +284,11 @@
     },
     {
       "iso3": "LBY",
-      "file_exists": false,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": null,
+      "file_exists": true,
+      "positions": 5388,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Libye",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -314,9 +318,10 @@
     {
       "iso3": "MDG",
       "file_exists": true,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": "Douanes Madagascar — DGD",
+      "positions": 5624,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Madagascar",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -335,9 +340,10 @@
     {
       "iso3": "MOZ",
       "file_exists": true,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": "Autoridade Tributária de Moçambique (AT)",
+      "positions": 5388,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Mozambique",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -345,19 +351,21 @@
     {
       "iso3": "MRT",
       "file_exists": true,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": "Direction Générale des Douanes — Mauritanie",
+      "positions": 5388,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Mauritanie",
       "target_primary": "national_crawl",
       "regional_tariff": null
     },
     {
       "iso3": "MUS",
-      "file_exists": false,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": null,
+      "file_exists": true,
+      "positions": 5619,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Maurice",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -365,9 +373,10 @@
     {
       "iso3": "MWI",
       "file_exists": true,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": "Malawi Revenue Authority (MRA)",
+      "positions": 5388,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Malawi",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -418,10 +427,11 @@
     },
     {
       "iso3": "SDN",
-      "file_exists": false,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": null,
+      "file_exists": true,
+      "positions": 5388,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Soudan",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -472,9 +482,10 @@
     {
       "iso3": "STP",
       "file_exists": true,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": "Direcção das Alfândegas — São Tomé-et-Príncipe",
+      "positions": 5388,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "São Tomé-et-Príncipe",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -492,10 +503,11 @@
     },
     {
       "iso3": "SYC",
-      "file_exists": false,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": null,
+      "file_exists": true,
+      "positions": 5396,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Seychelles",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -569,9 +581,10 @@
     {
       "iso3": "ZMB",
       "file_exists": true,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": "Zambia Revenue Authority (ZRA)",
+      "positions": 5613,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Zambie",
       "target_primary": "national_crawl",
       "regional_tariff": null
@@ -579,9 +592,10 @@
     {
       "iso3": "ZWE",
       "file_exists": true,
-      "positions": 0,
-      "effective_provenance": "none",
-      "source": "Zimbabwe Revenue Authority (ZIMRA)",
+      "positions": 5388,
+      "effective_provenance": "regional_cet_official",
+      "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+      "estimated_positions": 0,
       "name_fr": "Zimbabwe",
       "target_primary": "national_crawl",
       "regional_tariff": null
