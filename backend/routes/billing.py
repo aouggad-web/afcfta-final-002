@@ -21,7 +21,7 @@ from __future__ import annotations
 import ipaddress
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Literal, Optional
 
 from bson import ObjectId
@@ -498,12 +498,22 @@ async def chargily_webhook(request: Request):
         user_id = meta.get("user_id", "")
 
         if event_type == "checkout.paid":
+            cycle = meta.get("cycle")
+            # Chargily has no recurring subscription concept (see docstring
+            # above) — a paid checkout only covers the period actually
+            # bought. Without an explicit end date, entitlements.py's
+            # resolver treats a missing subscription_current_end as "still
+            # ongoing" and would grant paid access indefinitely from a
+            # single payment.
+            paid_days = 365 if cycle == "annual" else 30
             await _update_user_by_id(
                 user_id,
                 {
                     "subscription_tier": meta.get("plan", "free"),
                     "subscription_status": "active",
-                    "subscription_cycle": meta.get("cycle"),
+                    "subscription_cycle": cycle,
+                    "subscription_current_end": datetime.now(timezone.utc)
+                    + timedelta(days=paid_days),
                     "payment_provider": "chargily",
                     "billing_country": "DZ",
                 },
