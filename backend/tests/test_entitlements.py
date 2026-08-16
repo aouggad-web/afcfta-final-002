@@ -144,3 +144,25 @@ def test_all_declared_tiers_are_resolvable():
     for tier in TIERS:
         user = {"subscription_tier": tier, "subscription_status": "active"}
         assert resolve_entitlements(user).tier == tier
+
+
+@pytest.mark.parametrize(
+    "malformed_end",
+    [
+        "not-a-date",
+        12345,
+        {"nested": "dict"},
+        ["2026-08-15"],
+    ],
+)
+def test_malformed_period_end_fails_closed_to_free_without_raising(malformed_end):
+    """A legacy or corrupted subscription_current_end must never crash the
+    resolver (routes gate on this) nor silently grant unlimited paid access
+    by being treated as an absent value."""
+    user = {
+        "subscription_tier": "business",
+        "subscription_status": "active",
+        "subscription_current_end": malformed_end,
+    }
+
+    assert resolve_entitlements(user).tier == "free"

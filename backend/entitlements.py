@@ -75,17 +75,32 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
 }
 
 
-def _parse_period_end(value) -> Optional[datetime]:
+# Distinguishes "no period end recorded" (None — subscription still
+# ongoing, e.g. Stripe hasn't sent its first invoice yet) from "the stored
+# value is malformed" (_INVALID — a legacy/corrupted document must fail
+# closed to free, not raise and not grant unlimited access).
+_INVALID = object()
+
+
+def _parse_period_end(value):
+    """Returns a datetime, None (no value recorded), or the _INVALID
+    sentinel for a value that couldn't be parsed as one."""
     if value is None:
         return None
-    if isinstance(value, str):
-        value = datetime.fromisoformat(value)
-    if value.tzinfo is None:
-        # MongoDB/BSON stores datetimes without timezone info, so pymongo
-        # returns a naive datetime here even though it was written as
-        # UTC-aware (same caveat as the login-lockout check in user_auth.py).
-        value = value.replace(tzinfo=timezone.utc)
-    return value
+    try:
+        if isinstance(value, str):
+            value = datetime.fromisoformat(value)
+        if not isinstance(value, datetime):
+            return _INVALID
+        if value.tzinfo is None:
+            # MongoDB/BSON stores datetimes without timezone info, so pymongo
+            # returns a naive datetime here even though it was written as
+            # UTC-aware (same caveat as the login-lockout check in
+            # user_auth.py).
+            value = value.replace(tzinfo=timezone.utc)
+        return value
+    except (ValueError, TypeError):
+        return _INVALID
 
 
 def _effective_tier(user: Optional[dict], *, now: Optional[datetime] = None) -> str:
@@ -108,6 +123,12 @@ def _effective_tier(user: Optional[dict], *, now: Optional[datetime] = None) -> 
         return "free"
 
     period_end = _parse_period_end(user.get("subscription_current_end"))
+    if period_end is _INVALID:
+        # Malformed value on a legacy or corrupted document — fail closed to
+        # free rather than raise (this resolver must never crash a route
+        # that gates on it) or silently treat it as "no end date" (which
+        # would grant unlimited paid access).
+        return "free"
     if period_end is not None and (now or datetime.now(timezone.utc)) > period_end:
         # The paid period has lapsed — don't grant paid entitlements past
         # what was actually paid for, even if subscription_status hasn't
