@@ -437,8 +437,18 @@ def _auto_register_scrapers():
     try:
         from . import countries as countries_package
 
+        # Derived from the actual imported package name rather than
+        # hard-coded: a relative import resolves to whatever dotted name
+        # this module was loaded under, which differs between launch modes
+        # (`crawlers.countries` when backend/ is on sys.path — the app's own
+        # runtime convention — vs `backend.crawlers.countries` if imported
+        # from the repo root, as some docstrings in this codebase document).
+        # A hard-coded prefix would only work for one of the two and fail
+        # importlib.import_module() silently for the other, right back to
+        # an empty registry.
+        prefix = f"{countries_package.__name__}."
         for importer, modname, ispkg in pkgutil.iter_modules(
-            countries_package.__path__, prefix="crawlers.countries."
+            countries_package.__path__, prefix=prefix
         ):
             try:
                 module = importlib.import_module(modname)
