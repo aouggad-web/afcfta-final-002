@@ -961,8 +961,10 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         # destination) ET l'export (pays d'origine), fusionnée. La valeur déclarée
         # sert d'assiette pour les frais ad valorem, qu'ils portent sur le FOB ou
         # le CIF : chaque ligne conserve son base_label (FOB/CIF) pour l'honnêteté.
-        # Ne produit des lignes que pour les pays à prestataire mandaté actif (ou
-        # frais vérifié) ; sinon None (pas de rubrique vide).
+        # Produit des lignes pour les pays à prestataire mandaté actif, à frais
+        # vérifié, ou à formalité dont le prestataire/le frais n'est pas
+        # confirmé par une source (provider_status=UNCONFIRMED, jamais chiffré
+        # ni masqué) ; sinon None (pas de rubrique vide).
         cost_import = build_regulatory_cost(
             regulatory_compliance,
             fob_value=request.value,

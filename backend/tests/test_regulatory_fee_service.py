@@ -163,6 +163,56 @@ def test_provider_and_formality_fees_are_bucketed_separately():
     assert scopes.issubset({"provider", "formality"})
 
 
+def test_registry_stage_reflects_logistics_step_not_side():
+    # `side` = axe origine/destination du registre consulté ; `stage` = étape
+    # logistique réelle (amont export / aval import). Un contrôle de
+    # conformité (PECAE) ou un suivi de cargaison (BESC), quoique consultés
+    # via le registre de DESTINATION (side="import"), sont accomplis avant
+    # embarquement dans le pays d'origine → stage="export", jamais copié
+    # depuis side. Un guichet unique ou un contrôle de valeur (RFCV/CIVIC),
+    # eux, restent une procédure de dédouanement à destination → stage=side.
+    rc = build_regulatory_cost(
+        get_country_regulatory_compliance("CMR"), fob_value=50000, side="import"
+    )
+
+    def assert_all_stages(cost_block, measure_name, expected_stage):
+        matching_lines = [
+            line for line in cost_block["line_items"] if line["measure_name"] == measure_name
+        ]
+        assert matching_lines, f"Aucune ligne trouvée pour {measure_name}"
+        assert all(line["stage"] == expected_stage for line in matching_lines)
+
+    assert_all_stages(
+        rc,
+        "Programme d'Évaluation de la Conformité Avant Embarquement (PECAE)",
+        "export",
+    )
+    assert_all_stages(
+        rc,
+        "Bordereau Électronique de Suivi des Cargaisons (BESC)",
+        "export",
+    )
+    assert_all_stages(
+        rc,
+        "Contrôle d'Identification des Véhicules Importés au Cameroun (CIVIC)",
+        "import",
+    )
+
+    civ_rc = build_regulatory_cost(
+        get_country_regulatory_compliance("CIV"), fob_value=50000, side="import"
+    )
+    assert_all_stages(
+        civ_rc,
+        "Bordereau de Suivi des Cargaisons (BSC)",
+        "export",
+    )
+    assert_all_stages(
+        civ_rc,
+        "Guichet Unique du Commerce Extérieur (GUCE-CI)",
+        "import",
+    )
+
+
 def test_expired_only_country_never_yields_a_provider_line():
     # Un mandat expiré n'entre jamais dans le calcul (règle 5) : CIV n'a aucun
     # acteur actif, donc aucun de ses acteurs historiques ne génère de ligne

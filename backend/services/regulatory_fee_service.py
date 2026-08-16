@@ -209,6 +209,31 @@ def _stage_for(payer: Optional[str]) -> str:
     return "export" if payer == "EXPORTER" else "import"
 
 
+# Catégories de mesure du registre conforme accomplies AVANT embarquement, dans
+# le pays d'origine (amont), même lorsque la mesure figure dans le registre du
+# pays de DESTINATION (« side » y reste "import"). `stage` doit refléter cette
+# étape logistique réelle et ne peut donc pas être simplement recopié depuis
+# `side` (side = axe origine/destination du dossier consulté, stage = étape
+# amont/aval de l'opération) — sans quoi un contrôle de conformité ou un
+# BSC/ECTN, réalisés avant chargement, seraient à tort classés côté import.
+_PRE_SHIPMENT_MEASURE_CATEGORIES = {"conformity_assessment", "cargo_tracking_note"}
+
+
+def _stage_for_measure(measure: Dict[str, Any], side: str) -> str:
+    """Étape logistique d'une mesure du registre conforme.
+
+    « export » (amont) pour les catégories de mesure accomplies avant
+    embarquement dans le pays d'origine (conformité, suivi de cargaison type
+    BSC/ECTN/FERI), quel que soit le pays dont le registre est consulté.
+    Sinon, retombe sur `side` (guichet unique, contrôle de valeur/RFCV,
+    identification de véhicules — procédures propres au dédouanement à
+    destination).
+    """
+    if measure.get("measure_category") in _PRE_SHIPMENT_MEASURE_CATEGORIES:
+        return "export"
+    return side
+
+
 def build_regulatory_cost(
     compliance: Optional[Dict[str, Any]],
     *,
@@ -243,6 +268,8 @@ def build_regulatory_cost(
         if not active_actors and actor_status != "NOT_AVAILABLE":
             continue
 
+        measure_stage = _stage_for_measure(measure, side)
+
         # Frais de la formalité elle-même (perçu public éventuel).
         formality_fee = compute_fee(
             measure.get("fees_detail"),
@@ -262,7 +289,7 @@ def build_regulatory_cost(
                 "legal_reference": measure.get("legal_reference"),
                 "as_of": compliance.get("as_of"),
                 "side": side,
-                "stage": side,
+                "stage": measure_stage,
                 # Prestataire confirmé actif, ou statut non établi par une
                 # source (jamais fabriqué) — distingue les deux cas côté
                 # frontend sans jamais nommer un acteur non confirmé.
@@ -291,7 +318,7 @@ def build_regulatory_cost(
                     "mandate_status": actor.get("mandate_status"),
                     "as_of": compliance.get("as_of"),
                     "side": side,
-                    "stage": side,
+                    "stage": measure_stage,
                     "provider_status": "ACTIVE",
                     **provider_fee,
                 }
