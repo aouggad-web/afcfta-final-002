@@ -313,6 +313,26 @@ def test_dza_precompte_label_normalized_in_legacy_fields(dza_calc):
     assert prct_ind["label"] == "Précompte sur Impôt"
 
 
+def test_dza_tcs_label_normalized_in_legacy_fields(dza_calc):
+    """Même garantie que pour PRCT (cf. test ci-dessus) côté TCS : remarque
+    Codex sur #409 — seul PRCT était normalisé, laissant taxes_detail.TCS
+    et individual_taxes exposer l'intitulé brut hérité des données crawled
+    (« Taxe de Contrôle Sanitaire », erroné) au lieu de l'intitulé officiel."""
+    line = dict(_DZA_LINE)
+    line["taxes_detail"] = dict(_DZA_LINE["taxes_detail"])
+    line["taxes_detail"]["TCS"] = {
+        "rate": 3.0,
+        "label": "Taxe de Contrôle Sanitaire",
+    }
+    dza_calc.setattr(svc, "get_tariff_line", lambda iso3, hs6: dict(line))
+
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
+
+    assert result["taxes_detail"]["TCS"]["label"] == "Taxe de Contribution de Solidarité"
+    tcs_ind = next(t for t in result["individual_taxes"] if t["code"] == "TCS")
+    assert tcs_ind["label"] == "Taxe de Contribution de Solidarité"
+
+
 def test_summary_totals_match_breakdown_rows(synthetic_calc):
     synthetic_calc.setattr(exchange_rates_module, "get_service", lambda: _FakeFxService(rate=100.0))
 

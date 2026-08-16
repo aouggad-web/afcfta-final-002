@@ -1325,11 +1325,15 @@ def calculate_import_taxes(
         rate = float(tax_info.get("rate", 0) or 0)
         if rate == 0:
             continue
-        # PRCT : intitulé officiel fixe (« Précompte sur Impôt ») — on ignore
-        # les libellés hérités des données crawled (ex. « Prélèvement à la
-        # Compensation du Transport », un intitulé erroné).
-        if norm == "PRCT":
-            label = _TAX_LABELS["PRCT"]
+        # PRCT/TCS : intitulés officiels fixes — on ignore les libellés
+        # hérités des données crawled (ex. « Prélèvement à la Compensation
+        # du Transport », « Taxe de Contrôle Sanitaire »), erronés. Réécrit
+        # aussi dans tax_info (même dict que taxes_detail, copié plus haut)
+        # pour que taxes_detail exposé en sortie soit corrigé de la même
+        # façon que individual_taxes, pas seulement l'un des deux.
+        if norm in ("PRCT", "TCS"):
+            label = _TAX_LABELS[norm]
+            tax_info["label"] = label
         individual_taxes.append({"code": norm, "label": label, "rate_pct": rate})
         if norm == "DAPS":
             daps_rate_pct = rate
