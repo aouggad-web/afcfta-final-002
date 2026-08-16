@@ -450,6 +450,14 @@ def _auto_register_scrapers():
         for importer, modname, ispkg in pkgutil.iter_modules(
             countries_package.__path__, prefix=prefix
         ):
+            # `*_example.py` modules (e.g. ghana_example.py) are documented
+            # templates showing how to write a scraper, not real ones — one
+            # of them is a demo GhanaScraper with an empty tariff_schedule.
+            # Now that discovery actually works, registering it would make
+            # ordinary Ghana crawl jobs silently save placeholder data
+            # instead of falling back to the (working) generic scraper.
+            if modname.rsplit(".", 1)[-1].endswith("_example"):
+                continue
             try:
                 module = importlib.import_module(modname)
 
