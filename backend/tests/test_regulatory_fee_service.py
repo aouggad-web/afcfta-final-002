@@ -174,6 +174,7 @@ def test_registry_stage_reflects_logistics_step_not_side():
     rc = build_regulatory_cost(
         get_country_regulatory_compliance("CMR"), fob_value=50000, side="import"
     )
+
     def assert_all_stages(cost_block, measure_name, expected_stage):
         matching_lines = [
             line for line in cost_block["line_items"] if line["measure_name"] == measure_name
