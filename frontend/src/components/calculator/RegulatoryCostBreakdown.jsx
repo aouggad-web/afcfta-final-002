@@ -93,10 +93,21 @@ function T(language) {
     explainBody: fr
       ? "Les formalités déléguées se répartissent en deux étapes de l'opération. À l'EXPORT (amont), les programmes de conformité (VOC, PVoC, CBCA, PECAE, PROGEC, PCEC) sont exécutés dans le pays d'origine AVANT l'embarquement et payés par l'exportateur — même s'ils sont exigés par le pays de destination. À l'IMPORT (aval), d'autres frais sont acquittés à destination par l'importateur (ex. redevance OCC en RDC, certificat SONCAP au Nigeria). Les frais du prestataire PRIVÉ restent distincts des perçus PUBLICS (organismes d'État)."
       : "Delegated formalities split into two stages of the operation. On the EXPORT side (upstream), conformity programmes (VOC, PVoC, CBCA, PECAE, PROGEC, PCEC) are carried out in the country of origin BEFORE shipment and paid by the exporter — even though required by the destination country. On the IMPORT side (downstream), other fees are paid at destination by the importer (e.g. OCC levy in DRC, SONCAP certificate in Nigeria). PRIVATE-provider fees remain distinct from PUBLIC levies (state bodies).",
+    unconfirmedProvider: fr ? 'prestataire non confirmé' : 'provider unconfirmed',
+    unconfirmedProviderNote: fr
+      ? "Formalité obligatoire confirmée par une source, mais aucun prestataire actuellement actif ni frais n'est établi — l'absence de prestataire n'est pas démontrée pour autant. À ne pas confondre avec un frais nul."
+      : 'Mandatory formality confirmed by a source, but no currently active provider or fee is established — the absence of a provider is not established either. Not to be read as a zero fee.',
   };
 }
 
 function ScopeTag({ item, t }) {
+  if (item.provider_status === 'UNCONFIRMED') {
+    return (
+      <span className="text-[9px] px-1.5 py-0.5 rounded border bg-amber-600/15 text-amber-300 border-amber-500/40">
+        {t.unconfirmedProvider}
+      </span>
+    );
+  }
   const isPublic = item.scope === 'formality' || item.collector_type === 'STATE_BODY';
   return (
     <span
@@ -190,6 +201,9 @@ function FeeLine({ item, t, language }) {
             <p className="text-slate-500 text-[11px] mt-1 italic">
               {t.conditions}: {item.conditions}
             </p>
+          )}
+          {item.provider_status === 'UNCONFIRMED' && (
+            <p className="text-amber-400/90 text-[11px] mt-1 italic">{t.unconfirmedProviderNote}</p>
           )}
         </div>
         <div className="text-right shrink-0">

@@ -218,10 +218,16 @@ def build_regulatory_cost(
 ) -> Optional[Dict[str, Any]]:
     """Compose la ventilation des frais réglementaires d'un pays.
 
-    Ne traite QUE les mesures portant un prestataire mandaté ACTIF (règle 5) et
-    range séparément « frais de formalité obligatoire » et « frais du prestataire
-    mandaté » (règle 7). Renvoie None quand aucun prestataire actif n'est présent
-    (pas de rubrique vide).
+    Traite les mesures portant un prestataire mandaté ACTIF (règle 5), en
+    rangeant séparément « frais de formalité obligatoire » et « frais du
+    prestataire mandaté » (règle 7). Une mesure SANS prestataire actif est
+    aussi incluse — comme formalité seule, jamais chiffrée — dès lors que la
+    source ne confirme PAS une administration directe (mandated_actor_status
+    == NOT_AVAILABLE) : l'existence de la formalité ne doit jamais être
+    masquée simplement parce que son prestataire/son frais reste à trouver.
+    Une mesure confirmée NOT_APPLICABLE (administration directe, aucun
+    prestataire) reste exclue : elle est hors périmètre de ce volet. Renvoie
+    None quand rien n'est présent (pas de rubrique vide).
     """
     if not compliance:
         return None
@@ -233,7 +239,8 @@ def build_regulatory_cost(
             for a in (measure.get("mandated_actors") or [])
             if a.get("mandate_status") in _ACTIVE_MANDATE_STATUSES
         ]
-        if not active_actors:
+        actor_status = measure.get("mandated_actor_status")
+        if not active_actors and actor_status != "NOT_AVAILABLE":
             continue
 
         # Frais de la formalité elle-même (perçu public éventuel).
@@ -256,6 +263,10 @@ def build_regulatory_cost(
                 "as_of": compliance.get("as_of"),
                 "side": side,
                 "stage": side,
+                # Prestataire confirmé actif, ou statut non établi par une
+                # source (jamais fabriqué) — distingue les deux cas côté
+                # frontend sans jamais nommer un acteur non confirmé.
+                "provider_status": "ACTIVE" if active_actors else "UNCONFIRMED",
                 **formality_fee,
             }
         )
@@ -281,6 +292,7 @@ def build_regulatory_cost(
                     "as_of": compliance.get("as_of"),
                     "side": side,
                     "stage": side,
+                    "provider_status": "ACTIVE",
                     **provider_fee,
                 }
             )

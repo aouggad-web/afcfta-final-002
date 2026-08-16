@@ -140,9 +140,17 @@ def test_active_provider_country_yields_unpriced_incomplete_block():
     assert all(li["fee_status"] != "CALCULABLE" for li in rc["line_items"])
 
 
-def test_country_without_active_provider_has_no_cost_block():
-    # CIV : seul acteur TERMINATED → aucune rubrique de coût (pas de rubrique vide).
-    assert build_regulatory_cost(get_country_regulatory_compliance("CIV"), fob_value=50000) is None
+def test_country_without_active_provider_but_undetermined_status_still_shows_formality():
+    # CIV : mesures sans prestataire actif confirmé (GUCE, RFCV, BSC, VOC — statut
+    # NOT_AVAILABLE, jamais NOT_APPLICABLE) restent visibles comme formalité seule,
+    # jamais chiffrées, jamais masquées faute de prestataire/frais trouvé.
+    rc = build_regulatory_cost(get_country_regulatory_compliance("CIV"), fob_value=50000)
+    assert rc is not None
+    assert rc["line_items"], "les formalités CIV à prestataire non confirmé doivent apparaître"
+    for li in rc["line_items"]:
+        assert li["scope"] == "formality"
+        assert li["provider_status"] == "UNCONFIRMED"
+        assert li["fee_status"] != "CALCULABLE"
 
 
 def test_provider_and_formality_fees_are_bucketed_separately():
@@ -155,10 +163,29 @@ def test_provider_and_formality_fees_are_bucketed_separately():
     assert scopes.issubset({"provider", "formality"})
 
 
-def test_expired_only_country_is_excluded_from_calculation():
+def test_expired_only_country_never_yields_a_provider_line():
     # Un mandat expiré n'entre jamais dans le calcul (règle 5) : CIV n'a aucun
-    # actif, donc aucun de ses acteurs historiques ne génère de ligne de coût.
-    assert build_regulatory_cost(get_country_regulatory_compliance("CIV"), fob_value=1) is None
+    # acteur actif, donc aucun de ses acteurs historiques ne génère de ligne
+    # "provider" ni de montant chiffré — seule la formalité elle-même apparaît.
+    rc = build_regulatory_cost(get_country_regulatory_compliance("CIV"), fob_value=1)
+    assert rc is not None
+    assert all(li["scope"] != "provider" for li in rc["line_items"])
+    assert all(li["fee_status"] != "CALCULABLE" for li in rc["line_items"])
+
+
+def test_confirmed_direct_administration_measure_stays_excluded():
+    # KEN-KRA-ACD est NOT_APPLICABLE (source confirmant une opération directe,
+    # sans prestataire) : cette mesure reste hors du volet formalités déléguées,
+    # contrairement à une mesure NOT_AVAILABLE (statut non établi).
+    compliance = get_country_regulatory_compliance("KEN")
+    rc = build_regulatory_cost(compliance, fob_value=50000)
+    names = {li["measure_name"] for li in (rc or {}).get("line_items", [])}
+    excluded = [
+        m for m in compliance["measures"] if m.get("mandated_actor_status") == "NOT_APPLICABLE"
+    ]
+    assert excluded, "KEN doit conserver au moins une mesure NOT_APPLICABLE de référence"
+    excluded_names = {m["measure_name"] for m in excluded}
+    assert not (excluded_names & names)
 
 
 # ── Fourchette de taux (route-dépendante) ─────────────────────────────────────

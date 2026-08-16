@@ -112,6 +112,29 @@ describe('RegulatoryCostBreakdown', () => {
     expect(screen.queryByText(/0 USD|0,00/)).toBeNull();
   });
 
+  it('affiche une formalité sans prestataire confirmé, jamais masquée', () => {
+    const UNCONFIRMED_ITEM = {
+      scope: 'formality',
+      measure_name: 'Guichet Unique du Commerce Extérieur (GUCE-CI)',
+      actor_name: null,
+      mandating_authority: "Ministère du Commerce (CIV)",
+      side: 'import',
+      stage: 'import',
+      fee_status: 'FEE_EXISTS_AMOUNT_NOT_AVAILABLE',
+      provider_status: 'UNCONFIRMED',
+      calculated_amount: null,
+      currency: null,
+      contact: null,
+    };
+    const result = costBlock([UNCONFIRMED_ITEM], { has_unpriced_fees: true, complete: false });
+    render(<RegulatoryCostBreakdown result={result} language="fr" />);
+    expect(screen.getByText(/Guichet Unique du Commerce Extérieur/)).toBeInTheDocument();
+    expect(screen.getByText(/prestataire non confirmé/i)).toBeInTheDocument();
+    expect(screen.getByText(/l'absence de prestataire n'est pas démontrée/i)).toBeInTheDocument();
+    // Jamais un zéro fabriqué pour ce frais non trouvé.
+    expect(screen.queryByText(/0 USD|0,00/)).toBeNull();
+  });
+
   it('affiche une fourchette vérifiée ad valorem avec badge VÉRIFIÉ et conditions', () => {
     const VERIFIED_RANGE = {
       scope: 'provider',
