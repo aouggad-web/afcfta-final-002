@@ -427,12 +427,18 @@ def _auto_register_scrapers():
         logger.info("No countries/ directory found, skipping auto-registration")
         return
 
-    # Import all modules in countries/
+    # Import all modules in countries/. Relative import, matching every other
+    # import in this module (`.base_scraper`, `.all_countries_registry`):
+    # the running app has `backend/` itself on sys.path (not a `backend`
+    # package), so `import backend.crawlers...` always raised ImportError
+    # here — silently swallowed below, leaving every one of the 15+
+    # country-specific scrapers in countries/ unregistered and every country
+    # falling back to the generic scraper without anyone noticing.
     try:
-        import backend.crawlers.countries as countries_package
+        from . import countries as countries_package
 
         for importer, modname, ispkg in pkgutil.iter_modules(
-            countries_package.__path__, prefix="backend.crawlers.countries."
+            countries_package.__path__, prefix="crawlers.countries."
         ):
             try:
                 module = importlib.import_module(modname)
