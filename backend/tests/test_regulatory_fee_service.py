@@ -174,19 +174,42 @@ def test_registry_stage_reflects_logistics_step_not_side():
     rc = build_regulatory_cost(
         get_country_regulatory_compliance("CMR"), fob_value=50000, side="import"
     )
-    by_name = {li["measure_name"]: li["stage"] for li in rc["line_items"]}
-    assert by_name["Programme d'Évaluation de la Conformité Avant Embarquement (PECAE)"] == "export"
-    assert by_name["Bordereau Électronique de Suivi des Cargaisons (BESC)"] == "export"
-    assert (
-        by_name["Contrôle d'Identification des Véhicules Importés au Cameroun (CIVIC)"] == "import"
+    def assert_all_stages(cost_block, measure_name, expected_stage):
+        matching_lines = [
+            line for line in cost_block["line_items"] if line["measure_name"] == measure_name
+        ]
+        assert matching_lines, f"Aucune ligne trouvée pour {measure_name}"
+        assert all(line["stage"] == expected_stage for line in matching_lines)
+
+    assert_all_stages(
+        rc,
+        "Programme d'Évaluation de la Conformité Avant Embarquement (PECAE)",
+        "export",
+    )
+    assert_all_stages(
+        rc,
+        "Bordereau Électronique de Suivi des Cargaisons (BESC)",
+        "export",
+    )
+    assert_all_stages(
+        rc,
+        "Contrôle d'Identification des Véhicules Importés au Cameroun (CIVIC)",
+        "import",
     )
 
     civ_rc = build_regulatory_cost(
         get_country_regulatory_compliance("CIV"), fob_value=50000, side="import"
     )
-    civ_by_name = {li["measure_name"]: li["stage"] for li in civ_rc["line_items"]}
-    assert civ_by_name["Bordereau de Suivi des Cargaisons (BSC)"] == "export"
-    assert civ_by_name["Guichet Unique du Commerce Extérieur (GUCE-CI)"] == "import"
+    assert_all_stages(
+        civ_rc,
+        "Bordereau de Suivi des Cargaisons (BSC)",
+        "export",
+    )
+    assert_all_stages(
+        civ_rc,
+        "Guichet Unique du Commerce Extérieur (GUCE-CI)",
+        "import",
+    )
 
 
 def test_expired_only_country_never_yields_a_provider_line():
