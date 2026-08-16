@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta, timezone
 
 import pytest
-
 from entitlements import TIERS, resolve_entitlements
 
 
