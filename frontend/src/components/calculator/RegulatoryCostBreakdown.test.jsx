@@ -33,6 +33,8 @@ const CALCULABLE_ITEM = {
   actor_name: 'COTECNA',
   mandating_authority: 'Ministère du Commerce',
   side: 'import',
+  stage: 'export',
+  payer: 'EXPORTER',
   fee_status: 'CALCULABLE',
   calculated_amount: 500,
   currency: 'USD',
@@ -45,6 +47,8 @@ const UNPRICED_ITEM = {
   actor_name: 'SGS',
   mandating_authority: 'Douanes',
   side: 'export',
+  stage: 'export',
+  payer: 'EXPORTER',
   fee_status: 'FEE_EXISTS_AMOUNT_NOT_AVAILABLE',
   calculated_amount: null,
   currency: null,
@@ -67,9 +71,35 @@ describe('RegulatoryCostBreakdown', () => {
     expect(screen.getAllByText(/500 USD/).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/Coût réglementaire total/)).toBeInTheDocument();
     expect(screen.getByText(/Complet/)).toBeInTheDocument();
-    // Les frais prestataires sont séparés des droits & taxes.
-    expect(screen.getByText(/Frais du prestataire mandaté/)).toBeInTheDocument();
     expect(screen.getByText(/Droits de douane/)).toBeInTheDocument();
+    // Volet EXPORT (le frais est payé par l'exportateur) + tag prestataire privé.
+    expect(screen.getByText(/Formalités à l'export/)).toBeInTheDocument();
+    expect(screen.getByText(/prestataire privé/)).toBeInTheDocument();
+  });
+
+  it('affiche un encadré explicatif import vs export', () => {
+    const result = costBlock([CALCULABLE_ITEM], { complete: true });
+    render(<RegulatoryCostBreakdown result={result} language="fr" />);
+    expect(screen.getByText(/Import vs export : comment lire ces frais/)).toBeInTheDocument();
+    expect(screen.getByText(/à l'IMPORT \(aval\)/i)).toBeInTheDocument();
+  });
+
+  it('sépare les volets export (amont) et import (aval)', () => {
+    const importItem = {
+      ...CALCULABLE_ITEM,
+      measure_name: 'Redevance OCC',
+      stage: 'import',
+      payer: 'IMPORTER',
+      collector_type: 'STATE_BODY',
+      scope: 'formality',
+    };
+    const result = costBlock([CALCULABLE_ITEM, importItem], { complete: true });
+    render(<RegulatoryCostBreakdown result={result} language="fr" />);
+    expect(screen.getByText(/Formalités à l'export/)).toBeInTheDocument();
+    expect(screen.getByText(/Formalités à l'import/)).toBeInTheDocument();
+    expect(screen.getByText(/Redevance OCC/)).toBeInTheDocument();
+    // Le perçu public (OCC) porte le tag « perçu public ».
+    expect(screen.getByText(/perçu public/)).toBeInTheDocument();
   });
 
   it('signale « montant à confirmer » et le message quand un frais existe mais est inconnu', () => {
@@ -79,6 +109,29 @@ describe('RegulatoryCostBreakdown', () => {
     expect(screen.getByText(/prendre attache avec le prestataire/i)).toBeInTheDocument();
     expect(screen.getByText(/Partiel/)).toBeInTheDocument();
     // Jamais un zéro fabriqué pour le frais inconnu.
+    expect(screen.queryByText(/0 USD|0,00/)).toBeNull();
+  });
+
+  it('affiche une formalité sans prestataire confirmé, jamais masquée', () => {
+    const UNCONFIRMED_ITEM = {
+      scope: 'formality',
+      measure_name: 'Guichet Unique du Commerce Extérieur (GUCE-CI)',
+      actor_name: null,
+      mandating_authority: "Ministère du Commerce (CIV)",
+      side: 'import',
+      stage: 'import',
+      fee_status: 'FEE_EXISTS_AMOUNT_NOT_AVAILABLE',
+      provider_status: 'UNCONFIRMED',
+      calculated_amount: null,
+      currency: null,
+      contact: null,
+    };
+    const result = costBlock([UNCONFIRMED_ITEM], { has_unpriced_fees: true, complete: false });
+    render(<RegulatoryCostBreakdown result={result} language="fr" />);
+    expect(screen.getByText(/Guichet Unique du Commerce Extérieur/)).toBeInTheDocument();
+    expect(screen.getByText(/prestataire non confirmé/i)).toBeInTheDocument();
+    expect(screen.getByText(/l'absence de prestataire n'est pas démontrée/i)).toBeInTheDocument();
+    // Jamais un zéro fabriqué pour ce frais non trouvé.
     expect(screen.queryByText(/0 USD|0,00/)).toBeNull();
   });
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { AlertTriangle, FlaskConical } from 'lucide-react';
+import { AlertTriangle, FlaskConical, Info, ArrowUpRight, ArrowDownLeft } from 'lucide-react';
 
 // Couche « indications secondaires » : prestataires et frais REPORTÉS par une
 // synthèse non vérifiée, pour les pays pas encore couverts par le registre
@@ -54,6 +54,22 @@ function T(language) {
     sideImport: fr ? 'Import' : 'Import',
     sideExport: fr ? 'Export' : 'Export',
     unverified: fr ? 'NON VÉRIFIÉ' : 'UNVERIFIED',
+    exportStageTitle: fr
+      ? "Formalités à l'export (amont — pays d'origine)"
+      : 'Export-side formalities (upstream — country of origin)',
+    exportStageDesc: fr
+      ? "Accomplies avant embarquement dans le pays d'origine, à la charge de l'exportateur."
+      : 'Completed before shipment in the country of origin, borne by the exporter.',
+    importStageTitle: fr
+      ? "Formalités à l'import (aval — pays de destination)"
+      : 'Import-side formalities (downstream — country of destination)',
+    importStageDesc: fr
+      ? "Acquittées à l'arrivée dans le pays de destination, à la charge de l'importateur."
+      : 'Paid on arrival in the destination country, borne by the importer.',
+    explainTitle: fr ? "Import vs export : comment lire ces indications" : 'Import vs export: how to read these indications',
+    explainBody: fr
+      ? "Ces indications se répartissent selon l'étape de l'opération : à l'EXPORT (amont), les formalités concernent le pays d'origine, avant embarquement ; à l'IMPORT (aval), elles concernent le pays de destination, à l'arrivée. Dans les deux cas, ces montants restent NON VÉRIFIÉS et n'entrent dans aucun total."
+      : "These indications are split by the stage of the operation: on the EXPORT side (upstream), formalities concern the country of origin, before shipment; on the IMPORT side (downstream), they concern the destination country, on arrival. In both cases, these amounts remain UNVERIFIED and enter no total.",
   };
 }
 
@@ -103,10 +119,32 @@ function ReportedItem({ item, t, language }) {
   );
 }
 
+function StageBlock({ title, desc, icon: Icon, items, t, language }) {
+  if (!items.length) return null;
+  return (
+    <div className="space-y-2">
+      <div>
+        <p className="text-sm font-semibold text-slate-300 flex items-center gap-2">
+          <Icon className="w-4 h-4" /> {title}
+        </p>
+        <p className="text-[11px] text-slate-500 ml-6">{desc}</p>
+      </div>
+      {items.map((item, idx) => (
+        <ReportedItem key={idx} item={item} t={t} language={language} />
+      ))}
+    </div>
+  );
+}
+
 export default function RegulatoryReportedIndications({ result, language = 'fr' }) {
   const t = T(language);
   const layer = result?.regulatory_reported;
   if (!layer || !(layer.items || []).length) return null;
+
+  // Regroupement par ÉTAPE logistique : export (amont, pays d'origine) vs
+  // import (aval, pays de destination) — même logique que la couche vérifiée.
+  const exportItems = layer.items.filter((i) => i.side === 'export');
+  const importItems = layer.items.filter((i) => i.side !== 'export');
 
   return (
     <Card className="bg-slate-900/40 border border-dashed border-slate-600">
@@ -131,9 +169,34 @@ export default function RegulatoryReportedIndications({ result, language = 'fr' 
           <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
           <p className="text-sm text-amber-200/90">{t.warning}</p>
         </div>
-        {layer.items.map((item, idx) => (
-          <ReportedItem key={idx} item={item} t={t} language={language} />
-        ))}
+
+        {/* Encadré explicatif import vs export */}
+        <div className="rounded-lg border border-sky-500/30 bg-sky-500/5 p-3">
+          <p className="text-sm font-semibold text-sky-200 flex items-center gap-2">
+            <Info className="w-4 h-4" /> {t.explainTitle}
+          </p>
+          <p className="text-xs text-slate-300/90 mt-1">{t.explainBody}</p>
+        </div>
+
+        {/* Volet EXPORT (amont, pays d'origine) */}
+        <StageBlock
+          title={t.exportStageTitle}
+          desc={t.exportStageDesc}
+          icon={ArrowUpRight}
+          items={exportItems}
+          t={t}
+          language={language}
+        />
+
+        {/* Volet IMPORT (aval, pays de destination) */}
+        <StageBlock
+          title={t.importStageTitle}
+          desc={t.importStageDesc}
+          icon={ArrowDownLeft}
+          items={importItems}
+          t={t}
+          language={language}
+        />
       </CardContent>
     </Card>
   );

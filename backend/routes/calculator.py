@@ -958,21 +958,31 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     try:
         regulatory_compliance = get_country_regulatory_compliance(dest_iso3)
         # Ventilation des frais de formalité/prestataire pour l'import (pays de
-        # destination) ET l'export (pays d'origine), fusionnée. L'assiette FOB par
-        # défaut est la valeur déclarée. Ne produit des lignes que pour les pays à
-        # prestataire mandaté actif ; sinon None (pas de rubrique vide).
+        # destination) ET l'export (pays d'origine), fusionnée. La valeur déclarée
+        # sert d'assiette pour les frais ad valorem, qu'ils portent sur le FOB ou
+        # le CIF : chaque ligne conserve son base_label (FOB/CIF) pour l'honnêteté.
+        # Ne produit des lignes que pour les pays à prestataire mandaté actif (ou
+        # frais vérifié) ; sinon None (pas de rubrique vide).
         cost_import = build_regulatory_cost(
-            regulatory_compliance, fob_value=request.value, side="import"
+            regulatory_compliance,
+            fob_value=request.value,
+            cif_value=request.value,
+            side="import",
         )
         origin_compliance = get_country_regulatory_compliance(origin_iso3)
         cost_export = build_regulatory_cost(
-            origin_compliance, fob_value=request.value, side="export"
+            origin_compliance,
+            fob_value=request.value,
+            cif_value=request.value,
+            side="export",
         )
-        # Frais VÉRIFIÉS sur source primaire (ex. VOC Côte d'Ivoire) — autoritaires,
-        # ajoutés indépendamment du registre conforme, pour import et export.
+        # Frais VÉRIFIÉS sur source primaire (ex. VOC Côte d'Ivoire, OCC RDC) —
+        # autoritaires, ajoutés indépendamment du registre conforme, import + export.
         verified_items = build_verified_provider_costs(
-            dest_iso3, fob_value=request.value, side="import"
-        ) + build_verified_provider_costs(origin_iso3, fob_value=request.value, side="export")
+            dest_iso3, fob_value=request.value, cif_value=request.value, side="import"
+        ) + build_verified_provider_costs(
+            origin_iso3, fob_value=request.value, cif_value=request.value, side="export"
+        )
         regulatory_cost = _merge_regulatory_cost(cost_import, cost_export, verified_items)
         # Couche d'indications secondaires (non vérifiée) pour les pays pas
         # encore couverts par le registre conforme — purement informative.

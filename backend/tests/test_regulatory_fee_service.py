@@ -140,9 +140,17 @@ def test_active_provider_country_yields_unpriced_incomplete_block():
     assert all(li["fee_status"] != "CALCULABLE" for li in rc["line_items"])
 
 
-def test_country_without_active_provider_has_no_cost_block():
-    # CIV : seul acteur TERMINATED → aucune rubrique de coût (pas de rubrique vide).
-    assert build_regulatory_cost(get_country_regulatory_compliance("CIV"), fob_value=50000) is None
+def test_country_without_active_provider_but_undetermined_status_still_shows_formality():
+    # CIV : mesures sans prestataire actif confirmé (GUCE, RFCV, BSC, VOC — statut
+    # NOT_AVAILABLE, jamais NOT_APPLICABLE) restent visibles comme formalité seule,
+    # jamais chiffrées, jamais masquées faute de prestataire/frais trouvé.
+    rc = build_regulatory_cost(get_country_regulatory_compliance("CIV"), fob_value=50000)
+    assert rc is not None
+    assert rc["line_items"], "les formalités CIV à prestataire non confirmé doivent apparaître"
+    for li in rc["line_items"]:
+        assert li["scope"] == "formality"
+        assert li["provider_status"] == "UNCONFIRMED"
+        assert li["fee_status"] != "CALCULABLE"
 
 
 def test_provider_and_formality_fees_are_bucketed_separately():
@@ -155,10 +163,29 @@ def test_provider_and_formality_fees_are_bucketed_separately():
     assert scopes.issubset({"provider", "formality"})
 
 
-def test_expired_only_country_is_excluded_from_calculation():
+def test_expired_only_country_never_yields_a_provider_line():
     # Un mandat expiré n'entre jamais dans le calcul (règle 5) : CIV n'a aucun
-    # actif, donc aucun de ses acteurs historiques ne génère de ligne de coût.
-    assert build_regulatory_cost(get_country_regulatory_compliance("CIV"), fob_value=1) is None
+    # acteur actif, donc aucun de ses acteurs historiques ne génère de ligne
+    # "provider" ni de montant chiffré — seule la formalité elle-même apparaît.
+    rc = build_regulatory_cost(get_country_regulatory_compliance("CIV"), fob_value=1)
+    assert rc is not None
+    assert all(li["scope"] != "provider" for li in rc["line_items"])
+    assert all(li["fee_status"] != "CALCULABLE" for li in rc["line_items"])
+
+
+def test_confirmed_direct_administration_measure_stays_excluded():
+    # KEN-KRA-ACD est NOT_APPLICABLE (source confirmant une opération directe,
+    # sans prestataire) : cette mesure reste hors du volet formalités déléguées,
+    # contrairement à une mesure NOT_AVAILABLE (statut non établi).
+    compliance = get_country_regulatory_compliance("KEN")
+    rc = build_regulatory_cost(compliance, fob_value=50000)
+    names = {li["measure_name"] for li in (rc or {}).get("line_items", [])}
+    excluded = [
+        m for m in compliance["measures"] if m.get("mandated_actor_status") == "NOT_APPLICABLE"
+    ]
+    assert excluded, "KEN doit conserver au moins une mesure NOT_APPLICABLE de référence"
+    excluded_names = {m["measure_name"] for m in excluded}
+    assert not (excluded_names & names)
 
 
 # ── Fourchette de taux (route-dépendante) ─────────────────────────────────────
@@ -206,3 +233,160 @@ def test_verified_voc_civ_is_calculable_range_with_sources():
 
 def test_verified_costs_absent_for_uncovered_country():
     assert build_verified_provider_costs("DZA", fob_value=100000, side="import") == []
+
+
+def test_verified_kenya_pvoc_bracket_from_kebs():
+    items = build_verified_provider_costs("KEN", fob_value=100000, side="import")
+    assert len(items) == 1
+    pvoc = items[0]
+    assert pvoc["fee_status"] == "CALCULABLE"
+    assert pvoc["is_range"] is True
+    # 0,50%-0,60% de 100000 = 500-600 (bornes ad valorem).
+    assert pvoc["calculated_amount_min"] == 500.0
+    assert pvoc["calculated_amount_max"] == 600.0
+    assert pvoc["source"] and "kebs.org" in pvoc["source"]
+    assert "300 USD" in (pvoc["conditions"] or "")
+
+
+def test_verified_tanzania_pvoc_bracket_from_tbs():
+    items = build_verified_provider_costs("TZA", fob_value=100000, side="import")
+    assert len(items) == 1
+    pvoc = items[0]
+    assert pvoc["fee_status"] == "CALCULABLE"
+    assert pvoc["is_range"] is True
+    # 0,25%-0,53% de 100000 = 250-530.
+    assert pvoc["calculated_amount_min"] == 250.0
+    assert pvoc["calculated_amount_max"] == 530.0
+    assert pvoc["source"] and pvoc["source"].startswith("http")
+
+
+def test_verified_uganda_pvoc_bracket_from_unbs():
+    items = build_verified_provider_costs("UGA", fob_value=100000, side="import")
+    assert len(items) == 1
+    pvoc = items[0]
+    assert pvoc["fee_status"] == "CALCULABLE"
+    assert pvoc["is_range"] is True
+    # 0,25%-0,50% de 100000 = 250-500.
+    assert pvoc["calculated_amount_min"] == 250.0
+    assert pvoc["calculated_amount_max"] == 500.0
+    assert pvoc["source"] and pvoc["source"].startswith("http")
+    assert "235 USD" in (pvoc["conditions"] or "")
+
+
+def test_verified_cameroon_pecae_bracket_with_legal_basis():
+    items = build_verified_provider_costs("CMR", fob_value=100000, side="import")
+    assert len(items) == 1
+    pecae = items[0]
+    assert pecae["fee_status"] == "CALCULABLE"
+    assert pecae["is_range"] is True
+    # 0,27%-0,45% de 100000 = 270-450.
+    assert pecae["calculated_amount_min"] == 270.0
+    assert pecae["calculated_amount_max"] == 450.0
+    # Base légale (décret) citée dans les conditions.
+    assert "Décret" in (pecae["conditions"] or "")
+
+
+def test_verified_zimbabwe_cbca_bracket_with_statutory_instrument():
+    items = build_verified_provider_costs("ZWE", fob_value=100000, side="import")
+    assert len(items) == 1
+    cbca = items[0]
+    assert cbca["fee_status"] == "CALCULABLE"
+    assert cbca["is_range"] is True
+    # 0,25%-0,50% de 100000 = 250-500 (general goods).
+    assert cbca["calculated_amount_min"] == 250.0
+    assert cbca["calculated_amount_max"] == 500.0
+    assert "S.I. 35" in (cbca["conditions"] or "")
+
+
+def test_verified_gabon_progec_bracket():
+    items = build_verified_provider_costs("GAB", fob_value=100000, side="import")
+    assert len(items) == 1
+    progec = items[0]
+    assert progec["fee_status"] == "CALCULABLE"
+    assert progec["is_range"] is True
+    # 0,27%-0,53% de 100000 = 270-530.
+    assert progec["calculated_amount_min"] == 270.0
+    assert progec["calculated_amount_max"] == 530.0
+    assert progec["source"] and progec["source"].startswith("http")
+
+
+def test_verified_congo_brazzaville_pcec_bracket():
+    # COG (Brazzaville) — distinct de COD (RDC).
+    items = build_verified_provider_costs("COG", fob_value=100000, side="import")
+    assert len(items) == 1
+    pcec = items[0]
+    assert pcec["fee_status"] == "CALCULABLE"
+    assert pcec["is_range"] is True
+    assert pcec["calculated_amount_min"] == 270.0
+    assert pcec["calculated_amount_max"] == 530.0
+    assert pcec["source"] and pcec["source"].startswith("http")
+
+
+def test_verified_drc_occ_needs_cif_base_and_is_calculable_with_it():
+    # OCC RDC = 2% de la valeur CIF. Sans assiette CIF → PARTIAL (fail-closed, on ne
+    # substitue jamais le FOB au CIF). Avec CIF → montant unique 2% CIF.
+    no_cif = build_verified_provider_costs("COD", fob_value=100000, side="import")[0]
+    assert no_cif["fee_status"] == "PARTIAL"
+    assert no_cif["calculated_amount"] is None
+    with_cif = build_verified_provider_costs(
+        "COD", fob_value=100000, cif_value=100000, side="import"
+    )[0]
+    assert with_cif["fee_status"] == "CALCULABLE"
+    assert with_cif["is_range"] is False
+    assert with_cif["calculated_amount"] == 2000.0
+    assert with_cif["base_label"] == "CIF"
+    # OCC est un organisme ÉTATIQUE : le prélèvement est classé perçu PUBLIC
+    # (formalité), pas frais de prestataire privé.
+    assert with_cif["scope"] == "formality"
+    assert with_cif["collector_type"] == "STATE_BODY"
+    # Split BIVAC/OCC et avertissement taxe santé documentés.
+    assert "0,75%" in (with_cif["conditions"] or "")
+    assert "santé" in (with_cif["conditions"] or "").lower()
+
+
+def test_verified_nigeria_soncap_sc_fixed_amount():
+    # SONCAP Certificate (SC) = montant FIXE par expédition (350 USD), délivré par
+    # des organismes privés mandatés par la SON.
+    items = build_verified_provider_costs("NGA", fob_value=100000, cif_value=100000, side="import")
+    assert len(items) == 1
+    sc = items[0]
+    assert sc["fee_status"] == "DOCUMENTED_FIXED_AMOUNT"
+    assert sc["calculated_amount"] == 350.0
+    assert sc["currency"] == "USD"
+    assert sc["scope"] == "provider"
+    # PC (par produit) et CISS (douane) explicitement hors de cette ligne.
+    assert "PC1" in (sc["conditions"] or "") and "CISS" in (sc["conditions"] or "")
+
+
+def test_verified_morocco_voc_single_rate():
+    # Maroc : taux unique 0,45% FOB (identique toutes routes) → montant unique.
+    items = build_verified_provider_costs("MAR", fob_value=100000, side="import")
+    assert len(items) == 1
+    voc = items[0]
+    assert voc["fee_status"] == "CALCULABLE"
+    assert voc["is_range"] is False
+    assert voc["calculated_amount"] == 450.0
+    assert voc["stage"] == "export"
+    assert voc["source"] and voc["source"].startswith("http")
+
+
+def test_stage_separates_export_upstream_from_import_downstream():
+    # Conformité payée par l'exportateur → étape EXPORT (amont). OCC/SONCAP payés
+    # par l'importateur → étape IMPORT (aval).
+    civ = build_verified_provider_costs("CIV", fob_value=100000, side="import")[0]
+    ken = build_verified_provider_costs("KEN", fob_value=100000, side="import")[0]
+    cod = build_verified_provider_costs("COD", fob_value=100000, cif_value=100000, side="import")[0]
+    nga = build_verified_provider_costs("NGA", fob_value=100000, side="import")[0]
+    assert civ["stage"] == "export" and ken["stage"] == "export"
+    assert cod["stage"] == "import" and nga["stage"] == "import"
+
+
+def test_every_verified_fee_carries_a_primary_source():
+    # Règle 1 : chaque frais vérifié exploitable cite au moins une source (y
+    # compris les frais à assiette CIF, d'où le cif_value fourni).
+    for iso in ("CIV", "KEN", "TZA", "UGA", "CMR", "ZWE", "GAB", "COG", "COD", "NGA", "MAR"):
+        for item in build_verified_provider_costs(
+            iso, fob_value=100000, cif_value=100000, side="import"
+        ):
+            assert item["source"] and item["source"].startswith("http")
+            assert item["verification_sources"]

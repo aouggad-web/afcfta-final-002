@@ -197,6 +197,18 @@ def _fee_exists_for_measure(measure: Dict[str, Any]) -> bool:
     return measure.get("fees_status") not in (None, "NOT_APPLICABLE")
 
 
+def _stage_for(payer: Optional[str]) -> str:
+    """Étape logistique d'une formalité, dérivée du payeur.
+
+    « export » (amont, pays d'origine) quand l'exportateur en supporte la charge :
+    typiquement les programmes de conformité (VOC/PVoC/…) accomplis AVANT
+    embarquement dans le pays d'origine, bien qu'exigés par le pays de destination.
+    « import » (aval, pays de destination) sinon : frais à la charge de
+    l'importateur, acquittés à destination (ex. redevance OCC, SONCAP).
+    """
+    return "export" if payer == "EXPORTER" else "import"
+
+
 def build_regulatory_cost(
     compliance: Optional[Dict[str, Any]],
     *,
@@ -206,10 +218,16 @@ def build_regulatory_cost(
 ) -> Optional[Dict[str, Any]]:
     """Compose la ventilation des frais réglementaires d'un pays.
 
-    Ne traite QUE les mesures portant un prestataire mandaté ACTIF (règle 5) et
-    range séparément « frais de formalité obligatoire » et « frais du prestataire
-    mandaté » (règle 7). Renvoie None quand aucun prestataire actif n'est présent
-    (pas de rubrique vide).
+    Traite les mesures portant un prestataire mandaté ACTIF (règle 5), en
+    rangeant séparément « frais de formalité obligatoire » et « frais du
+    prestataire mandaté » (règle 7). Une mesure SANS prestataire actif est
+    aussi incluse — comme formalité seule, jamais chiffrée — dès lors que la
+    source ne confirme PAS une administration directe (mandated_actor_status
+    == NOT_AVAILABLE) : l'existence de la formalité ne doit jamais être
+    masquée simplement parce que son prestataire/son frais reste à trouver.
+    Une mesure confirmée NOT_APPLICABLE (administration directe, aucun
+    prestataire) reste exclue : elle est hors périmètre de ce volet. Renvoie
+    None quand rien n'est présent (pas de rubrique vide).
     """
     if not compliance:
         return None
@@ -221,7 +239,8 @@ def build_regulatory_cost(
             for a in (measure.get("mandated_actors") or [])
             if a.get("mandate_status") in _ACTIVE_MANDATE_STATUSES
         ]
-        if not active_actors:
+        actor_status = measure.get("mandated_actor_status")
+        if not active_actors and actor_status != "NOT_AVAILABLE":
             continue
 
         # Frais de la formalité elle-même (perçu public éventuel).
@@ -243,6 +262,11 @@ def build_regulatory_cost(
                 "legal_reference": measure.get("legal_reference"),
                 "as_of": compliance.get("as_of"),
                 "side": side,
+                "stage": side,
+                # Prestataire confirmé actif, ou statut non établi par une
+                # source (jamais fabriqué) — distingue les deux cas côté
+                # frontend sans jamais nommer un acteur non confirmé.
+                "provider_status": "ACTIVE" if active_actors else "UNCONFIRMED",
                 **formality_fee,
             }
         )
@@ -267,6 +291,8 @@ def build_regulatory_cost(
                     "mandate_status": actor.get("mandate_status"),
                     "as_of": compliance.get("as_of"),
                     "side": side,
+                    "stage": side,
+                    "provider_status": "ACTIVE",
                     **provider_fee,
                 }
             )
@@ -319,13 +345,21 @@ def build_verified_provider_costs(
         # convertit pas de devise ; le seuil est appliqué uniquement si l'assiette
         # est exprimée dans la même devise que le seuil (prudence anti-FX).
         computed = compute_fee(detail, fob_value=fob_value, cif_value=cif_value, fee_exists=True)
+        # Nature du percepteur : "provider" (prestataire privé mandaté) par défaut,
+        # ou "formality" quand le frais est un prélèvement PUBLIC/étatique (ex. la
+        # redevance de l'OCC, organisme d'État de la RDC), même si une part est
+        # exécutée par un prestataire mandaté. L'entrée peut le déclarer via "scope".
+        scope = entry.get("scope_kind") or "provider"
+        payer = entry.get("payer")
         line = {
-            "scope": "provider",
+            "scope": scope,
             "measure_name": entry.get("program"),
             "mandating_authority": entry.get("mandating_authority"),
             "actor_name": ", ".join(entry.get("providers", [])) or None,
+            "collector_type": entry.get("collector_type"),
             "service": entry.get("scope"),
-            "payer": entry.get("payer"),
+            "payer": payer,
+            "stage": _stage_for(payer),
             "contact": sources[0].get("url") if sources else None,
             "verification_status": verification.get("status"),
             "verification_sources": sources,

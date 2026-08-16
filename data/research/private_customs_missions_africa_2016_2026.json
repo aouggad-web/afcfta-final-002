@@ -92,7 +92,27 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "Virement direct compte Banque Centrale (CBN) avant émission de la déclaration.",
-      "verification_status": "UNVERIFIED"
+      "verification_status": "UNVERIFIED",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search SON SONCAP / CISS",
+          "finding": "Le programme SONCAP (SON) n'est PAS un ad valorem unique : barème multi-composant (Product Certificate à montant fixe selon le nombre de modèles, SONCAP Certificate ~350 USD/expédition) ; la CISS (1% FOB) est un dispositif distinct de supervision à l'import. Aucune fourchette ad valorem unique exploitable.",
+          "sources_checked": [
+            "https://son.gov.ng/helpie_faq/how-much-does-it-cost-to-apply-for-soncap-product-certificate/",
+            "https://son.gov.ng/soncap-faq/"
+          ],
+          "outcome": "PARTIALLY_PROMOTED",
+          "reason": "Structure hétérogène : seule la composante par expédition est promue.",
+          "followup": {
+            "date": "2026-08-15",
+            "method": "SON — SONCAP FAQ officielle (son.gov.ng)",
+            "finding": "Le SONCAP Certificate (SC) est un montant FIXE de 350 USD par expédition, délivré par des organismes privés (Bureau Veritas, Cotecna, Intertek, CCIC…). Promu en DOCUMENTED_FIXED_AMOUNT. Les Product Certificates (PC1 500 / PC2 1000 / PC3 2000 USD) sont par produit (one-time) et la CISS (1% FOB) est un dispositif douanier séparé — tous deux hors de la ligne calculée.",
+            "sources": ["https://son.gov.ng/soncap-faq/"],
+            "target": "data/regulatory-compliance/verified_provider_fees.json#NGA-SONCAP-SC"
+          }
+        }
+      ]
     },
     {
       "record_id": "SEN-SCANNER-2017",
@@ -111,7 +131,20 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "RUS intégrée au Code des Douanes sénégalais et au système GAINDE.",
-      "verification_status": "PARTIAL"
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-09",
+          "method": "web_search douanes.sn / eRegulations / Cotecna",
+          "finding": "Un montant de 35 560 FCFA par conteneur 20' est référencé (portail eRegulations Corridor Dakar-Bamako) mais il porte sur le « relevage »/manutention, distinct de la RUS scanner ; les 20 000/45 000 FCFA de la synthèse ne sont pas confirmés par une grille officielle des douanes.",
+          "sources_checked": [
+            "https://www.douanes.sn/ndn722/",
+            "https://corridor.eregulations.org/procedure/print/102/108/step/0?l=fr"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Montant exact de la RUS scanner non tranché par une source officielle (confusion possible relevage vs scanner). Reste en indication secondaire."
+        }
+      ]
     },
     {
       "record_id": "SEN-BESC-COSEC",
@@ -151,7 +184,16 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "Renouvellements trisannuels.",
-      "verification_status": "UNVERIFIED"
+      "verification_status": "PROMOTED_TO_VERIFIED",
+      "promotion": {
+        "date": "2026-08-09",
+        "target": "data/regulatory-compliance/verified_provider_fees.json#TZA-PVOC-HONORAIRES",
+        "sources": [
+          "https://trade.tanzania.go.tz/media/PVoC_HARMONISED_PR0CEDURE_(SUMMARISED)_1.pdf",
+          "https://www.tbs.go.tz/pages/inspection"
+        ],
+        "note": "Barème TBS confirmé : Route A 0,53% / B 0,45% / C 0,25% FOB ; min 250 USD ; max 5000 USD. Désormais CALCULABLE (fourchette ad valorem)."
+      }
     },
     {
       "record_id": "KEN-UGA-ECTS-2017",
@@ -223,7 +265,43 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "Redémarrage strict des contrôles 2021.",
-      "verification_status": "UNVERIFIED"
+      "verification_status": "UNVERIFIED",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search PCEC RDC / Bureau Veritas / Cotecna",
+          "finding": "Les résultats se rapportent majoritairement au Congo-Brazzaville (COG), pas à la RDC (COD) : à ne pas confondre. Aucun barème chiffré officiel (taux FOB, plancher/plafond) trouvé pour la RDC.",
+          "sources_checked": [
+            "https://verigates.bureauveritas.com/programmes/congo",
+            "https://www.cotecna.com/fr/services/verification-de-la-conformite/congo"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Barème RDC non chiffré par une source primaire ; risque de confusion COD/COG. Reste en indication secondaire."
+        },
+        {
+          "date": "2026-08-15",
+          "method": "web_search OCC (Office Congolais de Contrôle) redevance CIF",
+          "finding": "L'OCC prélèverait ~2% de la valeur CIF (réparti 0,75% BIVAC + 1,25% OCC) selon plusieurs sources, une autre indiquant 1,5% ; le PDF de l'Examen OMC (WT/TPR/S/240) n'est pas exploitable (binaire). Deux incertitudes : (1) taux non tranché (2% vs 1,5%), (2) assiette CIF alors que le calculateur transmet le FOB.",
+          "sources_checked": [
+            "https://www.occ.cd/qui-sommes-nous/",
+            "https://docsonline.wto.org/dol2fe/Pages/SS/directdoc.aspx?filename=R%3A%2FWT%2FTPR%2FS240-04.pdf"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux OCC non confirmé par une source primaire lisible + assiette CIF (≠ FOB du calculateur). À reprendre avec un arrêté/tarif OCC officiel et un support CIF dans le calculateur."
+        },
+        {
+          "date": "2026-08-15",
+          "method": "confirmation datasheet Bureau Veritas/Verigates RDC (Rev 22) + Examen OMC (.doc lisible)",
+          "finding": "Redevance OCC confirmée à 2% de la valeur CIF (0,75% BIVAC/Bureau Veritas + 1,25% OCC) par le datasheet officiel de l'opérateur mandaté et l'Examen OMC. Le moteur supporte désormais l'assiette CIF (le calculateur transmet la valeur déclarée comme CIF).",
+          "sources_checked": [
+            "https://verigates.bureauveritas.com/sites/verigates/files/2020-12/CONGO%20(Rep%20Democratic%20of)%20%20FR%20Datasheet%20Rev%2022_1.pdf",
+            "https://www.wto.org/french/tratop_f/tpr_f/s240-03_f.doc"
+          ],
+          "outcome": "PROMOTED_TO_VERIFIED",
+          "target": "data/regulatory-compliance/verified_provider_fees.json#COD-OCC-REDEVANCE",
+          "reason": "Taux (2% CIF) confirmé + assiette CIF supportée → CALCULABLE. Taxe santé 2% distincte signalée pour éviter tout double comptage."
+        }
+      ]
     },
     {
       "record_id": "COD-FERI-OGEFREM",
@@ -337,7 +415,16 @@
       },
       "mandate_status_reported": "ACTIVE",
       "traceability": "Programme consolidé et actif.",
-      "verification_status": "UNVERIFIED"
+      "verification_status": "PROMOTED_TO_VERIFIED",
+      "promotion": {
+        "date": "2026-08-15",
+        "target": "data/regulatory-compliance/verified_provider_fees.json#CMR-PECAE-HONORAIRES",
+        "sources": [
+          "https://www.osidimbea.cm/entreprises/a-capitaux-publics/anor-pecae/",
+          "https://www.anor.cm/pecae"
+        ],
+        "note": "Barème réel confirmé (Décret n° 2015/1875/PM du 1er juillet 2015) : Méthode A 0,45% / B 0,40% / C 0,27% FOB ; plancher 175 218 XAF ; plafond 4 088 420 XAF ; exemption FOB < 2 000 000 XAF. Le taux « 0,95% » de certains agrégateurs est ERRONÉ. Désormais CALCULABLE (fourchette 0,27%-0,45%)."
+      }
     },
     {
       "record_id": "MAR-PORTNET",
@@ -396,6 +483,375 @@
       "traceability": "Contrats BSC/GasyNet.",
       "verification_status": "UNVERIFIED",
       "note": "Regroupe plusieurs pays sous une même ligne source — à éclater par pays lors de la vérification primaire."
+    },
+    {
+      "record_id": "CAF-CONFORMITE-2021",
+      "country_iso3": "CAF",
+      "country_name": "République Centrafricaine",
+      "program": "Vérification préalable de la conformité des marchandises importées",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["SGS (mandataire exclusif)"],
+      "period": {"start": "2021-03-01", "end": "en cours"},
+      "mission": "Contrôle documentaire, inspection (marquage/étiquetage), délivrance du certificat de conformité, pour le compte du Ministère du Commerce.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "Taux ad valorem FOB NON publié officiellement (barème SGS non rendu public).",
+        "reported_min": null,
+        "reported_max": null,
+        "currency": null,
+        "exemption": "Expéditions commerciales de valeur FOB < 1 500 USD (3 000 USD pour les expéditions personnelles) exemptées."
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "SGS mandataire exclusif depuis le 1er mars 2021, pour le Ministère du Commerce de la RCA.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search + fetch page SGS RCA",
+          "finding": "Programme confirmé (SGS exclusif, seuil d'exemption FOB 1 500 USD commercial / 3 000 USD personnel), MAIS le TAUX ad valorem n'est pas publié officiellement. Les taux des voisins CEMAC (Cameroun 0,27-0,45%, Gabon/Congo 0,27-0,53%) ne peuvent PAS être transposés (généralisation interdite, règle #4).",
+          "sources_checked": [
+            "https://www.sgs.com/fr-fr/services/republique-centrafricaine-rca-verification-prealable-de-la-conformite-des-marchandises-importees",
+            "https://corbeaunews-centrafrique.org/rca-mise-en-place-du-systeme-de-verification-de-la-conformite-des-importations/"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux non publié par une source officielle. Reste en indication secondaire (à confirmer) jusqu'à obtention de l'arrêté/barème RCA."
+        }
+      ]
+    },
+    {
+      "record_id": "CAF-BESC-2023",
+      "country_iso3": "CAF",
+      "country_name": "République Centrafricaine",
+      "program": "BESC — Bordereau Électronique de Suivi des Cargaisons (import/export/transit)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Groupe Albatros (mandataire exclusif, société centrafricaine)", "K-Polygone Multinational (appui technique)"],
+      "period": {"start": "2023-05-30", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons, sécurisation des flux financiers, recouvrement des droits liés au transport ; BESC obligatoire validé par le Conseil Centrafricain des Chargeurs.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "Redevance par bordereau/connaissement — montant officiel non publié dans les sources consultées.",
+        "currency": null
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Lancement officiel le 30 mai 2023 à Douala ; Groupe Albatros mandataire exclusif du gouvernement centrafricain.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search BESC RCA / Groupe Albatros",
+          "finding": "BESC RCA confirmé (Groupe Albatros mandataire exclusif depuis mai 2023) mais montant de la redevance non publié dans les sources consultées.",
+          "sources_checked": [
+            "https://www.economieducameroun.info/echanges-commerciaux-la-rca-et-le-cameroun-elaborent-un-bordereau-electronique-de-suivi-des-cargaisons-de-marchandises-entre-les-deux-pays/",
+            "https://www.capresse.net/besc-et-redevance-armatoriale-la-rca-engage-la-bataille-de-la-tracabilite/"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Montant de la redevance BESC non publié officiellement. Reste en indication secondaire (à confirmer)."
+        }
+      ]
+    },
+    {
+      "record_id": "BEN-BESC-CNCB",
+      "country_iso3": "BEN",
+      "country_name": "Bénin",
+      "program": "BESC / ECTN — Bordereau Électronique de Suivi des Cargaisons (Conseil National des Chargeurs du Bénin)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le CNCB / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Suivi et traçabilité des cargaisons à destination/en transit du Bénin (corridor Cotonou vers Niger/Burkina) ; validation anticipée des données de fret.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement (fourchette d'agents commerciaux — NON officielle ; barème du Conseil des Chargeurs non publié).",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil National des Chargeurs du Bénin (CNCB), organisme public mandant ; émission déléguée à des opérateurs/agents privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "TGO-ECTN-CNCT",
+      "country_iso3": "TGO",
+      "country_name": "Togo",
+      "program": "ECTN / BESC — Bordereau Électronique de Suivi des Cargaisons (Conseil National des Chargeurs du Togo)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le CNCT / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons entrant à Lomé ou en transit vers le Burkina, le Niger, le Mali.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement (fourchette d'agents commerciaux — NON officielle).",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil National des Chargeurs du Togo (CNCT), organisme public mandant ; émission déléguée à des opérateurs privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "NER-BSC-CNUT",
+      "country_iso3": "NER",
+      "country_name": "Niger",
+      "program": "BSC / ECTN — Bordereau de Suivi des Cargaisons (pays enclavé ; Conseil Nigérien des Utilisateurs des Transports)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le CNUT / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons du Niger transitant par Cotonou, Lomé ou Lagos ; sécurisation des données de fret. Un BSC transit + un BSC destination peuvent être requis.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement, potentiellement doublé pour l'enclavement (transit + destination) — fourchette d'agents commerciaux, NON officielle.",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil Nigérien des Utilisateurs des Transports Publics (CNUT), organisme public mandant ; émission déléguée à des opérateurs privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "CMR-BESC-CNCC",
+      "country_iso3": "CMR",
+      "country_name": "Cameroun",
+      "program": "BESC — Bordereau Électronique de Suivi des Cargaisons (Conseil National des Chargeurs du Cameroun)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le CNCC / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons entrant à Douala/Kribi ou en transit vers le Tchad et la RCA ; contrôle des taux de fret.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement (fourchette d'agents commerciaux — NON officielle).",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil National des Chargeurs du Cameroun (CNCC), organisme public mandant ; émission déléguée à des opérateurs privés. NB : distinct du PECAE (conformité), déjà vérifié et calculable.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "MLI-BSC-CMC",
+      "country_iso3": "MLI",
+      "country_name": "Mali",
+      "program": "BSC / ECTN — Bordereau de Suivi des Cargaisons (pays enclavé ; Conseil Malien des Chargeurs)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le CMC / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons du Mali transitant par Dakar, Abidjan, Lomé, Cotonou, Tema ; sécurisation des données de fret.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement, potentiellement doublé pour l'enclavement (transit + destination) — fourchette d'agents commerciaux, NON officielle.",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil Malien des Chargeurs (CMC), organisme public mandant ; émission déléguée à des opérateurs privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "BFA-PVI-BSC",
+      "country_iso3": "BFA",
+      "country_name": "Burkina Faso",
+      "program": "PVI (Programme de Vérification des Importations, Cotecna) + BSC (Conseil Burkinabè des Chargeurs)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["COTECNA (PVI, prestataire mandaté)", "Opérateur BSC mandaté par le CBC (privé)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Inspection avant embarquement des importations (> 1 000 000 FCFA) par Cotecna ; bordereau de suivi des cargaisons (traçabilité) pour ce pays enclavé.",
+      "payer": "IMPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "Inspection avant embarquement Cotecna au-delà d'un seuil FOB de 1 000 000 FCFA ; taux ad valorem NON publié officiellement. BSC : redevance par connaissement (non publiée).",
+        "currency": null,
+        "threshold": "FOB ≥ 1 000 000 FCFA (~1565 USD) pour le PVI."
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Convention État du Burkina Faso / SGS ; PVI opéré par Cotecna (source trade.gov). BSC via le Conseil Burkinabè des Chargeurs (CBC).",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search PVI Burkina Faso / Cotecna",
+          "finding": "PVI confirmé (Cotecna, seuil 1 000 000 FCFA) mais taux ad valorem non publié officiellement.",
+          "sources_checked": ["https://trade.gov/country-commercial-guides/burkina-faso-import-requirements-documentation"],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux non publié. Reste en indication secondaire."
+        }
+      ]
+    },
+    {
+      "record_id": "TCD-BESC-CTT",
+      "country_iso3": "TCD",
+      "country_name": "Tchad",
+      "program": "BESC — Bordereau Électronique de Suivi des Cargaisons (pays enclavé, CEMAC)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le Conseil des Chargeurs tchadien / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons du Tchad transitant principalement par Douala (Cameroun) ; sécurisation des données de fret.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement, potentiellement doublé (transit + destination) — fourchette d'agents commerciaux, NON officielle.",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil des Chargeurs tchadien, organisme public mandant ; émission déléguée à des opérateurs privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "MRT-BSC",
+      "country_iso3": "MRT",
+      "country_name": "Mauritanie",
+      "program": "BSC / ECTN — Bordereau de Suivi des Cargaisons",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["Opérateur mandaté par le Conseil des Chargeurs mauritanien / agents ECTN agréés (privés)"],
+      "period": {"start": "avant 2016", "end": "en cours"},
+      "mission": "Traçabilité des cargaisons à destination de Nouakchott/Nouadhibou ; sécurisation des données de fret.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement (fourchette d'agents commerciaux, NON officielle).",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Conseil des Chargeurs mauritanien, organisme public mandant ; émission déléguée à des opérateurs privés.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "DJI-ECTN-2023",
+      "country_iso3": "DJI",
+      "country_name": "Djibouti",
+      "program": "ECTN — Electronic Cargo Tracking Note (Autorité des Ports et Zones Franches de Djibouti)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["CTN Djibouti (opérateur privé mandaté)"],
+      "period": {"start": "2023-06-15", "end": "en cours"},
+      "mission": "Suivi électronique obligatoire de toutes les cargaisons vers les ports et la zone franche de Djibouti (hub d'entrée de l'Éthiopie) ; ECTN obtenu au port de chargement, reporté sur le connaissement.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "≈180-450 USD par connaissement (fourchette d'agents commerciaux — NON officielle).",
+        "currency": "USD"
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Djibouti Ports & Free Zone Authority, mandant public ; ECTN obligatoire effectif au 15 juin 2023 ; émission par l'opérateur privé CTN Djibouti.",
+      "verification_status": "PARTIAL"
+    },
+    {
+      "record_id": "SSD-PVOC-2022",
+      "country_iso3": "SSD",
+      "country_name": "Soudan du Sud",
+      "program": "PVoC — Pre-Export Verification of Conformity (SSNBS)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["SGS (mandataire, contrat 5 ans avec le SSNBS)"],
+      "period": {"start": "2022", "end": "en cours"},
+      "mission": "Vérification de conformité avant embarquement des marchandises importées au Soudan du Sud (valeur > 2000 USD), délivrance du certificat de conformité.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "Routes A/B/C existantes mais taux ad valorem NON publié officiellement.",
+        "currency": null,
+        "exemption": "Marchandises de valeur ≤ 2000 USD non concernées."
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "SGS mandataire du South Sudan National Bureau of Standards (SSNBS), contrat de 5 ans.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search + fetch brochure SGS South Sudan",
+          "finding": "Programme confirmé (SGS, seuil 2000 USD, routes A/B/C) mais taux ad valorem non publié ; la brochure SGS PDF n'est pas exploitable (binaire). Les taux d'autres programmes SGS ne peuvent PAS être transposés (règle #4).",
+          "sources_checked": [
+            "https://www.sgs.com/en/services/south-sudan-product-conformity-assessment-pca",
+            "https://ssnbs.gov.ss/pvoc-2/"
+          ],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux non publié par une source officielle lisible. Reste en indication secondaire."
+        }
+      ]
+    },
+    {
+      "record_id": "ETH-COC-2021",
+      "country_iso3": "ETH",
+      "country_name": "Éthiopie",
+      "program": "COC / PVoC — Certificate of Conformity (Ethiopian Standards/Conformity Assessment)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["SGS", "Intertek", "Bureau Veritas", "TÜV Rheinland"],
+      "period": {"start": "avant 2021", "end": "en cours"},
+      "mission": "Vérification de conformité avant expédition de certains produits importés en Éthiopie, délivrance d'un certificat de conformité.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "PERCENTAGE_OF_FOB",
+        "reported_range": "Taux ad valorem NON publié officiellement (barème des organismes non rendu public).",
+        "currency": null
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Organismes d'évaluation mandatés (SGS, Intertek, Bureau Veritas, TÜV) ; barème non publié.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-15",
+          "method": "web_search COC Éthiopie",
+          "finding": "Programme COC confirmé (organismes privés) mais aucun barème de frais publié dans les sources consultées.",
+          "sources_checked": ["https://www.intertek.com/government/product-conformity/ethiopia/"],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux non publié officiellement. Reste en indication secondaire."
+        }
+      ]
+    },
+    {
+      "record_id": "SOM-ECTN-2025",
+      "country_iso3": "SOM",
+      "country_name": "Somalie",
+      "program": "ECTN — Electronic Cargo Tracking Note (CTN Somalia, réseau GlobalCTN)",
+      "formality_type": "CARGO_TRACKING_NOTE",
+      "providers": ["CTN Somalia (ctnsomalia.com — opérateur privé mandaté)"],
+      "period": {"start": "2025-10-14", "end": "en cours"},
+      "mission": "Suivi électronique obligatoire de toutes les cargaisons (conteneurs et vrac) à destination des ports de Mogadiscio, Berbera et Kismayo ; ECTN à obtenir avant chargement, numéro reporté sur le connaissement — introduit en février 2023, généralisé et rendu contraignant à tous les ports fédéraux le 14 octobre 2025.",
+      "payer": "SHIPPER_OR_IMPORTER",
+      "reported_fee_structure": {
+        "method": "FIXED_PER_BL",
+        "reported_range": "Barème publié sur une page dédiée du prestataire (« ECTN Fees ») mais montant exact non extrait des sources consultées — NON officiel/NON confirmé.",
+        "currency": null
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Gouvernement fédéral somalien (autorité portuaire), mandant public ; émission par l'opérateur privé CTN Somalia ; obligation étendue au port de Berbera (Somaliland) dans un contexte de différend territorial.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-16",
+          "method": "web_search ECTN Somalia + ctnsomalia.com ECTN fees",
+          "finding": "Obligation ECTN confirmée (effective 14/10/2025, tous ports) et page tarifaire du prestataire identifiée, mais montant en USD par connaissement non extrait des résultats — sujet à variation selon type/taille de cargaison.",
+          "sources_checked": ["https://ctnsomalia.com/electronic-cargo-tracking-number-ectn-requirement-effective-14-october-2025/", "https://ctnsomalia.com/ectn-fees/", "https://www.ecofinagency.com/news-digital/2611-50839-somalia-enforces-mandatory-digital-tracking-for-all-cargo-at-its-ports"],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Montant non confirmé sur une source primaire archivable. Reste en indication secondaire."
+        }
+      ]
+    },
+    {
+      "record_id": "SOM-SOMALILAND-VOC-2022",
+      "country_iso3": "SOM",
+      "country_name": "Somalie (Somaliland — territoire non reconnu, régime douanier distinct)",
+      "program": "VOC — Verification of Conformity (Ministère du Commerce et du Tourisme du Somaliland, opérateur Cotecna)",
+      "formality_type": "CONFORMITY_ASSESSMENT",
+      "providers": ["Cotecna"],
+      "period": {"start": "2022-04-16", "end": "en cours"},
+      "mission": "Vérification de conformité aux normes avant expédition de produits réglementés exportés vers le port de Berbera (Somaliland) ; Cotecna mandaté par le Ministère du Commerce et du Tourisme pour délivrer les certificats de conformité.",
+      "payer": "EXPORTER",
+      "reported_fee_structure": {
+        "method": "UNKNOWN",
+        "reported_range": "Barème non publié dans les sources consultées (fiche produit Cotecna sans grille tarifaire publique).",
+        "currency": null
+      },
+      "mandate_status_reported": "ACTIVE",
+      "traceability": "Ministère du Commerce et du Tourisme du Somaliland ; opérateur Cotecna depuis le 16/04/2022.",
+      "verification_status": "PARTIAL",
+      "verification_attempts": [
+        {
+          "date": "2026-08-16",
+          "method": "web_search Cotecna Somaliland verification of conformity fee rate",
+          "finding": "Programme confirmé (Cotecna mandaté, CoC obligatoire depuis avril 2022) mais aucun taux/montant publié dans les sources consultées.",
+          "sources_checked": ["https://www.cotecna.com/en/services/verification-of-conformity/somaliland", "https://www.cotecna.com/media/dsbppmgc/somaliland-voc-infosheet.pdf"],
+          "outcome": "NOT_PROMOTED_TO_CALCULABLE",
+          "reason": "Taux non publié officiellement. Reste en indication secondaire."
+        }
+      ]
     }
   ]
 }
