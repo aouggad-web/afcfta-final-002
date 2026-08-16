@@ -129,18 +129,30 @@ def _effective_tier(user: Optional[dict], *, now: Optional[datetime] = None) -> 
         # that gates on it) or silently treat it as "no end date" (which
         # would grant unlimited paid access).
         return "free"
-    if period_end is not None and (now or datetime.now(timezone.utc)) > period_end:
-        # The paid period has lapsed — don't grant paid entitlements past
-        # what was actually paid for, even if subscription_status hasn't
-        # been updated yet (e.g. a missed or delayed downgrade webhook).
-        return "free"
+    if period_end is not None:
+        effective_now = now or datetime.now(timezone.utc)
+        if effective_now.tzinfo is None:
+            # A caller-supplied `now` can be naive (e.g. a test using
+            # datetime.now() without a tz) while period_end is always
+            # normalized to UTC-aware above — comparing the two directly
+            # would raise TypeError, breaking the "never raises" guarantee.
+            # Same normalization as user_auth._is_locked_out().
+            effective_now = effective_now.replace(tzinfo=timezone.utc)
+        if effective_now > period_end:
+            # The paid period has lapsed — don't grant paid entitlements
+            # past what was actually paid for, even if subscription_status
+            # hasn't been updated yet (e.g. a missed/delayed downgrade
+            # webhook).
+            return "free"
 
     return tier
 
 
 def resolve_entitlements(user: Optional[dict], *, now: Optional[datetime] = None) -> Entitlements:
-    """Resolve the effective entitlements for a user document, or None for an
-    unauthenticated visitor. Never raises — always returns at least the free
-    tier, so callers can gate features without a separate "no subscription"
-    branch."""
+    """Resolve the effective entitlements for a user document. `user=None`
+    (an unauthenticated visitor) resolves to the free tier, same as any
+    other user without an active paid subscription — this always returns an
+    Entitlements instance, never None. Never raises — always returns at
+    least the free tier, so callers can gate features without a separate
+    "no subscription" branch."""
     return _TIER_ENTITLEMENTS[_effective_tier(user, now=now)]
