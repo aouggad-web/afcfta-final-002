@@ -286,8 +286,8 @@ COUNTRY_TAX_PROFILES = {
 _TAX_LABELS = {
     "DD": "Droits de Douane",
     "DAPS": "Droit Additionnel Provisoire de Sauvegarde",
-    "PRCT": "Précompte (PRCT)",
-    "TCS": "Taxe Complémentaire de Sauvegarde",
+    "PRCT": "Précompte sur Impôt",
+    "TCS": "Taxe de Contribution de Solidarité",
     "TVA": "Taxe sur la Valeur Ajoutée",
     "TPI": "Taxe Parafiscale à l'Importation",
     "CEDEAO": "Prélèvement Communautaire CEDEAO",
@@ -1325,11 +1325,15 @@ def calculate_import_taxes(
         rate = float(tax_info.get("rate", 0) or 0)
         if rate == 0:
             continue
-        # PRCT : intitulé officiel fixe (« Précompte (PRCT) ») — on ignore les
-        # libellés hérités des données crawled (ex. « Prélèvement à la
-        # Compensation du Transport »).
-        if norm == "PRCT":
-            label = _TAX_LABELS["PRCT"]
+        # PRCT/TCS : intitulés officiels fixes — on ignore les libellés
+        # hérités des données crawled (ex. « Prélèvement à la Compensation
+        # du Transport », « Taxe de Contrôle Sanitaire »), erronés. Réécrit
+        # aussi dans tax_info (même dict que taxes_detail, copié plus haut)
+        # pour que taxes_detail exposé en sortie soit corrigé de la même
+        # façon que individual_taxes, pas seulement l'un des deux.
+        if norm in ("PRCT", "TCS"):
+            label = _TAX_LABELS[norm]
+            tax_info["label"] = label
         individual_taxes.append({"code": norm, "label": label, "rate_pct": rate})
         if norm == "DAPS":
             daps_rate_pct = rate
@@ -1374,7 +1378,7 @@ def calculate_import_taxes(
         prct_rate_pct = other_taxes_pct
         if not any(t["code"] == "PRCT" for t in individual_taxes):
             individual_taxes.insert(
-                0, {"code": "PRCT", "label": "Précompte (PRCT)", "rate_pct": other_taxes_pct}
+                0, {"code": "PRCT", "label": _TAX_LABELS["PRCT"], "rate_pct": other_taxes_pct}
             )
 
     # ── Build rates dict for cascade engine ──────────────────────────────────
