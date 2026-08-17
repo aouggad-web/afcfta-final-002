@@ -19,43 +19,13 @@ from etl.country_tariffs_complete import (
 from fastapi import APIRouter, HTTPException
 from models import TariffCalculationRequest, TariffCalculationResponse
 from services.crawled_data_service import crawled_service
-from services.regulatory_compliance_service import get_country_regulatory_compliance
-from services.regulatory_fee_service import (
-    build_regulatory_cost,
-    build_verified_provider_costs,
-)
-from services.regulatory_reported_service import build_reported_layer
+from services.regulatory_fee_service import build_regulatory_blocks
 from services.tariff_data_service import tariff_service
 from services.tariff_enrichment_service import get_country_enrichment
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Calculator"])
-
-
-def _merge_regulatory_cost(
-    cost_import: Optional[Dict[str, Any]],
-    cost_export: Optional[Dict[str, Any]],
-    verified_items: Optional[List[Dict[str, Any]]] = None,
-) -> Optional[Dict[str, Any]]:
-    """Fusionne registre conforme (import/export) et frais vérifiés en un bloc.
-
-    Concatène toutes les lignes (chacune conserve son ``side``) et re-agrège les
-    drapeaux de complétude et les totaux (bornés min/max) via le sommateur du
-    service, sans jamais additionner de devises hétérogènes. Renvoie None si tout
-    est vide.
-    """
-    from services.regulatory_fee_service import _summarise
-
-    merged_items: List[Dict[str, Any]] = []
-    for side in (cost_import, cost_export):
-        if side:
-            merged_items.extend(side.get("line_items", []))
-    if verified_items:
-        merged_items.extend(verified_items)
-    if not merged_items:
-        return None
-    return _summarise(merged_items)
 
 
 def _is_vat_tax(tax: Dict[str, Any]) -> bool:
@@ -956,39 +926,17 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     regulatory_cost = None
     regulatory_reported = None
     try:
-        regulatory_compliance = get_country_regulatory_compliance(dest_iso3)
-        # Ventilation des frais de formalité/prestataire pour l'import (pays de
-        # destination) ET l'export (pays d'origine), fusionnée. La valeur déclarée
-        # sert d'assiette pour les frais ad valorem, qu'ils portent sur le FOB ou
-        # le CIF : chaque ligne conserve son base_label (FOB/CIF) pour l'honnêteté.
-        # Produit des lignes pour les pays à prestataire mandaté actif, à frais
-        # vérifié, ou à formalité dont le prestataire/le frais n'est pas
-        # confirmé par une source (provider_status=UNCONFIRMED, jamais chiffré
-        # ni masqué) ; sinon None (pas de rubrique vide).
-        cost_import = build_regulatory_cost(
-            regulatory_compliance,
-            fob_value=request.value,
-            cif_value=request.value,
-            side="import",
+        # Point d'entrée UNIQUE (services.regulatory_fee_service) partagé par
+        # toutes les routes de calcul — la ventilation réglementaire (frais de
+        # formalité/prestataire import+export, frais VÉRIFIÉS sur source
+        # primaire, indications secondaires) ne doit jamais dépendre du chemin
+        # de calcul tarifaire emprunté par le frontend pour un pays donné.
+        blocks = build_regulatory_blocks(
+            dest_iso3, origin_iso3, fob_value=request.value, cif_value=request.value
         )
-        origin_compliance = get_country_regulatory_compliance(origin_iso3)
-        cost_export = build_regulatory_cost(
-            origin_compliance,
-            fob_value=request.value,
-            cif_value=request.value,
-            side="export",
-        )
-        # Frais VÉRIFIÉS sur source primaire (ex. VOC Côte d'Ivoire, OCC RDC) —
-        # autoritaires, ajoutés indépendamment du registre conforme, import + export.
-        verified_items = build_verified_provider_costs(
-            dest_iso3, fob_value=request.value, cif_value=request.value, side="import"
-        ) + build_verified_provider_costs(
-            origin_iso3, fob_value=request.value, cif_value=request.value, side="export"
-        )
-        regulatory_cost = _merge_regulatory_cost(cost_import, cost_export, verified_items)
-        # Couche d'indications secondaires (non vérifiée) pour les pays pas
-        # encore couverts par le registre conforme — purement informative.
-        regulatory_reported = build_reported_layer(dest_iso3, origin_iso3)
+        regulatory_compliance = blocks["regulatory_compliance"]
+        regulatory_cost = blocks["regulatory_cost"]
+        regulatory_reported = blocks["regulatory_reported"]
     except Exception as exc:  # pragma: no cover - garde-fou fail-closed
         logging.warning(
             "Regulatory-compliance/fee lookup failed for %s->%s (calcul tarifaire non affecté): %s",

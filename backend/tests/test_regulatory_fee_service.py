@@ -3,6 +3,7 @@
 from services.regulatory_compliance_service import get_country_regulatory_compliance
 from services.regulatory_fee_service import (
     FEE_STATUSES,
+    build_regulatory_blocks,
     build_regulatory_cost,
     build_verified_provider_costs,
     compute_fee,
@@ -440,3 +441,65 @@ def test_every_verified_fee_carries_a_primary_source():
         ):
             assert item["source"] and item["source"].startswith("http")
             assert item["verification_sources"]
+
+
+# ── build_regulatory_blocks — point d'entrée unique partagé par toutes les
+#    routes de calcul (calculator.py ET authentic_tariffs.py) ─────────────────
+
+
+def test_build_regulatory_blocks_matches_manual_composition():
+    # Le point d'entrée unique doit produire exactement le même résultat que
+    # la composition manuelle (registre + frais vérifiés + indications
+    # reportées) — sans quoi une route de calcul pourrait diverger d'une
+    # autre pour le même pays (régression du bug « formalités absentes sur le
+    # chemin authentic-tariffs, présentes sur /calculate-tariff »).
+    blocks = build_regulatory_blocks("CMR", "KEN", fob_value=100000, cif_value=100000)
+    assert blocks["regulatory_compliance"] is not None
+    assert blocks["regulatory_cost"] is not None
+    assert len(blocks["regulatory_cost"]["line_items"]) >= 1
+
+    manual_cost_import = build_regulatory_cost(
+        get_country_regulatory_compliance("CMR"), fob_value=100000, cif_value=100000, side="import"
+    )
+    manual_cost_export = build_regulatory_cost(
+        get_country_regulatory_compliance("KEN"), fob_value=100000, cif_value=100000, side="export"
+    )
+    manual_verified = build_verified_provider_costs(
+        "CMR", fob_value=100000, cif_value=100000, side="import"
+    ) + build_verified_provider_costs("KEN", fob_value=100000, cif_value=100000, side="export")
+    manual_line_count = (
+        len((manual_cost_import or {}).get("line_items", []))
+        + len((manual_cost_export or {}).get("line_items", []))
+        + len(manual_verified)
+    )
+    assert len(blocks["regulatory_cost"]["line_items"]) == manual_line_count
+
+
+def test_build_regulatory_blocks_without_origin_still_covers_destination():
+    # Un pays d'origine absent (formulaire incomplet) ne doit jamais faire
+    # échouer le bloc destination : dégrade en gracieux, jamais fail-open.
+    blocks = build_regulatory_blocks("CMR", None, fob_value=100000, cif_value=100000)
+    assert blocks["regulatory_compliance"] is not None
+    assert blocks["regulatory_cost"] is not None
+
+
+def test_build_regulatory_blocks_without_destination_never_crashes():
+    # `dest_iso3` est typé Optional : un appelant qui n'a pas encore résolu le
+    # pays de destination (ex. formulaire incomplet en amont d'un garde-fou
+    # try/except) ne doit jamais provoquer d'AttributeError sur `.upper()`.
+    blocks = build_regulatory_blocks(None, "KEN", fob_value=100000, cif_value=100000)
+    assert blocks["regulatory_compliance"] is None
+
+    blocks_both_none = build_regulatory_blocks(None, None, fob_value=100000, cif_value=100000)
+    assert blocks_both_none == {
+        "regulatory_compliance": None,
+        "regulatory_cost": None,
+        "regulatory_reported": None,
+    }
+
+
+def test_build_regulatory_blocks_uncovered_country_is_none_not_error():
+    blocks = build_regulatory_blocks("XXX", "YYY", fob_value=100000, cif_value=100000)
+    assert blocks["regulatory_compliance"] is None
+    assert blocks["regulatory_cost"] is None
+    assert blocks["regulatory_reported"] is None

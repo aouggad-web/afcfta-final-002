@@ -20,6 +20,7 @@ from services.national_legal_calculation_service import (
     calculate_kenya_legal_layer,
     calculate_national_legal_layer,
 )
+from services.regulatory_fee_service import build_regulatory_blocks
 from services.tariff_enrichment_service import (
     get_country_enrichment,
     get_supported_enrichment_countries,
@@ -279,6 +280,33 @@ async def calculate_taxes_endpoint(
 
     country = country_iso3.upper()
     result["country_enrichment"] = get_country_enrichment(country)
+
+    # ── Formalités, prestataires mandatés et frais réglementaires ──
+    # Bloc informatif STRICTEMENT SÉPARÉ des droits et taxes : jamais ajouté au
+    # coût douanier. Fail-closed : toute erreur de données ou pays non couvert
+    # laisse les trois champs à None sans jamais interrompre le calcul
+    # tarifaire. Même point d'entrée que /calculate-tariff (routes/calculator.py)
+    # afin que ces frais apparaissent quel que soit le chemin de calcul emprunté
+    # par le frontend (données "authentiques" vs registre générique).
+    origin_iso3 = (origin or "").upper() or None
+    try:
+        blocks = build_regulatory_blocks(
+            country, origin_iso3, fob_value=cif_value, cif_value=cif_value
+        )
+        result["regulatory_compliance"] = blocks["regulatory_compliance"]
+        result["regulatory_cost"] = blocks["regulatory_cost"]
+        result["regulatory_reported"] = blocks["regulatory_reported"]
+    except Exception as exc:  # pragma: no cover - garde-fou fail-closed
+        logger.warning(
+            "Regulatory-compliance/fee lookup failed for %s->%s (calcul tarifaire non affecté): %s",
+            origin_iso3,
+            country,
+            exc,
+        )
+        result["regulatory_compliance"] = None
+        result["regulatory_cost"] = None
+        result["regulatory_reported"] = None
+
     parsed_authorization_hs_codes = [
         value.strip() for value in (authorization_hs_codes or "").split(",") if value.strip()
     ]
