@@ -830,13 +830,16 @@ def test_country_product_imports_falls_back_to_direct(monkeypatch):
     assert res["import_value_usd"] == 1234.0
 
 
-def test_tariff_benefit_zero_when_no_duty():
+def test_tariff_benefit_remains_unavailable_when_mfn_is_zero_but_offer_is_unverified():
     from services import benchmarking_service as benchmark
 
-    # EGY rice (100630): national duty already 0% => no ZLECAf advantage.
+    # EGY rice (100630) is already 0 % NPF, but that does not turn Egypt's
+    # unverified offer into an applicable ZLECAf rate or a verified zero saving.
     res = benchmark.tariff_benefit_analysis("SEN", "EGY", "100630")
-    assert res["available"] is True
-    assert res["tariff_advantage_pct"] == 0.0
+    assert res["available"] is False
+    assert res.get("zlecaf_rate_pct") is None
+    assert res.get("tariff_advantage_pct") is None
+    assert res.get("savings_per_1000usd") is None
 
 
 def test_segmentation_no_fabricated_tariff_when_unavailable():
