@@ -1192,9 +1192,12 @@ def _resolve_zlecaf_context(
 
     decision = implementation_decision(dest, origin)
     if not decision["applied"]:
+        # OFFER_ONLY/PARTNER_NOTICE_REQUIRED restent distincts de NOT_AVAILABLE :
+        # une offre publiée sur le site officiel de la ZLECAf n'est pas une
+        # absence de source, mais un taux non vérifié comme applicable.
         return _no_preference(
             decision["note"],
-            zlecaf_rate_status="NOT_AVAILABLE",
+            zlecaf_rate_status=decision["status"],
         )
 
     official_rate = resolve_official_preferential_rate(dest, hs_code_clean, origin)
@@ -1532,10 +1535,21 @@ def calculate_import_taxes(
     # (zéro vérifié) : elle est INCONNUE. Les autres régimes (union douanière,
     # calendrier DZA, NPF strict) retournent toujours un `dd_rate_pct`
     # numérique concret, jamais None — `zlecaf_status` reste `DOCUMENTED`.
-    zlecaf_rate_untraceable = zlecaf_rate_calculation_status == "NOT_AVAILABLE" or (
-        _preferential and trade_regime == "ZLECAF" and _eff_dd is None
+    # OFFER_ONLY/PARTNER_NOTICE_REQUIRED : une offre publiée existe mais n'est
+    # pas vérifiée comme applicable — aussi non traçable que NOT_AVAILABLE
+    # pour le calcul (aucune économie affichée), mais un statut distinct pour
+    # que le frontend l'affiche comme « à vérifier auprès des douanes
+    # locales » plutôt que comme une absence pure et simple de source.
+    zlecaf_rate_untraceable = zlecaf_rate_calculation_status in (
+        "NOT_AVAILABLE",
+        "OFFER_ONLY",
+        "PARTNER_NOTICE_REQUIRED",
+    ) or (_preferential and trade_regime == "ZLECAF" and _eff_dd is None)
+    zlecaf_status = (
+        zlecaf_rate_calculation_status
+        if zlecaf_rate_calculation_status in ("OFFER_ONLY", "PARTNER_NOTICE_REQUIRED")
+        else ("NOT_AVAILABLE" if zlecaf_rate_untraceable else "DOCUMENTED")
     )
-    zlecaf_status = "NOT_AVAILABLE" if zlecaf_rate_untraceable else "DOCUMENTED"
 
     if zlecaf_rate_untraceable:
         savings_amount = None
@@ -1749,7 +1763,8 @@ def calculate_import_taxes(
         "zlecaf_eligible": zlecaf_eligible,
         "zlecaf_preference_applied": zlecaf_preference_applied,
         "zlecaf_note": zlecaf_note,
-        "zlecaf_status": zlecaf_status,  # DOCUMENTED | NOT_AVAILABLE
+        # DOCUMENTED | NOT_AVAILABLE | OFFER_ONLY | PARTNER_NOTICE_REQUIRED
+        "zlecaf_status": zlecaf_status,
         "zlecaf_rate_expression": zlecaf_rate_expression,
         "zlecaf_rate_source": zlecaf_rate_source,
         "zlecaf_rate_calculation_status": zlecaf_rate_calculation_status,
