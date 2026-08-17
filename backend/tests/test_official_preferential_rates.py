@@ -1,7 +1,3 @@
-from scripts.extract_sars_afcfta_schedule import (
-    SOURCE_SHA256,
-    classify_rate_expression,
-)
 from services.authentic_tariff_service import resolve_zlecaf_context
 from services.official_preferential_rates import resolve_official_preferential_rate
 from services.zlecaf_implementation_registry import (
@@ -9,6 +5,11 @@ from services.zlecaf_implementation_registry import (
     OFFER_ONLY,
     PARTNER_NOTICE_REQUIRED,
     implementation_decision,
+)
+
+from scripts.extract_sars_afcfta_schedule import (
+    SOURCE_SHA256,
+    classify_rate_expression,
 )
 
 
