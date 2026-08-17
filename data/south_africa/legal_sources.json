@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "country": "ZAF",
-  "generated_at": "2026-07-25",
+  "generated_at": "2026-08-17",
   "sources": [
     {
       "source_id": "ZAF-SARS-VAT-GUIDE-20260725",
@@ -43,7 +43,21 @@
       "consolidation_date": "2020-12-31",
       "sha256": "8b27435187a9429eb136fb21370095de34726e06c7904dd9fbe90220922fa570",
       "source_tier": "OFFICIAL_GAZETTE_INSTRUMENT",
-      "notes": "PDF officiel de 12 Mo (texte intégral de l'Accord ZLECAf inséré au Schedule 10). Non archivé tel quel dans le dépôt (politique de poids — voir data/sources/south_africa/README.md) ; extrait de 80 lignes (page de couverture + citation légale) conservé sous extracted/. Le hash SHA-256 permet de vérifier une ré-collecte future. Ce document est le texte de l'Accord lui-même, PAS le barème de concessions ligne à ligne (voir Schedule No. 1 Part 1, non collecté)."
+      "notes": "PDF officiel de 12 Mo (texte intégral de l'Accord ZLECAf inséré au Schedule 10). Non archivé tel quel dans le dépôt (politique de poids — voir data/sources/south_africa/README.md) ; extrait de 80 lignes (page de couverture + citation légale) conservé sous extracted/. Le hash SHA-256 permet de vérifier une re-collecte future."
+    },
+    {
+      "source_id": "ZAF-SARS-SCH1P1-AFCFTA-COLUMN-20260806",
+      "official_title": "Schedule No. 1 Part 1 — Chapters 1 to 99 (Ordinary Customs Duty, including AfCFTA column)",
+      "institution": "South African Revenue Service (SARS)",
+      "text_number_and_year": "Customs and Excise Act, 1964",
+      "html_url": "https://www.sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99-schedule-no-1-part-1-chapters-1-to-99/",
+      "pdf_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P1Chpt1-to-99-Schedule-No-1-Part-1-Chapters-1-to-99.pdf",
+      "publication_date": "2026-08-06",
+      "commencement_date": null,
+      "consolidation_date": "2026-08-06",
+      "sha256": "e45e6d797a6372e881ef88063f4fde8eecbbcdf3c5f68d9c8183932478f90560",
+      "source_tier": "OFFICIAL_GAZETTE_INSTRUMENT",
+      "notes": "PDF officiel de 704 pages non dupliqué dans le dépôt; son SHA-256 est verrouillé par l'extracteur. Les 8 592 lignes de la colonne AfCFTA sont extraites de manière déterministe sous backend/data/official_preferential/ZAF_afcfta_2026-08-06.json.gz ; les expressions spécifiques/composées ne sont jamais aplaties en taux ad valorem."
     }
   ]
 }

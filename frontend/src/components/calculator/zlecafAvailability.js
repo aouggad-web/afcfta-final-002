@@ -2,6 +2,11 @@ export const ZLECAF_NOT_AVAILABLE = 'NOT_AVAILABLE';
 
 const isNumber = (value) => typeof value === 'number' && Number.isFinite(value);
 
+export function isCustomsDutyTax(tax) {
+  const code = String(tax?.tax || tax?.code || '').trim().toUpperCase();
+  return code === 'DD' || code === 'D.D' || code === 'CET';
+}
+
 /**
  * A ZLECAf rate is displayable only when the backend documented the rate,
  * resolved the ZLECAf regime for this origin/destination pair, and returned

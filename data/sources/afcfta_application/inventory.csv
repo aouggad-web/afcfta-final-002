@@ -1,0 +1,12 @@
+destination_iso3,evidence_type,instrument_or_source,effective_or_review_date,official_url,calculator_status,reason
+ZAF,current_tariff_schedule,SARS Schedule 1 Part 1,2026-08-06,https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/,APPLIED,Current AfCFTA column with separate active-partner gate
+KEN,customs_implementation,EAC Legal Notice EAC/321/2022,2021-01-01,https://ikesra.kra.go.ke/bitstream/handle/123456789/2484/Sensitization%20on%20EAC%20tariff%20Concession%20for%20AfCFTA%20_EXTERNAL%2027.10.2022.pdf?isAllowed=y&sequence=1,APPLIED,Only the 21 origins explicitly listed by KRA
+ETH,domestic_regulation,Regulation 574/2025,2025-08-14,https://justice.gov.et/en/law/%E1%8B%A8%E1%8A%A0%E1%8D%8D%E1%88%AA%E1%8A%AB-%E1%8A%A0%E1%88%85%E1%8C%89%E1%88%AB%E1%8B%8A-%E1%8A%90%E1%8C%BB-%E1%8A%95%E1%8C%8D%E1%8B%B5-%E1%89%80%E1%8C%A0%E1%8A%93-%E1%88%B5%E1%88%9D%E1%88%9D/,PARTNER_NOTICE_REQUIRED,Article 3(2) requires separate official notification of accepted states
+ZMB,domestic_regulation,Statutory Instrument 92 of 2024,2024-12-30,https://www.parliament.gov.zm/node/12434,PARTNER_NOTICE_REQUIRED,No exhaustive reciprocal-origin list located
+CIV,domestic_regulation,Ordinance of 23 April 2025,2025-04-23,https://onu.diplomatie.gouv.ci/conseil-ministre.php?lang=&num=508,PARTNER_NOTICE_REQUIRED,Reciprocity required but accepted-origin list not published in reviewed source
+NGA,gazetted_schedule,Nigeria AfCFTA PSTC gazetting,2025-04-15,https://x.com/AfCFTA/status/1911814539785494880,PARTNER_NOTICE_REQUIRED,No exhaustive reciprocal-origin list located
+CMR,tariff_offer,CEMAC PSTC,2026-08-17,https://etariff.au-afcfta.org/,OFFER_ONLY,Offer is not execution evidence
+EGY,tariff_offer,Egypt PSTCs,2026-08-17,https://etariff.au-afcfta.org/,OFFER_ONLY,Offer is not execution evidence
+GHA,tariff_offer,ECOWAS PSTC,2026-08-17,https://etariff.au-afcfta.org/,OFFER_ONLY,GTI participation is not a general bilateral legal switch
+RWA,tariff_offer,EAC PSTC,2026-08-17,https://etariff.au-afcfta.org/,OFFER_ONLY,Kenya implementation evidence is not imputed to Rwanda
+TUN,tariff_offer,Tunisia PSTCs,2026-08-17,https://etariff.au-afcfta.org/,OFFER_ONLY,Offer is not execution evidence

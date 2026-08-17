@@ -945,7 +945,8 @@ def _resolve_zlecaf_context(
          PRIORITAIRE sur la ZLECAf et indépendante de la ratification ZLECAf.
       1. ZLECAf : ratification continentale (origine ET destination) + activation
          bilatérale (Algérie : partenaires actifs DGD 482/2024 ; Afrique du Sud :
-         partenaires actifs hors SACU/SADC ; autres : taux générique de la ligne).
+         partenaires actifs hors SACU/SADC ; autres : instrument d'application,
+         origine réciproque nommément acceptée et ligne officielle exacte).
       2. ZLE conditionnelle (CEDEAO/ECOWAS, SADC, COMESA) : signalée lorsqu'aucun
          régime ci-dessus ne s'applique mais que les deux pays partagent une zone
          de libre-échange — INFORMATIONNELLE, sans recalcul (règles d'origine).
@@ -953,7 +954,7 @@ def _resolve_zlecaf_context(
 
     Source unique de vérité : réutilise exactement les mêmes modules que
     routes/calculator.py (zlecaf_membership_status, zlecaf_schedule_dza,
-    zlecaf_schedule_zaf) + regional_blocs — aucune duplication de liste.
+    zlecaf_schedule_zaf, zlecaf_implementation_registry) + regional_blocs.
 
     Retourne un dict :
       - preferential (bool)        : un régime réduit effectivement le droit de
@@ -981,6 +982,9 @@ def _resolve_zlecaf_context(
         note,
         zlecaf_eligible,
         zlecaf_note,
+        rate_expression=None,
+        preferential_rate_source=None,
+        preferential_rate_calculation_status=None,
     ):
         return {
             "preferential": preferential,
@@ -992,6 +996,9 @@ def _resolve_zlecaf_context(
             "trade_regime_note": note,
             "zlecaf_eligible": zlecaf_eligible,
             "zlecaf_note": zlecaf_note,
+            "zlecaf_rate_expression": rate_expression,
+            "zlecaf_rate_source": preferential_rate_source,
+            "zlecaf_rate_calculation_status": preferential_rate_calculation_status,
         }
 
     # Origine renseignée ? Toute préférence suppose un pays d'origine connu
@@ -1048,7 +1055,7 @@ def _resolve_zlecaf_context(
 
     ftas = shared_free_trade_areas(origin, dest)
 
-    def _no_preference(base_note):
+    def _no_preference(base_note, *, zlecaf_rate_status=None):
         """Aucun régime ZLECAf/union douanière : signaler une ZLE conditionnelle
         si les deux pays en partagent une, sinon NPF strict. Aucun recalcul."""
         if ftas:
@@ -1070,6 +1077,7 @@ def _resolve_zlecaf_context(
                 note=fta_note,
                 zlecaf_eligible=False,
                 zlecaf_note=base_note,
+                preferential_rate_calculation_status=zlecaf_rate_status,
             )
         return _result(
             preferential=False,
@@ -1081,6 +1089,7 @@ def _resolve_zlecaf_context(
             note=base_note,
             zlecaf_eligible=False,
             zlecaf_note=base_note,
+            preferential_rate_calculation_status=zlecaf_rate_status,
         )
 
     # 1. Ratification continentale ZLECAf (origine ET destination).
@@ -1120,9 +1129,12 @@ def _resolve_zlecaf_context(
             zlecaf_note=_src,
         )
 
-    # 3. Afrique du Sud : activation bilatérale (hors SACU/SADC, traités en 0) ;
-    #    pas de calendrier détaillé → taux ZLECAf générique de la ligne.
+    # 3. Afrique du Sud : activation bilatérale (hors SACU/SADC, traités en 0)
+    #    + colonne AfCFTA officielle de SARS Schedule 1 Part 1. Les droits
+    #    spécifiques/composés sont documentés mais restent non calculables sans
+    #    quantité : ils ne sont jamais aplatis en leur seule composante ad valorem.
     if dest == "ZAF":
+        from services.official_preferential_rates import resolve_official_preferential_rate
         from services.zlecaf_schedule_zaf import zaf_partner_active
 
         if not zaf_partner_active(origin):
@@ -1131,8 +1143,31 @@ def _resolve_zlecaf_context(
                 "avec l'Afrique du Sud (newsletter AfCFTA dtic/SARS, mars 2026) "
                 "— taux NPF appliqué"
             )
-        eff_dd = line_zlecaf_rate_pct
+        official_rate = resolve_official_preferential_rate(dest, hs_code_clean)
+        eff_dd = official_rate.get("ad_valorem_rate_pct") if official_rate else None
         applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)
+        source = None
+        expression = None
+        calculation_status = None
+        note = None
+        if official_rate:
+            expression = official_rate["rate_expression"]
+            calculation_status = official_rate["calculation_status"]
+            source = {
+                "title": official_rate["source_title"],
+                "url": official_rate["source_url"],
+                "pdf_url": official_rate["source_pdf_url"],
+                "source_date": official_rate["source_date"],
+                "pdf_sha256": official_rate["source_pdf_sha256"],
+                "page": official_rate["page"],
+                "column": official_rate["source_column"],
+            }
+            note = (
+                f"SARS Schedule 1 Part 1, colonne AfCFTA, p. {official_rate['page']} "
+                f"— taux officiel : {expression}."
+            )
+            if calculation_status != "CALCULABLE":
+                note += " Quantité requise pour calculer ce droit spécifique/composé."
         return _result(
             preferential=True,
             preference_applied=applied,
@@ -1140,27 +1175,66 @@ def _resolve_zlecaf_context(
             daps=False,
             regime="ZLECAF",
             code="ZLECAF",
-            note=None,
+            note=note,
             zlecaf_eligible=True,
-            zlecaf_note=None,
+            zlecaf_note=note,
+            rate_expression=expression,
+            preferential_rate_source=source,
+            preferential_rate_calculation_status=calculation_status,
         )
 
-    # 4. Autres pays ratifiés des deux côtés : le taux ZLECAf générique de la
-    #    ligne n'est appliqué que si la DESTINATION a une preuve d'application
-    #    réelle du barème préférentiel (même principe que la circulaire DGD
-    #    482/2024 pour l'Algérie, généralisé) — une ratification seule ne
-    #    garantit aucune réduction effective au poste-frontière.
-    from services.zlecaf_active_implementers import implementation_evidence, is_active_implementer
+    # 4. Autres pays : une offre, une ratification ou la participation au GTI
+    #    ne déclenchent jamais un calcul. Il faut une transposition en vigueur,
+    #    une origine explicitement acceptée sur base réciproque et une ligne
+    #    tarifaire officielle exacte.
+    from services.official_preferential_rates import resolve_official_preferential_rate
+    from services.zlecaf_implementation_registry import implementation_decision
 
-    if not is_active_implementer(dest):
+    decision = implementation_decision(dest, origin)
+    if not decision["applied"]:
         return _no_preference(
-            f"ZLECAf ratifié par {dest} mais aucune preuve d'application réelle "
-            f"du barème préférentiel trouvée à ce jour (recherche 2026-07-06) "
-            f"— taux NPF appliqué"
+            decision["note"],
+            zlecaf_rate_status="NOT_AVAILABLE",
         )
 
-    eff_dd = line_zlecaf_rate_pct
-    applied = eff_dd is not None and eff_dd < (dd_rate_pct or 0)
+    official_rate = resolve_official_preferential_rate(dest, hs_code_clean, origin)
+    if not official_rate or official_rate.get("ad_valorem_rate_pct") is None:
+        return _result(
+            preferential=True,
+            preference_applied=False,
+            dd=None,
+            daps=False,
+            regime="ZLECAF",
+            code="ZLECAF",
+            note=(
+                f"{decision['note']} Aucune ligne préférentielle exacte et "
+                "calculable n'a été vérifiée pour ce code."
+            ),
+            zlecaf_eligible=True,
+            zlecaf_note=decision["note"],
+            preferential_rate_calculation_status="NOT_AVAILABLE",
+        )
+
+    eff_dd = official_rate["ad_valorem_rate_pct"]
+    applied = eff_dd < (dd_rate_pct or 0)
+    record = decision["record"]
+    source = {
+        "title": official_rate["source_title"],
+        "url": official_rate["source_url"],
+        "api_url": official_rate.get("source_api_url"),
+        "source_date": official_rate["source_date"],
+        "column": official_rate["source_column"],
+        "schedule": official_rate.get("schedule"),
+        "implementation_instrument": record.instrument_id,
+        "implementation_title": record.instrument_title,
+        "implementation_url": record.instrument_url,
+        "effective_from": record.effective_from,
+    }
+    note = (
+        f"{record.instrument_id}, origine {origin}; ligne "
+        f"{official_rate['hs_code']}, {official_rate['source_column']} : "
+        f"{official_rate['rate_expression']}. Certificat d'origine ZLECAf requis."
+    )
     return _result(
         preferential=True,
         preference_applied=applied,
@@ -1168,9 +1242,12 @@ def _resolve_zlecaf_context(
         daps=False,
         regime="ZLECAF",
         code="ZLECAF",
-        note=f"Application réelle : {implementation_evidence(dest)}" if applied else None,
+        note=note,
         zlecaf_eligible=True,
-        zlecaf_note=None,
+        zlecaf_note=note,
+        rate_expression=official_rate["rate_expression"],
+        preferential_rate_source=source,
+        preferential_rate_calculation_status=official_rate["calculation_status"],
     )
 
 
@@ -1427,6 +1504,9 @@ def calculate_import_taxes(
     zlecaf_eligible = _zctx["zlecaf_eligible"]
     zlecaf_preference_applied = _zctx["preference_applied"] and trade_regime == "ZLECAF"
     zlecaf_note = _zctx["zlecaf_note"]
+    zlecaf_rate_expression = _zctx["zlecaf_rate_expression"]
+    zlecaf_rate_source = _zctx["zlecaf_rate_source"]
+    zlecaf_rate_calculation_status = _zctx["zlecaf_rate_calculation_status"]
 
     zlecaf_taxes = dict(taxes_for_cascade)
     _eff_dd = None
@@ -1452,7 +1532,9 @@ def calculate_import_taxes(
     # (zéro vérifié) : elle est INCONNUE. Les autres régimes (union douanière,
     # calendrier DZA, NPF strict) retournent toujours un `dd_rate_pct`
     # numérique concret, jamais None — `zlecaf_status` reste `DOCUMENTED`.
-    zlecaf_rate_untraceable = _preferential and trade_regime == "ZLECAF" and _eff_dd is None
+    zlecaf_rate_untraceable = zlecaf_rate_calculation_status == "NOT_AVAILABLE" or (
+        _preferential and trade_regime == "ZLECAF" and _eff_dd is None
+    )
     zlecaf_status = "NOT_AVAILABLE" if zlecaf_rate_untraceable else "DOCUMENTED"
 
     if zlecaf_rate_untraceable:
@@ -1618,6 +1700,40 @@ def calculate_import_taxes(
     except Exception as _ccy_err:
         logger.warning(f"Bloc devise indisponible pour {country_iso3}: {_ccy_err}")
 
+    # Contrat API fail-closed : lorsque le taux ZLECAf exact n'est pas vérifié,
+    # aucun consommateur ne doit pouvoir interpréter la copie NPF interne comme
+    # un total ZLECAf ou une économie nulle. Les valeurs numériques internes ne
+    # servent qu'à garder la cascade stable ; la sortie publique est neutralisée.
+    if zlecaf_rate_untraceable:
+        for tax_line in taxes_breakdown:
+            tax_line.update(
+                {
+                    "rate_zlecaf_pct": None,
+                    "amount_zlecaf": None,
+                    "amount_zlecaf_local": None,
+                    "base_value_zlecaf": None,
+                    "affected_by_zlecaf": False,
+                }
+            )
+        taxes_summary = {
+            "npf": _npf_sum,
+            "zlecaf": None,
+            "economie_droits": None,
+            "economie_totale": None,
+        }
+        zlecaf_legacy = None
+        calculation_steps_zlecaf = []
+        if currency_block and currency_block.get("summary_local"):
+            currency_block["summary_local"].update(
+                {
+                    "zlecaf": None,
+                    "economie_droits": None,
+                    "economie_totale": None,
+                }
+            )
+    else:
+        calculation_steps_zlecaf = zlecaf_cascade["steps"]
+
     return {
         "hs_code": hs_code_clean,
         "hs6": hs6,
@@ -1634,6 +1750,9 @@ def calculate_import_taxes(
         "zlecaf_preference_applied": zlecaf_preference_applied,
         "zlecaf_note": zlecaf_note,
         "zlecaf_status": zlecaf_status,  # DOCUMENTED | NOT_AVAILABLE
+        "zlecaf_rate_expression": zlecaf_rate_expression,
+        "zlecaf_rate_source": zlecaf_rate_source,
+        "zlecaf_rate_calculation_status": zlecaf_rate_calculation_status,
         "cif_value": cif_value,
         "generated_at": country_data.get("generated_at", "") if country_data else "",
         "rates": {
@@ -1646,7 +1765,9 @@ def calculate_import_taxes(
             # du taux applicable (notamment pour le calendrier DZA) : le
             # frontend ne doit donc jamais le convertir implicitement en 0 %.
             "effective_zlecaf_rate_pct": (
-                round(_eff_dd, 6) if trade_regime == "ZLECAF" and _eff_dd is not None else None
+                round(min(float(_eff_dd), float(dd_rate_pct)), 6)
+                if trade_regime == "ZLECAF" and _eff_dd is not None
+                else None
             ),
             "vat_rate_pct": vat_rate_pct,
             "other_taxes_pct": other_taxes_pct,
@@ -1659,7 +1780,7 @@ def calculate_import_taxes(
         },
         # Step-by-step cascade — ready for frontend display
         "calculation_steps": npf_cascade["steps"],
-        "calculation_steps_zlecaf": zlecaf_cascade["steps"],
+        "calculation_steps_zlecaf": calculation_steps_zlecaf,
         "cascade_legal_source": npf_cascade["legal_source"],
         "calculation_profile_status": npf_cascade["profile_status"],
         # Legacy keys kept for backward compatibility with existing frontend code

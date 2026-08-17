@@ -1,11 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import {
   effectiveTaxRateFromSteps,
+  isCustomsDutyTax,
   isDisplayableZlecafResult,
   neutralizeZlecafBreakdown,
   neutralizeZlecafSummary,
   resolveZlecafAvailability,
 } from './zlecafAvailability';
+
+it.each(['DD', 'D.D', 'CET'])('reconnait %s comme droit de douane', (tax) => {
+  expect(isCustomsDutyTax({ tax })).toBe(true);
+});
+
+it('ne confond pas la TVA avec le droit de douane', () => {
+  expect(isCustomsDutyTax({ tax: 'TVA' })).toBe(false);
+});
 
 describe('resolveZlecafAvailability', () => {
   it('conserve un taux documente effectivement resolu, y compris 0 %', () => {

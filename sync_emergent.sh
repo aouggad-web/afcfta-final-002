@@ -197,7 +197,9 @@ assert tun['sub_positions'][0].get('preferences'), 'TUN_tariffs.json périmé (p
 mdg = json.load(open('data/crawled/MDG_tariffs.json'))
 assert 'TVA' in mdg['sub_positions'][0].get('taxes', {}), 'MDG_tariffs.json périmé (TVA nationale absente)'
 from services.zlecaf_active_implementers import is_active_implementer
-assert is_active_implementer('ETH') and not is_active_implementer('MOZ'), 'registre application réelle ZLECAf incohérent'
+assert is_active_implementer('KEN') and not is_active_implementer('ETH') and not is_active_implementer('MOZ'), 'registre application réelle ZLECAf incohérent'
+from services.zlecaf_implementation_registry import PARTNER_NOTICE_REQUIRED, implementation_decision
+assert implementation_decision('ETH', 'KEN')['status'] == PARTNER_NOTICE_REQUIRED, 'garde juridique ETH périmée'
 from services.crawled_data_service import CrawledDataService
 svc = CrawledDataService(); svc.load(force=True)
 assert svc.lookup('AGO', '010121'), 'normaliseur WITS absent (AGO illisible)'
