@@ -483,6 +483,21 @@ def test_build_regulatory_blocks_without_origin_still_covers_destination():
     assert blocks["regulatory_cost"] is not None
 
 
+def test_build_regulatory_blocks_without_destination_never_crashes():
+    # `dest_iso3` est typé Optional : un appelant qui n'a pas encore résolu le
+    # pays de destination (ex. formulaire incomplet en amont d'un garde-fou
+    # try/except) ne doit jamais provoquer d'AttributeError sur `.upper()`.
+    blocks = build_regulatory_blocks(None, "KEN", fob_value=100000, cif_value=100000)
+    assert blocks["regulatory_compliance"] is None
+
+    blocks_both_none = build_regulatory_blocks(None, None, fob_value=100000, cif_value=100000)
+    assert blocks_both_none == {
+        "regulatory_compliance": None,
+        "regulatory_cost": None,
+        "regulatory_reported": None,
+    }
+
+
 def test_build_regulatory_blocks_uncovered_country_is_none_not_error():
     blocks = build_regulatory_blocks("XXX", "YYY", fob_value=100000, cif_value=100000)
     assert blocks["regulatory_compliance"] is None

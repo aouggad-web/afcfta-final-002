@@ -528,7 +528,7 @@ def build_regulatory_blocks(
     from services.regulatory_compliance_service import get_country_regulatory_compliance
     from services.regulatory_reported_service import build_reported_layer
 
-    regulatory_compliance = get_country_regulatory_compliance(dest_iso3)
+    regulatory_compliance = get_country_regulatory_compliance(dest_iso3) if dest_iso3 else None
     cost_import = build_regulatory_cost(
         regulatory_compliance, fob_value=fob_value, cif_value=cif_value, side="import"
     )
