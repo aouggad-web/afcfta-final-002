@@ -1188,10 +1188,30 @@ def _resolve_zlecaf_context(
     #    une origine explicitement acceptée sur base réciproque et une ligne
     #    tarifaire officielle exacte.
     from services.official_preferential_rates import resolve_official_preferential_rate
-    from services.zlecaf_implementation_registry import implementation_decision
+    from services.zlecaf_implementation_registry import PARTNER_NOTICE_REQUIRED, implementation_decision
 
     decision = implementation_decision(dest, origin)
     if not decision["applied"]:
+        # Instrument de transposition en vigueur mais liste des corridors non publiée :
+        # on reste dans le régime ZLECAf sans taux calculable (dd=None), seulement
+        # lorsque la ligne tarifaire ne porte pas de taux ZLECAf explicite. Le moteur
+        # de rapport applique l'hypothèse de démantèlement total (0 %) côté benchmarking,
+        # et le calculateur affiche le statut « NOT_AVAILABLE » (économie inconnue).
+        # Si la ligne porte un taux explicite (même 0 %), on reste fail-closed : aucun
+        # corridor réciproque vérifié ne peut déclencher un calcul (never_calculate).
+        if decision.get("status") == PARTNER_NOTICE_REQUIRED and line_zlecaf_rate_pct is None:
+            return _result(
+                preferential=True,
+                preference_applied=False,
+                dd=None,
+                daps=False,
+                regime="ZLECAF",
+                code="ZLECAF",
+                note=decision["note"],
+                zlecaf_eligible=True,
+                zlecaf_note=decision["note"],
+                preferential_rate_calculation_status="NOT_AVAILABLE",
+            )
         return _no_preference(
             decision["note"],
             zlecaf_rate_status="NOT_AVAILABLE",
@@ -1199,6 +1219,27 @@ def _resolve_zlecaf_context(
 
     official_rate = resolve_official_preferential_rate(dest, hs_code_clean, origin)
     if not official_rate or official_rate.get("ad_valorem_rate_pct") is None:
+        # Repli sur le taux de la ligne ETL lorsqu'aucune ligne officielle exacte
+        # n'a été vérifiée pour ce code. La donnée tarifaire de la ligne (issue du
+        # barème national publié) est utilisée comme taux préférentiel de référence.
+        if line_zlecaf_rate_pct is not None:
+            eff_dd = line_zlecaf_rate_pct
+            applied = eff_dd < (dd_rate_pct or 0)
+            return _result(
+                preferential=True,
+                preference_applied=applied,
+                dd=eff_dd,
+                daps=False,
+                regime="ZLECAF",
+                code="ZLECAF",
+                note=(
+                    f"{decision['note']} Taux ZLECAf issu du barème national "
+                    f"(ligne tarifaire officielle non vérifiée pour ce code)."
+                ),
+                zlecaf_eligible=True,
+                zlecaf_note=decision["note"],
+                preferential_rate_calculation_status="DOCUMENTED",
+            )
         return _result(
             preferential=True,
             preference_applied=False,
