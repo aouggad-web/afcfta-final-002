@@ -576,7 +576,17 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           computation_order_ref: `Données tarifaires officielles ${destISO3} - Format enhanced_v2`,
           last_verified: authenticResult.generated_at ? new Date(authenticResult.generated_at).toISOString().split('T')[0] : '2025-02',
           confidence_level: 'very_high',
-          kenya_legal_calculation: authenticResult.kenya_legal_calculation || null
+          kenya_legal_calculation: authenticResult.kenya_legal_calculation || null,
+
+          // Formalités, prestataires mandatés et frais réglementaires — bloc
+          // informatif strictement séparé des droits/taxes (voir
+          // RegulatoryCostBreakdown / RegulatoryComplianceView / RegulatoryReportedIndications).
+          // Sans ce report explicite, ces champs — présents dans la réponse API
+          // authentique — étaient silencieusement perdus lors de la
+          // reconstruction manuelle de `transformedResult`.
+          regulatory_compliance: authenticResult.regulatory_compliance || null,
+          regulatory_cost: authenticResult.regulatory_cost || null,
+          regulatory_reported: authenticResult.regulatory_reported || null,
         };
         
         setResult(transformedResult);

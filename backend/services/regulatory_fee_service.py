@@ -480,3 +480,73 @@ def _summarise(line_items: List[Dict[str, Any]]) -> Dict[str, Any]:
             {i.get("fee_status") for i in line_items if i.get("fee_status")}
         ),
     }
+
+
+def merge_regulatory_cost(
+    cost_import: Optional[Dict[str, Any]],
+    cost_export: Optional[Dict[str, Any]],
+    verified_items: Optional[List[Dict[str, Any]]] = None,
+) -> Optional[Dict[str, Any]]:
+    """Fusionne registre conforme (import/export) et frais vérifiés en un bloc.
+
+    Concatène toutes les lignes (chacune conserve son ``side``) et re-agrège les
+    drapeaux de complétude et les totaux (bornés min/max) via ``_summarise``,
+    sans jamais additionner de devises hétérogènes. Renvoie None si tout est
+    vide. Fonction commune à toutes les routes de calcul (ex. calculator.py,
+    authentic_tariffs.py) : la ventilation réglementaire ne doit jamais
+    dépendre du chemin de calcul emprunté par le frontend.
+    """
+    merged_items: List[Dict[str, Any]] = []
+    for side in (cost_import, cost_export):
+        if side:
+            merged_items.extend(side.get("line_items", []))
+    if verified_items:
+        merged_items.extend(verified_items)
+    if not merged_items:
+        return None
+    return _summarise(merged_items)
+
+
+def build_regulatory_blocks(
+    dest_iso3: Optional[str],
+    origin_iso3: Optional[str],
+    *,
+    fob_value: Optional[float] = None,
+    cif_value: Optional[float] = None,
+) -> Dict[str, Optional[Dict[str, Any]]]:
+    """Compose les trois blocs réglementaires (compliance/cost/reported) pour
+    une paire origine/destination — fail-closed : toute erreur de données
+    remonte à l'appelant (qui doit l'entourer d'un garde-fou try/except pour
+    ne jamais interrompre le calcul tarifaire).
+
+    Point d'entrée UNIQUE partagé par toutes les routes de calcul, afin que la
+    ventilation réglementaire (formalités, prestataires mandatés, frais
+    vérifiés, indications secondaires) ne dépende jamais du chemin de calcul
+    (ex. données "authentiques" vs registre generique) emprunté par le
+    frontend pour un pays donné.
+    """
+    from services.regulatory_compliance_service import get_country_regulatory_compliance
+    from services.regulatory_reported_service import build_reported_layer
+
+    regulatory_compliance = get_country_regulatory_compliance(dest_iso3)
+    cost_import = build_regulatory_cost(
+        regulatory_compliance, fob_value=fob_value, cif_value=cif_value, side="import"
+    )
+    origin_compliance = get_country_regulatory_compliance(origin_iso3) if origin_iso3 else None
+    cost_export = build_regulatory_cost(
+        origin_compliance, fob_value=fob_value, cif_value=cif_value, side="export"
+    )
+    verified_items = build_verified_provider_costs(
+        dest_iso3, fob_value=fob_value, cif_value=cif_value, side="import"
+    )
+    if origin_iso3:
+        verified_items = verified_items + build_verified_provider_costs(
+            origin_iso3, fob_value=fob_value, cif_value=cif_value, side="export"
+        )
+    regulatory_cost = merge_regulatory_cost(cost_import, cost_export, verified_items)
+    regulatory_reported = build_reported_layer(dest_iso3, origin_iso3)
+    return {
+        "regulatory_compliance": regulatory_compliance,
+        "regulatory_cost": regulatory_cost,
+        "regulatory_reported": regulatory_reported,
+    }
