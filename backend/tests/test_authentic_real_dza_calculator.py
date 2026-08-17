@@ -51,6 +51,7 @@ def test_real_dza_tariff_line_cascade_breakdown_and_local_currency(monkeypatch):
     assert result["zlecaf_preference_applied"] is True
 
     assert result["rates"]["dd_rate_pct"] == 15.0
+    assert result["rates"]["effective_zlecaf_rate_pct"] == 0.0
     assert result["rates"]["tcs_rate_pct"] == 3.0
     assert result["rates"]["prct_rate_pct"] == 2.0
     assert result["rates"]["vat_rate_pct"] == 19.0
