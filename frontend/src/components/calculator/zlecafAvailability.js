@@ -23,9 +23,11 @@ export function resolveZlecafAvailability(authenticResult) {
     && isNumber(effectiveRatePct)
   );
 
-  // OFFER_ONLY/PARTNER_NOTICE_REQUIRED : une offre officielle est archivée
-  // mais non vérifiée comme applicable — jamais calculée, mais distincte
-  // d'une absence pure de source (NOT_AVAILABLE) pour l'affichage.
+  // OFFER_ONLY : offre tarifaire officielle archivée sans preuve
+  // d'application ; PARTNER_NOTICE_REQUIRED : domestication en vigueur sans
+  // liste de partenaires réciproques publiée. Aucun des deux n'est calculé,
+  // mais tous deux sont distincts d'une absence pure de source
+  // (NOT_AVAILABLE) pour l'affichage.
   const unavailableStatus =
     status === ZLECAF_OFFER_ONLY || status === ZLECAF_PARTNER_NOTICE_REQUIRED
       ? status

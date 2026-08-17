@@ -610,7 +610,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           title: `✅ ${t.calculationSuccess}`,
           description: hasZlecafRate
             ? `${t.potentialSavings}: ${formatCurrency(savings.amount ?? 0)} (Données officielles ${destISO3})`
-            : authenticResult.zlecaf_status === 'OFFER_ONLY'
+            : (authenticResult.zlecaf_status === 'OFFER_ONLY' || authenticResult.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
               ? (language === 'fr'
                 ? `Offre tarifaire ZLECAf publiée pour ${destISO3} — non vérifiée comme applicable, à confirmer avec les douanes locales (calcul NPF conservé)`
                 : `Published AfCFTA tariff offer for ${destISO3} — not verified as applicable, confirm with local customs (MFN calculation retained)`)
@@ -1310,7 +1310,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <p className="text-emerald-400/60 text-xs mt-1">
                     {isDisplayableZlecafResult(result)
                       ? (language === 'fr' ? 'Avec accord' : 'With agreement')
-                      : result.zlecaf_status === 'OFFER_ONLY'
+                      : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
                         ? (language === 'fr'
                           ? 'Offre publiée ZLECAf — à vérifier avec les douanes locales'
                           : 'Published AfCFTA offer — verify with local customs')
@@ -1333,9 +1333,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <p className="text-amber-400/60 text-xs mt-1">
                     {isDisplayableZlecafResult(result)
                       ? (language === 'fr' ? 'Certificat Origine' : 'Origin Certificate')
-                      : result.zlecaf_status === 'OFFER_ONLY'
-                        ? 'OFFER_ONLY'
-                        : 'NOT_AVAILABLE'}
+                      : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
+                        ? (language === 'fr' ? 'À vérifier' : 'To verify')
+                        : (language === 'fr' ? 'Non disponible' : 'Unavailable')}
                   </p>
                 </div>
                 
