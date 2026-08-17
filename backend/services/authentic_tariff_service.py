@@ -1640,6 +1640,14 @@ def calculate_import_taxes(
             "daps_rate_pct": daps_rate_pct,
             "dd_rate_pct": dd_rate_pct,
             "zlecaf_rate_pct": zlecaf_rate_pct,
+            # Taux préférentiel effectivement résolu après les garde-fous
+            # origine/destination (réciprocité, activation et calendrier).
+            # Le taux brut de la ligne ci-dessus peut être absent ou différer
+            # du taux applicable (notamment pour le calendrier DZA) : le
+            # frontend ne doit donc jamais le convertir implicitement en 0 %.
+            "effective_zlecaf_rate_pct": (
+                round(_eff_dd, 6) if trade_regime == "ZLECAF" and _eff_dd is not None else None
+            ),
             "vat_rate_pct": vat_rate_pct,
             "other_taxes_pct": other_taxes_pct,
             "prct_rate_pct": prct_rate_pct,
