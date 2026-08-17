@@ -361,7 +361,10 @@ def tariff_benefit_analysis(
     regime = ctx["trade_regime"]
     applied = ctx["dd_rate_pct"]
     rate_status = ctx.get("zlecaf_rate_calculation_status")
-    if rate_status == "NOT_AVAILABLE" or applied is None:
+    # OFFER_ONLY/PARTNER_NOTICE_REQUIRED : offre publiée ou domestication sans
+    # liste de partenaires vérifiée — jamais assez pour modéliser un avantage
+    # tarifaire chiffré, au même titre qu'une absence totale de source.
+    if rate_status in ("NOT_AVAILABLE", "OFFER_ONLY", "PARTNER_NOTICE_REQUIRED") or applied is None:
         return {
             "available": False,
             "hs6_used": hs6,

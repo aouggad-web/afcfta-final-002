@@ -1,4 +1,6 @@
 export const ZLECAF_NOT_AVAILABLE = 'NOT_AVAILABLE';
+export const ZLECAF_OFFER_ONLY = 'OFFER_ONLY';
+export const ZLECAF_PARTNER_NOTICE_REQUIRED = 'PARTNER_NOTICE_REQUIRED';
 
 const isNumber = (value) => typeof value === 'number' && Number.isFinite(value);
 
@@ -21,9 +23,19 @@ export function resolveZlecafAvailability(authenticResult) {
     && isNumber(effectiveRatePct)
   );
 
+  // OFFER_ONLY : offre tarifaire officielle archivée sans preuve
+  // d'application ; PARTNER_NOTICE_REQUIRED : domestication en vigueur sans
+  // liste de partenaires réciproques publiée. Aucun des deux n'est calculé,
+  // mais tous deux sont distincts d'une absence pure de source
+  // (NOT_AVAILABLE) pour l'affichage.
+  const unavailableStatus =
+    status === ZLECAF_OFFER_ONLY || status === ZLECAF_PARTNER_NOTICE_REQUIRED
+      ? status
+      : ZLECAF_NOT_AVAILABLE;
+
   return {
     available,
-    status: available ? status : ZLECAF_NOT_AVAILABLE,
+    status: available ? status : unavailableStatus,
     effectiveRatePct: available ? effectiveRatePct : null,
   };
 }

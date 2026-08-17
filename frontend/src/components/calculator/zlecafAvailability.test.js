@@ -36,6 +36,17 @@ describe('resolveZlecafAvailability', () => {
       effectiveRatePct: null,
     });
   });
+
+  it.each(['OFFER_ONLY', 'PARTNER_NOTICE_REQUIRED'])(
+    'distingue une offre non verifiee (%s) d une absence pure de source, sans jamais la calculer',
+    (status) => {
+      expect(resolveZlecafAvailability({
+        zlecaf_status: status,
+        trade_regime: 'NPF',
+        rates: {},
+      })).toEqual({ available: false, status, effectiveRatePct: null });
+    },
+  );
 });
 
 it('n affiche la colonne ZLECAf que pour un taux documente', () => {

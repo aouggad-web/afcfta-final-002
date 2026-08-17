@@ -620,6 +620,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           title: `✅ ${t.calculationSuccess}`,
           description: hasZlecafRate
             ? `${t.potentialSavings}: ${formatCurrency(savings.amount ?? 0)} (Données officielles ${destISO3})`
+            : (authenticResult.zlecaf_status === 'OFFER_ONLY' || authenticResult.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
+              ? (language === 'fr'
+                ? `Offre tarifaire ZLECAf publiée pour ${destISO3} — non vérifiée comme applicable, à confirmer avec les douanes locales (calcul NPF conservé)`
+                : `Published AfCFTA tariff offer for ${destISO3} — not verified as applicable, confirm with local customs (MFN calculation retained)`)
             : authenticResult.zlecaf_rate_expression
               ? (language === 'fr'
                 ? `Taux officiel ZLECAf : ${authenticResult.zlecaf_rate_expression} — quantité requise, total non calculé (${destISO3})`
@@ -1316,14 +1320,18 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <p className="text-emerald-400/60 text-xs mt-1">
                     {isDisplayableZlecafResult(result)
                       ? (language === 'fr' ? 'Avec accord' : 'With agreement')
-                      : result.zlecaf_rate_expression
+                      : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
                         ? (language === 'fr'
-                          ? `Taux ligne ${result.zlecaf_rate_expression} — quantité requise`
-                          : `Line rate ${result.zlecaf_rate_expression} — quantity required`)
-                        : (language === 'fr' ? 'Taux non disponible' : 'Rate unavailable')}
+                          ? 'Offre publiée ZLECAf — à vérifier avec les douanes locales'
+                          : 'Published AfCFTA offer — verify with local customs')
+                        : result.zlecaf_rate_expression
+                          ? (language === 'fr'
+                            ? `Taux ligne ${result.zlecaf_rate_expression} — quantité requise`
+                            : `Line rate ${result.zlecaf_rate_expression} — quantity required`)
+                          : (language === 'fr' ? 'Taux non disponible' : 'Rate unavailable')}
                   </p>
                 </div>
-                
+
                 {/* Économie */}
                 <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
                   <p className="text-amber-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
@@ -1335,7 +1343,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <p className="text-amber-400/60 text-xs mt-1">
                     {isDisplayableZlecafResult(result)
                       ? (language === 'fr' ? 'Certificat Origine' : 'Origin Certificate')
-                      : 'NOT_AVAILABLE'}
+                      : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
+                        ? (language === 'fr' ? 'À vérifier' : 'To verify')
+                        : (language === 'fr' ? 'Non disponible' : 'Unavailable')}
                   </p>
                 </div>
                 

@@ -194,13 +194,17 @@ def test_offer_and_domestication_without_partner_notice_never_calculate():
     assert resolve_official_preferential_rate("GHA", "0101210000", "KEN") is None
     assert resolve_official_preferential_rate("ETH", "01012100", "KEN") is None
 
+    # Statut distinct de NOT_AVAILABLE : une offre archivée ou une
+    # domestication sans liste de partenaires publiée ne sont jamais
+    # calculées, mais ne sont pas non plus une absence pure de source — le
+    # frontend les affiche comme « à vérifier avec les douanes locales ».
     offer_only = resolve_zlecaf_context("GHA", "KEN", "0101210000", 5.0, 0.0)
     assert offer_only["trade_regime"] != "ZLECAF"
-    assert offer_only["zlecaf_rate_calculation_status"] == "NOT_AVAILABLE"
+    assert offer_only["zlecaf_rate_calculation_status"] == OFFER_ONLY
 
     missing_notice = resolve_zlecaf_context("ETH", "KEN", "01012100", 5.0, 0.0)
     assert missing_notice["trade_regime"] != "ZLECAF"
-    assert missing_notice["zlecaf_rate_calculation_status"] == "NOT_AVAILABLE"
+    assert missing_notice["zlecaf_rate_calculation_status"] == PARTNER_NOTICE_REQUIRED
 
 
 def test_accepted_corridor_ignores_unverified_etl_rate_when_exact_line_is_missing():
