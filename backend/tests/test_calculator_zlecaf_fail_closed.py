@@ -514,6 +514,7 @@ def test_authentic_tariff_service_untraceable_zlecaf_line_has_null_savings():
     # Le droit reste au taux NPF réel de la source — aucune exonération
     # fabriquée (pas de 0.0 silencieux).
     assert result["rates"]["dd_rate_pct"] == line["dd_rate"]
+    assert result["rates"]["effective_zlecaf_rate_pct"] is None
 
 
 def test_authentic_tariff_service_customs_union_savings_stay_documented():
@@ -526,6 +527,7 @@ def test_authentic_tariff_service_customs_union_savings_stay_documented():
 
     assert result["trade_regime"] == "CUSTOMS_UNION"
     assert result["zlecaf_status"] == "DOCUMENTED"
+    assert result["rates"]["effective_zlecaf_rate_pct"] is None
     assert result["savings"]["amount"] is not None
     assert result["savings"]["amount"] > 0
 
