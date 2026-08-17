@@ -1646,9 +1646,7 @@ def calculate_import_taxes(
             # du taux applicable (notamment pour le calendrier DZA) : le
             # frontend ne doit donc jamais le convertir implicitement en 0 %.
             "effective_zlecaf_rate_pct": (
-                round(_eff_dd, 6)
-                if trade_regime == "ZLECAF" and _eff_dd is not None
-                else None
+                round(_eff_dd, 6) if trade_regime == "ZLECAF" and _eff_dd is not None else None
             ),
             "vat_rate_pct": vat_rate_pct,
             "other_taxes_pct": other_taxes_pct,
