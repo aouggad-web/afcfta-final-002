@@ -18,7 +18,13 @@ const CATEGORY_LABEL = {
   autre_taxe: { fr: 'Prélèvement', en: 'Levy' },
 };
 
-export default function TaxBreakdownDual({ breakdown, summary, currency, language = 'fr' }) {
+export default function TaxBreakdownDual({
+  breakdown,
+  summary,
+  currency,
+  zlecafAvailable = true,
+  language = 'fr',
+}) {
   const fr = language === 'fr';
   const hasLocal = !!(currency && currency.available && currency.usd_to_local_rate);
   const [mode, setMode] = useState('USD'); // 'USD' | 'LOCAL'
@@ -39,7 +45,7 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
 
   const s = summary || {};
   const npf = s.npf || {};
-  const zlc = s.zlecaf || {};
+  const zlc = zlecafAvailable ? (s.zlecaf || {}) : {};
   const sl = (currency && currency.summary_local) || {};
   const slNpf = sl.npf || {};
   const slZlc = sl.zlecaf || {};
@@ -85,6 +91,13 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
       </CardHeader>
 
       <CardContent>
+        {!zlecafAvailable && (
+          <div className="mb-4 rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-sm text-amber-200">
+            {fr
+              ? 'Taux ZLECAf non disponible pour cette ligne : la colonne préférentielle et les économies ne sont pas calculées.'
+              : 'AfCFTA rate unavailable for this line: the preferential column and savings are not calculated.'}
+          </div>
+        )}
         {/* En-tête de colonnes */}
         <div className="hidden md:grid grid-cols-12 gap-2 px-3 pb-2 text-xs uppercase tracking-wide text-slate-500">
           <div className="col-span-5">{fr ? 'Taxe / Base' : 'Tax / Base'}</div>
@@ -95,7 +108,9 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
         <div className="space-y-2">
           {breakdown.map((b, idx) => {
             const cat = CATEGORY_LABEL[b.category] || { fr: b.category, en: b.category };
-            const reduced = b.affected_by_zlecaf && b.amount_zlecaf < b.amount_npf;
+            const reduced = zlecafAvailable
+              && b.affected_by_zlecaf
+              && b.amount_zlecaf < b.amount_npf;
             return (
               <div
                 key={idx}
@@ -130,9 +145,13 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
                   <span className="md:hidden text-xs text-slate-500">ZLECAf</span>
                   <div>
                     <span className={`font-bold ${reduced ? 'text-emerald-400' : 'text-slate-200'}`}>
-                      {fmt(b.amount_zlecaf, b.amount_zlecaf_local)}
+                      {zlecafAvailable ? fmt(b.amount_zlecaf, b.amount_zlecaf_local) : '—'}
                     </span>
-                    <span className="text-slate-500 text-xs ml-1">({b.rate_zlecaf_pct}%)</span>
+                    <span className="text-slate-500 text-xs ml-1">
+                      {zlecafAvailable && b.rate_zlecaf_pct !== null && b.rate_zlecaf_pct !== undefined
+                        ? `(${b.rate_zlecaf_pct}%)`
+                        : '(—)'}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -155,7 +174,7 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
             <SummaryCard
               title={fr ? 'Total ZLECAf' : 'Total AfCFTA'}
               s={zlc}
-              sLocal={slZlc}
+              sLocal={zlecafAvailable ? slZlc : {}}
               useLocal={useLocal}
               currency={currency}
               language={language}
@@ -171,9 +190,11 @@ export default function TaxBreakdownDual({ breakdown, summary, currency, languag
               <span className="font-semibold">{fr ? 'Économie totale ZLECAf' : 'Total AfCFTA savings'}</span>
             </div>
             <span className="text-emerald-400 font-bold text-lg">
-              {useLocal
-                ? `${(sl.economie_totale ?? 0).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} ${currency.local_symbol || currency.local_code}`
-                : `$${(s.economie_totale ?? 0).toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`}
+              {!zlecafAvailable || s.economie_totale === null || s.economie_totale === undefined
+                ? '—'
+                : useLocal
+                  ? `${sl.economie_totale.toLocaleString('fr-FR', { maximumFractionDigits: 0 })} ${currency.local_symbol || currency.local_code}`
+                  : `$${s.economie_totale.toLocaleString('fr-FR', { maximumFractionDigits: 0 })}`}
             </span>
           </div>
         )}
