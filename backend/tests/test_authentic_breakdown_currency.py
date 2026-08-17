@@ -56,13 +56,32 @@ _SYNTHETIC_LINE = {
 @pytest.fixture
 def synthetic_calc(monkeypatch):
     """calculate_import_taxes sur une ligne déterministe (profil par défaut :
-    DD sur CIF, TVA sur CIF+DD). CIF=1000, DD=20%, TVA=15%, ZLECAf DD=0%."""
+    DD sur CIF, TVA sur CIF+DD). Le taux ZLECAf 0 % est fourni par une ligne
+    officielle exacte simulée, jamais par le champ ETL générique."""
+    from services import official_preferential_rates
+
     monkeypatch.setattr(svc, "_get_postgres_provider", lambda: None)
     monkeypatch.setattr(svc, "load_country_tariffs", lambda iso3: {"generated_at": "2025-01-01"})
     monkeypatch.setattr(svc, "get_tariff_line", lambda iso3, hs6: dict(_SYNTHETIC_LINE))
     monkeypatch.setattr(svc, "load_crawled_position_index", lambda iso3: None)
     monkeypatch.setattr(svc, "get_sub_positions", lambda *a, **k: [])
     monkeypatch.setattr(currency_service, "get_by_country", lambda code: _FakeCurrency())
+    monkeypatch.setattr(
+        official_preferential_rates,
+        "resolve_official_preferential_rate",
+        lambda destination, hs_code, origin=None: {
+            "hs_code": hs_code,
+            "ad_valorem_rate_pct": 0.0,
+            "rate_expression": "0%",
+            "calculation_status": "CALCULABLE",
+            "source_title": "Official exact test schedule",
+            "source_url": "https://example.test/official",
+            "source_api_url": "https://example.test/official/api",
+            "source_date": "2026-01-01",
+            "source_column": "year6",
+            "schedule": "1",
+        },
+    )
     return monkeypatch
 
 
@@ -253,7 +272,9 @@ def test_etl_list_format_taxes_detail_does_not_crash(monkeypatch):
     assert "error" not in result
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}
     assert by_code["DD"]["amount_npf"] == 200.0
-    assert by_code["DD"]["amount_zlecaf"] == 0.0
+    assert by_code["DD"]["amount_zlecaf"] is None
+    assert result["zlecaf_status"] == "NOT_AVAILABLE"
+    assert result["taxes_summary"]["zlecaf"] is None
 
 
 def test_null_rates_do_not_crash_and_vat_falls_back_to_taxes_detail(monkeypatch):
@@ -374,8 +395,8 @@ def test_no_origin_yields_npf_no_preference(synthetic_calc):
     assert result["taxes_summary"]["economie_droits"] == 0.0
 
 
-def test_generic_zlecaf_partner_gets_preference(synthetic_calc):
-    """Deux pays ratifiés sans bloc commun (KEN←GHA) : ZLECAf générique, DD→0."""
+def test_exact_official_kenya_line_gets_preference(synthetic_calc):
+    """KEN←GHA : seule la ligne officielle exacte simulée déclenche le DD 0 %."""
     synthetic_calc.setattr(currency_service, "get_by_country", lambda code: None)
     result = svc.calculate_import_taxes("KEN", "100190", 1000.0, origin_country="GHA")
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}

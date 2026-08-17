@@ -490,17 +490,17 @@ def test_benchmark_top_producers(monkeypatch):
     assert result["producers"][0]["country_iso3"] == "CIV"
 
 
-def test_tariff_benefit_real_rates():
+def test_tariff_benefit_requires_verified_reciprocal_rate():
     from services import benchmarking_service as benchmark
 
-    # NGA imports cocoa (180100): national duty 5% -> ZLECAf 0% => real 5% advantage.
+    # Nigeria's gazetted offer is not enough: no exhaustive reciprocal-origin
+    # notice has been verified, so the report must not model a 0 % end-state.
     res = benchmark.tariff_benefit_analysis("CIV", "NGA", "180100")
-    assert res["available"] is True
+    assert res["available"] is False
     assert res["national_rate_pct"] == 5.0
-    assert res["zlecaf_rate_pct"] == 0.0
-    assert res["tariff_advantage_pct"] == 5.0
-    # Must NOT be the old hardcoded 8.5%
-    assert res["tariff_advantage_pct"] != 8.5
+    assert res["zlecaf_rate_pct"] is None
+    assert res["tariff_advantage_pct"] is None
+    assert res["savings_per_1000usd"] is None
 
 
 def test_tariff_hs4_resolves_to_hs6():
@@ -510,10 +510,10 @@ def test_tariff_hs4_resolves_to_hs6():
     hs6, resolved = benchmark._resolve_hs6("NGA", "1801")
     assert hs6 == "180100" and resolved is True
     res = benchmark.tariff_benefit_analysis("CIV", "NGA", "1801")
-    assert res["available"] is True
+    assert res["available"] is False
     assert res["hs6_used"] == "180100"
     assert res["hs6_resolved"] is True
-    assert res["tariff_advantage_pct"] == 5.0
+    assert res["tariff_advantage_pct"] is None
 
 
 def test_tariff_dza_no_zlecaf_for_non_active_partner():

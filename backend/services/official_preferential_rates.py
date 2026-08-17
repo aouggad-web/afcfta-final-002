@@ -22,6 +22,63 @@ DATASETS = {
     "ZMB": DATA_DIR / "ZMB_afcfta_etariff_2026-08-17.json.gz",
 }
 
+ISO3_TO_ISO2 = {
+    "AGO": "AO",
+    "BFA": "BF",
+    "BDI": "BI",
+    "BEN": "BJ",
+    "BWA": "BW",
+    "CAF": "CF",
+    "CIV": "CI",
+    "CMR": "CM",
+    "COD": "CD",
+    "COG": "CG",
+    "COM": "KM",
+    "CPV": "CV",
+    "DJI": "DJ",
+    "DZA": "DZ",
+    "EGY": "EG",
+    "ERI": "ER",
+    "ETH": "ET",
+    "GAB": "GA",
+    "GHA": "GH",
+    "GIN": "GN",
+    "GMB": "GM",
+    "GNB": "GW",
+    "GNQ": "GQ",
+    "KEN": "KE",
+    "LBR": "LR",
+    "LBY": "LY",
+    "LSO": "LS",
+    "MAR": "MA",
+    "MDG": "MG",
+    "MLI": "ML",
+    "MOZ": "MZ",
+    "MRT": "MR",
+    "MUS": "MU",
+    "MWI": "MW",
+    "NAM": "NA",
+    "NER": "NE",
+    "NGA": "NG",
+    "RWA": "RW",
+    "SDN": "SD",
+    "SEN": "SN",
+    "SLE": "SL",
+    "SOM": "SO",
+    "SSD": "SS",
+    "STP": "ST",
+    "SWZ": "SZ",
+    "SYC": "SC",
+    "TCD": "TD",
+    "TGO": "TG",
+    "TUN": "TN",
+    "TZA": "TZ",
+    "UGA": "UG",
+    "ZAF": "ZA",
+    "ZMB": "ZM",
+    "ZWE": "ZW",
+}
+
 
 @lru_cache(maxsize=None)
 def _load_dataset(dataset_code: str) -> Optional[dict]:
@@ -43,15 +100,10 @@ def _load_dataset(dataset_code: str) -> Optional[dict]:
 
 
 def _candidate_codes(clean_code: str) -> list[str]:
-    if len(clean_code) in (6, 8):
-        return [clean_code]
-    if len(clean_code) >= 10:
-        return [clean_code[:10], clean_code[:8], clean_code[:6]]
-    if len(clean_code) == 9:
-        return [clean_code[:8], clean_code[:6]]
-    if len(clean_code) == 7:
-        return [clean_code[:6]]
-    return []
+    # Exact national line only. A broader HS6/HS8 parent can contain several
+    # national tariff lines with different concessions and must never be used
+    # as an implicit fallback. This also preserves Tunisia's 9-digit lines.
+    return [clean_code] if 6 <= len(clean_code) <= 12 else []
 
 
 def _parse_offer_rate(expression: Optional[str]) -> Optional[float]:
@@ -85,7 +137,13 @@ def _resolve_offer_line(
         return None
 
     schedule_map = dataset.get("origin_schedule_map", {})
-    schedule = schedule_map.get(origin) or schedule_map.get("*")
+    # New snapshots store ISO3 keys. Keep ISO2 lookup for the already archived
+    # EGY/TUN snapshots collected from the e-Tariff Book regions endpoint.
+    schedule = (
+        schedule_map.get(origin)
+        or schedule_map.get(ISO3_TO_ISO2.get(origin, ""))
+        or schedule_map.get("*")
+    )
     schedule_index = dataset.get("_schedule_indexes", {}).get(schedule or "")
     if schedule_index is None:
         return None
@@ -100,8 +158,15 @@ def _resolve_offer_line(
     if line is None:
         return None
 
-    year_index = _offer_schedule_year(as_of_year)
-    expression = line.get("annual_rate_expressions", {}).get(str(year_index))
+    annual_expressions = line.get("annual_rate_expressions", {})
+    published_years = sorted(int(year) for year in annual_expressions if str(year).isdigit())
+    if not published_years:
+        return None
+    requested_year = _offer_schedule_year(as_of_year)
+    # After the phase-down calendar ends, the final published concession
+    # remains the applicable tier; never fall back to NOT_AVAILABLE or 0.
+    year_index = min(requested_year, published_years[-1])
+    expression = annual_expressions.get(str(year_index))
     rate = _parse_offer_rate(expression)
     display_expression = (
         f"{expression}%" if expression and not expression.endswith("%") else expression

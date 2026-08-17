@@ -14,6 +14,7 @@ ad-valorem component would understate the legal duty.
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
 import json
 import re
@@ -192,6 +193,18 @@ def build_dataset(pdf_path: Path, pdftotext: str = "pdftotext") -> dict:
     }
 
 
+def write_dataset(output: Path, dataset: dict) -> None:
+    """Write deterministic JSON, gzip-compressed when the target is ``.gz``."""
+    serialized = (json.dumps(dataset, ensure_ascii=False, separators=(",", ":")) + "\n").encode(
+        "utf-8"
+    )
+    output.parent.mkdir(parents=True, exist_ok=True)
+    if output.suffix == ".gz":
+        output.write_bytes(gzip.compress(serialized, compresslevel=9, mtime=0))
+    else:
+        output.write_bytes(serialized)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("pdf", type=Path)
@@ -200,11 +213,7 @@ def main() -> None:
     args = parser.parse_args()
 
     dataset = build_dataset(args.pdf, args.pdftotext)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(dataset, ensure_ascii=False, separators=(",", ":")) + "\n",
-        encoding="utf-8",
-    )
+    write_dataset(args.output, dataset)
 
 
 if __name__ == "__main__":

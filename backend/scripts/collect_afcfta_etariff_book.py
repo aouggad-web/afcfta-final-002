@@ -34,6 +34,63 @@ OFFERS = {
     "ZMB": {"destination": "ZM", "region": "ZM", "origins": {"1": "DZ"}},
 }
 
+AFRICAN_ISO2_TO_ISO3 = {
+    "AO": "AGO",
+    "BF": "BFA",
+    "BI": "BDI",
+    "BJ": "BEN",
+    "BW": "BWA",
+    "CD": "COD",
+    "CF": "CAF",
+    "CG": "COG",
+    "CI": "CIV",
+    "CM": "CMR",
+    "CV": "CPV",
+    "DJ": "DJI",
+    "DZ": "DZA",
+    "EG": "EGY",
+    "ER": "ERI",
+    "ET": "ETH",
+    "GA": "GAB",
+    "GH": "GHA",
+    "GM": "GMB",
+    "GN": "GIN",
+    "GQ": "GNQ",
+    "GW": "GNB",
+    "KE": "KEN",
+    "KM": "COM",
+    "LR": "LBR",
+    "LS": "LSO",
+    "LY": "LBY",
+    "MA": "MAR",
+    "MG": "MDG",
+    "ML": "MLI",
+    "MR": "MRT",
+    "MU": "MUS",
+    "MW": "MWI",
+    "MZ": "MOZ",
+    "NA": "NAM",
+    "NE": "NER",
+    "NG": "NGA",
+    "RW": "RWA",
+    "SC": "SYC",
+    "SD": "SDN",
+    "SL": "SLE",
+    "SN": "SEN",
+    "SO": "SOM",
+    "SS": "SSD",
+    "ST": "STP",
+    "SZ": "SWZ",
+    "TD": "TCD",
+    "TG": "TGO",
+    "TN": "TUN",
+    "TZ": "TZA",
+    "UG": "UGA",
+    "ZA": "ZAF",
+    "ZM": "ZMB",
+    "ZW": "ZWE",
+}
+
 
 def _request_json(url: str, payload: dict | None = None, attempts: int = 4):
     data = json.dumps(payload).encode("utf-8") if payload is not None else None
@@ -121,7 +178,10 @@ def _origin_schedule_map(destination: str, region: str, country_codes: list[str]
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
         for origin, schedule in executor.map(probe, country_codes):
             if schedule:
-                mapping[origin] = schedule
+                iso3 = AFRICAN_ISO2_TO_ISO3.get(origin.upper())
+                if iso3 is None:
+                    raise ValueError(f"Unknown African ISO2 origin returned by API: {origin}")
+                mapping[iso3] = schedule
     return dict(sorted(mapping.items()))
 
 

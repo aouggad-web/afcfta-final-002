@@ -21,7 +21,7 @@ SARS Schedule No. 1 Part 1, y compris sa colonne AfCFTA extraite ligne à ligne.
    AfCFTA » dans Schedule No. 1 Part 1 (barème douanier ordinaire, chapitres
    1-99, mis à jour au 24 juillet 2026) — c'est cette colonne qui contient les
    taux préférentiels ligne à ligne réels. La révision du **6 août 2026** a
-   a été vérifiée par SHA-256 et ses **8 592 lignes nationales** extraites
+   été vérifiée par SHA-256 et ses **8 592 lignes nationales** extraites
    par position PDF de la colonne AfCFTA. Le jeu structuré contient 4 663
    lignes `free`, 3 617 taux ad valorem, 140 droits composés et 172 droits
    spécifiques. Les 312 droits composés/spécifiques sont conservés verbatim

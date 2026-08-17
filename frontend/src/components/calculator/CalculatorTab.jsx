@@ -37,6 +37,7 @@ import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
 import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import {
   effectiveTaxRateFromSteps,
+  isCustomsDutyTax,
   isDisplayableZlecafResult,
   neutralizeZlecafBreakdown,
   neutralizeZlecafSummary,
@@ -1414,10 +1415,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           <p className="text-slate-500 text-xs">{language === 'fr' ? 'ZLECAf' : 'AfCFTA'}</p>
                           <p className="text-emerald-400 font-bold">
                             {isDisplayableZlecafResult(result)
-                              ? (tax.tax === 'D.D' || tax.tax === 'DD'
+                              ? (isCustomsDutyTax(tax)
                                 ? `${(result.zlecaf_tariff_rate * 100).toFixed(2)}%`
                                 : `${tax.rate}%`)
-                              : ((tax.tax === 'D.D' || tax.tax === 'DD')
+                              : (isCustomsDutyTax(tax)
                                 && result.zlecaf_rate_expression
                                 ? result.zlecaf_rate_expression
                                 : '—')}

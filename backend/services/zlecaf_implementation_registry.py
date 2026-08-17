@@ -95,9 +95,7 @@ RECORDS = {
         destination_iso3="ETH",
         status=PARTNER_NOTICE_REQUIRED,
         instrument_id="Regulation 574/2025",
-        instrument_title=(
-            "Council of Ministers Regulation 574/2025 implementing AfCFTA " "tariff concessions"
-        ),
+        instrument_title="Council of Ministers Regulation 574/2025 implementing AfCFTA tariff concessions",
         instrument_url=(
             "https://justice.gov.et/en/law/%E1%8B%A8%E1%8A%A0%E1%8D%8D%E1%88%AA"
             "%E1%8A%AB-%E1%8A%A0%E1%88%85%E1%8C%89%E1%88%AB%E1%8B%8A-%E1%8A%90"

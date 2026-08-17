@@ -360,16 +360,26 @@ def tariff_benefit_analysis(
 
     regime = ctx["trade_regime"]
     applied = ctx["dd_rate_pct"]
-    assumed_end_state = False
-    if applied is None:
-        if regime == "ZLECAF":
-            # A missing ZLECAf rate on the line is treated as 0 % — the AfCFTA
-            # end-state preferential rate for the vast majority of tariff lines
-            # (full dismantlement target). Documented modelling assumption.
-            applied = 0.0
-            assumed_end_state = True
-        else:
-            applied = national
+    rate_status = ctx.get("zlecaf_rate_calculation_status")
+    if rate_status == "NOT_AVAILABLE" or applied is None:
+        return {
+            "available": False,
+            "hs6_used": hs6,
+            "hs6_resolved": hs6_resolved,
+            "national_rate_pct": national,
+            "zlecaf_rate_pct": None,
+            "tariff_advantage_pct": None,
+            "savings_per_1000usd": None,
+            "tariff_advantage_index": None,
+            "trade_regime": regime,
+            "trade_regime_code": ctx.get("trade_regime_code"),
+            "trade_regime_note": ctx.get("trade_regime_note"),
+            "note": (
+                ctx.get("zlecaf_note")
+                or "Taux ZLECAf exact non vérifié pour cette ligne — avantage non calculable."
+            ),
+            "source": "authentic_tariff_service",
+        }
     applied = float(applied)
 
     advantage = max(national - applied, 0.0)
@@ -394,11 +404,6 @@ def tariff_benefit_analysis(
         )
 
     note = "Tarif indicatif au niveau HS6 ; vérifier la sous-position nationale exacte."
-    if assumed_end_state:
-        note = (
-            "Taux ZLECAf de la ligne absent — hypothèse de démantèlement total (0 %) "
-            "documentée. " + note
-        )
     if hs6_resolved:
         note = f"Code élargi en sous-position HS6 {hs6} pour la recherche tarifaire. " + note
 
