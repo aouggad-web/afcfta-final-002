@@ -1188,7 +1188,10 @@ def _resolve_zlecaf_context(
     #    une origine explicitement acceptée sur base réciproque et une ligne
     #    tarifaire officielle exacte.
     from services.official_preferential_rates import resolve_official_preferential_rate
-    from services.zlecaf_implementation_registry import PARTNER_NOTICE_REQUIRED, implementation_decision
+    from services.zlecaf_implementation_registry import (
+        PARTNER_NOTICE_REQUIRED,
+        implementation_decision,
+    )
 
     decision = implementation_decision(dest, origin)
     if not decision["applied"]:
