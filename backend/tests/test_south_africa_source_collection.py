@@ -92,7 +92,7 @@ def test_inventory_csv_has_required_columns_and_extracted_schedule_row():
     }
     assert required_columns <= set(rows[0].keys())
     extracted = [r for r in rows if r["id"] == "ZAF-SARS-SCH1P1-AFCFTA-COLUMN"]
-    assert extracted and extracted[0]["status"] == "official_extracted"
+    assert extracted and extracted[0]["status"] == "official_extracted_pdf_not_archived"
     assert extracted[0]["sha256"] == (
         "e45e6d797a6372e881ef88063f4fde8eecbbcdf3c5f68d9c8183932478f90560"
     )
