@@ -2,11 +2,6 @@ import gzip
 import json
 from importlib import import_module
 
-from scripts.extract_sars_afcfta_schedule import (
-    SOURCE_SHA256,
-    classify_rate_expression,
-    write_dataset,
-)
 from services import authentic_tariff_service
 from services.authentic_tariff_service import resolve_zlecaf_context
 from services.official_preferential_rates import (
@@ -18,6 +13,12 @@ from services.zlecaf_implementation_registry import (
     OFFER_ONLY,
     PARTNER_NOTICE_REQUIRED,
     implementation_decision,
+)
+
+from scripts.extract_sars_afcfta_schedule import (
+    SOURCE_SHA256,
+    classify_rate_expression,
+    write_dataset,
 )
 
 collector = import_module("scripts.collect_afcfta_etariff_book")
