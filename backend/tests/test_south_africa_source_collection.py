@@ -1,7 +1,6 @@
 """
-Vérifications d'intégrité de la première collecte Afrique du Sud (ZAF) :
-taux TVA standard et registre de sources. Cette collecte est délibérément
-partielle (TVA seule, offre ZLECAf non ingérée) — voir
+Vérifications d'intégrité de la collecte Afrique du Sud (ZAF) :
+taux TVA standard, registre de sources et offre ZLECAf ligne à ligne — voir
 data/sources/south_africa/README.md — donc ZAF n'est pas enregistrée dans
 SUPPORTED_JURISDICTIONS ni dans NATIONAL_OFFER_REGISTRY : ces tests
 vérifient les données collectées elles-mêmes, pas un calcul de bout en bout.
@@ -75,7 +74,7 @@ def test_afcfta_agreement_excerpt_exists_and_is_small():
     assert "AFRICAN CONTINENTAL FREE TRADE AREA" in text
 
 
-def test_inventory_csv_has_required_columns_and_pending_row():
+def test_inventory_csv_has_required_columns_and_extracted_schedule_row():
     with open(_ZAF_SOURCES / "inventory.csv", encoding="utf-8", newline="") as f:
         rows = list(csv.DictReader(f))
     required_columns = {
@@ -92,10 +91,11 @@ def test_inventory_csv_has_required_columns_and_pending_row():
         "notes",
     }
     assert required_columns <= set(rows[0].keys())
-    pending = [r for r in rows if r["status"] == "source_pending_collection"]
-    assert (
-        pending
-    ), "le barème ligne à ligne ZLECAf (Schedule 1 Part 1) doit être marqué PENDING, pas absent"
+    extracted = [r for r in rows if r["id"] == "ZAF-SARS-SCH1P1-AFCFTA-COLUMN"]
+    assert extracted and extracted[0]["status"] == "official_extracted"
+    assert extracted[0]["sha256"] == (
+        "e45e6d797a6372e881ef88063f4fde8eecbbcdf3c5f68d9c8183932478f90560"
+    )
 
 
 def test_zaf_is_not_registered_as_a_supported_jurisdiction_yet():
@@ -107,9 +107,9 @@ def test_zaf_is_not_registered_as_a_supported_jurisdiction_yet():
     assert "ZAF" not in SUPPORTED_JURISDICTIONS
 
 
-def test_zaf_has_no_fabricated_afcfta_national_offer():
-    """Garde-fou de sincérité : sans le barème Schedule 1 Part 1 ingéré,
-    ZAF ne doit apparaître dans aucun registre d'offre nationale ZLECAf."""
+def test_zaf_category_registry_remains_separate_from_exact_rate_registry():
+    """Schedule 1 fournit des taux exacts, pas des catégories A/B/C : il ne
+    doit donc pas être injecté dans le registre de classification nationale."""
     from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
 
     assert "ZAF" not in NATIONAL_OFFER_REGISTRY

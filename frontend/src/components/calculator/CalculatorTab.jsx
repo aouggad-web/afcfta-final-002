@@ -487,6 +487,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           zlecaf_preference_applied: authenticResult.zlecaf_preference_applied === true,
           zlecaf_note: authenticResult.zlecaf_note || null,
           zlecaf_status: zlecafAvailability.status,
+          zlecaf_rate_expression: authenticResult.zlecaf_rate_expression || null,
+          zlecaf_rate_source: authenticResult.zlecaf_rate_source || null,
+          zlecaf_rate_calculation_status:
+            authenticResult.zlecaf_rate_calculation_status || null,
           
           // Ventilation complète NPF vs ZLECAf + bi-devise (TaxBreakdownDual)
           taxes_breakdown: neutralizeZlecafBreakdown(
@@ -605,6 +609,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           title: `✅ ${t.calculationSuccess}`,
           description: hasZlecafRate
             ? `${t.potentialSavings}: ${formatCurrency(savings.amount ?? 0)} (Données officielles ${destISO3})`
+            : authenticResult.zlecaf_rate_expression
+              ? (language === 'fr'
+                ? `Taux officiel ZLECAf : ${authenticResult.zlecaf_rate_expression} — quantité requise, total non calculé (${destISO3})`
+                : `Official AfCFTA rate: ${authenticResult.zlecaf_rate_expression} — quantity required, total not calculated (${destISO3})`)
             : (language === 'fr'
               ? `Taux ZLECAf non disponible pour cette ligne — calcul NPF conservé (${destISO3})`
               : `AfCFTA rate unavailable for this line — MFN calculation retained (${destISO3})`),
@@ -1297,7 +1305,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   <p className="text-emerald-400/60 text-xs mt-1">
                     {isDisplayableZlecafResult(result)
                       ? (language === 'fr' ? 'Avec accord' : 'With agreement')
-                      : (language === 'fr' ? 'Taux non disponible' : 'Rate unavailable')}
+                      : result.zlecaf_rate_expression
+                        ? (language === 'fr'
+                          ? `Taux ligne ${result.zlecaf_rate_expression} — quantité requise`
+                          : `Line rate ${result.zlecaf_rate_expression} — quantity required`)
+                        : (language === 'fr' ? 'Taux non disponible' : 'Rate unavailable')}
                   </p>
                 </div>
                 
@@ -1405,7 +1417,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                               ? (tax.tax === 'D.D' || tax.tax === 'DD'
                                 ? `${(result.zlecaf_tariff_rate * 100).toFixed(2)}%`
                                 : `${tax.rate}%`)
-                              : '—'}
+                              : ((tax.tax === 'D.D' || tax.tax === 'DD')
+                                && result.zlecaf_rate_expression
+                                ? result.zlecaf_rate_expression
+                                : '—')}
                           </p>
                         </div>
                       </div>

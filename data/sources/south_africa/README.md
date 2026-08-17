@@ -1,10 +1,9 @@
 # Afrique du Sud — collecte officielle
 
-Consultation : 2026-07-25 (Africa/Algiers).
+Consultation : 2026-08-17 (Africa/Algiers).
 
-Première collecte, volontairement restreinte : un fait fiscal unique et bien
-vérifié (taux TVA standard) et la confirmation d'une offre ZLECAf nationale
-officielle publiquement accessible mais non encore extraite ligne à ligne.
+Cette collecte couvre le taux de TVA standard et le barème douanier officiel
+SARS Schedule No. 1 Part 1, y compris sa colonne AfCFTA extraite ligne à ligne.
 
 ## Couverture de cette collecte
 
@@ -21,20 +20,18 @@ officielle publiquement accessible mais non encore extraite ligne à ligne.
    effectif 1er janvier 2021). Ce texte confirme l'existence d'une « colonne
    AfCFTA » dans Schedule No. 1 Part 1 (barème douanier ordinaire, chapitres
    1-99, mis à jour au 24 juillet 2026) — c'est cette colonne qui contient les
-   taux préférentiels ligne à ligne réels, **non collectée** dans cette
-   itération : le barème complet couvre l'intégralité de la nomenclature
-   douanière sud-africaine (99 chapitres) et une extraction fiable ligne à
-   ligne dépasse le périmètre de cette collecte. Statut :
-   `PENDING_COLLECTION` (localisée et confirmée publiquement accessible,
-   non ingérée).
+   taux préférentiels ligne à ligne réels. La révision du **6 août 2026** a
+   a été vérifiée par SHA-256 et ses **8 592 lignes nationales** extraites
+   par position PDF de la colonne AfCFTA. Le jeu structuré contient 4 663
+   lignes `free`, 3 617 taux ad valorem, 140 droits composés et 172 droits
+   spécifiques. Les 312 droits composés/spécifiques sont conservés verbatim
+   mais ne sont pas calculés sans quantité/unité.
 
 ## Ce qui n'est pas couvert
 
 - Accises (Schedule No. 1 Part 2A/2B), droits antidumping/compensateurs/
   sauvegarde (Schedule No. 2), ristournes/remboursements (Schedules 3-6) :
   non collectés.
-- Le barème douanier ordinaire lui-même (Schedule No. 1 Part 1) et sa
-  colonne ZLECAf : non collectés (voir ci-dessus).
 - Formalités administratives sud-africaines : non collectées.
 - La juridiction ZAF n'est donc **pas** enregistrée dans
   `SUPPORTED_JURISDICTIONS` (backend/services/national_legal_calculation_service.py) :
@@ -51,6 +48,11 @@ sous `extracted/`, avec le SHA-256 du PDF original consigné dans
 `data/south_africa/legal_sources.json` pour permettre une vérification lors
 d'une future re-collecte.
 
+Schedule No. 1 Part 1 (2,85 Mo) n'est pas dupliqué dans le dépôt. Son jeu
+déterministe est conservé sous
+`backend/data/official_preferential/ZAF_afcfta_2026-08-06.json.gz`; le hash du
+PDF officiel est verrouillé par `backend/scripts/extract_sars_afcfta_schedule.py`.
+
 ## Résultat des tests d'accès
 
 | Source | Résultat (User-Agent navigateur, curl direct) |
@@ -58,7 +60,7 @@ d'une future re-collecte.
 | `https://www.sars.gov.za/types-of-tax/value-added-tax/` | HTTP 200 |
 | `https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/` | HTTP 200 |
 | `https://www.sars.gov.za/legal-lprim-ce-sch10p8-schedule-no-10-part-8/` | HTTP 200 (sert directement un PDF, pas une page HTML) |
-| `https://www.sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99-schedule-no-1-part-1-chapters-1-to-99/` | HTTP 403 sur requête HEAD (non retesté en GET dans cette collecte) |
+| `https://www.sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99-schedule-no-1-part-1-chapters-1-to-99/` | HTTP 200 en GET, PDF daté du 6 août 2026 |
 
 Note technique : l'outil WebFetch intégré a retourné 403 Forbidden sur ces
 mêmes URLs (proxy sans en-tête User-Agent de navigateur), alors qu'un curl
