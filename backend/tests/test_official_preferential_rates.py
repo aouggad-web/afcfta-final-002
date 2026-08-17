@@ -1,7 +1,7 @@
 import gzip
 import json
+from importlib import import_module
 
-from scripts import collect_afcfta_etariff_book as collector
 from scripts.extract_sars_afcfta_schedule import (
     SOURCE_SHA256,
     classify_rate_expression,
@@ -19,6 +19,8 @@ from services.zlecaf_implementation_registry import (
     PARTNER_NOTICE_REQUIRED,
     implementation_decision,
 )
+
+collector = import_module("scripts.collect_afcfta_etariff_book")
 
 
 def test_dataset_records_the_reviewed_sars_revision():
