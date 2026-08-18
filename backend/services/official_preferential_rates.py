@@ -96,6 +96,10 @@ def _load_dataset(dataset_code: str) -> Optional[dict]:
             schedule: {line["hs_code"]: line for line in lines}
             for schedule, lines in payload.get("schedules", {}).items()
         }
+        payload["_published_lengths"] = {
+            schedule: sorted({len(code) for code in index}, reverse=True)
+            for schedule, index in payload["_schedule_indexes"].items()
+        }
     return payload
 
 
@@ -212,7 +216,11 @@ def resolve_published_offer_rate(
     which would look identical to a total absence of source.
 
     Returns None when the destination has no archived offer dataset, or when
-    the exact national line is absent from it.
+    the requested code cannot be matched. When the requested code is finer
+    than the published offer granularity (e.g. an 11-digit national line
+    against an 8-digit offer), the code is truncated to the published level
+    — the sub-position is included in that offer line. The reverse (coarser
+    request resolved to a finer offer sub-position) is never attempted.
     """
     from services.zlecaf_implementation_registry import (
         APPLIED,
@@ -261,11 +269,11 @@ def resolve_published_offer_rate(
     # sous-positions d'offre, qui portent des concessions différentes — on ne
     # choisirait alors qu'arbitrairement. On ne tronque donc que vers le bas,
     # et jamais en-deçà du SH6.
-    _, schedule_index = _offer_schedule_index(dataset, origin)
+    schedule, schedule_index = _offer_schedule_index(dataset, origin)
     if not schedule_index:
         return None
 
-    published_lengths = sorted({len(code) for code in schedule_index}, reverse=True)
+    published_lengths = dataset.get("_published_lengths", {}).get(schedule, [])
     for length in published_lengths:
         if 6 <= length < len(clean_code):
             parent = _resolve_offer_line(dataset, country, origin, clean_code[:length], year)
