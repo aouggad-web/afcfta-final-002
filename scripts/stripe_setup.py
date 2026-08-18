@@ -52,15 +52,15 @@ PLANS = [
         "slug": "starter",
         "name": "ZLECAf Starter",
         "description": "54 pays, export CSV — indépendants et petits importateurs/exportateurs.",
-        "monthly_cents": 1000,   # 10 €/mois
-        "annual_cents": 11000,   # 110 €/an
+        "monthly_cents": 1000,  # 10 €/mois
+        "annual_cents": 11000,  # 110 €/an
     },
     {
         "slug": "pro",
         "name": "ZLECAf Pro",
         "description": "Export CSV+Excel+PDF, profils complets, alertes tarifaires — exportateurs, traders, consultants.",
-        "monthly_cents": 2500,   # 25 €/mois
-        "annual_cents": 27500,   # 275 €/an
+        "monthly_cents": 2500,  # 25 €/mois
+        "annual_cents": 27500,  # 275 €/an
     },
     {
         "slug": "business",
