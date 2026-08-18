@@ -119,12 +119,32 @@ class TariffCalculationResponse(BaseModel):
     zlecaf_note: Optional[str] = None
     # Statut de la préférence ZLECAf elle-même (distinct de duty_status, qui
     # porte sur le droit NPF) :
-    #   DOCUMENTED    → taux préférentiel résolu à partir d'une source tracée
-    #                    et datée (union douanière, calendrier DZA/ZAF, taux
-    #                    réel de ligne + preuve d'application).
-    #   NOT_AVAILABLE → aucune préférence traçable : zlecaf_tariff_rate=null,
-    #                    zlecaf_tariff_amount=null, savings=null.
+    #   DOCUMENTED             → taux préférentiel résolu à partir d'une source
+    #                             tracée et datée (union douanière, calendrier
+    #                             DZA/ZAF, taux réel de ligne + preuve
+    #                             d'application).
+    #   OFFER_ONLY              → une offre tarifaire officielle est archivée
+    #                             pour cette destination mais aucune preuve
+    #                             nationale d'application/réciprocité n'a été
+    #                             vérifiée.
+    #   PARTNER_NOTICE_REQUIRED → domestication en vigueur, mais la liste
+    #                             officielle des partenaires réciproques n'a
+    #                             pas été publiée.
+    #   NOT_AVAILABLE          → aucune préférence traçable : zlecaf_tariff_rate=null,
+    #                             zlecaf_tariff_amount=null, savings=null.
+    # OFFER_ONLY et PARTNER_NOTICE_REQUIRED ne sont jamais calculés (comme
+    # NOT_AVAILABLE), mais restent distincts pour l'affichage : le frontend
+    # les présente comme « à vérifier avec les douanes locales » plutôt que
+    # comme une absence pure de source.
     zlecaf_status: str = "NOT_AVAILABLE"
+    # Taux publié au e-Tariff Book officiel de la ZLECAf pour cette ligne, mais
+    # NON vérifié comme légalement applicable (zlecaf_status OFFER_ONLY ou
+    # PARTNER_NOTICE_REQUIRED). STRICTEMENT informatif : il n'entre dans aucun
+    # calcul — zlecaf_tariff_rate, les totaux et les économies restent ceux du
+    # régime NPF. Affiché « à vérifier avec les douanes locales ».
+    zlecaf_offer_rate_pct: Optional[float] = None
+    zlecaf_offer_rate_expression: Optional[str] = None
+    zlecaf_offer_rate_source: Optional[Dict[str, Any]] = None
     has_varying_sub_positions: bool = False  # Si d'autres taux existent pour ce HS6
     available_sub_positions_count: int = 0
     # WARNING: Taux variables selon sous-positions
