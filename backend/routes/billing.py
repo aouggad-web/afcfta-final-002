@@ -12,7 +12,7 @@ Monté sous `api_router` (préfixe `/api`), donc URLs effectives :
 L'accès n'est **jamais** accordé sur la redirection de succès : seul le webhook
 signé fait foi. Le routage par pays est explicite (choix de l'utilisateur, pas
 de géo-IP) : `billing_country == "DZ"` part vers Chargily (CIB/Edahabia, DZD),
-tout le reste vers Stripe (USD). Si Chargily n'est pas activé
+tout le reste vers Stripe (EUR). Si Chargily n'est pas activé
 (`CHARGILY_ENABLED`), la branche algérienne répond 501.
 """
 
@@ -168,7 +168,7 @@ async def payment_context(request: Request):
         "provider": ctx["provider"],
         "country": ctx["country"],
         "locked": ctx["locked"],
-        "currency": "DZD" if ctx["provider"] == "chargily" else "USD",
+        "currency": "DZD" if ctx["provider"] == "chargily" else "EUR",
     }
 
 
