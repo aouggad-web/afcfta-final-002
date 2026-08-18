@@ -13,6 +13,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from types import MappingProxyType
 from typing import Mapping, Optional
 
 TIERS = ("free", "starter", "pro", "business")
@@ -64,6 +65,15 @@ class Entitlements:
     api_monthly_quota: Optional[int]
     seats_included: int
     modules: Mapping[str, ModuleAccess] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        # These instances are shared singletons (resolve_entitlements returns
+        # the same object for every caller of a tier). A plain dict here would
+        # let any caller mutate `ent.modules` and permanently alter access for
+        # all subsequent users — breaking fail-closed. Freeze the mapping so
+        # module access is read-only after construction. (frozen=True only
+        # blocks reassigning the attribute, not mutating the dict it points to.)
+        object.__setattr__(self, "modules", MappingProxyType(dict(self.modules)))
 
     def module(self, module_id: str) -> ModuleAccess:
         """Access for a module id; unknown/ungranted modules fail closed to
