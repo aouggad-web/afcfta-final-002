@@ -1,14 +1,14 @@
 from datetime import datetime, timedelta, timezone
 
 import pytest
-from entitlements import TIERS, resolve_entitlements
+from entitlements import MODULES, TIERS, resolve_entitlements
 
 
 def test_no_user_grants_free_tier():
     ent = resolve_entitlements(None)
 
     assert ent.tier == "free"
-    assert ent.daily_calculations == 5
+    assert ent.daily_calculations == 10
     assert ent.export_formats == ()
     assert ent.api_access is False
 
@@ -45,7 +45,7 @@ def test_pro_tier_unlocks_all_export_formats_and_unlimited_profiles():
 
     assert set(ent.export_formats) == {"csv", "excel", "pdf"}
     assert ent.monthly_country_profiles is None
-    assert ent.daily_calculations is None
+    assert ent.daily_calculations == 100
 
 
 def test_starter_tier_only_unlocks_csv_export():
@@ -186,3 +186,67 @@ def test_malformed_period_end_fails_closed_to_free_without_raising(malformed_end
     }
 
     assert resolve_entitlements(user).tier == "free"
+
+
+# --- Module entitlements ---------------------------------------------------
+
+
+def test_every_tier_declares_every_module():
+    for tier in TIERS:
+        ent = resolve_entitlements({"subscription_tier": tier, "subscription_status": "active"})
+        assert set(ent.modules) == set(MODULES)
+
+
+def test_free_tier_module_caps_and_denials():
+    ent = resolve_entitlements(None)
+
+    stats = ent.module("stats")
+    assert stats.enabled is True
+    assert stats.quota == 20
+    assert stats.quota_period == "month"
+
+    assert ent.module("tools").enabled is False
+    assert ent.module("roo").quota == 59
+    assert ent.module("roo").quota_period == "day"
+
+
+def test_pro_tier_mixes_unlimited_and_capped_modules():
+    ent = resolve_entitlements({"subscription_tier": "pro", "subscription_status": "active"})
+
+    production = ent.module("production")
+    assert production.enabled is True
+    assert production.quota is None  # unlimited
+    assert production.quota_period is None
+
+    logistics = ent.module("logistics")
+    assert logistics.quota == 289
+    assert logistics.quota_period == "day"
+
+
+def test_business_tier_unlimited_modules_and_capped_reports():
+    ent = resolve_entitlements({"subscription_tier": "business", "subscription_status": "active"})
+
+    for module_id in ("production", "logistics", "roo", "tools"):
+        assert ent.module(module_id).enabled is True
+        assert ent.module(module_id).quota is None
+
+    assert ent.module("reports").quota == 200
+    assert ent.module("stats").quota == 300
+
+
+def test_unknown_module_fails_closed_to_denied():
+    ent = resolve_entitlements(None)
+
+    denied = ent.module("nonexistent-module")
+    assert denied.enabled is False
+    assert denied.quota is None
+
+
+def test_inactive_subscription_falls_back_to_free_module_set():
+    """A lapsed business subscriber must lose the business module grants and
+    get the free tier's caps (e.g. tools denied) rather than keep them."""
+    user = {"subscription_tier": "business", "subscription_status": "canceled"}
+
+    ent = resolve_entitlements(user)
+    assert ent.tier == "free"
+    assert ent.module("tools").enabled is False
