@@ -206,7 +206,7 @@ def test_free_tier_module_caps_and_denials():
     assert stats.quota_period == "month"
 
     assert ent.module("tools").enabled is False
-    assert ent.module("roo").quota == 59
+    assert ent.module("roo").quota == 60
     assert ent.module("roo").quota_period == "day"
 
 
@@ -219,7 +219,7 @@ def test_pro_tier_mixes_unlimited_and_capped_modules():
     assert production.quota_period is None
 
     logistics = ent.module("logistics")
-    assert logistics.quota == 289
+    assert logistics.quota == 300
     assert logistics.quota_period == "day"
 
 
