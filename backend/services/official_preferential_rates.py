@@ -96,6 +96,10 @@ def _load_dataset(dataset_code: str) -> Optional[dict]:
             schedule: {line["hs_code"]: line for line in lines}
             for schedule, lines in payload.get("schedules", {}).items()
         }
+        payload["_published_lengths"] = {
+            schedule: sorted({len(code) for code in index}, reverse=True)
+            for schedule, index in payload["_schedule_indexes"].items()
+        }
     return payload
 
 
@@ -120,6 +124,19 @@ def _offer_schedule_year(as_of_year: int) -> int:
     return max(1, as_of_year - 2020)
 
 
+def _offer_schedule_index(dataset: dict, origin: str) -> tuple[Optional[str], Optional[dict]]:
+    """Return the (schedule id, line index) an origin is served by."""
+    schedule_map = dataset.get("origin_schedule_map", {})
+    # New snapshots store ISO3 keys. Keep ISO2 lookup for the already archived
+    # EGY/TUN snapshots collected from the e-Tariff Book regions endpoint.
+    schedule = (
+        schedule_map.get(origin)
+        or schedule_map.get(ISO3_TO_ISO2.get(origin, ""))
+        or schedule_map.get("*")
+    )
+    return schedule, dataset.get("_schedule_indexes", {}).get(schedule or "")
+
+
 def _resolve_offer_line(
     dataset: dict,
     country: str,
@@ -136,15 +153,7 @@ def _resolve_offer_line(
     ):
         return None
 
-    schedule_map = dataset.get("origin_schedule_map", {})
-    # New snapshots store ISO3 keys. Keep ISO2 lookup for the already archived
-    # EGY/TUN snapshots collected from the e-Tariff Book regions endpoint.
-    schedule = (
-        schedule_map.get(origin)
-        or schedule_map.get(ISO3_TO_ISO2.get(origin, ""))
-        or schedule_map.get("*")
-    )
-    schedule_index = dataset.get("_schedule_indexes", {}).get(schedule or "")
+    schedule, schedule_index = _offer_schedule_index(dataset, origin)
     if schedule_index is None:
         return None
     line = next(
@@ -187,6 +196,90 @@ def _resolve_offer_line(
         "rate_kind": "AD_VALOREM" if rate is not None else "NOT_AVAILABLE",
         "calculation_status": "CALCULABLE" if rate is not None else "NOT_AVAILABLE",
     }
+
+
+def resolve_published_offer_rate(
+    destination_iso3: str,
+    hs_code: str,
+    origin_iso3: Optional[str] = None,
+    *,
+    as_of_year: Optional[int] = None,
+) -> Optional[dict]:
+    """Resolve the officially published AfCFTA offer line, for display only.
+
+    This deliberately bypasses the implementation registry's applicability
+    gate: it answers "what does the official AfCFTA e-Tariff Book publish for
+    this line?", never "what duty is legally payable?". The returned rate is
+    therefore INFORMATIONAL — callers must never use it to compute a duty, a
+    total or a saving. It exists so a published offer can be surfaced as
+    « à vérifier avec les douanes locales » instead of being silently dropped,
+    which would look identical to a total absence of source.
+
+    Returns None when the destination has no archived offer dataset, or when
+    the requested code cannot be matched. When the requested code is finer
+    than the published offer granularity (e.g. an 11-digit national line
+    against an 8-digit offer), the code is truncated to the published level
+    — the sub-position is included in that offer line. The reverse (coarser
+    request resolved to a finer offer sub-position) is never attempted.
+    """
+    from services.zlecaf_implementation_registry import (
+        APPLIED,
+        OFFER_DATASETS,
+        implementation_record,
+    )
+
+    country = (destination_iso3 or "").upper().strip()
+    origin = (origin_iso3 or "").upper().strip()
+    clean_code = re.sub(r"\D", "", hs_code or "")
+
+    record = implementation_record(country)
+    if record is not None:
+        # An APPLIED corridor is served by the legally usable resolver above;
+        # this display-only path must not shadow it.
+        if record.status == APPLIED:
+            return None
+        dataset_code = record.tariff_dataset
+    else:
+        dataset_code = OFFER_DATASETS.get(country)
+
+    if not dataset_code:
+        return None
+
+    dataset = _load_dataset(dataset_code)
+    if dataset is None:
+        return None
+
+    # Granularité pilotée par la source, jamais par le code demandé :
+    #  * pays dont l'offre est collectée en lignes nationales (8 à 10 chiffres) :
+    #    ces lignes sont appliquées rigoureusement ;
+    #  * pays dont l'offre n'existe qu'au SH6 (barèmes des groupements
+    #    économiques régionaux) : le SH6 EST la granularité officielle.
+    year = as_of_year or date.today().year
+    exact = _resolve_offer_line(dataset, country, origin, clean_code, year)
+    if exact is not None:
+        return exact
+
+    # Le code demandé peut être PLUS FIN que l'offre publiée (ex. ligne
+    # nationale éthiopienne 01012100000 pour une offre publiée en 01012100,
+    # tunisienne 01012100015 pour 010121000, zambienne 0101210010 pour
+    # 01012100). Lire l'offre au niveau où elle est publiée n'invente rien :
+    # la sous-position demandée est incluse dans cette ligne d'offre.
+    #
+    # L'inverse reste INTERDIT : jamais descendre d'un SH6 vers l'une de ses
+    # sous-positions d'offre, qui portent des concessions différentes — on ne
+    # choisirait alors qu'arbitrairement. On ne tronque donc que vers le bas,
+    # et jamais en-deçà du SH6.
+    schedule, schedule_index = _offer_schedule_index(dataset, origin)
+    if not schedule_index:
+        return None
+
+    published_lengths = dataset.get("_published_lengths", {}).get(schedule, [])
+    for length in published_lengths:
+        if 6 <= length < len(clean_code):
+            parent = _resolve_offer_line(dataset, country, origin, clean_code[:length], year)
+            if parent is not None:
+                return {**parent, "requested_hs_code": clean_code}
+    return None
 
 
 def resolve_official_preferential_rate(

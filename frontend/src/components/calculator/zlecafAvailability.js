@@ -33,10 +33,18 @@ export function resolveZlecafAvailability(authenticResult) {
       ? status
       : ZLECAF_NOT_AVAILABLE;
 
+  // Taux publié au e-Tariff Book officiel de la ZLECAf, non vérifié comme
+  // applicable : porté tel quel pour l'affichage informatif uniquement.
+  // Jamais utilisé quand `available` est vrai (le taux vérifié prime).
+  const offerRatePct = authenticResult?.zlecaf_offer_rate_pct;
+  const offerRateExpression = authenticResult?.zlecaf_offer_rate_expression ?? null;
+
   return {
     available,
     status: available ? status : unavailableStatus,
     effectiveRatePct: available ? effectiveRatePct : null,
+    offerRatePct: available ? null : (isNumber(offerRatePct) ? offerRatePct : null),
+    offerRateExpression: available ? null : offerRateExpression,
   };
 }
 

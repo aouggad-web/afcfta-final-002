@@ -22,7 +22,13 @@ describe('resolveZlecafAvailability', () => {
       zlecaf_status: 'DOCUMENTED',
       trade_regime: 'ZLECAF',
       rates: { effective_zlecaf_rate_pct: 0 },
-    })).toEqual({ available: true, status: 'DOCUMENTED', effectiveRatePct: 0 });
+    })).toEqual({
+      available: true,
+      status: 'DOCUMENTED',
+      effectiveRatePct: 0,
+      offerRatePct: null,
+      offerRateExpression: null,
+    });
   });
 
   it.each([
@@ -34,6 +40,8 @@ describe('resolveZlecafAvailability', () => {
       available: false,
       status: 'NOT_AVAILABLE',
       effectiveRatePct: null,
+      offerRatePct: null,
+      offerRateExpression: null,
     });
   });
 
@@ -44,9 +52,50 @@ describe('resolveZlecafAvailability', () => {
         zlecaf_status: status,
         trade_regime: 'NPF',
         rates: {},
-      })).toEqual({ available: false, status, effectiveRatePct: null });
+      })).toEqual({
+        available: false,
+        status,
+        effectiveRatePct: null,
+        offerRatePct: null,
+        offerRateExpression: null,
+      });
     },
   );
+
+  it.each(['OFFER_ONLY', 'PARTNER_NOTICE_REQUIRED'])(
+    'porte le taux publie (%s) a titre informatif, sans jamais le rendre calculable',
+    (status) => {
+      expect(resolveZlecafAvailability({
+        zlecaf_status: status,
+        trade_regime: 'NPF',
+        rates: {},
+        zlecaf_offer_rate_pct: 2.0,
+        zlecaf_offer_rate_expression: '2%',
+      })).toEqual({
+        available: false,
+        status,
+        effectiveRatePct: null,
+        offerRatePct: 2.0,
+        offerRateExpression: '2%',
+      });
+    },
+  );
+
+  it('n expose jamais un taux d offre publie quand un taux verifie est disponible', () => {
+    expect(resolveZlecafAvailability({
+      zlecaf_status: 'DOCUMENTED',
+      trade_regime: 'ZLECAF',
+      rates: { effective_zlecaf_rate_pct: 4 },
+      zlecaf_offer_rate_pct: 2.0,
+      zlecaf_offer_rate_expression: '2%',
+    })).toEqual({
+      available: true,
+      status: 'DOCUMENTED',
+      effectiveRatePct: 4,
+      offerRatePct: null,
+      offerRateExpression: null,
+    });
+  });
 });
 
 it('n affiche la colonne ZLECAf que pour un taux documente', () => {

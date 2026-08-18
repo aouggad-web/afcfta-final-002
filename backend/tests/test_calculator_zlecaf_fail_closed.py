@@ -313,7 +313,11 @@ def test_gha_synthetic_zero_rate_rejected(client):
     data = _calc(client, "EGY", "GHA")
     assert data["zlecaf_preference_applied"] is False
     assert data["zlecaf_tariff_rate"] is None
-    assert data["zlecaf_status"] == "NOT_AVAILABLE"
+    # Ghana a une offre ZLECAf officiellement archivée (ECOWAS e-Tariff Book)
+    # mais aucune preuve nationale d'application/réciprocité vérifiée : le
+    # garde-fou distingue ce statut (OFFER_ONLY) d'une absence pure de source
+    # (NOT_AVAILABLE) — jamais calculé dans les deux cas.
+    assert data["zlecaf_status"] == "OFFER_ONLY"
     assert data["savings"] is None
 
 

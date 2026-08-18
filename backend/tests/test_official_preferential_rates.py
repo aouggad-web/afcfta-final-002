@@ -201,10 +201,33 @@ def test_offer_and_domestication_without_partner_notice_never_calculate():
     offer_only = resolve_zlecaf_context("GHA", "KEN", "0101210000", 5.0, 0.0)
     assert offer_only["trade_regime"] != "ZLECAF"
     assert offer_only["zlecaf_rate_calculation_status"] == OFFER_ONLY
+    # Le taux publié est remonté à titre informatif (jamais dans dd_rate_pct,
+    # qui reste le taux NPF) pour permettre l'affichage « à vérifier ».
+    assert offer_only["dd_rate_pct"] == 5.0
+    assert offer_only["zlecaf_offer_rate_pct"] == 2.0
+    assert offer_only["zlecaf_offer_rate_expression"] == "2.0%"
 
     missing_notice = resolve_zlecaf_context("ETH", "KEN", "01012100", 5.0, 0.0)
     assert missing_notice["trade_regime"] != "ZLECAF"
     assert missing_notice["zlecaf_rate_calculation_status"] == PARTNER_NOTICE_REQUIRED
+    assert missing_notice["dd_rate_pct"] == 5.0
+    assert missing_notice["zlecaf_offer_rate_pct"] == 0.0
+    assert missing_notice["zlecaf_offer_rate_expression"] == "0%"
+
+
+def test_offer_rate_resolves_at_the_source_granularity_not_the_requested_code():
+    # Éthiopie/Zambie/Tunisie collectent l'offre en lignes nationales plus
+    # longues que le code demandé (ex. ligne éthiopienne 01012100 pour une
+    # sous-position nationale 01012100000) : lire l'offre à son niveau publié
+    # n'invente rien, la sous-position demandée y est incluse.
+    finer = resolve_zlecaf_context("ETH", "KEN", "01012100000", 5.0, 0.0)
+    assert finer["zlecaf_offer_rate_pct"] == 0.0
+
+    # L'inverse est interdit : un SH6 ne doit jamais être résolu en piochant
+    # arbitrairement l'une de ses sous-positions d'offre, qui portent des
+    # concessions différentes.
+    coarser = resolve_zlecaf_context("ETH", "KEN", "010121", 5.0, 0.0)
+    assert coarser["zlecaf_offer_rate_pct"] is None
 
 
 def test_accepted_corridor_ignores_unverified_etl_rate_when_exact_line_is_missing():

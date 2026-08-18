@@ -985,6 +985,9 @@ def _resolve_zlecaf_context(
         rate_expression=None,
         preferential_rate_source=None,
         preferential_rate_calculation_status=None,
+        offer_rate_pct=None,
+        offer_rate_expression=None,
+        offer_rate_source=None,
     ):
         return {
             "preferential": preferential,
@@ -999,6 +1002,15 @@ def _resolve_zlecaf_context(
             "zlecaf_rate_expression": rate_expression,
             "zlecaf_rate_source": preferential_rate_source,
             "zlecaf_rate_calculation_status": preferential_rate_calculation_status,
+            # Taux publié sur le site officiel de la ZLECAf mais NON vérifié
+            # comme applicable : strictement informatif. Jamais utilisé pour
+            # calculer un droit, un total ou une économie — `dd_rate_pct`
+            # reste le taux NPF. Affiché « à vérifier avec les douanes
+            # locales » pour ne pas confondre une offre publiée avec une
+            # absence pure de source.
+            "zlecaf_offer_rate_pct": offer_rate_pct,
+            "zlecaf_offer_rate_expression": offer_rate_expression,
+            "zlecaf_offer_rate_source": offer_rate_source,
         }
 
     # Origine renseignée ? Toute préférence suppose un pays d'origine connu
@@ -1055,9 +1067,19 @@ def _resolve_zlecaf_context(
 
     ftas = shared_free_trade_areas(origin, dest)
 
-    def _no_preference(base_note, *, zlecaf_rate_status=None):
+    def _no_preference(
+        base_note,
+        *,
+        zlecaf_rate_status=None,
+        offer_rate_pct=None,
+        offer_rate_expression=None,
+        offer_rate_source=None,
+    ):
         """Aucun régime ZLECAf/union douanière : signaler une ZLE conditionnelle
-        si les deux pays en partagent une, sinon NPF strict. Aucun recalcul."""
+        si les deux pays en partagent une, sinon NPF strict. Aucun recalcul.
+
+        Un éventuel taux d'offre publié est transporté tel quel, à titre
+        informatif : il ne touche jamais `dd`, qui reste le taux NPF."""
         if ftas:
             code = ftas[0]
             label = FTA_NAMES.get(code, code)
@@ -1078,6 +1100,9 @@ def _resolve_zlecaf_context(
                 zlecaf_eligible=False,
                 zlecaf_note=base_note,
                 preferential_rate_calculation_status=zlecaf_rate_status,
+                offer_rate_pct=offer_rate_pct,
+                offer_rate_expression=offer_rate_expression,
+                offer_rate_source=offer_rate_source,
             )
         return _result(
             preferential=False,
@@ -1090,6 +1115,9 @@ def _resolve_zlecaf_context(
             zlecaf_eligible=False,
             zlecaf_note=base_note,
             preferential_rate_calculation_status=zlecaf_rate_status,
+            offer_rate_pct=offer_rate_pct,
+            offer_rate_expression=offer_rate_expression,
+            offer_rate_source=offer_rate_source,
         )
 
     # 1. Ratification continentale ZLECAf (origine ET destination).
@@ -1188,16 +1216,43 @@ def _resolve_zlecaf_context(
     #    une origine explicitement acceptée sur base réciproque et une ligne
     #    tarifaire officielle exacte.
     from services.official_preferential_rates import resolve_official_preferential_rate
-    from services.zlecaf_implementation_registry import implementation_decision
+    from services.zlecaf_implementation_registry import (
+        OFFER_ONLY,
+        PARTNER_NOTICE_REQUIRED,
+        implementation_decision,
+    )
 
     decision = implementation_decision(dest, origin)
     if not decision["applied"]:
         # OFFER_ONLY/PARTNER_NOTICE_REQUIRED restent distincts de NOT_AVAILABLE :
         # une offre publiée sur le site officiel de la ZLECAf n'est pas une
-        # absence de source, mais un taux non vérifié comme applicable.
+        # absence de source, mais un taux non vérifié comme applicable. On
+        # remonte alors le taux publié à titre STRICTEMENT informatif, pour
+        # l'afficher « à vérifier avec les douanes locales ». Il ne touche
+        # jamais le droit exigible : `_no_preference` conserve le taux NPF.
+        offer_pct = offer_expression = offer_source = None
+        if decision["status"] in (OFFER_ONLY, PARTNER_NOTICE_REQUIRED):
+            from services.official_preferential_rates import resolve_published_offer_rate
+
+            published = resolve_published_offer_rate(dest, hs_code_clean, origin)
+            if published:
+                offer_pct = published.get("ad_valorem_rate_pct")
+                offer_expression = published.get("rate_expression")
+                offer_source = {
+                    "title": published.get("source_title"),
+                    "url": published.get("source_url"),
+                    "api_url": published.get("source_api_url"),
+                    "source_date": published.get("source_date"),
+                    "column": published.get("source_column"),
+                    "schedule": published.get("schedule"),
+                    "schedule_year": published.get("schedule_year"),
+                }
         return _no_preference(
             decision["note"],
             zlecaf_rate_status=decision["status"],
+            offer_rate_pct=offer_pct,
+            offer_rate_expression=offer_expression,
+            offer_rate_source=offer_source,
         )
 
     official_rate = resolve_official_preferential_rate(dest, hs_code_clean, origin)
@@ -1510,6 +1565,11 @@ def calculate_import_taxes(
     zlecaf_rate_expression = _zctx["zlecaf_rate_expression"]
     zlecaf_rate_source = _zctx["zlecaf_rate_source"]
     zlecaf_rate_calculation_status = _zctx["zlecaf_rate_calculation_status"]
+    # Offre publiée sur le site officiel de la ZLECAf, non vérifiée comme
+    # applicable : informatif seulement, jamais injecté dans la cascade.
+    zlecaf_offer_rate_pct = _zctx["zlecaf_offer_rate_pct"]
+    zlecaf_offer_rate_expression = _zctx["zlecaf_offer_rate_expression"]
+    zlecaf_offer_rate_source = _zctx["zlecaf_offer_rate_source"]
 
     zlecaf_taxes = dict(taxes_for_cascade)
     _eff_dd = None
@@ -1768,6 +1828,13 @@ def calculate_import_taxes(
         "zlecaf_rate_expression": zlecaf_rate_expression,
         "zlecaf_rate_source": zlecaf_rate_source,
         "zlecaf_rate_calculation_status": zlecaf_rate_calculation_status,
+        # Taux d'offre publié au e-Tariff Book officiel de la ZLECAf mais NON
+        # vérifié comme légalement applicable : affiché « à vérifier avec les
+        # douanes locales ». Il n'entre dans AUCUN calcul — les totaux et
+        # économies restent ceux du régime NPF.
+        "zlecaf_offer_rate_pct": zlecaf_offer_rate_pct,
+        "zlecaf_offer_rate_expression": zlecaf_offer_rate_expression,
+        "zlecaf_offer_rate_source": zlecaf_offer_rate_source,
         "cif_value": cif_value,
         "generated_at": country_data.get("generated_at", "") if country_data else "",
         "rates": {

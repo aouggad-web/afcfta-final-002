@@ -492,7 +492,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           zlecaf_rate_source: authenticResult.zlecaf_rate_source || null,
           zlecaf_rate_calculation_status:
             authenticResult.zlecaf_rate_calculation_status || null,
-          
+          // Taux publié au e-Tariff Book officiel de la ZLECAf mais non
+          // vérifié comme applicable (OFFER_ONLY/PARTNER_NOTICE_REQUIRED) —
+          // strictement informatif, jamais utilisé dans un calcul.
+          zlecaf_offer_rate_pct: zlecafAvailability.offerRatePct,
+          zlecaf_offer_rate_expression: zlecafAvailability.offerRateExpression,
+
           // Ventilation complète NPF vs ZLECAf + bi-devise (TaxBreakdownDual)
           taxes_breakdown: neutralizeZlecafBreakdown(
             authenticResult.taxes_breakdown,
@@ -622,8 +627,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             ? `${t.potentialSavings}: ${formatCurrency(savings.amount ?? 0)} (Données officielles ${destISO3})`
             : (authenticResult.zlecaf_status === 'OFFER_ONLY' || authenticResult.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
               ? (language === 'fr'
-                ? `Offre tarifaire ZLECAf publiée pour ${destISO3} — non vérifiée comme applicable, à confirmer avec les douanes locales (calcul NPF conservé)`
-                : `Published AfCFTA tariff offer for ${destISO3} — not verified as applicable, confirm with local customs (MFN calculation retained)`)
+                ? `Offre tarifaire ZLECAf publiée pour ${destISO3}${zlecafAvailability.offerRateExpression ? ` (${zlecafAvailability.offerRateExpression})` : ''} — non vérifiée comme applicable, à confirmer avec les douanes locales (calcul NPF conservé)`
+                : `Published AfCFTA tariff offer for ${destISO3}${zlecafAvailability.offerRateExpression ? ` (${zlecafAvailability.offerRateExpression})` : ''} — not verified as applicable, confirm with local customs (MFN calculation retained)`)
             : authenticResult.zlecaf_rate_expression
               ? (language === 'fr'
                 ? `Taux officiel ZLECAf : ${authenticResult.zlecaf_rate_expression} — quantité requise, total non calculé (${destISO3})`
@@ -1322,8 +1327,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       ? (language === 'fr' ? 'Avec accord' : 'With agreement')
                       : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
                         ? (language === 'fr'
-                          ? 'Offre publiée ZLECAf — à vérifier avec les douanes locales'
-                          : 'Published AfCFTA offer — verify with local customs')
+                          ? `Offre publiée ZLECAf${result.zlecaf_offer_rate_expression ? ` : ${result.zlecaf_offer_rate_expression}` : ''} — à vérifier avec les douanes locales`
+                          : `Published AfCFTA offer${result.zlecaf_offer_rate_expression ? `: ${result.zlecaf_offer_rate_expression}` : ''} — verify with local customs`)
                         : result.zlecaf_rate_expression
                           ? (language === 'fr'
                             ? `Taux ligne ${result.zlecaf_rate_expression} — quantité requise`

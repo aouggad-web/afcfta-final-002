@@ -531,9 +531,19 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # Statut de la préférence ZLECAf elle-même : DOCUMENTED uniquement quand
     # une source tracée et datée a produit le taux exposé côté API
     # (zlecaf_response_rate is not None — 0.0 est un taux valide, ex. union
-    # douanière à 0 %, et ne doit pas être confondu avec une absence) ;
-    # NOT_AVAILABLE sinon — jamais déduit d'un 0 % ou d'un taux NPF recopié.
-    zlecaf_status = "DOCUMENTED" if zlecaf_response_rate is not None else "NOT_AVAILABLE"
+    # douanière à 0 %, et ne doit pas être confondu avec une absence).
+    # OFFER_ONLY/PARTNER_NOTICE_REQUIRED restent distincts de NOT_AVAILABLE :
+    # une offre publiée sur le site officiel de la ZLECAf ou une domestication
+    # sans liste de partenaires n'est jamais calculée, mais n'est pas non plus
+    # une absence pure de source (garde-fou central resolve_zlecaf_context) —
+    # jamais déduit d'un 0 % ou d'un taux NPF recopié.
+    _zlecaf_calc_status = _zctx.get("zlecaf_rate_calculation_status")
+    if zlecaf_response_rate is not None:
+        zlecaf_status = "DOCUMENTED"
+    elif _zlecaf_calc_status in ("OFFER_ONLY", "PARTNER_NOTICE_REQUIRED"):
+        zlecaf_status = _zlecaf_calc_status
+    else:
+        zlecaf_status = "NOT_AVAILABLE"
 
     # Droit de douane absent de la source : la valeur 0 n'est pas un taux
     # vérifié — signaler explicitement l'absence de donnée plutôt qu'un 0 %.
@@ -1021,6 +1031,9 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         zlecaf_preference_applied=zlecaf_preference_applied,
         zlecaf_note=zlecaf_note,
         zlecaf_status=zlecaf_status,
+        zlecaf_offer_rate_pct=_zctx.get("zlecaf_offer_rate_pct"),
+        zlecaf_offer_rate_expression=_zctx.get("zlecaf_offer_rate_expression"),
+        zlecaf_offer_rate_source=_zctx.get("zlecaf_offer_rate_source"),
         rules_of_origin=rules,
         top_african_producers=top_producers,
         origin_country_data=wb_data.get(origin_country["wb_code"], {}),
