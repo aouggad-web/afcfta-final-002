@@ -627,6 +627,13 @@ const prices = {
   pro:     { m: 25,  y: 275  },
   biz:     { m: 125, y: 1375 }
 };
+// DZD (Algérie, Chargily) — montants alignés sur backend/services/chargily_service.py.
+const pricesDZD = {
+  starter: { m: 1500,  y: 16500  },
+  pro:     { m: 3750,  y: 41250  },
+  biz:     { m: 18750, y: 206250 }
+};
+let currentCurrency = 'EUR'; // 'EUR' ou 'DZD', piloté par le sélecteur pays
 
 function toggleFaq(el) {
   const open = el.classList.toggle('open');
@@ -647,6 +654,8 @@ async function loadPaymentContext() {
 
     if (ctx.provider === 'chargily') {
       select.value = 'DZ';
+      currentCurrency = 'DZD';
+      renderPrices();
       if (ctx.locked) {
         select.disabled = true;
         if (note) {
@@ -661,6 +670,10 @@ async function loadPaymentContext() {
   }
 }
 document.addEventListener('DOMContentLoaded', loadPaymentContext);
+document.getElementById('billing-country').addEventListener('change', function () {
+  currentCurrency = this.value === 'DZ' ? 'DZD' : 'EUR';
+  renderPrices();
+});
 
 // Retour du checkout Stripe : ?checkout=success ou ?checkout=cancel. Affiche
 // une bannière d'état, puis nettoie l'URL pour ne pas la rejouer au reload.
@@ -735,15 +748,7 @@ async function startCheckout(plan) {
   }
 }
 
-function toggleBilling() {
-  annual = !annual;
-  const track = document.getElementById('toggle-track');
-  track.classList.toggle('on', annual);
-  const sw = document.getElementById('billing-switch');
-  if (sw) sw.setAttribute('aria-checked', annual ? 'true' : 'false');
-  document.getElementById('bill-monthly').style.color = annual ? 'var(--muted)' : 'var(--txt)';
-  document.getElementById('bill-annual').style.color  = annual ? 'var(--txt)' : 'var(--muted)';
-
+function renderPrices() {
   const pStarter = document.getElementById('price-starter');
   const perStarter = document.getElementById('per-starter');
   const annStarter = document.getElementById('annual-starter');
@@ -756,34 +761,52 @@ function toggleBilling() {
   const perBiz = document.getElementById('per-biz');
   const annBiz = document.getElementById('annual-biz');
 
+  const source = currentCurrency === 'DZD' ? pricesDZD : prices;
+  const symbol = currentCurrency === 'DZD' ? ' DZD' : '€';
+  const fmt = (n) => currentCurrency === 'DZD' ? n.toLocaleString('fr-FR') : n;
+
   // Équivalent mensuel exact (2 décimales) : 110/12 = 9,17 € — se réconcilie
   // avec le total annuel facturé, contrairement à un arrondi entier (9×12≠110).
-  const perMonthAnnual = (y) => (y / 12).toFixed(2).replace('.', ',');
+  const perMonthAnnual = (y) => currentCurrency === 'DZD'
+    ? Math.round(y / 12).toLocaleString('fr-FR')
+    : (y / 12).toFixed(2).replace('.', ',');
+
   if (annual) {
-    pStarter.innerHTML = perMonthAnnual(prices.starter.y) + '€<span>/mois</span>';
-    perStarter.textContent = 'facturé ' + prices.starter.y + '€ / an';
-    annStarter.innerHTML = '<span style="color:var(--grn);font-size:12px">✓ Économisez ' + (prices.starter.m * 12 - prices.starter.y) + '€ vs mensuel</span>';
+    pStarter.innerHTML = perMonthAnnual(source.starter.y) + symbol + '<span>/mois</span>';
+    perStarter.textContent = 'facturé ' + fmt(source.starter.y) + symbol + ' / an';
+    annStarter.innerHTML = '<span style="color:var(--grn);font-size:12px">✓ Économisez ' + fmt(source.starter.m * 12 - source.starter.y) + symbol + ' vs mensuel</span>';
 
-    pPro.innerHTML = perMonthAnnual(prices.pro.y) + '€<span>/mois</span>';
-    perPro.textContent = 'facturé ' + prices.pro.y + '€ / an';
-    annPro.innerHTML = '<span style="color:var(--grn);font-size:12px">✓ Économisez ' + (prices.pro.m * 12 - prices.pro.y) + '€ vs mensuel</span>';
+    pPro.innerHTML = perMonthAnnual(source.pro.y) + symbol + '<span>/mois</span>';
+    perPro.textContent = 'facturé ' + fmt(source.pro.y) + symbol + ' / an';
+    annPro.innerHTML = '<span style="color:var(--grn);font-size:12px">✓ Économisez ' + fmt(source.pro.m * 12 - source.pro.y) + symbol + ' vs mensuel</span>';
 
-    pBiz.innerHTML = perMonthAnnual(prices.biz.y) + '€<span>/mois</span>';
-    perBiz.textContent = 'facturé ' + prices.biz.y + '€ / an';
-    annBiz.innerHTML = '<span style="color:var(--grn);font-size:12px">✓ Économisez ' + (prices.biz.m * 12 - prices.biz.y) + '€ vs mensuel</span>';
+    pBiz.innerHTML = perMonthAnnual(source.biz.y) + symbol + '<span>/mois</span>';
+    perBiz.textContent = 'facturé ' + fmt(source.biz.y) + symbol + ' / an';
+    annBiz.innerHTML = '<span style="color:var(--grn);font-size:12px">✓ Économisez ' + fmt(source.biz.m * 12 - source.biz.y) + symbol + ' vs mensuel</span>';
   } else {
-    pStarter.innerHTML = prices.starter.m + '€<span>/mois</span>';
+    pStarter.innerHTML = fmt(source.starter.m) + symbol + '<span>/mois</span>';
     perStarter.textContent = 'facturé mensuellement';
     annStarter.innerHTML = '';
 
-    pPro.innerHTML = prices.pro.m + '€<span>/mois</span>';
+    pPro.innerHTML = fmt(source.pro.m) + symbol + '<span>/mois</span>';
     perPro.textContent = 'facturé mensuellement';
     annPro.innerHTML = '';
 
-    pBiz.innerHTML = prices.biz.m + '€<span>/mois</span>';
+    pBiz.innerHTML = fmt(source.biz.m) + symbol + '<span>/mois</span>';
     perBiz.textContent = 'facturé mensuellement';
     annBiz.innerHTML = '';
   }
+}
+
+function toggleBilling() {
+  annual = !annual;
+  const track = document.getElementById('toggle-track');
+  track.classList.toggle('on', annual);
+  const sw = document.getElementById('billing-switch');
+  if (sw) sw.setAttribute('aria-checked', annual ? 'true' : 'false');
+  document.getElementById('bill-monthly').style.color = annual ? 'var(--muted)' : 'var(--txt)';
+  document.getElementById('bill-annual').style.color  = annual ? 'var(--txt)' : 'var(--muted)';
+  renderPrices();
 }
 </script>
 </body>
