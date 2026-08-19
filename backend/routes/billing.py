@@ -24,6 +24,7 @@ import os
 from datetime import datetime, timedelta, timezone
 from typing import Literal, Optional
 
+import pricing
 from bson import ObjectId
 from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel
@@ -148,6 +149,20 @@ async def geo_diagnostic(request: Request):
             "x_forwarded_for_hops": len([h for h in xff.split(",") if h.strip()]),
         },
         "asgi_client_is_private": asgi_is_private,
+    }
+
+
+@router.get("/pricing")
+async def get_pricing():
+    """Grille tarifaire publique (source unique `pricing.py`).
+
+    Permet à la page de tarifs de consommer les prix EUR/DZD au lieu de les
+    coder en dur, ce qui garantit qu'affichage, Stripe et Chargily restent
+    cohérents. Aucune authentification : les prix sont publics.
+    """
+    return {
+        "currencies": {"stripe": "EUR", "chargily": "DZD"},
+        "plans": pricing.grid(),
     }
 
 

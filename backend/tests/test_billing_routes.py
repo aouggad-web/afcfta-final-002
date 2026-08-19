@@ -134,8 +134,15 @@ def test_chargily_amount_unknown_plan_is_400():
     assert exc.value.status_code == 400
 
 
-def test_chargily_amount_missing_env_is_503(monkeypatch):
+def test_chargily_amount_missing_env_falls_back_to_grid_default(monkeypatch):
+    # Sans surcharge d'environnement, le montant retombe désormais sur la grille
+    # unique pricing.py (source de vérité) au lieu d'échouer en 503.
     monkeypatch.delenv("CHARGILY_PRICE_STARTER_M", raising=False)
+    assert chargily_service.resolve_amount_dzd("starter", "monthly") == 1500
+
+
+def test_chargily_amount_invalid_env_is_503(monkeypatch):
+    monkeypatch.setenv("CHARGILY_PRICE_STARTER_M", "pas-un-nombre")
     with pytest.raises(HTTPException) as exc:
         chargily_service.resolve_amount_dzd("starter", "monthly")
     assert exc.value.status_code == 503
