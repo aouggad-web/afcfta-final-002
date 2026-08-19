@@ -102,40 +102,53 @@ def create_checkout(
     url = f"{_api_base()}/checkouts"
     headers = {"Authorization": f"Bearer {key}"}
 
-    # Retry uniquement les échecs transitoires (réseau + 5xx). Un 4xx est une
-    # erreur définitive (montant/clé invalides) et ne doit jamais être rejoué.
+    # Chargily n'expose pas de clé d'idempotence documentée : rejouer une
+    # requête que le serveur a pu recevoir créerait un second checkout facturé
+    # au client. On ne retente donc QUE les échecs prouvés pré-envoi — l'appel
+    # n'a jamais atteint Chargily, rejouer est donc sans risque de doublon.
+    # httpx.ConnectError/ConnectTimeout surviennent à l'établissement de la
+    # connexion, avant l'écriture de la requête. Un ReadTimeout/WriteTimeout
+    # ou un 5xx signifient que le serveur a pu recevoir la requête : jamais
+    # rejoués, on remonte l'échec tel quel.
     last_detail = "Chargily injoignable."
     for attempt in range(1, _CHECKOUT_ATTEMPTS + 1):
         try:
             resp = httpx.post(url, json=payload, headers=headers, timeout=20)
-        except httpx.HTTPError as exc:
+        except (httpx.ConnectError, httpx.ConnectTimeout) as exc:
             last_detail = f"Chargily injoignable : {exc}"
-        else:
-            if resp.status_code < 400:
-                data = resp.json()
-                checkout_url = data.get("checkout_url")
-                if not checkout_url:
-                    raise HTTPException(
-                        status_code=status.HTTP_502_BAD_GATEWAY,
-                        detail="Réponse Chargily sans checkout_url.",
-                    )
-                return checkout_url
-            if resp.status_code < 500:
-                # Erreur cliente définitive : ne pas rejouer.
+            if attempt < _CHECKOUT_ATTEMPTS:
+                logger.warning(
+                    "Chargily checkout: tentative %d/%d échouée avant envoi (%s) — retry",
+                    attempt,
+                    _CHECKOUT_ATTEMPTS,
+                    last_detail,
+                )
+                time.sleep(_CHECKOUT_BACKOFF * (2 ** (attempt - 1)))
+                continue
+            raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=last_detail)
+        except httpx.HTTPError as exc:
+            # Timeout après écriture ou autre erreur ambiguë : la requête a pu
+            # atteindre Chargily. Ne jamais rejouer un paiement en double.
+            raise HTTPException(
+                status_code=status.HTTP_502_BAD_GATEWAY,
+                detail=f"Chargily : état du paiement incertain ({exc}). Ne pas rejouer automatiquement.",
+            )
+
+        if resp.status_code < 400:
+            data = resp.json()
+            checkout_url = data.get("checkout_url")
+            if not checkout_url:
                 raise HTTPException(
                     status_code=status.HTTP_502_BAD_GATEWAY,
-                    detail=f"Chargily a refusé la création du paiement ({resp.status_code}).",
+                    detail="Réponse Chargily sans checkout_url.",
                 )
-            last_detail = f"Chargily indisponible ({resp.status_code})."
-
-        if attempt < _CHECKOUT_ATTEMPTS:
-            logger.warning(
-                "Chargily checkout: tentative %d/%d échouée (%s) — retry",
-                attempt,
-                _CHECKOUT_ATTEMPTS,
-                last_detail,
-            )
-            time.sleep(_CHECKOUT_BACKOFF * (2 ** (attempt - 1)))
+            return checkout_url
+        # 4xx et 5xx : la requête a atteint Chargily et a reçu une réponse —
+        # jamais rejouée, qu'elle soit définitive (4xx) ou serveur (5xx).
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"Chargily a refusé la création du paiement ({resp.status_code}).",
+        )
 
     raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail=last_detail)
 

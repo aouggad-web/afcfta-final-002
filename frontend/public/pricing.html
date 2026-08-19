@@ -621,12 +621,42 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
 <script>
 let annual = false;
 // m = prix mensuel (EUR), y = total annuel facturé en une fois (EUR).
-// Grille validée : annuel = ~1 mois offert (110 = 11×10, 275 = 11×25, 1375 = 11×125).
-const prices = {
+// Repli affiché tant que /api/billing/pricing n'a pas répondu (ou en cas
+// d'échec réseau) — doit rester synchronisé avec backend/pricing.py, mais
+// n'est plus la source de vérité : loadPricing() ci-dessous la remplace par
+// la grille serveur dès que possible, pour qu'un changement de pricing.py
+// n'exige plus d'édition manuelle de cette page.
+let prices = {
   starter: { m: 10,  y: 110  },
   pro:     { m: 25,  y: 275  },
   biz:     { m: 125, y: 1375 }
 };
+
+// Charge la grille tarifaire publique depuis le backend (source unique
+// pricing.py) et re-rend les cartes. En cas d'échec, on garde silencieusement
+// le repli ci-dessus : la page reste utilisable, juste potentiellement
+// obsolète de quelques jours au pire.
+async function loadPricing() {
+  try {
+    const res = await fetch('/api/billing/pricing', { credentials: 'include' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    const byPlan = {};
+    (data.plans || []).forEach(function (p) { byPlan[p.plan] = p; });
+    if (!byPlan.starter || !byPlan.pro || !byPlan.business) {
+      throw new Error('grille incomplète');
+    }
+    prices = {
+      starter: { m: byPlan.starter.eur.monthly, y: byPlan.starter.eur.annual },
+      pro:     { m: byPlan.pro.eur.monthly,     y: byPlan.pro.eur.annual },
+      biz:     { m: byPlan.business.eur.monthly, y: byPlan.business.eur.annual }
+    };
+    renderPrices();
+  } catch (e) {
+    console.warn('Grille tarifaire serveur indisponible, repli statique conservé:', e);
+  }
+}
+document.addEventListener('DOMContentLoaded', loadPricing);
 
 function toggleFaq(el) {
   const open = el.classList.toggle('open');
@@ -788,7 +818,13 @@ function toggleBilling() {
   if (sw) sw.setAttribute('aria-checked', annual ? 'true' : 'false');
   document.getElementById('bill-monthly').style.color = annual ? 'var(--muted)' : 'var(--txt)';
   document.getElementById('bill-annual').style.color  = annual ? 'var(--txt)' : 'var(--muted)';
+  renderPrices();
+}
 
+// Rend les 3 cartes payantes depuis l'objet `prices` courant (repli statique
+// ou grille serveur une fois loadPricing() résolue). Appelée au chargement
+// (via loadPricing) et à chaque bascule mensuel/annuel (toggleBilling).
+function renderPrices() {
   const pStarter = document.getElementById('price-starter');
   const perStarter = document.getElementById('per-starter');
   const annStarter = document.getElementById('annual-starter');

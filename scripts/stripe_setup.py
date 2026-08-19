@@ -111,10 +111,43 @@ def ensure_price(product, plan: dict, cycle: str, dry_run: bool):
 
     existing = find_price_by_lookup(lookup_key)
     if existing:
+        # Un Price Stripe est immuable (montant/devise/intervalle) : si la
+        # grille a changé depuis sa création, il faut créer un nouveau Price
+        # et lui transférer la lookup_key, jamais réutiliser l'ancien tel quel
+        # (sinon Stripe reste silencieusement figé sur l'ancien montant).
+        if existing.unit_amount == amount and existing.currency == CURRENCY:
+            print(
+                f"  Price     ✓ existant  {existing.id}  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}"
+            )
+            return existing.id
         print(
-            f"  Price     ✓ existant  {existing.id}  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}"
+            f"  Price     ⚠ dérive détectée  {existing.id}  [{lookup_key}]  "
+            f"ancien={existing.unit_amount/100:.0f} {existing.currency.upper()} "
+            f"→ nouveau={amount/100:.0f} {CURRENCY.upper()} — nouveau Price requis (immuable)"
         )
-        return existing.id
+        if dry_run:
+            print(f"  Price     + à créer    (dry-run, remplace {existing.id})")
+            return None
+        if product is None:
+            print(f"  Price     ! ignoré (product non créé)  [{lookup_key}]")
+            return None
+        new_price = stripe.Price.create(
+            product=product.id,
+            currency=CURRENCY,
+            unit_amount=amount,
+            recurring={"interval": interval},
+            lookup_key=lookup_key,
+            transfer_lookup_key=True,  # détache la lookup_key de l'ancien Price
+            metadata={"app": APP_TAG, "plan": plan["slug"], "cycle": cycle},
+        )
+        print(
+            f"  Price     + créé (remplace {existing.id})  {new_price.id}  [{lookup_key}]  "
+            f"{amount/100:.0f} {CURRENCY.upper()}/{interval}"
+        )
+        print(
+            f"  Price     ! archivez manuellement l'ancien : stripe prices update {existing.id} --active=false"
+        )
+        return new_price.id
     if dry_run:
         print(
             f"  Price     + à créer    (dry-run)  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}"
