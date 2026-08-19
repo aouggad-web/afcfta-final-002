@@ -37,6 +37,12 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+from pathlib import Path
+
+# Les montants EUR proviennent de la grille unique backend/pricing.py — aucune
+# valeur tarifaire n'est dupliquée ici.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+import pricing  # noqa: E402
 
 try:
     import stripe
@@ -44,30 +50,22 @@ except ImportError:
     sys.exit("Le SDK Stripe est requis : pip install stripe")
 
 
-# ── Grille tarifaire (source de vérité alignée sur pricing.html) ────────────
-# unit_amount en cents EUR. L'annuel est un prix `interval=year` dont le montant
-# est le total annuel (grille : annuel = 11 × mensuel, soit ~1 mois offert).
+# Métadonnées produit uniquement — les montants viennent de pricing.stripe_cents.
 PLANS = [
     {
         "slug": "starter",
         "name": "ZLECAf Starter",
         "description": "54 pays, export CSV — indépendants et petits importateurs/exportateurs.",
-        "monthly_cents": 1000,  # 10 €/mois
-        "annual_cents": 11000,  # 110 €/an
     },
     {
         "slug": "pro",
         "name": "ZLECAf Pro",
         "description": "Export CSV+Excel+PDF, profils complets, alertes tarifaires — exportateurs, traders, consultants.",
-        "monthly_cents": 2500,  # 25 €/mois
-        "annual_cents": 27500,  # 275 €/an
     },
     {
         "slug": "business",
         "name": "ZLECAf Business",
         "description": "Tout Pro + API REST, rapports automatisés, 5 utilisateurs — entreprises et plateformes.",
-        "monthly_cents": 12500,  # 125 €/mois
-        "annual_cents": 137500,  # 1375 €/an
     },
 ]
 
@@ -106,7 +104,7 @@ def find_price_by_lookup(lookup_key: str):
 def ensure_price(product, plan: dict, cycle: str, dry_run: bool):
     """cycle ∈ {'monthly','annual'}. Retourne le price id (ou None en dry-run)."""
     interval = "month" if cycle == "monthly" else "year"
-    amount = plan["monthly_cents"] if cycle == "monthly" else plan["annual_cents"]
+    amount = pricing.stripe_cents(plan["slug"], cycle)
     # La devise fait partie de la clé : migration USD → EUR sans collision avec
     # d'anciens Prices (dont le montant/la devise sont immuables côté Stripe).
     lookup_key = f"{APP_TAG}_{plan['slug']}_{cycle}_{CURRENCY}"
