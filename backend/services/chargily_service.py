@@ -26,9 +26,8 @@ import os
 import time
 
 import httpx
-from fastapi import HTTPException, status
-
 import pricing
+from fastapi import HTTPException, status
 
 logger = logging.getLogger(__name__)
 

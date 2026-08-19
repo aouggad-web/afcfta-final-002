@@ -1,8 +1,7 @@
 """Tests for the single pricing source of truth (pricing.py)."""
 
-import pytest
-
 import pricing
+import pytest
 
 
 def test_every_plan_cycle_has_eur_and_dzd():
