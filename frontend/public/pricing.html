@@ -690,7 +690,43 @@ document.addEventListener('DOMContentLoaded', function () {
   window.history.replaceState(null, '', clean);
 });
 
-// Lance le paiement Stripe Checkout pour le plan choisi.
+// Lecture du cookie CSRF côté JS (double-submit).
+function readCsrfCookie() {
+  const prefix = 'csrf_token=';
+  const c = document.cookie.split(';').map(function (s) { return s.trim(); })
+    .find(function (s) { return s.indexOf(prefix) === 0; });
+  return c ? decodeURIComponent(c.slice(prefix.length)) : null;
+}
+
+// Persiste le jeton comme cookie lisible. Indispensable dans l'iframe de
+// prévisualisation Emergent, où le Set-Cookie du serveur est abandonné
+// (SameSite=None; Secure; Partitioned requis, sinon Lax en HTTP local).
+// Reproduit frontend/src/services/csrf.js pour cette page statique.
+function persistCsrf(token) {
+  const isHttps = location.protocol === 'https:';
+  const attrs = isHttps ? 'SameSite=None; Secure; Partitioned' : 'SameSite=Lax';
+  document.cookie = 'csrf_token=' + encodeURIComponent(token) +
+    '; Path=/; ' + attrs + '; Max-Age=3600';
+}
+
+// Garantit un couple cookie+jeton cohérent avant toute mutation. Sans la
+// persistance ci-dessous, le POST partait avec l'en-tête mais SANS cookie
+// → « CSRF token missing ».
+async function ensureCsrf(forceRefresh) {
+  if (!forceRefresh) {
+    const existing = readCsrfCookie();
+    if (existing) return existing;
+  }
+  const res = await fetch('/api/health?_csrf=' + Date.now(), {
+    credentials: 'include', cache: 'no-store'
+  });
+  const token = res.headers.get('X-CSRF-Token') || readCsrfCookie();
+  if (!token) throw new Error('CSRF non initialisé');
+  if (readCsrfCookie() !== token) persistCsrf(token);
+  return token;
+}
+
+// Lance le paiement pour le plan choisi (Stripe hors DZ, Chargily pour DZ).
 // Nécessite une session (cookie JWT) : sinon, redirection vers la connexion.
 // Le cycle suit le toggle mensuel/annuel. Les prix sont résolus côté serveur.
 async function startCheckout(plan) {
@@ -699,20 +735,29 @@ async function startCheckout(plan) {
   // (CIB/Edahabia, en dinars), sinon Stripe. Pas de détection silencieuse.
   const countryEl = document.getElementById('billing-country');
   const country = countryEl ? countryEl.value : '';
-  try {
-    // Amorce le jeton CSRF (cookie + en-tête) exigé par le backend.
-    const primer = await fetch('/api/health', { credentials: 'include' });
-    const csrf = primer.headers.get('X-CSRF-Token');
+  const body = JSON.stringify({ plan: plan, cycle: cycle, billing_country: country });
 
-    const res = await fetch('/api/billing/checkout', {
+  async function postCheckout(token) {
+    return fetch('/api/billing/checkout', {
       method: 'POST',
       credentials: 'include',
-      headers: Object.assign(
-        { 'Content-Type': 'application/json' },
-        csrf ? { 'X-CSRF-Token': csrf } : {}
-      ),
-      body: JSON.stringify({ plan: plan, cycle: cycle, billing_country: country })
+      headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': token },
+      body: body
     });
+  }
+
+  try {
+    let csrf = await ensureCsrf(false);
+    let res = await postCheckout(csrf);
+
+    // Cookie perdu/expiré côté navigateur : réamorcer une fois et rejouer.
+    if (res.status === 403) {
+      const err = await res.clone().json().catch(function () { return {}; });
+      if (err.detail === 'CSRF token missing' || err.detail === 'CSRF token invalid') {
+        csrf = await ensureCsrf(true);
+        res = await postCheckout(csrf);
+      }
+    }
 
     if (res.status === 401) {
       // Pas connecté : renvoyer vers l'app avec un fragment qui ouvrira la
