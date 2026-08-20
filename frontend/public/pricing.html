@@ -765,8 +765,9 @@ function renderPrices() {
   const symbol = currentCurrency === 'DZD' ? ' DZD' : '€';
   const fmt = (n) => currentCurrency === 'DZD' ? n.toLocaleString('fr-FR') : n;
 
-  // Équivalent mensuel exact (2 décimales) : 110/12 = 9,17 € — se réconcilie
-  // avec le total annuel facturé, contrairement à un arrondi entier (9×12≠110).
+  // Équivalent mensuel : en EUR, valeur exacte à 2 décimales (ex. 110/12 = 9,17 €)
+  // pour se réconcilier avec le total annuel facturé ; en DZD, arrondi à l'entier
+  // (Math.round) car la monnaie locale n'utilise pas de centimes.
   const perMonthAnnual = (y) => currentCurrency === 'DZD'
     ? Math.round(y / 12).toLocaleString('fr-FR')
     : (y / 12).toFixed(2).replace('.', ',');
