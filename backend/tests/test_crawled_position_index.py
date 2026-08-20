@@ -179,6 +179,7 @@ def test_get_sub_positions_adds_only_missing_crawled_positions(monkeypatch, tmp_
 def test_search_handles_raw_tax_lists_and_returns_position_provenance(monkeypatch, tmp_path):
     raw_taxes = [
         {"code": "GENERAL", "name": "General Customs Duty", "rate_pct": 10},
+        {"code": "VAT", "name": "Value Added Tax", "rate_pct": 15},
         {"code": "AfCFTA", "name": "AfCFTA rate", "rate_pct": 0},
     ]
     _write_crawled(
@@ -189,7 +190,6 @@ def test_search_handles_raw_tax_lists_and_returns_position_provenance(monkeypatc
                 {
                     "code_clean": "01012100",
                     "designation": "Pure-bred breeding animals",
-                    "dd_rate": 10,
                     "taxes": raw_taxes,
                     "source": "South African Revenue Service",
                     "source_url": "https://sars.example/tariff.pdf",
@@ -206,12 +206,77 @@ def test_search_handles_raw_tax_lists_and_returns_position_provenance(monkeypatc
 
     assert result["national_code"] == "01012100"
     assert result["dd_rate"] == 10
+    assert result["tva_rate"] == 15
     assert result["source"] == "South African Revenue Service"
     assert result["source_url"] == "https://sars.example/tariff.pdf"
     assert service.load_crawled_position_index("ZAF")["01012100"]["taxes"] == raw_taxes
 
 
-def test_real_repository_regression_formats_are_consumed():
+def test_search_handles_scalar_tax_maps(monkeypatch, tmp_path):
+    raw_taxes = {"DD": 20.0, "TVA": 18.0, "PCC": 0.5}
+    _write_crawled(
+        tmp_path,
+        "GIN",
+        {
+            "positions": [
+                {
+                    "code_clean": "7612900000",
+                    "designation": "Récipients en aluminium",
+                    "taxes": raw_taxes,
+                }
+            ]
+        },
+    )
+    monkeypatch.setattr(service, "CRAWLED_DIR", str(tmp_path))
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
+    monkeypatch.setattr(service, "load_country_tariffs", lambda *_args: None)
+
+    result = service.search_tariff_lines("GIN", "7612900000", limit=1)[0]
+
+    assert result["dd_rate"] == 20
+    assert result["tva_rate"] == 18
+    assert service.load_crawled_position_index("GIN")["7612900000"]["taxes"] == raw_taxes
+
+
+def test_search_uses_etl_rates_when_crawled_position_has_no_tax_fields(monkeypatch, tmp_path):
+    tariff_data = {
+        "tariff_lines": [
+            {
+                "hs6": "010129",
+                "vat_rate": 16,
+                "sub_positions": [
+                    {
+                        "code": "01012900",
+                        "dd": 25,
+                        "description_fr": "Autres chevaux",
+                    }
+                ],
+            }
+        ]
+    }
+    _write_crawled(
+        tmp_path,
+        "KEN",
+        {
+            "positions": [
+                {
+                    "code_clean": "01012900",
+                    "designation": "Other horses",
+                }
+            ]
+        },
+    )
+    monkeypatch.setattr(service, "CRAWLED_DIR", str(tmp_path))
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
+    monkeypatch.setattr(service, "load_country_tariffs", lambda *_args: tariff_data)
+
+    result = service.search_tariff_lines("KEN", "01012900", limit=1)[0]
+
+    assert result["dd_rate"] == 25
+    assert result["tva_rate"] == 16
+
+
+def test_real_repository_regression_formats_are_consumed(monkeypatch):
     gha = service.load_crawled_position_index("GHA")
     ken = service.load_crawled_position_index("KEN")
     zaf = service.load_crawled_position_index("ZAF")
@@ -222,6 +287,24 @@ def test_real_repository_regression_formats_are_consumed():
     assert "0101210000" in gha
     assert "01012100" in ken
     assert isinstance(zaf["010121"]["taxes"], list)
+
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
+    monkeypatch.setattr(service, "load_country_tariffs", lambda *_args: None)
+    gin_result = service.search_tariff_lines("GIN", "7612900000", limit=1)[0]
+    nga_result = service.search_tariff_lines("NGA", "0101210000", limit=1)[0]
+
+    assert gin_result["dd_rate"] == 20
+    assert gin_result["tva_rate"] == 18
+    assert nga_result["dd_rate"] == 5
+    assert nga_result["tva_rate"] == 7.5
+
+
+def test_crawled_index_cache_is_bounded_to_recent_countries():
+    for position in range(service._CRAWLED_INDEX_CACHE_MAX_COUNTRIES + 1):
+        service._cache_crawled_position_index(f"X{position}", {str(position): {}})
+
+    assert len(service._crawled_index_cache) == service._CRAWLED_INDEX_CACHE_MAX_COUNTRIES
+    assert "X0" not in service._crawled_index_cache
 
 
 def test_calculator_keeps_existing_etl_rate_for_newly_indexed_nested_position(
@@ -293,3 +376,65 @@ def test_calculator_keeps_existing_root_sub_position_tax_precedence(monkeypatch,
     result = service.calculate_import_taxes("DZA", "0101210010", 1_000)
 
     assert result["rates"]["dd_rate_pct"] == 5
+
+
+@pytest.mark.parametrize(
+    "iso3, raw_taxes",
+    [
+        ("CIV", {"DD": 99.0, "TVA": 99.0}),
+        (
+            "NGA",
+            [
+                {"code": "ID", "name": "Import Duty", "rate_pct": 99.0},
+                {"code": "VAT", "name": "Value Added Tax", "rate_pct": 99.0},
+            ],
+        ),
+    ],
+)
+def test_calculator_keeps_etl_rates_for_new_scalar_and_list_schemas(
+    monkeypatch, tmp_path, iso3, raw_taxes
+):
+    parent_line = {
+        "hs6": "010121",
+        "description_fr": "Chevaux vivants",
+        "description_en": "Live horses",
+        "dd_rate": 20,
+        "vat_rate": 14,
+        "other_taxes_rate": 0,
+        "taxes_detail": [
+            {"tax": "DD", "rate": 20},
+            {"tax": "TVA", "rate": 14},
+        ],
+        "sub_positions": [
+            {
+                "code": "0101210000",
+                "dd": 5,
+                "description_fr": "Chevaux reproducteurs",
+            }
+        ],
+        "administrative_formalities": [],
+    }
+    _write_crawled(
+        tmp_path,
+        iso3,
+        {
+            "positions": [
+                {
+                    "code_clean": "0101210000",
+                    "designation": "Chevaux reproducteurs",
+                    "taxes": raw_taxes,
+                }
+            ]
+        },
+    )
+    monkeypatch.setattr(service, "CRAWLED_DIR", str(tmp_path))
+    monkeypatch.setattr(service, "get_tariff_line", lambda *_args: dict(parent_line))
+    monkeypatch.setattr(service, "load_country_tariffs", lambda *_args: {})
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
+
+    result = service.calculate_import_taxes(iso3, "0101210000", 1_000)
+
+    assert result["rates"]["dd_rate_pct"] == 5
+    assert result["rates"]["vat_rate_pct"] == 14
+    assert result["taxes_detail"]["DD"]["rate"] == 20
+    assert result["taxes_detail"]["TVA"]["rate"] == 14

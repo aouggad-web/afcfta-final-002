@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import re
+from collections import OrderedDict
 from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
@@ -9,7 +10,8 @@ DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
 CRAWLED_DIR = os.path.join(DATA_DIR, "crawled")
 _tariff_cache = {}
 _nomenclature_cache = {}
-_crawled_index_cache = {}  # {ISO3: {hs_code_10: sub_position_entry}}
+_CRAWLED_INDEX_CACHE_MAX_COUNTRIES = 4
+_crawled_index_cache = OrderedDict()  # {ISO3: {national_hs_code: position_entry}}
 _available_countries_cache = None
 _postgres_provider_cache = None
 
@@ -114,11 +116,12 @@ def load_crawled_position_index(country_iso3: str) -> dict:
     """
     country_iso3 = _validate_iso3(country_iso3)
     if country_iso3 in _crawled_index_cache:
+        _crawled_index_cache.move_to_end(country_iso3)
         return _crawled_index_cache[country_iso3]
 
     file_path = os.path.join(CRAWLED_DIR, f"{country_iso3}_tariffs.json")
     if not os.path.exists(file_path):
-        _crawled_index_cache[country_iso3] = {}
+        _cache_crawled_position_index(country_iso3, {})
         return {}
 
     try:
@@ -129,13 +132,21 @@ def load_crawled_position_index(country_iso3: str) -> dict:
             position = _adapt_crawled_position(raw_position, parent)
             if position:
                 index[position["hs_code"]] = position
-        _crawled_index_cache[country_iso3] = index
+        _cache_crawled_position_index(country_iso3, index)
         logger.info(f"Loaded crawled position index for {country_iso3}: {len(index)} entries")
         return index
     except Exception as e:
         logger.error(f"Error loading crawled index for {country_iso3}: {e}")
-        _crawled_index_cache[country_iso3] = {}
+        _cache_crawled_position_index(country_iso3, {})
         return {}
+
+
+def _cache_crawled_position_index(country_iso3: str, index: dict) -> None:
+    """Keep only the most recently used country indexes in process memory."""
+    _crawled_index_cache[country_iso3] = index
+    _crawled_index_cache.move_to_end(country_iso3)
+    while len(_crawled_index_cache) > _CRAWLED_INDEX_CACHE_MAX_COUNTRIES:
+        _crawled_index_cache.popitem(last=False)
 
 
 # Only allow well-formed ISO 2- or 3-letter country codes to prevent path traversal.
@@ -456,6 +467,63 @@ def _find_vat_key(crawled_taxes: dict) -> Optional[str]:
         if _is_vat_code(k):
             return k
     return None
+
+
+def _parse_crawled_tax_rate(value) -> Optional[float]:
+    """Read a rate without mutating the source-specific tax representation."""
+    if isinstance(value, dict):
+        value = value.get("rate", value.get("rate_pct"))
+    if isinstance(value, (int, float)) and not isinstance(value, bool):
+        return float(value)
+    if isinstance(value, str):
+        if value.strip().lower() in {"free", "exempt", "exonere", "exonéré"}:
+            return 0.0
+        match = re.search(r"-?\d+(?:[.,]\d+)?", value)
+        if match:
+            return float(match.group(0).replace(",", "."))
+    return None
+
+
+def _normalise_crawled_tax_details(raw_taxes) -> dict:
+    """Adapt dict, scalar-map and list tax schemas for runtime calculations.
+
+    The returned mapping is derived and canonical. ``raw_taxes`` is retained
+    unchanged on the crawled position so source columns (including
+    preferential columns such as AfCFTA or SADC) remain available verbatim.
+    """
+    details = {}
+    if isinstance(raw_taxes, dict):
+        rows = []
+        for code, value in raw_taxes.items():
+            info = value if isinstance(value, dict) else {}
+            rows.append(
+                {
+                    "code": code,
+                    "name": info.get("name", info.get("label", code)),
+                    "rate": value,
+                    "source": info.get("source", "crawled"),
+                }
+            )
+    elif isinstance(raw_taxes, list):
+        rows = [row for row in raw_taxes if isinstance(row, dict)]
+    else:
+        return details
+
+    for row in rows:
+        code = row.get("code", row.get("tax", row.get("tax_code", "")))
+        label = row.get("name", row.get("label", row.get("tax_name", code)))
+        value = row.get("rate", row.get("rate_pct", row.get("raw_value")))
+        rate = _parse_crawled_tax_rate(value)
+        if not code or rate is None:
+            continue
+        canonical = _canonical_tax_code(code, label)
+        details[canonical] = {
+            "label": label or _TAX_LABELS.get(canonical, canonical),
+            "rate": rate,
+            "source": row.get("source", "crawled"),
+            "source_tax_code": code,
+        }
+    return details
 
 
 def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) -> dict:
@@ -817,8 +885,9 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
             continue
         taxes = position.get("taxes", {})
         dd_rate = position.get("dd", position.get("dd_rate", parent_dd_rate_pct))
-        if isinstance(taxes, dict) and isinstance(taxes.get("DD"), dict):
-            dd_rate = taxes["DD"].get("rate", parent_dd_rate_pct)
+        normalised_taxes = _normalise_crawled_tax_details(taxes)
+        if "DD" in normalised_taxes:
+            dd_rate = normalised_taxes["DD"].get("rate", parent_dd_rate_pct)
         merged[code] = {
             "code": code,
             "national_code": code,
@@ -913,16 +982,40 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
         except Exception as e:
             _log_etl_fallback("search_tariff_lines", country_iso3, reason=f"postgres-error: {e}")
 
+    data = load_country_tariffs(country_iso3)
+    etl_positions = {}
+    if data:
+        for line in data.get("tariff_lines", []):
+            for position in line.get("sub_positions", []):
+                position_code = _clean_crawled_hs_code(position)
+                if position_code:
+                    etl_positions[position_code] = {
+                        "dd_rate": position.get("dd"),
+                        "vat_rate": line.get("vat_rate"),
+                    }
+
     # ── 1. Crawled national/source positions (6-12 digits) ─────────────────
     crawled_index = load_crawled_position_index(country_iso3)
     if crawled_index:
         for code, sp in crawled_index.items():
             name = (sp.get("name") or sp.get("description") or sp.get("designation") or "").lower()
             if code.startswith(q) or q in name:
-                taxes = sp.get("taxes", {})
-                taxes = taxes if isinstance(taxes, dict) else {}
-                dd = sp.get("dd", sp.get("dd_rate", taxes.get("DD", {}).get("rate", 0)))
-                tva = taxes.get("TVA", {}).get("rate", 0)
+                taxes = _normalise_crawled_tax_details(sp.get("taxes"))
+                etl_position = etl_positions.get(code, {})
+                dd = _parse_crawled_tax_rate(sp.get("dd"))
+                if dd is None:
+                    dd = _parse_crawled_tax_rate(sp.get("dd_rate"))
+                if dd is None:
+                    dd = _parse_crawled_tax_rate(taxes.get("DD"))
+                if dd is None:
+                    dd = _parse_crawled_tax_rate(etl_position.get("dd_rate"))
+                if dd is None:
+                    dd = 0.0
+                tva = _parse_crawled_tax_rate(taxes.get("TVA"))
+                if tva is None:
+                    tva = _parse_crawled_tax_rate(etl_position.get("vat_rate"))
+                if tva is None:
+                    tva = 0.0
                 tcs = taxes.get("TCS", {}).get("rate", 0)
                 prct = taxes.get("PRCT", {}).get("rate", 0)
                 daps = taxes.get("DAPS", {}).get("rate", 0)
@@ -968,7 +1061,6 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
 
     # ── 2. ETL tariff_lines (HS6-level) ─────────────────────────────────────
     if len(results) < limit:
-        data = load_country_tariffs(country_iso3)
         if data:
             desc_key = "description_fr" if language == "fr" else "description_en"
             for line in data.get("tariff_lines", []):
@@ -1476,8 +1568,11 @@ def calculate_import_taxes(
     if len(hs_code_clean) > 6:
         if crawled_sp_entry:
             crawled_taxes = crawled_sp_entry.get("taxes", {})
-            if isinstance(crawled_taxes, dict) and "DD" in crawled_taxes:
-                dd_rate_pct = float(crawled_taxes["DD"].get("rate", dd_rate_pct))
+            crawled_dd = crawled_taxes.get("DD") if isinstance(crawled_taxes, dict) else None
+            if isinstance(crawled_dd, dict):
+                parsed_dd = _parse_crawled_tax_rate(crawled_dd)
+                if parsed_dd is not None:
+                    dd_rate_pct = parsed_dd
             elif etl_sub_position_entry:
                 dd_rate_pct = etl_sub_position_entry.get("dd", dd_rate_pct)
         else:
@@ -1520,27 +1615,17 @@ def calculate_import_taxes(
     # Extract DAPS and other individual taxes:
     # If crawled entry has per-position taxes, use them as primary source;
     # otherwise fall back to taxes_detail from the ETL line.
-    if (
-        (not is_postgres_line)
-        and crawled_sp_entry
-        and isinstance(crawled_sp_entry.get("taxes"), dict)
-        and crawled_sp_entry.get("taxes")
-    ):
+    _raw_crawled_taxes = crawled_sp_entry.get("taxes") if crawled_sp_entry else None
+    _has_legacy_crawled_tax_details = isinstance(_raw_crawled_taxes, dict) and any(
+        isinstance(value, dict) for value in _raw_crawled_taxes.values()
+    )
+    if (not is_postgres_line) and crawled_sp_entry and _has_legacy_crawled_tax_details:
         crawled_taxes = crawled_sp_entry["taxes"]
-        taxes_detail = {
-            k: {
-                "label": v.get("name", k),
-                "rate": v.get("rate", 0),
-                "source": v.get("source", "crawled"),
-            }
-            for k, v in crawled_taxes.items()
-            if isinstance(v, dict)
-        }
+        taxes_detail = _normalise_crawled_tax_details(crawled_taxes)
         # Inherit VAT and ZLECAf from ETL line (not always in crawled). Le code
         # varie selon le pays (TVA/IVA/VAT/TVA-APTAXE) — cf. _find_vat_key.
-        _vat_key = _find_vat_key(crawled_taxes)
-        if _vat_key:
-            vat_rate_pct = float(crawled_taxes[_vat_key].get("rate", vat_rate_pct) or 0)
+        if "TVA" in taxes_detail:
+            vat_rate_pct = float(taxes_detail["TVA"].get("rate", vat_rate_pct) or 0)
     else:
         # Copie défensive : on ne mute jamais l'objet de ligne (potentiellement
         # mis en cache) lors de la normalisation des libellés. Le format liste
