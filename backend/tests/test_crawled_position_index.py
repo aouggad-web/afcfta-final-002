@@ -276,6 +276,75 @@ def test_search_uses_etl_rates_when_crawled_position_has_no_tax_fields(monkeypat
     assert result["tva_rate"] == 16
 
 
+def test_search_keeps_missing_duty_unresolved(monkeypatch, tmp_path):
+    tariff_data = {
+        "tariff_lines": [
+            {
+                "hs6": "010121",
+                "vat_rate": 15,
+                "sub_positions": [],
+            }
+        ]
+    }
+    _write_crawled(
+        tmp_path,
+        "ETH",
+        {
+            "positions": [
+                {
+                    "code_clean": "01012100000",
+                    "designation": "Chevaux reproducteurs",
+                    "taxes": {"TVA": {"rate": 15}},
+                }
+            ]
+        },
+    )
+    monkeypatch.setattr(service, "CRAWLED_DIR", str(tmp_path))
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
+    monkeypatch.setattr(service, "load_country_tariffs", lambda *_args: tariff_data)
+
+    result = service.search_tariff_lines("ETH", "01012100000", limit=1)[0]
+
+    assert result["dd_rate"] is None
+    assert result["duty_status"] == "UNAVAILABLE"
+
+
+def test_search_keeps_existing_etl_hs6_priority(monkeypatch, tmp_path):
+    etl_line = {
+        "hs6": "010121",
+        "description_fr": "Ligne SH6 ETL existante",
+        "dd_rate": 5,
+        "vat_rate": 15,
+        "source": "ETL existant",
+        "sub_positions": [],
+    }
+    _write_crawled(
+        tmp_path,
+        "ZAF",
+        {
+            "positions": [
+                {
+                    "code_clean": "010121",
+                    "designation": "Crawled HS6 must not shadow ETL",
+                    "taxes": [{"code": "GENERAL", "name": "General duty", "rate_pct": 99}],
+                }
+            ]
+        },
+    )
+    monkeypatch.setattr(service, "CRAWLED_DIR", str(tmp_path))
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
+    monkeypatch.setattr(
+        service,
+        "load_country_tariffs",
+        lambda *_args: {"tariff_lines": [etl_line]},
+    )
+
+    result = service.search_tariff_lines("ZAF", "010121", limit=1)[0]
+
+    assert result["dd_rate"] == 5
+    assert result["source"] == "ETL existant"
+
+
 def test_real_repository_regression_formats_are_consumed(monkeypatch):
     gha = service.load_crawled_position_index("GHA")
     ken = service.load_crawled_position_index("KEN")

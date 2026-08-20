@@ -984,8 +984,12 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
 
     data = load_country_tariffs(country_iso3)
     etl_positions = {}
+    etl_hs6_codes = set()
     if data:
         for line in data.get("tariff_lines", []):
+            line_hs6 = _clean_crawled_hs_code(line)[:6]
+            if line_hs6:
+                etl_hs6_codes.add(line_hs6)
             for position in line.get("sub_positions", []):
                 position_code = _clean_crawled_hs_code(position)
                 if position_code:
@@ -998,6 +1002,10 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
     crawled_index = load_crawled_position_index(country_iso3)
     if crawled_index:
         for code, sp in crawled_index.items():
+            # This PR adds national positions only. Existing HS6 lines retain
+            # the ETL search path's source, shape and priority unchanged.
+            if len(code) == 6 and code in etl_hs6_codes:
+                continue
             name = (sp.get("name") or sp.get("description") or sp.get("designation") or "").lower()
             if code.startswith(q) or q in name:
                 taxes = _normalise_crawled_tax_details(sp.get("taxes"))
@@ -1009,8 +1017,6 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                     dd = _parse_crawled_tax_rate(taxes.get("DD"))
                 if dd is None:
                     dd = _parse_crawled_tax_rate(etl_position.get("dd_rate"))
-                if dd is None:
-                    dd = 0.0
                 tva = _parse_crawled_tax_rate(taxes.get("TVA"))
                 if tva is None:
                     tva = _parse_crawled_tax_rate(etl_position.get("vat_rate"))
@@ -1031,7 +1037,7 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                             ("TCS", tcs),
                             ("TVA", tva),
                         ]
-                        if r > 0
+                        if r is not None and r > 0
                     },
                     country_iso3,
                 )
@@ -1043,6 +1049,7 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                         "description_en": sp.get("name") or sp.get("description") or "",
                         "designation": sp.get("designation") or sp.get("name") or "",
                         "dd_rate": dd,
+                        "duty_status": "PAYABLE" if dd is not None else "UNAVAILABLE",
                         "tva_rate": tva,
                         "tcs_rate": tcs,
                         "prct_rate": prct,
