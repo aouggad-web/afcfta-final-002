@@ -12,10 +12,16 @@ Le script est **idempotent** :
   - les Prices sont retrouvés par `lookup_key` (unique) avant création.
 Le relancer ne crée donc pas de doublons.
 
-Grille (validée) — montants en USD :
-  Starter : 9 $/mois   ·  annuel 7 $/mois  (84 $/an)
-  Pro     : 19 $/mois  ·  annuel 15 $/mois (180 $/an)
-  Business: 59 $/mois  ·  annuel 49 $/mois (588 $/an)
+Grille (validée) — montants en EUR (Stripe France) :
+  Starter : 10 €/mois  ·  annuel 110 €/an   (~1 mois offert)
+  Pro     : 25 €/mois  ·  annuel 275 €/an
+  Business: 125 €/mois ·  annuel 1375 €/an
+
+Migration USD → EUR : la devise est incluse dans la `lookup_key`
+(`zlecaf_<plan>_<cycle>_eur`), donc ce script crée des Prices EUR neufs sans
+entrer en collision avec les anciens Prices USD (`..._monthly`/`..._annual`).
+Après avoir collé les nouveaux `STRIPE_PRICE_*`, archivez les anciens Prices
+USD dans le Dashboard pour qu'aucun Checkout n'y retombe.
 
 Usage :
   export STRIPE_SECRET_KEY=sk_test_xxx        # clé TEST tant que le compte est en vérification
@@ -31,6 +37,12 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+from pathlib import Path
+
+# Les montants EUR proviennent de la grille unique backend/pricing.py — aucune
+# valeur tarifaire n'est dupliquée ici.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+import pricing  # noqa: E402
 
 try:
     import stripe
@@ -38,34 +50,26 @@ except ImportError:
     sys.exit("Le SDK Stripe est requis : pip install stripe")
 
 
-# ── Grille tarifaire (source de vérité alignée sur pricing.html) ────────────
-# unit_amount en cents USD. L'annuel est un prix `interval=year` dont le montant
-# est le total annuel (mensuel remisé × 12).
+# Métadonnées produit uniquement — les montants viennent de pricing.stripe_cents.
 PLANS = [
     {
         "slug": "starter",
         "name": "ZLECAf Starter",
-        "description": "Calculs illimités, 54 pays, export CSV — indépendants et petits importateurs/exportateurs.",
-        "monthly_cents": 900,  # 9 $/mois
-        "annual_cents": 8400,  # 7 $/mois × 12 = 84 $/an
+        "description": "54 pays, export CSV — indépendants et petits importateurs/exportateurs.",
     },
     {
         "slug": "pro",
         "name": "ZLECAf Pro",
         "description": "Export CSV+Excel+PDF, profils complets, alertes tarifaires — exportateurs, traders, consultants.",
-        "monthly_cents": 1900,  # 19 $/mois
-        "annual_cents": 18000,  # 15 $/mois × 12 = 180 $/an
     },
     {
         "slug": "business",
         "name": "ZLECAf Business",
         "description": "Tout Pro + API REST, rapports automatisés, 5 utilisateurs — entreprises et plateformes.",
-        "monthly_cents": 5900,  # 59 $/mois
-        "annual_cents": 58800,  # 49 $/mois × 12 = 588 $/an
     },
 ]
 
-CURRENCY = "usd"
+CURRENCY = "eur"
 APP_TAG = "zlecaf"
 
 
@@ -100,15 +104,50 @@ def find_price_by_lookup(lookup_key: str):
 def ensure_price(product, plan: dict, cycle: str, dry_run: bool):
     """cycle ∈ {'monthly','annual'}. Retourne le price id (ou None en dry-run)."""
     interval = "month" if cycle == "monthly" else "year"
-    amount = plan["monthly_cents"] if cycle == "monthly" else plan["annual_cents"]
-    lookup_key = f"{APP_TAG}_{plan['slug']}_{cycle}"
+    amount = pricing.stripe_cents(plan["slug"], cycle)
+    # La devise fait partie de la clé : migration USD → EUR sans collision avec
+    # d'anciens Prices (dont le montant/la devise sont immuables côté Stripe).
+    lookup_key = f"{APP_TAG}_{plan['slug']}_{cycle}_{CURRENCY}"
 
     existing = find_price_by_lookup(lookup_key)
     if existing:
+        # Un Price Stripe est immuable (montant/devise/intervalle) : si la
+        # grille a changé depuis sa création, il faut créer un nouveau Price
+        # et lui transférer la lookup_key, jamais réutiliser l'ancien tel quel
+        # (sinon Stripe reste silencieusement figé sur l'ancien montant).
+        if existing.unit_amount == amount and existing.currency == CURRENCY:
+            print(
+                f"  Price     ✓ existant  {existing.id}  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}"
+            )
+            return existing.id
         print(
-            f"  Price     ✓ existant  {existing.id}  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}"
+            f"  Price     ⚠ dérive détectée  {existing.id}  [{lookup_key}]  "
+            f"ancien={existing.unit_amount/100:.0f} {existing.currency.upper()} "
+            f"→ nouveau={amount/100:.0f} {CURRENCY.upper()} — nouveau Price requis (immuable)"
         )
-        return existing.id
+        if dry_run:
+            print(f"  Price     + à créer    (dry-run, remplace {existing.id})")
+            return None
+        if product is None:
+            print(f"  Price     ! ignoré (product non créé)  [{lookup_key}]")
+            return None
+        new_price = stripe.Price.create(
+            product=product.id,
+            currency=CURRENCY,
+            unit_amount=amount,
+            recurring={"interval": interval},
+            lookup_key=lookup_key,
+            transfer_lookup_key=True,  # détache la lookup_key de l'ancien Price
+            metadata={"app": APP_TAG, "plan": plan["slug"], "cycle": cycle},
+        )
+        print(
+            f"  Price     + créé (remplace {existing.id})  {new_price.id}  [{lookup_key}]  "
+            f"{amount/100:.0f} {CURRENCY.upper()}/{interval}"
+        )
+        print(
+            f"  Price     ! archivez manuellement l'ancien : stripe prices update {existing.id} --active=false"
+        )
+        return new_price.id
     if dry_run:
         print(
             f"  Price     + à créer    (dry-run)  [{lookup_key}]  {amount/100:.0f} {CURRENCY.upper()}/{interval}"

@@ -11,17 +11,48 @@ follow-up phases (usage counters, route-level enforcement, team seats).
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Optional
+from types import MappingProxyType
+from typing import Mapping, Optional
 
 TIERS = ("free", "starter", "pro", "business")
+
+# Feature modules gated per tier (mirrors the app's sidebar). Each tier grants
+# or denies each module and, when granted, may cap its usage over a period.
+MODULES = ("stats", "production", "logistics", "roo", "tools", "reports")
+
+# Reset window a module quota is counted over.
+#   "day"   — rolling/calendar day, reset nightly
+#   "month" — calendar month
+#   "cycle" — the paid subscription period (30d monthly / 365d annual), reset
+#             at renewal rather than on a calendar boundary
+QUOTA_PERIODS = ("day", "month", "cycle")
 
 # Subscription statuses that still grant the paid tier's entitlements.
 # "canceling" = cancel_at_period_end was requested but the paid period the
 # user already paid for hasn't ended yet — access continues until it does
 # (checked separately via subscription_current_end below).
 _ACTIVE_STATUSES = frozenset({"active", "trialing", "canceling"})
+
+
+@dataclass(frozen=True)
+class ModuleAccess:
+    """Whether a tier can open a module, and (if capped) how much per period."""
+
+    enabled: bool
+    quota: Optional[int] = None  # None = unlimited when enabled
+    quota_period: Optional[str] = None  # one of QUOTA_PERIODS; None when unlimited/disabled
+
+
+# A module a tier grants without any usage cap.
+_UNLIMITED = ModuleAccess(enabled=True)
+# A module a tier does not grant at all.
+_DENIED = ModuleAccess(enabled=False)
+
+
+def _capped(quota: int, period: str) -> ModuleAccess:
+    return ModuleAccess(enabled=True, quota=quota, quota_period=period)
 
 
 @dataclass(frozen=True)
@@ -33,35 +64,74 @@ class Entitlements:
     api_access: bool
     api_monthly_quota: Optional[int]
     seats_included: int
+    modules: Mapping[str, ModuleAccess] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        # These instances are shared singletons (resolve_entitlements returns
+        # the same object for every caller of a tier). A plain dict here would
+        # let any caller mutate `ent.modules` and permanently alter access for
+        # all subsequent users — breaking fail-closed. Freeze the mapping so
+        # module access is read-only after construction. (frozen=True only
+        # blocks reassigning the attribute, not mutating the dict it points to.)
+        object.__setattr__(self, "modules", MappingProxyType(dict(self.modules)))
+
+    def module(self, module_id: str) -> ModuleAccess:
+        """Access for a module id; unknown/ungranted modules fail closed to
+        denied so callers can gate without a separate membership check."""
+        return self.modules.get(module_id, _DENIED)
 
 
 _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
     "free": Entitlements(
         tier="free",
-        daily_calculations=5,
-        monthly_country_profiles=3,
+        daily_calculations=10,
+        monthly_country_profiles=None,
         export_formats=(),
         api_access=False,
         api_monthly_quota=None,
         seats_included=1,
+        modules={
+            "stats": _capped(20, "month"),
+            "production": _capped(10, "day"),
+            "logistics": _capped(5, "day"),
+            "roo": _capped(60, "day"),
+            "tools": _DENIED,
+            "reports": _capped(2, "day"),
+        },
     ),
     "starter": Entitlements(
         tier="starter",
-        daily_calculations=None,
-        monthly_country_profiles=10,
+        daily_calculations=40,
+        monthly_country_profiles=None,
         export_formats=("csv",),
         api_access=False,
         api_monthly_quota=None,
         seats_included=1,
+        modules={
+            "stats": _capped(5, "day"),
+            "production": _capped(50, "day"),
+            "logistics": _capped(50, "day"),
+            "roo": _capped(200, "day"),
+            "tools": _capped(10, "day"),
+            "reports": _capped(10, "day"),
+        },
     ),
     "pro": Entitlements(
         tier="pro",
-        daily_calculations=None,
+        daily_calculations=100,
         monthly_country_profiles=None,
         export_formats=("csv", "excel", "pdf"),
         api_access=False,
         api_monthly_quota=None,
         seats_included=1,
+        modules={
+            "stats": _capped(50, "day"),
+            "production": _UNLIMITED,
+            "logistics": _capped(300, "day"),
+            "roo": _UNLIMITED,
+            "tools": _UNLIMITED,
+            "reports": _capped(30, "day"),
+        },
     ),
     "business": Entitlements(
         tier="business",
@@ -71,6 +141,14 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         api_access=True,
         api_monthly_quota=1000,
         seats_included=5,
+        modules={
+            "stats": _capped(300, "day"),
+            "production": _UNLIMITED,
+            "logistics": _UNLIMITED,
+            "roo": _UNLIMITED,
+            "tools": _UNLIMITED,
+            "reports": _capped(200, "day"),
+        },
     ),
 }
 

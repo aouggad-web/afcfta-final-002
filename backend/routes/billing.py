@@ -12,7 +12,7 @@ Monté sous `api_router` (préfixe `/api`), donc URLs effectives :
 L'accès n'est **jamais** accordé sur la redirection de succès : seul le webhook
 signé fait foi. Le routage par pays est explicite (choix de l'utilisateur, pas
 de géo-IP) : `billing_country == "DZ"` part vers Chargily (CIB/Edahabia, DZD),
-tout le reste vers Stripe (USD). Si Chargily n'est pas activé
+tout le reste vers Stripe (EUR). Si Chargily n'est pas activé
 (`CHARGILY_ENABLED`), la branche algérienne répond 501.
 """
 
@@ -24,6 +24,7 @@ import os
 from datetime import datetime, timedelta, timezone
 from typing import Literal, Optional
 
+import pricing
 from bson import ObjectId
 from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel
@@ -151,6 +152,20 @@ async def geo_diagnostic(request: Request):
     }
 
 
+@router.get("/pricing")
+async def get_pricing():
+    """Grille tarifaire publique (source unique `pricing.py`).
+
+    Permet à la page de tarifs de consommer les prix EUR/DZD au lieu de les
+    coder en dur, ce qui garantit qu'affichage, Stripe et Chargily restent
+    cohérents. Aucune authentification : les prix sont publics.
+    """
+    return {
+        "currencies": {"stripe": "EUR", "chargily": "DZD"},
+        "plans": pricing.grid(),
+    }
+
+
 @router.get("/payment-context")
 async def payment_context(request: Request):
     """Contexte de paiement pour l'interface : prestataire imposé ou non.
@@ -168,7 +183,7 @@ async def payment_context(request: Request):
         "provider": ctx["provider"],
         "country": ctx["country"],
         "locked": ctx["locked"],
-        "currency": "DZD" if ctx["provider"] == "chargily" else "USD",
+        "currency": "DZD" if ctx["provider"] == "chargily" else "EUR",
     }
 
 
