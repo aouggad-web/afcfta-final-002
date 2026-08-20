@@ -14,10 +14,102 @@ _available_countries_cache = None
 _postgres_provider_cache = None
 
 
+def _clean_crawled_hs_code(entry: dict) -> str:
+    """Return the first usable national/HS code exposed by a crawled row."""
+    for key in (
+        "hs_code",
+        "code_clean",
+        "code",
+        "national_code",
+        "raw_code",
+        "code_raw",
+        "hs6",
+    ):
+        raw_code = entry.get(key)
+        if raw_code is None:
+            continue
+        code = re.sub(r"\D", "", str(raw_code))
+        if len(code) >= 6:
+            return code
+    return ""
+
+
+def _adapt_crawled_position(entry: dict, parent: Optional[dict] = None) -> Optional[dict]:
+    """Expose one source position without changing its tariff columns."""
+    code = _clean_crawled_hs_code(entry)
+    if not code:
+        return None
+
+    parent = parent or {}
+    description = (
+        entry.get("name")
+        or entry.get("description")
+        or entry.get("designation")
+        or entry.get("description_fr")
+        or entry.get("description_en")
+        or parent.get("description_fr")
+        or parent.get("description_en")
+        or parent.get("designation")
+        or ""
+    )
+    source = entry.get("source") or parent.get("source") or "crawled"
+    result = dict(entry)
+    result.update(
+        {
+            "hs_code": code,
+            "name": description,
+            "description": description,
+            "description_fr": entry.get("description_fr") or description,
+            "description_en": entry.get("description_en") or description,
+            "source": source,
+            "source_url": entry.get("source_url") or parent.get("source_url"),
+            "source_quality": (
+                entry.get("source_quality")
+                or parent.get("source_quality")
+                or entry.get("data_format")
+                or parent.get("data_format")
+                or "crawled_unclassified"
+            ),
+            "advantages": entry.get("advantages", entry.get("fiscal_advantages", [])),
+        }
+    )
+    return result
+
+
+def _iter_crawled_positions(data: dict):
+    """Yield rows from every crawled schema currently present in the repo."""
+    for key in ("sub_positions", "positions"):
+        rows = data.get(key)
+        if isinstance(rows, list):
+            for row in rows:
+                if isinstance(row, dict):
+                    yield row, data
+
+    tariff_lines = data.get("tariff_lines")
+    if not isinstance(tariff_lines, list):
+        return
+    for line in tariff_lines:
+        if not isinstance(line, dict):
+            continue
+        parent = dict(data)
+        parent.update(line)
+        sub_positions = line.get("sub_positions")
+        if isinstance(sub_positions, list) and sub_positions:
+            for row in sub_positions:
+                if isinstance(row, dict):
+                    yield row, parent
+
+
 def load_crawled_position_index(country_iso3: str) -> dict:
     """
-    Load and index the crawled DZA_tariffs.json (or similar) by hs_code.
-    Returns {hs_code_10digits: entry_dict} for fast per-position lookup.
+    Load a country crawled file and index every source position by HS code.
+
+    Supported repository schemas:
+    - ``sub_positions[]`` (DZA and WITS-normalised sources),
+    - ``positions[]`` (national/regional crawlers),
+    - ``tariff_lines[].sub_positions[]`` (canonical_v4).
+
+    Returns ``{clean_hs_code: normalised_entry}`` for fast per-position lookup.
     Cached in memory after first load.
     """
     country_iso3 = _validate_iso3(country_iso3)
@@ -33,10 +125,10 @@ def load_crawled_position_index(country_iso3: str) -> dict:
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         index = {}
-        for sp in data.get("sub_positions", []):
-            code = sp.get("hs_code", "").replace(".", "").replace(" ", "")
-            if code:
-                index[code] = sp
+        for raw_position, parent in _iter_crawled_positions(data):
+            position = _adapt_crawled_position(raw_position, parent)
+            if position:
+                index[position["hs_code"]] = position
         _crawled_index_cache[country_iso3] = index
         logger.info(f"Loaded crawled position index for {country_iso3}: {len(index)} entries")
         return index
@@ -718,6 +810,27 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     "source": sp.get("source", f"Nomenclature nationale DGD {country_iso3}"),
                 }
 
+    # Add positions that exist only in crawled source files. Existing ETL
+    # positions keep their current rate and metadata unchanged.
+    for code, position in load_crawled_position_index(country_iso3).items():
+        if not (code.startswith(hs6_normalized) and len(code) > 6) or code in merged:
+            continue
+        taxes = position.get("taxes", {})
+        dd_rate = position.get("dd", position.get("dd_rate", parent_dd_rate_pct))
+        if isinstance(taxes, dict) and isinstance(taxes.get("DD"), dict):
+            dd_rate = taxes["DD"].get("rate", parent_dd_rate_pct)
+        merged[code] = {
+            "code": code,
+            "national_code": code,
+            "digits": len(code),
+            "description_fr": position.get("description_fr") or position.get("name", ""),
+            "description_en": position.get("description_en") or position.get("name", ""),
+            "dd_rate": dd_rate,
+            "source": position.get("source", "crawled"),
+            "source_url": position.get("source_url"),
+            "source_quality": position.get("source_quality"),
+        }
+
     # Merge with nomenclature_map – adds positions missing from tariff_lines
     # and enriches descriptions for existing ones
     nomenclature = load_nomenclature_map(country_iso3)
@@ -800,14 +913,15 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
         except Exception as e:
             _log_etl_fallback("search_tariff_lines", country_iso3, reason=f"postgres-error: {e}")
 
-    # ── 1. Crawled sub-positions (authentic, 10-digit) ──────────────────────
+    # ── 1. Crawled national/source positions (6-12 digits) ─────────────────
     crawled_index = load_crawled_position_index(country_iso3)
     if crawled_index:
         for code, sp in crawled_index.items():
             name = (sp.get("name") or sp.get("description") or sp.get("designation") or "").lower()
             if code.startswith(q) or q in name:
                 taxes = sp.get("taxes", {})
-                dd = taxes.get("DD", {}).get("rate", 0)
+                taxes = taxes if isinstance(taxes, dict) else {}
+                dd = sp.get("dd", sp.get("dd_rate", taxes.get("DD", {}).get("rate", 0)))
                 tva = taxes.get("TVA", {}).get("rate", 0)
                 tcs = taxes.get("TCS", {}).get("rate", 0)
                 prct = taxes.get("PRCT", {}).get("rate", 0)
@@ -843,8 +957,9 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                         "effective_rate": ref_cascade["effective_rate_pct"],
                         "total_rate": ref_cascade["effective_rate_pct"],  # kept for compat
                         "advantages": sp.get("advantages", []),
-                        "source": "douane.gov.dz",
-                        "source_quality": "crawled_authentic",
+                        "source": sp.get("source") or "crawled",
+                        "source_url": sp.get("source_url"),
+                        "source_quality": sp.get("source_quality", "crawled_unclassified"),
                     }
                 )
                 seen_codes.add(code)
@@ -1343,27 +1458,31 @@ def calculate_import_taxes(
     sub_position_info = None
 
     # --- Priority 1: crawled authentic JSON (per-position taxes) ---
-    # For countries that have a crawled/{ISO3}_tariffs.json with per-position
-    # tax rates (source_quality=crawled_authentic), these rates take precedence
-    # over the ETL-computed rates in the main DZA_tariffs.json.
+    # Existing dictionary-shaped per-position taxes keep their current
+    # precedence. Newly indexed schemas fall back to the existing ETL rate.
     crawled_sp_entry = None
+    etl_sub_position_entry = None
     if not is_postgres_line:
         crawled_index = load_crawled_position_index(country_iso3)
         if crawled_index and hs_code_clean in crawled_index:
             crawled_sp_entry = crawled_index[hs_code_clean]
 
     if len(hs_code_clean) > 6:
+        etl_sub_position_entry = next(
+            (sp for sp in line.get("sub_positions", []) if sp.get("code") == hs_code_clean),
+            None,
+        )
+
+    if len(hs_code_clean) > 6:
         if crawled_sp_entry:
-            # Use crawled per-position DD rate (authentic, sourced from douane.gov.dz)
             crawled_taxes = crawled_sp_entry.get("taxes", {})
-            if "DD" in crawled_taxes:
+            if isinstance(crawled_taxes, dict) and "DD" in crawled_taxes:
                 dd_rate_pct = float(crawled_taxes["DD"].get("rate", dd_rate_pct))
+            elif etl_sub_position_entry:
+                dd_rate_pct = etl_sub_position_entry.get("dd", dd_rate_pct)
         else:
-            # Fall back to ETL tariff_lines sub_positions
-            for sp in line.get("sub_positions", []):
-                if sp.get("code") == hs_code_clean:
-                    dd_rate_pct = sp.get("dd", dd_rate_pct)
-                    break
+            if etl_sub_position_entry:
+                dd_rate_pct = etl_sub_position_entry.get("dd", dd_rate_pct)
 
         # Resolve description: crawled name > nomenclature_map > sub_positions
         sp_desc = ""
@@ -1374,10 +1493,10 @@ def calculate_import_taxes(
             if nomenclature:
                 sp_desc = nomenclature.get(hs_code_clean, "")
         if not sp_desc:
-            for sp in line.get("sub_positions", []):
-                if sp.get("code") == hs_code_clean:
-                    sp_desc = sp.get("description_fr", sp.get("description_en", ""))
-                    break
+            if etl_sub_position_entry:
+                sp_desc = etl_sub_position_entry.get(
+                    "description_fr", etl_sub_position_entry.get("description_en", "")
+                )
 
         sub_position_info = {
             "code": hs_code_clean,
@@ -1401,7 +1520,12 @@ def calculate_import_taxes(
     # Extract DAPS and other individual taxes:
     # If crawled entry has per-position taxes, use them as primary source;
     # otherwise fall back to taxes_detail from the ETL line.
-    if (not is_postgres_line) and crawled_sp_entry and crawled_sp_entry.get("taxes"):
+    if (
+        (not is_postgres_line)
+        and crawled_sp_entry
+        and isinstance(crawled_sp_entry.get("taxes"), dict)
+        and crawled_sp_entry.get("taxes")
+    ):
         crawled_taxes = crawled_sp_entry["taxes"]
         taxes_detail = {
             k: {
