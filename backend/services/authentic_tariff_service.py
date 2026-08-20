@@ -456,6 +456,13 @@ def _canonical_tax_code(code: str, label: str = "") -> str:
 # entrée "IVA"/"VAT" dans le détail par taxe.
 _VAT_EQUIVALENT_CODES = ("TVA", "IVA", "VAT", "TVAI")
 
+# Preferential duty columns describe an alternative trade regime. They remain
+# available verbatim on the crawled row but must never be added to the NPF tax
+# cascade alongside the general customs duty.
+_PREFERENTIAL_RATE_CODES = frozenset(
+    {"AFCFTA", "ZLECAF", "SADC", "COMESA", "EU_UK", "EUUK", "EFTA", "MERCOSUR"}
+)
+
 
 def _is_vat_code(code: str) -> bool:
     norm = _normalize_tax_code(code)
@@ -833,6 +840,7 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
     country_iso3 = _validate_iso3(country_iso3)
     hs6_normalized = hs6.replace(".", "").replace(" ", "")[:6]
 
+    merged: Dict[str, dict] = {}
     provider = _get_postgres_provider()
     if provider:
         try:
@@ -840,8 +848,11 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                 provider.get_sub_positions(country_iso3, hs6_normalized, language) or []
             )
             if postgres_positions:
-                return [
-                    {
+                for sp in postgres_positions:
+                    code = sp.get("code")
+                    if not code:
+                        continue
+                    merged[code] = {
                         "code": sp.get("code"),
                         "national_code": sp.get("code"),
                         "digits": sp.get("digits", len(sp.get("code", ""))),
@@ -850,10 +861,10 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                         "dd_rate": float(sp.get("dd", 0) or 0),
                         "source": "postgres",
                     }
-                    for sp in postgres_positions
-                    if sp.get("code")
-                ]
-            _log_etl_fallback("get_sub_positions", country_iso3, hs6_normalized, "postgres-miss")
+            else:
+                _log_etl_fallback(
+                    "get_sub_positions", country_iso3, hs6_normalized, "postgres-miss"
+                )
         except Exception as e:
             _log_etl_fallback(
                 "get_sub_positions", country_iso3, hs6_normalized, f"postgres-error: {e}"
@@ -863,11 +874,10 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
     parent_dd_rate_pct = line.get("dd_rate", 0) if line else 0
 
     # Build index from tariff_lines sub_positions (have explicit DD rates)
-    merged: Dict[str, dict] = {}
     if line:
         for sp in line.get("sub_positions", []):
             code = sp.get("code", "")
-            if code:
+            if code and code not in merged:
                 merged[code] = {
                     "code": code,
                     "national_code": code,
@@ -884,10 +894,12 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
         if not (code.startswith(hs6_normalized) and len(code) > 6) or code in merged:
             continue
         taxes = position.get("taxes", {})
-        dd_rate = position.get("dd", position.get("dd_rate", parent_dd_rate_pct))
+        dd_rate = _parse_crawled_tax_rate(position.get("dd"))
+        if dd_rate is None:
+            dd_rate = _parse_crawled_tax_rate(position.get("dd_rate"))
         normalised_taxes = _normalise_crawled_tax_details(taxes)
-        if "DD" in normalised_taxes:
-            dd_rate = normalised_taxes["DD"].get("rate", parent_dd_rate_pct)
+        if dd_rate is None:
+            dd_rate = _parse_crawled_tax_rate(normalised_taxes.get("DD"))
         merged[code] = {
             "code": code,
             "national_code": code,
@@ -895,6 +907,7 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
             "description_fr": position.get("description_fr") or position.get("name", ""),
             "description_en": position.get("description_en") or position.get("name", ""),
             "dd_rate": dd_rate,
+            "duty_status": "PAYABLE" if dd_rate is not None else "UNAVAILABLE",
             "source": position.get("source", "crawled"),
             "source_url": position.get("source_url"),
             "source_quality": position.get("source_quality"),
@@ -949,9 +962,10 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
     """Search tariff lines by HS code prefix or description keyword.
 
     Priority order:
-    1. Crawled authentic sub-positions (10-digit, e.g. DZA 17 114 positions from CSV)
-    2. ETL tariff_lines (HS6-level)
-    3. Nomenclature map (extended national codes)
+    1. PostgreSQL results when available
+    2. Missing crawled authentic positions (national codes)
+    3. ETL tariff_lines (HS6-level)
+    4. Nomenclature map (extended national codes)
     """
     country_iso3 = _validate_iso3(country_iso3)
     q = query.lower().strip()
@@ -966,19 +980,26 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                 or []
             )
             if pg_results:
-                return [
-                    {
-                        "hs6": r.get("hs6", ""),
-                        "national_code": r.get("code", r.get("hs6", "")),
-                        "description_fr": r.get("description", ""),
-                        "description_en": r.get("description", ""),
-                        "dd_rate": r.get("dd_rate", 0),
-                        "zlecaf_rate": r.get("zlecaf_rate"),
-                        "source": "postgres",
-                    }
-                    for r in pg_results
-                ]
-            _log_etl_fallback("search_tariff_lines", country_iso3, reason="postgres-miss")
+                for r in pg_results:
+                    national_code = r.get("code", r.get("hs6", ""))
+                    results.append(
+                        {
+                            "hs6": r.get("hs6", ""),
+                            "national_code": national_code,
+                            "description_fr": r.get("description", ""),
+                            "description_en": r.get("description", ""),
+                            "dd_rate": r.get("dd_rate", 0),
+                            "zlecaf_rate": r.get("zlecaf_rate"),
+                            "source": "postgres",
+                        }
+                    )
+                    clean_code = re.sub(r"\D", "", str(national_code))
+                    if clean_code:
+                        seen_codes.add(clean_code)
+                    if len(results) >= limit:
+                        return results
+            else:
+                _log_etl_fallback("search_tariff_lines", country_iso3, reason="postgres-miss")
         except Exception as e:
             _log_etl_fallback("search_tariff_lines", country_iso3, reason=f"postgres-error: {e}")
 
@@ -1006,6 +1027,8 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
             # the ETL search path's source, shape and priority unchanged.
             if len(code) == 6 and code in etl_hs6_codes:
                 continue
+            if code in seen_codes:
+                continue
             name = (sp.get("name") or sp.get("description") or sp.get("designation") or "").lower()
             if code.startswith(q) or q in name:
                 taxes = _normalise_crawled_tax_details(sp.get("taxes"))
@@ -1025,20 +1048,23 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                 tcs = taxes.get("TCS", {}).get("rate", 0)
                 prct = taxes.get("PRCT", {}).get("rate", 0)
                 daps = taxes.get("DAPS", {}).get("rate", 0)
-                # Effective rate = total_taxes / CIF×100 (cascade, not sum of rates)
+                # Effective rate = total_taxes / CIF×100 (cascade, not sum of rates).
+                # Include every applicable source tax (PCC, TPI, etc.) while
+                # excluding alternative preferential duty columns.
+                cascade_rates = {
+                    tax_code: details["rate"]
+                    for tax_code, details in taxes.items()
+                    if tax_code not in _PREFERENTIAL_RATE_CODES and details["rate"] > 0
+                }
+                if dd is None:
+                    cascade_rates.pop("DD", None)
+                elif dd > 0:
+                    cascade_rates["DD"] = dd
+                if tva > 0:
+                    cascade_rates["TVA"] = tva
                 ref_cascade = compute_tax_cascade(
                     100.0,
-                    {
-                        c: r
-                        for c, r in [
-                            ("DD", dd),
-                            ("DAPS", daps),
-                            ("PRCT", prct),
-                            ("TCS", tcs),
-                            ("TVA", tva),
-                        ]
-                        if r is not None and r > 0
-                    },
+                    cascade_rates,
                     country_iso3,
                 )
                 results.append(

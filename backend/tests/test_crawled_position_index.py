@@ -176,11 +176,81 @@ def test_get_sub_positions_adds_only_missing_crawled_positions(monkeypatch, tmp_
     assert by_code["0101210090"]["source"] == "GRA"
 
 
+def test_get_sub_positions_does_not_inherit_parent_duty_for_crawled_only_row(monkeypatch, tmp_path):
+    _write_crawled(
+        tmp_path,
+        "ETH",
+        {
+            "positions": [
+                {
+                    "code_clean": "01012100000",
+                    "designation": "Chevaux reproducteurs",
+                    "taxes": {"TVA": {"rate": 15}, "WHR": {"rate": 3}},
+                }
+            ]
+        },
+    )
+    monkeypatch.setattr(service, "CRAWLED_DIR", str(tmp_path))
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
+    monkeypatch.setattr(
+        service,
+        "get_tariff_line",
+        lambda *_args: {"hs6": "010121", "dd_rate": 35, "sub_positions": []},
+    )
+    monkeypatch.setattr(service, "load_nomenclature_map", lambda *_args: None)
+
+    result = service.get_sub_positions("ETH", "010121")[0]
+
+    assert result["dd_rate"] is None
+    assert result["duty_status"] == "UNAVAILABLE"
+
+
+def test_get_sub_positions_merges_postgres_with_missing_crawled_rows(monkeypatch, tmp_path):
+    class PartialProvider:
+        def get_sub_positions(self, *_args):
+            return [
+                {
+                    "code": "0101210010",
+                    "description_fr": "Position PostgreSQL",
+                    "dd": 5,
+                }
+            ]
+
+    _write_crawled(
+        tmp_path,
+        "GHA",
+        {
+            "positions": [
+                {"code_clean": "0101210010", "designation": "Doublon", "dd": 99},
+                {"code_clean": "0101210090", "designation": "Position manquante", "dd": 20},
+            ]
+        },
+    )
+    monkeypatch.setattr(service, "CRAWLED_DIR", str(tmp_path))
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: PartialProvider())
+    monkeypatch.setattr(
+        service,
+        "get_tariff_line",
+        lambda *_args: {"hs6": "010121", "dd_rate": 20, "sub_positions": []},
+    )
+    monkeypatch.setattr(service, "load_nomenclature_map", lambda *_args: None)
+
+    by_code = {
+        position["code"]: position for position in service.get_sub_positions("GHA", "010121")
+    }
+
+    assert set(by_code) == {"0101210010", "0101210090"}
+    assert by_code["0101210010"]["source"] == "postgres"
+    assert by_code["0101210010"]["dd_rate"] == 5
+    assert by_code["0101210090"]["dd_rate"] == 20
+
+
 def test_search_handles_raw_tax_lists_and_returns_position_provenance(monkeypatch, tmp_path):
     raw_taxes = [
         {"code": "GENERAL", "name": "General Customs Duty", "rate_pct": 10},
         {"code": "VAT", "name": "Value Added Tax", "rate_pct": 15},
-        {"code": "AfCFTA", "name": "AfCFTA rate", "rate_pct": 0},
+        {"code": "AfCFTA", "name": "AfCFTA rate", "rate_pct": 2},
+        {"code": "SADC", "name": "SADC preferential rate", "rate_pct": 4},
     ]
     _write_crawled(
         tmp_path,
@@ -209,6 +279,10 @@ def test_search_handles_raw_tax_lists_and_returns_position_provenance(monkeypatc
     assert result["tva_rate"] == 15
     assert result["source"] == "South African Revenue Service"
     assert result["source_url"] == "https://sars.example/tariff.pdf"
+    assert (
+        result["effective_rate"]
+        == service.compute_tax_cascade(100, {"DD": 10, "TVA": 15}, "ZAF")["effective_rate_pct"]
+    )
     assert service.load_crawled_position_index("ZAF")["01012100"]["taxes"] == raw_taxes
 
 
@@ -235,7 +309,54 @@ def test_search_handles_scalar_tax_maps(monkeypatch, tmp_path):
 
     assert result["dd_rate"] == 20
     assert result["tva_rate"] == 18
+    assert (
+        result["effective_rate"]
+        == service.compute_tax_cascade(100, raw_taxes, "GIN")["effective_rate_pct"]
+    )
     assert service.load_crawled_position_index("GIN")["7612900000"]["taxes"] == raw_taxes
+
+
+def test_search_merges_postgres_with_missing_crawled_rows(monkeypatch, tmp_path):
+    class PartialProvider:
+        def search_commodities(self, *_args, **_kwargs):
+            return [
+                {
+                    "hs6": "010121",
+                    "code": "0101210010",
+                    "description": "Position PostgreSQL",
+                    "dd_rate": 5,
+                }
+            ]
+
+    _write_crawled(
+        tmp_path,
+        "GHA",
+        {
+            "positions": [
+                {
+                    "code_clean": "0101210010",
+                    "designation": "Doublon collecté",
+                    "taxes": {"DD": 99},
+                },
+                {
+                    "code_clean": "0101210090",
+                    "designation": "Position collectée manquante",
+                    "taxes": {"DD": 20},
+                },
+            ]
+        },
+    )
+    monkeypatch.setattr(service, "CRAWLED_DIR", str(tmp_path))
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: PartialProvider())
+    monkeypatch.setattr(service, "load_country_tariffs", lambda *_args: None)
+    monkeypatch.setattr(service, "load_nomenclature_map", lambda *_args: None)
+
+    results = service.search_tariff_lines("GHA", "010121", limit=10)
+
+    assert [result["national_code"] for result in results] == ["0101210010", "0101210090"]
+    assert results[0]["source"] == "postgres"
+    assert results[0]["dd_rate"] == 5
+    assert results[1]["dd_rate"] == 20
 
 
 def test_search_uses_etl_rates_when_crawled_position_has_no_tax_fields(monkeypatch, tmp_path):
