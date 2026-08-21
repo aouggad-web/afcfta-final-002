@@ -349,8 +349,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     });
   };
 
-  const calculateTariff = async () => {
-    if (!originCountry || !destinationCountry || !hsCode || !value) {
+  const calculateTariff = async (overrideHsCode) => {
+    // overrideHsCode : recalcul immédiat après sélection d'une position
+    // nationale dans la liste (sinon l'état hsCode n'est pas encore à jour
+    // au moment de cet appel, à cause du batching React setState/onClick).
+    const hsCodeToUse = overrideHsCode || hsCode;
+    if (!originCountry || !destinationCountry || !hsCodeToUse || !value) {
       toast({
         title: t.missingFields,
         description: t.fillAllFields,
@@ -360,7 +364,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     }
 
     // Validation: code HS entre 6 et 12 chiffres
-    const cleanHsCode = hsCode.replace(/[.\s]/g, '');
+    const cleanHsCode = hsCodeToUse.replace(/[.\s]/g, '');
     if (cleanHsCode.length < 6 || cleanHsCode.length > 12) {
       toast({
         title: t.invalidHsCode,
@@ -1524,7 +1528,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           setHsCode(code);
                           setSelectedSubPositionDesc(desc);
                           setSelectedSubPositionFormalities(spFormalities);
+                          calculateTariff(code);
                         }}
+                        data-testid={`sub-position-${code}`}
                         className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${
                           isSelected
                             ? 'bg-purple-500/20 border-purple-500/50'

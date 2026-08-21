@@ -799,6 +799,14 @@ async function startCheckout(plan) {
   const country = countryEl ? countryEl.value : '';
   const body = JSON.stringify({ plan: plan, cycle: cycle, billing_country: country });
 
+  // Safari/iOS perd le "geste utilisateur" dès qu'un await sépare le clic de
+  // la navigation : window.location.href après un fetch y est alors ignoré
+  // silencieusement (aucune erreur, aucun changement de page). Ouvrir un
+  // onglet vide de façon SYNCHRONE, avant tout await, conserve l'autorisation
+  // de navigation ; on y redirige une fois l'URL connue. Si le popup est
+  // bloqué (w === null), on retombe sur l'onglet courant.
+  const w = window.open('', '_blank');
+
   async function postCheckout(token) {
     return fetch('/api/billing/checkout', {
       method: 'POST',
@@ -825,19 +833,28 @@ async function startCheckout(plan) {
       // Pas connecté : renvoyer vers l'app avec un fragment qui ouvrira la
       // modale d'authentification. On utilise un hash (jamais 404) plutôt
       // qu'une route dédiée, l'app n'ayant pas de routage par URL.
+      if (w) w.close();
       window.location.href = '/#auth=login&next=pricing';
       return;
     }
     if (!res.ok) {
+      if (w) w.close();
       const err = await res.json().catch(function () { return {}; });
       alert(err.detail || "Paiement momentanément indisponible. Réessayez plus tard.");
       return;
     }
     const data = await res.json();
     if (data && data.url) {
-      window.location.href = data.url;
+      if (w) {
+        w.location.href = data.url;
+      } else {
+        window.location.href = data.url;
+      }
+    } else if (w) {
+      w.close();
     }
   } catch (e) {
+    if (w) w.close();
     alert("Erreur réseau — vérifiez votre connexion et réessayez.");
   }
 }
