@@ -852,13 +852,19 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     code = sp.get("code")
                     if not code:
                         continue
+                    # Un DD absent côté PostgreSQL ne doit pas se fabriquer en
+                    # 0 % : on préserve l'inconnu (dd_rate None + UNAVAILABLE),
+                    # un 0 réellement présent restant un droit exigible à 0.
+                    raw_dd = sp.get("dd", sp.get("dd_rate"))
+                    dd_rate = float(raw_dd) if raw_dd is not None else None
                     merged[code] = {
                         "code": sp.get("code"),
                         "national_code": sp.get("code"),
                         "digits": sp.get("digits", len(sp.get("code", ""))),
                         "description_fr": sp.get("description_fr", sp.get("description_en", "")),
                         "description_en": sp.get("description_en", sp.get("description_fr", "")),
-                        "dd_rate": float(sp.get("dd", 0) or 0),
+                        "dd_rate": dd_rate,
+                        "duty_status": "PAYABLE" if dd_rate is not None else "UNAVAILABLE",
                         "source": "postgres",
                     }
             else:
@@ -872,6 +878,9 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
 
     line = get_tariff_line(country_iso3, hs6_normalized)
     parent_dd_rate_pct = line.get("dd_rate", 0) if line else 0
+    # Le taux parent n'est « réel » que si une ligne tarifaire le porte
+    # explicitement : sinon (aucune ligne) l'hériter revient à fabriquer un 0 %.
+    parent_dd_known = bool(line) and line.get("dd_rate") is not None
 
     # Build index from tariff_lines sub_positions (have explicit DD rates)
     if line:
@@ -927,7 +936,8 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     "digits": len(code),
                     "description_fr": description,
                     "description_en": description,
-                    "dd_rate": parent_dd_rate_pct,
+                    "dd_rate": parent_dd_rate_pct if parent_dd_known else None,
+                    "duty_status": "PAYABLE" if parent_dd_known else "UNAVAILABLE",
                     "source": f"Nomenclature DGD {country_iso3}",
                 }
             else:
@@ -937,6 +947,16 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     merged[code]["description_fr"] = description
                 if not merged[code].get("description_en"):
                     merged[code]["description_en"] = description
+
+    # Garantit un `duty_status` cohérent sur CHAQUE source (postgres, ETL,
+    # crawl, nomenclature) : un droit de douane connu → PAYABLE (0 % inclus),
+    # un droit absent → UNAVAILABLE. Le frontend s'appuie dessus pour afficher
+    # « à vérifier » au lieu d'un 0 % trompeur.
+    for entry in merged.values():
+        entry.setdefault(
+            "duty_status",
+            "PAYABLE" if entry.get("dd_rate") is not None else "UNAVAILABLE",
+        )
 
     result = sorted(merged.values(), key=lambda x: x["code"])
     logger.debug(f"get_sub_positions({country_iso3}, {hs6_normalized}): {len(result)} positions")
@@ -1401,6 +1421,22 @@ def _resolve_zlecaf_context(
     #    + colonne AfCFTA officielle de SARS Schedule 1 Part 1. Les droits
     #    spécifiques/composés sont documentés mais restent non calculables sans
     #    quantité : ils ne sont jamais aplatis en leur seule composante ad valorem.
+    #
+    #    GAP CONNU (à vérifier avant extension) : Botswana, Lesotho, Namibie et
+    #    Eswatini (SACU hors Afrique du Sud) publient dans le crawl national un
+    #    barème identique à celui-ci — mêmes 8589 lignes, mêmes colonnes AfCFTA/
+    #    SADC, mêmes 2959 positions à taux préférentiel réel (backend/data/
+    #    crawled/{BWA,LSO,NAM,SWZ}_tariffs.json). Ce n'est PAS traité ici : la
+    #    source citée par `zlecaf_schedule_zaf.ACTIVE_PARTNERS_ZAF` (newsletter
+    #    dtic/SARS mars 2026) documente nommément l'activation ZLECAf pour
+    #    l'Afrique du Sud, pas pour les trois autres membres de la SACU. Une
+    #    même union douanière et un barème partagé ne prouvent pas, à eux
+    #    seuls, une activation bilatérale identique pour BWA/LSO/NAM/SWZ — ce
+    #    serait une inférence, pas une source. Décision produit (2026-08-22) :
+    #    ne rien extrapoler tant qu'aucune source nommée ne couvre ces 4 pays
+    #    individuellement ; ils restent au régime NPF via le chemin générique
+    #    ci-dessous (`resolve_official_preferential_rate` ne référence que
+    #    ZAF/EAC/ECOWAS/CEMAC/EGY/TUN/ETH/ZMB dans `DATASETS`).
     if dest == "ZAF":
         from services.official_preferential_rates import resolve_official_preferential_rate
         from services.zlecaf_schedule_zaf import zaf_partner_active
@@ -1455,6 +1491,21 @@ def _resolve_zlecaf_context(
     #    ne déclenchent jamais un calcul. Il faut une transposition en vigueur,
     #    une origine explicitement acceptée sur base réciproque et une ligne
     #    tarifaire officielle exacte.
+    #
+    #    GAP VÉRIFIÉ ET ÉCARTÉ — Égypte : le crawl national (backend/data/
+    #    crawled/EGY_tariffs.json, source customs.gov.eg) porte un champ
+    #    `zlecaf_rate` par position (6417/8746 lignes, 5357 avec réduction
+    #    réelle). Vérification (2026-08-22) : ce champ n'est PAS conditionné
+    #    par pays d'origine (aucune clé d'origine dans le schéma) et sa valeur
+    #    recoupe le barème par CATÉGORIE A/B/C de l'AfCFTA e-Tariff Book
+    #    (cf. `official_instructions` bruts de la même ligne : « Groupe [A]
+    #    -100% / Groupe [B] -60% ») — la même offre continentale que le
+    #    dataset officiel EGY, déjà marqué `legal_effect_status: OFFER_ONLY`,
+    #    `execution_authorized: False` dans `official_preferential_rates.py`.
+    #    L'utiliser reproduirait exactement le taux générique par catégorie
+    #    que `test_no_generic_category_based_zlecaf_string_anywhere` interdit.
+    #    Ne pas l'exploiter tant qu'aucune source nommée ne prouve une
+    #    réciprocité bilatérale par partenaire (à la manière de DZA/ZAF).
     from services.official_preferential_rates import resolve_official_preferential_rate
     from services.zlecaf_implementation_registry import (
         OFFER_ONLY,

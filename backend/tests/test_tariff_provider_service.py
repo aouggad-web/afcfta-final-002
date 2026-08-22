@@ -88,7 +88,54 @@ def test_provider_prefers_postgres_sub_positions(monkeypatch):
 
     assert len(sub_positions) == 1
     assert sub_positions[0]["dd_rate"] == 10
+    assert sub_positions[0]["duty_status"] == "PAYABLE"
     assert sub_positions[0]["source"] == "postgres"
+
+
+def test_provider_sub_positions_missing_dd_is_unavailable_not_zero(monkeypatch):
+    """No DD on the PostgreSQL row must surface as UNAVAILABLE, not a
+    fabricated 0 % (regression guard for the previous `sp.get("dd", 0)`
+    silent fallback)."""
+    postgres = _StubPostgres()
+    postgres._sub_positions = [
+        {
+            "code": "18010010",
+            "digits": 8,
+            "description_fr": "Sans droit connu",
+            "description_en": "No known duty",
+        }
+    ]
+    monkeypatch.setattr(
+        "services.tariff_provider_service.authentic_service.get_sub_positions",
+        lambda _country, _hs6: [],
+    )
+
+    service = TariffProviderService(postgres_factory=lambda: postgres)
+    sub_positions = service.get_sub_positions("MAR", "180100")
+
+    assert sub_positions[0]["dd_rate"] is None
+    assert sub_positions[0]["duty_status"] == "UNAVAILABLE"
+
+
+def test_provider_search_missing_dd_is_unavailable_not_zero(monkeypatch):
+    postgres = _StubPostgres()
+    postgres._search = [
+        {
+            "hs6": "180100",
+            "code": "18010010",
+            "description": "Cacao sans droit connu",
+        }
+    ]
+    monkeypatch.setattr(
+        "services.tariff_provider_service.authentic_service.search_tariff_lines",
+        lambda *_args, **_kwargs: [],
+    )
+
+    service = TariffProviderService(postgres_factory=lambda: postgres)
+    results = service.search_tariff_lines("MAR", "cacao", "fr", 20)
+
+    assert results[0]["dd_rate"] is None
+    assert results[0]["duty_status"] == "UNAVAILABLE"
 
 
 def test_provider_falls_back_for_tariff_line(monkeypatch):
@@ -128,4 +175,5 @@ def test_provider_search_uses_postgres_first(monkeypatch):
 
     assert len(results) == 1
     assert results[0]["national_code"] == "18010010"
+    assert results[0]["duty_status"] == "PAYABLE"
     assert results[0]["source"] == "postgres"
