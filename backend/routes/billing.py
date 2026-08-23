@@ -384,8 +384,48 @@ def _period_end(sub: dict) -> Optional[datetime]:
     return datetime.fromtimestamp(ts, tz=timezone.utc) if ts else None
 
 
-async def _email_user(user_id: Optional[str], subject: str, body: str) -> None:
+# Libellés FR des formules, pour le corps des emails transactionnels
+# uniquement — la page pricing (frontend) a sa propre source pour l'affichage.
+_PLAN_LABELS = {"starter": "Starter", "pro": "Pro", "business": "Business"}
+_CYCLE_LABELS = {"monthly": "mensuel", "annual": "annuel"}
+
+
+def _plan_label(plan: Optional[str]) -> str:
+    return _PLAN_LABELS.get(plan or "", plan or "votre formule")
+
+
+def _amount_line(plan: Optional[str], cycle: Optional[str], *, currency: str) -> str:
+    """Ligne de montant pour le corps d'un email, à partir de la grille
+    tarifaire serveur (`pricing.py`) plutôt que du payload webhook — évite de
+    dépendre de champs qui varient selon le fournisseur/la version d'API et
+    reste garanti cohérent avec ce qui a été facturé au checkout."""
+    if plan not in pricing.PLANS or cycle not in pricing.CYCLES:
+        return ""
+    try:
+        if currency == "eur":
+            return f"Montant : {pricing.eur_amount(plan, cycle)} €"
+        return f"Montant : {pricing.dzd_amount(plan, cycle)} DZD"
+    except (pricing.UnknownPlanCycle, pricing.InvalidPrice):
+        return ""
+
+
+def _period_end_line(period_end: Optional[datetime]) -> str:
+    if not period_end:
+        return ""
+    return f"Prochaine échéance : {period_end.strftime('%d/%m/%Y')}"
+
+
+async def _send_email_best_effort(email: Optional[str], subject: str, body: str) -> None:
     """Envoi best-effort : ne bloque jamais le traitement du webhook."""
+    if not email:
+        return
+    try:
+        await run_in_threadpool(send_email, email, subject, body)
+    except Exception as exc:  # pragma: no cover - best effort
+        logger.warning("Webhook: envoi email échoué: %s", exc)
+
+
+async def _email_user(user_id: Optional[str], subject: str, body: str) -> None:
     if not user_id:
         return
     db = _require_db()
@@ -393,11 +433,21 @@ async def _email_user(user_id: Optional[str], subject: str, body: str) -> None:
         user = await db.users.find_one({"_id": ObjectId(user_id)}, {"email": 1})
     except Exception:
         return
-    if user and user.get("email"):
-        try:
-            await run_in_threadpool(send_email, user["email"], subject, body)
-        except Exception as exc:  # pragma: no cover - best effort
-            logger.warning("Webhook: envoi email échoué: %s", exc)
+    if user:
+        await _send_email_best_effort(user.get("email"), subject, body)
+
+
+async def _user_by_customer(customer_id: str) -> Optional[dict]:
+    """Récupère le document utilisateur AVANT que le webhook ne le mette à
+    jour — nécessaire pour que l'email d'échec/annulation puisse encore
+    mentionner la formule que l'utilisateur est en train de perdre."""
+    if not customer_id:
+        return None
+    db = _require_db()
+    return await db.users.find_one(
+        {"stripe_customer_id": customer_id},
+        {"email": 1, "subscription_tier": 1, "subscription_cycle": 1},
+    )
 
 
 async def _claim_event(db, event_key: str, event_type: str) -> bool:
@@ -465,22 +515,29 @@ async def stripe_webhook(request: Request):
     try:
         if event_type == "checkout.session.completed":
             meta = data_obj.get("metadata") or {}
+            plan = meta.get("plan", "free")
+            cycle = meta.get("cycle")
             await _update_user_by_id(
                 meta.get("user_id", ""),
                 {
-                    "subscription_tier": meta.get("plan", "free"),
+                    "subscription_tier": plan,
                     "subscription_status": "active",
-                    "subscription_cycle": meta.get("cycle"),
+                    "subscription_cycle": cycle,
                     "subscription_id": data_obj.get("subscription"),
                     "stripe_customer_id": data_obj.get("customer"),
                     "payment_provider": "stripe",
                 },
             )
+            lines = [
+                f"Merci — votre abonnement {_plan_label(plan)} "
+                f"({_CYCLE_LABELS.get(cycle, cycle or '')}) est désormais actif.",
+                _amount_line(plan, cycle, currency="eur"),
+                "Vous pouvez le gérer à tout moment depuis votre tableau de bord.",
+            ]
             await _email_user(
                 meta.get("user_id"),
                 "Votre abonnement ZLECAf est actif",
-                "Merci — votre abonnement est désormais actif. "
-                "Vous pouvez le gérer à tout moment depuis votre tableau de bord.",
+                "\n\n".join(line for line in lines if line),
             )
 
         elif event_type == "customer.subscription.updated":
@@ -494,16 +551,45 @@ async def stripe_webhook(request: Request):
             await _update_user_by_customer(data_obj.get("customer", ""), fields)
 
         elif event_type == "customer.subscription.deleted":
+            customer_id = data_obj.get("customer", "")
+            user = await _user_by_customer(customer_id)
             await _update_user_by_customer(
-                data_obj.get("customer", ""),
+                customer_id,
                 {"subscription_tier": "free", "subscription_status": "canceled"},
             )
+            if user:
+                plan = user.get("subscription_tier")
+                await _send_email_best_effort(
+                    user.get("email"),
+                    "Votre abonnement ZLECAf a été résilié",
+                    f"Votre abonnement {_plan_label(plan)} a été résilié — vous repassez "
+                    "à la formule Free. Vous pouvez vous réabonner à tout moment depuis "
+                    "votre tableau de bord.",
+                )
 
         elif event_type == "invoice.payment_failed":
-            await _update_user_by_customer(
-                data_obj.get("customer", ""),
-                {"subscription_status": "past_due"},
-            )
+            customer_id = data_obj.get("customer", "")
+            user = await _user_by_customer(customer_id)
+            await _update_user_by_customer(customer_id, {"subscription_status": "past_due"})
+            if user:
+                plan = user.get("subscription_tier")
+                amount_cents = data_obj.get("amount_due")
+                amount_line = (
+                    f"Montant impayé : {amount_cents / 100:.2f} €"
+                    if isinstance(amount_cents, (int, float))
+                    else ""
+                )
+                lines = [
+                    f"Le paiement de votre abonnement {_plan_label(plan)} a échoué.",
+                    amount_line,
+                    "Merci de mettre à jour votre moyen de paiement depuis votre tableau "
+                    "de bord pour éviter une interruption d'accès.",
+                ]
+                await _send_email_best_effort(
+                    user.get("email"),
+                    "Échec du paiement de votre abonnement ZLECAf",
+                    "\n\n".join(line for line in lines if line),
+                )
     except Exception:
         await _release_event(db, event_id)
         raise
@@ -546,6 +632,7 @@ async def chargily_webhook(request: Request):
         user_id = meta.get("user_id", "")
 
         if event_type == "checkout.paid":
+            plan = meta.get("plan", "free")
             cycle = meta.get("cycle")
             # Chargily n'a pas de notion d'abonnement récurrent (cf. docstring
             # ci-dessus) — un paiement ne couvre que la période réellement
@@ -554,27 +641,42 @@ async def chargily_webhook(request: Request):
             # absente comme « toujours en cours » et accorderait un accès
             # payant permanent depuis un seul paiement.
             paid_days = 365 if cycle == "annual" else 30
+            period_end = datetime.now(timezone.utc) + timedelta(days=paid_days)
             await _update_user_by_id(
                 user_id,
                 {
-                    "subscription_tier": meta.get("plan", "free"),
+                    "subscription_tier": plan,
                     "subscription_status": "active",
                     "subscription_cycle": cycle,
-                    "subscription_current_end": datetime.now(timezone.utc)
-                    + timedelta(days=paid_days),
+                    "subscription_current_end": period_end,
                     "payment_provider": "chargily",
                     "billing_country": "DZ",
                 },
             )
+            lines = [
+                f"Merci — votre paiement pour la formule {_plan_label(plan)} "
+                f"({_CYCLE_LABELS.get(cycle, cycle or '')}) a été confirmé et votre "
+                "abonnement est actif.",
+                _amount_line(plan, cycle, currency="dzd"),
+                _period_end_line(period_end),
+            ]
             await _email_user(
                 user_id,
                 "Votre abonnement ZLECAf est actif",
-                "Merci — votre paiement a été confirmé et votre abonnement est actif.",
+                "\n\n".join(line for line in lines if line),
             )
 
         elif event_type in ("checkout.failed", "checkout.canceled", "checkout.expired"):
             # Aucun accès accordé : on journalise sans dégrader un abonnement actif.
             logger.info("Chargily: paiement non abouti (%s) pour user_id=%s", event_type, user_id)
+            if event_type == "checkout.failed":
+                await _email_user(
+                    user_id,
+                    "Échec de votre paiement ZLECAf",
+                    "Votre paiement via Chargily n'a pas pu être confirmé. Aucun montant "
+                    "n'a été prélevé pour cet abonnement — vous pouvez réessayer depuis "
+                    "la page tarifs.",
+                )
     except Exception:
         await _release_event(db, event_key)
         raise

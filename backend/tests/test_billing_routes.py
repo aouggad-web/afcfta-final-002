@@ -406,6 +406,122 @@ def test_webhook_releases_reservation_when_handler_fails(webhook_client, monkeyp
     assert replay.json()["status"] == "ok"
 
 
+def test_checkout_completed_email_includes_plan_and_amount(webhook_client, monkeypatch):
+    """L'email d'activation doit être un vrai reçu — formule, cycle, montant —
+    pas juste un « votre abonnement est actif » générique."""
+    client, fake = webhook_client
+
+    async def _noop_update(*a, **k):
+        return None
+
+    monkeypatch.setattr(billing, "_update_user_by_id", _noop_update)
+    sent = {}
+
+    async def _capture(email, subject, body):
+        sent["email"], sent["subject"], sent["body"] = email, subject, body
+
+    monkeypatch.setattr(billing, "_send_email_best_effort", _capture)
+
+    async def _fake_find_one(query, projection=None):
+        return {"email": "sub@example.com"}
+
+    fake.users.find_one = _fake_find_one
+
+    resp = client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
+    assert resp.status_code == 200
+    assert sent["email"] == "sub@example.com"
+    assert "Pro" in sent["body"]
+    assert "mensuel" in sent["body"]
+    assert "25 €" in sent["body"]  # pricing.py: pro/monthly = 25 EUR
+
+
+def test_subscription_deleted_emails_cancellation_with_prior_plan(webhook_client, monkeypatch):
+    event = {
+        "id": "evt_cancel",
+        "type": "customer.subscription.deleted",
+        "data": {"object": {"customer": "cus_1"}},
+    }
+    monkeypatch.setattr(stripe_service, "construct_event", lambda payload, sig: event)
+    client, fake = webhook_client
+
+    async def _noop_update(*a, **k):
+        return None
+
+    monkeypatch.setattr(billing, "_update_user_by_customer", _noop_update)
+    sent = {}
+
+    async def _capture(email, subject, body):
+        sent["email"], sent["subject"], sent["body"] = email, subject, body
+
+    monkeypatch.setattr(billing, "_send_email_best_effort", _capture)
+
+    async def _fake_find_one(query, projection=None):
+        return {"email": "sub@example.com", "subscription_tier": "business"}
+
+    fake.users.find_one = _fake_find_one
+
+    resp = client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
+    assert resp.status_code == 200
+    assert sent["email"] == "sub@example.com"
+    assert "résilié" in sent["subject"].lower()
+    assert "Business" in sent["body"]
+
+
+def test_invoice_payment_failed_emails_user_with_amount(webhook_client, monkeypatch):
+    event = {
+        "id": "evt_failed",
+        "type": "invoice.payment_failed",
+        "data": {"object": {"customer": "cus_1", "amount_due": 2500}},
+    }
+    monkeypatch.setattr(stripe_service, "construct_event", lambda payload, sig: event)
+    client, fake = webhook_client
+
+    async def _noop_update(*a, **k):
+        return None
+
+    monkeypatch.setattr(billing, "_update_user_by_customer", _noop_update)
+    sent = {}
+
+    async def _capture(email, subject, body):
+        sent["email"], sent["subject"], sent["body"] = email, subject, body
+
+    monkeypatch.setattr(billing, "_send_email_best_effort", _capture)
+
+    async def _fake_find_one(query, projection=None):
+        return {"email": "sub@example.com", "subscription_tier": "starter"}
+
+    fake.users.find_one = _fake_find_one
+
+    resp = client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
+    assert resp.status_code == 200
+    assert sent["email"] == "sub@example.com"
+    assert "échec" in sent["subject"].lower()
+    assert "25.00 €" in sent["body"]
+
+
+def test_invoice_payment_failed_skips_email_when_customer_unknown(webhook_client, monkeypatch):
+    """Pas d'utilisateur trouvé pour ce customer_id → pas de tentative d'envoi
+    (rien à qui envoyer), et le traitement du webhook ne doit pas planter."""
+    event = {
+        "id": "evt_failed2",
+        "type": "invoice.payment_failed",
+        "data": {"object": {"customer": "cus_unknown"}},
+    }
+    monkeypatch.setattr(stripe_service, "construct_event", lambda payload, sig: event)
+    client, fake = webhook_client
+
+    async def _noop_update(*a, **k):
+        return None
+
+    monkeypatch.setattr(billing, "_update_user_by_customer", _noop_update)
+    calls = []
+    monkeypatch.setattr(billing, "_send_email_best_effort", lambda *a, **k: calls.append(a))
+
+    resp = client.post("/billing/webhook", content=b"{}", headers={"stripe-signature": "x"})
+    assert resp.status_code == 200
+    assert calls == []
+
+
 def test_geo_diagnostic_reports_what_backend_sees(client, monkeypatch):
     """Le diagnostic reflète fidèlement la requête : en-têtes vus, IP, pays."""
     monkeypatch.delenv("CLOUDFLARE_EDGE_SECRET", raising=False)
