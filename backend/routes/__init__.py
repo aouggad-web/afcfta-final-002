@@ -26,6 +26,7 @@ MIGRATION STATUS:
 import logging
 
 from auth import require_admin, require_auth
+from entitlement_guard import require_api_access, require_calculations_quota, require_module
 from fastapi import APIRouter, Depends
 
 _auth = [Depends(require_auth)]
@@ -33,6 +34,21 @@ _auth = [Depends(require_auth)]
 # trigger data collection or mutate shared cache state, so they're restricted
 # to admin-tier keys rather than any valid key.
 _admin = [Depends(require_admin)]
+
+# SaaS entitlement gating: layered on top of `_auth` for the module routers
+# that map onto `entitlements.MODULES` — `_auth` checks "is this a valid
+# API key", these check "does this subscriber's tier include this module,
+# and are they still under its usage quota". A JWT-session subscriber is
+# gated on their real tier; anyone else (API-key-only, or no auth at all)
+# is gated as the free tier — see entitlement_guard.get_optional_subscriber.
+_stats_entitlement = [Depends(require_module("stats"))]
+_production_entitlement = [Depends(require_module("production"))]
+_logistics_entitlement = [Depends(require_module("logistics"))]
+_roo_entitlement = [Depends(require_module("roo"))]
+_tools_entitlement = [Depends(require_module("tools"))]
+_reports_entitlement = [Depends(require_module("reports"))]
+_calculator_entitlement = [Depends(require_calculations_quota())]
+_api_entitlement = [Depends(require_api_access())]
 
 _logger = logging.getLogger(__name__)
 
@@ -440,11 +456,23 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(news_router, tags=["News"], dependencies=_auth)
     api_router.include_router(oec_router, tags=["OEC Trade"], dependencies=_auth)
     api_router.include_router(hs_codes_router, tags=["HS Codes"], dependencies=_auth)
-    api_router.include_router(production_router, tags=["Production"], dependencies=_auth)
-    api_router.include_router(logistics_router, tags=["Logistics"], dependencies=_auth)
+    api_router.include_router(
+        production_router,
+        tags=["Production"],
+        dependencies=_auth + _production_entitlement,
+    )
+    api_router.include_router(
+        logistics_router,
+        tags=["Logistics"],
+        dependencies=_auth + _logistics_entitlement,
+    )
     api_router.include_router(countries_router, tags=["Countries"], dependencies=_auth)
     api_router.include_router(tariffs_router, tags=["Tariffs"], dependencies=_auth)
-    api_router.include_router(statistics_router, tags=["Statistics"], dependencies=_auth)
+    api_router.include_router(
+        statistics_router,
+        tags=["Statistics"],
+        dependencies=_auth + _stats_entitlement,
+    )
     api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_admin)
     api_router.include_router(substitution_router, tags=["Trade Substitution"], dependencies=_auth)
     api_router.include_router(
@@ -452,7 +480,9 @@ def register_routes(api_router: APIRouter):
     )
     if GEMINI_AVAILABLE:
         api_router.include_router(gemini_router, tags=["AI Analysis"], dependencies=_auth)
-    api_router.include_router(rules_router, tags=["Rules of Origin"], dependencies=_auth)
+    api_router.include_router(
+        rules_router, tags=["Rules of Origin"], dependencies=_auth + _roo_entitlement
+    )
     api_router.include_router(hs6_db_router, tags=["HS6 Database"], dependencies=_auth)
     api_router.include_router(
         authentic_tariffs_router, tags=["Authentic Tariffs"], dependencies=_auth
@@ -462,7 +492,11 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(
             faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth
         )
-    api_router.include_router(calculator_router, tags=["Calculator"], dependencies=_auth)
+    api_router.include_router(
+        calculator_router,
+        tags=["Calculator"],
+        dependencies=_auth + _calculator_entitlement,
+    )
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(
             trade_data_router, tags=["Trade Data Sources"], dependencies=_auth
@@ -473,7 +507,9 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(crawl_router, tags=["Crawl Orchestration"], dependencies=_admin)
     if TARIFF_DATA_AVAILABLE:
         api_router.include_router(
-            tariff_data_router, tags=["Tariff Data Collection"], dependencies=_auth
+            tariff_data_router,
+            tags=["Tariff Data Collection"],
+            dependencies=_auth + _tools_entitlement,
         )
     if REGULATORY_ENGINE_AVAILABLE:
         api_router.include_router(
@@ -526,7 +562,9 @@ def register_routes(api_router: APIRouter):
             uma_regions_router, tags=["UMA North Africa Regions"], dependencies=_auth
         )
     if API_V2_AVAILABLE:
-        api_router.include_router(api_v2_router, tags=["API v2"], dependencies=_auth)
+        api_router.include_router(
+            api_v2_router, tags=["API v2"], dependencies=_auth + _api_entitlement
+        )
     if AI_INTELLIGENCE_AVAILABLE:
         api_router.include_router(
             ai_intelligence_router, tags=["AI Intelligence"], dependencies=_auth
@@ -585,7 +623,9 @@ def register_routes(api_router: APIRouter):
         )
     if REPORTS_AVAILABLE:
         api_router.include_router(
-            reports_router, tags=["Premium Opportunity Reports"], dependencies=_auth
+            reports_router,
+            tags=["Premium Opportunity Reports"],
+            dependencies=_auth + _reports_entitlement,
         )
 
     # SaaS layer: user accounts (JWT session, separate from the X-API-Key

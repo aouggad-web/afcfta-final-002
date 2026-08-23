@@ -74,6 +74,7 @@ logger = logging.getLogger(__name__)
 
 import auth as _auth_module
 from cors_config import resolve_cors_origin_regex, resolve_cors_origins
+from entitlement_guard import set_database as set_entitlement_guard_db
 
 # Import routes module for modular endpoint registration
 from routes import register_routes
@@ -356,6 +357,7 @@ async def startup_load_tariff_data():
     _auth_module.set_database(db)
     set_user_auth_db(db)
     set_contact_db(db)
+    set_entitlement_guard_db(db)
     if set_billing_db is not None:
         set_billing_db(db)
     await _seed_admin_account()
@@ -364,6 +366,32 @@ async def startup_load_tariff_data():
     # Idempotence des webhooks Stripe : un event rejoué ne doit être traité
     # qu'une fois (Stripe garantit une livraison at-least-once).
     if db is not None:
+        try:
+            from pymongo import ASCENDING as _ASCENDING
+
+            await db.usage_counters.create_index(
+                [
+                    ("user_id", _ASCENDING),
+                    ("counter_id", _ASCENDING),
+                    ("period_key", _ASCENDING),
+                ],
+                unique=True,
+            )
+        except Exception as e:
+            # Sans cet index, entitlement_guard.check_and_increment_usage()
+            # distingue "premier appel de la période" de "quota déjà épuisé"
+            # via l'échec d'insertion sur la clé composite (user_id,
+            # counter_id, period_key). Sans la contrainte unique, l'insert
+            # réussit systématiquement : ce n'est pas un simple risque de
+            # double comptage sous concurrence, c'est un contournement total
+            # et permanent des quotas d'abonnement (accès illimité de facto).
+            logger.error(
+                "CRITIQUE: index unique usage_counters non créé (%s) — les quotas "
+                "d'entitlement (calculs/jour, modules, accès API) ne sont PLUS "
+                "appliqués du tout, pas seulement comptés en double. Créez l'index "
+                "manuellement avant de considérer la monétisation opérationnelle.",
+                e,
+            )
         try:
             await db.payment_events.create_index("event_id", unique=True)
         except Exception as e:
