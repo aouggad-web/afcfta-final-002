@@ -120,12 +120,13 @@ async def test_require_module_denies_disabled_module():
 
 
 @pytest.mark.asyncio
-async def test_require_module_requires_login_for_quota_capped_module():
+async def test_require_module_allows_anonymous_without_metering():
+    # No identity to meter usage against — an anonymous caller keeps the
+    # module's prior (unmetered) public access rather than being newly
+    # blocked, as long as the module is enabled for the free tier.
     dep = entitlement_guard.require_module("stats")
-    with pytest.raises(HTTPException) as exc:
+    for _ in range(10):
         await _call_dep(dep, None)
-    assert exc.value.status_code == 401
-    assert exc.value.detail["error"] == "login_required"
 
 
 @pytest.mark.asyncio

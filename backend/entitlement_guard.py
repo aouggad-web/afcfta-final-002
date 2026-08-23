@@ -137,17 +137,6 @@ def _forbidden(tier: str, module_id: str) -> HTTPException:
     )
 
 
-def _login_required(module_id: str) -> HTTPException:
-    return HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail={
-            "error": "login_required",
-            "module": module_id,
-            "message": "Connectez-vous pour accéder à ce module (usage limité par compte).",
-        },
-    )
-
-
 def _quota_exceeded(tier: str, module_id: str, access: ModuleAccess) -> HTTPException:
     return HTTPException(
         status_code=status.HTTP_429_TOO_MANY_REQUESTS,
@@ -179,13 +168,14 @@ def require_module(module_id: str):
         access = ent.module(module_id)
         if not access.enabled:
             raise _forbidden(ent.tier, module_id)
-        if access.quota is not None:
-            if user is None:
-                # Entitlements for an unauthenticated caller only ever
-                # resolve to "free", whose modules are all quota-capped —
-                # there's no stable identity to count usage against, so
-                # metered access requires a signed-in account.
-                raise _login_required(module_id)
+        if access.quota is not None and user is not None:
+            # Metering needs a stable identity to count against. An
+            # unauthenticated caller (anonymous visitor, or an API-key-only
+            # integration predating the SaaS accounts) has none — these
+            # module routers were public/API-key-gated before entitlements
+            # existed, so anonymous traffic keeps that prior behavior
+            # (module on/off still enforced above, just not metered) rather
+            # than being newly locked behind a login wall.
             ok = await check_and_increment_usage(user, module_id, access)
             if not ok:
                 raise _quota_exceeded(ent.tier, module_id, access)
@@ -203,11 +193,12 @@ def require_calculations_quota():
         user: Optional[dict] = Depends(get_optional_subscriber),
     ) -> Entitlements:
         ent = resolve_entitlements(user)
-        if ent.daily_calculations is None:
+        if ent.daily_calculations is None or user is None:
+            # Same rationale as require_module: no identity to meter an
+            # anonymous caller against, so it keeps its prior (unmetered)
+            # access rather than being newly blocked.
             return ent
         access = ModuleAccess(enabled=True, quota=ent.daily_calculations, quota_period="day")
-        if user is None:
-            raise _login_required("calculator")
         ok = await check_and_increment_usage(user, "calculator", access)
         if not ok:
             raise _quota_exceeded(ent.tier, "calculator", access)
