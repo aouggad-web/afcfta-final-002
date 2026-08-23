@@ -226,6 +226,13 @@ def _effective_tier(user: Optional[dict], *, now: Optional[datetime] = None) -> 
     return tier
 
 
+def all_tier_entitlements() -> Mapping[str, Entitlements]:
+    """Every tier's `Entitlements`, for callers that need the whole grid (the
+    public `/api/billing/entitlements` endpoint) rather than one resolved
+    user's effective tier."""
+    return _TIER_ENTITLEMENTS
+
+
 def resolve_entitlements(user: Optional[dict], *, now: Optional[datetime] = None) -> Entitlements:
     """Resolve the effective entitlements for a user document. `user=None`
     (an unauthenticated visitor) resolves to the free tier, same as any

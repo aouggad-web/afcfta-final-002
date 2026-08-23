@@ -78,6 +78,7 @@ from cors_config import resolve_cors_origin_regex, resolve_cors_origins
 # Import routes module for modular endpoint registration
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
+from entitlement_guard import set_database as set_entitlement_guard_db
 from routes.calculator import set_database as set_calculator_db
 from routes.contact import set_database as set_contact_db
 from routes.substitution import register_routes as register_substitution_routes
@@ -356,6 +357,7 @@ async def startup_load_tariff_data():
     _auth_module.set_database(db)
     set_user_auth_db(db)
     set_contact_db(db)
+    set_entitlement_guard_db(db)
     if set_billing_db is not None:
         set_billing_db(db)
     await _seed_admin_account()
@@ -364,6 +366,23 @@ async def startup_load_tariff_data():
     # Idempotence des webhooks Stripe : un event rejoué ne doit être traité
     # qu'une fois (Stripe garantit une livraison at-least-once).
     if db is not None:
+        try:
+            from pymongo import ASCENDING as _ASCENDING
+
+            await db.usage_counters.create_index(
+                [
+                    ("user_id", _ASCENDING),
+                    ("counter_id", _ASCENDING),
+                    ("period_key", _ASCENDING),
+                ],
+                unique=True,
+            )
+        except Exception as e:
+            logger.error(
+                "Index unique usage_counters non créé (%s) — les quotas d'entitlement "
+                "risquent d'être comptés en double sous forte concurrence.",
+                e,
+            )
         try:
             await db.payment_events.create_index("event_id", unique=True)
         except Exception as e:

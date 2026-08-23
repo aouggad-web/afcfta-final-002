@@ -89,6 +89,27 @@ def test_checkout_requires_authentication(client):
     assert resp.status_code == 401
 
 
+def test_entitlements_endpoint_lists_all_tiers_and_modules(client):
+    resp = client.get("/billing/entitlements")
+    assert resp.status_code == 200
+    data = resp.json()
+    assert set(data.keys()) == {"free", "starter", "pro", "business"}
+    for tier_data in data.values():
+        assert set(tier_data["modules"].keys()) == {
+            "stats",
+            "production",
+            "logistics",
+            "roo",
+            "tools",
+            "reports",
+        }
+    # Free denies "tools", business unlocks it unlimited — spot-check the
+    # asymmetry the pricing page relies on to render its feature lists.
+    assert data["free"]["modules"]["tools"]["enabled"] is False
+    assert data["business"]["modules"]["tools"]["enabled"] is True
+    assert data["business"]["modules"]["tools"]["quota"] is None
+
+
 def test_checkout_algeria_disabled_returns_501(client, monkeypatch):
     """Chargily non activé : la branche algérienne annonce clairement 501."""
 
