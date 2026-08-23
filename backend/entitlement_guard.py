@@ -80,9 +80,7 @@ def _period_key(quota_period: str, user: dict) -> str:
     return f"cycle:{end}"
 
 
-async def check_and_increment_usage(
-    user: dict, counter_id: str, access: ModuleAccess
-) -> bool:
+async def check_and_increment_usage(user: dict, counter_id: str, access: ModuleAccess) -> bool:
     """Atomically increments the usage counter for (user, counter_id, current
     period) and returns whether the call is within quota. `access.quota is
     None` (unlimited) always returns True without touching the database.
