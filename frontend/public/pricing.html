@@ -723,7 +723,7 @@ async function loadEntitlements() {
       items.push({
         ok: ent.api_access,
         text: ent.api_access
-          ? 'Accès API REST' + (ent.api_monthly_quota ? ' — ' + ent.api_monthly_quota + ' req/mois' : '')
+          ? 'Accès API REST' + (ent.api_monthly_quota != null ? ' — ' + ent.api_monthly_quota + ' req/mois' : '')
           : 'Accès API'
       });
       if (ent.seats_included > 1) {

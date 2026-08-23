@@ -87,9 +87,18 @@ async def check_and_increment_usage(user: dict, counter_id: str, access: ModuleA
     if access.quota is None:
         return True
     if _db is None:
-        # No database to count against — fail closed rather than silently
-        # grant unmetered access.
-        return False
+        # No database to count against. This is an operational outage, not
+        # a subscriber hitting their cap — raising here (rather than
+        # returning False, which callers turn into a 429 "quota_exceeded")
+        # keeps the HTTP status and message honest about the actual cause,
+        # so it doesn't get debugged as a billing/quota issue.
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail={
+                "error": "entitlements_unavailable",
+                "message": "Vérification des quotas indisponible (base de données non configurée).",
+            },
+        )
 
     period_key = _period_key(access.quota_period, user)
     key = {"user_id": user["_id"], "counter_id": counter_id, "period_key": period_key}

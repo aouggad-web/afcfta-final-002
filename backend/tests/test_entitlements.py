@@ -457,6 +457,21 @@ async def test_check_and_increment_usage_unlimited_skips_db():
 
 
 @pytest.mark.asyncio
+async def test_check_and_increment_usage_raises_503_when_db_unset():
+    """A missing database is an operational outage, not a subscriber hitting
+    their cap — must surface as 503, never get silently folded into a 429
+    "quota_exceeded" that would mislead debugging."""
+    entitlement_guard.set_database(None)
+    user = _user("free")
+    access = ModuleAccess(enabled=True, quota=2, quota_period="day")
+
+    with pytest.raises(HTTPException) as exc:
+        await entitlement_guard.check_and_increment_usage(user, "roo", access)
+    assert exc.value.status_code == 503
+    assert exc.value.detail["error"] == "entitlements_unavailable"
+
+
+@pytest.mark.asyncio
 async def test_check_and_increment_usage_concurrent_first_call_only_one_wins():
     """Two requests racing to create the SAME period's counter for the first
     time (quota=1) must not both succeed: the unique index on

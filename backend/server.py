@@ -378,9 +378,18 @@ async def startup_load_tariff_data():
                 unique=True,
             )
         except Exception as e:
+            # Sans cet index, entitlement_guard.check_and_increment_usage()
+            # distingue "premier appel de la période" de "quota déjà épuisé"
+            # via l'échec d'insertion sur la clé composite (user_id,
+            # counter_id, period_key). Sans la contrainte unique, l'insert
+            # réussit systématiquement : ce n'est pas un simple risque de
+            # double comptage sous concurrence, c'est un contournement total
+            # et permanent des quotas d'abonnement (accès illimité de facto).
             logger.error(
-                "Index unique usage_counters non créé (%s) — les quotas d'entitlement "
-                "risquent d'être comptés en double sous forte concurrence.",
+                "CRITIQUE: index unique usage_counters non créé (%s) — les quotas "
+                "d'entitlement (calculs/jour, modules, accès API) ne sont PLUS "
+                "appliqués du tout, pas seulement comptés en double. Créez l'index "
+                "manuellement avant de considérer la monétisation opérationnelle.",
                 e,
             )
         try:
