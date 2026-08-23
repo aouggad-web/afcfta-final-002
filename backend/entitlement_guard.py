@@ -25,7 +25,7 @@ from bson.errors import InvalidId
 from entitlements import Entitlements, ModuleAccess, resolve_entitlements
 from fastapi import Depends, HTTPException, Request, status
 from pymongo import ReturnDocument
-from pymongo.errors import DuplicateKeyError
+from pymongo.errors import DuplicateKeyError, PyMongoError
 from services.user_auth_service import decode_access_token
 
 _db = None
@@ -61,7 +61,15 @@ async def get_optional_subscriber(request: Request) -> Optional[dict]:
     except (InvalidId, TypeError, KeyError):
         return None
 
-    return await _db.users.find_one({"_id": user_id})
+    try:
+        return await _db.users.find_one({"_id": user_id})
+    except PyMongoError:
+        # Motor connects lazily, so a Mongo outage first surfaces here
+        # rather than at startup — this dependency promises never to
+        # raise, so an unreachable database falls back to `None` (free
+        # tier) rather than turning every session-cookie-bearing request
+        # into an unstructured 500.
+        return None
 
 
 def _period_key(quota_period: str, user: dict) -> str:
@@ -103,31 +111,46 @@ async def check_and_increment_usage(user: dict, counter_id: str, access: ModuleA
     period_key = _period_key(access.quota_period, user)
     key = {"user_id": user["_id"], "counter_id": counter_id, "period_key": period_key}
 
-    # Atomic "increment only if still under quota": the filter re-checks
-    # `count < quota` as part of the same update, so concurrent requests
-    # can't both read a stale count and both succeed past the limit.
-    updated = await _db.usage_counters.find_one_and_update(
-        {**key, "count": {"$lt": access.quota}},
-        {"$inc": {"count": 1}},
-        return_document=ReturnDocument.AFTER,
-    )
-    if updated is not None:
-        return True
+    # Two attempts: the second only runs if the first's insert_one lost a
+    # first-of-the-period race (see below) — never because a real quota
+    # denial should be retried.
+    for _attempt in range(2):
+        # Atomic "increment only if still under quota": the filter re-checks
+        # `count < quota` as part of the same update, so concurrent requests
+        # can't both read a stale count and both succeed past the limit.
+        updated = await _db.usage_counters.find_one_and_update(
+            {**key, "count": {"$lt": access.quota}},
+            {"$inc": {"count": 1}},
+            return_document=ReturnDocument.AFTER,
+        )
+        if updated is not None:
+            return True
 
-    # No document matched the filter above — either this is the first call
-    # of the period (no document yet, allow it and seed count=1) or the
-    # quota is already exhausted (document exists with count >= quota, deny
-    # it). These two cases must NOT be conflated: unconditionally upserting
-    # here would let every call past the quota re-create/no-op the same
-    # maxed-out document and always return True, defeating the cap entirely.
-    # The unique index on (user_id, counter_id, period_key) makes the
-    # insert itself the atomic "does it already exist" check — a concurrent
-    # first call racing this one loses the insert and is correctly denied.
-    try:
-        await _db.usage_counters.insert_one({**key, "count": 1})
-        return True
-    except DuplicateKeyError:
-        return False
+        # No document matched the filter above — either this is the first
+        # call of the period (no document yet) or the quota is already
+        # exhausted (document exists with count >= quota). These two cases
+        # must NOT be conflated: unconditionally upserting here would let
+        # every call past the quota re-create/no-op the same maxed-out
+        # document and always return True, defeating the cap entirely. The
+        # unique index on (user_id, counter_id, period_key) makes the
+        # insert itself the atomic "does it already exist" check.
+        try:
+            await _db.usage_counters.insert_one({**key, "count": 1})
+            return True
+        except DuplicateKeyError:
+            # Ambiguous: either the quota was genuinely already exhausted
+            # (correctly deny), or another concurrent request created the
+            # counter first — meaning THIS request's find_one_and_update
+            # above ran too early (against a not-yet-existing document) and
+            # was never actually checked against the now-real count. With a
+            # quota > 1 the latter case still has room and must not be
+            # denied as a false first-of-the-period 429, so loop once more
+            # to re-run the conditional increment against the document that
+            # now exists — this second find_one_and_update is the real
+            # quota check for this request.
+            continue
+
+    return False
 
 
 def _forbidden(tier: str, module_id: str) -> HTTPException:

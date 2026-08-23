@@ -496,6 +496,31 @@ async def test_check_and_increment_usage_concurrent_first_call_only_one_wins():
         entitlement_guard.set_database(None)
 
 
+@pytest.mark.asyncio
+async def test_check_and_increment_usage_first_call_race_retries_when_quota_allows_it():
+    """Same first-of-the-period race as above, but with quota=5: the losing
+    request has plenty of allowance left and must NOT be denied just because
+    its own find_one_and_update ran before the counter document existed —
+    it should retry the conditional increment against the now-real
+    document and succeed, landing both requests within quota."""
+    db = _FakeDB(yield_before_return=True)
+    entitlement_guard.set_database(db)
+    try:
+        user = _user("free")
+        access = ModuleAccess(enabled=True, quota=5, quota_period="day")
+
+        results = await asyncio.gather(
+            entitlement_guard.check_and_increment_usage(user, "roo", access),
+            entitlement_guard.check_and_increment_usage(user, "roo", access),
+        )
+
+        assert results == [True, True]
+        doc = await db.usage_counters.find_one({"user_id": user["_id"], "counter_id": "roo"})
+        assert doc["count"] == 2
+    finally:
+        entitlement_guard.set_database(None)
+
+
 # ── Bout en bout : vraie route FastAPI + session JWT ─────────────────────────
 
 

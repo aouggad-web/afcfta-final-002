@@ -8,7 +8,8 @@ import logging
 from datetime import date
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from entitlement_guard import require_calculations_quota
+from fastapi import APIRouter, Depends, HTTPException, Query
 from services.authentic_tariff_service import (
     calculate_import_taxes,
     get_administrative_formalities,
@@ -225,7 +226,7 @@ async def get_formalities_endpoint(
     }
 
 
-@router.post("/calculate")
+@router.post("/calculate", dependencies=[Depends(require_calculations_quota())])
 async def calculate_taxes_endpoint(
     country_iso3: str = Query(..., description="ISO3 country code"),
     hs_code: str = Query(..., description="HS code (6-12 digits)"),
@@ -357,7 +358,9 @@ async def calculate_taxes_endpoint(
     return result
 
 
-@router.get("/calculate/{country_iso3}/{hs_code}")
+@router.get(
+    "/calculate/{country_iso3}/{hs_code}", dependencies=[Depends(require_calculations_quota())]
+)
 async def calculate_taxes_get_endpoint(
     country_iso3: str,
     hs_code: str,
