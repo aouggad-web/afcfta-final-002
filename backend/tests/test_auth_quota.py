@@ -73,6 +73,42 @@ def test_require_auth_rejects_unknown_key_when_db_configured():
     assert exc.value.status_code == 401
 
 
+def test_require_auth_rejects_no_key_no_session_when_public_access_disabled(monkeypatch):
+    monkeypatch.setattr(auth, "PUBLIC_DATA_ACCESS", False)
+    auth.set_database(_FakeDB([]))
+    with pytest.raises(HTTPException) as exc:
+        asyncio.run(auth.require_auth(x_api_key=None))
+    assert exc.value.status_code == 401
+
+
+def test_require_auth_accepts_valid_jwt_session_when_public_access_disabled(monkeypatch):
+    """The entitlement-gated module routers put `_auth` before the entitlement
+    dependency in the FastAPI dependency chain — if `_auth` 401s a signed-in
+    SaaS subscriber for lacking an X-API-Key, `entitlement_guard.require_module`
+    never even runs, and the JWT-based subscription gating this PR adds is
+    dead on any deployment with PUBLIC_DATA_ACCESS=false. A valid session
+    cookie must let the request through here so entitlement_guard can resolve
+    the subscriber's real tier downstream."""
+    monkeypatch.setenv("JWT_SECRET", "test-secret")
+    monkeypatch.setattr(auth, "PUBLIC_DATA_ACCESS", False)
+    auth.set_database(_FakeDB([]))
+
+    from services.user_auth_service import create_access_token
+
+    token = create_access_token("507f1f77bcf86cd799439011", "subscriber@example.com")
+
+    result = asyncio.run(auth.require_auth(x_api_key=None, access_token=token))
+    assert result["tier"] == "subscriber"
+
+
+def test_require_auth_rejects_invalid_jwt_session_when_public_access_disabled(monkeypatch):
+    monkeypatch.setattr(auth, "PUBLIC_DATA_ACCESS", False)
+    auth.set_database(_FakeDB([]))
+    with pytest.raises(HTTPException) as exc:
+        asyncio.run(auth.require_auth(x_api_key=None, access_token="not-a-real-jwt"))
+    assert exc.value.status_code == 401
+
+
 def test_check_ai_quota_blocks_when_no_db():
     with pytest.raises(HTTPException) as exc:
         asyncio.run(auth.check_ai_quota(x_api_key="whatever"))

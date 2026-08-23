@@ -268,7 +268,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <div class="plan-per">pour toujours · sans carte</div>
     <div class="annual-price" id="annual-free"></div>
     <div class="plan-desc">Idéal pour découvrir les opportunités commerciales AfCFTA et faire vos premiers calculs.</div>
-    <div class="plan-items">
+    <div class="plan-items" id="items-free">
       <div class="plan-item ok">10 calculs de tarifs par jour</div>
       <div class="plan-item ok">54 pays membres AfCFTA</div>
       <div class="plan-item ok">Règles d'origine basiques</div>
@@ -287,7 +287,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <div class="plan-per" id="per-starter">facturé mensuellement</div>
     <div class="annual-price" id="annual-starter"></div>
     <div class="plan-desc">Pour les indépendants et petits importateurs/exportateurs qui veulent des calculs quotidiens généreux.</div>
-    <div class="plan-items">
+    <div class="plan-items" id="items-starter">
       <div class="plan-item ok">40 calculs de tarifs par jour</div>
       <div class="plan-item ok">54 pays membres AfCFTA</div>
       <div class="plan-item ok">Règles d'origine complètes</div>
@@ -307,7 +307,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <div class="plan-per" id="per-pro">facturé mensuellement</div>
     <div class="annual-price" id="annual-pro"></div>
     <div class="plan-desc">Pour les exportateurs, traders et consultants qui ont besoin de données illimitées et d'exports.</div>
-    <div class="plan-items">
+    <div class="plan-items" id="items-pro">
       <div class="plan-item ok">100 calculs de tarifs par jour</div>
       <div class="plan-item ok">Export CSV + Excel + PDF</div>
       <div class="plan-item ok">54 profils économiques complets</div>
@@ -326,7 +326,7 @@ footer{border-top:1px solid var(--b);margin:64px 0 0;padding:28px 48px;display:f
     <div class="plan-per" id="per-biz">facturé mensuellement</div>
     <div class="annual-price" id="annual-biz"></div>
     <div class="plan-desc">Pour les entreprises, cabinets de conseil et plateformes qui intègrent les données ZLECAf dans leurs outils.</div>
-    <div class="plan-items">
+    <div class="plan-items" id="items-business">
       <div class="plan-item ok">Tout du plan Pro</div>
       <div class="plan-item ok">Calculs de tarifs illimités</div>
       <div class="plan-item ok">API REST — 1 000 req/mois</div>
@@ -673,6 +673,83 @@ async function loadPricing() {
   }
 }
 document.addEventListener('DOMContentLoaded', loadPricing);
+
+// Libellés FR des modules `entitlements.MODULES` (backend/entitlements.py),
+// dans l'ordre où ils doivent apparaître dans la liste de fonctionnalités.
+const MODULE_LABELS = {
+  stats: 'Statistiques commerciales',
+  production: 'Données de production',
+  logistics: 'Données logistiques (ports, corridors)',
+  roo: "Règles d'origine",
+  tools: 'Outils & téléchargements tarifaires',
+  reports: 'Rapports d\'opportunités'
+};
+const PLAN_TO_ITEMS_ID = { free: 'items-free', starter: 'items-starter', pro: 'items-pro', business: 'items-business' };
+
+function formatQuota(quota, period) {
+  if (quota === null || quota === undefined) return 'illimité';
+  const perFr = { day: 'jour', month: 'mois', cycle: 'cycle de facturation' };
+  return quota + ' / ' + (perFr[period] || period);
+}
+
+// Génère la liste de fonctionnalités de chaque formule à partir de
+// `/api/billing/entitlements` (source unique backend/entitlements.py), pour
+// que cette page ne puisse plus diverger de ce qui est réellement appliqué
+// par `entitlement_guard.require_module` sur les routes. En cas d'échec, la
+// liste statique déjà présente dans le HTML reste affichée telle quelle.
+async function loadEntitlements() {
+  try {
+    const res = await fetch('/api/billing/entitlements', { credentials: 'include' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    Object.keys(PLAN_TO_ITEMS_ID).forEach(function (tier) {
+      const ent = data[tier];
+      const container = document.getElementById(PLAN_TO_ITEMS_ID[tier]);
+      if (!ent || !container) return;
+
+      const items = [];
+      items.push({
+        ok: true,
+        text: ent.daily_calculations === null
+          ? 'Calculs de tarifs illimités'
+          : ent.daily_calculations + ' calculs de tarifs par jour'
+      });
+      items.push({
+        ok: ent.export_formats.length > 0,
+        text: ent.export_formats.length > 0
+          ? 'Export ' + ent.export_formats.map(function (f) { return f.toUpperCase(); }).join(' + ')
+          : 'Export CSV / Excel / PDF'
+      });
+      items.push({
+        ok: ent.api_access,
+        text: ent.api_access
+          ? 'Accès API REST' + (ent.api_monthly_quota != null ? ' — ' + ent.api_monthly_quota + ' req/mois' : '')
+          : 'Accès API'
+      });
+      if (ent.seats_included > 1) {
+        items.push({ ok: true, text: ent.seats_included + ' utilisateurs inclus' });
+      }
+      Object.keys(MODULE_LABELS).forEach(function (moduleId) {
+        const access = ent.modules[moduleId];
+        if (!access) return;
+        const label = MODULE_LABELS[moduleId];
+        items.push({
+          ok: access.enabled,
+          text: access.enabled
+            ? label + (access.quota !== null ? ' (' + formatQuota(access.quota, access.quota_period) + ')' : '')
+            : label
+        });
+      });
+
+      container.innerHTML = items.map(function (item) {
+        return '<div class="plan-item ' + (item.ok ? 'ok' : 'no') + '">' + item.text + '</div>';
+      }).join('');
+    });
+  } catch (e) {
+    console.warn('Entitlements serveur indisponibles, liste statique conservée:', e);
+  }
+}
+document.addEventListener('DOMContentLoaded', loadEntitlements);
 
 function toggleFaq(el) {
   const open = el.classList.toggle('open');

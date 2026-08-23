@@ -21,8 +21,9 @@ import os
 from datetime import datetime, timezone
 from typing import Annotated, Optional
 
-from fastapi import Depends, Header, HTTPException, status
+from fastapi import Cookie, Depends, Header, HTTPException, status
 from pymongo import ReturnDocument
+from services.user_auth_service import decode_access_token
 
 # Tariff/trade data is public information — keep data endpoints accessible
 # without a key by default, even once MongoDB (and therefore key validation)
@@ -55,6 +56,21 @@ def _hash_key(raw_key: str) -> str:
     return hashlib.sha256(raw_key.encode()).hexdigest()
 
 
+def _has_valid_jwt_session(
+    access_token_cookie: Optional[str], authorization_header: Optional[str]
+) -> bool:
+    """Best-effort check for a valid SaaS JWT session (cookie or bearer),
+    independent of `services.user_auth_service.get_current_user` — this
+    module never needs the user document itself, only proof that a signed-in
+    subscriber, not a bare browser request, is behind the call."""
+    token = access_token_cookie
+    if not token and authorization_header and authorization_header.startswith("Bearer "):
+        token = authorization_header[7:]
+    if not token:
+        return False
+    return decode_access_token(token) is not None
+
+
 # ---------------------------------------------------------------------------
 # Dependencies
 # ---------------------------------------------------------------------------
@@ -62,6 +78,8 @@ def _hash_key(raw_key: str) -> str:
 
 async def require_auth(
     x_api_key: Annotated[Optional[str], Header()] = None,
+    access_token: Annotated[Optional[str], Cookie()] = None,
+    authorization: Annotated[Optional[str], Header()] = None,
 ) -> dict:
     """Validate X-API-Key header; return the key document on success.
 
@@ -73,6 +91,14 @@ async def require_auth(
     if not x_api_key:
         if PUBLIC_DATA_ACCESS:
             return {"tier": "public", "no_key": True}
+        if _has_valid_jwt_session(access_token, authorization):
+            # A signed-in SaaS subscriber (entitlement_guard resolves their
+            # actual tier downstream) has no reason to also hold an X-API-Key
+            # — without this, PUBLIC_DATA_ACCESS=false would 401 every
+            # browser session on the entitlement-gated module routers before
+            # entitlement_guard.require_module() ever runs, defeating the
+            # JWT-based subscription gating entirely in that deployment mode.
+            return {"tier": "subscriber", "jwt_session": True}
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Missing X-API-Key header",

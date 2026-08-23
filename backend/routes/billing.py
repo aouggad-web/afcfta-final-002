@@ -26,6 +26,7 @@ from typing import Literal, Optional
 
 import pricing
 from bson import ObjectId
+from entitlements import all_tier_entitlements
 from fastapi import APIRouter, HTTPException, Request, status
 from pydantic import BaseModel
 from pymongo.errors import DuplicateKeyError
@@ -163,6 +164,38 @@ async def get_pricing():
     return {
         "currencies": {"stripe": "EUR", "chargily": "DZD"},
         "plans": pricing.grid(),
+    }
+
+
+@router.get("/entitlements")
+async def get_entitlements():
+    """Ce que chaque formule débloque réellement (source unique `entitlements.py`).
+
+    Permet à la page de tarifs de générer sa liste de fonctionnalités à partir
+    du même modèle que celui qui gate les routes côté backend
+    (`entitlement_guard.require_module`), au lieu d'une liste HTML codée en
+    dur qui pourrait diverger. Aucune authentification : ce sont les règles
+    des formules, pas les droits d'un utilisateur précis — le tier "free"
+    inclus ici est celui d'un visiteur non connecté.
+    """
+    return {
+        tier: {
+            "daily_calculations": ent.daily_calculations,
+            "monthly_country_profiles": ent.monthly_country_profiles,
+            "export_formats": list(ent.export_formats),
+            "api_access": ent.api_access,
+            "api_monthly_quota": ent.api_monthly_quota,
+            "seats_included": ent.seats_included,
+            "modules": {
+                module_id: {
+                    "enabled": access.enabled,
+                    "quota": access.quota,
+                    "quota_period": access.quota_period,
+                }
+                for module_id, access in ent.modules.items()
+            },
+        }
+        for tier, ent in all_tier_entitlements().items()
     }
 
 

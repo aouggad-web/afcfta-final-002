@@ -226,6 +226,20 @@ def _effective_tier(user: Optional[dict], *, now: Optional[datetime] = None) -> 
     return tier
 
 
+_ALL_TIER_ENTITLEMENTS_VIEW = MappingProxyType(_TIER_ENTITLEMENTS)
+
+
+def all_tier_entitlements() -> Mapping[str, Entitlements]:
+    """Every tier's `Entitlements`, for callers that need the whole grid (the
+    public `/api/billing/entitlements` endpoint) rather than one resolved
+    user's effective tier. Read-only view — same rationale as freezing
+    `Entitlements.modules`: this is the shared singleton grid every caller
+    reads, not a defensive copy, so a caller mutating the returned mapping
+    (e.g. `del all_tier_entitlements()["business"]`) would corrupt it for
+    every subsequent resolve_entitlements() call."""
+    return _ALL_TIER_ENTITLEMENTS_VIEW
+
+
 def resolve_entitlements(user: Optional[dict], *, now: Optional[datetime] = None) -> Entitlements:
     """Resolve the effective entitlements for a user document. `user=None`
     (an unauthenticated visitor) resolves to the free tier, same as any
