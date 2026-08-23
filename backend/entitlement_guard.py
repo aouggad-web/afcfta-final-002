@@ -183,6 +183,39 @@ def require_module(module_id: str):
     return _dependency
 
 
+def require_api_access():
+    """FastAPI dependency for `Entitlements.api_access`/`api_monthly_quota`
+    (currently only Business: unlocked, 1000 req/month) — a per-tier field,
+    not a `MODULES` entry, same shape as `require_calculations_quota`.
+
+    Provisional wiring for pre-production testing: gates the API v2 router
+    for a signed-in SaaS subscriber (403 if their tier doesn't include API
+    access, 429 past the monthly quota), but — same rationale as
+    `require_module` — an anonymous/API-key-only caller keeps its prior,
+    unmetered access rather than being newly locked out. Once real API
+    subscriptions ship, this should require identity outright instead of
+    falling back for anonymous callers.
+    """
+
+    async def _dependency(
+        request: Request,
+        user: Optional[dict] = Depends(get_optional_subscriber),
+    ) -> Entitlements:
+        ent = resolve_entitlements(user)
+        if user is None:
+            return ent
+        if not ent.api_access:
+            raise _forbidden(ent.tier, "api")
+        if ent.api_monthly_quota is not None:
+            access = ModuleAccess(enabled=True, quota=ent.api_monthly_quota, quota_period="month")
+            ok = await check_and_increment_usage(user, "api", access)
+            if not ok:
+                raise _quota_exceeded(ent.tier, "api", access)
+        return ent
+
+    return _dependency
+
+
 def require_calculations_quota():
     """FastAPI dependency for the tariff calculator's `daily_calculations`
     limit — a per-tier field on `Entitlements`, not a `MODULES` entry."""

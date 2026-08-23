@@ -26,7 +26,7 @@ MIGRATION STATUS:
 import logging
 
 from auth import require_admin, require_auth
-from entitlement_guard import require_calculations_quota, require_module
+from entitlement_guard import require_api_access, require_calculations_quota, require_module
 from fastapi import APIRouter, Depends
 
 _auth = [Depends(require_auth)]
@@ -48,6 +48,7 @@ _roo_entitlement = [Depends(require_module("roo"))]
 _tools_entitlement = [Depends(require_module("tools"))]
 _reports_entitlement = [Depends(require_module("reports"))]
 _calculator_entitlement = [Depends(require_calculations_quota())]
+_api_entitlement = [Depends(require_api_access())]
 
 _logger = logging.getLogger(__name__)
 
@@ -561,7 +562,9 @@ def register_routes(api_router: APIRouter):
             uma_regions_router, tags=["UMA North Africa Regions"], dependencies=_auth
         )
     if API_V2_AVAILABLE:
-        api_router.include_router(api_v2_router, tags=["API v2"], dependencies=_auth)
+        api_router.include_router(
+            api_v2_router, tags=["API v2"], dependencies=_auth + _api_entitlement
+        )
     if AI_INTELLIGENCE_AVAILABLE:
         api_router.include_router(
             ai_intelligence_router, tags=["AI Intelligence"], dependencies=_auth

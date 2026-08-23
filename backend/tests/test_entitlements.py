@@ -582,3 +582,59 @@ async def test_route_business_tier_tools_access_is_unmetered(fake_db, monkeypatc
 
     for _ in range(25):
         assert client.get("/probe").status_code == 200
+
+
+# ── require_api_access : Entitlements.api_access / api_monthly_quota ────────
+
+
+def _build_api_app():
+    app = FastAPI()
+
+    @app.get("/api-probe")
+    async def api_probe(ent=Depends(entitlement_guard.require_api_access())):
+        return {"tier": ent.tier}
+
+    return app
+
+
+@pytest.mark.asyncio
+async def test_api_access_denied_below_business(fake_db, monkeypatch):
+    monkeypatch.setenv("JWT_SECRET", "test-secret")
+    user = _user("pro")  # api_access is False below business
+    fake_db.users = _UsersCollection([user])
+
+    app = _build_api_app()
+    client = _client_with_session(app, str(user["_id"]))
+
+    resp = client.get("/api-probe")
+    assert resp.status_code == 403
+    assert resp.json()["detail"]["module"] == "api"
+
+
+@pytest.mark.asyncio
+async def test_api_access_anonymous_keeps_prior_unmetered_access(fake_db):
+    # No JWT session at all — same "keep prior behavior" fallback as
+    # require_module, so an existing API-key-only integration isn't newly
+    # locked out of api_v2 by this provisional wiring.
+    dep = entitlement_guard.require_api_access()
+    for _ in range(5):
+        await dep(request=None, user=None)
+
+
+@pytest.mark.asyncio
+async def test_api_access_business_meters_monthly_quota_then_429(fake_db, monkeypatch):
+    monkeypatch.setenv("JWT_SECRET", "test-secret")
+    user = _user("business")  # api_monthly_quota == 1000
+    fake_db.users = _UsersCollection([user])
+    entitlement_guard.set_database(_FakeDB(users=[user]))
+
+    dep = entitlement_guard.require_api_access()
+    ent = resolve_entitlements(user)
+    assert ent.api_monthly_quota == 1000
+
+    for _ in range(1000):
+        await dep(request=None, user=user)
+    with pytest.raises(HTTPException) as exc:
+        await dep(request=None, user=user)
+    assert exc.value.status_code == 429
+    assert exc.value.detail["error"] == "quota_exceeded"
