@@ -74,11 +74,11 @@ logger = logging.getLogger(__name__)
 
 import auth as _auth_module
 from cors_config import resolve_cors_origin_regex, resolve_cors_origins
+from entitlement_guard import set_database as set_entitlement_guard_db
 
 # Import routes module for modular endpoint registration
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
-from entitlement_guard import set_database as set_entitlement_guard_db
 from routes.calculator import set_database as set_calculator_db
 from routes.contact import set_database as set_contact_db
 from routes.substitution import register_routes as register_substitution_routes

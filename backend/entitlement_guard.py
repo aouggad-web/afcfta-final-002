@@ -22,11 +22,10 @@ from typing import Optional
 
 from bson import ObjectId
 from bson.errors import InvalidId
+from entitlements import Entitlements, ModuleAccess, resolve_entitlements
 from fastapi import Depends, HTTPException, Request, status
 from pymongo import ReturnDocument
 from pymongo.errors import DuplicateKeyError
-
-from entitlements import Entitlements, ModuleAccess, resolve_entitlements
 from services.user_auth_service import decode_access_token
 
 _db = None
