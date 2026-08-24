@@ -353,7 +353,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     // overrideHsCode : recalcul immédiat après sélection d'une position
     // nationale dans la liste (sinon l'état hsCode n'est pas encore à jour
     // au moment de cet appel, à cause du batching React setState/onClick).
-    const hsCodeToUse = overrideHsCode || hsCode;
+    // Attention : le bouton « Calculer » câble `onClick={calculateTariff}`,
+    // donc React passe l'événement de clic comme premier argument. On ne
+    // retient donc `overrideHsCode` que si c'est réellement une chaîne de
+    // code ; sinon (SyntheticEvent) `.replace` planterait et aucun résultat
+    // ne s'afficherait.
+    const hsCodeToUse =
+      typeof overrideHsCode === 'string' && overrideHsCode ? overrideHsCode : hsCode;
     if (!originCountry || !destinationCountry || !hsCodeToUse || !value) {
       toast({
         title: t.missingFields,
@@ -1110,7 +1116,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           {/* Boutons Calculer / Réinitialiser */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Button 
-              onClick={calculateTariff}
+              onClick={() => calculateTariff()}
               disabled={loading}
               data-testid="calculate-tariff-button"
               className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg hover:shadow-xl transition-all"
