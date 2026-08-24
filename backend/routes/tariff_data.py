@@ -8,6 +8,7 @@ import zipfile
 from typing import Annotated, List, Optional
 
 from auth import require_admin
+from entitlement_guard import require_module
 from etl.hs_sections_headings import (
     get_hs4_heading,
     get_rangee_number,
@@ -22,6 +23,18 @@ from services.tariff_data_collector import get_collector
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/tariff-data", tags=["Tariff Data Collection"])
+
+# The router as a whole is gated on the tier on/off switch only (see
+# routes/__init__.py, require_module_enabled("tools")) — most endpoints here
+# just read an already-generated CSV/JSON export or the in-memory collector
+# cache. The three endpoints below are the exception: on a cache miss they
+# call collector.collect_country_tariffs() (recomputes every HS6 line for the
+# country from the loaded tariff modules) and persist it via
+# save_country_tariffs() — expensive and a disk write, unlike the rest of
+# this router. They keep the metered require_module("tools") in addition to
+# the router-level gate, so a Starter caller can't bypass its 10/day tools
+# cap by hitting these instead of the admin-only /collect endpoints.
+_tools_metered = [Depends(require_module("tools"))]
 
 EXPORTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "exports")
 TARIFFS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "tariffs")
@@ -73,7 +86,7 @@ async def list_collected_countries():
     }
 
 
-@router.get("/{country_code}")
+@router.get("/{country_code}", dependencies=_tools_metered)
 async def get_country_tariff_data(
     country_code: str,
     chapter: Optional[str] = Query(None, description="Filter by HS chapter (2 digits)"),
@@ -157,7 +170,7 @@ async def get_monitoring_stats():
     return stats
 
 
-@router.get("/{country_code}/summary")
+@router.get("/{country_code}/summary", dependencies=_tools_metered)
 async def get_country_tariff_summary(country_code: str):
     collector = get_collector()
     data = collector.load_country_tariffs(country_code.upper())
@@ -733,7 +746,7 @@ def _safe_filename_part(name: str) -> str:
     return re.sub(r"[^\w\-]", "_", name)
 
 
-@router.get("/download-json/{country_code}")
+@router.get("/download-json/{country_code}", dependencies=_tools_metered)
 async def download_country_json(country_code: str):
     # Validate country code against the known allowlist
     cc = next((k for k in COUNTRY_NAMES if k == country_code.upper()), None)

@@ -317,14 +317,19 @@ def test_every_tier_declares_every_module():
 def test_free_tier_module_caps_and_denials():
     ent = resolve_entitlements(None)
 
+    # stats/production/logistics/roo are browse/reference modules — gated by
+    # require_module_enabled() (on/off only, never metered), so their
+    # published quota must be unlimited to match runtime enforcement.
     stats = ent.module("stats")
     assert stats.enabled is True
-    assert stats.quota == 20
-    assert stats.quota_period == "month"
+    assert stats.quota is None
+    assert stats.quota_period is None
 
     assert ent.module("tools").enabled is False
-    assert ent.module("roo").quota == 60
-    assert ent.module("roo").quota_period == "day"
+    roo = ent.module("roo")
+    assert roo.enabled is True
+    assert roo.quota is None
+    assert roo.quota_period is None
 
 
 def test_pro_tier_mixes_unlimited_and_capped_modules():
@@ -335,20 +340,24 @@ def test_pro_tier_mixes_unlimited_and_capped_modules():
     assert production.quota is None  # unlimited
     assert production.quota_period is None
 
+    # logistics is unlimited-when-enabled at every tier (browse module, see
+    # above) — "mixes" here refers to tools/reports below staying capped.
     logistics = ent.module("logistics")
-    assert logistics.quota == 300
-    assert logistics.quota_period == "day"
+    assert logistics.enabled is True
+    assert logistics.quota is None
+    assert logistics.quota_period is None
+
+    assert ent.module("reports").quota == 30
 
 
 def test_business_tier_unlimited_modules_and_capped_reports():
     ent = resolve_entitlements({"subscription_tier": "business", "subscription_status": "active"})
 
-    for module_id in ("production", "logistics", "roo", "tools"):
+    for module_id in ("stats", "production", "logistics", "roo", "tools"):
         assert ent.module(module_id).enabled is True
         assert ent.module(module_id).quota is None
 
     assert ent.module("reports").quota == 200
-    assert ent.module("stats").quota == 300
 
 
 def test_unknown_module_fails_closed_to_denied():
@@ -419,9 +428,13 @@ async def test_require_module_allows_anonymous_without_metering():
 
 @pytest.mark.asyncio
 async def test_require_module_allows_within_quota_then_blocks():
-    dep = entitlement_guard.require_module("stats")
-    user = _user("starter")  # stats capped at 5/day for starter
-    for _ in range(5):
+    # "stats"/"production"/"logistics"/"roo" are unlimited-when-enabled at
+    # every tier now (see require_module_enabled) — "reports" is the module
+    # that stays genuinely metered per request, so it's the one that still
+    # exercises this blocking behavior.
+    dep = entitlement_guard.require_module("reports")
+    user = _user("starter")  # reports capped at 10/day for starter
+    for _ in range(10):
         await _call_dep(dep, user)
     with pytest.raises(HTTPException) as exc:
         await _call_dep(dep, user)
@@ -453,10 +466,13 @@ async def test_require_module_enabled_denies_disabled_module():
 
 @pytest.mark.asyncio
 async def test_require_module_enabled_never_meters_capped_module():
-    # A single logistics screen fans out to many GETs; enablement-only gating
-    # must let a signed-in free user (logistics capped at 5/day for the metered
-    # variant) load it any number of times without being blocked.
-    dep = entitlement_guard.require_module_enabled("logistics")
+    # A single logistics/stats/production/roo screen fans out to many GETs;
+    # enablement-only gating must let a signed-in free user load it any
+    # number of times without being blocked. Exercised here against "reports"
+    # (still genuinely capped at 2/day via the metered require_module()) to
+    # prove require_module_enabled() ignores a module's quota entirely,
+    # rather than happening to pass because the module has none.
+    dep = entitlement_guard.require_module_enabled("reports")
     user = _user("free")
     for _ in range(50):
         await _call_dep(dep, user)
@@ -604,13 +620,16 @@ async def test_route_denies_free_tier_subscriber_jwt(fake_db, monkeypatch):
 @pytest.mark.asyncio
 async def test_route_meters_quota_for_logged_in_user_then_429(fake_db, monkeypatch):
     monkeypatch.setenv("JWT_SECRET", "test-secret")
-    user = _user("starter")  # stats capped at 5/day for starter
+    # "stats" is a browse module (unlimited when enabled, see entitlements.py)
+    # — "reports" is the module that still carries a real per-request quota,
+    # so it's the one that exercises require_module()'s HTTP-level 429 path.
+    user = _user("starter")  # reports capped at 10/day for starter
     fake_db.users = _UsersCollection([user])
 
-    app = _build_app("stats")
+    app = _build_app("reports")
     client = _client_with_session(app, str(user["_id"]))
 
-    for _ in range(5):
+    for _ in range(10):
         assert client.get("/probe").status_code == 200
     resp = client.get("/probe")
     assert resp.status_code == 429
