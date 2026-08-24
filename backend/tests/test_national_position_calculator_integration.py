@@ -16,7 +16,6 @@ chemin get_sub_positions → get_tariff_line → calculate_import_taxes.
 """
 
 import pytest
-
 from services.authentic_tariff_service import (
     calculate_import_taxes,
     get_sub_positions,
@@ -43,9 +42,9 @@ def test_guinea_7612900000_national_position_found_and_selectable():
     assert result["rates"]["dd_rate_pct"] == 20.0, "DD attendu 20% — pas de taux 0% artificiel"
     assert result["rates"]["vat_rate_pct"] == 18.0
     assert result["rates"]["other_taxes_pct"] == 0.5
-    assert result["sub_position"]["code"] == "7612900000", (
-        "code utilisé doit être la position nationale, pas le SH6 parent"
-    )
+    assert (
+        result["sub_position"]["code"] == "7612900000"
+    ), "code utilisé doit être la position nationale, pas le SH6 parent"
 
 
 def test_guinea_sibling_position_not_substituted_by_parent_rate():
