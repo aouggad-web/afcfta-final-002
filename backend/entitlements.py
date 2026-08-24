@@ -91,10 +91,24 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         api_monthly_quota=None,
         seats_included=1,
         modules={
-            "stats": _capped(20, "month"),
-            "production": _capped(10, "day"),
-            "logistics": _capped(5, "day"),
-            "roo": _capped(60, "day"),
+            # stats/production/logistics/roo are browse/reference modules gated
+            # by entitlement_guard.require_module_enabled() — the tier on/off
+            # switch only, never metered per request (a single screen fans out
+            # to many GETs; metering broke the very first page load — see the
+            # module docstring). Publishing a quota here that enforcement never
+            # checks would let this grid, and the pricing page built from it,
+            # advertise limits nobody hits. "unlimited when enabled" below is
+            # therefore the true runtime behavior, not an aspirational cap.
+            "stats": _UNLIMITED,
+            "production": _UNLIMITED,
+            "logistics": _UNLIMITED,
+            "roo": _UNLIMITED,
+            # "tools" (tariff data downloads) keeps real per-request metering:
+            # unlike the browse modules above, some of its endpoints trigger
+            # tariff collection + a disk write on a cache miss — see
+            # routes/tariff_data.py — so it stays gated by the metered
+            # require_module(), applied at the router level here and again,
+            # redundantly but harmlessly, on those specific endpoints.
             "tools": _DENIED,
             "reports": _capped(2, "day"),
         },
@@ -108,10 +122,10 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         api_monthly_quota=None,
         seats_included=1,
         modules={
-            "stats": _capped(5, "day"),
-            "production": _capped(50, "day"),
-            "logistics": _capped(50, "day"),
-            "roo": _capped(200, "day"),
+            "stats": _UNLIMITED,
+            "production": _UNLIMITED,
+            "logistics": _UNLIMITED,
+            "roo": _UNLIMITED,
             "tools": _capped(10, "day"),
             "reports": _capped(10, "day"),
         },
@@ -125,9 +139,9 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         api_monthly_quota=None,
         seats_included=1,
         modules={
-            "stats": _capped(50, "day"),
+            "stats": _UNLIMITED,
             "production": _UNLIMITED,
-            "logistics": _capped(300, "day"),
+            "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
             "tools": _UNLIMITED,
             "reports": _capped(30, "day"),
@@ -142,7 +156,7 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
         api_monthly_quota=1000,
         seats_included=5,
         modules={
-            "stats": _capped(300, "day"),
+            "stats": _UNLIMITED,
             "production": _UNLIMITED,
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,

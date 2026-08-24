@@ -26,7 +26,12 @@ MIGRATION STATUS:
 import logging
 
 from auth import require_admin, require_auth
-from entitlement_guard import require_api_access, require_calculations_quota, require_module
+from entitlement_guard import (
+    require_api_access,
+    require_calculations_quota,
+    require_module,
+    require_module_enabled,
+)
 from fastapi import APIRouter, Depends
 
 _auth = [Depends(require_auth)]
@@ -37,15 +42,25 @@ _admin = [Depends(require_admin)]
 
 # SaaS entitlement gating: layered on top of `_auth` for the module routers
 # that map onto `entitlements.MODULES` — `_auth` checks "is this a valid
-# API key", these check "does this subscriber's tier include this module,
-# and are they still under its usage quota". A JWT-session subscriber is
-# gated on their real tier; anyone else (API-key-only, or no auth at all)
-# is gated as the free tier — see entitlement_guard.get_optional_subscriber.
-_stats_entitlement = [Depends(require_module("stats"))]
-_production_entitlement = [Depends(require_module("production"))]
-_logistics_entitlement = [Depends(require_module("logistics"))]
-_roo_entitlement = [Depends(require_module("roo"))]
-_tools_entitlement = [Depends(require_module("tools"))]
+# API key", these check "does this subscriber's tier include this module". A
+# JWT-session subscriber is gated on their real tier; anyone else (API-key-only,
+# or no auth at all) is gated as the free tier — see
+# entitlement_guard.get_optional_subscriber.
+#
+# Browse/reference modules (stats, production, logistics, roo, tools) are gated
+# on the tier on/off switch ONLY — no per-request metering. A single UI view of
+# these fans out to many GET requests (logistics ports + corridors + fees,
+# stats lookups, ...), so metering per HTTP request made one screen load burn a
+# whole day's/month's quota on the first visit, breaking the module for
+# signed-in free users ("impossible de charger les données"). Usage quotas are
+# enforced on genuine billable *actions* instead — one tariff calculation
+# (`_calculator_entitlement`) and one generated premium report
+# (`_reports_entitlement`) — not on browsing reference data.
+_stats_entitlement = [Depends(require_module_enabled("stats"))]
+_production_entitlement = [Depends(require_module_enabled("production"))]
+_logistics_entitlement = [Depends(require_module_enabled("logistics"))]
+_roo_entitlement = [Depends(require_module_enabled("roo"))]
+_tools_entitlement = [Depends(require_module_enabled("tools"))]
 _reports_entitlement = [Depends(require_module("reports"))]
 _calculator_entitlement = [Depends(require_calculations_quota())]
 _api_entitlement = [Depends(require_api_access())]
