@@ -437,6 +437,38 @@ async def test_require_module_unlimited_module_never_blocks():
         await _call_dep(dep, user)
 
 
+# ── require_module_enabled : on/off switch only, never metered ───────────────
+
+
+@pytest.mark.asyncio
+async def test_require_module_enabled_denies_disabled_module():
+    # The tier on/off switch is still enforced: a module a tier doesn't grant
+    # (tools on free) is refused with the same 403 as the metered variant.
+    dep = entitlement_guard.require_module_enabled("tools")
+    with pytest.raises(HTTPException) as exc:
+        await _call_dep(dep, None)
+    assert exc.value.status_code == 403
+    assert exc.value.detail["error"] == "upgrade_required"
+
+
+@pytest.mark.asyncio
+async def test_require_module_enabled_never_meters_capped_module():
+    # A single logistics screen fans out to many GETs; enablement-only gating
+    # must let a signed-in free user (logistics capped at 5/day for the metered
+    # variant) load it any number of times without being blocked.
+    dep = entitlement_guard.require_module_enabled("logistics")
+    user = _user("free")
+    for _ in range(50):
+        await _call_dep(dep, user)
+
+
+@pytest.mark.asyncio
+async def test_require_module_enabled_allows_anonymous():
+    dep = entitlement_guard.require_module_enabled("stats")
+    for _ in range(50):
+        await _call_dep(dep, None)
+
+
 # ── check_and_increment_usage atomicity ─────────────────────────────────────
 
 

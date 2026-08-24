@@ -215,6 +215,37 @@ def require_module(module_id: str):
     return _dependency
 
 
+def require_module_enabled(module_id: str):
+    """FastAPI dependency factory: gates a route on a subscriber's *access* to
+    `module_id` (the tier on/off switch only), WITHOUT per-request metering.
+
+    Use this for read-only reference/browse routers whose single UI view fans
+    out to many GET requests (logistics ports + corridors + fees, statistics
+    lookups, production tables, rules-of-origin chapters). Metering those
+    per HTTP request — as `require_module` does — makes one screen load burn a
+    whole day's/month's quota on the first visit (free logistics = 5/day, free
+    stats = 20/month), so a signed-in free user gets "impossible to load"
+    before doing anything. Quotas belong on genuine billable *actions* (one
+    tariff calculation, one generated premium report), not on browsing
+    reference data, so those still use the metered `require_module` /
+    `require_calculations_quota`.
+
+    The tier on/off switch is preserved: a module a tier does not grant at all
+    (e.g. `tools` on free) still returns 403 here."""
+
+    async def _dependency(
+        request: Request,
+        user: Optional[dict] = Depends(get_optional_subscriber),
+    ) -> Entitlements:
+        ent = resolve_entitlements(user)
+        access = ent.module(module_id)
+        if not access.enabled:
+            raise _forbidden(ent.tier, module_id)
+        return ent
+
+    return _dependency
+
+
 def require_api_access():
     """FastAPI dependency for `Entitlements.api_access`/`api_monthly_quota`
     (currently only Business: unlocked, 1000 req/month) — a per-tier field,
