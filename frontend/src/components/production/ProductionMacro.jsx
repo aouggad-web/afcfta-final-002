@@ -27,7 +27,9 @@ function ProductionMacro({ language = 'fr' }) {
   const texts = {
     fr: {
       title: 'Valeur Ajoutée Macro (World Bank / IMF)',
-      subtitle: 'Structure sectorielle du PIB des économies africaines (2021-2024)',
+      subtitle: 'Structure sectorielle du PIB des économies africaines (2023-2025)',
+      projection: 'Projection',
+      projectionHint: 'Projection FMI (World Economic Outlook)',
       records: 'enregistrements',
       sectors: 'secteurs',
       loading: 'Chargement des données macro...',
@@ -43,7 +45,9 @@ function ProductionMacro({ language = 'fr' }) {
     },
     en: {
       title: 'Macro Value Added (World Bank / IMF)',
-      subtitle: 'Sectoral structure of GDP for African economies (2021-2024)',
+      subtitle: 'Sectoral structure of GDP for African economies (2023-2025)',
+      projection: 'Projection',
+      projectionHint: 'IMF projection (World Economic Outlook)',
       records: 'records',
       sectors: 'sectors',
       loading: 'Loading macro data...',
@@ -81,10 +85,30 @@ function ProductionMacro({ language = 'fr' }) {
     }
   };
 
+  const availableYears = useMemo(() => {
+    if (!macroData?.data_by_sector) return [];
+    const set = new Set();
+    Object.values(macroData.data_by_sector).forEach((records) => {
+      records.forEach((r) => set.add(r.year));
+    });
+    return Array.from(set).sort((a, b) => a - b);
+  }, [macroData]);
+
+  const projectionYears = useMemo(() => {
+    if (!macroData?.data_by_sector) return new Set();
+    const set = new Set();
+    Object.values(macroData.data_by_sector).forEach((records) => {
+      records.forEach((r) => {
+        if (r.is_projection) set.add(r.year);
+      });
+    });
+    return set;
+  }, [macroData]);
+
   const chartData = useMemo(() => {
     if (!macroData?.data_by_sector) return [];
 
-    const years = [2021, 2022, 2023, 2024];
+    const years = availableYears;
     return years.map((year) => {
       const dataPoint = { year };
 
@@ -97,7 +121,7 @@ function ProductionMacro({ language = 'fr' }) {
 
       return dataPoint;
     });
-  }, [macroData]);
+  }, [macroData, availableYears]);
 
   const sectorNames = macroData?.data_by_sector ? Object.keys(macroData.data_by_sector) : [];
 
@@ -123,8 +147,15 @@ function ProductionMacro({ language = 'fr' }) {
                 {t.source}: World Bank / IMF
               </Badge>
               <Badge className="bg-[rgba(212,137,26,0.12)] text-[var(--gold)] border border-[rgba(212,137,26,0.2)]">
-                2021–2024
+                {availableYears.length
+                  ? `${availableYears[0]}–${availableYears[availableYears.length - 1]}`
+                  : '2023–2025'}
               </Badge>
+              {projectionYears.size > 0 && (
+                <Badge className="bg-[rgba(155,110,245,0.14)] text-[#c3a3ff] border border-[rgba(155,110,245,0.28)]">
+                  {t.projection} {Array.from(projectionYears).sort().join(', ')}
+                </Badge>
+              )}
             </div>
           </div>
         </CardHeader>
@@ -298,9 +329,23 @@ function ProductionMacro({ language = 'fr' }) {
                             borderColor: 'rgba(255,255,255,0.05)',
                           }}
                         >
-                          <p className="text-xs text-[var(--afcfta-muted)]">
-                            {t.year} {record.year}
-                          </p>
+                          <div className="flex items-center justify-between gap-1">
+                            <p className="text-xs text-[var(--afcfta-muted)]">
+                              {t.year} {record.year}
+                            </p>
+                            {record.is_projection && (
+                              <span
+                                className="text-[9px] font-semibold px-1.5 py-0.5 rounded"
+                                style={{
+                                  background: 'rgba(155,110,245,0.18)',
+                                  color: '#c3a3ff',
+                                }}
+                                title={t.projectionHint}
+                              >
+                                {t.projection}
+                              </span>
+                            )}
+                          </div>
                           <p className="text-xl font-bold mt-1 text-[var(--text)]">{record.value}%</p>
                           <p className="text-[11px] text-[var(--afcfta-muted)] mt-2 line-clamp-2">
                             {record.indicator_label}
