@@ -10,8 +10,10 @@ Applique quatre enrichissements curés (valeurs publiées uniquement) :
   1. MINING      — nouveaux minéraux + extension 2024   (etl/mining_extended.py)
   2. MACRO       — séries 2023-2025, WB + IMF WEO 2025   (etl/macro_extended.py)
   3. AGRICULTURE — prévisions OECD-FAO (2025/2030)        (etl/faostat_projections.py)
-  4. MANUFACTURING — séries multi-années 2021-2024 rétro-calculées depuis les taux
-                     de croissance publiés UNIDO          (etl/unido_data.py)
+
+La dimension MANUFACTURING est laissée aux valeurs publiées (aucune série
+rétro-calculée : le contrat « valeurs publiées uniquement » interdit d'extrapoler
+des années non sourcées).
 
 Chaque dimension est fusionnée par clé naturelle (upsert) → le script est
 IDEMPOTENT : le relancer ne crée pas de doublons.
@@ -40,10 +42,6 @@ sys.path.insert(0, str(BACKEND_DIR))
 from etl.faostat_projections import build_projections
 from etl.macro_extended import build_macro_series
 from etl.mining_extended import build_all as build_mining_additions
-from etl.unido_data import UNIDO_INDUSTRY_DATA
-
-# Années rétro-calculées AVANT l'année de référence (data_year, généralement 2024).
-MANUF_BACKCAST_YEARS = [2021, 2022, 2023]
 
 
 # =============================================================================
@@ -76,74 +74,6 @@ def _upsert(
             merged.append(rec)
             added += 1
     return merged, added, updated
-
-
-# =============================================================================
-# MANUFACTURING — séries multi-années rétro-calculées
-# =============================================================================
-def build_manufacturing_backcast(existing: List[Dict]) -> List[Dict]:
-    """Ajoute une série 2021-2023 de valeur ajoutée manufacturière PAR SECTEUR,
-    dérivée des enregistrements existants (année de référence) en les déflatant
-    par les taux de croissance PUBLIÉS (UNIDO).
-
-    Principe : on ne touche PAS aux enregistrements existants (labels, valeurs et
-    année de référence conservés à l'identique — indispensable pour ne pas casser
-    la résolution HS→commodité et les calculs de couverture continentale, qui
-    s'appuient sur l'année la plus récente). On ne fait qu'AJOUTER des années
-    antérieures, en copiant chaque enregistrement existant et en déflatant sa
-    valeur : val(N-1) = val(N) / (1 + taux/100). Aucune valeur aléatoire — les
-    taux 2024→2023 (growth_rate_2024_est) et 2023→2022→2021 (growth_rate_2023)
-    proviennent d'UNIDO. Les années ajoutées portent is_estimation=True.
-    """
-    # Taux publiés par pays.
-    rates: Dict[str, tuple] = {}
-    for iso3, d in UNIDO_INDUSTRY_DATA.items():
-        rates[iso3] = (d.get("growth_rate_2024_est"), d.get("growth_rate_2023"))
-
-    # Ne rétro-calcule qu'à partir de l'enregistrement de l'année de référence
-    # (la plus récente) de chaque (pays, secteur ISIC).
-    latest_by_key: Dict[tuple, Dict] = {}
-    for rec in existing:
-        key = (rec.get("country_iso3"), rec.get("isic_code"))
-        cur = latest_by_key.get(key)
-        if cur is None or (rec.get("year") or 0) > (cur.get("year") or 0):
-            latest_by_key[key] = rec
-
-    additions: List[Dict] = []
-    for (iso3, _isic), base in latest_by_key.items():
-        base_year = base.get("year")
-        base_val = base.get("value")
-        if base_year is None or not base_val:
-            continue
-        g24, g23 = rates.get(iso3, (None, None))
-        rate23 = (g23 / 100.0) if g23 is not None else 0.0
-        rate24 = (g24 / 100.0) if g24 is not None else 0.0
-
-        # Valeurs déflatées année par année en repartant de l'année de référence.
-        year_values: Dict[int, float] = {}
-        v = float(base_val)
-        # base_year -> 2023
-        if base_year >= 2024:
-            v = v / (1.0 + rate24)
-            year_values[2023] = v
-        elif base_year == 2023:
-            year_values[2023] = v
-        v23 = year_values.get(2023, float(base_val))
-        year_values[2022] = v23 / (1.0 + rate23)
-        year_values[2021] = year_values[2022] / (1.0 + rate23)
-
-        for year in MANUF_BACKCAST_YEARS:
-            if year >= base_year:
-                continue  # ne jamais recouvrir l'année de référence
-            val = year_values.get(year)
-            if val is None:
-                continue
-            rec = dict(base)
-            rec["year"] = year
-            rec["value"] = round(val)
-            rec["is_estimation"] = True
-            additions.append(rec)
-    return additions
 
 
 # =============================================================================
@@ -219,15 +149,14 @@ def main() -> None:
         f"[3] Agriculture : {a_add} prévisions FAO/OCDE (clé agri_projections, horizons 2025/2030)"
     )
 
-    # ── 4. Manufacturing : back-cast 2021-2023 (labels/2024 préservés) ──────
-    manuf_backcast = build_manufacturing_backcast(data.get("manufacturing_unido", []))
-    data["manufacturing_unido"], mf_add, mf_up = _upsert(
-        data.get("manufacturing_unido", []),
-        manuf_backcast,
-        ["country_iso3", "isic_code", "year"],
-        overwrite=False,
+    # ── 4. Manufacturing : conservé aux valeurs PUBLIÉES (pas de back-cast) ──
+    # Le contrat de données du projet interdit toute valeur extrapolée : sans
+    # série UNIDO INDSTAT4 multi-années publiée en source, on ne fabrique pas
+    # d'années antérieures. La dimension reste donc aux enregistrements publiés.
+    print(
+        f"[4] Manufacture : {len(data.get('manufacturing_unido', []))} enreg. publiés "
+        "(inchangés — aucune extrapolation)"
     )
-    print(f"[4] Manufacture : +{mf_add} enreg. back-cast (séries 2021-2024, réf. préservée)")
 
     # ── Countries agrégés + metadata ────────────────────────────────────────
     all_recs = (

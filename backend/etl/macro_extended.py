@@ -14,9 +14,11 @@ Aucune extrapolation aléatoire. Là où une valeur annuelle n'est pas publiée 
 un pays, le couple (pays, indicateur, année) est simplement omis.
 
 Sources :
-  • World Bank — World Development Indicators (NV.AGR/IND/MAN/SRV.*.ZS, NY.GDP.MKTP.KD.ZG)
+  • World Bank — World Development Indicators (NV.AGR/IND/MAN/SRV.*.ZS)
+    — valeur ajoutée sectorielle (% PIB), années 2023-2024.
     https://data.worldbank.org/
-  • IMF — World Economic Outlook Database, avril 2025 (croissance PIB réel 2025)
+  • IMF — World Economic Outlook Database, avril 2025 — croissance du PIB réel
+    (NY.GDP.MKTP.KD.ZG), historique 2023-2024 ET projection 2025.
     https://www.imf.org/en/Publications/WEO
 """
 
@@ -183,9 +185,11 @@ _INDICATORS = [
 def build_macro_series() -> List[Dict]:
     """Enregistrements macro multi-années (schéma value_added_macro).
 
-    2025 : projections FMI (``is_projection = True``). Les valeurs de valeur
-    ajoutée sectorielle proviennent de World Bank WDI (2023-2024) ; la croissance
-    2025 du World Economic Outlook (FMI, avril 2025).
+    Attribution de source par indicateur :
+      • Valeur ajoutée sectorielle (% PIB) → World Bank WDI (années 2023-2024).
+      • Croissance du PIB réel → IMF World Economic Outlook (avr. 2025), qui
+        publie à la fois les valeurs historiques (2023-2024) et les projections
+        (2025). Les enregistrements 2025 portent ``is_projection = True``.
     """
     records: List[Dict] = []
     for iso3, by_year in MACRO_SERIES.items():

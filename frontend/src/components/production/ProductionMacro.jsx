@@ -36,6 +36,7 @@ function ProductionMacro({ language = 'fr' }) {
       noData: 'Aucune donnée disponible pour ce pays.',
       evolutionTitle: 'Évolution de la Valeur Ajoutée par Secteur (% du PIB)',
       comparisonTitle: 'Comparaison Sectorielle par Année',
+      growthTitle: 'Croissance du PIB réel (variation annuelle %) — FMI WEO',
       detailsTitle: 'Données Détaillées',
       gdpPercent: '% du PIB',
       year: 'Année',
@@ -54,6 +55,7 @@ function ProductionMacro({ language = 'fr' }) {
       noData: 'No data available for this country.',
       evolutionTitle: 'Value Added Evolution by Sector (% of GDP)',
       comparisonTitle: 'Sectoral Comparison by Year',
+      growthTitle: 'Real GDP growth (annual %) — IMF WEO',
       detailsTitle: 'Detailed Data',
       gdpPercent: '% of GDP',
       year: 'Year',
@@ -85,45 +87,58 @@ function ProductionMacro({ language = 'fr' }) {
     }
   };
 
-  const availableYears = useMemo(() => {
+  // La croissance du PIB (NY.GDP.MKTP.KD.ZG) est une variation annuelle (%), pas
+  // une part sectorielle « % du PIB » : elle ne doit PAS être tracée comme un
+  // secteur dans les graphes de valeur ajoutée. On la sépare et on l'affiche à part.
+  const isGdpGrowth = (records) =>
+    Array.isArray(records) &&
+    records.some(
+      (r) => r.indicator_code === 'NY.GDP.MKTP.KD.ZG' || r.sector_isic_section === 'TOTAL'
+    );
+
+  const valueAddedSectors = useMemo(() => {
+    if (!macroData?.data_by_sector) return {};
+    return Object.fromEntries(
+      Object.entries(macroData.data_by_sector).filter(([, recs]) => !isGdpGrowth(recs))
+    );
+  }, [macroData]);
+
+  const gdpGrowthRecords = useMemo(() => {
     if (!macroData?.data_by_sector) return [];
+    const entry = Object.entries(macroData.data_by_sector).find(([, recs]) => isGdpGrowth(recs));
+    return entry ? [...entry[1]].sort((a, b) => a.year - b.year) : [];
+  }, [macroData]);
+
+  const availableYears = useMemo(() => {
     const set = new Set();
-    Object.values(macroData.data_by_sector).forEach((records) => {
+    Object.values(valueAddedSectors).forEach((records) => {
       records.forEach((r) => set.add(r.year));
     });
     return Array.from(set).sort((a, b) => a - b);
-  }, [macroData]);
+  }, [valueAddedSectors]);
 
   const projectionYears = useMemo(() => {
-    if (!macroData?.data_by_sector) return new Set();
     const set = new Set();
-    Object.values(macroData.data_by_sector).forEach((records) => {
-      records.forEach((r) => {
-        if (r.is_projection) set.add(r.year);
-      });
+    gdpGrowthRecords.forEach((r) => {
+      if (r.is_projection) set.add(r.year);
     });
     return set;
-  }, [macroData]);
+  }, [gdpGrowthRecords]);
 
   const chartData = useMemo(() => {
-    if (!macroData?.data_by_sector) return [];
-
-    const years = availableYears;
-    return years.map((year) => {
+    return availableYears.map((year) => {
       const dataPoint = { year };
-
-      Object.entries(macroData.data_by_sector).forEach(([sectorName, records]) => {
+      Object.entries(valueAddedSectors).forEach(([sectorName, records]) => {
         const yearRecord = records.find((r) => r.year === year);
         if (yearRecord) {
           dataPoint[sectorName] = yearRecord.value;
         }
       });
-
       return dataPoint;
     });
-  }, [macroData, availableYears]);
+  }, [valueAddedSectors, availableYears]);
 
-  const sectorNames = macroData?.data_by_sector ? Object.keys(macroData.data_by_sector) : [];
+  const sectorNames = Object.keys(valueAddedSectors);
 
   const seriesColors = ['#9b6ef5', '#4f8ef7', '#20c997', '#d4891a'];
 
@@ -288,6 +303,46 @@ function ProductionMacro({ language = 'fr' }) {
             </CardContent>
           </Card>
 
+          {gdpGrowthRecords.length > 0 && (
+            <Card className="afcfta-card">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl text-[var(--text)]">
+                  📈 {t.growthTitle}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <div className="flex flex-wrap gap-3">
+                  {gdpGrowthRecords.map((record) => (
+                    <div
+                      key={record.year}
+                      className="rounded-lg border p-3 min-w-[110px]"
+                      style={{
+                        background: 'rgba(17,24,39,0.55)',
+                        borderColor: 'rgba(255,255,255,0.05)',
+                      }}
+                    >
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-xs text-[var(--afcfta-muted)]">
+                          {t.year} {record.year}
+                        </p>
+                        {record.is_projection && (
+                          <span
+                            className="text-[9px] font-semibold px-1.5 py-0.5 rounded"
+                            style={{ background: 'rgba(155,110,245,0.18)', color: '#c3a3ff' }}
+                            title={t.projectionHint}
+                          >
+                            {t.projection}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xl font-bold mt-1 text-[var(--text)]">{record.value}%</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           <Card className="afcfta-card">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl text-[var(--text)]">
@@ -296,7 +351,7 @@ function ProductionMacro({ language = 'fr' }) {
             </CardHeader>
             <CardContent className="pt-4">
               <div className="space-y-4">
-                {Object.entries(macroData.data_by_sector).map(([sectorName, records], index) => (
+                {Object.entries(valueAddedSectors).map(([sectorName, records], index) => (
                   <div
                     key={sectorName}
                     className="rounded-xl border p-4"

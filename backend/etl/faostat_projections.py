@@ -77,10 +77,16 @@ PROJECTIONS: Dict[str, Dict[str, Dict[int, float]]] = {
 _ISO_FIX = {"ESW": "SWZ"}
 
 
+# Agrégats relevant de l'élevage (et non des cultures) — métadonnées secteur adaptées.
+_LIVESTOCK_COMMODITIES = {"Meat (projection)"}
+
+
 def build_projections() -> List[Dict]:
     """Enregistrements de prévisions agricoles (schéma agri_faostat, is_projection)."""
     records: List[Dict] = []
     for commodity, by_country in PROJECTIONS.items():
+        is_livestock = commodity in _LIVESTOCK_COMMODITIES
+        sector_detail = "Livestock (projection)" if is_livestock else "Crops (projection)"
         for iso_raw, year_vals in by_country.items():
             iso3 = _ISO_FIX.get(iso_raw, iso_raw)
             country_name = ISO3_FR_NAME.get(iso3, iso3)
@@ -91,7 +97,7 @@ def build_projections() -> List[Dict]:
                         "country_iso3": iso3,
                         "year": year,
                         "sector_isic_section": "A",
-                        "sector_detail": "Crops (projection)",
+                        "sector_detail": sector_detail,
                         "indicator_code": "FAO_PROJECTION",
                         "indicator_label": "Projection (OECD-FAO Outlook)",
                         "value": value,

@@ -501,12 +501,33 @@ MINING_YEAR_2024: Dict[str, Tuple] = {
     ),
 }
 
-# Codes courts par commodité (traçabilité).
+# Codes courts par commodité (traçabilité). Codes UNIQUES pour chaque commodité
+# ajoutée : le repli commodity[:2] provoquait des collisions
+# (Tin/Titanium → « TI », Zinc/Zircon → « ZI »), et get_mining_production filtrant
+# par commodity_code exact, un même code aurait renvoyé deux minéraux distincts.
 _COMMODITY_CODE: Dict[str, str] = {
-    "Titanium (ilmenite)": "TI",
+    # Existants (énergie / codes déjà distincts)
     "Iron ore": "FE",
     "Crude oil": "OIL",
     "Natural gas": "GAS",
+    # Nouveaux minéraux (mining_extended) — codes uniques, sans collision [:2]
+    "Zinc": "ZNC",
+    "Lead": "PB",
+    "Tin": "SN",
+    "Nickel": "NCK",
+    "Chromium": "CRM",
+    "Lithium": "LIT",
+    "Graphite": "GPH",
+    "Tantalum": "TNT",
+    "Vanadium": "VDM",
+    "Antimony": "ATM",
+    "Silver": "AGX",
+    "Palladium": "PLD",
+    "Titanium (ilmenite)": "ILM",
+    "Zircon": "ZRC",
+    "Fluorspar": "FLR",
+    "Salt": "SLT",
+    "Gypsum": "GYP",
 }
 
 _ENERGY = {"Crude oil", "Natural gas"}
