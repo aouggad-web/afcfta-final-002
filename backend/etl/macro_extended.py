@@ -137,16 +137,46 @@ MACRO_SERIES: Dict[str, Dict[int, Dict[str, float]]] = {
 
 _INDICATORS = [
     # (clef table, sector_isic_section, sector_detail, indicator_code, indicator_label, wb_code)
-    ("agri", "A", "Agriculture, forestry and fishing", "NV.AGR.TOTL.ZS",
-     "Agriculture, value added (% of GDP)", "NV.AGR.TOTL.ZS"),
-    ("ind", "B-F", "Industry (including construction)", "NV.IND.TOTL.ZS",
-     "Industry, value added (% of GDP)", "NV.IND.TOTL.ZS"),
-    ("manuf", "C", "Manufacturing", "NV.IND.MANF.ZS",
-     "Manufacturing, value added (% of GDP)", "NV.IND.MANF.ZS"),
-    ("serv", "G-T", "Services", "NV.SRV.TOTL.ZS",
-     "Services, value added (% of GDP)", "NV.SRV.TOTL.ZS"),
-    ("gdp_growth", "TOTAL", "Gross domestic product", "NY.GDP.MKTP.KD.ZG",
-     "GDP growth (annual %)", "NY.GDP.MKTP.KD.ZG"),
+    (
+        "agri",
+        "A",
+        "Agriculture, forestry and fishing",
+        "NV.AGR.TOTL.ZS",
+        "Agriculture, value added (% of GDP)",
+        "NV.AGR.TOTL.ZS",
+    ),
+    (
+        "ind",
+        "B-F",
+        "Industry (including construction)",
+        "NV.IND.TOTL.ZS",
+        "Industry, value added (% of GDP)",
+        "NV.IND.TOTL.ZS",
+    ),
+    (
+        "manuf",
+        "C",
+        "Manufacturing",
+        "NV.IND.MANF.ZS",
+        "Manufacturing, value added (% of GDP)",
+        "NV.IND.MANF.ZS",
+    ),
+    (
+        "serv",
+        "G-T",
+        "Services",
+        "NV.SRV.TOTL.ZS",
+        "Services, value added (% of GDP)",
+        "NV.SRV.TOTL.ZS",
+    ),
+    (
+        "gdp_growth",
+        "TOTAL",
+        "Gross domestic product",
+        "NY.GDP.MKTP.KD.ZG",
+        "GDP growth (annual %)",
+        "NY.GDP.MKTP.KD.ZG",
+    ),
 ]
 
 

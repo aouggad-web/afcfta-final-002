@@ -306,6 +306,20 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("2513", "mining", "Pumice"),
     ("2530", "mining", "Perlite"),
     ("2614", "mining", "Ilmenite"),
+    # ── Minéraux ajoutés (enrichissement mining_extended) — codes HS spécifiques
+    #    (préfixe le plus long prioritaire ; évite les collisions avec les
+    #    positions génériques déjà mappées : 2615=Tantalum, 2530=Perlite…). ──
+    ("2610", "mining", "Chromium"),  # minerais de chrome
+    ("2504", "mining", "Graphite"),  # graphite naturel
+    ("2520", "mining", "Gypsum"),  # gypse, anhydrite
+    ("2607", "mining", "Lead"),  # minerais de plomb
+    ("2617", "mining", "Antimony"),  # minerais d'antimoine
+    ("253090", "mining", "Lithium"),  # spodumène / minéraux de lithium (HS6)
+    ("261610", "mining", "Silver"),  # minerais d'argent (chap. 26 ; ≠ 7106 métal)
+    ("711021", "mining", "Palladium"),  # palladium (groupe platine, HS6)
+    ("261510", "mining", "Zircon"),  # minerais de zirconium (HS6)
+    ("261590", "mining", "Vanadium"),  # minerais de vanadium/niobium (HS6)
+    ("261400", "mining", "Titanium (ilmenite)"),  # minerais de titane (HS6)
 ]
 
 # Repli par chapitre HS (2 chiffres) — moins précis mais utile pour couverture large.

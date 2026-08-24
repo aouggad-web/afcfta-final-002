@@ -39,51 +39,26 @@ sys.path.insert(0, str(BACKEND_DIR))
 
 from etl.faostat_projections import build_projections
 from etl.macro_extended import build_macro_series
-from etl.mining_extended import ISO3_FR_NAME, build_all as build_mining_additions
-from etl.unido_data import ISIC_SECTORS, UNIDO_INDUSTRY_DATA
+from etl.mining_extended import build_all as build_mining_additions
+from etl.unido_data import UNIDO_INDUSTRY_DATA
 
-# ISIC labels EN alignés sur le reste du build (fallback : label FR).
-ISIC_LABELS_EN = {
-    "10": "Manufacture of food products",
-    "11": "Manufacture of beverages",
-    "12": "Manufacture of tobacco products",
-    "13": "Manufacture of textiles",
-    "14": "Manufacture of wearing apparel",
-    "15": "Manufacture of leather and related products",
-    "16": "Manufacture of wood products",
-    "17": "Manufacture of paper and paper products",
-    "18": "Printing and reproduction of recorded media",
-    "19": "Manufacture of coke and refined petroleum products",
-    "20": "Manufacture of chemicals and chemical products",
-    "21": "Manufacture of pharmaceuticals",
-    "22": "Manufacture of rubber and plastics products",
-    "23": "Manufacture of other non-metallic mineral products",
-    "24": "Manufacture of basic metals",
-    "25": "Manufacture of fabricated metal products",
-    "26": "Manufacture of computer, electronic and optical products",
-    "27": "Manufacture of electrical equipment",
-    "28": "Manufacture of machinery and equipment n.e.c.",
-    "29": "Manufacture of motor vehicles, trailers and semi-trailers",
-    "30": "Manufacture of other transport equipment",
-    "31": "Manufacture of furniture",
-    "32": "Other manufacturing",
-    "33": "Repair and installation of machinery and equipment",
-}
-
-MANUF_SERIES_YEARS = [2021, 2022, 2023, 2024]
+# Années rétro-calculées AVANT l'année de référence (data_year, généralement 2024).
+MANUF_BACKCAST_YEARS = [2021, 2022, 2023]
 
 
 # =============================================================================
 # Fusion générique par clé naturelle (upsert)
 # =============================================================================
-def _upsert(existing: List[Dict], additions: List[Dict], key_fields: List[str],
-            overwrite: bool) -> tuple[List[Dict], int, int]:
+def _upsert(
+    existing: List[Dict], additions: List[Dict], key_fields: List[str], overwrite: bool
+) -> tuple[List[Dict], int, int]:
     """Fusionne ``additions`` dans ``existing`` par clé naturelle.
 
     overwrite=True  → une addition remplace l'enregistrement existant de même clé.
     overwrite=False → l'existant est préservé, seules les clés absentes sont ajoutées.
     Retourne (liste fusionnée, nb ajoutés, nb mis à jour).
     """
+
     def key(rec: Dict) -> tuple:
         return tuple(rec.get(f) for f in key_fields)
 
@@ -104,80 +79,84 @@ def _upsert(existing: List[Dict], additions: List[Dict], key_fields: List[str],
 
 
 # =============================================================================
-# MANUFACTURING — séries multi-années 2021-2024 depuis les taux UNIDO publiés
+# MANUFACTURING — séries multi-années rétro-calculées
 # =============================================================================
-def build_manufacturing_series() -> List[Dict]:
-    """Rétro-calcule une série 2021-2024 de valeur ajoutée manufacturière par
-    secteur ISIC, à partir des taux de croissance PUBLIÉS (UNIDO). Aucune valeur
-    aléatoire : chaque année antérieure est déflatée par le taux publié
-    (2024→2023 via growth_rate_2024_est ; 2023→2022 et 2022→2021 via
-    growth_rate_2023). Les années < data_year portent is_estimation=True.
+def build_manufacturing_backcast(existing: List[Dict]) -> List[Dict]:
+    """Ajoute une série 2021-2023 de valeur ajoutée manufacturière PAR SECTEUR,
+    dérivée des enregistrements existants (année de référence) en les déflatant
+    par les taux de croissance PUBLIÉS (UNIDO).
+
+    Principe : on ne touche PAS aux enregistrements existants (labels, valeurs et
+    année de référence conservés à l'identique — indispensable pour ne pas casser
+    la résolution HS→commodité et les calculs de couverture continentale, qui
+    s'appuient sur l'année la plus récente). On ne fait qu'AJOUTER des années
+    antérieures, en copiant chaque enregistrement existant et en déflatant sa
+    valeur : val(N-1) = val(N) / (1 + taux/100). Aucune valeur aléatoire — les
+    taux 2024→2023 (growth_rate_2024_est) et 2023→2022→2021 (growth_rate_2023)
+    proviennent d'UNIDO. Les années ajoutées portent is_estimation=True.
     """
-    records: List[Dict] = []
+    # Taux publiés par pays.
+    rates: Dict[str, tuple] = {}
     for iso3, d in UNIDO_INDUSTRY_DATA.items():
-        country_name = d.get("country_name", iso3)
-        data_year = d.get("data_year", 2024)
-        mva_total = d.get("mva_2024_mln_usd", d.get("mva_2023_mln_usd"))
-        g24 = d.get("growth_rate_2024_est")
-        g23 = d.get("growth_rate_2023")
+        rates[iso3] = (d.get("growth_rate_2024_est"), d.get("growth_rate_2023"))
 
-        for sector in d.get("top_sectors", []):
-            isic = str(sector.get("isic", ""))
-            base_val = sector.get("value_mln_usd")
-            base_is_est = False
-            if not base_val and mva_total and sector.get("share_mva"):
-                base_val = mva_total * sector["share_mva"] / 100.0
-                base_is_est = True
-            if not base_val:
+    # Ne rétro-calcule qu'à partir de l'enregistrement de l'année de référence
+    # (la plus récente) de chaque (pays, secteur ISIC).
+    latest_by_key: Dict[tuple, Dict] = {}
+    for rec in existing:
+        key = (rec.get("country_iso3"), rec.get("isic_code"))
+        cur = latest_by_key.get(key)
+        if cur is None or (rec.get("year") or 0) > (cur.get("year") or 0):
+            latest_by_key[key] = rec
+
+    additions: List[Dict] = []
+    for (iso3, _isic), base in latest_by_key.items():
+        base_year = base.get("year")
+        base_val = base.get("value")
+        if base_year is None or not base_val:
+            continue
+        g24, g23 = rates.get(iso3, (None, None))
+        rate23 = (g23 / 100.0) if g23 is not None else 0.0
+        rate24 = (g24 / 100.0) if g24 is not None else 0.0
+
+        # Valeurs déflatées année par année en repartant de l'année de référence.
+        year_values: Dict[int, float] = {}
+        v = float(base_val)
+        # base_year -> 2023
+        if base_year >= 2024:
+            v = v / (1.0 + rate24)
+            year_values[2023] = v
+        elif base_year == 2023:
+            year_values[2023] = v
+        v23 = year_values.get(2023, float(base_val))
+        year_values[2022] = v23 / (1.0 + rate23)
+        year_values[2021] = year_values[2022] / (1.0 + rate23)
+
+        for year in MANUF_BACKCAST_YEARS:
+            if year >= base_year:
+                continue  # ne jamais recouvrir l'année de référence
+            val = year_values.get(year)
+            if val is None:
                 continue
-
-            label_en = ISIC_LABELS_EN.get(isic, sector.get("name") or ISIC_SECTORS.get(isic, f"ISIC {isic}"))
-
-            # Reconstruit la valeur de chaque année en déflatant depuis data_year.
-            year_values: Dict[int, float] = {data_year: base_val}
-            if g24 is not None:
-                year_values[2023] = base_val / (1.0 + g24 / 100.0)
-            else:
-                year_values[2023] = base_val
-            rate23 = (g23 / 100.0) if g23 is not None else 0.0
-            year_values[2022] = year_values[2023] / (1.0 + rate23)
-            year_values[2021] = year_values[2022] / (1.0 + rate23)
-
-            for year in MANUF_SERIES_YEARS:
-                val_mln = year_values.get(year)
-                if val_mln is None:
-                    continue
-                records.append(
-                    {
-                        "country_name": country_name,
-                        "country_iso3": iso3,
-                        "year": year,
-                        "sector_isic_section": "C",
-                        "sector_detail": label_en,
-                        "indicator_code": "INDSTAT_VA",
-                        "indicator_label": "Value added",
-                        "value": round(val_mln * 1_000_000),
-                        "unit": "USD",
-                        "currency": "USD",
-                        "price_base_year": "current",
-                        "source_institution": "UNIDO",
-                        "source_dataset": "INDSTAT4 (ISIC Rev.4)",
-                        "source_url": "https://stat.unido.org/",
-                        "unido_dataset": "INDSTAT4",
-                        "isic_revision": "4",
-                        "isic_code": isic,
-                        "isic_label": label_en,
-                        "is_estimation": base_is_est or (year != data_year),
-                    }
-                )
-    return records
+            rec = dict(base)
+            rec["year"] = year
+            rec["value"] = round(val)
+            rec["is_estimation"] = True
+            additions.append(rec)
+    return additions
 
 
 # =============================================================================
 # Point d'entrée
 # =============================================================================
 def _summary(data: Dict) -> None:
-    for dim in ("value_added_macro", "agri_faostat", "manufacturing_unido", "mining_usgs"):
+    for dim in (
+        "value_added_macro",
+        "agri_faostat",
+        "agri_projections",
+        "manufacturing_unido",
+        "mining_usgs",
+    ):
         recs = data.get(dim, [])
         years = sorted({r.get("year") for r in recs if r.get("year") is not None})
         countries = len({r.get("country_iso3") for r in recs})
@@ -206,39 +185,57 @@ def main() -> None:
     # ── 1. Mining : nouveaux minéraux + 2024 (préserve l'existant) ──────────
     mining_add = build_mining_additions()
     data["mining_usgs"], m_add, m_up = _upsert(
-        data.get("mining_usgs", []), mining_add,
-        ["country_iso3", "commodity_label", "year"], overwrite=False,
+        data.get("mining_usgs", []),
+        mining_add,
+        ["country_iso3", "commodity_label", "year"],
+        overwrite=False,
     )
-    print(f"\n[1] Mining      : +{m_add} enreg. ({len({r['commodity_label'] for r in mining_add})} minéraux apportés)")
+    print(
+        f"\n[1] Mining      : +{m_add} enreg. ({len({r['commodity_label'] for r in mining_add})} minéraux apportés)"
+    )
 
     # ── 2. Macro : séries 2023-2025 (upsert, données plus récentes) ─────────
     macro_add = build_macro_series()
     data["value_added_macro"], mac_add, mac_up = _upsert(
-        data.get("value_added_macro", []), macro_add,
-        ["country_iso3", "indicator_code", "sector_isic_section", "year"], overwrite=True,
+        data.get("value_added_macro", []),
+        macro_add,
+        ["country_iso3", "indicator_code", "sector_isic_section", "year"],
+        overwrite=True,
     )
     print(f"[2] Macro       : +{mac_add} enreg., {mac_up} mis à jour (WB 2024 + IMF WEO 2025)")
 
-    # ── 3. Agriculture : prévisions OECD-FAO ────────────────────────────────
+    # ── 3. Agriculture : prévisions OECD-FAO (clé DÉDIÉE agri_projections) ───
+    # Stockées à part de agri_faostat : ce sont des PRÉVISIONS (pas des
+    # productions observées), qui ne doivent pas alimenter la résolution
+    # HS→capacité ni les calculs de besoin national du module Opportunités.
     proj_add = build_projections()
-    data["agri_faostat"], a_add, a_up = _upsert(
-        data.get("agri_faostat", []), proj_add,
-        ["country_iso3", "commodity_label", "indicator_code", "year"], overwrite=True,
+    data["agri_projections"], a_add, a_up = _upsert(
+        data.get("agri_projections", []),
+        proj_add,
+        ["country_iso3", "commodity_label", "indicator_code", "year"],
+        overwrite=True,
     )
-    print(f"[3] Agriculture : +{a_add} prévisions FAO/OCDE (horizons 2025/2030)")
+    print(
+        f"[3] Agriculture : {a_add} prévisions FAO/OCDE (clé agri_projections, horizons 2025/2030)"
+    )
 
-    # ── 4. Manufacturing : séries 2021-2024 ─────────────────────────────────
-    manuf_series = build_manufacturing_series()
+    # ── 4. Manufacturing : back-cast 2021-2023 (labels/2024 préservés) ──────
+    manuf_backcast = build_manufacturing_backcast(data.get("manufacturing_unido", []))
     data["manufacturing_unido"], mf_add, mf_up = _upsert(
-        data.get("manufacturing_unido", []), manuf_series,
-        ["country_iso3", "isic_code", "year"], overwrite=True,
+        data.get("manufacturing_unido", []),
+        manuf_backcast,
+        ["country_iso3", "isic_code", "year"],
+        overwrite=False,
     )
-    print(f"[4] Manufacture : +{mf_add} enreg., {mf_up} mis à jour (séries 2021-2024)")
+    print(f"[4] Manufacture : +{mf_add} enreg. back-cast (séries 2021-2024, réf. préservée)")
 
     # ── Countries agrégés + metadata ────────────────────────────────────────
     all_recs = (
-        data.get("value_added_macro", []) + data.get("agri_faostat", [])
-        + data.get("manufacturing_unido", []) + data.get("mining_usgs", [])
+        data.get("value_added_macro", [])
+        + data.get("agri_faostat", [])
+        + data.get("agri_projections", [])
+        + data.get("manufacturing_unido", [])
+        + data.get("mining_usgs", [])
     )
     data["countries"] = sorted({r.get("country_iso3") for r in all_recs if r.get("country_iso3")})
 
@@ -256,6 +253,7 @@ def main() -> None:
     )
     meta["record_counts"] = {
         "agriculture": len(data.get("agri_faostat", [])),
+        "agriculture_projections": len(data.get("agri_projections", [])),
         "manufacturing": len(data.get("manufacturing_unido", [])),
         "mining": len(data.get("mining_usgs", [])),
         "macro": len(data.get("value_added_macro", [])),
