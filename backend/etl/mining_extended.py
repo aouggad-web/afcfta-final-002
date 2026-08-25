@@ -106,7 +106,9 @@ MINING_EXTENDED: Dict[str, Tuple] = {
         _USGS_MCS25,
         _USGS_URL,
         {
-            "BFA": {2022: 180000.0, 2023: 175000.0, 2024: 170000.0},
+            # NB : Burkina Faso retiré — la mine Perkoa (unique mine de zinc du
+            # pays) a cessé sa production après l'inondation d'avril 2022 ; toute
+            # valeur 2023/2024 serait non sourcée.
             "NAM": {2022: 60000.0, 2023: 62000.0, 2024: 63000.0},
             "MAR": {2022: 90000.0, 2023: 92000.0, 2024: 95000.0},
             "DZA": {2022: 30000.0, 2023: 32000.0, 2024: 33000.0},
@@ -537,6 +539,11 @@ _ENERGY = {"Crude oil", "Natural gas"}
 def _emit(commodity: str, spec: Tuple, records: List[Dict]) -> None:
     unit, inst, dataset, url, by_country = spec
     is_energy = commodity in _ENERGY
+    # USGS Mineral Commodity Summaries publie l'année la plus récente comme
+    # ESTIMÉE (2024 dans MCS 2025). On marque donc explicitement is_estimate pour
+    # ces enregistrements afin que les consommateurs ne les confondent pas avec des
+    # valeurs observées. Ne s'applique qu'aux séries USGS MCS (pas WNA/EIA/OPEC).
+    is_usgs_mcs = "Mineral Commodity Summaries" in dataset
     for iso3, year_vals in by_country.items():
         country_name = ISO3_FR_NAME.get(iso3, iso3)
         for year, value in sorted(year_vals.items()):
@@ -561,6 +568,7 @@ def _emit(commodity: str, spec: Tuple, records: List[Dict]) -> None:
                     "commodity_code": _COMMODITY_CODE.get(commodity, commodity[:2].upper()),
                     "commodity_label": commodity,
                     "usgs_table_name": f"{commodity} production {year}",
+                    "is_estimate": bool(is_usgs_mcs and year >= 2024),
                 }
             )
 

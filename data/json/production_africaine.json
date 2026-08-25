@@ -2894,8 +2894,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 2.9,
       "unit": "percent",
       "currency": null,
@@ -2903,7 +2903,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -2984,8 +2984,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.4,
       "unit": "percent",
       "currency": null,
@@ -2993,7 +2993,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3002,8 +3002,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.0,
       "unit": "percent",
       "currency": null,
@@ -3011,7 +3011,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -3038,8 +3038,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 0.7,
       "unit": "percent",
       "currency": null,
@@ -3047,7 +3047,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3128,8 +3128,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 0.6,
       "unit": "percent",
       "currency": null,
@@ -3137,7 +3137,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3146,8 +3146,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 1.5,
       "unit": "percent",
       "currency": null,
@@ -3155,7 +3155,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -3182,8 +3182,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.8,
       "unit": "percent",
       "currency": null,
@@ -3191,7 +3191,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3272,8 +3272,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 2.4,
       "unit": "percent",
       "currency": null,
@@ -3281,7 +3281,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3290,8 +3290,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.6,
       "unit": "percent",
       "currency": null,
@@ -3299,7 +3299,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -3326,8 +3326,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.1,
       "unit": "percent",
       "currency": null,
@@ -3335,7 +3335,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3416,8 +3416,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.8,
       "unit": "percent",
       "currency": null,
@@ -3425,7 +3425,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3434,8 +3434,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.0,
       "unit": "percent",
       "currency": null,
@@ -3443,7 +3443,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -3470,8 +3470,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.4,
       "unit": "percent",
       "currency": null,
@@ -3479,7 +3479,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3560,8 +3560,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.2,
       "unit": "percent",
       "currency": null,
@@ -3569,7 +3569,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3578,8 +3578,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.9,
       "unit": "percent",
       "currency": null,
@@ -3587,7 +3587,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -3614,8 +3614,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 5.6,
       "unit": "percent",
       "currency": null,
@@ -3623,7 +3623,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3704,8 +3704,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.6,
       "unit": "percent",
       "currency": null,
@@ -3713,7 +3713,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3722,8 +3722,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 5.0,
       "unit": "percent",
       "currency": null,
@@ -3731,7 +3731,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -3758,8 +3758,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 7.2,
       "unit": "percent",
       "currency": null,
@@ -3767,7 +3767,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3848,8 +3848,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.1,
       "unit": "percent",
       "currency": null,
@@ -3857,7 +3857,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3866,8 +3866,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.5,
       "unit": "percent",
       "currency": null,
@@ -3875,7 +3875,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -3902,8 +3902,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 2.9,
       "unit": "percent",
       "currency": null,
@@ -3911,7 +3911,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -3992,8 +3992,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 5.7,
       "unit": "percent",
       "currency": null,
@@ -4001,7 +4001,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4010,8 +4010,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.4,
       "unit": "percent",
       "currency": null,
@@ -4019,7 +4019,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -4046,8 +4046,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.2,
       "unit": "percent",
       "currency": null,
@@ -4055,7 +4055,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4136,8 +4136,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.5,
       "unit": "percent",
       "currency": null,
@@ -4145,7 +4145,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4154,8 +4154,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.3,
       "unit": "percent",
       "currency": null,
@@ -4163,7 +4163,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -4190,8 +4190,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 5.1,
       "unit": "percent",
       "currency": null,
@@ -4199,7 +4199,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4280,8 +4280,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 5.4,
       "unit": "percent",
       "currency": null,
@@ -4289,7 +4289,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4298,8 +4298,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.0,
       "unit": "percent",
       "currency": null,
@@ -4307,7 +4307,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -4334,8 +4334,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 1.0,
       "unit": "percent",
       "currency": null,
@@ -4343,7 +4343,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4424,8 +4424,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 2.4,
       "unit": "percent",
       "currency": null,
@@ -4433,7 +4433,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4442,8 +4442,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.0,
       "unit": "percent",
       "currency": null,
@@ -4451,7 +4451,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -4478,8 +4478,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 0.0,
       "unit": "percent",
       "currency": null,
@@ -4487,7 +4487,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4568,8 +4568,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 1.4,
       "unit": "percent",
       "currency": null,
@@ -4577,7 +4577,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4586,8 +4586,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 1.6,
       "unit": "percent",
       "currency": null,
@@ -4595,7 +4595,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -4622,8 +4622,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.3,
       "unit": "percent",
       "currency": null,
@@ -4631,7 +4631,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4712,8 +4712,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.0,
       "unit": "percent",
       "currency": null,
@@ -4721,7 +4721,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4730,8 +4730,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 8.0,
       "unit": "percent",
       "currency": null,
@@ -4739,7 +4739,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -4766,8 +4766,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 5.3,
       "unit": "percent",
       "currency": null,
@@ -4775,7 +4775,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4856,8 +4856,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.0,
       "unit": "percent",
       "currency": null,
@@ -4865,7 +4865,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -4874,8 +4874,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.2,
       "unit": "percent",
       "currency": null,
@@ -4883,7 +4883,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -4910,8 +4910,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 5.4,
       "unit": "percent",
       "currency": null,
@@ -4919,7 +4919,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5000,8 +5000,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.0,
       "unit": "percent",
       "currency": null,
@@ -5009,7 +5009,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5018,8 +5018,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.2,
       "unit": "percent",
       "currency": null,
@@ -5027,7 +5027,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -5054,8 +5054,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 8.4,
       "unit": "percent",
       "currency": null,
@@ -5063,7 +5063,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5144,8 +5144,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 6.5,
       "unit": "percent",
       "currency": null,
@@ -5153,7 +5153,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5162,8 +5162,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 5.7,
       "unit": "percent",
       "currency": null,
@@ -5171,7 +5171,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -5198,8 +5198,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.2,
       "unit": "percent",
       "currency": null,
@@ -5207,7 +5207,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5288,8 +5288,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.9,
       "unit": "percent",
       "currency": null,
@@ -5297,7 +5297,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5306,8 +5306,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.2,
       "unit": "percent",
       "currency": null,
@@ -5315,7 +5315,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -5342,8 +5342,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 5.0,
       "unit": "percent",
       "currency": null,
@@ -5351,7 +5351,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5432,8 +5432,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 1.9,
       "unit": "percent",
       "currency": null,
@@ -5441,7 +5441,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5450,8 +5450,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 2.5,
       "unit": "percent",
       "currency": null,
@@ -5459,7 +5459,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -5486,8 +5486,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 3.6,
       "unit": "percent",
       "currency": null,
@@ -5495,7 +5495,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5576,8 +5576,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.4,
       "unit": "percent",
       "currency": null,
@@ -5585,7 +5585,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5594,8 +5594,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.9,
       "unit": "percent",
       "currency": null,
@@ -5603,7 +5603,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     },
     {
@@ -5630,8 +5630,8 @@
       "year": 2023,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.5,
       "unit": "percent",
       "currency": null,
@@ -5639,7 +5639,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5720,8 +5720,8 @@
       "year": 2024,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.7,
       "unit": "percent",
       "currency": null,
@@ -5729,7 +5729,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": false
     },
     {
@@ -5738,8 +5738,8 @@
       "year": 2025,
       "sector_isic_section": "TOTAL",
       "sector_detail": "Gross domestic product",
-      "indicator_code": "NY.GDP.MKTP.KD.ZG",
-      "indicator_label": "GDP growth (annual %)",
+      "indicator_code": "NGDP_RPCH",
+      "indicator_label": "Real GDP growth (annual %)",
       "value": 4.4,
       "unit": "percent",
       "currency": null,
@@ -5747,7 +5747,7 @@
       "source_institution": "IMF",
       "source_dataset": "World Economic Outlook (Apr 2025)",
       "source_url": "https://www.imf.org/en/Publications/WEO",
-      "wb_indicator_code": "NY.GDP.MKTP.KD.ZG",
+      "imf_indicator_code": "NGDP_RPCH",
       "is_projection": true
     }
   ],
@@ -266351,63 +266351,6 @@
       "usgs_table_name": "Coal production 2023"
     },
     {
-      "country_name": "Burkina Faso",
-      "country_iso3": "BFA",
-      "year": 2022,
-      "sector_isic_section": "B",
-      "sector_detail": "Mining and quarrying",
-      "indicator_code": "USGS_PROD",
-      "indicator_label": "Production",
-      "value": 180000.0,
-      "unit": "tonnes",
-      "currency": null,
-      "price_base_year": null,
-      "source_institution": "USGS",
-      "source_dataset": "Mineral Commodity Summaries 2025",
-      "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-      "commodity_code": "ZNC",
-      "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2022"
-    },
-    {
-      "country_name": "Burkina Faso",
-      "country_iso3": "BFA",
-      "year": 2023,
-      "sector_isic_section": "B",
-      "sector_detail": "Mining and quarrying",
-      "indicator_code": "USGS_PROD",
-      "indicator_label": "Production",
-      "value": 175000.0,
-      "unit": "tonnes",
-      "currency": null,
-      "price_base_year": null,
-      "source_institution": "USGS",
-      "source_dataset": "Mineral Commodity Summaries 2025",
-      "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-      "commodity_code": "ZNC",
-      "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2023"
-    },
-    {
-      "country_name": "Burkina Faso",
-      "country_iso3": "BFA",
-      "year": 2024,
-      "sector_isic_section": "B",
-      "sector_detail": "Mining and quarrying",
-      "indicator_code": "USGS_PROD",
-      "indicator_label": "Production",
-      "value": 170000.0,
-      "unit": "tonnes",
-      "currency": null,
-      "price_base_year": null,
-      "source_institution": "USGS",
-      "source_dataset": "Mineral Commodity Summaries 2025",
-      "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
-      "commodity_code": "ZNC",
-      "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2024"
-    },
-    {
       "country_name": "Namibie",
       "country_iso3": "NAM",
       "year": 2022,
@@ -266424,7 +266367,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2022"
+      "usgs_table_name": "Zinc production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Namibie",
@@ -266443,7 +266387,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2023"
+      "usgs_table_name": "Zinc production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Namibie",
@@ -266462,7 +266407,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2024"
+      "usgs_table_name": "Zinc production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Maroc",
@@ -266481,7 +266427,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2022"
+      "usgs_table_name": "Zinc production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Maroc",
@@ -266500,7 +266447,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2023"
+      "usgs_table_name": "Zinc production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Maroc",
@@ -266519,7 +266467,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2024"
+      "usgs_table_name": "Zinc production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Algérie",
@@ -266538,7 +266487,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2022"
+      "usgs_table_name": "Zinc production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Algérie",
@@ -266557,7 +266507,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2023"
+      "usgs_table_name": "Zinc production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Algérie",
@@ -266576,7 +266527,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2024"
+      "usgs_table_name": "Zinc production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "RD Congo",
@@ -266595,7 +266547,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2022"
+      "usgs_table_name": "Zinc production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "RD Congo",
@@ -266614,7 +266567,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2023"
+      "usgs_table_name": "Zinc production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "RD Congo",
@@ -266633,7 +266587,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2024"
+      "usgs_table_name": "Zinc production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Zambie",
@@ -266652,7 +266607,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2022"
+      "usgs_table_name": "Zinc production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Zambie",
@@ -266671,7 +266627,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2023"
+      "usgs_table_name": "Zinc production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Zambie",
@@ -266690,7 +266647,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZNC",
       "commodity_label": "Zinc",
-      "usgs_table_name": "Zinc production 2024"
+      "usgs_table_name": "Zinc production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Maroc",
@@ -266709,7 +266667,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2022"
+      "usgs_table_name": "Lead production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Maroc",
@@ -266728,7 +266687,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2023"
+      "usgs_table_name": "Lead production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Maroc",
@@ -266747,7 +266707,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2024"
+      "usgs_table_name": "Lead production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Namibie",
@@ -266766,7 +266727,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2022"
+      "usgs_table_name": "Lead production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Namibie",
@@ -266785,7 +266747,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2023"
+      "usgs_table_name": "Lead production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Namibie",
@@ -266804,7 +266767,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2024"
+      "usgs_table_name": "Lead production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -266823,7 +266787,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2022"
+      "usgs_table_name": "Lead production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -266842,7 +266807,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2023"
+      "usgs_table_name": "Lead production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -266861,7 +266827,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2024"
+      "usgs_table_name": "Lead production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Algérie",
@@ -266880,7 +266847,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2022"
+      "usgs_table_name": "Lead production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Algérie",
@@ -266899,7 +266867,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2023"
+      "usgs_table_name": "Lead production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Algérie",
@@ -266918,7 +266887,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PB",
       "commodity_label": "Lead",
-      "usgs_table_name": "Lead production 2024"
+      "usgs_table_name": "Lead production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "RD Congo",
@@ -266937,7 +266907,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2022"
+      "usgs_table_name": "Tin production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "RD Congo",
@@ -266956,7 +266927,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2023"
+      "usgs_table_name": "Tin production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "RD Congo",
@@ -266975,7 +266947,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2024"
+      "usgs_table_name": "Tin production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Nigéria",
@@ -266994,7 +266967,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2022"
+      "usgs_table_name": "Tin production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Nigéria",
@@ -267013,7 +266987,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2023"
+      "usgs_table_name": "Tin production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Nigéria",
@@ -267032,7 +267007,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2024"
+      "usgs_table_name": "Tin production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Rwanda",
@@ -267051,7 +267027,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2022"
+      "usgs_table_name": "Tin production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Rwanda",
@@ -267070,7 +267047,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2023"
+      "usgs_table_name": "Tin production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Rwanda",
@@ -267089,7 +267067,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2024"
+      "usgs_table_name": "Tin production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Burundi",
@@ -267108,7 +267087,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2022"
+      "usgs_table_name": "Tin production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Burundi",
@@ -267127,7 +267107,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2023"
+      "usgs_table_name": "Tin production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Burundi",
@@ -267146,7 +267127,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SN",
       "commodity_label": "Tin",
-      "usgs_table_name": "Tin production 2024"
+      "usgs_table_name": "Tin production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Madagascar",
@@ -267165,7 +267147,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2022"
+      "usgs_table_name": "Nickel production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Madagascar",
@@ -267184,7 +267167,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2023"
+      "usgs_table_name": "Nickel production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Madagascar",
@@ -267203,7 +267187,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2024"
+      "usgs_table_name": "Nickel production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Zimbabwe",
@@ -267222,7 +267207,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2022"
+      "usgs_table_name": "Nickel production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Zimbabwe",
@@ -267241,7 +267227,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2023"
+      "usgs_table_name": "Nickel production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Zimbabwe",
@@ -267260,7 +267247,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2024"
+      "usgs_table_name": "Nickel production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -267279,7 +267267,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2022"
+      "usgs_table_name": "Nickel production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -267298,7 +267287,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2023"
+      "usgs_table_name": "Nickel production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -267317,7 +267307,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2024"
+      "usgs_table_name": "Nickel production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -267336,7 +267327,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2022"
+      "usgs_table_name": "Nickel production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -267355,7 +267347,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2023"
+      "usgs_table_name": "Nickel production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -267374,7 +267367,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "NCK",
       "commodity_label": "Nickel",
-      "usgs_table_name": "Nickel production 2024"
+      "usgs_table_name": "Nickel production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -267393,7 +267387,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CRM",
       "commodity_label": "Chromium",
-      "usgs_table_name": "Chromium production 2022"
+      "usgs_table_name": "Chromium production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -267412,7 +267407,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CRM",
       "commodity_label": "Chromium",
-      "usgs_table_name": "Chromium production 2023"
+      "usgs_table_name": "Chromium production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -267431,7 +267427,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CRM",
       "commodity_label": "Chromium",
-      "usgs_table_name": "Chromium production 2024"
+      "usgs_table_name": "Chromium production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Zimbabwe",
@@ -267450,7 +267447,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CRM",
       "commodity_label": "Chromium",
-      "usgs_table_name": "Chromium production 2022"
+      "usgs_table_name": "Chromium production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Zimbabwe",
@@ -267469,7 +267467,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CRM",
       "commodity_label": "Chromium",
-      "usgs_table_name": "Chromium production 2023"
+      "usgs_table_name": "Chromium production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Zimbabwe",
@@ -267488,7 +267487,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CRM",
       "commodity_label": "Chromium",
-      "usgs_table_name": "Chromium production 2024"
+      "usgs_table_name": "Chromium production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Madagascar",
@@ -267507,7 +267507,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CRM",
       "commodity_label": "Chromium",
-      "usgs_table_name": "Chromium production 2022"
+      "usgs_table_name": "Chromium production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Madagascar",
@@ -267526,7 +267527,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CRM",
       "commodity_label": "Chromium",
-      "usgs_table_name": "Chromium production 2023"
+      "usgs_table_name": "Chromium production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Madagascar",
@@ -267545,7 +267547,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CRM",
       "commodity_label": "Chromium",
-      "usgs_table_name": "Chromium production 2024"
+      "usgs_table_name": "Chromium production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Zimbabwe",
@@ -267564,7 +267567,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "LIT",
       "commodity_label": "Lithium",
-      "usgs_table_name": "Lithium production 2022"
+      "usgs_table_name": "Lithium production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Zimbabwe",
@@ -267583,7 +267587,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "LIT",
       "commodity_label": "Lithium",
-      "usgs_table_name": "Lithium production 2023"
+      "usgs_table_name": "Lithium production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Zimbabwe",
@@ -267602,7 +267607,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "LIT",
       "commodity_label": "Lithium",
-      "usgs_table_name": "Lithium production 2024"
+      "usgs_table_name": "Lithium production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Namibie",
@@ -267621,7 +267627,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "LIT",
       "commodity_label": "Lithium",
-      "usgs_table_name": "Lithium production 2023"
+      "usgs_table_name": "Lithium production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Namibie",
@@ -267640,7 +267647,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "LIT",
       "commodity_label": "Lithium",
-      "usgs_table_name": "Lithium production 2024"
+      "usgs_table_name": "Lithium production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "RD Congo",
@@ -267659,7 +267667,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "LIT",
       "commodity_label": "Lithium",
-      "usgs_table_name": "Lithium production 2024"
+      "usgs_table_name": "Lithium production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Mozambique",
@@ -267678,7 +267687,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GPH",
       "commodity_label": "Graphite",
-      "usgs_table_name": "Graphite production 2022"
+      "usgs_table_name": "Graphite production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Mozambique",
@@ -267697,7 +267707,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GPH",
       "commodity_label": "Graphite",
-      "usgs_table_name": "Graphite production 2023"
+      "usgs_table_name": "Graphite production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Mozambique",
@@ -267716,7 +267727,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GPH",
       "commodity_label": "Graphite",
-      "usgs_table_name": "Graphite production 2024"
+      "usgs_table_name": "Graphite production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Madagascar",
@@ -267735,7 +267747,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GPH",
       "commodity_label": "Graphite",
-      "usgs_table_name": "Graphite production 2022"
+      "usgs_table_name": "Graphite production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Madagascar",
@@ -267754,7 +267767,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GPH",
       "commodity_label": "Graphite",
-      "usgs_table_name": "Graphite production 2023"
+      "usgs_table_name": "Graphite production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Madagascar",
@@ -267773,7 +267787,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GPH",
       "commodity_label": "Graphite",
-      "usgs_table_name": "Graphite production 2024"
+      "usgs_table_name": "Graphite production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Tanzanie",
@@ -267792,7 +267807,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GPH",
       "commodity_label": "Graphite",
-      "usgs_table_name": "Graphite production 2022"
+      "usgs_table_name": "Graphite production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Tanzanie",
@@ -267811,7 +267827,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GPH",
       "commodity_label": "Graphite",
-      "usgs_table_name": "Graphite production 2023"
+      "usgs_table_name": "Graphite production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Tanzanie",
@@ -267830,7 +267847,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GPH",
       "commodity_label": "Graphite",
-      "usgs_table_name": "Graphite production 2024"
+      "usgs_table_name": "Graphite production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "RD Congo",
@@ -267849,7 +267867,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2022"
+      "usgs_table_name": "Tantalum production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "RD Congo",
@@ -267868,7 +267887,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2023"
+      "usgs_table_name": "Tantalum production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "RD Congo",
@@ -267887,7 +267907,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2024"
+      "usgs_table_name": "Tantalum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Rwanda",
@@ -267906,7 +267927,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2022"
+      "usgs_table_name": "Tantalum production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Rwanda",
@@ -267925,7 +267947,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2023"
+      "usgs_table_name": "Tantalum production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Rwanda",
@@ -267944,7 +267967,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2024"
+      "usgs_table_name": "Tantalum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Nigéria",
@@ -267963,7 +267987,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2022"
+      "usgs_table_name": "Tantalum production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Nigéria",
@@ -267982,7 +268007,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2023"
+      "usgs_table_name": "Tantalum production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Nigéria",
@@ -268001,7 +268027,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2024"
+      "usgs_table_name": "Tantalum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Éthiopie",
@@ -268020,7 +268047,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2022"
+      "usgs_table_name": "Tantalum production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Éthiopie",
@@ -268039,7 +268067,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2023"
+      "usgs_table_name": "Tantalum production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Éthiopie",
@@ -268058,7 +268087,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "TNT",
       "commodity_label": "Tantalum",
-      "usgs_table_name": "Tantalum production 2024"
+      "usgs_table_name": "Tantalum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -268077,7 +268107,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "VDM",
       "commodity_label": "Vanadium",
-      "usgs_table_name": "Vanadium production 2022"
+      "usgs_table_name": "Vanadium production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268096,7 +268127,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "VDM",
       "commodity_label": "Vanadium",
-      "usgs_table_name": "Vanadium production 2023"
+      "usgs_table_name": "Vanadium production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268115,7 +268147,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "VDM",
       "commodity_label": "Vanadium",
-      "usgs_table_name": "Vanadium production 2024"
+      "usgs_table_name": "Vanadium production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -268134,7 +268167,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ATM",
       "commodity_label": "Antimony",
-      "usgs_table_name": "Antimony production 2022"
+      "usgs_table_name": "Antimony production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268153,7 +268187,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ATM",
       "commodity_label": "Antimony",
-      "usgs_table_name": "Antimony production 2023"
+      "usgs_table_name": "Antimony production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268172,7 +268207,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ATM",
       "commodity_label": "Antimony",
-      "usgs_table_name": "Antimony production 2024"
+      "usgs_table_name": "Antimony production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Maroc",
@@ -268191,7 +268227,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "AGX",
       "commodity_label": "Silver",
-      "usgs_table_name": "Silver production 2022"
+      "usgs_table_name": "Silver production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Maroc",
@@ -268210,7 +268247,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "AGX",
       "commodity_label": "Silver",
-      "usgs_table_name": "Silver production 2023"
+      "usgs_table_name": "Silver production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Maroc",
@@ -268229,7 +268267,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "AGX",
       "commodity_label": "Silver",
-      "usgs_table_name": "Silver production 2024"
+      "usgs_table_name": "Silver production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -268248,7 +268287,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "AGX",
       "commodity_label": "Silver",
-      "usgs_table_name": "Silver production 2022"
+      "usgs_table_name": "Silver production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268267,7 +268307,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "AGX",
       "commodity_label": "Silver",
-      "usgs_table_name": "Silver production 2023"
+      "usgs_table_name": "Silver production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268286,7 +268327,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "AGX",
       "commodity_label": "Silver",
-      "usgs_table_name": "Silver production 2024"
+      "usgs_table_name": "Silver production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Algérie",
@@ -268305,7 +268347,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "AGX",
       "commodity_label": "Silver",
-      "usgs_table_name": "Silver production 2022"
+      "usgs_table_name": "Silver production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Algérie",
@@ -268324,7 +268367,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "AGX",
       "commodity_label": "Silver",
-      "usgs_table_name": "Silver production 2023"
+      "usgs_table_name": "Silver production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Algérie",
@@ -268343,7 +268387,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "AGX",
       "commodity_label": "Silver",
-      "usgs_table_name": "Silver production 2024"
+      "usgs_table_name": "Silver production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -268362,7 +268407,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PLD",
       "commodity_label": "Palladium",
-      "usgs_table_name": "Palladium production 2022"
+      "usgs_table_name": "Palladium production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268381,7 +268427,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PLD",
       "commodity_label": "Palladium",
-      "usgs_table_name": "Palladium production 2023"
+      "usgs_table_name": "Palladium production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268400,7 +268447,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PLD",
       "commodity_label": "Palladium",
-      "usgs_table_name": "Palladium production 2024"
+      "usgs_table_name": "Palladium production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Zimbabwe",
@@ -268419,7 +268467,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PLD",
       "commodity_label": "Palladium",
-      "usgs_table_name": "Palladium production 2022"
+      "usgs_table_name": "Palladium production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Zimbabwe",
@@ -268438,7 +268487,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PLD",
       "commodity_label": "Palladium",
-      "usgs_table_name": "Palladium production 2023"
+      "usgs_table_name": "Palladium production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Zimbabwe",
@@ -268457,7 +268507,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PLD",
       "commodity_label": "Palladium",
-      "usgs_table_name": "Palladium production 2024"
+      "usgs_table_name": "Palladium production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -268476,7 +268527,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2022"
+      "usgs_table_name": "Titanium (ilmenite) production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268495,7 +268547,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2023"
+      "usgs_table_name": "Titanium (ilmenite) production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268514,7 +268567,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2024"
+      "usgs_table_name": "Titanium (ilmenite) production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Mozambique",
@@ -268533,7 +268587,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2022"
+      "usgs_table_name": "Titanium (ilmenite) production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Mozambique",
@@ -268552,7 +268607,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2023"
+      "usgs_table_name": "Titanium (ilmenite) production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Mozambique",
@@ -268571,7 +268627,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2024"
+      "usgs_table_name": "Titanium (ilmenite) production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Madagascar",
@@ -268590,7 +268647,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2022"
+      "usgs_table_name": "Titanium (ilmenite) production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Madagascar",
@@ -268609,7 +268667,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2023"
+      "usgs_table_name": "Titanium (ilmenite) production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Madagascar",
@@ -268628,7 +268687,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2024"
+      "usgs_table_name": "Titanium (ilmenite) production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Sénégal",
@@ -268647,7 +268707,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2022"
+      "usgs_table_name": "Titanium (ilmenite) production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Sénégal",
@@ -268666,7 +268727,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2023"
+      "usgs_table_name": "Titanium (ilmenite) production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Sénégal",
@@ -268685,7 +268747,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2024"
+      "usgs_table_name": "Titanium (ilmenite) production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Kenya",
@@ -268704,7 +268767,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2022"
+      "usgs_table_name": "Titanium (ilmenite) production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Kenya",
@@ -268723,7 +268787,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2023"
+      "usgs_table_name": "Titanium (ilmenite) production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Kenya",
@@ -268742,7 +268807,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ILM",
       "commodity_label": "Titanium (ilmenite)",
-      "usgs_table_name": "Titanium (ilmenite) production 2024"
+      "usgs_table_name": "Titanium (ilmenite) production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -268761,7 +268827,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2022"
+      "usgs_table_name": "Zircon production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268780,7 +268847,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2023"
+      "usgs_table_name": "Zircon production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -268799,7 +268867,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2024"
+      "usgs_table_name": "Zircon production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Mozambique",
@@ -268818,7 +268887,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2022"
+      "usgs_table_name": "Zircon production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Mozambique",
@@ -268837,7 +268907,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2023"
+      "usgs_table_name": "Zircon production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Mozambique",
@@ -268856,7 +268927,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2024"
+      "usgs_table_name": "Zircon production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Sénégal",
@@ -268875,7 +268947,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2022"
+      "usgs_table_name": "Zircon production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Sénégal",
@@ -268894,7 +268967,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2023"
+      "usgs_table_name": "Zircon production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Sénégal",
@@ -268913,7 +268987,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2024"
+      "usgs_table_name": "Zircon production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Kenya",
@@ -268932,7 +269007,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2022"
+      "usgs_table_name": "Zircon production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Kenya",
@@ -268951,7 +269027,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2023"
+      "usgs_table_name": "Zircon production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Kenya",
@@ -268970,7 +269047,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "ZRC",
       "commodity_label": "Zircon",
-      "usgs_table_name": "Zircon production 2024"
+      "usgs_table_name": "Zircon production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -268989,7 +269067,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2022"
+      "usgs_table_name": "Fluorspar production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -269008,7 +269087,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2023"
+      "usgs_table_name": "Fluorspar production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -269027,7 +269107,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2024"
+      "usgs_table_name": "Fluorspar production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Namibie",
@@ -269046,7 +269127,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2022"
+      "usgs_table_name": "Fluorspar production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Namibie",
@@ -269065,7 +269147,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2023"
+      "usgs_table_name": "Fluorspar production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Namibie",
@@ -269084,7 +269167,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2024"
+      "usgs_table_name": "Fluorspar production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Kenya",
@@ -269103,7 +269187,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2022"
+      "usgs_table_name": "Fluorspar production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Kenya",
@@ -269122,7 +269207,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2023"
+      "usgs_table_name": "Fluorspar production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Kenya",
@@ -269141,7 +269227,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2024"
+      "usgs_table_name": "Fluorspar production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Maroc",
@@ -269160,7 +269247,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2022"
+      "usgs_table_name": "Fluorspar production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Maroc",
@@ -269179,7 +269267,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2023"
+      "usgs_table_name": "Fluorspar production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Maroc",
@@ -269198,7 +269287,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FLR",
       "commodity_label": "Fluorspar",
-      "usgs_table_name": "Fluorspar production 2024"
+      "usgs_table_name": "Fluorspar production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Égypte",
@@ -269217,7 +269307,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2022"
+      "usgs_table_name": "Salt production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Égypte",
@@ -269236,7 +269327,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2023"
+      "usgs_table_name": "Salt production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Égypte",
@@ -269255,7 +269347,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2024"
+      "usgs_table_name": "Salt production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -269274,7 +269367,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2022"
+      "usgs_table_name": "Salt production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -269293,7 +269387,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2023"
+      "usgs_table_name": "Salt production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -269312,7 +269407,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2024"
+      "usgs_table_name": "Salt production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Sénégal",
@@ -269331,7 +269427,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2022"
+      "usgs_table_name": "Salt production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Sénégal",
@@ -269350,7 +269447,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2023"
+      "usgs_table_name": "Salt production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Sénégal",
@@ -269369,7 +269467,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2024"
+      "usgs_table_name": "Salt production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Tunisie",
@@ -269388,7 +269487,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2022"
+      "usgs_table_name": "Salt production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Tunisie",
@@ -269407,7 +269507,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2023"
+      "usgs_table_name": "Salt production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Tunisie",
@@ -269426,7 +269527,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2024"
+      "usgs_table_name": "Salt production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Namibie",
@@ -269445,7 +269547,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2022"
+      "usgs_table_name": "Salt production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Namibie",
@@ -269464,7 +269567,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2023"
+      "usgs_table_name": "Salt production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Namibie",
@@ -269483,7 +269587,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2024"
+      "usgs_table_name": "Salt production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Botswana",
@@ -269502,7 +269607,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2022"
+      "usgs_table_name": "Salt production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Botswana",
@@ -269521,7 +269627,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2023"
+      "usgs_table_name": "Salt production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Botswana",
@@ -269540,7 +269647,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "SLT",
       "commodity_label": "Salt",
-      "usgs_table_name": "Salt production 2024"
+      "usgs_table_name": "Salt production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Égypte",
@@ -269559,7 +269667,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2022"
+      "usgs_table_name": "Gypsum production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Égypte",
@@ -269578,7 +269687,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2023"
+      "usgs_table_name": "Gypsum production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Égypte",
@@ -269597,7 +269707,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2024"
+      "usgs_table_name": "Gypsum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Tunisie",
@@ -269616,7 +269727,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2022"
+      "usgs_table_name": "Gypsum production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Tunisie",
@@ -269635,7 +269747,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2023"
+      "usgs_table_name": "Gypsum production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Tunisie",
@@ -269654,7 +269767,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2024"
+      "usgs_table_name": "Gypsum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Algérie",
@@ -269673,7 +269787,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2022"
+      "usgs_table_name": "Gypsum production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Algérie",
@@ -269692,7 +269807,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2023"
+      "usgs_table_name": "Gypsum production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Algérie",
@@ -269711,7 +269827,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2024"
+      "usgs_table_name": "Gypsum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Maroc",
@@ -269730,7 +269847,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2022"
+      "usgs_table_name": "Gypsum production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Maroc",
@@ -269749,7 +269867,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2023"
+      "usgs_table_name": "Gypsum production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Maroc",
@@ -269768,7 +269887,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2024"
+      "usgs_table_name": "Gypsum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Nigéria",
@@ -269787,7 +269907,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2022"
+      "usgs_table_name": "Gypsum production 2022",
+      "is_estimate": false
     },
     {
       "country_name": "Nigéria",
@@ -269806,7 +269927,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2023"
+      "usgs_table_name": "Gypsum production 2023",
+      "is_estimate": false
     },
     {
       "country_name": "Nigéria",
@@ -269825,7 +269947,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GYP",
       "commodity_label": "Gypsum",
-      "usgs_table_name": "Gypsum production 2024"
+      "usgs_table_name": "Gypsum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Ghana",
@@ -269844,7 +269967,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Mali",
@@ -269863,7 +269987,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -269882,7 +270007,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Burkina Faso",
@@ -269901,7 +270027,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Soudan",
@@ -269920,7 +270047,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Guinée",
@@ -269939,7 +270067,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Tanzanie",
@@ -269958,7 +270087,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -269977,7 +270107,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "RD Congo",
@@ -269996,7 +270127,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Zimbabwe",
@@ -270015,7 +270147,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Égypte",
@@ -270034,7 +270167,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Sénégal",
@@ -270053,7 +270187,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Érythrée",
@@ -270072,7 +270207,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Mauritanie",
@@ -270091,7 +270227,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Niger",
@@ -270110,7 +270247,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Ouganda",
@@ -270129,7 +270267,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Éthiopie",
@@ -270148,7 +270287,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "GO",
       "commodity_label": "Gold",
-      "usgs_table_name": "Gold production 2024"
+      "usgs_table_name": "Gold production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "RD Congo",
@@ -270167,7 +270307,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CO",
       "commodity_label": "Copper",
-      "usgs_table_name": "Copper production 2024"
+      "usgs_table_name": "Copper production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Zambie",
@@ -270186,7 +270327,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CO",
       "commodity_label": "Copper",
-      "usgs_table_name": "Copper production 2024"
+      "usgs_table_name": "Copper production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -270205,7 +270347,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CO",
       "commodity_label": "Copper",
-      "usgs_table_name": "Copper production 2024"
+      "usgs_table_name": "Copper production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Namibie",
@@ -270224,7 +270367,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CO",
       "commodity_label": "Copper",
-      "usgs_table_name": "Copper production 2024"
+      "usgs_table_name": "Copper production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Botswana",
@@ -270243,7 +270387,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CO",
       "commodity_label": "Copper",
-      "usgs_table_name": "Copper production 2024"
+      "usgs_table_name": "Copper production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Tanzanie",
@@ -270262,7 +270407,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CO",
       "commodity_label": "Copper",
-      "usgs_table_name": "Copper production 2024"
+      "usgs_table_name": "Copper production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "RD Congo",
@@ -270281,7 +270427,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CO",
       "commodity_label": "Cobalt",
-      "usgs_table_name": "Cobalt production 2024"
+      "usgs_table_name": "Cobalt production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Madagascar",
@@ -270300,7 +270447,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CO",
       "commodity_label": "Cobalt",
-      "usgs_table_name": "Cobalt production 2024"
+      "usgs_table_name": "Cobalt production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Maroc",
@@ -270319,7 +270467,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "CO",
       "commodity_label": "Cobalt",
-      "usgs_table_name": "Cobalt production 2024"
+      "usgs_table_name": "Cobalt production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Botswana",
@@ -270338,7 +270487,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "DI",
       "commodity_label": "Diamonds",
-      "usgs_table_name": "Diamonds production 2024"
+      "usgs_table_name": "Diamonds production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Angola",
@@ -270357,7 +270507,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "DI",
       "commodity_label": "Diamonds",
-      "usgs_table_name": "Diamonds production 2024"
+      "usgs_table_name": "Diamonds production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -270376,7 +270527,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "DI",
       "commodity_label": "Diamonds",
-      "usgs_table_name": "Diamonds production 2024"
+      "usgs_table_name": "Diamonds production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Zimbabwe",
@@ -270395,7 +270547,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "DI",
       "commodity_label": "Diamonds",
-      "usgs_table_name": "Diamonds production 2024"
+      "usgs_table_name": "Diamonds production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Namibie",
@@ -270414,7 +270567,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "DI",
       "commodity_label": "Diamonds",
-      "usgs_table_name": "Diamonds production 2024"
+      "usgs_table_name": "Diamonds production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "RD Congo",
@@ -270433,7 +270587,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "DI",
       "commodity_label": "Diamonds",
-      "usgs_table_name": "Diamonds production 2024"
+      "usgs_table_name": "Diamonds production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Lesotho",
@@ -270452,7 +270607,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "DI",
       "commodity_label": "Diamonds",
-      "usgs_table_name": "Diamonds production 2024"
+      "usgs_table_name": "Diamonds production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Sierra Leone",
@@ -270471,7 +270627,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "DI",
       "commodity_label": "Diamonds",
-      "usgs_table_name": "Diamonds production 2024"
+      "usgs_table_name": "Diamonds production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Maroc",
@@ -270490,7 +270647,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PH",
       "commodity_label": "Phosphate",
-      "usgs_table_name": "Phosphate production 2024"
+      "usgs_table_name": "Phosphate production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Égypte",
@@ -270509,7 +270667,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PH",
       "commodity_label": "Phosphate",
-      "usgs_table_name": "Phosphate production 2024"
+      "usgs_table_name": "Phosphate production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Tunisie",
@@ -270528,7 +270687,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PH",
       "commodity_label": "Phosphate",
-      "usgs_table_name": "Phosphate production 2024"
+      "usgs_table_name": "Phosphate production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Sénégal",
@@ -270547,7 +270707,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PH",
       "commodity_label": "Phosphate",
-      "usgs_table_name": "Phosphate production 2024"
+      "usgs_table_name": "Phosphate production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -270566,7 +270727,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PH",
       "commodity_label": "Phosphate",
-      "usgs_table_name": "Phosphate production 2024"
+      "usgs_table_name": "Phosphate production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Togo",
@@ -270585,7 +270747,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PH",
       "commodity_label": "Phosphate",
-      "usgs_table_name": "Phosphate production 2024"
+      "usgs_table_name": "Phosphate production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Algérie",
@@ -270604,7 +270767,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PH",
       "commodity_label": "Phosphate",
-      "usgs_table_name": "Phosphate production 2024"
+      "usgs_table_name": "Phosphate production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Guinée",
@@ -270623,7 +270787,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "BA",
       "commodity_label": "Bauxite",
-      "usgs_table_name": "Bauxite production 2024"
+      "usgs_table_name": "Bauxite production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Sierra Leone",
@@ -270642,7 +270807,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "BA",
       "commodity_label": "Bauxite",
-      "usgs_table_name": "Bauxite production 2024"
+      "usgs_table_name": "Bauxite production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Ghana",
@@ -270661,7 +270827,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "BA",
       "commodity_label": "Bauxite",
-      "usgs_table_name": "Bauxite production 2024"
+      "usgs_table_name": "Bauxite production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Namibie",
@@ -270680,7 +270847,8 @@
       "source_url": "https://world-nuclear.org/information-library/nuclear-fuel-cycle/mining-of-uranium/world-uranium-mining-production",
       "commodity_code": "UR",
       "commodity_label": "Uranium",
-      "usgs_table_name": "Uranium production 2024"
+      "usgs_table_name": "Uranium production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Niger",
@@ -270699,7 +270867,8 @@
       "source_url": "https://world-nuclear.org/information-library/nuclear-fuel-cycle/mining-of-uranium/world-uranium-mining-production",
       "commodity_code": "UR",
       "commodity_label": "Uranium",
-      "usgs_table_name": "Uranium production 2024"
+      "usgs_table_name": "Uranium production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -270718,7 +270887,8 @@
       "source_url": "https://world-nuclear.org/information-library/nuclear-fuel-cycle/mining-of-uranium/world-uranium-mining-production",
       "commodity_code": "UR",
       "commodity_label": "Uranium",
-      "usgs_table_name": "Uranium production 2024"
+      "usgs_table_name": "Uranium production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Afrique du Sud",
@@ -270737,7 +270907,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FE",
       "commodity_label": "Iron ore",
-      "usgs_table_name": "Iron ore production 2024"
+      "usgs_table_name": "Iron ore production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Mauritanie",
@@ -270756,7 +270927,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FE",
       "commodity_label": "Iron ore",
-      "usgs_table_name": "Iron ore production 2024"
+      "usgs_table_name": "Iron ore production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Sierra Leone",
@@ -270775,7 +270947,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FE",
       "commodity_label": "Iron ore",
-      "usgs_table_name": "Iron ore production 2024"
+      "usgs_table_name": "Iron ore production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Libéria",
@@ -270794,7 +270967,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "FE",
       "commodity_label": "Iron ore",
-      "usgs_table_name": "Iron ore production 2024"
+      "usgs_table_name": "Iron ore production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -270813,7 +270987,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "MA",
       "commodity_label": "Manganese",
-      "usgs_table_name": "Manganese production 2024"
+      "usgs_table_name": "Manganese production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Gabon",
@@ -270832,7 +271007,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "MA",
       "commodity_label": "Manganese",
-      "usgs_table_name": "Manganese production 2024"
+      "usgs_table_name": "Manganese production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Ghana",
@@ -270851,7 +271027,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "MA",
       "commodity_label": "Manganese",
-      "usgs_table_name": "Manganese production 2024"
+      "usgs_table_name": "Manganese production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -270870,7 +271047,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "MA",
       "commodity_label": "Manganese",
-      "usgs_table_name": "Manganese production 2024"
+      "usgs_table_name": "Manganese production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -270889,7 +271067,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PL",
       "commodity_label": "Platinum",
-      "usgs_table_name": "Platinum production 2024"
+      "usgs_table_name": "Platinum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Zimbabwe",
@@ -270908,7 +271087,8 @@
       "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
       "commodity_code": "PL",
       "commodity_label": "Platinum",
-      "usgs_table_name": "Platinum production 2024"
+      "usgs_table_name": "Platinum production 2024",
+      "is_estimate": true
     },
     {
       "country_name": "Afrique du Sud",
@@ -270927,7 +271107,8 @@
       "source_url": "https://www.iea.org/reports/coal-2024",
       "commodity_code": "CO",
       "commodity_label": "Coal",
-      "usgs_table_name": "Coal production 2024"
+      "usgs_table_name": "Coal production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Mozambique",
@@ -270946,7 +271127,8 @@
       "source_url": "https://www.iea.org/reports/coal-2024",
       "commodity_code": "CO",
       "commodity_label": "Coal",
-      "usgs_table_name": "Coal production 2024"
+      "usgs_table_name": "Coal production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Zimbabwe",
@@ -270965,7 +271147,8 @@
       "source_url": "https://www.iea.org/reports/coal-2024",
       "commodity_code": "CO",
       "commodity_label": "Coal",
-      "usgs_table_name": "Coal production 2024"
+      "usgs_table_name": "Coal production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Nigéria",
@@ -270984,7 +271167,8 @@
       "source_url": "https://www.iea.org/reports/coal-2024",
       "commodity_code": "CO",
       "commodity_label": "Coal",
-      "usgs_table_name": "Coal production 2024"
+      "usgs_table_name": "Coal production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Nigéria",
@@ -271003,7 +271187,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Libye",
@@ -271022,7 +271207,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Angola",
@@ -271041,7 +271227,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Algérie",
@@ -271060,7 +271247,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Égypte",
@@ -271079,7 +271267,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Congo",
@@ -271098,7 +271287,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Gabon",
@@ -271117,7 +271307,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Ghana",
@@ -271136,7 +271327,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Soudan du Sud",
@@ -271155,7 +271347,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Tchad",
@@ -271174,7 +271367,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Guinée équatoriale",
@@ -271193,7 +271387,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Soudan",
@@ -271212,7 +271407,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Cameroun",
@@ -271231,7 +271427,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Tunisie",
@@ -271250,7 +271447,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -271269,7 +271467,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "OIL",
       "commodity_label": "Crude oil",
-      "usgs_table_name": "Crude oil production 2024"
+      "usgs_table_name": "Crude oil production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Algérie",
@@ -271288,7 +271487,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "GAS",
       "commodity_label": "Natural gas",
-      "usgs_table_name": "Natural gas production 2024"
+      "usgs_table_name": "Natural gas production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Égypte",
@@ -271307,7 +271507,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "GAS",
       "commodity_label": "Natural gas",
-      "usgs_table_name": "Natural gas production 2024"
+      "usgs_table_name": "Natural gas production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Nigéria",
@@ -271326,7 +271527,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "GAS",
       "commodity_label": "Natural gas",
-      "usgs_table_name": "Natural gas production 2024"
+      "usgs_table_name": "Natural gas production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Libye",
@@ -271345,7 +271547,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "GAS",
       "commodity_label": "Natural gas",
-      "usgs_table_name": "Natural gas production 2024"
+      "usgs_table_name": "Natural gas production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Mozambique",
@@ -271364,7 +271567,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "GAS",
       "commodity_label": "Natural gas",
-      "usgs_table_name": "Natural gas production 2024"
+      "usgs_table_name": "Natural gas production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Guinée équatoriale",
@@ -271383,7 +271587,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "GAS",
       "commodity_label": "Natural gas",
-      "usgs_table_name": "Natural gas production 2024"
+      "usgs_table_name": "Natural gas production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Angola",
@@ -271402,7 +271607,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "GAS",
       "commodity_label": "Natural gas",
-      "usgs_table_name": "Natural gas production 2024"
+      "usgs_table_name": "Natural gas production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Côte d'Ivoire",
@@ -271421,7 +271627,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "GAS",
       "commodity_label": "Natural gas",
-      "usgs_table_name": "Natural gas production 2024"
+      "usgs_table_name": "Natural gas production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Tunisie",
@@ -271440,7 +271647,8 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "GAS",
       "commodity_label": "Natural gas",
-      "usgs_table_name": "Natural gas production 2024"
+      "usgs_table_name": "Natural gas production 2024",
+      "is_estimate": false
     },
     {
       "country_name": "Ghana",
@@ -271459,11 +271667,12 @@
       "source_url": "https://www.eia.gov/international/data/world",
       "commodity_code": "GAS",
       "commodity_label": "Natural gas",
-      "usgs_table_name": "Natural gas production 2024"
+      "usgs_table_name": "Natural gas production 2024",
+      "is_estimate": false
     }
   ],
   "metadata": {
-    "last_updated": "2026-08-25T10:28:03.897739+00:00",
+    "last_updated": "2026-08-25T10:43:19.724753+00:00",
     "update_source": "build_production_faostat_usgs.py — ingestion FAOSTAT bulk + USGS MCS",
     "sources": {
       "agriculture": "FAO FAOSTAT (Production QCL) bulk Africa — multi-années 2019-2024",
@@ -271477,9 +271686,9 @@
       "agriculture": 10138,
       "agriculture_projections": 60,
       "manufacturing": 190,
-      "mining": 435,
+      "mining": 432,
       "macro": 322,
-      "total": 11145
+      "total": 11142
     },
     "note": "Valeurs réelles publiées + projections étiquetées (is_projection). Aucune génération aléatoire. Sources : FAO/OCDE, UNIDO, USGS, WNA, EIA, OPEC, World Bank, IMF.",
     "enriched_by": "scripts/enrich_production_data.py — surcouche curée idempotente"

@@ -93,7 +93,10 @@ function ProductionMacro({ language = 'fr' }) {
   const isGdpGrowth = (records) =>
     Array.isArray(records) &&
     records.some(
-      (r) => r.indicator_code === 'NY.GDP.MKTP.KD.ZG' || r.sector_isic_section === 'TOTAL'
+      (r) =>
+        r.indicator_code === 'NGDP_RPCH' ||
+        r.indicator_code === 'NY.GDP.MKTP.KD.ZG' ||
+        r.sector_isic_section === 'TOTAL'
     );
 
   const valueAddedSectors = useMemo(() => {

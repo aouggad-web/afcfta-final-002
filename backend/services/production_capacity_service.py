@@ -317,12 +317,18 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("2504", "mining", "Graphite"),  # graphite naturel
     ("2520", "mining", "Gypsum"),  # gypse, anhydrite
     ("2607", "mining", "Lead"),  # minerais de plomb
-    ("2617", "mining", "Antimony"),  # minerais d'antimoine
+    # HS 2617 est l'en-tête large « autres minerais » ; seul 261710 désigne
+    # spécifiquement l'antimoine → on cible le HS6 pour ne pas capter tout 2617xx.
+    ("261710", "mining", "Antimony"),  # minerais d'antimoine (HS6 spécifique)
     ("253090", "mining", "Lithium"),  # spodumène / minéraux de lithium (HS6)
     ("261610", "mining", "Silver"),  # minerais d'argent (chap. 26 ; ≠ 7106 métal)
     ("711021", "mining", "Palladium"),  # palladium (groupe platine, HS6)
-    ("261510", "mining", "Zircon"),  # minerais de zirconium (HS6)
-    ("261590", "mining", "Vanadium"),  # minerais de vanadium/niobium (HS6)
+    ("261510", "mining", "Zircon"),  # minerais de zirconium (HS6 spécifique)
+    # Vanadium : HS 261590 couvre CONJOINTEMENT niobium/tantale/vanadium (et
+    # écraserait le mapping 2615=Tantalum par préfixe long) → on pointe vers le
+    # code vanadium-spécifique 282530 (oxydes et hydroxydes de vanadium, forme
+    # sous laquelle la production vanadium est usuellement rapportée).
+    ("282530", "mining", "Vanadium"),  # oxydes/hydroxydes de vanadium (HS6 spécifique)
     ("261400", "mining", "Titanium (ilmenite)"),  # minerais de titane (HS6)
 ]
 

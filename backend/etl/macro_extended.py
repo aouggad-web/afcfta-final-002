@@ -175,9 +175,9 @@ _INDICATORS = [
         "gdp_growth",
         "TOTAL",
         "Gross domestic product",
-        "NY.GDP.MKTP.KD.ZG",
-        "GDP growth (annual %)",
-        "NY.GDP.MKTP.KD.ZG",
+        "NGDP_RPCH",  # code natif IMF WEO (croissance PIB réel), ≠ code WDI
+        "Real GDP growth (annual %)",
+        None,  # pas de code World Bank : série IMF
     ),
 ]
 
@@ -225,7 +225,13 @@ def build_macro_series() -> List[Dict]:
                             if is_growth
                             else f"https://data.worldbank.org/indicator/{wb_code}"
                         ),
-                        "wb_indicator_code": wb_code,
+                        # Code source-natif : IMF pour la croissance (imf_indicator_code),
+                        # World Bank pour la valeur ajoutée (wb_indicator_code).
+                        **(
+                            {"imf_indicator_code": ind_code}
+                            if is_growth
+                            else {"wb_indicator_code": wb_code}
+                        ),
                         "is_projection": is_projection,
                     }
                 )
