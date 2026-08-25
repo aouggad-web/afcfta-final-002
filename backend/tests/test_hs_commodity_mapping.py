@@ -104,6 +104,17 @@ def test_newly_added_agri_commodities_resolve_at_hs6_with_data():
         assert pcs._records_for("agri", label), f"aucun enregistrement pour {label}"
 
 
+def test_titanium_hs4_and_hs6_resolve_to_enriched_series():
+    # HS 2614 (minerais de titane) doit atteindre le libellé réellement présent
+    # dans production_africaine.json (« Titanium (ilmenite) ») aux niveaux HS4 ET
+    # HS6 : l'ancien mapping pointait vers « Ilmenite » (sans enregistrement), la
+    # recherche de capacité renvoyait donc un ensemble vide.
+    for hs, level in (("2614", "HS4"), ("261400", "HS6")):
+        match = pcs._match_commodity(hs)
+        assert match == ("mining", "Titanium (ilmenite)", level), (hs, match)
+        assert pcs._records_for("mining", "Titanium (ilmenite)"), f"aucun enregistrement pour {hs}"
+
+
 def test_no_production_commodity_left_without_hs_mapping():
     # Invariant de couverture : toute commodité (agri FAO, mines USGS, secteur
     # UNIDO) présente dans production_africaine.json doit être atteignable par

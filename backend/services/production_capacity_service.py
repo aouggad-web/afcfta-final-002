@@ -305,7 +305,31 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("2516", "mining", "Granite"),
     ("2513", "mining", "Pumice"),
     ("2530", "mining", "Perlite"),
-    ("2614", "mining", "Ilmenite"),
+    # HS 2614 = minerais de titane (ilménite). Pointé vers le libellé réellement
+    # présent dans le dataset (« Titanium (ilmenite) ») : l'ancien libellé
+    # « Ilmenite » n'a aucun enregistrement, la recherche de capacité HS4 renvoyait
+    # donc un ensemble vide. Couvre à la fois HS4 (2614) et HS6 (261400 ci-dessous).
+    ("2614", "mining", "Titanium (ilmenite)"),
+    # ── Minéraux ajoutés (enrichissement mining_extended) — codes HS spécifiques
+    #    (préfixe le plus long prioritaire ; évite les collisions avec les
+    #    positions génériques déjà mappées : 2615=Tantalum, 2530=Perlite…). ──
+    ("2610", "mining", "Chromium"),  # minerais de chrome
+    ("2504", "mining", "Graphite"),  # graphite naturel
+    ("2520", "mining", "Gypsum"),  # gypse, anhydrite
+    ("2607", "mining", "Lead"),  # minerais de plomb
+    # HS 2617 est l'en-tête large « autres minerais » ; seul 261710 désigne
+    # spécifiquement l'antimoine → on cible le HS6 pour ne pas capter tout 2617xx.
+    ("261710", "mining", "Antimony"),  # minerais d'antimoine (HS6 spécifique)
+    ("253090", "mining", "Lithium"),  # spodumène / minéraux de lithium (HS6)
+    ("261610", "mining", "Silver"),  # minerais d'argent (chap. 26 ; ≠ 7106 métal)
+    ("711021", "mining", "Palladium"),  # palladium (groupe platine, HS6)
+    ("261510", "mining", "Zircon"),  # minerais de zirconium (HS6 spécifique)
+    # Vanadium : HS 261590 couvre CONJOINTEMENT niobium/tantale/vanadium (et
+    # écraserait le mapping 2615=Tantalum par préfixe long) → on pointe vers le
+    # code vanadium-spécifique 282530 (oxydes et hydroxydes de vanadium, forme
+    # sous laquelle la production vanadium est usuellement rapportée).
+    ("282530", "mining", "Vanadium"),  # oxydes/hydroxydes de vanadium (HS6 spécifique)
+    ("261400", "mining", "Titanium (ilmenite)"),  # minerais de titane (HS6)
 ]
 
 # Repli par chapitre HS (2 chiffres) — moins précis mais utile pour couverture large.
