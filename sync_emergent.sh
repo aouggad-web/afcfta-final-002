@@ -168,7 +168,7 @@ else
 fi
 
 echo "── 4/6 · Contrôle d'import + données de la copie appliquée ──"
-( cd backend && python -c "
+( cd backend && PYTHONPATH="$(pwd)/..:$(pwd)" python -c "
 import importlib
 for m in [
     'services.regional_blocs',
@@ -235,7 +235,10 @@ print('✓ Données de la session appliquées (TUN préférences, TVA WITS, réc
 # n'apparaissent jamais). SKIP_BUILD est donc IGNORÉ quand supervisord gère le
 # frontend, pour régler définitivement le « les mises à jour ne s'affichent pas ».
 HAS_SUPERVISOR=0
-if command -v supervisorctl >/dev/null 2>&1 && supervisorctl status >/dev/null 2>&1; then
+# `supervisorctl status` (sans argument) sort en erreur si UN SEUL programme
+# n'est pas RUNNING (ex: code-server, sans rapport avec cette app) — on
+# vérifie donc un programme précis et géré par supervisor (backend).
+if command -v supervisorctl >/dev/null 2>&1 && supervisorctl status backend >/dev/null 2>&1; then
   HAS_SUPERVISOR=1
 fi
 
