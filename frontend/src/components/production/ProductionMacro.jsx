@@ -27,7 +27,7 @@ function ProductionMacro({ language = 'fr' }) {
   const texts = {
     fr: {
       title: 'Valeur Ajoutée Macro (World Bank / IMF)',
-      subtitle: 'Structure sectorielle du PIB des économies africaines (2023-2025)',
+      subtitle: 'Structure sectorielle du PIB des économies africaines (données récentes)',
       projection: 'Projection',
       projectionHint: 'Projection FMI (World Economic Outlook)',
       records: 'enregistrements',
@@ -46,7 +46,7 @@ function ProductionMacro({ language = 'fr' }) {
     },
     en: {
       title: 'Macro Value Added (World Bank / IMF)',
-      subtitle: 'Sectoral structure of GDP for African economies (2023-2025)',
+      subtitle: 'Sectoral structure of GDP for African economies (recent data)',
       projection: 'Projection',
       projectionHint: 'IMF projection (World Economic Outlook)',
       records: 'records',

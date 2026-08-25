@@ -305,7 +305,11 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("2516", "mining", "Granite"),
     ("2513", "mining", "Pumice"),
     ("2530", "mining", "Perlite"),
-    ("2614", "mining", "Ilmenite"),
+    # HS 2614 = minerais de titane (ilménite). Pointé vers le libellé réellement
+    # présent dans le dataset (« Titanium (ilmenite) ») : l'ancien libellé
+    # « Ilmenite » n'a aucun enregistrement, la recherche de capacité HS4 renvoyait
+    # donc un ensemble vide. Couvre à la fois HS4 (2614) et HS6 (261400 ci-dessous).
+    ("2614", "mining", "Titanium (ilmenite)"),
     # ── Minéraux ajoutés (enrichissement mining_extended) — codes HS spécifiques
     #    (préfixe le plus long prioritaire ; évite les collisions avec les
     #    positions génériques déjà mappées : 2615=Tantalum, 2530=Perlite…). ──

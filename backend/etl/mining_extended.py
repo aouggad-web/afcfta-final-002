@@ -407,8 +407,9 @@ MINING_YEAR_2024: Dict[str, Tuple] = {
         "WNA Uranium Production 2024",
         "https://world-nuclear.org/information-library/nuclear-fuel-cycle/mining-of-uranium/world-uranium-mining-production",
         {
-            "NAM": {2024: 5600.0},
-            "NER": {2024: 2000.0},
+            # WNA « World Uranium Mining Production » (tonnes U), valeurs 2024.
+            "NAM": {2024: 7333.0},
+            "NER": {2024: 962.0},
             "ZAF": {2024: 200.0},
         },
     ),

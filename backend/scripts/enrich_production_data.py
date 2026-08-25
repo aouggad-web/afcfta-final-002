@@ -177,7 +177,7 @@ def main() -> None:
             "mining_extended": "USGS MCS 2024/2025, WNA, EIA/OPEC — etl/mining_extended.py",
             "macro": "World Bank WDI 2024 + IMF WEO (avr. 2025) — etl/macro_extended.py",
             "agriculture_projections": "OECD-FAO Agricultural Outlook 2024-2033 — etl/faostat_projections.py",
-            "manufacturing": "UNIDO INDSTAT4 — séries 2021-2024 (taux publiés)",
+            "manufacturing": "UNIDO INDSTAT4 — valeurs publiées (2024, inchangées)",
         }
     )
     meta["record_counts"] = {

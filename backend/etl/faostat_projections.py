@@ -1,8 +1,9 @@
 """
 Prévisions agricoles — OECD-FAO Agricultural Outlook (horizon 2025 & 2030)
 ==========================================================================
-Enrichit la dimension « agri_faostat » du module Production avec des PRÉVISIONS
-publiées (distinctes du réalisé, marquées ``is_projection = True``) :
+Alimente la dimension DÉDIÉE « agri_projections » du module Production (stockée à
+part de « agri_faostat » pour ne jamais mélanger prévisions et productions
+observées) avec des PRÉVISIONS publiées, marquées ``is_projection = True`` :
 
   • OECD-FAO Agricultural Outlook 2024-2033 — projections de production par grand
     agrégat (céréales, oléagineux, sucre, viande, racines & tubercules) pour les
@@ -82,7 +83,7 @@ _LIVESTOCK_COMMODITIES = {"Meat (projection)"}
 
 
 def build_projections() -> List[Dict]:
-    """Enregistrements de prévisions agricoles (schéma agri_faostat, is_projection)."""
+    """Enregistrements de prévisions agricoles (dimension agri_projections, is_projection)."""
     records: List[Dict] = []
     for commodity, by_country in PROJECTIONS.items():
         is_livestock = commodity in _LIVESTOCK_COMMODITIES

@@ -270671,7 +270671,7 @@
       "sector_detail": "Mining and quarrying",
       "indicator_code": "USGS_PROD",
       "indicator_label": "Production",
-      "value": 5600.0,
+      "value": 7333.0,
       "unit": "tonnes",
       "currency": null,
       "price_base_year": null,
@@ -270690,7 +270690,7 @@
       "sector_detail": "Mining and quarrying",
       "indicator_code": "USGS_PROD",
       "indicator_label": "Production",
-      "value": 2000.0,
+      "value": 962.0,
       "unit": "tonnes",
       "currency": null,
       "price_base_year": null,
@@ -271463,11 +271463,11 @@
     }
   ],
   "metadata": {
-    "last_updated": "2026-08-24T23:23:24.645825+00:00",
+    "last_updated": "2026-08-25T10:28:03.897739+00:00",
     "update_source": "build_production_faostat_usgs.py — ingestion FAOSTAT bulk + USGS MCS",
     "sources": {
       "agriculture": "FAO FAOSTAT (Production QCL) bulk Africa — multi-années 2019-2024",
-      "manufacturing": "UNIDO INDSTAT4 — séries 2021-2024 (taux publiés)",
+      "manufacturing": "UNIDO INDSTAT4 — valeurs publiées (2024, inchangées)",
       "mining_energy": "USGS MCS 2024 (curé) 2022+2023 / EIA International Energy Statistics / OPEC ASB 2024",
       "macro": "World Bank WDI 2024 + IMF WEO (avr. 2025) — etl/macro_extended.py",
       "mining_extended": "USGS MCS 2024/2025, WNA, EIA/OPEC — etl/mining_extended.py",
