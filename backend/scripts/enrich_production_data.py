@@ -8,7 +8,8 @@ afin de préserver les 10 000+ enregistrements agricoles FAOSTAT bulk déjà en 
 Applique quatre enrichissements curés (valeurs publiées uniquement) :
 
   1. MINING      — nouveaux minéraux + extension 2024   (etl/mining_extended.py)
-  2. MACRO       — séries 2023-2025, WB + IMF WEO 2025   (etl/macro_extended.py)
+  2. MACRO       — valeur ajoutée sectorielle & croissance PIB réels, World Bank
+                   WDI 2023-2024 (etl/macro_extended.py ← etl/macro_wdi_data.py)
   3. AGRICULTURE — prévisions OECD-FAO (2025/2030)        (etl/faostat_projections.py)
 
 La dimension MANUFACTURING est laissée aux valeurs publiées (aucune série
@@ -27,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -124,7 +126,7 @@ def main() -> None:
         f"\n[1] Mining      : +{m_add} enreg. ({len({r['commodity_label'] for r in mining_add})} minéraux apportés)"
     )
 
-    # ── 2. Macro : séries 2023-2025 (upsert, données plus récentes) ─────────
+    # ── 2. Macro : World Bank WDI 2023-2024 réels (upsert) ──────────────────
     macro_add = build_macro_series()
     data["value_added_macro"], mac_add, mac_up = _upsert(
         data.get("value_added_macro", []),
@@ -132,7 +134,7 @@ def main() -> None:
         ["country_iso3", "indicator_code", "sector_isic_section", "year"],
         overwrite=True,
     )
-    print(f"[2] Macro       : +{mac_add} enreg., {mac_up} mis à jour (WB 2024 + IMF WEO 2025)")
+    print(f"[2] Macro       : +{mac_add} enreg., {mac_up} mis à jour (World Bank WDI 2023-2024)")
 
     # ── 3. Agriculture : prévisions OECD-FAO (clé DÉDIÉE agri_projections) ───
     # Stockées à part de agri_faostat : ce sont des PRÉVISIONS (pas des
@@ -175,7 +177,7 @@ def main() -> None:
     meta["sources"].update(
         {
             "mining_extended": "USGS MCS 2024/2025, WNA, EIA/OPEC — etl/mining_extended.py",
-            "macro": "World Bank WDI 2024 + IMF WEO (avr. 2025) — etl/macro_extended.py",
+            "macro": "World Bank WDI 2023-2024 (valeurs réelles API) — etl/macro_wdi_data.py",
             "agriculture_projections": "OECD-FAO Agricultural Outlook 2024-2033 — etl/faostat_projections.py",
             "manufacturing": "UNIDO INDSTAT4 — valeurs publiées (2024, inchangées)",
         }
@@ -189,9 +191,10 @@ def main() -> None:
         "total": len(all_recs),
     }
     meta["note"] = (
-        "Valeurs réelles publiées + projections étiquetées (is_projection). "
+        "Valeurs réelles publiées (macro = World Bank WDI via API) + prévisions "
+        "agricoles étiquetées (is_projection). "
         "Aucune génération aléatoire. Sources : FAO/OCDE, UNIDO, USGS, WNA, EIA, "
-        "OPEC, World Bank, IMF."
+        "OPEC, World Bank."
     )
 
     print("\n[APRÈS]")
@@ -201,8 +204,18 @@ def main() -> None:
         print("\n(--dry-run) Fichier NON écrit.")
         return
 
-    with open(OUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    # Écriture ATOMIQUE : sérialise dans un fichier temporaire sibling puis
+    # remplace la cible via os.replace (atomique sur le même système de fichiers).
+    # Une interruption / erreur de sérialisation / disque plein laisse ainsi le
+    # dataset d'origine intact (les 10 000+ enregistrements ne sont jamais perdus).
+    tmp = OUT_FILE.with_name(OUT_FILE.name + ".tmp")
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        os.replace(tmp, OUT_FILE)
+    finally:
+        if tmp.exists():
+            tmp.unlink()
     print(f"\n✅ Écrit : {OUT_FILE.relative_to(REPO_ROOT)}")
 
 

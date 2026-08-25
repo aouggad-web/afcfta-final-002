@@ -26,7 +26,7 @@ function ProductionMacro({ language = 'fr' }) {
 
   const texts = {
     fr: {
-      title: 'Valeur Ajoutée Macro (World Bank / IMF)',
+      title: 'Valeur Ajoutée Macro (World Bank WDI)',
       subtitle: 'Structure sectorielle du PIB des économies africaines (données récentes)',
       projection: 'Projection',
       projectionHint: 'Projection FMI (World Economic Outlook)',
@@ -36,7 +36,7 @@ function ProductionMacro({ language = 'fr' }) {
       noData: 'Aucune donnée disponible pour ce pays.',
       evolutionTitle: 'Évolution de la Valeur Ajoutée par Secteur (% du PIB)',
       comparisonTitle: 'Comparaison Sectorielle par Année',
-      growthTitle: 'Croissance du PIB réel (variation annuelle %) — FMI WEO',
+      growthTitle: 'Croissance du PIB réel (variation annuelle %) — World Bank',
       detailsTitle: 'Données Détaillées',
       gdpPercent: '% du PIB',
       year: 'Année',
@@ -45,7 +45,7 @@ function ProductionMacro({ language = 'fr' }) {
       dataCoverage: 'Couverture',
     },
     en: {
-      title: 'Macro Value Added (World Bank / IMF)',
+      title: 'Macro Value Added (World Bank WDI)',
       subtitle: 'Sectoral structure of GDP for African economies (recent data)',
       projection: 'Projection',
       projectionHint: 'IMF projection (World Economic Outlook)',
@@ -55,7 +55,7 @@ function ProductionMacro({ language = 'fr' }) {
       noData: 'No data available for this country.',
       evolutionTitle: 'Value Added Evolution by Sector (% of GDP)',
       comparisonTitle: 'Sectoral Comparison by Year',
-      growthTitle: 'Real GDP growth (annual %) — IMF WEO',
+      growthTitle: 'Real GDP growth (annual %) — World Bank',
       detailsTitle: 'Detailed Data',
       gdpPercent: '% of GDP',
       year: 'Year',
@@ -120,13 +120,15 @@ function ProductionMacro({ language = 'fr' }) {
     return Array.from(set).sort((a, b) => a - b);
   }, [valueAddedSectors]);
 
-  const projectionYears = useMemo(() => {
-    const set = new Set();
-    gdpGrowthRecords.forEach((r) => {
-      if (r.is_projection) set.add(r.year);
-    });
-    return set;
-  }, [gdpGrowthRecords]);
+  // Couverture affichée : on privilégie years_covered fourni par la réponse
+  // (couvre TOUS les indicateurs, y compris la croissance PIB), sinon repli sur
+  // les années des secteurs de valeur ajoutée.
+  const coverageYears = useMemo(() => {
+    if (Array.isArray(macroData?.years_covered) && macroData.years_covered.length) {
+      return [...macroData.years_covered].sort((a, b) => a - b);
+    }
+    return availableYears;
+  }, [macroData, availableYears]);
 
   const chartData = useMemo(() => {
     return availableYears.map((year) => {
@@ -162,16 +164,13 @@ function ProductionMacro({ language = 'fr' }) {
 
             <div className="flex items-center gap-2 flex-wrap">
               <Badge className="bg-[rgba(255,255,255,0.06)] text-[var(--text)] border border-[rgba(255,255,255,0.08)]">
-                {t.source}: World Bank / IMF
+                {t.source}: World Bank
               </Badge>
-              <Badge className="bg-[rgba(212,137,26,0.12)] text-[var(--gold)] border border-[rgba(212,137,26,0.2)]">
-                {availableYears.length
-                  ? `${availableYears[0]}–${availableYears[availableYears.length - 1]}`
-                  : '2023–2025'}
-              </Badge>
-              {projectionYears.size > 0 && (
-                <Badge className="bg-[rgba(155,110,245,0.14)] text-[#c3a3ff] border border-[rgba(155,110,245,0.28)]">
-                  {t.projection} {Array.from(projectionYears).sort().join(', ')}
+              {coverageYears.length > 0 && (
+                <Badge className="bg-[rgba(212,137,26,0.12)] text-[var(--gold)] border border-[rgba(212,137,26,0.2)]">
+                  {coverageYears.length > 1
+                    ? `${coverageYears[0]}–${coverageYears[coverageYears.length - 1]}`
+                    : `${coverageYears[0]}`}
                 </Badge>
               )}
             </div>

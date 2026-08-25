@@ -547,6 +547,15 @@ def _emit(commodity: str, spec: Tuple, records: List[Dict]) -> None:
     for iso3, year_vals in by_country.items():
         country_name = ISO3_FR_NAME.get(iso3, iso3)
         for year, value in sorted(year_vals.items()):
+            # Provenance PAR ANNÉE pour les séries USGS MCS : l'édition MCS 2024
+            # publie 2022 (révisé) et 2023 (estimé) ; l'édition MCS 2025 publie
+            # 2023 (révisé) et 2024 (estimé). On rattache donc chaque enregistrement
+            # à l'édition qui l'a réellement publié (2022 → MCS 2024, ≥2023 → MCS 2025)
+            # plutôt que d'estampiller toute la série avec une seule édition.
+            if is_usgs_mcs:
+                dataset_year = _USGS_MCS24 if year <= 2022 else _USGS_MCS25
+            else:
+                dataset_year = dataset
             records.append(
                 {
                     "country_name": country_name,
@@ -563,7 +572,7 @@ def _emit(commodity: str, spec: Tuple, records: List[Dict]) -> None:
                     "currency": None,
                     "price_base_year": None,
                     "source_institution": inst,
-                    "source_dataset": dataset,
+                    "source_dataset": dataset_year,
                     "source_url": url,
                     "commodity_code": _COMMODITY_CODE.get(commodity, commodity[:2].upper()),
                     "commodity_label": commodity,
