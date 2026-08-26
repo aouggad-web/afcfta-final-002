@@ -91,6 +91,78 @@ _CROP_ALIASES_FR_EN = {
 # "eggs") : ex. "Cattle milk", "Chicken meat", "Hen eggs" sont exclus.
 _ANIMAL_PRODUCT_WORDS = {"meat", "milk", "egg", "eggs"}
 
+# Libellés d'affichage FR des commodités bulk (anglais dans agri_faostat), pour
+# éviter une liste "Cultures" bilingue en vue française (ex. "Eggplants" affiché
+# à côté de "Blé"). Couvre l'intégralité du vocabulaire bulk cultures ; un libellé
+# absent conserve son nom d'origine (dégradation gracieuse).
+_BULK_LABEL_FR = {
+    "almonds": "Amandes",
+    "apples": "Pommes",
+    "avocados": "Avocats",
+    "bananas": "Bananes",
+    "barley": "Orge",
+    "beans": "Haricots",
+    "cabbages": "Choux",
+    "carrots": "Carottes",
+    "cashew nuts": "Noix de cajou",
+    "cassava": "Manioc",
+    "cauliflowers": "Choux-fleurs",
+    "chickpeas": "Pois chiches",
+    "chillies and peppers": "Piments et poivrons",
+    "cinnamon": "Cannelle",
+    "cloves": "Clou de girofle",
+    "cocoa beans": "Cacao",
+    "coconuts": "Noix de coco",
+    "coffee": "Café",
+    "cowpeas": "Niébé",
+    "cucumbers": "Concombres",
+    "dates": "Dattes",
+    "eggplants": "Aubergines",
+    "ginger": "Gingembre",
+    "grapes": "Raisins",
+    "groundnuts": "Arachide",
+    "kola nuts": "Noix de kola",
+    "lemons and limes": "Citrons et limes",
+    "lentils": "Lentilles",
+    "lettuce": "Laitue",
+    "linseed": "Lin",
+    "maize (corn)": "Maïs",
+    "mangoes": "Mangues",
+    "millet": "Mil",
+    "oats": "Avoine",
+    "oil palm": "Huile de palme",
+    "okra": "Gombo",
+    "olives": "Olives",
+    "onions": "Oignons",
+    "oranges": "Oranges",
+    "papayas": "Papayes",
+    "peas": "Pois",
+    "pepper": "Poivre",
+    "pigeon peas": "Pois d'Angole",
+    "pineapples": "Ananas",
+    "plantain": "Plantain",
+    "potatoes": "Pomme de terre",
+    "rapeseed": "Colza",
+    "rice": "Riz",
+    "rubber": "Hévéa",
+    "seed cotton": "Coton",
+    "sesame": "Sésame",
+    "shea nuts": "Noix de karité",
+    "sorghum": "Sorgho",
+    "soybeans": "Soja",
+    "spinach": "Épinards",
+    "sugarcane": "Canne à sucre",
+    "sunflower seed": "Tournesol",
+    "sweet potatoes": "Patate douce",
+    "tea": "Thé",
+    "tobacco": "Tabac",
+    "tomatoes": "Tomates",
+    "vanilla": "Vanille",
+    "watermelons": "Pastèques",
+    "wheat": "Blé",
+    "yam": "Igname",
+}
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/faostat")
@@ -242,9 +314,13 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
         value = latest.get("value")
         if not value:
             continue
+        display_name = commodity
+        if language.startswith("fr"):
+            display_name = _BULK_LABEL_FR.get(commodity_key, commodity)
         extra_crops.append(
             {
-                "name": commodity,
+                "name": display_name,
+                "name_en": commodity,  # identifiant stable (libellé bulk d'origine)
                 "value_2023": value,  # valeur bulk de l'année la plus récente (voir "year")
                 "year": latest.get("year"),
                 "unit": latest.get("unit", "tonnes"),
