@@ -486,12 +486,29 @@ def _observed_imports_floor(
     annual_usd = (observed_imports or {}).get("import_value_usd")
     if not annual_usd or annual_usd <= 0:
         return None
+    observed_qty = (observed_imports or {}).get("import_quantity_tonnes")
     if (unit or "").upper() == "USD":
         floor_value, conversion = float(annual_usd), None
+    elif observed_qty and observed_qty > 0 and "tonne" in (unit or "").lower():
+        # Quantité RÉELLE déjà connue pour ce même flux (BACI) : utilisée
+        # directement, sans passer par un ratio valeur/poids — mesurée, pas
+        # estimée. Strictement plus fiable qu'une conversion via indice.
+        floor_value = float(observed_qty)
+        conversion = {
+            "usd_per_kg": round(float(annual_usd) / (float(observed_qty) * 1000.0), 4),
+            "is_estimate": False,
+            "source": observed_imports.get("source", "OEC / BACI"),
+            "note": "Quantité réelle observée (même flux BACI) — pas de conversion "
+            "par ratio nécessaire.",
+        }
     else:
         try:
             from services.shipment_estimator import usd_per_kg_for_hs
 
+            # Aucune quantité connue pour CE flux précis : repli sur la cascade
+            # valeur/poids habituelle (cours mondial → chapitre) — pas de
+            # valeur observée à injecter ici (elle exigerait déjà la quantité
+            # que ce branchement, par construction, n'a pas).
             ratio = usd_per_kg_for_hs(hs_code)
             usd_per_kg = ratio.get("usd_per_kg") or 0
             if usd_per_kg <= 0 or "tonne" not in (unit or "").lower():
