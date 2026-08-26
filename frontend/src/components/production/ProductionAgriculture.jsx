@@ -127,9 +127,29 @@ export default function ProductionAgriculture({ language = 'fr' }) {
   // Refetch aussi au changement de langue : les libellés des cultures bulk sont
   // localisés côté backend (paramètre language), sinon le basculement FR/EN
   // laisserait des noms de cultures dans la langue précédente jusqu'à un
-  // changement de pays.
+  // changement de pays. Le nettoyage d'effet ignore les réponses obsolètes :
+  // un changement rapide de pays/langue ne peut plus laisser une ancienne
+  // réponse écraser la sélection courante (condition de course).
   useEffect(() => {
-    if (country) fetchDetail(country);
+    if (!country) return undefined;
+    let cancelled = false;
+    setLoading(true);
+    setDetail(null);
+    (async () => {
+      try {
+        const r = await axios.get(
+          `${API}/faostat/country-detail/${country}?language=${language}`
+        );
+        if (!cancelled) setDetail(r.data);
+      } catch (err) {
+        if (!cancelled) console.error('Error fetching country detail:', err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [country, language]);
 
   const fetchFaoStats = async () => {
@@ -137,19 +157,6 @@ export default function ProductionAgriculture({ language = 'fr' }) {
       const r = await axios.get(`${API}/faostat/statistics`);
       setFaoStats(r.data);
     } catch (_) {}
-  };
-
-  const fetchDetail = async (iso3) => {
-    setLoading(true);
-    setDetail(null);
-    try {
-      const r = await axios.get(`${API}/faostat/country-detail/${iso3}?language=${language}`);
-      setDetail(r.data);
-    } catch (err) {
-      console.error('Error fetching country detail:', err);
-    } finally {
-      setLoading(false);
-    }
   };
 
   // ── Charts data ──────────────────────────────────────────────────────────
