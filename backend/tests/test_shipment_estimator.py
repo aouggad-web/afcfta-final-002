@@ -150,3 +150,95 @@ def test_load_live_benchmarks_missing_or_corrupt_file_returns_empty(tmp_path):
     no_key = tmp_path / "nokey.json"
     no_key.write_text('{"autre": 1}', encoding="utf-8")
     assert se._load_live_benchmarks(str(no_key)) == {}
+
+
+# ── Tier « valeur unitaire observée » (flux commercial réel OEC/BACI) ──────────
+#
+# Bug signalé : l'export de médicaments (SH 300490, chapitre 30) vers l'Algérie
+# affichait un indice figé de 60 USD/kg — l'estimation par chapitre générique,
+# alors qu'un flux réel (importations algériennes observées pour ce SH précis)
+# était disponible et bien plus spécifique. Ces tests couvrent le nouveau palier
+# intermédiaire de la cascade : cours mondial > valeur unitaire observée >
+# estimation par chapitre.
+
+
+def test_observed_unit_value_none_without_data():
+    assert se.observed_unit_value("300490", None, None) is None
+    assert se.observed_unit_value("300490", 0, 100) is None
+    assert se.observed_unit_value("300490", 1000, 0) is None
+
+
+def test_observed_unit_value_plausible_within_chapter_band():
+    # Algérie importe (hypothèse) 50 M USD / 2 000 t de SH 300490 -> 25 USD/kg,
+    # dans la bande plausible autour du repère de chapitre 30 (60 USD/kg).
+    r = se.observed_unit_value(
+        "300490", 50_000_000, 2000, basis="importations de DZA, toutes origines"
+    )
+    assert r is not None
+    assert r["plausible"] is True
+    assert r["usd_per_kg"] == 25.0
+    assert r["note"] is None
+
+
+def test_observed_unit_value_implausible_outside_band_flagged_not_used():
+    # 50 M USD / 1 t -> 50 000 USD/kg, très au-delà de ×20 le repère de
+    # chapitre (60 USD/kg) : quasi certainement une erreur de déclaration
+    # (quantité omise/mal unitée) -> signalée, jamais utilisée aveuglément.
+    r = se.observed_unit_value("300490", 50_000_000, 1)
+    assert r is not None
+    assert r["plausible"] is False
+    assert r["note"] is not None
+    assert "erreur de déclaration" in r["note"]
+
+
+def test_usd_per_kg_for_hs_uses_observed_tier_when_plausible():
+    # Sans flux observé : repli sur l'estimation générique par chapitre (bug
+    # signalé -> 60 USD/kg plat pour tout le chapitre 30).
+    baseline = se.usd_per_kg_for_hs("300490")
+    assert baseline["classification_source"] == "estimation_chapitre"
+    assert baseline["usd_per_kg"] == 60.0
+
+    # Avec un flux réel observé et plausible : le ratio devient spécifique au
+    # produit et au marché, plus fiable que le chapitre générique.
+    enriched = se.usd_per_kg_for_hs(
+        "300490",
+        observed_value_usd=50_000_000,
+        observed_quantity_tonnes=2000,
+        observed_basis="importations de DZA, toutes origines, 2024",
+        observed_year=2024,
+    )
+    assert enriched["classification_source"] == "valeur_unitaire_observee"
+    assert enriched["usd_per_kg"] == 25.0
+    assert enriched["basis"] == "importations de DZA, toutes origines, 2024"
+    assert enriched["negotiation"]["usable_as_price_reference"] is True
+
+
+def test_usd_per_kg_for_hs_falls_back_to_chapter_when_observed_implausible():
+    r = se.usd_per_kg_for_hs("300490", observed_value_usd=50_000_000, observed_quantity_tonnes=1)
+    assert r["classification_source"] == "estimation_chapitre"
+    assert r["usd_per_kg"] == 60.0
+    # Transparence : la valeur écartée reste tracée, jamais silencieuse.
+    assert r.get("discarded_observed_value")
+
+
+def test_usd_per_kg_for_hs_world_benchmark_still_wins_over_observed():
+    # Le cours mondial coté (tier 1, curé/vérifié) reste prioritaire même si
+    # un flux observé plausible est fourni.
+    r = se.usd_per_kg_for_hs("1801", observed_value_usd=1_000_000, observed_quantity_tonnes=170)
+    assert r["classification_source"] == "cours_mondial"
+
+
+def test_estimate_shipment_forwards_observed_tier_end_to_end():
+    r = se.estimate_shipment(
+        2_000_000,
+        "300490",
+        observed_value_usd=50_000_000,
+        observed_quantity_tonnes=2000,
+        observed_basis="importations de DZA, toutes origines, 2024",
+    )
+    assert r["available"] is True
+    assert r["value_to_weight"]["classification_source"] == "valeur_unitaire_observee"
+    # 2 M USD / 25 USD/kg = 80 000 kg -> conteneurs 40'.
+    assert r["weight_kg"] == 80000.0
+    assert r["negotiation_reference"]["classification_source"] == "valeur_unitaire_observee"
+    assert r["negotiation_reference"]["basis"] == "importations de DZA, toutes origines, 2024"

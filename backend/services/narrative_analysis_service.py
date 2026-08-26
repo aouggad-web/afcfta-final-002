@@ -434,7 +434,19 @@ def _phase1_volume_target(report: Dict) -> Optional[str]:
     try:
         from services.shipment_estimator import usd_per_kg_for_hs
 
-        ratio = usd_per_kg_for_hs(hs_code)
+        # Le flux d'importations observé porte déjà valeur ET quantité pour ce
+        # SH précis (même source OEC/BACI) : transmis pour affiner le ratio
+        # au-delà de l'estimation par chapitre — voir la cascade de
+        # usd_per_kg_for_hs (cours mondial > valeur unitaire observée >
+        # chapitre SH).
+        ratio = usd_per_kg_for_hs(
+            hs_code,
+            observed_value_usd=annual_usd,
+            observed_quantity_tonnes=obs.get("import_quantity_tonnes"),
+            observed_basis="importations annuelles observées du marché cible",
+            observed_year=obs.get("year"),
+            observed_source=obs.get("source"),
+        )
     except Exception as exc:  # pragma: no cover - defensive
         _log.warning("usd_per_kg_for_hs unavailable: %s", exc)
         return None
@@ -450,10 +462,13 @@ def _phase1_volume_target(report: Dict) -> Optional[str]:
     else:
         volume_txt = _fmt_range(lo_kg, hi_kg, "kg/mois")
 
-    ratio_src = (
-        f"cours mondial {ratio.get('benchmark')}"
-        if not ratio.get("is_estimate")
-        else "estimation par chapitre SH"
+    _ratio_src_labels = {
+        "cours_mondial": f"cours mondial {ratio.get('benchmark')}",
+        "valeur_unitaire_observee": "valeur unitaire réelle observée (OEC/BACI)",
+        "estimation_chapitre": "estimation par chapitre SH",
+    }
+    ratio_src = _ratio_src_labels.get(
+        ratio.get("classification_source"), "estimation par chapitre SH"
     )
     return (
         f"Volumes cibles phase 1 : ≈ {volume_txt} "
