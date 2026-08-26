@@ -195,7 +195,11 @@ function MarketSeekingView({ fr }) {
         },
       });
     }
-    const notes = [demand.note, rep.data_quality?.note].filter(Boolean);
+    const notes = [
+      demand.note,
+      supply.commodity_caveat ? `⚠ ${supply.commodity_caveat}` : null,
+      rep.data_quality?.note,
+    ].filter(Boolean);
     if (notes.length) sections.push({ title: fr ? 'Notes' : 'Notes', paragraphs: notes });
     return {
       badge: 'MARCHÉS',
@@ -329,6 +333,15 @@ function MarketSeekingView({ fr }) {
               <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
                 {fr ? "Source" : "Source"} : {srcText(supply.source)}
                 {supply.year ? ` (${supply.year})` : ""}
+              </div>
+            )}
+            {supply.commodity_caveat && (
+              <div style={{
+                fontSize: 11, color: "#92400e", background: "#fef3c7",
+                border: "1px solid #fde68a", borderRadius: 6, padding: "6px 9px",
+                marginTop: 8, lineHeight: 1.4,
+              }}>
+                ⚠ {supply.commodity_caveat}
               </div>
             )}
           </div>
@@ -2087,6 +2100,15 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
                 <div style={{ fontSize: 26, fontWeight: 800, marginTop: 6 }}>
                   {num(Math.round(rep.value), rep.unit)}
                 </div>
+                {rep.plausibility?.caveat && (
+                  <div style={{
+                    fontSize: 12, color: "#92400e", background: "#fef3c7",
+                    border: "1px solid #fbbf24", borderRadius: 6, padding: "8px 10px",
+                    marginTop: 8, lineHeight: 1.45,
+                  }}>
+                    ⚠ {fr ? "Seuil de vraisemblance" : "Plausibility threshold"} : {rep.plausibility.caveat}
+                  </div>
+                )}
                 {rep.observed_imports?.import_value_usd && (
                   <div style={{ fontSize: 13, marginTop: 4 }}>
                     {fr ? "Importe déjà" : "Already imports"} : {money(rep.observed_imports.import_value_usd)}
@@ -2110,6 +2132,11 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
                     {fr ? "Analyser l'opportunité" : "Analyze opportunity"} : {rep.suggested_supplier.iso3} → {country} ▸
                   </button>
                 )}
+                {!rep.suggested_supplier?.iso3 && rep.suggested_supplier_suppressed_reason && (
+                  <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 10, fontStyle: "italic" }}>
+                    {rep.suggested_supplier_suppressed_reason}
+                  </div>
+                )}
               </>
             ) : (
               <div style={{ color: "var(--afcfta-muted,#667)", marginTop: 6 }}>{rep.note || "—"}</div>
@@ -2131,7 +2158,19 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
                 {inp.gdp_adjustment_factor != null && (
                   <div>{fr ? "Facteur PIB/hab" : "GDP/cap factor"} : {num(inp.gdp_adjustment_factor)}</div>
                 )}
+                {rep.implied_per_capita?.value != null && (
+                  <div style={{ fontWeight: 700 }}>
+                    {fr ? "Besoin par habitant" : "Need per capita"} : {num(rep.implied_per_capita.value)} {rep.implied_per_capita.unit}
+                  </div>
+                )}
               </div>
+              {rep.implied_per_capita?.value != null && (
+                <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 6, fontStyle: "italic" }}>
+                  {fr
+                    ? `Contrôle de vraisemblance : le besoin ${rep.is_estimation ? "estimé" : "mesuré"} équivaut à ${num(rep.implied_per_capita.value)} ${rep.implied_per_capita.unit}.`
+                    : `Plausibility check: the ${rep.is_estimation ? "estimated" : "measured"} need equals ${num(rep.implied_per_capita.value)} ${rep.implied_per_capita.unit}.`}
+                </div>
+              )}
               {rep.sources?.length > 0 && (
                 <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
                   {fr ? "Sources" : "Sources"} : {rep.sources.map((s) => srcText(s)).filter(Boolean).join(" · ")}

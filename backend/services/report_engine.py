@@ -1345,6 +1345,7 @@ def _supply_side(hs_code: str) -> Dict:
         "year": prod.get("year"),
         "source": prod.get("source"),
         "coverage_caveat": prod.get("coverage_caveat"),
+        "commodity_caveat": prod.get("commodity_caveat"),
     }
 
 
