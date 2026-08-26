@@ -203,7 +203,9 @@ def estimate_need_from_own_imports(
     }
 
 
-def _implied_per_capita(need: Optional[float], unit: Optional[str], population: Optional[int]) -> Optional[Dict]:
+def _implied_per_capita(
+    need: Optional[float], unit: Optional[str], population: Optional[int]
+) -> Optional[Dict]:
     """
     Besoin estimé RAMENÉ PAR HABITANT — le contrôle de vraisemblance le plus
     direct d'une estimation de besoin national. Un total brut (« 581 000 t »)
