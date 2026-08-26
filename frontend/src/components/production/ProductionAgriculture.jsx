@@ -54,6 +54,11 @@ const TEXTS = {
     noLivestock: 'Données élevage non disponibles pour ce pays',
     noFisheries: 'Données pêche non disponibles pour ce pays',
     topCerealsDZA: 'Grandes céréales (cultures stratégiques)',
+    perspectives: 'Perspectives 2025–2030',
+    perspectivesSubtitle: 'Prévisions de production par grand agrégat',
+    perspectivesSource: 'Source : OCDE-FAO Agricultural Outlook 2024-2033',
+    projection: 'Projection',
+    latestObserved: 'Dernière donnée observée',
   },
   en: {
     title: 'FAO Agricultural Production',
@@ -88,6 +93,11 @@ const TEXTS = {
     noLivestock: 'Livestock data not available for this country',
     noFisheries: 'Fisheries data not available for this country',
     topCerealsDZA: 'Major cereals (strategic crops)',
+    perspectives: '2025–2030 Outlook',
+    perspectivesSubtitle: 'Production forecasts by major aggregate',
+    perspectivesSource: 'Source: OECD-FAO Agricultural Outlook 2024-2033',
+    projection: 'Projection',
+    latestObserved: 'Latest observed value',
   }
 };
 
@@ -172,6 +182,9 @@ export default function ProductionAgriculture({ language = 'fr' }) {
   };
 
   const evoLines = Object.keys(detail?.evolution || {}).slice(0, 5);
+
+  const commodityShortLabel = (name) =>
+    (name || '').replace(/\s*\(projection\)\s*$/i, '').trim();
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
@@ -398,6 +411,67 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             ))}
                           </LineChart>
                         </ResponsiveContainer>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Perspectives / Prévisions OCDE-FAO */}
+                  {detail.has_projections && (
+                    <Card className="shadow-md border-emerald-200">
+                      <CardHeader>
+                        <CardTitle className="text-base text-emerald-800 flex items-center gap-2">
+                          <TrendingUp className="w-4 h-4" /> {t.perspectives}
+                        </CardTitle>
+                        <CardDescription className="text-xs text-gray-500">
+                          {t.perspectivesSubtitle}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {detail.projections.map((proj) => {
+                            const points = proj.points || [];
+                            const first = points[0];
+                            const last = points[points.length - 1];
+                            const growthPct =
+                              first && last && first.value
+                                ? ((last.value - first.value) / first.value) * 100
+                                : null;
+                            return (
+                              <div
+                                key={proj.commodity}
+                                className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4"
+                              >
+                                <div className="flex items-center justify-between gap-2 mb-2">
+                                  <span className="font-semibold text-emerald-900 text-sm">
+                                    {commodityShortLabel(proj.commodity)}
+                                  </span>
+                                  <Badge className="bg-emerald-600 text-white text-[10px]">
+                                    {t.projection}
+                                  </Badge>
+                                </div>
+                                <div className="flex items-end gap-3 flex-wrap">
+                                  {points.map((p) => (
+                                    <div key={p.year} className="text-center">
+                                      <p className="text-lg font-bold text-emerald-800">
+                                        {fmt(p.value)}
+                                      </p>
+                                      <p className="text-[11px] text-gray-500">
+                                        {p.year} · {proj.unit}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                                {growthPct !== null && (
+                                  <p className="text-xs text-emerald-700 mt-2">
+                                    {growthPct >= 0 ? '+' : ''}
+                                    {growthPct.toFixed(1)}% ({first.year}→{last.year})
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <p className="text-[11px] text-gray-400 mt-3">{t.perspectivesSource}</p>
                       </CardContent>
                     </Card>
                   )}

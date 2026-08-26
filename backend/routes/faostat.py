@@ -18,6 +18,7 @@ from etl.faostat_data import (
     get_faostat_country_data,
     get_fisheries_rankings,
 )
+from production_data import get_agriculture_by_country, get_agriculture_projections
 from services.faostat_service import (
     AFRICAN_COUNTRIES,
     KEY_COMMODITIES,
@@ -28,6 +29,11 @@ from services.faostat_service import (
     get_production_trends,
     get_top_producers,
 )
+
+# Nombre max de commodités supplémentaires (bulk FAOSTAT, hors table curée)
+# ajoutées à la liste "cultures" d'un pays — évite de noyer le graphique/tableau
+# existant pour les pays où le bulk couvre 50-100+ produits.
+_MAX_EXTRA_BULK_CROPS = 20
 
 logger = logging.getLogger(__name__)
 
@@ -158,6 +164,58 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
     else:
         cultures_sorted = sorted(cultures_list, key=lambda x: x["value_2023"], reverse=True)
 
+    # --- Cultures supplémentaires (bulk FAOSTAT réel, hors table curée) ---
+    # La table curée FAOSTAT_AGRICULTURE_DATA ne couvre que 6-10 produits phares
+    # par pays. Le dataset enrichi production_africaine.json (agri_faostat, bulk
+    # FAOSTAT 2019-2024) en couvre 30-100+. On complète la liste "cultures" avec
+    # les produits bulk absents de la table curée (comparaison insensible à la
+    # casse), triés par valeur décroissante et plafonnés pour rester lisible.
+    curated_names_lower = {c["name"].strip().lower() for c in cultures_sorted}
+    bulk = get_agriculture_by_country(iso3)
+    extra_crops = []
+    for commodity, records in bulk.get("data_by_commodity", {}).items():
+        if commodity.strip().lower() in curated_names_lower or not records:
+            continue
+        latest = max(records, key=lambda r: r.get("year") or 0)
+        value = latest.get("value")
+        if not value:
+            continue
+        extra_crops.append(
+            {
+                "name": commodity,
+                "value_2023": value,  # dernière valeur bulk disponible (voir "year")
+                "year": latest.get("year"),
+                "unit": latest.get("unit", "tonnes"),
+                "rank_africa": None,
+                "area_ha": None,
+                "yield_kg_ha": None,
+                "is_bulk_faostat": True,
+            }
+        )
+    extra_crops.sort(key=lambda x: x["value_2023"], reverse=True)
+    cultures_sorted = cultures_sorted + extra_crops[:_MAX_EXTRA_BULK_CROPS]
+
+    # --- Prévisions OCDE-FAO (agri_projections, horizons 2025/2030) ---
+    proj_records = get_agriculture_projections(iso3)
+    projections_by_commodity: dict = {}
+    for rec in proj_records:
+        label = rec.get("commodity_label", "")
+        entry = projections_by_commodity.setdefault(
+            label,
+            {
+                "commodity": label,
+                "unit": rec.get("unit", "tonnes"),
+                "source_institution": rec.get("source_institution"),
+                "source_dataset": rec.get("source_dataset"),
+                "source_url": rec.get("source_url"),
+                "points": [],
+            },
+        )
+        entry["points"].append({"year": rec.get("year"), "value": rec.get("value")})
+    projections = list(projections_by_commodity.values())
+    for entry in projections:
+        entry["points"].sort(key=lambda p: p["year"])
+
     # --- Évolution temporelle ---
     evolution = data.get("evolution", {})
     evolution_formatted = {}
@@ -220,6 +278,8 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
         "key_indicators": indicators,
         "has_livestock": len(elevage) > 0,
         "has_fisheries": (peche["capture_tonnes"] + peche["aquaculture_tonnes"]) > 0,
+        "projections": projections,
+        "has_projections": len(projections) > 0,
     }
 
 
