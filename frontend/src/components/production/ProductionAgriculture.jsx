@@ -124,9 +124,13 @@ export default function ProductionAgriculture({ language = 'fr' }) {
 
   useEffect(() => { fetchFaoStats(); }, []);
 
+  // Refetch aussi au changement de langue : les libellés des cultures bulk sont
+  // localisés côté backend (paramètre language), sinon le basculement FR/EN
+  // laisserait des noms de cultures dans la langue précédente jusqu'à un
+  // changement de pays.
   useEffect(() => {
     if (country) fetchDetail(country);
-  }, [country]);
+  }, [country, language]);
 
   const fetchFaoStats = async () => {
     try {
@@ -296,7 +300,9 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-gray-500">{t.source}</p>
-                  <p className="text-xs font-medium text-gray-700">{detail.source}</p>
+                  {(detail.sources?.length ? detail.sources : [detail.source]).map((s) => (
+                    <p key={s} className="text-xs font-medium text-gray-700">{s}</p>
+                  ))}
                 </div>
               </div>
             </CardHeader>

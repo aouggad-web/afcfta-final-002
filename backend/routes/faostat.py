@@ -328,10 +328,24 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
                 "area_ha": None,
                 "yield_kg_ha": None,
                 "is_bulk_faostat": True,
+                # Provenance par ligne : les valeurs bulk viennent de FAOSTAT et non
+                # de la source curée pays (souvent un ministère, année 2023). Sans
+                # cela, une valeur 2024 serait affichée sous une attribution 2023.
+                "source": latest.get("source_dataset") or latest.get("source_institution"),
             }
         )
     extra_crops.sort(key=lambda x: x["value_2023"], reverse=True)
-    cultures_sorted = cultures_sorted + extra_crops[:_MAX_EXTRA_BULK_CROPS]
+    extra_crops = extra_crops[:_MAX_EXTRA_BULK_CROPS]
+    cultures_sorted = cultures_sorted + extra_crops
+
+    # Liste de sources agrégée : source curée pays + dataset FAOSTAT bulk si des
+    # cultures bulk ont été ajoutées (attribution honnête par jeu de données).
+    curated_source = data.get("source", "FAOSTAT 2023")
+    sources = [curated_source]
+    bulk_sources = sorted({c["source"] for c in extra_crops if c.get("source")})
+    for s in bulk_sources:
+        if s and s not in sources:
+            sources.append(s)
 
     # --- Prévisions OCDE-FAO (agri_projections, horizons 2025/2030) ---
     proj_records = get_agriculture_projections(iso3)
@@ -412,6 +426,7 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
         "region": data.get("region", ""),
         "data_year": data.get("data_year", 2023),
         "source": data.get("source", "FAOSTAT 2023"),
+        "sources": sources,
         "main_crops": data.get("main_crops", []),
         "cultures": cultures_sorted,
         "evolution": evolution_formatted,
