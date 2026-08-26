@@ -750,7 +750,18 @@ export function BilateralView({ countries, fr, prefill }) {
             </div>
           )}
 
-          {landed.shipment_sizing?.value_to_weight && (
+          {landed.shipment_sizing?.value_to_weight && (() => {
+            const vtw = landed.shipment_sizing.value_to_weight;
+            // Trois paliers de fiabilité décroissante — voir shipment_estimator.usd_per_kg_for_hs :
+            // cours coté > valeur unitaire réelle observée (flux OEC/BACI pour ce SH précis) >
+            // estimation générique par chapitre SH.
+            const tierStyle = {
+              cours_mondial: { bg: "#dcfce7", fg: "#166534", label: fr ? "Cours mondial réel" : "Real world market price" },
+              valeur_unitaire_observee: { bg: "#dbeafe", fg: "#1e40af", label: fr ? "Valeur unitaire réelle observée" : "Real observed unit value" },
+              estimation_chapitre: { bg: "#fef9c3", fg: "#854d0e", label: fr ? "Estimation par chapitre SH" : "HS-chapter estimate" },
+            };
+            const tier = tierStyle[vtw.classification_source] || tierStyle.estimation_chapitre;
+            return (
             <div style={card}>
               <div style={{ ...label, marginBottom: 8 }}>
                 {fr
@@ -758,35 +769,19 @@ export function BilateralView({ countries, fr, prefill }) {
                   : "Value/weight index & negotiation reference"}
               </div>
               <div style={{ fontSize: 13, display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
-                <strong>
-                  {landed.shipment_sizing.value_to_weight.usd_per_kg.toLocaleString()} USD/kg
-                </strong>
-                <span
-                  style={{
-                    fontSize: 11,
-                    padding: "2px 8px",
-                    borderRadius: 999,
-                    background:
-                      landed.shipment_sizing.value_to_weight.classification_source === "cours_mondial"
-                        ? "#dcfce7"
-                        : "#fef9c3",
-                    color:
-                      landed.shipment_sizing.value_to_weight.classification_source === "cours_mondial"
-                        ? "#166534"
-                        : "#854d0e",
-                  }}
-                >
-                  {landed.shipment_sizing.value_to_weight.classification_source === "cours_mondial"
-                    ? fr
-                      ? "Cours mondial réel"
-                      : "Real world market price"
-                    : fr
-                    ? "Estimation par chapitre SH"
-                    : "HS-chapter estimate"}
+                <strong>{vtw.usd_per_kg.toLocaleString()} USD/kg</strong>
+                <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 999, background: tier.bg, color: tier.fg }}>
+                  {tier.label}
                 </span>
               </div>
+              {vtw.basis && (
+                <div style={{ fontSize: 12, color: "#334155", marginTop: 6 }}>
+                  {fr ? "Base" : "Basis"} : {vtw.basis}
+                  {vtw.raw_quote && ` (${vtw.raw_quote})`}
+                </div>
+              )}
               <div style={{ fontSize: 12, color: "#64748b", marginTop: 6 }}>
-                {landed.shipment_sizing.value_to_weight.source}
+                {vtw.source}
               </div>
               {landed.shipment_sizing.negotiation_reference ? (
                 <div style={{ fontSize: 12, color: "#334155", marginTop: 6 }}>
@@ -804,8 +799,14 @@ export function BilateralView({ countries, fr, prefill }) {
                     : "Logistics sizing only — NOT a price-negotiation basis."}
                 </div>
               )}
+              {vtw.discarded_observed_value && (
+                <div style={{ fontSize: 11, color: "#92400e", background: "#fef3c7", border: "1px solid #fde68a", borderRadius: 6, padding: "6px 9px", marginTop: 8, lineHeight: 1.4 }}>
+                  ⚠ {vtw.discarded_observed_value}
+                </div>
+              )}
             </div>
-          )}
+            );
+          })()}
 
           {e2e.breakdown && (
             <div style={card}>
