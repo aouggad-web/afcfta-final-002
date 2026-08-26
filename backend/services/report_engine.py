@@ -376,6 +376,11 @@ def _landed_cost(
                     f" Poids estimé via le cours mondial de {vtw.get('commodity', 'la matière première')} "
                     f"({vtw['usd_per_kg']} USD/kg, {vtw.get('benchmark', '?')}, {vtw.get('as_of', '?')})."
                 )
+            elif vtw.get("classification_source") == "valeur_unitaire_observee":
+                note += (
+                    f" Poids estimé via une valeur unitaire réelle observée de "
+                    f"{vtw['usd_per_kg']} USD/kg ({vtw.get('basis', 'flux commercial observé')})."
+                )
             else:
                 note += (
                     f" Poids estimé via un ratio {vtw['usd_per_kg']} USD/kg "
@@ -407,6 +412,12 @@ def _landed_cost(
                     f" Poids estimé via le cours mondial de {vtw.get('commodity', 'la matière première')} "
                     f"({vtw['usd_per_kg']} USD/kg, {vtw.get('benchmark', '?')}, {vtw.get('as_of', '?')}) "
                     "— repère non contractuel, cf. garde-fou de négociation."
+                )
+            elif vtw.get("classification_source") == "valeur_unitaire_observee":
+                note += (
+                    f" Poids estimé via une valeur unitaire réelle observée de "
+                    f"{vtw['usd_per_kg']} USD/kg ({vtw.get('basis', 'flux commercial observé')}) "
+                    "— reflète un flux précis, pas une cotation de marché organisé."
                 )
             else:
                 note += (

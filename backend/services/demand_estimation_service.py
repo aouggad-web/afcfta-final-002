@@ -487,12 +487,25 @@ def _observed_imports_floor(
     if not annual_usd or annual_usd <= 0:
         return None
     observed_qty = (observed_imports or {}).get("import_quantity_tonnes")
+    observed_qty_plausible = False
+    if observed_qty and observed_qty > 0:
+        try:
+            from services.shipment_estimator import observed_unit_value
+
+            check = observed_unit_value(hs_code, float(annual_usd), float(observed_qty))
+            observed_qty_plausible = bool(check and check.get("plausible"))
+        except Exception as exc:  # pragma: no cover - defensive
+            _log.warning("observed-imports plausibility check unavailable: %s", exc)
     if (unit or "").upper() == "USD":
         floor_value, conversion = float(annual_usd), None
-    elif observed_qty and observed_qty > 0 and "tonne" in (unit or "").lower():
+    elif observed_qty_plausible and "tonne" in (unit or "").lower():
         # Quantité RÉELLE déjà connue pour ce même flux (BACI) : utilisée
         # directement, sans passer par un ratio valeur/poids — mesurée, pas
-        # estimée. Strictement plus fiable qu'une conversion via indice.
+        # estimée. Strictement plus fiable qu'une conversion via indice, mais
+        # seulement retenue si valeur/quantité restent dans un ordre de
+        # grandeur plausible (même garde-fou que `observed_unit_value`) : une
+        # quantité douanière omise/mal unitée pourrait sinon gonfler le
+        # besoin national de façon arbitraire.
         floor_value = float(observed_qty)
         conversion = {
             "usd_per_kg": round(float(annual_usd) / (float(observed_qty) * 1000.0), 4),

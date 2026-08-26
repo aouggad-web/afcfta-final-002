@@ -209,6 +209,42 @@ def test_landed_cost_unavailable_without_freight():
     assert res["available"] is False and res["value_usd"] is None
 
 
+def test_landed_cost_note_labels_observed_tier_not_chapter_estimate():
+    # Régression Copilot (PR #430) : `_landed_cost` traitait tout ratio
+    # non-cours_mondial comme une estimation de chapitre, y compris un flux
+    # réel OEC/BACI observé (valeur/quantité). La note rendue doit distinguer
+    # les deux — le libellé "estimation par chapitre" serait trompeur pour un
+    # ratio mesuré sur un flux réel.
+    shipment = {
+        "available": True,
+        "containers_needed": 2,
+        "container_type": "teu",
+        "value_to_weight": {
+            "classification_source": "valeur_unitaire_observee",
+            "usd_per_kg": 25.0,
+            "basis": "importations de DZA, toutes origines, 2024",
+        },
+    }
+    res = report_engine._landed_cost(2_000_000.0, 995.0, shipment, {"mode": "sea"})
+    assert "valeur unitaire réelle observée" in res["note"]
+    assert "importations de DZA, toutes origines, 2024" in res["note"]
+    assert "chapitre" not in res["note"]
+
+
+def test_landed_cost_note_labels_observed_tier_for_bulk_charter():
+    shipment = {
+        "available": True,
+        "value_to_weight": {
+            "classification_source": "valeur_unitaire_observee",
+            "usd_per_kg": 0.4,
+            "basis": "importations de DZA, toutes origines, 2024",
+        },
+    }
+    res = report_engine._landed_cost(2_000_000.0, 50_000.0, shipment, {"mode": "sea_bulk"})
+    assert "valeur unitaire réelle observée" in res["note"]
+    assert "chapitre" not in res["note"]
+
+
 # ── Supply component from real production data ────────────────────────────────
 def test_supply_component_real_producer():
     # Côte d'Ivoire is the #1 African cocoa producer — deterministic local data.
