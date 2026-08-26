@@ -2131,7 +2131,19 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
                 {inp.gdp_adjustment_factor != null && (
                   <div>{fr ? "Facteur PIB/hab" : "GDP/cap factor"} : {num(inp.gdp_adjustment_factor)}</div>
                 )}
+                {rep.implied_per_capita?.value != null && (
+                  <div style={{ fontWeight: 700 }}>
+                    {fr ? "Besoin par habitant" : "Need per capita"} : {num(rep.implied_per_capita.value)} {rep.implied_per_capita.unit}
+                  </div>
+                )}
               </div>
+              {rep.implied_per_capita?.value != null && (
+                <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 6, fontStyle: "italic" }}>
+                  {fr
+                    ? `Contrôle de vraisemblance : le besoin estimé équivaut à ${num(rep.implied_per_capita.value)} ${rep.implied_per_capita.unit} par habitant.`
+                    : `Plausibility check: the estimated need equals ${num(rep.implied_per_capita.value)} ${rep.implied_per_capita.unit} per capita.`}
+                </div>
+              )}
               {rep.sources?.length > 0 && (
                 <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 8 }}>
                   {fr ? "Sources" : "Sources"} : {rep.sources.map((s) => srcText(s)).filter(Boolean).join(" · ")}

@@ -203,6 +203,35 @@ def estimate_need_from_own_imports(
     }
 
 
+def _implied_per_capita(need: Optional[float], unit: Optional[str], population: Optional[int]) -> Optional[Dict]:
+    """
+    Besoin estimé RAMENÉ PAR HABITANT — le contrôle de vraisemblance le plus
+    direct d'une estimation de besoin national. Un total brut (« 581 000 t »)
+    ne dit rien sans dénominateur ; ramené à l'habitant il devient immédiatement
+    challengeable : ~13 kg/hab/an de bananes = plausible, alors que 8 t/hab/an
+    sauterait aux yeux comme absurde. Exprimé en kg/hab/an quand l'unité de
+    référence est la tonne (lisible à l'échelle humaine), sinon dans l'unité
+    native par habitant.
+    """
+    if not need or not population or population <= 0:
+        return None
+    u = (unit or "").lower()
+    if "tonne" in u:
+        return {
+            "value": round(need / population * 1000.0, 2),
+            "unit": "kg/hab/an",
+        }
+    if u == "usd":
+        return {
+            "value": _round_sig(need / population, 3),
+            "unit": "USD/hab/an",
+        }
+    return {
+        "value": _round_sig(need / population, 3),
+        "unit": f"{unit}/hab/an" if unit else "par hab/an",
+    }
+
+
 def _round_sig(x: float, sig: int = 3) -> float:
     """Arrondi à ``sig`` chiffres significatifs — une estimation affichée au
     centime près (« 3 694 915 962,13 USD ») revendique une précision qu'elle
@@ -481,6 +510,9 @@ def estimate_national_need(
             "level_label": "Consommation apparente (mesurée)",
             "value": round(app, 2),
             "unit": (apparent or {}).get("unit"),
+            "implied_per_capita": _implied_per_capita(
+                app, (apparent or {}).get("unit"), get_population(country_iso3).get("value")
+            ),
             "method": "Production + Importations − Exportations",
             "inputs": {
                 "production": apparent.get("production"),
@@ -753,6 +785,10 @@ def estimate_national_need(
         # revendiquerait une précision qu'elle n'a pas.
         "value": _round_sig(need, 3),
         "unit": prod.get("unit"),
+        # Besoin ramené par habitant — contrôle de vraisemblance immédiat d'un
+        # total brut qui, sans dénominateur, peut paraître aberrant (ex.
+        # « 581 000 t » de bananes pour l'Algérie = ≈13 kg/hab/an, plausible).
+        "implied_per_capita": _implied_per_capita(need, prod.get("unit"), pop.get("value")),
         "commodity": prod.get("commodity"),
         "reference_year": prod.get("year"),
         "reference_basis": reference_basis,
