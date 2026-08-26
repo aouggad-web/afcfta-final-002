@@ -2100,6 +2100,15 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
                 <div style={{ fontSize: 26, fontWeight: 800, marginTop: 6 }}>
                   {num(Math.round(rep.value), rep.unit)}
                 </div>
+                {rep.plausibility?.caveat && (
+                  <div style={{
+                    fontSize: 12, color: "#92400e", background: "#fef3c7",
+                    border: "1px solid #fbbf24", borderRadius: 6, padding: "8px 10px",
+                    marginTop: 8, lineHeight: 1.45,
+                  }}>
+                    ⚠ {fr ? "Seuil de vraisemblance" : "Plausibility threshold"} : {rep.plausibility.caveat}
+                  </div>
+                )}
                 {rep.observed_imports?.import_value_usd && (
                   <div style={{ fontSize: 13, marginTop: 4 }}>
                     {fr ? "Importe déjà" : "Already imports"} : {money(rep.observed_imports.import_value_usd)}
@@ -2122,6 +2131,11 @@ function NationalNeedView({ countries, fr, onAnalyze, prefill }) {
                   >
                     {fr ? "Analyser l'opportunité" : "Analyze opportunity"} : {rep.suggested_supplier.iso3} → {country} ▸
                   </button>
+                )}
+                {!rep.suggested_supplier?.iso3 && rep.suggested_supplier_suppressed_reason && (
+                  <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 10, fontStyle: "italic" }}>
+                    {rep.suggested_supplier_suppressed_reason}
+                  </div>
                 )}
               </>
             ) : (

@@ -94,3 +94,50 @@ def test_measured_l1_path_also_exposes_per_capita():
     )
     assert r.get("estimation_level") == 1
     assert r.get("implied_per_capita", {}).get("unit") == "kg/hab/an"
+
+
+# ── Garde-fou « seuil logique » (audit des besoins nationaux) ──────────────────
+
+
+def test_diet_extrapolation_flagged_and_gdp_capped_cassava_north_africa():
+    # Manioc pour l'Algérie : la sous-région (Afrique du Nord) n'en produit pas
+    # (<2 producteurs) → référence continentale = régime subsaharien appliqué à un
+    # pays qui ne consomme quasiment pas de manioc. DOIT être flaggé, l'ajustement
+    # PIB à la hausse neutralisé, et aucun fournisseur suggéré.
+    r = d.estimate_national_need("0714", "DZA")
+    assert r.get("available")
+    pl = r.get("plausibility")
+    assert pl and "diet_extrapolation" in pl["flags"]
+    assert r["inputs"]["gdp_adjustment_capped"] is True
+    assert r.get("suggested_supplier") is None
+    assert r.get("suggested_supplier_suppressed_reason")
+    assert "SEUIL LOGIQUE" in r.get("note", "")
+
+
+def test_legitimate_staple_not_flagged_cassava_nigeria():
+    # Manioc pour le Nigéria : référence RÉGIONALE réelle (Afrique de l'Ouest,
+    # 15 producteurs) — consommation staple élevée mais authentique. NE DOIT PAS
+    # être flaggé, ni voir son facteur PIB plafonné, ni perdre le fournisseur.
+    r = d.estimate_national_need("0714", "NGA")
+    assert r.get("available")
+    assert r.get("plausibility") is None
+    assert r["inputs"]["gdp_adjustment_capped"] is False
+    assert r.get("suggested_supplier") is not None
+
+
+def test_banana_algeria_stays_plausible_unflagged():
+    # Non-régression : le cas banane/DZA (≈13 kg/hab) reste dans les clous.
+    r = d.estimate_national_need("080390", "DZA")
+    assert r.get("available")
+    assert r.get("plausibility") is None
+
+
+def test_above_human_ceiling_flag_triggers():
+    ipc = {"value": 1500.0, "unit": "kg/hab/an"}
+    g = d._plausibility_guardrail("agri", ipc, False, "Afrique de l'Ouest", "Cassava")
+    assert g and "above_human_ceiling" in g["flags"]
+
+
+def test_plausibility_none_when_within_bounds():
+    ipc = {"value": 50.0, "unit": "kg/hab/an"}
+    assert d._plausibility_guardrail("agri", ipc, False, "Afrique de l'Ouest", "Maize") is None

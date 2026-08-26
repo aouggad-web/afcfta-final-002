@@ -241,6 +241,65 @@ def _implied_per_capita(
     }
 
 
+# Plafond de vraisemblance d'un besoin alimentaire ANNUEL par habitant : aucune
+# commodité alimentaire unique n'est consommée à plus d'≈1 tonne/hab/an (les
+# racines/tubercules les plus consommés — manioc au Nigéria/Ghana — culminent
+# vers 300-350 kg/hab/an). Au-delà, c'est presque à coup sûr un artefact de
+# référence (agrégation, extrapolation), pas un besoin réel. Filet de sécurité —
+# émet un drapeau, ne modifie jamais silencieusement la valeur.
+_AGRI_PER_CAPITA_CEILING_KG = 1000.0
+
+
+def _plausibility_guardrail(
+    dataset: Optional[str],
+    implied_per_capita: Optional[Dict],
+    diet_extrapolation: bool,
+    region: Optional[str],
+    commodity: Optional[str],
+) -> Optional[Dict]:
+    """
+    Contrôle de « seuil logique » d'un besoin national estimé — jamais silencieux,
+    ne modifie pas la valeur, expose un drapeau + un caveat lisible.
+
+    Deux déclencheurs :
+      1. ``diet_extrapolation`` : produit agricole dont la sous-région du pays ne
+         produit RIEN et dont la référence a dû retomber sur le continent — un
+         régime alimentaire continental est appliqué à un pays qui ne le partage
+         vraisemblablement pas (ex. manioc/igname/plantain en Afrique du Nord).
+      2. plafond de consommation humaine : un besoin agricole > ~1 t/hab/an est
+         physiquement invraisemblable pour une commodité alimentaire unique.
+    """
+    flags = []
+    notes = []
+    if diet_extrapolation:
+        flags.append("diet_extrapolation")
+        notes.append(
+            f"SEUIL LOGIQUE — « {commodity} » n'est produit par AUCUN pays de la "
+            f"sous-région du pays évalué ({region}) : la référence par habitant "
+            "retombe sur la moyenne continentale et applique un régime alimentaire "
+            "que ce pays ne partage vraisemblablement pas (ex. manioc/igname/"
+            "plantain hors Afrique subsaharienne). Besoin très probablement "
+            "surestimé — à traiter comme une borne haute peu fiable, pas un besoin "
+            "réel. L'ajustement au niveau de vie à la hausse est neutralisé ici."
+        )
+    if (
+        dataset == "agri"
+        and implied_per_capita
+        and implied_per_capita.get("unit") == "kg/hab/an"
+        and (implied_per_capita.get("value") or 0) > _AGRI_PER_CAPITA_CEILING_KG
+    ):
+        flags.append("above_human_ceiling")
+        notes.append(
+            f"SEUIL LOGIQUE — besoin implicite de {implied_per_capita['value']} "
+            "kg/hab/an : au-delà du plafond de consommation humaine plausible "
+            f"(~{_AGRI_PER_CAPITA_CEILING_KG:.0f} kg/hab/an) pour une commodité "
+            "alimentaire unique. Presque certainement un artefact de référence."
+        )
+    if not flags:
+        return None
+    return {"flags": flags, "caveat": " ".join(notes)}
+
+
 def _round_sig(x: float, sig: int = 3) -> float:
     """Arrondi à ``sig`` chiffres significatifs — une estimation affichée au
     centime près (« 3 694 915 962,13 USD ») revendique une précision qu'elle
@@ -674,6 +733,26 @@ def estimate_national_need(
         )
     gdp_factor = None
 
+    # ── Garde-fou « extrapolation de régime » ────────────────────────────────
+    # Produit AGRICOLE dont la sous-région du pays ne produit RIEN, et dont la
+    # référence a dû retomber sur le continent : on applique un régime alimentaire
+    # continental que le pays ne partage vraisemblablement pas (ex. manioc/igname/
+    # plantain en Afrique du Nord). Conséquences : l'ajustement PIB à la HAUSSE
+    # est neutralisé (plus de revenu n'ajoute pas un aliment absent du régime — il
+    # n'amplifierait que la surestimation) et un caveat de vraisemblance est émis.
+    # Seuil aligné sur celui du repli régional (production_capacity : régional
+    # retenu SEULEMENT si ≥2 pays producteurs) : dès que la sous-région a <2
+    # producteurs, la référence retombe sur le continent (reference_basis
+    # "production_only") et applique un régime alimentaire continental — que le
+    # produit y soit totalement absent (0 producteur) ou anecdotique (1).
+    diet_extrapolation = bool(
+        prod.get("dimension") == "agri"
+        and reference_basis == "production_only"
+        and region_coverage
+        and (region_coverage.get("producers_with_data") or 0) < 2
+    )
+    gdp_factor_capped = False
+
     # ── L3: standard-of-living adjustment ────────────────────────────────────
     # PIB/hab du pays ET moyenne de référence depuis la meilleure source (dataset
     # ETL prioritaire, sinon module Profils Pays) — L3 s'active sans réseau.
@@ -693,6 +772,13 @@ def estimate_national_need(
             gdp_avg = _weighted_continental_gdp_avg(gdp_map, idx)
         if gdp_avg:
             gdp_factor = (gdp["value_usd"] / gdp_avg) ** income_elasticity
+            # Extrapolation de régime : ne pas laisser un revenu élevé GONFLER le
+            # besoin d'un aliment hors du régime alimentaire du pays. On plafonne
+            # le facteur à 1,0 (les ajustements à la BAISSE restent permis : ils
+            # ne font que réduire une surestimation — sens conservateur).
+            if diet_extrapolation and gdp_factor > 1.0:
+                gdp_factor = 1.0
+                gdp_factor_capped = True
             need = need_l2 * gdp_factor
             level = 3
             level_label = "Proxy population + ajustement niveau de vie (estimé)"
@@ -700,6 +786,8 @@ def estimate_national_need(
                 f" × (PIB/hab_pays ÷ PIB/hab_moyen_{'régional' if gdp_avg_is_regional else 'continental'})"
                 f"^{income_elasticity}"
             )
+            if gdp_factor_capped:
+                method += " [plafonné à 1,0 — extrapolation de régime]"
         else:
             need = need_l2
     else:
@@ -767,6 +855,16 @@ def estimate_national_need(
             + " — importations observées du pays"
         )
 
+    # Besoin ramené par habitant (calculé sur le besoin FINAL, après recalage) —
+    # sert à la fois d'affichage et de contrôle de vraisemblance.
+    implied_pc = _implied_per_capita(need, prod.get("unit"), pop.get("value"))
+
+    # Garde-fou « seuil logique » : extrapolation de régime et/ou dépassement du
+    # plafond de consommation humaine — jamais silencieux, n'altère pas la valeur.
+    plausibility = _plausibility_guardrail(
+        prod.get("dimension"), implied_pc, diet_extrapolation, region, prod.get("commodity")
+    )
+
     # Suggested supplier: the #1 African producer that isn't the market itself —
     # a natural "who could serve this need" hand-off to the bilateral report.
     # SUPPRIMÉ quand la commodité porte un caveat méthodologique : recommander le
@@ -784,6 +882,13 @@ def estimate_national_need(
             "nécessairement un fournisseur export du produit demandé. Identifier le "
             "fournisseur via les flux d'export, pas ce classement de production."
         )
+    elif diet_extrapolation:
+        suggested_supplier_suppressed_reason = (
+            "Recommandation fournisseur suspendue : besoin issu d'une extrapolation "
+            f"de régime (« {prod.get('commodity')} » non produit dans la sous-région "
+            "du pays) — proposer un fournisseur pour un besoin très probablement "
+            "surestimé induirait une opportunité qui n'existe pas."
+        )
     else:
         for p in prod.get("top_producers", []):
             iso = (p.get("country_iso3") or "").upper()
@@ -799,6 +904,8 @@ def estimate_national_need(
     )
     if scope_note:
         note = scope_note + " " + note
+    if plausibility:
+        note = plausibility["caveat"] + " " + note
     if commodity_caveat:
         note += " ATTENTION MÉTHODOLOGIE : " + commodity_caveat
     if coverage_caveat:
@@ -818,7 +925,11 @@ def estimate_national_need(
         # Besoin ramené par habitant — contrôle de vraisemblance immédiat d'un
         # total brut qui, sans dénominateur, peut paraître aberrant (ex.
         # « 581 000 t » de bananes pour l'Algérie = ≈13 kg/hab/an, plausible).
-        "implied_per_capita": _implied_per_capita(need, prod.get("unit"), pop.get("value")),
+        "implied_per_capita": implied_pc,
+        # Garde-fou « seuil logique » : drapeau(x) + caveat quand le besoin sort
+        # d'une borne plausible (extrapolation de régime, plafond humain). None
+        # quand l'estimation est dans les clous.
+        "plausibility": plausibility,
         "commodity": prod.get("commodity"),
         "reference_year": prod.get("year"),
         "reference_basis": reference_basis,
@@ -841,6 +952,7 @@ def estimate_national_need(
             "regional_population": region_pop if regional_used else None,
             "per_capita_reference": round(per_capita_ref, 6),
             "gdp_adjustment_factor": round(gdp_factor, 3) if gdp_factor else None,
+            "gdp_adjustment_capped": gdp_factor_capped,
             "income_elasticity": income_elasticity if level == 3 else None,
             "income_elasticity_class": elasticity_class if level == 3 else None,
         },
