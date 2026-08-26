@@ -638,6 +638,7 @@ class RealSubstitutionService:
                     "continental_total": prod.get("continental_total"),
                     "top_producers": (prod.get("top_producers") or [])[:3],
                     "coverage_caveat": prod.get("coverage_caveat"),
+                    "commodity_caveat": prod.get("commodity_caveat"),
                 }
         except Exception:  # noqa: BLE001 - enrichissement, jamais bloquant
             logger.warning("verified_production lookup failed for %s", hs_code, exc_info=True)

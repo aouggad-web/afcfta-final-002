@@ -432,6 +432,46 @@ def _coverage_caveat(dataset: str, label: str, n_countries: int) -> Optional[str
     )
 
 
+# ── Caveat MÉTHODOLOGIQUE par commodité ────────────────────────────────────────
+# Certaines commodités FAOSTAT/USGS/UNIDO agrègent, sous un même libellé, des
+# sous-produits que le code SH sépare — ou dont l'usage (autoconsommation vs.
+# export) diffère radicalement. Le classement « top producteurs » reste EXACT
+# pour la commodité mesurée, mais il NE répond PAS forcément à la question posée
+# par le code SH. Ce caveat est affiché EN PLUS du classement (il ne le supprime
+# pas, contrairement au coverage_caveat) pour empêcher toute lecture abusive.
+#
+# Cas emblématique — bananes : FAOSTAT « Bananas » (item 486) additionne les
+# bananes dessert (Cavendish, l'essentiel du commerce SH 080390) ET les bananes
+# à cuire / bananes de montagne d'Afrique de l'Est (matooke…), cultivées avant
+# tout pour l'autoconsommation et quasiment jamais exportées. Le rang de
+# production ne reflète donc PAS la capacité d'export de banane dessert : les
+# leaders africains à l'export (Côte d'Ivoire, Cameroun) se lisent sur les flux
+# commerciaux, pas sur ce chiffre de production alimentaire.
+_COMMODITY_METHODOLOGY_CAVEAT: Dict[str, str] = {
+    "Bananas": (
+        "Production FAOSTAT « Bananas » (item 486) = bananes dessert (Cavendish, "
+        "l'essentiel du commerce SH 080390) ET bananes à cuire / bananes de "
+        "montagne d'Afrique de l'Est (matooke…), cultivées surtout pour "
+        "l'autoconsommation et très peu exportées. Ce classement mesure la "
+        "PRODUCTION alimentaire totale de bananes, PAS la capacité d'export de "
+        "banane dessert — les leaders africains à l'export (Côte d'Ivoire, "
+        "Cameroun) se lisent sur les flux commerciaux, pas sur ce chiffre."
+    ),
+    "Plantain": (
+        "Production FAOSTAT « Plantains and others » (item 489), distincte des "
+        "bananes dessert (item 486, SH 080390). Ce classement mesure la "
+        "production de plantains (SH 080310), cultivés majoritairement pour "
+        "l'autoconsommation régionale."
+    ),
+}
+
+
+def _commodity_caveat(label: str) -> Optional[str]:
+    """Caveat méthodologique lié à la commodité (agrégation FAOSTAT vs. code SH),
+    affiché en supplément du classement — jamais un motif de suppression."""
+    return _COMMODITY_METHODOLOGY_CAVEAT.get(label)
+
+
 SOURCE_META = {
     "agri": {
         "institution": "FAO",
@@ -709,6 +749,7 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
             ),
             "top_producers": top_producers,
             "coverage_caveat": coverage_caveat,
+            "commodity_caveat": _commodity_caveat(label),
         },
         "integration_scenarios": scenarios,
     }
@@ -786,6 +827,7 @@ def get_country_profile(country_iso3: str, top_n: int = 20) -> Dict:
                     round(country_rec["value"] / total * 100.0, 1) if total and not caveat else None
                 ),
                 "coverage_caveat": caveat,
+                "commodity_caveat": _commodity_caveat(label),
             }
         )
     products.sort(key=lambda p: (p["share_pct"] or 0.0), reverse=True)
@@ -854,6 +896,7 @@ def get_continental_producers(hs_code: str) -> Dict:
             for r in year_recs[:10]
         ],
         "coverage_caveat": coverage_caveat,
+        "commodity_caveat": _commodity_caveat(label),
     }
 
 

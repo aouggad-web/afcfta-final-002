@@ -754,6 +754,11 @@ class ClaudeTradeService:
                                 base + f", continental rank {p['rank']}/"
                                 f"{p['total_countries']}, African share {p['share_pct']}%"
                             )
+                        if p.get("commodity_caveat"):
+                            # La commodité FAOSTAT agrège des sous-produits que le
+                            # code SH sépare (ex. « Bananas » = dessert + à cuire) :
+                            # le rang de PRODUCTION ne vaut pas capacité d'EXPORT.
+                            lines.append("  [METHODOLOGY] " + p["commodity_caveat"])
                     stats["production_products"] = len(lines)
                     sections.append(
                         f"VERIFIED PRODUCTION OF {country_name} "
@@ -918,6 +923,13 @@ STRICT DATA RULES:
                     if prod.get("coverage_caveat")
                     else ""
                 )
+                # Caveat méthodologique : quand la commodité FAOSTAT regroupe des
+                # sous-produits séparés par le code SH (ex. « Bananas » = dessert
+                # + à cuire/matooke), ce classement de PRODUCTION ne représente
+                # pas la capacité d'EXPORT du produit SH — les leaders export se
+                # lisent sur les flux commerciaux ci-dessous, pas sur ce chiffre.
+                if prod.get("commodity_caveat"):
+                    caveat += " [METHODOLOGY — " + prod["commodity_caveat"] + "]"
                 sections.append(
                     f"REAL PRODUCTION for {prod['commodity']} (HS {hs_code}) "
                     f"[{prod['measure']}, {prod['source']['institution']} "
