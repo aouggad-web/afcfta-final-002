@@ -488,12 +488,15 @@ def _observed_imports_floor(
         return None
     observed_qty = (observed_imports or {}).get("import_quantity_tonnes")
     observed_qty_plausible = False
+    discarded_observed_qty_note = None
     if observed_qty and observed_qty > 0:
         try:
             from services.shipment_estimator import observed_unit_value
 
             check = observed_unit_value(hs_code, float(annual_usd), float(observed_qty))
             observed_qty_plausible = bool(check and check.get("plausible"))
+            if check and not observed_qty_plausible:
+                discarded_observed_qty_note = check.get("note")
         except Exception as exc:  # pragma: no cover - defensive
             _log.warning("observed-imports plausibility check unavailable: %s", exc)
     if (unit or "").upper() == "USD":
@@ -532,6 +535,12 @@ def _observed_imports_floor(
                 "is_estimate": ratio.get("is_estimate", True),
                 "source": ratio.get("source"),
             }
+            if discarded_observed_qty_note:
+                # La quantité observée existait mais a été jugée implausible
+                # (même garde-fou que `shipment_estimator.observed_unit_value`) :
+                # tracée ici plutôt que silencieusement remplacée par le repli
+                # sur le ratio de chapitre générique.
+                conversion["discarded_observed_value"] = discarded_observed_qty_note
         except Exception as exc:  # pragma: no cover - defensive
             _log.warning("observed-imports conversion unavailable: %s", exc)
             return None

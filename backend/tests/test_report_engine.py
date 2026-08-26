@@ -108,6 +108,63 @@ def test_logistics_accessibility_unavailable():
     assert res["available"] is False and res["index"] is None
 
 
+def test_logistics_accessibility_counts_distinct_modes_not_raw_options():
+    # Régression Copilot (PR #430) : `compare_multimodal` peut renvoyer
+    # PLUSIEURS options pour un même mode (ex. deux itinéraires maritimes,
+    # cf. `_sea_options`). Compter les options brutes surestime
+    # l'accessibilité d'un corridor qui n'a en réalité qu'un seul mode
+    # opérationnel (mer uniquement) — un pays sans route/rail/air vers ce
+    # marché ne doit pas dépasser le seuil du caveat "accès limité".
+    profile = {
+        "freight": {
+            "available": True,
+            "options": [
+                {"mode": "sea", "is_future": False},
+                {"mode": "sea", "is_future": False},  # second itinéraire, même mode
+                {"mode": "air", "is_future": True},  # non opérationnel -> exclu
+            ],
+        },
+        "cheapest_operational_option": {"feasibility": "medium"},
+    }
+    res = logistics.summarize_logistics_accessibility(profile)
+    assert res["available"] is True
+    assert res["operational_modes"] == 1  # 1 mode distinct (mer), pas 2 options
+    # 1 mode / 3 * 0.7 + 0.15 (feasibility medium) = 0.383 — nettement plus bas
+    # que ce que 2 options brutes auraient produit (2/3*0.7+0.15 = 0.617).
+    assert res["index"] == round(1 / 3.0 * 0.7 + 0.15, 3)
+
+
+def test_logistics_accessibility_multiple_distinct_modes_scores_higher():
+    profile = {
+        "freight": {
+            "available": True,
+            "options": [
+                {"mode": "sea", "is_future": False},
+                {"mode": "sea", "is_future": False},
+                {"mode": "road", "is_future": False},
+                {"mode": "air", "is_future": False},
+            ],
+        },
+        "cheapest_operational_option": {"feasibility": "high"},
+    }
+    res = logistics.summarize_logistics_accessibility(profile)
+    assert res["operational_modes"] == 3  # sea, road, air — pas 4 options
+    assert res["index"] == 1.0
+
+
+def test_logistics_accessibility_falls_back_to_operational_count_without_options():
+    # Compatibilité : un profil qui n'expose pas la liste `options` brute
+    # (ancien format / test existant) continue de fonctionner via le compteur
+    # pré-calculé.
+    profile = {
+        "freight": {"available": True, "operational_count": 3},
+        "cheapest_operational_option": {"feasibility": "high"},
+    }
+    res = logistics.summarize_logistics_accessibility(profile)
+    assert res["operational_modes"] == 3
+    assert res["index"] == 1.0
+
+
 # ── End-to-end score renormalisation (pure, deterministic) ───────────────────
 def test_end_to_end_score_renormalises_over_available():
     components = {

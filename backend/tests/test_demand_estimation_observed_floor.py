@@ -53,6 +53,12 @@ def test_observed_quantity_rejected_when_implausible_falls_back_to_chapter():
     assert r["floor_value"] != 1.0
     assert round(r["floor_value"], 1) == round(50_000_000 / 60.0 / 1000.0, 1)
     assert r["conversion"]["is_estimate"] is True
+    # Régression Copilot (PR #430) : la quantité observée écartée reste
+    # tracée dans les métadonnées de conversion — jamais silencieusement
+    # remplacée par un repli qui ressemblerait à une conversion de chapitre
+    # ordinaire, sans indice qu'une valeur observée a été rejetée.
+    assert r["conversion"].get("discarded_observed_value")
+    assert "erreur de déclaration" in r["conversion"]["discarded_observed_value"]
 
 
 def test_observed_quantity_plausibility_check_failure_falls_back_gracefully(monkeypatch):
