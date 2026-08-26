@@ -48,10 +48,12 @@ _CROP_ALIASES_FR_EN = {
     "cacao": "cocoa beans",
     "café": "coffee",
     "canne à sucre": "sugarcane",
+    "cannelle": "cinnamon",
     "clou de girofle": "cloves",
     "coton": "seed cotton",
     "dattes": "dates",
     "fonio": "fonio",
+    "haricot": "beans",
     "huile de palme": "oil palm",
     "hévéa": "rubber",
     "igname": "yam",
@@ -60,6 +62,7 @@ _CROP_ALIASES_FR_EN = {
     "mil": "millet",
     "niébé": "cowpeas",
     "noix de cajou": "cashew nuts",
+    "noix de coco": "coconuts",
     "oignon": "onions",
     "olives": "olives",
     "oranges": "oranges",
@@ -78,6 +81,13 @@ _CROP_ALIASES_FR_EN = {
     "tournesol": "sunflower seed",
     "vanille": "vanilla",
 }
+
+# Le bulk agri_faostat mêle cultures et produits animaux (viande, lait, œufs).
+# L'onglet "Cultures" ne doit afficher que des cultures : on exclut les produits
+# animaux (dont les gros volumes — lait/viande bovine — consommeraient sinon les
+# slots du plafond _MAX_EXTRA_BULK_CROPS). Aucun nom de culture ne contient ces
+# fragments, la détection par mot-clé reste donc robuste aux nouveaux libellés.
+_ANIMAL_PRODUCT_KEYWORDS = ("meat", "milk", "egg")
 
 logger = logging.getLogger(__name__)
 
@@ -224,6 +234,8 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
         commodity_key = commodity.strip().lower()
         if commodity_key in curated_names_lower or not records:
             continue
+        if any(kw in commodity_key for kw in _ANIMAL_PRODUCT_KEYWORDS):
+            continue  # produit animal — hors onglet "Cultures"
         latest = max(records, key=lambda r: r.get("year") or 0)
         value = latest.get("value")
         if not value:
