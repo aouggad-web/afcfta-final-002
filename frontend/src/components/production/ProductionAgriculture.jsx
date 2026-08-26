@@ -183,8 +183,28 @@ export default function ProductionAgriculture({ language = 'fr' }) {
 
   const evoLines = Object.keys(detail?.evolution || {}).slice(0, 5);
 
-  const commodityShortLabel = (name) =>
-    (name || '').replace(/\s*\(projection\)\s*$/i, '').trim();
+  const PROJECTION_AGGREGATE_LABELS = {
+    fr: {
+      cereals: 'Céréales',
+      oilseeds: 'Oléagineux',
+      sugar: 'Sucre',
+      meat: 'Viande',
+      'roots & tubers': 'Racines & tubercules',
+    },
+    en: {
+      cereals: 'Cereals',
+      oilseeds: 'Oilseeds',
+      sugar: 'Sugar',
+      meat: 'Meat',
+      'roots & tubers': 'Roots & tubers',
+    },
+  };
+
+  const commodityShortLabel = (name) => {
+    const short = (name || '').replace(/\s*\(projection\)\s*$/i, '').trim();
+    const localized = PROJECTION_AGGREGATE_LABELS[language]?.[short.toLowerCase()];
+    return localized || short;
+  };
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
@@ -361,6 +381,9 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                                   </td>
                                   <td className="px-3 py-2 text-right font-mono text-green-700 font-bold">
                                     {fmt(c.value_2023)} t
+                                    {c.is_bulk_faostat && c.year && (
+                                      <span className="ml-1 text-xs font-normal text-gray-400">({c.year})</span>
+                                    )}
                                   </td>
                                   <td className="px-3 py-2 text-right text-gray-500 hidden sm:table-cell">
                                     {c.area_ha ? `${fmt(c.area_ha)} ha` : '—'}

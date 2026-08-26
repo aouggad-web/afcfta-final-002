@@ -35,6 +35,50 @@ from services.faostat_service import (
 # existant pour les pays où le bulk couvre 50-100+ produits.
 _MAX_EXTRA_BULK_CROPS = 20
 
+# Alias FR (noms curés FAOSTAT_AGRICULTURE_DATA) -> EN (libellés bulk agri_faostat),
+# pour dédupliquer correctement les cultures déjà présentes dans la table curée
+# avant de compléter avec le bulk (ex. "Manioc" curé == "Cassava" bulk : sans cet
+# alias, le même produit apparaissait deux fois sous deux noms différents).
+_CROP_ALIASES_FR_EN = {
+    "agrumes": "citrus",
+    "ananas": "pineapples",
+    "arachide": "groundnuts",
+    "banane": "bananas",
+    "blé": "wheat",
+    "cacao": "cocoa beans",
+    "café": "coffee",
+    "canne à sucre": "sugarcane",
+    "clou de girofle": "cloves",
+    "coton": "seed cotton",
+    "dattes": "dates",
+    "fonio": "fonio",
+    "huile de palme": "oil palm",
+    "hévéa": "rubber",
+    "igname": "yam",
+    "manioc": "cassava",
+    "maïs": "maize (corn)",
+    "mil": "millet",
+    "niébé": "cowpeas",
+    "noix de cajou": "cashew nuts",
+    "oignon": "onions",
+    "olives": "olives",
+    "oranges": "oranges",
+    "orge": "barley",
+    "plantain": "plantain",
+    "pomme de terre": "potatoes",
+    "riz": "rice",
+    "soja": "soybeans",
+    "sorgho": "sorghum",
+    "sésame": "sesame",
+    "tabac": "tobacco",
+    "teff": "teff",
+    "thé": "tea",
+    "tomate": "tomatoes",
+    "tomates": "tomatoes",
+    "tournesol": "sunflower seed",
+    "vanille": "vanilla",
+}
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/faostat")
@@ -170,11 +214,15 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
     # FAOSTAT 2019-2024) en couvre 30-100+. On complète la liste "cultures" avec
     # les produits bulk absents de la table curée (comparaison insensible à la
     # casse), triés par valeur décroissante et plafonnés pour rester lisible.
-    curated_names_lower = {c["name"].strip().lower() for c in cultures_sorted}
+    curated_names_lower = {
+        _CROP_ALIASES_FR_EN.get(c["name"].strip().lower(), c["name"].strip().lower())
+        for c in cultures_sorted
+    }
     bulk = get_agriculture_by_country(iso3)
     extra_crops = []
     for commodity, records in bulk.get("data_by_commodity", {}).items():
-        if commodity.strip().lower() in curated_names_lower or not records:
+        commodity_key = commodity.strip().lower()
+        if commodity_key in curated_names_lower or not records:
             continue
         latest = max(records, key=lambda r: r.get("year") or 0)
         value = latest.get("value")
@@ -183,7 +231,7 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
         extra_crops.append(
             {
                 "name": commodity,
-                "value_2023": value,  # dernière valeur bulk disponible (voir "year")
+                "value_2023": value,  # valeur bulk de l'année la plus récente (voir "year")
                 "year": latest.get("year"),
                 "unit": latest.get("unit", "tonnes"),
                 "rank_africa": None,
