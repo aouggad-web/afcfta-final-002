@@ -10,7 +10,7 @@ import {
 import EnhancedCountrySelector from './EnhancedCountrySelector';
 import {
   Wheat, Beef, Fish, TrendingUp, AlertTriangle, Loader2,
-  Globe, BarChart3, Droplets, Award, Info, LineChart as LineChartIcon
+  Globe, BarChart3, Droplets, Award, Info
 } from 'lucide-react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -31,7 +31,7 @@ const TEXTS = {
     tabElevage: 'Élevage',
     tabPeche: 'Pêche & Aquaculture',
     cultures: 'Grandes cultures',
-    production: 'Production 2023',
+    production: 'Production (dernière année)',
     tonnes: 'tonnes',
     tetes: 'têtes',
     hectares: 'ha',
@@ -54,13 +54,13 @@ const TEXTS = {
     noLivestock: 'Données élevage non disponibles pour ce pays',
     noFisheries: 'Données pêche non disponibles pour ce pays',
     topCerealsDZA: 'Grandes céréales (cultures stratégiques)',
-    tabProjections: 'Perspectives',
-    projectionsTitle: 'Perspectives de production 2025–2030',
-    projectionsSubtitle: 'Projections OCDE-FAO (OECD-FAO Agricultural Outlook)',
-    noProjections: 'Aucune projection disponible pour ce pays',
-    projValue2025: 'Projection 2025',
-    projValue2030: 'Projection 2030',
-    projGrowth: 'Évolution 2025→2030',
+    perspectives: 'Perspectives 2025–2030',
+    perspectivesSubtitle: 'Prévisions de production par grand agrégat',
+    perspectivesSource: 'Source : OCDE-FAO Agricultural Outlook 2024-2033',
+    projection: 'Projection',
+    sectorCrops: 'Cultures',
+    sectorLivestock: 'Élevage',
+    latestObserved: 'Dernière donnée observée',
   },
   en: {
     title: 'FAO Agricultural Production',
@@ -72,7 +72,7 @@ const TEXTS = {
     tabElevage: 'Livestock',
     tabPeche: 'Fisheries & Aquaculture',
     cultures: 'Major crops',
-    production: '2023 Production',
+    production: 'Production (latest year)',
     tonnes: 'tonnes',
     tetes: 'heads',
     hectares: 'ha',
@@ -95,13 +95,13 @@ const TEXTS = {
     noLivestock: 'Livestock data not available for this country',
     noFisheries: 'Fisheries data not available for this country',
     topCerealsDZA: 'Major cereals (strategic crops)',
-    tabProjections: 'Outlook',
-    projectionsTitle: '2025–2030 Production Outlook',
-    projectionsSubtitle: 'OECD-FAO Agricultural Outlook projections',
-    noProjections: 'No projections available for this country',
-    projValue2025: '2025 projection',
-    projValue2030: '2030 projection',
-    projGrowth: '2025→2030 change',
+    perspectives: '2025–2030 Outlook',
+    perspectivesSubtitle: 'Production forecasts by major aggregate',
+    perspectivesSource: 'Source: OECD-FAO Agricultural Outlook 2024-2033',
+    projection: 'Projection',
+    sectorCrops: 'Crops',
+    sectorLivestock: 'Livestock',
+    latestObserved: 'Latest observed value',
   }
 };
 
@@ -121,17 +121,36 @@ export default function ProductionAgriculture({ language = 'fr' }) {
   const [faoStats, setFaoStats] = useState(null);
   const [loading, setLoading]   = useState(false);
   const [activeTab, setActiveTab] = useState('cultures');
-  const [projections, setProjections] = useState([]);
-  const [loadingProjections, setLoadingProjections] = useState(false);
 
   useEffect(() => { fetchFaoStats(); }, []);
 
+  // Refetch aussi au changement de langue : les libellés des cultures bulk sont
+  // localisés côté backend (paramètre language), sinon le basculement FR/EN
+  // laisserait des noms de cultures dans la langue précédente jusqu'à un
+  // changement de pays. Le nettoyage d'effet ignore les réponses obsolètes :
+  // un changement rapide de pays/langue ne peut plus laisser une ancienne
+  // réponse écraser la sélection courante (condition de course).
   useEffect(() => {
-    if (country) {
-      fetchDetail(country);
-      fetchProjections(country);
-    }
-  }, [country]);
+    if (!country) return undefined;
+    let cancelled = false;
+    setLoading(true);
+    setDetail(null);
+    (async () => {
+      try {
+        const r = await axios.get(
+          `${API}/faostat/country-detail/${country}?language=${language}`
+        );
+        if (!cancelled) setDetail(r.data);
+      } catch (err) {
+        if (!cancelled) console.error('Error fetching country detail:', err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [country, language]);
 
   const fetchFaoStats = async () => {
     try {
@@ -140,38 +159,13 @@ export default function ProductionAgriculture({ language = 'fr' }) {
     } catch (_) {}
   };
 
-  const fetchDetail = async (iso3) => {
-    setLoading(true);
-    setDetail(null);
-    try {
-      const r = await axios.get(`${API}/faostat/country-detail/${iso3}?language=${language}`);
-      setDetail(r.data);
-    } catch (err) {
-      console.error('Error fetching country detail:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchProjections = async (iso3) => {
-    setLoadingProjections(true);
-    setProjections([]);
-    try {
-      const r = await axios.get(`${API}/production/agriculture/projections?country_iso3=${iso3}`);
-      setProjections(Array.isArray(r.data) ? r.data : []);
-    } catch (err) {
-      console.error('Error fetching agriculture projections:', err);
-    } finally {
-      setLoadingProjections(false);
-    }
-  };
-
   // ── Charts data ──────────────────────────────────────────────────────────
   const culturesChartData = () =>
     (detail?.cultures || []).map((c, i) => ({
       name: c.name.length > 14 ? c.name.slice(0, 14) + '…' : c.name,
       fullName: c.name,
       value: c.value_2023,
+      year: c.is_bulk_faostat ? c.year : 2023,
       fill: COLORS_CULTURES[i % COLORS_CULTURES.length],
     }));
 
@@ -205,23 +199,28 @@ export default function ProductionAgriculture({ language = 'fr' }) {
 
   const evoLines = Object.keys(detail?.evolution || {}).slice(0, 5);
 
-  // Regroupe les projections OCDE-FAO par filière (commodity_label) : une
-  // ligne par produit avec sa valeur 2025 et sa valeur 2030 côte à côte.
-  const projectionsByCommodity = () => {
-    const byName = {};
-    projections.forEach((p) => {
-      const name = p.commodity_label || p.sector_detail || p.indicator_label || '—';
-      if (!byName[name]) byName[name] = { name, unit: p.unit || '' };
-      byName[name][p.year] = p.value;
-    });
-    return Object.values(byName).sort((a, b) => (b[2030] || 0) - (a[2030] || 0));
+  const PROJECTION_AGGREGATE_LABELS = {
+    fr: {
+      cereals: 'Céréales',
+      oilseeds: 'Oléagineux',
+      sugar: 'Sucre',
+      meat: 'Viande',
+      'roots & tubers': 'Racines & tubercules',
+    },
+    en: {
+      cereals: 'Cereals',
+      oilseeds: 'Oilseeds',
+      sugar: 'Sugar',
+      meat: 'Meat',
+      'roots & tubers': 'Roots & tubers',
+    },
   };
 
-  const projectionsChartData = () =>
-    projectionsByCommodity().map((row, i) => ({
-      ...row,
-      fill: COLORS_CULTURES[i % COLORS_CULTURES.length],
-    }));
+  const commodityShortLabel = (name) => {
+    const short = (name || '').replace(/\s*\(projection\)\s*$/i, '').trim();
+    const localized = PROJECTION_AGGREGATE_LABELS[language]?.[short.toLowerCase()];
+    return localized || short;
+  };
 
   // ── Render ────────────────────────────────────────────────────────────────
   return (
@@ -308,7 +307,9 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-gray-500">{t.source}</p>
-                  <p className="text-xs font-medium text-gray-700">{detail.source}</p>
+                  {(detail.sources?.length ? detail.sources : [detail.source]).map((s) => (
+                    <p key={s} className="text-xs font-medium text-gray-700">{s}</p>
+                  ))}
                 </div>
               </div>
             </CardHeader>
@@ -316,7 +317,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
 
           {/* Sub-tabs: Cultures / Élevage / Pêche */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
-            <TabsList className="grid w-full grid-cols-4 bg-green-100 p-1 h-auto">
+            <TabsList className="grid w-full grid-cols-3 bg-green-100 p-1 h-auto">
               <TabsTrigger
                 value="cultures"
                 className="data-[state=active]:bg-green-600 data-[state=active]:text-white py-2.5"
@@ -336,13 +337,6 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                 disabled={!detail.has_fisheries}
               >
                 <Fish className="w-4 h-4 mr-2" /> {t.tabPeche}
-              </TabsTrigger>
-              <TabsTrigger
-                value="projections"
-                className="data-[state=active]:bg-emerald-700 data-[state=active]:text-white py-2.5"
-                data-testid="agriculture-projections-tab"
-              >
-                <LineChartIcon className="w-4 h-4 mr-2" /> {t.tabProjections}
               </TabsTrigger>
             </TabsList>
 
@@ -365,7 +359,10 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <XAxis type="number" tickFormatter={fmt} tick={{ fontSize: 11 }} />
                             <YAxis type="category" dataKey="name" width={105} tick={{ fontSize: 11 }} />
                             <Tooltip
-                              formatter={(v, _, p) => [fmtUnit(v, t.tonnes), p?.payload?.fullName || '']}
+                              formatter={(v, _, p) => [
+                                `${fmtUnit(v, t.tonnes)}${p?.payload?.year ? ` (${p.payload.year})` : ''}`,
+                                p?.payload?.fullName || '',
+                              ]}
                             />
                             <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                               {culturesChartData().map((e, i) => (
@@ -405,6 +402,9 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                                   </td>
                                   <td className="px-3 py-2 text-right font-mono text-green-700 font-bold">
                                     {fmt(c.value_2023)} t
+                                    <span className="ml-1 text-xs font-normal text-gray-400">
+                                      ({c.is_bulk_faostat ? c.year : 2023})
+                                    </span>
                                   </td>
                                   <td className="px-3 py-2 text-right text-gray-500 hidden sm:table-cell">
                                     {c.area_ha ? `${fmt(c.area_ha)} ha` : '—'}
@@ -728,88 +728,73 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                 </Card>
               )}
             </TabsContent>
-
-            {/* ═══════════════════ PERSPECTIVES 2025-2030 ═══════════════════ */}
-            <TabsContent value="projections" className="space-y-5" data-testid="agriculture-projections-content">
-              {loadingProjections ? (
-                <Card>
-                  <CardContent className="flex items-center justify-center h-48">
-                    <Loader2 className="w-10 h-10 animate-spin text-emerald-600" />
-                  </CardContent>
-                </Card>
-              ) : projections.length > 0 ? (
-                <>
-                  <Card className="shadow-md">
-                    <CardHeader>
-                      <CardTitle className="text-base text-emerald-800 flex items-center gap-2">
-                        <TrendingUp className="w-4 h-4" /> {t.projectionsTitle}
-                      </CardTitle>
-                      <CardDescription>{t.projectionsSubtitle}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <ResponsiveContainer width="100%" height={320}>
-                        <BarChart data={projectionsChartData()} margin={{ left: 10, right: 20 }}>
-                          <CartesianGrid strokeDasharray="3 3" />
-                          <XAxis dataKey="name" tick={{ fontSize: 11 }} interval={0} angle={-15} textAnchor="end" height={60} />
-                          <YAxis tickFormatter={fmt} />
-                          <Tooltip formatter={(v, key) => [fmt(v), key === '2025' ? t.projValue2025 : t.projValue2030]} />
-                          <Legend formatter={(key) => (key === '2025' ? t.projValue2025 : t.projValue2030)} />
-                          <Bar dataKey="2025" fill="#84cc16" radius={[4, 4, 0, 0]} />
-                          <Bar dataKey="2030" fill="#15803d" radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="shadow-md">
-                    <CardContent className="p-0">
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="bg-emerald-50 border-b">
-                              <th className="text-left px-3 py-2 font-semibold">Filière</th>
-                              <th className="text-right px-3 py-2 font-semibold">{t.projValue2025}</th>
-                              <th className="text-right px-3 py-2 font-semibold">{t.projValue2030}</th>
-                              <th className="text-right px-3 py-2 font-semibold">{t.projGrowth}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {projectionsByCommodity().map((row) => {
-                              const growth = row[2025] && row[2030]
-                                ? (((row[2030] - row[2025]) / row[2025]) * 100).toFixed(1)
-                                : null;
-                              return (
-                                <tr key={row.name} className="border-b hover:bg-emerald-50/50">
-                                  <td className="px-3 py-2 font-medium">{row.name}</td>
-                                  <td className="px-3 py-2 text-right font-mono">{fmtUnit(row[2025], row.unit)}</td>
-                                  <td className="px-3 py-2 text-right font-mono font-bold text-emerald-700">{fmtUnit(row[2030], row.unit)}</td>
-                                  <td className="px-3 py-2 text-right">
-                                    {growth !== null ? (
-                                      <Badge className={growth >= 0 ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}>
-                                        {growth >= 0 ? '+' : ''}{growth}%
-                                      </Badge>
-                                    ) : '—'}
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <p className="text-xs text-gray-500 px-1">Source : {projections[0]?.source_institution || 'OECD-FAO Agricultural Outlook'}</p>
-                </>
-              ) : (
-                <Card className="border-l-4 border-l-amber-400" data-testid="agriculture-projections-empty">
-                  <CardContent className="flex items-center gap-4 py-8">
-                    <AlertTriangle className="w-10 h-10 text-amber-500 flex-shrink-0" />
-                    <p className="text-gray-600">{t.noProjections}</p>
-                  </CardContent>
-                </Card>
-              )}
-            </TabsContent>
           </Tabs>
+
+          {/* Perspectives / Prévisions OCDE-FAO — agrégats nationaux transversaux
+              (cultures ET élevage), donc affichés hors des sous-onglets sectoriels. */}
+          {detail.has_projections && (
+            <Card className="shadow-md border-emerald-200">
+              <CardHeader>
+                <CardTitle className="text-base text-emerald-800 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4" /> {t.perspectives}
+                </CardTitle>
+                <CardDescription className="text-xs text-gray-500">
+                  {t.perspectivesSubtitle}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {detail.projections.map((proj) => {
+                    const points = proj.points || [];
+                    const first = points[0];
+                    const last = points[points.length - 1];
+                    const growthPct =
+                      first && last && first.value
+                        ? ((last.value - first.value) / first.value) * 100
+                        : null;
+                    return (
+                      <div
+                        key={proj.commodity}
+                        className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4"
+                      >
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="font-semibold text-emerald-900 text-sm">
+                            {commodityShortLabel(proj.commodity)}
+                          </span>
+                          <Badge
+                            className={`text-[10px] text-white ${
+                              proj.is_livestock ? 'bg-amber-600' : 'bg-emerald-600'
+                            }`}
+                          >
+                            {proj.is_livestock ? t.sectorLivestock : t.sectorCrops}
+                          </Badge>
+                        </div>
+                        <div className="flex items-end gap-3 flex-wrap">
+                          {points.map((p) => (
+                            <div key={p.year} className="text-center">
+                              <p className="text-lg font-bold text-emerald-800">
+                                {fmt(p.value)}
+                              </p>
+                              <p className="text-[11px] text-gray-500">
+                                {p.year} · {proj.unit}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                        {growthPct !== null && (
+                          <p className="text-xs text-emerald-700 mt-2">
+                            {growthPct >= 0 ? '+' : ''}
+                            {growthPct.toFixed(1)}% ({first.year}→{last.year})
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="text-[11px] text-gray-400 mt-3">{t.perspectivesSource}</p>
+              </CardContent>
+            </Card>
+          )}
         </>
       )}
 

@@ -454,6 +454,11 @@ const HS6SearchResult = ({ result, language, onClear }) => {
                 ⚠ {prod.coverage_caveat}
               </p>
             )}
+            {prod.commodity_caveat && (
+              <p className="text-[10px] text-amber-700 bg-amber-100 border border-amber-300 rounded px-2 py-1 mt-2">
+                ⚠ {prod.commodity_caveat}
+              </p>
+            )}
           </div>
         )}
 
