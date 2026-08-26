@@ -58,6 +58,8 @@ const TEXTS = {
     perspectivesSubtitle: 'Prévisions de production par grand agrégat',
     perspectivesSource: 'Source : OCDE-FAO Agricultural Outlook 2024-2033',
     projection: 'Projection',
+    sectorCrops: 'Cultures',
+    sectorLivestock: 'Élevage',
     latestObserved: 'Dernière donnée observée',
   },
   en: {
@@ -97,6 +99,8 @@ const TEXTS = {
     perspectivesSubtitle: 'Production forecasts by major aggregate',
     perspectivesSource: 'Source: OECD-FAO Agricultural Outlook 2024-2033',
     projection: 'Projection',
+    sectorCrops: 'Crops',
+    sectorLivestock: 'Livestock',
     latestObserved: 'Latest observed value',
   }
 };
@@ -442,67 +446,6 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                     </Card>
                   )}
 
-                  {/* Perspectives / Prévisions OCDE-FAO */}
-                  {detail.has_projections && (
-                    <Card className="shadow-md border-emerald-200">
-                      <CardHeader>
-                        <CardTitle className="text-base text-emerald-800 flex items-center gap-2">
-                          <TrendingUp className="w-4 h-4" /> {t.perspectives}
-                        </CardTitle>
-                        <CardDescription className="text-xs text-gray-500">
-                          {t.perspectivesSubtitle}
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {detail.projections.map((proj) => {
-                            const points = proj.points || [];
-                            const first = points[0];
-                            const last = points[points.length - 1];
-                            const growthPct =
-                              first && last && first.value
-                                ? ((last.value - first.value) / first.value) * 100
-                                : null;
-                            return (
-                              <div
-                                key={proj.commodity}
-                                className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4"
-                              >
-                                <div className="flex items-center justify-between gap-2 mb-2">
-                                  <span className="font-semibold text-emerald-900 text-sm">
-                                    {commodityShortLabel(proj.commodity)}
-                                  </span>
-                                  <Badge className="bg-emerald-600 text-white text-[10px]">
-                                    {t.projection}
-                                  </Badge>
-                                </div>
-                                <div className="flex items-end gap-3 flex-wrap">
-                                  {points.map((p) => (
-                                    <div key={p.year} className="text-center">
-                                      <p className="text-lg font-bold text-emerald-800">
-                                        {fmt(p.value)}
-                                      </p>
-                                      <p className="text-[11px] text-gray-500">
-                                        {p.year} · {proj.unit}
-                                      </p>
-                                    </div>
-                                  ))}
-                                </div>
-                                {growthPct !== null && (
-                                  <p className="text-xs text-emerald-700 mt-2">
-                                    {growthPct >= 0 ? '+' : ''}
-                                    {growthPct.toFixed(1)}% ({first.year}→{last.year})
-                                  </p>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                        <p className="text-[11px] text-gray-400 mt-3">{t.perspectivesSource}</p>
-                      </CardContent>
-                    </Card>
-                  )}
-
                   {/* Key indicators */}
                   {detail.key_indicators && Object.keys(detail.key_indicators).length > 0 && (
                     <Card className="shadow-md bg-green-50 border-green-200">
@@ -773,6 +716,72 @@ export default function ProductionAgriculture({ language = 'fr' }) {
               )}
             </TabsContent>
           </Tabs>
+
+          {/* Perspectives / Prévisions OCDE-FAO — agrégats nationaux transversaux
+              (cultures ET élevage), donc affichés hors des sous-onglets sectoriels. */}
+          {detail.has_projections && (
+            <Card className="shadow-md border-emerald-200">
+              <CardHeader>
+                <CardTitle className="text-base text-emerald-800 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4" /> {t.perspectives}
+                </CardTitle>
+                <CardDescription className="text-xs text-gray-500">
+                  {t.perspectivesSubtitle}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {detail.projections.map((proj) => {
+                    const points = proj.points || [];
+                    const first = points[0];
+                    const last = points[points.length - 1];
+                    const growthPct =
+                      first && last && first.value
+                        ? ((last.value - first.value) / first.value) * 100
+                        : null;
+                    return (
+                      <div
+                        key={proj.commodity}
+                        className="rounded-xl border border-emerald-200 bg-emerald-50/60 p-4"
+                      >
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="font-semibold text-emerald-900 text-sm">
+                            {commodityShortLabel(proj.commodity)}
+                          </span>
+                          <Badge
+                            className={`text-[10px] text-white ${
+                              proj.is_livestock ? 'bg-amber-600' : 'bg-emerald-600'
+                            }`}
+                          >
+                            {proj.is_livestock ? t.sectorLivestock : t.sectorCrops}
+                          </Badge>
+                        </div>
+                        <div className="flex items-end gap-3 flex-wrap">
+                          {points.map((p) => (
+                            <div key={p.year} className="text-center">
+                              <p className="text-lg font-bold text-emerald-800">
+                                {fmt(p.value)}
+                              </p>
+                              <p className="text-[11px] text-gray-500">
+                                {p.year} · {proj.unit}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                        {growthPct !== null && (
+                          <p className="text-xs text-emerald-700 mt-2">
+                            {growthPct >= 0 ? '+' : ''}
+                            {growthPct.toFixed(1)}% ({first.year}→{last.year})
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <p className="text-[11px] text-gray-400 mt-3">{t.perspectivesSource}</p>
+              </CardContent>
+            </Card>
+          )}
         </>
       )}
 

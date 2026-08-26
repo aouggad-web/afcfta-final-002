@@ -267,6 +267,11 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
             {
                 "commodity": label,
                 "unit": rec.get("unit", "tonnes"),
+                # Secteur d'origine (Crops / Livestock) : certaines projections
+                # sont des agrégats d'élevage (ex. "Meat (projection)") et ne
+                # doivent pas être présentées comme des cultures.
+                "sector_detail": rec.get("sector_detail"),
+                "is_livestock": (rec.get("sector_detail") or "").lower().startswith("livestock"),
                 "source_institution": rec.get("source_institution"),
                 "source_dataset": rec.get("source_dataset"),
                 "source_url": rec.get("source_url"),
