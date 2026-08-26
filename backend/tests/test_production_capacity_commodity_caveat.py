@@ -65,7 +65,11 @@ def test_get_capacity_banana_continental_block_has_methodology_caveat():
 
 
 def test_country_profile_banana_entry_has_methodology_caveat():
+    # get_capacity("NGA", "080390") établit que la fixture contient bien des
+    # données banane pour le Nigéria — l'entrée DOIT donc exister dans le profil,
+    # sans quoi la propagation get_country_profile ne serait pas réellement testée.
+    assert pcs.get_capacity("NGA", "080390").get("available")
     profile = pcs.get_country_profile("NGA")
     bananas = [p for p in profile.get("products", []) if p.get("commodity") == "Bananas"]
-    if bananas:  # présent seulement si le Nigéria a un enregistrement banane
-        assert bananas[0].get("commodity_caveat")
+    assert bananas, "attendu : une entrée « Bananas » dans le profil du Nigéria"
+    assert bananas[0].get("commodity_caveat")

@@ -608,7 +608,11 @@ class RealSubstitutionService:
     # excluaient les hydrocarbures/machines/véhicules et rendaient l'analyse
     # d'export vide pour les pays diversifiés (ex : Algérie). Bump indispensable
     # pour purger ces index tronqués mis en cache sur les instances déployées.
-    _CACHE_SCHEMA_VERSION = 5
+    # v6 : ajout de commodity_caveat sur la production vérifiée (garde-fou
+    # méthodologique banane/plantain). Sans bump, les entrées v5 persistantes
+    # continueraient d'être servies jusqu'à 24 h sans le caveat et le correctif
+    # frontend paraîtrait inopérant après déploiement.
+    _CACHE_SCHEMA_VERSION = 6
 
     @staticmethod
     def _verified_production(hs_code: str, memo: Dict[str, Optional[Dict]]) -> Optional[Dict]:

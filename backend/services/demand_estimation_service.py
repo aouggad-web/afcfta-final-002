@@ -182,6 +182,13 @@ def estimate_need_from_own_imports(
         "level_label": "Proxy import national (estimé, sans production continentale)",
         "value": _round_sig(avg_value, 3),
         "unit": "USD",
+        # Besoin ramené par habitant (USD/hab/an ici — pas d'unité physique pour
+        # ce produit) : même contrôle de vraisemblance que sur les autres chemins
+        # de la cascade. Ce repli est le SEUL chemin intégré dont le besoin est en
+        # USD, donc la seule voie qui exerce la branche USD du helper.
+        "implied_per_capita": _implied_per_capita(
+            avg_value, "USD", get_population(country_iso3).get("value")
+        ),
         "reference_basis": basis,
         "is_long_shelf_life": long_shelf,
         "method": method,
@@ -745,6 +752,10 @@ def estimate_national_need(
     # sous-estimée et l'estimation peu fiable — propagé, plus jamais silencieux.
     coverage_caveat = prod.get("coverage_caveat")
 
+    # Caveat MÉTHODOLOGIQUE de la commodité (ex. « Bananas » agrège dessert +
+    # à cuire) : le classement de PRODUCTION ne vaut pas capacité d'EXPORT.
+    commodity_caveat = prod.get("commodity_caveat")
+
     # Recalage sur flux réel : les importations observées du pays sont un
     # plancher mesuré du besoin.
     calibration = _observed_imports_floor(need, prod.get("unit"), hs_code, observed_imports)
@@ -758,12 +769,27 @@ def estimate_national_need(
 
     # Suggested supplier: the #1 African producer that isn't the market itself —
     # a natural "who could serve this need" hand-off to the bilateral report.
+    # SUPPRIMÉ quand la commodité porte un caveat méthodologique : recommander le
+    # 1er PRODUCTEUR (ex. Nigéria pour « Bananas », dominé par la banane à cuire
+    # d'autoconsommation) comme fournisseur EXPORT de banane dessert serait
+    # exactement l'inférence production⇒export que ce garde-fou vise à empêcher.
+    # Le fournisseur réel se lit alors sur les flux d'export, pas ce classement.
     suggested_supplier = None
-    for p in prod.get("top_producers", []):
-        iso = (p.get("country_iso3") or "").upper()
-        if iso and iso != country_iso3:
-            suggested_supplier = {"iso3": iso, "country_name": p.get("country_name")}
-            break
+    suggested_supplier_suppressed_reason = None
+    if commodity_caveat:
+        suggested_supplier_suppressed_reason = (
+            "Recommandation fournisseur suspendue : le classement de production de "
+            f"« {prod.get('commodity')} » agrège des sous-produits (le code SH "
+            "distingue dessert / à cuire) — le 1er producteur n'est pas "
+            "nécessairement un fournisseur export du produit demandé. Identifier le "
+            "fournisseur via les flux d'export, pas ce classement de production."
+        )
+    else:
+        for p in prod.get("top_producers", []):
+            iso = (p.get("country_iso3") or "").upper()
+            if iso and iso != country_iso3:
+                suggested_supplier = {"iso3": iso, "country_name": p.get("country_name")}
+                break
 
     note = (
         "Estimation transparente : valeur modélisée, non mesurée. "
@@ -773,6 +799,8 @@ def estimate_national_need(
     )
     if scope_note:
         note = scope_note + " " + note
+    if commodity_caveat:
+        note += " ATTENTION MÉTHODOLOGIE : " + commodity_caveat
     if coverage_caveat:
         note += " COUVERTURE PARTIELLE de la référence : " + coverage_caveat
     if calibration:
@@ -798,8 +826,10 @@ def estimate_national_need(
         "region_coverage": region_coverage,
         "reference_scope": "secteur (chapitre SH2)" if scope_is_sector else "produit",
         "reference_coverage_caveat": coverage_caveat,
+        "commodity_caveat": commodity_caveat,
         "calibration": calibration,
         "suggested_supplier": suggested_supplier,
+        "suggested_supplier_suppressed_reason": suggested_supplier_suppressed_reason,
         "method": method,
         "inputs": {
             "population": pop["value"],

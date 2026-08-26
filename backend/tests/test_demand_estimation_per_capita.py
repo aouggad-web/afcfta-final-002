@@ -53,6 +53,33 @@ def test_algeria_banana_need_is_realistic_per_capita():
     assert 5.0 < ipc["value"] < 40.0
 
 
+def test_own_imports_fallback_exposes_usd_per_capita():
+    # Repli sur imports propres (produit sans mapping production, besoin en USD) :
+    # c'est le seul chemin intégré dont le besoin est en USD, donc la seule voie
+    # qui exerce la branche USD du helper — le champ ne doit pas y être omis.
+    history = [
+        {"year": 2020, "import_value_usd": 1_000_000, "no_data": False},
+        {"year": 2021, "import_value_usd": 2_000_000, "no_data": False},
+    ]
+    r = d.estimate_need_from_own_imports("901890", "DZA", history)
+    assert r is not None
+    ipc = r.get("implied_per_capita")
+    assert ipc is not None
+    assert ipc["unit"] == "USD/hab/an"
+
+
+def test_suggested_supplier_suppressed_for_caveated_commodity():
+    # Pour la banane (SH 080390), le classement de production est méthodologiquement
+    # inapte à désigner un fournisseur EXPORT : la recommandation doit être
+    # suspendue (pas de NGA recommandé) et le caveat remonté dans la réponse.
+    r = d.estimate_national_need("080390", "DZA")
+    assert r.get("available")
+    assert r.get("suggested_supplier") is None
+    assert r.get("suggested_supplier_suppressed_reason")
+    assert r.get("commodity_caveat")
+    assert "MÉTHODOLOGIE" in r.get("note", "")
+
+
 def test_measured_l1_path_also_exposes_per_capita():
     r = d.estimate_national_need(
         "080390",
