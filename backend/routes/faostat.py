@@ -5,6 +5,7 @@ Updated for 2024 data
 
 import logging
 import os
+import re
 import sys
 from typing import List, Optional
 
@@ -85,9 +86,10 @@ _CROP_ALIASES_FR_EN = {
 # Le bulk agri_faostat mêle cultures et produits animaux (viande, lait, œufs).
 # L'onglet "Cultures" ne doit afficher que des cultures : on exclut les produits
 # animaux (dont les gros volumes — lait/viande bovine — consommeraient sinon les
-# slots du plafond _MAX_EXTRA_BULK_CROPS). Aucun nom de culture ne contient ces
-# fragments, la détection par mot-clé reste donc robuste aux nouveaux libellés.
-_ANIMAL_PRODUCT_KEYWORDS = ("meat", "milk", "egg")
+# slots du plafond _MAX_EXTRA_BULK_CROPS). La détection porte sur des MOTS ENTIERS
+# pour ne pas rejeter une culture comme "Eggplants" (contient "egg" mais pas le mot
+# "eggs") : ex. "Cattle milk", "Chicken meat", "Hen eggs" sont exclus.
+_ANIMAL_PRODUCT_WORDS = {"meat", "milk", "egg", "eggs"}
 
 logger = logging.getLogger(__name__)
 
@@ -234,7 +236,7 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
         commodity_key = commodity.strip().lower()
         if commodity_key in curated_names_lower or not records:
             continue
-        if any(kw in commodity_key for kw in _ANIMAL_PRODUCT_KEYWORDS):
+        if _ANIMAL_PRODUCT_WORDS & set(re.findall(r"[a-z]+", commodity_key)):
             continue  # produit animal — hors onglet "Cultures"
         latest = max(records, key=lambda r: r.get("year") or 0)
         value = latest.get("value")

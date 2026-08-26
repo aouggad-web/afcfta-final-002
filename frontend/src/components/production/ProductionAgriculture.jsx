@@ -31,7 +31,7 @@ const TEXTS = {
     tabElevage: 'Élevage',
     tabPeche: 'Pêche & Aquaculture',
     cultures: 'Grandes cultures',
-    production: 'Production 2023',
+    production: 'Production (dernière année)',
     tonnes: 'tonnes',
     tetes: 'têtes',
     hectares: 'ha',
@@ -70,7 +70,7 @@ const TEXTS = {
     tabElevage: 'Livestock',
     tabPeche: 'Fisheries & Aquaculture',
     cultures: 'Major crops',
-    production: '2023 Production',
+    production: 'Production (latest year)',
     tonnes: 'tonnes',
     tetes: 'heads',
     hectares: 'ha',
@@ -150,6 +150,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
       name: c.name.length > 14 ? c.name.slice(0, 14) + '…' : c.name,
       fullName: c.name,
       value: c.value_2023,
+      year: c.is_bulk_faostat ? c.year : 2023,
       fill: COLORS_CULTURES[i % COLORS_CULTURES.length],
     }));
 
@@ -341,7 +342,10 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <XAxis type="number" tickFormatter={fmt} tick={{ fontSize: 11 }} />
                             <YAxis type="category" dataKey="name" width={105} tick={{ fontSize: 11 }} />
                             <Tooltip
-                              formatter={(v, _, p) => [fmtUnit(v, t.tonnes), p?.payload?.fullName || '']}
+                              formatter={(v, _, p) => [
+                                `${fmtUnit(v, t.tonnes)}${p?.payload?.year ? ` (${p.payload.year})` : ''}`,
+                                p?.payload?.fullName || '',
+                              ]}
                             />
                             <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                               {culturesChartData().map((e, i) => (
@@ -381,9 +385,9 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                                   </td>
                                   <td className="px-3 py-2 text-right font-mono text-green-700 font-bold">
                                     {fmt(c.value_2023)} t
-                                    {c.is_bulk_faostat && c.year && (
-                                      <span className="ml-1 text-xs font-normal text-gray-400">({c.year})</span>
-                                    )}
+                                    <span className="ml-1 text-xs font-normal text-gray-400">
+                                      ({c.is_bulk_faostat ? c.year : 2023})
+                                    </span>
                                   </td>
                                   <td className="px-3 py-2 text-right text-gray-500 hidden sm:table-cell">
                                     {c.area_ha ? `${fmt(c.area_ha)} ha` : '—'}
