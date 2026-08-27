@@ -35,6 +35,7 @@ import RegulatoryComplianceView, {
 } from '../regulatory/RegulatoryComplianceView';
 import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
 import RegulatoryReportedIndications from './RegulatoryReportedIndications';
+import { normalizeTaxesDetail } from './taxesDetail';
 import {
   effectiveTaxRateFromSteps,
   isCustomsDutyTax,
@@ -42,6 +43,7 @@ import {
   neutralizeZlecafBreakdown,
   neutralizeZlecafSummary,
   resolveZlecafAvailability,
+  zlecafTotalTaxRatePct,
 } from './zlecafAvailability';
 import './calculator.css';
 
@@ -521,8 +523,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           calculation_profile_status: authenticResult.calculation_profile_status || 'default',
           cascade_legal_source: authenticResult.cascade_legal_source || null,
           
-          // Détails des taxes
-          taxes_detail: authenticResult.taxes_detail || [],
+          // Détails des taxes — le chemin authentique renvoie un OBJET indexé
+          // par code de taxe, l'affichage attend une liste : sans cette
+          // normalisation, `taxes_detail.length` valait `undefined` et toute
+          // la carte « Détail des Taxes » (donc la colonne ZLECAf par taxe)
+          // disparaissait.
+          taxes_detail: normalizeTaxesDetail(
+            authenticResult.taxes_detail,
+            authenticResult.taxes_breakdown,
+          ),
           
           // Avantages fiscaux
           fiscal_advantages: authenticResult.fiscal_advantages || [],
@@ -657,7 +666,38 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           value: parseFloat(value)
         });
         
-        setResult(response.data);
+        // Le repli n'expose pas les taux de taxation totaux (`total_taxes_*`),
+        // seulement la ventilation `taxes_summary`. On les en déduit — la
+        // valeur CIF est celle saisie — pour que la synthèse économique ne
+        // reste pas vide sur ce chemin ; jamais de 0 % fabriqué quand la
+        // ventilation préférentielle est absente (`null`).
+        const fallbackSummary = response.data?.taxes_summary || null;
+        const fallbackCif = parseFloat(value);
+        const totalRatePct = (block) => (
+          block && typeof block.total_taxes_et_droits === 'number'
+            && Number.isFinite(fallbackCif) && fallbackCif > 0
+            ? Math.round((block.total_taxes_et_droits / fallbackCif) * 10000) / 100
+            : null
+        );
+        const fallbackNpfTotal = typeof response.data?.total_taxes_npf === 'number'
+          ? response.data.total_taxes_npf
+          : totalRatePct(fallbackSummary?.npf);
+        const fallbackZlecafTotal = typeof response.data?.total_taxes_zlecaf === 'number'
+          ? response.data.total_taxes_zlecaf
+          : totalRatePct(fallbackSummary?.zlecaf);
+
+        setResult({
+          ...response.data,
+          total_taxes_npf: fallbackNpfTotal,
+          total_taxes_zlecaf: fallbackZlecafTotal,
+          // Même normalisation que sur le chemin authentique : le repli sert
+          // déjà une liste, mais elle est enrichie du taux préférentiel par
+          // taxe quand la ventilation le fournit.
+          taxes_detail: normalizeTaxesDetail(
+            response.data?.taxes_detail,
+            response.data?.taxes_breakdown,
+          ),
+        });
         
         // Récupérer le calcul détaillé NPF vs ZLECAf
         try {
@@ -1328,12 +1368,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20">
                   <p className="text-emerald-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total ZLECAf' : 'Total AfCFTA'}</p>
                   <p className="text-3xl font-bold text-emerald-400 mt-1">
-                    {isDisplayableZlecafResult(result)
-                      ? `${result.total_taxes_zlecaf.toFixed(1)}%`
+                    {zlecafTotalTaxRatePct(result) !== null
+                      ? `${zlecafTotalTaxRatePct(result).toFixed(1)}%`
                       : '—'}
                   </p>
                   <p className="text-emerald-400/60 text-xs mt-1">
-                    {isDisplayableZlecafResult(result)
+                    {zlecafTotalTaxRatePct(result) !== null
                       ? (language === 'fr' ? 'Avec accord' : 'With agreement')
                       : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
                         ? (language === 'fr'
@@ -1351,12 +1391,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
                   <p className="text-amber-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
                   <p className="text-3xl font-bold text-amber-400 mt-1">
-                    {isDisplayableZlecafResult(result)
-                      ? `-${((result.total_taxes_npf || 0) - result.total_taxes_zlecaf).toFixed(1)}%`
+                    {zlecafTotalTaxRatePct(result) !== null
+                      ? `-${((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)).toFixed(1)}%`
                       : '—'}
                   </p>
                   <p className="text-amber-400/60 text-xs mt-1">
-                    {isDisplayableZlecafResult(result)
+                    {zlecafTotalTaxRatePct(result) !== null
                       ? (language === 'fr' ? 'Certificat Origine' : 'Origin Certificate')
                       : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
                         ? (language === 'fr' ? 'À vérifier' : 'To verify')
@@ -1368,12 +1408,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
                   <p className="text-blue-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Montant Économisé' : 'Amount Saved'}</p>
                   <p className="text-2xl font-bold text-blue-400 mt-1">
-                    {isDisplayableZlecafResult(result)
-                      ? `${((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - result.total_taxes_zlecaf) / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} USD`
+                    {zlecafTotalTaxRatePct(result) !== null
+                      ? `${((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)) / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} USD`
                       : '—'}
                   </p>
                   <p className="text-blue-400/60 text-xs mt-1">
-                    {isDisplayableZlecafResult(result)
+                    {zlecafTotalTaxRatePct(result) !== null
                       ? (language === 'fr' ? 'Sur votre valeur' : 'On your value')
                       : (language === 'fr' ? 'Non calculé' : 'Not calculated')}
                   </p>
@@ -1450,9 +1490,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           <p className="text-slate-500 text-xs">{language === 'fr' ? 'ZLECAf' : 'AfCFTA'}</p>
                           <p className="text-emerald-400 font-bold">
                             {isDisplayableZlecafResult(result)
-                              ? (isCustomsDutyTax(tax)
-                                ? `${(result.zlecaf_tariff_rate * 100).toFixed(2)}%`
-                                : `${tax.rate}%`)
+                              ? (typeof tax.rate_zlecaf_pct === 'number'
+                                ? `${tax.rate_zlecaf_pct.toFixed(2)}%`
+                                : isCustomsDutyTax(tax)
+                                  ? `${(result.zlecaf_tariff_rate * 100).toFixed(2)}%`
+                                  : `${tax.rate}%`)
                               : (isCustomsDutyTax(tax)
                                 && result.zlecaf_rate_expression
                                 ? result.zlecaf_rate_expression
