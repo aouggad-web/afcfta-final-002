@@ -30,12 +30,30 @@ const toRate = (value) => {
 /** Clé de rapprochement entre `taxes_detail` et `taxes_breakdown`. */
 const matchKey = (code) => String(code || '').trim().toUpperCase().replace(/[.\s_-]/g, '');
 
+/**
+ * Index des taux préférentiels par taxe, sur DEUX clés : le code (`DD`) et
+ * l'intitulé (`Droit de douane`).
+ *
+ * Le rapprochement par code seul ne suffit pas : sur le chemin de repli issu
+ * des données crawlées, `routes/calculator.py` renseigne `taxes_detail[].tax`
+ * avec le NOM de la taxe alors que la ventilation garde `code` et `name`
+ * séparément. Sans l'alias par intitulé, ces lignes ressortaient sans taux
+ * préférentiel et l'affichage y recopiait le taux NPF.
+ *
+ * Le code prime : un intitulé n'écrase jamais une entrée déjà indexée.
+ */
 function zlecafRatesByCode(taxesBreakdown) {
   const rates = new Map();
   if (!Array.isArray(taxesBreakdown)) return rates;
+  const add = (value, rate) => {
+    const key = matchKey(value);
+    if (key && !rates.has(key)) rates.set(key, rate);
+  };
   taxesBreakdown.forEach((row) => {
-    const key = matchKey(row?.code);
-    if (key && isNumber(row?.rate_zlecaf_pct)) rates.set(key, row.rate_zlecaf_pct);
+    if (isNumber(row?.rate_zlecaf_pct)) add(row.code, row.rate_zlecaf_pct);
+  });
+  taxesBreakdown.forEach((row) => {
+    if (isNumber(row?.rate_zlecaf_pct)) add(row.name, row.rate_zlecaf_pct);
   });
   return rates;
 }
@@ -44,10 +62,12 @@ export function normalizeTaxesDetail(taxesDetail, taxesBreakdown) {
   const zlecafRates = zlecafRatesByCode(taxesBreakdown);
 
   const withZlecafRate = (row) => {
-    const key = matchKey(row.code) || matchKey(row.tax);
+    const key = [row.code, row.tax]
+      .map(matchKey)
+      .find((candidate) => candidate && zlecafRates.has(candidate));
     return {
       ...row,
-      rate_zlecaf_pct: zlecafRates.has(key) ? zlecafRates.get(key) : null,
+      rate_zlecaf_pct: key ? zlecafRates.get(key) : null,
     };
   };
 

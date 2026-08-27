@@ -52,6 +52,37 @@ describe('normalizeTaxesDetail', () => {
     }]);
   });
 
+  it('rapproche par intitulé la forme réelle du repli issu des données crawlées', () => {
+    // routes/calculator.py renseigne `taxes_detail[].tax` avec le NOM de la
+    // taxe (`t["name"]`) tandis que la ventilation garde `code` et `name`
+    // séparément : sans alias par intitulé, ces lignes ressortaient sans taux
+    // préférentiel et l'affichage y recopiait le taux NPF.
+    const rows = normalizeTaxesDetail(
+      [
+        { tax: 'Droit de douane', rate: 15, observation: 'Source: DGD' },
+        { tax: 'Taxe sur la Valeur Ajoutée', rate: 19, observation: 'Source: DGD' },
+      ],
+      [
+        { code: 'DD', name: 'Droit de douane', rate_npf_pct: 15, rate_zlecaf_pct: 6 },
+        { code: 'TVA', name: 'Taxe sur la Valeur Ajoutée', rate_npf_pct: 19, rate_zlecaf_pct: 19 },
+      ],
+    );
+
+    expect(rows.map((r) => r.rate_zlecaf_pct)).toEqual([6, 19]);
+  });
+
+  it('fait primer le code sur l’intitulé en cas de collision', () => {
+    const rows = normalizeTaxesDetail(
+      [{ tax: 'DD', rate: 15 }],
+      [
+        { code: 'TCS', name: 'DD', rate_npf_pct: 3, rate_zlecaf_pct: 3 },
+        { code: 'DD', name: 'Droit de douane', rate_npf_pct: 15, rate_zlecaf_pct: 6 },
+      ],
+    );
+
+    expect(rows[0].rate_zlecaf_pct).toBe(6);
+  });
+
   it('laisse le taux ZLECAf à null quand la ventilation ne le documente pas', () => {
     const rows = normalizeTaxesDetail(AUTHENTIC_DZA_DETAIL, null);
     expect(rows.every((r) => r.rate_zlecaf_pct === null)).toBe(true);

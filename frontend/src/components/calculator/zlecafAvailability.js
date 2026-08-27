@@ -60,10 +60,12 @@ export function isDisplayableZlecafResult(result) {
  * Taux de taxation total sous régime préférentiel, en pourcentage du CIF.
  *
  * `isDisplayableZlecafResult` ne garantit que la présence d'un TAUX de droit
- * de douane préférentiel : le TOTAL, lui, n'est calculé que sur le chemin
- * authentique. Sur le chemin de repli il peut être absent — le lire sans
- * vérification (`result.total_taxes_zlecaf.toFixed(1)`) faisait alors échouer
- * le rendu de tout le panneau de résultats. On renvoie `null` dans ce cas.
+ * de douane préférentiel, jamais celle du TOTAL : selon la réponse servie et
+ * la ventilation disponible, `total_taxes_zlecaf` peut manquer même quand une
+ * préférence est documentée. Le lire sans vérification
+ * (`result.total_taxes_zlecaf.toFixed(1)`) faisait alors échouer le rendu de
+ * tout le panneau de résultats. On renvoie `null` dans ce cas, et l'appelant
+ * affiche « — » plutôt qu'un total fabriqué.
  */
 export function zlecafTotalTaxRatePct(result) {
   return isDisplayableZlecafResult(result) && isNumber(result?.total_taxes_zlecaf)
