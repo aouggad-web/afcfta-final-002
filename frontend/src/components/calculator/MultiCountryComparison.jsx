@@ -15,6 +15,7 @@ import {
   PolarRadiusAxis, Radar
 } from 'recharts';
 import { Search, Globe, TrendingDown, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { normalizeTaxesDetail } from './taxesDetail';
 
 const API = (import.meta.env.VITE_BACKEND_URL || '') + '/api';
 
@@ -255,7 +256,11 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             countryName: COUNTRY_NAMES[r.iso3]?.[language] || r.iso3,
             description: r.description,
             rates: r.rates || {},
-            taxes: r.taxes_detail || [],
+            // Même normalisation que le calculateur : le point d'entrée
+            // authentique renvoie `taxes_detail` en OBJET indexé par code de
+            // taxe. Stocké tel quel, `r.taxes.slice(...)` plus bas levait une
+            // TypeError et le tableau comparatif ne s'affichait pas.
+            taxes: normalizeTaxesDetail(r.taxes_detail, r.taxes_breakdown),
             npfTotal,
             zlecafTotal,
             savings,

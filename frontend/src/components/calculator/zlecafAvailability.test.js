@@ -6,6 +6,7 @@ import {
   neutralizeZlecafBreakdown,
   neutralizeZlecafSummary,
   resolveZlecafAvailability,
+  zlecafTotalTaxRatePct,
 } from './zlecafAvailability';
 
 it.each(['DD', 'D.D', 'CET'])('reconnait %s comme droit de douane', (tax) => {
@@ -135,4 +136,28 @@ it('neutralise les colonnes et economies ZLECAf indisponibles', () => {
 it('calcule le taux effectif uniquement a partir d etapes numeriques', () => {
   expect(effectiveTaxRateFromSteps([{ amount: 100 }, { amount: 90 }], 1000)).toBe(19);
   expect(effectiveTaxRateFromSteps([], 0)).toBeNull();
+});
+
+describe('zlecafTotalTaxRatePct', () => {
+  const documented = {
+    zlecaf_status: 'DOCUMENTED',
+    trade_regime: 'ZLECAF',
+    zlecaf_tariff_rate: 0.06,
+  };
+
+  it('renvoie le taux total quand il a été calculé', () => {
+    expect(zlecafTotalTaxRatePct({ ...documented, total_taxes_zlecaf: 31.72 })).toBe(31.72);
+  });
+
+  it('renvoie null quand le chemin de repli ne fournit pas de total', () => {
+    // Sans ce garde-fou, `result.total_taxes_zlecaf.toFixed(1)` faisait
+    // échouer le rendu de tout le panneau de résultats.
+    expect(zlecafTotalTaxRatePct(documented)).toBeNull();
+    expect(zlecafTotalTaxRatePct({ ...documented, total_taxes_zlecaf: null })).toBeNull();
+  });
+
+  it('renvoie null quand aucune préférence n\'est affichable', () => {
+    expect(zlecafTotalTaxRatePct({ zlecaf_status: 'NOT_AVAILABLE', total_taxes_zlecaf: 31.72 }))
+      .toBeNull();
+  });
 });
