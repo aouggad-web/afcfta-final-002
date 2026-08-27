@@ -56,6 +56,21 @@ export function isDisplayableZlecafResult(result) {
   );
 }
 
+/**
+ * Taux de taxation total sous régime préférentiel, en pourcentage du CIF.
+ *
+ * `isDisplayableZlecafResult` ne garantit que la présence d'un TAUX de droit
+ * de douane préférentiel : le TOTAL, lui, n'est calculé que sur le chemin
+ * authentique. Sur le chemin de repli il peut être absent — le lire sans
+ * vérification (`result.total_taxes_zlecaf.toFixed(1)`) faisait alors échouer
+ * le rendu de tout le panneau de résultats. On renvoie `null` dans ce cas.
+ */
+export function zlecafTotalTaxRatePct(result) {
+  return isDisplayableZlecafResult(result) && isNumber(result?.total_taxes_zlecaf)
+    ? result.total_taxes_zlecaf
+    : null;
+}
+
 export function effectiveTaxRateFromSteps(steps, cifValue) {
   if (!Array.isArray(steps) || !isNumber(cifValue) || cifValue <= 0) return null;
   const total = steps.reduce((sum, step) => sum + (isNumber(step?.amount) ? step.amount : 0), 0);
