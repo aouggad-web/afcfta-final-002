@@ -9,6 +9,7 @@ Coverage:
 
 from typing import Dict, List, Optional
 
+from .banks_registry_extended import merge_into as _merge_extended_banks
 from .models import BankContact, BankingSystemInfo, CentralBank, CommercialBank, RegionalBank
 
 # ---------------------------------------------------------------------------
@@ -3849,9 +3850,8 @@ COMMERCIAL_BANKS: Dict[str, List[CommercialBank]] = {
 # Merge the extended commercial-banks registry (broad coverage of major
 # trade-finance banks across all 54 AU member states). De-duplicated on
 # abbreviation/name so the curated entries above are never overwritten.
+# (merge_into is imported at the top of the module.)
 # ---------------------------------------------------------------------------
-
-from .banks_registry_extended import merge_into as _merge_extended_banks  # noqa: E402
 
 _merge_extended_banks(COMMERCIAL_BANKS)
 

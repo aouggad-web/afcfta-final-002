@@ -181,6 +181,17 @@ class TestCommercialBanks:
                         len(bank.services) > 0
                     ), f"Bank {bank.name} ({country_code}) has no services listed"
 
+    def test_no_duplicate_commercial_banks_per_country(self):
+        """After merging the extended registry, no country should list the same
+        bank twice – neither by name nor by abbreviation (case-insensitive)."""
+        for country_code, banks in COMMERCIAL_BANKS.items():
+            names = [b.name.strip().lower() for b in banks if b.name]
+            abbrs = [b.abbreviation.strip().lower() for b in banks if b.abbreviation]
+            dup_names = {n for n in names if names.count(n) > 1}
+            dup_abbrs = {a for a in abbrs if abbrs.count(a) > 1}
+            assert not dup_names, f"Duplicate bank names in {country_code}: {dup_names}"
+            assert not dup_abbrs, f"Duplicate bank abbreviations in {country_code}: {dup_abbrs}"
+
 
 # ===========================================================================
 # FOREX / DOMICILIATION TESTS

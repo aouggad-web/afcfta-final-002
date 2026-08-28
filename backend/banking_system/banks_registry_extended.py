@@ -24,7 +24,7 @@ abbreviation (falling back to the bank name) so existing curated entries are
 never overwritten.
 """
 
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from .models import BankContact, CommercialBank
 
@@ -1600,20 +1600,33 @@ def _build() -> Dict[str, List[CommercialBank]]:
 COMMERCIAL_BANKS_EXTENDED: Dict[str, List[CommercialBank]] = _build()
 
 
+def _norm(value: Optional[str]) -> str:
+    """Normalise an abbreviation or name for de-duplication comparisons."""
+    return (value or "").strip().lower()
+
+
 def merge_into(registry: Dict[str, List[CommercialBank]]) -> Dict[str, List[CommercialBank]]:
     """Merge the extended banks into ``registry`` in place.
 
-    De-duplicates on abbreviation (case-insensitive), falling back to the
-    lower-cased bank name, so curated entries already present in ``registry``
-    are never overwritten or duplicated.
+    De-duplicates on BOTH the abbreviation and the bank name (case-insensitive):
+    an extended bank is skipped when either its abbreviation or its name already
+    matches a bank present for that country. This prevents duplicates such as
+    the same institution appearing under two different abbreviations
+    (e.g. "Banque Misr" as both ``BM`` and ``BANQUE-MISR``). Curated entries
+    already present in ``registry`` are never overwritten.
     """
     for code, extra_banks in COMMERCIAL_BANKS_EXTENDED.items():
         current = registry.setdefault(code, [])
-        seen = {(b.abbreviation or b.name or "").strip().lower() for b in current}
+        seen_abbr = {_norm(b.abbreviation) for b in current if b.abbreviation}
+        seen_name = {_norm(b.name) for b in current if b.name}
         for bank in extra_banks:
-            key = (bank.abbreviation or bank.name or "").strip().lower()
-            if key and key in seen:
+            abbr = _norm(bank.abbreviation)
+            name = _norm(bank.name)
+            if (abbr and abbr in seen_abbr) or (name and name in seen_name):
                 continue
             current.append(bank)
-            seen.add(key)
+            if abbr:
+                seen_abbr.add(abbr)
+            if name:
+                seen_name.add(name)
     return registry
