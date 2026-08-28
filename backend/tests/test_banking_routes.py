@@ -326,3 +326,21 @@ class TestBankingRoutes:
         assert payload["transaction"]["destination_country"] == "MA"
         assert payload["domiciliation_alert"]["required"] is True
         assert payload["summary"]["top_instrument"] is not None
+
+    def test_validate_transaction_does_not_compare_xof_threshold_with_usd(self, client):
+        response = client.post(
+            "/banking/transaction/validate",
+            json={
+                "origin_country": "MA",
+                "destination_country": "CI",
+                "amount_usd": 50_000,
+                "transaction_type": "export",
+                "sector": "agroalimentaire",
+            },
+        )
+        assert response.status_code == 200
+        payload = response.json()
+        assert payload["summary"]["domiciliation_required"] is None
+        assert payload["domiciliation_alert"]["required"] is None
+        assert payload["domiciliation_alert"]["threshold_local_amount"] == 20_000_000
+        assert payload["domiciliation_alert"]["threshold_currency"] == "XOF"

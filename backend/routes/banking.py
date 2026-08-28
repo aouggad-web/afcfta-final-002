@@ -271,6 +271,8 @@ async def get_all_domiciliation_rules():
             "domiciliation_required": profile.domiciliation.required,
             "domiciliation_conditional": profile.domiciliation.conditional,
             "threshold_usd": profile.domiciliation.threshold_usd,
+            "threshold_local_amount": profile.domiciliation.threshold_local_amount,
+            "threshold_currency": profile.domiciliation.threshold_currency,
             "timeline_days": profile.domiciliation.timeline_days,
             "regulation_level": profile.forex_regulation.regulation_level,
             "imf_article_status": profile.forex_regulation.imf_article_status,
@@ -658,7 +660,18 @@ async def get_regulations_summary(
                 "domiciliation_required": profile.domiciliation.required,
                 "domiciliation_conditional": profile.domiciliation.conditional,
                 "threshold_usd": profile.domiciliation.threshold_usd,
+                "threshold_local_amount": profile.domiciliation.threshold_local_amount,
+                "threshold_currency": profile.domiciliation.threshold_currency,
                 "repatriation_days": profile.forex_regulation.repatriation_deadline_days,
+                "conditional_repatriation_days": (
+                    profile.forex_regulation.conditional_repatriation_deadline_days
+                ),
+                "export_payment_due_days": (
+                    profile.forex_regulation.export_payment_due_deadline_days
+                ),
+                "repatriation_after_due_months": (
+                    profile.forex_regulation.repatriation_after_payment_due_months
+                ),
                 "prior_authorization": profile.forex_regulation.prior_authorization_required,
                 "authorization_threshold_usd": profile.forex_regulation.authorization_threshold_usd,
                 "declaration_threshold_usd": profile.forex_regulation.declaration_threshold_usd,
@@ -723,12 +736,18 @@ async def validate_transaction(body: TransactionValidationRequest):
 
     # Domiciliation alert
     domiciliation_alert = None
-    domiciliation_triggered = domiciliation.required or (
-        domiciliation.conditional
-        and domiciliation.threshold_usd is not None
-        and body.amount_usd >= domiciliation.threshold_usd
-    )
-    if domiciliation_triggered:
+    if domiciliation.required is True:
+        domiciliation_triggered = True
+    elif domiciliation.conditional and domiciliation.threshold_usd is not None:
+        domiciliation_triggered = body.amount_usd >= domiciliation.threshold_usd
+    elif domiciliation.conditional and domiciliation.threshold_local_amount is not None:
+        # The request amount is in USD. Do not compare it with a legal threshold
+        # expressed in local currency without a transaction-date exchange rate.
+        domiciliation_triggered = None
+    else:
+        domiciliation_triggered = domiciliation.required
+
+    if domiciliation_triggered is True:
         docs = ", ".join(str(d) for d in (domiciliation.mandatory_documents or []))
         threshold_str = (
             "toutes opérations"
@@ -742,6 +761,19 @@ async def validate_transaction(body: TransactionValidationRequest):
                 f"(seuil: {threshold_str}). "
                 f"Documents requis: {docs}."
             ),
+            "timeline_days": domiciliation.timeline_days,
+        }
+    elif domiciliation_triggered is None and domiciliation.threshold_local_amount is not None:
+        domiciliation_alert = {
+            "required": None,
+            "message": (
+                "Domiciliation conditionnelle : le seuil légal est de "
+                f"{domiciliation.threshold_local_amount:,.0f} "
+                f"{domiciliation.threshold_currency}. Une conversion au taux de la "
+                "transaction est nécessaire pour déterminer l'obligation."
+            ),
+            "threshold_local_amount": domiciliation.threshold_local_amount,
+            "threshold_currency": domiciliation.threshold_currency,
             "timeline_days": domiciliation.timeline_days,
         }
 

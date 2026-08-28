@@ -192,6 +192,26 @@ class TestCommercialBanks:
             assert not dup_names, f"Duplicate bank names in {country_code}: {dup_names}"
             assert not dup_abbrs, f"Duplicate bank abbreviations in {country_code}: {dup_abbrs}"
 
+    def test_commercial_registry_covers_exactly_the_54_central_bank_countries(self):
+        """Every covered country must expose a commercial-bank list."""
+        assert len(CENTRAL_BANKS) == 54
+        assert set(COMMERCIAL_BANKS) == set(CENTRAL_BANKS)
+
+    def test_extended_banks_do_not_invent_trade_finance_capabilities(self):
+        cih = next(bank for bank in COMMERCIAL_BANKS["MA"] if bank.abbreviation == "CIH")
+        assert cih.trade_finance is False
+        assert cih.services == []
+        assert cih.contact.department is None
+
+    def test_current_bank_identities_replace_stale_brands(self):
+        rwanda_names = {bank.name for bank in COMMERCIAL_BANKS["RW"]}
+        madagascar_names = {bank.name for bank in COMMERCIAL_BANKS["MG"]}
+        assert "BPR Bank Rwanda Plc" in rwanda_names
+        assert "Banque Populaire du Rwanda (Atlas Mara)" not in rwanda_names
+        assert "BRED Madagasikara Banque Populaire" in madagascar_names
+        assert "Société Générale Madagascar" not in madagascar_names
+        assert "BFV-Société Générale" not in madagascar_names
+
 
 # ===========================================================================
 # FOREX / DOMICILIATION TESTS
@@ -245,14 +265,44 @@ class TestForexProfiles:
         assert isinstance(profile, CountryForexProfile)
 
     def test_uemoa_members_share_bceao_profile(self):
-        """All UEMOA members expose the shared BCEAO exchange regime."""
-        for code in ["BF", "BJ", "GW", "ML", "NE", "TG"]:
+        """All UEMOA members expose the current 2024/2025 BCEAO regime."""
+        for code in ["BF", "BJ", "CI", "GW", "ML", "NE", "SN", "TG"]:
             profile = get_forex_profile(code)
             assert code in FOREX_PROFILES
             assert profile.central_bank_name == "BCEAO"
             assert profile.currency_code == "XOF"
-            assert profile.forex_regulation.repatriation_deadline_days == 120
-            assert "09/2010" in profile.forex_regulation.legal_reference
+            assert profile.domiciliation.required is False
+            assert profile.domiciliation.conditional is True
+            assert profile.domiciliation.threshold_usd is None
+            assert profile.domiciliation.threshold_local_amount == 20_000_000
+            assert profile.domiciliation.threshold_currency == "XOF"
+            assert profile.forex_regulation.repatriation_deadline_days is None
+            assert profile.forex_regulation.export_payment_due_deadline_days == 120
+            assert profile.forex_regulation.repatriation_after_payment_due_months == 1
+            assert profile.import_formalities.domiciliation_threshold_local_amount == 20_000_000
+            assert profile.export_formalities.payment_due_deadline_days == 120
+            assert profile.export_formalities.repatriation_after_payment_due_months == 1
+            assert "06/2024" in profile.forex_regulation.legal_reference
+            assert "02/07/2025/RFE" in profile.forex_regulation.legal_reference
+            assert "03/07/2025/RFE" in profile.forex_regulation.legal_reference
+
+    def test_guinea_bissau_imf_date_is_national_not_collective(self):
+        status = get_forex_profile("GW").forex_regulation.imf_article_status
+        assert "1er janvier 1997" in status
+        assert "collective" not in status
+        central_status = CENTRAL_BANKS["GW"].imf_article_status
+        assert central_status is None or "1er juin 1996" not in central_status
+
+    def test_comoros_unknown_operational_rules_remain_unknown(self):
+        profile = get_forex_profile("KM")
+        assert profile.domiciliation.required is None
+        assert profile.domiciliation.threshold_usd is None
+        assert profile.domiciliation.timeline_days is None
+        assert profile.forex_regulation.prior_authorization_required is None
+        assert profile.forex_regulation.declaration_threshold_usd is None
+        assert profile.forex_regulation.repatriation_deadline_days is None
+        assert profile.domiciliation.mandatory_documents == []
+        assert "NOT_AVAILABLE" in profile.domiciliation.notes
 
     def test_cemac_members_share_beac_profile(self):
         """All CEMAC members expose the shared BEAC exchange regime (150-day

@@ -61,9 +61,11 @@ def test_export_formalities_repatriation_deadline_matches_forex_regulation():
 
 def test_algeria_export_repatriation_deadline():
     profile = get_forex_profile("DZ")
-    # Délai de rapatriement export : 180 jours (Instruction BA n° 07-2021 /
-    # Règlement BA n° 2016-04).
-    assert profile.export_formalities.repatriation_deadline_days == 180
+    # Règlement BA n° 26-02, art. 2 : 120 jours en règle générale ; 180 jours
+    # uniquement avec une assurance-crédit export nationale préalable.
+    assert profile.export_formalities.repatriation_deadline_days == 120
+    assert profile.export_formalities.conditional_repatriation_deadline_days == 180
+    assert "assurance-crédit" in (profile.export_formalities.conditional_repatriation_condition)
     # Côté importation : domiciliation systématique dès le premier dinar.
     assert profile.import_formalities.domiciliation_threshold_usd == 0
 
@@ -79,6 +81,9 @@ def test_algeria_export_formalities_are_explicit_authentic():
     assert "100 000 DZD" in export.repatriation_formalities
     assert "07-2021" in export.legal_reference
     assert "2016-04" in export.legal_reference
+    assert "26-02" in export.legal_reference
+    assert "120 jours" in export.repatriation_formalities
+    assert "180 jours uniquement" in export.repatriation_formalities
     # Documents propres à l'exportation (et non au titre d'importation).
     assert "declaration_exportation" in export.mandatory_documents
     assert "titre_importation" not in export.mandatory_documents

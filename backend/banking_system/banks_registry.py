@@ -1198,15 +1198,14 @@ CENTRAL_BANKS: Dict[str, CentralBank] = {
 # ---------------------------------------------------------------------------
 # Fill shared regulatory fields for monetary-union central banks.
 # BCEAO (UEMOA) and BEAC (CEMAC) are single supranational central banks whose
-# statute, founding year and IMF status are identical across every member
-# state. We backfill these shared facts only where a member entry left them
-# blank – curated per-country values (e.g. an explicit SWIFT/BIC) are kept.
+# statute and founding year are identical across every member state. IMF
+# Article VIII acceptance is a national fact and must never be backfilled from
+# the monetary union; curated per-country values are kept.
 # ---------------------------------------------------------------------------
 
 _BCEAO_SHARED = {
     "established_year": 1962,
     "banking_act": "Loi uniforme BCEAO relative à l'activité bancaire (révisée 2010)",
-    "imf_article_status": "Article VIII – UEMOA (1er juin 1996)",
 }
 _BEAC_SHARED = {
     "established_year": 1972,
@@ -1214,7 +1213,6 @@ _BEAC_SHARED = {
         "Règlement COBAC relatif à l'exercice de l'activité bancaire dans la CEMAC ; "
         "Convention portant harmonisation de la réglementation bancaire (1992)"
     ),
-    "imf_article_status": "Article VIII – CEMAC",
 }
 
 
@@ -3717,23 +3715,23 @@ COMMERCIAL_BANKS: Dict[str, List[CommercialBank]] = {
             ),
         ),
         CommercialBank(
-            name="Société Générale Madagascar",
-            abbreviation="SGM-MG",
+            name="BRED Madagasikara Banque Populaire",
+            abbreviation="BRED-MG",
             country_code="MG",
-            swift_code="SOGEMGMG",
+            swift_code=None,
             trade_finance=True,
-            correspondent_banks=["SOCIETE_GENERALE"],
+            correspondent_banks=[],
             services=["LC", "documentary_collection", "bank_guarantee", "forex"],
-            website="https://www.societegenerale.mg",
-            address="Immeuble Ny Havana, Anosy, Antananarivo, Madagascar",
-            phone="+261 20 22 209 10",
-            email="trade.mg@societegenerale.mg",
-            license_type="Filiale internationale",
+            website="https://bred.mg",
+            address="14 Rue Général Rabehevitra, Antananarivo, Madagascar",
+            phone="+261 20 22 206 91",
+            email="relation.client@bred.mg",
+            license_type="Filiale de BRED Banque Populaire",
             contact=BankContact(
-                address="Immeuble Ny Havana, Anosy, Antananarivo",
-                phone="+261 20 22 209 10",
-                email="trade.mg@societegenerale.mg",
-                website="https://www.societegenerale.mg",
+                address="14 Rue Général Rabehevitra, Antananarivo",
+                phone="+261 20 22 206 91",
+                email="relation.client@bred.mg",
+                website="https://bred.mg",
             ),
         ),
         CommercialBank(

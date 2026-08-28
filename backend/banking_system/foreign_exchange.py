@@ -11,7 +11,8 @@ Sources légales :
   Égypte    – CBE (Banking Law No. 194 of 2020)
   Nigeria   – CBN (BOFIA 2020 ; Circulaire TED/FEM/FPC/GEN/01/012)
   Ghana     – BoG (Foreign Exchange Act 723 / 2006)
-  Côte d'Ivoire – BCEAO / UEMOA (Règlement n° 09/2010/CM/UEMOA)
+  Côte d'Ivoire – BCEAO / UEMOA (Règlement n° 06/2024/CM/UEMOA ;
+                  Instructions n° 02 et 03/07/2025/RFE)
   Sénégal   – BCEAO / UEMOA (idem)
   Kenya     – CBK (CBK Act Cap. 491)
   Éthiopie  – NBE (Directive FXD/44/2018)
@@ -33,6 +34,30 @@ from .models import (
     ForexRegulation,
     ImportFormalities,
 )
+
+_UEMOA_DOMICILIATION_THRESHOLD_XOF = 20_000_000
+_UEMOA_LEGAL_REFERENCE = (
+    "Règlement n° 06/2024/CM/UEMOA relatif aux relations financières "
+    "extérieures des États membres de l'UEMOA ; Instruction BCEAO "
+    "n° 02/07/2025/RFE relative aux importations ; Instruction BCEAO "
+    "n° 03/07/2025/RFE relative aux exportations (en vigueur depuis le "
+    "1er août 2025)"
+)
+_UEMOA_DOMICILIATION_NOTES = (
+    "La domiciliation bancaire est obligatoire lorsque la valeur de "
+    "l'importation ou de l'exportation excède 20 000 000 XOF. Le seuil "
+    "réglementaire est conservé en XOF et n'est pas converti en USD."
+)
+_UEMOA_REPATRIATION_NOTES = (
+    "À l'exportation, l'échéance contractuelle de paiement doit être fixée "
+    "au plus tard 120 jours après l'expédition des biens ou la réalisation "
+    "des services. Les recettes doivent ensuite être encaissées et rapatriées "
+    "dans un délai maximal d'un mois à compter de cette échéance ; au moins "
+    "80 % sont encaissés via les comptes de correspondants de la BCEAO."
+)
+_UEMOA_IMF_ARTICLE_STATUS = {
+    "GW": "Article VIII – acceptation par la Guinée-Bissau le 1er janvier 1997",
+}
 
 # ---------------------------------------------------------------------------
 # FOREX PROFILES – Phase-1 priority countries (detailed)
@@ -124,7 +149,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "domiciliation_bancaire",
                 "certificat_conformite_produits",
             ],
-            timeline_days=180,
+            timeline_days=None,
             notes=(
                 "Toute importation doit être domiciliée auprès d'une banque "
                 "primaire agréée. Pas de seuil minimal : la domiciliation est "
@@ -138,7 +163,13 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
             prior_authorization_required=True,
             authorization_threshold_usd=0,
             declaration_threshold_usd=1_000,
-            repatriation_deadline_days=180,
+            repatriation_deadline_days=120,
+            conditional_repatriation_deadline_days=180,
+            conditional_repatriation_condition=(
+                "Délai de paiement contractuel supérieur à 120 jours, couvert "
+                "au préalable par une assurance-crédit à l'exportation souscrite "
+                "auprès d'un organisme national habilité."
+            ),
             penalties=(
                 "Infractions au code pénal algérien (Art. 429 à 442) : "
                 "amende de 2 à 5 fois la valeur de l'infraction + emprisonnement "
@@ -157,7 +188,9 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "Règlement BA n° 17-01 du 10 janvier 2017 relatif aux conditions "
                 "d'ouverture et de fonctionnement des comptes devises ; "
                 "Règlement n° 07-01 du 03 février 2007 relatif aux règles applicables "
-                "aux transactions courantes avec l'étranger et aux comptes devises"
+                "aux transactions courantes avec l'étranger et aux comptes devises ; "
+                "Règlement de la Banque d'Algérie n° 26-02 du 23 juillet 2026, "
+                "article 2 modifiant l'article 61"
             ),
             regulatory_body=(
                 "Banque d'Algérie – Direction Générale des Opérations Bancaires "
@@ -178,7 +211,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         special_regimes=["zones_franches_exportation", "offshore_banking_units"],
         # Formalités de change à l'EXPORTATION fournies explicitement (données
         # authentiques DGD/Banque d'Algérie) : régimes de domiciliation distincts
-        # selon le type de produit et délai de rapatriement de 180 jours.
+        # selon le type de produit et délai normal de rapatriement de 120 jours.
         export_formalities=ExportFormalities(
             domiciliation_required=True,
             domiciliation_conditional=True,
@@ -191,20 +224,28 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "autorisations_FAP_si_applicable",
                 "preuve_origine_si_avantages_fiscaux",
             ],
-            repatriation_deadline_days=180,
+            repatriation_deadline_days=120,
+            conditional_repatriation_deadline_days=180,
+            conditional_repatriation_condition=(
+                "Délai de paiement contractuel supérieur à 120 jours, couvert "
+                "au préalable par une assurance-crédit à l'exportation souscrite "
+                "auprès d'un organisme national habilité."
+            ),
             repatriation_formalities=(
-                "Délai de rapatriement des recettes d'exportation hors "
-                "hydrocarbures : 180 jours maximum à compter de la date "
-                "d'expédition. Deux régimes de domiciliation selon le produit : "
+                "Le délai contractuel de paiement ne peut normalement dépasser "
+                "120 jours à compter de l'expédition des biens ou de la réalisation "
+                "des services. Il peut atteindre 180 jours uniquement si l'exportateur "
+                "a souscrit au préalable une assurance-crédit à l'exportation auprès "
+                "d'un organisme national habilité ; 180 jours constitue alors le "
+                "maximum absolu. Le rapatriement intervient le jour du paiement par "
+                "le client (Règlement BA n° 26-02, art. 2). "
+                "Deux régimes de domiciliation selon le produit : "
                 "(1) Produits frais, périssables et/ou dangereux — domiciliation "
                 "a posteriori autorisée : la facture commerciale peut être "
                 "domiciliée dans les 05 jours ouvrables suivant l'expédition "
-                "(Instruction Banque d'Algérie n° 07-2021 du 29 juin 2021, "
-                "règle générale 180 jours) ; "
+                "(Instruction Banque d'Algérie n° 07-2021 du 29 juin 2021) ; "
                 "(2) Biens de consommation courants — domiciliation a priori "
-                "obligatoire avant expédition, sauf dérogation "
-                "(Règlement Banque d'Algérie n° 2016-04 du 17 novembre 2016, "
-                "180 jours maximum). "
+                "obligatoire avant expédition, sauf dérogation. "
                 "Aucune domiciliation requise pour les exportations de "
                 "marchandises ou d'échantillons d'une valeur inférieure ou "
                 "égale à 100 000 DZD."
@@ -214,6 +255,8 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "(produits frais et périssables – domiciliation a posteriori) ; "
                 "Règlement de la Banque d'Algérie n° 2016-04 du 17 novembre 2016 "
                 "(biens de consommation courants – domiciliation a priori) ; "
+                "Règlement de la Banque d'Algérie n° 26-02 du 23 juillet 2026, "
+                "article 2 modifiant l'article 61 (délais de paiement et rapatriement) ; "
                 "Guide de l'exportateur 2017 – Direction Générale des Douanes"
             ),
             regulatory_body=(
@@ -493,51 +536,35 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         currency_code="XOF",
         currency_name="Franc CFA BCEAO",
         domiciliation=DomiciliationRule(
-            required=True,
-            conditional=False,
-            threshold_usd=5_000,
+            required=False,
+            conditional=True,
+            threshold_usd=None,
+            threshold_local_amount=_UEMOA_DOMICILIATION_THRESHOLD_XOF,
+            threshold_currency="XOF",
             mandatory_documents=[
                 "declaration_importation",
                 "facture_commerciale",
                 "domiciliation_BCEAO",
                 "bordereau_de_suivi_des_cargaisons",
             ],
-            timeline_days=120,
-            notes=(
-                "Zone UEMOA : la domiciliation suit les règles BCEAO. "
-                "Le franc CFA (XOF) est indexé à l'euro avec une parité fixe "
-                "(1 EUR = 655,957 XOF). "
-                "Les transferts intra-zone UEMOA sont libres sans limitation."
-            ),
+            timeline_days=None,
+            notes=_UEMOA_DOMICILIATION_NOTES,
         ),
         forex_regulation=ForexRegulation(
             regulation_level="moderate",
             prior_authorization_required=False,
-            declaration_threshold_usd=5_000,
-            repatriation_deadline_days=120,
-            penalties=(
-                "Pénalités BCEAO : amende de 25% à 200% du montant + "
-                "saisie des avoirs en cas de fraude (Art. 34 du Règlement UEMOA)."
-            ),
-            notes=(
-                "La zone CFA BCEAO (UEMOA) bénéficie d'une convertibilité "
-                "garantie par le Trésor français (accord de coopération monétaire). "
-                "Les transferts intra-UEMOA sont libres. "
-                "Les transferts hors zone nécessitent une domiciliation bancaire."
-            ),
-            legal_reference=(
-                "Règlement UEMOA n° 09/2010/CM/UEMOA du 1er octobre 2010 "
-                "relatif aux relations financières extérieures ; "
-                "Instruction BCEAO n° 04/2012/RB du 2 juillet 2012 ; "
-                "Accord de coopération monétaire France-UEMOA du 14 novembre 1973"
-            ),
+            declaration_threshold_usd=None,
+            repatriation_deadline_days=None,
+            export_payment_due_deadline_days=120,
+            repatriation_after_payment_due_months=1,
+            penalties=None,
+            notes=_UEMOA_REPATRIATION_NOTES,
+            legal_reference=_UEMOA_LEGAL_REFERENCE,
             regulatory_body=(
                 "BCEAO – Direction Nationale pour la Côte d'Ivoire ; "
                 "Ministère de l'Économie et des Finances de Côte d'Ivoire"
             ),
-            imf_article_status=(
-                "Article VIII – Zone UEMOA. " "Acceptation collective du 1er juin 1996."
-            ),
+            imf_article_status="Article VIII – statut national à vérifier par pays",
         ),
         authorized_currencies=["EUR", "USD", "GBP", "XAF"],
         restricted_operations=["speculative_forex", "crypto_non_agréé"],
@@ -551,50 +578,35 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         currency_code="XOF",
         currency_name="Franc CFA BCEAO",
         domiciliation=DomiciliationRule(
-            required=True,
-            conditional=False,
-            threshold_usd=5_000,
+            required=False,
+            conditional=True,
+            threshold_usd=None,
+            threshold_local_amount=_UEMOA_DOMICILIATION_THRESHOLD_XOF,
+            threshold_currency="XOF",
             mandatory_documents=[
                 "declaration_importation",
                 "facture_commerciale",
                 "domiciliation_BCEAO",
                 "bordereau_fret",
             ],
-            timeline_days=120,
-            notes=(
-                "Mêmes règles que la zone UEMOA (BCEAO). "
-                "Parité fixe EUR/XOF : 1 EUR = 655,957 XOF. "
-                "Les déclarations d'importation sont traitées via le "
-                "Guichet Unique du Commerce Extérieur (GUCE)."
-            ),
+            timeline_days=None,
+            notes=_UEMOA_DOMICILIATION_NOTES,
         ),
         forex_regulation=ForexRegulation(
             regulation_level="moderate",
             prior_authorization_required=False,
-            declaration_threshold_usd=5_000,
-            repatriation_deadline_days=120,
-            penalties=(
-                "Pénalités BCEAO conformément au Règlement UEMOA n° 09/2010. "
-                "Amende de 25% à 200% du montant de l'infraction."
-            ),
-            notes=(
-                "Zone CFA BCEAO – parité fixe EUR/XOF (655,957). "
-                "La convertibilité est garantie par la France (compte d'opérations "
-                "au Trésor français). "
-                "Les transferts intra-UEMOA sont libres et non soumis à déclaration."
-            ),
-            legal_reference=(
-                "Règlement UEMOA n° 09/2010/CM/UEMOA du 1er octobre 2010 ; "
-                "Instruction BCEAO n° 04/2012/RB ; "
-                "Loi n° 2002-07 du 15 juillet 2002 relative au contrôle des changes"
-            ),
+            declaration_threshold_usd=None,
+            repatriation_deadline_days=None,
+            export_payment_due_deadline_days=120,
+            repatriation_after_payment_due_months=1,
+            penalties=None,
+            notes=_UEMOA_REPATRIATION_NOTES,
+            legal_reference=_UEMOA_LEGAL_REFERENCE,
             regulatory_body=(
                 "BCEAO – Direction Nationale du Sénégal ; "
                 "Ministère des Finances et du Budget du Sénégal"
             ),
-            imf_article_status=(
-                "Article VIII – Zone UEMOA. " "Acceptation collective du 1er juin 1996."
-            ),
+            imf_article_status="Article VIII – statut national à vérifier par pays",
         ),
         authorized_currencies=["EUR", "USD", "GBP"],
         restricted_operations=[],
@@ -1011,7 +1023,7 @@ _CEMAC_MEMBERS: Dict[str, str] = {
 
 
 def _build_uemoa_profile(code: str, name: str) -> CountryForexProfile:
-    """Build a BCEAO/UEMOA forex profile (uniform regime, Règlement 09/2010)."""
+    """Build a BCEAO/UEMOA profile under the 2024/2025 exchange regime."""
     return CountryForexProfile(
         country_code=code,
         country_name=name,
@@ -1019,53 +1031,37 @@ def _build_uemoa_profile(code: str, name: str) -> CountryForexProfile:
         currency_code="XOF",
         currency_name="Franc CFA BCEAO",
         domiciliation=DomiciliationRule(
-            required=True,
-            conditional=False,
-            threshold_usd=5_000,
+            required=False,
+            conditional=True,
+            threshold_usd=None,
+            threshold_local_amount=_UEMOA_DOMICILIATION_THRESHOLD_XOF,
+            threshold_currency="XOF",
             mandatory_documents=[
                 "declaration_importation",
                 "facture_commerciale",
                 "domiciliation_BCEAO",
                 "bordereau_de_suivi_des_cargaisons",
             ],
-            timeline_days=120,
-            notes=(
-                "Zone UEMOA : la domiciliation bancaire suit les règles uniformes "
-                "de la BCEAO. Le franc CFA (XOF) est arrimé à l'euro à parité fixe "
-                "(1 EUR = 655,957 XOF). Les transferts intra-UEMOA sont libres ; "
-                "les transferts hors zone requièrent une domiciliation et sont "
-                "adossés à un motif justifié (importation, service, etc.)."
-            ),
+            timeline_days=None,
+            notes=_UEMOA_DOMICILIATION_NOTES,
         ),
         forex_regulation=ForexRegulation(
             regulation_level="moderate",
             prior_authorization_required=False,
-            declaration_threshold_usd=5_000,
-            repatriation_deadline_days=120,
-            penalties=(
-                "Pénalités BCEAO conformément au Règlement UEMOA n° 09/2010 : "
-                "amende de 25% à 200% du montant de l'infraction, saisie possible "
-                "des avoirs en cas de fraude."
-            ),
-            notes=(
-                "Zone CFA BCEAO (UEMOA) – convertibilité garantie via la "
-                "coopération monétaire avec la France (compte d'opérations au "
-                "Trésor français). Parité fixe EUR/XOF (655,957). Les transferts "
-                "intra-UEMOA sont libres et non soumis à déclaration ; les "
-                "transferts hors zone au-delà des seuils requièrent une "
-                "domiciliation bancaire et une déclaration."
-            ),
-            legal_reference=(
-                "Règlement n° 09/2010/CM/UEMOA du 1er octobre 2010 relatif aux "
-                "relations financières extérieures des États membres de l'UEMOA ; "
-                "Instruction BCEAO n° 04/2012/RB du 2 juillet 2012 ; "
-                "Accord de coopération monétaire France-UEMOA du 14 novembre 1973"
-            ),
+            declaration_threshold_usd=None,
+            repatriation_deadline_days=None,
+            export_payment_due_deadline_days=120,
+            repatriation_after_payment_due_months=1,
+            penalties=None,
+            notes=_UEMOA_REPATRIATION_NOTES,
+            legal_reference=_UEMOA_LEGAL_REFERENCE,
             regulatory_body=(
                 f"BCEAO – Direction Nationale pour {name} ; "
                 f"Ministère chargé des Finances ({name})"
             ),
-            imf_article_status="Article VIII – Zone UEMOA (acceptation collective du 1er juin 1996)",
+            imf_article_status=_UEMOA_IMF_ARTICLE_STATUS.get(
+                code, "Article VIII – statut national à vérifier par pays"
+            ),
         ),
         authorized_currencies=["EUR", "USD", "GBP"],
         restricted_operations=["speculative_forex", "crypto_non_agréé"],
@@ -1176,38 +1172,35 @@ def _register_union_profiles() -> None:
             currency_code="KMF",
             currency_name="Franc comorien",
             domiciliation=DomiciliationRule(
-                required=True,
-                conditional=True,
-                threshold_usd=5_000,
-                mandatory_documents=[
-                    "facture_commerciale",
-                    "declaration_douaniere",
-                    "domiciliation_bancaire",
-                ],
-                timeline_days=90,
+                required=None,
+                conditional=False,
+                threshold_usd=None,
+                mandatory_documents=[],
+                timeline_days=None,
                 notes=(
                     "Le franc comorien (KMF) est arrimé à l'euro à parité fixe "
                     "(1 EUR = 491,96775 KMF) dans le cadre de l'accord de "
-                    "coopération monétaire avec la France. Les opérations "
-                    "commerciales transitent par les banques agréées."
+                    "coopération monétaire avec la France. NOT_AVAILABLE : "
+                    "aucun texte officiel BCC actuel identifiant une obligation, "
+                    "un seuil ou un délai de domiciliation n'a été documenté."
                 ),
             ),
             forex_regulation=ForexRegulation(
                 regulation_level="moderate",
-                prior_authorization_required=False,
-                declaration_threshold_usd=5_000,
-                repatriation_deadline_days=90,
+                prior_authorization_required=None,
+                declaration_threshold_usd=None,
+                repatriation_deadline_days=None,
                 notes=(
-                    "Convertibilité du compte courant garantie via la coopération "
-                    "monétaire avec la France (compte d'opérations au Trésor "
-                    "français). Parité fixe EUR/KMF (491,96775)."
+                    "Parité fixe EUR/KMF (491,96775). Le FMI décrit le régime des "
+                    "transactions courantes comme exempt de restrictions. "
+                    "NOT_AVAILABLE : seuils, autorisations préalables et délais "
+                    "opérationnels non documentés par une source officielle actuelle."
                 ),
                 legal_reference=(
                     "Accord de coopération monétaire entre la France et les "
-                    "Comores du 23 novembre 1979 ; réglementation des changes de "
-                    "la Banque Centrale des Comores"
+                    "Comores du 23 novembre 1979 ; IMF Country Report No. 20/198"
                 ),
-                regulatory_body="Banque Centrale des Comores (BCC) – Direction des Changes",
+                regulatory_body="Banque Centrale des Comores (BCC)",
                 imf_article_status="Article VIII",
             ),
             authorized_currencies=["EUR", "USD"],

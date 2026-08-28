@@ -1,12 +1,12 @@
 """
-Extended commercial-banks registry – broad coverage of major trade-finance
-banks across all 54 African Union member states.
+Extended commercial-banks registry – broad coverage of commercial banks
+across all 54 African Union member states.
 
 This module supplements ``banks_registry.COMMERCIAL_BANKS`` with additional
 well-established commercial banks per country. The goal is breadth: for every
-country we list the leading universal / trade-finance banks (public,
-private and pan-African subsidiaries) that businesses actually use for
-letters of credit, documentary collections, guarantees and FX.
+country we list established commercial banks (public, private and
+pan-African subsidiaries). Trade-finance capabilities are exposed only when
+they are explicitly documented in the entry.
 
 Data-quality policy
 -------------------
@@ -20,28 +20,18 @@ Data-quality policy
 * ``phone`` / ``email`` are intentionally left ``None`` here – branch contact
   numbers change frequently and should be confirmed with the bank directly.
   The head-office ``website`` is the authoritative contact channel.
-* ``trade_finance`` defaults to ``True`` because the entries below are
-  overwhelmingly universal / trade-finance banks; retail-only institutions are
-  flagged ``trade_finance=False`` explicitly so the recommender never proposes
-  them for letters of credit.
+* ``trade_finance`` defaults to ``False`` and ``services`` to an empty list.
+  A bank is eligible for trade-finance recommendations only when its entry
+  explicitly documents that capability and the corresponding services.
 
 The entries are merged into ``COMMERCIAL_BANKS`` at import time by
 ``banks_registry`` via :func:`merge_into`, de-duplicating on the bank
-abbreviation (falling back to the bank name) so existing curated entries are
-never overwritten.
+abbreviation or bank name so existing curated entries are never overwritten.
 """
 
 from typing import Dict, List, Optional
 
 from .models import BankContact, CommercialBank
-
-# Default trade-finance service bundle for a universal commercial bank.
-_DEFAULT_SERVICES: List[str] = [
-    "LC",
-    "documentary_collection",
-    "bank_guarantee",
-    "forex",
-]
 
 # ---------------------------------------------------------------------------
 # Raw data: ISO2 country code → list of bank definitions (kwargs).
@@ -1013,11 +1003,11 @@ _EXTRA: Dict[str, List[dict]] = {
             license_type="Banque universelle",
         ),
         dict(
-            name="Banque Populaire du Rwanda (Atlas Mara)",
+            name="BPR Bank Rwanda Plc",
             abbreviation="BPR-RW",
             website="https://www.bpr.rw",
             address="KN 67 Street, Kigali, Rwanda",
-            license_type="Banque universelle",
+            license_type="Banque universelle – membre de KCB Group",
         ),
         dict(
             name="Cogebanque",
@@ -1393,14 +1383,6 @@ _EXTRA: Dict[str, List[dict]] = {
             correspondent_banks=["BMCE_BANK_OF_AFRICA"],
             license_type="Filiale panafricaine",
         ),
-        dict(
-            name="BFV-Société Générale",
-            abbreviation="BFV-SG",
-            website="https://www.bfv.mg",
-            address="14 Lalana Jeneraly Rabehevitra, Antananarivo, Madagascar",
-            correspondent_banks=["SOCIETE_GENERALE"],
-            license_type="Filiale internationale",
-        ),
     ],
     "KM": [
         dict(
@@ -1470,14 +1452,13 @@ def _build() -> Dict[str, List[CommercialBank]]:
         for raw in rows:
             data = dict(raw)
             data["country_code"] = code
-            data.setdefault("trade_finance", True)
-            data.setdefault("services", list(_DEFAULT_SERVICES))
+            data.setdefault("trade_finance", False)
+            data.setdefault("services", [])
             data.setdefault("correspondent_banks", [])
             if "contact" not in data:
                 data["contact"] = BankContact(
                     address=data.get("address"),
                     website=data.get("website"),
-                    department="Trade Finance & Entreprises",
                 )
             banks.append(CommercialBank(**data))
         out[code] = banks
