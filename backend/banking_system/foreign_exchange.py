@@ -1083,17 +1083,16 @@ def _build_cemac_profile(code: str, name: str) -> CountryForexProfile:
         domiciliation=DomiciliationRule(
             required=False,
             conditional=True,
-            # Le seuil légal est exprimé en monnaie locale (5 000 000 XAF) ; le
-            # champ threshold_usd (USD) est laissé None pour ne pas publier une
-            # conversion approximative. Le seuil exact figure dans les notes.
             threshold_usd=None,
+            threshold_local_amount=5_000_000,
+            threshold_currency="XAF",
             mandatory_documents=[
                 "declaration_importation_exportation",
                 "facture_commerciale",
                 "domiciliation_bancaire_BEAC",
                 "engagement_de_change",
             ],
-            timeline_days=150,
+            timeline_days=None,
             notes=(
                 "Zone CEMAC : depuis l'entrée en vigueur du nouveau Règlement des "
                 "changes le 1er mars 2019, la domiciliation bancaire est "
@@ -1140,7 +1139,7 @@ def _build_cemac_profile(code: str, name: str) -> CountryForexProfile:
                 f"Commission Bancaire de l'Afrique Centrale (COBAC) ; "
                 f"Ministère chargé des Finances ({name})"
             ),
-            imf_article_status="Article VIII – Zone CEMAC",
+            imf_article_status="Article VIII – statut national à vérifier par pays",
         ),
         authorized_currencies=["EUR", "USD", "GBP"],
         restricted_operations=[

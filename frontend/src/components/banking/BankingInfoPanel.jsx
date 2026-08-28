@@ -74,6 +74,7 @@ const texts = {
     loading: 'Chargement…',
     error: 'Erreur de chargement',
     noData: 'Données non disponibles',
+    notDocumented: 'Inconnu / non documenté',
     documents: 'Documents requis',
     currency: 'Devise',
     swiftCode: 'Code SWIFT',
@@ -200,6 +201,7 @@ const texts = {
     loading: 'Loading…',
     error: 'Loading error',
     noData: 'Data not available',
+    notDocumented: 'Unknown / not documented',
     documents: 'Required documents',
     currency: 'Currency',
     swiftCode: 'SWIFT Code',
@@ -910,15 +912,19 @@ function ForexTab({ data, countryCode, t }) {
   const { forex_regulation, import_formalities, export_formalities } = data;
   const currencyCode = data.currency_code || data.central_bank?.currency_code;
 
-  const domColorFor = (f) => f?.domiciliation_required
+  const domColorFor = (f) => f?.domiciliation_required == null
+    ? 'bg-gray-50 border-gray-300'
+    : f.domiciliation_required
     ? 'bg-red-50 border-red-200'
-    : f?.domiciliation_conditional
+    : f.domiciliation_conditional
     ? 'bg-yellow-50 border-yellow-200'
     : 'bg-green-50 border-green-200';
 
-  const domLabelFor = (f) => f?.domiciliation_required
+  const domLabelFor = (f) => f?.domiciliation_required == null
+    ? t.notDocumented
+    : f.domiciliation_required
     ? t.domiciliationRequired
-    : f?.domiciliation_conditional
+    : f.domiciliation_conditional
     ? t.domiciliationConditional
     : t.domiciliationFree;
 
@@ -938,6 +944,9 @@ function ForexTab({ data, countryCode, t }) {
             <p className="text-xs font-semibold">{domLabelFor(import_formalities)}</p>
             {import_formalities?.domiciliation_threshold_usd != null && (
               <p><strong>{t.threshold} :</strong> {import_formalities.domiciliation_threshold_usd === 0 ? t.allOperations : `${import_formalities.domiciliation_threshold_usd.toLocaleString()} USD`}</p>
+            )}
+            {import_formalities?.domiciliation_threshold_local_amount != null && (
+              <p><strong>{t.threshold} :</strong> {import_formalities.domiciliation_threshold_local_amount.toLocaleString()} {import_formalities.domiciliation_threshold_currency}</p>
             )}
             <p>
               <strong>{t.transferDeadline} :</strong>{' '}
@@ -969,6 +978,9 @@ function ForexTab({ data, countryCode, t }) {
             {export_formalities?.domiciliation_threshold_usd != null && (
               <p><strong>{t.threshold} :</strong> {export_formalities.domiciliation_threshold_usd === 0 ? t.allOperations : `${export_formalities.domiciliation_threshold_usd.toLocaleString()} USD`}</p>
             )}
+            {export_formalities?.domiciliation_threshold_local_amount != null && (
+              <p><strong>{t.threshold} :</strong> {export_formalities.domiciliation_threshold_local_amount.toLocaleString()} {export_formalities.domiciliation_threshold_currency}</p>
+            )}
             {export_formalities?.repatriation_deadline_days && (
               <p><strong>{t.repatriationDeadline} :</strong> {export_formalities.repatriation_deadline_days} {t.days}</p>
             )}
@@ -996,6 +1008,9 @@ function ForexTab({ data, countryCode, t }) {
             <RegulationBadge level={forex_regulation?.regulation_level} />
             {forex_regulation?.prior_authorization_required && (
               <span className="text-xs text-red-600">{t.priorAuthRequired}</span>
+            )}
+            {forex_regulation?.prior_authorization_required == null && (
+              <span className="text-xs text-gray-600">{t.notDocumented}</span>
             )}
           </div>
           {forex_regulation?.penalties && (
@@ -1592,7 +1607,12 @@ function RegSummaryBar({ data, t }) {
 // ── Regulations Tab ───────────────────────────────────────────────────────────
 
 const REG_COLORS = { strict: 'bg-red-100 text-red-800', moderate: 'bg-yellow-100 text-yellow-800', liberal: 'bg-green-100 text-green-800' };
-const DOM_COLORS = { required: 'text-red-700 font-medium', conditional: 'text-yellow-700', free: 'text-green-700' };
+const DOM_COLORS = {
+  required: 'text-red-700 font-medium',
+  conditional: 'text-yellow-700',
+  free: 'text-green-700',
+  unknown: 'text-gray-600',
+};
 
 function RegulationsTab({ t }) {
   const [data, setData] = useState([]);
@@ -1654,12 +1674,20 @@ function RegulationsTab({ t }) {
             <tbody>
               {filtered.map((row, i) => {
                 const isOpen = expanded === i;
-                const domText = row.domiciliation_required
+                const domText = row.domiciliation_required == null
+                  ? t.notDocumented
+                  : row.domiciliation_required
                   ? t.required
                   : row.domiciliation_conditional
                   ? t.conditional
                   : t.free;
-                const domKey = row.domiciliation_required ? 'required' : row.domiciliation_conditional ? 'conditional' : 'free';
+                const domKey = row.domiciliation_required == null
+                  ? 'unknown'
+                  : row.domiciliation_required
+                  ? 'required'
+                  : row.domiciliation_conditional
+                  ? 'conditional'
+                  : 'free';
                 const flag = COUNTRY_FLAGS[row.country_code] || '';
 
                 return (
@@ -1683,7 +1711,9 @@ function RegulationsTab({ t }) {
                       </td>
                       <td className={`border px-2 py-1.5 text-center ${DOM_COLORS[domKey]}`}>{domText}</td>
                       <td className="border px-2 py-1.5 text-center">
-                        {row.prior_authorization
+                        {row.prior_authorization == null
+                          ? <span className="text-gray-600">{t.notDocumented}</span>
+                          : row.prior_authorization
                           ? <span className="text-red-600 font-medium">{t.yes}</span>
                           : <span className="text-green-600">{t.no}</span>}
                       </td>

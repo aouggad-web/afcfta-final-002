@@ -316,10 +316,15 @@ class TestForexProfiles:
             # Domiciliation must be conditional (threshold), not unconditional.
             assert profile.domiciliation.conditional is True
             assert profile.domiciliation.required is False
+            assert profile.domiciliation.threshold_usd is None
+            assert profile.domiciliation.threshold_local_amount == 5_000_000
+            assert profile.domiciliation.threshold_currency == "XAF"
             assert "5 000 000 XAF" in profile.domiciliation.notes
             # Derived import/export formalities inherit the conditional flag.
             assert profile.import_formalities.domiciliation_conditional is True
             assert profile.export_formalities.domiciliation_conditional is True
+            assert profile.import_formalities.domiciliation_threshold_local_amount == 5_000_000
+            assert "statut national à vérifier" in profile.forex_regulation.imf_article_status
 
     def test_get_domiciliation_rules_returns_domiciliation_rule(self):
         rule = get_domiciliation_rules("MA")
