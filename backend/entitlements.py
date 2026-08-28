@@ -103,12 +103,12 @@ _TIER_ENTITLEMENTS: dict[str, Entitlements] = {
             "production": _UNLIMITED,
             "logistics": _UNLIMITED,
             "roo": _UNLIMITED,
-            # "tools" (tariff data downloads) keeps real per-request metering:
-            # unlike the browse modules above, some of its endpoints trigger
-            # tariff collection + a disk write on a cache miss — see
-            # routes/tariff_data.py — so it stays gated by the metered
-            # require_module(), applied at the router level here and again,
-            # redundantly but harmlessly, on those specific endpoints.
+            # "tools" (tariff data downloads) is gated the same way as the
+            # browse modules above: entitlement_guard.require_module_enabled()
+            # is mounted on the router (see routes/__init__.py,
+            # _tools_entitlement), an on/off switch per tier, not metered per
+            # request. It is _DENIED here for free, not _capped(...), because
+            # the module is withheld outright rather than rate-limited.
             "tools": _DENIED,
             "reports": _capped(2, "day"),
         },

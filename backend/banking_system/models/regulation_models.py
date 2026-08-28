@@ -10,10 +10,24 @@ from pydantic import BaseModel, Field, model_validator
 class DomiciliationRule(BaseModel):
     """Règle de domiciliation bancaire pour une opération d'import/export"""
 
-    required: bool = Field(..., description="Domiciliation obligatoire (true/false)")
+    required: Optional[bool] = Field(
+        ...,
+        description=(
+            "Domiciliation obligatoire (true), non obligatoire (false) ou "
+            "non documentée par une source officielle disponible (null)"
+        ),
+    )
     conditional: bool = Field(default=False, description="Domiciliation conditionnelle")
     threshold_usd: Optional[float] = Field(
         default=None, description="Seuil (USD) déclenchant l'obligation"
+    )
+    threshold_local_amount: Optional[float] = Field(
+        default=None,
+        description="Seuil légal exprimé dans la monnaie de la réglementation",
+    )
+    threshold_currency: Optional[str] = Field(
+        default=None,
+        description="Code ISO 4217 de la monnaie du seuil légal",
     )
     mandatory_documents: List[str] = Field(
         default_factory=list,
@@ -33,10 +47,14 @@ class ForexRegulation(BaseModel):
         ...,
         description="Niveau: strict | moderate | liberal",
     )
-    prior_authorization_required: bool = False
+    prior_authorization_required: Optional[bool] = False
     authorization_threshold_usd: Optional[float] = None
     declaration_threshold_usd: Optional[float] = None
     repatriation_deadline_days: Optional[int] = None
+    conditional_repatriation_deadline_days: Optional[int] = None
+    conditional_repatriation_condition: Optional[str] = None
+    export_payment_due_deadline_days: Optional[int] = None
+    repatriation_after_payment_due_months: Optional[int] = None
     penalties: Optional[str] = None
     notes: Optional[str] = None
     # ── Données authentiques de réglementation ────────────────────────────
@@ -69,9 +87,11 @@ class ImportFormalities(BaseModel):
     transfert propre à l'importation, distinct du délai de rapatriement export.
     """
 
-    domiciliation_required: bool = False
+    domiciliation_required: Optional[bool] = False
     domiciliation_conditional: bool = False
     domiciliation_threshold_usd: Optional[float] = None
+    domiciliation_threshold_local_amount: Optional[float] = None
+    domiciliation_threshold_currency: Optional[str] = None
     mandatory_documents: List[str] = Field(default_factory=list)
     transfer_deadline_days: Optional[int] = Field(
         default=None,
@@ -98,11 +118,17 @@ class ExportFormalities(BaseModel):
     données sources, restructurées par sens de flux).
     """
 
-    domiciliation_required: bool = False
+    domiciliation_required: Optional[bool] = False
     domiciliation_conditional: bool = False
     domiciliation_threshold_usd: Optional[float] = None
+    domiciliation_threshold_local_amount: Optional[float] = None
+    domiciliation_threshold_currency: Optional[str] = None
     mandatory_documents: List[str] = Field(default_factory=list)
     repatriation_deadline_days: Optional[int] = None
+    conditional_repatriation_deadline_days: Optional[int] = None
+    conditional_repatriation_condition: Optional[str] = None
+    payment_due_deadline_days: Optional[int] = None
+    repatriation_after_payment_due_months: Optional[int] = None
     repatriation_formalities: Optional[str] = Field(
         default=None,
         description="Formalités de change applicables au rapatriement des devises d'exportation.",
@@ -182,6 +208,8 @@ class CountryForexProfile(BaseModel):
                 domiciliation_required=self.domiciliation.required,
                 domiciliation_conditional=self.domiciliation.conditional,
                 domiciliation_threshold_usd=self.domiciliation.threshold_usd,
+                domiciliation_threshold_local_amount=self.domiciliation.threshold_local_amount,
+                domiciliation_threshold_currency=self.domiciliation.threshold_currency,
                 mandatory_documents=list(self.domiciliation.mandatory_documents),
                 transfer_deadline_days=None,
                 payment_formalities=self.domiciliation.notes,
@@ -193,8 +221,20 @@ class CountryForexProfile(BaseModel):
                 domiciliation_required=self.domiciliation.required,
                 domiciliation_conditional=self.domiciliation.conditional,
                 domiciliation_threshold_usd=self.domiciliation.threshold_usd,
+                domiciliation_threshold_local_amount=self.domiciliation.threshold_local_amount,
+                domiciliation_threshold_currency=self.domiciliation.threshold_currency,
                 mandatory_documents=list(self.domiciliation.mandatory_documents),
                 repatriation_deadline_days=self.forex_regulation.repatriation_deadline_days,
+                conditional_repatriation_deadline_days=(
+                    self.forex_regulation.conditional_repatriation_deadline_days
+                ),
+                conditional_repatriation_condition=(
+                    self.forex_regulation.conditional_repatriation_condition
+                ),
+                payment_due_deadline_days=(self.forex_regulation.export_payment_due_deadline_days),
+                repatriation_after_payment_due_months=(
+                    self.forex_regulation.repatriation_after_payment_due_months
+                ),
                 repatriation_formalities=self.forex_regulation.notes,
                 legal_reference=self.forex_regulation.legal_reference,
                 regulatory_body=self.forex_regulation.regulatory_body,

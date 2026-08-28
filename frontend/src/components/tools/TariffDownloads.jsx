@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
+import { entitlementNoticeText, entitlementRefusal } from './entitlementNotice';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -131,6 +132,7 @@ function DownloadButton({ url, label, icon, className, size = "normal" }) {
 
 export default function TariffDownloads({ language = 'fr' }) {
   const [downloadData, setDownloadData] = useState(null);
+  const [subscriptionNotice, setSubscriptionNotice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [expandedCountry, setExpandedCountry] = useState(null);
 
@@ -146,6 +148,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     format: "HS6 + sous-positions nationales (HS8/HS10/HS12)",
     columnsDetail: "Code, Niveau, Description FR/EN, Taxes spécifiques au pays, Formalités, Total%",
     error: "Erreur de chargement",
+    subscriptionTitle: "Module réservé aux abonnés",
     countries: "pays",
   } : {
     title: "MFN Tariff Data Download (Common Law)",
@@ -158,6 +161,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     format: "HS6 + national sub-positions (HS8/HS10/HS12)",
     columnsDetail: "Code, Level, Description FR/EN, Country-specific taxes, Formalities, Total%",
     error: "Loading error",
+    subscriptionTitle: "Subscribers-only module",
     countries: "countries",
   };
 
@@ -172,8 +176,14 @@ export default function TariffDownloads({ language = 'fr' }) {
     try {
       const res = await axios.get(`${API}/tariff-data/download/list`);
       setDownloadData(res.data);
+      setSubscriptionNotice(null);
     } catch (err) {
-      console.error('Error fetching download list:', err);
+      // Un refus d'abonnement (403 upgrade_required) est une réponse normale,
+      // pas une panne : l'annoncer comme condition d'accès plutôt que comme
+      // « Erreur de chargement ».
+      const refusal = entitlementRefusal(err);
+      setSubscriptionNotice(refusal ? entitlementNoticeText(refusal, language) : null);
+      if (!refusal) console.error('Error fetching download list:', err);
     } finally {
       setLoading(false);
     }
@@ -185,6 +195,18 @@ export default function TariffDownloads({ language = 'fr' }) {
         <CardContent className="p-8 text-center">
           <div className="animate-spin text-4xl mb-4">🌍</div>
           <span className="text-gray-500">{t.loading}</span>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (subscriptionNotice) {
+    return (
+      <Card className="border-2 border-amber-200">
+        <CardContent className="p-8 text-center">
+          <div className="text-4xl mb-3" aria-hidden="true">🔒</div>
+          <div className="font-semibold text-gray-800 mb-1">{t.subscriptionTitle}</div>
+          <p className="text-gray-600 max-w-xl mx-auto">{subscriptionNotice}</p>
         </CardContent>
       </Card>
     );
