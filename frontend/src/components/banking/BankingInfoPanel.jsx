@@ -45,6 +45,11 @@ const texts = {
     exportFormalitiesDesc: 'Rapatriement des devises',
     transferDeadline: 'Délai de transfert (importation)',
     repatriationDeadline: 'Délai de rapatriement (exportation)',
+    standardDeadline: 'Délai normal',
+    conditionalDeadline: 'Extension conditionnelle',
+    paymentDueDeadline: 'Échéance de paiement maximale',
+    postDueDeadline: 'Rapatriement après échéance',
+    month: 'mois',
     noTransferDeadline: 'Aucun délai distinct prévu par la source pour l\'importation',
     paymentFormalitiesNotes: 'Formalités de paiement',
     repatriationFormalitiesNotes: 'Formalités de rapatriement',
@@ -172,6 +177,11 @@ const texts = {
     exportFormalitiesDesc: 'Currency repatriation',
     transferDeadline: 'Transfer deadline (import)',
     repatriationDeadline: 'Repatriation deadline (export)',
+    standardDeadline: 'Standard deadline',
+    conditionalDeadline: 'Conditional extension',
+    paymentDueDeadline: 'Maximum payment due date',
+    postDueDeadline: 'Repatriation after due date',
+    month: 'month(s)',
     noTransferDeadline: 'No distinct deadline specified by the source for imports',
     paymentFormalitiesNotes: 'Payment formalities',
     repatriationFormalitiesNotes: 'Repatriation formalities',
@@ -1688,6 +1698,13 @@ function RegulationsTab({ t }) {
                   : row.domiciliation_conditional
                   ? 'conditional'
                   : 'free';
+                const repatriationText = row.repatriation_days != null
+                  ? row.conditional_repatriation_days != null
+                    ? `${row.repatriation_days}j / ${row.conditional_repatriation_days}j*`
+                    : `${row.repatriation_days}j`
+                  : row.export_payment_due_days != null
+                    ? `≤${row.export_payment_due_days}j${row.repatriation_after_due_months != null ? ` + ${row.repatriation_after_due_months} ${t.month}` : ''}`
+                    : '—';
                 const flag = COUNTRY_FLAGS[row.country_code] || '';
 
                 return (
@@ -1718,7 +1735,7 @@ function RegulationsTab({ t }) {
                           : <span className="text-green-600">{t.no}</span>}
                       </td>
                       <td className="border px-2 py-1.5 text-center text-gray-600">
-                        {row.repatriation_days ? `${row.repatriation_days}j` : '—'}
+                        {repatriationText}
                       </td>
                       <td className="border px-2 py-1.5 text-center">
                         {(row.central_bank_phone || row.central_bank_email) ? (
@@ -1734,6 +1751,34 @@ function RegulationsTab({ t }) {
                               {row.threshold_usd != null && (
                                 <div><span className="text-gray-500">{t.threshold}: </span>
                                   <strong>{row.threshold_usd === 0 ? t.allOperations : `${row.threshold_usd.toLocaleString()} USD`}</strong>
+                                </div>
+                              )}
+                              {row.threshold_local_amount != null && (
+                                <div><span className="text-gray-500">{t.threshold}: </span>
+                                  <strong>{row.threshold_local_amount.toLocaleString()} {row.threshold_currency}</strong>
+                                </div>
+                              )}
+                              {row.repatriation_days != null && (
+                                <div><span className="text-gray-500">{t.standardDeadline}: </span>
+                                  <strong>{row.repatriation_days} {t.days}</strong>
+                                </div>
+                              )}
+                              {row.conditional_repatriation_days != null && (
+                                <div><span className="text-gray-500">{t.conditionalDeadline}: </span>
+                                  <strong>{row.conditional_repatriation_days} {t.days}</strong>
+                                  {row.conditional_repatriation_condition && (
+                                    <span className="block text-gray-600 italic mt-0.5">{row.conditional_repatriation_condition}</span>
+                                  )}
+                                </div>
+                              )}
+                              {row.export_payment_due_days != null && (
+                                <div><span className="text-gray-500">{t.paymentDueDeadline}: </span>
+                                  <strong>{row.export_payment_due_days} {t.days}</strong>
+                                </div>
+                              )}
+                              {row.repatriation_after_due_months != null && (
+                                <div><span className="text-gray-500">{t.postDueDeadline}: </span>
+                                  <strong>{row.repatriation_after_due_months} {t.month}</strong>
                                 </div>
                               )}
                               {row.authorization_threshold_usd && (

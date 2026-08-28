@@ -21,7 +21,7 @@ Endpoints:
 
 import logging
 from collections import defaultdict
-from typing import Optional
+from typing import Literal, Optional
 
 from banking_system import (
     assess_transaction_risk,
@@ -122,7 +122,7 @@ class TransactionValidationRequest(BaseModel):
     origin_country: str = Field(..., description="ISO2 code du pays exportateur")
     destination_country: str = Field(..., description="ISO2 code du pays importateur")
     amount_usd: float = Field(..., gt=0, description="Montant de la transaction en USD")
-    transaction_type: str = Field(
+    transaction_type: Literal["export", "import"] = Field(
         default="export",
         description="Type : export | import",
     )
@@ -666,6 +666,9 @@ async def get_regulations_summary(
                 "conditional_repatriation_days": (
                     profile.forex_regulation.conditional_repatriation_deadline_days
                 ),
+                "conditional_repatriation_condition": (
+                    profile.forex_regulation.conditional_repatriation_condition
+                ),
                 "export_payment_due_days": (
                     profile.forex_regulation.export_payment_due_deadline_days
                 ),
@@ -701,7 +704,8 @@ async def validate_transaction(body: TransactionValidationRequest):
     """
     Effectue une analyse complète d'une transaction commerciale :
 
-    1. **Réglementation de change** du pays destinataire
+    1. **Réglementation de change** du pays exportateur à l'exportation ou du
+       pays importateur à l'importation
     2. **Vérification de conformité** (AML/KYC, sanctions)
     3. **Évaluation du risque** pays
     4. **Instruments financiers** recommandés
@@ -710,8 +714,18 @@ async def validate_transaction(body: TransactionValidationRequest):
     dest = body.destination_country.upper()
     orig = body.origin_country.upper()
 
-    # Domiciliation rules for destination country
-    domiciliation = get_domiciliation_rules(dest)
+    # Apply the regulation on the side where the declared operation occurs:
+    # exporter/origin for exports, importer/destination for imports.
+    if body.transaction_type == "export":
+        formalities = get_export_formalities(orig)
+        regulatory_country = orig
+        domiciliation_flow = "export"
+        timeline_days = formalities.repatriation_deadline_days
+    else:
+        formalities = get_import_formalities(dest)
+        regulatory_country = dest
+        domiciliation_flow = "import"
+        timeline_days = formalities.transfer_deadline_days
 
     # Compliance check
     compliance = check_compliance(
@@ -736,45 +750,65 @@ async def validate_transaction(body: TransactionValidationRequest):
 
     # Domiciliation alert
     domiciliation_alert = None
-    if domiciliation.required is True:
+    if formalities.domiciliation_required is True:
         domiciliation_triggered = True
-    elif domiciliation.conditional and domiciliation.threshold_usd is not None:
-        domiciliation_triggered = body.amount_usd >= domiciliation.threshold_usd
-    elif domiciliation.conditional and domiciliation.threshold_local_amount is not None:
+    elif (
+        formalities.domiciliation_conditional
+        and formalities.domiciliation_threshold_usd is not None
+    ):
+        domiciliation_triggered = body.amount_usd >= formalities.domiciliation_threshold_usd
+    elif (
+        formalities.domiciliation_conditional
+        and formalities.domiciliation_threshold_local_amount is not None
+    ):
         # The request amount is in USD. Do not compare it with a legal threshold
         # expressed in local currency without a transaction-date exchange rate.
         domiciliation_triggered = None
     else:
-        domiciliation_triggered = domiciliation.required
+        domiciliation_triggered = formalities.domiciliation_required
 
     if domiciliation_triggered is True:
-        docs = ", ".join(str(d) for d in (domiciliation.mandatory_documents or []))
-        threshold_str = (
-            "toutes opérations"
-            if domiciliation.threshold_usd == 0
-            else f"{domiciliation.threshold_usd:,.0f} USD"
-        )
+        docs = ", ".join(str(d) for d in (formalities.mandatory_documents or []))
+        if formalities.domiciliation_threshold_usd == 0:
+            threshold_str = "toutes opérations"
+        elif formalities.domiciliation_threshold_usd is not None:
+            threshold_str = f"{formalities.domiciliation_threshold_usd:,.0f} USD"
+        elif formalities.domiciliation_threshold_local_amount is not None:
+            threshold_str = (
+                f"{formalities.domiciliation_threshold_local_amount:,.0f} "
+                f"{formalities.domiciliation_threshold_currency}"
+            )
+        else:
+            threshold_str = "selon la règle applicable"
         domiciliation_alert = {
             "required": True,
+            "country_code": regulatory_country,
+            "flow": domiciliation_flow,
             "message": (
-                f"Domiciliation bancaire obligatoire pour ce pays "
+                f"Domiciliation bancaire obligatoire pour le flux {domiciliation_flow} "
+                f"en {regulatory_country} "
                 f"(seuil: {threshold_str}). "
                 f"Documents requis: {docs}."
             ),
-            "timeline_days": domiciliation.timeline_days,
+            "timeline_days": timeline_days,
         }
-    elif domiciliation_triggered is None and domiciliation.threshold_local_amount is not None:
+    elif (
+        domiciliation_triggered is None
+        and formalities.domiciliation_threshold_local_amount is not None
+    ):
         domiciliation_alert = {
             "required": None,
+            "country_code": regulatory_country,
+            "flow": domiciliation_flow,
             "message": (
                 "Domiciliation conditionnelle : le seuil légal est de "
-                f"{domiciliation.threshold_local_amount:,.0f} "
-                f"{domiciliation.threshold_currency}. Une conversion au taux de la "
+                f"{formalities.domiciliation_threshold_local_amount:,.0f} "
+                f"{formalities.domiciliation_threshold_currency}. Une conversion au taux de la "
                 "transaction est nécessaire pour déterminer l'obligation."
             ),
-            "threshold_local_amount": domiciliation.threshold_local_amount,
-            "threshold_currency": domiciliation.threshold_currency,
-            "timeline_days": domiciliation.timeline_days,
+            "threshold_local_amount": formalities.domiciliation_threshold_local_amount,
+            "threshold_currency": formalities.domiciliation_threshold_currency,
+            "timeline_days": timeline_days,
         }
 
     return {
@@ -791,6 +825,8 @@ async def validate_transaction(body: TransactionValidationRequest):
         "summary": {
             "alert_level": risk["alert_level"],
             "domiciliation_required": domiciliation_triggered,
+            "domiciliation_country": regulatory_country,
+            "domiciliation_flow": domiciliation_flow,
             "compliance_warnings": compliance["warnings"],
             "top_instrument": instruments[0].code if instruments else None,
         },
