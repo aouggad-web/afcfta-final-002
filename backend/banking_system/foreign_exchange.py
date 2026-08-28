@@ -980,6 +980,241 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
 }
 
 # ---------------------------------------------------------------------------
+# MONETARY-UNION PROFILES – generated from the shared, uniform exchange
+# regime of each union (identical rules across member states, so member
+# profiles are derived from one authenticated template rather than guessed).
+#   • UEMOA / BCEAO  – Franc CFA XOF (parité fixe 1 EUR = 655,957 XOF)
+#   • CEMAC / BEAC   – Franc CFA XAF (parité fixe 1 EUR = 655,957 XAF)
+# Members that already carry an explicit, curated profile above
+# (Côte d'Ivoire, Sénégal) are never overwritten.
+# ---------------------------------------------------------------------------
+
+#: UEMOA member states (ISO2) sharing the BCEAO exchange regime.
+_UEMOA_MEMBERS: Dict[str, str] = {
+    "BF": "Burkina Faso",
+    "BJ": "Bénin",
+    "GW": "Guinée-Bissau",
+    "ML": "Mali",
+    "NE": "Niger",
+    "TG": "Togo",
+}
+
+#: CEMAC member states (ISO2) sharing the BEAC exchange regime.
+_CEMAC_MEMBERS: Dict[str, str] = {
+    "CM": "Cameroun",
+    "CF": "République centrafricaine",
+    "CG": "Congo",
+    "GA": "Gabon",
+    "GQ": "Guinée équatoriale",
+    "TD": "Tchad",
+}
+
+
+def _build_uemoa_profile(code: str, name: str) -> CountryForexProfile:
+    """Build a BCEAO/UEMOA forex profile (uniform regime, Règlement 09/2010)."""
+    return CountryForexProfile(
+        country_code=code,
+        country_name=name,
+        central_bank_name="BCEAO",
+        currency_code="XOF",
+        currency_name="Franc CFA BCEAO",
+        domiciliation=DomiciliationRule(
+            required=True,
+            conditional=False,
+            threshold_usd=5_000,
+            mandatory_documents=[
+                "declaration_importation",
+                "facture_commerciale",
+                "domiciliation_BCEAO",
+                "bordereau_de_suivi_des_cargaisons",
+            ],
+            timeline_days=120,
+            notes=(
+                "Zone UEMOA : la domiciliation bancaire suit les règles uniformes "
+                "de la BCEAO. Le franc CFA (XOF) est arrimé à l'euro à parité fixe "
+                "(1 EUR = 655,957 XOF). Les transferts intra-UEMOA sont libres ; "
+                "les transferts hors zone requièrent une domiciliation et sont "
+                "adossés à un motif justifié (importation, service, etc.)."
+            ),
+        ),
+        forex_regulation=ForexRegulation(
+            regulation_level="moderate",
+            prior_authorization_required=False,
+            declaration_threshold_usd=5_000,
+            repatriation_deadline_days=120,
+            penalties=(
+                "Pénalités BCEAO conformément au Règlement UEMOA n° 09/2010 : "
+                "amende de 25% à 200% du montant de l'infraction, saisie possible "
+                "des avoirs en cas de fraude."
+            ),
+            notes=(
+                "Zone CFA BCEAO (UEMOA) – convertibilité garantie via la "
+                "coopération monétaire avec la France (compte d'opérations au "
+                "Trésor français). Parité fixe EUR/XOF (655,957). Les transferts "
+                "intra-UEMOA sont libres et non soumis à déclaration ; les "
+                "transferts hors zone au-delà des seuils requièrent une "
+                "domiciliation bancaire et une déclaration."
+            ),
+            legal_reference=(
+                "Règlement n° 09/2010/CM/UEMOA du 1er octobre 2010 relatif aux "
+                "relations financières extérieures des États membres de l'UEMOA ; "
+                "Instruction BCEAO n° 04/2012/RB du 2 juillet 2012 ; "
+                "Accord de coopération monétaire France-UEMOA du 14 novembre 1973"
+            ),
+            regulatory_body=(
+                f"BCEAO – Direction Nationale pour {name} ; "
+                f"Ministère chargé des Finances ({name})"
+            ),
+            imf_article_status="Article VIII – Zone UEMOA (acceptation collective du 1er juin 1996)",
+        ),
+        authorized_currencies=["EUR", "USD", "GBP"],
+        restricted_operations=["speculative_forex", "crypto_non_agréé"],
+        special_regimes=[
+            "zone_UEMOA_libre_circulation_capitaux",
+            "parité_fixe_EUR_XOF",
+        ],
+    )
+
+
+def _build_cemac_profile(code: str, name: str) -> CountryForexProfile:
+    """Build a BEAC/CEMAC forex profile (Règlement des changes 02/18/CEMAC/UMAC/CM 2018)."""
+    return CountryForexProfile(
+        country_code=code,
+        country_name=name,
+        central_bank_name="BEAC",
+        currency_code="XAF",
+        currency_name="Franc CFA BEAC",
+        domiciliation=DomiciliationRule(
+            required=True,
+            conditional=False,
+            threshold_usd=None,
+            mandatory_documents=[
+                "declaration_importation_exportation",
+                "facture_commerciale",
+                "domiciliation_bancaire_BEAC",
+                "engagement_de_change",
+            ],
+            timeline_days=150,
+            notes=(
+                "Zone CEMAC : depuis l'entrée en vigueur du nouveau Règlement des "
+                "changes le 1er mars 2019, la domiciliation bancaire est "
+                "obligatoire pour les opérations d'importation et d'exportation "
+                "d'un montant supérieur à 5 000 000 XAF. Le franc CFA (XAF) est "
+                "arrimé à l'euro à parité fixe (1 EUR = 655,957 XAF). Les recettes "
+                "d'exportation doivent être rapatriées et cédées via le système "
+                "bancaire dans un délai de 150 jours."
+            ),
+        ),
+        forex_regulation=ForexRegulation(
+            regulation_level="strict",
+            prior_authorization_required=True,
+            authorization_threshold_usd=None,
+            declaration_threshold_usd=None,
+            repatriation_deadline_days=150,
+            penalties=(
+                "Sanctions prévues par le Règlement des changes CEMAC de 2018 et "
+                "les textes nationaux : amendes proportionnelles au montant de "
+                "l'infraction et sanctions pénales pour non-rapatriement des "
+                "recettes d'exportation."
+            ),
+            notes=(
+                "Zone CFA BEAC (CEMAC) – convertibilité garantie via la coopération "
+                "monétaire avec la France. Parité fixe EUR/XAF (655,957). Le "
+                "Règlement des changes de 2018, appliqué à partir de 2019, a "
+                "renforcé le rapatriement obligatoire des devises, la "
+                "domiciliation des opérations et le contrôle des transferts par "
+                "la BEAC. Les transferts hors zone requièrent la présentation de "
+                "pièces justificatives et, au-delà de certains seuils, un accord "
+                "préalable de la BEAC."
+            ),
+            legal_reference=(
+                "Règlement n° 02/18/CEMAC/UMAC/CM du 21 décembre 2018 portant "
+                "réglementation des changes dans la CEMAC (en vigueur le 1er mars "
+                "2019) ; Instructions d'application de la BEAC (2019-2020) ; "
+                "Convention de coopération monétaire entre les États membres de "
+                "la CEMAC et la France du 23 novembre 1972"
+            ),
+            regulatory_body=(
+                f"BEAC – Direction Nationale pour {name} ; "
+                f"Commission Bancaire de l'Afrique Centrale (COBAC) ; "
+                f"Ministère chargé des Finances ({name})"
+            ),
+            imf_article_status="Article VIII – Zone CEMAC",
+        ),
+        authorized_currencies=["EUR", "USD", "GBP"],
+        restricted_operations=[
+            "speculative_forex",
+            "crypto_non_agréé",
+            "capital_account_transfers",
+        ],
+        special_regimes=[
+            "zone_CEMAC",
+            "parité_fixe_EUR_XAF",
+            "réglementation_changes_BEAC_2018",
+        ],
+    )
+
+
+def _register_union_profiles() -> None:
+    """Register generated union profiles for members lacking an explicit one."""
+    for _code, _name in _UEMOA_MEMBERS.items():
+        FOREX_PROFILES.setdefault(_code, _build_uemoa_profile(_code, _name))
+    for _code, _name in _CEMAC_MEMBERS.items():
+        FOREX_PROFILES.setdefault(_code, _build_cemac_profile(_code, _name))
+    # ── Comores : franc comorien (KMF) arrimé à l'euro (1 EUR = 491,96775 KMF)
+    FOREX_PROFILES.setdefault(
+        "KM",
+        CountryForexProfile(
+            country_code="KM",
+            country_name="Comores",
+            central_bank_name="Banque Centrale des Comores",
+            currency_code="KMF",
+            currency_name="Franc comorien",
+            domiciliation=DomiciliationRule(
+                required=True,
+                conditional=True,
+                threshold_usd=5_000,
+                mandatory_documents=[
+                    "facture_commerciale",
+                    "declaration_douaniere",
+                    "domiciliation_bancaire",
+                ],
+                timeline_days=90,
+                notes=(
+                    "Le franc comorien (KMF) est arrimé à l'euro à parité fixe "
+                    "(1 EUR = 491,96775 KMF) dans le cadre de l'accord de "
+                    "coopération monétaire avec la France. Les opérations "
+                    "commerciales transitent par les banques agréées."
+                ),
+            ),
+            forex_regulation=ForexRegulation(
+                regulation_level="moderate",
+                prior_authorization_required=False,
+                declaration_threshold_usd=5_000,
+                repatriation_deadline_days=90,
+                notes=(
+                    "Convertibilité du compte courant garantie via la coopération "
+                    "monétaire avec la France (compte d'opérations au Trésor "
+                    "français). Parité fixe EUR/KMF (491,96775)."
+                ),
+                legal_reference=(
+                    "Accord de coopération monétaire entre la France et les "
+                    "Comores du 23 novembre 1979 ; réglementation des changes de "
+                    "la Banque Centrale des Comores"
+                ),
+                regulatory_body="Banque Centrale des Comores (BCC) – Direction des Changes",
+                imf_article_status="Article VIII",
+            ),
+            authorized_currencies=["EUR", "USD"],
+            restricted_operations=["speculative_forex"],
+            special_regimes=["parité_fixe_EUR_KMF"],
+        ),
+    )
+
+
+_register_union_profiles()
+
+# ---------------------------------------------------------------------------
 # DEFAULT PROFILE for countries not yet fully detailed
 # ---------------------------------------------------------------------------
 

@@ -1193,6 +1193,46 @@ CENTRAL_BANKS: Dict[str, CentralBank] = {
     ),
 }
 
+
+# ---------------------------------------------------------------------------
+# Fill shared regulatory fields for monetary-union central banks.
+# BCEAO (UEMOA) and BEAC (CEMAC) are single supranational central banks whose
+# statute, founding year and IMF status are identical across every member
+# state. We backfill these shared facts only where a member entry left them
+# blank – curated per-country values (e.g. an explicit SWIFT/BIC) are kept.
+# ---------------------------------------------------------------------------
+
+_BCEAO_SHARED = {
+    "established_year": 1962,
+    "banking_act": "Loi uniforme BCEAO relative à l'activité bancaire (révisée 2010)",
+    "imf_article_status": "Article VIII – UEMOA (1er juin 1996)",
+}
+_BEAC_SHARED = {
+    "established_year": 1972,
+    "banking_act": (
+        "Règlement COBAC relatif à l'exercice de l'activité bancaire dans la CEMAC ; "
+        "Convention portant harmonisation de la réglementation bancaire (1992)"
+    ),
+    "imf_article_status": "Article VIII – CEMAC",
+}
+
+
+def _backfill_union_central_banks() -> None:
+    for _cb in CENTRAL_BANKS.values():
+        if _cb.abbreviation == "BCEAO":
+            _shared = _BCEAO_SHARED
+        elif _cb.abbreviation == "BEAC":
+            _shared = _BEAC_SHARED
+        else:
+            continue
+        for _field, _value in _shared.items():
+            if getattr(_cb, _field, None) in (None, ""):
+                setattr(_cb, _field, _value)
+
+
+_backfill_union_central_banks()
+
+
 # ---------------------------------------------------------------------------
 # COMMERCIAL BANKS – Phase-1 & extended coverage (22 countries)
 # ---------------------------------------------------------------------------
