@@ -341,6 +341,10 @@ class TestBankingRoutes:
         assert payload["domiciliation_alert"]["required"] is True
         assert payload["domiciliation_alert"]["country_code"] == "DZ"
         assert payload["domiciliation_alert"]["flow"] == "export"
+        # timeline_days must reflect DZ's export repatriation deadline (120 days),
+        # not MA's generic domiciliation timeline (150 days), confirming that
+        # get_export_formalities(origin_country) is used for exports.
+        assert payload["domiciliation_alert"]["timeline_days"] == 120
         assert payload["summary"]["domiciliation_country"] == "DZ"
         assert payload["summary"]["domiciliation_flow"] == "export"
         assert payload["summary"]["top_instrument"] is not None
