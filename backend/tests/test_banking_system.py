@@ -244,6 +244,33 @@ class TestForexProfiles:
         assert profile is not None
         assert isinstance(profile, CountryForexProfile)
 
+    def test_uemoa_members_share_bceao_profile(self):
+        """All UEMOA members expose the shared BCEAO exchange regime."""
+        for code in ["BF", "BJ", "GW", "ML", "NE", "TG"]:
+            profile = get_forex_profile(code)
+            assert code in FOREX_PROFILES
+            assert profile.central_bank_name == "BCEAO"
+            assert profile.currency_code == "XOF"
+            assert profile.forex_regulation.repatriation_deadline_days == 120
+            assert "09/2010" in profile.forex_regulation.legal_reference
+
+    def test_cemac_members_share_beac_profile(self):
+        """All CEMAC members expose the shared BEAC exchange regime (150-day
+        repatriation) and a CONDITIONAL domiciliation rule (threshold in XAF)."""
+        for code in ["CM", "CF", "CG", "GA", "GQ", "TD"]:
+            profile = get_forex_profile(code)
+            assert code in FOREX_PROFILES
+            assert profile.central_bank_name == "BEAC"
+            assert profile.currency_code == "XAF"
+            assert profile.forex_regulation.repatriation_deadline_days == 150
+            # Domiciliation must be conditional (threshold), not unconditional.
+            assert profile.domiciliation.conditional is True
+            assert profile.domiciliation.required is False
+            assert "5 000 000 XAF" in profile.domiciliation.notes
+            # Derived import/export formalities inherit the conditional flag.
+            assert profile.import_formalities.domiciliation_conditional is True
+            assert profile.export_formalities.domiciliation_conditional is True
+
     def test_get_domiciliation_rules_returns_domiciliation_rule(self):
         rule = get_domiciliation_rules("MA")
         assert isinstance(rule, DomiciliationRule)

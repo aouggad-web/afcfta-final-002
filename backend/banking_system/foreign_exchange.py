@@ -1085,8 +1085,11 @@ def _build_cemac_profile(code: str, name: str) -> CountryForexProfile:
         currency_code="XAF",
         currency_name="Franc CFA BEAC",
         domiciliation=DomiciliationRule(
-            required=True,
-            conditional=False,
+            required=False,
+            conditional=True,
+            # Le seuil légal est exprimé en monnaie locale (5 000 000 XAF) ; le
+            # champ threshold_usd (USD) est laissé None pour ne pas publier une
+            # conversion approximative. Le seuil exact figure dans les notes.
             threshold_usd=None,
             mandatory_documents=[
                 "declaration_importation_exportation",
@@ -1099,10 +1102,12 @@ def _build_cemac_profile(code: str, name: str) -> CountryForexProfile:
                 "Zone CEMAC : depuis l'entrée en vigueur du nouveau Règlement des "
                 "changes le 1er mars 2019, la domiciliation bancaire est "
                 "obligatoire pour les opérations d'importation et d'exportation "
-                "d'un montant supérieur à 5 000 000 XAF. Le franc CFA (XAF) est "
-                "arrimé à l'euro à parité fixe (1 EUR = 655,957 XAF). Les recettes "
-                "d'exportation doivent être rapatriées et cédées via le système "
-                "bancaire dans un délai de 150 jours."
+                "dont le montant est supérieur à 5 000 000 XAF (règle "
+                "conditionnelle : en deçà de ce seuil, la domiciliation n'est pas "
+                "exigée). Le franc CFA (XAF) est arrimé à l'euro à parité fixe "
+                "(1 EUR = 655,957 XAF). Les recettes d'exportation doivent être "
+                "rapatriées et cédées via le système bancaire dans un délai de "
+                "150 jours."
             ),
         ),
         forex_regulation=ForexRegulation(
