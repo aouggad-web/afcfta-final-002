@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+import { entitlementNoticeText, entitlementRefusal } from './entitlementNotice';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -12,6 +13,7 @@ export default function MonitoringDashboard({ language = 'fr' }) {
   const [loading, setLoading] = useState(true);
   const [collecting, setCollecting] = useState(false);
   const [error, setError] = useState(null);
+  const [subscriptionNotice, setSubscriptionNotice] = useState(null);
   const [sortField, setSortField] = useState('code');
   const [sortAsc, setSortAsc] = useState(true);
 
@@ -36,6 +38,7 @@ export default function MonitoringDashboard({ language = 'fr' }) {
     noData: "Aucune donnée. Lancez une collecte.",
     success: "Collecte terminée avec succès !",
     errorMsg: "Erreur lors de la collecte",
+    subscriptionTitle: "Module réservé aux abonnés",
     coverage: "Couverture",
     withSub: "Avec sous-positions",
     scheduler: "Planification",
@@ -63,6 +66,7 @@ export default function MonitoringDashboard({ language = 'fr' }) {
     noData: "No data. Run a collection.",
     success: "Collection completed successfully!",
     errorMsg: "Error during collection",
+    subscriptionTitle: "Subscribers-only module",
     coverage: "Coverage",
     withSub: "With sub-positions",
     scheduler: "Scheduling",
@@ -77,12 +81,19 @@ export default function MonitoringDashboard({ language = 'fr' }) {
     try {
       const res = await axios.get(`${API}/tariff-data/monitoring/stats`);
       setStats(res.data);
+      setSubscriptionNotice(null);
     } catch (err) {
-      setError(err.message);
+      // Le module Outils est réservé aux formules payantes : un 403
+      // `upgrade_required` est une réponse normale, pas une panne. On annonce
+      // la condition d'accès au lieu d'afficher « Request failed with status
+      // code 403 ».
+      const refusal = entitlementRefusal(err);
+      setSubscriptionNotice(refusal ? entitlementNoticeText(refusal, language) : null);
+      setError(refusal ? null : err.message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [language]);
 
   useEffect(() => { fetchStats(); }, [fetchStats]);
 
@@ -93,7 +104,9 @@ export default function MonitoringDashboard({ language = 'fr' }) {
       await axios.post(`${API}/tariff-data/collect`, { all_countries: true });
       await fetchStats();
     } catch (err) {
-      setError(t.errorMsg);
+      const refusal = entitlementRefusal(err);
+      setSubscriptionNotice(refusal ? entitlementNoticeText(refusal, language) : null);
+      setError(refusal ? null : t.errorMsg);
     } finally {
       setCollecting(false);
     }
@@ -153,6 +166,18 @@ export default function MonitoringDashboard({ language = 'fr' }) {
             </Button>
           </div>
 
+          {subscriptionNotice && (
+            <div
+              className="border p-3 rounded-lg mb-4 flex items-start gap-3"
+              style={{ background: 'rgba(245,158,11,0.1)', borderColor: 'rgba(245,158,11,0.3)' }}
+            >
+              <span aria-hidden="true">🔒</span>
+              <div>
+                <div className="font-semibold text-amber-300">{t.subscriptionTitle}</div>
+                <p className="text-amber-200/90 text-sm">{subscriptionNotice}</p>
+              </div>
+            </div>
+          )}
           {error && <div className="border text-red-400 p-3 rounded-lg mb-4" style={{background:'rgba(239,68,68,0.1)', borderColor:'rgba(239,68,68,0.3)'}}>{error}</div>}
 
           <Card className="mb-4" style={{background:'rgba(251,191,36,0.08)', border:'1px solid rgba(251,191,36,0.25)'}}>
