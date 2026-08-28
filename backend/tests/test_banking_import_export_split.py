@@ -61,8 +61,9 @@ def test_export_formalities_repatriation_deadline_matches_forex_regulation():
 
 def test_algeria_export_repatriation_deadline():
     profile = get_forex_profile("DZ")
-    # Délai de rapatriement export porté à 360 jours (Instruction BA n° 07-2021).
-    assert profile.export_formalities.repatriation_deadline_days == 360
+    # Délai de rapatriement export : 180 jours (Instruction BA n° 07-2021 /
+    # Règlement BA n° 2016-04).
+    assert profile.export_formalities.repatriation_deadline_days == 180
     # Côté importation : domiciliation systématique dès le premier dinar.
     assert profile.import_formalities.domiciliation_threshold_usd == 0
 

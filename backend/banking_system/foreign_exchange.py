@@ -124,7 +124,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "domiciliation_bancaire",
                 "certificat_conformite_produits",
             ],
-            timeline_days=360,
+            timeline_days=180,
             notes=(
                 "Toute importation doit être domiciliée auprès d'une banque "
                 "primaire agréée. Pas de seuil minimal : la domiciliation est "
@@ -138,7 +138,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
             prior_authorization_required=True,
             authorization_threshold_usd=0,
             declaration_threshold_usd=1_000,
-            repatriation_deadline_days=360,
+            repatriation_deadline_days=180,
             penalties=(
                 "Infractions au code pénal algérien (Art. 429 à 442) : "
                 "amende de 2 à 5 fois la valeur de l'infraction + emprisonnement "
@@ -178,7 +178,7 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
         special_regimes=["zones_franches_exportation", "offshore_banking_units"],
         # Formalités de change à l'EXPORTATION fournies explicitement (données
         # authentiques DGD/Banque d'Algérie) : régimes de domiciliation distincts
-        # selon le type de produit et délai de rapatriement porté à 360 jours.
+        # selon le type de produit et délai de rapatriement de 180 jours.
         export_formalities=ExportFormalities(
             domiciliation_required=True,
             domiciliation_conditional=True,
@@ -191,20 +191,20 @@ FOREX_PROFILES: Dict[str, CountryForexProfile] = {
                 "autorisations_FAP_si_applicable",
                 "preuve_origine_si_avantages_fiscaux",
             ],
-            repatriation_deadline_days=360,
+            repatriation_deadline_days=180,
             repatriation_formalities=(
                 "Délai de rapatriement des recettes d'exportation hors "
-                "hydrocarbures : 360 jours maximum à compter de la date "
+                "hydrocarbures : 180 jours maximum à compter de la date "
                 "d'expédition. Deux régimes de domiciliation selon le produit : "
                 "(1) Produits frais, périssables et/ou dangereux — domiciliation "
                 "a posteriori autorisée : la facture commerciale peut être "
                 "domiciliée dans les 05 jours ouvrables suivant l'expédition "
                 "(Instruction Banque d'Algérie n° 07-2021 du 29 juin 2021, "
-                "règle générale 360 jours) ; "
+                "règle générale 180 jours) ; "
                 "(2) Biens de consommation courants — domiciliation a priori "
                 "obligatoire avant expédition, sauf dérogation "
                 "(Règlement Banque d'Algérie n° 2016-04 du 17 novembre 2016, "
-                "360 jours maximum). "
+                "180 jours maximum). "
                 "Aucune domiciliation requise pour les exportations de "
                 "marchandises ou d'échantillons d'une valeur inférieure ou "
                 "égale à 100 000 DZD."
