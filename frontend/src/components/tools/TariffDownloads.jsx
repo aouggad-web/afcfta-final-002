@@ -204,7 +204,7 @@ export default function TariffDownloads({ language = 'fr' }) {
     return (
       <Card className="border-2 border-amber-200">
         <CardContent className="p-8 text-center">
-          <div className="text-4xl mb-3">🔒</div>
+          <div className="text-4xl mb-3" aria-hidden="true">🔒</div>
           <div className="font-semibold text-gray-800 mb-1">{t.subscriptionTitle}</div>
           <p className="text-gray-600 max-w-xl mx-auto">{subscriptionNotice}</p>
         </CardContent>

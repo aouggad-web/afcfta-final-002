@@ -88,6 +88,9 @@ export default function MonitoringDashboard({ language = 'fr' }) {
       // la condition d'accès au lieu d'afficher « Request failed with status
       // code 403 ».
       const refusal = entitlementRefusal(err);
+      if (refusal) {
+        setStats(null);
+      }
       setSubscriptionNotice(refusal ? entitlementNoticeText(refusal, language) : null);
       setError(refusal ? null : err.message);
     } finally {
@@ -105,6 +108,9 @@ export default function MonitoringDashboard({ language = 'fr' }) {
       await fetchStats();
     } catch (err) {
       const refusal = entitlementRefusal(err);
+      if (refusal) {
+        setStats(null);
+      }
       setSubscriptionNotice(refusal ? entitlementNoticeText(refusal, language) : null);
       setError(refusal ? null : t.errorMsg);
     } finally {
@@ -192,7 +198,7 @@ export default function MonitoringDashboard({ language = 'fr' }) {
         </CardContent>
       </Card>
 
-      {loading ? (
+      {subscriptionNotice ? null : loading ? (
         <div className="text-center py-8 text-gray-500">Loading...</div>
       ) : !stats?.countries?.length ? (
         <div className="text-center py-8 text-gray-500">{t.noData}</div>
