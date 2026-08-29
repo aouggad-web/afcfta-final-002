@@ -2,7 +2,7 @@
   "country_iso3": "MAR",
   "country_name": "Maroc",
   "audit_tool": "scripts/audit_tariff_documentation.py",
-  "consultation_date": "2026-07-24",
+  "consultation_date": "2026-08-29",
   "read_only_audit": true,
   "local_related_files": [
     {
@@ -53,11 +53,12 @@
     "hs_version": null,
     "hs_version_declared_in_code": null,
     "hs_version_status": "NOT_AVAILABLE",
-    "date_consulted": "2026-07-24",
+    "date_consulted": "2026-08-29",
     "extracted_at": "2026-02-11T22:41:08.772056",
     "source_hash_sha256": "8a8671685c7736965c1d9e38d19f9b77725f583f152df2f5d372f62b0ccc1368",
     "archive_official_available": false,
     "official_archive_candidates": [],
+    "official_archives_manifests": [],
     "status": "UNVERIFIED",
     "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés."
   },
@@ -2424,7 +2425,28 @@
   "source_comparison": {
     "status": "NOT_AVAILABLE",
     "official_lines_compared": 0,
-    "note": "Aucune copie officielle tarifaire archivée dans le dépôt; les dix lignes restent non comparées."
+    "note": "Aucune comparaison à une publication officielle disponible; échantillon non comparé. Toute comparaison documentaire ne confère pas d'opposabilité."
+  },
+  "legal_framing": {
+    "saas_status": "INFORMATIF_NON_OPPOSABLE",
+    "fait_foi": "Les publications officielles de l'autorité douanière (tarif officiel, JO, arrêtés) seules sont opposables.",
+    "portee": "Le SaaS fournit des repères documentaires sourcés ; il ne constitue ni une décision douanière, ni un conseil juridique, ni une validation administrative.",
+    "rigueur": "La rigueur documentaire (SHA-256, verbatim, écarts documentés sans arbitrage, aucun taux inventé) reste exigée et ne confère pas d'opposabilité.",
+    "verification": {
+      "disclaimer_present": true,
+      "forbidden_claims_found": [],
+      "status": "DOCUMENTED"
+    }
+  },
+  "verbatim_integrity": {
+    "effective_path_clean": true,
+    "quarantined_or_suspicious_paths": [
+      "/Users/sayahfarid/afcfta-final-002/backend/data/crawled/QUARANTINE_SYNTHETIC/MAR_tariffs.json"
+    ],
+    "rows_with_forbidden_markers": 0,
+    "rows_with_forbidden_markers_examples": [],
+    "verbatim_policy_declared_in_metadata": false,
+    "rule": "Pas de mock, pas de synthèse, pas d'extrapolation : toute donnée non publiée par la source reste un écart documenté (source_gaps)."
   },
   "quality_dimensions": {
     "source": "UNVERIFIED",
@@ -2432,7 +2454,9 @@
     "classification": "DOCUMENTED",
     "taxes_and_levies": "PARTIAL",
     "preference_and_origin": "NOT_AVAILABLE",
-    "formalities": "PARTIAL"
+    "formalities": "PARTIAL",
+    "informative_framing": "DOCUMENTED",
+    "verbatim_integrity": "PARTIAL"
   },
   "overall_informative_status": "INFORMATIVE_PARTIAL",
   "known_data_gaps": [

@@ -1,0 +1,15 @@
+{
+  "country": "ZAF",
+  "generated_at": "2026-08-29T22:40:56.208429+00:00",
+  "description": "Documents officiels sud-africains archivés avec empreintes SHA-256 (méthode DZA).",
+  "documents": [
+    {
+      "file": "legislation/sars_schedule1_part1_ch1-99.pdf",
+      "title": "SARS — Schedule n°1 au Customs and Excise Act (Loi 91/1964), Partie 1, chapitres 1-99 (tarif douanier officiel)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P1Chpt1-to-99-Schedule-No-1-Part-1-Chapters-1-to-99.pdf",
+      "referencing_page": "https://www.sars.gov.za/tariff-book/",
+      "sha256": "442ed3d758d741e283a7d8fa513fe53cd94a813d0ef13cafcb0a3a9c2749c65c",
+      "archived_at": "2026-08-29T22:40:56.208429+00:00"
+    }
+  ]
+}

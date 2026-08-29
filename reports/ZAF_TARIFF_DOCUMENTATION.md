@@ -1,16 +1,25 @@
-# Documentation tarifaire ZAF — 2026-07-24
+# Documentation tarifaire ZAF — 2026-08-29
 
-> Audit local en lecture seule. Aucun taux ni fichier source n'a été modifié. Ce document décrit la qualité documentaire disponible et ne constitue pas une validation administrative.
+> Audit local en lecture seule. Aucun taux ni fichier source n'a été modifié. **Outil informatif, non opposable** : le SaaS ne crée aucun droit et n'engage pas l'administration ; seules les publications officielles de l'autorité douanière font foi. Ce document décrit la qualité documentaire disponible — il ne constitue ni une validation administrative, ni un conseil juridique.
+
+## Cadre d'usage — outil informatif, non opposable
+
+- Statut du SaaS : **INFORMATIF_NON_OPPOSABLE** — il ne crée aucun droit et n'engage pas l'administration.
+- Les publications officielles de l'autorité douanière (tarif officiel, JO, arrêtés) seules sont opposables.
+- Le SaaS fournit des repères documentaires sourcés ; il ne constitue ni une décision douanière, ni un conseil juridique, ni une validation administrative.
+- La rigueur documentaire (SHA-256, verbatim, écarts documentés sans arbitrage, aucun taux inventé) reste exigée et ne confère pas d'opposabilité.
 
 ## Résultat informatif
 
 - Statut global : **INFORMATIVE_PARTIAL**
-- source : **UNVERIFIED**
+- source : **DOCUMENTED**
 - temporal_validity : **NOT_AVAILABLE**
 - classification : **DOCUMENTED**
 - taxes_and_levies : **PARTIAL**
 - preference_and_origin : **NOT_AVAILABLE**
 - formalities : **NOT_AVAILABLE**
+- informative_framing : **DOCUMENTED**
+- verbatim_integrity : **PARTIAL**
 
 ## Inventaire et consommation
 
@@ -26,8 +35,8 @@
 - Autorité déclarée : sars.gov.za.
 - Titre : sars.gov.za.
 - URL de ligne : https://www.sars.gov.za/customs-and-excise/tariff-books/schedules/; URL d'acquisition déclarée : non indiquée; autorité douanière : non indiquée.
-- Archive officielle locale : **non retrouvée**.
-- SHA-256 du fichier effectif : 0ebdf907917cfbcfd175df9c37d8f987b35775696aa46f3d270ea3ad90fcf08a.
+- Archive officielle locale : **disponible**.
+- SHA-256 du fichier effectif : 23e7f03cb492b337704caea944fce64986010b14b4163039f0051692d2ce5e6d.
 - Extraction : non indiquée (ce n'est pas une date d'effet).
 - Publication/effet : non documentée / non documentée.
 - Version SH dans les métadonnées : non déclarée; déclaration trouvée dans l'adaptateur : aucune (statut : NOT_AVAILABLE).
@@ -71,7 +80,7 @@ Aucune ligne n'a pu être comparée à une archive officielle locale; aucun éca
 ## Analyse des DD manquants
 
 - Lignes DD absentes/non analysables : **1**.
-- Causes : EXPLICIT_FREE (1).
+- Causes : TRUE_MISSING (1).
 Aucune cause n'est transformée en taux numérique.
 
 ## Lacunes et actions
