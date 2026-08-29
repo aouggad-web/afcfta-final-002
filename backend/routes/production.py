@@ -20,7 +20,7 @@ from production_data import (
     get_value_added,
     get_value_added_by_country,
 )
-from services import production_capacity_service
+from services import manufacturing_proxy_service, production_capacity_service
 
 try:
     from etl.unido_data import UNIDO_INDUSTRY_DATA
@@ -177,6 +177,32 @@ async def get_continental_capacity(hs_code: str):
     (dernière année disponible). Utilisé par la recherche HS6 des chaînes de valeur.
     """
     return production_capacity_service.get_continental_producers(hs_code)
+
+
+# =============================================================================
+# SIGNAL D'ASSEMBLAGE PAR PROXY D'INTRANTS (biens d'équipement non couverts
+# par FAOSTAT/USGS/UNIDO — ex. réfrigérateurs, climatiseurs, téléviseurs).
+# Voir services/manufacturing_proxy_service.py pour la méthodologie et les
+# garde-fous anti-fabrication.
+# =============================================================================
+
+
+@router.get("/assembly-signal/chapters")
+async def list_assembly_signal_chapters():
+    """Codes HS couverts par le signal d'assemblage (proxy d'intrants)."""
+    return {"chapters": manufacturing_proxy_service.list_proxy_chapters()}
+
+
+@router.get("/assembly-signal/{country_iso3}/{hs_code}")
+async def get_assembly_signal(country_iso3: str, hs_code: str):
+    """
+    Signal INDIRECT d'assemblage local pour un produit fini non mesuré par
+    FAOSTAT/USGS/UNIDO (ex. réfrigérateurs HS 8418, téléviseurs HS 8528),
+    dérivé des importations réelles (OEC/UN Comtrade) de son composant-clé
+    (ex. compresseurs, modules d'affichage). Ce n'est PAS une production
+    mesurée — voir le champ "methodology" de la réponse.
+    """
+    return await manufacturing_proxy_service.estimate_assembly_signal(country_iso3, hs_code)
 
 
 # =============================================================================

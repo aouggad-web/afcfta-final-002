@@ -14,12 +14,21 @@ MISE À JOUR 2025: Les données 2024 sont maintenant disponibles
 import asyncio
 import json
 import logging
+import time
 from datetime import datetime
 from typing import Dict, List, Optional
 
 import httpx
 
 logger = logging.getLogger(__name__)
+
+# Disjoncteur : au-delà de _CIRCUIT_FAILURE_THRESHOLD échecs consécutifs,
+# on arrête d'essayer le réseau pendant _CIRCUIT_COOLDOWN_SECONDS et on sert
+# directement le cache périmé (stale) — évite de marteler une API en panne
+# ou sous limitation de débit (observé : blocages 403 côté egress) avec des
+# tentatives réseau coûteuses et vouées à l'échec sur chaque requête utilisateur.
+_CIRCUIT_FAILURE_THRESHOLD = 3
+_CIRCUIT_COOLDOWN_SECONDS = 30
 
 # Configuration de l'API OEC
 OEC_BASE_URL = "https://api.oec.world/tesseract/data.jsonrecords"
@@ -185,22 +194,32 @@ def build_trade_series(
     Les listes de lignes peuvent être None (flux absent).
     """
 
-    def agg(rows: Optional[List[Dict]]) -> Dict[int, float]:
-        totals = {y: 0.0 for y in years}
+    def agg(rows: Optional[List[Dict]]) -> Dict[int, Dict[str, float]]:
+        totals = {y: {"value": 0.0, "quantity": 0.0} for y in years}
         for row in rows or []:
             year = row.get("Year")
             if year in totals:
-                totals[year] += float(row.get("Trade Value") or 0)
+                totals[year]["value"] += float(row.get("Trade Value") or 0)
+                totals[year]["quantity"] += float(row.get("Quantity") or 0)
         return totals
 
     exports = agg(exports_rows)
     imports = agg(imports_rows)
     series = []
     for year in years:
-        exp = round(exports[year], 2)
-        imp = round(imports[year], 2)
+        exp = round(exports[year]["value"], 2)
+        imp = round(imports[year]["value"], 2)
         series.append(
-            {"year": year, "exports": exp, "imports": imp, "balance": round(exp - imp, 2)}
+            {
+                "year": year,
+                "exports": exp,
+                "imports": imp,
+                "balance": round(exp - imp, 2),
+                # Volumes BACI (poids net, tonnes) quand la mesure Quantity a
+                # été demandée ; 0 sinon (lignes sans le champ).
+                "exports_quantity": round(exports[year]["quantity"], 2),
+                "imports_quantity": round(imports[year]["quantity"], 2),
+            }
         )
     return series
 
@@ -211,6 +230,12 @@ class OECTradeService:
     def __init__(self, api_token: Optional[str] = None):
         self.api_token = api_token
         self.timeout = 30.0
+
+        # Disjoncteur : état par instance (le service est utilisé en singleton
+        # — voir ``oec_service`` en bas de fichier — donc partagé par toute
+        # l'application, ce qui est le comportement voulu).
+        self._circuit_open_until = 0.0
+        self._circuit_consecutive_failures = 0
 
         # Optional cache integration
         try:
@@ -261,21 +286,44 @@ class OECTradeService:
                     return stale
             return {"error": err, "data": []}
 
+        # Disjoncteur ouvert : ne pas retenter le réseau, servir directement
+        # le repli (cache périmé ou erreur) — la fenêtre de cooldown évite les
+        # tentatives réseau vouées à l'échec pendant une panne/un blocage.
+        if time.monotonic() < self._circuit_open_until:
+            logger.warning(
+                "OEC circuit ouvert (%d échecs consécutifs) — appel réseau sauté",
+                self._circuit_consecutive_failures,
+            )
+            return _on_failure("circuit ouvert (échecs consécutifs récents)")
+
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             try:
                 response = await client.get(OEC_BASE_URL, params=params)
                 response.raise_for_status()
                 data = response.json()
+                self._circuit_consecutive_failures = 0
                 if self._cache_available and "error" not in data:
                     self._cache_set(cache_key, data, "oec_data")
                 return data
             except httpx.HTTPStatusError as e:
                 # Status code only — avoid echoing the URL (which carries the token).
                 logger.error(f"OEC API error: {e.response.status_code}")
+                self._register_circuit_failure()
                 return _on_failure(f"OEC API error {e.response.status_code}")
             except Exception as e:
                 logger.error("OEC request failed: %s", _sanitize(str(e)))
+                self._register_circuit_failure()
                 return _on_failure(str(e))
+
+    def _register_circuit_failure(self) -> None:
+        self._circuit_consecutive_failures += 1
+        if self._circuit_consecutive_failures >= _CIRCUIT_FAILURE_THRESHOLD:
+            self._circuit_open_until = time.monotonic() + _CIRCUIT_COOLDOWN_SECONDS
+            logger.warning(
+                "OEC : %d échecs consécutifs — disjoncteur ouvert %ds",
+                self._circuit_consecutive_failures,
+                _CIRCUIT_COOLDOWN_SECONDS,
+            )
 
     def _build_params(
         self,
@@ -646,6 +694,10 @@ class OECTradeService:
                     "exports": exp_val,
                     "imports": imp_val,
                     "balance": round(exp_val - imp_val, 2),
+                    # Volumes BACI (poids net, tonnes) — objectif « valeur +
+                    # quantité » : le front affiche les deux côte à côte.
+                    "exports_quantity": exp_qty,
+                    "imports_quantity": imp_qty,
                 }
             )
 
@@ -674,6 +726,7 @@ class OECTradeService:
             "chart_rows": chart_rows,
             "source": "OEC / BACI (HS Rev. 2017)",
             "currency": "USD",
+            "quantity_unit": "tonnes",  # BACI : poids net en tonnes métriques
             "has_data": any_exports or any_imports,
         }
 
@@ -707,7 +760,7 @@ class OECTradeService:
             params = self._build_params(
                 cube=OEC_CUBES[DEFAULT_CUBE],
                 drilldowns=["Year"],
-                measures=["Trade Value"],
+                measures=["Trade Value", "Quantity"],
                 cuts={country_dim: oec_id, "Year": ",".join(str(y) for y in years)},
                 limit=1000,
             )
@@ -731,6 +784,7 @@ class OECTradeService:
             "chart_rows": chart_rows,
             "source": "OEC / BACI (HS Rev. 2017)",
             "currency": "USD",
+            "quantity_unit": "tonnes",  # BACI : poids net en tonnes métriques
             "has_data": any(r["exports"] > 0 or r["imports"] > 0 for r in chart_rows),
         }
 
@@ -794,7 +848,7 @@ class OECTradeService:
         params = self._build_params(
             cube=OEC_CUBES[DEFAULT_CUBE],
             drilldowns=["Year", "Exporter Country"],
-            measures=["Trade Value"],
+            measures=["Trade Value", "Quantity"],
             cuts={"Year": str(year), "HS6": oec_hs_id},
             limit=200,  # Get more to filter African countries
         )
@@ -818,7 +872,62 @@ class OECTradeService:
             "year": year,
             "total_countries": len(african_data),
             "data": african_data[:limit],
+            "quantity_unit": "tonnes",  # champ Quantity des lignes (BACI)
             "source": "OEC/BACI",
+        }
+
+    async def get_top_african_importers(self, hs_code: str, year: int, limit: int = 54) -> Dict:
+        """
+        Principaux IMPORTATEURS africains d'un produit — miroir de
+        ``get_top_african_exporters``. UNE seule requête (cut HS6, drilldown
+        Importer Country) sur le canal OEC gratuit du module Statistiques,
+        avec son cache — remplace le fan-out 54 pays du module Opportunités.
+        """
+        hs6_code = hs_code.zfill(6)[:6]
+        if len(hs_code) == 4:
+            hs6_code = hs_code.zfill(4) + "00"
+
+        oec_hs_id = self._format_oec_hs6_id(hs6_code)
+
+        params = self._build_params(
+            cube=OEC_CUBES[DEFAULT_CUBE],
+            drilldowns=["Year", "Importer Country"],
+            measures=["Trade Value", "Quantity"],
+            cuts={"Year": str(year), "HS6": oec_hs_id},
+            limit=200,
+        )
+
+        result = await self._make_request(params)
+
+        african_by_oec_id = {
+            v["oec_id"]: (iso3, v) for iso3, v in AFRICAN_COUNTRIES_OEC.items() if v.get("oec_id")
+        }
+        african_data = []
+        for row in result.get("data", []):
+            hit = african_by_oec_id.get(row.get("Importer Country ID", ""))
+            if not hit:
+                continue
+            iso3, info = hit
+            value = row.get("Trade Value") or 0
+            if value > 0:
+                african_data.append(
+                    {
+                        "country_iso3": iso3,
+                        "country_name": info.get("name_fr") or info.get("name_en") or iso3,
+                        "hs_code": hs6_code,
+                        "import_value": value,
+                        "import_quantity": row.get("Quantity") or 0,
+                    }
+                )
+
+        african_data.sort(key=lambda x: x["import_value"], reverse=True)
+        return {
+            "hs_code": hs_code,
+            "year": year,
+            "total_countries": len(african_data),
+            "data": african_data[:limit],
+            "quantity_unit": "tonnes",  # BACI : poids net en tonnes métriques
+            "source": "OEC/BACI (canal gratuit du module Statistiques)",
         }
 
     def _format_product_response(

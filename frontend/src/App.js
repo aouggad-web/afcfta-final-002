@@ -20,8 +20,8 @@ import ToolsTab from './components/tools/ToolsTab';
 import RulesTab from './components/rules/RulesTab';
 import CountryProfilesTab from './components/profiles/CountryProfilesTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
-import OpportunitiesTab from './components/opportunities/OpportunitiesTab';
-import BankingInfoPanel from './components/banking/BankingInfoPanel';
+import FinanceTab from './components/finance/FinanceTab';
+import OpportunityReportTab from './components/reports/OpportunityReportTab';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -59,7 +59,17 @@ const texts = {
 function App() {
   const { i18n } = useTranslation();
   const [countries, setCountries] = useState([]);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  // Onglet actif persisté en session : si la page se recharge (ex. websocket
+  // HMR coupé par un proxy, mise à jour du service worker...), l'utilisateur
+  // revient sur SON module au lieu d'être renvoyé au dashboard. sessionStorage
+  // (pas localStorage) : une nouvelle visite repart du dashboard, un simple
+  // rechargement conserve la place.
+  const [activeTab, setActiveTab] = useState(
+    () => sessionStorage.getItem('zlecaf_active_tab') || 'dashboard'
+  );
+  useEffect(() => {
+    sessionStorage.setItem('zlecaf_active_tab', activeTab);
+  }, [activeTab]);
   const [language, setLanguage] = useState(i18n.language || 'fr');
   const [stats, setStats] = useState(null);
   const [backendOnline, setBackendOnline] = useState(null);
@@ -86,19 +96,29 @@ function App() {
     i18n.changeLanguage(newLang);
   };
 
+  // Navigation inter-modules (ex.: Statistiques → Opportunités avec pré-remplissage).
+  useEffect(() => {
+    const onGotoTab = (e) => {
+      const tab = e?.detail?.tab;
+      if (tab) setActiveTab(tab);
+    };
+    window.addEventListener('zlecaf:goto-tab', onGotoTab);
+    return () => window.removeEventListener('zlecaf:goto-tab', onGotoTab);
+  }, []);
+
   const handleTabChange = (type, value) => {
     if (type === 'tab') {
       const tabMapping = {
         dashboard: 'dashboard',
         calculator: 'calculator',
         stats: 'statistics',
-        opps: 'opportunities',
         production: 'production',
         logistics: 'logistics',
         banking: 'banking',
         tools: 'tools',
         roo: 'rules',
         profiles: 'profiles',
+        reports: 'reports',
       };
       setActiveTab(tabMapping[value] || value);
     } else if (type === 'language') {
@@ -111,13 +131,13 @@ function App() {
       dashboard: 'dashboard',
       calculator: 'calculator',
       statistics: 'stats',
-      opportunities: 'opps',
       production: 'production',
       logistics: 'logistics',
       banking: 'banking',
       tools: 'tools',
       rules: 'roo',
       profiles: 'profiles',
+      reports: 'reports',
     };
     return reverseMapping[activeTab] || activeTab;
   };
@@ -200,25 +220,6 @@ function App() {
           </div>
         );
 
-      case 'opportunities':
-        return (
-          <div className="afcfta-section afcfta-fadeIn">
-            <SectionHeader
-              title={language === 'fr' ? 'Opportunités Commerciales' : 'Trade Opportunities'}
-              subtitle={
-                language === 'fr'
-                  ? "Analyse des marchés et substitution d'importations"
-                  : 'Market analysis and import substitution'
-              }
-              dotColor="success"
-            />
-            <div style={{ height: 20 }} />
-            <div className="afcfta-card">
-              <OpportunitiesTab language={language} />
-            </div>
-          </div>
-        );
-
       case 'production':
         return (
           <div className="afcfta-section afcfta-fadeIn">
@@ -261,18 +262,16 @@ function App() {
         return (
           <div className="afcfta-section afcfta-fadeIn">
             <SectionHeader
-              title={language === 'fr' ? 'Système Bancaire Africain' : 'African Banking System'}
+              title={language === 'fr' ? 'Finance – Banque & Assurance' : 'Finance – Banking & Insurance'}
               subtitle={
                 language === 'fr'
-                  ? 'Change, domiciliation, financement du commerce'
-                  : 'Forex, domiciliation, trade finance'
+                  ? 'Change, domiciliation, financement du commerce, assurance-crédit export'
+                  : 'Forex, domiciliation, trade finance, export credit insurance'
               }
               dotColor="info"
             />
             <div style={{ height: 20 }} />
-            <div className="afcfta-card">
-              <BankingInfoPanel language={language} countries={countries} />
-            </div>
+            <FinanceTab language={language} countries={countries} />
           </div>
         );
 
@@ -324,6 +323,25 @@ function App() {
             <div style={{ height: 20 }} />
             <div className="afcfta-card">
               <CountryProfilesTab language={language} />
+            </div>
+          </div>
+        );
+
+      case 'reports':
+        return (
+          <div className="afcfta-section afcfta-fadeIn">
+            <SectionHeader
+              title={language === 'fr' ? 'Opportunités' : 'Opportunities'}
+              subtitle={
+                language === 'fr'
+                  ? 'Scénarios S1–S4, recherche de marchés, rapport bilatéral et substitution SH6 (S5)'
+                  : 'S1–S4 scenarios, market finding, bilateral report and HS6 substitution (S5)'
+              }
+              dotColor="copper"
+            />
+            <div style={{ height: 20 }} />
+            <div className="afcfta-card">
+              <OpportunityReportTab countries={countries} language={language} />
             </div>
           </div>
         );

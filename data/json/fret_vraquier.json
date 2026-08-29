@@ -1,0 +1,52 @@
+{
+  "_meta": {
+    "description": "Facteur de marché du fret vrac sec (proxy BDRY) appliqué au modèle distance-coût de backend/logistics_bulk_fees_data.py, uniformément par classe de navire. Proxy, pas l'indice Baltic par classe. Sans facteur live, repli statique 1,0 (modèle calibré Baltic 2024). Zéro fabrication.",
+    "generated_at": "2026-07-17T06:52:28Z",
+    "generator": "etl/update_bulk_freight_indices.py (GitHub Actions, jours ouvrés)",
+    "market_proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
+    "market_proxy_url": "https://finance.yahoo.com/quote/BDRY/",
+    "plausibility_multiplier_bounds": [
+      0.3,
+      3.0
+    ],
+    "is_live": true
+  },
+  "vessel_class_multipliers": {
+    "handysize": {
+      "multiplier": 1.2759,
+      "is_live": true,
+      "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
+      "proxy_level": 12.65,
+      "proxy_baseline_12m": 9.9145,
+      "as_of": "2026-07-16",
+      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 12.65 vs moyenne glissante 9.9145 (251 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
+    },
+    "supramax": {
+      "multiplier": 1.2759,
+      "is_live": true,
+      "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
+      "proxy_level": 12.65,
+      "proxy_baseline_12m": 9.9145,
+      "as_of": "2026-07-16",
+      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 12.65 vs moyenne glissante 9.9145 (251 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
+    },
+    "panamax": {
+      "multiplier": 1.2759,
+      "is_live": true,
+      "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
+      "proxy_level": 12.65,
+      "proxy_baseline_12m": 9.9145,
+      "as_of": "2026-07-16",
+      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 12.65 vs moyenne glissante 9.9145 (251 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
+    },
+    "capesize": {
+      "multiplier": 1.2759,
+      "is_live": true,
+      "proxy": "Breakwave Dry Bulk Shipping ETF (BDRY)",
+      "proxy_level": 12.65,
+      "proxy_baseline_12m": 9.9145,
+      "as_of": "2026-07-16",
+      "source": "Yahoo Finance (BDRY) — proxy marché du fret vrac sec (panier futures Capesize/Panamax/Supramax) — cours 12.65 vs moyenne glissante 9.9145 (251 j). Proxy marché vrac sec appliqué uniformément aux classes (pas l'indice Baltic par classe)."
+    }
+  }
+}

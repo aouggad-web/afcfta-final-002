@@ -1,0 +1,94 @@
+name: Update Market Prices
+
+on:
+  # Tous les jours ouvrés à 05:30 UTC (après la clôture US, avant l'ouverture
+  # de la journée africaine/européenne). Les marchés sont fermés le week-end.
+  schedule:
+    - cron: '30 5 * * 1-5'
+
+  # Déclenchement manuel possible
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Script en stdlib pure — aucune dépendance à installer.
+      - name: Fetch world market prices
+        id: fetch
+        run: python backend/etl/update_world_market_prices.py
+
+      - name: Validate output against backend loader
+        run: |
+          python - <<'EOF'
+          import sys
+          sys.path.insert(0, 'backend')
+          from services import shipment_estimator as se
+          live = se._load_live_benchmarks()
+          assert live, "cours_mondiaux.json illisible par le backend"
+          merged = se._apply_live_benchmarks({}, live)
+          assert all(v["usd_per_kg"] > 0 for v in merged.values())
+          print(f"Backend lit {len(live)} cours rafraîchis : OK")
+          EOF
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --quiet -- data/json/cours_mondiaux.json || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        if: steps.check_changes.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(data): cours mondiaux du jour (update_market_prices #${{ github.run_number }})"
+          committer: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
+          author: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
+          branch: automated-market-prices
+          delete-branch: true
+          title: "chore(data): mise à jour quotidienne des cours mondiaux"
+          body: |
+            ## Mise à jour automatique des cours mondiaux
+
+            Rafraîchit `data/json/cours_mondiaux.json`, lu par
+            `backend/services/shipment_estimator.py` (indice valeur/poids :
+            dimensionnement conteneurs + repère de négociation).
+
+            **Run :** #${{ github.run_number }} · **Déclencheur :** ${{ github.event_name }}
+
+            Chaque cours porte sa cotation brute, sa date de marché (fournie
+            par l'API, pas par le workflow) et sa source. Les symboles en
+            échec sont absents du fichier : le backend retombe sur ses
+            valeurs statiques datées (zéro fabrication).
+
+            La branche est fixe (`automated-market-prices`) : si une PR de
+            cours est déjà ouverte, elle est mise à jour au lieu d'en créer
+            une nouvelle chaque jour.
+          labels: |
+            automated
+            data-update
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Cours mondiaux — $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.check_changes.outputs.changes }}" == "true" ]; then
+            echo "✅ Cours mis à jour — PR créée/actualisée" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ Aucun changement de cours" >> $GITHUB_STEP_SUMMARY
+          fi

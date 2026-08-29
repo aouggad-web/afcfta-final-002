@@ -5,13 +5,27 @@ analytics, AI recommendations and mobile quick-lookup.
 
 from __future__ import annotations
 
+import sys
 import time
 import uuid
 from datetime import datetime, timezone
+from importlib import import_module
+from pathlib import Path
 from typing import Any, Optional
 
+from analytics.dashboard_generator import DashboardGenerator  # type: ignore
+from analytics.regional_intelligence import RegionalAnalyticsEngine  # type: ignore
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
+from search.hs_code_search import get_search_engine  # type: ignore
+from search.investment_search import InvestmentOpportunitySearch  # type: ignore
+
+_ENGINE_DIR = Path(__file__).resolve().parents[3] / "engine"
+if str(_ENGINE_DIR) not in sys.path:
+    sys.path.insert(0, str(_ENGINE_DIR))
+
+compute_duties = import_module("calculation").compute_duties
+CanonicalTariffLine = import_module("schemas.canonical_model").CanonicalTariffLine
 
 # ---------------------------------------------------------------------------
 # Internal imports (backend/ is on sys.path)
@@ -34,17 +48,12 @@ except Exception:
     _SCORER = None
     _SCORING_AVAILABLE = False
 
-from analytics.dashboard_generator import DashboardGenerator  # type: ignore
-from analytics.regional_intelligence import RegionalAnalyticsEngine  # type: ignore
-from search.hs_code_search import AdvancedHSCodeSearch  # type: ignore
-from search.investment_search import InvestmentOpportunitySearch  # type: ignore
-
 # ---------------------------------------------------------------------------
 # Module-level singletons
 # ---------------------------------------------------------------------------
 _regional_engine = RegionalAnalyticsEngine()
 _dashboard_gen = DashboardGenerator()
-_hs_search = AdvancedHSCodeSearch()
+_hs_search = get_search_engine()
 _inv_search = InvestmentOpportunitySearch()
 
 router = APIRouter(prefix="/v2")
@@ -84,6 +93,14 @@ class RouteItem(BaseModel):
 class BulkTariffRequest(BaseModel):
     products: list[ProductItem]
     routes: list[RouteItem]
+
+
+class CalculationRequest(BaseModel):
+    line: CanonicalTariffLine
+    cif_value: float = Field(..., gt=0)
+    quantity: Optional[float] = Field(default=None, gt=0)
+    currency: str = Field(default="LOCAL", min_length=3, max_length=12)
+    regime: str = Field(default="NPF", pattern="^(NPF|ZLECAF)$")
 
 
 class OpportunityItem(BaseModel):
@@ -151,7 +168,7 @@ async def comprehensive_search(request: ComprehensiveSearchRequest) -> dict[str,
     start = time.perf_counter()
 
     # HS code / product search
-    products = _hs_search.fuzzy_search(request.query, limit=10)
+    products = _hs_search.search(request.query, limit=10)
     if request.filters.hs_chapters:
         products = [p for p in products if p.get("chapter") in request.filters.hs_chapters]
 
@@ -199,6 +216,41 @@ async def comprehensive_search(request: ComprehensiveSearchRequest) -> dict[str,
         "total_count": len(products) + len(investment_opportunities),
         "execution_time_ms": elapsed_ms,
         "pagination": {"page": page, "limit": limit},
+    }
+
+
+@router.post("/calculations", summary="Canonical v4 tariff calculation")
+async def calculate_tariff_v2(request: CalculationRequest) -> dict[str, Any]:
+    """Calculate duties and taxes using the canonical v4 fiscal engine."""
+    start = time.perf_counter()
+    result = compute_duties(
+        request.line,
+        cif_value=request.cif_value,
+        quantity=request.quantity,
+        currency=request.currency,
+        regime=request.regime,
+    )
+    elapsed_ms = round((time.perf_counter() - start) * 1000, 2)
+
+    return {
+        "success": True,
+        "schema_version": request.line.schema_version,
+        "calculation_engine": "engine.calculation.compute_duties",
+        "processing_time_ms": elapsed_ms,
+        "data_status": result.data_status,
+        "disclaimer": result.disclaimer,
+        "warnings": result.warnings,
+        "result": {
+            "country_iso3": result.country_iso3,
+            "national_code": result.national_code,
+            "cif_value": result.cif_value,
+            "currency": result.currency,
+            "regime": result.regime,
+            "total_duties_taxes": result.total_duties_taxes,
+            "landed_cost": result.landed_cost,
+            "effective_rate_pct": result.effective_rate_pct,
+            "lines": [line.__dict__ for line in result.lines],
+        },
     }
 
 
@@ -313,7 +365,7 @@ async def ai_recommendations(profile: UserProfile) -> dict[str, Any]:
                 "profile_used": raw_profile,
                 "generated_at": datetime.now(timezone.utc).isoformat(),
             }
-        except Exception as exc:
+        except Exception:
             # Fall through to heuristic fallback
             pass
 
@@ -351,7 +403,7 @@ async def mobile_quick_lookup(
     result: dict[str, Any] = {"query": {"hs_code": hs_code, "country": country}}
 
     if hs_code:
-        matches = _hs_search.fuzzy_search(hs_code, limit=3)
+        matches = _hs_search.search(hs_code, limit=3)
         result["hs_info"] = matches[0] if matches else None
         chapter = hs_code[:2] if len(hs_code) >= 2 else "00"
         rates = _TARIFF_RATES.get(chapter, _TARIFF_RATES["default"])

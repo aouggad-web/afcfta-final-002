@@ -27,6 +27,7 @@ Usage :
     python3 scripts/build_production_faostat_usgs.py --faostat-only
     python3 scripts/build_production_faostat_usgs.py --usgs-path /path/to/mcs2024.xlsx
 """
+
 from __future__ import annotations
 
 import argparse
@@ -235,6 +236,65 @@ FAOSTAT_ITEM_TO_COMMODITY: dict[str, str] = {
     "Teff": "Teff",
     "Beans, dry": "Beans",
     "Soyabeans": "Soybeans",
+    # Noms QCL modernes manquants — expliquaient l'absence totale de ces
+    # produits pourtant mappés côté HS (soja, tabac, plantain, vanille,
+    # cannelle, girofle) : le bulk FAOSTAT actuel les publie sous ces
+    # libellés-ci, pas sous les anciens.
+    "Soya beans": "Soybeans",
+    "Unmanufactured tobacco": "Tobacco",
+    "Plantains and cooking bananas": "Plantain",
+    "Vanilla, raw": "Vanilla",
+    "Cinnamon and cinnamon-tree flowers, raw": "Cinnamon",
+    "Cloves (whole stems), raw": "Cloves",
+    "Cloves": "Cloves",
+    "Cinnamon (canella)": "Cinnamon",
+    # ── Élargissement : cultures africaines à fort potentiel d'export ──
+    # (noms FAOSTAT QCL modernes ET anciens pour maximiser les correspondances ;
+    #  un item absent du bulk est simplement ignoré, jamais inventé.)
+    "Mangoes, guavas and mangosteens": "Mangoes",
+    "Mangoes": "Mangoes",
+    "Avocados": "Avocados",
+    "Grapes": "Grapes",
+    "Watermelons": "Watermelons",
+    "Papayas": "Papayas",
+    "Ginger, raw": "Ginger",
+    "Ginger": "Ginger",
+    "Garlic": "Garlic",
+    "Sweet potatoes": "Sweet potatoes",
+    "Cabbages": "Cabbages",
+    "Cabbages and other brassicas": "Cabbages",
+    "Carrots and turnips": "Carrots",
+    "Eggplants (aubergines)": "Eggplants",
+    "Okra": "Okra",
+    "Cucumbers and gherkins": "Cucumbers",
+    "Lettuce and chicory": "Lettuce",
+    "Spinach": "Spinach",
+    "Cauliflowers and broccoli": "Cauliflowers",
+    "Lentils": "Lentils",
+    "Lentils, dry": "Lentils",
+    "Chick peas": "Chickpeas",
+    "Chick peas, dry": "Chickpeas",
+    "Peas, dry": "Peas",
+    "Pigeon peas": "Pigeon peas",
+    "Pigeon peas, dry": "Pigeon peas",
+    "Rape or colza seed": "Rapeseed",
+    "Rapeseed": "Rapeseed",
+    "Linseed": "Linseed",
+    "Karite nuts (sheanuts)": "Shea nuts",
+    "Sheanuts": "Shea nuts",
+    "Kola nuts": "Kola nuts",
+    "Pepper (Piper spp.), raw": "Pepper",
+    "Chillies and peppers, dry (Capsicum spp., Pimenta spp.), raw": "Chillies and peppers",
+    "Chillies and peppers, green (Capsicum spp. and Pimenta spp.)": "Chillies and peppers",
+    "Almonds, in shell": "Almonds",
+    "Apples": "Apples",
+    "Oats": "Oats",
+    "Oranges": "Oranges",
+    "Lemons and limes": "Lemons and limes",
+    "Raw milk of cattle": "Cattle milk",
+    "Hen eggs in shell, fresh": "Hen eggs",
+    "Meat of cattle with the bone, fresh or chilled": "Cattle meat",
+    "Meat of chickens, fresh or chilled": "Chicken meat",
 }
 
 # Codes FAOSTAT par commodity (pour traçabilité)
@@ -567,55 +627,27 @@ def fetch_faostat_bulk(
 
         reader = csv.DictReader(io.StringIO(raw_bytes.decode("utf-8", errors="replace")))
 
+        # Le bulk FAOSTAT existe en deux formats :
+        #   - LONG (« Normalized ») : une ligne par (pays, item, année), colonne "Year" ;
+        #   - LARGE (défaut, dont NOFLAG) : une ligne par (pays, item, élément),
+        #     avec UNE COLONNE PAR ANNÉE (Y2019, Y2020, ...).
+        # Le run GitHub 28689166688 a montré « 14 750 lignes lues → 0 retenues » :
+        # le zip Afrique est en format LARGE. On supporte les deux.
+        fieldnames = reader.fieldnames or []
+        year_columns = [
+            (col, int(col[1:]))
+            for col in fieldnames
+            if col.startswith("Y") and col[1:].isdigit() and int(col[1:]) in YEARS_RANGE
+        ]
+        wide_format = "Year" not in fieldnames and bool(year_columns)
+        if wide_format:
+            print(f"      Format LARGE détecté ({len(year_columns)} colonnes années retenues)")
+
         total_rows = 0
         matched_rows = 0
         unknown_items: set[str] = set()
 
-        for row in reader:
-            total_rows += 1
-
-            # Filtre élément : Production quantity uniquement
-            elem = row.get("Element Code", row.get("Element code", "")).strip()
-            if elem != FAOSTAT_ELEMENT_CODE:
-                continue
-
-            # Filtre année
-            try:
-                year = int(row.get("Year", "0").strip())
-            except ValueError:
-                continue
-            if year not in YEARS_RANGE:
-                continue
-
-            # Résolution pays
-            iso3 = _resolve_fao_country(row)
-            if not iso3:
-                continue
-
-            # Résolution commodity
-            item_raw = row.get("Item", "").strip()
-            commodity = FAOSTAT_ITEM_TO_COMMODITY.get(item_raw)
-            if not commodity:
-                unknown_items.add(item_raw)
-                continue
-
-            # Valeur
-            val_str = row.get("Value", "").strip()
-            if not val_str:
-                continue
-            try:
-                val = float(val_str)
-            except ValueError:
-                continue
-            if val <= 0:
-                continue
-
-            # Unité (FAOSTAT bulk utilise "t" pour tonnes)
-            raw_unit = row.get("Unit", "t").strip()
-            unit = "tonnes" if raw_unit in ("t", "T") else raw_unit
-
-            item_code = row.get("Item Code", row.get("Item code", "")).strip()
-
+        def _emit(iso3: str, commodity: str, item_code: str, unit: str, year: int, val: float):
             records.append(
                 {
                     "country_name": ISO3_FR_NAME.get(iso3, iso3),
@@ -643,7 +675,63 @@ def fetch_faostat_bulk(
                     "_ingested_from": "FAOSTAT_BULK",
                 }
             )
-            matched_rows += 1
+
+        def _to_value(val_str: str) -> Optional[float]:
+            val_str = (val_str or "").strip()
+            if not val_str:
+                return None
+            try:
+                val = float(val_str)
+            except ValueError:
+                return None
+            return val if val > 0 else None
+
+        for row in reader:
+            total_rows += 1
+
+            # Filtre élément : Production quantity uniquement
+            elem = row.get("Element Code", row.get("Element code", "")).strip()
+            if elem != FAOSTAT_ELEMENT_CODE:
+                continue
+
+            # Résolution pays
+            iso3 = _resolve_fao_country(row)
+            if not iso3:
+                continue
+
+            # Résolution commodity
+            item_raw = row.get("Item", "").strip()
+            commodity = FAOSTAT_ITEM_TO_COMMODITY.get(item_raw)
+            if not commodity:
+                unknown_items.add(item_raw)
+                continue
+
+            # Unité (FAOSTAT bulk utilise "t" pour tonnes)
+            raw_unit = row.get("Unit", "t").strip()
+            unit = "tonnes" if raw_unit in ("t", "T") else raw_unit
+            item_code = row.get("Item Code", row.get("Item code", "")).strip()
+
+            if wide_format:
+                # Une ligne = toutes les années : émettre un enregistrement par
+                # colonne Y#### non vide dans la plage.
+                for col, year in year_columns:
+                    val = _to_value(row.get(col, ""))
+                    if val is None:
+                        continue
+                    _emit(iso3, commodity, item_code, unit, year, val)
+                    matched_rows += 1
+            else:
+                try:
+                    year = int(row.get("Year", "0").strip())
+                except ValueError:
+                    continue
+                if year not in YEARS_RANGE:
+                    continue
+                val = _to_value(row.get("Value", ""))
+                if val is None:
+                    continue
+                _emit(iso3, commodity, item_code, unit, year, val)
+                matched_rows += 1
 
         print(f"      {total_rows:,} lignes lues → {matched_rows:,} retenues")
         if unknown_items:

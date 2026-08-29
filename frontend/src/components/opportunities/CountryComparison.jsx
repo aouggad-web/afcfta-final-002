@@ -10,6 +10,8 @@ import {
   TrendingUp, TrendingDown, Scale, Zap,
 } from 'lucide-react';
 import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -190,6 +192,44 @@ export default function CountryComparison({ language = 'fr' }) {
   const nameA = AFCFTA_COUNTRIES.find(c => c.iso3 === countryA)?.name || countryA || 'A';
   const nameB = AFCFTA_COUNTRIES.find(c => c.iso3 === countryB)?.name || countryB || 'B';
 
+  // Rapport PDF de la comparaison : commerce bilatéral + indicateurs économiques.
+  const buildPdfSpec = () => {
+    if (!data) return null;
+    const fr = lang !== 'en';
+    const pair = (label, va, vb) => ({
+      title: label,
+      keyValues: [
+        { label: nameA, value: va ?? '—' },
+        { label: nameB, value: vb ?? '—' },
+      ],
+    });
+    return {
+      badge: fr ? 'COMPARAISON PAYS' : 'COUNTRY COMPARISON',
+      title: `${nameA} ⇄ ${nameB}`,
+      subtitle: txt.subtitle || txt.title,
+      sections: [
+        (bilateral.exports_a_to_b_musd != null || bilateral.exports_b_to_a_musd != null) && {
+          title: fr ? 'Commerce bilatéral' : 'Bilateral trade',
+          keyValues: [
+            { label: `${nameA} → ${nameB}`, value: fmtMUSD(bilateral.exports_a_to_b_musd) },
+            { label: `${nameB} → ${nameA}`, value: fmtMUSD(bilateral.exports_b_to_a_musd) },
+          ],
+        },
+        pair(
+          txt.gdp,
+          econ.gdp_a_billion != null ? `$${Number(econ.gdp_a_billion).toFixed(1)}Bn` : null,
+          econ.gdp_b_billion != null ? `$${Number(econ.gdp_b_billion).toFixed(1)}Bn` : null,
+        ),
+        pair(txt.growth, econ.gdp_growth_a != null ? `${econ.gdp_growth_a}%` : null, econ.gdp_growth_b != null ? `${econ.gdp_growth_b}%` : null),
+        pair(txt.hdi, econ.hdi_a, econ.hdi_b),
+        pair(txt.inflation, econ.inflation_a != null ? `${econ.inflation_a}%` : null, econ.inflation_b != null ? `${econ.inflation_b}%` : null),
+        data.note && { title: fr ? 'Note' : 'Note', paragraphs: [data.note] },
+      ].filter(Boolean),
+      source: data.sources ? data.sources.join(' · ') : 'IMF, UNDP, OEC',
+      filename: opportunityPdfFilename('Comparaison', `${countryA}_${countryB}`),
+    };
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* Header */}
@@ -285,6 +325,19 @@ export default function CountryComparison({ language = 'fr' }) {
       {/* Results */}
       {!loading && !error && data && (
         <>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <OpportunityPdfExport getSpec={buildPdfSpec} language={lang} />
+          </div>
+          {/* Data-status notice (e.g. OEC trade flows temporarily unavailable) */}
+          {data.note && (
+            <div className="afcfta-card" style={{ padding: '12px 16px', borderLeft: '3px solid var(--gold)', background: 'rgba(212,137,26,0.06)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text)' }}>
+                <Info style={{ width: 15, height: 15, color: 'var(--gold)', flexShrink: 0 }} />
+                {data.note}
+              </div>
+            </div>
+          )}
+
           {/* Bilateral trade */}
           {(bilateral.exports_a_to_b_musd != null || bilateral.exports_b_to_a_musd != null) && (
             <div className="afcfta-card" style={{ padding: '18px 22px' }}>

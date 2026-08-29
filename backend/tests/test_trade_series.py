@@ -29,18 +29,46 @@ def test_aggregates_by_year_and_computes_balance():
     series = build_trade_series(exports_rows, imports_rows, years)
 
     assert [r["year"] for r in series] == years
-    assert series[0] == {"year": 2022, "exports": 150.0, "imports": 80.0, "balance": 70.0}
+    assert series[0] == {
+        "year": 2022,
+        "exports": 150.0,
+        "imports": 80.0,
+        "balance": 70.0,
+        "exports_quantity": 0.0,
+        "imports_quantity": 0.0,
+    }
     assert series[1]["balance"] == -50.0  # 200 - 250
-    assert series[2] == {"year": 2024, "exports": 300.0, "imports": 120.0, "balance": 180.0}
+    assert series[2]["exports"] == 300.0
+    assert series[2]["imports"] == 120.0
+    assert series[2]["balance"] == 180.0
 
 
 def test_missing_years_are_zero_filled():
     years = [2018, 2019, 2020]
     # Seule 2019 a des données.
     series = build_trade_series([{"Year": 2019, "Trade Value": 42.0}], [], years)
-    assert series[0] == {"year": 2018, "exports": 0, "imports": 0, "balance": 0}
+    assert series[0]["exports"] == 0
+    assert series[0]["imports"] == 0
+    assert series[0]["balance"] == 0
     assert series[1]["exports"] == 42.0
     assert series[2]["exports"] == 0
+
+
+def test_quantity_is_aggregated_by_year():
+    years = [2022, 2023]
+    exports_rows = [
+        {"Year": 2022, "Trade Value": 100.0, "Quantity": 10.0},
+        {"Year": 2022, "Trade Value": 50.0, "Quantity": 5.0},
+        {"Year": 2023, "Trade Value": 200.0, "Quantity": 20.0},
+    ]
+    imports_rows = [
+        {"Year": 2022, "Trade Value": 80.0, "Quantity": 8.0},
+    ]
+    series = build_trade_series(exports_rows, imports_rows, years)
+    assert series[0]["exports_quantity"] == 15.0
+    assert series[0]["imports_quantity"] == 8.0
+    assert series[1]["exports_quantity"] == 20.0
+    assert series[1]["imports_quantity"] == 0.0
 
 
 def test_ignores_years_outside_range_and_handles_nulls():

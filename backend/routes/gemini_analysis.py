@@ -5,16 +5,26 @@ WITH HYBRID CACHING (Redis → JSON file fallback)
 """
 
 import logging
-from typing import Optional
+from typing import Annotated, Optional
 
-from fastapi import APIRouter, Body, HTTPException, Query
+from auth import check_ai_quota, require_admin
+from fastapi import APIRouter, Body, Depends, HTTPException, Query
 from services.claude_trade_service import claude_trade_service
+from services.real_comparison_service import real_comparison_service
+from services.real_product_service import real_product_service
+from services.real_summary_service import real_summary_service
 from services.real_trade_data_service import AFRICAN_COUNTRIES, has_trade_data
 from services.redis_cache_service import cache_service
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/ai", tags=["AI Trade Analysis"])
+
+# These endpoints call the Anthropic Claude API and have real per-request
+# cost, so they're metered against the caller's monthly quota (see auth.py)
+# in addition to the router-wide require_auth dependency applied at
+# registration in routes/__init__.py.
+_ai_quota = [Depends(check_ai_quota)]
 
 # Countries without trade data (occupied territories, etc.)
 NO_DATA_COUNTRIES = {
@@ -58,7 +68,7 @@ def check_country_has_data(country_name: str) -> tuple:
     return True, None
 
 
-@router.get("/opportunities/{country_name}")
+@router.get("/opportunities/{country_name}", dependencies=_ai_quota)
 async def get_ai_trade_opportunities(
     country_name: str,
     mode: str = Query(default="export", description="Analysis mode: export, import, or industrial"),
@@ -121,7 +131,7 @@ async def get_ai_trade_opportunities(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/profile/{country_name}")
+@router.get("/profile/{country_name}", dependencies=_ai_quota)
 async def get_ai_country_profile(
     country_name: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
@@ -163,17 +173,16 @@ async def get_ai_product_analysis(
     hs_code: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
     """
-    Get AI-analyzed trade flows for a specific product (HS code)
+    Trade flows for a specific product (HS code), from REAL data.
 
-    Provides:
-    - Product information and classification
-    - African trade flows summary
-    - Top African exporters and importers
-    - Production capacities
-    - Substitution opportunities
+    Provides (all sourced, no LLM-generated figures):
+    - Product information and classification (WCO HS nomenclature)
+    - African trade flows summary (OEC BACI / UN Comtrade)
+    - Top African exporters and importers (OEC)
+    - Production capacities (FAO / USGS / UNIDO)
 
     Args:
-        hs_code: HS code (4 or 6 digits)
+        hs_code: HS code (2, 4 or 6 digits)
         lang: Language for the response
 
     Returns:
@@ -184,7 +193,7 @@ async def get_ai_product_analysis(
         raise HTTPException(status_code=400, detail="HS code must be 2, 4, or 6 digits")
 
     try:
-        result = await claude_trade_service.analyze_product_by_hs_code(hs_code=hs_code, lang=lang)
+        result = await real_product_service.analyze_product_by_hs_code(hs_code=hs_code, lang=lang)
 
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
@@ -198,7 +207,7 @@ async def get_ai_product_analysis(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/balance/{country_name}")
+@router.get("/balance/{country_name}", dependencies=_ai_quota)
 async def get_ai_trade_balance(
     country_name: str, lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
@@ -258,6 +267,25 @@ async def check_ai_service_health():
     }
 
 
+@router.get("/oec-health")
+async def check_oec_health():
+    """
+    Diagnostic: is the OEC trade API reachable from this deployment?
+
+    The Par Produit and Comparaison tabs need live OEC access for trade flows.
+    Use this to confirm the deployment's network policy allows outbound HTTPS to
+    api-v2.oec.world (returns reachability, HTTP status, latency).
+    """
+    from services.real_trade_data_service import real_trade_service
+
+    result = await real_trade_service.ping_oec()
+    return {
+        "service": "OEC (Observatory of Economic Complexity)",
+        "status": "operational" if result.get("reachable") else "unreachable",
+        **result,
+    }
+
+
 @router.get("/compare")
 async def compare_two_countries(
     country_a: str = Query(..., description="First African country name"),
@@ -265,8 +293,11 @@ async def compare_two_countries(
     lang: str = Query(default="fr", description="Language (fr/en)"),
 ):
     """
-    Compare two African countries as potential AfCFTA trade partners.
-    Returns bilateral trade data, economic comparison, and trade complementarity analysis.
+    Compare two African countries as AfCFTA trade partners, from REAL data.
+
+    Economic indicators come from country_data (IMF/World Bank/UNDP), bilateral
+    trade and complementarity from OEC (BACI/UN Comtrade). No LLM-generated
+    figures.
     """
     if not country_a or not country_b:
         raise HTTPException(status_code=400, detail="Both country_a and country_b are required")
@@ -274,13 +305,14 @@ async def compare_two_countries(
         raise HTTPException(status_code=400, detail="The two countries must be different")
 
     try:
-        result = await claude_trade_service.compare_countries(
+        result = await real_comparison_service.compare_countries(
             country_a=country_a,
             country_b=country_b,
             lang=lang,
         )
         if "error" in result and len(result) <= 2:
-            raise HTTPException(status_code=500, detail=result["error"])
+            # Unknown/invalid country is a client input error, not a server fault
+            raise HTTPException(status_code=404, detail=result["error"])
         return result
     except HTTPException:
         raise
@@ -294,19 +326,20 @@ async def get_ai_trade_summary(
     lang: str = Query(default="fr", description="Language for response (fr/en)")
 ):
     """
-    Get AI-generated comprehensive African trade summary
+    Comprehensive African trade summary, from REAL data.
 
-    Used for the "Vue d'ensemble" (Overview) tab.
-    Returns aggregate statistics across all African countries.
+    Used for the "Vue d'ensemble" (Overview) tab. Aggregates come from the
+    curated 2024 trade dataset (OEC/World Bank/IMF) and country_data — no
+    LLM-generated figures.
 
     Args:
         lang: Language for the response
 
     Returns:
-        Trade summary with top countries, sectors, and growth metrics
+        Trade summary with real continental aggregates and top trading countries
     """
     try:
-        result = await claude_trade_service.get_trade_summary(lang=lang)
+        result = await real_summary_service.get_trade_summary(lang=lang)
 
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
@@ -320,7 +353,7 @@ async def get_ai_trade_summary(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.get("/value-chains")
+@router.get("/value-chains", dependencies=_ai_quota)
 async def get_ai_value_chains(
     sector: str = Query(
         default=None,
@@ -364,9 +397,10 @@ async def get_ai_value_chains(
 
 
 @router.get("/cache/stats")
-async def get_cache_statistics():
+async def get_cache_statistics(key_doc: Annotated[dict, Depends(require_admin)] = None):
     """
-    Get cache statistics (Redis + JSON file fallback)
+    Get cache statistics (Redis + JSON file fallback) — admin only,
+    consistent with the other /ai/cache/* management endpoints.
 
     Returns:
         Cache status, active backend, hit rate, and entry count
@@ -384,6 +418,7 @@ async def invalidate_cache(
         default=None, description="Country name to invalidate specific country cache entries."
     ),
     lang: str = Query(default=None, description="Language filter for invalidation (fr/en)."),
+    key_doc: Annotated[dict, Depends(require_admin)] = None,
 ):
     """
     Invalidate cache entries (admin endpoint)
@@ -409,7 +444,18 @@ async def invalidate_cache(
             pdv = None
         for mode in ["export", "import", "industrial"]:
             for l in ([lang] if lang else ["fr", "en"]):
-                params = {"country": country, "mode": mode, "lang": l}
+                # Doit reproduire EXACTEMENT les clés de cache_params posées par
+                # ClaudeTradeService.analyze_trade_opportunities() (pv, model) —
+                # le cache est un match exact par clé, pas un préfixe : un champ
+                # manquant ici laisse l'ancienne analyse vivre jusqu'au TTL de
+                # 90 jours au lieu d'être invalidée.
+                params = {
+                    "country": country,
+                    "mode": mode,
+                    "lang": l,
+                    "pv": 2,
+                    "model": claude_trade_service.MODEL,
+                }
                 if pdv and mode in ("export", "industrial"):
                     params["pdv"] = pdv
                 if cache_service.invalidate("claude_analysis", params):
@@ -442,7 +488,8 @@ async def clear_cache(
     pattern: str = Query(
         default=None,
         description="Pattern to clear (e.g., 'gemini_analysis'). Leave empty to clear all.",
-    )
+    ),
+    key_doc: Annotated[dict, Depends(require_admin)] = None,
 ):
     """
     Clear cache entries (admin endpoint)

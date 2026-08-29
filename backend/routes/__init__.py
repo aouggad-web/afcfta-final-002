@@ -25,10 +25,14 @@ MIGRATION STATUS:
 
 import logging
 
-from auth import require_auth
+from auth import require_admin, require_auth
 from fastapi import APIRouter, Depends
 
 _auth = [Depends(require_auth)]
+# Administrative/operational routers (ETL, crawlers, cache management) — these
+# trigger data collection or mutate shared cache state, so they're restricted
+# to admin-tier keys rather than any valid key.
+_admin = [Depends(require_admin)]
 
 _logger = logging.getLogger(__name__)
 
@@ -54,6 +58,7 @@ from .production import router as production_router
 from .rules_of_origin import init_data as init_rules_data
 from .rules_of_origin import router as rules_router
 from .statistics import router as statistics_router
+from .strategic_intelligence import router as strategic_router
 from .substitution import router as substitution_router
 from .tariffs import router as tariffs_router
 from .tariffs_calculation import router as tariffs_calc_router
@@ -291,6 +296,22 @@ except ImportError:
     BANKING_AVAILABLE = False
 
 try:
+    from .banking_enhancements import router as banking_enhancements_router
+
+    BANKING_ENHANCEMENTS_AVAILABLE = True
+except ImportError:
+    banking_enhancements_router = None
+    BANKING_ENHANCEMENTS_AVAILABLE = False
+
+try:
+    from .insurance import router as insurance_router
+
+    INSURANCE_AVAILABLE = True
+except ImportError:
+    insurance_router = None
+    INSURANCE_AVAILABLE = False
+
+try:
     from .postgres_tariffs import router as postgres_tariffs_router
 
     POSTGRES_TARIFFS_AVAILABLE = True
@@ -346,6 +367,15 @@ except ImportError:
     admin_projects_router = None
     ADMIN_PROJECTS_AVAILABLE = False
 
+try:
+    from .reports import router as reports_router
+
+    REPORTS_AVAILABLE = True
+except ImportError as e:
+    reports_router = None
+    REPORTS_AVAILABLE = False
+    _logger.warning(f"Premium reports route unavailable: {e}")
+
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -367,8 +397,11 @@ def register_routes(api_router: APIRouter):
     api_router.include_router(countries_router, tags=["Countries"], dependencies=_auth)
     api_router.include_router(tariffs_router, tags=["Tariffs"], dependencies=_auth)
     api_router.include_router(statistics_router, tags=["Statistics"], dependencies=_auth)
-    api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_auth)
+    api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_admin)
     api_router.include_router(substitution_router, tags=["Trade Substitution"], dependencies=_auth)
+    api_router.include_router(
+        strategic_router, tags=["Strategic Trade Intelligence"], dependencies=_auth
+    )
     if GEMINI_AVAILABLE:
         api_router.include_router(gemini_router, tags=["AI Analysis"], dependencies=_auth)
     api_router.include_router(rules_router, tags=["Rules of Origin"], dependencies=_auth)
@@ -389,7 +422,7 @@ def register_routes(api_router: APIRouter):
     if EXPORT_ROUTER_AVAILABLE:
         api_router.include_router(export_router, tags=["Export"], dependencies=_auth)
     if CRAWL_AVAILABLE:
-        api_router.include_router(crawl_router, tags=["Crawl Orchestration"], dependencies=_auth)
+        api_router.include_router(crawl_router, tags=["Crawl Orchestration"], dependencies=_admin)
     if TARIFF_DATA_AVAILABLE:
         api_router.include_router(
             tariff_data_router, tags=["Tariff Data Collection"], dependencies=_auth
@@ -401,20 +434,20 @@ def register_routes(api_router: APIRouter):
     if SEARCH_AVAILABLE:
         api_router.include_router(search_router, tags=["Text Search"], dependencies=_auth)
     if CACHE_ROUTER_AVAILABLE:
-        api_router.include_router(cache_router, tags=["Cache Management"], dependencies=_auth)
+        api_router.include_router(cache_router, tags=["Cache Management"], dependencies=_admin)
     if DZA_CRAWLER_AVAILABLE:
-        api_router.include_router(dza_crawler_router, tags=["DZA Crawler"], dependencies=_auth)
+        api_router.include_router(dza_crawler_router, tags=["DZA Crawler"], dependencies=_admin)
     if ENHANCED_CALCULATOR_AVAILABLE:
         api_router.include_router(
             enhanced_calculator_router, tags=["Enhanced Calculator v2"], dependencies=_auth
         )
     if NORTH_AFRICA_CRAWLERS_AVAILABLE:
         api_router.include_router(
-            north_africa_crawlers_router, tags=["North Africa Crawlers"], dependencies=_auth
+            north_africa_crawlers_router, tags=["North Africa Crawlers"], dependencies=_admin
         )
     if CEMAC_CRAWLERS_AVAILABLE:
         api_router.include_router(
-            cemac_crawlers_router, tags=["CEMAC Crawlers"], dependencies=_auth
+            cemac_crawlers_router, tags=["CEMAC Crawlers"], dependencies=_admin
         )
     if REGIONAL_DATA_AVAILABLE:
         api_router.include_router(
@@ -456,6 +489,18 @@ def register_routes(api_router: APIRouter):
         )
     if BANKING_AVAILABLE:
         api_router.include_router(banking_router, tags=["Banking System"], dependencies=_auth)
+    if BANKING_ENHANCEMENTS_AVAILABLE:
+        api_router.include_router(
+            banking_enhancements_router,
+            tags=["Enhancements"],
+            dependencies=_auth,
+        )
+    if INSURANCE_AVAILABLE:
+        api_router.include_router(
+            insurance_router,
+            tags=["Insurance"],
+            dependencies=_auth,
+        )
     if POSTGRES_TARIFFS_AVAILABLE:
         api_router.include_router(
             postgres_tariffs_router, tags=["PostgreSQL Tariffs"], dependencies=_auth
@@ -477,4 +522,8 @@ def register_routes(api_router: APIRouter):
     if DISMANTLEMENT_AVAILABLE:
         api_router.include_router(
             dismantlement_router, tags=["ZLECAf Dismantlement Schedule"], dependencies=_auth
+        )
+    if REPORTS_AVAILABLE:
+        api_router.include_router(
+            reports_router, tags=["Premium Opportunity Reports"], dependencies=_auth
         )

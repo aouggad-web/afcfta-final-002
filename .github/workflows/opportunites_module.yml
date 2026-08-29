@@ -1,0 +1,141 @@
+name: Module Opportunités — Exécution
+
+# Exécution manuelle du module Opportunités depuis GitHub :
+#   1. ETL World Bank (PIB/hab → L3 des besoins ; réserves → couverture d'import) ;
+#   2. Démarrage du backend FastAPI ;
+#   3. Smoke-test des endpoints (S2/S3/bilatéral) — par défaut : noix de cajou
+#      brutes (SH 080131) de Guinée-Bissau vers l'Algérie ;
+#   4. Publication des rapports JSON + datasets WB en artefacts.
+#
+# Sur un runner GitHub le réseau est ouvert : l'API World Bank répond, et l'OEC
+# aussi si le secret OEC_API_TOKEN est configuré (sinon dégradation gracieuse).
+# Optionnel : committer les datasets WB sur la branche (commit_wb_data).
+
+on:
+  workflow_dispatch:
+    inputs:
+      hs_code:
+        description: 'Code SH du produit'
+        required: false
+        default: '080131'
+      producer:
+        description: 'Pays producteur/exportateur (ISO3)'
+        required: false
+        default: 'GNB'
+      destination:
+        description: 'Marché cible ISO3 (vide = meilleur marché classé par S2)'
+        required: false
+        default: 'DZA'
+      top_k:
+        description: 'Nombre de marchés analysés en profondeur (S2)'
+        required: false
+        default: '5'
+      run_wb_etl:
+        description: 'Lancer les ETL World Bank (PIB/hab + réserves)'
+        required: false
+        type: boolean
+        default: true
+      commit_wb_data:
+        description: 'Committer les datasets WB produits sur la branche'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  run-module:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install backend dependencies
+        run: pip install -r backend/requirements.txt
+
+      - name: Run World Bank ETL (GDP per capita + reserves)
+        if: ${{ inputs.run_wb_etl }}
+        working-directory: backend
+        # Non bloquant : le module dégrade gracieusement sans ces datasets.
+        continue-on-error: true
+        run: |
+          python -m etl.fetch_wb_gdp
+          python -m etl.fetch_wb_reserves
+
+      - name: Start backend
+        working-directory: backend
+        env:
+          PUBLIC_DATA_ACCESS: 'true'
+          OEC_API_TOKEN: ${{ secrets.OEC_API_TOKEN }}
+        run: |
+          export SECRET_KEY="$(openssl rand -hex 32)"
+          nohup python -m uvicorn server:app --port 8000 > ../uvicorn.log 2>&1 &
+          echo "Waiting for backend readiness..."
+          timeout 180 bash -c \
+            'until curl -sf http://localhost:8000/api/reports/health > /dev/null; do sleep 2; done'
+          echo "Backend ready."
+
+      - name: Smoke-test Opportunités (S2 + S3 + bilatéral ultra-fin)
+        working-directory: backend
+        env:
+          HS_CODE: ${{ inputs.hs_code }}
+          PRODUCER: ${{ inputs.producer }}
+          DESTINATION: ${{ inputs.destination }}
+          TOP_K: ${{ inputs.top_k }}
+        run: |
+          DEST_FLAG=()
+          if [ -n "$DESTINATION" ]; then
+            DEST_FLAG=(--destination "$DESTINATION")
+          fi
+          python -m scripts.smoke_opportunites \
+            --hs-code "$HS_CODE" \
+            --producer "$PRODUCER" \
+            --top-k "$TOP_K" \
+            "${DEST_FLAG[@]}" \
+            --out-dir ../test_reports/smoke_opportunites
+
+      - name: Upload reports and datasets as artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: opportunites-${{ inputs.hs_code }}-${{ inputs.producer }}
+          path: |
+            test_reports/smoke_opportunites/
+            data/json/wb_gdp_pc.json
+            data/json/wb_reserves.json
+            uvicorn.log
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Commit World Bank datasets to branch
+        if: ${{ inputs.commit_wb_data }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # N'ajouter que les fichiers réellement produits (l'ETL est non
+          # bloquant : en cas de timeout WB, ne pas faire échouer le job ici).
+          added=0
+          for f in data/json/wb_gdp_pc.json data/json/wb_reserves.json; do
+            if [ -f "$f" ]; then git add "$f"; added=1; else echo "⚠ $f absent (ETL en échec ?) — ignoré"; fi
+          done
+          if [ "$added" = "0" ] || git diff --cached --quiet; then
+            echo "Aucun dataset WB nouveau — rien à committer."
+          else
+            git commit -m "data: datasets World Bank (PIB/hab + réserves) via workflow"
+            git push
+          fi

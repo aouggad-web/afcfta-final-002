@@ -1,0 +1,5 @@
+0101.21 00 -- Reproducteurs de race pure                         u      ex      ex      ex
+0101.29 00 -- Autres                                             u      20      20      ex
+0101.30 10 --- Reproducteurs de race pure                        u      ex      ex      ex
+0101.30 90 --- Autres                                            u      20      20      ex
+0201.10 00 -- Carcasses et demi-carcasses                        kg     20      20      ex

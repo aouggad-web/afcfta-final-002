@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   Calculator,
   BarChart3,
-  Target,
   Factory,
   Ship,
   Landmark,
@@ -13,6 +12,7 @@ import {
   Menu,
   Moon,
   Sun,
+  TrendingUp,
   X,
 } from "lucide-react";
 
@@ -21,13 +21,13 @@ const NAV_ITEMS = (isFrench) => [
   { id: "dashboard",  label: isFrench ? "Tableau de bord" : "Dashboard",      icon: LayoutDashboard },
   { id: "calculator", label: isFrench ? "Calculateur"     : "Calculator",     icon: Calculator },
   { id: "stats",      label: isFrench ? "Statistiques"    : "Statistics",     icon: BarChart3 },
-  { id: "opps",       label: isFrench ? "Opportunités"    : "Opportunities",  icon: Target },
   { id: "production", label: isFrench ? "Production"      : "Production",     icon: Factory },
   { id: "logistics",  label: isFrench ? "Logistique"      : "Logistics",      icon: Ship },
-  { id: "banking",    label: isFrench ? "Banque"          : "Banking",        icon: Landmark },
+  { id: "banking",    label: isFrench ? "Finance"         : "Finance",        icon: Landmark },
   { id: "tools",      label: isFrench ? "Outils"          : "Tools",          icon: Wrench },
   { id: "roo",        label: isFrench ? "R. d'Origine"    : "Rules of Origin",icon: FileCheck },
   { id: "profiles",   label: isFrench ? "Profils"         : "Profiles",       icon: Globe2 },
+  { id: "reports",    label: isFrench ? "Opportunités"    : "Opportunities",  icon: TrendingUp },
 ];
 
 /* ─── Horizontal topbar component ───────────────────────────── */

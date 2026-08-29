@@ -10,7 +10,9 @@ Provides real trade data for African countries
 
 import asyncio
 import logging
+import os
 from collections import defaultdict
+from datetime import datetime
 from typing import Dict, List
 
 import httpx
@@ -22,7 +24,44 @@ WITS_BASE_URL = "https://wits.worldbank.org/API/V1/SDMX/V21/rest"
 WITS_DATA_URL = "https://wits.worldbank.org/API/V1"
 
 # OEC API (Already integrated in oec_trade_service.py)
-OEC_BASE_URL = "https://api-v2.oec.world/tesseract/data.jsonrecords"
+# Base URL is overridable via env in case a paid plan uses a distinct host.
+OEC_BASE_URL = os.getenv("OEC_BASE_URL", "https://api-v2.oec.world/tesseract/data.jsonrecords")
+
+# Paid-plan API token. Read from the environment / secret store ONLY — never
+# hardcode a token here or commit one. Accepts either OEC_API_TOKEN or the
+# OEC_API_KEY name already reserved in .env.example. When absent, requests go
+# out unauthenticated (public tier, subject to rate limits and blocking).
+OEC_API_TOKEN = os.getenv("OEC_API_TOKEN") or os.getenv("OEC_API_KEY")
+
+
+def _oec_params(params: Dict) -> Dict:
+    """Inject the OEC token into request params when configured."""
+    if OEC_API_TOKEN:
+        enriched = dict(params)
+        enriched["token"] = OEC_API_TOKEN
+        return enriched
+    return params
+
+
+# Supported OEC drilldown/record-key levels and the digit width each HS code
+# is zero-padded to. Centralised so hs_level is validated once instead of
+# duplicating the same if/elif/else in every fetcher below.
+_HS_LEVEL_DIGITS = {"HS2": 2, "HS4": 4, "HS6": 6}
+
+
+def _normalize_hs_level(hs_level: str) -> str:
+    """Normalize a caller-supplied HS level to one of HS2/HS4/HS6.
+
+    A caller-supplied level is interpolated directly into the OEC drilldown
+    string and used as a record-key lookup (``record.get(f"{hs_level} ID")``);
+    left unvalidated, a lowercase or unexpected value (e.g. ``"hs6"``) would
+    silently fall through to HS4 handling while still requesting a
+    non-existent drilldown field from OEC. Uppercase and default to HS4 for
+    anything unrecognized instead of failing that way.
+    """
+    normalized = (hs_level or "").strip().upper()
+    return normalized if normalized in _HS_LEVEL_DIGITS else "HS4"
+
 
 # African Countries (55 pays incluant la RASD - Membre UA depuis 1984)
 # Note: La RASD n'a pas de statistiques commerciales (territoire occupé)
@@ -527,8 +566,13 @@ HS_PRODUCT_NAMES = {
     "96": {"fr": "Ouvrages divers", "en": "Miscellaneous articles"},
     "97": {"fr": "Objets d'art", "en": "Works of art"},
     # Specific HS4 codes
+    "0402": {
+        "fr": "Lait et crème de lait concentrés/sucrés",
+        "en": "Concentrated/sweetened milk and cream",
+    },
     "0603": {"fr": "Fleurs coupées", "en": "Cut flowers"},
     "0713": {"fr": "Légumes secs", "en": "Dried legumes"},
+    "0803": {"fr": "Bananes, y compris les plantains", "en": "Bananas, including plantains"},
     "0805": {"fr": "Agrumes", "en": "Citrus fruits"},
     "0901": {"fr": "Café", "en": "Coffee"},
     "0902": {"fr": "Thé", "en": "Tea"},
@@ -544,23 +588,48 @@ HS_PRODUCT_NAMES = {
     "1801": {"fr": "Cacao en fèves", "en": "Cocoa beans"},
     "2202": {"fr": "Boissons non alcoolisées", "en": "Non-alcoholic beverages"},
     "2523": {"fr": "Ciment", "en": "Cement"},
+    "2601": {"fr": "Minerais de fer et concentrés", "en": "Iron ores and concentrates"},
     "2709": {"fr": "Huiles brutes de pétrole", "en": "Crude petroleum oils"},
     "2710": {"fr": "Huiles de pétrole raffinées", "en": "Refined petroleum oils"},
     "2711": {"fr": "Gaz de pétrole", "en": "Petroleum gases"},
+    "2814": {"fr": "Ammoniac", "en": "Ammonia"},
     "3004": {"fr": "Médicaments", "en": "Medicaments"},
     "3102": {"fr": "Engrais azotés", "en": "Nitrogen fertilizers"},
     "3105": {"fr": "Engrais NPK", "en": "NPK fertilizers"},
     "3901": {"fr": "Polymères d'éthylène", "en": "Ethylene polymers"},
     "3902": {"fr": "Polymères de propylène", "en": "Propylene polymers"},
+    "4001": {"fr": "Caoutchouc naturel", "en": "Natural rubber"},
     "4011": {"fr": "Pneumatiques neufs", "en": "New pneumatic tires"},
     "5201": {"fr": "Coton non cardé", "en": "Cotton, not carded"},
+    "6109": {
+        "fr": "T-shirts et maillots de corps, en bonneterie",
+        "en": "T-shirts, singlets, knitted",
+    },
+    "7102": {"fr": "Diamants", "en": "Diamonds"},
     "7108": {"fr": "Or", "en": "Gold"},
+    "7207": {
+        "fr": "Demi-produits en fer ou aciers non alliés",
+        "en": "Semi-finished iron/non-alloy steel products",
+    },
     "7208": {"fr": "Produits laminés plats en fer", "en": "Flat-rolled iron products"},
+    "7308": {
+        "fr": "Constructions et parties de constructions en fer ou acier",
+        "en": "Structures and parts of structures, of iron or steel",
+    },
     "7403": {"fr": "Cuivre affiné", "en": "Refined copper"},
+    "8471": {
+        "fr": "Ordinateurs et machines de traitement de données",
+        "en": "Automatic data-processing machines (computers)",
+    },
+    "8481": {"fr": "Articles de robinetterie", "en": "Taps, cocks, valves and similar appliances"},
     "8517": {"fr": "Téléphones", "en": "Telephones"},
     "8544": {"fr": "Fils et câbles électriques", "en": "Insulated wire, cable"},
     "8703": {"fr": "Voitures de tourisme", "en": "Motor cars"},
     "8704": {"fr": "Véhicules pour transport de marchandises", "en": "Goods transport vehicles"},
+    "8708": {
+        "fr": "Parties et accessoires de véhicules automobiles",
+        "en": "Motor vehicle parts and accessories",
+    },
 }
 
 
@@ -575,29 +644,52 @@ class RealTradeDataService:
         self._cache_ttl = 3600  # 1 hour
 
     async def get_oec_imports(
-        self, country_iso3: str, year: int = 2022, limit: int = 100
+        self, country_iso3: str, year: int = 2022, limit: int = 100, hs_level: str = "HS4"
     ) -> List[Dict]:
         """
         Get imports for a country from OEC API
+
+        Args:
+            country_iso3: Country ISO3 code
+            year: Year for trade data
+            limit: Number of results to return
+            hs_level: Harmonized System level (HS2, HS4, HS6) - default HS4
         """
         country_info = AFRICAN_COUNTRIES.get(country_iso3.upper())
         if not country_info:
             return []
 
         oec_id = country_info["oec"]
+        if not oec_id:
+            # No OEC identifier for this territory (e.g. ESH/Western Sahara):
+            # sending None would become an empty "Importer Country" query
+            # param rather than raising, silently asking OEC for a bogus
+            # aggregate instead of failing loudly.
+            return []
+
+        hs_level = _normalize_hs_level(hs_level)
+        hs_digits = _HS_LEVEL_DIGITS[hs_level]
 
         try:
             params = {
                 "cube": "trade_i_baci_a_17",
-                "drilldowns": "Year,Importer Country,HS4",
+                "drilldowns": f"Year,Importer Country,{hs_level}",
                 "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Importer Country": oec_id,
+                # OEC renvoie les lignes dans l'ordre du code SH (croissant), pas
+                # par valeur. Sans tri serveur, un `limit` tronque avant le
+                # chapitre 27 (hydrocarbures) et au-delà : un importateur diversifié
+                # comme le Nigeria (~4 800 lignes) ne montrerait que les premiers
+                # chapitres (agro/alimentaire) et jamais ses vraies plus grosses
+                # importations (pétrole raffiné 27, machines 84, véhicules 87).
+                # On force donc un tri décroissant sur la valeur côté serveur.
+                "sort": "Trade Value.desc",
                 "limit": str(limit * 5),  # Get more to filter
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     data = response.json()
@@ -609,13 +701,13 @@ class RealTradeDataService:
                     # Format results
                     results = []
                     for record in records[:limit]:
-                        hs4_id = str(record.get("HS4 ID", ""))
-                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
+                        hs_id = str(record.get(f"{hs_level} ID", ""))
+                        hs_code = hs_id[-hs_digits:].zfill(hs_digits) if hs_id else ""
 
                         results.append(
                             {
-                                "hs_code": hs4_code,
-                                "product_name": record.get("HS4", ""),
+                                "hs_code": hs_code,
+                                "product_name": record.get(hs_level, ""),
                                 "trade_value": record.get("Trade Value", 0),
                                 "quantity": record.get("Quantity", 0),
                                 "year": year,
@@ -630,29 +722,46 @@ class RealTradeDataService:
         return []
 
     async def get_oec_exports(
-        self, country_iso3: str, year: int = 2022, limit: int = 100
+        self, country_iso3: str, year: int = 2022, limit: int = 100, hs_level: str = "HS4"
     ) -> List[Dict]:
         """
         Get exports for a country from OEC API
+
+        Args:
+            country_iso3: Country ISO3 code
+            year: Year for trade data
+            limit: Number of results to return
+            hs_level: Harmonized System level (HS2, HS4, HS6) - default HS4
         """
         country_info = AFRICAN_COUNTRIES.get(country_iso3.upper())
         if not country_info:
             return []
 
         oec_id = country_info["oec"]
+        if not oec_id:
+            # No OEC identifier for this territory (e.g. ESH/Western Sahara):
+            # avoid sending an empty "Exporter Country" query param.
+            return []
+
+        hs_level = _normalize_hs_level(hs_level)
+        hs_digits = _HS_LEVEL_DIGITS[hs_level]
 
         try:
             params = {
                 "cube": "trade_i_baci_a_17",
-                "drilldowns": "Year,Exporter Country,HS4",
+                "drilldowns": f"Year,Exporter Country,{hs_level}",
                 "measures": "Trade Value,Quantity",
                 "Year": str(year),
                 "Exporter Country": oec_id,
+                # Tri serveur décroissant sur la valeur (cf. get_oec_imports) :
+                # sans lui, un `limit` tronque dans l'ordre du code SH et ampute
+                # les vraies forces d'export d'un pays diversifié.
+                "sort": "Trade Value.desc",
                 "limit": str(limit * 5),
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     data = response.json()
@@ -662,13 +771,13 @@ class RealTradeDataService:
 
                     results = []
                     for record in records[:limit]:
-                        hs4_id = str(record.get("HS4 ID", ""))
-                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
+                        hs_id = str(record.get(f"{hs_level} ID", ""))
+                        hs_code = hs_id[-hs_digits:].zfill(hs_digits) if hs_id else ""
 
                         results.append(
                             {
-                                "hs_code": hs4_code,
-                                "product_name": record.get("HS4", ""),
+                                "hs_code": hs_code,
+                                "product_name": record.get(hs_level, ""),
                                 "trade_value": record.get("Trade Value", 0),
                                 "quantity": record.get("Quantity", 0),
                                 "year": year,
@@ -683,31 +792,50 @@ class RealTradeDataService:
         return []
 
     async def get_oec_bilateral_from_world(
-        self, importer_iso3: str, year: int = 2022, limit: int = 50
+        self, importer_iso3: str, year: int = 2022, limit: int = 50, hs_level: str = "HS4"
     ) -> Dict:
         """
         Get imports by partner country to identify non-African sources
+
+        Args:
+            importer_iso3: Importer country ISO3 code
+            year: Year for trade data
+            limit: Number of results to return
+            hs_level: Harmonized System level (HS2, HS4, HS6) - default HS4
         """
         country_info = AFRICAN_COUNTRIES.get(importer_iso3.upper())
         if not country_info:
             return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
 
         oec_id = country_info["oec"]
-        african_oec_ids = [c["oec"] for c in AFRICAN_COUNTRIES.values()]
+        if not oec_id:
+            # No OEC identifier for this territory (e.g. ESH/Western Sahara):
+            # avoid sending an empty "Importer Country" query param.
+            return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
+
+        hs_level = _normalize_hs_level(hs_level)
+        hs_digits = _HS_LEVEL_DIGITS[hs_level]
+        # Some AfCFTA members have no OEC identifier (e.g. Western Sahara ESH):
+        # skip them so ``af_id.replace(...)`` below never hits a None.
+        african_oec_ids = [c["oec"] for c in AFRICAN_COUNTRIES.values() if c.get("oec")]
 
         try:
             # Get imports by exporter country
             params = {
                 "cube": "trade_i_baci_a_17",
-                "drilldowns": "Year,Importer Country,Exporter Country,HS4",
+                "drilldowns": f"Year,Importer Country,Exporter Country,{hs_level}",
                 "measures": "Trade Value",
                 "Year": str(year),
                 "Importer Country": oec_id,
+                # Tri serveur décroissant : ce drilldown croise Importateur ×
+                # Exportateur × SH (des dizaines de milliers de lignes), donc un
+                # `limit` sans tri écarterait les plus gros flux (pétrole, etc.).
+                "sort": "Trade Value.desc",
                 "limit": "500",
             }
 
             async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.get(OEC_BASE_URL, params=params)
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                 if response.status_code == 200:
                     data = response.json()
@@ -720,10 +848,12 @@ class RealTradeDataService:
 
                     for record in records:
                         value = record.get("Trade Value", 0)
-                        exporter_id = record.get("Exporter Country ID", "")
-                        hs4_id = str(record.get("HS4 ID", ""))
-                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
-                        product_name = record.get("HS4", "")
+                        # OEC can return this as a non-string JSON value (or
+                        # None); coerce before .startswith() below.
+                        exporter_id = str(record.get("Exporter Country ID", "") or "")
+                        hs_id = str(record.get(f"{hs_level} ID", ""))
+                        hs_code = hs_id[-hs_digits:].zfill(hs_digits) if hs_id else ""
+                        product_name = record.get(hs_level, "")
                         exporter_name = record.get("Exporter Country", "")
 
                         total_value += value
@@ -738,10 +868,10 @@ class RealTradeDataService:
                             from_africa += value
                         else:
                             from_outside += value
-                            if hs4_code and value > 1000000:  # Only significant imports
-                                products_from_outside[hs4_code]["value"] += value
-                                products_from_outside[hs4_code]["name"] = product_name
-                                products_from_outside[hs4_code]["sources"].add(exporter_name)
+                            if hs_code and value > 1000000:  # Only significant imports
+                                products_from_outside[hs_code]["value"] += value
+                                products_from_outside[hs_code]["name"] = product_name
+                                products_from_outside[hs_code]["sources"].add(exporter_name)
 
                     # Format products from outside
                     products_list = []
@@ -769,6 +899,114 @@ class RealTradeDataService:
             logger.error(f"OEC bilateral API error: {str(e)}")
 
         return {"total": 0, "from_africa": 0, "from_outside": 0, "products_from_outside": []}
+
+    async def ping_oec(self, year: int = 2022) -> Dict:
+        """
+        Lightweight connectivity check against the OEC API.
+
+        Performs a minimal real request and reports whether OEC is reachable,
+        the HTTP status, latency and how many records came back. Used by the
+        /ai/oec-health diagnostic so operators can confirm that outbound access
+        to api-v2.oec.world is allowed by the deployment's network policy.
+        """
+        params = {
+            "cube": "trade_i_baci_a_17",
+            "drilldowns": "Year,Exporter Country,HS4",
+            "measures": "Trade Value",
+            "Year": str(year),
+            "Exporter Country": "afzaf",
+            "limit": "1",
+        }
+        start = datetime.utcnow()
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
+            latency_ms = int((datetime.utcnow() - start).total_seconds() * 1000)
+            records = []
+            if response.status_code == 200:
+                records = response.json().get("data", [])
+            return {
+                "reachable": response.status_code == 200 and bool(records),
+                "status_code": response.status_code,
+                "latency_ms": latency_ms,
+                "records": len(records),
+                "endpoint": OEC_BASE_URL,
+                "token_configured": bool(OEC_API_TOKEN),
+                "error": None if response.status_code == 200 else f"HTTP {response.status_code}",
+            }
+        except Exception as e:
+            latency_ms = int((datetime.utcnow() - start).total_seconds() * 1000)
+            return {
+                "reachable": False,
+                "status_code": None,
+                "latency_ms": latency_ms,
+                "records": 0,
+                "endpoint": OEC_BASE_URL,
+                "token_configured": bool(OEC_API_TOKEN),
+                "error": str(e),
+            }
+
+    async def get_bilateral_trade(
+        self, exporter_iso3: str, importer_iso3: str, year: int = 2022, limit: int = 10
+    ) -> Dict:
+        """
+        Real directional trade flow exporter -> importer from the OEC API.
+
+        Returns the total exported value plus the top HS4 products. Used by the
+        country-comparison view to show real bilateral trade (not estimates).
+        """
+        exp_info = AFRICAN_COUNTRIES.get(exporter_iso3.upper())
+        imp_info = AFRICAN_COUNTRIES.get(importer_iso3.upper())
+        if not exp_info or not imp_info or not exp_info.get("oec") or not imp_info.get("oec"):
+            return {"total_value": 0, "top_products": [], "year": year}
+
+        try:
+            params = {
+                "cube": "trade_i_baci_a_17",
+                "drilldowns": "Year,Exporter Country,Importer Country,HS4",
+                "measures": "Trade Value,Quantity",
+                "Year": str(year),
+                "Exporter Country": exp_info["oec"],
+                "Importer Country": imp_info["oec"],
+                "limit": "300",
+            }
+
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
+
+                if response.status_code == 200:
+                    records = response.json().get("data", [])
+                    total_value = 0
+                    total_quantity = 0.0
+                    products = []
+                    for record in records:
+                        value = record.get("Trade Value", 0)
+                        total_value += value
+                        total_quantity += float(record.get("Quantity") or 0)
+                        hs4_id = str(record.get("HS4 ID", ""))
+                        hs4_code = hs4_id[-4:].zfill(4) if hs4_id else ""
+                        products.append(
+                            {
+                                "hs_code": hs4_code,
+                                "product_name": record.get("HS4", ""),
+                                "value": value,
+                                "quantity": record.get("Quantity") or 0,
+                            }
+                        )
+
+                    products.sort(key=lambda p: p["value"], reverse=True)
+                    return {
+                        "total_value": total_value,
+                        "total_quantity": round(total_quantity, 2),
+                        "quantity_unit": "tonnes",  # BACI : poids net
+                        "top_products": products[:limit],
+                        "year": year,
+                    }
+
+        except Exception as e:
+            logger.error(f"OEC bilateral trade API error: {str(e)}")
+
+        return {"total_value": 0, "top_products": [], "year": year}
 
     async def get_african_exporters_for_product(self, hs_code: str, year: int = 2022) -> List[Dict]:
         """
@@ -819,7 +1057,7 @@ class RealTradeDataService:
                 }
 
                 async with httpx.AsyncClient(timeout=self.timeout) as client:
-                    response = await client.get(OEC_BASE_URL, params=params)
+                    response = await client.get(OEC_BASE_URL, params=_oec_params(params))
 
                     if response.status_code == 200:
                         data = response.json()
@@ -871,115 +1109,285 @@ class RealTradeDataService:
 
     async def get_african_importers_for_product(self, hs_code: str, year: int = 2022) -> List[Dict]:
         """
-        Find African countries that import a specific product
-        Queries OEC API for all African importers
+        African countries that import a specific product, at the EXACT HS4/HS6
+        level, across ALL 54 African countries (not a 10-country chapter-level
+        sample).
+
+        - 6+ digit code -> HS6 drilldown, exact 6-digit match.
+        - 4-5 digit code -> HS4 drilldown, exact 4-digit match.
+
+        Primary channel: the statistics module's FREE OEC client
+        (``oec_trade_service.get_top_african_importers``) — ONE cached request
+        for all importers, no token needed. Fallback: the legacy per-country
+        fan-out (one request per country, small semaphore).
         """
+        clean_hs = "".join(ch for ch in (hs_code or "") if ch.isdigit())
         try:
-            hs4 = hs_code[:4] if len(hs_code) >= 4 else hs_code.zfill(4)
+            from services.oec_trade_service import oec_service
 
-            african_importers_found = []
+            res = await oec_service.get_top_african_importers(clean_hs, year)
+            rows = (res or {}).get("data") or []
+            if rows:
+                return rows
+        except Exception as e:
+            logger.warning(f"OEC importers via free stats channel {hs_code}: {e}")
 
-            # Sample top importing African countries for efficiency
-            top_importers = ["ZAF", "EGY", "NGA", "MAR", "DZA", "KEN", "TUN", "ETH", "GHA", "TZA"]
+        clean = clean_hs
+        if len(clean) >= 6:
+            level, code, id_len, limit = "HS6", clean[:6], 6, "6000"
+        else:
+            level, code, id_len, limit = "HS4", clean[:4].zfill(4), 4, "2000"
 
-            for iso3 in top_importers:
-                country_info = AFRICAN_COUNTRIES.get(iso3)
-                if not country_info:
-                    continue
+        importers = [
+            (iso3, info)
+            for iso3, info in AFRICAN_COUNTRIES.items()
+            if info.get("has_trade_data") and info.get("oec")
+        ]
 
-                oec_id = country_info["oec"]
+        sem = asyncio.Semaphore(6)
 
-                params = {
-                    "cube": "trade_i_baci_a_17",
-                    "drilldowns": "Year,Importer Country,HS4",
-                    "measures": "Trade Value",
-                    "Year": str(year),
-                    "Importer Country": oec_id,
-                    "limit": "100",
+        async def _one(client: httpx.AsyncClient, iso3: str, info: Dict):
+            params = {
+                "cube": "trade_i_baci_a_17",
+                "drilldowns": f"Year,Importer Country,{level}",
+                "measures": "Trade Value,Quantity",
+                "Year": str(year),
+                "Importer Country": info["oec"],
+                "limit": limit,
+            }
+            async with sem:
+                try:
+                    response = await client.get(OEC_BASE_URL, params=_oec_params(params))
+                    if response.status_code != 200:
+                        return None
+                    records = response.json().get("data", [])
+                except Exception as e:
+                    logger.warning(f"OEC importers {iso3}: {e}")
+                    return None
+
+                total = 0.0
+                total_qty = 0.0
+                for record in records:
+                    rid = str(record.get(f"{level} ID", ""))
+                    rcode = rid[-id_len:].zfill(id_len) if rid else ""
+                    if rcode == code:
+                        value = record.get("Trade Value") or 0
+                        if value > 0:
+                            total += value
+                            total_qty += float(record.get("Quantity") or 0)
+                if total <= 0:
+                    return None
+                return {
+                    "country_iso3": iso3,
+                    "country_name": info["name_fr"],
+                    "hs_code": code,
+                    "import_value": total,
+                    "import_quantity": round(total_qty, 2),
                 }
 
-                try:
-                    async with httpx.AsyncClient(timeout=15.0) as client:
-                        response = await client.get(OEC_BASE_URL, params=params)
-
-                        if response.status_code == 200:
-                            data = response.json()
-                            records = data.get("data", [])
-
-                            for record in records:
-                                hs4_id = str(record.get("HS4 ID", ""))
-                                record_hs4 = hs4_id[-4:].zfill(4) if hs4_id else ""
-
-                                # Match HS code (at least first 2 digits)
-                                if record_hs4[:2] == hs4[:2]:
-                                    import_value = record.get("Trade Value", 0)
-                                    if import_value > 0:
-                                        african_importers_found.append(
-                                            {
-                                                "country_iso3": iso3,
-                                                "country_name": country_info["name_fr"],
-                                                "hs_code": record_hs4,
-                                                "product_name": record.get("HS4", ""),
-                                                "import_value": import_value,
-                                            }
-                                        )
-                except Exception as e:
-                    logger.warning(f"Error fetching imports for {iso3}: {e}")
-                    continue
-
-            # Aggregate by country
-            country_imports = {}
-            for imp in african_importers_found:
-                iso3 = imp["country_iso3"]
-                if iso3 not in country_imports:
-                    country_imports[iso3] = {
-                        "country_iso3": iso3,
-                        "country_name": imp["country_name"],
-                        "import_value": 0,
-                    }
-                country_imports[iso3]["import_value"] += imp["import_value"]
-
-            result = list(country_imports.values())
-            result.sort(key=lambda x: x["import_value"], reverse=True)
-
-            return result
-
+        try:
+            # Single pooled client shared across all country tasks (connection
+            # reuse; the semaphore still bounds concurrency).
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                gathered = await asyncio.gather(*[_one(client, i, inf) for i, inf in importers])
         except Exception as e:
             logger.error(f"OEC product importers API error: {str(e)}")
+            return []
 
-        return []
+        result = [r for r in gathered if r]
+        result.sort(key=lambda x: x["import_value"], reverse=True)
+        return result
+
+    async def get_country_product_imports(
+        self, importer_iso3: str, hs_code: str, year: int = 2022
+    ) -> Dict:
+        """
+        Total imports (USD) of a product by ONE country. Used to feed the
+        bilateral report's market-potential component and the S3 observed-imports
+        signal from real demand.
+
+        Primary channel: the SAME OEC client as the statistics module's
+        SH2/SH4/SH6 search (``oec_trade_service``) — persistent cache with
+        stale-on-error, and one cached OEC response per (country, period)
+        serves EVERY HS code (the HS filter is client-side). So a country
+        already browsed in the statistics tab keeps feeding the opportunities
+        module even when OEC is momentarily unreachable.
+
+        Fallback: the legacy direct OEC request (kept for environments where
+        the shared client is unavailable).
+
+        Returns {available, import_value_usd, hs_code, year, source} or
+        {available: False} — never fabricated.
+        """
+        clean_hs = "".join(ch for ch in (hs_code or "") if ch.isdigit())
+        try:
+            from services.oec_trade_service import DEFAULT_YEAR, oec_service
+
+            level = "hs6" if len(clean_hs) >= 6 else ("hs4" if len(clean_hs) >= 4 else "hs2")
+            hist = await oec_service.get_country_hs6_history(
+                country_iso3=importer_iso3,
+                hs_code=clean_hs,
+                n_years=3,
+                end_year=max(int(year or 0), DEFAULT_YEAR),
+                level=level,
+            )
+            rows = (hist or {}).get("chart_rows") or []
+            # Most recent year with observed imports (> 0).
+            for row in sorted(rows, key=lambda r: -(r.get("year") or 0)):
+                if (row.get("imports") or 0) > 0:
+                    return {
+                        "available": True,
+                        "import_value_usd": float(row["imports"]),
+                        "import_quantity_tonnes": float(row.get("imports_quantity") or 0) or None,
+                        "quantity_unit": "tonnes",
+                        "hs_code": clean_hs[:6] if len(clean_hs) >= 6 else clean_hs,
+                        "year": row.get("year"),
+                        "source": hist.get("source") or "OEC / BACI",
+                        "channel": "oec_trade_service (cache partagé avec le module Statistiques)",
+                    }
+        except Exception as e:
+            logger.warning(f"OEC shared-channel imports {importer_iso3}/{hs_code}: {e}")
+
+        info = AFRICAN_COUNTRIES.get((importer_iso3 or "").upper())
+        if not info or not info.get("oec"):
+            return {"available": False, "note": "Pays importateur inconnu de l'OEC."}
+
+        clean = "".join(ch for ch in (hs_code or "") if ch.isdigit())
+        if len(clean) >= 6:
+            level, code, id_len, limit = "HS6", clean[:6], 6, "6000"
+        else:
+            level, code, id_len, limit = "HS4", clean[:4].zfill(4), 4, "2000"
+
+        params = {
+            "cube": "trade_i_baci_a_17",
+            "drilldowns": f"Year,Importer Country,{level}",
+            "measures": "Trade Value",
+            "Year": str(year),
+            "Importer Country": info["oec"],
+            "limit": limit,
+        }
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                response = await client.get(OEC_BASE_URL, params=_oec_params(params))
+            if response.status_code != 200:
+                return {"available": False, "note": f"HTTP {response.status_code}"}
+            records = response.json().get("data", [])
+        except Exception as e:
+            logger.warning(f"OEC country-product imports {importer_iso3}: {e}")
+            return {"available": False, "note": str(e)}
+
+        total = 0.0
+        for record in records:
+            rid = str(record.get(f"{level} ID", ""))
+            rcode = rid[-id_len:].zfill(id_len) if rid else ""
+            if rcode == code:
+                value = record.get("Trade Value") or 0
+                if value > 0:
+                    total += value
+        if total <= 0:
+            return {"available": False, "note": "Aucune importation observée."}
+        return {
+            "available": True,
+            "import_value_usd": total,
+            "hs_code": code,
+            "year": year,
+            "source": "OEC / UN Comtrade (BACI)",
+        }
+
+    async def get_country_product_import_history(
+        self, importer_iso3: str, hs_code: str, n_years: int = 5, end_year: int = 2022
+    ) -> Dict:
+        """
+        Historique pluriannuel des imports (USD) d'UN pays pour un SH — utilisé
+        par le repli "production continentale indisponible" du module Demande
+        (``demand_estimation_service.estimate_need_from_own_imports``) : quand
+        aucune donnée de production (FAO/USGS/UNIDO) n'existe pour ce SH (ex.
+        instruments médicaux SH90), l'estimation du besoin national se rabat sur
+        les imports RÉELS du pays lui-même, moyennés sur plusieurs années pour
+        les biens durables/longue conservation (achat ponctuel/cyclique).
+
+        Même canal OEC partagé (cache persistant, stale-on-error) que
+        ``get_country_product_imports`` — une réponse par (pays, période) sert
+        tous les codes SH déjà interrogés pour ce pays.
+
+        Retourne {available, imports: [{year, import_value_usd, no_data}], source}
+        ou {available: False} — jamais fabriqué.
+        """
+        clean_hs = "".join(ch for ch in (hs_code or "") if ch.isdigit())
+        try:
+            from services.oec_trade_service import DEFAULT_YEAR, oec_service
+
+            level = "hs6" if len(clean_hs) >= 6 else ("hs4" if len(clean_hs) >= 4 else "hs2")
+            hist = await oec_service.get_country_hs6_history(
+                country_iso3=importer_iso3,
+                hs_code=clean_hs,
+                n_years=n_years,
+                end_year=min(int(end_year or DEFAULT_YEAR), DEFAULT_YEAR),
+                level=level,
+            )
+            rows = (hist or {}).get("imports") or []
+            if not rows:
+                return {"available": False, "note": "Historique d'imports indisponible."}
+            imports = [
+                {
+                    "year": r.get("year"),
+                    "import_value_usd": r.get("trade_value"),
+                    "import_quantity_tonnes": r.get("quantity") or None,
+                    "no_data": bool(r.get("no_data")),
+                }
+                for r in rows
+            ]
+            return {
+                "available": True,
+                "imports": imports,
+                "quantity_unit": "tonnes",  # BACI : poids net
+                "source": hist.get("source") or "OEC / BACI",
+            }
+        except Exception as e:
+            logger.warning(f"OEC import history {importer_iso3}/{hs_code}: {e}")
+            return {"available": False, "note": str(e)}
 
 
 def get_product_name(hs_code: str, lang: str = "fr", oec_name: str = None) -> str:
-    """Get product name for HS code with fallback to OEC name"""
+    """
+    Intitulé officiel d'un code SH, du plus spécifique au plus général :
+    sous-position SH6 exacte (base OMD 5 800+ codes) -> position SH4 ->
+    chapitre SH2 -> nom OEC fourni -> générique.
+
+    Bug corrigé : l'ancien code tronquait un SH6 à ses 4 DERNIERS chiffres
+    (« 180400 » -> « 0400 »), rattachant chaque sous-position au chapitre de
+    ses chiffres 3-4 — « Beurre de cacao » était étiqueté « Produits
+    laitiers, œufs » (chapitre 04), et tout SH6 dont les chiffres 3-4
+    valaient « 01 » devenait « Animaux vivants ».
+    """
     if not hs_code:
         return oec_name or "Produit inconnu"
 
-    # Clean HS code (remove any prefixes)
-    clean_code = str(hs_code).strip()
-    if len(clean_code) > 4:
-        clean_code = clean_code[-4:]  # Keep last 4 digits if longer
+    clean_code = "".join(ch for ch in str(hs_code) if ch.isdigit())
+    if not clean_code:
+        return oec_name or f"HS {hs_code}"
 
-    # Try exact match first
-    if clean_code in HS_PRODUCT_NAMES:
-        return HS_PRODUCT_NAMES[clean_code].get(
-            lang, HS_PRODUCT_NAMES[clean_code].get("en", clean_code)
-        )
+    # Sous-position SH6 exacte — libellés officiels FR/EN de la base OMD.
+    if len(clean_code) >= 6:
+        try:
+            from etl.hs6_database import HS6_DATABASE
 
-    # Try HS4 (first 4 digits)
-    if len(clean_code) >= 4:
-        hs4 = clean_code[:4]
-        if hs4 in HS_PRODUCT_NAMES:
-            return HS_PRODUCT_NAMES[hs4].get(lang, HS_PRODUCT_NAMES[hs4].get("en", f"HS {hs4}"))
+            entry = HS6_DATABASE.get(clean_code[:6])
+            if entry:
+                label = entry.get(f"description_{lang}") or entry.get("description_en")
+                if label:
+                    return label
+        except ImportError:  # base indisponible — replis ci-dessous
+            pass
 
-    # Try chapter (first 2 digits)
-    chapter = clean_code[:2]
-    if chapter in HS_PRODUCT_NAMES:
-        return HS_PRODUCT_NAMES[chapter].get(
-            lang, HS_PRODUCT_NAMES[chapter].get("en", f"HS {hs_code}")
-        )
+    # Position SH4 puis chapitre SH2, dans la table locale.
+    for prefix_len in (4, 2):
+        prefix = clean_code[:prefix_len]
+        if len(prefix) == prefix_len and prefix in HS_PRODUCT_NAMES:
+            return HS_PRODUCT_NAMES[prefix].get(
+                lang, HS_PRODUCT_NAMES[prefix].get("en", f"HS {prefix}")
+            )
 
-    # Return OEC name if available, otherwise generic
     if oec_name:
         return oec_name
 

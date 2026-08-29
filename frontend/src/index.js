@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import axios from "axios";
 import "./index.css";
+import "./services/csrf";
 import App from "./App";
 import AdminProjectsPage from "./components/admin/AdminProjectsPage";
 
@@ -60,18 +60,39 @@ window.ResizeObserver = class ResizeObserver extends _ {
   }
 };
 
-// Register PWA Service Worker
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/service-worker.js', { scope: '/' })
-      .then((registration) => {
-        console.log('[PWA] Service worker registered:', registration.scope);
-      })
-      .catch((err) => {
-        console.warn('[PWA] Service worker registration failed:', err);
+// Register PWA Service Worker (PROD only) — and unregister any legacy SW in DEV
+if ('serviceWorker' in navigator) {
+  if (import.meta.env.PROD) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('/service-worker.js', { scope: '/' })
+        .then((registration) => {
+          console.log('[PWA] Service worker registered:', registration.scope);
+        })
+        .catch((err) => {
+          console.warn('[PWA] Service worker registration failed:', err);
+        });
+    });
+  } else {
+    // DEV mode: clean up any SW registered by a previous PROD build
+    // to prevent stale caches from interfering with hot reload.
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister().then((ok) => {
+          if (ok) console.log('[PWA] Legacy service worker unregistered (DEV mode)');
+        });
       });
-  });
+    });
+    if ('caches' in window) {
+      caches.keys().then((keys) => {
+        keys.filter((k) => k.startsWith('afcfta-')).forEach((k) => {
+          caches.delete(k).then((ok) => {
+            if (ok) console.log(`[PWA] Legacy cache deleted: ${k}`);
+          });
+        });
+      });
+    }
+  }
 }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

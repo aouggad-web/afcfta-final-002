@@ -182,15 +182,6 @@ if _replit_app_domain:
     _escaped = _re.escape(_replit_app_domain)
     _allow_origin_regex = rf"https://{_escaped}"
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=_cors_origins,
-    allow_origin_regex=_allow_origin_regex,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
-)
-
 # Security middlewares (optional)
 try:
     from middlewares import CSRFMiddleware, RateLimitMiddleware, SecurityHeadersMiddleware
@@ -213,6 +204,16 @@ try:
     logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
 except ImportError as e:
     logger.warning(f"Security middlewares not loaded: {e}")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_cors_origins,
+    allow_origin_regex=_allow_origin_regex,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "X-CSRF-Token", "X-Requested-With"],
+    expose_headers=["X-CSRF-Token"],
+)
 
 # API Router with /api prefix
 api_router = APIRouter(prefix="/api")
@@ -372,8 +373,15 @@ from starlette.responses import FileResponse
 from starlette.staticfiles import StaticFiles
 
 build_dir = Path(__file__).parent.parent / "frontend" / "build"
-if build_dir.exists() and (build_dir / "static").exists():
-    app.mount("/static", StaticFiles(directory=str(build_dir / "static")), name="static")
+if build_dir.exists() and (build_dir / "index.html").exists():
+    # Supporte les deux layouts de build : CRA (build/static) et Vite
+    # (build/assets) — l'app est buildée par Vite (frontend/vite.config.js,
+    # outDir "build"), le mode mono-processus (Replit, petit VPS) sert le
+    # frontend directement depuis FastAPI.
+    for _sub in ("static", "assets"):
+        _subdir = build_dir / _sub
+        if _subdir.exists():
+            app.mount(f"/{_sub}", StaticFiles(directory=str(_subdir)), name=_sub)
 
     @app.get("/{full_path:path}")
     async def serve_react(full_path: str):

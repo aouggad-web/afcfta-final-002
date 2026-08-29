@@ -19,10 +19,13 @@ import {
   CartesianGrid, Tooltip, Legend, LineChart, Line, Cell, PieChart, Pie
 } from 'recharts';
 import { 
-  Search, Package, TrendingUp, Globe, Factory, 
-  ArrowRight, Loader2, ChevronRight, BarChart3, Building2, Sparkles
+  Search, Package, TrendingUp, Globe, Factory,
+  ArrowRight, Loader2, ChevronRight, BarChart3, Building2, Sparkles, Info
 } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
+import { useHsLabel } from '../../hooks/useHsLabel';
+import OpportunityPdfExport from './OpportunityPdfExport';
+import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -248,6 +251,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [productData, setProductData] = useState(null);
+  const { label: hsCodeLabel } = useHsLabel(hsCode, language);
 
   // Popular products for quick selection
   const popularProducts = [
@@ -305,7 +309,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           console.warn('AI product analysis not available:', err.message);
           return { data: null };
         }),
-        axios.get(`${API}/hs-codes/code/${hsCode}`).catch(() => ({ data: null }))
+        axios.get(`${API}/hs-codes/code/${hsCode}`, { params: { language } }).catch(() => ({ data: null }))
       ]);
 
       const chapter = hsCode.substring(0, 2);
@@ -323,7 +327,8 @@ export default function ProductAnalysisView({ language = 'fr' }) {
             hs2Code: ai.product?.hs2_code || chapter,
             hs2Name: ai.product?.hs2_name || hsInfo.chapter_name_fr || `Chapitre ${chapter}`,
             hs4Code: ai.product?.hs4_code || hs4,
-            hs4Name: ai.product?.hs4_name || hsInfo.heading_name_fr || `Position ${hs4}`
+            hs4Name: ai.product?.hs4_name || hsInfo.heading_name_fr || `Position ${hs4}`,
+            supplementaryUnitLabel: hsInfo.supplementary_unit_label || null
           },
           productionCapacities: (ai.production_capacities || []).map(p => ({
             country: p.country,
@@ -346,42 +351,12 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           marketShareTrends: extractTrends(ai.top_african_exporters),
           substitutionOpportunities: ai.substitution_opportunities || [],
           sources: ai.sources || ['Gemini AI'],
+          note: ai.note || null,
           isAiGenerated: true
         });
       } else {
-        // Fallback to default data
-        const productionCapacities = getProductionData(hsCode, chapter);
-
-        const topImporters = [
-          { country: 'Afrique du Sud', iso3: 'ZAF', tradeValue: 450000000 },
-          { country: 'Égypte', iso3: 'EGY', tradeValue: 320000000 },
-          { country: 'Nigeria', iso3: 'NGA', tradeValue: 280000000 },
-          { country: 'Maroc', iso3: 'MAR', tradeValue: 195000000 },
-          { country: 'Kenya', iso3: 'KEN', tradeValue: 145000000 },
-          { country: 'Algérie', iso3: 'DZA', tradeValue: 120000000 },
-          { country: 'Ghana', iso3: 'GHA', tradeValue: 98000000 },
-          { country: 'Tunisie', iso3: 'TUN', tradeValue: 75000000 }
-        ];
-
-        const topExporters = [
-          { country: "Côte d'Ivoire", iso3: 'CIV', tradeValue: 580000000 },
-          { country: 'Éthiopie', iso3: 'ETH', tradeValue: 420000000 },
-          { country: 'Kenya', iso3: 'KEN', tradeValue: 310000000 },
-          { country: 'Nigeria', iso3: 'NGA', tradeValue: 280000000 },
-          { country: 'Afrique du Sud', iso3: 'ZAF', tradeValue: 220000000 },
-          { country: 'Ghana', iso3: 'GHA', tradeValue: 180000000 },
-          { country: 'Tanzanie', iso3: 'TZA', tradeValue: 145000000 },
-          { country: 'Ouganda', iso3: 'UGA', tradeValue: 120000000 }
-        ];
-
-        const marketShareTrends = [
-          { year: 2020, countryValue: 165, regionalAverage: 140, globalAverage: 200 },
-          { year: 2021, countryValue: 210, regionalAverage: 175, globalAverage: 245 },
-          { year: 2022, countryValue: 280, regionalAverage: 210, globalAverage: 290 },
-          { year: 2023, countryValue: 320, regionalAverage: 245, globalAverage: 330 },
-          { year: 2024, countryValue: 365, regionalAverage: 285, globalAverage: 375 }
-        ];
-
+        // Backend product analysis unavailable: do NOT fabricate trade/production
+        // tables. Show the HS nomenclature + a clear notice instead.
         setProductData({
           product: {
             hsCode: hsCode,
@@ -389,12 +364,16 @@ export default function ProductAnalysisView({ language = 'fr' }) {
             hs2Code: chapter,
             hs2Name: hsInfo.chapter_name_fr || `Chapitre ${chapter}`,
             hs4Code: hs4,
-            hs4Name: hsInfo.heading_name_fr || `Position ${hs4}`
+            hs4Name: hsInfo.heading_name_fr || `Position ${hs4}`,
+            supplementaryUnitLabel: hsInfo.supplementary_unit_label || null
           },
-          productionCapacities,
-          importers: topImporters,
-          exporters: topExporters,
-          marketShareTrends,
+          productionCapacities: [],
+          importers: [],
+          exporters: [],
+          marketShareTrends: [],
+          note: language === 'fr'
+            ? "Service d'analyse produit temporairement indisponible. Veuillez réessayer plus tard."
+            : 'Product analysis service temporarily unavailable. Please try again later.',
           isAiGenerated: false
         });
       }
@@ -409,17 +388,12 @@ export default function ProductAnalysisView({ language = 'fr' }) {
 
   // Extract trends from historical data if available
   const extractTrends = (exporters) => {
+    // Only return a series when there is REAL historical data; otherwise return
+    // an empty array so the trend chart is hidden rather than showing fabricated
+    // numbers (there is no real per-product time series available offline).
     if (!exporters || exporters.length === 0) {
-      return [
-        { year: 2020, countryValue: 165, regionalAverage: 140, globalAverage: 200 },
-        { year: 2021, countryValue: 210, regionalAverage: 175, globalAverage: 245 },
-        { year: 2022, countryValue: 280, regionalAverage: 210, globalAverage: 290 },
-        { year: 2023, countryValue: 320, regionalAverage: 245, globalAverage: 330 },
-        { year: 2024, countryValue: 365, regionalAverage: 285, globalAverage: 375 }
-      ];
+      return [];
     }
-
-    // Try to extract from historical_data
     const firstExporter = exporters[0];
     if (firstExporter.historical_data && firstExporter.historical_data.length > 0) {
       return firstExporter.historical_data.map(h => ({
@@ -429,12 +403,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         globalAverage: (h.value_musd || 0) * 1.2
       }));
     }
-
-    return [
-      { year: 2022, countryValue: 280, regionalAverage: 210, globalAverage: 290 },
-      { year: 2023, countryValue: 320, regionalAverage: 245, globalAverage: 330 },
-      { year: 2024, countryValue: 365, regionalAverage: 285, globalAverage: 375 }
-    ];
+    return [];
   };
 
   // Get production data based on product type
@@ -512,6 +481,11 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                 className="text-lg font-mono"
                 data-testid="product-hs-input"
               />
+              {hsCodeLabel && (
+                <div className="text-xs text-emerald-600 font-medium truncate" title={hsCodeLabel}>
+                  {hsCodeLabel}
+                </div>
+              )}
               {/* Popular products */}
               <div className="flex flex-wrap gap-2 mt-2">
                 <span className="text-xs text-slate-500">{txt.popularProducts}:</span>
@@ -550,19 +524,75 @@ export default function ProductAnalysisView({ language = 'fr' }) {
       {/* Results */}
       {productData && (
         <Card className="shadow-xl overflow-hidden">
+          {/* Data-status notice (e.g. OEC trade flows temporarily unavailable) */}
+          {productData.note && (
+            <div className="flex items-center gap-2 px-4 py-3 text-sm" style={{ background: 'rgba(212,137,26,0.08)', borderBottom: '1px solid rgba(212,137,26,0.25)' }}>
+              <Info className="h-4 w-4" style={{ color: '#d4891a', flexShrink: 0 }} />
+              <span>{productData.note}</span>
+            </div>
+          )}
           {/* Product Header */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-8">
             <div className="text-center">
-              <div className="flex justify-center gap-2 mb-4">
+              <div className="flex justify-center items-center gap-2 mb-4 flex-wrap">
                 <Badge className="bg-white/20 text-white">
                   Rapport d'Intelligence Marché
                 </Badge>
                 {productData.isAiGenerated && (
-                  <Badge className="bg-purple-500/30 text-white border-purple-400">
+                  <Badge className="bg-emerald-500/30 text-white border-emerald-400">
                     <Sparkles className="h-3 w-3 mr-1" />
-                    Données IA
+                    Données réelles
                   </Badge>
                 )}
+                <OpportunityPdfExport
+                  language={language}
+                  getSpec={() => {
+                    const fr = language !== 'en';
+                    const p = productData.product || {};
+                    const usd = (v) => (v >= 1e9 ? `$${(v / 1e9).toFixed(2)}B` : v >= 1e6 ? `$${(v / 1e6).toFixed(1)}M` : `$${Math.round(v || 0).toLocaleString()}`);
+                    return {
+                      badge: fr ? 'PAR PRODUIT' : 'BY PRODUCT',
+                      title: `${p.name || ''} — SH6 ${p.hsCode || ''}`,
+                      subtitle: `${p.hs2Name || ''} (${p.hs2Code || ''}) · ${p.hs4Name || ''} (${p.hs4Code || ''})`,
+                      sections: [
+                        productData.productionCapacities?.length && {
+                          title: fr ? 'Capacités de production africaines' : 'African production capacities',
+                          table: {
+                            columns: [
+                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
+                              { key: 'volume', label: fr ? 'Volume' : 'Volume', align: 'right', width: 1, fmt: (v, row) => `${Number(v || 0).toLocaleString()} ${row.unit || ''}` },
+                              { key: 'share', label: fr ? 'Part (%)' : 'Share (%)', align: 'right', width: 0.7, fmt: (v) => `${v ?? '—'}%` },
+                            ],
+                            rows: productData.productionCapacities,
+                          },
+                        },
+                        productData.importers?.length && {
+                          title: txt.topImporters,
+                          table: {
+                            columns: [
+                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
+                              { key: 'tradeValue', label: fr ? 'Importations' : 'Imports', align: 'right', width: 1, fmt: usd },
+                            ],
+                            rows: productData.importers,
+                          },
+                        },
+                        productData.exporters?.length && {
+                          title: txt.topExporters,
+                          table: {
+                            columns: [
+                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
+                              { key: 'tradeValue', label: fr ? 'Exportations' : 'Exports', align: 'right', width: 1, fmt: usd },
+                            ],
+                            rows: productData.exporters,
+                          },
+                        },
+                        productData.note && { title: fr ? 'Note' : 'Note', paragraphs: [productData.note] },
+                      ].filter(Boolean),
+                      source: (productData.sources || []).join(', '),
+                      filename: opportunityPdfFilename('ParProduit', p.hsCode),
+                    };
+                  }}
+                />
               </div>
               
               {/* HS Navigation Breadcrumb */}
@@ -574,6 +604,11 @@ export default function ProductAnalysisView({ language = 'fr' }) {
 
               <p className="text-sm text-white/80 mb-2">
                 Code HS6: {productData.product.hsCode}
+                {productData.product.supplementaryUnitLabel && (
+                  <span className="ml-2 inline-flex items-center rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold">
+                    {language === 'fr' ? 'Unité' : 'Unit'} : {productData.product.supplementaryUnitLabel}
+                  </span>
+                )}
               </p>
               <h2 className="text-4xl font-black tracking-tight">
                 {productData.product.name}
@@ -635,10 +670,10 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               </Card>
             </div>
 
-            {/* Market Share Trends */}
-            {productData.marketShareTrends && (
-              <MarketShareTrendChart 
-                trends={productData.marketShareTrends} 
+            {/* Market Share Trends (only when a real time series exists) */}
+            {productData.marketShareTrends?.length > 0 && (
+              <MarketShareTrendChart
+                trends={productData.marketShareTrends}
                 language={language}
               />
             )}
