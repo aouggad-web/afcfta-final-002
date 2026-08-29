@@ -42,6 +42,22 @@
       "referencing_page": "https://www.customs.gov.eg/Services/Tarif",
       "sha256": "9bee73cb00f844293664eee026c32343c78604b7115900568701e1ba1dcc6b33",
       "archived_at": "2026-08-29T22:12:26.266868+00:00"
+    },
+    {
+      "file": "customs_gov_eg/decret_67-2023_modif_tarif_218-2022.pdf",
+      "title": "Décret présidentiel n°67 de 2023 modifiant le décret 218/2022 portant promulgation du tarif douanier égyptien",
+      "source_url": "https://www.customs.gov.eg/Upload/ECAAdminace/d74c21ef-7441-499f-9a00-928533ad0c4a.pdf",
+      "referencing_page": "https://www.customs.gov.eg/Legislations/Manshorat?categoryId=4",
+      "sha256": "1e830de37d1a318e39c0c9aac62f11427bc7278f97b09d8192cbde94570dbb18",
+      "archived_at": "2026-08-29T22:36:11.896114+00:00"
+    },
+    {
+      "file": "customs_gov_eg/decret_242-2023_regles_interpretatives_tarif.pdf",
+      "title": "Décision du ministre des finances n°242 de 2023 — explications et règles interprétatives du tableau du tarif douanier",
+      "source_url": "https://www.customs.gov.eg/Upload/ECAAdminace/75621f39-a658-4c00-a50a-e3b7eb82c0ea.pdf",
+      "referencing_page": "https://www.customs.gov.eg/Legislations/Manshorat?categoryId=4",
+      "sha256": "3d3df58fdad2df95018ec60660b0dcd71c07ee59cbedebedaa0da444e6d6fd59",
+      "archived_at": "2026-08-29T22:36:11.896114+00:00"
     }
   ]
 }

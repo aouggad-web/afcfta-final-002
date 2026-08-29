@@ -106857,6 +106857,14 @@
       "status": "DOCUMENTED"
     }
   },
+  "verbatim_integrity": {
+    "effective_path_clean": true,
+    "quarantined_or_suspicious_paths": [],
+    "rows_with_forbidden_markers": 0,
+    "rows_with_forbidden_markers_examples": [],
+    "verbatim_policy_declared_in_metadata": true,
+    "rule": "Pas de mock, pas de synthèse, pas d'extrapolation : toute donnée non publiée par la source reste un écart documenté (source_gaps)."
+  },
   "quality_dimensions": {
     "source": "DOCUMENTED",
     "temporal_validity": "PARTIAL",
@@ -106864,7 +106872,8 @@
     "taxes_and_levies": "PARTIAL",
     "preference_and_origin": "NOT_AVAILABLE",
     "formalities": "PARTIAL",
-    "informative_framing": "DOCUMENTED"
+    "informative_framing": "DOCUMENTED",
+    "verbatim_integrity": "DOCUMENTED"
   },
   "overall_informative_status": "INFORMATIVE_PARTIAL",
   "known_data_gaps": [

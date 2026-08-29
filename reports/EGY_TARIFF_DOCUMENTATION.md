@@ -2,7 +2,12 @@
 
 > Audit local en lecture seule. Aucun taux ni fichier source n'a été modifié. **Outil informatif, non opposable** : le SaaS ne crée aucun droit et n'engage pas l'administration ; seules les publications officielles de l'autorité douanière font foi. Ce document décrit la qualité documentaire disponible — il ne constitue ni une validation administrative, ni un conseil juridique.
 
+## Cadre d'usage — outil informatif, non opposable
 
+- Statut du SaaS : **INFORMATIF_NON_OPPOSABLE** — il ne crée aucun droit et n'engage pas l'administration.
+- Les publications officielles de l'autorité douanière (tarif officiel, JO, arrêtés) seules sont opposables.
+- Le SaaS fournit des repères documentaires sourcés ; il ne constitue ni une décision douanière, ni un conseil juridique, ni une validation administrative.
+- La rigueur documentaire (SHA-256, verbatim, écarts documentés sans arbitrage, aucun taux inventé) reste exigée et ne confère pas d'opposabilité.
 
 ## Cadre d'usage — outil informatif, non opposable
 
@@ -21,6 +26,7 @@
 - preference_and_origin : **NOT_AVAILABLE**
 - formalities : **PARTIAL**
 - informative_framing : **DOCUMENTED**
+- verbatim_integrity : **DOCUMENTED**
 
 ## Inventaire et consommation
 

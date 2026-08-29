@@ -39,6 +39,10 @@ DISCLAIMER_REPORT = (
 )
 # formulations interdites dans les rapports (risque d'opposabilité)
 FORBIDDEN_CLAIMS = ("opposable à", "garanti", "certifie que", "fait foi pour", "valeur légale")
+# Intégrité verbatim : marqueurs interdits dans les statuts de données et chemins
+# (scan des champs énumératifs uniquement — pas des notes de négation)
+INTEGRITY_MARKERS = ("mock", "synthetic", "extrapol", "fabricat", "fake", "dummy", "estimated_value")
+INTEGRITY_PATHS = ("quarantine", "synthetic", "mock")
 COUNTRY_NAMES = {"DZA": "Algérie", "MAR": "Maroc", "TUN": "Tunisie", "EGY": "Égypte", "ZAF": "Afrique du Sud", "KEN": "Kenya"}
 TAX_ALIASES = {
     "dd": "DD", "d.d": "DD", "droit_de_douane": "DD", "droit de douane": "DD",
@@ -519,6 +523,31 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         "formalities": "PARTIAL" if any(row["raw_row"].get("formalities") or row["raw_row"].get("administrative_formalities") or row["raw_row"].get("reglementation_import") for row in rows) else "NOT_AVAILABLE",
         "informative_framing": None,  # calculé après génération du rapport (voir plus bas)
     }
+
+    # --- Intégrité verbatim : pas de mock, pas de synthèse, pas d'extrapolation ---
+    path_clean = not any(m in str(effective).lower() for m in INTEGRITY_PATHS)
+    flagged_rows = [
+        row["national_code"] for row in rows
+        if any(m in str(row["raw_row"].get(field) or "").lower()
+               for field in ("data_status", "source_quality", "provenance")
+               for m in INTEGRITY_MARKERS)
+    ]
+    meta_free_text = " ".join(str(effective_meta.get(k) or "") for k in ("policy", "note", "method")).lower()
+    meta_free_text += " " + json.dumps(effective_meta.get("consolidation") or {}, ensure_ascii=False).lower()
+    policy_declared = any(sig in meta_free_text for sig in ("verbatim", "aucun taux", "sans arbitrage", "aucune estimation"))
+    integrity = {
+        "effective_path_clean": path_clean,
+        "quarantined_or_suspicious_paths": sorted(
+            str(p) for p in (root / "backend" / "data" / "crawled").rglob("*.json")
+            if any(m in str(p).lower() for m in INTEGRITY_PATHS) and country.lower() in p.name.lower()
+        ),
+        "rows_with_forbidden_markers": len(flagged_rows),
+        "rows_with_forbidden_markers_examples": flagged_rows[:20],
+        "verbatim_policy_declared_in_metadata": policy_declared,
+        "rule": "Pas de mock, pas de synthèse, pas d'extrapolation : toute donnée non publiée par la source reste un écart documenté (source_gaps).",
+    }
+    integrity_ok = path_clean and not flagged_rows and policy_declared
+    dimensions["verbatim_integrity"] = "DOCUMENTED" if integrity_ok else "PARTIAL"
     overall = "INFORMATIVE_COMPLETE" if all(value in {"DOCUMENTED", "NOT_APPLICABLE"} for value in dimensions.values()) else "INFORMATIVE_PARTIAL"
     version = next((str(meta[key]) for meta in (effective_meta, primary_meta) for key in ("hs_version", "nomenclature", "hs_level") if meta.get(key)), None)
     rel = lambda path: str(path.relative_to(root)) if path else None
@@ -633,6 +662,7 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         "sample_rows": samples(rows),
         "source_comparison": source_comparison or {"status": "NOT_AVAILABLE", "official_lines_compared": 0, "note": "Aucune comparaison à une publication officielle disponible; échantillon non comparé. Toute comparaison documentaire ne confère pas d'opposabilité."},
         "legal_framing": dict(LEGAL_FRAMING),
+        "verbatim_integrity": integrity,
         "quality_dimensions": dimensions,
         "overall_informative_status": overall,
         "known_data_gaps": [

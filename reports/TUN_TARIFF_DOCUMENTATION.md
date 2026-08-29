@@ -65,6 +65,13 @@ L'endpoint de détail `tarifwebnew/getresultat.php?choix=&chap=&sel=CODE` **publ
 - Le SaaS fournit des repères documentaires sourcés ; il ne constitue ni une décision douanière, ni un conseil juridique, ni une validation administrative.
 - La rigueur documentaire (SHA-256, verbatim, écarts documentés sans arbitrage, aucun taux inventé) reste exigée et ne confère pas d'opposabilité.
 
+## Cadre d'usage — outil informatif, non opposable
+
+- Statut du SaaS : **INFORMATIF_NON_OPPOSABLE** — il ne crée aucun droit et n'engage pas l'administration.
+- Les publications officielles de l'autorité douanière (tarif officiel, JO, arrêtés) seules sont opposables.
+- Le SaaS fournit des repères documentaires sourcés ; il ne constitue ni une décision douanière, ni un conseil juridique, ni une validation administrative.
+- La rigueur documentaire (SHA-256, verbatim, écarts documentés sans arbitrage, aucun taux inventé) reste exigée et ne confère pas d'opposabilité.
+
 ## Résultat informatif
 
 - Statut global : **INFORMATIVE_PARTIAL**
@@ -75,6 +82,7 @@ L'endpoint de détail `tarifwebnew/getresultat.php?choix=&chap=&sel=CODE` **publ
 - preference_and_origin : **PARTIAL**
 - formalities : **PARTIAL**
 - informative_framing : **DOCUMENTED**
+- verbatim_integrity : **DOCUMENTED**
 
 ## Inventaire et consommation
 
