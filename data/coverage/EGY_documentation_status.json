@@ -1,0 +1,612 @@
+{
+  "country_iso3": "EGY",
+  "country_name": "Égypte",
+  "audit_tool": "scripts/audit_tariff_documentation.py",
+  "consultation_date": "2026-07-24",
+  "read_only_audit": true,
+  "local_related_files": [
+    {
+      "path": "backend/data/EGY_tariffs.json",
+      "role": "primary_runtime_artifact",
+      "sha256": "063cf61664549ac37dde60475304580fca5f0990c9b56d99a459df7ead69a1e3"
+    },
+    {
+      "path": "backend/data/tariffs/EGY_tariffs.json",
+      "role": "secondary_local_artifact",
+      "sha256": "063cf61664549ac37dde60475304580fca5f0990c9b56d99a459df7ead69a1e3"
+    },
+    {
+      "path": "data/archive/csv/TARIF-DZA_CRAWLED_VALIDATION  AUTHENTIQUE .csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    },
+    {
+      "path": "docs/archive/attached_assets/TARIF-DZA_CRAWLED_VALIDATION_AUTHENTIQUE__1778803280738.csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    }
+  ],
+  "runtime_artifacts": {
+    "primary_tariff_file": "backend/data/EGY_tariffs.json",
+    "effective_national_file": "backend/data/crawled/EGY_tariffs.json",
+    "detail_override_file": "backend/data/crawled/EGY_tariffs.json",
+    "enriched_fallback_file": null,
+    "consumers": [
+      "backend/services/tariff_provider_service.py::get_tariff_line",
+      "backend/services/authentic_tariff_service.py::load_country_tariffs",
+      "backend/services/authentic_tariff_service.py::load_crawled_position_index",
+      "backend/routes/authentic_tariffs.py::get_tariff_line_endpoint",
+      "backend/routes/authentic_tariffs.py::get_sub_positions_endpoint",
+      "backend/routes/enhanced_calculator.py::_load_dza_authentic_line"
+    ],
+    "import_and_normalization_scripts": []
+  },
+  "source": {
+    "source_authority": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif)",
+    "source_title": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif)",
+    "source_url": "https://customs.gov.eg/Services/Tarif",
+    "source_root_url": null,
+    "official_authority_url": null,
+    "publication_date": null,
+    "effective_from": null,
+    "effective_to": null,
+    "hs_version": null,
+    "hs_version_declared_in_code": null,
+    "hs_version_status": "NOT_AVAILABLE",
+    "date_consulted": "2026-07-24",
+    "extracted_at": "2026-06-13T22:04:10.339176+00:00",
+    "source_hash_sha256": "c97045a4fc5909382b6a8ebce412af75e9cdded924c805f523c2030c36e1d065",
+    "archive_official_available": false,
+    "official_archive_candidates": [],
+    "status": "UNVERIFIED",
+    "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés."
+  },
+  "position_availability": {
+    "total_positions": 8746,
+    "positions_simulatable": 38,
+    "positions_calculation_unavailable": 0,
+    "positions_review_required": 8708
+  },
+  "missing_dd_analysis": {
+    "total_missing_dd": 0,
+    "counts_by_cause": {},
+    "records": [],
+    "examples": {},
+    "note": "Les causes sont documentaires; aucune cause n'est convertie en taux numérique."
+  },
+  "reconciliation_summary": {
+    "category_counts": {
+      "IDENTICAL": 38,
+      "ONLY_CANONICAL": 0,
+      "ONLY_CRAWLED": 0,
+      "RATE_DIFFERENCE": 8708,
+      "DESCRIPTION_DIFFERENCE": 0,
+      "NATIONAL_CODE_DIFFERENCE": 0,
+      "MISSING_RATE_CANONICAL": 0,
+      "MISSING_RATE_CRAWLED": 0
+    },
+    "runtime_preference_confirmed": true
+  },
+  "declared_metadata_not_used_for_status": {
+    "effective_source_quality_present": true,
+    "primary_data_status_present": true,
+    "primary_reliability_present": true,
+    "ignored_for_quality_status": true
+  },
+  "coverage": {
+    "effective_lines": 8746,
+    "unique_national_codes": 8746,
+    "unique_hs6": 5541,
+    "parent_lines_in_primary_file": 5541,
+    "national_sub_positions_in_primary_file": 8746,
+    "chapters_present": 95,
+    "code_lengths": {
+      "10": 8746
+    }
+  },
+  "controls": {
+    "total_rows_audited": 8746,
+    "duplicate_codes": [],
+    "duplicate_code_count": 0,
+    "invalid_codes": [],
+    "invalid_code_count": 0,
+    "hs6_missing_count": 0,
+    "missing_descriptions": 2,
+    "missing_rates": 0,
+    "unparseable_rates": 0,
+    "specific_or_composite_rights_count": 7677,
+    "specific_or_composite_examples": [
+      {
+        "code": "0206800000",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0206900000",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0209100000",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0209900000",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0210910050",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0210910090",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0210920050",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0210920090",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0210930050",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0210930090",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0210990050",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0210990090",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0305410000",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0305430000",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0305440000",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0305490000",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0306190000",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0306390000",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0306910010",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "0306910090",
+        "tax": "TVA",
+        "rate_type": "MIXED"
+      }
+    ],
+    "taxes_without_unit_count": 7677,
+    "taxes_without_unit_examples": [
+      {
+        "code": "0206800000",
+        "tax": "TVA"
+      },
+      {
+        "code": "0206900000",
+        "tax": "TVA"
+      },
+      {
+        "code": "0209100000",
+        "tax": "TVA"
+      },
+      {
+        "code": "0209900000",
+        "tax": "TVA"
+      },
+      {
+        "code": "0210910050",
+        "tax": "TVA"
+      },
+      {
+        "code": "0210910090",
+        "tax": "TVA"
+      },
+      {
+        "code": "0210920050",
+        "tax": "TVA"
+      },
+      {
+        "code": "0210920090",
+        "tax": "TVA"
+      },
+      {
+        "code": "0210930050",
+        "tax": "TVA"
+      },
+      {
+        "code": "0210930090",
+        "tax": "TVA"
+      },
+      {
+        "code": "0210990050",
+        "tax": "TVA"
+      },
+      {
+        "code": "0210990090",
+        "tax": "TVA"
+      },
+      {
+        "code": "0305410000",
+        "tax": "TVA"
+      },
+      {
+        "code": "0305430000",
+        "tax": "TVA"
+      },
+      {
+        "code": "0305440000",
+        "tax": "TVA"
+      },
+      {
+        "code": "0305490000",
+        "tax": "TVA"
+      },
+      {
+        "code": "0306190000",
+        "tax": "TVA"
+      },
+      {
+        "code": "0306390000",
+        "tax": "TVA"
+      },
+      {
+        "code": "0306910010",
+        "tax": "TVA"
+      },
+      {
+        "code": "0306910090",
+        "tax": "TVA"
+      }
+    ],
+    "chapter_hs6_inconsistency_count": 0,
+    "chapter_hs6_inconsistency_examples": [],
+    "dates_missing": 8746,
+    "tax_types": {
+      "DD": 8746,
+      "TJ": 188,
+      "TVA": 8709
+    },
+    "row_sources": {
+      "customs.gov.eg": 8746
+    },
+    "row_source_urls_count": 0
+  },
+  "sample_rows": [
+    {
+      "category": "agriculture",
+      "national_code": "0101210000",
+      "hs6": "010121",
+      "description": "Chevaux vivants (non reproducteurs)",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "5%",
+          "normalized_rate_numeric": 5.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "صفر",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "alimentation",
+      "national_code": "1601000000",
+      "hs6": "160100",
+      "description": "Saucisses et produits similaires",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "30%",
+          "normalized_rate_numeric": 30.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "صفر",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "médicament",
+      "national_code": "3001200000",
+      "hs6": "300120",
+      "description": "Extraits de glandes ou d'autres organes ou de leurs sécrétions",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "14% (من القيمة + ر.ض.جمركية)",
+          "normalized_rate_numeric": 14.0,
+          "rate_type": "MIXED",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "textile",
+      "national_code": "5001000000",
+      "hs6": "500100",
+      "description": "Cocons de vers à soie",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "صفر",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "صفر",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "machine",
+      "national_code": "8401100000",
+      "hs6": "840110",
+      "description": "Réacteurs nucléaires",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "5%",
+          "normalized_rate_numeric": 5.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "14% (من القيمة + ر.ض.جمركية)",
+          "normalized_rate_numeric": 14.0,
+          "rate_type": "MIXED",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "électronique",
+      "national_code": "8501100000",
+      "hs6": "850110",
+      "description": "Moteurs électriques ≤37,5W",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "14% (من القيمة + ر.ض.جمركية)",
+          "normalized_rate_numeric": 14.0,
+          "rate_type": "MIXED",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "véhicule",
+      "national_code": "8701100010",
+      "hs6": "870110",
+      "description": "Tracteurs agricoles à roues",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "5%",
+          "normalized_rate_numeric": 5.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "14% (من القيمة + ر.ض.جمركية)",
+          "normalized_rate_numeric": 14.0,
+          "rate_type": "MIXED",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit chimique",
+      "national_code": "2801100000",
+      "hs6": "280110",
+      "description": "Chlore",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "14% (من القيمة + ر.ض.جمركية)",
+          "normalized_rate_numeric": 14.0,
+          "rate_type": "MIXED",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "matière première",
+      "national_code": "2501000010",
+      "hs6": "250100",
+      "description": "Sel (y compris le sel préparé pour la table et le sel dénaturé) et chlorure de sodium pur",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "14% (من القيمة + ر.ض.جمركية)",
+          "normalized_rate_numeric": 14.0,
+          "rate_type": "MIXED",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit exonéré ou à taux nul",
+      "national_code": "2207101000",
+      "hs6": "220710",
+      "description": "Alcool éthylique non dénaturé >80%",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "14% (من القيمة + ر.ض.جمركية)",
+          "normalized_rate_numeric": 14.0,
+          "rate_type": "MIXED",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TJ": {
+          "tax": "TJ",
+          "normalized_rate_raw": "15.0",
+          "normalized_rate_numeric": 15.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    }
+  ],
+  "source_comparison": {
+    "status": "NOT_AVAILABLE",
+    "official_lines_compared": 0,
+    "note": "Aucune copie officielle tarifaire archivée dans le dépôt; les dix lignes restent non comparées."
+  },
+  "quality_dimensions": {
+    "source": "UNVERIFIED",
+    "temporal_validity": "PARTIAL",
+    "classification": "DOCUMENTED",
+    "taxes_and_levies": "PARTIAL",
+    "preference_and_origin": "NOT_AVAILABLE",
+    "formalities": "NOT_AVAILABLE"
+  },
+  "overall_informative_status": "INFORMATIVE_PARTIAL",
+  "known_data_gaps": [
+    "Archive officielle tarifaire non retrouvée localement.",
+    "Date de publication et date d'effet documentées absentes.",
+    "Version SH explicite absente des métadonnées JSON consommées.",
+    "Écart entre les lignes canoniques et crawled; les divergences restent en revue."
+  ],
+  "actions_required": [
+    "Archiver le document tarifaire de l'autorité déclarée sans remplacer le fichier actuel.",
+    "Comparer un échantillon de lignes et conserver les empreintes des documents.",
+    "Documenter la version SH et les dates de publication/effet.",
+    "Résoudre les divergences entre artefacts avant une utilisation documentaire plus forte."
+  ]
+}

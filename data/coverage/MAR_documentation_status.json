@@ -1,0 +1,2450 @@
+{
+  "country_iso3": "MAR",
+  "country_name": "Maroc",
+  "audit_tool": "scripts/audit_tariff_documentation.py",
+  "consultation_date": "2026-07-24",
+  "read_only_audit": true,
+  "local_related_files": [
+    {
+      "path": "backend/data/MAR_tariffs.json",
+      "role": "primary_runtime_artifact",
+      "sha256": "85a5e9d8d79860e6b443b97fb15c7ea4e13e5b3d2f682e634c51fc3101c24f9e"
+    },
+    {
+      "path": "backend/data/tariffs/MAR_tariffs.json",
+      "role": "secondary_local_artifact",
+      "sha256": "85a5e9d8d79860e6b443b97fb15c7ea4e13e5b3d2f682e634c51fc3101c24f9e"
+    },
+    {
+      "path": "data/archive/csv/TARIF-DZA_CRAWLED_VALIDATION  AUTHENTIQUE .csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    },
+    {
+      "path": "docs/archive/attached_assets/TARIF-DZA_CRAWLED_VALIDATION_AUTHENTIQUE__1778803280738.csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    }
+  ],
+  "runtime_artifacts": {
+    "primary_tariff_file": "backend/data/MAR_tariffs.json",
+    "effective_national_file": "backend/data/crawled/MAR_tariffs.json",
+    "detail_override_file": "backend/data/crawled/MAR_tariffs.json",
+    "enriched_fallback_file": null,
+    "consumers": [
+      "backend/services/tariff_provider_service.py::get_tariff_line",
+      "backend/services/authentic_tariff_service.py::load_country_tariffs",
+      "backend/services/authentic_tariff_service.py::load_crawled_position_index",
+      "backend/routes/authentic_tariffs.py::get_tariff_line_endpoint",
+      "backend/routes/authentic_tariffs.py::get_sub_positions_endpoint",
+      "backend/routes/enhanced_calculator.py::_load_dza_authentic_line"
+    ],
+    "import_and_normalization_scripts": []
+  },
+  "source": {
+    "source_authority": "douane.gov.ma/adil",
+    "source_title": "douane.gov.ma/adil",
+    "source_url": "https://www.douane.gov.ma",
+    "source_root_url": null,
+    "official_authority_url": null,
+    "publication_date": null,
+    "effective_from": null,
+    "effective_to": null,
+    "hs_version": null,
+    "hs_version_declared_in_code": null,
+    "hs_version_status": "NOT_AVAILABLE",
+    "date_consulted": "2026-07-24",
+    "extracted_at": "2026-02-11T22:41:08.772056",
+    "source_hash_sha256": "8a8671685c7736965c1d9e38d19f9b77725f583f152df2f5d372f62b0ccc1368",
+    "archive_official_available": false,
+    "official_archive_candidates": [],
+    "status": "UNVERIFIED",
+    "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés."
+  },
+  "position_availability": {
+    "total_positions": 13114,
+    "positions_simulatable": 0,
+    "positions_calculation_unavailable": 0,
+    "positions_review_required": 13114
+  },
+  "missing_dd_analysis": {
+    "total_missing_dd": 142,
+    "counts_by_cause": {
+      "DESCRIPTIVE_LINE": 142
+    },
+    "records": [
+      {
+        "national_code": "0405100010",
+        "hs6": "040510",
+        "description": "- - d'une teneur en poids de matières grasses inférieure ou égale à 84",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "0405100090",
+        "hs6": "040510",
+        "description": "- - - - autre",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "0902100000",
+        "hs6": "090210",
+        "description": "Thé vert (non fermenté) présenté en emballages immédiats d'un contenu n'excédant pas 3 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "0902200000",
+        "hs6": "090220",
+        "description": "Thé vert (non fermenté) présenté autrement",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "0902300000",
+        "hs6": "090230",
+        "description": "Thé noir (fermenté) et thé partiellement fermenté, présentés en emballages immédiats d'un contenu n'excédant pas 3 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "0902400000",
+        "hs6": "090240",
+        "description": "Thé noir (fermenté) et thé partiellement fermenté, présentés autrement",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1301900090",
+        "hs6": "130190",
+        "description": "- - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1302199099",
+        "hs6": "130219",
+        "description": "- - - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1515909200",
+        "hs6": "151590",
+        "description": "- - - huiles brutes",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1515909800",
+        "hs6": "151590",
+        "description": "- - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704100000",
+        "hs6": "170410",
+        "description": "Gommes à mâcher (chewing-gum), même enrobées de sucre",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704902030",
+        "hs6": "170490",
+        "description": "- - - décrits dans les notes complémentaire n 1 ou n  2 du présent Chapitre",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704902090",
+        "hs6": "170490",
+        "description": "- - - - autres£- - - autres :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704909300",
+        "hs6": "170490",
+        "description": "- - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704909911",
+        "hs6": "170490",
+        "description": "- - - - pâtes et masses pour fondants, pour massepain, pour nougat, pour fourrages et confiserie, etc",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704909912",
+        "hs6": "170490",
+        "description": "- - - - dragées et articles dragéifiés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704909913",
+        "hs6": "170490",
+        "description": "- - - - gommes, sucreries à la réglisse",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704909914",
+        "hs6": "170490",
+        "description": "- - - - nougat, massepain et similaires",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704909919",
+        "hs6": "170490",
+        "description": "- - - - sucres cuits, caramels, toffées, pastilles et similaires£- - - - - autres :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704909992",
+        "hs6": "170490",
+        "description": "- - - - - contenant une liqueur alcoolique",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1704909998",
+        "hs6": "170490",
+        "description": "- - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806311000",
+        "hs6": "180631",
+        "description": "- - tablettes",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806312000",
+        "hs6": "180631",
+        "description": "- - barres ou bâtons",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806321000",
+        "hs6": "180632",
+        "description": "- - couverture £– – autres:",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806322100",
+        "hs6": "180632",
+        "description": "- - - tablettes",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806322200",
+        "hs6": "180632",
+        "description": "- - - barres ou bâtons",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806900010",
+        "hs6": "180690",
+        "description": "- - mélanges de sirops avec du chocolat ou du cacao, non dénommés ni compris ailleurs, décrits dans la note complémentaire n°3 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806900020",
+        "hs6": "180690",
+        "description": "- - contenant plus de 65en poids sec de sucre, décrits dans la note complé- mentaire n°1 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806900030",
+        "hs6": "180690",
+        "description": "- - contenant plus de 10en poids sec de sucre, décrits dans la note complé- mentaire n°2 du chapitre 17£- - - autres :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806900050",
+        "hs6": "180690",
+        "description": "- - - produits à base de farines, amidons, fécules ou extraits de malt contenant du cacao dans une proportion inférieure à 50£- - - - autres :£- - - - - pralines et autres confiseries au chocolat, fourrées :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806900062",
+        "hs6": "180690",
+        "description": "- - - - - contenant de l'alcool",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806900068",
+        "hs6": "180690",
+        "description": "- - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806900081",
+        "hs6": "180690",
+        "description": "- - - - - - contenant de l'alcool",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1806900089",
+        "hs6": "180690",
+        "description": "- - - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1901909100",
+        "hs6": "190190",
+        "description": "- - - préparations alimentaires à base de farine, etc, non dénommées ni comprises ailleurs, contenant plus de 65en poids de sucre, décrites dans la note complémentaire n° 1 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1901909200",
+        "hs6": "190190",
+        "description": "- - - préparations alimentaires à base de farine, etc, non dénommées ni comprises ailleurs, contenant plus de 10en poids de sucre, décrites dans la note complémentaire n° 2 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902110010",
+        "hs6": "190211",
+        "description": "- - - - pâtes alimentaires de consommation courante",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902110020",
+        "hs6": "190211",
+        "description": "- - - vermicelles de riz",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902110030",
+        "hs6": "190211",
+        "description": "- - - - - pâtes de régime au gluten",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902110090",
+        "hs6": "190211",
+        "description": "- - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902190011",
+        "hs6": "190219",
+        "description": "- - - - - - pâtes de régime au gluten",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902190019",
+        "hs6": "190219",
+        "description": "- - - - - autres£- - - autres :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902190091",
+        "hs6": "190219",
+        "description": "- - - - - - pâtes de régime au gluten",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902190099",
+        "hs6": "190219",
+        "description": "- - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902201000",
+        "hs6": "190220",
+        "description": "- - de régime au gluten",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902209010",
+        "hs6": "190220",
+        "description": "- - - farcies de viandes ou d'abats",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902209020",
+        "hs6": "190220",
+        "description": "- - - farcies de poissons. y compris le caviar et ses succédanés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902209030",
+        "hs6": "190220",
+        "description": "- - - farcies de crustacés et de mollusques. y compris les coquillages\n£- - - - autres :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902209091",
+        "hs6": "190220",
+        "description": "- - - - cuites",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902209099",
+        "hs6": "190220",
+        "description": "- - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902301000",
+        "hs6": "190230",
+        "description": "- - de régime au gluten",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1902309000",
+        "hs6": "190230",
+        "description": "- - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1904101200",
+        "hs6": "190410",
+        "description": "- - - contenant du cacao",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1904109010",
+        "hs6": "190410",
+        "description": "- - - à base de maïs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1904109020",
+        "hs6": "190410",
+        "description": "- - - à base de riz",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1904109090",
+        "hs6": "190410",
+        "description": "- - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1904200000",
+        "hs6": "190420",
+        "description": "- - Préparations alimentaires obtenues à partir de flocons de céréales non grillés ou de mélanges de flocons d  céréales non grillés et de flocons de céréales grillés ou de céréales soufflées.",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905311000",
+        "hs6": "190531",
+        "description": "- - de régime au gluten",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905319000",
+        "hs6": "190531",
+        "description": "- - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905901000",
+        "hs6": "190590",
+        "description": "- - hosties, cachets pour médicaments, pains à cacheter, pâtes séchées de farine, d'amidon ou de fécule en feuilles et produits similaires£- - - pains, biscuits de mer et autres produits de la boulangerie ordinaire, sans addition de sucre, de mie",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905902100",
+        "hs6": "190590",
+        "description": "- - - pain azyme",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905902200",
+        "hs6": "190590",
+        "description": "- - - - - pain au gluten pour diabétiques",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905902300",
+        "hs6": "190590",
+        "description": "- - - de régime au gluten",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905902800",
+        "hs6": "190590",
+        "description": "- - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905909100",
+        "hs6": "190590",
+        "description": "- - - pizzas et quiches congelés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905909911",
+        "hs6": "190590",
+        "description": "- - - - - de régime au gluten",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905909919",
+        "hs6": "190590",
+        "description": "- - - - - autres\n£- - - - - produits de la pâtisserie (pâtisserie fraîche et pâtisserie industrielle):",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905909921",
+        "hs6": "190590",
+        "description": "- - - - - de régime au gluten",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905909929",
+        "hs6": "190590",
+        "description": "- - - - - autres\n£- - - - - produits de la biscuiterie :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905909940",
+        "hs6": "190590",
+        "description": "- - - - - de régime au gluten\n£- - - - - - autres :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "1905909997",
+        "hs6": "190590",
+        "description": "- - - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2101121000",
+        "hs6": "210112",
+        "description": "- - sirops mélangés décrits à la note complémentaire n°3 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2101122000",
+        "hs6": "210112",
+        "description": "- - contenant plus de 65en poids sec de sucre, décrits à la note complé- mentaire n°1 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2101123000",
+        "hs6": "210112",
+        "description": "- - contenant plus de 10en poids sec de sucre, décrits à la note complé- mentaire  n°2 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2101129000",
+        "hs6": "210112",
+        "description": "- - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2101201000",
+        "hs6": "210120",
+        "description": "- - mélanges de sirops décrits à la note complémentaire n°3 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2101202000",
+        "hs6": "210120",
+        "description": "- - contenant plus de 65en poids sec de sucre, décrits à la note complé- mentaire n°1 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2101203000",
+        "hs6": "210120",
+        "description": "- - contenant plus de 10en poids sec de sucre, décrits à la note complé- mentaire  n°2 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2101209000",
+        "hs6": "210120",
+        "description": "- - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2101301000",
+        "hs6": "210130",
+        "description": "- - - chicorée torréfiée et autres succédanés torréfiés du café",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2101309000",
+        "hs6": "210130",
+        "description": "- - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2106909010",
+        "hs6": "210690",
+        "description": "- - - préparations alimentaires antioxydantes à base de monoglycerides d'acides gras (E 171), de propylène glycol et huile végétale, de Propyl galate (E 310) et d'acide citrique (E 330)",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2106909020",
+        "hs6": "210690",
+        "description": "- - - mélange préparé de vitamines B1, B2, B9, PP et du fer, même sur support, à incorporer dans les farines de céréales en vue de leur enrichissement£- - - - autres :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2106909091",
+        "hs6": "210690",
+        "description": "- - - - hypocaloriques, hypoglucidiques et hyperprotéiniques, présentées en poudres (1)",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2106909092",
+        "hs6": "210690",
+        "description": "- - - - contenant plus de 65en poids sec de sucre, décrites dans la note complémentaire n° 1 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2106909093",
+        "hs6": "210690",
+        "description": "- - - - contenant plus de 10en poids sec de sucre, décrites dans la note complémentaire n° 2 du chapitre 17",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2106909098",
+        "hs6": "210690",
+        "description": "- - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2202990011",
+        "hs6": "220299",
+        "description": "- - - additionnées de sucre",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2202990019",
+        "hs6": "220299",
+        "description": "- - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309100000",
+        "hs6": "230910",
+        "description": "Aliments pour chiens ou chats, conditionnés pour la vente au détail",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309901000",
+        "hs6": "230990",
+        "description": "- - préparations contenant des produits laitiers",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309909010",
+        "hs6": "230990",
+        "description": "- - - paille mélassée pellétisée",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309909020",
+        "hs6": "230990",
+        "description": "- - - préparations utilisées dans l'alimentation des veaux",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309909030",
+        "hs6": "230990",
+        "description": "- - - produits d'origine végétale de la nature de ceux utilisés pour la nourriture des animaux",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309909040",
+        "hs6": "230990",
+        "description": "- - - anticoccidiens sur support d'origine végétale ou minérale",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309909050",
+        "hs6": "230990",
+        "description": "- - - antibiotiques sur support d'origine végétale ou minérale",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309909060",
+        "hs6": "230990",
+        "description": "- - - antioxydants sur support d'origine végétale ou minérale",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309909070",
+        "hs6": "230990",
+        "description": "- - - chlorure de choline sur support d'origine végétale ou minérale£- - - - autres :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309909081",
+        "hs6": "230990",
+        "description": "- - - - prémélanges (prémix)",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309909082",
+        "hs6": "230990",
+        "description": "- - - - Aliments pour poissons",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2309909088",
+        "hs6": "230990",
+        "description": "- - - - Autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2404190010",
+        "hs6": "240419",
+        "description": "- - sous forme de préparations chimiques",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2404190090",
+        "hs6": "240419",
+        "description": "- - autres £- Autres :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2710910000",
+        "hs6": "271091",
+        "description": "- Contenant des diphènyles polychlorés (PCB), des terphényles polychlorés (PCT) ou des diphényles polybromés (PBB)",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2901290000",
+        "hs6": "290129",
+        "description": "- Autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2902190000",
+        "hs6": "290219",
+        "description": "- Autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2903890000",
+        "hs6": "290389",
+        "description": "- Autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2905220020",
+        "hs6": "290522",
+        "description": "- - linalol, rhodinol, nérol et vétirol",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2907290090",
+        "hs6": "290729",
+        "description": "- - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "2930909095",
+        "hs6": "293090",
+        "description": "- - - - autre",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3301291879",
+        "hs6": "330129",
+        "description": "- - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3301299090",
+        "hs6": "330129",
+        "description": "- - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3301909000",
+        "hs6": "330190",
+        "description": "- - - - - - eaux distillées aromatiques et solutions aqueuses d'huiles essentielles, même médicinales",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3304990010",
+        "hs6": "330499",
+        "description": "- - - - - crèmes, émulsions et huiles",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3304990090",
+        "hs6": "330499",
+        "description": "- - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3305100000",
+        "hs6": "330510",
+        "description": "Shampooings",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3305900000",
+        "hs6": "330590",
+        "description": "Autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3307908000",
+        "hs6": "330790",
+        "description": "- - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3401116100",
+        "hs6": "340111",
+        "description": "- - - - médicaux",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3401116900",
+        "hs6": "340111",
+        "description": "- - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3401195010",
+        "hs6": "340119",
+        "description": "- - - savons ordinaires",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3401195090",
+        "hs6": "340119",
+        "description": "- - - - autres£- - - papiers et ouates de cellulose imprégnés, enduits ou recouverts de préparations tensio-actives :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3401201000",
+        "hs6": "340120",
+        "description": "- - - - savons médicaux",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3401202000",
+        "hs6": "340120",
+        "description": "- - - - savon écru non parfumé présenté sous forme de pellets, de nouilles, de petits cylindres ou de pastilles pour savons de toilette",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3401209091",
+        "hs6": "340120",
+        "description": "- - - - d'une teneur en matières grasses d'au moins de 80, présentés en copeaux, paillettes, poudres ou en granulés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3401209098",
+        "hs6": "340120",
+        "description": "- - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "4016999600",
+        "hs6": "401699",
+        "description": "- - - - - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "4017008000",
+        "hs6": "401700",
+        "description": "- - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "4202220010",
+        "hs6": "420222",
+        "description": "- - en feuilles de matières plastiques",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "4202220090",
+        "hs6": "420222",
+        "description": "- - en matières textiles",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "4202329000",
+        "hs6": "420232",
+        "description": "- - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "4412519920",
+        "hs6": "441251",
+        "description": "- - - - bois contre-plaqués à âme épaisse",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "4412529920",
+        "hs6": "441252",
+        "description": "- - - - bois contre-plaqués à âme épaisse",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "5607900080",
+        "hs6": "560790",
+        "description": "- - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "7210702900",
+        "hs6": "721070",
+        "description": "- - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "7318159000",
+        "hs6": "731815",
+        "description": "- - Migration NGP inexistants",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "7318168000",
+        "hs6": "731816",
+        "description": "- - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "7318198000",
+        "hs6": "731819",
+        "description": "- - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "7320909090",
+        "hs6": "732090",
+        "description": "- - - autres ressorts",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "7408212100",
+        "hs6": "740821",
+        "description": "- - - - filés, étirés tréfilés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8504402000",
+        "hs6": "850440",
+        "description": "- - - unités d'alimentation stabilisées, visées à la note 5 E du chapitre 84, présentées isolément£- - - autres :",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8504409980",
+        "hs6": "850440",
+        "description": "- - - - autres",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      }
+    ],
+    "examples": {
+      "DESCRIPTIVE_LINE": [
+        {
+          "national_code": "0405100010",
+          "hs6": "040510",
+          "description": "- - d'une teneur en poids de matières grasses inférieure ou égale à 84",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "0405100090",
+          "hs6": "040510",
+          "description": "- - - - autre",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "0902100000",
+          "hs6": "090210",
+          "description": "Thé vert (non fermenté) présenté en emballages immédiats d'un contenu n'excédant pas 3 kg",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "0902200000",
+          "hs6": "090220",
+          "description": "Thé vert (non fermenté) présenté autrement",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "0902300000",
+          "hs6": "090230",
+          "description": "Thé noir (fermenté) et thé partiellement fermenté, présentés en emballages immédiats d'un contenu n'excédant pas 3 kg",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "0902400000",
+          "hs6": "090240",
+          "description": "Thé noir (fermenté) et thé partiellement fermenté, présentés autrement",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1301900090",
+          "hs6": "130190",
+          "description": "- - - autres",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1302199099",
+          "hs6": "130219",
+          "description": "- - - - - - autres",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1515909200",
+          "hs6": "151590",
+          "description": "- - - huiles brutes",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1515909800",
+          "hs6": "151590",
+          "description": "- - - autres",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1704100000",
+          "hs6": "170410",
+          "description": "Gommes à mâcher (chewing-gum), même enrobées de sucre",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1704902030",
+          "hs6": "170490",
+          "description": "- - - décrits dans les notes complémentaire n 1 ou n  2 du présent Chapitre",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1704902090",
+          "hs6": "170490",
+          "description": "- - - - autres£- - - autres :",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1704909300",
+          "hs6": "170490",
+          "description": "- - - autres",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1704909911",
+          "hs6": "170490",
+          "description": "- - - - pâtes et masses pour fondants, pour massepain, pour nougat, pour fourrages et confiserie, etc",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1704909912",
+          "hs6": "170490",
+          "description": "- - - - dragées et articles dragéifiés",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1704909913",
+          "hs6": "170490",
+          "description": "- - - - gommes, sucreries à la réglisse",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1704909914",
+          "hs6": "170490",
+          "description": "- - - - nougat, massepain et similaires",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1704909919",
+          "hs6": "170490",
+          "description": "- - - - sucres cuits, caramels, toffées, pastilles et similaires£- - - - - autres :",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "1704909992",
+          "hs6": "170490",
+          "description": "- - - - - contenant une liqueur alcoolique",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        }
+      ]
+    },
+    "note": "Les causes sont documentaires; aucune cause n'est convertie en taux numérique."
+  },
+  "reconciliation_summary": {
+    "category_counts": {
+      "IDENTICAL": 0,
+      "ONLY_CANONICAL": 0,
+      "ONLY_CRAWLED": 0,
+      "RATE_DIFFERENCE": 13019,
+      "DESCRIPTION_DIFFERENCE": 0,
+      "NATIONAL_CODE_DIFFERENCE": 0,
+      "MISSING_RATE_CANONICAL": 13114,
+      "MISSING_RATE_CRAWLED": 142
+    },
+    "runtime_preference_confirmed": true
+  },
+  "declared_metadata_not_used_for_status": {
+    "effective_source_quality_present": true,
+    "primary_data_status_present": true,
+    "primary_reliability_present": true,
+    "ignored_for_quality_status": true
+  },
+  "coverage": {
+    "effective_lines": 13114,
+    "unique_national_codes": 13114,
+    "unique_hs6": 5610,
+    "parent_lines_in_primary_file": 5610,
+    "national_sub_positions_in_primary_file": 13114,
+    "chapters_present": 96,
+    "code_lengths": {
+      "10": 13114
+    }
+  },
+  "controls": {
+    "total_rows_audited": 13114,
+    "duplicate_codes": [],
+    "duplicate_code_count": 0,
+    "invalid_codes": [],
+    "invalid_code_count": 0,
+    "hs6_missing_count": 0,
+    "missing_descriptions": 0,
+    "missing_rates": 142,
+    "unparseable_rates": 0,
+    "specific_or_composite_rights_count": 0,
+    "specific_or_composite_examples": [],
+    "taxes_without_unit_count": 0,
+    "taxes_without_unit_examples": [],
+    "chapter_hs6_inconsistency_count": 0,
+    "chapter_hs6_inconsistency_examples": [],
+    "dates_missing": 13114,
+    "tax_types": {
+      "DD": 12972,
+      "TAXE PARAFISCALE À L'IMPORTATION (TPI)": 12971,
+      "TVA": 12586
+    },
+    "row_sources": {},
+    "row_source_urls_count": 0
+  },
+  "sample_rows": [
+    {
+      "category": "agriculture",
+      "national_code": "0101210000",
+      "hs6": "010121",
+      "description": "- Reproducteurs de race pure (a.)",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2.5 %",
+          "normalized_rate_numeric": 2.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TAXE PARAFISCALE À L'IMPORTATION (TPI)": {
+          "tax": "TAXE PARAFISCALE À L'IMPORTATION (TPI)",
+          "normalized_rate_raw": "0.25 %",
+          "normalized_rate_numeric": 0.25,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "alimentation",
+      "national_code": "1601001000",
+      "hs6": "160100",
+      "description": "- - - de foie£- - - autres :",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "40 %",
+          "normalized_rate_numeric": 40.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TAXE PARAFISCALE À L'IMPORTATION (TPI)": {
+          "tax": "TAXE PARAFISCALE À L'IMPORTATION (TPI)",
+          "normalized_rate_raw": "0.25 %",
+          "normalized_rate_numeric": 0.25,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "20 %",
+          "normalized_rate_numeric": 20.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "médicament",
+      "national_code": "3001200000",
+      "hs6": "300120",
+      "description": "Extraits de glandes ou d'autres organes ou de leurs sécrétions",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2.5 %",
+          "normalized_rate_numeric": 2.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TAXE PARAFISCALE À L'IMPORTATION (TPI)": {
+          "tax": "TAXE PARAFISCALE À L'IMPORTATION (TPI)",
+          "normalized_rate_raw": "0.25 %",
+          "normalized_rate_numeric": 0.25,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "20 %",
+          "normalized_rate_numeric": 20.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "textile",
+      "national_code": "5001000000",
+      "hs6": "500100",
+      "description": "Cocons de vers à soie propres au dévidage",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2.5 %",
+          "normalized_rate_numeric": 2.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TAXE PARAFISCALE À L'IMPORTATION (TPI)": {
+          "tax": "TAXE PARAFISCALE À L'IMPORTATION (TPI)",
+          "normalized_rate_raw": "0.25 %",
+          "normalized_rate_numeric": 0.25,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "20 %",
+          "normalized_rate_numeric": 20.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "machine",
+      "national_code": "8401200000",
+      "hs6": "840120",
+      "description": "Machines et appareils pour la séparation isotopique, et leurs parties",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2.5 %",
+          "normalized_rate_numeric": 2.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TAXE PARAFISCALE À L'IMPORTATION (TPI)": {
+          "tax": "TAXE PARAFISCALE À L'IMPORTATION (TPI)",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "20 %",
+          "normalized_rate_numeric": 20.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "électronique",
+      "national_code": "8501101000",
+      "hs6": "850110",
+      "description": "- - conçus pour l'équipement de jouets ou modèles réduits pour le divertis- sement£- - - autres :",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2.5 %",
+          "normalized_rate_numeric": 2.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TAXE PARAFISCALE À L'IMPORTATION (TPI)": {
+          "tax": "TAXE PARAFISCALE À L'IMPORTATION (TPI)",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "20 %",
+          "normalized_rate_numeric": 20.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "véhicule",
+      "national_code": "8701101100",
+      "hs6": "870110",
+      "description": "- - - à moteur à explosion ou à combustion interne .",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2.5 %",
+          "normalized_rate_numeric": 2.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TAXE PARAFISCALE À L'IMPORTATION (TPI)": {
+          "tax": "TAXE PARAFISCALE À L'IMPORTATION (TPI)",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "20 %",
+          "normalized_rate_numeric": 20.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit chimique",
+      "national_code": "2801100000",
+      "hs6": "280110",
+      "description": "Chlore",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "30 %",
+          "normalized_rate_numeric": 30.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TAXE PARAFISCALE À L'IMPORTATION (TPI)": {
+          "tax": "TAXE PARAFISCALE À L'IMPORTATION (TPI)",
+          "normalized_rate_raw": "0.25 %",
+          "normalized_rate_numeric": 0.25,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "20 %",
+          "normalized_rate_numeric": 20.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "matière première",
+      "national_code": "2501000011",
+      "hs6": "250100",
+      "description": "- - - destinés à la transformation chimique (séparation Na du CL) pour la fabrica- tion d'autres produits",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "30 %",
+          "normalized_rate_numeric": 30.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TAXE PARAFISCALE À L'IMPORTATION (TPI)": {
+          "tax": "TAXE PARAFISCALE À L'IMPORTATION (TPI)",
+          "normalized_rate_raw": "0.25 %",
+          "normalized_rate_numeric": 0.25,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "20 %",
+          "normalized_rate_numeric": 20.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit exonéré ou à taux nul",
+      "national_code": "0407111000",
+      "hs6": "040711",
+      "description": "- - œufs SFP (Specified Pathogene Free) ou EMPS (Exempts de microorganismes pathogènes spécifiques) (a)",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "2.5 %",
+          "normalized_rate_numeric": 2.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TAXE PARAFISCALE À L'IMPORTATION (TPI)": {
+          "tax": "TAXE PARAFISCALE À L'IMPORTATION (TPI)",
+          "normalized_rate_raw": "0.25 %",
+          "normalized_rate_numeric": 0.25,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    }
+  ],
+  "source_comparison": {
+    "status": "NOT_AVAILABLE",
+    "official_lines_compared": 0,
+    "note": "Aucune copie officielle tarifaire archivée dans le dépôt; les dix lignes restent non comparées."
+  },
+  "quality_dimensions": {
+    "source": "UNVERIFIED",
+    "temporal_validity": "PARTIAL",
+    "classification": "DOCUMENTED",
+    "taxes_and_levies": "PARTIAL",
+    "preference_and_origin": "NOT_AVAILABLE",
+    "formalities": "PARTIAL"
+  },
+  "overall_informative_status": "INFORMATIVE_PARTIAL",
+  "known_data_gaps": [
+    "Archive officielle tarifaire non retrouvée localement.",
+    "Date de publication et date d'effet documentées absentes.",
+    "Version SH explicite absente des métadonnées JSON consommées.",
+    "Écart entre les lignes canoniques et crawled; les divergences restent en revue."
+  ],
+  "actions_required": [
+    "Archiver le document tarifaire de l'autorité déclarée sans remplacer le fichier actuel.",
+    "Comparer un échantillon de lignes et conserver les empreintes des documents.",
+    "Documenter la version SH et les dates de publication/effet.",
+    "Résoudre les divergences entre artefacts avant une utilisation documentaire plus forte."
+  ]
+}

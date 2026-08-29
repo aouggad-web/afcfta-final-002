@@ -1,0 +1,877 @@
+{
+  "country_iso3": "ZAF",
+  "country_name": "Afrique du Sud",
+  "audit_tool": "scripts/audit_tariff_documentation.py",
+  "consultation_date": "2026-07-24",
+  "read_only_audit": true,
+  "local_related_files": [
+    {
+      "path": "backend/data/ZAF_tariffs.json",
+      "role": "primary_runtime_artifact",
+      "sha256": "655cf809559304406d984fdea642c8d978fe805363716116f85f1615e67f9944"
+    },
+    {
+      "path": "backend/data/tariffs/ZAF_tariffs.json",
+      "role": "secondary_local_artifact",
+      "sha256": "655cf809559304406d984fdea642c8d978fe805363716116f85f1615e67f9944"
+    },
+    {
+      "path": "data/archive/csv/TARIF-DZA_CRAWLED_VALIDATION  AUTHENTIQUE .csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    },
+    {
+      "path": "docs/archive/attached_assets/TARIF-DZA_CRAWLED_VALIDATION_AUTHENTIQUE__1778803280738.csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    }
+  ],
+  "runtime_artifacts": {
+    "primary_tariff_file": "backend/data/ZAF_tariffs.json",
+    "effective_national_file": "backend/data/crawled/ZAF_tariffs.json",
+    "detail_override_file": "backend/data/crawled/ZAF_tariffs.json",
+    "enriched_fallback_file": null,
+    "consumers": [
+      "backend/services/tariff_provider_service.py::get_tariff_line",
+      "backend/services/authentic_tariff_service.py::load_country_tariffs",
+      "backend/services/authentic_tariff_service.py::load_crawled_position_index",
+      "backend/routes/authentic_tariffs.py::get_tariff_line_endpoint",
+      "backend/routes/authentic_tariffs.py::get_sub_positions_endpoint",
+      "backend/routes/enhanced_calculator.py::_load_dza_authentic_line"
+    ],
+    "import_and_normalization_scripts": []
+  },
+  "source": {
+    "source_authority": "sars.gov.za",
+    "source_title": "sars.gov.za",
+    "source_url": "https://www.sars.gov.za/customs-and-excise/tariff-books/schedules/",
+    "source_root_url": null,
+    "official_authority_url": null,
+    "publication_date": null,
+    "effective_from": null,
+    "effective_to": null,
+    "hs_version": null,
+    "hs_version_declared_in_code": null,
+    "hs_version_status": "NOT_AVAILABLE",
+    "date_consulted": "2026-07-24",
+    "extracted_at": null,
+    "source_hash_sha256": "0ebdf907917cfbcfd175df9c37d8f987b35775696aa46f3d270ea3ad90fcf08a",
+    "archive_official_available": false,
+    "official_archive_candidates": [],
+    "status": "UNVERIFIED",
+    "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés."
+  },
+  "position_availability": {
+    "total_positions": 8589,
+    "positions_simulatable": 4328,
+    "positions_calculation_unavailable": 1,
+    "positions_review_required": 4260
+  },
+  "missing_dd_analysis": {
+    "total_missing_dd": 1,
+    "counts_by_cause": {
+      "EXPLICIT_FREE": 1
+    },
+    "records": [
+      {
+        "national_code": "441400",
+        "hs6": "441400",
+        "description": "Wooden frames for paintings, photographs, mirrors or similar objects",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      }
+    ],
+    "examples": {
+      "EXPLICIT_FREE": [
+        {
+          "national_code": "441400",
+          "hs6": "441400",
+          "description": "Wooden frames for paintings, photographs, mirrors or similar objects",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        }
+      ]
+    },
+    "note": "Les causes sont documentaires; aucune cause n'est convertie en taux numérique."
+  },
+  "reconciliation_summary": {
+    "category_counts": {
+      "IDENTICAL": 0,
+      "ONLY_CANONICAL": 0,
+      "ONLY_CRAWLED": 4329,
+      "RATE_DIFFERENCE": 4260,
+      "DESCRIPTION_DIFFERENCE": 0,
+      "NATIONAL_CODE_DIFFERENCE": 0,
+      "MISSING_RATE_CANONICAL": 139,
+      "MISSING_RATE_CRAWLED": 0
+    },
+    "runtime_preference_confirmed": true
+  },
+  "declared_metadata_not_used_for_status": {
+    "effective_source_quality_present": false,
+    "primary_data_status_present": true,
+    "primary_reliability_present": true,
+    "ignored_for_quality_status": true
+  },
+  "coverage": {
+    "effective_lines": 8589,
+    "unique_national_codes": 8589,
+    "unique_hs6": 5619,
+    "parent_lines_in_primary_file": 5619,
+    "national_sub_positions_in_primary_file": 4260,
+    "chapters_present": 98,
+    "code_lengths": {
+      "6": 4329,
+      "8": 4260
+    }
+  },
+  "controls": {
+    "total_rows_audited": 8589,
+    "duplicate_codes": [],
+    "duplicate_code_count": 0,
+    "invalid_codes": [],
+    "invalid_code_count": 0,
+    "hs6_missing_count": 0,
+    "missing_descriptions": 0,
+    "missing_rates": 1,
+    "unparseable_rates": 0,
+    "specific_or_composite_rights_count": 1077,
+    "specific_or_composite_examples": [
+      {
+        "code": "020110",
+        "tax": "DD",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "020110",
+        "tax": "EU / UK PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "020110",
+        "tax": "EFTA PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "020110",
+        "tax": "MERCOSUR PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "020110",
+        "tax": "AFCFTA PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02012010",
+        "tax": "DD",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02012010",
+        "tax": "EU / UK PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02012010",
+        "tax": "EFTA PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02012010",
+        "tax": "MERCOSUR PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02012010",
+        "tax": "AFCFTA PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02012090",
+        "tax": "DD",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02012090",
+        "tax": "EU / UK PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02012090",
+        "tax": "EFTA PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02012090",
+        "tax": "MERCOSUR PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02012090",
+        "tax": "AFCFTA PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02013010",
+        "tax": "DD",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02013010",
+        "tax": "EU / UK PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02013010",
+        "tax": "EFTA PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02013010",
+        "tax": "MERCOSUR PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      },
+      {
+        "code": "02013010",
+        "tax": "AFCFTA PREFERENTIAL RATE",
+        "rate_type": "MIXED"
+      }
+    ],
+    "taxes_without_unit_count": 0,
+    "taxes_without_unit_examples": [],
+    "chapter_hs6_inconsistency_count": 0,
+    "chapter_hs6_inconsistency_examples": [],
+    "dates_missing": 8589,
+    "tax_types": {
+      "AFCFTA PREFERENTIAL RATE": 8589,
+      "DD": 8589,
+      "EFTA PREFERENTIAL RATE": 8589,
+      "EU / UK PREFERENTIAL RATE": 8589,
+      "MERCOSUR PREFERENTIAL RATE": 8589,
+      "SADC PREFERENTIAL RATE": 8589
+    },
+    "row_sources": {
+      "sars.gov.za": 8589
+    },
+    "row_source_urls_count": 0
+  },
+  "sample_rows": [
+    {
+      "category": "agriculture",
+      "national_code": "010121",
+      "hs6": "010121",
+      "description": "Pure-bred breeding animals",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EU / UK PREFERENTIAL RATE": {
+          "tax": "EU / UK PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EFTA PREFERENTIAL RATE": {
+          "tax": "EFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "SADC PREFERENTIAL RATE": {
+          "tax": "SADC PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "MERCOSUR PREFERENTIAL RATE": {
+          "tax": "MERCOSUR PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AFCFTA PREFERENTIAL RATE": {
+          "tax": "AFCFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "alimentation",
+      "national_code": "16010010",
+      "hs6": "160100",
+      "description": "Paté de foie gras and foie gras (goose liver paste)",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EU / UK PREFERENTIAL RATE": {
+          "tax": "EU / UK PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EFTA PREFERENTIAL RATE": {
+          "tax": "EFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "SADC PREFERENTIAL RATE": {
+          "tax": "SADC PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "MERCOSUR PREFERENTIAL RATE": {
+          "tax": "MERCOSUR PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AFCFTA PREFERENTIAL RATE": {
+          "tax": "AFCFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "médicament",
+      "national_code": "300120",
+      "hs6": "300120",
+      "description": "Extracts of glands or other organs or of their secretions",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EU / UK PREFERENTIAL RATE": {
+          "tax": "EU / UK PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EFTA PREFERENTIAL RATE": {
+          "tax": "EFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "SADC PREFERENTIAL RATE": {
+          "tax": "SADC PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "MERCOSUR PREFERENTIAL RATE": {
+          "tax": "MERCOSUR PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AFCFTA PREFERENTIAL RATE": {
+          "tax": "AFCFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "textile",
+      "national_code": "500100",
+      "hs6": "500100",
+      "description": "Silk-worm cocoons suitable for reeling",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EU / UK PREFERENTIAL RATE": {
+          "tax": "EU / UK PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EFTA PREFERENTIAL RATE": {
+          "tax": "EFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "SADC PREFERENTIAL RATE": {
+          "tax": "SADC PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "MERCOSUR PREFERENTIAL RATE": {
+          "tax": "MERCOSUR PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AFCFTA PREFERENTIAL RATE": {
+          "tax": "AFCFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "machine",
+      "national_code": "840110",
+      "hs6": "840110",
+      "description": "Nuclear reactors",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EU / UK PREFERENTIAL RATE": {
+          "tax": "EU / UK PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EFTA PREFERENTIAL RATE": {
+          "tax": "EFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "SADC PREFERENTIAL RATE": {
+          "tax": "SADC PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "MERCOSUR PREFERENTIAL RATE": {
+          "tax": "MERCOSUR PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AFCFTA PREFERENTIAL RATE": {
+          "tax": "AFCFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "électronique",
+      "national_code": "850110",
+      "hs6": "850110",
+      "description": "Motors of an output not exceeding 37,5 W",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EU / UK PREFERENTIAL RATE": {
+          "tax": "EU / UK PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EFTA PREFERENTIAL RATE": {
+          "tax": "EFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "SADC PREFERENTIAL RATE": {
+          "tax": "SADC PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "MERCOSUR PREFERENTIAL RATE": {
+          "tax": "MERCOSUR PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AFCFTA PREFERENTIAL RATE": {
+          "tax": "AFCFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "véhicule",
+      "national_code": "870110",
+      "hs6": "870110",
+      "description": "Single axle tractors",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EU / UK PREFERENTIAL RATE": {
+          "tax": "EU / UK PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EFTA PREFERENTIAL RATE": {
+          "tax": "EFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "SADC PREFERENTIAL RATE": {
+          "tax": "SADC PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "MERCOSUR PREFERENTIAL RATE": {
+          "tax": "MERCOSUR PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AFCFTA PREFERENTIAL RATE": {
+          "tax": "AFCFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit chimique",
+      "national_code": "280110",
+      "hs6": "280110",
+      "description": "Chlorine",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "10.0%",
+          "normalized_rate_numeric": 10.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EU / UK PREFERENTIAL RATE": {
+          "tax": "EU / UK PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EFTA PREFERENTIAL RATE": {
+          "tax": "EFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "SADC PREFERENTIAL RATE": {
+          "tax": "SADC PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "MERCOSUR PREFERENTIAL RATE": {
+          "tax": "MERCOSUR PREFERENTIAL RATE",
+          "normalized_rate_raw": "10.0%",
+          "normalized_rate_numeric": 10.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AFCFTA PREFERENTIAL RATE": {
+          "tax": "AFCFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "4.0%",
+          "normalized_rate_numeric": 4.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "matière première",
+      "national_code": "25010010",
+      "hs6": "250100",
+      "description": "Not for human consumption",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EU / UK PREFERENTIAL RATE": {
+          "tax": "EU / UK PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EFTA PREFERENTIAL RATE": {
+          "tax": "EFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "SADC PREFERENTIAL RATE": {
+          "tax": "SADC PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "MERCOSUR PREFERENTIAL RATE": {
+          "tax": "MERCOSUR PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AFCFTA PREFERENTIAL RATE": {
+          "tax": "AFCFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "free",
+          "normalized_rate_numeric": null,
+          "rate_type": "FREE",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit exonéré ou à taux nul",
+      "national_code": "98010003",
+      "hs6": "980100",
+      "description": "Electric accumulators of tariff subheadings 8507.30, 8507.50, 8507.60 and 8507.80",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "10.0%",
+          "normalized_rate_numeric": 10.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EU / UK PREFERENTIAL RATE": {
+          "tax": "EU / UK PREFERENTIAL RATE",
+          "normalized_rate_raw": "10.0%",
+          "normalized_rate_numeric": 10.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "EFTA PREFERENTIAL RATE": {
+          "tax": "EFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "10.0%",
+          "normalized_rate_numeric": 10.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "SADC PREFERENTIAL RATE": {
+          "tax": "SADC PREFERENTIAL RATE",
+          "normalized_rate_raw": "10.0%",
+          "normalized_rate_numeric": 10.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "MERCOSUR PREFERENTIAL RATE": {
+          "tax": "MERCOSUR PREFERENTIAL RATE",
+          "normalized_rate_raw": "10.0%",
+          "normalized_rate_numeric": 10.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AFCFTA PREFERENTIAL RATE": {
+          "tax": "AFCFTA PREFERENTIAL RATE",
+          "normalized_rate_raw": "10.0%",
+          "normalized_rate_numeric": 10.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    }
+  ],
+  "source_comparison": {
+    "status": "NOT_AVAILABLE",
+    "official_lines_compared": 0,
+    "note": "Aucune copie officielle tarifaire archivée dans le dépôt; les dix lignes restent non comparées."
+  },
+  "quality_dimensions": {
+    "source": "UNVERIFIED",
+    "temporal_validity": "NOT_AVAILABLE",
+    "classification": "DOCUMENTED",
+    "taxes_and_levies": "PARTIAL",
+    "preference_and_origin": "NOT_AVAILABLE",
+    "formalities": "NOT_AVAILABLE"
+  },
+  "overall_informative_status": "INFORMATIVE_PARTIAL",
+  "known_data_gaps": [
+    "Archive officielle tarifaire non retrouvée localement.",
+    "Date de publication et date d'effet documentées absentes.",
+    "Version SH explicite absente des métadonnées JSON consommées.",
+    "Écart entre les lignes canoniques et crawled; les divergences restent en revue."
+  ],
+  "actions_required": [
+    "Archiver le document tarifaire de l'autorité déclarée sans remplacer le fichier actuel.",
+    "Comparer un échantillon de lignes et conserver les empreintes des documents.",
+    "Documenter la version SH et les dates de publication/effet.",
+    "Résoudre les divergences entre artefacts avant une utilisation documentaire plus forte."
+  ]
+}

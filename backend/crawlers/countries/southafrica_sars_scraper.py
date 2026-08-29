@@ -42,7 +42,7 @@ TAX_COLUMNS = [
 HS_CODE_PATTERN = re.compile(r"^(\d{4}\.\d{2}(?:\.\d{2})?)$")
 HEADING_PATTERN = re.compile(r"^(\d{2}\.\d{2})$")
 RATE_PCT_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*%")
-RATE_SPECIFIC_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*c/(?:kg|li|la|unit|u)")
+RATE_SPECIFIC_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*c/(?:\d+\s*)?(?:kg|li|la|unit|u)\b")
 
 
 class SouthAfricaSARSScraper:
@@ -87,6 +87,8 @@ class SouthAfricaSARSScraper:
             return {"rate_pct": None, "raw_value": ""}
 
         cleaned = raw_value.strip().lower()
+        # le texte brut publié est TOUJOURS conservé (aucune perte d'information)
+        raw_kept = " ".join(raw_value.split())
 
         if cleaned in ("free", ""):
             return {"rate_pct": 0.0, "raw_value": "free"}
@@ -98,25 +100,25 @@ class SouthAfricaSARSScraper:
             pct_val = float(pct_match.group(1).replace(",", "."))
             return {
                 "rate_pct": pct_val,
-                "raw_value": raw_value.strip(),
+                "raw_value": raw_kept,
                 "compound": True,
                 "specific_component": specific_match.group(0),
             }
         elif pct_match:
             pct_val = float(pct_match.group(1).replace(",", "."))
-            return {"rate_pct": pct_val, "raw_value": f"{pct_val}%"}
+            return {"rate_pct": pct_val, "raw_value": raw_kept}
         elif specific_match:
             return {
                 "rate_pct": None,
-                "raw_value": raw_value.strip(),
+                "raw_value": raw_kept,
                 "specific_value": specific_match.group(0),
             }
         else:
             try:
                 val = float(cleaned.replace("%", "").replace(",", "."))
-                return {"rate_pct": val, "raw_value": f"{val}%"}
+                return {"rate_pct": val, "raw_value": raw_kept}
             except ValueError:
-                return {"rate_pct": None, "raw_value": raw_value.strip()}
+                return {"rate_pct": None, "raw_value": raw_kept}
 
     def _get_chapter_from_code(self, code: str) -> str:
         digits = code.replace(".", "")
