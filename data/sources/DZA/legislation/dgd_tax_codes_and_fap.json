@@ -1,0 +1,80 @@
+{
+  "title": "Nomenclature officielle des droits et taxes et des formalités administratives particulières (F.A.P)",
+  "source_document": "Tarif Douanier d'usage — Dispositions préliminaires, Direction Générale des Douanes (DGD), Direction de la Fiscalité et des Bases de Taxation, édition mise à jour (dispositions de la Loi de Finances 2020)",
+  "source_url": "https://www.douane.gov.dz/spip.php?article154",
+  "source_pdf_local": "data/sources/DZA/legislation/tarif_d_usage_2020.pdf",
+  "source_pdf_sha256": null,
+  "extraction": {
+    "method": "extraction textuelle verbatim (PyMuPDF), pages 1-2 du PDF",
+    "date_consulted": "2026-08-29",
+    "note": "Listes reproduites mot pour mot depuis les pages 'LISTE DES ABREVIATIONS' du document officiel. Aucune interprétation ajoutée."
+  },
+  "droits_et_taxes": {
+    "D.D": "Droits de Douane",
+    "T.V.A": "Taxe sur la Valeur Ajoutée",
+    "T.S.V": "Taxe Sanitaire sur les Viandes",
+    "D.P.E": "Droit sur les Piles Électriques",
+    "T.I.C": "Taxe Intérieure de Consommation",
+    "D.C.A": "Droit de Circulation sur les vins et les Alcools",
+    "D.RTA": "Droit spécifique sur les appareils de Radiodiffusion combinée ou non-combiné, les appareils récepteurs de Télédiffusion combinés ou non-combiné et les Appareils de démodulation, de décryptage et de décodage",
+    "T.A.D.C.A": "Taxe Additionnelle sur le Droit de Circulation sur les Alcools",
+    "T.A.P.T": "Taxe Additionnelle sur les Produits Tabagiques",
+    "T.C.L.S": "Taxe sur les Céréales et les Légumes Secs",
+    "T.CARB": "Taxe sur les Carburants",
+    "T.E.E": "Taxe d'Efficacité Energétique",
+    "T.PNEU": "Taxe sur les pneus neufs",
+    "T.P.P": "Taxe sur les Produits Pétroliers",
+    "T.HUILE": "Taxe sur les Huiles, lubrifiants et préparations lubrifiantes",
+    "T.S.P": "Taxe sur les Sacs en Plastique",
+    "D.G.O.A.P": "Droits de Garantie sur les ouvrages d'Or, d'Argent et de Platine",
+    "C.S": "Contribution de Solidarité",
+    "D.A.P.S": "Droit Additionnel Provisoire de Sauvegarde"
+  },
+  "taux_declares_document_officiel": {
+    "droits_de_douane": "Les taux de droits de douane existant actuellement sont : exemption, 5%, 15%, 30% et 60% (Dispositions préliminaires du document)",
+    "tva": "Les taux de la TVA actuellement en vigueur sont : exemption, 9% et 19% (Dispositions préliminaires du document)"
+  },
+  "formalites_administratives_particulieres": {
+    "A.A.M": "Autorisation Armes et Munitions (DGSN/MDN)",
+    "A.D.L.O": "Autorisation de Diffusion des Livres et Ouvrages du Ministère de la Culture",
+    "A.E.B.C": "Autorisation préalable pour l'Exportation des Biens Culturels délivrée par le Ministère de la Culture",
+    "A.E.D.C": "Attestation d'Exportation Délivrée par la Direction de Wilaya du Commerce territorialement compétente",
+    "A.I.E.M": "Agrément pour l'Importation des Équipements Médicaux du Ministère de la Santé et de la Population",
+    "A.I.E.S": "Autorisation d'Importation des Équipements Sensibles",
+    "H.I.E.T": "Homologation pour l'Importation des Équipements terminaux délivrée par l'autorité de régulation des Postes et Télécommunications",
+    "A.O.A": "Agrément pour ouvrages d'or et argent ouvrée ou non ouvrée délivrée par l'administration fiscale",
+    "A.P.I.E": "Autorisation préalable à l'importation et/ou l'exportation de stupéfiants et substances psychotropes du Ministère de la santé",
+    "A.P.I": "Autorisation Préalable à l'importation du Ministère chargé de l'Energie",
+    "A.P.I.F": "Autorisation Préalable à l'importation délivrée par l'administration Fiscale",
+    "A.P.I.P": "Autorisation Préalable à l'importation délivrée par l'administration de la pêche",
+    "A.P.I.T": "Autorisation Préalable à l'importation délivrée par le Ministère des transports pour les navires de transport de marchandises",
+    "A.S.A": "Acquit du service des alcools, titre de régie D.C Droits de circulation sur les alcools",
+    "A.T.I": "Autorisation technique préalable à l'importation délivrée par l'Institut National de la Protection des Végétaux",
+    "C.C": "Contrôle de conformité des produits importés effectués par les services du Ministère du Commerce",
+    "C.C.T": "Cahier des charges type à l'exportation délivrée par le Ministère du commerce",
+    "C.P.O": "Certificat phytosanitaire du pays d'origine pour le terreau",
+    "D.I.T": "Décision portant autorisation d'importation du tabac délivrée par la Direction Générale des Impôts",
+    "D.R.C.P": "Déclaration d'importation pour paiement de la redevance pour copie délivrée par l'Office National des Droits d'Auteur",
+    "D.S.V": "Dérogation sanitaire vétérinaire",
+    "I.S": "Inspection sanitaire effectuée par les services de contrôle de la qualité et la répression des fraudes",
+    "I.S.V": "Inspection de contrôle sanitaire vétérinaire",
+    "V.P.H": "Visa de contrôle phytosanitaire",
+    "V.I.M": "Visa de contrôle des instruments de mesures",
+    "V.S.R": "Visa préalable à l'importation et l'exportation pour les appareils renfermant des sources radioactives du commissariat de l'énergie atomique",
+    "V.T.I": "Visa technique préalable à l'importation des produits pharmaceutiques du Ministère de la Santé et de la Population",
+    "Q.I.S.R": "Quota d'importation annuel des substances réglementées, accordé par le ministère chargé de l'environnement",
+    "O.N.E.X": "Monopole de l'Office National des Substances Explosives"
+  },
+  "codes_non_couverts_par_ce_document": {
+    "PRCT": {
+      "libelle_conformepro": "PRCT (taux 2% observé)",
+      "libelle_propose_dans_donnees_locales": "Prélèvement à la Compensation du Transport",
+      "statut_verification": "UNVERIFIED — code absent de la liste des abréviations du Tarif d'usage 2020 et absent de la LF 2026 (JO n°88). Le libellé exact ne peut pas être confirmé par un texte officiel à ce stade. Conservé tel que publié par conformepro.dz."
+    },
+    "TCS": {
+      "libelle_conformepro": "TCS (taux 3% observé)",
+      "libelle_propose_dans_donnees_locales": "Taxe de Contrôle Sanitaire",
+      "statut_verification": "UNVERIFIED — code absent de la liste des abréviations du Tarif d'usage 2020 et absent de la LF 2026 (JO n°88). Le libellé exact ne peut pas être confirmé par un texte officiel à ce stade. Conservé tel que publié par conformepro.dz."
+    }
+  }
+}

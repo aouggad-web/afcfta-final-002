@@ -1,0 +1,46 @@
+{
+  "title": "Références légales des accords commerciaux (FTA) applicables en Algérie — avantages documentés par sous-position",
+  "date_consulted": "2026-08-29",
+  "zlecaf": {
+    "loi_de_ratification": {
+      "ref": "Loi n° 20-10 du 5 Rabie El Aouel 1442 correspondant au 22 octobre 2020 portant approbation de l'accord portant création de la zone de libre-échange continentale africaine, signé à Kigali, le 21 mars 2018",
+      "journal_officiel": "JO de la République Algérienne N° 80 du 14 Joumada El Oula 1442 (29 décembre 2020), page 4",
+      "article_1er_verbatim": "Est approuvé l'accord portant création de la zone de libre-échange continentale africaine, signé à Kigali, le 21 mars 2018.",
+      "signataire": "Abdelmadjid TEBBOUNE, Président de la République, fait à Alger le 22 octobre 2020",
+      "source_pdf_local": "data/sources/DZA/legislation/JO_2020-80_ratification_zlecaf.pdf",
+      "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2020/F2020080.pdf",
+      "methode_extraction": "extraction textuelle verbatim (PyMuPDF) page 4 du JO n°80"
+    },
+    "protocole_applicable": {
+      "ref": "Accord portant création de la ZLECAf — Protocole sur le commerce des marchandises (Annexe 2 : règles d'origine ; Annexe 3 : certificat d'origine ARHA)",
+      "source_officielle": "Secrétariat de l'Accord ZLECAf / Union Africaine",
+      "note": "Le certificat d'origine ZLECAf (formulaire ARHA) est la condition d'application de la préférence tarifaire, conformément aux annexes du protocole commercial."
+    },
+    "avantages_crawles": {
+      "source": "conformepro.dz (par sous-position)",
+      "forme": "texte verbatim conservé dans chaque sous-position (champ advantages), ex. : 'Certificat d'origine dans le cadre -zale- exo d.d'",
+      "statut": "crawl_authentic — la préférence (exonération DD sur certificat d'origine ZLECAf) est documentée ligne à ligne par la source"
+    }
+  },
+  "autres_conventions_citees_par_la_source_par_sous_position": {
+    "convention_algero_jordanienne": {
+      "evidence_verbatim_conformepro": "Exoneration d.d et d.a.p dans cadre convention algero-jordanienne",
+      "reference_generale": "Accord commercial préférentiel Algérie-Jordanie — texte à consolider (ministère du Commerce, rubrique accords commerciaux : https://www.commerce.gov.dz/rubriques/accords-commerciaux)",
+      "statut": "avantage conservé verbatim ; référence JO du texte de ratification NON ENCORE CONSOLIDÉE"
+    },
+    "accord_algero_tunisien": {
+      "evidence_verbatim_conformepro": "Certificat d'origine dans le cadre algero-tunisie exo. d.d",
+      "reference_generale": "Accord commercial préférentiel algéro-tunisien — page officielle : https://www.commerce.gov.dz/accord-commercial-preferentiel-algero-tunisien",
+      "statut": "avantage conservé verbatim ; référence JO du texte de ratification NON ENCORE CONSOLIDÉE"
+    },
+    "zale_zone_arabe_de_libre_echange": {
+      "evidence_verbatim_conformepro": "Certificat d'origine dans le cadre -zale- exo d.d",
+      "reference_generale": "Convention de la Zone Arabe de Libre Échange (GAFTA/Agression) — texte à consolider",
+      "statut": "avantage conservé verbatim ; référence JO du texte de ratification NON ENCORE CONSOLIDÉE"
+    }
+  },
+  "dispositions_lf2026_liees_aux_foires_commerciales": {
+    "ref": "LF 2026 (JO n° 88 du 31/12/2025), art. 120 — foire commerciale intra-africaine (IATF-2025) : admission temporaire, exonération droits et taxes y compris C.S et D.A.P.S (limite 20.000 USD/exposant)",
+    "doc": "data/sources/DZA/legislation/JO_2026-88_loi_finances_2026.pdf"
+  }
+}
