@@ -1,0 +1,1597 @@
+
+
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tajwal font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;400;800&display=swap" rel="stylesheet">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="/assets/css/animate.min.css">
+  <link href="/assets/css/treeview.css" rel="stylesheet" />
+  <!-- owl Carsoul  -->
+  <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/assets/css/owl.theme.default.min.css">
+  <!-- font awsome -->
+  <link rel="stylesheet" href="/assets/css/all.min.css">
+  
+  <link href="/assets/css/homePage.css" rel="stylesheet" />
+  <script src="/Scripts/jquery.validate.min.js"></script>
+  <script src="/Scripts/jquery.validate.unobtrusive.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+
+    google.charts.load('current', { packages: ['orgchart', 'wordtree'] });
+    google.charts.setOnLoadCallback(draw);
+
+
+    function draw() {
+      //drawSimpleNodeChart();
+      drawChart();
+    }
+
+    function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Name');
+      data.addColumn('string', 'Manager');
+      data.addColumn('string', 'ToolTip');
+
+      // For each orgchart box, provide the name, manager, and tooltip to show.
+      data.addRows([
+        [{ 'v': 'shahat', 'f': 'احمد الاموى <div style="color:red; font-style:italic"> <img src="/images/chef-small.png" /> <span>رئيس المصلحة<span/></div>' }, '', 'رئيس المصلحة'],
+        // Start OF presdint Office
+        [{ 'v': 'presdientOffice', 'f': 'قطاع شئون المصلحة<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع شئون المصلحة'],
+        [{ 'v': 'aboHassn', 'f': 'أحمد أبو الحسن<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية لشئون مكتب رئيس المصلحة<span/></div>' }, 'presdientOffice', 'الإدارة المركزية لشئون مكتب رئيس المصلحة'],
+        [{ 'v': 'u1', 'f': 'الإدارة المركزية للعلاقات العامة والإتصالات<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية للعلاقات العامة والإتصالات<span/></div>' }, 'presdientOffice', 'الإدارة المركزية للعلاقات العامة والإتصالات'],
+        [{ 'v': 'u2', 'f': 'الإدارة المركزية للشئون القانونية<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية للشئون القانونية<span/></div>' }, 'presdientOffice', 'الإدارة المركزية للشئون القانونية'],
+        [{ 'v': 'u3', 'f': 'نعيم عبده شلبي<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية للتفتيش العام<span/></div>' }, 'presdientOffice', 'الإدارة المركزية للتفتيش العام'],
+
+        // End OF presdint Office
+        // Start OF presdint Office
+        [{ 'v': 'planningSector', 'f': 'قطاع التخطيط الاستراتيجي والمبادرات<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع التخطيط الاستراتيجي والمبادرات'],
+        [{ 'v': 'p', 'f': 'الإدارة المركزية لتخطيط وإدارة الأداء<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لتخطيط وإدارة الأداء<span/></div>' }, 'planningSector', 'الإدارة المركزية لتخطيط وإدارة الأداء'],
+        [{ 'v': 'p1', 'f': 'الإدارة المركزية لتخطيط الموارد<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لتخطيط الموارد<span/></div>' }, 'planningSector', ''],
+        [{ 'v': 'p2', 'f': 'الإدارة المركزية للتطوير والإصلاح الجمركي<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية للتطوير والإصلاح الجمركي<span/></div>' }, 'planningSector', ''],
+
+        // End OF presdint Office
+        // Start OF presdint Office
+        [{ 'v': 'techSector', 'f': 'محمد خميس<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس قطاع التكنولوجيا<span/></div>' }, 'shahat', 'قطاع التكنولوجيا'],
+        [{ 'v': 't', 'f': 'اسامة عبد الكريم<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لتكنولوجيا دعم العمليات الجمركية<span/></div>' }, 'techSector', ''],
+        [{ 'v': 't1', 'f': 'عبد الهادي عبد الرؤوف<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية للإحصاء<span/></div>' }, 'techSector', ''],
+        [{ 'v': 't2', 'f': 'الإدارة المركزية لتكنولوجيا المعلومات والاتصالات<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية لتكنولوجيا المعلومات والاتصالات<span/></div>' }, 'techSector', ''],
+
+        // End OF presdint Office
+        // Start OF presdint Office
+        [{ 'v': 'hrSector', 'f': 'محمد رشوان<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس قطاع الموارد البشرية وبناء القدرات<span/></div>' }, 'shahat', 'قطاع الموارد البشرية وبناء القدرات'],
+        [{ 'v': 'hr', 'f': 'الإدارة المركزية للمعهد الجمركي<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية للمعهد الجمركي<span/></div>' }, 'hrSector', ''],
+        [{ 'v': 'hr1', 'f': 'محمود السيد<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للموارد البشرية <span/></div>' }, 'hrSector', ''],
+
+        // End OF presdint Office
+
+        // Start OF presdint Office
+        [{ 'v': 'prossessSector', 'f': 'قطاع النظم والإجراءات والجمركية<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع النظم والإجراءات والجمركية'],
+        [{ 'v': 'pr', 'f': 'نجوى زغمور<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية للسياسات والإجراءات<span/></div>' }, 'prossessSector', ''],
+        [{ 'v': 'pr1', 'f': 'الإدارة المركزية للتعاون الدولي<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للتعاون الدولي <span/></div>' }, 'prossessSector', ''],
+        [{ 'v': 'pr2', 'f': 'الإدراة المركزية للتعريفة والقيمة  والمنشأ<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدراة المركزية للتعريفة والقيمة  والمنشأ <span/></div>' }, 'prossessSector', ''],
+        [{ 'v': 'pr3', 'f': 'رمضان عيسوي<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للتحكيم <span/></div>' }, 'prossessSector', ''],
+        [{ 'v': 'pr4', 'f': 'الإدارة المركزية للإعفاءات والنظم الخاصة<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للإعفاءات والنظم الخاصة <span/></div>' }, 'prossessSector', ''],
+
+        // End OF presdint Office
+
+        // Start OF presdint Office
+        [{ 'v': 'secuirtySector', 'f': 'قطاع الأمن والخدمات المالية والإدارية<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع الأمن والخدمات المالية والإدارية'],
+        [{ 'v': 'sr', 'f': ' لواء/ ياسر خالد<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية للخدمات الأمنية<span/></div>' }, 'secuirtySector', ''],
+        [{ 'v': 'sr1', 'f': 'محمد يوسف<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للخدمات الإدارية <span/></div>' }, 'secuirtySector', ''],
+        [{ 'v': 'sr2', 'f': 'محمد السيد عبد العليم <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدراة المركزية للخدمات المالية  <span/></div>' }, 'secuirtySector', ''],
+
+        // End OF presdint Office
+        // Start OF presdint Office
+        [{ 'v': 'commitSector', 'f': ' قطاع الإلتزام التجاري<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع الإلتزام التجاري'],
+        [{ 'v': 'cr', 'f': ' الإدارة المركزية لمكافحة التهرب <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لمكافحة التهرب<span/></div>' }, 'commitSector', ''],
+        [{ 'v': 'cr1', 'f': ' سعد سالم<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس    الإدارة المركزية لتكنولوجيا الإلتزام  <span/></div>' }, 'commitSector', ''],
+        [{ 'v': 'cr2', 'f': ' شهدي عيد <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية لشئون المجتمع التجاري  <span/></div>' }, 'commitSector', ''],
+        [{ 'v': 'cr3', 'f': '   الإدارة المركزية للتسهيل التجاري <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للتسهيل التجاري  <span/></div>' }, 'commitSector', ''],
+
+        // End OF presdint Office
+
+
+        // Start OF operations sector
+        [{ 'v': 'opsSector', 'f': ' قطاع العمليات<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع  العمليات'],
+        [{ 'v': 'opr', 'f': '    الإدارة المركزية لخدمة كبار العملاء <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لخدمة كبار العملاء <span/></div>' }, 'opsSector', ''],
+        [{ 'v': 'opr1', 'f': ' الإدارة المركزية لدعم البرامج <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية لدعم البرامج   <span/></div>' }, 'opsSector', ''],
+
+        [{ 'v': 'opr2', 'f': '  المنطقة الشمالية والغربية <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>  <span/></div>' }, 'opsSector', ''],
+        [{ 'v': 'opr21', 'f': '      الإدارة المركزية لجمرك الإسكندرية<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+        [{ 'v': 'opr22', 'f': '           الإدارة المركزية لجمارك الدخيلة<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+        [{ 'v': 'opr23', 'f': '      الإدارة المركزية للركاب والأسواق الحرة<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+        [{ 'v': 'opr24', 'f': '      الإدارة المركزية للمنطقة الغربية<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+        [{ 'v': 'opr25', 'f': '     الإدراة المركزية لدعم العمليات<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+        [{ 'v': 'opr26', 'f': '     الإدارة المركزية للدعم الإداري<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+
+        // start of mid and south partition
+        [{ 'v': 'opr3', 'f': '      المنطقة الوسطى والجنوبية <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>        <span/></div>' }, 'opsSector', ''],
+        [{ 'v': 'opr31', 'f': '      الإدارة المركزية لجمارك الوارادات والصادرات الجوية<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr3', ''],
+        [{ 'v': 'opr32', 'f': '           الإدارة المركزية لجمارك القاهرة<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr3', ''],
+        [{ 'v': 'opr33', 'f': '      الإدارة المركزية لجمارك البحر الأحمر والمنطقة الجنوبية<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr3', ''],
+        [{ 'v': 'opr34', 'f': '      الإدارة المركزية لدعم العمليات<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr3', ''],
+        [{ 'v': 'opr35', 'f': '      الإدارة المركزية للدعم الإداري<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr3', ''],
+
+        [{ 'v': 'opr4', 'f': '  المنطقة الشرقية <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>        <span/></div>' }, 'opsSector', ''],
+        [{ 'v': 'opr41', 'f': '   اشرف عبد العزيز   <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لجمارك دمياط<span/></div>' }, 'opr4', ''],
+        [{ 'v': 'opr42', 'f': '           الإدارة المركزية لجمارك السويس<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr4', ''],
+        [{ 'v': 'opr43', 'f': '      الإدارة المركزية لجمرك بورسعيد<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr4', ''],
+        [{ 'v': 'opr44', 'f': '      الإدارة المركزية لجمرك سيناء<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr4', ''],
+        [{ 'v': 'opr45', 'f': '   ياسر الشماع  <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس  الإدارة المركزية للدعم العمليات<span/></div>' }, 'opr4', ''],
+
+        // End OF operations sector
+
+      ]);
+
+      // Create the chart.
+      var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
+      // Draw the chart, setting the allowHtml option to true for the tooltips.
+      chart.draw(data, { 'allowHtml': true, allowCollapse: true });
+    }
+
+
+    function drawSimpleNodeChart() {
+      var nodeListData = new google.visualization.arrayToDataTable([
+        ['id', 'childLabel', 'parent', 'size', { role: 'style' }],
+        [0, 'الترانزيت', -1, 1, 'Blue'],
+        [1, 'تعريف نظام الترانزيت', 0, 1, 'Blue'],
+        [2, 'نصوص المواد المنظمه لنظام الترانزيت', 0, 1, 'Blue'],
+        [3, 'الاتفاقات الدوليه المنظمه لنظام الترانزيت', 0, 1, 'Blue'],
+        [4, 'انواع الترانزيت', 0, 1, 'Blue'],
+
+        [5, 'الترانزيت المباشر', 1, 1, 'Blue'],
+        [6, 'الترانزيت  الغير مباشر', 1, 1, 'Blue'],
+
+        [7, 'الترانزيت المباشر', 2, 1, 'Blue'],
+        [8, 'الترانزيت  الغير مباشر', 2, 1, 'Blue'],
+
+        [9, 'الترانزيت المباشر', 4, 1, 'Blue'],
+        [10, 'الترانزيت  الغير مباشر', 4, 1, 'Blue'],
+
+        [11, 'اجراءات الترانزيت المباشر', 9, 1, 'Blue'],
+        [12, 'المنشورات المنظمه للترانزيت المباشر', 9, 1, 'Blue'],
+        [13, 'القرارات الوزاريه الخاصه بتعديل بعض المواد المنظمه للترانزيت المباشر', 9, 1, 'Blue'],
+        [14, ' امثله حالات خاصه', 9, 1, 'Blue'],
+
+        [15, 'اجراءات الترانزيت  الغير مباشر', 10, 1, 'Blue'],
+        [16, 'المنشورات المنظمه للترانزيت الغير مباشر', 10, 1, 'Blue'],
+        [17, 'القرارات الوزاريه الخاصه بتعديل بعض المواد المنظمه للترانزيت الغير مباشر', 10, 1, 'Blue'],
+        [18, 'امثله حالات خاصه', 10, 1, 'Blue']
+
+      ]);
+      var options = {
+        colors: ['black', 'red', 'green'],
+        wordtree: {
+          fontName: 'Times-Roman',
+          format: 'explicit',
+          type: 'prefix',
+          allowHtml: true,
+          allowCollapse: true,
+          backgroundColor: '#cba',
+          forceIFrame: true
+        }
+      };
+
+      var wordtree = new google.visualization.WordTree(document.getElementById('wordtree_explicit'));
+      google.visualization.events.addListener(wordtree, 'select', selectHandler);
+      wordtree.draw(nodeListData, options);
+      function selectHandler() {
+        var selectedItem = wordtree.content;
+
+        alert('The user selected ' + selectedItem);
+      }
+    }
+
+
+  </script>
+  <link href="/assets/css/BrekingNews.css" rel="stylesheet" />
+
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="/assets/css/splide.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.rtl.min.css">
+  <!-- main style sheet -->
+  <link rel="stylesheet" href="/assets/css/homePage.css">
+
+  <!-- flags  icons css -->
+  <link rel="stylesheet" href="/assets/css/flag-icons.min.css">
+  <link rel="stylesheet" href="/assets/css/docs.css">
+
+  <!-- main style sheet -->
+  <link rel="stylesheet" href="/assets/css/aboutStyle.css">
+  <title> مصلحة الجمارك المصرية</title>
+</head>
+
+<form action="/Home/LogOff" id="logoutForm" method="post"><input name="__RequestVerificationToken" type="hidden" value="p9w1-5SwdIOCwsibwK_9q-NcyVP9EzD--g3wBkoUfKd_esw1bhAv4vGwdjOZ-9OvBgtCoa-DnwBvAcM2YEw4Y6jkOP3f18usRJbO5TGVGfw1" /></form><body>
+  <!-- Start Of the main Head -->
+  
+  <div class="main-header py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-sm-12">
+          <div class="d-flex align-items-center">
+            <div class="main-logo-wraper">
+              <a href="/">
+                <img src="/assets/images/EcaLogoLarge.png" class="img-fluid">
+              </a>
+            </div>
+            <div class="main-head-wraper px-2">
+              <h1>وزارة المالية</h1>
+              <h1>
+                مصلحة الجمارك المصرية
+                
+              </h1>
+
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="col-md-6 col-sm-12">
+          <div class="d-flex justify-content-end align-items-center auth-btns-wraper">
+                              <div class="px-2">
+                                <a href="/Administration/users/login" class="btn  btn-sm custom-btn-primary rounded-pill text-white">
+                                  <i class="fa-solid fa-user"></i>
+                                  <span>
+                                    تسجيل الدخول
+                                  </span>
+                                </a>
+                              </div> 
+            
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Of the main Head -->
+  <!-- Start of news ticker -->
+  
+  <div class="breking-news-section" style="background-color: #f34a3f; height: 40px ">
+  <span id="btext" class="text-light" style="margin-bottom:8px"><i class="fa-solid fa-rss"></i> أخبار عاجلة</span>
+  <marquee direction="ltr" onmouseover="this.stop()" scrollamount="2" onmouseout="this.start()" >
+        <a href="/Home/NewsDetail/177" class="breaking-news" style="margin-top:8px">
+اصدار 17 دليلًا استرشاديًا لتبسيط الإجراءات وتوحيد المفاهيم الجمركية        </a>
+        <a href="/Home/NewsDetail/175" class="breaking-news" style="margin-top:8px">
+منشور رقابي تصدير رقم (19) لسنة 2026        </a>
+        <a href="/Home/NewsDetail/174" class="breaking-news" style="margin-top:8px">
+مد العمل بالتسهيلات الجمركية الاستثنائية لشحنات &#171;الترانزيت العابر&#187; ٦ أشهر         </a>
+        <a href="/Home/NewsDetail/172" class="breaking-news" style="margin-top:8px">
+رئيس مصلحة الجمارك.. في جولة ميدانية بميناء &#171;سفاجا&#187;        </a>
+        <a href="/Home/NewsDetail/170" class="breaking-news" style="margin-top:8px">
+مصلحة الجمارك تستعرض منظومة &quot;الصادر المطور&quot; و&quot;التسجيل المسبق للشحنات الجوية&quot; في ندوة موسعة مع جمعية رجال الأعمال المصريين الصينيين        </a>
+        <a href="/Home/NewsDetail/169" class="breaking-news" style="margin-top:8px">
+نحو شراكة جمركية ذكية شاركنا في صياغة استراتيجية (2026–2029)         </a>
+        <a href="/Home/NewsDetail/168" class="breaking-news" style="margin-top:8px">
+إعلان هام للسادة المتعاملين مع الجمارك        </a>
+  </marquee>
+</div>
+
+
+  <!-- End of news ticker -->
+  <!-- START  of  nav  -->
+  <nav class="navbar navbar-expand-lg customs-nav navbar-dark sticky-top" id="mainNavBar">
+    <div class="container parant-nav">
+      <a class="navbar-brand" href="/">مصلحة الجمارك المصرية</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- start of first element in nav -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              عن المصلحة
+            </a>
+            <div class="megameanu dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class=" d-block">
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold">مصلحة الجمارك المصرية</h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/home/ChifWord" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    كلمة رئيس المصلحة
+                  </a>
+                </li>
+                <li>
+                  <a href="/home/StrategicPlan" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الخطه الاستراتيجيه
+                  </a>
+                </li>
+                <li>
+                  <a href="/home/Vision" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الرؤية والرسالة
+                  </a>
+                </li>
+                <li>
+                  <a href="/home/OrgCahrt" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الهيكل التنظيمي
+                  </a>
+                </li>
+                <li>
+                  <a href="/home/History" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    نبذة تاريخية
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold"> الوحدات التابعة </h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Pages/AEO_Index" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المشغل الاقتصادى المعتمد
+                  </a>
+                </li>
+                <li>
+                  <a href="/Pages/ExpSupUnit" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    وحدة دعم المصدرين والمستثمرين
+                  </a>
+                </li>
+                
+                <li>
+                  <a href="/pages/NTI_Index" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المعهد القومي للتدريب
+                  </a>
+                </li>
+                <li>
+                  <a href="/Home/RiskManagement" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    إدارة المخاطر
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold"> تواصل معنا</h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/home/Contact" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    تواصل معنا
+                  </a>
+                </li>
+                
+                <li>
+                  <a href="/Pages/Careers" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التوظيف
+                  </a>
+                </li>
+              </ul>
+              <ul>
+              </ul>
+            </div>
+          </li>
+          <!-- end of first element in nav -->
+          <!-- Start of second element in nav -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              الخدمات
+            </a>
+            <div class="megameanu dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class=" d-block">
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold">التخليص الجمركى</h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Services/ACI" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التسجيل المسبق للشحنات
+                  </a>
+                </li>
+                <li>
+
+                  <a href="/Services/Declartion" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    تقديم الأقرار
+                  </a>
+                </li>
+                <li>
+                  <a href="/Services/Manifest" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    تقديم المنافيست
+                  </a>
+                </li>
+                
+              </ul>
+              <ul>
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold"> استعلامات </h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Services/Tarif" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التعريفة
+                  </a>
+                </li>
+                <li>
+                  <a href="/Services/Currency" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    اسعار تحويل العملات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Services/Reports" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الاستعلام عن البيانات الاحصائية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Services/StudyReports" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                   تقررير زمن الافراج 
+                  </a>
+                </li>
+
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">   جهات ذات صله</h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=1" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الهيئه العامة للمنطقة الاقتصادية لقناه السويس
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=2" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الهيئة العامة للاستثمار
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=3" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الهيئه العامة للرقابة على الصادرات و الواردات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=4" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الهيئة القومية لسلامه الاغذية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=5" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    هيئة الدواء المصرية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=6" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الاتفاقيات و التجارة الخارجية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=7" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المعالجات التجارية
+                  </a>
+                </li>
+
+
+              </ul>
+              <ul>
+              </ul>
+              <ul>
+              </ul>
+            </div>
+          </li>
+          <!-- end of second element in nav -->
+          <!-- Start of theird element in nav -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              التشريعات
+            </a>
+            <div class="megameanu dropdown-menu " aria-labelledby="navbarDropdown">
+              <ul class=" d-block">
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold">
+                    التجارة الدولية
+                  </h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/Procedures" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    دورة الإجراءات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=7" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التسجيل المسبق للشحنات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=1" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    قائمة الشحن
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=2" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التفريغ
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=8" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    البيان الجمركي
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=3" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الإقرار النهائي للسيارات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=4" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الطرود البريدية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=5" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التسجيل والمتعاملين
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=6" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التحكيم
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold">  السفر والسياحة</h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=1" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الركاب
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=2" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الأمتعة الشخصية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=3" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التربتيكت
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=4" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المعارض والمؤتمرات الداخليه
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=7" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المعارض والمؤتمرات الخارجيه
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=5" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    سياحه اليخوت الاجنبيه
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=8" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    تموين السفن والبحارة
+                  </a>
+                </li>
+              </ul>
+
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">   النظم الخاصة</h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=1" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    السماح المؤقت
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=2" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الترانزيت
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=3" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المستودعات الجمركية
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=4" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التخزين الموقت
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=9" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التخليص المسبق
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=5" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المناطق الحرة
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=6" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المناطق الاقتصادية ذات الطبيعة الخاصة
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=7" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الأسواق الحرة
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=8" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الإفراج المؤقت
+                  </a>
+                </li>
+
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold"> اعفاءات ونظم اخرى</h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/ExemptionsSpecialSystem?exemptionsSpecialSystemsTypeId=11" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    اعفاءات ونظم اخرى
+                  </a>
+                </li>
+                
+                
+
+                <li>
+                  <a href="/Legislations/ExemptionsSpecialSystem?exemptionsSpecialSystemsTypeId=10" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الدخان
+                  </a>
+                </li>
+
+
+
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">
+                    القوانين والمنشورات
+                  </h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/Manshorat?categoryId=1" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    عام
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/Manshorat?categoryId=2" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    القوانين
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/Manshorat?categoryId=5" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    اللوائح
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/Manshorat?categoryId=4" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المنشورات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/Manshorat?categoryId=3" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الاتفاقيات
+                  </a>
+                </li>
+              </ul>
+
+            </div>
+          </li>
+          <!-- end of theird element in nav -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              المركز الاعلامي
+            </a>
+            <div class="megameanu dropdown-menu " aria-labelledby="navbarDropdown">
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">
+                    الاخبار
+                  </h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+
+                <li>
+                  <a href="/Home/NewsList" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    اخبار
+                  </a>
+                </li>
+                <li>
+                  <a href="/Home/Events" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    فعاليات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Pages/Seizures" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    ضبطيات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Home/AwarenessMediaCampaigns" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    تصريحات اعلامية
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">
+                    صور وفيديوهات
+                  </h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Pages/PhotoGalary" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    صور
+                  </a>
+                </li>
+                <li>
+                  <a href="/Pages/Videos" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    فيديوهات
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">
+                    مجلة الجمارك
+                  </h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Home/MagazineList" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    مجلة الجمارك
+                  </a>
+                </li>
+              </ul>
+              <ul>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/Home/PollIndex" id="navbarDropdown" role="button"
+               aria-expanded="false">
+              استطلاع رأي
+            </a>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+  <!-- end of  nav -->
+  
+
+<input type="hidden" id="TrfCulture" value="1" />
+
+<section class="">
+    <div class="inner-banner d-flex align-items-center">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div>
+                        <h3>
+                            التعريفة
+                        </h3>
+                    </div>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">الخدمات</a></li>
+                            <li class="breadcrumb-item"><a href="#">استعلامات</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">التعريفة</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br />
+<section class="">
+    <div class="vision-mision-wrap">
+        <div class="container">
+          <div class="col-lg-12 col-md-12">
+
+            <div class="row">
+
+              <div class="form-group col-sm-2">
+                <select class="form-control" id="TarifType" name="TarifType"><option value=""></option>
+<option selected="selected" value="1">وارد</option>
+<option value="2">صادر</option>
+</select>
+              </div>
+              <div class="form-group col-sm-5">
+                <select class="form-control" id="ChaptersList" name="ChaptersList"><option value=""></option>
+<option selected="selected" value="1">01 - حيوانات حية.</option>
+<option value="2">02 - لحوم وأحشاء وأطراف صالحة للأكل.</option>
+<option value="3">03 - أسماك وقشريات ، رخويات وغيرها من اللافقريات المائية.</option>
+<option value="4">04 - ألبان ومنتجات صناعة الألبان؛ بيض طيور ؛ عسل طبيعي</option>
+<option value="5">05 - منتجات أخر من أصل حيواني، غير مذكورة ولا داخلة في</option>
+<option value="6">06 - أشجار ونباتات أخرى ؛ بصلات وبصيلات وجذور وما شابهها</option>
+<option value="7">07 - خضر ونباتات وجذور ودرنات ، صالحة للأكل.</option>
+<option value="8">08 - فواكه وأثمار قشرية صالحة للأكل ؛ قشور حمضيات وقشور</option>
+<option value="9">09 - بن وشاي ومته وبهارات وتوابل.</option>
+<option value="10">10 - حبوب.</option>
+<option value="11">11 - منتجات مطاحن ؛ شعير ناشظ (مولت) ؛ نشا حبوب أو جذور</option>
+<option value="12">12 - بذور وأثمار زيتية ؛ حبوب وبذور وأثمار متنوعة ؛ نباتات</option>
+<option value="13">13 - صمغ اللك ؛ صموغ وراتنجات وغيرها من عصارات وخلاصات</option>
+<option value="14">14 - مواد ضفر نباتية ، منتجات أخر من أصل نباتي غير مذكورة</option>
+<option value="15">15 - شحوم ودهون وزيوت حيوانية أو نباتية ، ومنتجات تفككها</option>
+<option value="16">16 - محضرات لحوم أو أسماك أو قشريات أو رخويات أو غيرها</option>
+<option value="17">17 - سكر ومصنوعات سكرية.</option>
+<option value="18">18 - كاكاو ومحضراته</option>
+<option value="19">19 - محضرات أساسها الحبوب أو الدقيق أو النشاء او الحليب</option>
+<option value="20">20 - محضرات خضر ، ومحضرات أثمار قشرية أو فواكه ومحضرات</option>
+<option value="21">21 - محضرات غذائية متنوعة</option>
+<option value="22">22 - مشروبات ، سوائل كحولية وخل</option>
+<option value="23">23 - بقايا ونفايات صناعات الأغذية ؛ أغذية محضرة للحيوانات.</option>
+<option value="24">24 - تبغ وأبدال تبغ مصنعة</option>
+<option value="25">25 - ملح ؛ كبريت ؛ أتربة وأحجار ؛ مواد جبسية ؛ كلس (جير)</option>
+<option value="26">26 - خامات معادن ؛ خبث ورماد</option>
+<option value="27">27 - وقود معدني، زيوت معدنية ومنتجات تقطيرها ، مواد قارية</option>
+<option value="28">28 - منتجات كيماوية غير عضوية ؛ مركبات عضوية أو غير عضوية</option>
+<option value="29">29 - منتجات كيماوية عضوية</option>
+<option value="30">30 - منتجات الصيدلة</option>
+<option value="31">31 - أسمدة</option>
+<option value="32">32 - خلاصات للدباغة والصباغة ؛ مواد دابغة ومشتقاتها ؛ أصباغ</option>
+<option value="33">33 - زيوت عطرية ، وراتنجات عطرية &quot;رزينويد&quot; ؛ محضرات عطور</option>
+<option value="34">34 - صابون ، عوامل عضوية ذات نشاط سطحي ، محضرات غسيل ،</option>
+<option value="35">35 - مواد زلالية ، مواد أساسها النشا المعدل ؛ غراء ؛ أنزيمات.</option>
+<option value="36">36 - بارود ومتفجرات ؛ منتجات نارية فنية ؛ ثقاب ؛ خلائط</option>
+<option value="37">37 - منتجات تصوير فوتوغرافي أو سينمائي</option>
+<option value="38">38 - منتجات كيماوية متنوعة</option>
+<option value="39">39 - لدائن ومصنوعاتها</option>
+<option value="40">40 - مطاط ومصنوعاته</option>
+<option value="41">41 - صلال وجلود خام (عدا جلود بفراء) ، جلود مدبوغة أو مهيأة</option>
+<option value="42">42 - مصنوعا من جلد ؛ أصناف عدة الحيوانات والسراجة ؛ لوازم</option>
+<option value="43">43 - جلود بفراء طبيعية وفراء مقلدة (اصطناعية) ؛ مصنوعاتهم.</option>
+<option value="44">44 - خشب ومصنوعاته ؛ فحم خشبي</option>
+<option value="45">45 - فلين ومصنوعاته.</option>
+<option value="46">46 - مصنوعات من القش أو الحلفاء أو غيرها من مواد الضفر</option>
+<option value="47">47 - عجائن من خشب أو مواد ليفية سليولوزية أخر ؛ ورق قوى</option>
+<option value="48">48 - ورق وورق مقوى ؛ مصنوعات من عجينة السليولوز ؛ من ورق</option>
+<option value="49">49 - كتب وصحف وصور وغيرها من منتجات صناعة الطباعة ، مخطوطات</option>
+<option value="50">50 - حرير طبيعي</option>
+<option value="51">51 - صوف ، وبرر حيواني ناعم أو خشن ؛ خيوط وأقمشة منسوجة</option>
+<option value="52">52 - قطن.</option>
+<option value="53">53 - ألياف نسيجية نباتية اخر ؛ خيوط من رق وأقمشة منسوجة</option>
+<option value="54">54 - شعيرات تركيبية أو إصطناعية</option>
+<option value="55">55 - ألياف تركيبية أو أصطناعية غير مستمرة</option>
+<option value="56">56 - حشو ؛ لباد ولامنسوجات ؛ خيوط خاصة ، خيوط حزم ، حبال</option>
+<option value="57">57 - سجاد وأغطية أرضيات اخر من مواد نسيجية</option>
+<option value="58">58 - أقمشة خاصة منسوجة ؛ أقمشة بسطوح ذات خمل &quot; أوبار &quot;</option>
+<option value="59">59 - نسج مشربة أو مطلية أو مغطاة أو منضدة ؛ أصناف نسجية</option>
+<option value="60">60 - أقمشة مصنرة أو كروشيه</option>
+<option value="61">61 - ألبسة وتوابع البسة ، من مصنرات أو كروشيه</option>
+<option value="62">62 - ألبسة وتوابع ألبسة ، من غير المصنرات أو الكروشيه</option>
+<option value="63">63 - أصناف أخر جاهزة من مواد نسجية ؛ مجموعات (أطقم) ؛ ألبسة</option>
+<option value="64">64 - أحذية وطماقات وما يماثلها ؛ وأجزاء هذه الأصناف</option>
+<option value="65">65 - أغطية رأس وأجزاؤها</option>
+<option value="66">66 - مظلات مطر ، مظلات شمس ، عصى ، عصى بمقاعد ، سياط وسياط</option>
+<option value="67">67 - ريش وزغب محضران وأصناف مصنوعة منهما ؛ أزهار إصطناعية</option>
+<option value="68">68 - مصنوعات من حجر أو جص أو أسمنت أو حرير صخرى (أسبستوس</option>
+<option value="69">69 - منتجات من خزف</option>
+<option value="70">70 - زجاج ومصنوعاته</option>
+<option value="71">71 - لؤلؤ طبيعي أو مستنبت ، وأحجار كريمة أو شبه كريمة ،</option>
+<option value="72">72 - حديد صب (ظهر) وحديد ، وصلب (فولاذ)</option>
+<option value="73">73 - مصنوعات من حديد صب (ظهر) أو حديد أو صلب (فولاذ).</option>
+<option value="74">74 - نحاس ومصنوعاته.</option>
+<option value="75">75 - نيكل ومصنوعاته</option>
+<option value="76">76 - الومنيوم ومصنوعاته</option>
+<option value="77">77 - فصل إحتياطى لإستعمال لاحق محتمل فى النظام المنسق</option>
+<option value="78">78 - رصاص ومصنوعاته</option>
+<option value="79">79 - زنك ( توتياء) ومصنوعاته</option>
+<option value="80">80 - قصدير ومصنوعاته</option>
+<option value="81">81 - معادن عادية أخر ؛ خلائط معدنية خزفية (سيرميت)؛ ومصنوعاتها</option>
+<option value="82">82 - عدد وأدوات قاطعة وأدوات مائدة ، من معادن عادية ؛ أجزاء</option>
+<option value="83">83 - أصناف متنوعة من معادن عادية</option>
+<option value="84">84 - مفاعلات نووية ، مراجل ، آلات وأجهزة وأدوات آلية ؛</option>
+<option value="85">85 - آلات وأجهزة ومعدات كهربائية وأجزاؤها ؛ أجهزة تسجيل</option>
+<option value="86">86 - قاطرات وعربات ومعدات السكك الحديدية أو ما يماثلها</option>
+<option value="87">87 - سيارات وجرارات ودراجات ومركبات وعربات أخر ؛ وأجزاؤها</option>
+<option value="88">88 - مركبات جوية ومركبات فضائية ، وأجزاؤها</option>
+<option value="89">89 - سفن وقوارب وعائمات</option>
+<option value="90">90 - أدوات وأجهزة للبصريات أو التصوير الفوتوغرافي أو السينمائي</option>
+<option value="91">91 - أصناف صناعة الساعات وأجزاؤها</option>
+<option value="92">92 - أدوات موسيقية وأجزاؤها ولوازمها</option>
+<option value="93">93 - أسلحة وذخائر ؛ أجزاؤها ولوازمها</option>
+<option value="94">94 - أثاث ؛ أثاث للطلب والجراحة ؛ أصناف للأسرة ، ( حشايا</option>
+<option value="95">95 - لعب أطفال والعاب مجتمعات ، أصناف للتسلية أو الرياضة</option>
+<option value="96">96 - مصنوعات متنوعة</option>
+<option value="97">97 - تحف فنية ، قطع للمجموعات وقطع أثرية</option>
+<option value="98">98 - فصل إحتياطى لإستعمال لاحق محتمل فى النظام المنسق</option>
+</select>
+              </div>
+              <div class="form-group col-sm-3">
+                <input id="TextSearch" type="text" class="form-control" value="" placeholder="كلمة بحث...">
+              </div>
+              <div class="form-group col-sm-2">
+                <a href="#" onclick="DoSearch()" class="btn btn-primary"> <i class="fa fa-search"></i>  بحث</a>
+              </div>
+
+            </div>
+            <br />
+            <table class="table">
+              <tr>
+                <th>
+                  البند
+                </th>
+
+                <th>
+                  نص البند
+                </th>
+                
+
+                <th></th>
+              </tr>
+                <tr>
+                  <td>
+                    01/01/21/00/00
+                  </td>
+
+                  
+                  <td>
+                    خيول أصيلة للإنسال ، حية .
+                  </td>
+                  <td>
+                    <a data-target="#trfDetailsPopUp" data-modal="" data-toggle="modal" href="#" onclick=ShowTariffDetails(&#39;01/01/21/00/00&#39;)> التفاصيل </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    01/01/29/00/00
+                  </td>
+
+                  
+                  <td>
+                    خيول لغير الأنسال ، حية .
+                  </td>
+                  <td>
+                    <a data-target="#trfDetailsPopUp" data-modal="" data-toggle="modal" href="#" onclick=ShowTariffDetails(&#39;01/01/29/00/00&#39;)> التفاصيل </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    01/01/30/00/00
+                  </td>
+
+                  
+                  <td>
+                    حمير حيه .
+                  </td>
+                  <td>
+                    <a data-target="#trfDetailsPopUp" data-modal="" data-toggle="modal" href="#" onclick=ShowTariffDetails(&#39;01/01/30/00/00&#39;)> التفاصيل </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    01/01/90/00/00
+                  </td>
+
+                  
+                  <td>
+                    بغال ونغال ، حيه .
+                  </td>
+                  <td>
+                    <a data-target="#trfDetailsPopUp" data-modal="" data-toggle="modal" href="#" onclick=ShowTariffDetails(&#39;01/01/90/00/00&#39;)> التفاصيل </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    01/02/21/00/00
+                  </td>
+
+                  
+                  <td>
+                    أبقار أصيله للإنسال ، حيه
+                  </td>
+                  <td>
+                    <a data-target="#trfDetailsPopUp" data-modal="" data-toggle="modal" href="#" onclick=ShowTariffDetails(&#39;01/02/21/00/00&#39;)> التفاصيل </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    01/02/29/00/00
+                  </td>
+
+                  
+                  <td>
+                    أبقار  لغير  للإنسال ، حيه
+                  </td>
+                  <td>
+                    <a data-target="#trfDetailsPopUp" data-modal="" data-toggle="modal" href="#" onclick=ShowTariffDetails(&#39;01/02/29/00/00&#39;)> التفاصيل </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    01/02/31/00/00
+                  </td>
+
+                  
+                  <td>
+                    جاموس أصيله  للإنسال ، حيه .
+                  </td>
+                  <td>
+                    <a data-target="#trfDetailsPopUp" data-modal="" data-toggle="modal" href="#" onclick=ShowTariffDetails(&#39;01/02/31/00/00&#39;)> التفاصيل </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    01/02/39/00/00
+                  </td>
+
+                  
+                  <td>
+                    جاموس لغير  الإنسال ، حيه .
+                  </td>
+                  <td>
+                    <a data-target="#trfDetailsPopUp" data-modal="" data-toggle="modal" href="#" onclick=ShowTariffDetails(&#39;01/02/39/00/00&#39;)> التفاصيل </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    01/02/90/00/00
+                  </td>
+
+                  
+                  <td>
+                    حيوانات حية أخر، من فصيلة الأبقار
+                  </td>
+                  <td>
+                    <a data-target="#trfDetailsPopUp" data-modal="" data-toggle="modal" href="#" onclick=ShowTariffDetails(&#39;01/02/90/00/00&#39;)> التفاصيل </a>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    01/03/10/00/00
+                  </td>
+
+                  
+                  <td>
+                    حيوانات حية من فصيلة الخنازير أصيلة للإ نسال
+                  </td>
+                  <td>
+                    <a data-target="#trfDetailsPopUp" data-modal="" data-toggle="modal" href="#" onclick=ShowTariffDetails(&#39;01/03/10/00/00&#39;)> التفاصيل </a>
+                  </td>
+                </tr>
+            </table>
+
+              <div style="padding-top:20px !important">
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination">
+                    <div class="pagination-container"><ul class="pagination"><li class="page-link page-item active"><a>1</a></li><li class="page-link page-item"><a href="/Services/Tarif?page=2&amp;type=1&amp;chapterId=1">2</a></li><li class="page-link page-item"><a href="/Services/Tarif?page=3&amp;type=1&amp;chapterId=1">3</a></li><li class="page-link page-item"><a href="/Services/Tarif?page=4&amp;type=1&amp;chapterId=1">4</a></li><li class="page-link page-item"><a href="/Services/Tarif?page=5&amp;type=1&amp;chapterId=1">5</a></li><li class="page-link page-item PagedList-skipToNext"><a href="/Services/Tarif?page=2&amp;type=1&amp;chapterId=1" rel="next">»</a></li></ul></div>
+
+                  </ul>
+                </nav>
+              </div>
+
+            <br />
+
+
+            <div id="trfDetailsPopUp" class="modal fade" role="dialog">
+              <div class="modal-dialog" style="max-width:700px; max-height:400px;">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <div style="display: table-cell">
+                      <h4 class="modal-title"> التفاصيل </h4>
+                    </div>
+
+                    <a href="#" onclick=" $('#trfDetailsPopUp').modal('hide');">
+                      <i class="fa fa-times close" data-dismiss="modal" aria-label="Close"></i>
+                    </a>
+                  </div>
+                  <div class="modal-body">
+                    <dl id="trfDetails" class="dl-horizontal">
+                      <dt id="codeField">
+                      </dt>
+                      <dd id="code">
+                      </dd>
+                      <dt id="descField">
+                      </dt>
+                      <dd id="desc">
+                      </dd>
+                      <dt id="taxField">
+                      </dt>
+                      <dd id="tax">
+                        <ul></ul>
+                      </dd>
+                      <dt id="instField">
+                      </dt>
+                      <dd id="inst" style="max-height: 300px;overflow:auto ">
+                        <ul></ul>
+                      </dd>
+                    </dl>
+                  </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div><!-- /.modal -->
+            </div>
+
+
+            <div id="InstFullPopUp" class="modal fade bg-dark " role="dialog" >
+              <div class="modal-dialog" style="max-width:700px; max-height:400px;">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <div style="display: table-cell">
+                      <h4 class="modal-title"> التفاصيل </h4>
+                    </div>
+
+                    <a href="#" onclick=" $('#InstFullPopUp').modal('hide');">
+                      <i class="fa fa-times close" data-dismiss="modal" aria-label="Close"></i>
+                    </a>
+                  </div>
+                  <div class="modal-body">
+                    <dl id="InstFullDetails" class="dl-horizontal">
+                
+                      <dt id="instField">
+                      </dt>
+                      <dd id="instFull" style="max-height: 300px;overflow:auto ">
+                      <ul></ul>
+                      </dd>
+                    </dl>
+                  </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+              </div><!-- /.modal -->
+            </div>
+
+
+
+          </div>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    .select2-container--default .select2-selection--single {
+        line-height: 37.6px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+</style>
+
+
+  <!-- Start of footer -->
+
+  <section class="primary-section-bg   footer-section">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="footer-wraper">
+            <!-- <div class="client-form ">
+              <div class="sectionLine my-4"></div>
+              <h4 class="white-text">استطلاع رأي</h4>
+              <p class="white-text">
+                إذا كنت أحد المتعاملين مع مصلحة الجمارك ..
+              </p>
+              <p class="white-text">
+                هل قمت بالتسجيل على منصة نافذة استعدادا لتطبيق المرحلة الالزامية لنظام الـ ACI
+
+              </p>
+              <div class="my-4">
+                <div>
+                  <button class="btn btn-light ">نعم</button>
+                  <button class="btn btn-outline-light">لم اسجل بعد</button>
+
+                </div>
+                <div class="form-group my-4">
+                  <textarea name="" class="form-control" id="" cols="30" rows="5"></textarea>
+                </div>
+              </div>
+            </div> -->
+
+
+          </div>
+          <div class="footer-links">
+            <div class="row">
+              <div class="col-4">
+                <ul>
+                  <li>
+                    <div class="d-flex justify-content-center flex-column align-items-center">
+
+                      <img src="/images/EcaLogoLarge.png" class="img-fluid" alt="" style="max-width: 100px;">
+                      <h4 class="white-text">
+                        مصلحة الجمارك المصرية
+                      </h4>
+                    </div>
+                  </li>
+
+                </ul>
+              </div>
+              <div class="col-4">
+                <div style="border-right: 2px solid white; padding-right: 15px;">
+
+                  <ul>
+                    <li>
+                      <h4 class="white-text">
+                        مصلحة الجمارك
+                      </h4>
+                    </li>
+
+                    <li style="margin-bottom: 8px;">
+                      <a href="/home/ChifWord">
+                        كلمة رئيس المصلحة
+                      </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                      <a href="/home/ChifWord">
+                        الخطة الاستراتيجيه
+                      </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                      <a href="/home/Vision">
+                        الرؤية والرسال
+                      </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                      <a href="/home/OrgCahrt">
+                        الهيكل التنظيمي
+                      </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                      <a href="/home/History">
+                        نبذة تاريخية
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="col-4">
+                <div style="border-right: 2px solid white; padding-right: 15px;">
+
+                  <ul>
+                    <li>
+                      <h4 class="white-text">
+                        التواصل
+                      </h4>
+                    </li>
+                    <li style="margin-bottom: 5px;">
+                      <a href="https://www.facebook.com/egyptcustoms" target="_blank">
+                        فيسبوك
+                      </a>
+                    </li>
+                    <li style="margin-bottom: 5px;">
+
+                      <a href="https://rb.gy/zzmu7" target="_blank">
+                        يوتيوب
+                      </a>
+                    </li>
+                    
+
+                  </ul>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+          <div class="footer-decor">
+            <!-- <div class="footer-decor-line"></div> -->
+            <!-- <div class="footer-decor-img"> -->
+            <!-- <img src="/images/EcaLogoLarge.png" class="img-fluid" alt=""> -->
+            <!-- </div> -->
+            <div>
+              <p class="text-center footer-mark">
+                جميع الحقوق محفوظة لمصلحة الجمارك 2026
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End of footer -->
+  <div class="social-media-links main-shadow">
+
+    <a href="https://www.facebook.com/egyptcustoms" target="_blank" class="faceBook">
+      <i class="fa-brands fa-facebook fa-2x "></i>
+    </a>
+    <a class="youtube" href="https://rb.gy/zzmu7" target="_blank">
+      <i class="fa-brands fa-youtube fa-2x"></i>
+    </a>
+
+  </div>
+  <!-- End of footer -->
+  <!-- Start of  -->
+
+  <script src="/assets/js/jquery-3.6.0.min.js"></script>
+  <!-- bootstrap -->
+  
+  
+  
+
+
+  <script src="/assets/js/jquery-ui.js"></script>
+  <script src="/assets/js/bootstrap.bundle.min.js"></script>
+
+  <script src="/assets/js/owl.carousel.min.js"></script>
+
+  
+  <script src="/assets/js/telex.js"></script>
+  <script src="/assets/js/splide.min.js"></script>
+  
+  <script src="/assets/js/wow.min.js"></script>
+  <script src="/assets/js/mainJs.js"></script>
+
+  <script src="/Scripts/site.js"></script>
+
+<script>
+  var qtx = Telex.widget("tx", { pauseOnHover: true, speed: 25, direction: "reverse" }, [
+    {
+      id: "msg1",
+      content: "بدء العمل بمنظومة",
+      class: 'msg-lightgreen',
+    },
+    {
+      id: "msg2",
+      content: "بعض الاخبار التى تهم المجتمع الجمركي",
+      class: 'msg-lightgreen',
+    },
+    {
+      id: "msg3",
+      content: "بعض الاخبار التى تهم المجتمع الجمركي",
+      class: 'msg-lightgreen',
+    },
+    {
+      id: "msg4",
+      content: "بعض الاخبار التى تهم المجتمع الجمركي",
+      class: 'msg-lightgreen',
+    },
+  ]);
+</script>   <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var main = new Splide('#main-carousel', {
+        type: 'fade',
+        rewind: true,
+        pagination: false,
+        arrows: false,
+      });
+
+
+      var thumbnails = new Splide('#thumbnail-carousel', {
+        fixedWidth: 100,
+        fixedHeight: 60,
+        gap: 10,
+        rewind: true,
+        pagination: false,
+        isNavigation: true,
+        breakpoints: {
+          600: {
+            fixedWidth: 60,
+            fixedHeight: 44,
+          },
+        },
+      });
+
+
+      main.sync(thumbnails);
+      main.mount();
+      thumbnails.mount();
+    });
+  </script>
+  
+    <script src="/assets/jquery/dist/jquery.min.js"></script>
+
+    
+    <script src="/assets/js/jquery-ui.js"></script>
+
+    <link href="/assets/css/select2.min.css" rel="stylesheet" />
+    <script src="/assets/js/select2.full.js"></script>
+    <script>
+        jQuery(function ($) {
+            $("#TarifType").select2({
+                placeholder: "بحث ...",
+                width: '100%',
+                dir: "rtl",
+            });
+
+            $("#ChaptersList").select2({
+                placeholder: "بحث ...",
+                width: '100%',
+                dir: "rtl",
+              });
+
+        });
+      function ShowInstructionDetails(InstCode) {
+
+            $.ajax({
+                type: 'POST',
+              url: '/Services/InstDetails?InstCode=' + InstCode ,
+                dataType: 'json',
+              success: function (InstDetails) {
+
+                $('#InstFullPopUp #InstFullDetails #instFull').empty();
+               
+                $('#InstFullPopUp #InstFullDetails #instFull').append('<h1> تفاصيل التزييل :  </h1>'+'<h1>' + InstCode + '</h1>');
+                $('#InstFullPopUp #InstFullDetails #instFull').append('<li>' + InstDetails + '</li>');
+
+                $('#InstFullPopUp').modal('show');
+
+                    //hideLoading();
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve TariffDetails.' + ex);
+                    hideLoading();
+                }
+            });
+      }
+
+        function ShowTariffDetails(trfNumber) {
+
+            var type = $("#TarifType").val();
+
+            //showLoading();
+
+            $.ajax({
+                type: 'POST',
+                url: '/Services/TrfDetails?trfNumber=' + trfNumber + "&trfType=" + type,
+                dataType: 'json',
+                success: function (trfDetails) {
+                    var isAr = ($('#TrfCulture').val() == 'ar') ? true : false;
+                    $('#trfDetailsPopUp #trfDetails #codeField').text((isAr) ? "البند" : "HS Code");
+                    $('#trfDetailsPopUp #trfDetails #code').text(trfDetails.Number);
+                    $('#trfDetailsPopUp #trfDetails #descField').text((isAr) ? "نص البند" : "Desc");
+                    $('#trfDetailsPopUp #trfDetails #desc').text(trfDetails.Desc);
+                    if (allBlanks(trfDetails.Taxes) !== "") {
+                        $('#trfDetailsPopUp #trfDetails #taxField').text((isAr) ? "الضرائب" : "Taxes");
+                    }
+                    else {
+                        $('#trfDetailsPopUp #trfDetails #taxField').text((isAr) ? "" : "");
+
+                    }
+                    $('#trfDetailsPopUp #trfDetails #tax ul').empty();
+
+
+
+                    $.each(trfDetails.Taxes, function (i, tax) {
+                        if (tax !== '' && !tax.includes('صفر')) {
+                            $('#trfDetailsPopUp #trfDetails #tax ul').append('<li>' + tax + '</li>');
+                        }
+                    });
+                    $('#trfDetailsPopUp #trfDetails #instField').text((isAr) ? "المستندات و الأعمال" : "Instructions");
+                    $('#trfDetailsPopUp #trfDetails #inst ul').empty();
+                  $.each(trfDetails.InstructionCodes, function (i, InstructionCode) {
+                    $('#trfDetailsPopUp #trfDetails #inst ul').append('<a href="#"  onclick=ShowInstructionDetails("' + InstructionCode + '")> ' + InstructionCode + ' &nbsp;  </a>');
+                   
+                  });
+                  $('#trfDetailsPopUp #trfDetails #inst ul').append('<p class="bg-warning" class="fs-6">للاطلاع على تفاصيل التزييل برجاء الضغط عليه</p>');
+                  $.each(trfDetails.Instructions, function (i, instruction) {
+                    $('#trfDetailsPopUp #trfDetails #inst ul').append('<li>' + instruction + '</li>');
+                  });
+                    $('#trfDetailsPopUp').modal('show');
+
+                    //hideLoading();
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve TariffDetails.' + ex);
+                    hideLoading();
+                }
+            });
+        }
+
+
+        function DoSearch() {
+            var type = $("#TarifType").val();
+            var chapterId = $("#ChaptersList").val();
+            var textSearch = $("#TextSearch").val();
+
+            window.location.replace('/Services/Tarif?type=' + type + "&chapterId=" + chapterId + "&textSearch=" + textSearch);
+        }
+    </script>
+
+
+</body>
+</html>
+}

@@ -1,6 +1,6 @@
 # Documentation tarifaire TUN — 2026-08-29
 
-> Audit local en lecture seule. Aucun taux ni fichier source n'a été modifié. Ce document décrit la qualité documentaire disponible et ne constitue pas une validation administrative.
+> Audit local en lecture seule. Aucun taux ni fichier source n'a été modifié. **Outil informatif, non opposable** : le SaaS ne crée aucun droit et n'engage pas l'administration ; seules les publications officielles de l'autorité douanière font foi. Ce document décrit la qualité documentaire disponible — il ne constitue ni une validation administrative, ni un conseil juridique.
 
 ## Consolidation du fichier national autonome — 2026-08-29
 
@@ -58,15 +58,23 @@ L'endpoint de détail `tarifwebnew/getresultat.php?choix=&chap=&sel=CODE` **publ
 - **113 nouveaux codes sans taux** : taux publiés en ligne (vérifié sur 2 échantillons) → rempliront lors du re-crawl.
 - **Version SH et dates de publication/effet** : non documentées dans les métadonnées de la source.
 
+## Cadre d'usage — outil informatif, non opposable
+
+- Statut du SaaS : **INFORMATIF_NON_OPPOSABLE** — il ne crée aucun droit et n'engage pas l'administration.
+- Les publications officielles de l'autorité douanière (tarif officiel, JO, arrêtés) seules sont opposables.
+- Le SaaS fournit des repères documentaires sourcés ; il ne constitue ni une décision douanière, ni un conseil juridique, ni une validation administrative.
+- La rigueur documentaire (SHA-256, verbatim, écarts documentés sans arbitrage, aucun taux inventé) reste exigée et ne confère pas d'opposabilité.
+
 ## Résultat informatif
 
 - Statut global : **INFORMATIVE_PARTIAL**
-- source : **UNVERIFIED**
+- source : **DOCUMENTED**
 - temporal_validity : **PARTIAL**
 - classification : **DOCUMENTED**
 - taxes_and_levies : **PARTIAL**
 - preference_and_origin : **PARTIAL**
 - formalities : **PARTIAL**
+- informative_framing : **DOCUMENTED**
 
 ## Inventaire et consommation
 
@@ -82,7 +90,7 @@ L'endpoint de détail `tarifwebnew/getresultat.php?choix=&chap=&sel=CODE` **publ
 - Autorité déclarée : douane.gov.tn/tarifweb2025.
 - Titre : douane.gov.tn/tarifweb2025.
 - URL de ligne : https://www.douane.gov.tn; URL d'acquisition déclarée : non indiquée; autorité douanière : non indiquée.
-- Archive officielle locale : **non retrouvée**.
+- Archive officielle locale : **disponible**.
 - SHA-256 du fichier effectif : edb6aa0dd1d29500319f03be6a01560e4b428b1169b783f0188deb56297207a3.
 - Extraction : 2026-02-11T21:50:47.838713 (ce n'est pas une date d'effet).
 - Publication/effet : non documentée / non documentée.

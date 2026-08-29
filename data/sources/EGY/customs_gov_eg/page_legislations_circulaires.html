@@ -1,0 +1,2337 @@
+
+
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tajwal font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;400;800&display=swap" rel="stylesheet">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="/assets/css/animate.min.css">
+  <link href="/assets/css/treeview.css" rel="stylesheet" />
+  <!-- owl Carsoul  -->
+  <link rel="stylesheet" href="/assets/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/assets/css/owl.theme.default.min.css">
+  <!-- font awsome -->
+  <link rel="stylesheet" href="/assets/css/all.min.css">
+  
+  <link href="/assets/css/homePage.css" rel="stylesheet" />
+  <script src="/Scripts/jquery.validate.min.js"></script>
+  <script src="/Scripts/jquery.validate.unobtrusive.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+
+    google.charts.load('current', { packages: ['orgchart', 'wordtree'] });
+    google.charts.setOnLoadCallback(draw);
+
+
+    function draw() {
+      //drawSimpleNodeChart();
+      drawChart();
+    }
+
+    function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('string', 'Name');
+      data.addColumn('string', 'Manager');
+      data.addColumn('string', 'ToolTip');
+
+      // For each orgchart box, provide the name, manager, and tooltip to show.
+      data.addRows([
+        [{ 'v': 'shahat', 'f': 'احمد الاموى <div style="color:red; font-style:italic"> <img src="/images/chef-small.png" /> <span>رئيس المصلحة<span/></div>' }, '', 'رئيس المصلحة'],
+        // Start OF presdint Office
+        [{ 'v': 'presdientOffice', 'f': 'قطاع شئون المصلحة<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع شئون المصلحة'],
+        [{ 'v': 'aboHassn', 'f': 'أحمد أبو الحسن<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية لشئون مكتب رئيس المصلحة<span/></div>' }, 'presdientOffice', 'الإدارة المركزية لشئون مكتب رئيس المصلحة'],
+        [{ 'v': 'u1', 'f': 'الإدارة المركزية للعلاقات العامة والإتصالات<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية للعلاقات العامة والإتصالات<span/></div>' }, 'presdientOffice', 'الإدارة المركزية للعلاقات العامة والإتصالات'],
+        [{ 'v': 'u2', 'f': 'الإدارة المركزية للشئون القانونية<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية للشئون القانونية<span/></div>' }, 'presdientOffice', 'الإدارة المركزية للشئون القانونية'],
+        [{ 'v': 'u3', 'f': 'نعيم عبده شلبي<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية للتفتيش العام<span/></div>' }, 'presdientOffice', 'الإدارة المركزية للتفتيش العام'],
+
+        // End OF presdint Office
+        // Start OF presdint Office
+        [{ 'v': 'planningSector', 'f': 'قطاع التخطيط الاستراتيجي والمبادرات<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع التخطيط الاستراتيجي والمبادرات'],
+        [{ 'v': 'p', 'f': 'الإدارة المركزية لتخطيط وإدارة الأداء<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لتخطيط وإدارة الأداء<span/></div>' }, 'planningSector', 'الإدارة المركزية لتخطيط وإدارة الأداء'],
+        [{ 'v': 'p1', 'f': 'الإدارة المركزية لتخطيط الموارد<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لتخطيط الموارد<span/></div>' }, 'planningSector', ''],
+        [{ 'v': 'p2', 'f': 'الإدارة المركزية للتطوير والإصلاح الجمركي<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية للتطوير والإصلاح الجمركي<span/></div>' }, 'planningSector', ''],
+
+        // End OF presdint Office
+        // Start OF presdint Office
+        [{ 'v': 'techSector', 'f': 'محمد خميس<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس قطاع التكنولوجيا<span/></div>' }, 'shahat', 'قطاع التكنولوجيا'],
+        [{ 'v': 't', 'f': 'اسامة عبد الكريم<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لتكنولوجيا دعم العمليات الجمركية<span/></div>' }, 'techSector', ''],
+        [{ 'v': 't1', 'f': 'عبد الهادي عبد الرؤوف<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية للإحصاء<span/></div>' }, 'techSector', ''],
+        [{ 'v': 't2', 'f': 'الإدارة المركزية لتكنولوجيا المعلومات والاتصالات<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس الإدارة المركزية لتكنولوجيا المعلومات والاتصالات<span/></div>' }, 'techSector', ''],
+
+        // End OF presdint Office
+        // Start OF presdint Office
+        [{ 'v': 'hrSector', 'f': 'محمد رشوان<div style="color:red; font-style:italic"><img src="/images/chef-small-ava.png" /> <span>رئيس قطاع الموارد البشرية وبناء القدرات<span/></div>' }, 'shahat', 'قطاع الموارد البشرية وبناء القدرات'],
+        [{ 'v': 'hr', 'f': 'الإدارة المركزية للمعهد الجمركي<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية للمعهد الجمركي<span/></div>' }, 'hrSector', ''],
+        [{ 'v': 'hr1', 'f': 'محمود السيد<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للموارد البشرية <span/></div>' }, 'hrSector', ''],
+
+        // End OF presdint Office
+
+        // Start OF presdint Office
+        [{ 'v': 'prossessSector', 'f': 'قطاع النظم والإجراءات والجمركية<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع النظم والإجراءات والجمركية'],
+        [{ 'v': 'pr', 'f': 'نجوى زغمور<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية للسياسات والإجراءات<span/></div>' }, 'prossessSector', ''],
+        [{ 'v': 'pr1', 'f': 'الإدارة المركزية للتعاون الدولي<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للتعاون الدولي <span/></div>' }, 'prossessSector', ''],
+        [{ 'v': 'pr2', 'f': 'الإدراة المركزية للتعريفة والقيمة  والمنشأ<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدراة المركزية للتعريفة والقيمة  والمنشأ <span/></div>' }, 'prossessSector', ''],
+        [{ 'v': 'pr3', 'f': 'رمضان عيسوي<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للتحكيم <span/></div>' }, 'prossessSector', ''],
+        [{ 'v': 'pr4', 'f': 'الإدارة المركزية للإعفاءات والنظم الخاصة<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للإعفاءات والنظم الخاصة <span/></div>' }, 'prossessSector', ''],
+
+        // End OF presdint Office
+
+        // Start OF presdint Office
+        [{ 'v': 'secuirtySector', 'f': 'قطاع الأمن والخدمات المالية والإدارية<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع الأمن والخدمات المالية والإدارية'],
+        [{ 'v': 'sr', 'f': ' لواء/ ياسر خالد<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية للخدمات الأمنية<span/></div>' }, 'secuirtySector', ''],
+        [{ 'v': 'sr1', 'f': 'محمد يوسف<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للخدمات الإدارية <span/></div>' }, 'secuirtySector', ''],
+        [{ 'v': 'sr2', 'f': 'محمد السيد عبد العليم <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدراة المركزية للخدمات المالية  <span/></div>' }, 'secuirtySector', ''],
+
+        // End OF presdint Office
+        // Start OF presdint Office
+        [{ 'v': 'commitSector', 'f': ' قطاع الإلتزام التجاري<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع الإلتزام التجاري'],
+        [{ 'v': 'cr', 'f': ' الإدارة المركزية لمكافحة التهرب <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لمكافحة التهرب<span/></div>' }, 'commitSector', ''],
+        [{ 'v': 'cr1', 'f': ' سعد سالم<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس    الإدارة المركزية لتكنولوجيا الإلتزام  <span/></div>' }, 'commitSector', ''],
+        [{ 'v': 'cr2', 'f': ' شهدي عيد <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية لشئون المجتمع التجاري  <span/></div>' }, 'commitSector', ''],
+        [{ 'v': 'cr3', 'f': '   الإدارة المركزية للتسهيل التجاري <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية للتسهيل التجاري  <span/></div>' }, 'commitSector', ''],
+
+        // End OF presdint Office
+
+
+        // Start OF operations sector
+        [{ 'v': 'opsSector', 'f': ' قطاع العمليات<div style="color:red; font-style:italic"> <span><span/></div>' }, 'shahat', 'قطاع  العمليات'],
+        [{ 'v': 'opr', 'f': '    الإدارة المركزية لخدمة كبار العملاء <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لخدمة كبار العملاء <span/></div>' }, 'opsSector', ''],
+        [{ 'v': 'opr1', 'f': ' الإدارة المركزية لدعم البرامج <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس   الإدارة المركزية لدعم البرامج   <span/></div>' }, 'opsSector', ''],
+
+        [{ 'v': 'opr2', 'f': '  المنطقة الشمالية والغربية <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>  <span/></div>' }, 'opsSector', ''],
+        [{ 'v': 'opr21', 'f': '      الإدارة المركزية لجمرك الإسكندرية<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+        [{ 'v': 'opr22', 'f': '           الإدارة المركزية لجمارك الدخيلة<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+        [{ 'v': 'opr23', 'f': '      الإدارة المركزية للركاب والأسواق الحرة<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+        [{ 'v': 'opr24', 'f': '      الإدارة المركزية للمنطقة الغربية<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+        [{ 'v': 'opr25', 'f': '     الإدراة المركزية لدعم العمليات<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+        [{ 'v': 'opr26', 'f': '     الإدارة المركزية للدعم الإداري<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr2', ''],
+
+        // start of mid and south partition
+        [{ 'v': 'opr3', 'f': '      المنطقة الوسطى والجنوبية <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>        <span/></div>' }, 'opsSector', ''],
+        [{ 'v': 'opr31', 'f': '      الإدارة المركزية لجمارك الوارادات والصادرات الجوية<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr3', ''],
+        [{ 'v': 'opr32', 'f': '           الإدارة المركزية لجمارك القاهرة<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr3', ''],
+        [{ 'v': 'opr33', 'f': '      الإدارة المركزية لجمارك البحر الأحمر والمنطقة الجنوبية<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr3', ''],
+        [{ 'v': 'opr34', 'f': '      الإدارة المركزية لدعم العمليات<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr3', ''],
+        [{ 'v': 'opr35', 'f': '      الإدارة المركزية للدعم الإداري<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr3', ''],
+
+        [{ 'v': 'opr4', 'f': '  المنطقة الشرقية <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>        <span/></div>' }, 'opsSector', ''],
+        [{ 'v': 'opr41', 'f': '   اشرف عبد العزيز   <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس الإدارة المركزية لجمارك دمياط<span/></div>' }, 'opr4', ''],
+        [{ 'v': 'opr42', 'f': '           الإدارة المركزية لجمارك السويس<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr4', ''],
+        [{ 'v': 'opr43', 'f': '      الإدارة المركزية لجمرك بورسعيد<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr4', ''],
+        [{ 'v': 'opr44', 'f': '      الإدارة المركزية لجمرك سيناء<div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span><span/></div>' }, 'opr4', ''],
+        [{ 'v': 'opr45', 'f': '   ياسر الشماع  <div style="color:red; font-style:italic"> <img src="/images/chef-small-ava.png" /><span>رئيس  الإدارة المركزية للدعم العمليات<span/></div>' }, 'opr4', ''],
+
+        // End OF operations sector
+
+      ]);
+
+      // Create the chart.
+      var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
+      // Draw the chart, setting the allowHtml option to true for the tooltips.
+      chart.draw(data, { 'allowHtml': true, allowCollapse: true });
+    }
+
+
+    function drawSimpleNodeChart() {
+      var nodeListData = new google.visualization.arrayToDataTable([
+        ['id', 'childLabel', 'parent', 'size', { role: 'style' }],
+        [0, 'الترانزيت', -1, 1, 'Blue'],
+        [1, 'تعريف نظام الترانزيت', 0, 1, 'Blue'],
+        [2, 'نصوص المواد المنظمه لنظام الترانزيت', 0, 1, 'Blue'],
+        [3, 'الاتفاقات الدوليه المنظمه لنظام الترانزيت', 0, 1, 'Blue'],
+        [4, 'انواع الترانزيت', 0, 1, 'Blue'],
+
+        [5, 'الترانزيت المباشر', 1, 1, 'Blue'],
+        [6, 'الترانزيت  الغير مباشر', 1, 1, 'Blue'],
+
+        [7, 'الترانزيت المباشر', 2, 1, 'Blue'],
+        [8, 'الترانزيت  الغير مباشر', 2, 1, 'Blue'],
+
+        [9, 'الترانزيت المباشر', 4, 1, 'Blue'],
+        [10, 'الترانزيت  الغير مباشر', 4, 1, 'Blue'],
+
+        [11, 'اجراءات الترانزيت المباشر', 9, 1, 'Blue'],
+        [12, 'المنشورات المنظمه للترانزيت المباشر', 9, 1, 'Blue'],
+        [13, 'القرارات الوزاريه الخاصه بتعديل بعض المواد المنظمه للترانزيت المباشر', 9, 1, 'Blue'],
+        [14, ' امثله حالات خاصه', 9, 1, 'Blue'],
+
+        [15, 'اجراءات الترانزيت  الغير مباشر', 10, 1, 'Blue'],
+        [16, 'المنشورات المنظمه للترانزيت الغير مباشر', 10, 1, 'Blue'],
+        [17, 'القرارات الوزاريه الخاصه بتعديل بعض المواد المنظمه للترانزيت الغير مباشر', 10, 1, 'Blue'],
+        [18, 'امثله حالات خاصه', 10, 1, 'Blue']
+
+      ]);
+      var options = {
+        colors: ['black', 'red', 'green'],
+        wordtree: {
+          fontName: 'Times-Roman',
+          format: 'explicit',
+          type: 'prefix',
+          allowHtml: true,
+          allowCollapse: true,
+          backgroundColor: '#cba',
+          forceIFrame: true
+        }
+      };
+
+      var wordtree = new google.visualization.WordTree(document.getElementById('wordtree_explicit'));
+      google.visualization.events.addListener(wordtree, 'select', selectHandler);
+      wordtree.draw(nodeListData, options);
+      function selectHandler() {
+        var selectedItem = wordtree.content;
+
+        alert('The user selected ' + selectedItem);
+      }
+    }
+
+
+  </script>
+  <link href="/assets/css/BrekingNews.css" rel="stylesheet" />
+
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="/assets/css/splide.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap.rtl.min.css">
+  <!-- main style sheet -->
+  <link rel="stylesheet" href="/assets/css/homePage.css">
+
+  <!-- flags  icons css -->
+  <link rel="stylesheet" href="/assets/css/flag-icons.min.css">
+  <link rel="stylesheet" href="/assets/css/docs.css">
+
+  <!-- main style sheet -->
+  <link rel="stylesheet" href="/assets/css/aboutStyle.css">
+  <title> مصلحة الجمارك المصرية</title>
+</head>
+
+<form action="/Home/LogOff" id="logoutForm" method="post"><input name="__RequestVerificationToken" type="hidden" value="_MoQ6tfsyO1Xt086Mw-CPDl6gL8c6M8tBIx2jjozDwwgSqMXlyFXSKR2woa2Vyat8HE3h6K7MUPExBoH5JKg4CO1St_ZuULTvhrJFEKw5sY1" /></form><body>
+  <!-- Start Of the main Head -->
+  
+  <div class="main-header py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-sm-12">
+          <div class="d-flex align-items-center">
+            <div class="main-logo-wraper">
+              <a href="/">
+                <img src="/assets/images/EcaLogoLarge.png" class="img-fluid">
+              </a>
+            </div>
+            <div class="main-head-wraper px-2">
+              <h1>وزارة المالية</h1>
+              <h1>
+                مصلحة الجمارك المصرية
+                
+              </h1>
+
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="col-md-6 col-sm-12">
+          <div class="d-flex justify-content-end align-items-center auth-btns-wraper">
+                              <div class="px-2">
+                                <a href="/Administration/users/login" class="btn  btn-sm custom-btn-primary rounded-pill text-white">
+                                  <i class="fa-solid fa-user"></i>
+                                  <span>
+                                    تسجيل الدخول
+                                  </span>
+                                </a>
+                              </div> 
+            
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Of the main Head -->
+  <!-- Start of news ticker -->
+  
+  <div class="breking-news-section" style="background-color: #f34a3f; height: 40px ">
+  <span id="btext" class="text-light" style="margin-bottom:8px"><i class="fa-solid fa-rss"></i> أخبار عاجلة</span>
+  <marquee direction="ltr" onmouseover="this.stop()" scrollamount="2" onmouseout="this.start()" >
+        <a href="/Home/NewsDetail/177" class="breaking-news" style="margin-top:8px">
+اصدار 17 دليلًا استرشاديًا لتبسيط الإجراءات وتوحيد المفاهيم الجمركية        </a>
+        <a href="/Home/NewsDetail/175" class="breaking-news" style="margin-top:8px">
+منشور رقابي تصدير رقم (19) لسنة 2026        </a>
+        <a href="/Home/NewsDetail/174" class="breaking-news" style="margin-top:8px">
+مد العمل بالتسهيلات الجمركية الاستثنائية لشحنات &#171;الترانزيت العابر&#187; ٦ أشهر         </a>
+        <a href="/Home/NewsDetail/172" class="breaking-news" style="margin-top:8px">
+رئيس مصلحة الجمارك.. في جولة ميدانية بميناء &#171;سفاجا&#187;        </a>
+        <a href="/Home/NewsDetail/170" class="breaking-news" style="margin-top:8px">
+مصلحة الجمارك تستعرض منظومة &quot;الصادر المطور&quot; و&quot;التسجيل المسبق للشحنات الجوية&quot; في ندوة موسعة مع جمعية رجال الأعمال المصريين الصينيين        </a>
+        <a href="/Home/NewsDetail/169" class="breaking-news" style="margin-top:8px">
+نحو شراكة جمركية ذكية شاركنا في صياغة استراتيجية (2026–2029)         </a>
+        <a href="/Home/NewsDetail/168" class="breaking-news" style="margin-top:8px">
+إعلان هام للسادة المتعاملين مع الجمارك        </a>
+  </marquee>
+</div>
+
+
+  <!-- End of news ticker -->
+  <!-- START  of  nav  -->
+  <nav class="navbar navbar-expand-lg customs-nav navbar-dark sticky-top" id="mainNavBar">
+    <div class="container parant-nav">
+      <a class="navbar-brand" href="/">مصلحة الجمارك المصرية</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- start of first element in nav -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              عن المصلحة
+            </a>
+            <div class="megameanu dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class=" d-block">
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold">مصلحة الجمارك المصرية</h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/home/ChifWord" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    كلمة رئيس المصلحة
+                  </a>
+                </li>
+                <li>
+                  <a href="/home/StrategicPlan" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الخطه الاستراتيجيه
+                  </a>
+                </li>
+                <li>
+                  <a href="/home/Vision" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الرؤية والرسالة
+                  </a>
+                </li>
+                <li>
+                  <a href="/home/OrgCahrt" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الهيكل التنظيمي
+                  </a>
+                </li>
+                <li>
+                  <a href="/home/History" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    نبذة تاريخية
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold"> الوحدات التابعة </h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Pages/AEO_Index" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المشغل الاقتصادى المعتمد
+                  </a>
+                </li>
+                <li>
+                  <a href="/Pages/ExpSupUnit" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    وحدة دعم المصدرين والمستثمرين
+                  </a>
+                </li>
+                
+                <li>
+                  <a href="/pages/NTI_Index" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المعهد القومي للتدريب
+                  </a>
+                </li>
+                <li>
+                  <a href="/Home/RiskManagement" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    إدارة المخاطر
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold"> تواصل معنا</h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/home/Contact" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    تواصل معنا
+                  </a>
+                </li>
+                
+                <li>
+                  <a href="/Pages/Careers" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التوظيف
+                  </a>
+                </li>
+              </ul>
+              <ul>
+              </ul>
+            </div>
+          </li>
+          <!-- end of first element in nav -->
+          <!-- Start of second element in nav -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              الخدمات
+            </a>
+            <div class="megameanu dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul class=" d-block">
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold">التخليص الجمركى</h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Services/ACI" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التسجيل المسبق للشحنات
+                  </a>
+                </li>
+                <li>
+
+                  <a href="/Services/Declartion" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    تقديم الأقرار
+                  </a>
+                </li>
+                <li>
+                  <a href="/Services/Manifest" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    تقديم المنافيست
+                  </a>
+                </li>
+                
+              </ul>
+              <ul>
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold"> استعلامات </h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Services/Tarif" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التعريفة
+                  </a>
+                </li>
+                <li>
+                  <a href="/Services/Currency" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    اسعار تحويل العملات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Services/Reports" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الاستعلام عن البيانات الاحصائية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Services/StudyReports" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                   تقررير زمن الافراج 
+                  </a>
+                </li>
+
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">   جهات ذات صله</h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=1" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الهيئه العامة للمنطقة الاقتصادية لقناه السويس
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=2" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الهيئة العامة للاستثمار
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=3" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الهيئه العامة للرقابة على الصادرات و الواردات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=4" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الهيئة القومية لسلامه الاغذية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=5" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    هيئة الدواء المصرية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=6" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الاتفاقيات و التجارة الخارجية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/RelatedGovernment?RelatedGovermentTypeId=7" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المعالجات التجارية
+                  </a>
+                </li>
+
+
+              </ul>
+              <ul>
+              </ul>
+              <ul>
+              </ul>
+            </div>
+          </li>
+          <!-- end of second element in nav -->
+          <!-- Start of theird element in nav -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              التشريعات
+            </a>
+            <div class="megameanu dropdown-menu " aria-labelledby="navbarDropdown">
+              <ul class=" d-block">
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold">
+                    التجارة الدولية
+                  </h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/Procedures" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    دورة الإجراءات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=7" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التسجيل المسبق للشحنات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=1" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    قائمة الشحن
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=2" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التفريغ
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=8" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    البيان الجمركي
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=3" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الإقرار النهائي للسيارات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=4" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الطرود البريدية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=5" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التسجيل والمتعاملين
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/InternationalTrade?internationalTradeTypeId=6" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التحكيم
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <h5 class="text-white  fs-4 fw-bold">  السفر والسياحة</h5>
+                </li>
+                <li>
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=1" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الركاب
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=2" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الأمتعة الشخصية
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=3" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التربتيكت
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=4" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المعارض والمؤتمرات الداخليه
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=7" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المعارض والمؤتمرات الخارجيه
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=5" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    سياحه اليخوت الاجنبيه
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/TravelAndTourism?travelAndTourismId=8" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    تموين السفن والبحارة
+                  </a>
+                </li>
+              </ul>
+
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">   النظم الخاصة</h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=1" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    السماح المؤقت
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=2" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الترانزيت
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=3" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المستودعات الجمركية
+                  </a>
+                </li>
+
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=4" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التخزين الموقت
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=9" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    التخليص المسبق
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=5" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المناطق الحرة
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=6" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المناطق الاقتصادية ذات الطبيعة الخاصة
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=7" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الأسواق الحرة
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/SpecialSystem?SpecialSystemsTypeId=8" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الإفراج المؤقت
+                  </a>
+                </li>
+
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold"> اعفاءات ونظم اخرى</h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/ExemptionsSpecialSystem?exemptionsSpecialSystemsTypeId=11" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    اعفاءات ونظم اخرى
+                  </a>
+                </li>
+                
+                
+
+                <li>
+                  <a href="/Legislations/ExemptionsSpecialSystem?exemptionsSpecialSystemsTypeId=10" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الدخان
+                  </a>
+                </li>
+
+
+
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">
+                    القوانين والمنشورات
+                  </h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Legislations/Manshorat?categoryId=1" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    عام
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/Manshorat?categoryId=2" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    القوانين
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/Manshorat?categoryId=5" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    اللوائح
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/Manshorat?categoryId=4" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    المنشورات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Legislations/Manshorat?categoryId=3" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    الاتفاقيات
+                  </a>
+                </li>
+              </ul>
+
+            </div>
+          </li>
+          <!-- end of theird element in nav -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false">
+              المركز الاعلامي
+            </a>
+            <div class="megameanu dropdown-menu " aria-labelledby="navbarDropdown">
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">
+                    الاخبار
+                  </h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+
+                <li>
+                  <a href="/Home/NewsList" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    اخبار
+                  </a>
+                </li>
+                <li>
+                  <a href="/Home/Events" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    فعاليات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Pages/Seizures" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    ضبطيات
+                  </a>
+                </li>
+                <li>
+                  <a href="/Home/AwarenessMediaCampaigns" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    تصريحات اعلامية
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">
+                    صور وفيديوهات
+                  </h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Pages/PhotoGalary" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    صور
+                  </a>
+                </li>
+                <li>
+                  <a href="/Pages/Videos" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    فيديوهات
+                  </a>
+                </li>
+              </ul>
+              <ul>
+                <li class="pa-4">
+                  <h5 class="text-white fs-4 fw-bold">
+                    مجلة الجمارك
+                  </h5>
+                </li>
+                <li class="pa-4">
+                  <div class="sectionLine my-4"></div>
+                </li>
+                <li>
+                  <a href="/Home/MagazineList" class="text-light py-2">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    مجلة الجمارك
+                  </a>
+                </li>
+              </ul>
+              <ul>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/Home/PollIndex" id="navbarDropdown" role="button"
+               aria-expanded="false">
+              استطلاع رأي
+            </a>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+  <!-- end of  nav -->
+  
+
+
+<section>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="item-cont-head">
+                    <h3>
+                        الاستعلام عن القوانين والمنشورات
+                    </h3>
+                    <ul>
+                        <li>
+                            بحث بنص القانون  
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="laws-search-form mb-3">
+
+                  <div class="row">
+
+                    <div class="col-md-4">
+                      <label for="">  كلمه البحث </label>
+
+                      <input type="text" id="searchText" class="form-control" placeholder="كلمة بحث ..">
+
+                    </div>
+                    <div class="col-md-2">
+                      <label for="">  رقم المنشور</label>
+
+                      <input type="text" id="ManshorText" class="form-control" placeholder="رقم المنشور">
+
+                    </div>
+
+
+
+                    <div class="col-md-4">
+                      <label for="">حسب التصنيف</label>
+
+                      <select name="" id="classificationType" class="form-select">
+                        <option value="0">
+                        </option>
+                          <option value=2>
+
+تعليمات رئيس القطاع
+                          </option>
+                          <option value=3>
+
+اجراءات جمركية
+                          </option>
+                          <option value=4>
+
+استيراد
+                          </option>
+                          <option value=5>
+
+تصدير
+                          </option>
+                          <option value=6>
+
+تعريفات
+                          </option>
+                          <option value=7>
+
+نقد
+                          </option>
+                          <option value=8>
+
+منشأ
+                          </option>
+                          <option value=9>
+
+اتفاقيات
+                          </option>
+                          <option value=10>
+
+موارد بشرية
+                          </option>
+                          <option value=11>
+
+المجلة
+                          </option>
+                          <option value=12>
+
+ثنائية
+                          </option>
+                          <option value=13>
+
+اقليمية
+                          </option>
+                          <option value=14>
+
+دولية
+                          </option>
+                          <option value=15>
+
+جمركي
+                          </option>
+                          <option value=16>
+
+مرتبط بالجمارك
+                          </option>
+                          <option value=17>
+
+استيرادي
+                          </option>
+                          <option value=18>
+
+أخرى
+                          </option>
+                          <option value=19>
+
+عام
+                          </option>
+                          <option value=20>
+
+فاعل اقتصادي
+                          </option>
+                          <option value=21>
+
+تقرير موجز عن تجربة الصين الشعبية في مواجهة فيروس كورونا المستجد
+                          </option>
+                          <option value=22>
+
+قرارات وزارية
+                          </option>
+                          <option value=23>
+
+تعليمات رئيس المصلحة
+                          </option>
+                          <option value=24>
+
+تعليمات رئيس قطاع النظم
+                          </option>
+                          <option value=25>
+
+اجراءات جمركية
+                          </option>
+                          <option value=26>
+
+استيراد
+                          </option>
+                          <option value=27>
+
+تصدير
+                          </option>
+                          <option value=28>
+
+تعريفات
+                          </option>
+                          <option value=29>
+
+نقد
+                          </option>
+                          <option value=30>
+
+منشأ
+                          </option>
+                          <option value=41>
+
+ترانزيت
+                          </option>
+                          <option value=42>
+
+جهات ذات صله هيئة قناة السويس
+                          </option>
+                          <option value=43>
+
+جهات ذات صله هيئة الاستثمار
+                          </option>
+                          <option value=44>
+
+جهات ذات صله هيئه الرقابة على الصادرات و الوارادات
+                          </option>
+                          <option value=45>
+
+جهات ذات صلة هيئه الدواء
+                          </option>
+                          <option value=46>
+
+جهات ذات صله هيئة سلامة الاغذية
+                          </option>
+                          <option value=47>
+
+جهات ذات  صله الاتفاقيات و التجارة
+                          </option>
+                          <option value=48>
+
+جهات ذات صله المعالجات التجارية
+                          </option>
+                          <option value=49>
+
+الدخان
+                          </option>
+
+                      </select>
+                    </div>
+
+                  <script>setSelectClassification(ViewBag.classificationId);</script>
+
+                    <div class="col-md-2">
+                      <label for="">حسب السنة</label>
+
+                      <select name="" id="selectedDate" class="form-select">
+                        <option value=""> اختر سنة </option>
+ 			<option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                      </select>
+                    </div>
+
+                  </div>
+                    <div class="mt-3 mb-3">
+                        <button class="btn custom-btn-primary text-white rounded-pill" onclick="goSearch()">
+                            بحث <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <!-- <iframe src="./pdf/cusoms_law.pdf"  style="width:600px; height:500px;" frameborder="0"></iframe> -->
+
+        </div>
+        <div class="row">
+            <div class="col">
+                <div>
+                    <!-- <a href="#" class="read-more-btn"><i class="fas fa-arrow-right"></i><span> العودة
+                            للبحث</span></a> -->
+
+
+                </div>
+                <table class="table table-striped table-hover custom-table-style">
+                    <thead class="">
+                    <th>
+                        العنوان
+                    </th>
+                    <th>
+                        رقم المنشور
+                    </th>
+                    <th>
+                        تاريخ الأصدار
+                    </th>
+                    <th>
+                    </th>
+                    </thead>
+                    <tbody>
+                                    <tr>
+                                        <td>
+استدراك للقانون 160 لسنة 2023 بتعديل بعض أحكام قانون الاستثمار الصادر بالقانون رقم ٧٢ لسنة ٢٠١٧ .                                        </td>
+                                        <td>
+                                            160
+                                        </td>
+                                        <td>
+                                            20/10/2024
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/ECAAdminace885813148.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون 160 لسنة 2023 بتعديل بعض أحكام قانون الاستثمار الصادر بالقانون رقم ٧٢ لسنة ٢٠١٧ .                                        </td>
+                                        <td>
+                                            160
+                                        </td>
+                                        <td>
+                                            20/10/2024
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/ECAAdminace999139060.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون رقم 141 لسنة 2019 بتعديل قانون الإستثمار  رقم 72 لسنة 2917                                        </td>
+                                        <td>
+                                            141
+                                        </td>
+                                        <td>
+                                            20/10/2024
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/ECAAdminace482446514.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الجمارك رقم 207 لسنة 2020 بكافة التعديلات                                        </td>
+                                        <td>
+                                            207
+                                        </td>
+                                        <td>
+                                            20/10/2024
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/ECAAdminace159396001.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+نسخة باللغة الإنجليزية من قانون الجمارك رقم 207 لسنة 2022                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            22/06/2022
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/62f62698-1dd6-4320-a68b-75433f639fb4.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الجمارك رقم 207 لسنة 2020                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            12/11/2020
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/55140478-3cd5-4ced-88dc-153f231804c5.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+أحدث نسخة من مشروع قانون الجمارك الجديد                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            12/02/2020
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/fb629a4c-4039-4ceb-8f01-bda2eb046158.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+اللائحة التنفيذية لقانون هيئة سلامة الغذاء                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            02/12/2019
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/ECAAdminace377759461.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قرار رئيس الوزراء رقم 2338 لسنة 2019 بإضافة بعض التشريعات ذات الصلة بسلامة الغذاء لقانون سلامة الغذاء                                        </td>
+                                        <td>
+                                            2338
+                                        </td>
+                                        <td>
+                                            17/10/2019
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/ECAAdminace675980325.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+مشروع قانون الجمارك المصرية الجديد                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            13/10/2018
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/e2ac3ac8-bb78-49c8-b28b-ec8a3c406456.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+مقدمة مشروع قانون الجمارك الجديد                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            09/10/2018
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/1e25bcda-7004-4378-9060-2b40980dc51f.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الجمارك الجديد المنهجية والفلسفة                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            09/10/2018
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/1868f694-3207-42cc-b67b-cfd1d8a1567d.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الاستثمار ولائحته التنفيذية وفقا لأخر تعديلات                                        </td>
+                                        <td>
+                                            72
+                                        </td>
+                                        <td>
+                                            24/11/2017
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/ECAAdminace316621937.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قرار رئيس مجلس الوزراء رقم 2310 لسنة 2017 بإصدار اللائحة التنفيذية لقانون الإستثمار                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            28/10/2017
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/7c7daa97-9cd2-471b-a88c-ca28ca36134a.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون رقم 1 لسنة 2017 بإصدار قانون الهيئة القومية لسلامة الغذاء                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            01/10/2017
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/ECAAdminace540086066.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الإستثمار                                        </td>
+                                        <td>
+                                            72
+                                        </td>
+                                        <td>
+                                            31/05/2017
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/952f9d98-0ef3-4ab2-8b51-2144110e501c.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الاستثمار رقم 72 لسنة 2017                                        </td>
+                                        <td>
+                                            72
+                                        </td>
+                                        <td>
+                                            31/05/2017
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/ECAAdminace928474803.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+مشروع قانون الجمارك الجديد                                        </td>
+                                        <td>
+                                            0
+                                        </td>
+                                        <td>
+                                            24/05/2017
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/5bf94e58-8ebc-4ae3-aa1a-f5cfe851149f.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون 7 لسنة 2017 بتعديل احكام القانون 121 لسنة 1982 في شأن سجل المستوردين                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            07/03/2017
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/b83bc01b-de07-4ec6-8f5c-77dddea7704b.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون 1 لسنة 2017 بإصدار قانون الهيئة القومية لسلامة الغذاء                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            10/01/2017
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/ECAAdminace316497830.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الخدمة المدنية                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            01/11/2016
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/54f10188-271f-4255-93f2-2f722a46f244.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+ بإصدار  قانون الضريبة على القيمه المضافة                                        </td>
+                                        <td>
+                                            67
+                                        </td>
+                                        <td>
+                                            07/09/2016
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/85d87c8b-3785-41fb-88c0-58099a5824e7.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام قانون البنك المركزى والجهاز المصرفى والنقد الصادر بالقانون رقم 88 لسنة 2003                                        </td>
+                                        <td>
+                                            66
+                                        </td>
+                                        <td>
+                                            17/08/2016
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/474ff920-53f7-471e-8b0d-1542704e5901.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+تعديلات قانون المناطق الاقتصادية ذات الطبيعة الخاصة                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            23/06/2015
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/04783f54-d929-4557-ad60-b5ce0d916232.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام قانون البنك المركزى والجهاز المصرفى والنقد                                         </td>
+                                        <td>
+                                            8
+                                        </td>
+                                        <td>
+                                            09/04/2013
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/9de0f8fc-63f5-4d5b-823a-ef2f969ddc25.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل قانون البنك المركزى والجهاز المصرفى والنقد الصادر بالقانون رقم 88 لسنة 2003                                        </td>
+                                        <td>
+                                            160
+                                        </td>
+                                        <td>
+                                            20/12/2012
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/65834e8a-d216-4ae4-a527-5e0d5f183e02.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام قانون البنك المركزى والجهاز المصرفى والنقد الصادر بالقانون رقم 88 لسنة 2003                                        </td>
+                                        <td>
+                                            125
+                                        </td>
+                                        <td>
+                                            31/05/2009
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/a6c39f17-d027-4abc-bb19-8491ad1e995d.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون تعديل بعض أحكام قانون الجمارك الصادر بالقانون رقم 66 لسنة 1963                                        </td>
+                                        <td>
+                                            95
+                                        </td>
+                                        <td>
+                                            21/06/2005
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/c8b44967-c9c7-45be-9057-4a8a333ff2a4.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام قانون البنك المركزى والجهاز المصرفى والنقد الصادر بالقانون رقم 88 لسنة 2003                                        </td>
+                                        <td>
+                                            93
+                                        </td>
+                                        <td>
+                                            21/06/2005
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/1ae16bd3-8b22-4a31-8f50-07e0bc00b1c8.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+بتعديل بعض أحكام قانون العمل الصادر بالقانون رقم 12 لسنة 2003                                        </td>
+                                        <td>
+                                            90
+                                        </td>
+                                        <td>
+                                            02/06/2005
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/e43f60c3-066a-4e15-a2dc-2abb99a61381.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الجمارك                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            29/05/2005
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/0aa3c092-7978-430e-9f4d-a454746db80f.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام قانون البنك المركزى والجهاز المصرفى والنقد الصادر بالقانون رقم 88 لسنة 2003                                        </td>
+                                        <td>
+                                            162
+                                        </td>
+                                        <td>
+                                            22/12/2004
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/7df2dafa-aa6a-44cd-ab50-530029e84f4f.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام قانون الجمارك الصادر بالقانون رقم 66 لسنة 1963                                        </td>
+                                        <td>
+                                            14
+                                        </td>
+                                        <td>
+                                            22/04/2004
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/4838c0df-889e-4968-a875-2821c7471071.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام القانون رقم 17 لسنة 1999 باصدار قانون التجارة                                        </td>
+                                        <td>
+                                            158
+                                        </td>
+                                        <td>
+                                            03/07/2003
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/85107a16-6cc8-422a-8e78-5f96605a37d6.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون البنك المركزي والجهاز المصرفي والنقد                                         </td>
+                                        <td>
+                                            88
+                                        </td>
+                                        <td>
+                                            15/06/2003
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/17f7023a-526d-444a-a2f1-680ae2d43bc0.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+باصدار قانون العمل                                        </td>
+                                        <td>
+                                            12
+                                        </td>
+                                        <td>
+                                            07/04/2003
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/95fb2b5a-57cc-41e7-ae5c-b64de62c446c.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+باصدار قانون تنظيم الاتصالات                                        </td>
+                                        <td>
+                                            10
+                                        </td>
+                                        <td>
+                                            04/02/2003
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/9659461e-e75a-45f5-b431-54875aa8c954.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام القانون رقم 66 لسنة 1963 باصدار قانون الجمارك                                        </td>
+                                        <td>
+                                            157
+                                        </td>
+                                        <td>
+                                            20/06/2002
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/df889465-3c54-4160-bf29-7b914dae035e.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بشأن تنمية التصدير ( صندوق دعم الصادرات                                        </td>
+                                        <td>
+                                            155
+                                        </td>
+                                        <td>
+                                            18/06/2002
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/b57bfb5b-6620-4ad4-86d1-48b34aa7d283.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون المناطق الاقتصادية ذات الطبيعة الخاصة                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            05/06/2002
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/3b97e230-3aa3-4c3f-94ae-4bff4d0d2381.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام القانون رقم 17 لسنة 1999 باصدار قانون التجارة                                        </td>
+                                        <td>
+                                            150
+                                        </td>
+                                        <td>
+                                            24/06/2001
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/b3190c1b-f8c5-401b-8d6c-b7b65b92d7ae.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام قانون الجمارك الصادر بالقانون رقم 66 لسنة 1963                                        </td>
+                                        <td>
+                                            13
+                                        </td>
+                                        <td>
+                                            29/03/2001
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/79dd8240-95e6-4d6c-bcfe-eb3467bcdf68.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون  بتعديل بعض أحكام القانون رقم 17 لسنة 1999 باصدار قانون التجارة                                        </td>
+                                        <td>
+                                            168
+                                        </td>
+                                        <td>
+                                            27/07/2000
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/a097c7a7-c9b9-4e5d-a9a0-b0867b1fe25c.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام قانون الجمارك الصادر بالقانون رقم 66 لسنة 1963                                        </td>
+                                        <td>
+                                            160
+                                        </td>
+                                        <td>
+                                            18/06/2000
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/4a0b9aea-4297-49a9-954d-9ac84d73748b.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+بتعديل المادة (19) من القانون رقم 27 لسنة 1994 باصدار قانون فى شأن التحكيم فى المواد المدنية والتجارية                                        </td>
+                                        <td>
+                                            8
+                                        </td>
+                                        <td>
+                                            04/04/2000
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/19e7ec3c-8d6c-4d09-91da-2b64dcc95010.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+ قانون التجارة                                        </td>
+                                        <td>
+                                            17
+                                        </td>
+                                        <td>
+                                            17/05/1999
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/48dda6c5-4542-4427-b211-1339fc3c4a6e.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام قانون الجمارك الصادر بالقانون رقم 66 لسنة 1963                                        </td>
+                                        <td>
+                                            175
+                                        </td>
+                                        <td>
+                                            23/12/1998
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/a4cc4463-d719-4e74-ac4c-469727a6901d.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون بتعديل بعض أحكام قانون الجمارك الصادر بالقانون رقم 66 لسنة 1963                                        </td>
+                                        <td>
+                                            175
+                                        </td>
+                                        <td>
+                                            23/12/1998
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/7b590016-f470-4abf-b6d2-76077c85a4a1.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+ بشأن حماية الاقتصاد القومى من الآثار الناجمة عن الممارسات الضارة فى التجارة الدولية ( الدعم والاغراق )                                        </td>
+                                        <td>
+                                            161
+                                        </td>
+                                        <td>
+                                            11/05/1998
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/5ae9d961-221c-47ac-8e60-9e7be446267d.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون  بتعديل بعض أحكام قانون الجمارك الصادر بالقانون رقم 66 لسنة 1963                                        </td>
+                                        <td>
+                                            158
+                                        </td>
+                                        <td>
+                                            09/12/1997
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/9e78a4bd-03a8-4957-b42f-846b2f3d2dc3.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+ بتعديل بعض أحكام القانون رقم 68 لسنة 1976 بشأن الرقابة على المعادن الثمينة والاحجار ذات القيمة                                        </td>
+                                        <td>
+                                            3
+                                        </td>
+                                        <td>
+                                            03/02/1994
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/d635c981-1ffd-4161-81d5-615e5456b736.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+ باصدار قانون فى شأن البيئة ( جهاز شئون البيئة )                                        </td>
+                                        <td>
+                                            4
+                                        </td>
+                                        <td>
+                                            03/02/1994
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/217d0f9d-1c86-44dd-8586-c5c0c481edd7.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+ قانون التجارة البحرية                                        </td>
+                                        <td>
+                                            8
+                                        </td>
+                                        <td>
+                                            03/05/1990
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/9a6ad4fa-9aba-444a-be88-4567fe428c33.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون تنظيم الإعفاءات الجمركية                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            29/05/1986
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/5547d255-e9f8-47e4-87df-ecbeb95e550a.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون حماية الاثار                                         </td>
+                                        <td>
+                                            117
+                                        </td>
+                                        <td>
+                                            11/08/1983
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/45526e38-75da-4a46-be45-45332209188d.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+سجل المستوردين                                        </td>
+                                        <td>
+                                            121
+                                        </td>
+                                        <td>
+                                            05/08/1982
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/eda417b5-240b-41b5-93c6-d91eca3a6da6.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+بشأن الرقابة على المعادن الثمينة والاحجار ذات القيمة                                        </td>
+                                        <td>
+                                            68
+                                        </td>
+                                        <td>
+                                            12/08/1976
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/298d641e-596b-4754-89bd-76c420b48ca6.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الاستيراد والتصدير                                        </td>
+                                        <td>
+                                            1
+                                        </td>
+                                        <td>
+                                            29/05/1975
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/f73ecda0-d080-4bd6-884b-5102ada23bfb.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الجمارك الجريدة الرسمية                                         </td>
+                                        <td>
+                                            66
+                                        </td>
+                                        <td>
+                                            26/06/1963
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/2316ca62-1f1e-4cae-b57c-2befd0f05d2d.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+قانون الجمارك بكافه التعديلات                                        </td>
+                                        <td>
+                                            66
+                                        </td>
+                                        <td>
+                                            01/01/1963
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/71621040-0dc8-4f18-931f-245cad72c323.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+فى شان الاسلحة و الذخائر                                        </td>
+                                        <td>
+                                            394
+                                        </td>
+                                        <td>
+                                            08/07/1954
+                                        </td>
+                                        <td>
+                                          <a href="/Upload/ECAAdminace/0007a9d6-fe6a-4c2c-b0d4-3a4bbf8187fd.pdf" target="_blank" class="btn btn-warning waves-effect waves-light">التفاصيل</a>
+                                          
+
+                                        </td>
+                                    </tr>
+
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <iframe src="/PDF_Docs/Laws/cusoms_law.pdf" style="width:100%; height:80vh;" frameborder="0"></iframe>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+  function goSearch() {
+    constclassificationSelect = document.getElementById("classificationType");
+    const classificationType = constclassificationSelect.value;
+
+    const yearSelect = document.getElementById("selectedDate");
+    const selectedDate = yearSelect.value;
+
+
+
+   // var selectedDate = $("#selectedDate").val();
+    var textSearch = $("#searchText").val();
+    var manshorNumber = $("#ManshorText").val();
+   
+    //  window.open('/StatisticalServices/StatisticalReportView?DealerNumber=' + dNumber + '&startDate=' + sDate + '&endDate=' + eDate, '_blank');
+    window.location.replace('/Legislations/Manshorat?classificationId=' + classificationType + '&search=1' + '&searchYear=' + selectedDate + '&searchText=' + textSearch + '&manshorNumber=' + manshorNumber + '&categoryId=' + 2 );
+
+   // window.location.replace('/Services/Currency?textSearch=' + textSearch);
+    
+  }
+  function setSelectClassification(value) {
+
+    constclassificationSelect = document.getElementById("classificationType");
+     constclassificationSelect.value = value;
+  }
+</script>
+
+  <!-- Start of footer -->
+
+  <section class="primary-section-bg   footer-section">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="footer-wraper">
+            <!-- <div class="client-form ">
+              <div class="sectionLine my-4"></div>
+              <h4 class="white-text">استطلاع رأي</h4>
+              <p class="white-text">
+                إذا كنت أحد المتعاملين مع مصلحة الجمارك ..
+              </p>
+              <p class="white-text">
+                هل قمت بالتسجيل على منصة نافذة استعدادا لتطبيق المرحلة الالزامية لنظام الـ ACI
+
+              </p>
+              <div class="my-4">
+                <div>
+                  <button class="btn btn-light ">نعم</button>
+                  <button class="btn btn-outline-light">لم اسجل بعد</button>
+
+                </div>
+                <div class="form-group my-4">
+                  <textarea name="" class="form-control" id="" cols="30" rows="5"></textarea>
+                </div>
+              </div>
+            </div> -->
+
+
+          </div>
+          <div class="footer-links">
+            <div class="row">
+              <div class="col-4">
+                <ul>
+                  <li>
+                    <div class="d-flex justify-content-center flex-column align-items-center">
+
+                      <img src="/images/EcaLogoLarge.png" class="img-fluid" alt="" style="max-width: 100px;">
+                      <h4 class="white-text">
+                        مصلحة الجمارك المصرية
+                      </h4>
+                    </div>
+                  </li>
+
+                </ul>
+              </div>
+              <div class="col-4">
+                <div style="border-right: 2px solid white; padding-right: 15px;">
+
+                  <ul>
+                    <li>
+                      <h4 class="white-text">
+                        مصلحة الجمارك
+                      </h4>
+                    </li>
+
+                    <li style="margin-bottom: 8px;">
+                      <a href="/home/ChifWord">
+                        كلمة رئيس المصلحة
+                      </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                      <a href="/home/ChifWord">
+                        الخطة الاستراتيجيه
+                      </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                      <a href="/home/Vision">
+                        الرؤية والرسال
+                      </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                      <a href="/home/OrgCahrt">
+                        الهيكل التنظيمي
+                      </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                      <a href="/home/History">
+                        نبذة تاريخية
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="col-4">
+                <div style="border-right: 2px solid white; padding-right: 15px;">
+
+                  <ul>
+                    <li>
+                      <h4 class="white-text">
+                        التواصل
+                      </h4>
+                    </li>
+                    <li style="margin-bottom: 5px;">
+                      <a href="https://www.facebook.com/egyptcustoms" target="_blank">
+                        فيسبوك
+                      </a>
+                    </li>
+                    <li style="margin-bottom: 5px;">
+
+                      <a href="https://rb.gy/zzmu7" target="_blank">
+                        يوتيوب
+                      </a>
+                    </li>
+                    
+
+                  </ul>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+          <div class="footer-decor">
+            <!-- <div class="footer-decor-line"></div> -->
+            <!-- <div class="footer-decor-img"> -->
+            <!-- <img src="/images/EcaLogoLarge.png" class="img-fluid" alt=""> -->
+            <!-- </div> -->
+            <div>
+              <p class="text-center footer-mark">
+                جميع الحقوق محفوظة لمصلحة الجمارك 2026
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End of footer -->
+  <div class="social-media-links main-shadow">
+
+    <a href="https://www.facebook.com/egyptcustoms" target="_blank" class="faceBook">
+      <i class="fa-brands fa-facebook fa-2x "></i>
+    </a>
+    <a class="youtube" href="https://rb.gy/zzmu7" target="_blank">
+      <i class="fa-brands fa-youtube fa-2x"></i>
+    </a>
+
+  </div>
+  <!-- End of footer -->
+  <!-- Start of  -->
+
+  <script src="/assets/js/jquery-3.6.0.min.js"></script>
+  <!-- bootstrap -->
+  
+  
+  
+
+
+  <script src="/assets/js/jquery-ui.js"></script>
+  <script src="/assets/js/bootstrap.bundle.min.js"></script>
+
+  <script src="/assets/js/owl.carousel.min.js"></script>
+
+  
+  <script src="/assets/js/telex.js"></script>
+  <script src="/assets/js/splide.min.js"></script>
+  
+  <script src="/assets/js/wow.min.js"></script>
+  <script src="/assets/js/mainJs.js"></script>
+
+  <script src="/Scripts/site.js"></script>
+
+<script>
+  var qtx = Telex.widget("tx", { pauseOnHover: true, speed: 25, direction: "reverse" }, [
+    {
+      id: "msg1",
+      content: "بدء العمل بمنظومة",
+      class: 'msg-lightgreen',
+    },
+    {
+      id: "msg2",
+      content: "بعض الاخبار التى تهم المجتمع الجمركي",
+      class: 'msg-lightgreen',
+    },
+    {
+      id: "msg3",
+      content: "بعض الاخبار التى تهم المجتمع الجمركي",
+      class: 'msg-lightgreen',
+    },
+    {
+      id: "msg4",
+      content: "بعض الاخبار التى تهم المجتمع الجمركي",
+      class: 'msg-lightgreen',
+    },
+  ]);
+</script>   <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var main = new Splide('#main-carousel', {
+        type: 'fade',
+        rewind: true,
+        pagination: false,
+        arrows: false,
+      });
+
+
+      var thumbnails = new Splide('#thumbnail-carousel', {
+        fixedWidth: 100,
+        fixedHeight: 60,
+        gap: 10,
+        rewind: true,
+        pagination: false,
+        isNavigation: true,
+        breakpoints: {
+          600: {
+            fixedWidth: 60,
+            fixedHeight: 44,
+          },
+        },
+      });
+
+
+      main.sync(thumbnails);
+      main.mount();
+      thumbnails.mount();
+    });
+  </script>
+  
+</body>
+</html>
+}

@@ -8,6 +8,8 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 2. **Trade Calculator**: Calculate import taxes comparing NPF vs ZLECAf regimes with savings display
 3. **Multi-Country Support**: Cover all 54 AfCFTA member states
 4. **Data Accuracy**: Display authentic national tariff positions with exact descriptions
+5. **Statut juridique du SaaS — INFORMATIF, NON OPPOSABLE** : le SaaS est un outil informatif ; il ne crée aucun droit, n'engage pas l'administration et ne remplace pas les publications officielles de l'autorité douanière (tarif officiel, JO) qui seules font foi. Cela n'exonère pas de la rigueur documentaire : traçabilité SHA-256, verbatim de la source, écarts documentés sans arbitrage, aucun taux inventé.
+6. **Vérification de l'audit (mission)** : chaque audit documentaire (`scripts/audit_tariff_documentation.py`) doit vérifier que le cadre informatif est respecté — disclaimer « outil informatif, non opposable » présent dans les rapports, absence de toute formulation d'opposabilité (dimension `informative_framing`, bloc `legal_framing`), en plus des contrôles techniques (doublons, SH6, taux, taxes sans unité, comparaison source).
 
 ## Architecture
 - **Backend**: FastAPI (Python)

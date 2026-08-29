@@ -18,6 +18,27 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 QUALITY_VALUES = {"DOCUMENTED", "PARTIAL", "UNVERIFIED", "NOT_AVAILABLE", "NOT_APPLICABLE"}
+
+# Cadre d'usage : le SaaS est INFORMATIF. Il n'est pas opposable, ne crée aucun
+# droit et n'engage pas l'administration. Seules les publications officielles de
+# l'autorité douanière (tarif officiel, JO) font foi. La rigueur documentaire
+# (traçabilité, verbatim, écarts documentés) reste exigée et n'équivaut jamais
+# à une opposabilité.
+LEGAL_FRAMING = {
+    "saas_status": "INFORMATIF_NON_OPPOSABLE",
+    "fait_foi": "Les publications officielles de l'autorité douanière (tarif officiel, JO, arrêtés) seules sont opposables.",
+    "portee": "Le SaaS fournit des repères documentaires sourcés ; il ne constitue ni une décision douanière, ni un conseil juridique, ni une validation administrative.",
+    "rigueur": "La rigueur documentaire (SHA-256, verbatim, écarts documentés sans arbitrage, aucun taux inventé) reste exigée et ne confère pas d'opposabilité.",
+}
+DISCLAIMER_REPORT = (
+    "> Audit local en lecture seule. Aucun taux ni fichier source n'a été modifié. "
+    "**Outil informatif, non opposable** : le SaaS ne crée aucun droit et n'engage pas "
+    "l'administration ; seules les publications officielles de l'autorité douanière font foi. "
+    "Ce document décrit la qualité documentaire disponible — il ne constitue ni une validation "
+    "administrative, ni un conseil juridique."
+)
+# formulations interdites dans les rapports (risque d'opposabilité)
+FORBIDDEN_CLAIMS = ("opposable à", "garanti", "certifie que", "fait foi pour", "valeur légale")
 COUNTRY_NAMES = {"DZA": "Algérie", "MAR": "Maroc", "TUN": "Tunisie", "EGY": "Égypte", "ZAF": "Afrique du Sud", "KEN": "Kenya"}
 TAX_ALIASES = {
     "dd": "DD", "d.d": "DD", "droit_de_douane": "DD", "droit de douane": "DD",
@@ -466,8 +487,26 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         if base.exists() for path in base.rglob("*")
         if path.is_file() and country.lower() in path.name.lower() and "official" in path.name.lower()
     ]
-    archive_available = any(path.exists() for path in archive_candidates)
+    # Archives officielles conventionnées : data/sources/<ISO>/**/_manifest.json
+    # (documents officiels archivés avec SHA-256 — méthode DZA)
+    manifests = sorted((root / "data" / "sources" / country).rglob("_manifest.json")) if (root / "data" / "sources" / country).exists() else []
+    manifest_docs = 0
+    for m in manifests:
+        try:
+            manifest_docs += len(json.loads(m.read_text(encoding="utf-8")).get("documents", []))
+        except Exception:
+            pass
+    archive_available = any(path.exists() for path in archive_candidates) or bool(manifests and manifest_docs)
     source_status = "DOCUMENTED" if archive_available else "UNVERIFIED"
+    # Comparaison source : data/sources/<ISO>/source_comparison.json (produit par
+    # les scripts de consolidation ; les statuts codés en dur sont retirés)
+    comparison_file = root / "data" / "sources" / country / "source_comparison.json"
+    source_comparison = None
+    if comparison_file.exists():
+        try:
+            source_comparison = json.loads(comparison_file.read_text(encoding="utf-8"))
+        except Exception:
+            source_comparison = None
     temporal_status = "PARTIAL" if extracted_at else "NOT_AVAILABLE"
     classification_status = "DOCUMENTED" if rows and not invalid and not hs6_missing else "PARTIAL"
     taxes_status = "PARTIAL" if tax_types else "NOT_AVAILABLE"
@@ -478,6 +517,7 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         "taxes_and_levies": taxes_status,
         "preference_and_origin": "PARTIAL" if any(row["raw_row"].get("advantages") or row["raw_row"].get("fiscal_advantages") or row["raw_row"].get("preferences") for row in rows) else "NOT_AVAILABLE",
         "formalities": "PARTIAL" if any(row["raw_row"].get("formalities") or row["raw_row"].get("administrative_formalities") or row["raw_row"].get("reglementation_import") for row in rows) else "NOT_AVAILABLE",
+        "informative_framing": None,  # calculé après génération du rapport (voir plus bas)
     }
     overall = "INFORMATIVE_COMPLETE" if all(value in {"DOCUMENTED", "NOT_APPLICABLE"} for value in dimensions.values()) else "INFORMATIVE_PARTIAL"
     version = next((str(meta[key]) for meta in (effective_meta, primary_meta) for key in ("hs_version", "nomenclature", "hs_level") if meta.get(key)), None)
@@ -547,6 +587,7 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
             "source_hash_sha256": file_hash(effective),
             "archive_official_available": archive_available,
             "official_archive_candidates": [rel(path) for path in archive_candidates],
+            "official_archives_manifests": [rel(m) for m in manifests] + ([f"{manifest_docs} documents SHA-256"] if manifest_docs else []),
             "status": source_status,
             "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés.",
         },
@@ -590,7 +631,8 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
             "row_source_urls_count": len(row_urls),
         },
         "sample_rows": samples(rows),
-        "source_comparison": {"status": "NOT_AVAILABLE", "official_lines_compared": 0, "note": "Aucune copie officielle tarifaire archivée dans le dépôt; les dix lignes restent non comparées."},
+        "source_comparison": source_comparison or {"status": "NOT_AVAILABLE", "official_lines_compared": 0, "note": "Aucune comparaison à une publication officielle disponible; échantillon non comparé. Toute comparaison documentaire ne confère pas d'opposabilité."},
+        "legal_framing": dict(LEGAL_FRAMING),
         "quality_dimensions": dimensions,
         "overall_informative_status": overall,
         "known_data_gaps": [
@@ -614,7 +656,14 @@ def report(result: Dict[str, Any]) -> str:
     lines = [
         f"# Documentation tarifaire {result['country_iso3']} — {result['consultation_date']}",
         "",
-        "> Audit local en lecture seule. Aucun taux ni fichier source n'a été modifié. Ce document décrit la qualité documentaire disponible et ne constitue pas une validation administrative.",
+        DISCLAIMER_REPORT,
+        "",
+        "## Cadre d'usage — outil informatif, non opposable",
+        "",
+        f"- Statut du SaaS : **{LEGAL_FRAMING['saas_status']}** — il ne crée aucun droit et n'engage pas l'administration.",
+        f"- {LEGAL_FRAMING['fait_foi']}",
+        f"- {LEGAL_FRAMING['portee']}",
+        f"- {LEGAL_FRAMING['rigueur']}",
         "",
         "## Résultat informatif",
         "",
@@ -797,7 +846,30 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     output.parent.mkdir(parents=True, exist_ok=True)
     report_path.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    report_path.write_text(report(result), encoding="utf-8")
+    report_text = report(result)
+    report_path.write_text(report_text, encoding="utf-8")
+
+    # Vérification du cadre informatif (mission) : le rapport ne doit contenir
+    # aucune formulation d'opposabilité, et le disclaimer doit être présent.
+    hits = [claim for claim in FORBIDDEN_CLAIMS if claim.lower() in report_text.lower()]
+    framing_ok = (DISCLAIMER_REPORT in report_text) and not hits
+    result["quality_dimensions"]["informative_framing"] = "DOCUMENTED" if framing_ok else "PARTIAL"
+    if not framing_ok:
+        result["quality_dimensions"]["informative_framing"] = "PARTIAL"
+        result["known_data_gaps"] = list(result["known_data_gaps"]) + [
+            f"Cadre informatif à corriger : formulations à risque {hits}" if hits else "Disclaimer informatif absent du rapport.",
+        ]
+    result["legal_framing"]["verification"] = {
+        "disclaimer_present": DISCLAIMER_REPORT in report_text,
+        "forbidden_claims_found": hits,
+        "status": result["quality_dimensions"]["informative_framing"],
+    }
+    all_dims = [v for k, v in result["quality_dimensions"].items() if v is not None]
+    result["overall_informative_status"] = "INFORMATIVE_COMPLETE" if all(v in {"DOCUMENTED", "NOT_APPLICABLE"} for v in all_dims) else "INFORMATIVE_PARTIAL"
+    # mise à jour des lignes de statut du rapport + réécriture
+    report_text = report(result)
+    report_path.write_text(report_text, encoding="utf-8")
+    output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"country": country, "output": str(output), "report": str(report_path), "status": result["overall_informative_status"], "rows": result["controls"]["total_rows_audited"]}, ensure_ascii=False))
     return 0
 

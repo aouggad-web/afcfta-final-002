@@ -35,9 +35,94 @@ REPORTS_DIR = REPO_ROOT / "reports"
 
 RATE_RE = re.compile(r"(\d+(?:[.,]\d+)?)\s*%")
 
+TAX_CODE_MAPPING = {
+    "ضريبة الوارد": "ID",
+    "ضريبة قيمه مضافه": "VAT",
+    "ضريبة الدمغة": "STAMP",
+    "رسم دعم": "SUPPORT",
+}
+
 
 def norm_code(code: str) -> str:
     return code.replace("/", "").strip()
+
+
+def parse_taxes_lines(taxes_verbatim: list[str]) -> list[dict]:
+    """Parse ordonné des lignes de taxes publiées par la source.
+
+    Structure de la source : une ligne sans ':' est un en-tête de régime
+    (accord commercial, ex. « اتفاقيه الشراكه المصريه الاوربيه ») ; les lignes
+    « LABEL : valeur » qui suivent s'appliquent sous CE régime. Les lignes qui
+    précèdent tout en-tête sont les taux génériques. Rien n'est interprété :
+    le texte arabe reste verbatim."""
+    out: list[dict] = []
+    regime = None
+    for raw in taxes_verbatim or []:
+        raw = raw.strip()
+        if not raw:
+            continue
+        if ":" not in raw:
+            regime = raw
+            out.append({"label_ar": raw, "code": None, "raw": "", "rate": None,
+                        "rate_parsed": False, "regime_ar": regime, "kind": "regime_header"})
+            continue
+        label = raw.split(":")[0].strip()
+        value = raw.split(":", 1)[1].strip()
+        code = None
+        for ar, cd in TAX_CODE_MAPPING.items():
+            if ar in label:
+                code = cd
+                break
+        num = None
+        m = RATE_RE.search(value)
+        if m:
+            num = float(m.group(1).replace(",", "."))
+        elif "صفر" in value:
+            num = 0.0
+        out.append({"label_ar": label, "code": code, "raw": value, "rate": num,
+                    "rate_parsed": num is not None,
+                    "regime_ar": regime, "kind": "tax"})
+    return out
+
+
+def build_taxes_dict(taxes_parsed: list[dict]) -> dict:
+    """Dict des taux GÉNÉRIQUES uniquement (aucun régime). En cas de libellé
+    dupliqué générique (ex. TVA ad valorem + TVA minimum), la 2e/3e occurrence
+    est conservée sous un suffixe _2/_3 — aucune donnée n'est écrasée."""
+    out: dict = {}
+    seen: dict[str, int] = {}
+    for e in taxes_parsed:
+        if e.get("kind") != "tax" or e.get("regime_ar"):
+            continue
+        key = e.get("code") or e["label_ar"]
+        seen[key] = seen.get(key, 0) + 1
+        if seen[key] > 1:
+            key = f"{key}_{seen[key]}"
+        out[key] = {
+            "code": e.get("code"),
+            "label_ar": e["label_ar"],
+            "raw": e["raw"],
+            "rate": e["rate"],
+            "rate_parsed": e["rate_parsed"],
+        }
+    return out
+
+
+def build_regime_rates(taxes_parsed: list[dict]) -> list[dict]:
+    """Taux publiés SOUS un régime (accord) — conservés séparément du taux
+    générique (l'ancien parseur les écrasait dans le dict)."""
+    return [
+        {
+            "regime_ar": e["regime_ar"],
+            "code": e.get("code"),
+            "label_ar": e["label_ar"],
+            "raw": e["raw"],
+            "rate": e["rate"],
+            "rate_parsed": e["rate_parsed"],
+        }
+        for e in taxes_parsed
+        if e.get("kind") == "tax" and e.get("regime_ar")
+    ]
 
 
 def main() -> int:
@@ -67,7 +152,18 @@ def main() -> int:
     rate_diffs = []
     for code in sorted(positions):
         row = positions[code]
-        taxes = row.get("taxes") or {}
+        taxes_verbatim = row.get("taxes_verbatim") or []
+        # re-parse depuis le verbatim (source ordonnée faisant foi) ; le dict
+        # `taxes` du crawl est un repli si le verbatim est absent
+        if taxes_verbatim:
+            taxes_parsed = parse_taxes_lines(taxes_verbatim)
+            taxes = build_taxes_dict(taxes_parsed)
+            regime_rates = build_regime_rates(taxes_parsed)
+        else:
+            taxes = row.get("taxes") or {}
+            regime_rates = []
+        if regime_rates:
+            stats["with_regime_rates"] += 1
         old_line = old_by_code.get(code)
 
         dd = taxes.get("ID") or {}
@@ -107,6 +203,7 @@ def main() -> int:
             "name_fr_from_previous_crawl": (old_line or {}).get("name"),
             "name_ar_from_previous_crawl": (old_line or {}).get("name_ar"),
             "taxes": taxes,
+            "taxes_regimes": regime_rates,
             "taxes_verbatim_ar": row.get("taxes_verbatim"),
             "official_instructions": instructions,
             "official_instruction_codes": codes_instr,

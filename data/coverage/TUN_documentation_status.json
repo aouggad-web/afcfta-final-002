@@ -56,9 +56,13 @@
     "date_consulted": "2026-08-29",
     "extracted_at": "2026-02-11T21:50:47.838713",
     "source_hash_sha256": "edb6aa0dd1d29500319f03be6a01560e4b428b1169b783f0188deb56297207a3",
-    "archive_official_available": false,
+    "archive_official_available": true,
     "official_archive_candidates": [],
-    "status": "UNVERIFIED",
+    "official_archives_manifests": [
+      "data/sources/TUN/_manifest.json",
+      "24 documents SHA-256"
+    ],
+    "status": "DOCUMENTED",
     "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés."
   },
   "position_availability": {
@@ -2164,17 +2168,147 @@
     }
   ],
   "source_comparison": {
-    "status": "NOT_AVAILABLE",
-    "official_lines_compared": 0,
-    "note": "Aucune copie officielle tarifaire archivée dans le dépôt; les dix lignes restent non comparées."
+    "country": "TUN",
+    "generated_at": "2026-08-29T22:23:34.401461+00:00",
+    "method": "Comparaison du fichier national avec les pages de détail LIVE de la source (douane.gov.tn/tarifwebnew, captures data/sources/TUN/tarifweb2026/detail_*.html)",
+    "status": "SAMPLE_VERIFIED_LIVE",
+    "lines_compared": 3,
+    "lines_matched": 3,
+    "lines_divergent": 0,
+    "note_nouveaux_codes": "84852000008 (nouveau code, source_gaps) : la source live publie DD 0 % / TVA 7 % / RPD 3 % — taux à intégrer lors du re-crawl complet.",
+    "results": [
+      {
+        "code": "01012100015",
+        "statut": "EXISTANT",
+        "taxes": [
+          {
+            "tax_source": "DD",
+            "raw_live": "36 %",
+            "raw_fichier": "36 %",
+            "match": true
+          },
+          {
+            "tax_source": "TVA/AP",
+            "raw_live": "0 %",
+            "raw_fichier": "0 %",
+            "match": true
+          },
+          {
+            "tax_source": "RPD/IMPOR",
+            "raw_live": "3 %",
+            "raw_fichier": "3 %",
+            "match": true
+          },
+          {
+            "tax_source": "RPD/EXPOR",
+            "raw_live": "0 %",
+            "raw_fichier": "0 %",
+            "match": true
+          }
+        ],
+        "match_complet": true
+      },
+      {
+        "code": "16010010006",
+        "statut": "EXISTANT",
+        "taxes": [
+          {
+            "tax_source": "TCA",
+            "raw_live": "1 %",
+            "raw_fichier": "1 %",
+            "match": true
+          },
+          {
+            "tax_source": "TVA/AP",
+            "raw_live": "19 %",
+            "raw_fichier": "19 %",
+            "match": true
+          },
+          {
+            "tax_source": "RPD/IMPOR",
+            "raw_live": "3 %",
+            "raw_fichier": "3 %",
+            "match": true
+          },
+          {
+            "tax_source": "AIR/IMPOR",
+            "raw_live": "10 %",
+            "raw_fichier": "10 %",
+            "match": true
+          },
+          {
+            "tax_source": "DD",
+            "raw_live": "50 %",
+            "raw_fichier": "50 %",
+            "match": true
+          },
+          {
+            "tax_source": "RPD/EXPOR",
+            "raw_live": "0 %",
+            "raw_fichier": "0 %",
+            "match": true
+          }
+        ],
+        "match_complet": true
+      },
+      {
+        "code": "84852000008",
+        "statut": "NOUVEAU_CODE(source_gaps)",
+        "taxes": [],
+        "match_complet": false
+      },
+      {
+        "code": "87034010116",
+        "statut": "EXISTANT",
+        "taxes": [
+          {
+            "tax_source": "RPD/IMPOR",
+            "raw_live": "3 %",
+            "raw_fichier": "3 %",
+            "match": true
+          },
+          {
+            "tax_source": "DC/VOIT",
+            "raw_live": "10 %",
+            "raw_fichier": "10 %",
+            "match": true
+          },
+          {
+            "tax_source": "TVA/AUTO",
+            "raw_live": "19 %",
+            "raw_fichier": "19 %",
+            "match": true
+          },
+          {
+            "tax_source": "RPD/EXPOR",
+            "raw_live": "0 %",
+            "raw_fichier": "0 %",
+            "match": true
+          }
+        ],
+        "match_complet": true
+      }
+    ]
+  },
+  "legal_framing": {
+    "saas_status": "INFORMATIF_NON_OPPOSABLE",
+    "fait_foi": "Les publications officielles de l'autorité douanière (tarif officiel, JO, arrêtés) seules sont opposables.",
+    "portee": "Le SaaS fournit des repères documentaires sourcés ; il ne constitue ni une décision douanière, ni un conseil juridique, ni une validation administrative.",
+    "rigueur": "La rigueur documentaire (SHA-256, verbatim, écarts documentés sans arbitrage, aucun taux inventé) reste exigée et ne confère pas d'opposabilité.",
+    "verification": {
+      "disclaimer_present": true,
+      "forbidden_claims_found": [],
+      "status": "DOCUMENTED"
+    }
   },
   "quality_dimensions": {
-    "source": "UNVERIFIED",
+    "source": "DOCUMENTED",
     "temporal_validity": "PARTIAL",
     "classification": "DOCUMENTED",
     "taxes_and_levies": "PARTIAL",
     "preference_and_origin": "PARTIAL",
-    "formalities": "PARTIAL"
+    "formalities": "PARTIAL",
+    "informative_framing": "DOCUMENTED"
   },
   "overall_informative_status": "INFORMATIVE_PARTIAL",
   "known_data_gaps": [
