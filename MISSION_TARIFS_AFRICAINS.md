@@ -6,6 +6,16 @@
 > **Pas de mock, pas d'hallucination, pas d'analyse spéculative — rien que les
 > vrais, en application** — incluant les avantages ZLECAf et les outils de son
 > exécution.
+>
+> **Périmètre SaaS : le commerce africain avec le monde** — pas seulement le
+> commerce intra-africain. Quatre flux couverts :
+> 1. **Intra-africain** (ZLECAf, CEMAC, CEDEAO, SADC, EAC, COMESA, AMU…)
+> 2. **Afrique → monde** (accès préférentiels aux marchés tiers : EPA UE,
+>    AGOA États-Unis, GSP, accords bilatéraux Turquie/UK/Chine…)
+> 3. **Monde → Afrique** (taux NPF appliqués par les douanes africaines aux
+>    importations tierces, accords signés par chaque pays)
+> 4. **Chaînes de valeur transitant par l'Afrique** (régimes économiques,
+>    admission temporaire, plateformes/logistiques)
 
 ## 1. Distinction stricte ZALE ≠ ZLECAf
 
@@ -38,6 +48,46 @@
 - **Réconciliation systématique** entre versions de source (documentée, sans
   arbitrage silencieux).
 
+## 2 bis. Règle NPF — référence obligatoire (par pays, par code)
+
+1. **Le taux NPF (nation la plus favorisée / MFN) de chaque pays africain est
+   la référence de base** de sa grille tarifaire : c'est le taux appliqué aux
+   importations du reste du monde (membres OMC sans accord préférentiel).
+2. **Toute préférence s'exprime par rapport au NPF** : marge de préférence =
+   NPF − taux préférentiel. Sans NPF vérifié, la marge est **indisponible**
+   (jamais estimée).
+3. Le NPF provient de la **source tarifaire officielle nationale** du pays
+   (portail douanier, tarif légal, JORT/gazette équivalent) — archivé SHA-256.
+   Les bases tierces (WTO, ITC MacMap, UNCTAD TRAINS) ne servent que de
+   **contre-vérification**, signalées comme sources secondaires.
+4. Chaque partenaire préférentiel d'un pays est documenté avec **tous les
+   accords applicables** : blocs régionaux (ZLECAf, ZALE pour les États
+   arabes, CEMAC, CEDEAO, EAC, SADC, COMESA, AMU…), EPAs (UE/RU),
+   AGOA, GSP, accords bilatéraux (Turquie, Chine, Inde…) — avec le
+   **statut d'application réel** (en vigueur, signé non appliqué, en
+   négociation — jamais présentés comme appliqués si ce n'est pas le cas).
+5. **Avantages fiscaux** : les régimes incitatifs de chaque pays (exonérations
+   à l'importation, régimes suspensifs, admission temporaire, entrepôts et
+   zones franches, avantages à l'exportation, codes de réglementation) sont
+   collectés **exclusivement depuis les textes officiels et portails
+   douaniers/fiscaux** archivés — jamais depuis des brochures ou des
+   synthèses non opposables.
+
+## 2 ter. Périmètre SaaS — le commerce africain avec le monde
+
+Le calculateur et le module Opportunités couvrent les quatre flux :
+- **Import africain** : pour tout pays africain couvert, taux appliqué à une
+  origine donnée (NPF si aucun accord, préférentiel sinon, avec zone et
+  référence juridique).
+- **Export africain** : taux d'entrée constatés sur les marchés tiers quand
+  les sources officielles de ces marchés sont collectées (même méthode), sinon
+  indisponible.
+- **Préférences mondiales dont bénéficie l'Afrique** : EPA UE, AGOA (éligibilité
+  produit par produit quand la source officielle existe), GSP, accords
+  bilatéraux — traités comme des jeux de taux à part entière, zonés et sourcés.
+- **Comparaison NPF ↔ préférentiel** exposée dans l'API : l'avantage réel
+  (économie de droits) par partenaire et par code, avec base juridique.
+
 ## 3. Sources cartographiées et vérifiées (2026-08-30)
 
 | Source | Périmètre | État |
@@ -53,6 +103,9 @@
 
 - **Re-crawl TUN complet** : `backend/data/crawled/TUN_rates_2026-08-30.json`
   (17 542 codes, taxes import/export avec assiettes, préférences par pays, QCS/GU).
+- **Canonique TUN régénéré** : `backend/data/crawled/TUN_tariffs.json`
+  (source 2026 en application — 17 542 codes, 219 845 préférences **zonées** à
+  100 %, réglementation documents préservée du crawl précédent).
 - **Réconciliation juin 2025 ↔ août 2026** :
   `reports/TUN_RECONCILIATION_2026-08-30.json` — 16 782 taux identiques,
   **492 changements réels** (TVA 19→7 % sur 90 codes, DC sucres/chocolats,
@@ -62,10 +115,11 @@
   161 articles fiscaux localisés) + contingents + arrêtés taxes.
   PDFs archivés SHA-256 : `data/sources/TUN/jort/`.
 - **Registre des zones préférentielles TUN** (ZALE/ZLECAf/UE/AELE/bilatéraux)
-  avec statistiques observées par partenaire.
+  avec statistiques observées par partenaire — base de la règle NPF côté TUN :
+  la colonne DD du tarif (taux normal) sert de NPF tunisien.
 - **Crawlers réutilisables** : `scripts/tun_recrawl_rates.py`,
-  `scripts/jort_crawler.py`, `scripts/jort_lf_pipeline.py`,
-  `scripts/tun_reconcile.py`.
+  `scripts/tun_build_canonical.py`, `scripts/jort_crawler.py`,
+  `scripts/jort_lf_pipeline.py`, `scripts/tun_reconcile.py`.
 
 ## 5. Outils d'exécution ZLECAf (existants et à consolider)
 
@@ -80,13 +134,20 @@
 
 ## 6. Prochaines étapes
 
-1. **Régénérer le canonique TUN** (`TUN_tariffs.json`) depuis le crawl 2026 +
-   réconciliation (méthode DZA : consolidation + changelog).
-2. Archiver le **BOD 2023→2026** (SHA-256) et rattacher les changements de
+1. **Base NPF par pays africain couvert** : identifier le portail tarifaire
+   officiel de chaque pays (DZA, TUN, EGY, ZAF, KEN, MAR…) et collecter le
+   NPF national (référence obligatoire pour toute marge de préférence).
+2. **Registre d'accords par pays** : blocs régionaux + accords avec le monde
+   (EPA, AGOA, GSP, bilatéraux) avec statut d'application réel — un fichier
+   par pays, méthode DZA.
+3. **Avantages fiscaux** : collecter par pays les régimes incitatifs depuis
+   les textes officiels (codes de réglementation douanière, régimes
+   économiques, zones franches) — archivage SHA-256.
+4. Archiver le **BOD 2023→2026** (SHA-256) et rattacher les changements de
    taux aux bulletins (entre deux éditions du tarif).
-3. Étendre la collecte aux **tarifs ZLECAf publiés par les partenaires**
-   (offres tarifaires des pays cibles) — mêmes principes, même rigueur.
-4. Rattacher **chaque préférence ZLECAf à son acte** (décrets/arrêtés
-   tunisiens d'application des offres + JORT).
-5. Exposer dans l'API la **zone d'accord** sur chaque taux préférentiel
-   (filtre ZALE vs ZLECAf vs UE…) dans le calculateur et le module Opportunités.
+5. Rattacher **chaque préférence ZLECAf à son acte** (décrets/arrêtés
+   tunisiens d'application des offres + JORT) — puis idem pour les partenaires
+   (offres tarifaires publiées par les douanes nationales).
+6. Exposer dans l'API : **zone d'accord** + **marge de préférence vs NPF** sur
+   chaque taux (calculateur et module Opportunités), filtres ZALE/ZLECAf/UE/
+   AGOA/monde.
