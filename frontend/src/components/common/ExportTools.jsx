@@ -13,6 +13,7 @@ export function PDFExportButton({
   title = '', 
   subtitle = '',
   language = 'fr',
+  informationalNotice = true,
   className = '',
   ...buttonProps
 }) {
@@ -33,7 +34,8 @@ export function PDFExportButton({
         title,
         subtitle: subtitle || (language === 'fr' ? 'Rapport ZLECAf Analytics' : 'AfCFTA Analytics Report'),
         language,
-        showDate: true
+        showDate: true,
+        informationalNotice
       });
       
       if (!result.success) {
@@ -85,6 +87,7 @@ export function CSVExportButton({
   columns = [],
   filename = 'export',
   language = 'fr',
+  exportMetadata = null,
   className = '',
   ...buttonProps
 }) {
@@ -106,8 +109,23 @@ export function CSVExportButton({
     const body = rows
       .map((r) => columns.map((c) => escapeCell(r[c.key])).join(','))
       .join('\n');
+    const metadataRows = exportMetadata
+      ? [
+          ['Simulation informative des droits et taxes à l’importation', ''],
+          ['Date et heure de simulation', exportMetadata.simulation_generated_at || new Date().toISOString()],
+          ['Pays importateur', exportMetadata.importer_country || ''],
+          ['Pays exportateur', exportMetadata.exporter_country || ''],
+          ['Produit et code utilisé', exportMetadata.product_code || ''],
+          ['Hypothèses', exportMetadata.assumptions || ''],
+          ['Périmètre couvert', exportMetadata.scope || ''],
+          ['Sources', exportMetadata.sources || ''],
+          ['Lacunes', exportMetadata.known_data_gaps || ''],
+          ['Mention', 'Simulation informative — non opposable à l’administration douanière.'],
+          [],
+        ].map((row) => row.map(escapeCell).join(','))
+      : [];
     // BOM pour qu'Excel reconnaisse l'UTF-8 (accents)
-    const csv = `\uFEFF${header}\n${body}`;
+    const csv = `\uFEFF${metadataRows.length ? `${metadataRows.join('\n')}\n` : ''}${header}\n${body}`;
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

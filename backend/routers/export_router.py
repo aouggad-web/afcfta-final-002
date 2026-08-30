@@ -70,6 +70,14 @@ async def export_tariffs_csv(
                         "vat": line.get("vat", ""),
                         "source": line.get("source", ""),
                         "date": data.get("imported_at", ""),
+                        "simulation_generated_at": datetime.now(timezone.utc).isoformat(),
+                        "importer_country": data.get("country_code", ""),
+                        "exporter_country": data.get("exporter_country", ""),
+                        "product_code": line.get("hs_code", ""),
+                        "assumptions": data.get("assumptions", ""),
+                        "scope": data.get("scope", ""),
+                        "known_data_gaps": data.get("known_data_gaps", []),
+                        "informational_notice": "Simulation informative — non opposable à l’administration douanière.",
                     }
                 )
 
@@ -114,6 +122,7 @@ async def export_tariffs_excel(
                     continue
 
                 rows = []
+                generated_at = datetime.now(timezone.utc).isoformat()
                 for line in data.get("tariffs", {}).get("tariff_lines", []):
                     rows.append(
                         {
@@ -122,6 +131,14 @@ async def export_tariffs_excel(
                             "Unit": line.get("unit"),
                             "Customs Duty": line.get("customs_duty"),
                             "VAT": line.get("vat"),
+                            "Simulation generated at": generated_at,
+                            "Importer country": data.get("country_code", ""),
+                            "Exporter country": data.get("exporter_country", ""),
+                            "Product/code used": line.get("hs_code", ""),
+                            "Assumptions": data.get("assumptions", ""),
+                            "Scope": data.get("scope", ""),
+                            "Known data gaps": data.get("known_data_gaps", []),
+                            "Informational notice": "Simulation informative — non opposable à l’administration douanière.",
                         }
                     )
 

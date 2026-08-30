@@ -9,9 +9,12 @@ from engine.schemas.legal_override import (
 
 
 def measure(measure_id, measure_type, rate, start="2025-07-01", end="2026-06-30", **kw):
+    legal_layer = kw.pop("legal_layer", "REGIONAL_COMMON")
     return LegalOverrideMeasure(
         measure_id=measure_id,
-        jurisdiction="KEN",
+        jurisdiction=kw.pop("jurisdiction", "KEN"),
+        legal_layer=legal_layer,
+        regional_bloc=kw.pop("regional_bloc", "EAC" if legal_layer == "REGIONAL_COMMON" else None),
         measure_type=measure_type,
         legal_title="Test official instrument",
         gazette_number="TEST/1",
@@ -28,7 +31,7 @@ def measure(measure_id, measure_type, rate, start="2025-07-01", end="2026-06-30"
         base_rate=10,
         override_rate=rate,
         rate_unit="%",
-        verification_status=kw.pop("verification_status", "VERIFIED_OFFICIAL_EXTRACT"),
+        verification_status=kw.pop("verification_status", "SOURCE_ARCHIVED"),
         requires_human_review=kw.pop("requires_human_review", False),
         **kw,
     )
@@ -47,7 +50,7 @@ def test_cet_without_override():
     result = resolve([])
     assert result["applicable_customs_rate"] == 10
     assert result["override_rate"] is None
-    assert result["calculation_status"] == "VERIFIED_COMPLETE"
+    assert result["calculation_status"] == "INFORMATIVE_COMPLETE"
 
 
 def test_stay_of_application():
@@ -66,7 +69,7 @@ def test_conditional_remission_requires_matching_facts():
     )
     unresolved = resolve([remission])
     assert unresolved["applicable_customs_rate"] == 10
-    assert unresolved["calculation_status"] == "VERIFIED_PARTIAL"
+    assert unresolved["calculation_status"] == "INFORMATIVE_PARTIAL"
     applied = resolve(
         [remission],
         context=OverrideContext(
@@ -89,7 +92,7 @@ def test_non_eligible_beneficiary_keeps_normal_cet():
     )
     assert result["applicable_customs_rate"] == 10
     assert result["remission_eligibility_status"] == "NOT_ELIGIBLE"
-    assert result["calculation_status"] == "VERIFIED_COMPLETE"
+    assert result["calculation_status"] == "INFORMATIVE_COMPLETE"
 
 
 def test_claimed_eligibility_without_authorization_is_partial():
@@ -101,7 +104,7 @@ def test_claimed_eligibility_without_authorization_is_partial():
     assert result["applicable_customs_rate"] == 10
     assert result["remission_eligibility_status"] == "AUTHORIZATION_REQUIRED"
     assert result["requires_eligibility_input"] is True
-    assert result["calculation_status"] == "VERIFIED_PARTIAL"
+    assert result["calculation_status"] == "INFORMATIVE_PARTIAL"
 
 
 def test_authorization_must_cover_exact_tariff_line():
@@ -137,8 +140,56 @@ def test_expired_authorization_keeps_normal_cet():
 
 
 def test_national_exemption():
-    exemption = measure("exemption", "KENYA_NATIONAL_EXEMPTION", 0)
+    exemption = measure(
+        "exemption",
+        "NATIONAL_EXEMPTION",
+        0,
+        legal_layer="NATIONAL_COUNTRY",
+    )
     assert resolve([exemption])["applicable_customs_rate"] == 0
+
+
+def test_regional_layer_is_applied_before_country_layer():
+    regional_stay = measure("regional-stay", "STAY_OF_APPLICATION", 35)
+    national_exemption = measure(
+        "national-exemption",
+        "NATIONAL_EXEMPTION",
+        0,
+        legal_layer="NATIONAL_COUNTRY",
+    )
+    result = resolve([national_exemption, regional_stay])
+    assert result["applicable_customs_rate"] == 0
+    assert [step["measure_id"] for step in result["trace"] if step["measure_id"]] == [
+        "regional-stay",
+        "national-exemption",
+    ]
+    assert result["legal_layers"]["REGIONAL_COMMON"]["trace"][-1]["measure_id"] == "regional-stay"
+    assert (
+        result["legal_layers"]["NATIONAL_COUNTRY"]["trace"][-1]["measure_id"]
+        == "national-exemption"
+    )
+
+
+def test_national_layer_is_isolated_by_country():
+    uganda_exemption = measure(
+        "uganda-exemption",
+        "NATIONAL_EXEMPTION",
+        0,
+        legal_layer="NATIONAL_COUNTRY",
+        jurisdiction="UGA",
+    )
+    result = resolve([uganda_exemption])
+    assert result["applicable_customs_rate"] == 10
+    assert result["legal_layers"]["NATIONAL_COUNTRY"]["trace"] == []
+
+
+def test_regional_measure_requires_membership_of_the_regional_bloc():
+    regional_stay = measure("regional-stay", "STAY_OF_APPLICATION", 35)
+    result = resolve(
+        [regional_stay],
+        context=OverrideContext(jurisdiction="KEN", regional_blocs=[]),
+    )
+    assert result["applicable_customs_rate"] == 10
 
 
 def test_expired_measure_is_ignored():
@@ -161,7 +212,7 @@ def test_missing_source_verification_forces_partial():
     pending = measure("pending", "STAY_OF_APPLICATION", 35, verification_status="SOURCE_PENDING")
     result = resolve([pending])
     assert result["applicable_customs_rate"] == 35
-    assert result["calculation_status"] == "VERIFIED_PARTIAL"
+    assert result["calculation_status"] == "INFORMATIVE_PARTIAL"
 
 
 def test_same_code_at_two_dates_uses_temporal_measure():
@@ -180,5 +231,5 @@ def test_discontinuous_hs_list_does_not_become_a_range():
 
 def test_incomplete_gazette_coverage_never_becomes_complete():
     result = resolve([], complete=False)
-    assert result["calculation_status"] == "VERIFIED_PARTIAL"
+    assert result["calculation_status"] == "INFORMATIVE_PARTIAL"
     assert result["missing_elements"]

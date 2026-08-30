@@ -14,14 +14,23 @@ from pydantic import BaseModel, Field
 
 
 class LegalMeasureType(str, Enum):
+    REGIONAL_TARIFF_BASE = "REGIONAL_TARIFF_BASE"
+    REGIONAL_TARIFF_AMENDMENT = "REGIONAL_TARIFF_AMENDMENT"
     EAC_CET_BASE = "EAC_CET_BASE"
     EAC_CET_AMENDMENT = "EAC_CET_AMENDMENT"
     STAY_OF_APPLICATION = "STAY_OF_APPLICATION"
     DUTY_REMISSION = "DUTY_REMISSION"
     KENYA_NATIONAL_EXEMPTION = "KENYA_NATIONAL_EXEMPTION"
     KENYA_NATIONAL_LEVY = "KENYA_NATIONAL_LEVY"
+    NATIONAL_EXEMPTION = "NATIONAL_EXEMPTION"
+    NATIONAL_LEVY = "NATIONAL_LEVY"
     PROHIBITION_OR_RESTRICTION = "PROHIBITION_OR_RESTRICTION"
     ADMINISTRATIVE_REQUIREMENT = "ADMINISTRATIVE_REQUIREMENT"
+
+
+class LegalLayer(str, Enum):
+    REGIONAL_COMMON = "REGIONAL_COMMON"
+    NATIONAL_COUNTRY = "NATIONAL_COUNTRY"
 
 
 class RemissionEligibility(str, Enum):
@@ -34,6 +43,17 @@ class RemissionEligibility(str, Enum):
 class LegalOverrideMeasure(BaseModel):
     measure_id: str
     jurisdiction: str
+    legal_layer: LegalLayer = LegalLayer.NATIONAL_COUNTRY
+    regional_bloc: Optional[str] = None
+    customs_territory: Optional[str] = None
+    applicable_countries: List[str] = Field(default_factory=list)
+    excluded_countries: List[str] = Field(default_factory=list)
+    beneficiary_country: Optional[str] = None
+    importing_country: Optional[str] = None
+    exporting_country: Optional[str] = None
+    national_codes: List[str] = Field(default_factory=list)
+    end_use: Optional[str] = None
+    authorization_required: bool = False
     measure_type: LegalMeasureType
     legal_title: str
     gazette_number: Optional[str] = None
@@ -60,6 +80,54 @@ class LegalOverrideMeasure(BaseModel):
     requires_human_review: bool = False
     mapping_status: str = "DIRECT_HS"
     mapping_confidence: int = Field(100, ge=0, le=100)
+
+    def applies_to(
+        self,
+        country: str,
+        regional_blocs: List[str],
+        *,
+        exporting_country: Optional[str] = None,
+    ) -> bool:
+        jurisdiction = self.jurisdiction.strip().upper()
+        country = country.strip().upper()
+        included = {item.strip().upper() for item in self.applicable_countries}
+        excluded = {item.strip().upper() for item in self.excluded_countries}
+        if country in excluded:
+            return False
+        if included and country not in included:
+            return False
+        if self.importing_country and self.importing_country.strip().upper() != country:
+            return False
+        if self.exporting_country:
+            if not exporting_country:
+                return False
+            if self.exporting_country.strip().upper() != exporting_country.strip().upper():
+                return False
+        legacy_regional = (
+            self.legal_layer == LegalLayer.NATIONAL_COUNTRY
+            and jurisdiction in {"EAC", "KEN"}
+            and self.measure_type
+            in {
+                LegalMeasureType.EAC_CET_BASE,
+                LegalMeasureType.EAC_CET_AMENDMENT,
+                LegalMeasureType.STAY_OF_APPLICATION,
+                LegalMeasureType.DUTY_REMISSION,
+            }
+            and not self.regional_bloc
+            and not self.customs_territory
+        )
+        if self.legal_layer == LegalLayer.REGIONAL_COMMON or legacy_regional:
+            bloc = (
+                (
+                    self.customs_territory
+                    or self.regional_bloc
+                    or ("EAC" if legacy_regional else jurisdiction)
+                )
+                .strip()
+                .upper()
+            )
+            return bool(bloc) and bloc in {item.strip().upper() for item in regional_blocs}
+        return jurisdiction in {"ALL", "ANY", country}
 
     def classification_allows_automatic_application(self) -> bool:
         return (
@@ -88,7 +156,13 @@ class LegalOverrideMeasure(BaseModel):
 
 
 class OverrideContext(BaseModel):
+    # Backwards-compatible default for the Kenya calculator. Generic callers
+    # should pass the destination ISO3 explicitly when using another country.
     jurisdiction: str = "KEN"
+    # Kenya's historical resolver API did not require a bloc argument. Keep
+    # EAC as the compatibility default while callers for other countries (or
+    # an explicitly unverified membership) must pass their own list.
+    regional_blocs: List[str] = Field(default_factory=lambda: ["EAC"])
     origin: Optional[str] = None
     beneficiary: Optional[str] = None
     import_purpose: Optional[str] = None
@@ -103,6 +177,8 @@ class OverrideContext(BaseModel):
 
 class OverrideTraceStep(BaseModel):
     stage: str
+    legal_layer: Optional[LegalLayer] = None
+    jurisdiction: Optional[str] = None
     measure_id: Optional[str] = None
     outcome: str
     rate_before: Optional[float] = None
