@@ -1,6 +1,41 @@
-# Documentation tarifaire ZAF — 2026-08-29
+# Documentation tarifaire ZAF — 2026-08-30
 
 > Audit local en lecture seule. Aucun taux ni fichier source n'a été modifié. **Outil informatif, non opposable** : le SaaS ne crée aucun droit et n'engage pas l'administration ; seules les publications officielles de l'autorité douanière font foi. Ce document décrit la qualité documentaire disponible — il ne constitue ni une validation administrative, ni un conseil juridique.
+
+## Complétion exhaustive ZAF — annexes SARS + ITAC — 2026-08-29
+
+> Traçabilité : extraction verbatim des PDF officiels, taux numériques lus littéralement dans les chaînes publiées. Aucune fusion avec le taux général — sections séparées dans `schedules` du fichier national.
+
+### Ce qui a été fait
+
+1. **Découverte des URL exactes** des annexes via l'index Wayback CDX du répertoire `SCEA1964` (les URL devinées renvoyaient 403/404 — la page « tariff book » SARS a été restructurée).
+2. **Téléchargement + archivage SHA-256** de 6 documents supplémentaires (manifeste : **7 actes**) :
+   - Schedule 1 **Part 2A/2B** — droits d'accise spécifiques (140 + 148 lignes ; dates PDF 2026-04-30 / 2025-04-01)
+   - **Schedule 2** — anti-dumping (Part 1 : 401 lignes), compensateurs (Part 2 : 0 ligne publiée), sauvegarde (Part 3 : 30 lignes) — date PDF **2026-07-24**
+   - **Schedule 3** — rebates industriels (1 091 lignes, extents verbatim « Full duty »/%, date 2026-06-19)
+   - **Schedule 8** — licences et frais (34 lignes)
+   - **ITAC** — mesures anti-dumping définitives en vigueur au 31/12/2022 (références GG, 3 pages verbatim)
+3. **Bloc `calculation_method`** : bases publiées (ad valorem valeur en douane ; composés c/kg, c/li, c/la ; remèdes = taux additionnels par produit ET origine ; rebates = atténuations section 75 ; accise spécifique c/l, c/kg).
+4. **Bloc `policy` verbatim** déclaré → `verbatim_integrity: DOCUMENTED`.
+
+### Résultat
+
+| Indicateur | Valeur |
+|---|---|
+| Schedule 1 Part 1 (taux général + préférentiels) | 8 589 positions — AfCFTA 4 654 lignes 0 % / 3 750 > 0 |
+| Schedule 2 remèdes | 431 lignes (401 AD + 30 safeguard) — 54 SH6 concernés, tous présents dans Part 1 |
+| Schedule 3 rebates | 1 091 lignes |
+| Accises spécifiques | 288 lignes (2A + 2B) |
+| Licences (Sch 8) | 34 lignes |
+| Actes archivés | **7 PDF SHA-256** (SARS ×6 + ITAC ×1) |
+| Audit | source DOCUMENTED · integrity DOCUMENTED · framing DOCUMENTED |
+
+### Écarts de source documentés (non arbitrés)
+
+- **Part 2 countervailing : 0 ligne publiée** dans le PDF du jour (aucun droit compensateur en vigueur selon la source).
+- **NRCS (spécifications obligatoires / LoA)** : inaccessible depuis ce réseau — écart documenté ; alternative à étudier : Government Gazette.
+- **DALRRD / DFFE / liste TVA zéro-rated** : à sonder (prochaine phase).
+- Dates d'effet juridiques : dates PDF conservées (2026-07-24, 2026-06-19, 2026-04-30…) ; version SH non déclarée explicitement dans les PDF.
 
 ## Cadre d'usage — outil informatif, non opposable
 
@@ -19,7 +54,7 @@
 - preference_and_origin : **NOT_AVAILABLE**
 - formalities : **NOT_AVAILABLE**
 - informative_framing : **DOCUMENTED**
-- verbatim_integrity : **PARTIAL**
+- verbatim_integrity : **DOCUMENTED**
 
 ## Inventaire et consommation
 
@@ -36,7 +71,7 @@
 - Titre : sars.gov.za.
 - URL de ligne : https://www.sars.gov.za/customs-and-excise/tariff-books/schedules/; URL d'acquisition déclarée : non indiquée; autorité douanière : non indiquée.
 - Archive officielle locale : **disponible**.
-- SHA-256 du fichier effectif : 23e7f03cb492b337704caea944fce64986010b14b4163039f0051692d2ce5e6d.
+- SHA-256 du fichier effectif : 45b2c970b6083738daee6f693e725b9de8d32cb0c2033601f03e884911a0f3a2.
 - Extraction : non indiquée (ce n'est pas une date d'effet).
 - Publication/effet : non documentée / non documentée.
 - Version SH dans les métadonnées : non déclarée; déclaration trouvée dans l'adaptateur : aucune (statut : NOT_AVAILABLE).

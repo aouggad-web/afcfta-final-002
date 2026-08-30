@@ -2,7 +2,7 @@
   "country_iso3": "ZAF",
   "country_name": "Afrique du Sud",
   "audit_tool": "scripts/audit_tariff_documentation.py",
-  "consultation_date": "2026-08-29",
+  "consultation_date": "2026-08-30",
   "read_only_audit": true,
   "local_related_files": [
     {
@@ -53,14 +53,14 @@
     "hs_version": null,
     "hs_version_declared_in_code": null,
     "hs_version_status": "NOT_AVAILABLE",
-    "date_consulted": "2026-08-29",
+    "date_consulted": "2026-08-30",
     "extracted_at": null,
-    "source_hash_sha256": "23e7f03cb492b337704caea944fce64986010b14b4163039f0051692d2ce5e6d",
+    "source_hash_sha256": "45b2c970b6083738daee6f693e725b9de8d32cb0c2033601f03e884911a0f3a2",
     "archive_official_available": true,
     "official_archive_candidates": [],
     "official_archives_manifests": [
       "data/sources/ZAF/legislation/_manifest.json",
-      "1 documents SHA-256"
+      "7 documents SHA-256"
     ],
     "status": "DOCUMENTED",
     "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés."
@@ -875,7 +875,7 @@
     ],
     "rows_with_forbidden_markers": 0,
     "rows_with_forbidden_markers_examples": [],
-    "verbatim_policy_declared_in_metadata": false,
+    "verbatim_policy_declared_in_metadata": true,
     "rule": "Pas de mock, pas de synthèse, pas d'extrapolation : toute donnée non publiée par la source reste un écart documenté (source_gaps)."
   },
   "quality_dimensions": {
@@ -886,7 +886,7 @@
     "preference_and_origin": "NOT_AVAILABLE",
     "formalities": "NOT_AVAILABLE",
     "informative_framing": "DOCUMENTED",
-    "verbatim_integrity": "PARTIAL"
+    "verbatim_integrity": "DOCUMENTED"
   },
   "overall_informative_status": "INFORMATIVE_PARTIAL",
   "known_data_gaps": [
