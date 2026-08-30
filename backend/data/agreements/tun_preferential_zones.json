@@ -1,0 +1,49 @@
+{
+  "pays": "TUN",
+  "description": "Registre d'attribution des zones d'accords pour les taux préférentiels publiés par le Tarif Web tunisien (douane.gov.tn/tarifwebnew). Distinction stricte ZALE (Zone de Libre-Échange Arabe / GAFTA) et ZLECAf (Zone de Libre-Échange Continentale Africaine / AfCFTA) — interdiction de fusionner les deux zones dans les données, calculs ou analyses. Codes pays = codes MIGA de la nomenclature douanière tunisienne. Taux observés dans le crawl du 2026-08-30 (17 542 codes).",
+  "source": "douane.gov.tn/tarifwebnew/getresultat.php — section « DROITS PRÉFÉRENTIELS PAR PAYS »",
+  "generated_at": "2026-08-30",
+  "zones": {
+    "ZALE": {
+      "nom_fr": "Zone de Libre-Échange Arabe",
+      "nom_ar": "منطقة التجارة الحرة العربية",
+      "sigles": ["GAFTA", "ZALE"],
+      "nature": "libre-échange effectif — démantèlement achevé",
+      "taux_observes": "0 % quasi-systématique (produits sensibles exclus : 63–89 %)"
+    },
+    "ZLECAf": {
+      "nom_fr": "Zone de Libre-Échange Continentale Africaine",
+      "nom_en": "African Continental Free Trade Area (AfCFTA)",
+      "nom_ar": "منطقة التجارة الحرة القارية الأفريقية",
+      "sigles": ["ZLECAf", "AfCFTA"],
+      "nature": "démantèlement tarifaire en cours — concessions différenciées par listes (offres tunisiennes)",
+      "taux_observes": "40 % (trajectoire générale) · 87,5 % (produits sensibles, ~1 251 codes) · 0 % (concessions avancées, ex. Tanzanie 12 824 codes) · 80 % (couverture partielle Maurice/Rwanda)"
+    }
+  },
+  "pays_preferentiels": [
+    {"code_miga": "12", "pays": "ALGÉRIE", "zone": "ZALE", "accords": ["ZALE (GAFTA)", "accord bilatéral TUN-DZA"], "taux_dominant": "0 %", "codes_couverts": 13362},
+    {"code_miga": "504", "pays": "MAROC", "zone": "ZALE", "accords": ["ZALE (GAFTA)", "Accord d'Agadir", "accord bilatéral TUN-MAR"], "taux_dominant": "0 %", "codes_couverts": 13735},
+    {"code_miga": "818", "pays": "ÉGYPTE", "zone": "ZALE", "accords": ["ZALE (GAFTA)", "Accord d'Agadir"], "taux_dominant": "0 %", "codes_couverts": 10632},
+    {"code_miga": "400", "pays": "JORDANIE", "zone": "ZALE", "accords": ["ZALE (GAFTA)", "Accord d'Agadir"], "taux_dominant": "0 %", "codes_couverts": 10666},
+    {"code_miga": "414", "pays": "KOWEÏT", "zone": "ZALE", "accords": ["ZALE (GAFTA)"], "taux_dominant": "0 %", "codes_couverts": 14915},
+    {"code_miga": "888", "pays": "PALESTINE", "zone": "ZALE", "accords": ["ZALE (GAFTA)"], "taux_dominant": "0 %", "codes_couverts": 17535},
+    {"code_miga": "120", "pays": "CAMEROUN", "zone": "ZLECAf", "accords": ["ZLECAf (AfCFTA)"], "taux_dominant": "40 %", "codes_couverts": 14075},
+    {"code_miga": "288", "pays": "GHANA", "zone": "ZLECAf", "accords": ["ZLECAf (AfCFTA)"], "taux_dominant": "40 %", "codes_couverts": 14075},
+    {"code_miga": "404", "pays": "KENYA", "zone": "ZLECAf", "accords": ["ZLECAf (AfCFTA)"], "taux_dominant": "40 %", "codes_couverts": 14075},
+    {"code_miga": "566", "pays": "NIGÉRIA", "zone": "ZLECAf", "accords": ["ZLECAf (AfCFTA)"], "taux_dominant": "40 %", "codes_couverts": 12954},
+    {"code_miga": "710", "pays": "AFRIQUE DU SUD", "zone": "ZLECAf", "accords": ["ZLECAf (AfCFTA)"], "taux_dominant": "40 %", "codes_couverts": 12954},
+    {"code_miga": "834", "pays": "TANZANIE", "zone": "ZLECAf", "accords": ["ZLECAf (AfCFTA)"], "taux_dominant": "0 % (concession avancée) / 80 % (sensibles)", "codes_couverts": 14075},
+    {"code_miga": "480", "pays": "MAURICE", "zone": "ZLECAf", "accords": ["ZLECAf (AfCFTA)"], "taux_dominant": "80 %", "codes_couverts": 1251},
+    {"code_miga": "646", "pays": "RWANDA", "zone": "ZLECAf", "accords": ["ZLECAf (AfCFTA)"], "taux_dominant": "80 %", "codes_couverts": 1251},
+    {"code_miga": "97", "pays": "GROUPE PAYS UNION EUROPÉENNE", "zone": "ACCORD_UE", "accords": ["Accord d'association Tunisie-UE (1995)"], "taux_dominant": "0 %", "codes_couverts": 13831},
+    {"code_miga": "98", "pays": "GROUPE PAYS AELE", "zone": "ACCORD_AELE", "accords": ["Accord de libre-échange Tunisie-AELE (2004)"], "taux_dominant": "0 %", "codes_couverts": 13389},
+    {"code_miga": "792", "pays": "TURQUIE", "zone": "ACCORD_BILATERAL", "accords": ["Accord de libre-échange Tunisie-Turquie (2005)"], "taux_dominant": "0 % (75 % sur ~1 193 codes textiles sensibles)", "codes_couverts": 13234},
+    {"code_miga": "826", "pays": "ROYAUME-UNI", "zone": "ACCORD_BILATERAL", "accords": ["Accord d'association/continuité Tunisie-RU (post-Brexit)"], "taux_dominant": "0 %", "codes_couverts": 13831}
+  ],
+  "regles_donnees": [
+    "Chaque taux préférentiel doit porter son attribution de zone (ZALE, ZLECAf, ACCORD_UE, ACCORD_AELE, ACCORD_BILATERAL) — jamais de regroupement « arabe ou africain » indifférencié.",
+    "Un taux 0 % ZALE ≠ un 0 % ZLECAf : la base juridique, le périmètre produits et les règles d'origine diffèrent (GAFTA vs protocole ZLECAf + Annexe 2 règles d'origine).",
+    "Les taux ZLECAf supérieurs à 0 % (40/80/87,5 %) reflètent les listes de concessions tunisiennes en phase transitoire — ne jamais les présenter comme du libre-échange effectif.",
+    "Toute mise à jour du registre doit être adossée à une source officielle archivée (SHA-256)."
+  ]
+}
