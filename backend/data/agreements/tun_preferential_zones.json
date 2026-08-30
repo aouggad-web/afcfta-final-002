@@ -37,6 +37,7 @@
     {"code_miga": "646", "pays": "RWANDA", "zone": "ZLECAf", "accords": ["ZLECAf (AfCFTA)"], "taux_dominant": "80 %", "codes_couverts": 1251},
     {"code_miga": "97", "pays": "GROUPE PAYS UNION EUROPÉENNE", "zone": "ACCORD_UE", "accords": ["Accord d'association Tunisie-UE (1995)"], "taux_dominant": "0 %", "codes_couverts": 13831},
     {"code_miga": "98", "pays": "GROUPE PAYS AELE", "zone": "ACCORD_AELE", "accords": ["Accord de libre-échange Tunisie-AELE (2004)"], "taux_dominant": "0 %", "codes_couverts": 13389},
+    {"code_miga": "756", "pays": "SUISSE", "zone": "ACCORD_AELE", "accords": ["Accord de libre-échange Tunisie-AELE (2004)"], "taux_dominant": "0 % (100 % = produits exclus de la préférence, ~1 code/produit sensible)", "codes_couverts": 1},
     {"code_miga": "792", "pays": "TURQUIE", "zone": "ACCORD_BILATERAL", "accords": ["Accord de libre-échange Tunisie-Turquie (2005)"], "taux_dominant": "0 % (75 % sur ~1 193 codes textiles sensibles)", "codes_couverts": 13234},
     {"code_miga": "826", "pays": "ROYAUME-UNI", "zone": "ACCORD_BILATERAL", "accords": ["Accord d'association/continuité Tunisie-RU (post-Brexit)"], "taux_dominant": "0 %", "codes_couverts": 13831}
   ],
