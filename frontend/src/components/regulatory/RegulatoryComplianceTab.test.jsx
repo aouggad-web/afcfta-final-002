@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event';
 import RegulatoryComplianceTab from './RegulatoryComplianceTab';
 import { regulatoryApi } from '../../services/api-v2';
 
+const SLOW_TEST_TIMEOUT = 90000;
+
 vi.mock('../../services/api-v2', () => ({
   regulatoryApi: {
     getSupportedCountries: vi.fn(),
@@ -127,7 +129,7 @@ describe('RegulatoryComplianceTab', () => {
     await waitFor(() => expect(regulatoryApi.getCountryCompliance).toHaveBeenCalledWith('CIV'));
     expect(await screen.findByText('Guichet Unique du Commerce Extérieur (GUCE-CI)')).toBeInTheDocument();
     expect(screen.getByText('Bordereau de Suivi des Cargaisons (BSC)')).toBeInTheDocument();
-  }, 90000);
+  }, SLOW_TEST_TIMEOUT);
 
   it("n'affiche jamais un mandat TERMINATED dans la section active", async () => {
     render(<RegulatoryComplianceTab language="fr" />);
@@ -139,7 +141,7 @@ describe('RegulatoryComplianceTab', () => {
     expect(screen.getByText(/Mandats non actifs/)).toBeInTheDocument();
     expect(screen.queryByText('Prestataires mandatés')).not.toBeInTheDocument();
     expect(screen.getByText('Webb Fontaine')).toBeInTheDocument();
-  }, 90000);
+  }, SLOW_TEST_TIMEOUT);
 
   it('distingue NOT_AVAILABLE (prestataire non documenté) de NOT_APPLICABLE (aucun prestataire, confirmé)', async () => {
     render(<RegulatoryComplianceTab language="fr" />);
@@ -158,7 +160,7 @@ describe('RegulatoryComplianceTab', () => {
     expect(
       screen.getByText(/administration opère cette formalité directement/)
     ).toBeInTheDocument();
-  }, 90000);
+  }, SLOW_TEST_TIMEOUT);
 
   it("un acteur UNVERIFIED ne s'affiche jamais comme prestataire actif (régression revue codex PR #373)", async () => {
     regulatoryApi.getCountryCompliance.mockResolvedValue({
@@ -219,7 +221,7 @@ describe('RegulatoryComplianceTab', () => {
     expect(screen.getByText(/Mandats non actifs/)).toBeInTheDocument();
     expect(screen.getByText('Intertek')).toBeInTheDocument();
     expect(screen.getByText('Bureau Veritas')).toBeInTheDocument();
-  }, 90000);
+  }, SLOW_TEST_TIMEOUT);
 
   it('filtre les mesures par mode de transport', async () => {
     render(<RegulatoryComplianceTab language="fr" />);
@@ -234,7 +236,7 @@ describe('RegulatoryComplianceTab', () => {
 
     expect(screen.getByText('Bordereau de Suivi des Cargaisons (BSC)')).toBeInTheDocument();
     expect(screen.queryByText('Guichet Unique du Commerce Extérieur (GUCE-CI)')).not.toBeInTheDocument();
-  }, 90000);
+  }, SLOW_TEST_TIMEOUT);
 
   it('filtre par texte de recherche (nom de prestataire)', async () => {
     render(<RegulatoryComplianceTab language="fr" />);
@@ -248,7 +250,7 @@ describe('RegulatoryComplianceTab', () => {
 
     expect(screen.getByText('Guichet Unique du Commerce Extérieur (GUCE-CI)')).toBeInTheDocument();
     expect(screen.queryByText('Bordereau de Suivi des Cargaisons (BSC)')).not.toBeInTheDocument();
-  }, 90000);
+  }, SLOW_TEST_TIMEOUT);
 
   it('ne rend jamais un lien cliquable pour un schéma non http(s) (javascript:/data:)', async () => {
     regulatoryApi.getCountryCompliance.mockResolvedValue({
@@ -288,5 +290,5 @@ describe('RegulatoryComplianceTab', () => {
     expect(screen.getByText('javascript:alert(1)')).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /javascript:alert/ })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /Preuve malveillante/ })).not.toBeInTheDocument();
-  }, 90000);
+  }, SLOW_TEST_TIMEOUT);
 });
