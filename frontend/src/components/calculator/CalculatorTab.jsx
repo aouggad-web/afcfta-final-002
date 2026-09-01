@@ -29,6 +29,7 @@ import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import KenyaRemissionAuthorization from './KenyaRemissionAuthorization';
+import TariffDocumentationPanel from './TariffDocumentationPanel';
 import RegulatoryComplianceView, {
   hasActiveMandatedProvider,
   hasUnpricedActiveProviderFees,
@@ -601,6 +602,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           last_verified: authenticResult.generated_at ? new Date(authenticResult.generated_at).toISOString().split('T')[0] : '2025-02',
           confidence_level: 'very_high',
           kenya_legal_calculation: authenticResult.kenya_legal_calculation || null,
+          generic_legal_calculation: authenticResult.generic_legal_calculation || authenticResult.legal_calculation || null,
 
           // Formalités, prestataires mandatés et frais réglementaires — bloc
           // informatif strictement séparé des droits/taxes (voir
@@ -1274,44 +1276,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               )}
 
-              {result.kenya_legal_calculation && (
-                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl">
-                  <p className="text-amber-300 font-semibold text-sm">
-                    Couche juridique EAC/Kenya — {result.kenya_legal_calculation.calculation_status}
-                  </p>
-                  <p className="text-amber-100/80 text-sm mt-1">
-                    Éligibilité remission : {result.kenya_legal_calculation.remission_eligibility_status || 'Aucune remission conditionnelle identifiée'}
-                  </p>
-                  <div className="mt-3 grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-4">
-                    <span>
-                      CET de base : <strong>{result.kenya_legal_calculation.base_cet_rate}%</strong>
-                    </span>
-                    <span>
-                      Taux applicable : <strong>{result.kenya_legal_calculation.applicable_customs_rate}%</strong>
-                    </span>
-                    <span>
-                      Override :{' '}
-                      <strong>
-                        {result.kenya_legal_calculation.override_applied == null
-                          ? 'Aucun'
-                          : `${result.kenya_legal_calculation.override_applied}%`}
-                      </strong>
-                    </span>
-                    <span>
-                      Total vérifié :{' '}
-                      <strong>
-                        {result.kenya_legal_calculation.verified_total}{' '}
-                        {result.kenya_legal_calculation.currency_code}
-                      </strong>
-                    </span>
-                  </div>
-                  {result.kenya_legal_calculation.display_warning && (
-                    <p className="text-amber-100/80 text-sm mt-2">
-                      {result.kenya_legal_calculation.display_warning}
-                    </p>
-                  )}
-                </div>
-              )}
+              <TariffDocumentationPanel result={result} language={language} />
 
               {/* Bandeau Valeur CIF + Code HS sélectionné */}
               <div className="mb-6 p-4 bg-gradient-to-r from-slate-700/50 to-slate-800/50 rounded-xl border border-slate-600/50">
@@ -1419,6 +1384,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </p>
                 </div>
               </div>
+              <p className="mt-4 text-center text-xs font-medium text-amber-300">
+                Simulation informative — non opposable à l’administration douanière.
+              </p>
 
               {/* Point 4 — signalement d'incomplétude : le total ci-dessus couvre les
                   droits et taxes exigibles, mais un prestataire mandaté actif facture
