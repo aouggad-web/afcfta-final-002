@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -17,6 +17,10 @@ function ProductionManufacturing({ language = 'fr' }) {
   const [unidoStats, setUnidoStats] = useState(null);
   const [mvaRanking, setMvaRanking] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isic4Data, setIsic4Data] = useState(null);
+  const [isic4Status, setIsic4Status] = useState('idle'); // idle | loading | error | ready
+  const [expandedSector, setExpandedSector] = useState(null);
+  const isic4RequestCountry = useRef(null);
 
   // Translations
   const texts = {
@@ -120,6 +124,10 @@ function ProductionManufacturing({ language = 'fr' }) {
 
   const fetchUnidoData = async (countryIso3) => {
     setLoading(true);
+    setExpandedSector(null);
+    setIsic4Data(null);
+    setIsic4Status('idle');
+    isic4RequestCountry.current = null;
     try {
       const response = await axios.get(`${API}/production/unido/${countryIso3}`);
       setUnidoData(response.data);
@@ -129,6 +137,38 @@ function ProductionManufacturing({ language = 'fr' }) {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchIsic4Data = async () => {
+    const requestedCountry = selectedCountry;
+    isic4RequestCountry.current = requestedCountry;
+    setIsic4Status('loading');
+    try {
+      const response = await axios.get(`${API}/production/unido/isic4/${requestedCountry}`);
+      if (isic4RequestCountry.current !== requestedCountry) return; // stale response, country changed since
+      setIsic4Data(response.data);
+      setIsic4Status('ready');
+    } catch (error) {
+      console.error('Error fetching ISIC 4-digit breakdown:', error);
+      if (isic4RequestCountry.current !== requestedCountry) return;
+      setIsic4Data(null);
+      setIsic4Status('error');
+    }
+  };
+
+  const toggleSectorIsic4 = (sectorIsic2) => {
+    if (expandedSector === sectorIsic2) {
+      setExpandedSector(null);
+      return;
+    }
+    setExpandedSector(sectorIsic2);
+    if (isic4Status === 'ready' || isic4Status === 'loading') return;
+    fetchIsic4Data();
+  };
+
+  const getIsic4ForSector = (sectorIsic2) => {
+    if (!isic4Data?.isic4_breakdown) return [];
+    return isic4Data.isic4_breakdown.filter((c) => c.isic2 === sectorIsic2);
   };
 
   const formatNumber = (num) => {
@@ -420,12 +460,22 @@ function ProductionManufacturing({ language = 'fr' }) {
               <CardContent className="pt-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {unidoData.top_sectors.map((sector, index) => (
-                    <div 
-                      key={sector.isic} 
-                      className="bg-gradient-to-br from-white to-blue-50 p-4 rounded-xl border border-blue-100 hover:shadow-md transition-shadow"
+                    <div
+                      key={sector.isic}
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={expandedSector === sector.isic}
+                      className="bg-gradient-to-br from-white to-blue-50 p-4 rounded-xl border border-blue-100 hover:shadow-md transition-shadow cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+                      onClick={() => toggleSectorIsic4(sector.isic)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          toggleSectorIsic4(sector.isic);
+                        }
+                      }}
                     >
                       <div className="flex items-start justify-between mb-3">
-                        <Badge 
+                        <Badge
                           className="text-xs"
                           style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length], color: 'white' }}
                         >
@@ -440,6 +490,49 @@ function ProductionManufacturing({ language = 'fr' }) {
                         <p className="text-2xl font-bold text-blue-600">
                           ${formatNumber(sector.value_mln_usd * 1000000)}
                         </p>
+                      )}
+                      <p className="text-xs text-blue-500 mt-2 underline">
+                        {expandedSector === sector.isic ? (language === 'fr' ? 'Masquer le détail ISIC 4 chiffres' : 'Hide ISIC 4-digit detail') : (language === 'fr' ? 'Voir le détail ISIC 4 chiffres' : 'View ISIC 4-digit detail')}
+                      </p>
+                      {expandedSector === sector.isic && (
+                        <div className="mt-3 pt-3 border-t border-blue-100 space-y-1.5" onClick={(e) => e.stopPropagation()}>
+                          {isic4Status === 'loading' && (
+                            <p className="text-xs text-gray-500">{language === 'fr' ? 'Chargement...' : 'Loading...'}</p>
+                          )}
+                          {isic4Status === 'error' && (
+                            <div className="text-xs text-red-600 flex items-center justify-between gap-2">
+                              <span>{language === 'fr' ? 'Erreur lors du chargement du détail.' : 'Failed to load detail.'}</span>
+                              <button
+                                type="button"
+                                className="underline hover:no-underline"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  fetchIsic4Data();
+                                }}
+                              >
+                                {language === 'fr' ? 'Réessayer' : 'Retry'}
+                              </button>
+                            </div>
+                          )}
+                          {isic4Status === 'ready' && getIsic4ForSector(sector.isic).map((cls) => (
+                            <div key={cls.isic4} className="flex items-center justify-between text-xs">
+                              <span className="text-gray-700">
+                                <span className="font-mono font-semibold text-blue-700">{cls.isic4}</span>{' '}
+                                {cls.class_name}
+                              </span>
+                              <span className="text-gray-500 whitespace-nowrap ml-2">
+                                {cls.share_mva_estimated}%
+                              </span>
+                            </div>
+                          ))}
+                          {isic4Status === 'ready' && (
+                            <p className="text-[10px] text-gray-400 italic pt-1">
+                              {language === 'fr'
+                                ? 'Estimation de structure ISIC 4 chiffres (UNSD ISIC Rev.4), secteurs principaux uniquement, répartition indicative de la division UNIDO INDSTAT4.'
+                                : 'ISIC 4-digit structure estimate (UNSD ISIC Rev.4), main sectors only, indicative split of the UNIDO INDSTAT4 division.'}
+                            </p>
+                          )}
+                        </div>
                       )}
                     </div>
                   ))}
