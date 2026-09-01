@@ -420,7 +420,16 @@ class AlgeriaConformeproScraper:
                     async with sem:
                         return await self.scrape_sub_position_detail(s)
 
-                details = await asyncio.gather(*(_fetch_one(s) for s in subs))
+                # Traité par lots bornés : le sémaphore borne déjà les
+                # requêtes réseau simultanées, mais créer une tâche par
+                # sous-position d'un coup peut être coûteux en mémoire pour
+                # les grandes rubriques. On limite aussi le nombre de tâches
+                # en vol en même temps.
+                details = []
+                batch_size = concurrency * 4
+                for j in range(0, len(subs), batch_size):
+                    batch = subs[j : j + batch_size]
+                    details.extend(await asyncio.gather(*(_fetch_one(s) for s in batch)))
             else:
                 details = [await self.scrape_sub_position_detail(s) for s in subs]
 
