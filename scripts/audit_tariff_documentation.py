@@ -41,14 +41,40 @@ DISCLAIMER_REPORT = (
 FORBIDDEN_CLAIMS = ("opposable à", "garanti", "certifie que", "fait foi pour", "valeur légale")
 # Intégrité verbatim : marqueurs interdits dans les statuts de données et chemins
 # (scan des champs énumératifs uniquement — pas des notes de négation)
-INTEGRITY_MARKERS = ("mock", "synthetic", "extrapol", "fabricat", "fake", "dummy", "estimated_value")
+INTEGRITY_MARKERS = (
+    "mock",
+    "synthetic",
+    "extrapol",
+    "fabricat",
+    "fake",
+    "dummy",
+    "estimated_value",
+)
 INTEGRITY_PATHS = ("quarantine", "synthetic", "mock")
-COUNTRY_NAMES = {"DZA": "Algérie", "MAR": "Maroc", "TUN": "Tunisie", "EGY": "Égypte", "ZAF": "Afrique du Sud", "KEN": "Kenya"}
+COUNTRY_NAMES = {
+    "DZA": "Algérie",
+    "MAR": "Maroc",
+    "TUN": "Tunisie",
+    "EGY": "Égypte",
+    "ZAF": "Afrique du Sud",
+    "KEN": "Kenya",
+}
 TAX_ALIASES = {
-    "dd": "DD", "d.d": "DD", "droit_de_douane": "DD", "droit de douane": "DD",
-    "duty": "DD", "customs_duty": "DD", "general": "DD", "dddroit": "DD",
-    "vat": "TVA", "tva": "TVA", "value added tax": "TVA",
-    "prct": "PRCT", "tcs": "TCS", "daps": "DAPS", "tic": "TIC",
+    "dd": "DD",
+    "d.d": "DD",
+    "droit_de_douane": "DD",
+    "droit de douane": "DD",
+    "duty": "DD",
+    "customs_duty": "DD",
+    "general": "DD",
+    "dddroit": "DD",
+    "vat": "TVA",
+    "tva": "TVA",
+    "value added tax": "TVA",
+    "prct": "PRCT",
+    "tcs": "TCS",
+    "daps": "DAPS",
+    "tic": "TIC",
 }
 NUMBER_RE = re.compile(r"[-+]?\d+(?:[.,]\d+)?")
 
@@ -67,7 +93,17 @@ def first(row: Dict[str, Any], keys: Sequence[str], default: Any = "") -> Any:
 def tax_name(value: Any) -> str:
     raw = str(value or "").strip()
     low = raw.lower()
-    if any(token in low for token in ("droit de douane", "droit d'importation", "customs duty", "cet import", "dddroit", "rntadroit")) or low.startswith("dd"):
+    if any(
+        token in low
+        for token in (
+            "droit de douane",
+            "droit d'importation",
+            "customs duty",
+            "cet import",
+            "dddroit",
+            "rntadroit",
+        )
+    ) or low.startswith("dd"):
         return "DD"
     if "value added tax" in low or low == "vat" or "tva" in low:
         return "TVA"
@@ -77,7 +113,13 @@ def tax_name(value: Any) -> str:
 def parse_rate(raw: Any, unit: Optional[str] = None) -> Dict[str, Any]:
     """Expose raw and parsed values; never overwrite the input rate."""
     if raw in (None, ""):
-        return {"normalized_rate_raw": None, "normalized_rate_numeric": None, "rate_type": "UNPARSED", "rate_unit": unit, "rate_parse_status": "MISSING"}
+        return {
+            "normalized_rate_raw": None,
+            "normalized_rate_numeric": None,
+            "rate_type": "UNPARSED",
+            "rate_unit": unit,
+            "rate_parse_status": "MISSING",
+        }
     text = str(raw).strip()
     match = NUMBER_RE.search(text.replace(" ", ""))
     numeric = None
@@ -92,7 +134,11 @@ def parse_rate(raw: Any, unit: Optional[str] = None) -> Dict[str, Any]:
     elif "exempt" in low or "exon" in low:
         rate_type = "EXEMPT"
     elif "%" in text:
-        rate_type = "MIXED" if any(token in low for token in ("+", " or ", "min", "max", "/")) else "AD_VALOREM"
+        rate_type = (
+            "MIXED"
+            if any(token in low for token in ("+", " or ", "min", "max", "/"))
+            else "AD_VALOREM"
+        )
     elif unit or any(token in low for token in ("/kg", "/t", "par kg", "per kg", "usd", "dzd")):
         rate_type = "SPECIFIC"
     elif any(token in low for token in ("+", " or ", "min", "max")):
@@ -104,7 +150,9 @@ def parse_rate(raw: Any, unit: Optional[str] = None) -> Dict[str, Any]:
         "normalized_rate_numeric": numeric,
         "rate_type": rate_type,
         "rate_unit": unit,
-        "rate_parse_status": "PARSED" if numeric is not None or rate_type in {"FREE", "EXEMPT"} else "UNPARSED",
+        "rate_parse_status": (
+            "PARSED" if numeric is not None or rate_type in {"FREE", "EXEMPT"} else "UNPARSED"
+        ),
     }
 
 
@@ -148,33 +196,89 @@ def taxes(row: Dict[str, Any]) -> Dict[str, Any]:
         return {tax_name(key): value for key, value in row["taxes"].items()}
     detail = row.get("taxes_detail", row.get("taxes_import", row.get("tax_structure")))
     if isinstance(row.get("taxes"), list):
-        return {tax_name(item.get("name") or item.get("code")): item for item in row["taxes"] if isinstance(item, dict)}
+        return {
+            tax_name(item.get("name") or item.get("code")): item
+            for item in row["taxes"]
+            if isinstance(item, dict)
+        }
     if isinstance(detail, list):
-        return {tax_name(item.get("tax") or item.get("code") or item.get("tax_name")): item for item in detail if isinstance(item, dict)}
+        return {
+            tax_name(item.get("tax") or item.get("code") or item.get("tax_name")): item
+            for item in detail
+            if isinstance(item, dict)
+        }
     if isinstance(detail, dict):
         return {tax_name(key): value for key, value in detail.items()}
-    return {tax_name(key.replace("_rate", "")): row[key] for key in (
-        "dd_rate", "duty_rate", "customs_duty", "vat_rate", "tva_rate", "prct_rate", "tcs_rate", "daps_rate"
-    ) if key in row}
+    return {
+        tax_name(key.replace("_rate", "")): row[key]
+        for key in (
+            "dd_rate",
+            "duty_rate",
+            "customs_duty",
+            "vat_rate",
+            "tva_rate",
+            "prct_rate",
+            "tcs_rate",
+            "daps_rate",
+        )
+        if key in row
+    }
 
 
 def tax_value(value: Any) -> Tuple[Any, Optional[str]]:
     if isinstance(value, dict):
-        return first(value, ("raw", "raw_value", "rate", "rate_pct", "value", "amount", "specific_value")), first(value, ("unit", "rate_unit"), None)
+        return first(
+            value, ("raw", "raw_value", "rate", "rate_pct", "value", "amount", "specific_value")
+        ), first(value, ("unit", "rate_unit"), None)
     return value, None
 
 
 def normalize(row: Dict[str, Any]) -> Dict[str, Any]:
-    code = clean_code(first(row, ("hs_code", "code", "code_clean", "national_code", "tariff_code", "Code_SH_10_chiffres", "Code_HS10")))
+    code = clean_code(
+        first(
+            row,
+            (
+                "hs_code",
+                "code",
+                "code_clean",
+                "national_code",
+                "tariff_code",
+                "Code_SH_10_chiffres",
+                "Code_HS10",
+            ),
+        )
+    )
     hs6 = clean_code(first(row, ("hs6", "HS6", "HS6_code"))) or code[:6]
-    description = str(first(row, ("description", "description_fr", "Designation_complete", "Designation_Exacte", "designation", "name", "description_en"), "") or "").strip()
+    description = str(
+        first(
+            row,
+            (
+                "description",
+                "description_fr",
+                "Designation_complete",
+                "Designation_Exacte",
+                "designation",
+                "name",
+                "description_en",
+            ),
+            "",
+        )
+        or ""
+    ).strip()
     chapter = clean_code(first(row, ("chapter", "Chapitre", "chapter_code")))
     unit = first(row, ("unit", "statistical_unit", "rate_unit", "unite"), None)
     parsed = {}
     for key, value in taxes(row).items():
         raw, rate_unit = tax_value(value)
         parsed[key] = {"tax": key, **parse_rate(raw, rate_unit)}
-    return {"national_code": code, "hs6": hs6, "chapter": chapter, "description": description, "taxes": parsed, "raw_row": row}
+    return {
+        "national_code": code,
+        "hs6": hs6,
+        "chapter": chapter,
+        "description": description,
+        "taxes": parsed,
+        "raw_row": row,
+    }
 
 
 def file_hash(path: Path) -> str:
@@ -204,15 +308,35 @@ def resolve_artifacts(root: Path, country: str) -> Dict[str, Optional[Path]]:
 
 
 SAMPLE_RULES = [
-    ("agriculture", {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15"}, r"animal|semence|cereal|agric|viande|poisson|legume|fruit"),
-    ("alimentation", {"16", "17", "18", "19", "20", "21", "22", "23", "24"}, r"aliment|sucre|cacao|chocolat|boisson|tabac|preparation"),
+    (
+        "agriculture",
+        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15"},
+        r"animal|semence|cereal|agric|viande|poisson|legume|fruit",
+    ),
+    (
+        "alimentation",
+        {"16", "17", "18", "19", "20", "21", "22", "23", "24"},
+        r"aliment|sucre|cacao|chocolat|boisson|tabac|preparation",
+    ),
     ("médicament", {"30"}, r"medicament|pharm|serum|vaccin|therapeut"),
-    ("textile", {"50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63"}, r"textile|coton|fibre|fil|tissu|vetement"),
+    (
+        "textile",
+        {"50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60", "61", "62", "63"},
+        r"textile|coton|fibre|fil|tissu|vetement",
+    ),
     ("machine", {"84"}, r"machine|moteur|pompe|mecanique|chaudiere"),
     ("électronique", {"85"}, r"electron|electri|circuit|telephone|ordinateur"),
     ("véhicule", {"87"}, r"vehicule|voiture|tracteur|automobile|motocycle"),
-    ("produit chimique", {"28", "29", "31", "32", "33", "34", "35", "36", "37", "38"}, r"chim|acide|engrais|peinture|cosmet|savon"),
-    ("matière première", {"25", "26", "27", "44", "45", "47"}, r"minerai|petrole|bois|matiere|caoutchouc|pierre"),
+    (
+        "produit chimique",
+        {"28", "29", "31", "32", "33", "34", "35", "36", "37", "38"},
+        r"chim|acide|engrais|peinture|cosmet|savon",
+    ),
+    (
+        "matière première",
+        {"25", "26", "27", "44", "45", "47"},
+        r"minerai|petrole|bois|matiere|caoutchouc|pierre",
+    ),
     ("produit exonéré ou à taux nul", {"98"}, r"exoner|exempt|gratuit|free|0\s*%"),
 ]
 
@@ -233,22 +357,25 @@ def samples(rows: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
                     choice = (index, row)
                     break
         if choice is None:
-            choice = next(((index, row) for index, row in enumerate(rows) if index not in used), None)
+            choice = next(
+                ((index, row) for index, row in enumerate(rows) if index not in used), None
+            )
         if choice is None:
             continue
         index, row = choice
         used.add(index)
-        selected.append({
-            "category": category,
-            "national_code": row["national_code"],
-            "hs6": row["hs6"],
-            "description": row["description"],
-            "taxes": row["taxes"],
-            "source_comparison": "NOT_AVAILABLE",
-            "comparison_note": "Aucune archive officielle locale retrouvée.",
-        })
+        selected.append(
+            {
+                "category": category,
+                "national_code": row["national_code"],
+                "hs6": row["hs6"],
+                "description": row["description"],
+                "taxes": row["taxes"],
+                "source_comparison": "NOT_AVAILABLE",
+                "comparison_note": "Aucune archive officielle locale retrouvée.",
+            }
+        )
     return selected
-
 
 
 def rate_signature(row: Optional[Dict[str, Any]]) -> Dict[str, Any]:
@@ -289,7 +416,9 @@ def compact_side(row: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     }
 
 
-def reconcile_rows(canonical_rows: List[Dict[str, Any]], crawled_rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+def reconcile_rows(
+    canonical_rows: List[Dict[str, Any]], crawled_rows: List[Dict[str, Any]]
+) -> Dict[str, Any]:
     """Compare two flattened datasets without selecting a preferred side."""
     canonical = {row["national_code"]: row for row in canonical_rows if row.get("national_code")}
     crawled = {row["national_code"]: row for row in crawled_rows if row.get("national_code")}
@@ -312,7 +441,9 @@ def reconcile_rows(canonical_rows: List[Dict[str, Any]], crawled_rows: List[Dict
             flags.setdefault(code, set()).add("MISSING_RATE_CRAWLED")
         if rate_signature(c) != rate_signature(r):
             flags.setdefault(code, set()).add("RATE_DIFFERENCE")
-        if re.sub(r"\s+", " ", c.get("description", "").strip().lower()) != re.sub(r"\s+", " ", r.get("description", "").strip().lower()):
+        if re.sub(r"\s+", " ", c.get("description", "").strip().lower()) != re.sub(
+            r"\s+", " ", r.get("description", "").strip().lower()
+        ):
             flags.setdefault(code, set()).add("DESCRIPTION_DIFFERENCE")
         if not flags.get(code):
             flags[code] = {"IDENTICAL"}
@@ -328,7 +459,9 @@ def reconcile_rows(canonical_rows: List[Dict[str, Any]], crawled_rows: List[Dict
             if rcode in used_r or ccode in used_c:
                 continue
             r = crawled[rcode]
-            same_desc = re.sub(r"\s+", " ", c.get("description", "").strip().lower()) == re.sub(r"\s+", " ", r.get("description", "").strip().lower())
+            same_desc = re.sub(r"\s+", " ", c.get("description", "").strip().lower()) == re.sub(
+                r"\s+", " ", r.get("description", "").strip().lower()
+            )
             if c.get("hs6") and c.get("hs6") == r.get("hs6") and same_desc:
                 flags[ccode].discard("ONLY_CANONICAL")
                 flags[rcode].discard("ONLY_CRAWLED")
@@ -341,9 +474,14 @@ def reconcile_rows(canonical_rows: List[Dict[str, Any]], crawled_rows: List[Dict
                 break
 
     categories = [
-        "IDENTICAL", "ONLY_CANONICAL", "ONLY_CRAWLED", "RATE_DIFFERENCE",
-        "DESCRIPTION_DIFFERENCE", "NATIONAL_CODE_DIFFERENCE",
-        "MISSING_RATE_CANONICAL", "MISSING_RATE_CRAWLED",
+        "IDENTICAL",
+        "ONLY_CANONICAL",
+        "ONLY_CRAWLED",
+        "RATE_DIFFERENCE",
+        "DESCRIPTION_DIFFERENCE",
+        "NATIONAL_CODE_DIFFERENCE",
+        "MISSING_RATE_CANONICAL",
+        "MISSING_RATE_CRAWLED",
     ]
     output: Dict[str, Any] = {
         "canonical_line_count": len(canonical_rows),
@@ -365,11 +503,13 @@ def reconcile_rows(canonical_rows: List[Dict[str, Any]], crawled_rows: List[Dict
                 display_code = f"{c.get('national_code')} => {r.get('national_code')}"
             codes.append(display_code)
             if len(examples) < 20:
-                examples.append({
-                    "code": display_code,
-                    "canonical": compact_side(c),
-                    "crawled": compact_side(r),
-                })
+                examples.append(
+                    {
+                        "code": display_code,
+                        "canonical": compact_side(c),
+                        "crawled": compact_side(r),
+                    }
+                )
         output["categories"][category] = {"count": len(codes), "codes": codes, "examples": examples}
     return output
 
@@ -381,9 +521,16 @@ def analyze_missing_dd(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
             continue
         raw = row.get("raw_row", {})
         text = json.dumps(raw, ensure_ascii=False).lower()
-        nested = raw.get("taxes_detail") or raw.get("taxes_import") or raw.get("sub_positions") or raw.get("dd_rate")
+        nested = (
+            raw.get("taxes_detail")
+            or raw.get("taxes_import")
+            or raw.get("sub_positions")
+            or raw.get("dd_rate")
+        )
         nested_text = json.dumps(nested, ensure_ascii=False).lower()
-        if re.search(r"droit.?de.?douane|customs.?duty|\bdd\b|dddroit", nested_text) and re.search(r"\d", nested_text):
+        if re.search(r"droit.?de.?douane|customs.?duty|\bdd\b|dddroit", nested_text) and re.search(
+            r"\d", nested_text
+        ):
             cause = "RATE_STORED_ELSEWHERE"
         elif re.search(r"\bfree\b|gratuit|zero|صفر|\b0\s*%", text):
             cause = "EXPLICIT_FREE"
@@ -395,29 +542,42 @@ def analyze_missing_dd(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
             cause = "DESCRIPTIVE_LINE"
         else:
             cause = "TRUE_MISSING"
-        records.append({
-            "national_code": row.get("national_code"),
-            "hs6": row.get("hs6"),
-            "description": row.get("description", "")[:300],
-            "cause": cause,
-            "evidence": {
-                "free_or_zero_found": bool(re.search(r"\bfree\b|gratuit|zero|صفر|\b0\s*%", text)),
-                "exempt_found": bool(re.search(r"exon|exempt", text)),
-                "suspended_found": bool(re.search(r"suspend", text)),
-                "other_dd_field_found": bool(re.search(r"droit.?de.?douane|customs.?duty|\bdd\b|dddroit", nested_text)),
-            },
-        })
+        records.append(
+            {
+                "national_code": row.get("national_code"),
+                "hs6": row.get("hs6"),
+                "description": row.get("description", "")[:300],
+                "cause": cause,
+                "evidence": {
+                    "free_or_zero_found": bool(
+                        re.search(r"\bfree\b|gratuit|zero|صفر|\b0\s*%", text)
+                    ),
+                    "exempt_found": bool(re.search(r"exon|exempt", text)),
+                    "suspended_found": bool(re.search(r"suspend", text)),
+                    "other_dd_field_found": bool(
+                        re.search(r"droit.?de.?douane|customs.?duty|\bdd\b|dddroit", nested_text)
+                    ),
+                },
+            }
+        )
     counts = Counter(item["cause"] for item in records)
     return {
         "total_missing_dd": len(records),
         "counts_by_cause": dict(sorted(counts.items())),
         "records": records,
-        "examples": {cause: [item for item in records if item["cause"] == cause][:20] for cause in sorted(counts)},
+        "examples": {
+            cause: [item for item in records if item["cause"] == cause][:20]
+            for cause in sorted(counts)
+        },
         "note": "Les causes sont documentaires; aucune cause n'est convertie en taux numérique.",
     }
 
 
-def availability(effective_rows: List[Dict[str, Any]], canonical_rows: List[Dict[str, Any]], reconciliation: Optional[Dict[str, Any]]) -> Dict[str, int]:
+def availability(
+    effective_rows: List[Dict[str, Any]],
+    canonical_rows: List[Dict[str, Any]],
+    reconciliation: Optional[Dict[str, Any]],
+) -> Dict[str, int]:
     canonical = {row["national_code"]: row for row in canonical_rows if row.get("national_code")}
     effective = [row for row in effective_rows if row.get("national_code")]
     flagged = {}
@@ -430,7 +590,13 @@ def availability(effective_rows: List[Dict[str, Any]], canonical_rows: List[Dict
         code = row["national_code"]
         canonical_row = canonical.get(code)
         categories = flagged.get(code, set())
-        if canonical_row and categories & {"RATE_DIFFERENCE", "DESCRIPTION_DIFFERENCE", "NATIONAL_CODE_DIFFERENCE", "MISSING_RATE_CANONICAL", "MISSING_RATE_CRAWLED"}:
+        if canonical_row and categories & {
+            "RATE_DIFFERENCE",
+            "DESCRIPTION_DIFFERENCE",
+            "NATIONAL_CODE_DIFFERENCE",
+            "MISSING_RATE_CANONICAL",
+            "MISSING_RATE_CRAWLED",
+        }:
             review += 1
         elif dd_is_numeric(row):
             simulatable += 1
@@ -443,6 +609,7 @@ def availability(effective_rows: List[Dict[str, Any]], canonical_rows: List[Dict
         "positions_review_required": review,
     }
 
+
 def audit(root: Path, country: str) -> Dict[str, Any]:
     country = country.upper()
     artifacts = resolve_artifacts(root, country)
@@ -451,10 +618,18 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         raise FileNotFoundError(f"Aucun fichier tarifaire local trouvé pour {country}")
     effective_meta, raw_rows = load_rows(effective)
     rows = [normalize(row) for row in raw_rows]
-    primary_meta, primary_raw_rows = load_rows(primary) if primary and primary != effective else (effective_meta, raw_rows)
-    primary_parent_rows = primary_meta.get("tariff_lines", []) if isinstance(primary_meta.get("tariff_lines"), list) else []
+    primary_meta, primary_raw_rows = (
+        load_rows(primary) if primary and primary != effective else (effective_meta, raw_rows)
+    )
+    primary_parent_rows = (
+        primary_meta.get("tariff_lines", [])
+        if isinstance(primary_meta.get("tariff_lines"), list)
+        else []
+    )
     canonical_rows = [normalize(row) for row in primary_raw_rows]
-    reconciliation_result = reconcile_rows(canonical_rows, rows) if primary and primary != effective else None
+    reconciliation_result = (
+        reconcile_rows(canonical_rows, rows) if primary and primary != effective else None
+    )
     missing_dd_result = analyze_missing_dd(rows)
     availability_result = availability(rows, canonical_rows, reconciliation_result)
 
@@ -465,42 +640,83 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
     invalid = [code for code in codes if not re.fullmatch(r"\d{6,12}", code or "")]
     hs6_missing = sum(not re.fullmatch(r"\d{6}", row["hs6"] or "") for row in rows)
     descriptions_missing = sum(not row["description"] for row in rows)
-    rates_missing = sum("DD" not in row["taxes"] or row["taxes"]["DD"]["rate_parse_status"] == "MISSING" for row in rows)
-    rates_unparsed = sum(any(rate["rate_parse_status"] == "UNPARSED" for rate in row["taxes"].values()) for row in rows)
-    chapter_mismatch = [row["national_code"] for row in rows if row["chapter"] and row["hs6"] and row["chapter"].zfill(2) != row["hs6"][:2]]
+    rates_missing = sum(
+        "DD" not in row["taxes"] or row["taxes"]["DD"]["rate_parse_status"] == "MISSING"
+        for row in rows
+    )
+    rates_unparsed = sum(
+        any(rate["rate_parse_status"] == "UNPARSED" for rate in row["taxes"].values())
+        for row in rows
+    )
+    chapter_mismatch = [
+        row["national_code"]
+        for row in rows
+        if row["chapter"] and row["hs6"] and row["chapter"].zfill(2) != row["hs6"][:2]
+    ]
     tax_types = Counter()
     specific, no_unit = [], []
     for row in rows:
         tax_types.update(row["taxes"].keys())
         for rate in row["taxes"].values():
             if rate["rate_type"] in {"SPECIFIC", "COMPOUND", "MIXED"}:
-                specific.append({"code": row["national_code"], "tax": rate["tax"], "rate_type": rate["rate_type"]})
+                specific.append(
+                    {
+                        "code": row["national_code"],
+                        "tax": rate["tax"],
+                        "rate_type": rate["rate_type"],
+                    }
+                )
                 raw_rate = str(rate.get("normalized_rate_raw") or "").lower()
-                has_embedded_unit = bool(re.search(r"/\s*(kg|t|l|unit|piece|\S+)|\b(kg|tonne|dinars?|dzd|zar|usd)\b|\d+u\b", raw_rate))
+                has_embedded_unit = bool(
+                    re.search(
+                        r"/\s*(kg|t|l|unit|piece|\S+)|\b(kg|tonne|dinars?|dzd|zar|usd)\b|\d+u\b",
+                        raw_rate,
+                    )
+                )
                 if not rate.get("rate_unit") and not has_embedded_unit:
                     no_unit.append({"code": row["national_code"], "tax": rate["tax"]})
 
     extracted_at = effective_meta.get("extracted_at") or effective_meta.get("generated_at")
-    row_sources = Counter(str(row["raw_row"].get("source") or "") for row in rows if row["raw_row"].get("source"))
-    row_urls = Counter(str(row["raw_row"].get("source_url") or "") for row in rows if row["raw_row"].get("source_url"))
+    row_sources = Counter(
+        str(row["raw_row"].get("source") or "") for row in rows if row["raw_row"].get("source")
+    )
+    row_urls = Counter(
+        str(row["raw_row"].get("source_url") or "")
+        for row in rows
+        if row["raw_row"].get("source_url")
+    )
     source_name = effective_meta.get("source") or primary_meta.get("summary", {}).get("source_name")
     row_source_url = next(iter(row_urls), None)
-    source_url = effective_meta.get("source_url") or row_source_url or primary_meta.get("summary", {}).get("source_url")
+    source_url = (
+        effective_meta.get("source_url")
+        or row_source_url
+        or primary_meta.get("summary", {}).get("source_url")
+    )
     archive_candidates = [
-        path for base in (root / "data" / "archive", root / "backend" / "data" / "raw")
-        if base.exists() for path in base.rglob("*")
-        if path.is_file() and country.lower() in path.name.lower() and "official" in path.name.lower()
+        path
+        for base in (root / "data" / "archive", root / "backend" / "data" / "raw")
+        if base.exists()
+        for path in base.rglob("*")
+        if path.is_file()
+        and country.lower() in path.name.lower()
+        and "official" in path.name.lower()
     ]
     # Archives officielles conventionnées : data/sources/<ISO>/**/_manifest.json
     # (documents officiels archivés avec SHA-256 — méthode DZA)
-    manifests = sorted((root / "data" / "sources" / country).rglob("_manifest.json")) if (root / "data" / "sources" / country).exists() else []
+    manifests = (
+        sorted((root / "data" / "sources" / country).rglob("_manifest.json"))
+        if (root / "data" / "sources" / country).exists()
+        else []
+    )
     manifest_docs = 0
     for m in manifests:
         try:
             manifest_docs += len(json.loads(m.read_text(encoding="utf-8")).get("documents", []))
         except Exception:
             pass
-    archive_available = any(path.exists() for path in archive_candidates) or bool(manifests and manifest_docs)
+    archive_available = any(path.exists() for path in archive_candidates) or bool(
+        manifests and manifest_docs
+    )
     source_status = "DOCUMENTED" if archive_available else "UNVERIFIED"
     # Comparaison source : data/sources/<ISO>/source_comparison.json (produit par
     # les scripts de consolidation ; les statuts codés en dur sont retirés)
@@ -519,27 +735,57 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         "temporal_validity": temporal_status,
         "classification": classification_status,
         "taxes_and_levies": taxes_status,
-        "preference_and_origin": "PARTIAL" if any(row["raw_row"].get("advantages") or row["raw_row"].get("fiscal_advantages") or row["raw_row"].get("preferences") for row in rows) else "NOT_AVAILABLE",
-        "formalities": "PARTIAL" if any(row["raw_row"].get("formalities") or row["raw_row"].get("administrative_formalities") or row["raw_row"].get("reglementation_import") for row in rows) else "NOT_AVAILABLE",
+        "preference_and_origin": (
+            "PARTIAL"
+            if any(
+                row["raw_row"].get("advantages")
+                or row["raw_row"].get("fiscal_advantages")
+                or row["raw_row"].get("preferences")
+                for row in rows
+            )
+            else "NOT_AVAILABLE"
+        ),
+        "formalities": (
+            "PARTIAL"
+            if any(
+                row["raw_row"].get("formalities")
+                or row["raw_row"].get("administrative_formalities")
+                or row["raw_row"].get("reglementation_import")
+                for row in rows
+            )
+            else "NOT_AVAILABLE"
+        ),
         "informative_framing": None,  # calculé après génération du rapport (voir plus bas)
     }
 
     # --- Intégrité verbatim : pas de mock, pas de synthèse, pas d'extrapolation ---
     path_clean = not any(m in str(effective).lower() for m in INTEGRITY_PATHS)
     flagged_rows = [
-        row["national_code"] for row in rows
-        if any(m in str(row["raw_row"].get(field) or "").lower()
-               for field in ("data_status", "source_quality", "provenance")
-               for m in INTEGRITY_MARKERS)
+        row["national_code"]
+        for row in rows
+        if any(
+            m in str(row["raw_row"].get(field) or "").lower()
+            for field in ("data_status", "source_quality", "provenance")
+            for m in INTEGRITY_MARKERS
+        )
     ]
-    meta_free_text = " ".join(str(effective_meta.get(k) or "") for k in ("policy", "note", "method")).lower()
-    meta_free_text += " " + json.dumps(effective_meta.get("consolidation") or {}, ensure_ascii=False).lower()
-    policy_declared = any(sig in meta_free_text for sig in ("verbatim", "aucun taux", "sans arbitrage", "aucune estimation"))
+    meta_free_text = " ".join(
+        str(effective_meta.get(k) or "") for k in ("policy", "note", "method")
+    ).lower()
+    meta_free_text += (
+        " " + json.dumps(effective_meta.get("consolidation") or {}, ensure_ascii=False).lower()
+    )
+    policy_declared = any(
+        sig in meta_free_text
+        for sig in ("verbatim", "aucun taux", "sans arbitrage", "aucune estimation")
+    )
     integrity = {
         "effective_path_clean": path_clean,
         "quarantined_or_suspicious_paths": sorted(
-            str(p) for p in (root / "backend" / "data" / "crawled").rglob("*.json")
-            if any(m in str(p).lower() for m in INTEGRITY_PATHS) and country.lower() in p.name.lower()
+            str(p)
+            for p in (root / "backend" / "data" / "crawled").rglob("*.json")
+            if any(m in str(p).lower() for m in INTEGRITY_PATHS)
+            and country.lower() in p.name.lower()
         ),
         "rows_with_forbidden_markers": len(flagged_rows),
         "rows_with_forbidden_markers_examples": flagged_rows[:20],
@@ -548,8 +794,20 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
     }
     integrity_ok = path_clean and not flagged_rows and policy_declared
     dimensions["verbatim_integrity"] = "DOCUMENTED" if integrity_ok else "PARTIAL"
-    overall = "INFORMATIVE_COMPLETE" if all(value in {"DOCUMENTED", "NOT_APPLICABLE"} for value in dimensions.values()) else "INFORMATIVE_PARTIAL"
-    version = next((str(meta[key]) for meta in (effective_meta, primary_meta) for key in ("hs_version", "nomenclature", "hs_level") if meta.get(key)), None)
+    overall = (
+        "INFORMATIVE_COMPLETE"
+        if all(value in {"DOCUMENTED", "NOT_APPLICABLE"} for value in dimensions.values())
+        else "INFORMATIVE_PARTIAL"
+    )
+    version = next(
+        (
+            str(meta[key])
+            for meta in (effective_meta, primary_meta)
+            for key in ("hs_version", "nomenclature", "hs_level")
+            if meta.get(key)
+        ),
+        None,
+    )
     rel = lambda path: str(path.relative_to(root)) if path else None
     code_version_declaration = "HS2022" if country == "DZA" else None
     related_candidates = [
@@ -557,7 +815,11 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         root / "backend" / "data" / "tariffs" / f"{country}_tariffs.json",
         root / "backend" / "data" / "crawled" / f"{country}_tariffs_enriched.json",
         root / "data" / "archive" / "csv" / "TARIF-DZA_CRAWLED_VALIDATION  AUTHENTIQUE .csv",
-        root / "docs" / "archive" / "attached_assets" / "TARIF-DZA_CRAWLED_VALIDATION_AUTHENTIQUE__1778803280738.csv",
+        root
+        / "docs"
+        / "archive"
+        / "attached_assets"
+        / "TARIF-DZA_CRAWLED_VALIDATION_AUTHENTIQUE__1778803280738.csv",
     ]
     related_files = []
     for related in related_candidates:
@@ -570,13 +832,17 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
             elif related.name.endswith("DZA_tariffs_enriched.json"):
                 role = "calculator_fallback_artifact"
             related_files.append({"path": rel(related), "role": role, "sha256": file_hash(related)})
-    pipeline_scripts = [
-        "backend/scripts/build_dza_tariffs_complete.py",
-        "backend/scripts/enrich_dza_fast_json.py",
-        "backend/etl/dza_tariff_connector.py",
-        "engine/converters/dza_converter.py",
-        "engine/adapters/dza_conformepro_adapter.py",
-    ] if country == "DZA" else []
+    pipeline_scripts = (
+        [
+            "backend/scripts/build_dza_tariffs_complete.py",
+            "backend/scripts/enrich_dza_fast_json.py",
+            "backend/etl/dza_tariff_connector.py",
+            "engine/converters/dza_converter.py",
+            "engine/adapters/dza_conformepro_adapter.py",
+        ]
+        if country == "DZA"
+        else []
+    )
     result = {
         "country_iso3": country,
         "country_name": COUNTRY_NAMES.get(country, country),
@@ -601,28 +867,49 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         },
         "source": {
             "source_authority": source_name,
-            "source_title": "Tarif national intégré — données de crawl conformepro.dz" if country == "DZA" else source_name,
+            "source_title": (
+                "Tarif national intégré — données de crawl conformepro.dz"
+                if country == "DZA"
+                else source_name
+            ),
             "source_url": source_url or ("https://conformepro.dz/" if country == "DZA" else None),
-            "source_root_url": "https://conformepro.dz/resources/tarif-douanier" if country == "DZA" else None,
+            "source_root_url": (
+                "https://conformepro.dz/resources/tarif-douanier" if country == "DZA" else None
+            ),
             "official_authority_url": "https://www.douane.gov.dz" if country == "DZA" else None,
             "publication_date": None,
             "effective_from": None,
             "effective_to": None,
             "hs_version": version,
             "hs_version_declared_in_code": code_version_declaration,
-            "hs_version_status": "UNVERIFIED" if code_version_declaration and not version else ("DOCUMENTED" if version else "NOT_AVAILABLE"),
+            "hs_version_status": (
+                "UNVERIFIED"
+                if code_version_declaration and not version
+                else ("DOCUMENTED" if version else "NOT_AVAILABLE")
+            ),
             "date_consulted": date.today().isoformat(),
             "extracted_at": extracted_at,
             "source_hash_sha256": file_hash(effective),
             "archive_official_available": archive_available,
             "official_archive_candidates": [rel(path) for path in archive_candidates],
-            "official_archives_manifests": [rel(m) for m in manifests] + ([f"{manifest_docs} documents SHA-256"] if manifest_docs else []),
+            "official_archives_manifests": [rel(m) for m in manifests]
+            + ([f"{manifest_docs} documents SHA-256"] if manifest_docs else []),
             "status": source_status,
             "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés.",
         },
         "position_availability": availability_result,
         "missing_dd_analysis": missing_dd_result,
-        "reconciliation_summary": ({"category_counts": {key: value["count"] for key, value in reconciliation_result["categories"].items()}, "runtime_preference_confirmed": True} if reconciliation_result else None),
+        "reconciliation_summary": (
+            {
+                "category_counts": {
+                    key: value["count"]
+                    for key, value in reconciliation_result["categories"].items()
+                },
+                "runtime_preference_confirmed": True,
+            }
+            if reconciliation_result
+            else None
+        ),
         "declared_metadata_not_used_for_status": {
             "effective_source_quality_present": bool(effective_meta.get("source_quality")),
             "primary_data_status_present": bool(primary_meta.get("summary", {}).get("data_status")),
@@ -634,7 +921,11 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
             "unique_national_codes": len({code for code in codes if code}),
             "unique_hs6": len({row["hs6"] for row in rows if row["hs6"]}),
             "parent_lines_in_primary_file": len(primary_parent_rows) or len(primary_raw_rows),
-            "national_sub_positions_in_primary_file": sum(len(raw.get("sub_positions", [])) for raw in primary_parent_rows if isinstance(raw, dict)),
+            "national_sub_positions_in_primary_file": sum(
+                len(raw.get("sub_positions", []))
+                for raw in primary_parent_rows
+                if isinstance(raw, dict)
+            ),
             "chapters_present": len({row["chapter"] for row in rows if row["chapter"]}),
             "code_lengths": {str(length): count for length, count in sorted(lengths.items())},
         },
@@ -654,13 +945,26 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
             "taxes_without_unit_examples": no_unit[:20],
             "chapter_hs6_inconsistency_count": len(chapter_mismatch),
             "chapter_hs6_inconsistency_examples": chapter_mismatch[:20],
-            "dates_missing": len(rows) if not any(row["raw_row"].get(key) for row in rows for key in ("effective_from", "effective_to", "publication_date", "date")) else None,
+            "dates_missing": (
+                len(rows)
+                if not any(
+                    row["raw_row"].get(key)
+                    for row in rows
+                    for key in ("effective_from", "effective_to", "publication_date", "date")
+                )
+                else None
+            ),
             "tax_types": dict(sorted(tax_types.items())),
             "row_sources": dict(row_sources.most_common(10)),
             "row_source_urls_count": len(row_urls),
         },
         "sample_rows": samples(rows),
-        "source_comparison": source_comparison or {"status": "NOT_AVAILABLE", "official_lines_compared": 0, "note": "Aucune comparaison à une publication officielle disponible; échantillon non comparé. Toute comparaison documentaire ne confère pas d'opposabilité."},
+        "source_comparison": source_comparison
+        or {
+            "status": "NOT_AVAILABLE",
+            "official_lines_compared": 0,
+            "note": "Aucune comparaison à une publication officielle disponible; échantillon non comparé. Toute comparaison documentaire ne confère pas d'opposabilité.",
+        },
         "legal_framing": dict(LEGAL_FRAMING),
         "verbatim_integrity": integrity,
         "quality_dimensions": dimensions,
@@ -668,8 +972,17 @@ def audit(root: Path, country: str) -> Dict[str, Any]:
         "known_data_gaps": [
             "Archive officielle tarifaire non retrouvée localement.",
             "Date de publication et date d'effet documentées absentes.",
-            "Version SH explicite absente des métadonnées JSON consommées." if not version else "Date d'effet juridiquement documentée absente.",
-        ] + (["Écart entre les lignes canoniques et crawled; les divergences restent en revue."] if reconciliation_result else []),
+            (
+                "Version SH explicite absente des métadonnées JSON consommées."
+                if not version
+                else "Date d'effet juridiquement documentée absente."
+            ),
+        ]
+        + (
+            ["Écart entre les lignes canoniques et crawled; les divergences restent en revue."]
+            if reconciliation_result
+            else []
+        ),
         "actions_required": [
             "Archiver le document tarifaire de l'autorité déclarée sans remplacer le fichier actuel.",
             "Comparer un échantillon de lignes et conserver les empreintes des documents.",
@@ -738,7 +1051,9 @@ def report(result: Dict[str, Any]) -> str:
         "|---|---:|---:|---|---|",
     ]
     for item in result["sample_rows"]:
-        lines.append(f"| {item['category']} | {item['national_code']} | {item['hs6']} | {item['description'].replace('|', '/')} | {item['source_comparison']} |")
+        lines.append(
+            f"| {item['category']} | {item['national_code']} | {item['hs6']} | {item['description'].replace('|', '/')} | {item['source_comparison']} |"
+        )
     lines += [
         "",
         "Aucune ligne n'a pu être comparée à une archive officielle locale; aucun écart de taux n'est affirmé.",
@@ -767,28 +1082,31 @@ def report(result: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-
 def write_reconciliation(root: Path, output_path: Optional[Path] = None) -> Dict[str, Any]:
     artifacts = resolve_artifacts(root, "DZA")
     if not artifacts["primary"] or not artifacts["effective"]:
         raise FileNotFoundError("Fichiers DZA canonique/crawled introuvables")
     _, canonical_raw = load_rows(artifacts["primary"])
     _, crawled_raw = load_rows(artifacts["effective"])
-    result = reconcile_rows([normalize(row) for row in canonical_raw], [normalize(row) for row in crawled_raw])
-    result.update({
-        "country_iso3": "DZA",
-        "canonical_file": str(artifacts["primary"].relative_to(root)),
-        "crawled_file": str(artifacts["effective"].relative_to(root)),
-        "canonical_sha256": file_hash(artifacts["primary"]),
-        "crawled_sha256": file_hash(artifacts["effective"]),
-        "runtime_prefers_crawled": True,
-        "runtime_evidence": [
-            "backend/services/authentic_tariff_service.py::load_crawled_position_index",
-            "backend/services/authentic_tariff_service.py::calculate_import_taxes",
-            "backend/services/tariff_provider_service.py::get_tariff_line",
-        ],
-        "consultation_date": date.today().isoformat(),
-    })
+    result = reconcile_rows(
+        [normalize(row) for row in canonical_raw], [normalize(row) for row in crawled_raw]
+    )
+    result.update(
+        {
+            "country_iso3": "DZA",
+            "canonical_file": str(artifacts["primary"].relative_to(root)),
+            "crawled_file": str(artifacts["effective"].relative_to(root)),
+            "canonical_sha256": file_hash(artifacts["primary"]),
+            "crawled_sha256": file_hash(artifacts["effective"]),
+            "runtime_prefers_crawled": True,
+            "runtime_evidence": [
+                "backend/services/authentic_tariff_service.py::load_crawled_position_index",
+                "backend/services/authentic_tariff_service.py::calculate_import_taxes",
+                "backend/services/tariff_provider_service.py::get_tariff_line",
+            ],
+            "consultation_date": date.today().isoformat(),
+        }
+    )
     output = output_path or root / "data" / "coverage" / "DZA_tariff_reconciliation.json"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -806,23 +1124,31 @@ def write_wave_a(root: Path) -> Dict[str, Any]:
         report_path.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         report_path.write_text(report(result), encoding="utf-8")
-        rows.append({
-            "country_iso3": country,
-            "file_used": result["runtime_artifacts"]["effective_national_file"],
-            "total_lines": result["position_availability"]["total_positions"],
-            "hs6_covered": result["coverage"]["unique_hs6"],
-            "rates_present": result["controls"]["total_rows_audited"] - result["controls"]["missing_rates"],
-            "rates_missing": result["controls"]["missing_rates"],
-            "hs_version": result["source"]["hs_version"] or result["source"]["hs_version_declared_in_code"],
-            "effective_date": result["source"]["effective_from"],
-            "official_archive_available": result["source"]["archive_official_available"],
-            "declared_source": result["source"]["source_authority"],
-            "informative_status": result["overall_informative_status"],
-            "positions_simulatable": result["position_availability"]["positions_simulatable"],
-            "positions_calculation_unavailable": result["position_availability"]["positions_calculation_unavailable"],
-            "positions_review_required": result["position_availability"]["positions_review_required"],
-            "conflicts": result["position_availability"]["positions_review_required"],
-        })
+        rows.append(
+            {
+                "country_iso3": country,
+                "file_used": result["runtime_artifacts"]["effective_national_file"],
+                "total_lines": result["position_availability"]["total_positions"],
+                "hs6_covered": result["coverage"]["unique_hs6"],
+                "rates_present": result["controls"]["total_rows_audited"]
+                - result["controls"]["missing_rates"],
+                "rates_missing": result["controls"]["missing_rates"],
+                "hs_version": result["source"]["hs_version"]
+                or result["source"]["hs_version_declared_in_code"],
+                "effective_date": result["source"]["effective_from"],
+                "official_archive_available": result["source"]["archive_official_available"],
+                "declared_source": result["source"]["source_authority"],
+                "informative_status": result["overall_informative_status"],
+                "positions_simulatable": result["position_availability"]["positions_simulatable"],
+                "positions_calculation_unavailable": result["position_availability"][
+                    "positions_calculation_unavailable"
+                ],
+                "positions_review_required": result["position_availability"][
+                    "positions_review_required"
+                ],
+                "conflicts": result["position_availability"]["positions_review_required"],
+            }
+        )
     reconciliation = write_reconciliation(root)
     summary = {
         "wave": "A",
@@ -830,42 +1156,97 @@ def write_wave_a(root: Path) -> Dict[str, Any]:
         "consultation_date": date.today().isoformat(),
         "no_network_access": True,
         "no_rate_modification": True,
-        "dza_reconciliation_categories": {key: value["count"] for key, value in reconciliation["categories"].items()},
+        "dza_reconciliation_categories": {
+            key: value["count"] for key, value in reconciliation["categories"].items()
+        },
     }
     out = root / "data" / "coverage" / "WAVE_A_documentation_summary.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     report_lines = [
-        f"# Documentation tarifaire — Vague A ({summary['consultation_date']})", "",
-        "> Synthèse locale en lecture seule. Aucune nouvelle source ni aucun taux n'a été collecté ou modifié.", "",
+        f"# Documentation tarifaire — Vague A ({summary['consultation_date']})",
+        "",
+        "> Synthèse locale en lecture seule. Aucune nouvelle source ni aucun taux n'a été collecté ou modifié.",
+        "",
         "| Pays | Fichier utilisé | Lignes | SH6 | Taux renseignés | Taux manquants | Version SH | Date effet | Archive officielle | Source | Statut | Simulables | Indisponibles | Conflits |",
         "|---|---|---:|---:|---:|---:|---|---|---|---|---|---:|---:|---:|",
     ]
     for row in rows:
-        report_lines.append("| {country_iso3} | {file_used} | {total_lines} | {hs6_covered} | {rates_present} | {rates_missing} | {hs_version} | {effective_date} | {official_archive_available} | {declared_source} | {informative_status} | {positions_simulatable} | {positions_calculation_unavailable} | {conflicts} |".format(**row))
-    report_lines += ["", "## DZA — réconciliation", "", "Les catégories peuvent se chevaucher; le runtime privilégie crawled pour les positions nationales, sans arbitrer les divergences.", ""]
-    report_lines += [f"- {key} : **{value['count']}**" for key, value in reconciliation["categories"].items()]
-    report_lines += ["", "## Règles", "", "Une position sans DD analysable est CALCULATION_UNAVAILABLE. Une divergence entre fichiers est REVIEW_REQUIRED. Aucune cause de DD manquant n'est convertie en taux.", ""]
-    (root / "reports" / "WAVE_A_TARIFF_DOCUMENTATION.md").write_text("\n".join(report_lines), encoding="utf-8")
+        report_lines.append(
+            "| {country_iso3} | {file_used} | {total_lines} | {hs6_covered} | {rates_present} | {rates_missing} | {hs_version} | {effective_date} | {official_archive_available} | {declared_source} | {informative_status} | {positions_simulatable} | {positions_calculation_unavailable} | {conflicts} |".format(
+                **row
+            )
+        )
+    report_lines += [
+        "",
+        "## DZA — réconciliation",
+        "",
+        "Les catégories peuvent se chevaucher; le runtime privilégie crawled pour les positions nationales, sans arbitrer les divergences.",
+        "",
+    ]
+    report_lines += [
+        f"- {key} : **{value['count']}**" for key, value in reconciliation["categories"].items()
+    ]
+    report_lines += [
+        "",
+        "## Règles",
+        "",
+        "Une position sans DD analysable est CALCULATION_UNAVAILABLE. Une divergence entre fichiers est REVIEW_REQUIRED. Aucune cause de DD manquant n'est convertie en taux.",
+        "",
+    ]
+    (root / "reports" / "WAVE_A_TARIFF_DOCUMENTATION.md").write_text(
+        "\n".join(report_lines), encoding="utf-8"
+    )
     return summary
 
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
-    parser = argparse.ArgumentParser(description="Audit documentaire tarifaire local, sans modification des sources")
+    parser = argparse.ArgumentParser(
+        description="Audit documentaire tarifaire local, sans modification des sources"
+    )
     parser.add_argument("country", nargs="?", help="Code ISO3, par exemple DZA")
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--output", type=Path, default=None)
     parser.add_argument("--report", type=Path, default=None)
-    parser.add_argument("--reconcile-dza", action="store_true", help="Produire la réconciliation DZA canonique/crawled")
-    parser.add_argument("--batch-wave-a", action="store_true", help="Auditer DZA, MAR, TUN, EGY, ZAF et KEN")
+    parser.add_argument(
+        "--reconcile-dza",
+        action="store_true",
+        help="Produire la réconciliation DZA canonique/crawled",
+    )
+    parser.add_argument(
+        "--batch-wave-a", action="store_true", help="Auditer DZA, MAR, TUN, EGY, ZAF et KEN"
+    )
     args = parser.parse_args(argv)
     root = args.root.resolve()
     if args.batch_wave_a:
         summary = write_wave_a(root)
-        print(json.dumps({"wave": "A", "countries": len(summary["countries"]), "summary": str(root / "data/coverage/WAVE_A_documentation_summary.json")}, ensure_ascii=False))
+        print(
+            json.dumps(
+                {
+                    "wave": "A",
+                    "countries": len(summary["countries"]),
+                    "summary": str(root / "data/coverage/WAVE_A_documentation_summary.json"),
+                },
+                ensure_ascii=False,
+            )
+        )
         return 0
     if args.reconcile_dza:
         result = write_reconciliation(root, args.output)
-        print(json.dumps({"country": "DZA", "output": str(args.output or root / "data/coverage/DZA_tariff_reconciliation.json"), "categories": {key: value["count"] for key, value in result["categories"].items()}}, ensure_ascii=False))
+        print(
+            json.dumps(
+                {
+                    "country": "DZA",
+                    "output": str(
+                        args.output or root / "data/coverage/DZA_tariff_reconciliation.json"
+                    ),
+                    "categories": {
+                        key: value["count"] for key, value in result["categories"].items()
+                    },
+                },
+                ensure_ascii=False,
+            )
+        )
         return 0
     if not args.country:
         parser.error("country, --reconcile-dza ou --batch-wave-a requis")
@@ -887,7 +1268,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if not framing_ok:
         result["quality_dimensions"]["informative_framing"] = "PARTIAL"
         result["known_data_gaps"] = list(result["known_data_gaps"]) + [
-            f"Cadre informatif à corriger : formulations à risque {hits}" if hits else "Disclaimer informatif absent du rapport.",
+            (
+                f"Cadre informatif à corriger : formulations à risque {hits}"
+                if hits
+                else "Disclaimer informatif absent du rapport."
+            ),
         ]
     result["legal_framing"]["verification"] = {
         "disclaimer_present": DISCLAIMER_REPORT in report_text,
@@ -895,12 +1280,27 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         "status": result["quality_dimensions"]["informative_framing"],
     }
     all_dims = [v for k, v in result["quality_dimensions"].items() if v is not None]
-    result["overall_informative_status"] = "INFORMATIVE_COMPLETE" if all(v in {"DOCUMENTED", "NOT_APPLICABLE"} for v in all_dims) else "INFORMATIVE_PARTIAL"
+    result["overall_informative_status"] = (
+        "INFORMATIVE_COMPLETE"
+        if all(v in {"DOCUMENTED", "NOT_APPLICABLE"} for v in all_dims)
+        else "INFORMATIVE_PARTIAL"
+    )
     # mise à jour des lignes de statut du rapport + réécriture
     report_text = report(result)
     report_path.write_text(report_text, encoding="utf-8")
     output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"country": country, "output": str(output), "report": str(report_path), "status": result["overall_informative_status"], "rows": result["controls"]["total_rows_audited"]}, ensure_ascii=False))
+    print(
+        json.dumps(
+            {
+                "country": country,
+                "output": str(output),
+                "report": str(report_path),
+                "status": result["overall_informative_status"],
+                "rows": result["controls"]["total_rows_audited"],
+            },
+            ensure_ascii=False,
+        )
+    )
     return 0
 
 

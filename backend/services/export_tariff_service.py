@@ -160,7 +160,9 @@ def compute_export_taxes(
             # Droit spécifique (ex. ferrailles : 0.3 dinars/kg)
             base_value = net_weight_kg if "PN" in assiette.upper() else quantity
             amount = round(specific * (base_value or 0.0), 4)
-            method = f"Spécifique : {raw_value} × {'PN (KG)' if 'PN' in assiette.upper() else 'QCS'}"
+            method = (
+                f"Spécifique : {raw_value} × {'PN (KG)' if 'PN' in assiette.upper() else 'QCS'}"
+            )
         elif rate_pct is not None:
             if base_kind == "SUM_DUTIES_TAXES":
                 base_value = sum_duties_taxes
@@ -250,4 +252,8 @@ def load_providers_registry(force: bool = False) -> Dict:
 def get_country_providers(country_iso3: str) -> List[Dict]:
     """Prestataires délégataires documentés pour un pays (peut être vide)."""
     entry = load_providers_registry().get("countries", {}).get(country_iso3.upper(), {})
-    return [p for p in entry.get("providers", []) if entry.get("verification_status") == "VERIFIE_SOURCE_CRAWLEE"]
+    return [
+        p
+        for p in entry.get("providers", [])
+        if entry.get("verification_status") == "VERIFIE_SOURCE_CRAWLEE"
+    ]

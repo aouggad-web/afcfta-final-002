@@ -61,19 +61,23 @@ QUALITY_DIMENSION_KEYS = (
     "preference_and_origin",
     "formalities",
 )
-QUALITY_DIMENSION_VALUES = frozenset({
-    "DOCUMENTED",
-    "PARTIAL",
-    "UNVERIFIED",
-    "NOT_AVAILABLE",
-    "NOT_APPLICABLE",
-})
-OVERALL_STATUS_VALUES = frozenset({
-    "INFORMATIVE_COMPLETE",
-    "INFORMATIVE_PARTIAL",
-    "CALCULATION_UNAVAILABLE",
-    "REVIEW_REQUIRED",
-})
+QUALITY_DIMENSION_VALUES = frozenset(
+    {
+        "DOCUMENTED",
+        "PARTIAL",
+        "UNVERIFIED",
+        "NOT_AVAILABLE",
+        "NOT_APPLICABLE",
+    }
+)
+OVERALL_STATUS_VALUES = frozenset(
+    {
+        "INFORMATIVE_COMPLETE",
+        "INFORMATIVE_PARTIAL",
+        "CALCULATION_UNAVAILABLE",
+        "REVIEW_REQUIRED",
+    }
+)
 OVERALL_STATUS_ALIASES = {
     "BLOCKED_BASE_TARIFF": "CALCULATION_UNAVAILABLE",
     "UNVERIFIED_SOURCE": "REVIEW_REQUIRED",
@@ -83,7 +87,9 @@ OVERALL_STATUS_ALIASES = {
 }
 
 
-def validate_quality_dimensions(dimensions: Mapping[str, Any], *, require_all: bool = False) -> dict[str, str]:
+def validate_quality_dimensions(
+    dimensions: Mapping[str, Any], *, require_all: bool = False
+) -> dict[str, str]:
     """Validate the closed vocabulary used by the six quality dimensions."""
     if not isinstance(dimensions, Mapping):
         raise TypeError("quality_dimensions must be a mapping")
@@ -91,8 +97,7 @@ def validate_quality_dimensions(dimensions: Mapping[str, Any], *, require_all: b
     if unknown_keys:
         raise ValueError(f"Unknown quality dimension(s): {sorted(unknown_keys)}")
     invalid = {
-        key: value for key, value in dimensions.items()
-        if value not in QUALITY_DIMENSION_VALUES
+        key: value for key, value in dimensions.items() if value not in QUALITY_DIMENSION_VALUES
     }
     if invalid:
         raise ValueError(f"Invalid quality dimension value(s): {invalid}")
@@ -154,8 +159,10 @@ def _component_status(row: Mapping[str, Any], *, default_verified: bool = False)
             return "VERIFIED"
         if token in _UNVERIFIED_STATUS_TOKENS or token:
             return "UNVERIFIED"
-    if row.get("source_id") and row.get("effective_from") and (
-        not row.get("_require_provenance") or row.get("hs_version")
+    if (
+        row.get("source_id")
+        and row.get("effective_from")
+        and (not row.get("_require_provenance") or row.get("hs_version"))
     ):
         return "VERIFIED"
     return "VERIFIED" if default_verified else "UNVERIFIED"
@@ -170,7 +177,12 @@ def _base_metadata(profile: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def _documentation_status(status: str) -> str:
-    if status in {"VERIFIED", "SOURCE_ARCHIVED", "OFFICIAL_SOURCE_IDENTIFIED", "EFFECTIVE_DATE_DOCUMENTED"}:
+    if status in {
+        "VERIFIED",
+        "SOURCE_ARCHIVED",
+        "OFFICIAL_SOURCE_IDENTIFIED",
+        "EFFECTIVE_DATE_DOCUMENTED",
+    }:
         return "DOCUMENTED"
     if status in {"MISSING", "UNVERIFIED", "UNVERIFIED_SOURCE"}:
         return "UNVERIFIED"
@@ -193,19 +205,27 @@ def _quality_dimensions(
             base_status == "VERIFIED"
             and base_component.get("source_id")
             and base_component.get("source_hash")
-            and (base_component.get("source_authority") or base_component.get("source_title") or base_component.get("source_url"))
+            and (
+                base_component.get("source_authority")
+                or base_component.get("source_title")
+                or base_component.get("source_url")
+            )
         )
         else "PARTIAL" if base_component.get("source_id") else "UNVERIFIED"
     )
     temporal = "DOCUMENTED" if base_component.get("effective_from") else "PARTIAL"
     classification = "DOCUMENTED" if len(hs6_digits) == 6 else "UNVERIFIED"
     if tax_lines:
-        taxes = "DOCUMENTED" if all(
-            item.get("verification_status") == "VERIFIED"
-            and item.get("source_hash")
-            and (item.get("source_authority") or item.get("source_title"))
-            for item in tax_lines
-        ) else "PARTIAL"
+        taxes = (
+            "DOCUMENTED"
+            if all(
+                item.get("verification_status") == "VERIFIED"
+                and item.get("source_hash")
+                and (item.get("source_authority") or item.get("source_title"))
+                for item in tax_lines
+            )
+            else "PARTIAL"
+        )
     else:
         # A missing national provider is a partial fiscal layer when the
         # customs duty itself is available; the global status remains
@@ -220,12 +240,16 @@ def _quality_dimensions(
     if "administrative_formalities" not in profile:
         formalities = "NOT_APPLICABLE"
     elif profile.get("administrative_formalities"):
-        formalities = "DOCUMENTED" if all(
-            isinstance(item, Mapping)
-            and item.get("source_hash")
-            and (item.get("source_authority") or item.get("source_title"))
-            for item in profile.get("administrative_formalities", [])
-        ) else "PARTIAL"
+        formalities = (
+            "DOCUMENTED"
+            if all(
+                isinstance(item, Mapping)
+                and item.get("source_hash")
+                and (item.get("source_authority") or item.get("source_title"))
+                for item in profile.get("administrative_formalities", [])
+            )
+            else "PARTIAL"
+        )
     else:
         formalities = "NOT_AVAILABLE"
     provided = validate_quality_dimensions(profile.get("quality_dimensions") or {})
@@ -237,10 +261,14 @@ def _quality_dimensions(
             # A caller may lower a dimension to PARTIAL/UNVERIFIED, but may
             # not promote an internal assertion to DOCUMENTED here.
             if value != "DOCUMENTED":
-                if key == "classification": classification = value
-                elif key == "taxes_and_levies": taxes = value
-                elif key == "preference_and_origin": preference = value
-                elif key == "formalities": formalities = value
+                if key == "classification":
+                    classification = value
+                elif key == "taxes_and_levies":
+                    taxes = value
+                elif key == "preference_and_origin":
+                    preference = value
+                elif key == "formalities":
+                    formalities = value
     return {
         "source": source,
         "temporal_validity": temporal,
@@ -316,7 +344,13 @@ def _authorization_context(authorizations: Any) -> dict[str, Any]:
     return {"authorization_hs_codes": list(authorizations)}
 
 
-def _preference(profile: Mapping[str, Any], importing_country: str, exporting_country: str, hs6: str, on_date: date):
+def _preference(
+    profile: Mapping[str, Any],
+    importing_country: str,
+    exporting_country: str,
+    hs6: str,
+    on_date: date,
+):
     pref = profile.get("preferential_regime") or profile.get("preference")
     if not pref:
         return None, None, "NO_PREFERENCE_REQUESTED"
@@ -330,8 +364,12 @@ def _preference(profile: Mapping[str, Any], importing_country: str, exporting_co
         return None, None, "NOT_APPLICABLE"
     if not _active(pref, on_date):
         return None, "Preferential regime is outside its dated validity.", "EXPIRED"
-    reciprocity = str(profile.get("reciprocity_status", pref.get("reciprocity_status", "UNKNOWN"))).upper()
-    origin = str(profile.get("origin_rule_status", pref.get("origin_rule_status", "UNKNOWN"))).upper()
+    reciprocity = str(
+        profile.get("reciprocity_status", pref.get("reciprocity_status", "UNKNOWN"))
+    ).upper()
+    origin = str(
+        profile.get("origin_rule_status", pref.get("origin_rule_status", "UNKNOWN"))
+    ).upper()
     if reciprocity not in {"VERIFIED", "RECIPROCAL", "ACTIVE"}:
         missing.append("Reciprocity is not verified for the selected preferential regime.")
     if origin not in {"VERIFIED", "SATISFIED", "ORIGIN_CONFIRMED"}:
@@ -393,7 +431,12 @@ def calculate_import_charges(
 
     base_meta = _base_metadata(profile)
     if base_rate is None:
-        for key in ("base_rate", "base_tariff_rate", "regional_tariff_rate", "national_tariff_rate"):
+        for key in (
+            "base_rate",
+            "base_tariff_rate",
+            "regional_tariff_rate",
+            "national_tariff_rate",
+        ):
             if profile.get(key) is not None:
                 base_rate = float(profile[key])
                 break
@@ -428,26 +471,38 @@ def calculate_import_charges(
     base_component = {
         "verification_status": explicit_base_status or "MISSING",
         "source_id": base_source_id or base_meta.get("source_id") or profile.get("base_source_id"),
-        "source_hash": base_source_hash or base_meta.get("source_hash") or profile.get("base_source_hash"),
+        "source_hash": base_source_hash
+        or base_meta.get("source_hash")
+        or profile.get("base_source_hash"),
         "source_authority": base_meta.get("source_authority") or profile.get("source_authority"),
         "source_title": base_meta.get("source_title") or profile.get("source_title"),
         "source_url": base_meta.get("source_url") or profile.get("source_url"),
         "legal_reference": base_meta.get("legal_reference") or profile.get("legal_reference"),
         "source_date": base_meta.get("source_date") or profile.get("source_date"),
-        "hs_version": base_hs_version or base_meta.get("hs_version") or profile.get("base_hs_version"),
-        "effective_from": base_effective_from or base_meta.get("effective_from") or profile.get("base_effective_from"),
-        "effective_to": base_effective_to or base_meta.get("effective_to") or profile.get("base_effective_to"),
+        "hs_version": base_hs_version
+        or base_meta.get("hs_version")
+        or profile.get("base_hs_version"),
+        "effective_from": base_effective_from
+        or base_meta.get("effective_from")
+        or profile.get("base_effective_from"),
+        "effective_to": base_effective_to
+        or base_meta.get("effective_to")
+        or profile.get("base_effective_to"),
         "_require_provenance": explicit_base_provenance,
     }
     base_status = "MISSING" if base_missing else _component_status(base_component)
     missing: list[str] = []
     if territory is None and len(blocs) > 1:
-        missing.append("Multiple customs territories are applicable; tariff authority priority requires review.")
+        missing.append(
+            "Multiple customs territories are applicable; tariff authority priority requires review."
+        )
     if base_missing:
         base_rate = 0.0
         missing.append("No dated verified regional or national base tariff rate was supplied.")
     elif base_status != "VERIFIED":
-        missing.append("Base tariff rate is present but its source, HS version, or effective date is not sufficiently verified.")
+        missing.append(
+            "Base tariff rate is present but its source, HS version, or effective date is not sufficiently verified."
+        )
 
     auth = _authorization_context(authorizations)
     context = OverrideContext(
@@ -457,7 +512,9 @@ def calculate_import_charges(
         beneficiary=profile.get("beneficiary"),
         import_purpose=intended_use or profile.get("import_purpose"),
         quantity=profile.get("quantity"),
-        remission_eligibility=auth.get("remission_eligibility", RemissionEligibility.ELIGIBILITY_UNKNOWN),
+        remission_eligibility=auth.get(
+            "remission_eligibility", RemissionEligibility.ELIGIBILITY_UNKNOWN
+        ),
         authorization_reference=auth.get("authorization_reference"),
         authorization_effective_from=auth.get("authorization_effective_from"),
         authorization_effective_to=auth.get("authorization_effective_to"),
@@ -465,7 +522,9 @@ def calculate_import_charges(
         authorization_goods=list(auth.get("authorization_goods", [])),
     )
     measures = [
-        _as_measure(item, layer=LegalLayer.REGIONAL_COMMON, country=destination, territory=territory)
+        _as_measure(
+            item, layer=LegalLayer.REGIONAL_COMMON, country=destination, territory=territory
+        )
         for item in regional_measures
     ] + [
         _as_measure(item, layer=LegalLayer.NATIONAL_COUNTRY, country=destination, territory=None)
@@ -476,7 +535,9 @@ def calculate_import_charges(
         regional_coverage_complete=regional_coverage_complete,
         national_coverage_complete=national_coverage_complete,
     )
-    override = resolver.resolve(hs_code=requested_code or hs6_digits, on_date=on_date, base_rate=base_rate, context=context)
+    override = resolver.resolve(
+        hs_code=requested_code or hs6_digits, on_date=on_date, base_rate=base_rate, context=context
+    )
     missing.extend(override["missing_elements"])
     customs_rate = override["applicable_customs_rate"]
     customs_duty = round(value * customs_rate / 100.0, 2)
@@ -484,13 +545,19 @@ def calculate_import_charges(
     computed: dict[str, float] = {"CUSTOMS_DUTY": customs_duty, "DD": customs_duty}
     tax_lines = []
     taxes = [_row(item) for item in national_taxes]
-    taxes = [item for item in taxes if _iso(item.get("country_iso3", destination)) == destination and _active(item, on_date)]
+    taxes = [
+        item
+        for item in taxes
+        if _iso(item.get("country_iso3", destination)) == destination and _active(item, on_date)
+    ]
     for tax in sorted(taxes, key=lambda item: int(item.get("sequence", 100))):
         rate = tax.get("rate_pct", tax.get("rate"))
         code = str(tax.get("code", tax.get("tax_type", tax.get("tax_id", "TAX"))))
         tax_status = _component_status(tax)
         if tax_status != "VERIFIED":
-            missing.append(f"{code}: source, version, or effective date is not sufficiently verified.")
+            missing.append(
+                f"{code}: source, version, or effective date is not sufficiently verified."
+            )
         if rate is None:
             missing.append(f"{code}: no computable verified rate supplied.")
             continue
@@ -513,36 +580,40 @@ def calculate_import_charges(
             continue
         amount = round(basis_amount * float(rate) / 100.0, 2)
         computed[code] = amount
-        tax_lines.append({
-            "component_type": code,
-            "code": code,
-            "name": tax.get("name", code),
-            "source_rate": rate,
-            "rate": float(rate),
-            "rate_type": tax.get("rate_type", "AD_VALOREM"),
-            "taxable_base": basis_amount,
-            "calculated_amount": amount,
-            "currency": currency_code,
-            "basis": basis_amount,
-            "amount": amount,
-            "legal_reference": tax.get("legal_reference"),
-            "source_id": tax.get("source_id"),
-            "source_hash": tax.get("source_hash"),
-            "effective_from": tax.get("effective_from", tax.get("valid_from")),
-            "effective_to": tax.get("effective_to", tax.get("valid_to")),
-            "hs_version": tax.get("hs_version"),
-            "verification_status": tax_status,
-            "status": tax_status,
-            "components_included": list(includes),
-            "components_missing": [],
-            "source_authority": tax.get("source_authority"),
-            "source_title": tax.get("source_title"),
-            "documentation_status": _documentation_status(tax_status),
-            "assumptions": list(tax.get("assumptions", [])),
-            "data_gaps": [],
-        })
+        tax_lines.append(
+            {
+                "component_type": code,
+                "code": code,
+                "name": tax.get("name", code),
+                "source_rate": rate,
+                "rate": float(rate),
+                "rate_type": tax.get("rate_type", "AD_VALOREM"),
+                "taxable_base": basis_amount,
+                "calculated_amount": amount,
+                "currency": currency_code,
+                "basis": basis_amount,
+                "amount": amount,
+                "legal_reference": tax.get("legal_reference"),
+                "source_id": tax.get("source_id"),
+                "source_hash": tax.get("source_hash"),
+                "effective_from": tax.get("effective_from", tax.get("valid_from")),
+                "effective_to": tax.get("effective_to", tax.get("valid_to")),
+                "hs_version": tax.get("hs_version"),
+                "verification_status": tax_status,
+                "status": tax_status,
+                "components_included": list(includes),
+                "components_missing": [],
+                "source_authority": tax.get("source_authority"),
+                "source_title": tax.get("source_title"),
+                "documentation_status": _documentation_status(tax_status),
+                "assumptions": list(tax.get("assumptions", [])),
+                "data_gaps": [],
+            }
+        )
 
-    preference_rate, preference_missing, preference_status = _preference(profile, destination, origin, hs6_digits, on_date)
+    preference_rate, preference_missing, preference_status = _preference(
+        profile, destination, origin, hs6_digits, on_date
+    )
     if preference_missing:
         missing.append(preference_missing)
     if preference_rate is not None and preference_rate != customs_rate:
@@ -551,9 +622,13 @@ def calculate_import_charges(
         computed["CUSTOMS_DUTY"] = computed["DD"] = customs_duty
 
     quality_dimensions = _quality_dimensions(
-        profile, base_status=base_status, base_component=base_component,
-        tax_lines=tax_lines, national_coverage_complete=national_coverage_complete,
-        hs6_digits=hs6_digits, preference_status=preference_status,
+        profile,
+        base_status=base_status,
+        base_component=base_component,
+        tax_lines=tax_lines,
+        national_coverage_complete=national_coverage_complete,
+        hs6_digits=hs6_digits,
+        preference_status=preference_status,
     )
     formalities = []
     for item in profile.get("administrative_formalities", []):
@@ -563,14 +638,23 @@ def calculate_import_charges(
     total = round(customs_duty + sum(item["amount"] for item in tax_lines), 2)
     by_code = {item["code"].upper(): item for item in tax_lines}
     vat_line = next((item for code, item in by_code.items() if code in {"VAT", "TVA"}), None)
-    excise_lines = [item for code, item in by_code.items() if "EXCISE" in code or code in {"ED", "ET"}]
-    levy_lines = [item for code, item in by_code.items() if item not in excise_lines and item is not vat_line]
+    excise_lines = [
+        item for code, item in by_code.items() if "EXCISE" in code or code in {"ED", "ET"}
+    ]
+    levy_lines = [
+        item for code, item in by_code.items() if item not in excise_lines and item is not vat_line
+    ]
     status = override["calculation_status"]
     if base_missing:
         status = "BLOCKED_BASE_TARIFF"
     elif base_status != "VERIFIED":
         status = "UNVERIFIED_SOURCE"
-    elif status != "CONFLICT_REVIEW" and (missing or any(value not in {"DOCUMENTED", "NOT_APPLICABLE"} for value in quality_dimensions.values())):
+    elif status != "CONFLICT_REVIEW" and (
+        missing
+        or any(
+            value not in {"DOCUMENTED", "NOT_APPLICABLE"} for value in quality_dimensions.values()
+        )
+    ):
         # Compatibility status retained for existing consumers.
         status = "INFORMATIVE_PARTIAL"
     elif status != "CONFLICT_REVIEW":
@@ -616,7 +700,9 @@ def calculate_import_charges(
         "customs_duty": customs_component,
         "taxes": tax_lines,
     }
-    payable_total = None if overall_status in {"CALCULATION_UNAVAILABLE", "REVIEW_REQUIRED"} else total
+    payable_total = (
+        None if overall_status in {"CALCULATION_UNAVAILABLE", "REVIEW_REQUIRED"} else total
+    )
     return {
         "importing_country": destination,
         "exporting_country": origin,
@@ -638,10 +724,15 @@ def calculate_import_charges(
         # Compatibility aliases used by the Kenya legal response while the
         # generic API exposes the normalized ``taxes`` list.
         "vat": vat_line,
-        "excise": {"amount": round(sum(item["amount"] for item in excise_lines), 2), "lines": excise_lines},
+        "excise": {
+            "amount": round(sum(item["amount"] for item in excise_lines), 2),
+            "lines": excise_lines,
+        },
         "idf": next((item for code, item in by_code.items() if code == "IDF"), None),
         "rdl": next((item for code, item in by_code.items() if code == "RDL"), None),
-        "other_levies": {item["code"]: item for item in levy_lines if item["code"].upper() not in {"IDF", "RDL"}},
+        "other_levies": {
+            item["code"]: item for item in levy_lines if item["code"].upper() not in {"IDF", "RDL"}
+        },
         "verified_total": payable_total,
         "simulated_total": total,
         "total_payable": payable_total,
@@ -653,11 +744,16 @@ def calculate_import_charges(
         "calculation_status": status,
         "status": status,
         "overall_status": overall_status,
-        "technical_validation_status": "CALCULATION_VALIDATED" if status in {"INFORMATIVE_COMPLETE", "INFORMATIVE_PARTIAL"} else status,
+        "technical_validation_status": (
+            "CALCULATION_VALIDATED"
+            if status in {"INFORMATIVE_COMPLETE", "INFORMATIVE_PARTIAL"}
+            else status
+        ),
         "informational_only": True,
         "legally_binding": False,
         "administrative_confirmation_required": True,
-        "source_authority": base_component.get("source_authority") or base_component.get("source_id"),
+        "source_authority": base_component.get("source_authority")
+        or base_component.get("source_id"),
         "source_date": base_component.get("source_date"),
         "effective_date": base_component.get("effective_from"),
         "completeness_status": overall_status,

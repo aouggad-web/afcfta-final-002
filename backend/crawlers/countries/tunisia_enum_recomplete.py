@@ -5,44 +5,18 @@ présents dans le crawl national de juin manquent à l'énumération du 2026-08-
 Méthode DZA : source authentique uniquement, sauvegarde incrémentale, aucun taux inventé."""
 import asyncio
 import json
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 
-import html as htmllib
-
 import httpx
+
+from ._tunisia_parse import parse_enumeration as parse
+from ._tunisia_parse import verify_tls_default
 
 BASE = "https://www.douane.gov.tn/tarifwebnew/getresultat.php"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/126.0"}
-CELL_RE = re.compile(
-    r"submit_frm_resultat\('', '', '(\d+)'\); return false;\">(.*?)</td>", re.S
-)
-TAG_RE = re.compile(r"<[^>]+>")
 OUT = Path("backend/data/crawled/TUN_enumeration_2026-08.json")
 CRAWL = Path("backend/data/crawled/TUN_tariffs.json")
-
-
-def _clean(s):
-    return htmllib.unescape(TAG_RE.sub("", s)).strip()
-
-
-def parse(text):
-    """Paires (code, libellé) : chaque ligne = 2 cellules cliquables (code puis
-    libellé). Les libellés peuvent contenir des '<' littéraux (ex. '<= 1000 cm3'),
-    d'où une capture non gloutonne jusqu'à </td> suivie d'un décapage des balises."""
-    cells = CELL_RE.findall(text)
-    if len(cells) % 2 != 0 or not cells:
-        return {}
-    out = {}
-    for i in range(0, len(cells), 2):
-        code, _ = cells[i]
-        label_cell = cells[i + 1][1] if i + 1 < len(cells) else ""
-        if cells[i][1].strip() == code and label_cell:
-            out.setdefault(code, _clean(label_cell))
-        else:
-            return {}
-    return out
 
 
 async def fetch_prefix(client, hh):
@@ -50,9 +24,12 @@ async def fetch_prefix(client, hh):
         try:
             r = await client.get(BASE, params={"rech": "1", "mcle": hh})
             got = parse(r.text)
-            if got or r.status_code == 200:
+            if got:
                 return got, None
-            return got, f"HTTP {r.status_code}"
+            if r.status_code == 200:
+                # 200 mais aucune paire (code, libellé) : page vide / parse échoué.
+                return {}, "empty or unparseable response"
+            return {}, f"HTTP {r.status_code}"
         except Exception as e:
             if attempt == 4:
                 return {}, f"{type(e).__name__}: {e}"
@@ -73,7 +50,9 @@ async def main():
     print(f"codes absents: {len(missing)} | préfixes à re-requêter: {len(prefixes)}", flush=True)
 
     failed = []
-    async with httpx.AsyncClient(headers=HEADERS, verify=False, timeout=60, follow_redirects=True) as client:
+    async with httpx.AsyncClient(
+        headers=HEADERS, verify=verify_tls_default(), timeout=60, follow_redirects=True
+    ) as client:
         for i, pf in enumerate(prefixes, 1):
             got, err = await fetch_prefix(client, pf)
             if got:
@@ -106,8 +85,10 @@ async def main():
     for codes in chapters.values():
         ec.update(codes)
     still = len(set(crawl_codes) - ec)
-    print(f"TOTAL: {total} codes | échecs: {len(failed)} | codes du crawl toujours absents: {still}", flush=True)
-
+    print(
+        f"TOTAL: {total} codes | échecs: {len(failed)} | codes du crawl toujours absents: {still}",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":

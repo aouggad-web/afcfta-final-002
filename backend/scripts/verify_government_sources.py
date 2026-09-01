@@ -99,7 +99,9 @@ async def verify_tun(positions):
                     "stored_dd_rate_pct": stored_dd,
                     "official_dd_rate_pct": official_dd,
                     "official_taxes_import": official_import,
-                    "stored_taxes_import_codes": [t.get("code") for t in pos.get("taxes_import", [])],
+                    "stored_taxes_import_codes": [
+                        t.get("code") for t in pos.get("taxes_import", [])
+                    ],
                     "official_taxes_export_codes": official_export_codes,
                     "stored_taxes_export_codes": stored_export_codes,
                     "match": (
@@ -236,7 +238,11 @@ async def verify_egy(positions):
                 if key.upper() in ("ID", "DD", "GENERAL", "DI"):
                     stored_dd = val.get("rate") if isinstance(val, dict) else val
                     break
-            result = {"hs_code": code, "stored_dd_rate_pct": stored_dd, "official_dd_rate_pct": None}
+            result = {
+                "hs_code": code,
+                "stored_dd_rate_pct": stored_dd,
+                "official_dd_rate_pct": None,
+            }
             try:
                 r = await client.post(
                     f"{BASE}/Services/TrfDetails",
@@ -327,7 +333,9 @@ async def main():
 
     print(f"  conformes : {matches}/{len(results)}")
     for r in mismatches:
-        print(f"  ÉCART {r.get('hs_code')}: stocké={r.get('stored_dd_rate_pct')} officiel={r.get('official_dd_rate_pct')}")
+        print(
+            f"  ÉCART {r.get('hs_code')}: stocké={r.get('stored_dd_rate_pct')} officiel={r.get('official_dd_rate_pct')}"
+        )
     for r in errors:
         print(f"  ERREUR {r.get('hs_code')}: {r.get('error')}")
     print(f"Rapport : {out}")

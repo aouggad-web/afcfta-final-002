@@ -69,24 +69,26 @@ def main():
     # 2) nouveaux codes officiels : ajoutés sans taux, signalés
     new_lines = []
     for c in only_enum:
-        new_lines.append({
-            "hs_code": c,
-            "chapter": c[:2],
-            "designation": enum_map[c],
-            "reglementation_import": [],
-            "reglementation_export": [],
-            "qcs": "",
-            "qci": "",
-            "groupe_utilisation": "",
-            "mode_paiement": "",
-            "import_status": "Nouvelle sous-position — taux non publiés en ligne au 2026-08-29 (app de détail indisponible)",
-            "export_status": "",
-            "taxes_import": [],
-            "taxes_export": [],
-            "preferences": [],
-            "consolidation_flag": "NOUVEAU_CODE_2026-08-29",
-            "source_gaps": ["taux_import", "taux_export", "preferences"],
-        })
+        new_lines.append(
+            {
+                "hs_code": c,
+                "chapter": c[:2],
+                "designation": enum_map[c],
+                "reglementation_import": [],
+                "reglementation_export": [],
+                "qcs": "",
+                "qci": "",
+                "groupe_utilisation": "",
+                "mode_paiement": "",
+                "import_status": "Nouvelle sous-position — taux non publiés en ligne au 2026-08-29 (app de détail indisponible)",
+                "export_status": "",
+                "taxes_import": [],
+                "taxes_export": [],
+                "preferences": [],
+                "consolidation_flag": "NOUVEAU_CODE_2026-08-29",
+                "source_gaps": ["taux_import", "taux_export", "preferences"],
+            }
+        )
     sub_positions.extend(new_lines)
 
     n_total = len(sub_positions)
@@ -168,7 +170,9 @@ def main():
     CRAWLED.write_text(json.dumps(crawl, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"sous-positions: {len(crawl_codes)} -> {n_total} (+{len(new_lines)} nouveaux sans taux)")
     print(f"codes absents source signalés: {flagged_retired}")
-    print(f"libellés comparés: {len(common)} | divergences (toutes encodage): {len(label_diffs)} | designations nettoyées: {cleaned}")
+    print(
+        f"libellés comparés: {len(common)} | divergences (toutes encodage): {len(label_diffs)} | designations nettoyées: {cleaned}"
+    )
     print(f"backup: {backup.name}")
     print(f"rapport: {MACHINE_REPORT}")
 

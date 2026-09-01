@@ -14,9 +14,7 @@ def measure(measure_id, measure_type, rate, start="2025-07-01", end="2026-06-30"
         measure_id=measure_id,
         jurisdiction=kw.pop("jurisdiction", "KEN"),
         legal_layer=legal_layer,
-        regional_bloc=kw.pop(
-            "regional_bloc", "EAC" if legal_layer == "REGIONAL_COMMON" else None
-        ),
+        regional_bloc=kw.pop("regional_bloc", "EAC" if legal_layer == "REGIONAL_COMMON" else None),
         measure_type=measure_type,
         legal_title="Test official instrument",
         gazette_number="TEST/1",
@@ -165,12 +163,11 @@ def test_regional_layer_is_applied_before_country_layer():
         "regional-stay",
         "national-exemption",
     ]
-    assert result["legal_layers"]["REGIONAL_COMMON"]["trace"][-1][
-        "measure_id"
-    ] == "regional-stay"
-    assert result["legal_layers"]["NATIONAL_COUNTRY"]["trace"][-1][
-        "measure_id"
-    ] == "national-exemption"
+    assert result["legal_layers"]["REGIONAL_COMMON"]["trace"][-1]["measure_id"] == "regional-stay"
+    assert (
+        result["legal_layers"]["NATIONAL_COUNTRY"]["trace"][-1]["measure_id"]
+        == "national-exemption"
+    )
 
 
 def test_national_layer_is_isolated_by_country():

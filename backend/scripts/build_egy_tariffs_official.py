@@ -63,8 +63,17 @@ def parse_taxes_lines(taxes_verbatim: list[str]) -> list[dict]:
             continue
         if ":" not in raw:
             regime = raw
-            out.append({"label_ar": raw, "code": None, "raw": "", "rate": None,
-                        "rate_parsed": False, "regime_ar": regime, "kind": "regime_header"})
+            out.append(
+                {
+                    "label_ar": raw,
+                    "code": None,
+                    "raw": "",
+                    "rate": None,
+                    "rate_parsed": False,
+                    "regime_ar": regime,
+                    "kind": "regime_header",
+                }
+            )
             continue
         label = raw.split(":")[0].strip()
         value = raw.split(":", 1)[1].strip()
@@ -79,9 +88,17 @@ def parse_taxes_lines(taxes_verbatim: list[str]) -> list[dict]:
             num = float(m.group(1).replace(",", "."))
         elif "صفر" in value:
             num = 0.0
-        out.append({"label_ar": label, "code": code, "raw": value, "rate": num,
-                    "rate_parsed": num is not None,
-                    "regime_ar": regime, "kind": "tax"})
+        out.append(
+            {
+                "label_ar": label,
+                "code": code,
+                "raw": value,
+                "rate": num,
+                "rate_parsed": num is not None,
+                "regime_ar": regime,
+                "kind": "tax",
+            }
+        )
     return out
 
 
@@ -145,7 +162,9 @@ def main() -> int:
 
     old_path = CRAWLED_DIR / "EGY_tariffs.json"
     old = json.loads(old_path.read_text(encoding="utf-8"))
-    old_by_code = {(p.get("hs_code") or "").replace("/", ""): p for p in old.get("sub_positions", [])}
+    old_by_code = {
+        (p.get("hs_code") or "").replace("/", ""): p for p in old.get("sub_positions", [])
+    }
 
     sub_positions = []
     stats = Counter()
@@ -175,24 +194,45 @@ def main() -> int:
         if old_line and (new_dd != old_dd or new_vat != old_vat):
             stats["rate_diff_vs_previous"] += 1
             if len(rate_diffs) < 60:
-                rate_diffs.append({"code": code, "old": {"dd": old_dd, "tva": old_vat},
-                                   "new": {"dd": new_dd, "tva": new_vat},
-                                   "taxes_verbatim": row.get("taxes_verbatim")})
+                rate_diffs.append(
+                    {
+                        "code": code,
+                        "old": {"dd": old_dd, "tva": old_vat},
+                        "new": {"dd": new_dd, "tva": new_vat},
+                        "taxes_verbatim": row.get("taxes_verbatim"),
+                    }
+                )
 
         instructions = row.get("instructions") or []
         codes_instr = row.get("instruction_codes") or []
-        formalities = [
-            {"code_verbatim": c, "text_verbatim": t,
-             "kind": "administrative_instruction(غ)" if c.startswith("غ") else None,
-             "source": row.get("source")}
-            for c, t in zip(codes_instr, instructions) if c.startswith("غ")
-        ] if len(codes_instr) == len(instructions) else []
-        fta_preferences = [
-            {"code_verbatim": c, "text_verbatim": t,
-             "kind": "customs_instruction(ر)",
-             "zlecaf": ("افريقية القارية" in t)}
-            for c, t in zip(codes_instr, instructions) if c.startswith("ر")
-        ] if len(codes_instr) == len(instructions) else []
+        formalities = (
+            [
+                {
+                    "code_verbatim": c,
+                    "text_verbatim": t,
+                    "kind": "administrative_instruction(غ)" if c.startswith("غ") else None,
+                    "source": row.get("source"),
+                }
+                for c, t in zip(codes_instr, instructions)
+                if c.startswith("غ")
+            ]
+            if len(codes_instr) == len(instructions)
+            else []
+        )
+        fta_preferences = (
+            [
+                {
+                    "code_verbatim": c,
+                    "text_verbatim": t,
+                    "kind": "customs_instruction(ر)",
+                    "zlecaf": ("افريقية القارية" in t),
+                }
+                for c, t in zip(codes_instr, instructions)
+                if c.startswith("ر")
+            ]
+            if len(codes_instr) == len(instructions)
+            else []
+        )
 
         line = {
             "hs_code": code,
@@ -280,7 +320,8 @@ def main() -> int:
     }
     REPORTS_DIR.mkdir(exist_ok=True)
     (REPORTS_DIR / "EGY_REBUILD_RECONCILIATION.json").write_text(
-        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     print(json.dumps(dict(stats), ensure_ascii=False, indent=1))
     print(f"backup: {backup_path.name}")
     return 0

@@ -117,7 +117,15 @@ class LegalOverrideMeasure(BaseModel):
             and not self.customs_territory
         )
         if self.legal_layer == LegalLayer.REGIONAL_COMMON or legacy_regional:
-            bloc = (self.customs_territory or self.regional_bloc or ("EAC" if legacy_regional else jurisdiction)).strip().upper()
+            bloc = (
+                (
+                    self.customs_territory
+                    or self.regional_bloc
+                    or ("EAC" if legacy_regional else jurisdiction)
+                )
+                .strip()
+                .upper()
+            )
             return bool(bloc) and bloc in {item.strip().upper() for item in regional_blocs}
         return jurisdiction in {"ALL", "ANY", country}
 

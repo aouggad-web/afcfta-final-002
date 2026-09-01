@@ -18,8 +18,14 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from jort_crawler import (  # noqa: E402
-    BASE, OPENER, UA, open_advanced_search, search, parse_results,
-    FORM_ACTION_RE, paginate,
+    BASE,
+    OPENER,
+    UA,
+    open_advanced_search,
+    search,
+    parse_results,
+    FORM_ACTION_RE,
+    paginate,
 )
 
 ARCHIVE = Path("data/sources/TUN/jort")
@@ -82,7 +88,8 @@ def detail_and_pdf(action_url, occ, pdf_out=None):
 def get_req(url, extra):
     data = {"WD_ACTION_": "", **extra}
     req = rq.Request(
-        url, data=up.urlencode(data).encode(),
+        url,
+        data=up.urlencode(data).encode(),
         headers={"User-Agent": UA, "Referer": BASE},
     )
     with OPENER.open(req, timeout=90) as r:
@@ -111,24 +118,24 @@ def main():
                         lfs[key] = True
                         # détail + PDF immédiatement (état serveur = cette page)
                         pdf_path = (
-                            ARCHIVE / f"{key}.pdf"
-                            if int(annee_m.group(1)) >= PDF_SINCE
-                            else None
+                            ARCHIVE / f"{key}.pdf" if int(annee_m.group(1)) >= PDF_SINCE else None
                         )
                         print(f"{key}: {t[:60]}…", file=sys.stderr)
                         d = detail_and_pdf(action, r["occ"], pdf_path)
-                        docs.append({
-                            "file": pdf_path.name if pdf_path else None,
-                            "title": f"Loi de finances {'complémentaire ' if comp else ''}pour {annee_m.group(1)} — {t}",
-                            "type": "loi_finances",
-                            "annee_budget": int(annee_m.group(1)),
-                            "jort_ref": d["jort_ref"],
-                            "articles_douane_extraits": len(d["articles_douane"]),
-                            "articles_douane": d["articles_douane"],
-                            "pdf_sha256": d["pdf"]["sha256"],
-                            "pdf_bytes": d["pdf"]["bytes"],
-                            "source_url": f"{BASE} (JORT, recherche multicritères — texte intégral)",
-                        })
+                        docs.append(
+                            {
+                                "file": pdf_path.name if pdf_path else None,
+                                "title": f"Loi de finances {'complémentaire ' if comp else ''}pour {annee_m.group(1)} — {t}",
+                                "type": "loi_finances",
+                                "annee_budget": int(annee_m.group(1)),
+                                "jort_ref": d["jort_ref"],
+                                "articles_douane_extraits": len(d["articles_douane"]),
+                                "articles_douane": d["articles_douane"],
+                                "pdf_sha256": d["pdf"]["sha256"],
+                                "pdf_bytes": d["pdf"]["bytes"],
+                                "source_url": f"{BASE} (JORT, recherche multicritères — texte intégral)",
+                            }
+                        )
         print(f"page {page + 1}: total LF = {len(docs)}", file=sys.stderr)
         res = paginate(action, (page + 1) * 20)
         if not res or not parse_results(res):

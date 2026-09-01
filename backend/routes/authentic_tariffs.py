@@ -365,9 +365,13 @@ async def _compute_export_or_404(
 async def calculate_export_taxes_get_endpoint(
     country_iso3: str,
     hs_code: str,
-    value: float = Query(0.0, ge=0, description="Valeur douane déclarée (devise du tarif national)"),
+    value: float = Query(
+        0.0, ge=0, description="Valeur douane déclarée (devise du tarif national)"
+    ),
     quantity: float = Query(0.0, ge=0, description="Quantité (unités statistiques)"),
-    net_weight_kg: float = Query(0.0, ge=0, description="Poids net en kg (droits spécifiques au kg)"),
+    net_weight_kg: float = Query(
+        0.0, ge=0, description="Poids net en kg (droits spécifiques au kg)"
+    ),
 ):
     """
     Calculer la cascade de taxes et redevances à l'EXPORT (par pays) — GET
@@ -391,9 +395,13 @@ async def calculate_export_taxes_get_endpoint(
 async def calculate_export_taxes_post_endpoint(
     country_iso3: str = Query(..., description="ISO3 du pays exportateur"),
     hs_code: str = Query(..., description="Code SH national (6-12 chiffres)"),
-    value: float = Query(0.0, ge=0, description="Valeur douane déclarée (devise du tarif national)"),
+    value: float = Query(
+        0.0, ge=0, description="Valeur douane déclarée (devise du tarif national)"
+    ),
     quantity: float = Query(0.0, ge=0, description="Quantité (unités statistiques)"),
-    net_weight_kg: float = Query(0.0, ge=0, description="Poids net en kg (droits spécifiques au kg)"),
+    net_weight_kg: float = Query(
+        0.0, ge=0, description="Poids net en kg (droits spécifiques au kg)"
+    ),
 ):
     """Version POST du calcul export (même moteur que le GET)."""
     return await _compute_export_or_404(country_iso3, hs_code, value, quantity, net_weight_kg)
@@ -579,7 +587,10 @@ async def calculate_taxes_endpoint(
                 "beneficiary": beneficiary,
                 "import_purpose": import_purpose,
                 "quantity": quantity,
-                "administrative_formalities": get_administrative_formalities(country_iso3.upper(), hs_code) or [],
+                "administrative_formalities": get_administrative_formalities(
+                    country_iso3.upper(), hs_code
+                )
+                or [],
             },
             intended_use=import_purpose,
             authorizations={
@@ -603,9 +614,15 @@ async def calculate_taxes_endpoint(
     )
     # Normalize legacy nested statuses at the API boundary without changing
     # existing route fields or the supplied tariff rates.
-    raw_status = legal_result.get("overall_status") or legal_result.get("calculation_status") or legal_result.get("status")
+    raw_status = (
+        legal_result.get("overall_status")
+        or legal_result.get("calculation_status")
+        or legal_result.get("status")
+    )
     if raw_status:
-        normalized_status = OVERALL_STATUS_ALIASES.get(str(raw_status).upper(), str(raw_status).upper())
+        normalized_status = OVERALL_STATUS_ALIASES.get(
+            str(raw_status).upper(), str(raw_status).upper()
+        )
         if normalized_status in OVERALL_STATUS_VALUES:
             result["overall_status"] = normalized_status
     raw_dimensions = legal_result.get("quality_dimensions")
@@ -645,14 +662,17 @@ async def calculate_taxes_endpoint(
         if key in legal_result:
             result.setdefault(key, legal_result[key])
     result.setdefault("overall_status", "INFORMATIVE_PARTIAL")
-    result.setdefault("quality_dimensions", {
-        "source": "PARTIAL",
-        "temporal_validity": "PARTIAL",
-        "classification": "DOCUMENTED",
-        "taxes_and_levies": "PARTIAL",
-        "preference_and_origin": "UNVERIFIED",
-        "formalities": "NOT_AVAILABLE",
-    })
+    result.setdefault(
+        "quality_dimensions",
+        {
+            "source": "PARTIAL",
+            "temporal_validity": "PARTIAL",
+            "classification": "DOCUMENTED",
+            "taxes_and_levies": "PARTIAL",
+            "preference_and_origin": "UNVERIFIED",
+            "formalities": "NOT_AVAILABLE",
+        },
+    )
     result.setdefault("known_data_gaps", [])
     result.setdefault("completeness_status", result["overall_status"])
     return result

@@ -32,7 +32,9 @@ REPO_ROOT = BACKEND_DIR.parent
 CRAWLED_PATH = BACKEND_DIR / "data" / "crawled" / "DZA_tariffs.json"
 CANON_PATH = BACKEND_DIR / "data" / "DZA_tariffs.json"
 FAP_JSON = REPO_ROOT / "data" / "sources" / "DZA" / "legislation" / "dgd_tax_codes_and_fap.json"
-LF2026_JSON = REPO_ROOT / "data" / "sources" / "DZA" / "legislation" / "lf2026_customs_articles.json"
+LF2026_JSON = (
+    REPO_ROOT / "data" / "sources" / "DZA" / "legislation" / "lf2026_customs_articles.json"
+)
 
 DD_SOURCE = "Direction Générale des Douanes — Algérie (DGD) via conformepro.dz"
 OTHER_TAX_CODES = ("PRCT", "TCS", "DAPS", "TIC")
@@ -64,7 +66,11 @@ def main() -> int:
             e = lf_index.setdefault(code, [])
             e.append(art["article"])
 
-    subs = [p for p in crawled.get("sub_positions", []) if p.get("source_quality") == "crawled_authentic"]
+    subs = [
+        p
+        for p in crawled.get("sub_positions", [])
+        if p.get("source_quality") == "crawled_authentic"
+    ]
     by_hs6: dict[str, list] = defaultdict(list)
     for p in sorted(subs, key=lambda x: x.get("hs_code") or ""):
         by_hs6[p["hs_code"][:6]].append(p)
@@ -97,12 +103,14 @@ def main() -> int:
                 rate = 0.0 if "exo" in low else None
                 if ("zale" in low or "zleca" in low) and "exo" in low:
                     zlecaf_rate = 0.0
-                fiscal_advantages.append({
-                    "tax": tax,
-                    "rate": rate,
-                    "condition_fr": adv,
-                    "condition_en": adv,
-                })
+                fiscal_advantages.append(
+                    {
+                        "tax": tax,
+                        "rate": rate,
+                        "condition_fr": adv,
+                        "condition_en": adv,
+                    }
+                )
 
         # formalités : déduplication verbatim + rattachement F.A.P exact
         seen_form = set()
@@ -113,49 +121,73 @@ def main() -> int:
                 if txt in seen_form:
                     continue
                 seen_form.add(txt)
-                administrative_formalities.append({
-                    "code": f.get("fap_code") if isinstance(f, dict) else None,
-                    "document_fr": txt,
-                    "document_en": txt,
-                    "fap_official_label": f.get("fap_official_label") if isinstance(f, dict) else None,
-                })
+                administrative_formalities.append(
+                    {
+                        "code": f.get("fap_code") if isinstance(f, dict) else None,
+                        "document_fr": txt,
+                        "document_en": txt,
+                        "fap_official_label": (
+                            f.get("fap_official_label") if isinstance(f, dict) else None
+                        ),
+                    }
+                )
 
         # taxes_detail (format canonical_v4)
         taxes_detail = []
-        taxes_detail.append({
-            "tax": "DD",
-            "rate": dd,
-            "observation": (first.get("taxes") or {}).get("DD", {}).get("label_published", "DD"),
-            "variants": dd_variants or None,
-        })
-        taxes_detail.append({
-            "tax": "TVA",
-            "rate": vat,
-            "observation": (first.get("taxes") or {}).get("TVA", {}).get("label_published", "TVA"),
-            "variants": vat_variants or None,
-        })
+        taxes_detail.append(
+            {
+                "tax": "DD",
+                "rate": dd,
+                "observation": (first.get("taxes") or {})
+                .get("DD", {})
+                .get("label_published", "DD"),
+                "variants": dd_variants or None,
+            }
+        )
+        taxes_detail.append(
+            {
+                "tax": "TVA",
+                "rate": vat,
+                "observation": (first.get("taxes") or {})
+                .get("TVA", {})
+                .get("label_published", "TVA"),
+                "variants": vat_variants or None,
+            }
+        )
         for code in OTHER_TAX_CODES:
             if others.get(code) is None and not other_variants.get(code):
                 continue
-            taxes_detail.append({
-                "tax": code,
-                "rate": others[code],
-                "observation": (first.get("taxes") or {}).get(code, {}).get("label_published", code),
-                "variants": other_variants.get(code) or None,
-            })
+            taxes_detail.append(
+                {
+                    "tax": code,
+                    "rate": others[code],
+                    "observation": (first.get("taxes") or {})
+                    .get(code, {})
+                    .get("label_published", code),
+                    "variants": other_variants.get(code) or None,
+                }
+            )
 
         total_taxes = None
         if dd is not None and vat is not None and others_complete:
             total_taxes = round(dd + vat + others_sum, 4)
 
         # provisions LF 2026 rattachées à l'HS6 (sous-positions exactes)
-        lf_articles = sorted({a for p in group if lf_index.get(p["hs_code"]) for a in lf_index[p["hs_code"]]})
+        lf_articles = sorted(
+            {a for p in group if lf_index.get(p["hs_code"]) for a in lf_index[p["hs_code"]]}
+        )
 
         line = {
             "hs6": hs6,
             "chapter": first.get("chapter", ""),
-            "description_fr": first.get("designation_full") or first.get("description") or first.get("name") or "",
-            "description_en": first.get("designation_full") or first.get("description") or first.get("name") or "",
+            "description_fr": first.get("designation_full")
+            or first.get("description")
+            or first.get("name")
+            or "",
+            "description_en": first.get("designation_full")
+            or first.get("description")
+            or first.get("name")
+            or "",
             "category": None,
             "unit": None,
             "sensitivity": "normal",
@@ -177,8 +209,14 @@ def main() -> int:
                     "code": p["hs_code"],
                     "digits": 10,
                     "dd": (p.get("taxes") or {}).get("DD", {}).get("rate"),
-                    "description_fr": p.get("designation_full") or p.get("description") or p.get("name") or "",
-                    "description_en": p.get("designation_full") or p.get("description") or p.get("name") or "",
+                    "description_fr": p.get("designation_full")
+                    or p.get("description")
+                    or p.get("name")
+                    or "",
+                    "description_en": p.get("designation_full")
+                    or p.get("description")
+                    or p.get("name")
+                    or "",
                     "source": DD_SOURCE,
                     "source_url": p.get("source_url"),
                     "lf2026_articles": (lf_index.get(p["hs_code"]) or None),
@@ -229,6 +267,7 @@ def main() -> int:
     tmp = CANON_PATH.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
     import os
+
     os.replace(tmp, CANON_PATH)
 
     print(f"Backup ancien canonique : {backup_path}")

@@ -635,12 +635,19 @@ class CrawledDataService:
     def _normalize_egy(self, pos: dict) -> Optional[dict]:
         # Real crawl schema (customs.gov.eg, see backend/data/crawled/EGY_tariffs.json):
         # {"hs_code": "...", "designation"/"description"/"name": "...",
-        #  "taxes": {"DD": {"name", "rate", "raw", "source"}, "TVA": {...}, "TJ": {...}},
+        #  "taxes": {"ID"/"DD": {"name", "rate", "raw", "source"}, "VAT"/"TVA": {...}, ...},
         #  "official_instructions": [...]}
+        # Le scraper officiel customs.gov.eg publie les codes en anglais
+        # ("ID" = Import Duty, "VAT" = Value-Added Tax) alors que le reste
+        # de la plateforme utilise le libellé canonique francophone
+        # ("DD" = Droit de Douane, "TVA"). On normalise ici pour préserver
+        # l'homogénéité inter-pays sans altérer la donnée source.
         code_clean = pos.get("code_clean", "") or pos.get("hs_code", "") or pos.get("code", "")
         code_clean = code_clean.replace(".", "").replace(" ", "")
         if not code_clean:
             return None
+
+        _CODE_ALIAS = {"ID": "DD", "VAT": "TVA"}
 
         taxes = []
         taxes_detail = pos.get("taxes_detail", [])
@@ -648,7 +655,7 @@ class CrawledDataService:
             tax_code = td.get("tax_code", "")
             taxes.append(
                 {
-                    "code": tax_code,
+                    "code": _CODE_ALIAS.get(tax_code, tax_code),
                     "name": td.get("tax_name", tax_code),
                     "rate_pct": td.get("rate"),
                     "raw_value": f"{td.get('rate')}%" if td.get("rate") is not None else "",
@@ -660,12 +667,13 @@ class CrawledDataService:
             raw_taxes = pos.get("taxes", {})
             if isinstance(raw_taxes, dict):
                 for code, info in raw_taxes.items():
+                    canonical = _CODE_ALIAS.get(code, code)
                     if isinstance(info, dict):
                         rate = info.get("rate")
                         taxes.append(
                             {
-                                "code": code,
-                                "name": info.get("name", code),
+                                "code": canonical,
+                                "name": info.get("name", canonical),
                                 "rate_pct": rate,
                                 "raw_value": info.get(
                                     "raw", f"{rate}%" if rate is not None else ""
@@ -677,8 +685,8 @@ class CrawledDataService:
                         # legacy flat {code: rate} shape
                         taxes.append(
                             {
-                                "code": code,
-                                "name": code,
+                                "code": canonical,
+                                "name": canonical,
                                 "rate_pct": info,
                                 "raw_value": f"{info}%" if info is not None else "",
                                 "source": "customs.gov.eg",

@@ -75,14 +75,22 @@ def parse_sch2(path):
         if m:
             # structure publiée : Part 1 = anti-dumping, Part 2 = countervailing,
             # Part 3 = safeguard (en-têtes vérifiés p.2, p.47, p.48)
-            part = {"1": "part_1_antidumping", "2": "part_2_countervailing", "3": "part_3_safeguard"}.get(m.group(1), f"part_{m.group(1)}")
+            part = {
+                "1": "part_1_antidumping",
+                "2": "part_2_countervailing",
+                "3": "part_3_safeguard",
+            }.get(m.group(1), f"part_{m.group(1)}")
         lines = [l.strip() for l in text.splitlines() if l.strip()]
         i = 0
         while i < len(lines):
             if ITEM_RE.match(lines[i]):
                 block = [lines[i]]
                 i += 1
-                while i < len(lines) and not ITEM_RE.match(lines[i]) and "SCHEDULE 2 / PART" not in lines[i]:
+                while (
+                    i < len(lines)
+                    and not ITEM_RE.match(lines[i])
+                    and "SCHEDULE 2 / PART" not in lines[i]
+                ):
                     block.append(lines[i])
                     i += 1
                 rate_raw = None
@@ -98,16 +106,18 @@ def parse_sch2(path):
                     idx = block.index(rate_raw)
                     if idx > 0 and not TARIFF_RE.match(block[idx - 1]):
                         country = block[idx - 1]
-                rows.append({
-                    "part": part,
-                    "item": block[0],
-                    "tariff_code": tariff,
-                    "rate_raw": rate_raw,
-                    "rate_numeric": rate_num,
-                    "imported_from_or_originating_in": country,
-                    "raw_block": " | ".join(block)[:1200],
-                    "page": pno + 1,
-                })
+                rows.append(
+                    {
+                        "part": part,
+                        "item": block[0],
+                        "tariff_code": tariff,
+                        "rate_raw": rate_raw,
+                        "rate_numeric": rate_num,
+                        "imported_from_or_originating_in": country,
+                        "raw_block": " | ".join(block)[:1200],
+                        "page": pno + 1,
+                    }
+                )
             else:
                 i += 1
     return rows, date_pub
@@ -125,7 +135,9 @@ def parse_sch3(path):
             if ITEM_RE.match(lines[i]):
                 block = [lines[i]]
                 i += 1
-                while i < len(lines) and not ITEM_RE.match(lines[i]) and "SCHEDULE 3" not in lines[i]:
+                while (
+                    i < len(lines) and not ITEM_RE.match(lines[i]) and "SCHEDULE 3" not in lines[i]
+                ):
                     block.append(lines[i])
                     i += 1
                 tariff = next((l for l in block[1:] if re.match(r"^\d{4}\.\d{2}$", l)), None)
@@ -134,14 +146,18 @@ def parse_sch3(path):
                     if "%" in l or "full duty" in l.lower() or "c/" in l or "free" in l.lower():
                         extent = l
                         break
-                rows.append({
-                    "rebate_item": block[0],
-                    "tariff_code": tariff,
-                    "extent_raw": extent,
-                    "extent_numeric": literal_rate(extent) if extent and "%" in (extent or "") else None,
-                    "raw_block": " | ".join(block)[:1200],
-                    "page": pno + 1,
-                })
+                rows.append(
+                    {
+                        "rebate_item": block[0],
+                        "tariff_code": tariff,
+                        "extent_raw": extent,
+                        "extent_numeric": (
+                            literal_rate(extent) if extent and "%" in (extent or "") else None
+                        ),
+                        "raw_block": " | ".join(block)[:1200],
+                        "page": pno + 1,
+                    }
+                )
             else:
                 i += 1
     return rows, date_pub
@@ -158,14 +174,20 @@ def parse_licences(path):
             if re.match(r"^8\d\d\.\d{2}$", lines[i]):
                 block = [lines[i]]
                 i += 1
-                while i < len(lines) and not re.match(r"^8\d\d\.\d{2}$", lines[i]) and "SCHEDULE 8" not in lines[i]:
+                while (
+                    i < len(lines)
+                    and not re.match(r"^8\d\d\.\d{2}$", lines[i])
+                    and "SCHEDULE 8" not in lines[i]
+                ):
                     block.append(lines[i])
                     i += 1
-                rows.append({
-                    "item": block[0],
-                    "raw_block": " | ".join(block)[:800],
-                    "page": pno + 1,
-                })
+                rows.append(
+                    {
+                        "item": block[0],
+                        "raw_block": " | ".join(block)[:800],
+                        "page": pno + 1,
+                    }
+                )
             else:
                 i += 1
     return rows
@@ -187,7 +209,9 @@ def parse_specific_excise(path, label):
             if item_re.match(lines[i]):
                 block = [lines[i]]
                 i += 1
-                while i < len(lines) and not item_re.match(lines[i]) and "SCHEDULE 1" not in lines[i]:
+                while (
+                    i < len(lines) and not item_re.match(lines[i]) and "SCHEDULE 1" not in lines[i]
+                ):
                     block.append(lines[i])
                     i += 1
                 subheading = next((l for l in block[1:] if sub_re.match(l)), None)
@@ -196,14 +220,16 @@ def parse_specific_excise(path, label):
                     if re.search(r"\d", l) and ("c/" in l or "%" in l or "R" in l):
                         rate_raw = l
                         break
-                rows.append({
-                    "tariff_item": block[0],
-                    "tariff_subheading": subheading,
-                    "rate_raw": rate_raw,
-                    "rate_numeric": literal_rate(rate_raw),
-                    "raw_block": " | ".join(block)[:1000],
-                    "page": pno + 1,
-                })
+                rows.append(
+                    {
+                        "tariff_item": block[0],
+                        "tariff_subheading": subheading,
+                        "rate_raw": rate_raw,
+                        "rate_numeric": literal_rate(rate_raw),
+                        "raw_block": " | ".join(block)[:1000],
+                        "page": pno + 1,
+                    }
+                )
             else:
                 i += 1
     return rows, date_pub
@@ -227,8 +253,16 @@ def main():
         ("schedule_2_trade_remedies", LEG / "Sch2-Schedule-No-2.pdf", parse_sch2),
         ("schedule_3_rebates", LEG / "Sch3-Schedule-No-3.pdf", parse_sch3),
         ("schedule_8_licences", LEG / "Sch8-Schedule-No-8.pdf", parse_licences),
-        ("schedule_1_part_2a_specific_excise", LEG / "Sch1P2A-Schedule-No-1-Part-2A.pdf", lambda p: parse_specific_excise(p, "2A")),
-        ("schedule_1_part_2b_specific_excise", LEG / "Sch1P2B-Schedule-No-1-Part-2B.pdf", lambda p: parse_specific_excise(p, "2B")),
+        (
+            "schedule_1_part_2a_specific_excise",
+            LEG / "Sch1P2A-Schedule-No-1-Part-2A.pdf",
+            lambda p: parse_specific_excise(p, "2A"),
+        ),
+        (
+            "schedule_1_part_2b_specific_excise",
+            LEG / "Sch1P2B-Schedule-No-1-Part-2B.pdf",
+            lambda p: parse_specific_excise(p, "2B"),
+        ),
         ("itac_definitive_measures", LEG / "itac_definitive_duties_2022-12-31.pdf", parse_itac),
     ]
 
@@ -246,8 +280,11 @@ def main():
             "pdf": str(path.relative_to(ROOT)),
             "pdf_sha256": sha256(path),
             "date_on_pdf": date_pub,
-            "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/"
-            + path.name if "Sch" in path.name else "https://itac.org.za/wp-content/uploads/" + path.name,
+            "source_url": (
+                "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/" + path.name
+                if "Sch" in path.name
+                else "https://itac.org.za/wp-content/uploads/" + path.name
+            ),
             "rows": rows,
             "n_rows": len(rows),
             "parsed_at": now,
@@ -289,7 +326,8 @@ def main():
     }
     REPORTS.mkdir(exist_ok=True)
     (REPORTS / "ZAF_SCHEDULES_RECONCILIATION.json").write_text(
-        json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8")
+        json.dumps(report, ensure_ascii=False, indent=1), encoding="utf-8"
+    )
     print(json.dumps(stats, ensure_ascii=False, indent=1))
     return 0
 

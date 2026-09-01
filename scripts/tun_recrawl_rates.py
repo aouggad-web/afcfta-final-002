@@ -38,7 +38,8 @@ TAXROW_RE = re.compile(
     re.S,
 )
 PREFROW_RE = re.compile(
-    r"<td[^>]*>\s*(\d{1,4})\s*</td>\s*<td[^>]*>\s*([^<]+?)\s*</td>\s*<td[^>]*>\s*([^<]+?)\s*</td>", re.S
+    r"<td[^>]*>\s*(\d{1,4})\s*</td>\s*<td[^>]*>\s*([^<]+?)\s*</td>\s*<td[^>]*>\s*([^<]+?)\s*</td>",
+    re.S,
 )
 META_RE = re.compile(
     r"<th>(QCS|GU|Mode de Paiement|NOMBRE|BIENS DE CONSOMMATION)[^<]*(?:<br>\s*<font class=\"lib_ass\">\s*(.*?)\s*</font>)?\s*</th>\s*<th>[^<]*?(?:<br>\s*<font class=\"lib_ass\">\s*(.*?)\s*</font>)?\s*</th>\s*<th>[^<]*?(?:<br>\s*<font class=\"lib_ass\">\s*(.*?)\s*</font>)?\s*</th>\s*</tr>\s*<tr>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>",
@@ -71,7 +72,10 @@ def fetch(code, tries=4):
     last = ""
     for attempt in range(tries):
         try:
-            req = {"User-Agent": HEADERS["User-Agent"], "Accept-Language": HEADERS["Accept-Language"]}
+            req = {
+                "User-Agent": HEADERS["User-Agent"],
+                "Accept-Language": HEADERS["Accept-Language"],
+            }
             import urllib.request as _u
 
             r = _u.Request(f"{BASE}?{qs}", headers=req)
@@ -98,20 +102,46 @@ def parse_detail(text):
         body = parts[i + 1] if i + 1 < len(parts) else ""
         if "IMPORTATION" in title and "EXPORT" not in title:
             for m in TAXROW_RE.finditer(body):
-                code, label, val, base = clean(m.group(1)), clean(m.group(2)), clean(m.group(3)), clean(m.group(4))
+                code, label, val, base = (
+                    clean(m.group(1)),
+                    clean(m.group(2)),
+                    clean(m.group(3)),
+                    clean(m.group(4)),
+                )
                 out["import_taxes"].append(
-                    {"code": code, "label": label, "value_raw": val, "value_num": num(val), "base": base}
+                    {
+                        "code": code,
+                        "label": label,
+                        "value_raw": val,
+                        "value_num": num(val),
+                        "base": base,
+                    }
                 )
         elif "EXPORTATION" in title:
             for m in TAXROW_RE.finditer(body):
-                code, label, val, base = clean(m.group(1)), clean(m.group(2)), clean(m.group(3)), clean(m.group(4))
+                code, label, val, base = (
+                    clean(m.group(1)),
+                    clean(m.group(2)),
+                    clean(m.group(3)),
+                    clean(m.group(4)),
+                )
                 out["export_taxes"].append(
-                    {"code": code, "label": label, "value_raw": val, "value_num": num(val), "base": base}
+                    {
+                        "code": code,
+                        "label": label,
+                        "value_raw": val,
+                        "value_num": num(val),
+                        "base": base,
+                    }
                 )
         elif "PRÉFÉRENTIELS" in title or "PREFERENTIELS" in title:
             for m in PREFROW_RE.finditer(body):
                 out["preferential"].append(
-                    {"country_code": clean(m.group(1)), "country": clean(m.group(2)), "rate_raw": clean(m.group(3))}
+                    {
+                        "country_code": clean(m.group(1)),
+                        "country": clean(m.group(2)),
+                        "rate_raw": clean(m.group(3)),
+                    }
                 )
         elif "INFORMATIONS GÉNÉRALES" in title or "INFORMATIONS GENERALES" in title:
             ths = [clean(x) for x in TH_RE.findall(body)]
@@ -217,7 +247,7 @@ def main():
         n = int(sys.argv[2]) if len(sys.argv) > 2 else 8
         # mix: quelques codes connus + un ch.87 (hybrides/électriques)
         picks = ["01012100015", "01012900011", "10063010911", "87038000113", "87034000114"]
-        picks += [c for _, c in all_codes if c not in picks][: n]
+        picks += [c for _, c in all_codes if c not in picks][:n]
         for code in picks:
             text, err = fetch(code)
             if text is None:
@@ -246,7 +276,10 @@ def main():
     save(results, enum, len(results), failed)
     run(targets, results, failed, workers=3, save_every=150)
     save(results, enum, len(results), failed)
-    print(f"FINI: ok={_stats['ok']} no_result={_stats['no_result']} failed={_stats['failed']}", flush=True)
+    print(
+        f"FINI: ok={_stats['ok']} no_result={_stats['no_result']} failed={_stats['failed']}",
+        flush=True,
+    )
 
 
 if __name__ == "__main__":
