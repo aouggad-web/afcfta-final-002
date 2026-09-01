@@ -519,12 +519,29 @@ class CrawledDataService:
                 }
             )
 
+        # Taxes et redevances à l'export (source officielle douane.gov.tn) —
+        # incluses quand elles sont présentes, avec leurs assiettes exactes.
+        export_taxes = []
+        for tax in pos.get("taxes_export", []) or []:
+            export_taxes.append(
+                {
+                    "code": tax.get("code", ""),
+                    "name": tax.get("name", tax.get("code", "")),
+                    "rate_pct": tax.get("rate_pct"),
+                    "raw_value": tax.get("raw_value", ""),
+                    "specific_value": tax.get("specific_value", ""),
+                    "assiette": tax.get("assiette", ""),
+                    "source": "douane.gov.tn",
+                }
+            )
+
         return {
             "code_raw": raw_code,
             "code_clean": code_clean,
             "designation": pos.get("designation", ""),
             "chapter": pos.get("chapter", ""),
             "taxes": taxes,
+            "export_taxes": export_taxes,
             "fiscal_advantages": fiscal_advantages,
             "administrative_formalities": formalities,
             "source": "douane.gov.tn",
@@ -1203,6 +1220,34 @@ class CrawledDataService:
         self._ensure_country_loaded(country_code)
         hs6_clean = hs6_code.replace(".", "").replace(" ", "")[:6].zfill(6)
         return self._hs6_index.get(country_code, {}).get(hs6_clean, [])
+
+    def get_export_taxes(self, country_code: str, hs_code: str) -> Optional[dict]:
+        """
+        Taxes et redevances à l'export d'une position nationale, telles que
+        publiées par la source officielle (ex. douane.gov.tn : RPD/EXPOR).
+        Retourne None si aucune donnée export n'est disponible pour ce pays.
+        """
+        country_code = country_code.upper()
+        self._ensure_country_loaded(country_code)
+        position = self.lookup(country_code, hs_code)
+        if not position:
+            return None
+        export_taxes = position.get("export_taxes") or []
+        if not export_taxes:
+            return None
+        # Frais de prestataires : marquage explicite (redevances de prestations
+        # douanières) directement dans la couche de données.
+        from services.tariff_doctrine import provider_fee_flags
+
+        for tax in export_taxes:
+            tax.update(provider_fee_flags(tax))
+        return {
+            "country": country_code,
+            "code": position.get("code_clean", ""),
+            "designation": position.get("designation", ""),
+            "export_taxes": export_taxes,
+            "source": position.get("source", ""),
+        }
 
     def search(self, country_code: str, query: str, limit: int = 50) -> List[dict]:
         country_code = country_code.upper()

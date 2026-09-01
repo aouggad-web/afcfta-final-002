@@ -11,6 +11,7 @@ import logging
 from typing import Callable, Dict, List, Optional
 
 from services import authentic_tariff_service as authentic_service
+from services.tariff_doctrine import get_country_doctrine_status
 
 logger = logging.getLogger(__name__)
 
@@ -58,11 +59,24 @@ class TariffProviderService:
                         "source": "postgres",
                     }
                     for row in countries
+                    if not self._doctrine_refused(str(row.get("iso3") or ""))
                 ]
         return authentic_service.get_available_countries()
 
+    def _doctrine_refused(self, country_iso3: str) -> bool:
+        """Doctrine tarifaire : refuser un pays non recrawlé, avant toute source."""
+        try:
+            return get_country_doctrine_status(country_iso3).get("status") != "SERVABLE"
+        except ValueError:
+            return True
+        except Exception as exc:
+            logger.warning("Doctrine check failed for %s: %s", country_iso3, exc)
+            return False
+
     def get_country_summary(self, country_iso3: str) -> Optional[Dict]:
         country = country_iso3.upper()
+        if self._doctrine_refused(country):
+            return None
         postgres = self._get_postgres()
         if postgres:
             summary = postgres.get_country_summary(country)
@@ -72,6 +86,8 @@ class TariffProviderService:
 
     def get_tariff_line(self, country_iso3: str, hs_code: str) -> Optional[Dict]:
         country = country_iso3.upper()
+        if self._doctrine_refused(country):
+            return None
         postgres = self._get_postgres()
         if postgres:
             tariff_line = postgres.get_tariff_line(country, hs_code)
@@ -82,6 +98,8 @@ class TariffProviderService:
     def get_sub_positions(self, country_iso3: str, hs6: str) -> List[Dict]:
         country = country_iso3.upper()
         hs6_code = hs6[:6]
+        if self._doctrine_refused(country):
+            return []
         postgres = self._get_postgres()
         if postgres:
             sub_positions = postgres.get_sub_positions(country, hs6_code)
@@ -108,6 +126,8 @@ class TariffProviderService:
         self, country_iso3: str, query: str, language: str = "fr", limit: int = 20
     ) -> List[Dict]:
         country = country_iso3.upper()
+        if self._doctrine_refused(country):
+            return []
         postgres = self._get_postgres()
         if postgres:
             results = postgres.search_commodities(country, query, limit, language)

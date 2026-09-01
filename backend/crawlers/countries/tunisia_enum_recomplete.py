@@ -109,4 +109,6 @@ async def main():
     print(f"TOTAL: {total} codes | échecs: {len(failed)} | codes du crawl toujours absents: {still}", flush=True)
 
 
-asyncio.run(main())
+
+if __name__ == "__main__":
+    asyncio.run(main())

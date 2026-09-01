@@ -70,4 +70,6 @@ async def main():
     print(f"TOTAL: {total} codes | erreurs: {len(errors)} -> {OUT.name}", flush=True)
 
 
-asyncio.run(main())
+
+if __name__ == "__main__":
+    asyncio.run(main())
