@@ -1,0 +1,61 @@
+{
+  "registry_version": "1.0",
+  "updated_at": "2026-09-01",
+  "doctrine": "Registre des prestataires mandatés par les États pour des missions régaliennes douanières (guichet unique, réseau communautaire, système d'information douanier). Chaque entrée DOIT être sourcée par un document officiel vérifiable. Aucune entrée non vérifiée n'est servie — les pays non encore documentés restent explicitement 'A_DOCUMENTER'.",
+  "fields": {
+    "provider_name": "Nom du prestataire délégataire",
+    "delegated_missions": "Missions régaliennes déléguées (ex. guichet unique, traitement des déclarations)",
+    "fee_codes": "Codes des redevances/frais dans le tarif national crawlé",
+    "paid_by": "ETAT | OPERATEURS_ECONOMIQUES | MIXTE — qui paie la prestation",
+    "legal_basis": "Base légale instituant la délégation et la redevance",
+    "source_url": "URL officielle vérifiable",
+    "verification_status": "VERIFIE_SOURCE_CRAWLEE | A_DOCUMENTER"
+  },
+  "countries": {
+    "TUN": {
+      "verification_status": "VERIFIE_SOURCE_CRAWLEE",
+      "source_url": "https://www.douane.gov.tn/tarifwebnew/",
+      "tariff_system": {
+        "import_cascade": "DD, TVA/AP, RPD/IMPOR + taxes spécifiques par position (assiettes déclarées : VALEUR DOUANE DINARS, VAL.DOU(D)+R(DT), SOMME D.T)",
+        "export_cascade": "DROIT.EXP (produits spécifiques: dattes, pétrole brut), TAXE/FERRAILLES.EXP (spécifique en dinars/kg), T/PCEX, RPD/EXPOR (assiette SOMME D.T)",
+        "note": "Système documenté position par position dans le Tarif Web douane.gov.tn crawlé (17 542 positions)."
+      },
+      "providers": [
+        {
+          "provider_name": "Prestataire du guichet unique douanier tunisien (redevance de prestation douanière)",
+          "delegated_missions": "Traitement dématérialisé des déclarations en douane (guichet unique), réseau interconnecté douanes-banques-transporteurs",
+          "fee_codes": ["RPD/IMPOR", "RPD/EXPOR"],
+          "fee_labels": {
+            "RPD/IMPOR": "Redevance de Prestation Douanière à l'Importation",
+            "RPD/EXPOR": "Redevance de Prestation Douanière à l'Exportation"
+          },
+          "paid_by": "OPERATEURS_ECONOMIQUES",
+          "paid_by_note": "Redevance supportée par les opérateurs économiques (importateurs/exporteurs) déclarants, assise sur la somme des droits et taxes (assiette 'SOMME D.T') telle que publiée au Tarif Web.",
+          "legal_basis": "Tarif douanier tunisien — Tarif Web 2026 (douane.gov.tn), redevances de prestations douanières inscrites ligne par ligne",
+          "source_url": "https://www.douane.gov.tn/tarifwebnew/",
+          "evidence": "backend/data/crawled/TUN_tariffs.json : codes RPD/IMPOR et RPD/EXPOR présents sur 17 530/17 542 positions, assiettes officielles"
+        }
+      ]
+    },
+    "GHA": {
+      "verification_status": "A_DOCUMENTER",
+      "note": "Candidat documenté publiquement (réseau communautaire douanier / système d'information des déclarations) — redevances présumées portées par les opérateurs. Aucune entrée servie tant que la base légale et le barème ne sont pas vérifiés dans une source officielle crawlée.",
+      "providers": []
+    },
+    "CIV": {
+      "verification_status": "A_DOCUMENTER",
+      "note": "Guichet unique portuaire — frais de dossier des opérateurs à documenter depuis une source officielle.",
+      "providers": []
+    },
+    "SEN": {
+      "verification_status": "A_DOCUMENTER",
+      "note": "Système GAINDE (guichet unique) — redevances à documenter depuis une source officielle.",
+      "providers": []
+    },
+    "CMR": {
+      "verification_status": "A_DOCUMENTER",
+      "note": "Réseau douanier communautaire — redevances à documenter depuis une source officielle.",
+      "providers": []
+    }
+  }
+}

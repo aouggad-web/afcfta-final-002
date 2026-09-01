@@ -1,0 +1,663 @@
+
+
+
+<script type="text/javascript" charset="utf-8">
+		$(document).ready(function() {
+		    $('.sliderContent').hide();
+            $('a.togglebtn, a.toggleimg').click(function(){
+                // toggle the visibility with each click
+                //debugger;
+                
+			    // assign the button and image to variables (for clarity)
+			    var btn = $(this).parents('.downloadcategory').find('.togglebtn span');
+			    var img = $(this).parents('.downloadcategory').find('.toggleimg span img');
+    			// 21231/21211 gps
+			    if (btn.html() == "")
+			    {
+			        $(this).parents('.downloadcategory').find('.sliderContent').slideUp("fast");
+				    btn.before("<span>&nbsp;</span>").remove();
+				    img.before('<img src="http://41.231.36.137/tarifweb/autres2.gif" border="0" />').remove();
+			    } else {
+			        $(this).parents('.downloadcategory').find('.sliderContent').slideDown("fast");
+				    btn.before('<span></span>').remove();
+				    img.before('<img src="http://41.231.36.137/tarifweb/autres1.gif" border="0" />').remove();
+			    }
+		    });
+		});
+	</script>
+
+<script language="javascript" src="./Portail Douane_ Tarif_ar_files/fade.js.téléchargement"></script>
+<style type="text/css">
+.lib_ass {
+	font-style:italic;
+	font-size:10px;
+}
+
+a.info {
+   position: relative;
+   text-decoration: none;
+}
+a.info span {
+   display: none; /* on masque l'infobulle */
+}
+a.info:hover {
+   background: none; /* correction d'un bug IE */
+   z-index: 500; /* on d�finit une valeur pour l'ordre d'affichage */
+   cursor: help; /* on change le curseur par d�faut en curseur d'aide */
+}
+a.info:hover span {
+   display: inline; /* on affiche l'infobulle */
+   position: absolute;
+   white-space: nowrap; /* on change la valeur de la propri�t� white-space pour qu'il n'y ait pas de retour � la ligne non-d�sir� */
+   top: 30px; /* on positionne notre infobulle */
+   left: 20px;
+   background: white;
+   color: #448BBF;
+   padding: 3px;
+   border: 1px solid #666666;
+   border-left: 4px solid #666666;
+}
+</style>
+<script type="text/javascript">
+<!--
+
+function montre(id) {
+	var d = document.getElementById('smenu'+id);
+	for (var i = 1; i<=21; i++) {
+		if(document.getElementById('smenu'+i)){
+			if(id==i){
+				if(d.style.display=='block')
+					d.style.display='none';
+				else
+					d.style.display='block';
+			}
+			else
+				document.getElementById('smenu'+i).style.display='none';
+		}
+	}
+}
+var cl=0;
+
+function fond(){
+if (cl%2 == 0) {document.write("<tr class=blanc>");}
+else {document.write("<tr class=gris>");}
+return cl++;
+}
+
+function download_section(TheForm, sect) {
+	TheForm.action="fileadmin/download.php?Fichier_a_telecharger=NOTES_SECTION_"+sect+".pdf&chemin=notes_sections/";
+	TheForm.submit();
+	return true;
+}
+
+function download_chapitre(TheForm, chap) {
+	TheForm.action="fileadmin/download.php?Fichier_a_telecharger=NOTES_CHAPITRE_"+chap+".pdf&chemin=notes_chapitres/";
+	TheForm.submit();
+	return true;
+}
+
+function ListOver(element){
+    element.bgColor =  "#DAE8F2";
+}
+
+function ListOut_0(element){
+    element.bgColor =  "#EEEEEE";
+}
+
+function ListOut_1(element){
+    element.bgColor =  "#FFFFFF";
+}
+
+
+
+function valid_rech(TheForm) {
+	//if(TheForm.nomenclature.value!="" || TheForm.mcle.value!="") {
+	if( TheForm.mcle.value!="") {
+		TheForm.submit();
+		return true;
+	}
+	else
+		alert("Veuillez introduire des critères de recherche");
+}
+</script>
+ 
+	
+            
+        <td style="border-style:hidden;" >
+		
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informations Tarifaires - 01012100015</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f5f5f5;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .header {
+        background-color: #bdc3c7; /* Gris clair */
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+
+    .nomenclature-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .product-description {
+        
+          font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .info-section {
+        margin-bottom: 25px;
+    }
+
+  .section-title {
+    background-color: #bdc3c7; /* Gris clair */
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center; /* <-- Ajouté pour centrer le texte */
+}
+
+    .table-wrapper {
+        overflow-x: auto;
+        margin-bottom: 15px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px;
+    }
+
+    .info-table th, .info-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        white-space: nowrap;
+		text-align: center;
+    }
+
+    .info-table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+		text-align: center;
+    }
+
+    .info-table tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+
+    .tax-rate {
+        font-weight: bold;
+        color: #e74c3c;
+    }
+
+    .country-code {
+        font-weight: bold;
+        color: #3498db;
+    }
+
+    .zero-rate {
+        color: #27ae60;
+        font-weight: bold;
+    }
+
+    .print-section {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .print-btn {
+        background-color: #95a5a6; /* Gris plus foncé mais clair */
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: background-color 0.3s;
+    }
+
+    .print-btn:hover {
+        background-color: #7f8c8d; /* Gris un peu plus foncé au hover */
+    }
+
+    .print-icon {
+        font-size: 18px;
+    }
+
+    /* Responsive Mobile */
+    @media screen and (max-width: 768px) {
+        body {
+            margin: 10px;
+        }
+        
+        .container {
+            padding: 15px;
+        }
+        
+        .nomenclature-title {
+            font-size: 16px;
+        }
+        
+        .product-description {
+            font-size: 14px;
+        }
+        
+        .section-title {
+            font-size: 14px;
+            padding: 8px;
+        }
+        
+        /* Tables responsives - Mode scroll horizontal */
+        .table-wrapper {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+            position: relative;
+        }
+        
+        .table-wrapper::after {
+            content: "← Faites défiler horizontalement →";
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .info-table {
+            min-width: 500px;
+        }
+        
+        .info-table th, .info-table td {
+            padding: 6px;
+            font-size: 12px;
+            min-width: 80px;
+			text-align: center;
+        }
+        
+        /* Table spécifique pour informations générales */
+        .info-section:first-of-type .info-table {
+            min-width: 400px;
+        }
+        
+        /* Table CCEC plus compacte */
+        .info-section:nth-of-type(2) .info-table {
+            min-width: 250px;
+        }
+        
+        /* Tables droits et taxes */
+        .info-section .info-table th:first-child,
+        .info-section .info-table td:first-child {
+            min-width: 120px;
+        }
+        
+        /* Table documents - Code pays plus étroit */
+        .info-section:last-of-type .info-table th:first-child,
+        .info-section:last-of-type .info-table td:first-child {
+            min-width: 50px;
+            max-width: 60px;
+        }
+        
+        .print-btn {
+            padding: 10px 20px;
+            font-size: 14px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .container {
+            padding: 10px;
+        }
+        
+        .nomenclature-title {
+            font-size: 14px;
+        }
+        
+        .info-table th, .info-table td {
+            padding: 4px;
+            font-size: 11px;
+        }
+        
+        .info-table {
+            min-width: 400px;
+        }
+        
+        .print-btn {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+    }
+
+    @media print {
+        .print-section {
+            display: none;
+        }
+
+        body {
+            background-color: white;
+        }
+
+        .container {
+            box-shadow: none;
+            max-width: 100%;
+        }
+        
+        .table-wrapper::after {
+            display: none;
+        }
+    }
+</style>
+
+
+</head>
+<body>
+ <div id="printable-area">
+    <div class="container">
+        <div class="header">
+            <div class="nomenclature-title">
+                Section N° 01 => Chapitre N° 01 => N° de la nomenclature: 01012100015            </div>
+            <div class="product-description">
+                <!-- echo $LIBEL; php echo strtoupper(htmlentities($LIBEL, ENT_COMPAT, 'UTF-8')); -->
+                Chevaux de course,reproducteurs de race pure,de pur sang arabe				
+            </div>
+        </div>
+
+          <div class="info-section">
+        <div class="section-title">INFORMATIONS GÉNÉRALES</div>
+        <div class="table-wrapper">
+            <table class="info-table">
+                <tr>
+                                            <th>QCS <br><font class="lib_ass"> Quantité Complémentaire Statistique</font></th>
+                                        
+                                        
+                                            <th>GU <br><font class="lib_ass"> Groupe d'Utilisation</font></th>
+                                        
+                                            <th>Mode de Paiement</th>
+                                    </tr>
+                <tr>
+                                            <td>NOMBRE</td>
+                                        
+                                        
+                                            <td>BIENS DE CONSOMMATION</td>
+                                        
+                                            <td>MP5</td>
+                                    </tr>
+            </table>
+        </div>
+    </div>
+
+
+
+
+  
+        <div class="info-section">
+            <div class="section-title">CCEC - COMMERCE EXTÉRIEUR</div>
+            <div class="table-wrapper">
+                <table class="info-table">
+                    <tr>
+                        <th>IMPORT <br> <font class="lib_ass">   </font></th>
+                         <th>EXPORT <br> <font class="lib_ass">  </font></th>
+                        
+                    </tr>
+                    <tr>
+                    
+                      
+    <td>
+        <span style="color:green;">Libre ✅</span>    </td>
+
+    <td>
+        <span style="color:green;">Libre ✅</span>    </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+      
+        
+        
+        
+        
+                <div class="info-section">
+            <div class="section-title">DROITS ET TAXES À L'IMPORTATION</div>
+            <div class="table-wrapper">
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>DROITS / TAXES </th>
+                            <th>Valeur</th>
+                            <th>Assiette</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                <tr>
+                          <td>DD <br> <font class="lib_ass">  DROIT DOUANE ADV.IMP</font></td>
+                           <td style="font-weight: bold; font-size: 20px;">
+								36 %							</td>
+														
+                            <td>VALEUR DOUANE DINARS</td>
+                        </tr>
+                                                <tr>
+                          <td>TVA/AP <br> <font class="lib_ass">   TAXE VALEUR AJOUTEE</font></td>
+                           <td style="font-weight: bold; font-size: 20px;">
+								0 %							</td>
+														
+                            <td>VAL.DOU(D)+R(DT) GR.0</td>
+                        </tr>
+                                                <tr>
+                          <td>D.S.V. <br> <font class="lib_ass">  DROIT SANIT.VETERINA</font></td>
+                           <td style="font-weight: bold; font-size: 20px;">
+								0.1 dinars							</td>
+														
+                            <td> QCS</td>
+                        </tr>
+                                                <tr>
+                          <td>RPD/IMPOR <br> <font class="lib_ass">   REDEV.PREST.DOUA/IM</font></td>
+                           <td style="font-weight: bold; font-size: 20px;">
+								3 %							</td>
+														
+                            <td>SOMME D.T (G=0.1.2.3.4.</td>
+                        </tr>
+                                            </tbody>
+                </table>
+            </div>
+        </div>
+        
+                <div class="info-section">
+            <div class="section-title">DROITS ET TAXES À L'EXPORTATION</div>
+            <div class="table-wrapper">
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>DROITS / TAXES </th>
+                            <th>Valeur</th>
+                            <th>Assiette</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                <tr>
+                            <td>RPD/EXPOR <br> <font class="lib_ass">  REDEV.PREST.DOUA/EXP</font></td>
+
+                            <td style="font-weight: bold; font-size: 20px;">
+									0 %								</td>
+                            <td>SOMME D.T (G=0.1.2.3.4.</td>
+                        </tr>
+                                            </tbody>
+                </table>
+            </div>
+        </div>
+        
+                <div class="info-section">
+            <div class="section-title">DROITS PRÉFÉRENTIELS PAR PAYS</div>
+            <div class="table-wrapper">
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Code Pays</th>
+                            <th>Pays</th>
+                            <th>Taux Préférentiel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                <tr>
+                            <td style="font-weight: bold; font-size: 20px;">818</td>
+                            <td style="font-weight: bold; font-size: 20px;">EGYPTE</td>
+                            <td style="font-weight: bold; font-size: 20px;">
+                                0 %                            </td>
+                        </tr>
+                                                <tr>
+                            <td style="font-weight: bold; font-size: 20px;">120</td>
+                            <td style="font-weight: bold; font-size: 20px;">CAMEROUN</td>
+                            <td style="font-weight: bold; font-size: 20px;">
+                                40 %                            </td>
+                        </tr>
+                                                <tr>
+                            <td style="font-weight: bold; font-size: 20px;">566</td>
+                            <td style="font-weight: bold; font-size: 20px;">NIGERIA</td>
+                            <td style="font-weight: bold; font-size: 20px;">
+                                40 %                            </td>
+                        </tr>
+                                                <tr>
+                            <td style="font-weight: bold; font-size: 20px;">288</td>
+                            <td style="font-weight: bold; font-size: 20px;">GHANA</td>
+                            <td style="font-weight: bold; font-size: 20px;">
+                                40 %                            </td>
+                        </tr>
+                                                <tr>
+                            <td style="font-weight: bold; font-size: 20px;">710</td>
+                            <td style="font-weight: bold; font-size: 20px;">AFRIQUE DU SUD</td>
+                            <td style="font-weight: bold; font-size: 20px;">
+                                40 %                            </td>
+                        </tr>
+                                                <tr>
+                            <td style="font-weight: bold; font-size: 20px;">888</td>
+                            <td style="font-weight: bold; font-size: 20px;">PALESTINE</td>
+                            <td style="font-weight: bold; font-size: 20px;">
+                                0 %                            </td>
+                        </tr>
+                                                <tr>
+                            <td style="font-weight: bold; font-size: 20px;">834</td>
+                            <td style="font-weight: bold; font-size: 20px;">TANZANIE</td>
+                            <td style="font-weight: bold; font-size: 20px;">
+                                0 %                            </td>
+                        </tr>
+                                                <tr>
+                            <td style="font-weight: bold; font-size: 20px;">404</td>
+                            <td style="font-weight: bold; font-size: 20px;">KENYA</td>
+                            <td style="font-weight: bold; font-size: 20px;">
+                                40 %                            </td>
+                        </tr>
+                                                <tr>
+                            <td style="font-weight: bold; font-size: 20px;">414</td>
+                            <td style="font-weight: bold; font-size: 20px;">KOWEIT</td>
+                            <td style="font-weight: bold; font-size: 20px;">
+                                0 %                            </td>
+                        </tr>
+                                            </tbody>
+                </table>
+            </div>
+        </div>
+        
+                <div class="info-section">
+            <div class="section-title">DOCUMENTS REQUIS</div>
+            <div class="table-wrapper">
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Description</th>
+                            <th> Document</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                <tr>
+                            <td style="font-weight: bold; font-size: 20px;">705</td>
+                            <td>PR CERTIFICAT SANITAIRE</td>
+                             <td style="text-align:center;">
+                        <a href="/tarifwebnew/Reglementations_particulieres/doc-705.pdf" target="_blank" title="Ouvrir le document PDF">
+                            <!-- Icône PDF simple (tu peux changer avec une image si tu veux) -->
+                            📄
+                        </a>
+                    </td>
+                        </tr>
+                                            </tbody>
+                </table>
+            </div>
+        </div>
+            <div class="print-section">
+                <button onclick="window.print()" class="print-btn">
+                    <span class="print-icon">🖨️</span>
+                    Imprimer ces données
+                </button>
+            </div>
+        
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 100%; padding: 10px; font-family: Arial, sans-serif;">
+        <div style="width: 100%; text-align: center;">
+            <a target="_blank" href="/tarifwebnew/notes_sections/NOTES_SECTION_1.pdf">
+                <button class="bouton_calcul" style="width: 90%; max-width: 350px;">Notes de la section N° 1</button>
+            </a>
+        </div>
+        <div style="width: 100%; text-align: center;">
+            <a target="_blank" href="/tarifwebnew/notes_chapitres/NOTES_CHAPITRE_01.pdf">
+                <button class="bouton_calcul" style="width: 90%; max-width: 350px;">Notes du chapitre N° 01 de la section 1</button>
+            </a>
+        </div>
+    </div><table align="center" border="0" cellspacing="0" cellpadding="0" width="100%">
+    <tr>
+        <td align="center">
+            <input name="calculer" type="button" class="bouton_calcul" value="Retour" onclick="window.location.href='https://www.douane.gov.tn/tarifweb2025/'" />
+        </td>
+    </tr>
+    </table> 
+
+        <div style="margin-top: 30px; padding: 15px; background-color: #ecf0f1; border-radius: 5px;">
+            <strong>Note:</strong> Les informations présentées correspondent aux données tarifaires pour la nomenclature 01012100015 - Chevaux de course,reproducteurs de race pure,de pur sang arabe. Les taux et conditions peuvent être sujets à modification selon la réglementation en vigueur.
+        </div>
+
+        <div style="margin-top: 15px; padding: 15px; background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px;">
+            <strong>NB:</strong> L'estimation des droits et taxes à payer est sous réserve de vérification des données saisies lors du dédouanement effectif des marchandises.
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+
+<tr>    
+	</table></td>
+        </table></td>
+          </tr>
+	</table>
+	
+<script type="text/javascript">window.onload=montre("")</script>

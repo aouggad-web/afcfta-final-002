@@ -1,0 +1,383 @@
+{
+ "country": "TUN",
+ "generated_at": "2026-08-29T21:09:10.545430+00:00",
+ "action": "consolidation_fichier_national_autonome",
+ "rates_source_unchanged": true,
+ "before": {
+  "sub_positions": 17512,
+  "sha256": "3313ca536987dddf1c2ab1ff2253883c792fe6f02ccedf4ca8ee3231b1055d8a"
+ },
+ "after": {
+  "sub_positions": 17625,
+  "avec_taux": 17512,
+  "nouveaux_codes_sans_taux": 113,
+  "codes_absents_source": 83
+ },
+ "new_codes": [
+  "03049910098",
+  "04021019928",
+  "04021019939",
+  "04022118119",
+  "04022191110",
+  "04022191198",
+  "04022919112",
+  "04022919190",
+  "08051080073",
+  "11063090017",
+  "11063090095",
+  "15156059013",
+  "15156059091",
+  "27112900960",
+  "29096010005",
+  "29301000090",
+  "36034000011",
+  "36034000099",
+  "36035000006",
+  "36036000002",
+  "38089190242",
+  "38089190253",
+  "38089190286",
+  "39232100017",
+  "39232100095",
+  "44212000035",
+  "63049100083",
+  "84852000008",
+  "85149070015",
+  "85149070093",
+  "85176930006",
+  "87022010117",
+  "87022010195",
+  "87022010913",
+  "87022010991",
+  "87022090119",
+  "87022090197",
+  "87022090915",
+  "87022090993",
+  "87023010113",
+  "87023010191",
+  "87023010919",
+  "87023010997",
+  "87023090115",
+  "87023090193",
+  "87023090911",
+  "87023090999",
+  "87032110131",
+  "87032190188",
+  "87032210170",
+  "87032210181",
+  "87032290138",
+  "87032290149",
+  "87032410910",
+  "87032410998",
+  "87033110148",
+  "87033190184",
+  "87038010121",
+  "87038090123",
+  "87044131197",
+  "87044131288",
+  "87044131313",
+  "87044131391",
+  "87044131426",
+  "87044131506",
+  "87044131619",
+  "87044131697",
+  "87044139191",
+  "87044139282",
+  "87044139317",
+  "87044139395",
+  "87044139408",
+  "87044139500",
+  "87044139613",
+  "87044139691",
+  "87044191191",
+  "87044191226",
+  "87044191282",
+  "87044191317",
+  "87044191395",
+  "87044191408",
+  "87044191511",
+  "87044191599",
+  "87044191613",
+  "87044191691",
+  "87044199195",
+  "87044199220",
+  "87044199286",
+  "87044199311",
+  "87044199399",
+  "87044199402",
+  "87044199515",
+  "87044199593",
+  "87044199617",
+  "87044199695",
+  "87044299930",
+  "87045110910",
+  "87045131193",
+  "87045131206",
+  "87045131319",
+  "87045131397",
+  "87045139197",
+  "87045139200",
+  "87045139313",
+  "87045139391",
+  "87045191197",
+  "87045191200",
+  "87045191313",
+  "87045191391",
+  "87045199191",
+  "87045199204",
+  "87045199317",
+  "87045199395"
+ ],
+ "absent_codes": [
+  "03063990098",
+  "04021019927",
+  "04021019938",
+  "04022118118",
+  "04022191115",
+  "04022191193",
+  "04022919111",
+  "04022919199",
+  "08051080084",
+  "11063090006",
+  "15156059010",
+  "15156059098",
+  "22042990011",
+  "22042990099",
+  "27112900961",
+  "29096010004",
+  "29301000001",
+  "36030040013",
+  "36030040091",
+  "36030050006",
+  "36030060000",
+  "38089190247",
+  "38089190258",
+  "38089190281",
+  "39232100016",
+  "39232100092",
+  "44079998005",
+  "44212000031",
+  "84852000007",
+  "85149090013",
+  "85149090091",
+  "85176930005",
+  "85198111007",
+  "85198115009",
+  "85198121103",
+  "85198121910",
+  "85198121998",
+  "87022010015",
+  "87022010093",
+  "87022090017",
+  "87022090095",
+  "87023010011",
+  "87023010099",
+  "87023090013",
+  "87023090091",
+  "87032410911",
+  "87032410999",
+  "87044131108",
+  "87044131211",
+  "87044131299",
+  "87044131302",
+  "87044131415",
+  "87044131493",
+  "87044139102",
+  "87044139215",
+  "87044139293",
+  "87044139306",
+  "87044139419",
+  "87044139497",
+  "87044191102",
+  "87044191215",
+  "87044191293",
+  "87044191306",
+  "87044191419",
+  "87044191497",
+  "87044199106",
+  "87044199219",
+  "87044199297",
+  "87044199300",
+  "87044199413",
+  "87044199491",
+  "87044299939",
+  "87045131104",
+  "87045131217",
+  "87045131295",
+  "87045139108",
+  "87045139211",
+  "87045139299",
+  "87045191211",
+  "87045191299",
+  "87045199102",
+  "87045199215",
+  "87045199293"
+ ],
+ "label_diffs": [
+  {
+   "code": "20089736006",
+   "designation_juin": "Mélanges de fuits tropicaux (y compris les mélanges contenant en poids 50% ou + de fruits trop  et fruits a coques trop )a l'exception de ceux du n°2008 19,autrement préparés ou conservé avec add  d'alcool,d'une teneur en sucres <= 9% en poids,ayant un titre alcoomét mas  >= 11,85% mas",
+   "designation_aout": "MÉlanges de fuits tropicaux (y compris les mÉlanges contenant en poids 50% ou + de fruits trop  et fruits a coques trop )a l'exception de ceux du n°2008 19,autrement prÉparÉs ou conservÉ avec add  d'alcool,d'une teneur en sucres = 11,85% mas"
+  },
+  {
+   "code": "22042108097",
+   "designation_juin": "Autres vins de cipage,autres que ceux visés aux n° 22 04 10,presentés dans des bouteilles fermées par bouchon \"champignon\" maintenu a l'aide d'attaches ou des liens,d'une contenence >1l mais<2l;autres vins de cipage presentes en autres recipients d'une contenence >1l mais<2l ayant a la temperat",
+   "designation_aout": "Autres vins de cipage,autres que ceux visÉs aux n° 22 04 10,presentÉs dans des bouteilles fermÉes par bouchon \"champignon\" maintenu a l'aide d'attaches ou des liens,d'une contenence >1l mais1l mais<2l ayant a la temperat"
+  },
+  {
+   "code": "22042109012",
+   "designation_juin": "Autr vins autr que ceux visés au n°2204 10,presentés dans des bout fermées par un bouchon(champi) maintenu a l'aide d'attaches ou de liens; d'une contenance <= 0 375l; autr vins pres en autr rece d'une contenance <= 0 375l, ayan une temp a 20°c, une suppr due a l'anhydr carbonique en solu , >1bar et",
+   "designation_aout": "Autr vins autr que ceux visÉs au n°2204 10,presentÉs dans des bout fermÉes par un bouchon(champi) maintenu a l'aide d'attaches ou de liens; d'une contenance 1bar et"
+  },
+  {
+   "code": "22042109090",
+   "designation_juin": "Autres vins,autres que ceux visés aux n° 22 04 10,presentés dans des bouteilles fermées par bouchon \"champignon\" maintenu a l'aide d'attaches ou des liens,d'une contenance >1l mais <=2l;autres vins presentes en autres recipients d'une contenance >1l mais <=2l, ayant a la temperature de 20°c une",
+   "designation_aout": "Autres vins,autres que ceux visÉs aux n° 22 04 10,presentÉs dans des bouteilles fermÉes par bouchon \"champignon\" maintenu a l'aide d'attaches ou des liens,d'une contenance >1l mais 1l mais <=2l, ayant a la temperature de 20°c une"
+  },
+  {
+   "code": "22042185089",
+   "designation_juin": "Vin de madère et moscatel de setubal (vin de liqueur),produit dans l'union europ avec appellation d'origine protegee (aop)ou avec indication geographique protegee(igp),ayant un titre alco volumique acquis >15% vol et <=22% vol,présentés en bouteilles d'une contenance > 1l mais <= 2litres",
+   "designation_aout": "Vin de madÈre et moscatel de setubal (vin de liqueur),produit dans l'union europ avec appellation d'origine protegee (aop)ou avec indication geographique protegee(igp),ayant un titre alco volumique acquis >15% vol et  1l mais <= 2litres"
+  },
+  {
+   "code": "22042186093",
+   "designation_juin": "Vin de xères (vins de liqueur),produit dans l'union europ avec appellation d'origine protegee (aop)ou avec indication geographique protegee(igp),ayant un titre alco volumique acquis >15% vol et <=22% vol,présentés en bouteilles d'une contenance > 1l mais <= 2litres",
+   "designation_aout": "Vin de xÈres (vins de liqueur),produit dans l'union europ avec appellation d'origine protegee (aop)ou avec indication geographique protegee(igp),ayant un titre alco volumique acquis >15% vol et  1l mais <= 2litres"
+  },
+  {
+   "code": "22042190099",
+   "designation_juin": "Autres vins de liqueur,produit dans l'union europ avec appellation d'origine protegee (aop)ou avec indication geographique protegee(igp),ayant un titre alco volumique acquis >15% vol et <=22% vol,présentés en bouteilles d'une contenance > 1l mais <= 2litres",
+   "designation_aout": "Autres vins de liqueur,produit dans l'union europ avec appellation d'origine protegee (aop)ou avec indication geographique protegee(igp),ayant un titre alco volumique acquis >15% vol et  1l mais <= 2litres"
+  },
+  {
+   "code": "22042191081",
+   "designation_juin": "Autres vins de liqueur,produit dans l'union europ,ayant un titre alco volumique acquis >15% vol et <=22% vol,présentés en bouteilles d'une contenance > 1l mais <= 2litres",
+   "designation_aout": "Autres vins de liqueur,produit dans l'union europ,ayant un titre alco volumique acquis >15% vol et  1l mais <= 2litres"
+  },
+  {
+   "code": "22042210003",
+   "designation_juin": "Vins,autres que ceux visés au n°2204 10,présenté dans des bouteille fermés par 1 bouchon \"champignion\"maintenu a l'aide d'attache ou de liens;vins autre présenté ayant,a la tempé de 20°c,1e supression due a l'anhydride carboni en solution,>a1 bar et< a3 bar,en recipien d'1e contenance >2l mais<=10l",
+   "designation_aout": "Vins,autres que ceux visÉs au n°2204 10,prÉsentÉ dans des bouteille fermÉs par 1 bouchon \"champignion\"maintenu a l'aide d'attache ou de liens;vins autre prÉsentÉ ayant,a la tempÉ de 20°c,1e supression due a l'anhydride carboni en solution,>a1 bar et2l mais<=10l"
+  },
+  {
+   "code": "22042910008",
+   "designation_juin": "Vins,autres que ceux visés au n°2204  10,présentés dans des bouteilles fermées par un bouchon \"champignion\" maintenu a l'aide d'attaches ou de liens;vins autre  présentés ayant,a la tempé  de 20°c,une supression due a l'anhydride carbonique en solution,> a 1 bar et < a 3 bar,d'une contenance > 2l",
+   "designation_aout": "Vins,autres que ceux visÉs au n°2204  10,prÉsentÉs dans des bouteilles fermÉes par un bouchon \"champignion\" maintenu a l'aide d'attaches ou de liens;vins autre  prÉsentÉs ayant,a la tempÉ  de 20°c,une supression due a l'anhydride carbonique en solution,> a 1 bar et  2l"
+  },
+  {
+   "code": "37025500003",
+   "designation_juin": "Autres pellicules pour la photographie en couleurs(polychrome),sensibilisees,non impressionnees,en autres matieres que le papier,le carton ou les textiles,en rouleaux,d'une largeur >16mmmais<35mm et d'une largeur>30m",
+   "designation_aout": "Autres pellicules pour la photographie en couleurs(polychrome),sensibilisees,non impressionnees,en autres matieres que le papier,le carton ou les textiles,en rouleaux,d'une largeur >16mmmais30m"
+  },
+  {
+   "code": "37029710012",
+   "designation_juin": "Microfilms;films pour les arts graphiques,sensibilisees,non impressionnees,en autres matieres que le papier,le carton ou les textiles,en rouleaux,d'une largeur <= 35mm,et d'une longueur > 30 m pour l'impres  des journaux,periodiques,livres,depliants et brochures touristiques",
+   "designation_aout": "Microfilms;films pour les arts graphiques,sensibilisees,non impressionnees,en autres matieres que le papier,le carton ou les textiles,en rouleaux,d'une largeur  30 m pour l'impres  des journaux,periodiques,livres,depliants et brochures touristiques"
+  },
+  {
+   "code": "48025400712",
+   "designation_juin": "Papiers sans fib fab ppment apart de pat blan et obpar 1proc mec ou chim-mec ou dont 10%au+en poids de la comp fibr tot st cons par de tel fibr,d'1poid aum2<15g et dest a lafabr du papier stenc,en band ou en roul dtlarg>15cm;ou en feui de form car ou rect dtau-1cote>36cm etl'aut15 al'etat non plie",
+   "designation_aout": "Papiers sans fib fab ppment apart de pat blan et obpar 1proc mec ou chim-mec ou dont 10%au+en poids de la comp fibr tot st cons par de tel fibr,d'1poid aum215cm;ou en feui de form car ou rect dtau-1cote>36cm etl'aut15 al'etat non plie"
+  },
+  {
+   "code": "48025680714",
+   "designation_juin": "Autr pap support pour papier autocopiant,fab ppment a partir de pat blanchi,ss fibres ob par un proc meca ou chimico-meca ou dont 10% au+en poids de la compo fibr tot sont const par de tel fibres,d'un poids au m2 >=40g et <=150g,en feuil dont au-1cote >36cm,et l'autr 15,a l'etat non plie",
+   "designation_aout": "Autr pap support pour papier autocopiant,fab ppment a partir de pat blanchi,ss fibres ob par un proc meca ou chimico-meca ou dont 10% au+en poids de la compo fibr tot sont const par de tel fibres,d'un poids au m2 >=40g et 36cm,et l'autr 15,a l'etat non plie"
+  },
+  {
+   "code": "48025680792",
+   "designation_juin": "Autr pap et cartons,fab ppment a part de pat blanchi,ss fibres ob par un proc meca ou chimico-meca ou dont 10% au+en poids de la compo fibreuse tot sont constitues par de telles fibres,d'un poids au m2 >=40g et <=150g, en feuilles dont au-1cote>36cm et l'autre 15cm, a l'etat non plie",
+   "designation_aout": "Autr pap et cartons,fab ppment a part de pat blanchi,ss fibres ob par un proc meca ou chimico-meca ou dont 10% au+en poids de la compo fibreuse tot sont constitues par de telles fibres,d'un poids au m2 >=40g et 36cm et l'autre 15cm, a l'etat non plie"
+  },
+  {
+   "code": "48025700795",
+   "designation_juin": "Autres pap et cartons,fab ppment a part de pat blanch, ss fib ob par un proc meca ou chimico-meca ou dont 10% au+en poids de la compo fibr tot sont const par de tel fibr,d'1 poids au m2>=40g et<=150g,en band dont la larg>15cm ou en feuil autr que celles de la ss pos 480256",
+   "designation_aout": "Autres pap et cartons,fab ppment a part de pat blanch, ss fib ob par un proc meca ou chimico-meca ou dont 10% au+en poids de la compo fibr tot sont const par de tel fibr,d'1 poids au m2>=40g et15cm ou en feuil autr que celles de la ss pos 480256"
+  },
+  {
+   "code": "48103290107",
+   "designation_juin": "Pap et cart kraft autre que ceux des types util pour l'ecri, l'impress ou d'autres fins graph,  d'1 poids au m2 <=150 g,   en bandes ou en rouleau dont la larg>15cm;ou en feuilles de forme carre ou rect dont au - 1 cote >36cm et l'autre 15cm a l'etat non plie",
+   "designation_aout": "Pap et cart kraft autre que ceux des types util pour l'ecri, l'impress ou d'autres fins graph,  d'1 poids au m2 15cm;ou en feuilles de forme carre ou rect dont au - 1 cote >36cm et l'autre 15cm a l'etat non plie"
+  },
+  {
+   "code": "72071116001",
+   "designation_juin": "Demi-produits en fer ou en aciers non allies,contenant en poids moins de 025% de carbone,de section transversale carree ou rectang et dont la larg est < a deux fois l'epaisseur,lamines ou obtenus par coulee contenue,d'une epaisseur > 130mm",
+   "designation_aout": "Demi-produits en fer ou en aciers non allies,contenant en poids moins de 025% de carbone,de section transversale carree ou rectang et dont la larg est  130mm"
+  },
+  {
+   "code": "84622210005",
+   "designation_juin": "Machines de formage des profilés,à commande numérique, pour produits plats ¿¿¿¿  (1)     ¿¿¿¿¿¿",
+   "designation_aout": "Machines de formage des profilés,à commande numérique, pour produits plats   (1)"
+  },
+  {
+   "code": "84622290007",
+   "designation_juin": "Machines de formage des profilés,autres qu'à commande  numérique,pour produits plats ¿¿ (1)    ¿¿¿¿¿¿¿¿¿",
+   "designation_aout": "Machines de formage des profilés,autres qu'à commande  numérique,pour produits plats  (1)"
+  },
+  {
+   "code": "84622300006",
+   "designation_juin": "Presses plieuses, à commande numérique, pour produits plats ¿¿ (1)    ¿¿¿¿¿¿¿¿¿",
+   "designation_aout": "Presses plieuses, à commande numérique, pour produits plats  (1)"
+  },
+  {
+   "code": "84622400001",
+   "designation_juin": "Presses à panneaux, à commande numérique, pour produits plats ¿¿ (1)    ¿¿¿¿¿¿¿¿¿",
+   "designation_aout": "Presses à panneaux, à commande numérique, pour produits plats  (1)"
+  },
+  {
+   "code": "84622500006",
+   "designation_juin": "Machines à profiler à galets, à commande numérique, pour produits plats ¿¿ (1)    ¿¿¿¿¿¿¿¿¿",
+   "designation_aout": "Machines à profiler à galets, à commande numérique, pour produits plats  (1)"
+  },
+  {
+   "code": "84622600001",
+   "designation_juin": "Autres machines à rouler, cintrer, plier, dresser ou planer, à commande numérique,pour produits plats ¿¿ (1)    ¿",
+   "designation_aout": "Autres machines à rouler, cintrer, plier, dresser ou planer, à commande numérique,pour produits plats  (1)"
+  },
+  {
+   "code": "84622990002",
+   "designation_juin": "Autres machines(y compris les presses plieuses) à rouler, cintrer, plier, dresser ou planer, autres qu'à commande numérique, pour produits plats ¿¿ (1)                 ¿",
+   "designation_aout": "Autres machines(y compris les presses plieuses) à rouler, cintrer, plier, dresser ou planer, autres qu'à commande numérique, pour produits plats  (1)"
+  },
+  {
+   "code": "84624900008",
+   "designation_juin": "Machines (à l'exclusion des presses) à poinçonner, à gruger ou à grignoter, pour produits plats, y compris les machines combinées à poinçonner et à cisailler,autres qu'à commande numérique ¿   (1)¿",
+   "designation_aout": "Machines (à l'exclusion des presses) à poinçonner, à gruger ou à grignoter, pour produits plats, y compris les machines combinées à poinçonner et à cisailler,autres qu'à commande numérique    (1)"
+  },
+  {
+   "code": "84798300009",
+   "designation_juin": "Presses isostatiques à froid ¿¿¿ (1) ¿¿¿",
+   "designation_aout": "Presses isostatiques à froid  (1)"
+  },
+  {
+   "code": "84851000002",
+   "designation_juin": "Machines pour la fabrication additive,par dépôt métallique ¿¿ (1)    ¿",
+   "designation_aout": "Machines pour la fabrication additive,par dépôt métallique  (1)"
+  },
+  {
+   "code": "84853010008",
+   "designation_juin": "Machines pour la fabrication additive,par dépôt de plâtre,  de ciment ou de céramique ¿¿ (1)    ¿¿",
+   "designation_aout": "Machines pour la fabrication additive,par dépôt de plâtre,  de ciment ou de céramique  (1)"
+  },
+  {
+   "code": "84853090000",
+   "designation_juin": "Machines pour la fabrication additive,par dépôt de verre ¿  (1)    ¿",
+   "designation_aout": "Machines pour la fabrication additive,par dépôt de verre   (1)"
+  },
+  {
+   "code": "84858000004",
+   "designation_juin": "Machines pour la fabrication additive,par dépôt d'autresmatières ¿¿ (1)    ¿¿",
+   "designation_aout": "Machines pour la fabrication additive,par dépôt d'autresmatières  (1)"
+  },
+  {
+   "code": "85198100102",
+   "designation_juin": "Autres appareils d'enregistrement ou de reproduction du son et leur combinaison,utilisant un support magnétique, optique ou à semi-conducteurs, à usage industriel  ¿¿¿¿¿   (2)¿¿¿¿¿",
+   "designation_aout": "Autres appareils d'enregistrement ou de reproduction du son et leur combinaison,utilisant un support magnétique, optique ou à semi-conducteurs, à usage industriel     (2)"
+  }
+ ],
+ "label_diffs_all_encoding_artifacts": true,
+ "designations_cleaned": 347,
+ "backup": "data/archive/crawled_backup/TUN_tariffs_20260829T210911Z.json",
+ "label_diffs_note": "32 divergences restantes (artefacts casse/espaces) ; 347 deja corrigees dans le fichier (voir designations_cleaned)",
+ "label_diffs_total": 379
+}

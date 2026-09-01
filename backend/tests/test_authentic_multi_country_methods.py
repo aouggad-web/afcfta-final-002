@@ -88,12 +88,7 @@ def test_tunisia_tariff_codes_normalize_duty_and_import_levy(monkeypatch):
 @pytest.mark.parametrize(
     ("country", "hs_code", "vat_rate", "expected_base", "expected_total"),
     [
-        ("ZMB", "010129", 16.0, 1_150.0, 334.0),
-        ("ZWE", "010129", 15.5, 1_150.0, 328.25),
-        ("MOZ", "010129", 16.0, 1_200.0, 392.0),
         ("MUS", "010129", 15.0, 1_000.0, 150.0),
-        ("MDG", "010129", 20.0, 1_100.0, 320.0),
-        ("MWI", "010129", 17.5, 1_200.0, 410.0),
     ],
 )
 def test_southern_africa_and_indian_ocean_use_explicit_import_vat_profiles(
@@ -108,6 +103,24 @@ def test_southern_africa_and_indian_ocean_use_explicit_import_vat_profiles(
     assert by_code["TVA"]["base_expr"] == "CIF + DD"
     assert by_code["TVA"]["base_value_npf"] == expected_base
     assert result["taxes_summary"]["npf"]["total_taxes_et_droits"] == expected_total
+
+
+@pytest.mark.parametrize("country", ["ZMB", "ZWE", "MOZ", "MDG", "MWI"])
+def test_synthetic_southern_africa_countries_are_refused_by_doctrine(monkeypatch, country):
+    """P0-1 (audit 2026-09-01) : les fichiers nationaux synthétiques de ces pays
+    (sous-positions 10 chiffres générées par template, format enhanced_v2 sans
+    provenance) ont été archivés — le calcul national doit être refusé
+    explicitement, jamais effectué sur des données fabriquées. Les taux MFN HS6
+    officiels (WITS/UNCTAD-TRAINS) restent servis par l'ancien moteur
+    /calculate-tariff (priorité crawled)."""
+    result = _calc(monkeypatch, country, "010129")
+
+    assert "taxes_breakdown" not in result
+    assert "error" in result
+    assert any(
+        marker in str(result["error"])
+        for marker in ("non", "Aucune donnée", "No tariff", "not found", "aucune")
+    ), result["error"]
 
 
 def test_unmapped_country_reports_default_profile_instead_of_hiding_fallback():

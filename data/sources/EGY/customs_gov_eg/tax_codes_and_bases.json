@@ -1,0 +1,215 @@
+{
+ "country": "EGY",
+ "title": "Registre des codes de taxes EGY et de leurs bases de calcul (verbatim source)",
+ "source": "customs.gov.eg — Services/Tarif + TrfDetails (crawl 2026-08-29)",
+ "generated_at": "2026-08-29T22:00:25.283505+00:00",
+ "note": "La source publie, sur la ligne de taxe, soit un pourcentage seul (base non répétée), soit une base explicite entre parenthèses : « من القيمة + ر.ض.جمركية » = « de la valeur (en douane) + droits de douane ». Les minimums (بحد أدنى) en EGP/kg ou EGP/litre sont publiés verbatim. Rien n'est interprété au-delà du texte publié.",
+ "taxes_generiques": [
+  {
+   "cle": "DD",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "ID",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "ID_2",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "TVA",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "VAT",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "VAT_2",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "تامين صحى وزارة الصحة",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "رسم محصلة لحساب غرفة دخان",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "رسم محصلة لحساب غرفة نسيج",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "رسم محصلة لحساب غرفةجلود",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "ضريبة الجدول",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  },
+  {
+   "cle": "ضريبة الجدول_2",
+   "libelles_ar": [
+    null
+   ],
+   "n_lignes": 15,
+   "taux_lu": 0,
+   "bases_renconrees": {
+    "zero explicite": 1,
+    "valeur_en_douane + droits_de_douane (verbatim source)": 14
+   },
+   "exemples_raw": {
+    "14% (من القيمة + ر.ض.جمركية)": 14,
+    "صفر": 1
+   }
+  }
+ ],
+ "taux_par_regime": {
+  "n_lignes": 1501,
+  "regimes_ar_verbatim": {
+   "اتفاقية أمريكا اللاتينية الميركسور": 914,
+   "حره افريقيه ب": 174,
+   "الافتا": 117,
+   "GSTP": 81,
+   "اتفاقيه تركيا": 79,
+   "اتفاقيه الشراكه المصريه الاوربيه": 65,
+   "اتفاقيه بريطانيا": 43,
+   "نظام الجات": 28
+  },
+  "note": "Taux publiés par la source SOUS un en-tête d'accord (UE, UK, EFTA, Mercosur, Turquie, GSTP, GATS, ZLECAf...) — conservés séparément du taux générique."
+ }
+}

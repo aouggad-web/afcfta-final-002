@@ -711,11 +711,27 @@ def load_country_tariffs(country_iso3):
     try:
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        _tariff_cache[country_iso3] = data
-        return data
     except Exception as e:
         logger.error(f"Error loading tariffs for {country_iso3}: {e}")
         return None
+
+    # Doctrine tarifaire : refuser les fichiers non conformes (estimé/synthétique
+    # sans source officielle vérifiable) et signaler explicitement le pays.
+    from services.tariff_doctrine import evaluate_country_file
+
+    servable, reason_code, detail = evaluate_country_file(data)
+    if not servable:
+        logger.warning(
+            "Doctrine refusal for %s: %s (%s) — file not served",
+            country_iso3,
+            reason_code,
+            detail,
+        )
+        _tariff_cache[country_iso3] = None
+        return None
+
+    _tariff_cache[country_iso3] = data
+    return data
 
 
 def load_nomenclature_map(country_iso3):

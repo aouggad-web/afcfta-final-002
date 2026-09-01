@@ -522,12 +522,29 @@ class CrawledDataService:
                 }
             )
 
+        # Taxes et redevances à l'export (source officielle douane.gov.tn) —
+        # incluses quand elles sont présentes, avec leurs assiettes exactes.
+        export_taxes = []
+        for tax in pos.get("taxes_export", []) or []:
+            export_taxes.append(
+                {
+                    "code": tax.get("code", ""),
+                    "name": tax.get("name", tax.get("code", "")),
+                    "rate_pct": tax.get("rate_pct"),
+                    "raw_value": tax.get("raw_value", ""),
+                    "specific_value": tax.get("specific_value", ""),
+                    "assiette": tax.get("assiette", ""),
+                    "source": "douane.gov.tn",
+                }
+            )
+
         return {
             "code_raw": raw_code,
             "code_clean": code_clean,
             "designation": pos.get("designation", ""),
             "chapter": pos.get("chapter", ""),
             "taxes": taxes,
+            "export_taxes": export_taxes,
             "fiscal_advantages": fiscal_advantages,
             "administrative_formalities": formalities,
             "source": "douane.gov.tn",
@@ -618,12 +635,19 @@ class CrawledDataService:
     def _normalize_egy(self, pos: dict) -> Optional[dict]:
         # Real crawl schema (customs.gov.eg, see backend/data/crawled/EGY_tariffs.json):
         # {"hs_code": "...", "designation"/"description"/"name": "...",
-        #  "taxes": {"DD": {"name", "rate", "raw", "source"}, "TVA": {...}, "TJ": {...}},
+        #  "taxes": {"ID"/"DD": {"name", "rate", "raw", "source"}, "VAT"/"TVA": {...}, ...},
         #  "official_instructions": [...]}
+        # Le scraper officiel customs.gov.eg publie les codes en anglais
+        # ("ID" = Import Duty, "VAT" = Value-Added Tax) alors que le reste
+        # de la plateforme utilise le libellé canonique francophone
+        # ("DD" = Droit de Douane, "TVA"). On normalise ici pour préserver
+        # l'homogénéité inter-pays sans altérer la donnée source.
         code_clean = pos.get("code_clean", "") or pos.get("hs_code", "") or pos.get("code", "")
         code_clean = code_clean.replace(".", "").replace(" ", "")
         if not code_clean:
             return None
+
+        _CODE_ALIAS = {"ID": "DD", "VAT": "TVA"}
 
         taxes = []
         taxes_detail = pos.get("taxes_detail", [])
@@ -631,7 +655,7 @@ class CrawledDataService:
             tax_code = td.get("tax_code", "")
             taxes.append(
                 {
-                    "code": tax_code,
+                    "code": _CODE_ALIAS.get(tax_code, tax_code),
                     "name": td.get("tax_name", tax_code),
                     "rate_pct": td.get("rate"),
                     "raw_value": f"{td.get('rate')}%" if td.get("rate") is not None else "",
@@ -643,12 +667,13 @@ class CrawledDataService:
             raw_taxes = pos.get("taxes", {})
             if isinstance(raw_taxes, dict):
                 for code, info in raw_taxes.items():
+                    canonical = _CODE_ALIAS.get(code, code)
                     if isinstance(info, dict):
                         rate = info.get("rate")
                         taxes.append(
                             {
-                                "code": code,
-                                "name": info.get("name", code),
+                                "code": canonical,
+                                "name": info.get("name", canonical),
                                 "rate_pct": rate,
                                 "raw_value": info.get(
                                     "raw", f"{rate}%" if rate is not None else ""
@@ -660,8 +685,8 @@ class CrawledDataService:
                         # legacy flat {code: rate} shape
                         taxes.append(
                             {
-                                "code": code,
-                                "name": code,
+                                "code": canonical,
+                                "name": canonical,
                                 "rate_pct": info,
                                 "raw_value": f"{info}%" if info is not None else "",
                                 "source": "customs.gov.eg",
@@ -1206,6 +1231,34 @@ class CrawledDataService:
         self._ensure_country_loaded(country_code)
         hs6_clean = hs6_code.replace(".", "").replace(" ", "")[:6].zfill(6)
         return self._hs6_index.get(country_code, {}).get(hs6_clean, [])
+
+    def get_export_taxes(self, country_code: str, hs_code: str) -> Optional[dict]:
+        """
+        Taxes et redevances à l'export d'une position nationale, telles que
+        publiées par la source officielle (ex. douane.gov.tn : RPD/EXPOR).
+        Retourne None si aucune donnée export n'est disponible pour ce pays.
+        """
+        country_code = country_code.upper()
+        self._ensure_country_loaded(country_code)
+        position = self.lookup(country_code, hs_code)
+        if not position:
+            return None
+        export_taxes = position.get("export_taxes") or []
+        if not export_taxes:
+            return None
+        # Frais de prestataires : marquage explicite (redevances de prestations
+        # douanières) directement dans la couche de données.
+        from services.tariff_doctrine import provider_fee_flags
+
+        for tax in export_taxes:
+            tax.update(provider_fee_flags(tax))
+        return {
+            "country": country_code,
+            "code": position.get("code_clean", ""),
+            "designation": position.get("designation", ""),
+            "export_taxes": export_taxes,
+            "source": position.get("source", ""),
+        }
 
     def search(self, country_code: str, query: str, limit: int = 50) -> List[dict]:
         country_code = country_code.upper()

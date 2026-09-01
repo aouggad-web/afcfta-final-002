@@ -29,6 +29,7 @@ import TariffDownloads from '../tools/TariffDownloads';
 import NationalPositionsSelector from '../NationalPositionsSelector';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import KenyaRemissionAuthorization from './KenyaRemissionAuthorization';
+import TariffDocumentationPanel from './TariffDocumentationPanel';
 import RegulatoryComplianceView, {
   hasActiveMandatedProvider,
   hasUnpricedActiveProviderFees,
@@ -45,7 +46,6 @@ import {
   resolveZlecafAvailability,
   zlecafTotalTaxRatePct,
 } from './zlecafAvailability';
-import TariffDocumentationPanel from './TariffDocumentationPanel';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -1385,6 +1385,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </p>
                 </div>
               </div>
+              <p className="mt-4 text-center text-xs font-medium text-amber-300">
+                Simulation informative — non opposable à l’administration douanière.
+              </p>
 
               {/* Point 4 — signalement d'incomplétude : le total ci-dessus couvre les
                   droits et taxes exigibles, mais un prestataire mandaté actif facture
