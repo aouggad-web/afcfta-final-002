@@ -379,7 +379,11 @@ class AlgeriaConformeproScraper:
         return [], 0
 
     async def scrape_all_sub_positions(
-        self, start_heading_idx: int = 0, max_headings: int = None, resume: bool = True
+        self,
+        start_heading_idx: int = 0,
+        max_headings: int = None,
+        resume: bool = True,
+        concurrency: int = 1,
     ):
         logger.info(f"Scraping sub-positions from {len(self.headings)} headings...")
         all_subs = []
@@ -407,12 +411,19 @@ class AlgeriaConformeproScraper:
             subs = await self.scrape_sub_positions_for_heading(heading)
             logger.info(f"    Found {len(subs)} sub-positions, fetching details...")
 
-            for j, sub in enumerate(subs):
-                detail = await self.scrape_sub_position_detail(sub)
-                all_subs.append(detail)
+            if concurrency > 1:
+                sem = asyncio.Semaphore(concurrency)
 
-                if (j + 1) % 50 == 0:
-                    logger.info(f"    Progress: {j+1}/{len(subs)} sub-positions")
+                async def _fetch_one(s):
+                    async with sem:
+                        return await self.scrape_sub_position_detail(s)
+
+                details = await asyncio.gather(*(_fetch_one(s) for s in subs))
+            else:
+                details = [await self.scrape_sub_position_detail(s) for s in subs]
+
+            for detail in details:
+                all_subs.append(detail)
 
             if (i + 1) % 5 == 0:
                 self._save_progress(all_subs, f"DZA_progress_{i+1}")
@@ -493,7 +504,12 @@ class AlgeriaConformeproScraper:
         )
         logger.info(f"Stats: {json.dumps(self.stats, indent=2)}")
 
-    async def run(self, max_headings: int = None, chapters: set[str] | None = None):
+    async def run(
+        self,
+        max_headings: int = None,
+        chapters: set[str] | None = None,
+        concurrency: int = 1,
+    ):
         """
         chapters: si fourni, ne scrape que les chapitres SH listés (ex. {"29", "30", ...}).
         Permet de cibler un re-crawl correctif sans refaire les chapitres déjà
@@ -513,7 +529,7 @@ class AlgeriaConformeproScraper:
                     f"({sorted(c['code'] for c in self.chapters)})"
                 )
             await self.scrape_headings()
-            await self.scrape_all_sub_positions(max_headings=max_headings)
+            await self.scrape_all_sub_positions(max_headings=max_headings, concurrency=concurrency)
             self.save_final()
         finally:
             await self._close_client()
@@ -525,9 +541,11 @@ class AlgeriaConformeproScraper:
         }
 
 
-async def run_algeria_scraper(max_headings: int = None, chapters: set[str] | None = None):
+async def run_algeria_scraper(
+    max_headings: int = None, chapters: set[str] | None = None, concurrency: int = 1
+):
     scraper = AlgeriaConformeproScraper()
-    return await scraper.run(max_headings=max_headings, chapters=chapters)
+    return await scraper.run(max_headings=max_headings, chapters=chapters, concurrency=concurrency)
 
 
 async def run_algeria_scraper_fast():
@@ -607,6 +625,12 @@ if __name__ == "__main__":
         help="Liste de chapitres SH à recrawler, séparés par des virgules "
         "ou plages (ex. '29-76,78-98'). Sans cet argument, scrape tous les chapitres.",
     )
+    parser.add_argument(
+        "--concurrency",
+        type=int,
+        default=1,
+        help="Nombre de requêtes détail simultanées (1 = séquentiel).",
+    )
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO)
@@ -626,6 +650,10 @@ if __name__ == "__main__":
         result = asyncio.run(run_algeria_scraper_fast())
     else:
         result = asyncio.run(
-            run_algeria_scraper(max_headings=args.max_headings, chapters=chapters_filter)
+            run_algeria_scraper(
+                max_headings=args.max_headings,
+                chapters=chapters_filter,
+                concurrency=args.concurrency,
+            )
         )
     print(json.dumps(result, indent=2, ensure_ascii=False))

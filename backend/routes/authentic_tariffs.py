@@ -28,6 +28,13 @@ from services.tariff_enrichment_service import (
 )
 from services.tariff_provider_service import get_tariff_provider_service
 
+from engine.import_charges import (
+    OVERALL_STATUS_ALIASES,
+    OVERALL_STATUS_VALUES,
+    QUALITY_DIMENSION_KEYS,
+    QUALITY_DIMENSION_VALUES,
+    calculate_import_charges,
+)
 from engine.schemas.legal_override import RemissionEligibility
 
 logger = logging.getLogger(__name__)
@@ -353,8 +360,112 @@ async def calculate_taxes_endpoint(
             beneficiary=beneficiary,
             import_purpose=import_purpose,
             quantity=quantity,
+            currency_code="USD",
+        )
+    else:
+        # Destinations hors registre EAC : façade régionale/nationale générique.
+        # Les fournisseurs ne sont pas devinés — l'absence de couche datée
+        # produit INFORMATIVE_PARTIAL avec les sources manquantes dans la trace.
+        result["generic_legal_calculation"] = calculate_import_charges(
+            importing_country=country_iso3.upper(),
+            exporting_country=(origin or "").upper(),
+            hs6=hs_code[:6],
+            national_code=hs_code,
+            customs_value=cif_value,
+            calculation_date=calculation_date or date.today(),
+            importer_profile={
+                "base_rate": float(result.get("rates", {}).get("dd_rate_pct", 0) or 0),
+                "origin": (origin or "").upper() or None,
+                "beneficiary": beneficiary,
+                "import_purpose": import_purpose,
+                "quantity": quantity,
+                "administrative_formalities": get_administrative_formalities(
+                    country_iso3.upper(), hs_code
+                )
+                or [],
+            },
+            intended_use=import_purpose,
+            authorizations={
+                "remission_eligibility": remission_eligibility,
+                "authorization_reference": authorization_reference,
+                "authorization_effective_from": authorization_valid_from,
+                "authorization_effective_to": authorization_valid_to,
+                "authorization_hs_codes": parsed_authorization_hs_codes,
+                "authorization_goods": parsed_authorization_goods,
+            },
+            regional_coverage_complete=False,
+            national_coverage_complete=False,
         )
 
+    legal_result = (
+        result.get("kenya_legal_calculation")
+        or result.get("national_legal_calculation")
+        or result.get("generic_legal_calculation")
+        or {}
+    )
+    # Normalize legacy nested statuses at the API boundary without changing
+    # existing route fields or the supplied tariff rates.
+    raw_status = (
+        legal_result.get("overall_status")
+        or legal_result.get("calculation_status")
+        or legal_result.get("status")
+    )
+    if raw_status:
+        normalized_status = OVERALL_STATUS_ALIASES.get(
+            str(raw_status).upper(), str(raw_status).upper()
+        )
+        if normalized_status in OVERALL_STATUS_VALUES:
+            result["overall_status"] = normalized_status
+    raw_dimensions = legal_result.get("quality_dimensions")
+    if isinstance(raw_dimensions, dict):
+        defaults = {
+            "source": "PARTIAL",
+            "temporal_validity": "PARTIAL",
+            "classification": "DOCUMENTED",
+            "taxes_and_levies": "PARTIAL",
+            "preference_and_origin": "UNVERIFIED",
+            "formalities": "NOT_AVAILABLE",
+        }
+        if set(raw_dimensions).issubset(set(QUALITY_DIMENSION_KEYS)) and all(
+            value in QUALITY_DIMENSION_VALUES for value in raw_dimensions.values()
+        ):
+            result["quality_dimensions"] = {**defaults, **raw_dimensions}
+    result["disclaimer"] = {
+        "informational_only": True,
+        "legally_binding": False,
+        "message": "Simulation informative fondée sur les données disponibles.",
+    }
+    result["informational_only"] = True
+    result["legally_binding"] = False
+    result.setdefault("administrative_confirmation_recommended", True)
+    result.setdefault("administrative_confirmation_required", True)
+    # Keep the established top-level response shape while exposing the
+    # documentary envelope to API consumers that do not inspect the nested
+    # legal calculation object.
+    for key in (
+        "known_data_gaps",
+        "source_authority",
+        "source_date",
+        "effective_date",
+        "completeness_status",
+        "technical_validation_status",
+    ):
+        if key in legal_result:
+            result.setdefault(key, legal_result[key])
+    result.setdefault("overall_status", "INFORMATIVE_PARTIAL")
+    result.setdefault(
+        "quality_dimensions",
+        {
+            "source": "PARTIAL",
+            "temporal_validity": "PARTIAL",
+            "classification": "DOCUMENTED",
+            "taxes_and_levies": "PARTIAL",
+            "preference_and_origin": "UNVERIFIED",
+            "formalities": "NOT_AVAILABLE",
+        },
+    )
+    result.setdefault("known_data_gaps", [])
+    result.setdefault("completeness_status", result["overall_status"])
     return result
 
 

@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-07-24",
+  "scope": "Wave 1 — existing EAC and SACU data only",
+  "customs_territories": [
+    {
+      "territory_id": "EAC",
+      "name": "East African Community Customs Union",
+      "territory_type": "CUSTOMS_UNION",
+      "tariff_authority": true,
+      "priority": 10,
+      "source_id": "EAC-CET-2022"
+    },
+    {
+      "territory_id": "SACU",
+      "name": "Southern African Customs Union",
+      "territory_type": "CUSTOMS_UNION",
+      "tariff_authority": true,
+      "priority": 10,
+      "source_id": "SACU-CET-SARS-2026"
+    },
+    {
+      "territory_id": "COMESA",
+      "name": "Common Market for Eastern and Southern Africa",
+      "territory_type": "FREE_TRADE_AREA",
+      "tariff_authority": false,
+      "priority": 50,
+      "source_id": "REPO-REGIONAL-BLOCS"
+    },
+    {
+      "territory_id": "SADC",
+      "name": "Southern African Development Community",
+      "territory_type": "FREE_TRADE_AREA",
+      "tariff_authority": false,
+      "priority": 50,
+      "source_id": "REPO-REGIONAL-BLOCS"
+    }
+  ],
+  "territory_memberships": [
+    {"territory_id":"EAC","country_iso3":"KEN","valid_from":"2022-07-01","valid_to":null,"implementation_status":"ACTIVE","source_id":"EAC-CET-2022"},
+    {"territory_id":"EAC","country_iso3":"UGA","valid_from":"2022-07-01","valid_to":null,"implementation_status":"ACTIVE","source_id":"EAC-CET-2022"},
+    {"territory_id":"EAC","country_iso3":"TZA","valid_from":"2022-07-01","valid_to":null,"implementation_status":"ACTIVE","source_id":"EAC-CET-2022"},
+    {"territory_id":"EAC","country_iso3":"RWA","valid_from":"2022-07-01","valid_to":null,"implementation_status":"ACTIVE","source_id":"EAC-CET-2022"},
+    {"territory_id":"EAC","country_iso3":"BDI","valid_from":"2022-07-01","valid_to":null,"implementation_status":"ACTIVE","source_id":"EAC-CET-2022"},
+    {"territory_id":"SACU","country_iso3":"ZAF","valid_from":"2026-05-29","valid_to":null,"implementation_status":"ACTIVE","source_id":"SACU-CET-SARS-2026"},
+    {"territory_id":"SACU","country_iso3":"BWA","valid_from":"2026-05-29","valid_to":null,"implementation_status":"ACTIVE","source_id":"SACU-CET-SARS-2026"},
+    {"territory_id":"SACU","country_iso3":"NAM","valid_from":"2026-05-29","valid_to":null,"implementation_status":"ACTIVE","source_id":"SACU-CET-SARS-2026"},
+    {"territory_id":"SACU","country_iso3":"LSO","valid_from":"2026-05-29","valid_to":null,"implementation_status":"ACTIVE","source_id":"SACU-CET-SARS-2026"},
+    {"territory_id":"SACU","country_iso3":"SWZ","valid_from":"2026-05-29","valid_to":null,"implementation_status":"ACTIVE","source_id":"SACU-CET-SARS-2026"},
+    {"territory_id":"COMESA","country_iso3":"KEN","valid_from":"2022-07-01","valid_to":null,"implementation_status":"PENDING_VERIFICATION","source_id":"REPO-REGIONAL-BLOCS"},
+    {"territory_id":"COMESA","country_iso3":"UGA","valid_from":"2022-07-01","valid_to":null,"implementation_status":"PENDING_VERIFICATION","source_id":"REPO-REGIONAL-BLOCS"},
+    {"territory_id":"COMESA","country_iso3":"RWA","valid_from":"2022-07-01","valid_to":null,"implementation_status":"PENDING_VERIFICATION","source_id":"REPO-REGIONAL-BLOCS"},
+    {"territory_id":"COMESA","country_iso3":"BDI","valid_from":"2022-07-01","valid_to":null,"implementation_status":"PENDING_VERIFICATION","source_id":"REPO-REGIONAL-BLOCS"},
+    {"territory_id":"SADC","country_iso3":"TZA","valid_from":"2022-07-01","valid_to":null,"implementation_status":"PENDING_VERIFICATION","source_id":"REPO-REGIONAL-BLOCS"},
+    {"territory_id":"SADC","country_iso3":"ZAF","valid_from":"2026-05-29","valid_to":null,"implementation_status":"PENDING_VERIFICATION","source_id":"REPO-REGIONAL-BLOCS"},
+    {"territory_id":"SADC","country_iso3":"BWA","valid_from":"2026-05-29","valid_to":null,"implementation_status":"PENDING_VERIFICATION","source_id":"REPO-REGIONAL-BLOCS"},
+    {"territory_id":"SADC","country_iso3":"NAM","valid_from":"2026-05-29","valid_to":null,"implementation_status":"PENDING_VERIFICATION","source_id":"REPO-REGIONAL-BLOCS"},
+    {"territory_id":"SADC","country_iso3":"LSO","valid_from":"2026-05-29","valid_to":null,"implementation_status":"PENDING_VERIFICATION","source_id":"REPO-REGIONAL-BLOCS"},
+    {"territory_id":"SADC","country_iso3":"SWZ","valid_from":"2026-05-29","valid_to":null,"implementation_status":"PENDING_VERIFICATION","source_id":"REPO-REGIONAL-BLOCS"}
+  ],
+  "regional_tariffs": [
+    {"tariff_id":"EAC-CET-2022","territory_id":"EAC","country_iso3":null,"hs_version":"HS2022","tariff_year":2022,"valid_from":"2022-07-01","valid_to":null,"source_id":"EAC-CET-2022","source_url":"https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf","verification_status":"PARTIAL"},
+    {"tariff_id":"SACU-CET-SARS-2026","territory_id":"SACU","country_iso3":null,"hs_version":"HS2022","tariff_year":2026,"valid_from":"2026-05-29","valid_to":null,"source_id":"SACU-CET-SARS-2026","source_url":"https://www.sars.gov.za/legal-lprim-ce-sch1p1chpt1-to-99-schedule-no-1-part-1-chapters-1-to-99/","verification_status":"PARTIAL"}
+  ],
+  "national_tariffs": [],
+  "regional_legal_overrides": ["data/eac/legal_overrides.json"],
+  "national_legal_overrides": [],
+  "preferential_regimes": [],
+  "reciprocity_status": [],
+  "origin_rules": [],
+  "national_taxes": [
+    {"tax_id":"KEN-FISCAL-DATED","country_iso3":"KEN","tax_type":"VAT_EXCISE_LEVIES","valid_from":"2023-07-01","valid_to":null,"source_id":"data/kenya","verification_status":"PARTIAL"}
+  ],
+  "administrative_formalities": [],
+  "hs_concordances": []
+}

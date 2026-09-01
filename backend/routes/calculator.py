@@ -1040,6 +1040,61 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         destination_country_data=wb_data.get(dest_country["wb_code"], {}),
     )
 
+    # Expose a documentary trace for every monetary line without promoting
+    # internal tariff data to a documented source.  Existing rate fields and
+    # the response shape remain unchanged for current consumers.
+    documentary_gaps = [
+        "source archive and independent hash comparison pending",
+        "effective date coverage must be confirmed for the requested line",
+    ]
+
+    def trace_line(line):
+        item = dict(line)
+        source_rate = item.get(
+            "rate_npf_pct", item.get("rate_zlecaf_pct", item.get("rate_pct", item.get("rate")))
+        )
+        taxable_base = item.get(
+            "base_value_npf",
+            item.get("base_value_zlecaf", item.get("taxable_base", item.get("base"))),
+        )
+        calculated_amount = item.get(
+            "amount_npf",
+            item.get("amount_zlecaf", item.get("calculated_amount", item.get("amount"))),
+        )
+        item.setdefault("component_type", item.get("category", item.get("code", "TAX")))
+        item.setdefault("source_rate", source_rate)
+        item.setdefault("rate_type", "AD_VALOREM")
+        item.setdefault("taxable_base", taxable_base)
+        item.setdefault("calculated_amount", calculated_amount)
+        item.setdefault("currency", "USD")
+        item.setdefault("source_authority", result.data_source)
+        item.setdefault("source_title", "Tariff data used by the calculator")
+        item.setdefault("legal_reference", item.get("source"))
+        item.setdefault("effective_from", None)
+        item.setdefault("effective_to", None)
+        item.setdefault("documentation_status", "PARTIAL")
+        item.setdefault("assumptions", [])
+        item.setdefault("data_gaps", documentary_gaps)
+        return item
+
+    result.taxes_breakdown = [
+        trace_line(line) for line in result.taxes_breakdown or []
+    ] or result.taxes_breakdown
+    result.taxes_detail = [
+        trace_line(line) for line in result.taxes_detail or []
+    ] or result.taxes_detail
+    # Keep the model-calculated global status; the quality envelope is
+    # informational and never promoted by the route.
+    result.informational_only = True
+    result.legally_binding = False
+    result.known_data_gaps = list(dict.fromkeys((result.known_data_gaps or []) + documentary_gaps))
+    result.administrative_confirmation_recommended = True
+    result.disclaimer = {
+        "informational_only": True,
+        "legally_binding": False,
+        "message": "Simulation informative fondée sur les données disponibles.",
+    }
+
     if db is not None:
         await db.comprehensive_calculations.insert_one(result.dict())
 

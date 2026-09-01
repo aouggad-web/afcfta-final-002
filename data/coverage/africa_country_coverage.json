@@ -1,0 +1,1465 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-07-24",
+  "scope": "Coverage metadata only; no rate is inferred. Existing tariff files remain unchanged.",
+  "countries": [
+    {
+      "country_iso3": "AGO",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "BDI",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [
+        "EAC"
+      ],
+      "regional_affiliations_pending": [],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "REGIONAL_SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 2,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "BEN",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "BFA",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "BWA",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [
+        "SACU"
+      ],
+      "regional_affiliations_pending": [],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "REGIONAL_SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 3,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "CAF",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "CIV",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "CMR",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "COD",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 2,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "COG",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "COM",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "CPV",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "DJI",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "DZA",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "EGY",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "ERI",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "ETH",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "GAB",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "GHA",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "GIN",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "GMB",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "GNB",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "GNQ",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "KEN",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [
+        "EAC"
+      ],
+      "regional_affiliations_pending": [],
+      "national_taxes": "PARTIAL",
+      "gazettes_available": "EAC_REGISTER_PARTIAL",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "PARTIAL",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 1,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "LBR",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "LBY",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "LSO",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [
+        "SACU"
+      ],
+      "regional_affiliations_pending": [],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "REGIONAL_SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 3,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "MAR",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "MDG",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "MLI",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "MOZ",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "MRT",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "MUS",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "MWI",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "NAM",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [
+        "SACU"
+      ],
+      "regional_affiliations_pending": [],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "REGIONAL_SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 3,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "NER",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "NGA",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "RWA",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [
+        "EAC"
+      ],
+      "regional_affiliations_pending": [],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "REGIONAL_SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 2,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "SDN",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "SEN",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "SLE",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "SOM",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 2,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "SSD",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 2,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "STP",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "SWZ",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [
+        "SACU"
+      ],
+      "regional_affiliations_pending": [],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "REGIONAL_SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 3,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "SYC",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "TCD",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "TGO",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 4,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "TUN",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "TZA",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [
+        "EAC"
+      ],
+      "regional_affiliations_pending": [],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "REGIONAL_SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 2,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "UGA",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [
+        "EAC"
+      ],
+      "regional_affiliations_pending": [],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "REGIONAL_SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 2,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "ZAF",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [
+        "SACU"
+      ],
+      "regional_affiliations_pending": [],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "REGIONAL_SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 3,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "ZMB",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    },
+    {
+      "country_iso3": "ZWE",
+      "base_tariff_available": true,
+      "base_tariff_status": "AVAILABLE_UNVERIFIED",
+      "hs_version": "HS2022_OR_SOURCE_PENDING",
+      "tariff_year": null,
+      "customs_unions": [],
+      "regional_affiliations_pending": [
+        "membership source and effective dates"
+      ],
+      "national_taxes": "SOURCE_PENDING",
+      "gazettes_available": "SOURCE_PENDING",
+      "zlecaf_preference": "SOURCE_PENDING",
+      "reciprocity": "SOURCE_PENDING",
+      "rules_of_origin": "SOURCE_PENDING",
+      "formalities": "SOURCE_PENDING",
+      "complete_hs6_count": 0,
+      "partial_hs6_count": 0,
+      "sources_missing": [
+        "dated official tariff or validated national source",
+        "dated regional overrides",
+        "preferential regime and reciprocity evidence",
+        "origin rules and formalities"
+      ],
+      "next_action_priority": 5,
+      "overall_calculation_confidence": 0.0
+    }
+  ]
+}
