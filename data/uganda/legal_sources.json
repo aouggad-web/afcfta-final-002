@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "country": "UGA",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "UGA-ULII-VAT-ACT-CAP349",
+      "title": "Value Added Tax Act, Chapter 349 (revised and consolidated as at 31 December 2000)",
+      "institution": "ULII (Uganda Legal Information Institute) / Laws.Africa",
+      "legal_date": "1996-07-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://media.ulii.org/media/legislation/18233/source_file/52ea29f146b9c790/1996-8.pdf",
+      "local_file": "official/uga-vat-act-cap349.pdf",
+      "sha256": "9af8e7fffce29830769c15db3a26aae2c5f2ac9e3f551c3696956708c9b82a07",
+      "coverage": "rate-setting mechanism only (Section 24(3)-(4)) — does NOT itself state the standard rate percentage; zero-rating (Section 24(4), Third Schedule, exports) is fully covered",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Act commenced 1 July 1996. This is the most recent full-text consolidation obtainable in this environment (ULII/media.ulii.org and the tradebarriers.org Laws.Africa mirror both serve the same 31 Dec 2000 base text; the current site is behind a Cloudflare challenge that blocks automated and WebFetch access to the 2023-12-31 consolidated page). The text itself IS fully verified/authentic (hence VERIFIED_PRIMARY_TEXT) — the partial coverage is about what the text contains, not about how well it was read: Section 24(3) delegates the rate itself to a Minister's statutory order under Section 78(2), so the standard rate is NOT stated as a fixed percentage anywhere in this Act. See vat_measures.json for what is and is not registered as a result (no VAT-RATE-STANDARD record)."
+    },
+    {
+      "source_id": "UGA-URA-EXCISE-DUTY-ACT-2014",
+      "title": "Excise Duty Act, Chapter 336 (consolidated as at 31 December 2023)",
+      "institution": "ULII (Uganda Legal Information Institute) / Laws.Africa",
+      "legal_date": "2014-10-19",
+      "accessed_at": "2026-07-25",
+      "url": "https://media.ulii.org/media/legislation/112717/source_file/9dab1ac59e63ce1f/2014-11.pdf",
+      "local_file": "official/uga-excise-duty-act-cap336-re2023.pdf",
+      "sha256": "4b72fa22be4eb2b3f1d82e51735b504588e8dbba9890f16f19c801f7f5956808",
+      "coverage": "excise imposition (Section 3); Schedule 2 rates for cigarettes, beer, spirits, wine, non-alcoholic beverages",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Act 11 of 2014, assented to 19 October 2014, commenced 1 July 2014. Consolidated as at 31 December 2023 — the most current full-text version located. Schedule 2 covers many more categories (fuels, mobile money, airtime, etc.) than transcribed here; only a representative subset was captured this cycle."
+    },
+    {
+      "source_id": "UGA-ULII-FINANCE-ACT-2026",
+      "title": "Finance Act, 2026",
+      "institution": "ULII (Uganda Legal Information Institute)",
+      "legal_date": "2026-06-15",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.ulii.org/ug/legislation/act/2026/4",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "fiscal year 2026/27 tax rates and measures",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Not downloaded, not archived, not used for any rate in this collection. URL not re-verified this cycle."
+    },
+    {
+      "source_id": "UGA-URA-TARIFF-GUIDE-2026",
+      "title": "Uganda Revenue Authority Customs Tariff Guide 2026",
+      "institution": "Uganda Revenue Authority (URA)",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.ura.go.ug/services/tariff",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Not downloaded, not archived, not used for any rate in this collection."
+    }
+  ]
+}

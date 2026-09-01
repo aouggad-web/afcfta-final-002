@@ -26,6 +26,12 @@ MIGRATION STATUS:
 import logging
 
 from auth import require_admin, require_auth
+from entitlement_guard import (
+    require_api_access,
+    require_calculations_quota,
+    require_module,
+    require_module_enabled,
+)
 from fastapi import APIRouter, Depends
 
 _auth = [Depends(require_auth)]
@@ -33,6 +39,31 @@ _auth = [Depends(require_auth)]
 # trigger data collection or mutate shared cache state, so they're restricted
 # to admin-tier keys rather than any valid key.
 _admin = [Depends(require_admin)]
+
+# SaaS entitlement gating: layered on top of `_auth` for the module routers
+# that map onto `entitlements.MODULES` — `_auth` checks "is this a valid
+# API key", these check "does this subscriber's tier include this module". A
+# JWT-session subscriber is gated on their real tier; anyone else (API-key-only,
+# or no auth at all) is gated as the free tier — see
+# entitlement_guard.get_optional_subscriber.
+#
+# Browse/reference modules (stats, production, logistics, roo, tools) are gated
+# on the tier on/off switch ONLY — no per-request metering. A single UI view of
+# these fans out to many GET requests (logistics ports + corridors + fees,
+# stats lookups, ...), so metering per HTTP request made one screen load burn a
+# whole day's/month's quota on the first visit, breaking the module for
+# signed-in free users ("impossible de charger les données"). Usage quotas are
+# enforced on genuine billable *actions* instead — one tariff calculation
+# (`_calculator_entitlement`) and one generated premium report
+# (`_reports_entitlement`) — not on browsing reference data.
+_stats_entitlement = [Depends(require_module_enabled("stats"))]
+_production_entitlement = [Depends(require_module_enabled("production"))]
+_logistics_entitlement = [Depends(require_module_enabled("logistics"))]
+_roo_entitlement = [Depends(require_module_enabled("roo"))]
+_tools_entitlement = [Depends(require_module_enabled("tools"))]
+_reports_entitlement = [Depends(require_module("reports"))]
+_calculator_entitlement = [Depends(require_calculations_quota())]
+_api_entitlement = [Depends(require_api_access())]
 
 _logger = logging.getLogger(__name__)
 
@@ -152,6 +183,30 @@ try:
 except ImportError:
     regulatory_engine_router = None
     REGULATORY_ENGINE_AVAILABLE = False
+
+try:
+    from .regulatory_compliance import router as regulatory_compliance_router
+
+    REGULATORY_COMPLIANCE_AVAILABLE = True
+except ImportError:
+    regulatory_compliance_router = None
+    REGULATORY_COMPLIANCE_AVAILABLE = False
+
+try:
+    from .regulatory_master_registry import router as regulatory_master_registry_router
+
+    REGULATORY_MASTER_REGISTRY_AVAILABLE = True
+except ImportError:
+    regulatory_master_registry_router = None
+    REGULATORY_MASTER_REGISTRY_AVAILABLE = False
+
+try:
+    from .regulatory_qa import router as regulatory_qa_router
+
+    REGULATORY_QA_AVAILABLE = True
+except ImportError:
+    regulatory_qa_router = None
+    REGULATORY_QA_AVAILABLE = False
 
 try:
     from .search import router as search_router
@@ -376,6 +431,30 @@ except ImportError as e:
     REPORTS_AVAILABLE = False
     _logger.warning(f"Premium reports route unavailable: {e}")
 
+# Billing importé en défaut mou UNIQUEMENT quand la dépendance externe `stripe`
+# manque à l'installation — c'est le mode de panne réel qui a laissé le pod en
+# 404 sur /api/*. Toute autre ImportError (typiquement une régression interne :
+# refactor cassé, cycle d'import, `cannot import name ...`) doit remonter au
+# démarrage : l'étouffer laisserait le paiement silencieusement désactivé
+# malgré un environnement correct.
+try:
+    from .billing import router as billing_router
+
+    BILLING_AVAILABLE = True
+except ModuleNotFoundError as e:
+    if e.name != "stripe":
+        raise
+    billing_router = None
+    BILLING_AVAILABLE = False
+    _logger.error(
+        "CRITIQUE: routes de facturation indisponibles (paquet %s manquant). "
+        "Installez la dépendance et redémarrez : le paiement est HORS SERVICE.",
+        e.name,
+    )
+
+from .contact import router as contact_router
+from .user_auth import router as user_auth_router
+
 
 def register_routes(api_router: APIRouter):
     """Register all route modules to the main API router"""
@@ -392,11 +471,23 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(news_router, tags=["News"], dependencies=_auth)
     api_router.include_router(oec_router, tags=["OEC Trade"], dependencies=_auth)
     api_router.include_router(hs_codes_router, tags=["HS Codes"], dependencies=_auth)
-    api_router.include_router(production_router, tags=["Production"], dependencies=_auth)
-    api_router.include_router(logistics_router, tags=["Logistics"], dependencies=_auth)
+    api_router.include_router(
+        production_router,
+        tags=["Production"],
+        dependencies=_auth + _production_entitlement,
+    )
+    api_router.include_router(
+        logistics_router,
+        tags=["Logistics"],
+        dependencies=_auth + _logistics_entitlement,
+    )
     api_router.include_router(countries_router, tags=["Countries"], dependencies=_auth)
     api_router.include_router(tariffs_router, tags=["Tariffs"], dependencies=_auth)
-    api_router.include_router(statistics_router, tags=["Statistics"], dependencies=_auth)
+    api_router.include_router(
+        statistics_router,
+        tags=["Statistics"],
+        dependencies=_auth + _stats_entitlement,
+    )
     api_router.include_router(etl_router, tags=["ETL Administration"], dependencies=_admin)
     api_router.include_router(substitution_router, tags=["Trade Substitution"], dependencies=_auth)
     api_router.include_router(
@@ -404,7 +495,9 @@ def register_routes(api_router: APIRouter):
     )
     if GEMINI_AVAILABLE:
         api_router.include_router(gemini_router, tags=["AI Analysis"], dependencies=_auth)
-    api_router.include_router(rules_router, tags=["Rules of Origin"], dependencies=_auth)
+    api_router.include_router(
+        rules_router, tags=["Rules of Origin"], dependencies=_auth + _roo_entitlement
+    )
     api_router.include_router(hs6_db_router, tags=["HS6 Database"], dependencies=_auth)
     api_router.include_router(
         authentic_tariffs_router, tags=["Authentic Tariffs"], dependencies=_auth
@@ -414,7 +507,11 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(
             faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth
         )
-    api_router.include_router(calculator_router, tags=["Calculator"], dependencies=_auth)
+    api_router.include_router(
+        calculator_router,
+        tags=["Calculator"],
+        dependencies=_auth + _calculator_entitlement,
+    )
     if TRADE_DATA_AVAILABLE:
         api_router.include_router(
             trade_data_router, tags=["Trade Data Sources"], dependencies=_auth
@@ -425,12 +522,26 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(crawl_router, tags=["Crawl Orchestration"], dependencies=_admin)
     if TARIFF_DATA_AVAILABLE:
         api_router.include_router(
-            tariff_data_router, tags=["Tariff Data Collection"], dependencies=_auth
+            tariff_data_router,
+            tags=["Tariff Data Collection"],
+            dependencies=_auth + _tools_entitlement,
         )
     if REGULATORY_ENGINE_AVAILABLE:
         api_router.include_router(
             regulatory_engine_router, tags=["Regulatory Engine v3"], dependencies=_auth
         )
+    if REGULATORY_COMPLIANCE_AVAILABLE:
+        api_router.include_router(
+            regulatory_compliance_router, tags=["Regulatory Compliance"], dependencies=_auth
+        )
+    if REGULATORY_MASTER_REGISTRY_AVAILABLE:
+        api_router.include_router(
+            regulatory_master_registry_router,
+            tags=["Regulatory Master Registry"],
+            dependencies=_auth,
+        )
+    if REGULATORY_QA_AVAILABLE:
+        api_router.include_router(regulatory_qa_router, tags=["Regulatory QA"], dependencies=_auth)
     if SEARCH_AVAILABLE:
         api_router.include_router(search_router, tags=["Text Search"], dependencies=_auth)
     if CACHE_ROUTER_AVAILABLE:
@@ -466,7 +577,9 @@ def register_routes(api_router: APIRouter):
             uma_regions_router, tags=["UMA North Africa Regions"], dependencies=_auth
         )
     if API_V2_AVAILABLE:
-        api_router.include_router(api_v2_router, tags=["API v2"], dependencies=_auth)
+        api_router.include_router(
+            api_v2_router, tags=["API v2"], dependencies=_auth + _api_entitlement
+        )
     if AI_INTELLIGENCE_AVAILABLE:
         api_router.include_router(
             ai_intelligence_router, tags=["AI Intelligence"], dependencies=_auth
@@ -525,5 +638,19 @@ def register_routes(api_router: APIRouter):
         )
     if REPORTS_AVAILABLE:
         api_router.include_router(
-            reports_router, tags=["Premium Opportunity Reports"], dependencies=_auth
+            reports_router,
+            tags=["Premium Opportunity Reports"],
+            dependencies=_auth + _reports_entitlement,
         )
+
+    # SaaS layer: user accounts (JWT session, separate from the X-API-Key
+    # tiered access above) and the public contact form. No `_auth` dependency:
+    # these have their own auth (JWT cookie / open contact form) and must stay
+    # reachable even when PUBLIC_DATA_ACCESS=false requires an API key for the
+    # trade-data routers.
+    api_router.include_router(user_auth_router)
+    api_router.include_router(contact_router)
+    # Billing (abonnements Stripe) : couche SaaS, auth par session JWT ou
+    # signature de webhook — pas de dépendance clé API.
+    if BILLING_AVAILABLE:
+        api_router.include_router(billing_router)

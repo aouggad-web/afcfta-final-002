@@ -22,6 +22,9 @@ import CountryProfilesTab from './components/profiles/CountryProfilesTab';
 import DashboardTabNew from './components/dashboard/DashboardTabNew';
 import FinanceTab from './components/finance/FinanceTab';
 import OpportunityReportTab from './components/reports/OpportunityReportTab';
+import ContactTab from './components/contact/ContactTab';
+import AuthModal from './components/auth/AuthModal';
+import { AuthProvider } from './context/AuthContext';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -76,6 +79,36 @@ function App() {
 
   // ── Gestion du thème (sombre / clair) ──
   const [theme, setTheme] = useState(() => localStorage.getItem('zlecaf_theme') || 'dark');
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+
+  // Le lien "Démarrer un plan" de pricing.html renvoie ici avec
+  // `#auth=login&next=<écran>` quand le visiteur n'est pas connecté. On lit ce
+  // fragment au chargement pour ouvrir la modale et mémoriser la destination
+  // post-connexion — sans introduire de routage par URL dans une app qui n'en
+  // a pas et sans exiger d'écran /login (qui renverrait un 404).
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const raw = window.location.hash.replace(/^#/, '');
+    if (!raw) return;
+    const params = new URLSearchParams(raw);
+    if (params.get('auth') === 'login') {
+      setAuthModalOpen(true);
+      // Whitelist explicite des destinations post-connexion : stocker « next »
+      // brut laisserait la clé indéfiniment dans sessionStorage si la valeur ne
+      // correspond à aucun handler, avec des ouvertures ultérieures de la modale
+      // pouvant déclencher une navigation surprise. On limite aux cibles
+      // effectivement gérées, et on purge sinon pour repartir propre.
+      const POST_LOGIN_TARGETS = ['pricing'];
+      const next = params.get('next');
+      if (next && POST_LOGIN_TARGETS.includes(next)) {
+        sessionStorage.setItem('zlecaf_post_login_target', next);
+      } else {
+        sessionStorage.removeItem('zlecaf_post_login_target');
+      }
+      // Efface le fragment pour ne pas rouvrir la modale au moindre reload.
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }, []);
   useEffect(() => {
     const root = document.documentElement;
     if (theme === 'light') {
@@ -119,6 +152,7 @@ function App() {
         roo: 'rules',
         profiles: 'profiles',
         reports: 'reports',
+        contact: 'contact',
       };
       setActiveTab(tabMapping[value] || value);
     } else if (type === 'language') {
@@ -138,6 +172,7 @@ function App() {
       rules: 'roo',
       profiles: 'profiles',
       reports: 'reports',
+      contact: 'contact',
     };
     return reverseMapping[activeTab] || activeTab;
   };
@@ -346,6 +381,23 @@ function App() {
           </div>
         );
 
+      case 'contact':
+        return (
+          <div className="afcfta-section afcfta-fadeIn">
+            <SectionHeader
+              title={language === 'fr' ? 'Contact' : 'Contact'}
+              subtitle={
+                language === 'fr'
+                  ? 'Une question, une suggestion ? Écrivez-nous.'
+                  : 'A question, a suggestion? Write to us.'
+              }
+              dotColor="success"
+            />
+            <div style={{ height: 20 }} />
+            <ContactTab language={language} />
+          </div>
+        );
+
       default:
         return null;
     }
@@ -356,6 +408,25 @@ function App() {
       <div className="kente-band" />
       <div className="afcfta-layout-v2">
         <Toaster />
+        <AuthModal
+          open={authModalOpen}
+          onClose={() => {
+            setAuthModalOpen(false);
+            // Fermeture volontaire : annule toujours la destination différée.
+            sessionStorage.removeItem('zlecaf_post_login_target');
+          }}
+          onAuthenticated={() => {
+            setAuthModalOpen(false);
+            // Seule une authentification réussie peut déclencher la navigation
+            // différée. La clé est purgée dans tous les cas.
+            const target = sessionStorage.getItem('zlecaf_post_login_target');
+            sessionStorage.removeItem('zlecaf_post_login_target');
+            if (target === 'pricing') {
+              window.location.href = '/pricing.html';
+            }
+          }}
+          language={language}
+        />
 
         {/* Desktop sidebar — hidden on mobile via CSS */}
         <AfcftaSidebar
@@ -364,6 +435,7 @@ function App() {
           language={language}
           theme={theme}
           onThemeToggle={toggleTheme}
+          onOpenAuth={() => setAuthModalOpen(true)}
         />
 
         {/* Horizontal top navigation (mobile + tablet) */}
@@ -373,6 +445,7 @@ function App() {
           language={language}
           theme={theme}
           onThemeToggle={toggleTheme}
+          onOpenAuth={() => setAuthModalOpen(true)}
         />
 
       {/* Main content area */}
@@ -419,4 +492,10 @@ function App() {
   );
 }
 
-export default App;
+export default function AppWithAuth() {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+}

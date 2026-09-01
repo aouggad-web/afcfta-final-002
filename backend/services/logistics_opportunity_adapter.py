@@ -110,9 +110,20 @@ def summarize_logistics_accessibility(profile: Dict) -> Dict:
     if not freight.get("available"):
         return {"available": False, "index": None, "note": freight.get("note")}
 
-    operational = freight.get("operational_count")
-    if operational is None:
-        operational = sum(1 for o in freight.get("options", []) if o.get("available"))
+    # Nombre de MODES distincts opérationnels — pas le nombre brut d'options.
+    # `compare_multimodal` peut renvoyer plusieurs options pour un même mode
+    # (ex. deux itinéraires maritimes) ; les compter séparément surestimerait
+    # l'accessibilité d'un corridor qui ne dispose en réalité que d'un seul
+    # mode de transport (ex. mer uniquement).
+    options = freight.get("options")
+    if options:
+        operational = len(
+            {o.get("mode") for o in options if not o.get("is_future") and o.get("mode")}
+        )
+    else:
+        operational = freight.get("operational_count")
+        if operational is None:
+            operational = 0
 
     cheapest = profile.get("cheapest_operational_option") or {}
     feasibility = (cheapest.get("feasibility") or "").lower()

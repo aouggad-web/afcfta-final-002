@@ -9,6 +9,7 @@ Coverage:
 
 from typing import Dict, List, Optional
 
+from .banks_registry_extended import merge_into as _merge_extended_banks
 from .models import BankContact, BankingSystemInfo, CentralBank, CommercialBank, RegionalBank
 
 # ---------------------------------------------------------------------------
@@ -1192,6 +1193,44 @@ CENTRAL_BANKS: Dict[str, CentralBank] = {
         ),
     ),
 }
+
+
+# ---------------------------------------------------------------------------
+# Fill shared regulatory fields for monetary-union central banks.
+# BCEAO (UEMOA) and BEAC (CEMAC) are single supranational central banks whose
+# statute and founding year are identical across every member state. IMF
+# Article VIII acceptance is a national fact and must never be backfilled from
+# the monetary union; curated per-country values are kept.
+# ---------------------------------------------------------------------------
+
+_BCEAO_SHARED = {
+    "established_year": 1962,
+    "banking_act": "Loi uniforme BCEAO relative à l'activité bancaire (révisée 2010)",
+}
+_BEAC_SHARED = {
+    "established_year": 1972,
+    "banking_act": (
+        "Règlement COBAC relatif à l'exercice de l'activité bancaire dans la CEMAC ; "
+        "Convention portant harmonisation de la réglementation bancaire (1992)"
+    ),
+}
+
+
+def _backfill_union_central_banks() -> None:
+    for _cb in CENTRAL_BANKS.values():
+        if _cb.abbreviation == "BCEAO":
+            _shared = _BCEAO_SHARED
+        elif _cb.abbreviation == "BEAC":
+            _shared = _BEAC_SHARED
+        else:
+            continue
+        for _field, _value in _shared.items():
+            if getattr(_cb, _field, None) in (None, ""):
+                setattr(_cb, _field, _value)
+
+
+_backfill_union_central_banks()
+
 
 # ---------------------------------------------------------------------------
 # COMMERCIAL BANKS – Phase-1 & extended coverage (22 countries)
@@ -3676,23 +3715,23 @@ COMMERCIAL_BANKS: Dict[str, List[CommercialBank]] = {
             ),
         ),
         CommercialBank(
-            name="Société Générale Madagascar",
-            abbreviation="SGM-MG",
+            name="BRED Madagasikara Banque Populaire",
+            abbreviation="BRED-MG",
             country_code="MG",
-            swift_code="SOGEMGMG",
+            swift_code=None,
             trade_finance=True,
-            correspondent_banks=["SOCIETE_GENERALE"],
+            correspondent_banks=[],
             services=["LC", "documentary_collection", "bank_guarantee", "forex"],
-            website="https://www.societegenerale.mg",
-            address="Immeuble Ny Havana, Anosy, Antananarivo, Madagascar",
-            phone="+261 20 22 209 10",
-            email="trade.mg@societegenerale.mg",
-            license_type="Filiale internationale",
+            website="https://bred.mg",
+            address="14 Rue Général Rabehevitra, Antananarivo, Madagascar",
+            phone="+261 20 22 206 91",
+            email="relation.client@bred.mg",
+            license_type="Filiale de BRED Banque Populaire",
             contact=BankContact(
-                address="Immeuble Ny Havana, Anosy, Antananarivo",
-                phone="+261 20 22 209 10",
-                email="trade.mg@societegenerale.mg",
-                website="https://www.societegenerale.mg",
+                address="14 Rue Général Rabehevitra, Antananarivo",
+                phone="+261 20 22 206 91",
+                email="relation.client@bred.mg",
+                website="https://bred.mg",
             ),
         ),
         CommercialBank(
@@ -3804,6 +3843,15 @@ COMMERCIAL_BANKS: Dict[str, List[CommercialBank]] = {
         ),
     ],
 }
+
+# ---------------------------------------------------------------------------
+# Merge the extended commercial-banks registry (broad coverage of major
+# trade-finance banks across all 54 AU member states). De-duplicated on
+# abbreviation/name so the curated entries above are never overwritten.
+# (merge_into is imported at the top of the module.)
+# ---------------------------------------------------------------------------
+
+_merge_extended_banks(COMMERCIAL_BANKS)
 
 # ---------------------------------------------------------------------------
 # REGIONAL / DEVELOPMENT BANKS

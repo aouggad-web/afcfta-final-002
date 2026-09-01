@@ -56,13 +56,32 @@ _SYNTHETIC_LINE = {
 @pytest.fixture
 def synthetic_calc(monkeypatch):
     """calculate_import_taxes sur une ligne déterministe (profil par défaut :
-    DD sur CIF, TVA sur CIF+DD). CIF=1000, DD=20%, TVA=15%, ZLECAf DD=0%."""
+    DD sur CIF, TVA sur CIF+DD). Le taux ZLECAf 0 % est fourni par une ligne
+    officielle exacte simulée, jamais par le champ ETL générique."""
+    from services import official_preferential_rates
+
     monkeypatch.setattr(svc, "_get_postgres_provider", lambda: None)
     monkeypatch.setattr(svc, "load_country_tariffs", lambda iso3: {"generated_at": "2025-01-01"})
     monkeypatch.setattr(svc, "get_tariff_line", lambda iso3, hs6: dict(_SYNTHETIC_LINE))
     monkeypatch.setattr(svc, "load_crawled_position_index", lambda iso3: None)
     monkeypatch.setattr(svc, "get_sub_positions", lambda *a, **k: [])
     monkeypatch.setattr(currency_service, "get_by_country", lambda code: _FakeCurrency())
+    monkeypatch.setattr(
+        official_preferential_rates,
+        "resolve_official_preferential_rate",
+        lambda destination, hs_code, origin=None: {
+            "hs_code": hs_code,
+            "ad_valorem_rate_pct": 0.0,
+            "rate_expression": "0%",
+            "calculation_status": "CALCULABLE",
+            "source_title": "Official exact test schedule",
+            "source_url": "https://example.test/official",
+            "source_api_url": "https://example.test/official/api",
+            "source_date": "2026-01-01",
+            "source_column": "year6",
+            "schedule": "1",
+        },
+    )
     return monkeypatch
 
 
@@ -122,8 +141,8 @@ _DZA_LINE = {
     "other_taxes_rate": 0.0,
     "taxes_detail": {
         "DAPS": {"rate": 30.0, "label": "Droit Additionnel Provisoire de Sauvegarde"},
-        "TCS": {"rate": 3.0, "label": "Taxe Complémentaire de Sauvegarde"},
-        "PRCT": {"rate": 2.0, "label": "Précompte (PRCT)"},
+        "TCS": {"rate": 3.0, "label": "Taxe de Contribution de Solidarité"},
+        "PRCT": {"rate": 2.0, "label": "Précompte sur Impôt"},
     },
     "description_fr": "Viande bovine",
     "description_en": "Bovine meat",
@@ -165,13 +184,13 @@ def test_dza_daps_treated_as_customs_duty_and_reduced_under_zlecaf(dza_calc):
 
 
 def test_dza_precompte_label_base_and_order(dza_calc):
-    """PRCT = « Précompte (PRCT) », 2%, calculé après la TVA sur la valeur
+    """PRCT = « Précompte sur Impôt », 2%, calculé après la TVA sur la valeur
     globale TVA incluse mais HORS DAPS = CIF + DD + TCS + TVA."""
     result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}
 
     prct = by_code["PRCT"]
-    assert prct["name"] == "Précompte (PRCT)"
+    assert prct["name"] == "Précompte sur Impôt"
     assert prct["category"] == "autre_taxe"
     assert prct["base_expr"] == "CIF + DD + TCS + TVA"
     # NPF : 2% de (10000 + 3000 + 300 + 3040) = 326.80
@@ -205,7 +224,7 @@ def test_dza_daps_exempt_under_zlecaf_even_when_dd_is_zero(monkeypatch):
     line["zlecaf_rate"] = 0.0
     line["taxes_detail"] = {
         "DAPS": {"rate": 30.0, "label": "Droit Additionnel Provisoire de Sauvegarde"},
-        "TCS": {"rate": 3.0, "label": "Taxe Complémentaire de Sauvegarde"},
+        "TCS": {"rate": 3.0, "label": "Taxe de Contribution de Solidarité"},
         "TVA": {"rate": 19.0, "label": "Taxe sur la Valeur Ajoutée"},
     }
     monkeypatch.setattr(svc, "_get_postgres_provider", lambda: None)
@@ -253,7 +272,9 @@ def test_etl_list_format_taxes_detail_does_not_crash(monkeypatch):
     assert "error" not in result
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}
     assert by_code["DD"]["amount_npf"] == 200.0
-    assert by_code["DD"]["amount_zlecaf"] == 0.0
+    assert by_code["DD"]["amount_zlecaf"] is None
+    assert result["zlecaf_status"] == "NOT_AVAILABLE"
+    assert result["taxes_summary"]["zlecaf"] is None
 
 
 def test_null_rates_do_not_crash_and_vat_falls_back_to_taxes_detail(monkeypatch):
@@ -308,9 +329,29 @@ def test_dza_precompte_label_normalized_in_legacy_fields(dza_calc):
 
     result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
 
-    assert result["taxes_detail"]["PRCT"]["label"] == "Précompte (PRCT)"
+    assert result["taxes_detail"]["PRCT"]["label"] == "Précompte sur Impôt"
     prct_ind = next(t for t in result["individual_taxes"] if t["code"] == "PRCT")
-    assert prct_ind["label"] == "Précompte (PRCT)"
+    assert prct_ind["label"] == "Précompte sur Impôt"
+
+
+def test_dza_tcs_label_normalized_in_legacy_fields(dza_calc):
+    """Même garantie que pour PRCT (cf. test ci-dessus) côté TCS : remarque
+    Codex sur #409 — seul PRCT était normalisé, laissant taxes_detail.TCS
+    et individual_taxes exposer l'intitulé brut hérité des données crawled
+    (« Taxe de Contrôle Sanitaire », erroné) au lieu de l'intitulé officiel."""
+    line = dict(_DZA_LINE)
+    line["taxes_detail"] = dict(_DZA_LINE["taxes_detail"])
+    line["taxes_detail"]["TCS"] = {
+        "rate": 3.0,
+        "label": "Taxe de Contrôle Sanitaire",
+    }
+    dza_calc.setattr(svc, "get_tariff_line", lambda iso3, hs6: dict(line))
+
+    result = svc.calculate_import_taxes("DZA", "020110", 10000.0, origin_country="EGY")
+
+    assert result["taxes_detail"]["TCS"]["label"] == "Taxe de Contribution de Solidarité"
+    tcs_ind = next(t for t in result["individual_taxes"] if t["code"] == "TCS")
+    assert tcs_ind["label"] == "Taxe de Contribution de Solidarité"
 
 
 def test_summary_totals_match_breakdown_rows(synthetic_calc):
@@ -354,8 +395,8 @@ def test_no_origin_yields_npf_no_preference(synthetic_calc):
     assert result["taxes_summary"]["economie_droits"] == 0.0
 
 
-def test_generic_zlecaf_partner_gets_preference(synthetic_calc):
-    """Deux pays ratifiés sans bloc commun (KEN←GHA) : ZLECAf générique, DD→0."""
+def test_exact_official_kenya_line_gets_preference(synthetic_calc):
+    """KEN←GHA : seule la ligne officielle exacte simulée déclenche le DD 0 %."""
     synthetic_calc.setattr(currency_service, "get_by_country", lambda code: None)
     result = svc.calculate_import_taxes("KEN", "100190", 1000.0, origin_country="GHA")
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}

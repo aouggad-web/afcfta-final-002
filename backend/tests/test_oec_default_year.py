@@ -24,7 +24,8 @@ def test_oec_routes_default_year():
         source_code = f.read()
 
     # Match both literal integers and DEFAULT_YEAR constant
-    pattern = r"year:\s*int\s*=\s*Query\((?:(\d+)|DEFAULT_YEAR)"
+    # Use negative lookbehind to avoid matching start_year/end_year prefixes
+    pattern = r"(?<!\w)year:\s*int\s*=\s*Query\((?:(\d+)|DEFAULT_YEAR)"
     matches = re.findall(pattern, source_code)
 
     # Count endpoints that have a year parameter (literal year or DEFAULT_YEAR)

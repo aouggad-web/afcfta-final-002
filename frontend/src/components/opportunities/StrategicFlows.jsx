@@ -60,6 +60,7 @@ const T = {
     imports: 'importe',
     priorityMarkets: 'Marchés prioritaires',
     markets: 'marchés',
+    limitedAccess: 'accès logistique limité',
   },
   en: {
     title: 'Strategic Flows',
@@ -95,6 +96,7 @@ const T = {
     imports: 'imports',
     priorityMarkets: 'Priority markets',
     markets: 'markets',
+    limitedAccess: 'limited logistics access',
   },
 };
 
@@ -170,6 +172,9 @@ function MarketList({ markets, t }) {
             <span style={{ flex: '0 0 auto', fontSize: 12, color: 'var(--afcfta-muted)', whiteSpace: 'nowrap' }}>
               {t.imports} <strong style={{ color: 'var(--text)' }}>{fmtImport(m.import_usd)}</strong>
               {m.lead_time_days != null && <span> · {m.lead_time_days} {t.days}</span>}
+              {m.logistics_accessibility?.available && (m.logistics_accessibility.index ?? 1) < 0.35 && (
+                <span style={{ color: '#b45309', fontWeight: 600 }}> · ⚠ {t.limitedAccess}</span>
+              )}
             </span>
           </div>
         ))}

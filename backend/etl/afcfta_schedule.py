@@ -23,6 +23,12 @@ from __future__ import annotations
 from datetime import date
 from typing import Dict, List, Optional
 
+from etl.afcfta_national_offers import (
+    CLASSIFICATION_SOURCE_CANVAS,
+    CLASSIFICATION_SOURCE_NATIONAL,
+    resolve_classification,
+)
+
 # ---------------------------------------------------------------------------
 # Constantes officielles
 # ---------------------------------------------------------------------------
@@ -273,25 +279,54 @@ def get_dismantlement_schedule(
     hs6: str,
     npf_rate: float,
     category: Optional[str] = None,
+    hs_code_precise: Optional[str] = None,
 ) -> Dict:
     """
     Retourne le schéma complet de démantèlement pour un couple pays/HS6.
+
+    Démantèlement à deux niveaux (voir etl/afcfta_national_offers.py) :
+    si le pays dispose d'une offre tarifaire nationale officielle couvrant
+    ce code à sa précision propre (ex: SH10 pour l'Algérie — fournir alors
+    ``hs_code_precise``), elle prime sur le canevas générique SH2 et la
+    réponse porte ``classification_source: "NATIONAL_OFFER_OFFICIAL"``.
+    À défaut, la catégorie est celle du canevas générique ZLECAf (Annexe
+    1) appliqué au niveau du chapitre SH2 — une proposition indicative,
+    jamais une classification officielle par ligne — et la réponse porte
+    ``classification_source: "AFCFTA_CANVAS_HS2"``.
 
     Args:
         country_iso3: Code ISO3 du pays de destination
         hs6:          Code HS6 (6 chiffres)
         npf_rate:     Taux NPF (droit de douane normal) en %
-        category:     Catégorie ZLECAf (A/B/C/D). Si None, calculée automatiquement.
+        category:     Catégorie ZLECAf (A/B/C/D) forcée par l'appelant.
+                       Si fournie, aucune résolution automatique n'est faite
+                       (ni offre nationale, ni canevas) et
+                       ``classification_source`` vaut ``None``.
+        hs_code_precise: Code HS à la précision de l'offre nationale (ex:
+                       10 chiffres pour l'Algérie), si connu de l'appelant.
+                       Sans lui, une offre nationale publiée à une
+                       précision supérieure au SH6 ne peut pas être
+                       appliquée sans deviner — le canevas s'applique.
 
     Returns:
         {
-          country_iso3, hs6, npf_rate, category, is_ldc,
-          current_year, current_rate, target_year, target_rate,
+          country_iso3, hs6, npf_rate, category, classification_source,
+          is_ldc, current_year, current_rate, target_year, target_rate,
           schedule: [{year, calendar_year, rate, reduction_pct, category}]
         }
     """
     is_ldc = country_iso3 in LDC_COUNTRIES
-    cat = category or classify_hs6(country_iso3, hs6, npf_rate)
+
+    national_offer = None
+    classification_source = None
+    if category:
+        cat = category
+    else:
+        cat, classification_source, national_offer = resolve_classification(
+            country_iso3, hs_code_precise or hs6
+        )
+        if cat is None:
+            cat = classify_hs6(country_iso3, hs6, npf_rate)
 
     schedule = compute_annual_schedule(npf_rate, cat, is_ldc)
 
@@ -302,13 +337,16 @@ def get_dismantlement_schedule(
     total_years = REDUCTION_YEARS[group].get(cat, 0)
     target_year = AFCFTA_EIF_YEAR + total_years - 1 if total_years > 0 else None
 
-    return {
+    result = {
         "country_iso3": country_iso3,
         "hs6": hs6,
         "npf_rate": npf_rate,
         "category": cat,
         "category_label_fr": _category_label(cat, "fr"),
         "category_label_en": _category_label(cat, "en"),
+        "classification_source": classification_source,
+        "classification_source_label_fr": _classification_source_label(classification_source, "fr"),
+        "classification_source_label_en": _classification_source_label(classification_source, "en"),
         "is_ldc": is_ldc,
         "eif_year": AFCFTA_EIF_YEAR,
         "current_implementation_year": current_year,
@@ -319,7 +357,24 @@ def get_dismantlement_schedule(
         "target_calendar_year": target_year,
         "fully_liberalized": current_entry["rate"] == 0.0 and cat != CAT_C,
         "schedule": schedule,
+        "schedule_source_note_fr": (
+            "Calendrier générique du canevas ZLECAf (Annexe 1) — la classification "
+            "de cette ligne provient d'une offre nationale officielle, mais le "
+            "détail annuel ci-dessus reste le calendrier générique tant que "
+            "l'offre nationale ne publie pas son propre calendrier ligne à ligne "
+            "intégré à cette réponse."
+            if classification_source == CLASSIFICATION_SOURCE_NATIONAL
+            else None
+        ),
     }
+    if national_offer is not None:
+        result["national_offer"] = {
+            "legal_reference": national_offer.legal_reference,
+            "publication_url": national_offer.publication_url,
+            "source_id": national_offer.source_id,
+            "hs_precision": national_offer.hs_precision,
+        }
+    return result
 
 
 def compute_impact_projection(
@@ -361,6 +416,20 @@ def compute_impact_projection(
             }
         )
     return rows
+
+
+def _classification_source_label(source: Optional[str], lang: str) -> Optional[str]:
+    labels = {
+        CLASSIFICATION_SOURCE_NATIONAL: {
+            "fr": "Offre tarifaire nationale officielle",
+            "en": "Official national tariff offer",
+        },
+        CLASSIFICATION_SOURCE_CANVAS: {
+            "fr": "Proposition générique du canevas ZLECAf (niveau SH2, indicative)",
+            "en": "Generic AfCFTA canvas proposal (HS2 level, indicative)",
+        },
+    }
+    return labels.get(source, {}).get(lang)
 
 
 def _category_label(cat: str, lang: str) -> str:

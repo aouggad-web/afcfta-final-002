@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "country": "RWA",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "RWA-RRA-LAW-049-2023-VAT",
+      "title": "Law nº 049/2023 of 05/09/2023 establishing the value added tax",
+      "institution": "Rwanda Revenue Authority (RRA) — Official Gazette",
+      "legal_date": "2023-09-14",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.rra.gov.rw/fileadmin/user_upload/LAW_ESTABLISHING_VALUE_ADDED_TAX.pdf",
+      "local_file": "official/rwa-law-049-2023-vat.pdf",
+      "sha256": "b33e9a7575a6af69b0fdcaff3928c17d8b75d17d528c1979aebb209e99d5ab01",
+      "coverage": "standard VAT rate 18% and zero rate (Article 4); zero-rated goods/services list (Article 7)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Published in Official Gazette n° Special of 14/09/2023, trilingual (Kinyarwanda/English/French). Repeals Law No 37/2012 of 09/11/2012. Downloaded directly from the Rwanda Revenue Authority (primary government source). Subsequently amended (Article 8 exemptions only) by Law nº 009/2025 of 27/05/2025 — see RWA-MININJUST-OG-2025-05-29 below."
+    },
+    {
+      "source_id": "RWA-MININJUST-OG-2025-05-29",
+      "title": "Official Gazette n° Special of 29/05/2025 — includes Law nº 011/2025 of 27/05/2025 establishing the excise duty, and Law nº 009/2025 of 27/05/2025 amending the VAT law",
+      "institution": "Ministry of Justice (Rwanda) — Official Gazette",
+      "legal_date": "2025-05-29",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.minijust.gov.rw/index.php?eID=dumpFile&t=f&f=130496&token=4b9d4de9658212b7aaeeb5c8a42c823a7b879d7b",
+      "local_file": "official/rwa-official-gazette-29-05-2025.pdf",
+      "sha256": "1556bed2f90c1e7f854b4a4150bc30ee862a5f3f70a26f346a7c7e9b26bdfa2c",
+      "coverage": "excise duty imposition and Annex rate schedule (Law 011/2025); confirms VAT amendment (Law 009/2025) touches only Article 8 exemptions, not the rate articles",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Law nº 011/2025 of 27/05/2025 repeals and replaces the prior excise duty law (Law nº 050/2023 of 05/09/2023). Its Annex lists ~27 excisable product/service categories with HS codes; only a representative subset was transcribed into excise_measures.json this cycle."
+    },
+    {
+      "source_id": "RWA-RWANDALII-FINANCE-LAW-2026",
+      "title": "Finance Law, 2026",
+      "institution": "RwandaLII (Rwanda Legal Information Institute)",
+      "legal_date": "2026-06-20",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.rwandalii.org/rw/legislation/law/finance-2026",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "fiscal year 2026/27 tax rates and measures",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Not downloaded, not archived, not used for any rate in this collection. URL not re-verified this cycle — carried over from a prior pass and may not resolve."
+    },
+    {
+      "source_id": "RWA-RRA-TARIFF-GUIDE-2026",
+      "title": "Rwanda Revenue Authority Customs Tariff Guide 2026",
+      "institution": "Rwanda Revenue Authority (RRA)",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.rra.gov.rw/tariff",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Not downloaded, not archived, not used for any rate in this collection."
+    }
+  ]
+}

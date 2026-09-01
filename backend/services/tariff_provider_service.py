@@ -113,7 +113,7 @@ class TariffProviderService:
                         "description_fr": sp.get("description_fr"),
                         "description_en": sp.get("description_en"),
                         "dd_rate": sp.get("dd", sp.get("dd_rate", 0)),
-                        "zlecaf_rate": sp.get("zlecaf_rate", 0),
+                        "zlecaf_rate": sp.get("zlecaf_rate"),
                         "savings": sp.get("savings", 0),
                         "unit": sp.get("unit"),
                         "source": "postgres",

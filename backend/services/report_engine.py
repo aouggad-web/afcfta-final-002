@@ -376,6 +376,11 @@ def _landed_cost(
                     f" Poids estimé via le cours mondial de {vtw.get('commodity', 'la matière première')} "
                     f"({vtw['usd_per_kg']} USD/kg, {vtw.get('benchmark', '?')}, {vtw.get('as_of', '?')})."
                 )
+            elif vtw.get("classification_source") == "valeur_unitaire_observee":
+                note += (
+                    f" Poids estimé via une valeur unitaire réelle observée de "
+                    f"{vtw['usd_per_kg']} USD/kg ({vtw.get('basis', 'flux commercial observé')})."
+                )
             else:
                 note += (
                     f" Poids estimé via un ratio {vtw['usd_per_kg']} USD/kg "
@@ -407,6 +412,12 @@ def _landed_cost(
                     f" Poids estimé via le cours mondial de {vtw.get('commodity', 'la matière première')} "
                     f"({vtw['usd_per_kg']} USD/kg, {vtw.get('benchmark', '?')}, {vtw.get('as_of', '?')}) "
                     "— repère non contractuel, cf. garde-fou de négociation."
+                )
+            elif vtw.get("classification_source") == "valeur_unitaire_observee":
+                note += (
+                    f" Poids estimé via une valeur unitaire réelle observée de "
+                    f"{vtw['usd_per_kg']} USD/kg ({vtw.get('basis', 'flux commercial observé')}) "
+                    "— reflète un flux précis, pas une cotation de marché organisé."
                 )
             else:
                 note += (
@@ -531,7 +542,28 @@ def get_opportunity_report(
     # estimer le poids → type et nombre de conteneurs. Le choix conteneur (coût
     # d'un conteneur × nombre) vs vraquier (affrètement au tonnage complet) est
     # centralisé dans _resolve_logistics_and_landed pour une démarche uniforme.
-    shipment = shipment_estimator.estimate_shipment(goods_value_usd, hs_code)
+    #
+    # L'indice valeur/poids (ratio USD/kg) est affiné avec un flux commercial
+    # RÉEL quand disponible : ``market_imports`` (déjà récupéré par l'appelant
+    # pour la composante potentiel de marché) porte la valeur ET la quantité
+    # des importations du marché destination pour CE code SH précis — bien
+    # plus spécifique qu'une estimation par chapitre. Aucun appel réseau
+    # supplémentaire : cette donnée est réutilisée, pas re-fetchée.
+    obs = market_imports if (market_imports or {}).get("available") else {}
+    observed_basis = None
+    if obs:
+        observed_basis = f"importations de {destination_iso3}, toutes origines"
+        if obs.get("year"):
+            observed_basis += f", {obs['year']}"
+    shipment = shipment_estimator.estimate_shipment(
+        goods_value_usd,
+        hs_code,
+        observed_value_usd=obs.get("import_value_usd"),
+        observed_quantity_tonnes=obs.get("import_quantity_tonnes"),
+        observed_basis=observed_basis,
+        observed_year=obs.get("year"),
+        observed_source=obs.get("source"),
+    )
     log_profile, landed_cost = _resolve_logistics_and_landed(
         origin_iso3,
         destination_iso3,
@@ -1345,6 +1377,7 @@ def _supply_side(hs_code: str) -> Dict:
         "year": prod.get("year"),
         "source": prod.get("source"),
         "coverage_caveat": prod.get("coverage_caveat"),
+        "commodity_caveat": prod.get("commodity_caveat"),
     }
 
 

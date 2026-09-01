@@ -310,11 +310,25 @@ class TestBankingRoutes:
         assert payload["total"] > 0
         assert all(row["regulation_level"] == "strict" for row in payload["results"])
 
+    def test_regulations_summary_exposes_structured_thresholds_and_deadlines(self, client):
+        response = client.get("/banking/regulations/summary")
+        assert response.status_code == 200
+        rows = {row["country_code"]: row for row in response.json()["results"]}
+
+        assert rows["CI"]["threshold_local_amount"] == 20_000_000
+        assert rows["CI"]["threshold_currency"] == "XOF"
+        assert rows["CI"]["export_payment_due_days"] == 120
+        assert rows["CI"]["repatriation_after_due_months"] == 1
+
+        assert rows["DZ"]["repatriation_days"] == 120
+        assert rows["DZ"]["conditional_repatriation_days"] == 180
+        assert "assurance-crédit" in rows["DZ"]["conditional_repatriation_condition"]
+
     def test_validate_transaction_combines_banking_checks(self, client):
         response = client.post(
             "/banking/transaction/validate",
             json={
-                "origin_country": "SN",
+                "origin_country": "DZ",
                 "destination_country": "MA",
                 "amount_usd": 50000,
                 "transaction_type": "export",
@@ -325,4 +339,51 @@ class TestBankingRoutes:
         payload = response.json()
         assert payload["transaction"]["destination_country"] == "MA"
         assert payload["domiciliation_alert"]["required"] is True
+        assert payload["domiciliation_alert"]["country_code"] == "DZ"
+        assert payload["domiciliation_alert"]["flow"] == "export"
+        # timeline_days must reflect DZ's export repatriation deadline (120 days),
+        # not MA's generic domiciliation timeline (150 days), confirming that
+        # get_export_formalities(origin_country) is used for exports.
+        assert payload["domiciliation_alert"]["timeline_days"] == 120
+        assert payload["summary"]["domiciliation_country"] == "DZ"
+        assert payload["summary"]["domiciliation_flow"] == "export"
         assert payload["summary"]["top_instrument"] is not None
+
+    def test_validate_transaction_does_not_compare_local_threshold_with_usd(self, client):
+        for transaction_type, origin, destination, amount, currency in (
+            ("export", "CI", "MA", 20_000_000, "XOF"),
+            ("export", "CM", "MA", 5_000_000, "XAF"),
+            ("import", "MA", "CI", 20_000_000, "XOF"),
+            ("import", "MA", "CM", 5_000_000, "XAF"),
+        ):
+            response = client.post(
+                "/banking/transaction/validate",
+                json={
+                    "origin_country": origin,
+                    "destination_country": destination,
+                    "amount_usd": 50_000,
+                    "transaction_type": transaction_type,
+                    "sector": "agroalimentaire",
+                },
+            )
+            assert response.status_code == 200
+            payload = response.json()
+            assert payload["summary"]["domiciliation_required"] is None
+            assert payload["domiciliation_alert"]["required"] is None
+            regulatory_country = origin if transaction_type == "export" else destination
+            assert payload["domiciliation_alert"]["country_code"] == regulatory_country
+            assert payload["domiciliation_alert"]["flow"] == transaction_type
+            assert payload["domiciliation_alert"]["threshold_local_amount"] == amount
+            assert payload["domiciliation_alert"]["threshold_currency"] == currency
+
+    def test_validate_transaction_rejects_unknown_flow(self, client):
+        response = client.post(
+            "/banking/transaction/validate",
+            json={
+                "origin_country": "DZ",
+                "destination_country": "MA",
+                "amount_usd": 50_000,
+                "transaction_type": "transit",
+            },
+        )
+        assert response.status_code == 422

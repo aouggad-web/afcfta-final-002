@@ -205,7 +205,7 @@ def test_localize_breakdown_dual_currency():
     )
 
 
-def test_currency_mapping_and_offline_rate():
+def test_currency_mapping_and_offline_rate(monkeypatch):
     """Le mapping pays->devise marche hors-ligne ; le taux est None sans réseau
     (le calculateur dégrade alors proprement en USD)."""
     from currencies.service import get_by_country
@@ -213,8 +213,19 @@ def test_currency_mapping_and_offline_rate():
 
     assert get_by_country("CI").currency_code == "XOF"
     assert get_by_country("CM").currency_code == "XAF"
+
+    # Simule l'absence de réseau de façon déterministe : on neutralise tous les
+    # providers (primaire + complément) pour qu'aucun appel réseau réel ne soit
+    # émis. Sans cela, un runner CI disposant d'Internet récupère un vrai taux
+    # et fait échouer le test de manière intermittente (flaky).
+    service = get_service()
+    service._latest = None  # purge un éventuel cache d'un test précédent
+    for provider in service._primary_providers:
+        monkeypatch.setattr(provider, "fetch_rates", lambda base: None)
+    monkeypatch.setattr(service._supplement_provider, "fetch_rates", lambda base: None)
+
     # Hors réseau, get_rate renvoie None (pas d'exception) -> dégradation USD.
-    assert get_service().get_rate("USD", "XOF") is None
+    assert service.get_rate("USD", "XOF") is None
 
 
 def test_summary_savings():

@@ -30,6 +30,22 @@ import NationalPositionsSelector from '../NationalPositionsSelector';
 import ProductKeywordSearch from './ProductKeywordSearch';
 import KenyaRemissionAuthorization from './KenyaRemissionAuthorization';
 import TariffDocumentationPanel from './TariffDocumentationPanel';
+import RegulatoryComplianceView, {
+  hasActiveMandatedProvider,
+  hasUnpricedActiveProviderFees,
+} from '../regulatory/RegulatoryComplianceView';
+import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
+import RegulatoryReportedIndications from './RegulatoryReportedIndications';
+import { normalizeTaxesDetail } from './taxesDetail';
+import {
+  effectiveTaxRateFromSteps,
+  isCustomsDutyTax,
+  isDisplayableZlecafResult,
+  neutralizeZlecafBreakdown,
+  neutralizeZlecafSummary,
+  resolveZlecafAvailability,
+  zlecafTotalTaxRatePct,
+} from './zlecafAvailability';
 import './calculator.css';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -336,8 +352,18 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     });
   };
 
-  const calculateTariff = async () => {
-    if (!originCountry || !destinationCountry || !hsCode || !value) {
+  const calculateTariff = async (overrideHsCode) => {
+    // overrideHsCode : recalcul immédiat après sélection d'une position
+    // nationale dans la liste (sinon l'état hsCode n'est pas encore à jour
+    // au moment de cet appel, à cause du batching React setState/onClick).
+    // Attention : le bouton « Calculer » câble `onClick={calculateTariff}`,
+    // donc React passe l'événement de clic comme premier argument. On ne
+    // retient donc `overrideHsCode` que si c'est réellement une chaîne de
+    // code ; sinon (SyntheticEvent) `.replace` planterait et aucun résultat
+    // ne s'afficherait.
+    const hsCodeToUse =
+      typeof overrideHsCode === 'string' && overrideHsCode ? overrideHsCode : hsCode;
+    if (!originCountry || !destinationCountry || !hsCodeToUse || !value) {
       toast({
         title: t.missingFields,
         description: t.fillAllFields,
@@ -347,7 +373,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     }
 
     // Validation: code HS entre 6 et 12 chiffres
-    const cleanHsCode = hsCode.replace(/[.\s]/g, '');
+    const cleanHsCode = hsCodeToUse.replace(/[.\s]/g, '');
     if (cleanHsCode.length < 6 || cleanHsCode.length > 12) {
       toast({
         title: t.invalidHsCode,
@@ -414,6 +440,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         const zlecafCalc = authenticResult.zlecaf_calculation || {};
         const savings = authenticResult.savings || {};
         const rates = authenticResult.rates || {};
+        const cifValue = parseFloat(value);
+        const zlecafAvailability = resolveZlecafAvailability(authenticResult);
+        const hasZlecafRate = zlecafAvailability.available;
+        const totalTaxesZlecaf = hasZlecafRate
+          ? effectiveTaxRateFromSteps(authenticResult.calculation_steps_zlecaf, cifValue)
+          : null;
         
         // Construire le résultat au format compatible
         const transformedResult = {
@@ -421,39 +453,39 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           destination_country: destinationCountry,
           hs_code: cleanHsCode,
           hs6_code: authenticResult.hs6 || cleanHsCode.substring(0, 6),
-          value: parseFloat(value),
+          value: cifValue,
           
           // Tarifs
           normal_tariff_rate: (rates.dd_rate_pct || 0) / 100,
           normal_tariff_amount: npfCalc.dd?.amount || 0,
-          zlecaf_tariff_rate: 0, // DD exempt under ZLECAf
-          zlecaf_tariff_amount: zlecafCalc.dd?.amount || 0,
+          zlecaf_tariff_rate: hasZlecafRate
+            ? zlecafAvailability.effectiveRatePct / 100
+            : null,
+          zlecaf_tariff_amount: hasZlecafRate ? (zlecafCalc.dd?.amount ?? 0) : null,
           
           // TVA
           normal_vat_rate: (rates.vat_rate_pct || 0) / 100,
           normal_vat_amount: npfCalc.vat?.amount || 0,
-          zlecaf_vat_rate: (rates.vat_rate_pct || 0) / 100,
-          zlecaf_vat_amount: zlecafCalc.vat?.amount || 0,
+          zlecaf_vat_rate: hasZlecafRate ? (rates.vat_rate_pct || 0) / 100 : null,
+          zlecaf_vat_amount: hasZlecafRate ? (zlecafCalc.vat?.amount ?? 0) : null,
           
           // Autres taxes
           normal_other_taxes_total: npfCalc.other_taxes?.amount || 0,
-          zlecaf_other_taxes_total: zlecafCalc.other_taxes?.amount || 0,
+          zlecaf_other_taxes_total: hasZlecafRate ? (zlecafCalc.other_taxes?.amount ?? 0) : null,
           
           // Totaux
           normal_total_cost: npfCalc.total_to_pay || 0,
-          zlecaf_total_cost: zlecafCalc.total_to_pay || 0,
+          zlecaf_total_cost: hasZlecafRate ? (zlecafCalc.total_to_pay ?? null) : null,
           
           // Taux effectif = total_taxes / CIF × 100 (cascade réelle, PAS somme de taux)
           total_taxes_npf: rates.effective_rate_pct || rates.total_rate_pct || 0,
-          total_taxes_zlecaf: authenticResult.calculation_steps_zlecaf
-            ? Math.round(authenticResult.calculation_steps_zlecaf.reduce((s, t) => s + t.amount, 0) / parseFloat(value) * 10000) / 100
-            : (rates.vat_rate_pct || 0) + (rates.other_taxes_pct || 0),
+          total_taxes_zlecaf: totalTaxesZlecaf,
           
           // Économies
-          savings: savings.amount || 0,
-          savings_percentage: savings.percentage || 0,
-          total_savings_with_taxes: savings.amount || 0,
-          total_savings_percentage: savings.percentage || 0,
+          savings: hasZlecafRate ? (savings.amount ?? 0) : null,
+          savings_percentage: hasZlecafRate ? (savings.percentage ?? 0) : null,
+          total_savings_with_taxes: hasZlecafRate ? (savings.amount ?? 0) : null,
+          total_savings_percentage: hasZlecafRate ? (savings.percentage ?? 0) : null,
           
           // Précision et source
           tariff_precision: 'authentic_data',
@@ -463,21 +495,44 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           trade_regime: authenticResult.trade_regime || null,
           trade_regime_code: authenticResult.trade_regime_code || null,
           trade_regime_note: authenticResult.trade_regime_note || null,
-          preferential_regime_applied: authenticResult.preferential_regime_applied !== false,
+          preferential_regime_applied: authenticResult.preferential_regime_applied === true,
           // Éligibilité ZLECAf (réciprocité bilatérale + ratification continentale)
-          zlecaf_eligible: authenticResult.zlecaf_eligible !== false,
-          zlecaf_preference_applied: authenticResult.zlecaf_preference_applied !== false,
+          zlecaf_eligible: authenticResult.zlecaf_eligible === true,
+          zlecaf_preference_applied: authenticResult.zlecaf_preference_applied === true,
           zlecaf_note: authenticResult.zlecaf_note || null,
-          
+          zlecaf_status: zlecafAvailability.status,
+          zlecaf_rate_expression: authenticResult.zlecaf_rate_expression || null,
+          zlecaf_rate_source: authenticResult.zlecaf_rate_source || null,
+          zlecaf_rate_calculation_status:
+            authenticResult.zlecaf_rate_calculation_status || null,
+          // Taux publié au e-Tariff Book officiel de la ZLECAf mais non
+          // vérifié comme applicable (OFFER_ONLY/PARTNER_NOTICE_REQUIRED) —
+          // strictement informatif, jamais utilisé dans un calcul.
+          zlecaf_offer_rate_pct: zlecafAvailability.offerRatePct,
+          zlecaf_offer_rate_expression: zlecafAvailability.offerRateExpression,
+
           // Ventilation complète NPF vs ZLECAf + bi-devise (TaxBreakdownDual)
-          taxes_breakdown: authenticResult.taxes_breakdown || [],
-          taxes_summary: authenticResult.taxes_summary || null,
+          taxes_breakdown: neutralizeZlecafBreakdown(
+            authenticResult.taxes_breakdown,
+            hasZlecafRate,
+          ),
+          taxes_summary: neutralizeZlecafSummary(
+            authenticResult.taxes_summary,
+            hasZlecafRate,
+          ),
           currency: authenticResult.currency || null,
           calculation_profile_status: authenticResult.calculation_profile_status || 'default',
           cascade_legal_source: authenticResult.cascade_legal_source || null,
           
-          // Détails des taxes
-          taxes_detail: authenticResult.taxes_detail || [],
+          // Détails des taxes — le chemin authentique renvoie un OBJET indexé
+          // par code de taxe, l'affichage attend une liste : sans cette
+          // normalisation, `taxes_detail.length` valait `undefined` et toute
+          // la carte « Détail des Taxes » (donc la colonne ZLECAf par taxe)
+          // disparaissait.
+          taxes_detail: normalizeTaxesDetail(
+            authenticResult.taxes_detail,
+            authenticResult.taxes_breakdown,
+          ),
           
           // Avantages fiscaux
           fiscal_advantages: authenticResult.fiscal_advantages || [],
@@ -521,7 +576,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           })(),
           
           // Journal de calcul ZLECAf — moteur cascade avec DD préférentiel
-          zlecaf_calculation_journal: (() => {
+          zlecaf_calculation_journal: hasZlecafRate ? (() => {
             const cif = parseFloat(value);
             const steps = authenticResult.calculation_steps_zlecaf || [];
             const legalSource = authenticResult.cascade_legal_source || `Tarif ZLECAf ${destISO3}`;
@@ -541,13 +596,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               });
             });
             return journal;
-          })(),
+          })() : [],
           
           computation_order_ref: `Données tarifaires officielles ${destISO3} - Format enhanced_v2`,
           last_verified: authenticResult.generated_at ? new Date(authenticResult.generated_at).toISOString().split('T')[0] : '2025-02',
           confidence_level: 'very_high',
           kenya_legal_calculation: authenticResult.kenya_legal_calculation || null,
-          generic_legal_calculation: authenticResult.generic_legal_calculation || authenticResult.legal_calculation || null
+          generic_legal_calculation: authenticResult.generic_legal_calculation || authenticResult.legal_calculation || null,
+
+          // Formalités, prestataires mandatés et frais réglementaires — bloc
+          // informatif strictement séparé des droits/taxes (voir
+          // RegulatoryCostBreakdown / RegulatoryComplianceView / RegulatoryReportedIndications).
+          // Sans ce report explicite, ces champs — présents dans la réponse API
+          // authentique — étaient silencieusement perdus lors de la
+          // reconstruction manuelle de `transformedResult`.
+          regulatory_compliance: authenticResult.regulatory_compliance || null,
+          regulatory_cost: authenticResult.regulatory_cost || null,
+          regulatory_reported: authenticResult.regulatory_reported || null,
         };
         
         setResult(transformedResult);
@@ -579,7 +644,19 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         
         toast({
           title: `✅ ${t.calculationSuccess}`,
-          description: `${t.potentialSavings}: ${formatCurrency(savings.amount || 0)} (Données officielles ${destISO3})`,
+          description: hasZlecafRate
+            ? `${t.potentialSavings}: ${formatCurrency(savings.amount ?? 0)} (Données officielles ${destISO3})`
+            : (authenticResult.zlecaf_status === 'OFFER_ONLY' || authenticResult.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
+              ? (language === 'fr'
+                ? `Offre tarifaire ZLECAf publiée pour ${destISO3}${zlecafAvailability.offerRateExpression ? ` (${zlecafAvailability.offerRateExpression})` : ''} — non vérifiée comme applicable, à confirmer avec les douanes locales (calcul NPF conservé)`
+                : `Published AfCFTA tariff offer for ${destISO3}${zlecafAvailability.offerRateExpression ? ` (${zlecafAvailability.offerRateExpression})` : ''} — not verified as applicable, confirm with local customs (MFN calculation retained)`)
+            : authenticResult.zlecaf_rate_expression
+              ? (language === 'fr'
+                ? `Taux officiel ZLECAf : ${authenticResult.zlecaf_rate_expression} — quantité requise, total non calculé (${destISO3})`
+                : `Official AfCFTA rate: ${authenticResult.zlecaf_rate_expression} — quantity required, total not calculated (${destISO3})`)
+            : (language === 'fr'
+              ? `Taux ZLECAf non disponible pour cette ligne — calcul NPF conservé (${destISO3})`
+              : `AfCFTA rate unavailable for this line — MFN calculation retained (${destISO3})`),
         });
         
       } else {
@@ -591,7 +668,38 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           value: parseFloat(value)
         });
         
-        setResult(response.data);
+        // Le repli n'expose pas les taux de taxation totaux (`total_taxes_*`),
+        // seulement la ventilation `taxes_summary`. On les en déduit — la
+        // valeur CIF est celle saisie — pour que la synthèse économique ne
+        // reste pas vide sur ce chemin ; jamais de 0 % fabriqué quand la
+        // ventilation préférentielle est absente (`null`).
+        const fallbackSummary = response.data?.taxes_summary || null;
+        const fallbackCif = parseFloat(value);
+        const totalRatePct = (block) => (
+          block && typeof block.total_taxes_et_droits === 'number'
+            && Number.isFinite(fallbackCif) && fallbackCif > 0
+            ? Math.round((block.total_taxes_et_droits / fallbackCif) * 10000) / 100
+            : null
+        );
+        const fallbackNpfTotal = typeof response.data?.total_taxes_npf === 'number'
+          ? response.data.total_taxes_npf
+          : totalRatePct(fallbackSummary?.npf);
+        const fallbackZlecafTotal = typeof response.data?.total_taxes_zlecaf === 'number'
+          ? response.data.total_taxes_zlecaf
+          : totalRatePct(fallbackSummary?.zlecaf);
+
+        setResult({
+          ...response.data,
+          total_taxes_npf: fallbackNpfTotal,
+          total_taxes_zlecaf: fallbackZlecafTotal,
+          // Même normalisation que sur le chemin authentique : le repli sert
+          // déjà une liste, mais elle est enrichie du taux préférentiel par
+          // taxe quand la ventilation le fournit.
+          taxes_detail: normalizeTaxesDetail(
+            response.data?.taxes_detail,
+            response.data?.taxes_breakdown,
+          ),
+        });
         
         // Récupérer le calcul détaillé NPF vs ZLECAf
         try {
@@ -1050,7 +1158,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           {/* Boutons Calculer / Réinitialiser */}
           <div className="flex flex-col sm:flex-row gap-3">
             <Button 
-              onClick={calculateTariff}
+              onClick={() => calculateTariff()}
               disabled={loading}
               data-testid="calculate-tariff-button"
               className="flex-1 h-14 text-lg font-bold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white shadow-lg hover:shadow-xl transition-all"
@@ -1224,36 +1332,81 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 {/* Total ZLECAf */}
                 <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20">
                   <p className="text-emerald-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Total ZLECAf' : 'Total AfCFTA'}</p>
-                  <p className="text-3xl font-bold text-emerald-400 mt-1">{(result.total_taxes_zlecaf || 0).toFixed(1)}%</p>
-                  <p className="text-emerald-400/60 text-xs mt-1">{language === 'fr' ? 'Avec accord' : 'With agreement'}</p>
+                  <p className="text-3xl font-bold text-emerald-400 mt-1">
+                    {zlecafTotalTaxRatePct(result) !== null
+                      ? `${zlecafTotalTaxRatePct(result).toFixed(1)}%`
+                      : '—'}
+                  </p>
+                  <p className="text-emerald-400/60 text-xs mt-1">
+                    {zlecafTotalTaxRatePct(result) !== null
+                      ? (language === 'fr' ? 'Avec accord' : 'With agreement')
+                      : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
+                        ? (language === 'fr'
+                          ? `Offre publiée ZLECAf${result.zlecaf_offer_rate_expression ? ` : ${result.zlecaf_offer_rate_expression}` : ''} — à vérifier avec les douanes locales`
+                          : `Published AfCFTA offer${result.zlecaf_offer_rate_expression ? `: ${result.zlecaf_offer_rate_expression}` : ''} — verify with local customs`)
+                        : result.zlecaf_rate_expression
+                          ? (language === 'fr'
+                            ? `Taux ligne ${result.zlecaf_rate_expression} — quantité requise`
+                            : `Line rate ${result.zlecaf_rate_expression} — quantity required`)
+                          : (language === 'fr' ? 'Taux non disponible' : 'Rate unavailable')}
+                  </p>
                 </div>
-                
+
                 {/* Économie */}
                 <div className="bg-amber-500/10 rounded-xl p-4 border border-amber-500/20">
                   <p className="text-amber-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Économie' : 'Savings'}</p>
                   <p className="text-3xl font-bold text-amber-400 mt-1">
-                    -{((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)).toFixed(1)}%
+                    {zlecafTotalTaxRatePct(result) !== null
+                      ? `-${((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)).toFixed(1)}%`
+                      : '—'}
                   </p>
-                  <p className="text-amber-400/60 text-xs mt-1">{language === 'fr' ? 'Certificat Origine' : 'Origin Certificate'}</p>
+                  <p className="text-amber-400/60 text-xs mt-1">
+                    {zlecafTotalTaxRatePct(result) !== null
+                      ? (language === 'fr' ? 'Certificat Origine' : 'Origin Certificate')
+                      : (result.zlecaf_status === 'OFFER_ONLY' || result.zlecaf_status === 'PARTNER_NOTICE_REQUIRED')
+                        ? (language === 'fr' ? 'À vérifier' : 'To verify')
+                        : (language === 'fr' ? 'Non disponible' : 'Unavailable')}
+                  </p>
                 </div>
                 
                 {/* Montant économisé */}
                 <div className="bg-blue-500/10 rounded-xl p-4 border border-blue-500/20">
                   <p className="text-blue-400/80 text-xs uppercase tracking-wide font-medium">{language === 'fr' ? 'Montant Économisé' : 'Amount Saved'}</p>
                   <p className="text-2xl font-bold text-blue-400 mt-1">
-                    {((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - (result.total_taxes_zlecaf || 0)) / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} €
+                    {zlecafTotalTaxRatePct(result) !== null
+                      ? `${((parseFloat(value) || 0) * ((result.total_taxes_npf || 0) - zlecafTotalTaxRatePct(result)) / 100).toLocaleString('fr-FR', { maximumFractionDigits: 0 })} USD`
+                      : '—'}
                   </p>
-                  <p className="text-blue-400/60 text-xs mt-1">{language === 'fr' ? 'Sur votre valeur' : 'On your value'}</p>
+                  <p className="text-blue-400/60 text-xs mt-1">
+                    {zlecafTotalTaxRatePct(result) !== null
+                      ? (language === 'fr' ? 'Sur votre valeur' : 'On your value')
+                      : (language === 'fr' ? 'Non calculé' : 'Not calculated')}
+                  </p>
                 </div>
               </div>
               <p className="mt-4 text-center text-xs font-medium text-amber-300">
                 Simulation informative — non opposable à l’administration douanière.
               </p>
+
+              {/* Point 4 — signalement d'incomplétude : le total ci-dessus couvre les
+                  droits et taxes exigibles, mais un prestataire mandaté actif facture
+                  des frais dont le montant n'est pas chiffré dans les sources. Le coût
+                  total réel de dédouanement est donc INCOMPLET — signalé, jamais estimé. */}
+              {hasUnpricedActiveProviderFees(result.regulatory_compliance) && (
+                <div className="mt-4 flex items-start gap-3 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                  <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <p className="text-sm text-amber-200/90">
+                    {language === 'fr'
+                      ? "Calcul incomplet : ces totaux couvrent les droits et taxes exigibles, mais un prestataire mandaté actif perçoit des frais dont le montant n'est pas publié dans les sources (NOT_AVAILABLE). Le coût total de dédouanement est donc supérieur — voir le bloc « Frais des prestataires mandatés » ci-dessous. Aucun montant n'est estimé."
+                      : 'Incomplete calculation: these totals cover payable duties and taxes, but an active mandated provider charges fees whose amount is not published in the sources (NOT_AVAILABLE). The total clearance cost is therefore higher — see the “Mandated-provider fees” block below. No amount is estimated.'}
+                  </p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
           {/* Schéma de démantèlement ZLECAf */}
-          {result && destinationCountry && hsCode && (
+          {result && destinationCountry && hsCode && isDisplayableZlecafResult(result) && (
             <DismantlementSchedule
               countryIso3={destinationCountry}
               hs6={hsCode.replace(/[.\s]/g, '').slice(0, 6)}
@@ -1304,7 +1457,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         <div className="text-right">
                           <p className="text-slate-500 text-xs">{language === 'fr' ? 'ZLECAf' : 'AfCFTA'}</p>
                           <p className="text-emerald-400 font-bold">
-                            {tax.tax === 'D.D' || tax.tax === 'DD' ? '0%' : `${tax.rate}%`}
+                            {isDisplayableZlecafResult(result)
+                              ? (typeof tax.rate_zlecaf_pct === 'number'
+                                ? `${tax.rate_zlecaf_pct.toFixed(2)}%`
+                                : isCustomsDutyTax(tax)
+                                  ? `${(result.zlecaf_tariff_rate * 100).toFixed(2)}%`
+                                  : `${tax.rate}%`)
+                              : (isCustomsDutyTax(tax)
+                                && result.zlecaf_rate_expression
+                                ? result.zlecaf_rate_expression
+                                : '—')}
                           </p>
                         </div>
                       </div>
@@ -1327,6 +1489,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               breakdown={result.taxes_breakdown}
               summary={result.taxes_summary}
               currency={result.currency}
+              zlecafAvailable={isDisplayableZlecafResult(result)}
               language={language}
             />
           )}
@@ -1381,7 +1544,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           setHsCode(code);
                           setSelectedSubPositionDesc(desc);
                           setSelectedSubPositionFormalities(spFormalities);
+                          calculateTariff(code);
                         }}
+                        data-testid={`sub-position-${code}`}
                         className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-all ${
                           isSelected
                             ? 'bg-purple-500/20 border-purple-500/50'
@@ -1523,14 +1688,103 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
               </CardContent>
             </Card>
           )}
+
+          {/* Composition du coût réglementaire : droits & taxes publics + frais de
+              formalité et de prestataire (lignes séparées). Les frais documentés
+              chiffrés entrent dans le coût total ; les frais existants non chiffrés
+              sont signalés « montant à confirmer », jamais valués à zéro. */}
+          <RegulatoryCostBreakdown result={result} language={language} />
+
+          {/* ── BLOC DÉTAILLÉ — Formalités & prestataires mandatés (registre conforme) ──
+              Détail sourcé et daté (mission, mandat, preuves). Affiché UNIQUEMENT
+              pour les pays utilisant réellement un prestataire mandaté actif (jamais
+              pour une formalité opérée directement par l'administration ni un mandat
+              expiré). Distinct des droits et taxes. */}
+          {hasActiveMandatedProvider(result.regulatory_compliance) && (
+            <Card className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 border border-amber-500/30">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                    <ClipboardList className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg text-white">
+                      {language === 'fr'
+                        ? 'Détail des formalités & prestataires mandatés'
+                        : 'Formalities & mandated providers — detail'}
+                    </CardTitle>
+                    <CardDescription className="text-slate-400">
+                      {language === 'fr'
+                        ? `${getCountryName(result.destination_country)} — mission, mandat, preuves datées et sources officielles`
+                        : `${getCountryName(result.destination_country)} — mission, mandate, dated evidence and official sources`}
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-start gap-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                  <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <p className="text-sm text-amber-200/90">
+                    {language === 'fr'
+                      ? "Les frais du prestataire mandaté sont séparés des droits et taxes publics (voir « Composition du coût réglementaire » ci-dessus). Un montant n'est chiffré et intégré que lorsqu'il est prouvé et sourcé ; sinon il reste à confirmer (jamais fabriqué, jamais valué à zéro)."
+                      : 'Mandated-provider fees are separate from public duties and taxes (see “Regulatory cost composition” above). An amount is quantified and included only when proven and sourced; otherwise it stays to be confirmed (never fabricated, never valued at zero).'}
+                  </p>
+                </div>
+                <RegulatoryComplianceView
+                  compliance={result.regulatory_compliance}
+                  language={language}
+                  showFilters={false}
+                />
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Couche « indications secondaires » (non vérifiée) — pays hors registre
+              conforme. Rendu distinct, jamais sommé, tout « à confirmer ». */}
+          <RegulatoryReportedIndications result={result} language={language} />
         </div>
       )}
           </div>
       </TabsContent>
-        
+
         {/* Onglet Réglementation - Moteur Réglementaire v3 */}
         <TabsContent value="regulatory">
           <div className="space-y-6">
+            {/* Formalités & prestataires mandatés — registre CONFORME fail-closed
+                (source-bound, daté). Affiché en priorité sur le Moteur v3 ci-dessous,
+                et UNIQUEMENT pour un pays de destination utilisant réellement un
+                prestataire mandaté actif. */}
+            {hasActiveMandatedProvider(result?.regulatory_compliance) && (
+              <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border border-amber-500/30">
+                <CardHeader>
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                      <ClipboardList className="w-6 h-6 text-amber-400" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-xl text-white">
+                        {language === 'fr'
+                          ? 'Formalités particulières & prestataires mandatés'
+                          : 'Special formalities & mandated providers'}
+                      </CardTitle>
+                      <CardDescription className="text-slate-400">
+                        {language === 'fr'
+                          ? `${getCountryName(result.destination_country)} — registre sourcé et daté, distinct du calcul de droits et taxes`
+                          : `${getCountryName(result.destination_country)} — source-bound dated registry, distinct from the duties/taxes computation`}
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <RegulatoryComplianceView
+                    compliance={result.regulatory_compliance}
+                    language={language}
+                    showFilters
+                  />
+                </CardContent>
+              </Card>
+            )}
+
             {/* Header avec recherche */}
             <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 overflow-hidden">
               <div className="absolute top-0 left-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 -translate-x-1/2"></div>

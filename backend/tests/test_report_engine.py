@@ -108,6 +108,63 @@ def test_logistics_accessibility_unavailable():
     assert res["available"] is False and res["index"] is None
 
 
+def test_logistics_accessibility_counts_distinct_modes_not_raw_options():
+    # Régression Copilot (PR #430) : `compare_multimodal` peut renvoyer
+    # PLUSIEURS options pour un même mode (ex. deux itinéraires maritimes,
+    # cf. `_sea_options`). Compter les options brutes surestime
+    # l'accessibilité d'un corridor qui n'a en réalité qu'un seul mode
+    # opérationnel (mer uniquement) — un pays sans route/rail/air vers ce
+    # marché ne doit pas dépasser le seuil du caveat "accès limité".
+    profile = {
+        "freight": {
+            "available": True,
+            "options": [
+                {"mode": "sea", "is_future": False},
+                {"mode": "sea", "is_future": False},  # second itinéraire, même mode
+                {"mode": "air", "is_future": True},  # non opérationnel -> exclu
+            ],
+        },
+        "cheapest_operational_option": {"feasibility": "medium"},
+    }
+    res = logistics.summarize_logistics_accessibility(profile)
+    assert res["available"] is True
+    assert res["operational_modes"] == 1  # 1 mode distinct (mer), pas 2 options
+    # 1 mode / 3 * 0.7 + 0.15 (feasibility medium) = 0.383 — nettement plus bas
+    # que ce que 2 options brutes auraient produit (2/3*0.7+0.15 = 0.617).
+    assert res["index"] == round(1 / 3.0 * 0.7 + 0.15, 3)
+
+
+def test_logistics_accessibility_multiple_distinct_modes_scores_higher():
+    profile = {
+        "freight": {
+            "available": True,
+            "options": [
+                {"mode": "sea", "is_future": False},
+                {"mode": "sea", "is_future": False},
+                {"mode": "road", "is_future": False},
+                {"mode": "air", "is_future": False},
+            ],
+        },
+        "cheapest_operational_option": {"feasibility": "high"},
+    }
+    res = logistics.summarize_logistics_accessibility(profile)
+    assert res["operational_modes"] == 3  # sea, road, air — pas 4 options
+    assert res["index"] == 1.0
+
+
+def test_logistics_accessibility_falls_back_to_operational_count_without_options():
+    # Compatibilité : un profil qui n'expose pas la liste `options` brute
+    # (ancien format / test existant) continue de fonctionner via le compteur
+    # pré-calculé.
+    profile = {
+        "freight": {"available": True, "operational_count": 3},
+        "cheapest_operational_option": {"feasibility": "high"},
+    }
+    res = logistics.summarize_logistics_accessibility(profile)
+    assert res["operational_modes"] == 3
+    assert res["index"] == 1.0
+
+
 # ── End-to-end score renormalisation (pure, deterministic) ───────────────────
 def test_end_to_end_score_renormalises_over_available():
     components = {
@@ -207,6 +264,42 @@ def test_landed_cost_port_fees_unavailable_for_other_modes():
 def test_landed_cost_unavailable_without_freight():
     res = report_engine._landed_cost(100000.0, None)
     assert res["available"] is False and res["value_usd"] is None
+
+
+def test_landed_cost_note_labels_observed_tier_not_chapter_estimate():
+    # Régression Copilot (PR #430) : `_landed_cost` traitait tout ratio
+    # non-cours_mondial comme une estimation de chapitre, y compris un flux
+    # réel OEC/BACI observé (valeur/quantité). La note rendue doit distinguer
+    # les deux — le libellé "estimation par chapitre" serait trompeur pour un
+    # ratio mesuré sur un flux réel.
+    shipment = {
+        "available": True,
+        "containers_needed": 2,
+        "container_type": "teu",
+        "value_to_weight": {
+            "classification_source": "valeur_unitaire_observee",
+            "usd_per_kg": 25.0,
+            "basis": "importations de DZA, toutes origines, 2024",
+        },
+    }
+    res = report_engine._landed_cost(2_000_000.0, 995.0, shipment, {"mode": "sea"})
+    assert "valeur unitaire réelle observée" in res["note"]
+    assert "importations de DZA, toutes origines, 2024" in res["note"]
+    assert "chapitre" not in res["note"]
+
+
+def test_landed_cost_note_labels_observed_tier_for_bulk_charter():
+    shipment = {
+        "available": True,
+        "value_to_weight": {
+            "classification_source": "valeur_unitaire_observee",
+            "usd_per_kg": 0.4,
+            "basis": "importations de DZA, toutes origines, 2024",
+        },
+    }
+    res = report_engine._landed_cost(2_000_000.0, 50_000.0, shipment, {"mode": "sea_bulk"})
+    assert "valeur unitaire réelle observée" in res["note"]
+    assert "chapitre" not in res["note"]
 
 
 # ── Supply component from real production data ────────────────────────────────
@@ -490,17 +583,17 @@ def test_benchmark_top_producers(monkeypatch):
     assert result["producers"][0]["country_iso3"] == "CIV"
 
 
-def test_tariff_benefit_real_rates():
+def test_tariff_benefit_requires_verified_reciprocal_rate():
     from services import benchmarking_service as benchmark
 
-    # NGA imports cocoa (180100): national duty 5% -> ZLECAf 0% => real 5% advantage.
+    # Nigeria's gazetted offer is not enough: no exhaustive reciprocal-origin
+    # notice has been verified, so the report must not model a 0 % end-state.
     res = benchmark.tariff_benefit_analysis("CIV", "NGA", "180100")
-    assert res["available"] is True
+    assert res["available"] is False
     assert res["national_rate_pct"] == 5.0
-    assert res["zlecaf_rate_pct"] == 0.0
-    assert res["tariff_advantage_pct"] == 5.0
-    # Must NOT be the old hardcoded 8.5%
-    assert res["tariff_advantage_pct"] != 8.5
+    assert res["zlecaf_rate_pct"] is None
+    assert res["tariff_advantage_pct"] is None
+    assert res["savings_per_1000usd"] is None
 
 
 def test_tariff_hs4_resolves_to_hs6():
@@ -510,10 +603,10 @@ def test_tariff_hs4_resolves_to_hs6():
     hs6, resolved = benchmark._resolve_hs6("NGA", "1801")
     assert hs6 == "180100" and resolved is True
     res = benchmark.tariff_benefit_analysis("CIV", "NGA", "1801")
-    assert res["available"] is True
+    assert res["available"] is False
     assert res["hs6_used"] == "180100"
     assert res["hs6_resolved"] is True
-    assert res["tariff_advantage_pct"] == 5.0
+    assert res["tariff_advantage_pct"] is None
 
 
 def test_tariff_dza_no_zlecaf_for_non_active_partner():
@@ -830,13 +923,16 @@ def test_country_product_imports_falls_back_to_direct(monkeypatch):
     assert res["import_value_usd"] == 1234.0
 
 
-def test_tariff_benefit_zero_when_no_duty():
+def test_tariff_benefit_remains_unavailable_when_mfn_is_zero_but_offer_is_unverified():
     from services import benchmarking_service as benchmark
 
-    # EGY rice (100630): national duty already 0% => no ZLECAf advantage.
+    # EGY rice (100630) is already 0 % NPF, but that does not turn Egypt's
+    # unverified offer into an applicable ZLECAf rate or a verified zero saving.
     res = benchmark.tariff_benefit_analysis("SEN", "EGY", "100630")
-    assert res["available"] is True
-    assert res["tariff_advantage_pct"] == 0.0
+    assert res["available"] is False
+    assert res.get("zlecaf_rate_pct") is None
+    assert res.get("tariff_advantage_pct") is None
+    assert res.get("savings_per_1000usd") is None
 
 
 def test_segmentation_no_fabricated_tariff_when_unavailable():

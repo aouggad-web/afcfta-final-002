@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "country": "KEN",
-  "generated_at": "2026-07-24",
+  "generated_at": "2026-08-08",
   "sources": [
     {
       "source_id": "KEN-VAT-2013-CONS-20260415",
@@ -678,6 +678,24 @@
       "sha256": "cc9269d47b18e6845e59f0547af42987c4938b081fe73154cc2a91de928374f8",
       "source_status": "COLLECTED_ADMINISTRATIVE_GUIDE",
       "metadata_note": "Procedure source only; stale rate statements excluded from fiscal measures."
+    },
+    {
+      "source_id": "KEN-KEBS-PVOC-NOTICE-20260205",
+      "official_title": "Public Notice on Expiry of PVoC Contracts for General Goods and Incidental Arrangements Thereof",
+      "institution": "Kenya Bureau of Standards (KEBS)",
+      "html_url": "https://www.kebs.org/wp-content/uploads/2026/02/PUBLIC-NOTICE-ON-EXPIRY-OF-PVOC-CONTRACTS-FOR-GENERAL-GOODS-AND-INCIDENTAL-ARRANGEMENTS-THEREOF-05_02-Edit-1.pdf",
+      "publication_date": "2026-02-05",
+      "consulted_at": "2026-08-08",
+      "source_status": "COLLECTED"
+    },
+    {
+      "source_id": "KEN-KRA-ACD-NOTICE-20260714",
+      "official_title": "Advance Cargo Declaration (ACD) Platform for Containerized Cargo",
+      "institution": "Kenya Revenue Authority (KRA)",
+      "html_url": "https://www.kra.go.ke/news-center/public-notices/2380-advance-cargo-declaration-acd-platform-for-containerized-cargo",
+      "publication_date": "2026-07-14",
+      "consulted_at": "2026-08-08",
+      "source_status": "SOURCE_PENDING"
     }
   ]
 }

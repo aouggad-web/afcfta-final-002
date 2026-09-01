@@ -735,7 +735,7 @@ class ClaudeTradeService:
                 if profile.get("available"):
                     lines = []
                     for p in profile["products"]:
-                        base = (
+                        line = (
                             f"- {p['commodity']} (HS {p['hs_code']}, {p['institution']} "
                             f"{p['year']}): {p['value']:,.0f} {p['unit']}"
                         )
@@ -743,17 +743,25 @@ class ClaudeTradeService:
                             # Sous couverture partielle, aucun rang/part n'existe
                             # (champs nuls côté service) — le prompt reçoit la
                             # valeur réelle et l'interdiction explicite.
-                            lines.append(
-                                base + " [PARTIAL COVERAGE — too few African countries "
+                            line += (
+                                " [PARTIAL COVERAGE — too few African countries "
                                 "ingested for this product; NO continental rank or share "
                                 "exists; NEVER present this country as a leading/major "
                                 "producer of it]"
                             )
                         else:
-                            lines.append(
-                                base + f", continental rank {p['rank']}/"
+                            line += (
+                                f", continental rank {p['rank']}/"
                                 f"{p['total_countries']}, African share {p['share_pct']}%"
                             )
+                        if p.get("commodity_caveat"):
+                            # La commodité FAOSTAT agrège des sous-produits que le
+                            # code SH sépare (ex. « Bananas » = dessert + à cuire) :
+                            # le rang de PRODUCTION ne vaut pas capacité d'EXPORT.
+                            # Suffixe de la MÊME entrée produit (pas une ligne à
+                            # part, sinon production_products serait gonflé).
+                            line += "\n  [METHODOLOGY] " + p["commodity_caveat"]
+                        lines.append(line)
                     stats["production_products"] = len(lines)
                     sections.append(
                         f"VERIFIED PRODUCTION OF {country_name} "
@@ -918,6 +926,13 @@ STRICT DATA RULES:
                     if prod.get("coverage_caveat")
                     else ""
                 )
+                # Caveat méthodologique : quand la commodité FAOSTAT regroupe des
+                # sous-produits séparés par le code SH (ex. « Bananas » = dessert
+                # + à cuire/matooke), ce classement de PRODUCTION ne représente
+                # pas la capacité d'EXPORT du produit SH — les leaders export se
+                # lisent sur les flux commerciaux ci-dessous, pas sur ce chiffre.
+                if prod.get("commodity_caveat"):
+                    caveat += " [METHODOLOGY — " + prod["commodity_caveat"] + "]"
                 sections.append(
                     f"REAL PRODUCTION for {prod['commodity']} (HS {hs_code}) "
                     f"[{prod['measure']}, {prod['source']['institution']} "
@@ -1021,11 +1036,14 @@ STRICT DATA RULES:
         # de sortie sans changer country/mode/lang/pv — sans cette clé, changer
         # de modèle pour améliorer la qualité ne se voit qu'après 90 jours
         # (TTL du cache claude_analysis) ou une invalidation manuelle.
+        # pv=4 : l'ancrage production relaie désormais le caveat méthodologique
+        # par commodité (banane/plantain : production ≠ capacité d'export) —
+        # invalide les analyses en cache générées sans ce garde-fou.
         cache_params = {
             "country": country_name,
             "mode": mode,
             "lang": lang,
-            "pv": 3,
+            "pv": 4,
             "model": self.MODEL,
         }
         # Stamp de version des données de production : pour les modes enrichis
@@ -1679,7 +1697,10 @@ Return this EXACT JSON structure:
         # "pv" = version du prompt : v2 ajoute l'ancrage sur données réelles
         # (production_capacity_service + OEC) et les règles anti-fabrication —
         # invalide les analyses en cache générées avec l'ancien prompt non ancré.
-        cache_params = {"hs_code": hs_code, "lang": lang, "pv": 2}
+        # v3 : l'ancrage HS relaie le caveat méthodologique par commodité
+        # (banane/plantain : production ≠ capacité d'export) — invalide les
+        # analyses HS 080390 en cache générées sans ce garde-fou.
+        cache_params = {"hs_code": hs_code, "lang": lang, "pv": 3}
         cached = cache_service.get("claude_product", cache_params)
         if cached:
             cached["data_freshness"] = get_data_freshness(

@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "country": "TUN",
+  "as_of": "2026-07-29",
+  "sources": [
+    {
+      "source_id": "TUN-CUSTOMS-TARIFFWEB2025-RUNTIME",
+      "official_title": "Tarif Web 2025",
+      "institution": "Douane tunisienne",
+      "legal_date": "2025-01-01",
+      "url": "https://www.douane.gov.tn/consultation-tarif-2/",
+      "sha256": "3313ca536987dddf1c2ab1ff2253883c792fe6f02ccedf4ca8ee3231b1055d8a",
+      "verification_status": "PARTIAL_RUNTIME_DATASET",
+      "registry_path": "backend/data/crawled/TUN_tariffs.json",
+      "notes": "Empreinte du fichier runtime : 17 512 lignes nationales ; actualisation Tarif Web 2026 encore à collecter."
+    },
+    {
+      "source_id": "TUN-FINANCE-VAT-OVERVIEW-20260729",
+      "official_title": "Aperçu général sur la fiscalité — taxe sur la valeur ajoutée",
+      "institution": "Ministère des Finances tunisien",
+      "legal_date": null,
+      "url": "https://www.finances.gov.tn/fr/apercu-general-sur-la-fiscalite",
+      "sha256": null,
+      "verification_status": "OFFICIAL_GUIDE_STALE_RATE_WARNING",
+      "notes": "Présente historiquement un taux général de 18 %, les taux de 6 % et 12 %, et l'assiette à l'importation, mais sans date de consolidation suffisamment explicite. Aucun taux courant n'est publié à partir de cette page."
+    },
+    {
+      "source_id": "TUN-CUSTOMS-TARIFFWEB2026",
+      "official_title": "Tarif Web 2026",
+      "institution": "Douane tunisienne",
+      "legal_date": "2026-01-01",
+      "url": "https://www.douane.gov.tn/tarifweb2026/",
+      "sha256": null,
+      "verification_status": "PENDING_PRIMARY_COLLECTION",
+      "notes": "Portail officiel courant identifié ; contenu ligne par ligne non encore ingéré."
+    }
+  ]
+}

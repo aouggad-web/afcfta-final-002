@@ -95,6 +95,8 @@ def test_get_tariff_line_falls_back_to_etl(monkeypatch):
 
 def test_get_sub_positions_prefers_postgres(monkeypatch):
     monkeypatch.setattr(svc, "_get_postgres_provider", lambda: _PostgresProviderSuccess())
+    monkeypatch.setattr(svc, "load_crawled_position_index", lambda _iso3: {})
+    monkeypatch.setattr(svc, "load_nomenclature_map", lambda _iso3: None)
 
     positions = svc.get_sub_positions("MAR", "180100")
 

@@ -1,0 +1,459 @@
+EXTRAIT DU CODE GENERAL DES IMPOTS DU CAMEROUN — EDITION 2021
+Edition officielle, Direction Generale des Impots (DGI)
+Source : https://impots.cm/sites/default/files/documents/CGI%202021.pdf
+SHA-256 du PDF source complet (968 pages, 8.2 Mo) : 68d0e539f3a85d14af8a739417de15d66f30997f626a6b86e6e8d03a02c1d1fe
+Extrait produit le 2026-07-25 via pdftotext.
+Parties extraites : Titre I Section V Article 142 (taux TVA et Droit d'accises)
+                    et Annexe II (liste des produits soumis aux droits d'accises).
+
+==============================================================
+ARTICLE 142 — TAUX DE LA TVA ET DU DROIT D'ACCISES
+==============================================================
+Article 142.- (1) Les taux de la
+Taxe sur la Valeur Ajoutée et du
+Droit d’accises sont fixés de la
+manière suivante :
+a) Taxe sur la Valeur Ajoutée :
+Taux général …………...... 17,5 %
+Taux zéro ………………….... 0 %
+b) Droit d’accises :
+Taux super élevé :………….. 50 %
+Taux élevé :…………………. 30 %
+Taux général ………………. 25 %
+Taux moyen ………………..12,5 %
+Taux réduit ………….……..…. 5%
+Taux super réduit ……..…….. 2 %
+(2) Les taux sont applicables
+aussi bien pour les biens et/ou
+services produits localement
+
+que pour les biens importés.
+Les centimes additionnels
+communaux inclus au taux
+général s’ap-pliquent aux
+biens et/ou services locaux et
+aux biens importés.
+(3) Le taux général de la TVA
+s’applique à toutes les
+opérations non soumises au
+taux zéro.
+(4) Le taux zéro s’applique
+aux exportations de produits
+taxables.
+(5) Le taux général du Droit
+d’accises s’applique aux biens
+et services figurant à l’annexe
+II du Titre I du présent Code,
+autres que ceux soumis aux
+taux super élevé, élevé,
+moyen, réduit et super réduit.
+(6) a) Le taux moyen du Droit
+d’accises s’applique aux :
+- véhicules de tourisme
+d’une cylindrée inférieure
+ou égale à 2 500 cm3, de
+plus de 10 ans à 15 ans
+d’âge ;
+- véhicules de tourisme
+d’une cylindrée supérieure
+à 2 500 cm3, de 1 à 15 ans
+d’âge ;
+- autres véhicules utilitaires,
+véhicules de transport en
+commun,
+remorques,
+tracteurs à l’exclusion de
+ceux agricoles quelle que
+soit la cylindrée, de plus
+de 15 ans à 25 ans d’âge ;
+- motocycles
+d’une
+cylindrée supérieure à 250
+cm3
+des
+positions
+8711.30,
+8711.40
+et
+8711.50 ;
+
+Code Général des Impôts – Edition 2021
+86
+
+-
+
+parties de tous les
+motocycles des positions
+8714.10,
+8714.91
+à
+871499 ;
+- les cheveux, perruques,
+laines, barbes, sourcils,
+cils, mèches et autres
+matières textiles préparés
+pour la fabrication de
+perruques ou d'articles
+similaires en cheveux des
+positions tarifaires 6703. à
+6704 ;
+- articles de friperie de la
+position
+tarifaire
+6309.00.00.000 et les
+pneumatiques d’occasion
+des positions tarifaires
+4012.20.00.100
+à
+4012.20.00.900 ;
+- bouquets des programmes et
+contenus
+audiovisuels
+numériques.
+b) Le taux réduit du droit
+d’accises s’applique aux :
+- jeux de hasard et de
+divertissement non assujettis à
+la taxe spéciale sur les jeux de
+hasard et de divertissement
+visée à l’article 206 et suivants
+du présent code, sur le chiffre
+d’affaires réalisé ;
+- sucreries sans cacao de la
+position 1704 ;
+- chocolats et autres préparations
+alimentaires à forte teneur de
+cacao des positions 1806.20 à
+180690,
+- motocycles d’une cylindrée
+inférieure ou égale à 250 cm3,
+- préparations
+pour
+consommation des positions
+tarifaires 2103 à 2104 ;
+
+- les glaces de consommation du
+2105 ;
+- aux gruaux de maïs importés de
+la
+sous-position
+tarifaire
+1103.13 00 000 ;
+- à la mayonnaise importée de la
+sous-position 2103.90 00 000.
+c) Le
+taux
+super
+réduit
+s’applique sur le chiffre
+d’affaires hors taxes des
+entreprises
+de
+communication, de téléphonie
+mobile et de services internet.
+d) Le
+taux
+super
+élevé
+s’applique à l’hydroquinone
+de la position tarifaire
+29072200000 et les produits
+cosmétiques importés du
+chapitre 33 contenant de
+l’hydroquinone.
+e) Le taux élevé s’applique aux
+cigares, cigarettes, et autres
+tabacs du chapitre 24 ; les pipes
+et leurs parties, les tabacs et
+préparations pour pipes de
+positions tarifaires respectives
+2403.11.00.000,
+2403.19.90.000,
+324.90.00.0000 et 9614.00.000.
+(7) Pour le cas spécifique des
+tabacs, le montant du Droit
+d’accises résultant de l’application du taux de 25 % visé à
+l’alinéa (1) b ci-dessus, ne
+peut être inférieur à 5 000 F
+CFA pour 1000 tiges de
+cigarettes, s’agis-sant des
+produits finis de tabac
+importés.
+(8) (nouveau) Pour le cas
+spécifique
+des
+boissons
+alcoolisées, le montant du
+droit d’accises résultant de
+
+Code Général des Impôts – Edition 2021
+87
+
+l’application du taux de 25 %
+visé à l’alinéa (1) b ci-dessus
+est
+majoré
+d’un
+droit
+spécifique.
+Le montant des droits d’accises
+additionnels résultant de l’application du système de taxation
+spécifique est de :
+- 75 F CFA pour toutes les bières
+de 65 centilitres et 37,5 F CFA
+pour les bières de 33
+centilitres ;
+
+- pour
+
+les vins, spiritueux,
+whiskies
+et
+champagnes
+produits localement :
+• 2 F CFA par centilitre pour
+les spiritueux dits alcools
+mix ;
+• 2 F CFA par centilitre pour
+les vins ;
+
+• 8 F CFA par centilitre pour
+les whiskies ;
+
+• 25 F CFA par centilitre pour
+les champagnes ;
+- pour les vins, spiritueux,
+
+==============================================================
+ANNEXE II — LISTE DES PRODUITS SOUMIS AUX DROITS D'ACCISES
+==============================================================
+ANNEXE II : LISTE DES PRODUITS SOUMIS AUX DROITS
+D’ACCISES
+
+N° du tarif
+
+Désignation tarifaire
+
+16022010
+
+Foie gras
+
+16043000
+
+Caviar et ses succédanés
+
+2009
+
+Jus de fruits naturels
+
+2201 à 2202
+
+Boissons gazeuses, eaux minérales importées
+
+2203 00 00
+
+Bières de malt
+
+2204
+
+Vins de raisins frais... toute la position tarifaire
+
+2205
+
+Vermouths et autres vins de raisins frais
+
+2206 00 00
+
+Autres boissons fermentées (cidre, poiré, hydromel par
+exemple)
+
+Eaux-de-vie, whiskies, rhum, gin et spiritueux, etc. à
+2208 20 00 à 2208 90
+l’exception de :2208 90 10 «alcool éthylique non
+92
+dénaturé...»
+2402
+
+Cigares, cigarillos et cigarettes, en tabac ou en succédanées
+de tabacs
+
+2403 99 10
+
+Tabac à mâcher et à priser
+
+2403 99 90
+
+Autres tabacs fabriqués
+
+16022010
+
+Foie gras
+
+03021200
+
+Saumons du Pacifique, de l’Atlantique et du Danube frais ou
+réfrigérés
+
+03021900
+
+Autres saumons
+
+03031900
+
+Autres saumons du Pacifique congelés
+
+03032200
+
+Saumons de l’Atlantique congelés
+
+03054100
+
+Saumons du Pacifique, de l’Atlantique et du Danube
+séchés, salés ou en saumure
+
+7101 10 00 à 7105
+90 00
+7106 10 00 à 7112
+90 00
+7113 11 00 à 7117
+90 00
+
+Perles fines, pierres précieuses
+Métaux précieux
+Bijouteries
+Code Général des Impôts – Edition 2021
+103
+
+8703239100 à
+8703249001 et
+8703329100 à
+8703339001
+
+Véhicules de tourisme à moteur à explosion d’une cylindrée
+supérieure ou égale à 2000 cm3
+Les communications téléphoniques mobiles et services
+Internet.
+
+870321 à 870324
+870331 à 870333
+870390
+
+Véhicules de tourisme à moteur à explosion âgés de plus de
+dix (10) ans
+
+870120
+870190
+870421 à 870423
+870431 à 870432
+870490
+870210 à 870290
+
+Véhicules utilitaires et tracteurs routiers âgés de plus de
+quinze (15) ans à l’exclusion des tracteurs agricoles
+
+030390 00000
+
+foies, œufs et laitances de poissons du n° 03.03, congelés
+
+030520 00000
+
+foies, œufs et laitances de poissons, séchés, fumés, salés ou
+en saumure
+Emballages non retournables
+Les jeux de hasard et de divertissements y compris les
+loteries et les jeux de paris mutuels ou simples paris
+
+6309.00.00.000
+
+Articles de friperie
+
+4012.20.00.100 à
+4012.20.00.900
+
+Pneumatiques d’occasion
+
+9614.00.000
+2403.11.00.000
+2403.19.90.000
+3824.90.00.000
+
+Pipes et leurs parties, les tabacs et préparations pour pipes
+
+Parfums et cosmétiques
+Véhicules de tourisme d’une cylindrée inférieure ou égale à
+2 500 cm3, de plus de 10 ans à 15 ans d’âge
+Véhicules de tourisme d’une cylindrée supérieure à 2 500
+cm3, de 1 à 15 ans d’âge
+Autres véhicules utilitaires, véhicules de transport en
+commun, remorques, tracteurs à l’exclusion de ceux
+agricoles quelle que soit la cylindrée, de plus de 15 à 25 ans
+d’âge
+Véhicules de tourisme d’une cylindrée inférieure ou égale à
+2 500 cm3, de plus de 15 ans d’âge
+Véhicules de tourisme d’une cylindrée supérieure à 2 500
+cm3, de plus de 15 ans d’âge
+Code Général des Impôts – Edition 2021
+104
+
+Autre véhicules utilitaires, véhicules de transport en
+commun, remorques, tracteurs à l’exclusion de ceux
+agricoles quelle que soit la cylindrée, de plus de 25 ans d’âge
+
+2403.11.00.000,
+2403.19.90.000,
+324.90.00.0000 et
+9614.00.000
+
+Pipes et leurs parties, les tabacs et préparations pour pipes de
+positions tarifaires respectives
+
+8711.30, 8711.40 et
+8711.50
+
+Motocycles d’une cylindrée supérieure à 250 cm3
+
+8714.10, 8714.91 à
+871499;
+
+Parties de tous les motocycles
+
+6703. à 6704
+
+Cheveux, perruques, laines, barbes, sourcils, cils, mèches et
+autres matières textiles préparés pour la fabrication de
+perruques ou d'articles similaires en cheveux
+
+1704
+
+Sucreries sans cacao
+
+1806.20 à 180690
+
+Chocolats et autres préparations alimentaires à forte teneur
+de cacao
+Motocycles d’une cylindrée inférieure ou égale à 250 cm3
+
+2103 à 2104
+
+Préparations pour consommation
+
+2105
+
+Glaces de consommation
+
+29072200000
+
+Hydroquinone et les produits cosmétiques du chapitre 33
+contenant de l’hydroquinone
+
+9504
+
+Consoles et machines de jeux vidéo, articles pour jeux de
+société, y compris les jeux à moteur ou à mouvement, les
+billards, les tables spéciales pour jeux de casino et les jeux
+de quilles automatiques (bowlings…)
+
+Bouquets des programmes et contenus audiovisuels
+numériques
+…….
+

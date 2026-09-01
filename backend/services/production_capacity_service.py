@@ -305,7 +305,31 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("2516", "mining", "Granite"),
     ("2513", "mining", "Pumice"),
     ("2530", "mining", "Perlite"),
-    ("2614", "mining", "Ilmenite"),
+    # HS 2614 = minerais de titane (ilménite). Pointé vers le libellé réellement
+    # présent dans le dataset (« Titanium (ilmenite) ») : l'ancien libellé
+    # « Ilmenite » n'a aucun enregistrement, la recherche de capacité HS4 renvoyait
+    # donc un ensemble vide. Couvre à la fois HS4 (2614) et HS6 (261400 ci-dessous).
+    ("2614", "mining", "Titanium (ilmenite)"),
+    # ── Minéraux ajoutés (enrichissement mining_extended) — codes HS spécifiques
+    #    (préfixe le plus long prioritaire ; évite les collisions avec les
+    #    positions génériques déjà mappées : 2615=Tantalum, 2530=Perlite…). ──
+    ("2610", "mining", "Chromium"),  # minerais de chrome
+    ("2504", "mining", "Graphite"),  # graphite naturel
+    ("2520", "mining", "Gypsum"),  # gypse, anhydrite
+    ("2607", "mining", "Lead"),  # minerais de plomb
+    # HS 2617 est l'en-tête large « autres minerais » ; seul 261710 désigne
+    # spécifiquement l'antimoine → on cible le HS6 pour ne pas capter tout 2617xx.
+    ("261710", "mining", "Antimony"),  # minerais d'antimoine (HS6 spécifique)
+    ("253090", "mining", "Lithium"),  # spodumène / minéraux de lithium (HS6)
+    ("261610", "mining", "Silver"),  # minerais d'argent (chap. 26 ; ≠ 7106 métal)
+    ("711021", "mining", "Palladium"),  # palladium (groupe platine, HS6)
+    ("261510", "mining", "Zircon"),  # minerais de zirconium (HS6 spécifique)
+    # Vanadium : HS 261590 couvre CONJOINTEMENT niobium/tantale/vanadium (et
+    # écraserait le mapping 2615=Tantalum par préfixe long) → on pointe vers le
+    # code vanadium-spécifique 282530 (oxydes et hydroxydes de vanadium, forme
+    # sous laquelle la production vanadium est usuellement rapportée).
+    ("282530", "mining", "Vanadium"),  # oxydes/hydroxydes de vanadium (HS6 spécifique)
+    ("261400", "mining", "Titanium (ilmenite)"),  # minerais de titane (HS6)
 ]
 
 # Repli par chapitre HS (2 chiffres) — moins précis mais utile pour couverture large.
@@ -406,6 +430,46 @@ def _coverage_caveat(dataset: str, label: str, n_countries: int) -> Optional[str
         "producteurs africains existent très probablement mais ne sont pas encore "
         "ingérés. À traiter comme une donnée partielle, pas comme un classement fiable."
     )
+
+
+# ── Caveat MÉTHODOLOGIQUE par commodité ────────────────────────────────────────
+# Certaines commodités FAOSTAT/USGS/UNIDO agrègent, sous un même libellé, des
+# sous-produits que le code SH sépare — ou dont l'usage (autoconsommation vs.
+# export) diffère radicalement. Le classement « top producteurs » reste EXACT
+# pour la commodité mesurée, mais il NE répond PAS forcément à la question posée
+# par le code SH. Ce caveat est affiché EN PLUS du classement (il ne le supprime
+# pas, contrairement au coverage_caveat) pour empêcher toute lecture abusive.
+#
+# Cas emblématique — bananes : FAOSTAT « Bananas » (item 486) additionne les
+# bananes dessert (Cavendish, l'essentiel du commerce SH 080390) ET les bananes
+# à cuire / bananes de montagne d'Afrique de l'Est (matooke…), cultivées avant
+# tout pour l'autoconsommation et quasiment jamais exportées. Le rang de
+# production ne reflète donc PAS la capacité d'export de banane dessert : les
+# leaders africains à l'export (Côte d'Ivoire, Cameroun) se lisent sur les flux
+# commerciaux, pas sur ce chiffre de production alimentaire.
+_COMMODITY_METHODOLOGY_CAVEAT: Dict[str, str] = {
+    "Bananas": (
+        "Production FAOSTAT « Bananas » (item 486) = bananes dessert (Cavendish, "
+        "l'essentiel du commerce SH 080390) ET bananes à cuire / bananes de "
+        "montagne d'Afrique de l'Est (matooke…), cultivées surtout pour "
+        "l'autoconsommation et très peu exportées. Ce classement mesure la "
+        "PRODUCTION alimentaire totale de bananes, PAS la capacité d'export de "
+        "banane dessert — les leaders africains à l'export (Côte d'Ivoire, "
+        "Cameroun) se lisent sur les flux commerciaux, pas sur ce chiffre."
+    ),
+    "Plantain": (
+        "Production FAOSTAT « Plantains and others » (item 489), distincte des "
+        "bananes dessert (item 486, SH 080390). Ce classement mesure la "
+        "production de plantains (SH 080310), cultivés majoritairement pour "
+        "l'autoconsommation régionale."
+    ),
+}
+
+
+def _commodity_caveat(label: str) -> Optional[str]:
+    """Caveat méthodologique lié à la commodité (agrégation FAOSTAT vs. code SH),
+    affiché en supplément du classement — jamais un motif de suppression."""
+    return _COMMODITY_METHODOLOGY_CAVEAT.get(label)
 
 
 SOURCE_META = {
@@ -685,6 +749,7 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
             ),
             "top_producers": top_producers,
             "coverage_caveat": coverage_caveat,
+            "commodity_caveat": _commodity_caveat(label),
         },
         "integration_scenarios": scenarios,
     }
@@ -762,6 +827,7 @@ def get_country_profile(country_iso3: str, top_n: int = 20) -> Dict:
                     round(country_rec["value"] / total * 100.0, 1) if total and not caveat else None
                 ),
                 "coverage_caveat": caveat,
+                "commodity_caveat": _commodity_caveat(label),
             }
         )
     products.sort(key=lambda p: (p["share_pct"] or 0.0), reverse=True)
@@ -830,6 +896,7 @@ def get_continental_producers(hs_code: str) -> Dict:
             for r in year_recs[:10]
         ],
         "coverage_caveat": coverage_caveat,
+        "commodity_caveat": _commodity_caveat(label),
     }
 
 

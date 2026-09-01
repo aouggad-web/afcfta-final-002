@@ -9,6 +9,7 @@ import datetime
 
 from services.zlecaf_schedule_dza import (
     ACTIVE_PARTNERS,
+    CIRCULAR_482_SCHEDULE,
     LIST_B_BASE_RATES_2019,
     LIST_B_CODES,
     RECIPROCITY_PARTNERS,
@@ -141,6 +142,36 @@ def test_active_partners_count():
 
 def test_reciprocity_partners_count():
     assert len(RECIPROCITY_PARTNERS) == 13
+
+
+def test_circular_482_source_record_is_primary_and_traceable():
+    assert CIRCULAR_482_SCHEDULE["source_id"] == "DZA-DGD-CIRC-482-2024"
+    assert CIRCULAR_482_SCHEDULE["issuing_authority"] == (
+        "Direction générale des douanes algériennes"
+    )
+    assert CIRCULAR_482_SCHEDULE["legal_date"] == "2024-10-22"
+    assert CIRCULAR_482_SCHEDULE["verification_status"] == "DOCUMENTED"
+    assert CIRCULAR_482_SCHEDULE["provided_extract_sha256"] == (
+        "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99"
+    )
+
+
+def test_circular_482_line_counts_match_archived_lists():
+    counts = CIRCULAR_482_SCHEDULE["tariff_line_counts"]
+    assert counts == {
+        "total": 17322,
+        "list_a": 15703,
+        "list_a_frozen_for_missing_origin_rules": 1136,
+        "list_b": 1163,
+        "list_b_frozen_for_missing_origin_rules": 322,
+        "list_c": 456,
+    }
+    assert len(LIST_B_CODES) == counts["list_b"]
+    assert len(LIST_B_BASE_RATES_2019) == counts["list_b"]
+    assert (
+        len(__import__("services.zlecaf_schedule_dza", fromlist=["LIST_C_CODES"]).LIST_C_CODES)
+        == counts["list_c"]
+    )
 
 
 def test_list_a_full_elimination_after_2030_reciprocity():

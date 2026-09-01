@@ -15,6 +15,24 @@ _backend_dir = Path(__file__).parent
 if str(_backend_dir) not in sys.path:
     sys.path.insert(0, str(_backend_dir))
 
+# Ensure the repository root is on sys.path as well: backend services import the
+# top-level ``engine`` package (legal overrides, customs calculation), which is a
+# sibling of ``backend/`` and therefore invisible when the server is started with
+# ``cd backend && uvicorn server:app`` (start.sh, scripts/start.sh, .replit).
+#
+# Appended rather than inserted, deliberately. Position is irrelevant to
+# resolving ``engine``: neither ``engine/`` nor ``backend/engine/`` carries an
+# ``__init__.py``, so both are PEP 420 namespace portions that merge into one
+# ``engine.__path__`` whatever their order (and a regular ``engine`` package
+# installed in site-packages would win over both from any position, so moving
+# this entry earlier would not guard against that either). Appending does keep
+# the repository root behind site-packages, which matters: the root exposes
+# generically named directories (tests, data, docs, scripts, reports, ...) that
+# would shadow installed packages if they came first.
+_repo_root = _backend_dir.parent
+if str(_repo_root) not in sys.path:
+    sys.path.insert(1, str(_repo_root))
+
 import logging
 import logging.config
 
@@ -55,14 +73,30 @@ logging.config.dictConfig(
 logger = logging.getLogger(__name__)
 
 import auth as _auth_module
+from cors_config import resolve_cors_origin_regex, resolve_cors_origins
+from entitlement_guard import set_database as set_entitlement_guard_db
 
 # Import routes module for modular endpoint registration
 from routes import register_routes
 from routes.admin_keys import router as admin_keys_router
 from routes.calculator import set_database as set_calculator_db
+from routes.contact import set_database as set_contact_db
 from routes.substitution import register_routes as register_substitution_routes
+from routes.user_auth import set_database as set_user_auth_db
+
+# Billing en défaut mou UNIQUEMENT quand la dépendance externe `stripe` manque
+# à l'installation. Une régression interne à billing.py (import cassé, cycle,
+# `cannot import name ...`) doit remonter — sinon le paiement resterait
+# silencieusement désactivé malgré un environnement correct.
+try:
+    from routes.billing import set_database as set_billing_db
+except ModuleNotFoundError as e:
+    if e.name != "stripe":
+        raise
+    set_billing_db = None
 from services.crawled_data_service import crawled_service
 from services.tariff_data_service import tariff_service
+from services.user_auth_service import hash_password, verify_password
 
 try:
     from notifications import NotificationManager
@@ -149,38 +183,10 @@ app = FastAPI(
     ],
 )
 
-# CORS middleware — origins controlled via ALLOWED_ORIGINS env variable
-_default_origins = [
-    "http://localhost:3000",
-    "http://localhost:5000",
-    "http://localhost:8000",
-    "https://afcfta.trade",
-    "https://www.afcfta.trade",
-]
-
-_env_origins = os.environ.get("ALLOWED_ORIGINS", "")
-if _env_origins:
-    _cors_origins = [o.strip() for o in _env_origins.split(",") if o.strip()]
-else:
-    _cors_origins = _default_origins
-
-_frontend_url = os.environ.get("FRONTEND_URL", "")
-if _frontend_url and _frontend_url not in _cors_origins:
-    _cors_origins.append(_frontend_url)
-
-_replit_dev_domain = os.environ.get("REPLIT_DEV_DOMAIN", "")
-if _replit_dev_domain:
-    _replit_origin = f"https://{_replit_dev_domain}"
-    if _replit_origin not in _cors_origins:
-        _cors_origins.append(_replit_origin)
-
-_replit_app_domain = os.environ.get("REPLIT_APP_DOMAIN", "")
-_allow_origin_regex = None
-if _replit_app_domain:
-    import re as _re
-
-    _escaped = _re.escape(_replit_app_domain)
-    _allow_origin_regex = rf"https://{_escaped}"
+# CORS middleware — origins controlled via ALLOWED_ORIGINS env variable, plus
+# a regex covering Emergent preview subdomains (see cors_config.py for why).
+_cors_origins = resolve_cors_origins(os.environ)
+_allow_origin_regex = resolve_cors_origin_regex(os.environ)
 
 # Security middlewares (optional)
 try:
@@ -198,9 +204,15 @@ try:
             "/api/tariff-data/collect",
             "/api/crawl",
             "/api/crawl/start",
+            # Webhooks paiement : appels serveur-à-serveur signés, sans cookie
+            # ni jeton CSRF — authentifiés par leur propre signature.
+            "/api/billing/webhook",
+            "/api/billing/chargily/webhook",
         ],
     )
-    app.add_middleware(RateLimitMiddleware, requests_per_minute=120, burst_limit=20)
+    # Quotas et liste d'exemptions : voir backend/middlewares/rate_limiter.py.
+    # Pilotables par RATE_LIMIT_* (dont RATE_LIMIT_ENABLED pour couper vite).
+    app.add_middleware(RateLimitMiddleware)
     logger.info("Security middlewares loaded: CSP headers, CSRF protection, Rate limiting")
 except ImportError as e:
     logger.warning(f"Security middlewares not loaded: {e}")
@@ -288,9 +300,50 @@ async def _setup_database_indexes():
                 IndexModel([("active", ASCENDING), ("tier", ASCENDING)]),
             ]
         )
+        # SaaS user accounts + login brute-force tracking
+        await db["users"].create_indexes([IndexModel([("email", ASCENDING)], unique=True)])
+        await db["login_attempts"].create_indexes(
+            [IndexModel([("identifier", ASCENDING)], unique=True)]
+        )
         logger.info("MongoDB indexes created successfully")
     except Exception as e:
         logger.warning(f"MongoDB index creation skipped: {e}")
+
+
+async def _seed_admin_account():
+    """Create (or refresh) the SaaS admin account from .env credentials."""
+    if db is None:
+        return
+    admin_email = os.environ.get("ADMIN_EMAIL")
+    admin_password = os.environ.get("ADMIN_PASSWORD")
+    if not admin_email or not admin_password:
+        return
+    # /api/auth/login always lowercases the submitted email before querying;
+    # normalize the same way here so a stray uppercase letter or surrounding
+    # whitespace in ADMIN_EMAIL doesn't seed an account login can never find.
+    admin_email = admin_email.strip().lower()
+    try:
+        from datetime import datetime, timezone
+
+        existing = await db["users"].find_one({"email": admin_email})
+        if existing is None:
+            await db["users"].insert_one(
+                {
+                    "name": "Admin",
+                    "email": admin_email,
+                    "password_hash": hash_password(admin_password),
+                    "role": "admin",
+                    "created_at": datetime.now(timezone.utc),
+                }
+            )
+            logger.info(f"Seeded admin account: {admin_email}")
+        elif not verify_password(admin_password, existing.get("password_hash", "")):
+            await db["users"].update_one(
+                {"email": admin_email}, {"$set": {"password_hash": hash_password(admin_password)}}
+            )
+            logger.info(f"Admin password re-synced from .env: {admin_email}")
+    except Exception as e:
+        logger.warning(f"Admin account seeding skipped: {e}")
 
 
 @app.on_event("startup")
@@ -302,7 +355,56 @@ async def startup_load_tariff_data():
 
     # Wire database into auth and calculator
     _auth_module.set_database(db)
+    set_user_auth_db(db)
+    set_contact_db(db)
+    set_entitlement_guard_db(db)
+    if set_billing_db is not None:
+        set_billing_db(db)
+    await _seed_admin_account()
     set_calculator_db(db)
+
+    # Idempotence des webhooks Stripe : un event rejoué ne doit être traité
+    # qu'une fois (Stripe garantit une livraison at-least-once).
+    if db is not None:
+        try:
+            from pymongo import ASCENDING as _ASCENDING
+
+            await db.usage_counters.create_index(
+                [
+                    ("user_id", _ASCENDING),
+                    ("counter_id", _ASCENDING),
+                    ("period_key", _ASCENDING),
+                ],
+                unique=True,
+            )
+        except Exception as e:
+            # Sans cet index, entitlement_guard.check_and_increment_usage()
+            # distingue "premier appel de la période" de "quota déjà épuisé"
+            # via l'échec d'insertion sur la clé composite (user_id,
+            # counter_id, period_key). Sans la contrainte unique, l'insert
+            # réussit systématiquement : ce n'est pas un simple risque de
+            # double comptage sous concurrence, c'est un contournement total
+            # et permanent des quotas d'abonnement (accès illimité de facto).
+            logger.error(
+                "CRITIQUE: index unique usage_counters non créé (%s) — les quotas "
+                "d'entitlement (calculs/jour, modules, accès API) ne sont PLUS "
+                "appliqués du tout, pas seulement comptés en double. Créez l'index "
+                "manuellement avant de considérer la monétisation opérationnelle.",
+                e,
+            )
+        try:
+            await db.payment_events.create_index("event_id", unique=True)
+        except Exception as e:
+            # Sans cet index, la déduplication des webhooks ne tient plus : les
+            # rejeux Stripe/Chargily (livraison at-least-once) seraient traités
+            # plusieurs fois — emails en double, états d'abonnement incohérents.
+            # On ne bloque pas le démarrage, mais ceci doit remonter en alerte.
+            logger.error(
+                "CRITIQUE: index unique payment_events.event_id non créé (%s) — "
+                "l'idempotence des webhooks de paiement n'est PLUS garantie. "
+                "Créez l'index manuellement avant d'encaisser des paiements.",
+                e,
+            )
 
     # Load crawled data
     try:

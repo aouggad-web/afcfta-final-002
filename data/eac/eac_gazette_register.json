@@ -36,16 +36,17 @@
     {
       "reference": "EAC Gazette Vol. AT 1 No. 16",
       "date": "2026-06-30",
-      "territory": "EAC; Kenya",
+      "territory": "EAC; Kenya, Tanzanie, Ouganda, Rwanda, Burundi (extraction partielle)",
       "measure_types": ["STAY_OF_APPLICATION", "DUTY_REMISSION", "EAC_CET_AMENDMENT"],
       "official_url": "https://www.eac.int/documents?controller=download&file=a3c7fa5a-b765-48ed-befa-b6b65bf5b3cc&name=EAC+Vol.+AT+1+NO.+16+JUNE+2026.pdf.pdf&task=download.file",
       "official_mirror_url": null,
       "archive_path": "data/sources/eac/official/EAC_Vol_AT_1_No_16_2026-06-30.pdf",
       "sha256": "555b8fdd7cc817ae5f729762913c5f8205e503a28170bad86a8a0f66e4c93907",
       "access_status": "DOWNLOADED_OFFICIAL",
-      "extraction_status": "PARTIAL_KENYA_PRIORITY",
+      "extraction_status": "PARTIAL_EAC_BLOC",
+      "extraction_note": "Legal Notice EAC/160/2026, Table I : 325 lignes au total. 15 lignes Kenya extraites (priorité initiale) + 12 lignes Tanzanie/Ouganda/Rwanda/Burundi extraites (lignes 1-11 et 320, disposant d'un code SH explicite et non ambiguës — dont 2 exclues, lignes 1-2, car sans code SH, de nature procédurale). ~296 lignes restantes de la Table I, et les Tables II/III (spécifiques à l'Ouganda et au Kenya) non extraites.",
       "validation_status": "OFFICIAL_HASHED",
-      "tariff_lines_extracted": 15,
+      "tariff_lines_extracted": 27,
       "priority": "CURRENT_CRITICAL"
     },
     {

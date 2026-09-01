@@ -217,6 +217,11 @@ const VerifiedProductionBlock = ({ production, language }) => {
           ⚠ {production.coverage_caveat}
         </p>
       )}
+      {production.commodity_caveat && (
+        <p className="mt-1.5 text-[10px] text-amber-700" data-testid="verified-production-commodity-caveat">
+          ⚠ {production.commodity_caveat}
+        </p>
+      )}
     </div>
   );
 };

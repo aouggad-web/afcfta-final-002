@@ -427,13 +427,37 @@ def _auto_register_scrapers():
         logger.info("No countries/ directory found, skipping auto-registration")
         return
 
-    # Import all modules in countries/
+    # Import all modules in countries/. Relative import, matching every other
+    # import in this module (`.base_scraper`, `.all_countries_registry`):
+    # the running app has `backend/` itself on sys.path (not a `backend`
+    # package), so `import backend.crawlers...` always raised ImportError
+    # here — silently swallowed below, leaving every one of the 15+
+    # country-specific scrapers in countries/ unregistered and every country
+    # falling back to the generic scraper without anyone noticing.
     try:
-        import backend.crawlers.countries as countries_package
+        from . import countries as countries_package
 
+        # Derived from the actual imported package name rather than
+        # hard-coded: a relative import resolves to whatever dotted name
+        # this module was loaded under, which differs between launch modes
+        # (`crawlers.countries` when backend/ is on sys.path — the app's own
+        # runtime convention — vs `backend.crawlers.countries` if imported
+        # from the repo root, as some docstrings in this codebase document).
+        # A hard-coded prefix would only work for one of the two and fail
+        # importlib.import_module() silently for the other, right back to
+        # an empty registry.
+        prefix = f"{countries_package.__name__}."
         for importer, modname, ispkg in pkgutil.iter_modules(
-            countries_package.__path__, prefix="backend.crawlers.countries."
+            countries_package.__path__, prefix=prefix
         ):
+            # `*_example.py` modules (e.g. ghana_example.py) are documented
+            # templates showing how to write a scraper, not real ones — one
+            # of them is a demo GhanaScraper with an empty tariff_schedule.
+            # Now that discovery actually works, registering it would make
+            # ordinary Ghana crawl jobs silently save placeholder data
+            # instead of falling back to the (working) generic scraper.
+            if modname.rsplit(".", 1)[-1].endswith("_example"):
+                continue
             try:
                 module = importlib.import_module(modname)
 
