@@ -129,20 +129,28 @@ def _tariff_edge(hs_code: str) -> Dict:
     }
 
 
-# Lead time mémoïsé par corridor (origine, destination) : il ne dépend pas du
-# produit, or le calcul multimodal est coûteux et se répète sur chaque flux.
-_LEAD_TIME_CACHE: Dict[tuple, Optional[float]] = {}
+# Profil logistique mémoïsé par corridor (origine, destination, nature vrac) :
+# un seul appel au comparateur multimodal par corridor, réutilisé pour DEUX
+# usages — le délai de livraison (déjà affiché) ET l'indice d'accessibilité
+# logistique (infrastructure de transport : nombre de modes réellement
+# opérationnels — route, rail, mer, air — et faisabilité de l'option la moins
+# chère). Un pays enclavé (ex. RCA, dépendant de la route vers un port
+# étranger) peut afficher une capacité manufacturière réelle SANS pour autant
+# avoir l'accès logistique qui permettrait d'en exporter le volume — c'est un
+# frein aussi réel que la capacité de production elle-même, jusqu'ici jamais
+# intégré à l'analyse stratégique.
+_LOGISTICS_PROFILE_CACHE: Dict[tuple, Dict] = {}
 
 
-def _lead_time_days(origin_iso3: str, dest_iso3: str, hs_code: str) -> Optional[float]:
+def _logistics_profile_for_corridor(origin_iso3: str, dest_iso3: str, hs_code: str) -> Dict:
     """
-    Délai de livraison estimé (jours) de l'option opérationnelle la moins chère
-    pour le corridor origine -> destination. Mémoïsé par (corridor, nature vrac) ;
-    dégradation silencieuse (None) si le comparateur multimodal est indisponible.
+    Profil logistique mémoïsé pour un corridor : ``{"lead_time_days", "accessibility"}``.
+    Dégradation silencieuse (valeurs ``None``) si le comparateur multimodal est
+    indisponible — jamais bloquant pour le flux stratégique.
 
     La clé inclut la nature « vrac » du produit car ``get_logistics_profile``
     adapte les options selon le code SH (une commodité vrac — ciment, minerai —
-    exclut l'aérien et bascule la route terrestre en vrac) : réutiliser un délai
+    exclut l'aérien et bascule la route terrestre en vrac) : réutiliser un profil
     non-vrac pour un produit vrac (ou l'inverse) serait faux.
     """
     try:
@@ -152,24 +160,45 @@ def _lead_time_days(origin_iso3: str, dest_iso3: str, hs_code: str) -> Optional[
     except Exception:  # pragma: no cover
         is_bulk = False
     key = (origin_iso3.upper(), dest_iso3.upper(), is_bulk)
-    if key in _LEAD_TIME_CACHE:
-        return _LEAD_TIME_CACHE[key]
-    days: Optional[float] = None
+    if key in _LOGISTICS_PROFILE_CACHE:
+        return _LOGISTICS_PROFILE_CACHE[key]
+    result: Dict = {"lead_time_days": None, "accessibility": None}
     try:
-        from services.logistics_opportunity_adapter import get_logistics_profile
+        from services.logistics_opportunity_adapter import (
+            get_logistics_profile,
+            summarize_logistics_accessibility,
+        )
 
         profile = get_logistics_profile(origin_iso3, dest_iso3, hs_code=hs_code)
         cheapest = profile.get("cheapest_operational_option") or {}
         tmin = cheapest.get("transit_days_min")
         tmax = cheapest.get("transit_days_max")
         if tmin is not None and tmax is not None:
-            days = round((tmin + tmax) / 2)
+            result["lead_time_days"] = round((tmin + tmax) / 2)
         elif cheapest.get("transit_days") is not None:
-            days = round(cheapest["transit_days"])
+            result["lead_time_days"] = round(cheapest["transit_days"])
+        result["accessibility"] = summarize_logistics_accessibility(profile)
     except Exception:  # pragma: no cover
-        days = None
-    _LEAD_TIME_CACHE[key] = days
-    return days
+        pass
+    _LOGISTICS_PROFILE_CACHE[key] = result
+    return result
+
+
+def _lead_time_days(origin_iso3: str, dest_iso3: str, hs_code: str) -> Optional[float]:
+    """Délai de livraison estimé (jours) de l'option opérationnelle la moins
+    chère pour le corridor origine -> destination. Voir
+    :func:`_logistics_profile_for_corridor`."""
+    return _logistics_profile_for_corridor(origin_iso3, dest_iso3, hs_code).get("lead_time_days")
+
+
+def _logistics_accessibility(origin_iso3: str, dest_iso3: str, hs_code: str) -> Optional[Dict]:
+    """
+    Accessibilité logistique réelle du corridor (route/rail/mer/air) : nombre
+    de modes opérationnels + faisabilité de l'option la moins chère (voir
+    ``logistics_opportunity_adapter.summarize_logistics_accessibility``).
+    ``None`` si le comparateur multimodal est indisponible.
+    """
+    return _logistics_profile_for_corridor(origin_iso3, dest_iso3, hs_code).get("accessibility")
 
 
 def _transformation(match: Dict) -> Optional[Dict]:
@@ -270,6 +299,13 @@ def _build_flow(
                 "potential_usd": pot,
                 "capture_potential": capture,
                 "lead_time_days": _lead_time_days(exporter_iso3, m.get("country_iso3", ""), hs6),
+                # Infrastructure de transport réelle du corridor (route/rail/mer/
+                # air) : un pays enclavé ou mal connecté peut avoir la capacité de
+                # PRODUIRE sans avoir l'accès pour EXPORTER le volume — un frein
+                # aussi réel que la capacité manufacturière, jamais silencieux.
+                "logistics_accessibility": _logistics_accessibility(
+                    exporter_iso3, m.get("country_iso3", ""), hs6
+                ),
             }
         )
     market_entries.sort(key=lambda x: x["import_usd"], reverse=True)
@@ -744,29 +780,55 @@ def _unido_flow_rationale(
     nombre de débouchés et la demande totale, plus le niveau de confiance
     (facteur 4 : produit déjà exporté ou encore jamais) font varier chaque
     carte, sans qu'aucune ne se lise comme la copie d'une autre.
+
+    Deux garde-fous de réalisme (signalés explicitement, jamais silencieux) :
+
+    - **Demande brute vs potentiel réaliste** : ``import_usd`` (demande totale
+      du marché, TOUTES origines) est un chiffre macro sans rapport garanti
+      avec ce qu'un seul nouvel entrant peut espérer capter. ``potentiel_usd``
+      (borné en amont par le plafond de plausibilité — facteur 3/4, une
+      fraction de la VA sectorielle) est le chiffre RÉALISTE mis en avant ;
+      sans cette distinction, un texte annonçant une capacité de 103 M$
+      « suffisante » à côté d'une demande de 176 M$ laisse croire, à tort,
+      que ce dernier chiffre est atteignable.
+    - **Accessibilité logistique** : une VA sectorielle avérée ne dit rien de
+      la capacité à EXPORTER physiquement le volume — un pays enclavé ou mal
+      connecté au marché visé (peu de modes de transport opérationnels) a un
+      frein réel, indépendant de sa capacité de production, signalé quand
+      l'indice d'accessibilité du premier marché est faible.
     """
     sector = evidence.get("isic_label_fr") or "industrie manufacturière"
     va_txt = _fmt_usd_fr(evidence.get("value_added_usd") or 0)
     total_import = sum(m.get("import_usd", 0) or 0 for m in markets)
+    total_potential = sum(m.get("potential_usd", 0) or 0 for m in markets)
     top = markets[0] if markets else {}
     top_name = top.get("name") or top.get("iso3", "")
-    top_txt = _fmt_usd_fr(top.get("import_usd", 0) or 0)
+    top_import_txt = _fmt_usd_fr(top.get("import_usd", 0) or 0)
+    potential_txt = _fmt_usd_fr(total_potential)
 
+    # « Recensée », pas « suffisante » : la VA UNIDO est un agrégat SECTORIEL
+    # (toute la division ISIC, ex. « Produits alimentaires » couvre pain,
+    # laitages, huiles... pas seulement le produit visé) — elle documente une
+    # activité manufacturière réelle, jamais une preuve d'excédent exportable
+    # garanti pour CE produit précis (c'est tout l'objet du plafond ci-dessous).
     anchor = (
-        f"{exporter_name} a une capacité manufacturière avérée dans « {sector} » "
-        f"({va_txt} de valeur ajoutée, UNIDO INDSTAT4), suffisante pour produire "
-        f"« {product_name} »."
+        f"{exporter_name} a une activité manufacturière recensée dans « {sector} » "
+        f"({va_txt} de valeur ajoutée, UNIDO INDSTAT4 — un agrégat sectoriel, "
+        f"pas une mesure dédiée à « {product_name} »), pouvant s'appliquer à sa "
+        f"production."
     )
     if len(markets) <= 1:
         demand = (
-            f"{top_name} en importe {top_txt} aujourd'hui, sourcés en grande "
-            f"partie hors du continent — un marché accessible sous préférence ZLECAf."
+            f"{top_name} importe {top_import_txt} aujourd'hui (toutes origines) ; "
+            f"potentiel de capture RÉALISTE pour {exporter_name}, borné par sa "
+            f"capacité documentée : ≈ {potential_txt}."
         )
     else:
         demand = (
-            f"{len(markets)} marchés africains en importent {_fmt_usd_fr(total_import)} "
-            f"au total (premier : {top_name}, {top_txt}), sourcés en grande partie "
-            f"hors du continent — autant de débouchés accessibles sous préférence ZLECAf."
+            f"{len(markets)} marchés africains importent {_fmt_usd_fr(total_import)} "
+            f"au total (premier : {top_name}, {top_import_txt}, toutes origines) ; "
+            f"potentiel de capture RÉALISTE pour {exporter_name}, borné par sa "
+            f"capacité documentée : ≈ {potential_txt} — pas le total de la demande."
         )
     if has_export_history:
         confidence = (
@@ -776,10 +838,27 @@ def _unido_flow_rationale(
     else:
         confidence = (
             f"Aucun flux d'export significatif n'existe encore sur ce produit "
-            f"précis pour {exporter_name} — la capacité de production est avérée, "
-            f"sa conversion en flux commercial reste à amorcer."
+            f"précis pour {exporter_name} — l'activité de production est "
+            f"recensée, sa conversion en flux commercial reste à amorcer."
         )
-    return f"{anchor} {demand} {confidence}"
+
+    # Accessibilité logistique du premier marché : un frein réel et distinct
+    # de la capacité de production — jamais fabriqué, jamais silencieux.
+    top_access = top.get("logistics_accessibility") or {}
+    transport_note = ""
+    if top_access.get("available") and (top_access.get("index") or 0) < 0.35:
+        modes = top_access.get("operational_modes")
+        feas = top_access.get("cheapest_feasibility")
+        modes_txt = f"{modes} mode(s)" if modes is not None else "aucun mode confirmé"
+        feas_txt = f", faisabilité {feas}" if feas else ""
+        transport_note = (
+            f" Accès logistique limité vers {top_name} : {modes_txt} de transport "
+            f"opérationnel{feas_txt} — un frein réel à la montée en volume, "
+            "indépendant de la capacité de production, à évaluer avant d'investir "
+            "dans cette filière."
+        )
+
+    return f"{anchor} {demand} {confidence}{transport_note}"
 
 
 async def _unido_discovered_flows(
@@ -935,6 +1014,17 @@ async def _unido_discovered_flows(
             "input_requirement_checked": evidence.get("input_requirement_checked", False),
             "has_export_history": has_export_history,
             "plausibility_cap_fraction": va_cap_fraction,
+            # Portée de la donnée : la VA UNIDO couvre TOUTE la division ISIC
+            # (ex. « Produits alimentaires » = pain, laitages, huiles, sucreries...
+            # confondus), pas seulement le produit visé — jamais une mesure de
+            # capacité EXCÉDENTAIRE dédiée. C'est précisément pourquoi le potentiel
+            # exportable (``potential_usd`` par marché) est plafonné à une fraction
+            # de cette VA plutôt que présenté comme équivalent à la demande totale.
+            "is_sector_aggregate": True,
+            "scope_note": (
+                f"Valeur ajoutée de TOUTE la division « {evidence.get('isic_label_fr') or 'du secteur'} », "
+                "pas une mesure dédiée à ce produit précis."
+            ),
         }
         flows.append(flow)
 

@@ -8,7 +8,8 @@ import logging
 from datetime import date
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Query
+from entitlement_guard import require_calculations_quota
+from fastapi import APIRouter, Depends, HTTPException, Query
 from services.authentic_tariff_service import (
     calculate_import_taxes,
     get_administrative_formalities,
@@ -21,22 +22,24 @@ from services.export_tariff_service import (
     get_country_providers,
     get_export_profile,
 )
-from services.kenya_legal_calculation_service import calculate_kenya_legal_layer
+from services.national_legal_calculation_service import (
+    SUPPORTED_JURISDICTIONS,
+    calculate_kenya_legal_layer,
+    calculate_national_legal_layer,
+)
+from services.regulatory_fee_service import build_regulatory_blocks
 from services.tariff_doctrine import (
     get_country_doctrine_status,
     not_recrawled_http_detail,
     provider_fee_flags,
 )
+from services.tariff_enrichment_service import (
+    get_country_enrichment,
+    get_supported_enrichment_countries,
+)
 from services.tariff_provider_service import get_tariff_provider_service
 
 from engine.schemas.legal_override import RemissionEligibility
-from engine.import_charges import (
-    OVERALL_STATUS_ALIASES,
-    OVERALL_STATUS_VALUES,
-    QUALITY_DIMENSION_KEYS,
-    QUALITY_DIMENSION_VALUES,
-    calculate_import_charges,
-)
 
 logger = logging.getLogger(__name__)
 
@@ -69,6 +72,27 @@ def _ensure_servable_or_404(country_iso3: str) -> None:
                 "message_en": status.get("message_en"),
             },
         )
+
+
+@router.get("/enrichment/countries")
+async def list_enrichment_countries():
+    """Liste exacte des pays couverts par la vague d'enrichissement."""
+
+    countries = get_supported_enrichment_countries()
+    return {"success": True, "total": len(countries), "countries": countries}
+
+
+@router.get("/country/{country_iso3}/enrichment")
+async def get_country_enrichment_endpoint(country_iso3: str):
+    """Couverture tarifaire, fiscale, documentaire et réglementaire traçable."""
+
+    enrichment = get_country_enrichment(country_iso3)
+    if enrichment is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No enrichment registry found for country {country_iso3.upper()}",
+        )
+    return {"success": True, "country_iso3": country_iso3.upper(), "enrichment": enrichment}
 
 
 @router.get("/countries")
@@ -238,7 +262,6 @@ async def get_formalities_endpoint(
         Liste des documents/formalités requis
     """
     _ensure_servable_or_404(country_iso3)
-    _ensure_servable_or_404(country_iso3)
     formalities = get_administrative_formalities(country_iso3.upper(), hs_code)
 
     return {
@@ -393,7 +416,7 @@ async def get_country_tariff_system_endpoint(country_iso3: str):
     }
 
 
-@router.post("/calculate")
+@router.post("/calculate", dependencies=[Depends(require_calculations_quota())])
 async def calculate_taxes_endpoint(
     country_iso3: str = Query(..., description="ISO3 country code"),
     hs_code: str = Query(..., description="HS code (6-12 digits)"),
@@ -456,7 +479,45 @@ async def calculate_taxes_endpoint(
     if "error" in result:
         raise HTTPException(status_code=404, detail=result["error"])
 
-    if country_iso3.upper() == "KEN":
+    country = country_iso3.upper()
+    result["country_enrichment"] = get_country_enrichment(country)
+
+    # ── Formalités, prestataires mandatés et frais réglementaires ──
+    # Bloc informatif STRICTEMENT SÉPARÉ des droits et taxes : jamais ajouté au
+    # coût douanier. Fail-closed : toute erreur de données ou pays non couvert
+    # laisse les trois champs à None sans jamais interrompre le calcul
+    # tarifaire. Même point d'entrée que /calculate-tariff (routes/calculator.py)
+    # afin que ces frais apparaissent quel que soit le chemin de calcul emprunté
+    # par le frontend (données "authentiques" vs registre générique).
+    origin_iso3 = (origin or "").upper() or None
+    try:
+        blocks = build_regulatory_blocks(
+            country, origin_iso3, fob_value=cif_value, cif_value=cif_value
+        )
+        result["regulatory_compliance"] = blocks["regulatory_compliance"]
+        result["regulatory_cost"] = blocks["regulatory_cost"]
+        result["regulatory_reported"] = blocks["regulatory_reported"]
+    except Exception as exc:  # pragma: no cover - garde-fou fail-closed
+        logger.warning(
+            "Regulatory-compliance/fee lookup failed for %s->%s (calcul tarifaire non affecté): %s",
+            origin_iso3,
+            country,
+            exc,
+        )
+        result["regulatory_compliance"] = None
+        result["regulatory_cost"] = None
+        result["regulatory_reported"] = None
+
+    parsed_authorization_hs_codes = [
+        value.strip() for value in (authorization_hs_codes or "").split(",") if value.strip()
+    ]
+    parsed_authorization_goods = [
+        value.strip() for value in (authorization_goods or "").split(",") if value.strip()
+    ]
+
+    if country == "KEN":
+        # Alias historique conservé pour compatibilité (frontend, tests) —
+        # voir aussi la clé générique ``national_legal_calculation`` ci-dessous.
         result["kenya_legal_calculation"] = calculate_kenya_legal_layer(
             hs_code=hs_code,
             on_date=calculation_date or date.today(),
@@ -467,111 +528,39 @@ async def calculate_taxes_endpoint(
             authorization_reference=authorization_reference,
             authorization_effective_from=authorization_valid_from,
             authorization_effective_to=authorization_valid_to,
-            authorization_hs_codes=[
-                value.strip()
-                for value in (authorization_hs_codes or "").split(",")
-                if value.strip()
-            ],
-            authorization_goods=[
-                value.strip() for value in (authorization_goods or "").split(",") if value.strip()
-            ],
+            authorization_hs_codes=parsed_authorization_hs_codes,
+            authorization_goods=parsed_authorization_goods,
             beneficiary=beneficiary,
             import_purpose=import_purpose,
             quantity=quantity,
             currency_code="USD",
         )
-    else:
-        # All non-Kenya destinations use the shared regional/national facade.
-        # Providers are intentionally not guessed here: absent dated layers
-        # produce INFORMATIVE_PARTIAL with the missing sources in the trace.
-        result["generic_legal_calculation"] = calculate_import_charges(
-            importing_country=country_iso3.upper(),
-            exporting_country=(origin or "").upper(),
-            hs6=hs_code[:6],
-            national_code=hs_code,
+        result["national_legal_calculation"] = result["kenya_legal_calculation"]
+    elif country in SUPPORTED_JURISDICTIONS:
+        result["national_legal_calculation"] = calculate_national_legal_layer(
+            jurisdiction=country,
+            hs_code=hs_code,
+            on_date=calculation_date or date.today(),
             customs_value=cif_value,
-            calculation_date=calculation_date or date.today(),
-            importer_profile={
-                "base_rate": float(result.get("rates", {}).get("dd_rate_pct", 0) or 0),
-                "origin": (origin or "").upper() or None,
-                "beneficiary": beneficiary,
-                "import_purpose": import_purpose,
-                "quantity": quantity,
-                "administrative_formalities": get_administrative_formalities(country_iso3.upper(), hs_code) or [],
-            },
-            intended_use=import_purpose,
-            authorizations={
-                "remission_eligibility": remission_eligibility,
-                "authorization_reference": authorization_reference,
-                "authorization_effective_from": authorization_valid_from,
-                "authorization_effective_to": authorization_valid_to,
-                "authorization_hs_codes": [value.strip() for value in (authorization_hs_codes or "").split(",") if value.strip()],
-                "authorization_goods": [value.strip() for value in (authorization_goods or "").split(",") if value.strip()],
-            },
-            regional_coverage_complete=False,
-            national_coverage_complete=False,
-            currency_code="USD",
+            base_cet_rate=float(result.get("rates", {}).get("dd_rate_pct", 0) or 0),
+            origin=(origin or "").upper() or None,
+            remission_eligibility=remission_eligibility,
+            authorization_reference=authorization_reference,
+            authorization_effective_from=authorization_valid_from,
+            authorization_effective_to=authorization_valid_to,
+            authorization_hs_codes=parsed_authorization_hs_codes,
+            authorization_goods=parsed_authorization_goods,
+            beneficiary=beneficiary,
+            import_purpose=import_purpose,
+            quantity=quantity,
         )
 
-    legal_result = result.get("kenya_legal_calculation") or result.get("generic_legal_calculation") or {}
-    # Normalize legacy nested statuses at the API boundary without changing
-    # existing route fields or the supplied tariff rates.
-    raw_status = legal_result.get("overall_status") or legal_result.get("calculation_status") or legal_result.get("status")
-    if raw_status:
-        normalized_status = OVERALL_STATUS_ALIASES.get(str(raw_status).upper(), str(raw_status).upper())
-        if normalized_status in OVERALL_STATUS_VALUES:
-            result["overall_status"] = normalized_status
-    raw_dimensions = legal_result.get("quality_dimensions")
-    if isinstance(raw_dimensions, dict):
-        defaults = {
-            "source": "PARTIAL",
-            "temporal_validity": "PARTIAL",
-            "classification": "DOCUMENTED",
-            "taxes_and_levies": "PARTIAL",
-            "preference_and_origin": "UNVERIFIED",
-            "formalities": "NOT_AVAILABLE",
-        }
-        if set(raw_dimensions).issubset(set(QUALITY_DIMENSION_KEYS)) and all(
-            value in QUALITY_DIMENSION_VALUES for value in raw_dimensions.values()
-        ):
-            result["quality_dimensions"] = {**defaults, **raw_dimensions}
-    result["disclaimer"] = {
-        "informational_only": True,
-        "legally_binding": False,
-        "message": "Simulation informative fondée sur les données disponibles.",
-    }
-    result["informational_only"] = True
-    result["legally_binding"] = False
-    result.setdefault("administrative_confirmation_recommended", True)
-    result.setdefault("administrative_confirmation_required", True)
-    # Keep the established top-level response shape while exposing the
-    # documentary envelope to API consumers that do not inspect the nested
-    # legal calculation object.
-    for key in (
-        "known_data_gaps",
-        "source_authority",
-        "source_date",
-        "effective_date",
-        "completeness_status",
-        "technical_validation_status",
-    ):
-        if key in legal_result:
-            result.setdefault(key, legal_result[key])
-    result.setdefault("overall_status", "INFORMATIVE_PARTIAL")
-    result.setdefault("quality_dimensions", {
-        "source": "PARTIAL",
-        "temporal_validity": "PARTIAL",
-        "classification": "DOCUMENTED",
-        "taxes_and_levies": "PARTIAL",
-        "preference_and_origin": "UNVERIFIED",
-        "formalities": "NOT_AVAILABLE",
-    })
-    result.setdefault("known_data_gaps", [])
-    result.setdefault("completeness_status", result["overall_status"])
     return result
 
 
-@router.get("/calculate/{country_iso3}/{hs_code}")
+@router.get(
+    "/calculate/{country_iso3}/{hs_code}", dependencies=[Depends(require_calculations_quota())]
+)
 async def calculate_taxes_get_endpoint(
     country_iso3: str,
     hs_code: str,

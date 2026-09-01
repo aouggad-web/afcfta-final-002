@@ -48,13 +48,21 @@ git fetch origin "$BRANCH"
 git checkout "$BRANCH"
 # Aligne les fichiers suivis exactement sur l'origine, puis supprime les
 # fichiers non suivis périmés (caches .pyc, artefacts de build obsolètes...).
-# Les exclusions protègent uniquement la config d'environnement et les
-# dépendances installées — jamais du code applicatif.
+# Les exclusions protègent uniquement la config d'environnement, les dépendances
+# installées et les données téléchargées sur le serveur — jamais du code
+# applicatif.
+#
+# `data/geoip` : la base MaxMind n'est pas versionnée (binaire volumineux,
+# licence restrictive) mais elle est téléchargée sur le pod. Sans cette
+# exclusion, chaque déploiement l'effacerait et la détection de pays
+# retomberait silencieusement sur le pays déclaré par le client — le verrou
+# Algérie serait alors contournable.
 git reset --hard "origin/$BRANCH"
 git clean -fd \
   -e .env -e "*.env" -e .emergent \
   -e node_modules -e frontend/node_modules \
-  -e venv -e .venv
+  -e venv -e .venv \
+  -e data/geoip -e backend/data/geoip
 echo "  ✓ Arbre aligné sur origin/$BRANCH ($(git rev-parse --short HEAD))"
 
 echo "── 2/6 · Vérification des modules critiques (anti copie-partielle) ──"
@@ -116,8 +124,51 @@ fi
 echo "── 3/6 · Dépendances backend (Python) ──"
 pip install -r backend/requirements.txt --quiet --no-input
 
+echo "── 3bis/6 · Base GeoIP (facultatif — verrou pays de facturation) ──"
+# Détection : GEOIP_DB_PATH est le chemin cible ; s'il pointe déjà vers un
+# fichier présent, rien à faire — la base précédente a survécu au `git clean`
+# (protection ajoutée à l'étape 1). Sinon on la retélécharge SI on a une clé
+# de licence MaxMind, en défaut mou : la panne d'un téléchargement ne doit pas
+# planter le déploiement. Sans base, le sélecteur pays manuel prend le relais
+# et le backend écrit un logger.error explicite.
+#
+# On lit ces deux variables directement dans le .env du pod plutôt que
+# l'environnement shell : ce script n'est pas invoqué via `dotenv`, or
+# c'est backend/.env qui porte la configuration runtime.
+_extract_env() {
+  # $1 = nom de variable ; imprime la valeur (ligne KEY=... du .env), sans
+  # espaces ni guillemets superflus. Aucune interprétation shell : plus sûr
+  # que `source .env` (qui échouerait sur les caractères spéciaux avec set -e).
+  local key="$1"
+  local envfile="backend/.env"
+  # L'absence du fichier ou de la clé est un cas normal : la fonction doit
+  # toujours réussir pour rester compatible avec `set -euo pipefail`.
+  [ -f "$envfile" ] || return 0
+  grep -E "^[[:space:]]*${key}[[:space:]]*=" "$envfile" | tail -1 \
+    | sed -E "s/^[[:space:]]*${key}[[:space:]]*=[[:space:]]*//; s/^['\"]//; s/['\"][[:space:]]*$//" \
+    || true
+}
+GEOIP_TARGET="${GEOIP_DB_PATH:-$(_extract_env GEOIP_DB_PATH)}"
+GEOIP_TARGET="${GEOIP_TARGET:-/app/data/geoip/GeoLite2-Country.mmdb}"
+MAXMIND_KEY="${MAXMIND_LICENSE_KEY:-$(_extract_env MAXMIND_LICENSE_KEY)}"
+
+if [ -s "$GEOIP_TARGET" ]; then
+  echo "  ✓ base déjà présente : $GEOIP_TARGET"
+elif [ -n "$MAXMIND_KEY" ]; then
+  GEOIP_DIR="$(dirname "$GEOIP_TARGET")"
+  mkdir -p "$GEOIP_DIR"
+  if MAXMIND_LICENSE_KEY="$MAXMIND_KEY" python scripts/geoip_update.py --dest "$GEOIP_DIR" 2>&1 | sed 's/^/    /'; then
+    echo "  ✓ base téléchargée dans $GEOIP_DIR"
+  else
+    echo "  ⚠ téléchargement échoué — le verrou Algérie sera inactif jusqu'à réparation"
+  fi
+else
+  echo "  ⏭ MAXMIND_LICENSE_KEY absente : téléchargement automatique désactivé."
+  echo "     Pour installer manuellement : python scripts/geoip_update.py --from-file <archive>"
+fi
+
 echo "── 4/6 · Contrôle d'import + données de la copie appliquée ──"
-( cd backend && python -c "
+( cd backend && PYTHONPATH="$(pwd)/..:$(pwd)" python -c "
 import importlib
 for m in [
     'services.regional_blocs',
@@ -146,7 +197,9 @@ assert tun['sub_positions'][0].get('preferences'), 'TUN_tariffs.json périmé (p
 mdg = json.load(open('data/crawled/MDG_tariffs.json'))
 assert 'TVA' in mdg['sub_positions'][0].get('taxes', {}), 'MDG_tariffs.json périmé (TVA nationale absente)'
 from services.zlecaf_active_implementers import is_active_implementer
-assert is_active_implementer('ETH') and not is_active_implementer('MOZ'), 'registre application réelle ZLECAf incohérent'
+assert is_active_implementer('KEN') and not is_active_implementer('ETH') and not is_active_implementer('MOZ'), 'registre application réelle ZLECAf incohérent'
+from services.zlecaf_implementation_registry import PARTNER_NOTICE_REQUIRED, implementation_decision
+assert implementation_decision('ETH', 'KEN')['status'] == PARTNER_NOTICE_REQUIRED, 'garde juridique ETH périmée'
 from services.crawled_data_service import CrawledDataService
 svc = CrawledDataService(); svc.load(force=True)
 assert svc.lookup('AGO', '010121'), 'normaliseur WITS absent (AGO illisible)'
@@ -182,7 +235,10 @@ print('✓ Données de la session appliquées (TUN préférences, TVA WITS, réc
 # n'apparaissent jamais). SKIP_BUILD est donc IGNORÉ quand supervisord gère le
 # frontend, pour régler définitivement le « les mises à jour ne s'affichent pas ».
 HAS_SUPERVISOR=0
-if command -v supervisorctl >/dev/null 2>&1 && supervisorctl status >/dev/null 2>&1; then
+# `supervisorctl status` (sans argument) sort en erreur si UN SEUL programme
+# n'est pas RUNNING (ex: code-server, sans rapport avec cette app) — on
+# vérifie donc un programme précis et géré par supervisor (backend).
+if command -v supervisorctl >/dev/null 2>&1 && supervisorctl status backend >/dev/null 2>&1; then
   HAS_SUPERVISOR=1
 fi
 

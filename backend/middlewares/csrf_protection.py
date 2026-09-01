@@ -38,14 +38,36 @@ class CSRFMiddleware(BaseHTTPMiddleware):
             token = request.cookies.get(CSRF_COOKIE)
             if not token:
                 token = secrets.token_urlsafe(32)
+                # SameSite=None (not Strict): this app can be viewed inside the
+                # Emergent preview iframe, where the top-level document is a
+                # different site (app.emergent.sh) — a Strict/Lax cookie would
+                # never reach our own origin's fetches in that nested context.
+                # Safe here because double-submit CSRF protection relies on
+                # same-origin JS being the only reader/writer of this cookie
+                # and header, not on SameSite blocking cross-site sending.
+                # SameSite=None requires Secure, hence tied to _HTTPS.
                 response.set_cookie(
                     CSRF_COOKIE,
                     token,
                     httponly=False,
-                    samesite="strict",
+                    samesite="none" if _HTTPS else "lax",
                     secure=_HTTPS,
                     max_age=3600,
                 )
+                if _HTTPS:
+                    # Starlette's set_cookie() has no `partitioned` param yet.
+                    # Without it, Chrome's third-party cookie phase-out drops
+                    # this cookie entirely inside the Emergent preview iframe
+                    # (cross-site from the top document's point of view) even
+                    # though SameSite=None; Secure is set — CHIPS requires the
+                    # explicit Partitioned attribute for that case.
+                    for i, (name, value) in enumerate(response.raw_headers):
+                        if name == b"set-cookie" and value.startswith(f"{CSRF_COOKIE}=".encode()):
+                            response.raw_headers[i] = (
+                                name,
+                                value + b"; Partitioned",
+                            )
+                            break
             response.headers[CSRF_HEADER] = token
             return response
 

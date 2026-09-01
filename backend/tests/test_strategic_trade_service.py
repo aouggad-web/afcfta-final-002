@@ -477,3 +477,190 @@ def test_discovered_flow_lists_markets_in_one_card_not_duplicated(monkeypatch):
     assert "Égypte" in rat
     assert "2 marchés" in rat
     assert "300 M$" in rat
+
+
+# ── Rationale réaliste (RCA/sucreries) : capacité sectorielle vs potentiel ──────
+#
+# Bug signalé : le texte affichait « capacité manufacturière avérée dans
+# « Produits alimentaires » (103 M$ de VA, UNIDO)... suffisante pour produire
+# « Sucreries sans cacao ». 5 marchés africains en importent 176 M$ » — laissant
+# croire, à tort, qu'une VA sectorielle modeste (TOUTE l'industrie alimentaire
+# du pays, pas seulement les sucreries) suffit à adresser 176 M$ de demande
+# brute. Le plafond de plausibilité existait déjà en interne (facteur 3/4,
+# 10-30 % de la VA) mais n'apparaissait jamais dans le texte affiché.
+
+
+def _rca_style_markets():
+    # Reproduit l'exemple signalé : 5 marchés africains, 176 M$ de demande
+    # BRUTE totale (toutes origines), Afrique du Sud en tête ; potentiel de
+    # capture réaliste déjà plafonné en amont (comme le fait _unido_discovered_flows).
+    return [
+        {
+            "iso3": "ZAF",
+            "name": "Afrique du Sud",
+            "import_usd": 90_000_000,
+            "potential_usd": 6_000_000,
+            "capture_potential": 0.0667,
+            "lead_time_days": 18,
+            "logistics_accessibility": {"available": True, "index": 0.62, "operational_modes": 2},
+        },
+        {
+            "iso3": "COD",
+            "name": "RD Congo",
+            "import_usd": 40_000_000,
+            "potential_usd": 2_600_000,
+            "capture_potential": 0.065,
+            "lead_time_days": 9,
+            "logistics_accessibility": {"available": True, "index": 0.65, "operational_modes": 2},
+        },
+        {
+            "iso3": "CMR",
+            "name": "Cameroun",
+            "import_usd": 20_000_000,
+            "potential_usd": 1_300_000,
+            "capture_potential": 0.065,
+            "lead_time_days": 7,
+            "logistics_accessibility": {"available": True, "index": 0.7, "operational_modes": 3},
+        },
+        {
+            "iso3": "COG",
+            "name": "Congo",
+            "import_usd": 15_000_000,
+            "potential_usd": 950_000,
+            "capture_potential": 0.0633,
+            "lead_time_days": 8,
+            "logistics_accessibility": None,
+        },
+        {
+            "iso3": "GAB",
+            "name": "Gabon",
+            "import_usd": 11_000_000,
+            "potential_usd": 700_000,
+            "capture_potential": 0.0636,
+            "lead_time_days": 10,
+            "logistics_accessibility": None,
+        },
+    ]
+
+
+def _rca_style_evidence():
+    return {
+        "isic_label_fr": "Produits alimentaires",
+        "value_added_usd": 103_000_000,
+        "isic_code": "10",
+        "va_year": 2023,
+    }
+
+
+def test_rationale_never_claims_sufficiency_from_sector_aggregate():
+    rat = mod._unido_flow_rationale(
+        "RCA", _rca_style_markets(), "Sucreries sans cacao", _rca_style_evidence(), False
+    )
+    assert "suffisante pour produire" not in rat
+    assert "agrégat sectoriel" in rat
+    assert "recensée" in rat
+
+
+def test_rationale_headlines_capped_potential_not_raw_demand():
+    markets = _rca_style_markets()
+    rat = mod._unido_flow_rationale(
+        "RCA", markets, "Sucreries sans cacao", _rca_style_evidence(), False
+    )
+    total_potential = sum(m["potential_usd"] for m in markets)  # 11.55 M$
+    total_import = sum(m["import_usd"] for m in markets)  # 176 M$
+    assert mod._fmt_usd_fr(total_potential) in rat
+    # La demande brute reste mentionnée (contexte), mais jamais présentée comme
+    # le potentiel exportable de l'exportateur.
+    assert mod._fmt_usd_fr(total_import) in rat
+    assert "potentiel de capture RÉALISTE" in rat
+    # Le potentiel réaliste doit rester borné par la VA (cohérent avec le
+    # plafond de plausibilité appliqué en amont) — jamais >= la demande brute.
+    assert total_potential < total_import
+
+
+def test_rationale_flags_limited_logistics_access_on_top_market():
+    poor_access_markets = _rca_style_markets()
+    poor_access_markets[0]["logistics_accessibility"] = {
+        "available": True,
+        "index": 0.15,
+        "operational_modes": 1,
+        "cheapest_feasibility": "low",
+    }
+    rat = mod._unido_flow_rationale(
+        "RCA", poor_access_markets, "Sucreries sans cacao", _rca_style_evidence(), False
+    )
+    assert "Accès logistique limité" in rat
+    assert "Afrique du Sud" in rat.split("Accès logistique limité")[1]
+
+
+def test_rationale_silent_on_transport_when_access_is_good():
+    rat = mod._unido_flow_rationale(
+        "RCA", _rca_style_markets(), "Sucreries sans cacao", _rca_style_evidence(), False
+    )
+    assert "Accès logistique limité" not in rat
+
+
+def test_rationale_silent_on_transport_when_accessibility_unknown():
+    markets = _rca_style_markets()
+    for m in markets:
+        m["logistics_accessibility"] = None
+    rat = mod._unido_flow_rationale(
+        "RCA", markets, "Sucreries sans cacao", _rca_style_evidence(), False
+    )
+    assert "Accès logistique limité" not in rat
+
+
+# ── Profil logistique mémoïsé (route/rail/mer/air) ──────────────────────────────
+
+
+def test_logistics_profile_for_corridor_memoized(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_get_logistics_profile(origin, dest, hs_code=None):
+        calls["n"] += 1
+        return {
+            "cheapest_operational_option": {"transit_days_min": 10, "transit_days_max": 14},
+        }
+
+    def fake_summarize(profile):
+        return {"available": True, "index": 0.5, "operational_modes": 2}
+
+    monkeypatch.setattr(
+        "services.logistics_opportunity_adapter.get_logistics_profile",
+        fake_get_logistics_profile,
+    )
+    monkeypatch.setattr(
+        "services.logistics_opportunity_adapter.summarize_logistics_accessibility",
+        fake_summarize,
+    )
+    mod._LOGISTICS_PROFILE_CACHE.clear()
+
+    r1 = mod._logistics_profile_for_corridor("CAF", "ZAF", "170490")
+    r2 = mod._logistics_profile_for_corridor("CAF", "ZAF", "170490")
+    assert (
+        r1
+        == r2
+        == {
+            "lead_time_days": 12,
+            "accessibility": {"available": True, "index": 0.5, "operational_modes": 2},
+        }
+    )
+    # Mémoïsé : un seul appel réseau pour deux lectures du même corridor.
+    assert calls["n"] == 1
+
+
+def test_logistics_profile_graceful_when_adapter_unavailable(monkeypatch):
+    # Note : la fixture autouse ``mock_oec`` stubbe ``mod._lead_time_days`` pour
+    # TOUS les tests de ce fichier (valeur fixe, sans réseau) — la délégation
+    # ``_lead_time_days``/``_logistics_accessibility`` -> ``_logistics_profile_
+    # for_corridor`` (une ligne chacune) n'est donc pas testable ici sans
+    # défaire ce stub global ; ce test couvre directement l'unité réelle,
+    # ``_logistics_profile_for_corridor``, dont ces deux wrappers ne sont que
+    # des accesseurs triviaux.
+    def boom(*a, **k):
+        raise RuntimeError("multimodal comparator unreachable")
+
+    monkeypatch.setattr("services.logistics_opportunity_adapter.get_logistics_profile", boom)
+    mod._LOGISTICS_PROFILE_CACHE.clear()
+    r = mod._logistics_profile_for_corridor("CAF", "ZAF", "170490")
+    assert r == {"lead_time_days": None, "accessibility": None}

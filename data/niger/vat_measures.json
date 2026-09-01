@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "country": "NER",
+  "as_of": "2026-07-25",
+  "vat_rates": [
+    {
+      "record_id": "NER-VAT-RATE-STANDARD-20230101",
+      "legal_product_description": "Standard rate of Value-Added Tax on the supply of goods and services by registered vendors, and on the importation of goods.",
+      "normalized_product_description": "standard rate of value-added tax on the supply of goods and services by registered vendors, and on the importation of goods.",
+      "rate": "19%",
+      "rate_basis": "customs value plus duty (import); consideration (domestic)",
+      "effective_from": "2023-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "NER-DGI-CGI-2023",
+      "legal_reference": "Code Général des Impôts, Article 226 : « Le taux normal de la taxe sur la valeur ajoutée est de 19 %. »",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ],
+  "vat_exemptions": [],
+  "vat_zero_rated": []
+}

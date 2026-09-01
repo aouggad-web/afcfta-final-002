@@ -9,6 +9,7 @@ from fastapi import APIRouter, HTTPException, Query
 from production_data import (
     get_agriculture_by_country,
     get_agriculture_production,
+    get_agriculture_projections,
     get_country_production_overview,
     get_manufacturing_by_country,
     get_manufacturing_production,
@@ -83,6 +84,21 @@ async def get_agri_production(
     - commodity: Commodity name or code (e.g., 'Maize', '0015')
     """
     return get_agriculture_production(country_iso3=country_iso3, year=year, commodity=commodity)
+
+
+@router.get("/agriculture/projections")
+async def get_agri_projections(
+    country_iso3: Optional[str] = None, year: Optional[int] = None, commodity: Optional[str] = None
+):
+    """
+    Get agricultural production PROJECTIONS (OECD-FAO Agricultural Outlook).
+
+    Query parameters:
+    - country_iso3: ISO3 country code
+    - year: Projection horizon (2025, 2030)
+    - commodity: Aggregate name (e.g., 'Cereals')
+    """
+    return get_agriculture_projections(country_iso3=country_iso3, year=year, commodity=commodity)
 
 
 @router.get("/agriculture/{country_iso3}")

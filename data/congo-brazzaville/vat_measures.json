@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "country": "COG",
+  "as_of": "2026-07-25",
+  "vat_rates": [
+    {
+      "record_id": "COG-VAT-RATE-STANDARD-20021231",
+      "legal_product_description": "Taux normal de la taxe sur la valeur ajoutée applicable sur toutes les opérations taxables.",
+      "normalized_product_description": "normal rate of value-added tax applicable on all taxable operations.",
+      "rate": "18%",
+      "rate_basis": "customs value plus duty (import); consideration (domestic)",
+      "effective_from": "2002-12-31",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "COG-MINFIN-CGI-TOME1",
+      "legal_reference": "Code Général des Impôts, Livre TVA, Chapitre IV, Section II, Article 17 : « Les taux de la taxe sur la valeur ajoutée sont les suivants : - taux normal : 18 % applicable sur toutes les opérations taxables à l'exclusion de celles visées ci-dessous ; - taux zéro, applicable aux exportations et à leurs accessoires, aux transports internationaux et à la filière eucalyptus. » (Loi n°12-99 du 12 février 1999 ; Loi n°17-2000 du 30 décembre 2000 ; Loi n°10-2002 du 31 décembre 2002 — dernière modification consolidée du taux).",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ],
+  "vat_exemptions": [],
+  "vat_zero_rated": [
+    {
+      "record_id": "COG-VAT-ZERO-EXPORTS-20021231",
+      "legal_product_description": "Exportations et leurs accessoires, transports internationaux et filière eucalyptus.",
+      "normalized_product_description": "exports and related accessories, international transport, and eucalyptus sector.",
+      "rate": "0%",
+      "effective_from": "2002-12-31",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "COG-MINFIN-CGI-TOME1",
+      "legal_reference": "Code Général des Impôts, Article 17 : taux zéro sur exportations et accessoires, transports internationaux, filière eucalyptus.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ]
+}

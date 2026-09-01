@@ -341,9 +341,10 @@ def test_opportunities_cache_key_includes_model(monkeypatch):
     svc._call_claude = fake_call
     asyncio.run(svc.analyze_trade_opportunities("Kenya", mode="export", lang="fr"))
     assert captured["params"]["model"] == "claude-opus-4-8"
-    # v3 : proxy d'exportations + suppression des rangs/parts sous couverture
-    # partielle + ratio de risque — invalide les analyses en cache antérieures.
-    assert captured["params"]["pv"] == 3
+    # v4 : l'ancrage production relaie le caveat méthodologique par commodité
+    # (banane/plantain : production ≠ capacité d'export) — invalide les analyses
+    # en cache générées sans ce garde-fou.
+    assert captured["params"]["pv"] == 4
 
 
 def test_industrial_oec_year_uses_first_flow_not_last(monkeypatch):
@@ -557,7 +558,9 @@ def test_product_cache_key_includes_prompt_version(monkeypatch):
 
     svc._call_claude = fake_call
     asyncio.run(svc.analyze_product_by_hs_code("1801", lang="fr"))
-    assert captured["params"]["pv"] == 2
+    # v3 : l'ancrage HS relaie le caveat méthodologique par commodité
+    # (banane/plantain : production ≠ capacité d'export).
+    assert captured["params"]["pv"] == 3
 
 
 def test_compare_countries_grounded_on_real_production(monkeypatch):

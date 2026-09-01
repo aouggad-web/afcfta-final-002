@@ -1,0 +1,259 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-07-29",
+  "disclaimer": "Simulation informative — non opposable à l'administration douanière. Les taux, documents et préférences absents ou insuffisamment prouvés restent NOT_AVAILABLE.",
+  "regions": {
+    "ECOWAS_CET_WA15": {
+      "members": ["BEN", "BFA", "CPV", "GIN", "GMB", "GNB", "LBR", "MLI", "NER", "SEN", "SLE", "TGO"],
+      "tariff": {
+        "status": "PARTIAL",
+        "line_count_per_country": 6129,
+        "national_line_digits": [10],
+        "source_name": "TEC CEDEAO — fichiers nationaux ou références d'États membres",
+        "scope_note": "Les 10 chiffres partagés décrivent le référentiel régional chargé. Ils ne prouvent pas une extension nationale propre à chaque pays."
+      }
+    },
+    "GHA_NATIONAL": {
+      "members": ["GHA"],
+      "tariff": {
+        "status": "PARTIAL",
+        "line_count_per_country": 5387,
+        "national_line_digits": [10],
+        "source_name": "Ghana Revenue Authority / TEC CEDEAO",
+        "scope_note": "Sous-positions 10 chiffres présentes; actualité et intégralité du tarif national à revalider."
+      }
+    },
+    "NGA_NATIONAL": {
+      "members": ["NGA"],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 6363,
+        "national_line_digits": [10],
+        "source_name": "Nigeria Customs Service",
+        "scope_note": "Positions nationales 10 chiffres issues du fichier douanier nigérian."
+      }
+    },
+    "MRT_MFN": {
+      "members": ["MRT"],
+      "tariff": {
+        "status": "PARTIAL",
+        "line_count_per_country": 5388,
+        "national_line_digits": [6],
+        "source_name": "WITS / UNCTAD-TRAINS — NPF appliqué SH6",
+        "scope_note": "Référentiel NPF SH6 indicatif; aucune nomenclature nationale détaillée n'est démontrée."
+      }
+    }
+  },
+  "countries": {
+    "BEN": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "UNVERIFIED",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/benin/legal_sources.json", "data/benin/vat_measures.json"],
+      "vat_measure_path": "data/benin/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["Les taux réduits et exonérations ne sont pas mappés aux positions SH."]
+    },
+    "BFA": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "UNVERIFIED",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/burkina-faso/legal_sources.json", "data/burkina-faso/vat_measures.json"],
+      "vat_measure_path": "data/burkina-faso/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["Actualité 2026 et exceptions non consolidées.", "Le prélèvement PC-AES reste non vérifié."]
+    },
+    "CPV": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/cape-verde/legal_sources.json", "data/cape-verde/vat_measures.json"],
+      "vat_measure_path": "data/cape-verde/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["Le TEC est référencé depuis un autre État membre; aucune extension nationale n'est prouvée."]
+    },
+    "GHA": {
+      "region": "GHA_NATIONAL",
+      "national_extension_status": "PARTIAL",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/ghana/legal_sources.json", "data/ghana/vat_measures.json"],
+      "vat_measure_path": "data/ghana/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["La consolidation officielle TVA reste en attente.", "NHIL et GETFund doivent rester séparés de la TVA."]
+    },
+    "GIN": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/guinea/legal_sources.json", "data/guinea/vat_measures.json", "data/guinea/excise_measures.json"],
+      "vat_measure_path": "data/guinea/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["Les formalités exigibles restent NOT_AVAILABLE."]
+    },
+    "GMB": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "NOT_AVAILABLE",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/gambia/legal_sources.json", "data/gambia/vat_measures.json"],
+      "vat_measure_path": "data/gambia/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["La consolidation officielle TVA reste en attente."]
+    },
+    "GNB": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "NOT_AVAILABLE",
+      "other_taxes_status": "UNVERIFIED",
+      "calculation_order_status": "NOT_AVAILABLE",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/guinea-bissau/legal_sources.json", "data/guinea-bissau/vat_measures.json"],
+      "vat_measure_path": "data/guinea-bissau/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["Contradiction critique: 17 % dans le runtime contre 18 % dans une métadonnée non consolidée; aucun taux n'est validé."]
+    },
+    "LBR": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/liberia/legal_sources.json", "data/liberia/vat_measures.json"],
+      "vat_measure_path": "data/liberia/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["Plusieurs taux GST sont sectoriels et ne doivent pas être appliqués sans qualification produit."]
+    },
+    "MLI": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "UNVERIFIED",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/mali/legal_sources.json", "data/mali/vat_measures.json"],
+      "vat_measure_path": "data/mali/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["La date d'effet du taux réduit doit être corrigée.", "Le prélèvement PC-AES reste non vérifié."]
+    },
+    "MRT": {
+      "region": "MRT_MFN",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/mauritania/legal_sources.json", "data/mauritania/vat_measures.json", "data/mauritania/excise_measures.json"],
+      "vat_measure_path": "data/mauritania/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["Le tarif disponible est un NPF SH6 WITS/TRAINS, pas une nomenclature nationale."]
+    },
+    "NER": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "UNVERIFIED",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/niger/legal_sources.json", "data/niger/vat_measures.json"],
+      "vat_measure_path": "data/niger/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["Le texte archivé provient d'un miroir; actualité 2026 non établie.", "Le prélèvement PC-AES reste non vérifié."]
+    },
+    "NGA": {
+      "region": "NGA_NATIONAL",
+      "national_extension_status": "DOCUMENTED",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/nigeria/legal_sources.json", "data/nigeria/vat_measures.json"],
+      "vat_measure_path": "data/nigeria/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["La consolidation officielle TVA reste en attente."]
+    },
+    "SEN": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "UNVERIFIED",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/senegal/legal_sources.json", "data/senegal/vat_measures.json"],
+      "vat_measure_path": "data/senegal/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["La republication archivée n'est pas gouvernementale et les amendements récents restent à contrôler."]
+    },
+    "SLE": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/sierra-leone/legal_sources.json", "data/sierra-leone/vat_measures.json"],
+      "vat_measure_path": "data/sierra-leone/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["Les formalités exigibles restent NOT_AVAILABLE."]
+    },
+    "TGO": {
+      "region": "ECOWAS_CET_WA15",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "NOT_AVAILABLE",
+      "other_taxes_status": "UNVERIFIED",
+      "calculation_order_status": "NOT_AVAILABLE",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/togo/legal_sources.json", "data/togo/vat_measures.json"],
+      "vat_measure_path": "data/togo/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["Le taux de 18 % est seulement PENDING_COLLECTION; il ne doit pas être utilisé comme taux documenté."]
+    }
+  }
+}

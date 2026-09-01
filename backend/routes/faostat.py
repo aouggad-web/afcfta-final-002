@@ -5,6 +5,7 @@ Updated for 2024 data
 
 import logging
 import os
+import re
 import sys
 from typing import List, Optional
 
@@ -18,6 +19,7 @@ from etl.faostat_data import (
     get_faostat_country_data,
     get_fisheries_rankings,
 )
+from production_data import get_agriculture_by_country, get_agriculture_projections
 from services.faostat_service import (
     AFRICAN_COUNTRIES,
     KEY_COMMODITIES,
@@ -28,6 +30,138 @@ from services.faostat_service import (
     get_production_trends,
     get_top_producers,
 )
+
+# Nombre max de commodités supplémentaires (bulk FAOSTAT, hors table curée)
+# ajoutées à la liste "cultures" d'un pays — évite de noyer le graphique/tableau
+# existant pour les pays où le bulk couvre 50-100+ produits.
+_MAX_EXTRA_BULK_CROPS = 20
+
+# Alias FR (noms curés FAOSTAT_AGRICULTURE_DATA) -> EN (libellés bulk agri_faostat),
+# pour dédupliquer correctement les cultures déjà présentes dans la table curée
+# avant de compléter avec le bulk (ex. "Manioc" curé == "Cassava" bulk : sans cet
+# alias, le même produit apparaissait deux fois sous deux noms différents).
+_CROP_ALIASES_FR_EN = {
+    "agrumes": "citrus",
+    "ananas": "pineapples",
+    "arachide": "groundnuts",
+    "banane": "bananas",
+    "blé": "wheat",
+    "cacao": "cocoa beans",
+    "café": "coffee",
+    "canne à sucre": "sugarcane",
+    "cannelle": "cinnamon",
+    "clou de girofle": "cloves",
+    "coton": "seed cotton",
+    "dattes": "dates",
+    "fonio": "fonio",
+    "haricot": "beans",
+    "huile de palme": "oil palm",
+    "hévéa": "rubber",
+    "igname": "yam",
+    "manioc": "cassava",
+    "maïs": "maize (corn)",
+    "mil": "millet",
+    "niébé": "cowpeas",
+    "noix de cajou": "cashew nuts",
+    "noix de coco": "coconuts",
+    "oignon": "onions",
+    "olives": "olives",
+    "oranges": "oranges",
+    "orge": "barley",
+    "plantain": "plantain",
+    "pomme de terre": "potatoes",
+    "riz": "rice",
+    "soja": "soybeans",
+    "sorgho": "sorghum",
+    "sésame": "sesame",
+    "tabac": "tobacco",
+    "teff": "teff",
+    "thé": "tea",
+    "tomate": "tomatoes",
+    "tomates": "tomatoes",
+    "tournesol": "sunflower seed",
+    "vanille": "vanilla",
+}
+
+# Le bulk agri_faostat mêle cultures et produits animaux (viande, lait, œufs).
+# L'onglet "Cultures" ne doit afficher que des cultures : on exclut les produits
+# animaux (dont les gros volumes — lait/viande bovine — consommeraient sinon les
+# slots du plafond _MAX_EXTRA_BULK_CROPS). La détection porte sur des MOTS ENTIERS
+# pour ne pas rejeter une culture comme "Eggplants" (contient "egg" mais pas le mot
+# "eggs") : ex. "Cattle milk", "Chicken meat", "Hen eggs" sont exclus.
+_ANIMAL_PRODUCT_WORDS = {"meat", "milk", "egg", "eggs"}
+
+# Libellés d'affichage FR des commodités bulk (anglais dans agri_faostat), pour
+# éviter une liste "Cultures" bilingue en vue française (ex. "Eggplants" affiché
+# à côté de "Blé"). Couvre l'intégralité du vocabulaire bulk cultures ; un libellé
+# absent conserve son nom d'origine (dégradation gracieuse).
+_BULK_LABEL_FR = {
+    "almonds": "Amandes",
+    "apples": "Pommes",
+    "avocados": "Avocats",
+    "bananas": "Bananes",
+    "barley": "Orge",
+    "beans": "Haricots",
+    "cabbages": "Choux",
+    "carrots": "Carottes",
+    "cashew nuts": "Noix de cajou",
+    "cassava": "Manioc",
+    "cauliflowers": "Choux-fleurs",
+    "chickpeas": "Pois chiches",
+    "chillies and peppers": "Piments et poivrons",
+    "cinnamon": "Cannelle",
+    "cloves": "Clou de girofle",
+    "cocoa beans": "Cacao",
+    "coconuts": "Noix de coco",
+    "coffee": "Café",
+    "cowpeas": "Niébé",
+    "cucumbers": "Concombres",
+    "dates": "Dattes",
+    "eggplants": "Aubergines",
+    "ginger": "Gingembre",
+    "grapes": "Raisins",
+    "groundnuts": "Arachide",
+    "kola nuts": "Noix de kola",
+    "lemons and limes": "Citrons et limes",
+    "lentils": "Lentilles",
+    "lettuce": "Laitue",
+    "linseed": "Lin",
+    "maize (corn)": "Maïs",
+    "mangoes": "Mangues",
+    "millet": "Mil",
+    "oats": "Avoine",
+    "oil palm": "Huile de palme",
+    "okra": "Gombo",
+    "olives": "Olives",
+    "onions": "Oignons",
+    "oranges": "Oranges",
+    "papayas": "Papayes",
+    "peas": "Pois",
+    "pepper": "Poivre",
+    "pigeon peas": "Pois d'Angole",
+    "pineapples": "Ananas",
+    "plantain": "Plantain",
+    "potatoes": "Pomme de terre",
+    "rapeseed": "Colza",
+    "rice": "Riz",
+    "rubber": "Hévéa",
+    "seed cotton": "Coton",
+    "sesame": "Sésame",
+    "shea nuts": "Noix de karité",
+    "sorghum": "Sorgho",
+    "soybeans": "Soja",
+    "spinach": "Épinards",
+    "sugarcane": "Canne à sucre",
+    "sunflower seed": "Tournesol",
+    "sweet potatoes": "Patate douce",
+    "tea": "Thé",
+    "tobacco": "Tabac",
+    "tomatoes": "Tomates",
+    "vanilla": "Vanille",
+    "watermelons": "Pastèques",
+    "wheat": "Blé",
+    "yam": "Igname",
+}
 
 logger = logging.getLogger(__name__)
 
@@ -158,6 +292,87 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
     else:
         cultures_sorted = sorted(cultures_list, key=lambda x: x["value_2023"], reverse=True)
 
+    # --- Cultures supplémentaires (bulk FAOSTAT réel, hors table curée) ---
+    # La table curée FAOSTAT_AGRICULTURE_DATA ne couvre que 6-10 produits phares
+    # par pays. Le dataset enrichi production_africaine.json (agri_faostat, bulk
+    # FAOSTAT 2019-2024) en couvre 30-100+. On complète la liste "cultures" avec
+    # les produits bulk absents de la table curée (comparaison insensible à la
+    # casse), triés par valeur décroissante et plafonnés pour rester lisible.
+    curated_names_lower = {
+        _CROP_ALIASES_FR_EN.get(c["name"].strip().lower(), c["name"].strip().lower())
+        for c in cultures_sorted
+    }
+    bulk = get_agriculture_by_country(iso3)
+    extra_crops = []
+    for commodity, records in bulk.get("data_by_commodity", {}).items():
+        commodity_key = commodity.strip().lower()
+        if commodity_key in curated_names_lower or not records:
+            continue
+        if _ANIMAL_PRODUCT_WORDS & set(re.findall(r"[a-z]+", commodity_key)):
+            continue  # produit animal — hors onglet "Cultures"
+        latest = max(records, key=lambda r: r.get("year") or 0)
+        value = latest.get("value")
+        if not value:
+            continue
+        display_name = commodity
+        if language.startswith("fr"):
+            display_name = _BULK_LABEL_FR.get(commodity_key, commodity)
+        extra_crops.append(
+            {
+                "name": display_name,
+                "name_en": commodity,  # identifiant stable (libellé bulk d'origine)
+                "value_2023": value,  # valeur bulk de l'année la plus récente (voir "year")
+                "year": latest.get("year"),
+                "unit": latest.get("unit", "tonnes"),
+                "rank_africa": None,
+                "area_ha": None,
+                "yield_kg_ha": None,
+                "is_bulk_faostat": True,
+                # Provenance par ligne : les valeurs bulk viennent de FAOSTAT et non
+                # de la source curée pays (souvent un ministère, année 2023). Sans
+                # cela, une valeur 2024 serait affichée sous une attribution 2023.
+                "source": latest.get("source_dataset") or latest.get("source_institution"),
+            }
+        )
+    extra_crops.sort(key=lambda x: x["value_2023"], reverse=True)
+    extra_crops = extra_crops[:_MAX_EXTRA_BULK_CROPS]
+    cultures_sorted = cultures_sorted + extra_crops
+
+    # Liste de sources agrégée : source curée pays + dataset FAOSTAT bulk si des
+    # cultures bulk ont été ajoutées (attribution honnête par jeu de données).
+    curated_source = data.get("source", "FAOSTAT 2023")
+    sources = [curated_source]
+    bulk_sources = sorted({c["source"] for c in extra_crops if c.get("source")})
+    for s in bulk_sources:
+        if s and s not in sources:
+            sources.append(s)
+
+    # --- Prévisions OCDE-FAO (agri_projections, horizons 2025/2030) ---
+    proj_records = get_agriculture_projections(iso3)
+    projections_by_commodity: dict = {}
+    for rec in proj_records:
+        label = rec.get("commodity_label", "")
+        entry = projections_by_commodity.setdefault(
+            label,
+            {
+                "commodity": label,
+                "unit": rec.get("unit", "tonnes"),
+                # Secteur d'origine (Crops / Livestock) : certaines projections
+                # sont des agrégats d'élevage (ex. "Meat (projection)") et ne
+                # doivent pas être présentées comme des cultures.
+                "sector_detail": rec.get("sector_detail"),
+                "is_livestock": (rec.get("sector_detail") or "").lower().startswith("livestock"),
+                "source_institution": rec.get("source_institution"),
+                "source_dataset": rec.get("source_dataset"),
+                "source_url": rec.get("source_url"),
+                "points": [],
+            },
+        )
+        entry["points"].append({"year": rec.get("year"), "value": rec.get("value")})
+    projections = list(projections_by_commodity.values())
+    for entry in projections:
+        entry["points"].sort(key=lambda p: p["year"])
+
     # --- Évolution temporelle ---
     evolution = data.get("evolution", {})
     evolution_formatted = {}
@@ -211,6 +426,7 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
         "region": data.get("region", ""),
         "data_year": data.get("data_year", 2023),
         "source": data.get("source", "FAOSTAT 2023"),
+        "sources": sources,
         "main_crops": data.get("main_crops", []),
         "cultures": cultures_sorted,
         "evolution": evolution_formatted,
@@ -220,6 +436,8 @@ async def get_country_full_detail(country_iso3: str, language: str = Query(defau
         "key_indicators": indicators,
         "has_livestock": len(elevage) > 0,
         "has_fisheries": (peche["capture_tonnes"] + peche["aquaculture_tonnes"]) > 0,
+        "projections": projections,
+        "has_projections": len(projections) > 0,
     }
 
 

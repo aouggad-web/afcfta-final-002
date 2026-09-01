@@ -81,7 +81,7 @@ def test_compact_block_for_opportunities():
     compact = crs.compact_risk_for_opportunity("DZA")
     assert compact is not None
     assert compact["risk_ratio"] == crs.get_risk_ratio("DZA")["risk_ratio"]
-    assert compact["operational_grade"] == "B"
+    assert compact["operational_grade"] == "A4"
     assert "/api/reports/risk-ratio/DZA" in compact["note"]
     assert crs.compact_risk_for_opportunity("XXX") is None
 

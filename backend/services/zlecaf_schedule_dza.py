@@ -48,6 +48,8 @@ with open(DATA_DIR / "list_c_codes.json", encoding="utf-8") as f:
 # l'appelant pour les positions qu'il couvre.
 with open(DATA_DIR / "list_b_base_rates.json", encoding="utf-8") as f:
     LIST_B_BASE_RATES_2019 = {k: v / 100.0 for k, v in json.load(f).items()}
+with open(DATA_DIR / "circular_482_schedule.json", encoding="utf-8") as f:
+    CIRCULAR_482_SCHEDULE = json.load(f)
 
 # Pays ayant déclenché l'application effective et réciproque de la ZLECAf
 # avec l'Algérie (circulaire 482/2024, partie I).
@@ -92,29 +94,17 @@ FROZEN_HEADINGS = (
     ("8710", "8712"),
 )
 
+
+def _year_factors(section: str, list_name: str) -> dict[int, float]:
+    raw = CIRCULAR_482_SCHEDULE[section][f"list_{list_name}_remaining_factor"]
+    return {int(year): factor for year, factor in raw.items()}
+
+
 # Facteur = part du droit de base encore appliquée (0.0 = exonération totale).
-_STANDARD_A = {2021: 0.8, 2022: 0.6, 2023: 0.4, 2024: 0.2}  # >=2025 -> 0.0
-_STANDARD_B = {2026: 0.8, 2027: 0.6, 2028: 0.4, 2029: 0.2}  # 2021-25 -> 1.0 ; >=2030 -> 0.0
-_RECIP_A = {
-    2021: 0.9,
-    2022: 0.8,
-    2023: 0.7,
-    2024: 0.6,
-    2025: 0.5,
-    2026: 0.4,
-    2027: 0.3,
-    2028: 0.2,
-    2029: 0.1,
-}  # >=2030 -> 0.0
-_RECIP_B = {
-    2026: 0.875,
-    2027: 0.75,
-    2028: 0.625,
-    2029: 0.5,
-    2030: 0.375,
-    2031: 0.25,
-    2032: 0.125,
-}  # 2021-25 -> 1.0 ; >=2033 -> 0.0
+_STANDARD_A = _year_factors("standard_schedule", "a")
+_STANDARD_B = _year_factors("standard_schedule", "b")
+_RECIP_A = _year_factors("reciprocity_schedule", "a")
+_RECIP_B = _year_factors("reciprocity_schedule", "b")
 
 
 def _heading(hs_code_clean: str) -> str:
@@ -143,13 +133,14 @@ def _factor_standard(lst: str, year: int) -> float:
     if lst == "A":
         if year < 2021:
             return 1.0
-        if year >= 2025:
+        if year >= CIRCULAR_482_SCHEDULE["standard_schedule"]["list_a_zero_from"]:
             return 0.0
         return _STANDARD_A[year]
     if lst == "B":
-        if year < 2026:
+        schedule = CIRCULAR_482_SCHEDULE["standard_schedule"]
+        if year < schedule["list_b_reduction_from"]:
             return 1.0
-        if year >= 2030:
+        if year >= schedule["list_b_zero_from"]:
             return 0.0
         return _STANDARD_B[year]
     raise ValueError(lst)
@@ -161,13 +152,14 @@ def _factor_reciprocity(lst: str, year: int) -> float:
     if lst == "A":
         if year < 2021:
             return 1.0
-        if year >= 2030:
+        if year >= CIRCULAR_482_SCHEDULE["reciprocity_schedule"]["list_a_zero_from"]:
             return 0.0
         return _RECIP_A[year]
     if lst == "B":
-        if year < 2026:
+        schedule = CIRCULAR_482_SCHEDULE["reciprocity_schedule"]
+        if year < schedule["list_b_reduction_from"]:
             return 1.0
-        if year >= 2033:
+        if year >= schedule["list_b_zero_from"]:
             return 0.0
         return _RECIP_B[year]
     raise ValueError(lst)

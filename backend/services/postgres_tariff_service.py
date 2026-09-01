@@ -162,7 +162,7 @@ class PostgresTariffService:
                         "description_en", commodity.get("description_fr", "")
                     ),
                     "dd_rate": taxes.get("total_npf", 0) or 0,
-                    "zlecaf_rate": taxes.get("total_zlecaf", 0) or 0,
+                    "zlecaf_rate": taxes.get("total_zlecaf"),
                     "savings_pct": taxes.get("savings", 0) or 0,
                     "sub_positions": [],
                     "has_sub_positions": False,
@@ -198,7 +198,9 @@ class PostgresTariffService:
             "description_fr": line.get("description_fr", ""),
             "description_en": line.get("description_en") or line.get("description_fr", ""),
             "dd_rate": float(line.get("dd_rate") or 0),
-            "zlecaf_rate": float(line.get("zlecaf_rate") or 0),
+            "zlecaf_rate": (
+                float(line.get("zlecaf_rate")) if line.get("zlecaf_rate") is not None else None
+            ),
             "savings_pct": float(line.get("savings_pct") or 0),
             "sub_positions": sub_positions,
             "sub_position_count": int(line.get("sub_position_count") or len(sub_positions)),
@@ -361,7 +363,11 @@ class PostgresTariffService:
         calculations = []
         for sp in sub_positions:
             dd_rate = sp.get("dd", 0) or 0
-            zlecaf_rate = sp.get("zlecaf_rate", 0) or 0
+            # Absence de taux ZLECAf réel != préférence à 0 % : fabriquer un 0
+            # produirait une économie fictive (npf_duty - 0). Sans préférence
+            # traçable, le taux ZLECAf retombe sur le taux NPF (aucune réduction).
+            raw_zlecaf_rate = sp.get("zlecaf_rate")
+            zlecaf_rate = raw_zlecaf_rate if raw_zlecaf_rate is not None else dd_rate
 
             npf_duty = value * (dd_rate / 100)
             zlecaf_duty = value * (zlecaf_rate / 100)

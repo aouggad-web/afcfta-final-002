@@ -13,22 +13,43 @@ AMÉLIORATION (2) : l'indice valeur/poids sert à DEUX usages — (a) le
 dimensionnement logistique ci-dessus, et (b) un repère grossier pour la
 négociation du prix d'achat, quand le produit correspond à une matière
 première cotée sur un marché mondial (café, cacao, coton, métaux LME, or,
-pétrole...). Deux niveaux de qualité, distingués par `classification_source` :
+pétrole...). Trois niveaux de qualité, distingués par `classification_source` :
 
-  - "cours_mondial"       : cours RÉEL d'une bourse/organisme de référence
-                            (ICE, LME, CBOT, LBMA...), recherché et daté
-                            (voir _WORLD_MARKET_BENCHMARKS). C'est un prix
-                            RÉEL et SOURCÉ, mais reste un cours de RÉFÉRENCE
-                            pour une qualité/grade standard — jamais un devis
-                            garanti pour une opération précise (qualité,
-                            origine, incoterm et contrat font varier le prix
-                            réel négocié). Champ `negotiation` explicite ce
-                            garde-fou à chaque sortie.
-  - "estimation_chapitre" : à défaut de cours mondial identifié pour ce
-                            produit, ordre de grandeur par chapitre SH
-                            (UN Comtrade / BACI) — dimensionnement logistique
-                            uniquement, PAS une base de négociation fiable
-                            (c'est explicitement signalé dans la sortie).
+  - "cours_mondial"            : cours RÉEL d'une bourse/organisme de
+                                  référence (ICE, LME, CBOT, LBMA...),
+                                  recherché et daté (voir
+                                  _WORLD_MARKET_BENCHMARKS). C'est un prix
+                                  RÉEL et SOURCÉ, mais reste un cours de
+                                  RÉFÉRENCE pour une qualité/grade standard —
+                                  jamais un devis garanti pour une opération
+                                  précise (qualité, origine, incoterm et
+                                  contrat font varier le prix réel négocié).
+                                  Champ `negotiation` explicite ce garde-fou.
+                                  Couvre ~20 matières premières cotées.
+  - "valeur_unitaire_observee"  : à défaut de cours mondial, valeur unitaire
+                                  RÉELLE calculée à partir d'un flux
+                                  commercial observé pour CE code SH précis
+                                  (valeur déclarée ÷ quantité déclarée,
+                                  OEC/BACI — typiquement les importations du
+                                  marché destination, toutes origines
+                                  confondues). Bien plus spécifique qu'une
+                                  estimation de chapitre (2 chiffres), car
+                                  ancrée sur le produit exact — mais reflète
+                                  UN flux réel, pas nécessairement
+                                  représentatif de toutes les qualités/
+                                  origines de ce SH. Retenue seulement si elle
+                                  reste dans un ordre de grandeur plausible du
+                                  repère de chapitre (voir
+                                  `_OBSERVED_PLAUSIBILITY_BAND`) — sinon
+                                  écartée et signalée, jamais utilisée
+                                  aveuglément. S'étend à TOUT code SH pour
+                                  lequel un flux OEC/BACI est exploitable, pas
+                                  seulement aux ~20 matières premières cotées.
+  - "estimation_chapitre"       : à défaut des deux niveaux précédents, ordre
+                                  de grandeur par chapitre SH (UN Comtrade /
+                                  BACI) — dimensionnement logistique
+                                  uniquement, PAS une base de négociation
+                                  fiable (signalé explicitement en sortie).
 
 DISCIPLINE « zéro fabrication » : le poids reste une ESTIMATION dérivée d'un
 ratio, jamais une donnée réelle en soi. Chaque cours mondial porte sa date,
@@ -786,15 +807,104 @@ def _load_live_benchmarks(path: str = _LIVE_BENCHMARKS_PATH) -> Dict[str, Dict]:
 _WORLD_MARKET_BENCHMARKS = _apply_live_benchmarks(_WORLD_MARKET_BENCHMARKS, _load_live_benchmarks())
 
 
-def usd_per_kg_for_hs(hs_code: str) -> Dict:
+# Bande de plausibilité d'une valeur unitaire OBSERVÉE (valeur commerciale
+# réelle ÷ quantité réelle, ex. importations d'un pays pour ce SH6 précis) :
+# un flux d'échange authentique reste vulnérable aux erreurs de déclaration
+# douanière (quantité omise, mal unitée, ligne mixte...). On ne la retient que
+# si elle reste dans ce facteur autour du repère de chapitre (déjà curé,
+# indépendant) — au-delà, l'écart trahit presque toujours une donnée
+# aberrante plutôt qu'un vrai segment de marché haut/bas de gamme.
+_OBSERVED_PLAUSIBILITY_BAND = (0.05, 20.0)  # ×0.05 à ×20 du repère de chapitre
+
+
+def _plausibility_reference(hs_code_normalized: str) -> float:
+    """Repère de chapitre (ou défaut) utilisé UNIQUEMENT comme borne de
+    plausibilité pour une valeur observée — jamais retourné comme estimation
+    en soi si une source plus fiable existe."""
+    chapter = hs_code_normalized[:2] if hs_code_normalized else None
+    return _USD_PER_KG_BY_CHAPTER.get(chapter, _DEFAULT_USD_PER_KG)
+
+
+def observed_unit_value(
+    hs_code: str,
+    value_usd: Optional[float],
+    quantity_tonnes: Optional[float],
+    basis: Optional[str] = None,
+    year: Optional[int] = None,
+    source: Optional[str] = None,
+) -> Optional[Dict]:
+    """
+    Valeur unitaire RÉELLE (USD/kg) calculée à partir d'un flux commercial
+    observé (valeur déclarée ÷ quantité déclarée, OEC/BACI) pour ce code SH
+    précis — à défaut d'un cours mondial coté, bien plus spécifique qu'une
+    estimation par chapitre puisqu'ancrée sur CE produit exact.
+
+    ``basis`` documente l'origine du flux (ex. "importations d'Algérie,
+    toutes origines, 2024") — sert au repère de négociation affiché.
+
+    Retourne ``None`` si les données sont absentes/inexploitables (valeur ou
+    quantité nulle/manquante). Retourne toujours un dict sinon, avec
+    ``plausible: False`` (et un ``note`` explicite) quand le ratio obtenu
+    s'écarte trop de l'ordre de grandeur du chapitre SH — JAMAIS utilisée
+    silencieusement dans ce cas, l'appelant doit retomber sur le niveau
+    suivant de la cascade.
+    """
+    if not value_usd or value_usd <= 0 or not quantity_tonnes or quantity_tonnes <= 0:
+        return None
+    normalized = (hs_code or "").strip().replace(".", "").replace(" ", "")
+    usd_per_kg = float(value_usd) / (float(quantity_tonnes) * 1000.0)
+    reference = _plausibility_reference(normalized)
+    lo, hi = reference * _OBSERVED_PLAUSIBILITY_BAND[0], reference * _OBSERVED_PLAUSIBILITY_BAND[1]
+    plausible = lo <= usd_per_kg <= hi
+    return {
+        "usd_per_kg": round(usd_per_kg, 4),
+        "value_usd": float(value_usd),
+        "quantity_tonnes": float(quantity_tonnes),
+        "basis": basis or "flux commercial observé (OEC/BACI)",
+        "year": year,
+        "source": source or "OEC / UN Comtrade (BACI) — flux commercial réel observé",
+        "plausible": plausible,
+        "plausibility_reference_usd_per_kg": reference,
+        "note": (
+            None
+            if plausible
+            else (
+                f"Valeur unitaire observée ({round(usd_per_kg, 2)} USD/kg) hors de "
+                f"l'ordre de grandeur plausible pour ce chapitre SH (repère "
+                f"{reference} USD/kg, bande ×{_OBSERVED_PLAUSIBILITY_BAND[0]}-"
+                f"×{_OBSERVED_PLAUSIBILITY_BAND[1]}) — probable erreur de "
+                "déclaration douanière (quantité omise ou mal unitée) ; écartée "
+                "au profit de l'estimation par chapitre."
+            )
+        ),
+    }
+
+
+def usd_per_kg_for_hs(
+    hs_code: str,
+    observed_value_usd: Optional[float] = None,
+    observed_quantity_tonnes: Optional[float] = None,
+    observed_basis: Optional[str] = None,
+    observed_year: Optional[int] = None,
+    observed_source: Optional[str] = None,
+) -> Dict:
     """
     Ratio valeur/poids (USD/kg) pour un code SH, avec sa base et son usage
     possible comme repère de négociation.
 
-    Cherche d'abord un cours mondial réel (_WORLD_MARKET_BENCHMARKS, par
-    spécificité décroissante : position à 6 puis 4 chiffres du SH) ; à défaut,
-    retombe sur l'estimation par chapitre (2 chiffres) — ou le défaut prudent
-    si le chapitre lui-même est inconnu.
+    Cascade par fiabilité décroissante :
+      1. Cours mondial réel (_WORLD_MARKET_BENCHMARKS, par spécificité
+         décroissante : position à 6 puis 4 chiffres du SH).
+      2. Valeur unitaire observée (si ``observed_value_usd`` ET
+         ``observed_quantity_tonnes`` fournis par l'appelant — typiquement
+         les importations réelles OEC/BACI du marché destination pour ce SH
+         précis) ET jugée plausible (voir :func:`observed_unit_value`).
+      3. Estimation par chapitre (2 chiffres) — ou le défaut prudent si le
+         chapitre lui-même est inconnu.
+
+    Fonction pure : aucun appel réseau ici — ``observed_value_usd`` /
+    ``observed_quantity_tonnes`` doivent être déjà récupérés par l'appelant
+    (ex. ``real_trade_data_service.get_country_product_imports``).
     """
     normalized = (hs_code or "").strip().replace(".", "").replace(" ", "")
     chapter = normalized[:2] or None
@@ -825,9 +935,52 @@ def usd_per_kg_for_hs(hs_code: str) -> Dict:
             },
         }
 
+    # Tier 2 : valeur unitaire réelle observée pour CE code SH précis, à
+    # défaut d'un cours mondial coté. Bien plus spécifique qu'une estimation
+    # par chapitre (2 chiffres) — s'étend à TOUT code SH couvert par un flux
+    # OEC/BACI exploitable, pas seulement aux ~20 matières premières cotées.
+    observed = observed_unit_value(
+        normalized,
+        observed_value_usd,
+        observed_quantity_tonnes,
+        basis=observed_basis,
+        year=observed_year,
+        source=observed_source,
+    )
+    discarded_observed_note = None
+    if observed is not None:
+        if observed["plausible"]:
+            return {
+                "usd_per_kg": observed["usd_per_kg"],
+                "hs_chapter": chapter,
+                "classification_source": "valeur_unitaire_observee",
+                "commodity": None,
+                "basis": observed["basis"],
+                "raw_quote": f"{observed['value_usd']:,.0f} USD / "
+                f"{observed['quantity_tonnes']:,.1f} t".replace(",", " "),
+                "as_of": observed.get("year"),
+                "source": observed["source"],
+                "note": f"Valeur unitaire réelle calculée à partir d'un flux "
+                f"commercial observé ({observed['basis']}) pour ce code SH précis "
+                "— plus spécifique qu'une estimation par chapitre, mais reflète "
+                "UN flux réel (pas nécessairement représentatif de toutes les "
+                "qualités/origines de ce SH).",
+                "is_estimate": True,
+                "negotiation": {
+                    "usable_as_price_reference": True,
+                    "caveat": "Valeur unitaire réelle observée pour CE code SH — reflète "
+                    "un flux commercial précis (pays/année), pas une cotation de "
+                    "marché organisé : peut varier selon qualité, origine, incoterm "
+                    "et volume négocié.",
+                },
+            }
+        # Implausible : jamais utilisée silencieusement — signalée, puis repli
+        # sur l'estimation par chapitre (tier 3).
+        discarded_observed_note = observed["note"]
+
     rate = _USD_PER_KG_BY_CHAPTER.get(chapter)
     if rate is not None:
-        return {
+        result = {
             "usd_per_kg": rate,
             "hs_chapter": chapter,
             "classification_source": "estimation_chapitre",
@@ -841,7 +994,10 @@ def usd_per_kg_for_hs(hs_code: str) -> Dict:
                 "dimensionnement logistique.",
             },
         }
-    return {
+        if discarded_observed_note:
+            result["discarded_observed_value"] = discarded_observed_note
+        return result
+    result = {
         "usd_per_kg": _DEFAULT_USD_PER_KG,
         "hs_chapter": chapter,
         "classification_source": "estimation_chapitre",
@@ -854,6 +1010,9 @@ def usd_per_kg_for_hs(hs_code: str) -> Dict:
             "marché — à ne PAS utiliser comme base de négociation.",
         },
     }
+    if discarded_observed_note:
+        result["discarded_observed_value"] = discarded_observed_note
+    return result
 
 
 def plan_containers(weight_kg: float) -> Dict:
@@ -885,6 +1044,11 @@ def estimate_shipment(
     goods_value_usd: Optional[float],
     hs_code: str,
     weight_kg_override: Optional[float] = None,
+    observed_value_usd: Optional[float] = None,
+    observed_quantity_tonnes: Optional[float] = None,
+    observed_basis: Optional[str] = None,
+    observed_year: Optional[int] = None,
+    observed_source: Optional[str] = None,
 ) -> Dict:
     """
     Estime le poids et le plan de conteneurs d'une expédition à partir de sa
@@ -892,6 +1056,13 @@ def estimate_shipment(
 
     Si ``weight_kg_override`` est fourni (poids réel connu), il est utilisé tel
     quel et le ratio valeur/poids est ignoré (``weight_source: "fourni"``).
+
+    ``observed_value_usd`` / ``observed_quantity_tonnes`` (optionnels) : un
+    flux commercial RÉEL pour ce code SH précis (ex. importations OEC/BACI du
+    marché destination, valeur et quantité), transmis à
+    :func:`usd_per_kg_for_hs` pour affiner le ratio au-delà de l'estimation
+    par chapitre — voir la cascade documentée là-bas. Fonction toujours pure
+    (aucun appel réseau ici).
 
     Retourne un dict prêt à afficher : poids (estimé ou fourni), ratio utilisé,
     type et nombre de conteneurs, et les drapeaux de traçabilité. Renvoie
@@ -915,7 +1086,14 @@ def estimate_shipment(
             "conteneur impossible.",
         }
 
-    ratio = usd_per_kg_for_hs(hs_code)
+    ratio = usd_per_kg_for_hs(
+        hs_code,
+        observed_value_usd=observed_value_usd,
+        observed_quantity_tonnes=observed_quantity_tonnes,
+        observed_basis=observed_basis,
+        observed_year=observed_year,
+        observed_source=observed_source,
+    )
     weight_kg = float(goods_value_usd) / ratio["usd_per_kg"]
     plan = plan_containers(weight_kg)
     return {
@@ -930,6 +1108,8 @@ def estimate_shipment(
                 "usd_per_kg": ratio["usd_per_kg"],
                 "commodity": ratio.get("commodity"),
                 "benchmark": ratio.get("benchmark"),
+                "basis": ratio.get("basis"),
+                "classification_source": ratio.get("classification_source"),
                 "as_of": ratio.get("as_of"),
                 "caveat": ratio["negotiation"]["caveat"],
             }

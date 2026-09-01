@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "country": "EGY",
+  "as_of": "2026-07-29",
+  "vat_rates": [
+    {
+      "record_id": "EGY-VAT-RATE-STANDARD-20170701",
+      "legal_product_description": "Standard VAT rate on goods and services, including imported goods, unless a special provision applies.",
+      "normalized_product_description": "standard VAT rate on goods and services, including imported goods",
+      "rate": "14%",
+      "rate_basis": "customs value used for duty assessment plus customs duty and any other taxes or duties levied",
+      "effective_from": "2017-07-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_UNDER_OFFICIAL_TEXT",
+      "supersedes_record_id": null,
+      "source_id": "EGY-ETA-VAT-LAW-67-2016",
+      "legal_reference": "VAT Law No. 67 of 2016, articles 3 and 10(7)",
+      "verification_status": "VERIFIED_OFFICIAL_TEXT",
+      "hs_codes_explicit": []
+    }
+  ],
+  "vat_exemptions": [],
+  "vat_zero_rated": []
+}

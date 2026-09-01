@@ -1618,6 +1618,27 @@ body::before {
 .afcfta-topHeader__lang {
   display: flex;
   gap: 8px;
+  align-items: center;
+}
+
+/* Sur mobile (360-375 px courants), cette rangée porte déjà Tarifs, Connexion,
+   thème, FR et EN à côté du bouton menu : la somme des paddings et des largeurs
+   minimales dépasse la largeur d'écran et rogne les contrôles. Le lien Tarifs
+   se réduit donc à son icône, ce qui rend la largeur au reste de la rangée. */
+@media (max-width: 768px) {
+  .afcfta-topHeader__lang {
+    gap: 6px;
+  }
+
+  .afcfta-topHeader__lang [data-testid="topbar-pricing-link"] {
+    padding-left: 8px;
+    padding-right: 8px;
+    gap: 0 !important;
+  }
+
+  .afcfta-topHeader__lang [data-testid="topbar-pricing-link"] .afcfta-pricing-label {
+    display: none;
+  }
 }
 
 .afcfta-langBtn {

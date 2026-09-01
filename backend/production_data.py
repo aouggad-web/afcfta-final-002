@@ -224,6 +224,35 @@ def get_agriculture_by_country(country_iso3: str) -> Dict:
     }
 
 
+def get_agriculture_projections(
+    country_iso3: Optional[str] = None, year: Optional[int] = None, commodity: Optional[str] = None
+) -> List[Dict]:
+    """
+    Récupère les PRÉVISIONS agricoles (OECD-FAO Agricultural Outlook).
+
+    Stockées séparément des productions observées (``agri_projections``) car ce
+    sont des projections (horizons 2025/2030), à ne pas confondre avec les
+    productions réelles FAOSTAT.
+
+    Args:
+        country_iso3: Code ISO3 du pays
+        year: Horizon de projection (2025, 2030)
+        commodity: Nom de l'agrégat (ex: 'Cereals')
+    """
+    data = load_production_data()
+    records = data.get("agri_projections", [])
+
+    country_iso3 = _normalize_country_iso3(country_iso3)
+
+    if country_iso3:
+        records = [r for r in records if r.get("country_iso3") == country_iso3]
+    if year:
+        records = [r for r in records if r.get("year") == year]
+    if commodity:
+        records = [r for r in records if commodity.lower() in r.get("commodity_label", "").lower()]
+    return records
+
+
 # ==========================================
 # MANUFACTURING UNIDO
 # ==========================================
@@ -458,6 +487,19 @@ def get_production_statistics() -> Dict:
                 "countries": len(countries_mining),
                 "years": sorted(list(years_mining)),
             },
+            "agriculture_projections": {
+                "total_records": len(data.get("agri_projections", [])),
+                "countries": len(
+                    set(r.get("country_iso3") for r in data.get("agri_projections", []))
+                ),
+                "years": sorted(
+                    set(
+                        r.get("year")
+                        for r in data.get("agri_projections", [])
+                        if r.get("year") is not None
+                    )
+                ),
+            },
         },
     }
 
@@ -469,6 +511,7 @@ def get_country_production_overview(country_iso3: str) -> Dict:
         "country_iso3": country_iso3,
         "value_added": get_value_added_by_country(country_iso3),
         "agriculture": get_agriculture_by_country(country_iso3),
+        "agriculture_projections": get_agriculture_projections(country_iso3),
         "manufacturing": get_manufacturing_by_country(country_iso3),
         "mining": get_mining_by_country(country_iso3),
     }

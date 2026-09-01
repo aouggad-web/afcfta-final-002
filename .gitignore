@@ -94,3 +94,27 @@ test_reports/
 # Disk-backed cache tier (services/cache_service.py) — persisted OEC/API
 # responses for cold-start resilience without Redis, never source of truth
 backend/data/_cache/
+
+# Base GeoIP MaxMind (détection du pays de facturation).
+# JAMAIS committée : binaire de ~8 Mo republié deux fois par semaine (l'historique
+# git enflerait durablement) et la licence GeoLite2 restreint la redistribution.
+# Elle s'installe sur le serveur via `python scripts/geoip_update.py`.
+*.mmdb
+data/geoip/
+backend/data/geoip/
+
+# Emergent pod-runtime artefacts (régénérés à chaque déploiement, polluent
+# l'historique — visibles dans les commits « Auto-generated changes »).
+# job_id et created_at changent à chaque redéploiement, ils ne doivent pas
+# être versionnés.
+.emergent/emergent.yml
+.emergent/cron/webhook-crons
+.emergent/cron/applied.hash
+.emergent/markers/
+
+# Notes de session locales au pod (identifiants de test, URLs de preview
+# éphémères) — jamais de valeur en clair depuis le nettoyage du 2026-08-14,
+# mais toujours à tenir hors du dépôt par principe : ce fichier n'a de sens
+# que pour la session pod en cours, et son contenu se périme à chaque
+# redéploiement (nouvelle URL, nouveau compte de test).
+memory/test_credentials.md

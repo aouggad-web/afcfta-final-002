@@ -26,14 +26,17 @@ function ProductionMacro({ language = 'fr' }) {
 
   const texts = {
     fr: {
-      title: 'Valeur Ajoutée Macro (World Bank / IMF)',
-      subtitle: 'Structure sectorielle du PIB des économies africaines (2021-2024)',
+      title: 'Valeur Ajoutée Macro (World Bank WDI)',
+      subtitle: 'Structure sectorielle du PIB des économies africaines (données récentes)',
+      projection: 'Projection',
+      projectionHint: 'Projection FMI (World Economic Outlook)',
       records: 'enregistrements',
       sectors: 'secteurs',
       loading: 'Chargement des données macro...',
       noData: 'Aucune donnée disponible pour ce pays.',
       evolutionTitle: 'Évolution de la Valeur Ajoutée par Secteur (% du PIB)',
       comparisonTitle: 'Comparaison Sectorielle par Année',
+      growthTitle: 'Croissance du PIB réel (variation annuelle %) — World Bank',
       detailsTitle: 'Données Détaillées',
       gdpPercent: '% du PIB',
       year: 'Année',
@@ -42,14 +45,17 @@ function ProductionMacro({ language = 'fr' }) {
       dataCoverage: 'Couverture',
     },
     en: {
-      title: 'Macro Value Added (World Bank / IMF)',
-      subtitle: 'Sectoral structure of GDP for African economies (2021-2024)',
+      title: 'Macro Value Added (World Bank WDI)',
+      subtitle: 'Sectoral structure of GDP for African economies (recent data)',
+      projection: 'Projection',
+      projectionHint: 'IMF projection (World Economic Outlook)',
       records: 'records',
       sectors: 'sectors',
       loading: 'Loading macro data...',
       noData: 'No data available for this country.',
       evolutionTitle: 'Value Added Evolution by Sector (% of GDP)',
       comparisonTitle: 'Sectoral Comparison by Year',
+      growthTitle: 'Real GDP growth (annual %) — World Bank',
       detailsTitle: 'Detailed Data',
       gdpPercent: '% of GDP',
       year: 'Year',
@@ -81,25 +87,63 @@ function ProductionMacro({ language = 'fr' }) {
     }
   };
 
-  const chartData = useMemo(() => {
+  // La croissance du PIB (NY.GDP.MKTP.KD.ZG) est une variation annuelle (%), pas
+  // une part sectorielle « % du PIB » : elle ne doit PAS être tracée comme un
+  // secteur dans les graphes de valeur ajoutée. On la sépare et on l'affiche à part.
+  const isGdpGrowth = (records) =>
+    Array.isArray(records) &&
+    records.some(
+      (r) =>
+        r.indicator_code === 'NGDP_RPCH' ||
+        r.indicator_code === 'NY.GDP.MKTP.KD.ZG' ||
+        r.sector_isic_section === 'TOTAL'
+    );
+
+  const valueAddedSectors = useMemo(() => {
+    if (!macroData?.data_by_sector) return {};
+    return Object.fromEntries(
+      Object.entries(macroData.data_by_sector).filter(([, recs]) => !isGdpGrowth(recs))
+    );
+  }, [macroData]);
+
+  const gdpGrowthRecords = useMemo(() => {
     if (!macroData?.data_by_sector) return [];
+    const entry = Object.entries(macroData.data_by_sector).find(([, recs]) => isGdpGrowth(recs));
+    return entry ? [...entry[1]].sort((a, b) => a.year - b.year) : [];
+  }, [macroData]);
 
-    const years = [2021, 2022, 2023, 2024];
-    return years.map((year) => {
+  const availableYears = useMemo(() => {
+    const set = new Set();
+    Object.values(valueAddedSectors).forEach((records) => {
+      records.forEach((r) => set.add(r.year));
+    });
+    return Array.from(set).sort((a, b) => a - b);
+  }, [valueAddedSectors]);
+
+  // Couverture affichée : on privilégie years_covered fourni par la réponse
+  // (couvre TOUS les indicateurs, y compris la croissance PIB), sinon repli sur
+  // les années des secteurs de valeur ajoutée.
+  const coverageYears = useMemo(() => {
+    if (Array.isArray(macroData?.years_covered) && macroData.years_covered.length) {
+      return [...macroData.years_covered].sort((a, b) => a - b);
+    }
+    return availableYears;
+  }, [macroData, availableYears]);
+
+  const chartData = useMemo(() => {
+    return availableYears.map((year) => {
       const dataPoint = { year };
-
-      Object.entries(macroData.data_by_sector).forEach(([sectorName, records]) => {
+      Object.entries(valueAddedSectors).forEach(([sectorName, records]) => {
         const yearRecord = records.find((r) => r.year === year);
         if (yearRecord) {
           dataPoint[sectorName] = yearRecord.value;
         }
       });
-
       return dataPoint;
     });
-  }, [macroData]);
+  }, [valueAddedSectors, availableYears]);
 
-  const sectorNames = macroData?.data_by_sector ? Object.keys(macroData.data_by_sector) : [];
+  const sectorNames = Object.keys(valueAddedSectors);
 
   const seriesColors = ['#9b6ef5', '#4f8ef7', '#20c997', '#d4891a'];
 
@@ -120,11 +164,15 @@ function ProductionMacro({ language = 'fr' }) {
 
             <div className="flex items-center gap-2 flex-wrap">
               <Badge className="bg-[rgba(255,255,255,0.06)] text-[var(--text)] border border-[rgba(255,255,255,0.08)]">
-                {t.source}: World Bank / IMF
+                {t.source}: World Bank
               </Badge>
-              <Badge className="bg-[rgba(212,137,26,0.12)] text-[var(--gold)] border border-[rgba(212,137,26,0.2)]">
-                2021–2024
-              </Badge>
+              {coverageYears.length > 0 && (
+                <Badge className="bg-[rgba(212,137,26,0.12)] text-[var(--gold)] border border-[rgba(212,137,26,0.2)]">
+                  {coverageYears.length > 1
+                    ? `${coverageYears[0]}–${coverageYears[coverageYears.length - 1]}`
+                    : `${coverageYears[0]}`}
+                </Badge>
+              )}
             </div>
           </div>
         </CardHeader>
@@ -257,6 +305,46 @@ function ProductionMacro({ language = 'fr' }) {
             </CardContent>
           </Card>
 
+          {gdpGrowthRecords.length > 0 && (
+            <Card className="afcfta-card">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl text-[var(--text)]">
+                  📈 {t.growthTitle}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <div className="flex flex-wrap gap-3">
+                  {gdpGrowthRecords.map((record) => (
+                    <div
+                      key={record.year}
+                      className="rounded-lg border p-3 min-w-[110px]"
+                      style={{
+                        background: 'rgba(17,24,39,0.55)',
+                        borderColor: 'rgba(255,255,255,0.05)',
+                      }}
+                    >
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-xs text-[var(--afcfta-muted)]">
+                          {t.year} {record.year}
+                        </p>
+                        {record.is_projection && (
+                          <span
+                            className="text-[9px] font-semibold px-1.5 py-0.5 rounded"
+                            style={{ background: 'rgba(155,110,245,0.18)', color: '#c3a3ff' }}
+                            title={t.projectionHint}
+                          >
+                            {t.projection}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xl font-bold mt-1 text-[var(--text)]">{record.value}%</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           <Card className="afcfta-card">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl text-[var(--text)]">
@@ -265,7 +353,7 @@ function ProductionMacro({ language = 'fr' }) {
             </CardHeader>
             <CardContent className="pt-4">
               <div className="space-y-4">
-                {Object.entries(macroData.data_by_sector).map(([sectorName, records], index) => (
+                {Object.entries(valueAddedSectors).map(([sectorName, records], index) => (
                   <div
                     key={sectorName}
                     className="rounded-xl border p-4"
@@ -298,9 +386,23 @@ function ProductionMacro({ language = 'fr' }) {
                             borderColor: 'rgba(255,255,255,0.05)',
                           }}
                         >
-                          <p className="text-xs text-[var(--afcfta-muted)]">
-                            {t.year} {record.year}
-                          </p>
+                          <div className="flex items-center justify-between gap-1">
+                            <p className="text-xs text-[var(--afcfta-muted)]">
+                              {t.year} {record.year}
+                            </p>
+                            {record.is_projection && (
+                              <span
+                                className="text-[9px] font-semibold px-1.5 py-0.5 rounded"
+                                style={{
+                                  background: 'rgba(155,110,245,0.18)',
+                                  color: '#c3a3ff',
+                                }}
+                                title={t.projectionHint}
+                              >
+                                {t.projection}
+                              </span>
+                            )}
+                          </div>
                           <p className="text-xl font-bold mt-1 text-[var(--text)]">{record.value}%</p>
                           <p className="text-[11px] text-[var(--afcfta-muted)] mt-2 line-clamp-2">
                             {record.indicator_label}
