@@ -28,10 +28,14 @@ class _FakeFxService:
 def test_real_dza_tariff_line_cascade_breakdown_and_local_currency(monkeypatch):
     """DZA 0101211100 must keep the authentic calculator as the reference path.
 
-    The current generated DZA dataset has a 15% customs duty, 3% TCS, 19% VAT
-    on CIF + DD, and 2% PRCT on CIF + DD + TCS + VAT for this line. For an
-    active AfCFTA partner (EGY), DD is eliminated, dependent VAT/PRCT bases are
-    recalculated, and local DZD amounts are populated from the FX block.
+    Taux authentiques de la sous-position (conformepro.dz, re-crawl du
+    2026-08-29, vérifiés sur la page source) : DD 5%, TCS 3%, TVA 9% sur
+    CIF + DAPS + DD, PRCT 2% sur CIF + DD + TCS + TVA. Pour un partenaire
+    ZLECAf actif (EGY), le DD est éliminé, les bases TVA/PRCT dépendantes sont
+    recalculées, et les montants DZD locaux proviennent du bloc FX.
+
+    NB : les valeurs précédentes (DD 15%, TVA 19%) provenaient d'un fichier
+    crawlé erroné ; la page source publie bien 5% et 9%.
     """
     monkeypatch.setattr(exchange_rates_module, "get_service", lambda: _FakeFxService())
 
@@ -50,17 +54,17 @@ def test_real_dza_tariff_line_cascade_breakdown_and_local_currency(monkeypatch):
     assert result["zlecaf_eligible"] is True
     assert result["zlecaf_preference_applied"] is True
 
-    assert result["rates"]["dd_rate_pct"] == 15.0
+    assert result["rates"]["dd_rate_pct"] == 5.0
     assert result["rates"]["effective_zlecaf_rate_pct"] == 0.0
     assert result["rates"]["tcs_rate_pct"] == 3.0
     assert result["rates"]["prct_rate_pct"] == 2.0
-    assert result["rates"]["vat_rate_pct"] == 19.0
-    assert result["rates"]["effective_rate_pct"] == 42.65
+    assert result["rates"]["vat_rate_pct"] == 9.0
+    assert result["rates"]["effective_rate_pct"] == 19.8
 
     by_code = {row["code"]: row for row in result["taxes_breakdown"]}
     assert set(by_code) == {"DD", "TCS", "TVA", "PRCT"}
 
-    assert by_code["DD"]["amount_npf"] == 150_000.0
+    assert by_code["DD"]["amount_npf"] == 50_000.0
     assert by_code["DD"]["amount_zlecaf"] == 0.0
     assert by_code["DD"]["affected_by_zlecaf"] is True
 
@@ -69,33 +73,33 @@ def test_real_dza_tariff_line_cascade_breakdown_and_local_currency(monkeypatch):
     assert by_code["TCS"]["affected_by_zlecaf"] is False
 
     assert by_code["TVA"]["base_expr"] == "CIF + DAPS + DD"
-    assert by_code["TVA"]["base_value_npf"] == 1_150_000.0
+    assert by_code["TVA"]["base_value_npf"] == 1_050_000.0
     assert by_code["TVA"]["base_value_zlecaf"] == 1_000_000.0
-    assert by_code["TVA"]["amount_npf"] == 218_500.0
-    assert by_code["TVA"]["amount_zlecaf"] == 190_000.0
+    assert by_code["TVA"]["amount_npf"] == 94_500.0
+    assert by_code["TVA"]["amount_zlecaf"] == 90_000.0
 
     assert by_code["PRCT"]["base_expr"] == "CIF + DD + TCS + TVA"
-    assert by_code["PRCT"]["base_value_npf"] == 1_398_500.0
-    assert by_code["PRCT"]["base_value_zlecaf"] == 1_220_000.0
-    assert by_code["PRCT"]["amount_npf"] == 27_970.0
-    assert by_code["PRCT"]["amount_zlecaf"] == 24_400.0
+    assert by_code["PRCT"]["base_value_npf"] == 1_174_500.0
+    assert by_code["PRCT"]["base_value_zlecaf"] == 1_120_000.0
+    assert by_code["PRCT"]["amount_npf"] == 23_490.0
+    assert by_code["PRCT"]["amount_zlecaf"] == 22_400.0
 
     summary = result["taxes_summary"]
-    assert summary["npf"]["total_taxes_et_droits"] == 426_470.0
-    assert summary["npf"]["cout_total"] == 1_426_470.0
-    assert summary["zlecaf"]["total_taxes_et_droits"] == 244_400.0
-    assert summary["zlecaf"]["cout_total"] == 1_244_400.0
-    assert summary["economie_droits"] == 150_000.0
-    assert summary["economie_totale"] == 182_070.0
-    assert result["savings"] == {"amount": 182_070.0, "percentage": 12.76}
+    assert summary["npf"]["total_taxes_et_droits"] == 197_990.0
+    assert summary["npf"]["cout_total"] == 1_197_990.0
+    assert summary["zlecaf"]["total_taxes_et_droits"] == 142_400.0
+    assert summary["zlecaf"]["cout_total"] == 1_142_400.0
+    assert summary["economie_droits"] == 50_000.0
+    assert summary["economie_totale"] == 55_590.0
+    assert result["savings"] == {"amount": 55_590.0, "percentage": 4.64}
 
     currency = result["currency"]
     assert currency["available"] is True
     assert currency["local_code"] == "DZD"
     assert currency["usd_to_local_rate"] == 150.0
     assert currency["value_local"] == 150_000_000.0
-    assert by_code["DD"]["amount_npf_local"] == 22_500_000.0
-    assert by_code["TVA"]["amount_zlecaf_local"] == 28_500_000.0
-    assert currency["summary_local"]["npf"]["cout_total"] == 213_970_500.0
-    assert currency["summary_local"]["zlecaf"]["cout_total"] == 186_660_000.0
-    assert currency["summary_local"]["economie_totale"] == 27_310_500.0
+    assert by_code["DD"]["amount_npf_local"] == 7_500_000.0
+    assert by_code["TVA"]["amount_zlecaf_local"] == 13_500_000.0
+    assert currency["summary_local"]["npf"]["cout_total"] == 179_698_500.0
+    assert currency["summary_local"]["zlecaf"]["cout_total"] == 171_360_000.0
+    assert currency["summary_local"]["economie_totale"] == 8_338_500.0

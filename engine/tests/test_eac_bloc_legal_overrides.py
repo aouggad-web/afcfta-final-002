@@ -170,7 +170,7 @@ def test_beneficiary_restricted_smart_card_stay_does_not_apply_without_beneficia
         context=OverrideContext(jurisdiction="TZA"),
     )
     assert result["applicable_customs_rate"] == 25
-    assert result["calculation_status"] == "VERIFIED_PARTIAL"
+    assert result["calculation_status"] == "INFORMATIVE_PARTIAL"
 
 
 def test_beneficiary_restricted_smart_card_stay_applies_when_beneficiary_matches():
@@ -213,6 +213,10 @@ def test_kenya_measures_unaffected_by_bloc_extension():
         ),
     )
     # La remission conditionnelle Kenya existe toujours et requiert des
-    # faits d'éligibilité — comportement inchangé (VERIFIED_PARTIAL sans
-    # justification d'éligibilité).
-    assert result["calculation_status"] in {"VERIFIED_PARTIAL", "VERIFIED_COMPLETE"}
+    # faits d'éligibilité — comportement inchangé (statut partiel sans
+    # justification d'éligibilité). Le vocabulaire VERIFIED_* a été renommé
+    # INFORMATIVE_* : l'outil documente, il ne certifie pas.
+    assert result["calculation_status"] in {
+        "INFORMATIVE_PARTIAL",
+        "INFORMATIVE_COMPLETE",
+    }
