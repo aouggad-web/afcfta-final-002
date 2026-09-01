@@ -30,11 +30,15 @@ def test_real_dza_tariff_line_cascade_breakdown_and_local_currency(monkeypatch):
 
     Depuis l'audit P0 du 2026-09-01, DZA n'est plus servi par le dataset
     généré `enhanced_v2` mais par le crawl authentique DGD/conformepro.dz
-    (voir `backend/data/archive/superseded/README.md`). Pour cette ligne,
-    la source officielle publie : DD 5 %, TCS 3 %, TVA 9 % sur CIF + DAPS
-    + DD, PRCT 2 % sur CIF + DD + TCS + TVA. Un partenaire ZLECAf actif
-    (EGY) élimine le DD, recalcule les bases dépendantes et alimente les
-    montants locaux DZD depuis le bloc FX.
+    (voir `backend/data/archive/superseded/README.md`). Taux authentiques
+    de la sous-position (re-crawl du 2026-08-29, vérifiés sur la page
+    source) : DD 5 %, TCS 3 %, TVA 9 % sur CIF + DAPS + DD, PRCT 2 % sur
+    CIF + DD + TCS + TVA. Un partenaire ZLECAf actif (EGY) élimine le
+    DD, recalcule les bases dépendantes et alimente les montants locaux
+    DZD depuis le bloc FX.
+
+    NB : les valeurs précédentes (DD 15 %, TVA 19 %) provenaient d'un
+    fichier crawlé erroné ; la page source publie bien 5 % et 9 %.
     """
     monkeypatch.setattr(exchange_rates_module, "get_service", lambda: _FakeFxService())
 
@@ -58,7 +62,7 @@ def test_real_dza_tariff_line_cascade_breakdown_and_local_currency(monkeypatch):
     assert result["rates"]["tcs_rate_pct"] == 3.0
     assert result["rates"]["prct_rate_pct"] == 2.0
     assert result["rates"]["vat_rate_pct"] == 9.0
-    assert result["rates"]["effective_rate_pct"] == 19.80
+    assert result["rates"]["effective_rate_pct"] == 19.8
 
     by_code = {row["code"]: row for row in result["taxes_breakdown"]}
     assert set(by_code) == {"DD", "TCS", "TVA", "PRCT"}

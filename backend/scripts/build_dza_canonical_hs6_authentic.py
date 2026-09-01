@@ -12,8 +12,11 @@ Règles (aucune extrapolation) :
     publié (variants documentés dans dd_rate_variants / vat_rate_variants).
   - other_taxes_rate : somme PRCT+TCS+DAPS+TIC si univoque, sinon None.
   - total_taxes_pct : somme si toutes composantes univoques, sinon None.
-  - zlecaf_rate : 0.0 UNIQUEMENT si un avantage crawlé mentionne ZLECAf/ZALE
-    avec exonération DD ; sinon None.
+  - zlecaf_rate : JAMAIS dérivé de cette source. conformepro.dz ne documente que
+    l'exonération « -zale- » (Zone Arabe de Libre Échange), qui est un accord
+    distinct de la ZLECAf. Assimiler les deux fabriquerait un taux ZLECAf
+    (cf. PR #322/#324 qui ont retiré ces champs). L'avantage ZALE reste
+    conservé verbatim dans fiscal_advantages.
   - fiscal_advantages / administrative_formalities : texte verbatim conservé ;
     rattachement au code F.A.P officiel quand la correspondance exacte existe.
 """
@@ -92,7 +95,6 @@ def main() -> int:
         # avantages : déduplication verbatim
         seen_adv = set()
         fiscal_advantages = []
-        zlecaf_rate = None
         for p in group:
             for adv in p.get("advantages") or []:
                 if adv in seen_adv:
@@ -101,8 +103,10 @@ def main() -> int:
                 low = adv.lower()
                 tax = "DD" if re.search(r"\bd\.?\s?d\b|droit", low) else None
                 rate = 0.0 if "exo" in low else None
-                if ("zale" in low or "zleca" in low) and "exo" in low:
-                    zlecaf_rate = 0.0
+                # Aucun taux ZLECAf n'est dérivé ici : la source ne mentionne que
+                # « -zale- » (Zone Arabe de Libre Échange), un accord distinct
+                # de la ZLECAf per doctrine MISSION_TARIFS_AFRICAINS.md.
+                # L'avantage reste conservé verbatim ci-dessous.
                 fiscal_advantages.append(
                     {
                         "tax": tax,
@@ -194,8 +198,6 @@ def main() -> int:
             "dd_rate": dd,
             "dd_source": DD_SOURCE,
             "dd_rate_variants": dd_variants or None,
-            "zlecaf_rate": zlecaf_rate,
-            "zlecaf_source": "ZLECAf" if zlecaf_rate is not None else None,
             "vat_rate": vat,
             "vat_rate_variants": vat_variants or None,
             "other_taxes_rate": others_sum if others_complete else None,
@@ -237,7 +239,9 @@ def main() -> int:
         "source_quality": "crawled_authentic",
         "policy": (
             "Agrégation HS6 des sous-positions crawlées uniquement. Taux None = hétérogène "
-            "entre sous-positions ou non publié par la source (variants listés). Aucun taux ETL."
+            "entre sous-positions ou non publié par la source (variants listés). Aucun taux ETL. "
+            "Aucun taux ZLECAf n'est dérivé : la source ne documente que l'exonération -zale- "
+            "(Zone Arabe de Libre Échange), accord distinct de la ZLECAf (cf. PR #322/#324)."
         ),
         "summary": {
             "total_tariff_lines": len(tariff_lines),
