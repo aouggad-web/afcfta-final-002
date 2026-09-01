@@ -1,5 +1,5 @@
 {
-  "last_update": "2026-09-01T20:03:27.348324",
+  "last_update": "2026-09-01T21:57:33.216886",
   "articles": [
     {
       "id": "35ffb94640af",
@@ -14,7 +14,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-08-30T16:26:00",
-      "fetched_at": "2026-09-01T19:59:48.951556"
+      "fetched_at": "2026-09-01T21:53:20.716710"
     },
     {
       "id": "0acc40a55e91",
@@ -29,7 +29,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-08-30T14:12:00",
-      "fetched_at": "2026-09-01T19:59:48.331013"
+      "fetched_at": "2026-09-01T21:53:20.089470"
     },
     {
       "id": "346014c4e8bf",
@@ -44,7 +44,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-08-29T15:55:00",
-      "fetched_at": "2026-09-01T19:59:48.728886"
+      "fetched_at": "2026-09-01T21:53:20.522765"
     },
     {
       "id": "f970bb03ac19",
@@ -59,7 +59,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-08-29T09:52:00",
-      "fetched_at": "2026-09-01T19:59:49.190832"
+      "fetched_at": "2026-09-01T21:53:20.919237"
     },
     {
       "id": "84106bc12d4f",
@@ -76,7 +76,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-25T23:21:12",
-      "fetched_at": "2026-09-01T20:02:17.055316"
+      "fetched_at": "2026-09-01T21:55:32.065836"
     },
     {
       "id": "7c2ea61f7da0",
@@ -91,7 +91,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-08-16T07:00:00",
-      "fetched_at": "2026-09-01T20:02:56.451055"
+      "fetched_at": "2026-09-01T21:54:11.557861"
     },
     {
       "id": "3545f55d2d16",
@@ -108,7 +108,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-08T07:00:00",
-      "fetched_at": "2026-09-01T20:02:59.541624"
+      "fetched_at": "2026-09-01T21:54:12.208083"
     },
     {
       "id": "43696b8974a2",
@@ -125,7 +125,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-04T07:00:00",
-      "fetched_at": "2026-09-01T20:02:58.245352"
+      "fetched_at": "2026-09-01T21:54:11.979524"
     },
     {
       "id": "c87be1b95d27",
@@ -143,7 +143,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-03T07:00:00",
-      "fetched_at": "2026-09-01T20:02:19.022862"
+      "fetched_at": "2026-09-01T21:55:33.918512"
     },
     {
       "id": "78d09e945e0a",
@@ -158,7 +158,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-28T07:00:00",
-      "fetched_at": "2026-09-01T20:02:55.753007"
+      "fetched_at": "2026-09-01T21:54:11.772743"
     },
     {
       "id": "b9ab60acefc5",
@@ -173,7 +173,22 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-28T07:00:00",
-      "fetched_at": "2026-09-01T20:02:57.630337"
+      "fetched_at": "2026-09-01T21:54:12.437408"
+    },
+    {
+      "id": "8b4a2d30523a",
+      "title": "Algerian billionaire Abderrahmane Benhamadi's Condor signs German pipe manufacturing deal in Berlin - Billionaires.Africa",
+      "summary": "Algerian billionaire Abderrahmane Benhamadi's Condor signs German pipe manufacturing deal in Berlin  Billionaires.Africa",
+      "link": "https://www.billionaires.africa/2026/07/19/algerian-billionaire-abderrahmane-benhamadis-condor-signs-german-pipe-manufacturing-deal-in-berlin/",
+      "source": "Algérie Économie",
+      "category": "Économie",
+      "region": "Afrique du Nord",
+      "country": "DZA",
+      "priority": true,
+      "content_tags": [],
+      "content_priority": false,
+      "published_at": "2026-07-19T07:00:00",
+      "fetched_at": "2026-09-01T21:54:13.265976"
     },
     {
       "id": "56c2ce3c380b",
@@ -188,7 +203,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-07-07T07:00:00",
-      "fetched_at": "2026-09-01T19:59:47.927293"
+      "fetched_at": "2026-09-01T21:53:19.587458"
     },
     {
       "id": "62f4eedea75e",
@@ -205,7 +220,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-07-04T07:00:00",
-      "fetched_at": "2026-09-01T20:02:20.223295"
+      "fetched_at": "2026-09-01T21:55:35.278023"
     },
     {
       "id": "b3611cdcf1d9",
@@ -220,7 +235,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-06-29T22:30:26",
-      "fetched_at": "2026-09-01T20:02:18.392816"
+      "fetched_at": "2026-09-01T21:55:33.424502"
     },
     {
       "id": "f3cf714aaa71",
@@ -237,7 +252,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-29T01:48:01",
-      "fetched_at": "2026-09-01T20:02:21.691352"
+      "fetched_at": "2026-09-01T21:55:36.546382"
     },
     {
       "id": "28199a6dbc05",
@@ -254,7 +269,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-27T01:42:45",
-      "fetched_at": "2026-09-01T20:02:17.781468"
+      "fetched_at": "2026-09-01T21:55:32.883261"
     },
     {
       "id": "c54617f8b9c0",
@@ -271,7 +286,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-22T07:00:00",
-      "fetched_at": "2026-09-01T20:03:00.279460"
+      "fetched_at": "2026-09-01T21:54:12.839398"
     },
     {
       "id": "efe2fcac5785",
@@ -286,7 +301,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-06-20T07:00:00",
-      "fetched_at": "2026-09-01T19:59:47.526326"
+      "fetched_at": "2026-09-01T21:53:19.130825"
     },
     {
       "id": "0df89cf759e2",
@@ -303,7 +318,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-06-16T07:00:00",
-      "fetched_at": "2026-09-01T20:03:01.681651"
+      "fetched_at": "2026-09-01T21:54:13.039135"
     },
     {
       "id": "baff1a3e629b",
@@ -318,7 +333,24 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-06-10T07:00:00",
-      "fetched_at": "2026-09-01T20:02:58.929567"
+      "fetched_at": "2026-09-01T21:54:12.652854"
+    },
+    {
+      "id": "2aa9eec42e95",
+      "title": "Algiers reviving major industrial, railway projects - APAnews - Agence de Presse Africaine",
+      "summary": "Algiers reviving major industrial, railway projects  APAnews - Agence de Presse Africaine",
+      "link": "https://apanews.net/algiers-reviving-major-industrial-railway-projects/",
+      "source": "Algérie Économie",
+      "category": "Économie",
+      "region": "Afrique du Nord",
+      "country": "DZA",
+      "priority": true,
+      "content_tags": [
+        "development"
+      ],
+      "content_priority": true,
+      "published_at": "2026-06-06T07:00:00",
+      "fetched_at": "2026-09-01T21:54:13.490182"
     },
     {
       "id": "84aef0f81ff6",
@@ -335,7 +367,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-05-23T00:19:33",
-      "fetched_at": "2026-09-01T20:02:22.983583"
+      "fetched_at": "2026-09-01T21:55:37.562777"
     },
     {
       "id": "d90e6db44b80",
@@ -353,7 +385,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-05-10T07:00:00",
-      "fetched_at": "2026-09-01T20:02:19.695238"
+      "fetched_at": "2026-09-01T21:55:34.549118"
     },
     {
       "id": "5e0812b4442c",
@@ -370,7 +402,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-05-08T07:00:00",
-      "fetched_at": "2026-09-01T20:02:20.949211"
+      "fetched_at": "2026-09-01T21:55:36.049658"
     },
     {
       "id": "4fd848f58e69",
@@ -388,37 +420,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-05-05T07:00:00",
-      "fetched_at": "2026-09-01T20:02:22.282180"
-    },
-    {
-      "id": "d17f4009e92f",
-      "title": "China’s Geely Expands Into African Space With Algeria, Morocco Satellite Deals - The China-Global South Project",
-      "summary": "China’s Geely Expands Into African Space With Algeria, Morocco Satellite Deals  The China-Global South Project",
-      "link": "https://chinaglobalsouth.com/2026/03/09/geely-africa-space-satellite-deals-algeria-morocco/",
-      "source": "Algérie Économie",
-      "category": "Économie",
-      "region": "Afrique du Nord",
-      "country": "DZA",
-      "priority": true,
-      "content_tags": [],
-      "content_priority": false,
-      "published_at": "2026-03-09T07:00:00",
-      "fetched_at": "2026-09-01T20:03:00.902320"
-    },
-    {
-      "id": "67407a7601fd",
-      "title": "Algeria–China Industrial Era: Strategic Investments Set To Reshape National Economy - OpEd - Eurasia Review",
-      "summary": "Algeria–China Industrial Era: Strategic Investments Set To Reshape National Economy - OpEd  Eurasia Review",
-      "link": "https://www.eurasiareview.com/02122025-algeria-china-industrial-era-strategic-investments-set-to-reshape-national-economy-oped/",
-      "source": "Algérie Économie",
-      "category": "Finance",
-      "region": "Afrique du Nord",
-      "country": "DZA",
-      "priority": true,
-      "content_tags": [],
-      "content_priority": false,
-      "published_at": "2025-12-02T08:00:00",
-      "fetched_at": "2026-09-01T20:02:56.994579"
+      "fetched_at": "2026-09-01T21:55:37.058888"
     },
     {
       "id": "e3088539bfa8",
@@ -433,7 +435,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2025-09-28T00:01:11",
-      "fetched_at": "2026-09-01T19:59:48.125994"
+      "fetched_at": "2026-09-01T21:53:19.878414"
     },
     {
       "id": "dz-project-gara-djebilet",
@@ -444,7 +446,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2025-02-01T00:00:00",
-      "fetched_at": "2026-09-01T20:03:27.347909",
+      "fetched_at": "2026-09-01T21:57:33.216519",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -463,7 +465,7 @@
       "category": "Mines",
       "region": "Afrique du Nord",
       "published_at": "2025-02-01T00:00:00",
-      "fetched_at": "2026-09-01T20:03:27.347917",
+      "fetched_at": "2026-09-01T21:57:33.216525",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -482,7 +484,7 @@
       "category": "Infrastructure",
       "region": "Afrique du Nord",
       "published_at": "2025-02-01T00:00:00",
-      "fetched_at": "2026-09-01T20:03:27.347920",
+      "fetched_at": "2026-09-01T21:57:33.216528",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -501,7 +503,7 @@
       "category": "Infrastructure",
       "region": "Afrique du Nord",
       "published_at": "2025-02-01T00:00:00",
-      "fetched_at": "2026-09-01T20:03:27.347922",
+      "fetched_at": "2026-09-01T21:57:33.216530",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -520,7 +522,7 @@
       "category": "Industrie",
       "region": "Afrique du Nord",
       "published_at": "2025-02-01T00:00:00",
-      "fetched_at": "2026-09-01T20:03:27.347924",
+      "fetched_at": "2026-09-01T21:57:33.216531",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -539,7 +541,7 @@
       "category": "Énergie",
       "region": "Afrique du Nord",
       "published_at": "2025-02-01T00:00:00",
-      "fetched_at": "2026-09-01T20:03:27.347925",
+      "fetched_at": "2026-09-01T21:57:33.216533",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -558,7 +560,7 @@
       "category": "Énergie",
       "region": "Afrique du Nord",
       "published_at": "2025-02-01T00:00:00",
-      "fetched_at": "2026-09-01T20:03:27.347927",
+      "fetched_at": "2026-09-01T21:57:33.216535",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -577,7 +579,7 @@
       "category": "Énergie",
       "region": "Afrique du Nord",
       "published_at": "2025-02-01T00:00:00",
-      "fetched_at": "2026-09-01T20:03:27.347929",
+      "fetched_at": "2026-09-01T21:57:33.216536",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -596,7 +598,7 @@
       "category": "Industrie",
       "region": "Afrique du Nord",
       "published_at": "2025-02-01T00:00:00",
-      "fetched_at": "2026-09-01T20:03:27.347931",
+      "fetched_at": "2026-09-01T21:57:33.216538",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -615,7 +617,7 @@
       "category": "Commerce",
       "region": "Afrique du Nord",
       "published_at": "2025-02-01T00:00:00",
-      "fetched_at": "2026-09-01T20:03:27.347933",
+      "fetched_at": "2026-09-01T21:57:33.216540",
       "is_structural_project": true,
       "country": "DZA",
       "priority": true,
@@ -626,9 +628,9 @@
       "content_priority": true
     },
     {
-      "id": "0fada95d52b6",
-      "title": "Kouchet El-Djir, le bidonville coupe-gorge - Liberté-Algérie",
-      "summary": "Kouchet El-Djir, le bidonville coupe-gorge  Liberté-Algérie",
+      "id": "ce69b86847a8",
+      "title": "Kouchet El-Djir, le bidonville coupe-gorge - liberte-algerie.com",
+      "summary": "Kouchet El-Djir, le bidonville coupe-gorge  liberte-algerie.com",
       "link": "https://www.liberte-algerie.com/reportage/kouchet-el-djir-le-bidonville-coupe-gorge-374775",
       "source": "APS / El Watan / Liberté / TSA",
       "category": "Économie",
@@ -638,12 +640,12 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2022-03-13T08:00:00",
-      "fetched_at": "2026-09-01T19:59:47.739410"
+      "fetched_at": "2026-09-01T21:53:19.344144"
     },
     {
-      "id": "3f9a26774dbb",
-      "title": "LE PHARE DE RAS AL-AFIA DE JIJEL : L’EMBLÉMATIQUE JALON DE LA CORNICHE - Reportage - Liberté-Algérie",
-      "summary": "LE PHARE DE RAS AL-AFIA DE JIJEL : L’EMBLÉMATIQUE JALON DE LA CORNICHE - Reportage  Liberté-Algérie",
+      "id": "81001abb98de",
+      "title": "LE PHARE DE RAS AL-AFIA DE JIJEL : L’EMBLÉMATIQUE JALON DE LA CORNICHE - Reportage - liberte-algerie.com",
+      "summary": "LE PHARE DE RAS AL-AFIA DE JIJEL : L’EMBLÉMATIQUE JALON DE LA CORNICHE - Reportage  liberte-algerie.com",
       "link": "https://www.liberte-algerie.com/reportage/lemblematique-jalon-de-la-corniche-362416",
       "source": "APS / El Watan / Liberté / TSA",
       "category": "Économie",
@@ -653,7 +655,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2021-07-25T07:00:00",
-      "fetched_at": "2026-09-01T19:59:49.386343"
+      "fetched_at": "2026-09-01T21:53:21.159598"
     },
     {
       "id": "5f96ba26d772",
@@ -670,7 +672,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-09-01T18:53:34",
-      "fetched_at": "2026-09-01T20:00:03.206751"
+      "fetched_at": "2026-09-01T21:55:08.292213"
     },
     {
       "id": "f7a2034afd40",
@@ -687,7 +689,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-09-01T12:24:13",
-      "fetched_at": "2026-09-01T20:01:19.854674"
+      "fetched_at": "2026-09-01T21:54:36.097685"
     },
     {
       "id": "cb392a08a63f",
@@ -704,7 +706,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-09-01T08:49:13",
-      "fetched_at": "2026-09-01T20:00:04.357792"
+      "fetched_at": "2026-09-01T21:55:10.766453"
     },
     {
       "id": "19f52cc193e8",
@@ -721,7 +723,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-09-01T08:46:23",
-      "fetched_at": "2026-09-01T20:00:03.841500"
+      "fetched_at": "2026-09-01T21:55:08.915313"
     },
     {
       "id": "1d36fa902e94",
@@ -738,7 +740,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-09-01T07:03:17",
-      "fetched_at": "2026-09-01T20:02:34.194223"
+      "fetched_at": "2026-09-01T21:55:04.846808"
     },
     {
       "id": "492119506460",
@@ -755,7 +757,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-31T15:01:00",
-      "fetched_at": "2026-09-01T20:00:26.980570"
+      "fetched_at": "2026-09-01T21:53:51.657523"
     },
     {
       "id": "7a4ed32f3ff1",
@@ -772,12 +774,12 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-31T13:56:12",
-      "fetched_at": "2026-09-01T20:02:34.708141"
+      "fetched_at": "2026-09-01T21:55:05.476027"
     },
     {
-      "id": "431cc81987b4",
-      "title": "Gaz domestique : le Cameroun lance un appel d’offres pour 60 000 tonnes, près de 40 % des importations de 2025 - investiraucameroun.com",
-      "summary": "Gaz domestique : le Cameroun lance un appel d’offres pour 60 000 tonnes, près de 40 % des importations de 2025  investiraucameroun.com",
+      "id": "a7b1e5c4c20c",
+      "title": "Gaz domestique : le Cameroun lance un appel d’offres pour 60 000 tonnes, près de 40 % des importations de 2025 - Investir au Cameroun",
+      "summary": "Gaz domestique : le Cameroun lance un appel d’offres pour 60 000 tonnes, près de 40 % des importations de 2025  Investir au Cameroun",
       "link": "https://www.investiraucameroun.com/gestion-publique/3108-23720-gaz-domestique-le-cameroun-lance-un-appel-d-offres-pour-60-000-tonnes-pres-de-40-des-importations-de-2025",
       "source": "Investir au Cameroun / Cameroon Tribune",
       "category": "Énergie",
@@ -789,12 +791,12 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-31T10:15:00",
-      "fetched_at": "2026-09-01T20:00:24.461048"
+      "fetched_at": "2026-09-01T21:53:29.098911"
     },
     {
-      "id": "f7c853789d5d",
-      "title": "Titres publics : l’intérêt des banques pour les bons du Trésor (BTA) du Cameroun retombe à moins de 20% en juillet 2026 - investiraucameroun.com",
-      "summary": "Titres publics : l’intérêt des banques pour les bons du Trésor (BTA) du Cameroun retombe à moins de 20% en juillet 2026  investiraucameroun.com",
+      "id": "dbffadb2dc8e",
+      "title": "Titres publics : l’intérêt des banques pour les bons du Trésor (BTA) du Cameroun retombe à moins de 20% en juillet 2026 - Investir au Cameroun",
+      "summary": "Titres publics : l’intérêt des banques pour les bons du Trésor (BTA) du Cameroun retombe à moins de 20% en juillet 2026  Investir au Cameroun",
       "link": "https://www.investiraucameroun.com/gestion-publique/3108-23717-titres-publics-l-interet-des-banques-pour-les-bons-du-tresor-bta-du-cameroun-retombe-a-moins-de-20-en-juillet-2026",
       "source": "Investir au Cameroun / Cameroon Tribune",
       "category": "Finance",
@@ -806,7 +808,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-31T09:31:00",
-      "fetched_at": "2026-09-01T20:00:22.979445"
+      "fetched_at": "2026-09-01T21:53:27.832855"
     },
     {
       "id": "3565e21c2521",
@@ -823,7 +825,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-30T18:17:08",
-      "fetched_at": "2026-09-01T20:00:18.082864"
+      "fetched_at": "2026-09-01T21:56:22.639945"
     },
     {
       "id": "d5ebb33392c1",
@@ -840,24 +842,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-30T15:02:38",
-      "fetched_at": "2026-09-01T20:03:12.566590"
-    },
-    {
-      "id": "62fb9810db00",
-      "title": "America mobilises 3 powerful tech giants to Africa’s second-richest economy to counter China’s Huawei bid to build 2,008-chip AI data centre - Business Insider Africa",
-      "summary": "America mobilises 3 powerful tech giants to Africa’s second-richest economy to counter China’s Huawei bid to build 2,008-chip AI data centre  Business Insider Africa",
-      "link": "https://africa.businessinsider.com/local/markets/america-mobilises-3-powerful-tech-giants-to-africas-second-richest-economy-to-counter/dhynpj8",
-      "source": "Google News (Reuters, AFP, etc.)",
-      "category": "Télécoms",
-      "region": "Afrique",
-      "country": null,
-      "priority": false,
-      "content_tags": [
-        "statistics"
-      ],
-      "content_priority": true,
-      "published_at": "2026-08-30T11:41:39",
-      "fetched_at": "2026-09-01T20:01:21.984117"
+      "fetched_at": "2026-09-01T21:57:18.628758"
     },
     {
       "id": "bcac78e26e4a",
@@ -874,7 +859,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-28T15:47:10",
-      "fetched_at": "2026-09-01T20:00:08.494561"
+      "fetched_at": "2026-09-01T21:53:15.578233"
     },
     {
       "id": "e996758345e6",
@@ -891,7 +876,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-28T15:23:00",
-      "fetched_at": "2026-09-01T19:59:55.365369"
+      "fetched_at": "2026-09-01T21:53:50.743576"
     },
     {
       "id": "59e91925ae30",
@@ -908,12 +893,12 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-28T09:56:34",
-      "fetched_at": "2026-09-01T20:00:28.258554"
+      "fetched_at": "2026-09-01T21:53:53.006812"
     },
     {
-      "id": "e290c68e9575",
-      "title": "Grand Eweng, nouvel aéroport de Douala, data center… ces projets que le Cameroun propose aux investisseurs américains - investiraucameroun.com",
-      "summary": "Grand Eweng, nouvel aéroport de Douala, data center… ces projets que le Cameroun propose aux investisseurs américains  investiraucameroun.com",
+      "id": "1ff793e2f868",
+      "title": "Grand Eweng, nouvel aéroport de Douala, data center… ces projets que le Cameroun propose aux investisseurs américains - Investir au Cameroun",
+      "summary": "Grand Eweng, nouvel aéroport de Douala, data center… ces projets que le Cameroun propose aux investisseurs américains  Investir au Cameroun",
       "link": "https://www.investiraucameroun.com/gestion-publique/2708-23715-grand-eweng-nouvel-aeroport-de-douala-data-center-ces-projets-que-le-cameroun-propose-aux-investisseurs-americains",
       "source": "Investir au Cameroun / Cameroon Tribune",
       "category": "Infrastructure",
@@ -925,24 +910,24 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-27T11:05:00",
-      "fetched_at": "2026-09-01T20:00:23.820890"
+      "fetched_at": "2026-09-01T21:53:28.448849"
     },
     {
-      "id": "5e1ff5ed71b8",
-      "title": "Tech : une IA conçue pour le Cameroun revendique 97,2 % de précision dans la détection de la fraude fiscale - investiraucameroun.com",
-      "summary": "Tech : une IA conçue pour le Cameroun revendique 97,2 % de précision dans la détection de la fraude fiscale  investiraucameroun.com",
-      "link": "https://www.investiraucameroun.com/gestion-publique/2708-23713-tech-une-ia-concue-pour-le-cameroun-revendique-97-2-de-precision-dans-la-detection-de-la-fraude-fiscale",
-      "source": "Investir au Cameroun / Cameroon Tribune",
-      "category": "Télécoms",
-      "region": "Afrique Centrale",
-      "country": "CMR",
+      "id": "6679ada52ca7",
+      "title": "From infrastructure to industrialisation: Building Africa’s next bridge to economic integration - African Business",
+      "summary": "From infrastructure to industrialisation: Building Africa’s next bridge to economic integration  African Business",
+      "link": "https://african.business/2026/08/partner-content/from-infrastructure-to-industrialisation-building-africas-next-bridge-to-economic-integration",
+      "source": "African Business / APA News",
+      "category": "Économie",
+      "region": "Afrique",
+      "country": null,
       "priority": false,
       "content_tags": [
-        "statistics"
+        "development"
       ],
       "content_priority": true,
-      "published_at": "2026-08-27T10:59:00",
-      "fetched_at": "2026-09-01T20:00:23.186114"
+      "published_at": "2026-08-26T06:30:13",
+      "fetched_at": "2026-09-01T21:55:56.910851"
     },
     {
       "id": "9e215a24c53e",
@@ -959,12 +944,12 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-24T07:44:06",
-      "fetched_at": "2026-09-01T20:00:28.465360"
+      "fetched_at": "2026-09-01T21:53:53.211679"
     },
     {
-      "id": "7ed8f9cb4586",
-      "title": "Météo Oujda - Prévisions à 7 jours - medias24.com",
-      "summary": "Météo Oujda - Prévisions à 7 jours  medias24.com",
+      "id": "cf16618e744a",
+      "title": "Météo Oujda - Prévisions à 7 jours - Medias24",
+      "summary": "Météo Oujda - Prévisions à 7 jours  Medias24",
       "link": "https://medias24.com/rapport-meteo-Oujda/page/142",
       "source": "Médias24 / La Vie Éco",
       "category": "Économie",
@@ -976,7 +961,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-23T14:57:56",
-      "fetched_at": "2026-09-01T20:01:02.577417"
+      "fetched_at": "2026-09-01T21:54:34.272886"
     },
     {
       "id": "c60b74b8b014",
@@ -993,7 +978,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-19T19:56:00",
-      "fetched_at": "2026-09-01T20:00:31.810198"
+      "fetched_at": "2026-09-01T21:56:11.536881"
     },
     {
       "id": "4d51984d8288",
@@ -1010,12 +995,12 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-13T07:00:00",
-      "fetched_at": "2026-09-01T19:59:37.176755"
+      "fetched_at": "2026-09-01T21:54:09.708850"
     },
     {
-      "id": "44143177ada5",
-      "title": "Au Cameroun, la valeur des exportations des fèves de cacao chute de 63% sur la saison 2025-2026, à 400,9 milliards FCFA - investiraucameroun.com",
-      "summary": "Au Cameroun, la valeur des exportations des fèves de cacao chute de 63% sur la saison 2025-2026, à 400,9 milliards FCFA  investiraucameroun.com",
+      "id": "247286daf27d",
+      "title": "Au Cameroun, la valeur des exportations des fèves de cacao chute de 63% sur la saison 2025-2026, à 400,9 milliards FCFA - Investir au Cameroun",
+      "summary": "Au Cameroun, la valeur des exportations des fèves de cacao chute de 63% sur la saison 2025-2026, à 400,9 milliards FCFA  Investir au Cameroun",
       "link": "https://www.investiraucameroun.com/agriculture/1008-23686-au-cameroun-la-valeur-des-exportations-des-feves-de-cacao-chute-de-63-sur-la-saison-2025-2026-a-400-9-milliards-fcfa",
       "source": "Investir au Cameroun / Cameroon Tribune",
       "category": "Agriculture",
@@ -1027,7 +1012,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-10T07:00:00",
-      "fetched_at": "2026-09-01T20:00:24.657403"
+      "fetched_at": "2026-09-01T21:53:29.308250"
     },
     {
       "id": "f7749963364c",
@@ -1044,7 +1029,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-07T07:00:00",
-      "fetched_at": "2026-09-01T20:01:19.255037"
+      "fetched_at": "2026-09-01T21:54:35.849618"
     },
     {
       "id": "87bb90357932",
@@ -1062,7 +1047,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-08-06T07:00:00",
-      "fetched_at": "2026-09-01T20:00:28.875203"
+      "fetched_at": "2026-09-01T21:53:53.599663"
     },
     {
       "id": "caf8b5447245",
@@ -1079,7 +1064,7 @@
       ],
       "content_priority": true,
       "published_at": "2026-04-18T10:21:32",
-      "fetched_at": "2026-09-01T20:00:51.031938"
+      "fetched_at": "2026-09-01T21:54:16.971729"
     },
     {
       "id": "d64c7541d054",
@@ -1096,7 +1081,41 @@
       ],
       "content_priority": true,
       "published_at": "2026-04-06T07:00:00",
-      "fetched_at": "2026-09-01T20:01:24.291529"
+      "fetched_at": "2026-09-01T21:54:37.399456"
+    },
+    {
+      "id": "7785a5163950",
+      "title": "Publication de L’Économie africaine 2026 par l’Agence française de développement : investir, coopérer et transformer dans un monde en recomposition | AFD - AFD - Agence Française de Développement",
+      "summary": "Publication de L’Économie africaine 2026 par l’Agence française de développement : investir, coopérer et transformer dans un monde en recomposition | AFD  AFD - Agence Française de Développement",
+      "link": "http://www.afd.fr/fr/commmuniques-de-presse/publication-de-leconomie-africaine-2026-par-lagence-francaise-de",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique",
+      "country": null,
+      "priority": false,
+      "content_tags": [
+        "development"
+      ],
+      "content_priority": true,
+      "published_at": "2026-01-22T08:00:00",
+      "fetched_at": "2026-09-01T21:54:19.493661"
+    },
+    {
+      "id": "f196a021949a",
+      "title": "L'économie africaine 2025 | AFD - AFD - Agence Française de Développement",
+      "summary": "L'économie africaine 2025 | AFD  AFD - Agence Française de Développement",
+      "link": "https://www.afd.fr/fr/ressources/leconomie-africaine-2025",
+      "source": "Google News (Reuters, AFP, etc.)",
+      "category": "Économie",
+      "region": "Afrique",
+      "country": null,
+      "priority": false,
+      "content_tags": [
+        "development"
+      ],
+      "content_priority": true,
+      "published_at": "2026-01-14T08:00:00",
+      "fetched_at": "2026-09-01T21:54:18.863053"
     },
     {
       "id": "82be41f0b461",
@@ -1113,7 +1132,7 @@
       ],
       "content_priority": true,
       "published_at": "2024-09-25T07:00:00",
-      "fetched_at": "2026-09-01T19:59:14.316186"
+      "fetched_at": "2026-09-01T21:53:17.323154"
     },
     {
       "id": "225b9796f3e7",
@@ -1130,7 +1149,7 @@
       ],
       "content_priority": true,
       "published_at": "2024-03-20T07:00:00",
-      "fetched_at": "2026-09-01T20:00:11.351474"
+      "fetched_at": "2026-09-01T21:57:26.214548"
     },
     {
       "id": "c759f7f5dcd9",
@@ -1147,7 +1166,24 @@
       ],
       "content_priority": true,
       "published_at": "2024-03-12T07:00:00",
-      "fetched_at": "2026-09-01T20:03:08.303902"
+      "fetched_at": "2026-09-01T21:57:07.377033"
+    },
+    {
+      "id": "a6eb5550fa29",
+      "title": "Économie : le Fmi prévoit une Croissance de 3,6 % prévus pour l’Afrique subsaharienne en 2023 - FratMat",
+      "summary": "Économie : le Fmi prévoit une Croissance de 3,6 % prévus pour l’Afrique subsaharienne en 2023  FratMat",
+      "link": "https://www.fratmat.info/article/228212/economie/croissance-economique/economie-le-fmi-prevoit-une-croissance-de-36-prevus-pour-lafrique-subsaharienne-en-2023",
+      "source": "Fraternité Matin / Abidjan.net",
+      "category": "Finance",
+      "region": "Afrique de l'Ouest",
+      "country": "CIV",
+      "priority": false,
+      "content_tags": [
+        "statistics"
+      ],
+      "content_priority": true,
+      "published_at": "2023-04-16T12:56:29",
+      "fetched_at": "2026-09-01T21:54:04.408824"
     },
     {
       "id": "01be8b6ed0f4",
@@ -1164,7 +1200,7 @@
       ],
       "content_priority": true,
       "published_at": "2022-09-02T07:00:00",
-      "fetched_at": "2026-09-01T19:59:14.715309"
+      "fetched_at": "2026-09-01T21:53:17.774151"
     },
     {
       "id": "30a0454979ad",
@@ -1181,7 +1217,24 @@
       ],
       "content_priority": true,
       "published_at": "2021-04-22T07:00:00",
-      "fetched_at": "2026-09-01T20:00:11.166191"
+      "fetched_at": "2026-09-01T21:57:25.517164"
+    },
+    {
+      "id": "71d456a7650f",
+      "title": "Intégration économique : La croissance économique africaine devrait se poursuivre, selon les projections (BAD) - FratMat",
+      "summary": "Intégration économique : La croissance économique africaine devrait se poursuivre, selon les projections (BAD)  FratMat",
+      "link": "https://www.fratmat.info/article/60229/%C3%89conomie/integration-economique-la-croissance-economique-africaine-devrait-se-poursuivre-selon-les-projections-bad",
+      "source": "Fraternité Matin / Abidjan.net",
+      "category": "Économie",
+      "region": "Afrique de l'Ouest",
+      "country": "CIV",
+      "priority": false,
+      "content_tags": [
+        "statistics"
+      ],
+      "content_priority": true,
+      "published_at": "2021-01-15T07:13:38",
+      "fetched_at": "2026-09-01T21:54:04.610366"
     },
     {
       "id": "6c99ebadd9bc",
@@ -1198,7 +1251,7 @@
       ],
       "content_priority": true,
       "published_at": "2020-11-14T12:38:20",
-      "fetched_at": "2026-09-01T19:59:59.915607"
+      "fetched_at": "2026-09-01T21:54:03.612240"
     },
     {
       "id": "43aea20ce9e1",
@@ -1215,7 +1268,7 @@
       ],
       "content_priority": true,
       "published_at": "2020-11-14T12:18:49",
-      "fetched_at": "2026-09-01T20:00:00.114611"
+      "fetched_at": "2026-09-01T21:54:03.947274"
     },
     {
       "id": "c0e161e6d356",
@@ -1233,7 +1286,7 @@
       ],
       "content_priority": true,
       "published_at": "2020-11-14T08:29:20",
-      "fetched_at": "2026-09-01T19:59:59.299322"
+      "fetched_at": "2026-09-01T21:54:03.083433"
     },
     {
       "id": "8374d5391720",
@@ -1250,7 +1303,7 @@
       ],
       "content_priority": true,
       "published_at": "2015-12-19T08:00:00",
-      "fetched_at": "2026-09-01T19:59:59.704813"
+      "fetched_at": "2026-09-01T21:54:03.280360"
     },
     {
       "id": "4f21ccca4757",
@@ -1267,22 +1320,7 @@
       ],
       "content_priority": true,
       "published_at": "2010-08-25T07:00:00",
-      "fetched_at": "2026-09-01T20:00:11.584536"
-    },
-    {
-      "id": "98c779b69e07",
-      "title": "Tunis Re : Le pari stratégique d’une recapitalisation à 120 millions de dinars - Webmanagercenter",
-      "summary": "Tunis Re : Le pari stratégique d’une recapitalisation à 120 millions de dinars  Webmanagercenter",
-      "link": "https://www.webmanagercenter.com/2026/09/01/572158/tunis-re-le-pari-strategique-dune-recapitalisation-a-120-millions-de-dinars/",
-      "source": "African Manager / WMC",
-      "category": "Économie",
-      "region": "Afrique du Nord",
-      "country": "TUN",
-      "priority": false,
-      "content_tags": [],
-      "content_priority": false,
-      "published_at": "2026-09-01T17:48:14",
-      "fetched_at": "2026-09-01T20:00:04.566345"
+      "fetched_at": "2026-09-01T21:57:26.819245"
     },
     {
       "id": "80055f2edcee",
@@ -1297,7 +1335,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T17:13:57",
-      "fetched_at": "2026-09-01T20:00:03.405392"
+      "fetched_at": "2026-09-01T21:55:09.566074"
     },
     {
       "id": "1df6bab2e322",
@@ -1312,7 +1350,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T15:46:11",
-      "fetched_at": "2026-09-01T20:03:03.661711"
+      "fetched_at": "2026-09-01T21:57:03.047857"
     },
     {
       "id": "484ad6ba31ba",
@@ -1327,7 +1365,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T15:12:24",
-      "fetched_at": "2026-09-01T20:02:29.824169"
+      "fetched_at": "2026-09-01T21:55:00.225806"
     },
     {
       "id": "8209862f5e8f",
@@ -1342,7 +1380,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T15:04:17",
-      "fetched_at": "2026-09-01T20:00:03.623204"
+      "fetched_at": "2026-09-01T21:55:11.463073"
     },
     {
       "id": "4cb37b60168f",
@@ -1357,7 +1395,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T14:59:18",
-      "fetched_at": "2026-09-01T20:03:08.890630"
+      "fetched_at": "2026-09-01T21:57:14.514435"
     },
     {
       "id": "07fbb618e0a1",
@@ -1372,7 +1410,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T14:20:41",
-      "fetched_at": "2026-09-01T19:59:37.559619"
+      "fetched_at": "2026-09-01T21:54:10.138746"
     },
     {
       "id": "7ee107be5dff",
@@ -1387,7 +1425,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T14:11:10",
-      "fetched_at": "2026-09-01T20:02:10.698653"
+      "fetched_at": "2026-09-01T21:53:25.739173"
     },
     {
       "id": "9824b16b0fed",
@@ -1402,7 +1440,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T14:03:22",
-      "fetched_at": "2026-09-01T20:01:47.384937"
+      "fetched_at": "2026-09-01T21:55:53.415664"
     },
     {
       "id": "43f3a29d84b9",
@@ -1417,7 +1455,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T11:47:00",
-      "fetched_at": "2026-09-01T19:59:55.181275"
+      "fetched_at": "2026-09-01T21:53:50.534913"
     },
     {
       "id": "eebfdbdb9c80",
@@ -1432,7 +1470,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T11:25:48",
-      "fetched_at": "2026-09-01T20:02:31.110144"
+      "fetched_at": "2026-09-01T21:55:02.391110"
     },
     {
       "id": "bda66a504a8e",
@@ -1447,7 +1485,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T11:09:00",
-      "fetched_at": "2026-09-01T19:59:55.551583"
+      "fetched_at": "2026-09-01T21:53:50.949122"
     },
     {
       "id": "370182bba0c9",
@@ -1462,7 +1500,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T10:39:10",
-      "fetched_at": "2026-09-01T20:03:13.780216"
+      "fetched_at": "2026-09-01T21:57:15.120344"
     },
     {
       "id": "a8be3ac26f8c",
@@ -1477,22 +1515,37 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T10:19:51",
-      "fetched_at": "2026-09-01T20:00:27.186676"
+      "fetched_at": "2026-09-01T21:53:51.884228"
     },
     {
-      "id": "a94b75bdcb8b",
-      "title": "Opposition seeks 2015-style alliance to unseat Tinubu in 2027 - Business News Nigeria",
-      "summary": "Opposition seeks 2015-style alliance to unseat Tinubu in 2027  Business News Nigeria",
-      "link": "https://businessday.ng/uncategorized/article/opposition-seeks-2015-style-alliance-to-unseat-tinubu-in-2027/",
-      "source": "BusinessDay / Vanguard Nigeria",
+      "id": "ff94426c3c57",
+      "title": "Tunisie : le 26e Festival arabe de la radio et de la télévision se tiendra du 21 au 24 septembre - Webmanagercenter",
+      "summary": "Tunisie : le 26e Festival arabe de la radio et de la télévision se tiendra du 21 au 24 septembre  Webmanagercenter",
+      "link": "https://www.webmanagercenter.com/2026/09/01/572133/tunisie-le-26e-festival-arabe-de-la-radio-et-de-la-television-se-tiendra-du-21-au-24-septembre/",
+      "source": "African Manager / WMC",
       "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "country": "NGA",
+      "region": "Afrique du Nord",
+      "country": "TUN",
       "priority": false,
       "content_tags": [],
       "content_priority": false,
-      "published_at": "2026-09-01T09:47:38",
-      "fetched_at": "2026-09-01T20:02:35.958166"
+      "published_at": "2026-09-01T09:49:04",
+      "fetched_at": "2026-09-01T21:55:12.988307"
+    },
+    {
+      "id": "d1e9fe00873a",
+      "title": "Startups apresentam soluções inovadoras para resolver problemas reais nas empresas - Jornal de Angola",
+      "summary": "Startups apresentam soluções inovadoras para resolver problemas reais nas empresas  Jornal de Angola",
+      "link": "https://www.jornaldeangola.ao/noticias/4/economia/684507/startups-apresentam-solu%C3%A7%C3%B5es-inovadoras-para-resolver-problemas-reais-nas-empresas",
+      "source": "Jornal de Angola",
+      "category": "Télécoms",
+      "region": "Afrique Australe",
+      "country": "AGO",
+      "priority": false,
+      "content_tags": [],
+      "content_priority": false,
+      "published_at": "2026-09-01T08:49:53",
+      "fetched_at": "2026-09-01T21:53:16.461455"
     },
     {
       "id": "a489dbba042f",
@@ -1507,7 +1560,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T08:45:41",
-      "fetched_at": "2026-09-01T20:03:02.290715"
+      "fetched_at": "2026-09-01T21:57:01.815186"
     },
     {
       "id": "ba3946e67e41",
@@ -1522,7 +1575,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T08:42:32",
-      "fetched_at": "2026-09-01T20:00:03.021556"
+      "fetched_at": "2026-09-01T21:55:07.514136"
     },
     {
       "id": "828fe60711f9",
@@ -1537,7 +1590,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T08:23:57",
-      "fetched_at": "2026-09-01T20:00:02.788039"
+      "fetched_at": "2026-09-01T21:55:06.955118"
     },
     {
       "id": "f25b3b35cd62",
@@ -1552,7 +1605,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T05:31:38",
-      "fetched_at": "2026-09-01T20:03:10.767440"
+      "fetched_at": "2026-09-01T21:57:17.555848"
     },
     {
       "id": "c9f988916aea",
@@ -1567,13 +1620,13 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T04:32:41",
-      "fetched_at": "2026-09-01T20:02:33.452647"
+      "fetched_at": "2026-09-01T21:55:04.162896"
     },
     {
-      "id": "67efdf04673f",
-      "title": "Forúm Brasil e Angola reúne líderes empresariais - Jornal de Angola",
-      "summary": "Forúm Brasil e Angola reúne líderes empresariais  Jornal de Angola",
-      "link": "https://www.jornaldeangola.ao/noticias/4/economia/684510/for%C3%BAm-brasil-e-angola-re%C3%BAne-l%C3%ADderes-empresariais",
+      "id": "539c38aeb614",
+      "title": "TAAG mantém operações normais após retirada de pré-aviso de greve - Jornal de Angola",
+      "summary": "TAAG mantém operações normais após retirada de pré-aviso de greve  Jornal de Angola",
+      "link": "https://www.jornaldeangola.ao/noticias/4/economia/684500/taag-mant%C3%A9m-opera%C3%A7%C3%B5es-normais-ap%C3%B3s-retirada-de-pr%C3%A9-aviso-de-greve",
       "source": "Jornal de Angola",
       "category": "Économie",
       "region": "Afrique Australe",
@@ -1582,7 +1635,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-09-01T04:13:50",
-      "fetched_at": "2026-09-01T20:00:09.433092"
+      "fetched_at": "2026-09-01T21:53:14.691835"
     },
     {
       "id": "4fe6e58ec8d6",
@@ -1597,52 +1650,7 @@
       "content_tags": [],
       "content_priority": false,
       "published_at": "2026-08-31T22:18:00",
-      "fetched_at": "2026-09-01T20:01:26.190134"
-    },
-    {
-      "id": "fd00ce6151e0",
-      "title": "RDC-Israël : Tshisekedi à Jérusalem pour « approfondir un rapprochement diplomatique et économique - Actualite.cd",
-      "summary": "RDC-Israël : Tshisekedi à Jérusalem pour « approfondir un rapprochement diplomatique et économique  Actualite.cd",
-      "link": "https://actualite.cd/2026/08/31/rdc-israel-tshisekedi-jerusalem-pour-approfondir-un-rapprochement-diplomatique-et",
-      "source": "Actualite.cd",
-      "category": "Économie",
-      "region": "Afrique Centrale",
-      "country": "COD",
-      "priority": false,
-      "content_tags": [],
-      "content_priority": false,
-      "published_at": "2026-08-31T20:26:42",
-      "fetched_at": "2026-09-01T19:59:36.665955"
-    },
-    {
-      "id": "b6533411ea34",
-      "title": "Customs finds second illegal rifle shipment at Tincan Port in 2 weeks - Business News Nigeria",
-      "summary": "Customs finds second illegal rifle shipment at Tincan Port in 2 weeks  Business News Nigeria",
-      "link": "https://businessday.ng/news/article/customs-finds-second-illegal-rifle-shipment-at-tincan-port-in-2-weeks/",
-      "source": "BusinessDay / Vanguard Nigeria",
-      "category": "Économie",
-      "region": "Afrique de l'Ouest",
-      "country": "NGA",
-      "priority": false,
-      "content_tags": [],
-      "content_priority": false,
-      "published_at": "2026-08-31T19:28:42",
-      "fetched_at": "2026-09-01T20:02:30.355631"
-    },
-    {
-      "id": "73359f2c554f",
-      "title": "Kuscco liquidation vote costs saccos Sh11bn - Business Daily",
-      "summary": "Kuscco liquidation vote costs saccos Sh11bn  Business Daily",
-      "link": "https://www.businessdailyafrica.com/bd/corporate/companies/kuscco-liquidation-vote-costs-saccos-sh11-billion-5578156",
-      "source": "Business Daily Africa",
-      "category": "Économie",
-      "region": "Afrique de l'Est",
-      "country": "KEN",
-      "priority": false,
-      "content_tags": [],
-      "content_priority": false,
-      "published_at": "2026-08-31T18:45:00",
-      "fetched_at": "2026-09-01T20:02:11.783284"
+      "fetched_at": "2026-09-01T21:54:18.641913"
     }
   ]
 }

@@ -41,6 +41,6 @@ async def detailed_health():
         manager = NotificationManager()
         enabled_channels = manager.get_enabled_channels()
         checks["notifications"] = {"status": "healthy"}
-    except:
+    except Exception:
         checks["notifications"] = {"status": "error"}
     return {"status": "healthy", "components": checks}

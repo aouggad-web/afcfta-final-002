@@ -113,13 +113,17 @@ async def get_ports(country_iso: Optional[str] = None):
         raise HTTPException(status_code=500, detail=f"Error loading ports data: {str(e)}")
 
 
-@router.get("/ports/{port_id}")
-async def get_port_details(port_id: str):
-    """Get detailed information for a specific port"""
-    port = get_port_by_id(port_id)
-    if not port:
-        raise HTTPException(status_code=404, detail=f"Port {port_id} not found")
-    return port
+@router.get("/ports/search")
+async def search_ports_endpoint(q: str):
+    """
+    Search ports by name, UN LOCODE, or country name
+    Query params:
+    - q: Search query string
+    """
+    if len(q) < 2:
+        raise HTTPException(status_code=400, detail="Search query must be at least 2 characters")
+    results = search_ports(q)
+    return {"query": q, "count": len(results), "results": results}
 
 
 @router.get("/ports/type/{port_type}")
@@ -150,17 +154,13 @@ async def get_top_ports_teu(limit: int = 20):
     return {"count": len(ports), "ports": ports}
 
 
-@router.get("/ports/search")
-async def search_ports_endpoint(q: str):
-    """
-    Search ports by name, UN LOCODE, or country name
-    Query params:
-    - q: Search query string
-    """
-    if len(q) < 2:
-        raise HTTPException(status_code=400, detail="Search query must be at least 2 characters")
-    results = search_ports(q)
-    return {"query": q, "count": len(results), "results": results}
+@router.get("/ports/{port_id}")
+async def get_port_details(port_id: str):
+    """Get detailed information for a specific port"""
+    port = get_port_by_id(port_id)
+    if not port:
+        raise HTTPException(status_code=404, detail=f"Port {port_id} not found")
+    return port
 
 
 @router.get("/statistics")
@@ -223,15 +223,6 @@ async def get_airports(country_iso: Optional[str] = None):
         raise HTTPException(status_code=500, detail=f"Error loading airports data: {str(e)}")
 
 
-@router.get("/air/airports/{airport_id}")
-async def get_airport_details(airport_id: str):
-    """Get detailed information for a specific airport"""
-    airport = get_airport_by_id(airport_id)
-    if not airport:
-        raise HTTPException(status_code=404, detail=f"Airport {airport_id} not found")
-    return airport
-
-
 @router.get("/air/airports/top/cargo")
 async def get_top_airports_cargo(limit: int = 20):
     """
@@ -256,6 +247,15 @@ async def search_airports_endpoint(q: str):
         raise HTTPException(status_code=400, detail="Search query must be at least 2 characters")
     results = search_airports(q)
     return {"query": q, "count": len(results), "results": results}
+
+
+@router.get("/air/airports/{airport_id}")
+async def get_airport_details(airport_id: str):
+    """Get detailed information for a specific airport"""
+    airport = get_airport_by_id(airport_id)
+    if not airport:
+        raise HTTPException(status_code=404, detail=f"Airport {airport_id} not found")
+    return airport
 
 
 @router.get("/air/statistics")

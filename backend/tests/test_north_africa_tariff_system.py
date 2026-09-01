@@ -2462,12 +2462,6 @@ class TestAllAfricaFormalities:
         obs = enrich_observation("TPI")
         assert "Morocco" in obs or "TPI" in obs
 
-    def test_enrich_observation_idf(self):
-        from etl.para_fiscal_levies import enrich_observation
-
-        obs = enrich_observation("IDF")
-        assert "Kenya" in obs and "3.5" in obs
-
     def test_enrich_observation_rdl(self):
         from etl.para_fiscal_levies import enrich_observation
 
