@@ -15,7 +15,6 @@ from engine.schemas.customs_territory import (
     TerritoryType,
 )
 
-
 MODEL_PATH = Path(__file__).resolve().parents[2] / "data" / "customs" / "africa_customs_model.json"
 
 

@@ -209,11 +209,24 @@ def calculate_national_customs(
         excise_lines.append(
             {
                 "record_id": row["record_id"],
+                "component_type": "EXCISE",
+                "source_rate": rate,
                 "rate": rate,
+                "rate_type": "AD_VALOREM",
+                "taxable_base": basis,
+                "calculated_amount": amount,
+                "currency": currency_code,
                 "basis": basis,
                 "amount": amount,
                 "legal_reference": row["legal_reference"],
                 "source_id": row["source_id"],
+                "source_authority": row.get("source_authority"),
+                "source_title": row.get("source_title"),
+                "effective_from": row.get("effective_from"),
+                "effective_to": row.get("effective_to"),
+                "documentation_status": "PARTIAL",
+                "assumptions": ["ad valorem excise applied to customs value plus duty"],
+                "data_gaps": ["official archive and independent comparison pending"],
             }
         )
 
@@ -223,10 +236,23 @@ def calculate_national_customs(
         if row:
             rate = _pct(row["rate"])
             levy_amounts[label] = {
+                "component_type": label.upper(),
+                "source_rate": rate,
                 "rate": rate,
+                "rate_type": "AD_VALOREM",
+                "taxable_base": customs_value,
+                "calculated_amount": round(customs_value * rate / 100, 2),
+                "currency": currency_code,
                 "amount": round(customs_value * rate / 100, 2),
                 "legal_reference": row["legal_reference"],
                 "source_id": row["source_id"],
+                "source_authority": row.get("source_authority"),
+                "source_title": row.get("source_title"),
+                "effective_from": row.get("effective_from"),
+                "effective_to": row.get("effective_to"),
+                "documentation_status": "PARTIAL",
+                "assumptions": ["ad valorem levy applied to customs value"],
+                "data_gaps": ["official archive and independent comparison pending"],
             }
         else:
             levy_amounts[label] = None

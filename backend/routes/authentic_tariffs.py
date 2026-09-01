@@ -269,7 +269,6 @@ async def get_formalities_endpoint(
         Liste des documents/formalités requis
     """
     _ensure_servable_or_404(country_iso3)
-    _ensure_servable_or_404(country_iso3)
     formalities = get_administrative_formalities(country_iso3.upper(), hs_code)
 
     return {
@@ -569,11 +568,12 @@ async def calculate_taxes_endpoint(
             beneficiary=beneficiary,
             import_purpose=import_purpose,
             quantity=quantity,
+            currency_code="USD",
         )
     else:
-        # All non-Kenya destinations use the shared regional/national facade.
-        # Providers are intentionally not guessed here: absent dated layers
-        # produce INFORMATIVE_PARTIAL with the missing sources in the trace.
+        # Destinations hors registre EAC : façade régionale/nationale générique.
+        # Les fournisseurs ne sont pas devinés — l'absence de couche datée
+        # produit INFORMATIVE_PARTIAL avec les sources manquantes dans la trace.
         result["generic_legal_calculation"] = calculate_import_charges(
             importing_country=country_iso3.upper(),
             exporting_country=(origin or "").upper(),
@@ -603,7 +603,6 @@ async def calculate_taxes_endpoint(
             },
             regional_coverage_complete=False,
             national_coverage_complete=False,
-            currency_code="USD",
         )
 
     legal_result = (

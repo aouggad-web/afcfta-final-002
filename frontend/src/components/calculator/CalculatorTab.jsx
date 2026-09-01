@@ -602,7 +602,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           last_verified: authenticResult.generated_at ? new Date(authenticResult.generated_at).toISOString().split('T')[0] : '2025-02',
           confidence_level: 'very_high',
           kenya_legal_calculation: authenticResult.kenya_legal_calculation || null,
-          generic_legal_calculation: authenticResult.generic_legal_calculation || authenticResult.legal_calculation || null,
 
           // Formalités, prestataires mandatés et frais réglementaires — bloc
           // informatif strictement séparé des droits/taxes (voir
@@ -613,6 +612,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           regulatory_compliance: authenticResult.regulatory_compliance || null,
           regulatory_cost: authenticResult.regulatory_cost || null,
           regulatory_reported: authenticResult.regulatory_reported || null,
+          national_legal_calculation: authenticResult.national_legal_calculation || null,
+          generic_legal_calculation: authenticResult.generic_legal_calculation || authenticResult.legal_calculation || null
         };
         
         setResult(transformedResult);
@@ -1402,6 +1403,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </p>
                 </div>
               )}
+              <p className="mt-4 text-center text-xs font-medium text-amber-300">
+                Simulation informative — non opposable à l’administration douanière.
+              </p>
             </CardContent>
           </Card>
 
