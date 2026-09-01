@@ -289,10 +289,11 @@ async def get_unido_ranking():
 @router.get("/unido/isic4/{country_iso3}")
 async def get_unido_isic4_breakdown(country_iso3: str):
     """
-    Désagrégation ISIC Rev.4 4 chiffres (classe) des secteurs manufacturiers
-    d'un pays, à partir des données UNIDO INDSTAT4 (division, 2 chiffres) et
-    de la nomenclature officielle UNSD ISIC Rev.4.
-    Voir le champ "methodology" de la réponse pour la méthode d'estimation.
+    Désagrégation ISIC Rev.4 4 chiffres (classe) des principaux secteurs
+    manufacturiers (top_sectors) d'un pays, à partir des données UNIDO
+    INDSTAT4 (division, 2 chiffres) et de la nomenclature officielle UNSD
+    ISIC Rev.4. Ne couvre PAS l'ensemble des divisions manufacturières du
+    pays — voir les champs "coverage" et "methodology" de la réponse.
     """
     from etl.unido_data import get_isic4_breakdown
 

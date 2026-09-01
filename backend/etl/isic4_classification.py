@@ -65,7 +65,7 @@ ISIC4_CLASSES: Dict[str, Dict[str, str]] = {
         "1430": "Fabrication d'articles en bonneterie",
     },
     "15": {
-        "1511": "Tannage et apprêt du cuir, articles de voyage",
+        "1511": "Tannage et apprêt du cuir, préparation et teinture des fourrures",
         "1512": "Fabrication d'articles de voyage, de maroquinerie et de sellerie",
         "1520": "Fabrication de chaussures",
     },
@@ -128,6 +128,7 @@ ISIC4_CLASSES: Dict[str, Dict[str, str]] = {
         "2511": "Fabrication d'éléments de charpente en métal",
         "2512": "Fabrication de réservoirs et citernes métalliques",
         "2513": "Fabrication de générateurs de vapeur",
+        "2520": "Fabrication d'armes et de munitions",
         "2591": "Forge, emboutissage et estampage des métaux",
         "2592": "Traitement et revêtement des métaux",
         "2593": "Fabrication d'outillage et de quincaillerie",
@@ -191,8 +192,8 @@ ISIC4_CLASSES: Dict[str, Dict[str, str]] = {
         "3100": "Fabrication de meubles",
     },
     "32": {
-        "3211": "Frappe de monnaie",
-        "3212": "Fabrication d'articles de bijouterie et joaillerie",
+        "3211": "Fabrication d'articles de bijouterie et joaillerie",
+        "3212": "Fabrication de bijouterie fantaisie (imitation)",
         "3220": "Fabrication d'instruments de musique",
         "3230": "Fabrication d'articles de sport",
         "3240": "Fabrication de jeux et jouets",

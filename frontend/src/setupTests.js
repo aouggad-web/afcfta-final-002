@@ -15,7 +15,18 @@ if (!Element.prototype.releasePointerCapture) {
   Element.prototype.releasePointerCapture = () => {};
 }
 if (!window.PointerEvent) {
-  window.PointerEvent = MouseEvent;
+  // jsdom has no PointerEvent; Radix branches on pointer-specific metadata
+  // (pointerType/pointerId/isPrimary), so a bare MouseEvent alias would
+  // silently take the wrong code path in components under test.
+  class PointerEventPolyfill extends MouseEvent {
+    constructor(type, params = {}) {
+      super(type, params);
+      this.pointerId = params.pointerId ?? 1;
+      this.pointerType = params.pointerType ?? 'mouse';
+      this.isPrimary = params.isPrimary ?? true;
+    }
+  }
+  window.PointerEvent = PointerEventPolyfill;
 }
 if (!Element.prototype.scrollIntoView) {
   Element.prototype.scrollIntoView = () => {};
