@@ -13,9 +13,8 @@ Référence : audits/AUDIT_CALCULATEUR_DONNEES_TARIFAIRES_2026-09-01.md
 import json
 
 import pytest
-
 from fastapi import HTTPException
-
+from routes import authentic_tariffs
 from services import tariff_doctrine
 from services.tariff_doctrine import (
     evaluate_country_file,
@@ -23,8 +22,6 @@ from services.tariff_doctrine import (
     not_recrawled_http_detail,
     provider_fee_flags,
 )
-from routes import authentic_tariffs
-
 
 SYNTHETIC_ISO3 = [
     "AGO",

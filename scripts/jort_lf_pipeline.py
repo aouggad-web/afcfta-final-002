@@ -19,13 +19,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from jort_crawler import (  # noqa: E402
     BASE,
+    FORM_ACTION_RE,
     OPENER,
     UA,
     open_advanced_search,
-    search,
-    parse_results,
-    FORM_ACTION_RE,
     paginate,
+    parse_results,
+    search,
 )
 
 ARCHIVE = Path("data/sources/TUN/jort")

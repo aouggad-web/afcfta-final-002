@@ -122,7 +122,6 @@ async def verify_dza(positions):
     republication vérifiable du tarif DGD douane.gov.dz). On relit la page
     officielle et on compare chaque taux publié au taux stocké."""
     import httpx
-
     from bs4 import BeautifulSoup
 
     TAX_LABELS = ("Droit de douane", "TVA", "TCS", "PRCT", "DAPS", "TIC")

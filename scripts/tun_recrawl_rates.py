@@ -16,8 +16,8 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.request import build_opener, HTTPSHandler
 from urllib.parse import urlencode
+from urllib.request import HTTPSHandler, build_opener
 
 BASE = "https://www.douane.gov.tn/tarifwebnew/getresultat.php"
 HEADERS = {

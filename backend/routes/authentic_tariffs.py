@@ -28,18 +28,17 @@ from services.national_legal_calculation_service import (
     calculate_national_legal_layer,
 )
 from services.regulatory_fee_service import build_regulatory_blocks
-from services.tariff_enrichment_service import (
-    get_country_enrichment,
-    get_supported_enrichment_countries,
-)
 from services.tariff_doctrine import (
     get_country_doctrine_status,
     not_recrawled_http_detail,
     provider_fee_flags,
 )
+from services.tariff_enrichment_service import (
+    get_country_enrichment,
+    get_supported_enrichment_countries,
+)
 from services.tariff_provider_service import get_tariff_provider_service
 
-from engine.schemas.legal_override import RemissionEligibility
 from engine.import_charges import (
     OVERALL_STATUS_ALIASES,
     OVERALL_STATUS_VALUES,
@@ -47,6 +46,7 @@ from engine.import_charges import (
     QUALITY_DIMENSION_VALUES,
     calculate_import_charges,
 )
+from engine.schemas.legal_override import RemissionEligibility
 
 logger = logging.getLogger(__name__)
 
