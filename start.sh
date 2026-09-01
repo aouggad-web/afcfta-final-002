@@ -37,7 +37,7 @@ cleanup() {
 }
 trap cleanup TERM INT EXIT
 
-cd "$BACKEND_DIR" && python -m uvicorn server:app --host 0.0.0.0 --port "$BACKEND_PORT" --workers 1 &
+cd "$BACKEND_DIR" && "$BACKEND_DIR/.venv311/bin/python" -m uvicorn server:app --host 0.0.0.0 --port "$BACKEND_PORT" --workers 1 &
 BACKEND_PID=$!
 
 echo "Waiting for backend to start on port $BACKEND_PORT..."

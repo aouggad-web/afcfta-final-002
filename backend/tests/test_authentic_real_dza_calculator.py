@@ -28,14 +28,17 @@ class _FakeFxService:
 def test_real_dza_tariff_line_cascade_breakdown_and_local_currency(monkeypatch):
     """DZA 0101211100 must keep the authentic calculator as the reference path.
 
-    Taux authentiques de la sous-position (conformepro.dz, re-crawl du
-    2026-08-29, vérifiés sur la page source) : DD 5%, TCS 3%, TVA 9% sur
-    CIF + DAPS + DD, PRCT 2% sur CIF + DD + TCS + TVA. Pour un partenaire
-    ZLECAf actif (EGY), le DD est éliminé, les bases TVA/PRCT dépendantes sont
-    recalculées, et les montants DZD locaux proviennent du bloc FX.
+    Depuis l'audit P0 du 2026-09-01, DZA n'est plus servi par le dataset
+    généré `enhanced_v2` mais par le crawl authentique DGD/conformepro.dz
+    (voir `backend/data/archive/superseded/README.md`). Taux authentiques
+    de la sous-position (re-crawl du 2026-08-29, vérifiés sur la page
+    source) : DD 5 %, TCS 3 %, TVA 9 % sur CIF + DAPS + DD, PRCT 2 % sur
+    CIF + DD + TCS + TVA. Un partenaire ZLECAf actif (EGY) élimine le
+    DD, recalcule les bases dépendantes et alimente les montants locaux
+    DZD depuis le bloc FX.
 
-    NB : les valeurs précédentes (DD 15%, TVA 19%) provenaient d'un fichier
-    crawlé erroné ; la page source publie bien 5% et 9%.
+    NB : les valeurs précédentes (DD 15 %, TVA 19 %) provenaient d'un
+    fichier crawlé erroné ; la page source publie bien 5 % et 9 %.
     """
     monkeypatch.setattr(exchange_rates_module, "get_service", lambda: _FakeFxService())
 

@@ -1,0 +1,339 @@
+{
+ "date": "2026-08-29T21:59:13.912993+00:00",
+ "country": "EGY",
+ "action": "rebuild_fichier_national_officiel (crawl customs.gov.eg 2026-08-29)",
+ "fichier": "backend/data/crawled/EGY_tariffs.json",
+ "previous_file_sha256": "c97045a4fc5909382b6a8ebce412af75e9cdded924c805f523c2030c36e1d065",
+ "comparison_basis": "fichier national du 2026-08-29 vs crawl juin 2026 (backup EGY_tariffs_20260829T215128Z.json)",
+ "build_stats": {
+  "positions_officielles": 8818,
+  "with_regime_rates": 1397,
+  "with_formalities": 2342,
+  "with_fta_preferences": 6764,
+  "with_zlecaf_instruction": 5137,
+  "legacy_not_in_official_crawl": 15,
+  "missing_taxes": 10
+ },
+ "diff_classification": {
+  "dd_juin_raw_vide_0_impute": 34,
+  "bug_juin_taux_regime_ecrasait_generique": 1342,
+  "dd_juin_specifique->aujourdhui_raw_sans_%": 40,
+  "tva_changement_reel": 9,
+  "tva_juin_minimum_pris_comme_taux->ad_valorem_retabli": 16,
+  "tva_none_vs_valeur_representation": 56,
+  "dd_changement_reel": 29
+ },
+ "rate_changes_detail": [
+  {
+   "code": "1701991000",
+   "tax": "TVA",
+   "juin": 0.0,
+   "aout": 14.0,
+   "raw_juin": "صفر",
+   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  },
+  {
+   "code": "2309901015",
+   "tax": "TVA",
+   "juin": 0.0,
+   "aout": 14.0,
+   "raw_juin": "صفر",
+   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  },
+  {
+   "code": "2309901025",
+   "tax": "TVA",
+   "juin": 0.0,
+   "aout": 14.0,
+   "raw_juin": "صفر",
+   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  },
+  {
+   "code": "2309901090",
+   "tax": "TVA",
+   "juin": 0.0,
+   "aout": 14.0,
+   "raw_juin": "صفر",
+   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  },
+  {
+   "code": "2309909015",
+   "tax": "TVA",
+   "juin": 0.0,
+   "aout": 14.0,
+   "raw_juin": "صفر",
+   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  },
+  {
+   "code": "2309909025",
+   "tax": "TVA",
+   "juin": 0.0,
+   "aout": 14.0,
+   "raw_juin": "صفر",
+   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  },
+  {
+   "code": "2309909035",
+   "tax": "TVA",
+   "juin": 0.0,
+   "aout": 14.0,
+   "raw_juin": "صفر",
+   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  },
+  {
+   "code": "2520100010",
+   "tax": "TVA",
+   "juin": 5.0,
+   "aout": 14.0,
+   "raw_juin": "5% (من القيمة + ر.ض.جمركية)",
+   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  },
+  {
+   "code": "2709000010",
+   "tax": "TVA",
+   "juin": 0.0,
+   "aout": 10.0,
+   "raw_juin": "صفر",
+   "raw_aout": "10% (من القيمة + ر.ض.جمركية)"
+  },
+  {
+   "code": "2804800000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2908990015",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2909500010",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2917320000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 5.0,
+   "raw_juin": "",
+   "raw_aout": "5%"
+  },
+  {
+   "code": "2918300090",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2921300090",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2931900010",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2931900090",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932110000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932120000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932130000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932140010",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932140090",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932190000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932200000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932910000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932920000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932930000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932940000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932950000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932960000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932990010",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2932990090",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2933110000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2933190000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "2933210000",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "3204150010",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 2.0,
+   "raw_juin": "",
+   "raw_aout": "2%"
+  },
+  {
+   "code": "4009210010",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 10.0,
+   "raw_juin": "",
+   "raw_aout": "10%"
+  },
+  {
+   "code": "8483109010",
+   "tax": "DD",
+   "juin": 0.0,
+   "aout": 10.0,
+   "raw_juin": "",
+   "raw_aout": "10%"
+  }
+ ],
+ "notes": [
+  "1 342 lignes : le crawl de juin avait écrasé le taux générique DD par un taux de régime (accord UE/UK/etc. 19,5% etc.) ; le taux générique publié par la source est rétabli, les taux de régime sont conservés séparément dans taxes_regimes.",
+  "Les TVA 'minimum' (بحد أدنى) étaient prises comme taux unique en juin ; aujourd'hui la ligne ad valorem générique est rétablie et le minimum conservé (VAT_2 + verbatim).",
+  "Les changements réels restants (ex. TVA 0->14 sur 230990*, tabac 75/100/200) sont pris du verbatim publié aujourd'hui, sans arbitrage.",
+  "ch.77 vide (réservé SH) ; ch.95 vide : HTTP 500 côté source (persistant depuis juin) — écart de source documenté."
+ ],
+ "backup": "data/archive/crawled_backup/EGY_tariffs_20260829T215739Z.json"
+}

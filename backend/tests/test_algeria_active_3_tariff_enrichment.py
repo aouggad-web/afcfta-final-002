@@ -55,9 +55,14 @@ def test_statuses_are_canonical_and_missing_preferences_fail_closed():
 
 def test_registered_line_counts_and_national_depths_match_runtime_data():
     expected = {
-        "EGY": (8746, {10}),
+        # Comptes alignés sur les crawls authentiques du 2026-08/09 (voir
+        # audits/AUDIT_CALCULATEUR_DONNEES_TARIFAIRES_2026-09-01.md ; EGY
+        # recouvert par egypt_customs_official_scraper, TUN re-crawl complet
+        # de Tarif Web 2026). Les sha256 associés sont vérifiés dans
+        # `test_runtime_dataset_hashes_match_the_source_records`.
+        "EGY": (8818, {10}),
         "MUS": (5619, {6}),
-        "TUN": (17512, {10, 11}),
+        "TUN": (17542, {10, 11}),
     }
     for country, (line_count, digit_depths) in expected.items():
         lines = _tariff_lines(country)

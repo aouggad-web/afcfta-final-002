@@ -104,7 +104,8 @@ def main() -> int:
                 tax = "DD" if re.search(r"\bd\.?\s?d\b|droit", low) else None
                 rate = 0.0 if "exo" in low else None
                 # Aucun taux ZLECAf n'est dérivé ici : la source ne mentionne que
-                # « -zale- » (Zone Arabe de Libre Échange), un accord distinct.
+                # « -zale- » (Zone Arabe de Libre Échange), un accord distinct
+                # de la ZLECAf per doctrine MISSION_TARIFS_AFRICAINS.md.
                 # L'avantage reste conservé verbatim ci-dessous.
                 fiscal_advantages.append(
                     {

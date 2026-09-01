@@ -198,6 +198,23 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     dest_iso3 = dest_country["iso3"]
     origin_iso3 = origin_country["iso3"]
 
+    # Doctrine tarifaire : refuser explicitement un pays qui n'a NI fichier
+    # national servable NI données officielles crawlées (WITS/UNCTAD-TRAINS).
+    # Aucun calcul sur données estimées/synthétiques.
+    try:
+        from services.tariff_doctrine import get_country_doctrine_status, not_recrawled_http_detail
+
+        _doctrine = get_country_doctrine_status(dest_iso3)
+        if (
+            _doctrine.get("status") != "SERVABLE"
+            and dest_iso3 not in crawled_service.get_available_countries()
+        ):
+            raise HTTPException(status_code=404, detail=not_recrawled_http_detail(dest_iso3))
+    except HTTPException:
+        raise
+    except Exception:
+        pass  # la doctrine ne doit jamais interrompre le calcul légitime
+
     # Clean and normalize HS code
     hs_code_clean = request.hs_code.replace(".", "").replace(" ", "")
     hs6_code = hs_code_clean[:6].zfill(6)
