@@ -1862,6 +1862,63 @@ def get_sector_analysis(isic_code: str) -> List[Dict]:
     return sorted(results, key=lambda x: x.get("value_mln_usd", 0), reverse=True)
 
 
+def get_isic4_breakdown(country_iso3: str) -> Optional[Dict]:
+    """
+    Désagrégation indicative des secteurs manufacturiers d'un pays au niveau
+    ISIC Rev.4 4 chiffres (classe), à partir des données UNIDO INDSTAT4 2
+    chiffres (division) déjà disponibles dans UNIDO_INDUSTRY_DATA.
+
+    Méthodologie: en l'absence d'un accès direct au jeu de données UNIDO
+    INDSTAT4 au niveau "classe" (4 chiffres) pour chaque pays, la part de
+    valeur ajoutée manufacturière (share_mva) de chaque division (2 chiffres)
+    est répartie de façon égale entre ses classes ISIC Rev.4 (4 chiffres),
+    telles que définies par la nomenclature officielle des Nations Unies
+    (UNSD ISIC Rev.4). Ceci fournit une estimation de premier niveau de la
+    structure fine du secteur, à affiner via une intégration ultérieure du
+    détail UNIDO INDSTAT4 4 chiffres par pays.
+    """
+    from etl.isic4_classification import get_isic4_for_division
+
+    data = UNIDO_INDUSTRY_DATA.get(country_iso3.upper())
+    if not data:
+        return None
+
+    breakdown = []
+    for sector in data.get("top_sectors", []):
+        isic2 = sector.get("isic")
+        classes = get_isic4_for_division(isic2)
+        if not classes:
+            continue
+        n = len(classes)
+        share_mva = sector.get("share_mva", 0)
+        value_mln_usd = sector.get("value_mln_usd", 0)
+        for code, label in classes.items():
+            breakdown.append(
+                {
+                    "isic4": code,
+                    "isic2": isic2,
+                    "division_name": sector.get("name"),
+                    "class_name": label,
+                    "share_mva_estimated": round(share_mva / n, 3) if n else 0,
+                    "value_mln_usd_estimated": round(value_mln_usd / n, 2) if n else 0,
+                }
+            )
+
+    return {
+        "country_iso3": country_iso3.upper(),
+        "country_name": data.get("country_name"),
+        "classification": "ISIC Rev.4 (4 chiffres / classe)",
+        "methodology": (
+            "Répartition indicative à parts égales des divisions ISIC 2 chiffres "
+            "UNIDO INDSTAT4 entre leurs classes ISIC Rev.4 4 chiffres (nomenclature UNSD). "
+            "Valeurs à considérer comme des estimations de structure, en attendant "
+            "l'intégration du détail UNIDO INDSTAT4 4 chiffres par pays."
+        ),
+        "source": "UNIDO INDSTAT4 2024 (niveau division) + UNSD ISIC Rev.4 (nomenclature classe)",
+        "isic4_breakdown": breakdown,
+    }
+
+
 def get_unido_statistics() -> Dict:
     """Retourne des statistiques globales sur les données UNIDO."""
     total_mva = sum(

@@ -286,6 +286,37 @@ async def get_unido_ranking():
     }
 
 
+@router.get("/unido/isic4/{country_iso3}")
+async def get_unido_isic4_breakdown(country_iso3: str):
+    """
+    Désagrégation ISIC Rev.4 4 chiffres (classe) des secteurs manufacturiers
+    d'un pays, à partir des données UNIDO INDSTAT4 (division, 2 chiffres) et
+    de la nomenclature officielle UNSD ISIC Rev.4.
+    Voir le champ "methodology" de la réponse pour la méthode d'estimation.
+    """
+    from etl.unido_data import get_isic4_breakdown
+
+    breakdown = get_isic4_breakdown(country_iso3)
+    if breakdown is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Aucune donnée UNIDO disponible pour {country_iso3.upper()}",
+        )
+    return breakdown
+
+
+@router.get("/unido/isic4-classification")
+async def get_isic4_classification():
+    """Table de référence ISIC Rev.4 4 chiffres (classes) par division manufacturière."""
+    from etl.isic4_classification import ISIC4_CLASSES
+
+    return {
+        "classification": "ISIC Rev.4",
+        "source": "UNSD - International Standard Industrial Classification Rev.4",
+        "divisions": ISIC4_CLASSES,
+    }
+
+
 @router.get("/unido/{country_iso3}")
 async def get_unido_country_data(country_iso3: str):
     """
