@@ -8,11 +8,24 @@ from pathlib import Path
 
 import httpx
 
-from ._tunisia_parse import parse_enumeration, verify_tls_default
+try:
+    from ._tunisia_parse import parse_enumeration, verify_tls_default
+except ImportError:
+    # Exécution directe (`python tunisia_enum_complete.py`) : pas de paquet
+    # parent connu pour un import relatif. Repli sur sys.path.
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _tunisia_parse import parse_enumeration, verify_tls_default
 
 BASE = "https://www.douane.gov.tn/tarifwebnew/getresultat.php"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/126.0"}
-OUT = Path("backend/data/crawled/TUN_enumeration_2026-08.json")
+OUT = (
+    Path(__file__).resolve().parent.parent.parent
+    / "data"
+    / "crawled"
+    / "TUN_enumeration_2026-08.json"
+)
 
 
 async def main():
@@ -30,7 +43,14 @@ async def main():
                 try:
                     r = await client.get(BASE, params={"rech": "1", "mcle": ch})
                     got = parse_enumeration(r.text)
-                    break
+                    if got:
+                        break
+                    if attempt < 2:
+                        print(
+                            f"ch.{ch}: tentative {attempt+1} réponse vide/non parsable, retry",
+                            flush=True,
+                        )
+                        await asyncio.sleep(5)
                 except Exception as e:
                     print(f"ch.{ch}: tentative {attempt+1} erreur {type(e).__name__}", flush=True)
                     await asyncio.sleep(5)
@@ -47,7 +67,15 @@ async def main():
                         try:
                             r2 = await client.get(BASE, params={"rech": "1", "mcle": hh})
                             got2 = parse_enumeration(r2.text)
-                            break
+                            if got2:
+                                break
+                            if attempt == 2:
+                                print(
+                                    f"  ch.{ch} heading {hh}: réponse vide après 3 essais",
+                                    flush=True,
+                                )
+                            else:
+                                await asyncio.sleep(5)
                         except Exception:
                             if attempt == 2:
                                 print(f"  ch.{ch} heading {hh}: abandon après 3 essais", flush=True)

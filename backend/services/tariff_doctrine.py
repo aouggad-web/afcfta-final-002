@@ -188,7 +188,7 @@ def get_country_doctrine_status(country_iso3: str) -> dict:
     Statut doctrinal d'un pays, avec message explicite « non encore recrawlé ».
 
     Returns:
-        {"status": "SERVABLE" | "NOT_RECRALLED" | "NO_FILE",
+        {"status": "SERVABLE" | "NOT_RECRAWLED" | "NO_FILE",
          "reason_code": str, "detail": str,
          "message_fr": str, "message_en": str}
     """
@@ -246,7 +246,7 @@ def get_country_doctrine_status(country_iso3: str) -> dict:
         else:
             result.update(
                 {
-                    "status": "NOT_RECRALLED",
+                    "status": "NOT_RECRAWLED",
                     "reason_code": reason_code,
                     "detail": detail,
                     "message_fr": (
@@ -288,7 +288,7 @@ def not_recrawled_http_detail(country_iso3: str) -> dict:
     """
     status = get_country_doctrine_status(country_iso3)
     return {
-        "error": "COUNTRY_NOT_RECRALLED",
+        "error": "COUNTRY_NOT_RECRAWLED",
         "country_iso3": _validate_iso3(country_iso3),
         "doctrine_status": status.get("status"),
         "reason_code": status.get("reason_code"),

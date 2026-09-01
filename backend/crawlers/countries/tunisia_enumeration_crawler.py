@@ -9,7 +9,15 @@ from pathlib import Path
 
 import httpx
 
-from ._tunisia_parse import parse_enumeration, verify_tls_default
+try:
+    from ._tunisia_parse import parse_enumeration, verify_tls_default
+except ImportError:
+    # Exécution directe (`python tunisia_enumeration_crawler.py`) : pas de
+    # paquet parent connu pour un import relatif. Repli sur sys.path.
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _tunisia_parse import parse_enumeration, verify_tls_default
 
 BASE = "https://www.douane.gov.tn/tarifwebnew/getresultat.php"
 OUT = (

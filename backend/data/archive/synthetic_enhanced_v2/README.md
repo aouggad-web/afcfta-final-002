@@ -28,7 +28,7 @@ Ces pays **ne disparaissent pas** de la plateforme :
   (WITS / UNCTAD-TRAINS — Banque mondiale, source vérifiable) via les fichiers
   crawlés `backend/data/crawled/{ISO3}_tariffs.json`.
 - Les endpoints nationaux (sous-positions 8-10 chiffres, lignes détaillées)
-  retournent désormais une **erreur explicite** `COUNTRY_NOT_RECRALLED`
+  retournent désormais une **erreur explicite** `COUNTRY_NOT_RECRAWLED`
   (voir `backend/services/tariff_doctrine.py`) au lieu de données fabriquées.
 
 ## Ré-activation

@@ -67,7 +67,7 @@ def _ensure_servable_or_404(country_iso3: str) -> None:
         status = get_country_doctrine_status(country_iso3.upper())
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
-    if status.get("status") == "NOT_RECRALLED":
+    if status.get("status") == "NOT_RECRAWLED":
         raise HTTPException(status_code=404, detail=not_recrawled_http_detail(country_iso3))
     if status.get("status") == "NO_FILE":
         raise HTTPException(

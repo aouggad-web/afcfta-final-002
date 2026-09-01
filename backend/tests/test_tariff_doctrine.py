@@ -106,13 +106,13 @@ def test_doctrine_status_synthetic_country_has_explicit_message():
     for iso3 in ("AGO", "ZWE"):
         status = get_country_doctrine_status(iso3)
         # Après archivage P0-1 : plus de fichier synthétique servi.
-        assert status["status"] in ("NOT_RECRALLED", "NO_FILE")
+        assert status["status"] in ("NOT_RECRAWLED", "NO_FILE")
         assert status["message_fr"]
 
 
 def test_not_recrawled_http_detail_shape():
     detail = not_recrawled_http_detail("AGO")
-    assert detail["error"] == "COUNTRY_NOT_RECRALLED"
+    assert detail["error"] == "COUNTRY_NOT_RECRAWLED"
     assert detail["country_iso3"] == "AGO"
     assert "doctrine" not in detail  # statut sérialisable
 
@@ -183,7 +183,7 @@ def test_provider_refuses_country_even_if_postgres_has_data():
     assert provider.get_sub_positions("AGO", "010121") == []
 
 
-# ── Routes : message explicite COUNTRY_NOT_RECRALLED ──────────────────────────
+# ── Routes : message explicite COUNTRY_NOT_RECRAWLED ──────────────────────────
 
 
 def test_route_summary_raises_explicit_not_recralled(monkeypatch):
@@ -191,7 +191,7 @@ def test_route_summary_raises_explicit_not_recralled(monkeypatch):
         authentic_tariffs,
         "get_country_doctrine_status",
         lambda iso3: {
-            "status": "NOT_RECRALLED",
+            "status": "NOT_RECRAWLED",
             "reason_code": "UNSERVABLE_FORMAT",
             "message_fr": "msg-fr",
             "message_en": "msg-en",
@@ -202,7 +202,7 @@ def test_route_summary_raises_explicit_not_recralled(monkeypatch):
 
         asyncio.run(authentic_tariffs.get_tariff_summary("AGO"))
     assert exc_info.value.status_code == 404
-    assert exc_info.value.detail["error"] == "COUNTRY_NOT_RECRALLED"
+    assert exc_info.value.detail["error"] == "COUNTRY_NOT_RECRAWLED"
 
 
 def test_route_summary_passes_for_servable_country(monkeypatch):

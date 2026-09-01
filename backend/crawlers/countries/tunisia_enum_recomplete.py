@@ -10,13 +10,23 @@ from pathlib import Path
 
 import httpx
 
-from ._tunisia_parse import parse_enumeration as parse
-from ._tunisia_parse import verify_tls_default
+try:
+    from ._tunisia_parse import parse_enumeration as parse
+    from ._tunisia_parse import verify_tls_default
+except ImportError:
+    # Exécution directe (`python tunisia_enum_recomplete.py`) : pas de
+    # paquet parent connu pour un import relatif. Repli sur sys.path.
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from _tunisia_parse import parse_enumeration as parse
+    from _tunisia_parse import verify_tls_default
 
 BASE = "https://www.douane.gov.tn/tarifwebnew/getresultat.php"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/126.0"}
-OUT = Path("backend/data/crawled/TUN_enumeration_2026-08.json")
-CRAWL = Path("backend/data/crawled/TUN_tariffs.json")
+_DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "crawled"
+OUT = _DATA_DIR / "TUN_enumeration_2026-08.json"
+CRAWL = _DATA_DIR / "TUN_tariffs.json"
 
 
 async def fetch_prefix(client, hh):

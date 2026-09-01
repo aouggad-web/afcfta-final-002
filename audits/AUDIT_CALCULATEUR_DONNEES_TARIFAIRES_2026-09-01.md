@@ -116,7 +116,7 @@ Le socle est solide : moteur de calcul cascade avec assiettes légales résolues
 
 - **`backend/services/tariff_doctrine.py`** (nouveau) : contrôle unique de servabilité
   (`data_format == canonical_v4` + `data_status ∈ {VERIFIED, PARTIAL, CRAWLED_AUTHENTIC}` +
-  `source_name`/`source_url` obligatoires), message FR/EN explicite `COUNTRY_NOT_RECRALLED`,
+  `source_name`/`source_url` obligatoires), message FR/EN explicite `COUNTRY_NOT_RECRAWLED`,
   marquage des frais de prestataires (`provider_fee_flags`).
 - Gate appliqué à : `authentic_tariff_service.load_country_tariffs` (refus au chargement),
   facade `tariff_provider_service` (**avant PostgreSQL** — bloque la donnée migrée éventuelle),

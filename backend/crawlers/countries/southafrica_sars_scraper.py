@@ -42,7 +42,9 @@ TAX_COLUMNS = [
 HS_CODE_PATTERN = re.compile(r"^(\d{4}\.\d{2}(?:\.\d{2})?)$")
 HEADING_PATTERN = re.compile(r"^(\d{2}\.\d{2})$")
 RATE_PCT_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*%")
-RATE_SPECIFIC_PATTERN = re.compile(r"(\d+(?:[.,]\d+)?)\s*c/(?:\d+\s*)?(?:kg|li|la|unit|u)\b")
+RATE_SPECIFIC_PATTERN = re.compile(
+    r"(\d+(?:[.,]\d+)?)\s*c/(?:\d+\s*)?(?:kg|li|la|unit|u)\b", re.IGNORECASE
+)
 
 
 class SouthAfricaSARSScraper:

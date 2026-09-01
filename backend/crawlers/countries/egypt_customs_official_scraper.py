@@ -183,8 +183,15 @@ class EgyptOfficialScraper:
             )
             return row
 
-        tasks = [one(r) for r in rows]
-        results = await asyncio.gather(*tasks)
+        # Traité par lots bornés : le sémaphore self.sem borne déjà les
+        # requêtes réseau simultanées, mais créer une tâche par ligne d'un
+        # coup peut être coûteux pour les gros chapitres. On limite aussi le
+        # nombre de tâches en vol en même temps.
+        results: list[dict] = []
+        batch_size = max(CONCURRENCY * 4, 1)
+        for i in range(0, len(rows), batch_size):
+            batch = rows[i : i + batch_size]
+            results.extend(await asyncio.gather(*(one(r) for r in batch)))
         return [r for r in results if r]
 
     def save(self, chapter_id: int, rows: list[dict]):
