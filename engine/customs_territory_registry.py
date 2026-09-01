@@ -35,9 +35,7 @@ class CustomsTerritoryRegistry:
         memberships.sort(key=lambda item: self.territories[item.territory_id].priority)
         return [item.territory_id for item in memberships]
 
-    def tariff_territory_for(
-        self, country_iso3: str, on_date: date
-    ) -> Optional[CustomsTerritory]:
+    def tariff_territory_for(self, country_iso3: str, on_date: date) -> Optional[CustomsTerritory]:
         candidates = [
             self.territories[territory_id]
             for territory_id in self.territory_ids_for(country_iso3, on_date)

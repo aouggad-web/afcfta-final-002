@@ -31,7 +31,7 @@ ROW_TYPE_RE = re.compile(r'<div id="_(\d+)_A10">\s*([^<]+?)\s*</div>')
 ROW_TITLE_RE = re.compile(
     r'<a name=A2[^>]*_PAGE_\.A1\.value=(\d+);[^>]*TITLE="[^"]*"[^>]*>(.*?)</a>', re.S
 )
-ROW_PDF_RE = re.compile(r'_PAGE_\.A1\.value=(\d+);javascript:\{_JSL\(_PAGE_,\'A18\'')
+ROW_PDF_RE = re.compile(r"_PAGE_\.A1\.value=(\d+);javascript:\{_JSL\(_PAGE_,\'A18\'")
 PAGI_RE = re.compile(r'href="([^"]*WD_ACTION_=SCROLLTABLE[^"]*)"', re.I)
 
 
@@ -54,7 +54,7 @@ def parse_form(html):
             continue
         name = nm.group(1)
         if "<SELECT" in t.upper():
-            om = OPT_RE.search(html[tag.end(): tag.end() + 800])
+            om = OPT_RE.search(html[tag.end() : tag.end() + 800])
             fields[name] = om.group(1) if om else ""
         else:
             vm = HIDDEN_VAL_RE.search(t)
@@ -122,7 +122,9 @@ def fetch_detail(action_url, occ):
     return {
         "page_url": BASE + m.group(1) if m else None,
         "pdfs": pdfs,
-        "text_excerpt": txt[txt.find("خارطة الموقع") + 14:][:4000] if "خارطة الموقع" in txt else txt[:4000],
+        "text_excerpt": (
+            txt[txt.find("خارطة الموقع") + 14 :][:4000] if "خارطة الموقع" in txt else txt[:4000]
+        ),
         "raw_len": len(page),
     }
 
@@ -140,7 +142,9 @@ def main():
         out = args[args.index("--json") + 1]
 
     a3, f3 = open_advanced_search()
-    print(f"recherche: kw={keyword!r} type={type_code or 'tous'} année={year or '-'}", file=sys.stderr)
+    print(
+        f"recherche: kw={keyword!r} type={type_code or 'tous'} année={year or '-'}", file=sys.stderr
+    )
     res = search(a3, f3, keyword, type_code, year)
 
     all_rows = []
@@ -149,7 +153,11 @@ def main():
         rows = parse_results(res)
         all_rows.extend(rows)
         m = FORM_ACTION_RE.search(res)
-        cur_action = BASE + m.group(1) if m and m.group(1).startswith("/") else m.group(1) if m else cur_action
+        cur_action = (
+            BASE + m.group(1)
+            if m and m.group(1).startswith("/")
+            else m.group(1) if m else cur_action
+        )
         print(f"page {page + 1}: +{len(rows)} (total {len(all_rows)})", file=sys.stderr)
         pagi = PAGI_RE.search(res)
         if not pagi or not rows:

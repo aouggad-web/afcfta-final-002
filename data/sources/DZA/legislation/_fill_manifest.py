@@ -14,7 +14,5 @@ for doc in manifest["documents"]:
     doc["sha256"] = h
     print(f"{doc['file']}: {h[:16]}... ({p.stat().st_size} bytes)")
 
-manifest_path.write_text(
-    json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
-)
+manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
 print("manifest updated")

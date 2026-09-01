@@ -230,22 +230,26 @@ class TariffCalculationResponse(BaseModel):
     informational_only: bool = True
     legally_binding: bool = False
     overall_status: str = "INFORMATIVE_PARTIAL"
-    quality_dimensions: Dict[str, str] = Field(default_factory=lambda: {
-        "source": "PARTIAL",
-        "temporal_validity": "PARTIAL",
-        "classification": "DOCUMENTED",
-        "taxes_and_levies": "PARTIAL",
-        "preference_and_origin": "UNVERIFIED",
-        "formalities": "NOT_AVAILABLE",
-    })
+    quality_dimensions: Dict[str, str] = Field(
+        default_factory=lambda: {
+            "source": "PARTIAL",
+            "temporal_validity": "PARTIAL",
+            "classification": "DOCUMENTED",
+            "taxes_and_levies": "PARTIAL",
+            "preference_and_origin": "UNVERIFIED",
+            "formalities": "NOT_AVAILABLE",
+        }
+    )
     known_data_gaps: List[str] = Field(default_factory=list)
     administrative_confirmation_recommended: bool = True
     administrative_confirmation_required: bool = True
-    disclaimer: Dict[str, Any] = Field(default_factory=lambda: {
-        "informational_only": True,
-        "legally_binding": False,
-        "message": "Simulation informative fondée sur les données disponibles.",
-    })
+    disclaimer: Dict[str, Any] = Field(
+        default_factory=lambda: {
+            "informational_only": True,
+            "legally_binding": False,
+            "message": "Simulation informative fondée sur les données disponibles.",
+        }
+    )
     technical_validation_status: Optional[str] = None
     source_authority: Optional[str] = None
     source_title: Optional[str] = None
@@ -297,6 +301,7 @@ class TariffCalculationResponse(BaseModel):
     def force_non_binding(cls, value: Any) -> bool:
         # Normalize legacy true payloads at the response boundary.
         return False
+
     # Règles d'origine
     rules_of_origin: Dict[str, Any]
     # Top producteurs africains

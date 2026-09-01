@@ -28,6 +28,11 @@ from pathlib import Path
 
 import httpx
 
+# TLS verification est ACTIVÉE par défaut. Pour la désactiver ponctuellement
+# (environnement dont la chaîne TLS de customs.gov.eg est problématique),
+# exporter EGY_INSECURE_TLS=1 en documentant explicitement le risque MITM.
+_VERIFY_TLS = os.environ.get("EGY_INSECURE_TLS", "").strip() not in ("1", "true", "yes")
+
 BASE = "https://www.customs.gov.eg"
 LIST_URL = f"{BASE}/Services/Tarif"
 DETAIL_URL = f"{BASE}/Services/TrfDetails"
@@ -54,7 +59,7 @@ class EgyptOfficialScraper:
     async def _init(self):
         if not self.client:
             self.client = httpx.AsyncClient(
-                headers=HEADERS, timeout=40.0, follow_redirects=True, verify=False
+                headers=HEADERS, timeout=40.0, follow_redirects=True, verify=_VERIFY_TLS
             )
             self.sem = asyncio.Semaphore(CONCURRENCY)
 
@@ -96,7 +101,9 @@ class EgyptOfficialScraper:
         rows: dict[str, dict] = {}
         page = 1
         while True:
-            html = await self._get(LIST_URL, params={"page": page, "type": trf_type, "chapterId": chapter_id})
+            html = await self._get(
+                LIST_URL, params={"page": page, "type": trf_type, "chapterId": chapter_id}
+            )
             if not html:
                 break
             found = CODE_RE.findall(html)
@@ -119,8 +126,12 @@ class EgyptOfficialScraper:
     def _parse_taxes(self, taxes: list[str]) -> dict:
         """Taxes verbatim + tentative de lecture purement littérale du taux publié."""
         out = {}
-        mapping = {"ضريبة الوارد": "ID", "ضريبة قيمه مضافه": "VAT",
-                   "ضريبة الدمغة": "STAMP", "رسم دعم": "SUPPORT"}
+        mapping = {
+            "ضريبة الوارد": "ID",
+            "ضريبة قيمه مضافه": "VAT",
+            "ضريبة الدمغة": "STAMP",
+            "رسم دعم": "SUPPORT",
+        }
         for raw in taxes or []:
             label = raw.split(":")[0].strip()
             value = raw.split(":", 1)[1].strip() if ":" in raw else ""
@@ -155,19 +166,21 @@ class EgyptOfficialScraper:
             if not det:
                 row["data_status"] = "DETAIL_UNAVAILABLE"
                 return row
-            row.update({
-                "number": det.get("Number"),
-                "short_desc_ar": det.get("ShortDesc"),
-                "desc_ar": det.get("Desc"),
-                "taxes": self._parse_taxes(det.get("Taxes")),
-                "taxes_verbatim": det.get("Taxes"),
-                "instructions": det.get("Instructions"),
-                "instruction_codes": det.get("InstructionCodes"),
-                "data_status": "OK",
-                "source": "customs.gov.eg (Autorité Égyptienne des Douanes)",
-                "source_url": f"{LIST_URL}?type={trf_type}&chapterId={chapter_id}",
-                "detail_endpoint": f"POST {DETAIL_URL}?trfNumber={det.get('Number')}&trfType={trf_type}",
-            })
+            row.update(
+                {
+                    "number": det.get("Number"),
+                    "short_desc_ar": det.get("ShortDesc"),
+                    "desc_ar": det.get("Desc"),
+                    "taxes": self._parse_taxes(det.get("Taxes")),
+                    "taxes_verbatim": det.get("Taxes"),
+                    "instructions": det.get("Instructions"),
+                    "instruction_codes": det.get("InstructionCodes"),
+                    "data_status": "OK",
+                    "source": "customs.gov.eg (Autorité Égyptienne des Douanes)",
+                    "source_url": f"{LIST_URL}?type={trf_type}&chapterId={chapter_id}",
+                    "detail_endpoint": f"POST {DETAIL_URL}?trfNumber={row['code']}&trfType={trf_type}",
+                }
+            )
             return row
 
         tasks = [one(r) for r in rows]
@@ -201,7 +214,6 @@ async def main(chapters: list[int] | None = None):
             rows = await scraper.crawl_chapter(ch)
             scraper.save(ch, rows)
     finally:
-        await scraper._close() if hasattr(scraper, "_close") else None
         if scraper.client:
             await scraper.client.aclose()
     err = OUT_DIR / "EGY_official_errors.json"

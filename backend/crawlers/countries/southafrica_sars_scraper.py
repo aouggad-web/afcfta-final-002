@@ -87,11 +87,12 @@ class SouthAfricaSARSScraper:
             return {"rate_pct": None, "raw_value": ""}
 
         cleaned = raw_value.strip().lower()
-        # le texte brut publié est TOUJOURS conservé (aucune perte d'information)
+        # le texte brut publié est conservé quand il existe ; une cellule
+        # vide est normalisée au libellé SARS canonique « free ».
         raw_kept = " ".join(raw_value.split())
 
         if cleaned in ("free", ""):
-            return {"rate_pct": 0.0, "raw_value": "free"}
+            return {"rate_pct": 0.0, "raw_value": raw_kept if raw_kept else "free"}
 
         pct_match = RATE_PCT_PATTERN.search(raw_value)
         specific_match = RATE_SPECIFIC_PATTERN.search(raw_value)

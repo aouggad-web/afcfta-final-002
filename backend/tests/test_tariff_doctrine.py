@@ -27,8 +27,20 @@ from routes import authentic_tariffs
 
 
 SYNTHETIC_ISO3 = [
-    "AGO", "COM", "DJI", "ERI", "LBY", "MDG", "MOZ", "MRT",
-    "MWI", "SDN", "STP", "SYC", "ZMB", "ZWE",
+    "AGO",
+    "COM",
+    "DJI",
+    "ERI",
+    "LBY",
+    "MDG",
+    "MOZ",
+    "MRT",
+    "MWI",
+    "SDN",
+    "STP",
+    "SYC",
+    "ZMB",
+    "ZWE",
 ]
 
 
@@ -203,7 +215,8 @@ def test_route_summary_passes_for_servable_country(monkeypatch):
         lambda iso3: {"status": "SERVABLE"},
     )
     monkeypatch.setattr(
-        authentic_tariffs, "get_tariff_provider_service",
+        authentic_tariffs,
+        "get_tariff_provider_service",
         lambda: type("P", (), {"get_country_summary": staticmethod(lambda c: {"ok": True})})(),
     )
     import asyncio
@@ -244,9 +257,9 @@ def test_tun_import_taxes_include_provider_fee():
     position = crawled_service.lookup("TUN", "01012100015")
     assert position is not None
     codes = [t["code"] for t in position["taxes"]]
-    assert "RPD/IMPOR" in codes, (
-        "La redevance de prestation douanière à l'import doit être conservée dans le calcul"
-    )
+    assert (
+        "RPD/IMPOR" in codes
+    ), "La redevance de prestation douanière à l'import doit être conservée dans le calcul"
 
 
 # ── Système tarifaire export par pays + prestataires délégataires ─────────────
@@ -303,7 +316,9 @@ def test_tun_export_cascade_specific_scrap_iron():
     crawled_service.load(force=True)
     subs = crawled_service.lookup_by_hs6("TUN", "720410")  # déchets et débris d'acier
     with_scrap = [
-        s for s in subs if any(t["code"] == "TAXE/FERRAILLES.EXP" for t in s.get("export_taxes", []))
+        s
+        for s in subs
+        if any(t["code"] == "TAXE/FERRAILLES.EXP" for t in s.get("export_taxes", []))
     ]
     assert with_scrap, "Les positions ferrailles TUN doivent avoir leur taxe export crawlée"
     position = next(

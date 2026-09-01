@@ -72,14 +72,10 @@ class LegalOverrideResolver:
     ):
         self.measures = list(measures)
         self.regional_coverage_complete = (
-            coverage_complete
-            if regional_coverage_complete is None
-            else regional_coverage_complete
+            coverage_complete if regional_coverage_complete is None else regional_coverage_complete
         )
         self.national_coverage_complete = (
-            coverage_complete
-            if national_coverage_complete is None
-            else national_coverage_complete
+            coverage_complete if national_coverage_complete is None else national_coverage_complete
         )
 
     @staticmethod
@@ -191,9 +187,7 @@ class LegalOverrideResolver:
         layer_sources = {layer: set() for layer in LegalLayer}
         eligibility_status = None
         requires_eligibility_input = False
-        coverage_complete = (
-            self.regional_coverage_complete and self.national_coverage_complete
-        )
+        coverage_complete = self.regional_coverage_complete and self.national_coverage_complete
         status = "INFORMATIVE_COMPLETE" if coverage_complete else "INFORMATIVE_PARTIAL"
         if not self.regional_coverage_complete:
             missing.append("Regional gazette coverage is not complete for the requested date.")
@@ -399,11 +393,14 @@ class LegalOverrideResolver:
         serialized_trace = [step.model_dump() for step in trace]
         relevant_sources = [m for m in candidates if m.publication_url]
         source_documented = bool(relevant_sources) and all(
-            m.source_hash and m.verification_status in {"SOURCE_ARCHIVED", "OFFICIAL_SOURCE_IDENTIFIED"}
+            m.source_hash
+            and m.verification_status in {"SOURCE_ARCHIVED", "OFFICIAL_SOURCE_IDENTIFIED"}
             for m in relevant_sources
         )
         quality_dimensions = {
-            "source": "DOCUMENTED" if source_documented else ("PARTIAL" if sources else "UNVERIFIED"),
+            "source": (
+                "DOCUMENTED" if source_documented else ("PARTIAL" if sources else "UNVERIFIED")
+            ),
             "temporal_validity": "PARTIAL",
             "classification": "DOCUMENTED" if len(str(hs_code)) >= 6 else "UNVERIFIED",
             "taxes_and_levies": "DOCUMENTED" if self.national_coverage_complete else "PARTIAL",
@@ -416,7 +413,9 @@ class LegalOverrideResolver:
             overall_status = "CALCULATION_UNAVAILABLE"
         elif any(value == "UNVERIFIED" for value in quality_dimensions.values()):
             overall_status = "REVIEW_REQUIRED"
-        elif all(value in {"DOCUMENTED", "NOT_APPLICABLE"} for value in quality_dimensions.values()):
+        elif all(
+            value in {"DOCUMENTED", "NOT_APPLICABLE"} for value in quality_dimensions.values()
+        ):
             overall_status = "INFORMATIVE_COMPLETE"
         else:
             overall_status = "INFORMATIVE_PARTIAL"
@@ -427,7 +426,11 @@ class LegalOverrideResolver:
             "calculation_status": status,
             "status": status,
             "overall_status": overall_status,
-            "technical_validation_status": "CALCULATION_VALIDATED" if status in {"INFORMATIVE_COMPLETE", "INFORMATIVE_PARTIAL"} else status,
+            "technical_validation_status": (
+                "CALCULATION_VALIDATED"
+                if status in {"INFORMATIVE_COMPLETE", "INFORMATIVE_PARTIAL"}
+                else status
+            ),
             "informational_only": True,
             "legally_binding": False,
             "administrative_confirmation_required": True,

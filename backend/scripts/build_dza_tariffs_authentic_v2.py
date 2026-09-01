@@ -55,10 +55,26 @@ LEGAL_REFS_BASE = [
 # Rapprochement code court données crawlées ↔ nomenclature officielle DGD
 # (Tarif d'usage 2020, page 2). Uniquement quand le libellé officiel existe.
 TAX_CODE_OFFICIAL_MATCH = {
-    "DD": {"official_code": "D.D", "official_label": "Droits de Douane", "status": "MATCHED_DGD_LIST"},
-    "TVA": {"official_code": "T.V.A", "official_label": "Taxe sur la Valeur Ajoutée", "status": "MATCHED_DGD_LIST"},
-    "DAPS": {"official_code": "D.A.P.S", "official_label": "Droit Additionnel Provisoire de Sauvegarde", "status": "MATCHED_DGD_LIST"},
-    "TIC": {"official_code": "T.I.C", "official_label": "Taxe Intérieure de Consommation", "status": "MATCHED_DGD_LIST"},
+    "DD": {
+        "official_code": "D.D",
+        "official_label": "Droits de Douane",
+        "status": "MATCHED_DGD_LIST",
+    },
+    "TVA": {
+        "official_code": "T.V.A",
+        "official_label": "Taxe sur la Valeur Ajoutée",
+        "status": "MATCHED_DGD_LIST",
+    },
+    "DAPS": {
+        "official_code": "D.A.P.S",
+        "official_label": "Droit Additionnel Provisoire de Sauvegarde",
+        "status": "MATCHED_DGD_LIST",
+    },
+    "TIC": {
+        "official_code": "T.I.C",
+        "official_label": "Taxe Intérieure de Consommation",
+        "status": "MATCHED_DGD_LIST",
+    },
     "PRCT": {"official_code": None, "official_label": None, "status": "UNVERIFIED_LABEL"},
     "TCS": {"official_code": None, "official_label": None, "status": "UNVERIFIED_LABEL"},
 }
@@ -88,14 +104,20 @@ def load_progress_positions() -> tuple[dict, dict]:
             item["_progress_file"] = os.path.basename(path)
             item["_crawled_at"] = d.get("extracted_at")
             index[code] = item
-    return index, {"progress_files": len(files), "unique_positions": len(index), "duplicates_overwritten": dup_count}
+    return index, {
+        "progress_files": len(files),
+        "unique_positions": len(index),
+        "duplicates_overwritten": dup_count,
+    }
 
 
 def load_official_ref_files() -> tuple[dict, dict, dict]:
     fap_doc = json.loads((SOURCES_DIR / "dgd_tax_codes_and_fap.json").read_text(encoding="utf-8"))
-    lf2026 = json.loads((SOURCES_DIR / "legislation_lf2026.json").read_text(encoding="utf-8")) if (
-        SOURCES_DIR / "legislation_lf2026.json"
-    ).exists() else json.loads((SOURCES_DIR / "lf2026_customs_articles.json").read_text(encoding="utf-8"))
+    lf2026 = (
+        json.loads((SOURCES_DIR / "legislation_lf2026.json").read_text(encoding="utf-8"))
+        if (SOURCES_DIR / "legislation_lf2026.json").exists()
+        else json.loads((SOURCES_DIR / "lf2026_customs_articles.json").read_text(encoding="utf-8"))
+    )
     # index LF2026 par code numérique
     lf_index: dict[str, dict] = {}
     for art in lf2026.get("articles", []):
@@ -119,11 +141,13 @@ def map_formalities(formalities: list[str], fap_list: dict) -> list:
         base = raw.split("(")[0].strip()
         key = fap_norm.get(_norm(base)) or fap_norm2.get(_norm(raw))
         if key:
-            entry.update({
-                "fap_code": key,
-                "fap_official_label": fap_list[key],
-                "match_status": "MATCHED_DGD_FAP_LIST",
-            })
+            entry.update(
+                {
+                    "fap_code": key,
+                    "fap_official_label": fap_list[key],
+                    "match_status": "MATCHED_DGD_FAP_LIST",
+                }
+            )
         else:
             entry["match_status"] = "UNMATCHED_VERBATIM"
         out.append(entry)
@@ -208,18 +232,23 @@ def main() -> int:
             }
 
         if old_line:
-            old_tax = {k: v.get("rate") for k, v in (old_line.get("taxes") or {}).items()
-                       if isinstance(v, dict)}
+            old_tax = {
+                k: v.get("rate")
+                for k, v in (old_line.get("taxes") or {}).items()
+                if isinstance(v, dict)
+            }
             new_tax = {k: v.get("rate") for k, v in taxes.items()}
             if old_tax != new_tax:
                 stats["rate_changes_vs_previous"] += 1
                 if len(rate_changes) < 50:
-                    rate_changes.append({
-                        "hs_code": code,
-                        "old": old_tax,
-                        "new": new_tax,
-                        "source_url": item.get("source_url"),
-                    })
+                    rate_changes.append(
+                        {
+                            "hs_code": code,
+                            "old": old_tax,
+                            "new": new_tax,
+                            "source_url": item.get("source_url"),
+                        }
+                    )
 
         line = {
             "raw_code": item.get("raw_code"),
@@ -236,10 +265,17 @@ def main() -> int:
             "advantages": advantages,
             "formalities": map_formalities(formalities, fap_list),
             "lf2026_provisions": lf_provisions,
-            "legal_refs": LEGAL_REFS_BASE + (
-                [{"ref": "Loi de finances pour 2026 — JO n° 88 du 31/12/2025, " + ", ".join(lf_link["articles"]),
-                  "doc": "data/sources/DZA/legislation/JO_2026-88_loi_finances_2026.pdf"}]
-                if lf_provisions else []
+            "legal_refs": LEGAL_REFS_BASE
+            + (
+                [
+                    {
+                        "ref": "Loi de finances pour 2026 — JO n° 88 du 31/12/2025, "
+                        + ", ".join(lf_link["articles"]),
+                        "doc": "data/sources/DZA/legislation/JO_2026-88_loi_finances_2026.pdf",
+                    }
+                ]
+                if lf_provisions
+                else []
             ),
             "source": SOURCE_NAME,
             "source_root_url": SOURCE_ROOT_URL,
@@ -290,11 +326,16 @@ def main() -> int:
             "officiels à ce stade). Les lignes non retrouvées dans le crawl sont marquées "
             "etl_legacy_unverified / REVIEW_REQUIRED."
         ),
-        "legal_refs": LEGAL_REFS_BASE + [
-            {"ref": "Loi de finances pour l'année 2026 — JO n° 88 du 31 décembre 2025",
-             "doc": "data/sources/DZA/legislation/JO_2026-88_loi_finances_2026.pdf"},
-            {"ref": "Nomenclature F.A.P — Tarif d'usage DGD (pages 1-2)",
-             "doc": "data/sources/DZA/legislation/dgd_tax_codes_and_fap.json"},
+        "legal_refs": LEGAL_REFS_BASE
+        + [
+            {
+                "ref": "Loi de finances pour l'année 2026 — JO n° 88 du 31 décembre 2025",
+                "doc": "data/sources/DZA/legislation/JO_2026-88_loi_finances_2026.pdf",
+            },
+            {
+                "ref": "Nomenclature F.A.P — Tarif d'usage DGD (pages 1-2)",
+                "doc": "data/sources/DZA/legislation/dgd_tax_codes_and_fap.json",
+            },
         ],
         "stats": stats,
         "progress_stats": progress_stats,

@@ -1064,11 +1064,20 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         "source archive and independent hash comparison pending",
         "effective date coverage must be confirmed for the requested line",
     ]
+
     def trace_line(line):
         item = dict(line)
-        source_rate = item.get("rate_npf_pct", item.get("rate_zlecaf_pct", item.get("rate_pct", item.get("rate"))))
-        taxable_base = item.get("base_value_npf", item.get("base_value_zlecaf", item.get("taxable_base", item.get("base"))))
-        calculated_amount = item.get("amount_npf", item.get("amount_zlecaf", item.get("calculated_amount", item.get("amount"))))
+        source_rate = item.get(
+            "rate_npf_pct", item.get("rate_zlecaf_pct", item.get("rate_pct", item.get("rate")))
+        )
+        taxable_base = item.get(
+            "base_value_npf",
+            item.get("base_value_zlecaf", item.get("taxable_base", item.get("base"))),
+        )
+        calculated_amount = item.get(
+            "amount_npf",
+            item.get("amount_zlecaf", item.get("calculated_amount", item.get("amount"))),
+        )
         item.setdefault("component_type", item.get("category", item.get("code", "TAX")))
         item.setdefault("source_rate", source_rate)
         item.setdefault("rate_type", "AD_VALOREM")
@@ -1085,8 +1094,12 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         item.setdefault("data_gaps", documentary_gaps)
         return item
 
-    result.taxes_breakdown = [trace_line(line) for line in result.taxes_breakdown or []] or result.taxes_breakdown
-    result.taxes_detail = [trace_line(line) for line in result.taxes_detail or []] or result.taxes_detail
+    result.taxes_breakdown = [
+        trace_line(line) for line in result.taxes_breakdown or []
+    ] or result.taxes_breakdown
+    result.taxes_detail = [
+        trace_line(line) for line in result.taxes_detail or []
+    ] or result.taxes_detail
     # Keep the model-calculated global status; the quality envelope is
     # informational and never promoted by the route.
     result.informational_only = True

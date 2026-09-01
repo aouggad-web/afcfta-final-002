@@ -3,25 +3,16 @@
 re-tentée, puis repli par rangée (préfixe 4 chiffres)."""
 import asyncio
 import json
-import re
 from datetime import datetime, timezone
 from pathlib import Path
 
 import httpx
 
+from ._tunisia_parse import parse_enumeration, verify_tls_default
+
 BASE = "https://www.douane.gov.tn/tarifwebnew/getresultat.php"
 HEADERS = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Chrome/126.0"}
-CODE_RE = re.compile(r"submit_frm_resultat\('', '', '(\d+)'\);")
-LABEL_RE = re.compile(r"submit_frm_resultat\('', '', '\d+'\); return false;\">([^<]+)</td>")
 OUT = Path("backend/data/crawled/TUN_enumeration_2026-08.json")
-
-
-def parse(text):
-    codes = CODE_RE.findall(text)
-    labels = LABEL_RE.findall(text)
-    if len(labels) == len(codes) and len(codes) % 2 == 0 and codes:
-        return dict(zip(codes[::2], [l.strip() for l in labels[1::2]]))
-    return {}
 
 
 async def main():
@@ -30,13 +21,15 @@ async def main():
     empty = [ch for ch, codes in chapters.items() if not codes]
     print("chapitres vides:", empty, flush=True)
 
-    async with httpx.AsyncClient(headers=HEADERS, verify=False, timeout=50, follow_redirects=True) as client:
+    async with httpx.AsyncClient(
+        headers=HEADERS, verify=verify_tls_default(), timeout=50, follow_redirects=True
+    ) as client:
         for ch in empty:
             got = {}
             for attempt in range(3):
                 try:
                     r = await client.get(BASE, params={"rech": "1", "mcle": ch})
-                    got = parse(r.text)
+                    got = parse_enumeration(r.text)
                     break
                 except Exception as e:
                     print(f"ch.{ch}: tentative {attempt+1} erreur {type(e).__name__}", flush=True)
@@ -49,17 +42,16 @@ async def main():
                 merged = {}
                 for h in range(1, 98):
                     hh = f"{ch}{h:02d}"
+                    got2 = {}
                     for attempt in range(3):
                         try:
                             r2 = await client.get(BASE, params={"rech": "1", "mcle": hh})
-                            got2 = parse(r2.text)
+                            got2 = parse_enumeration(r2.text)
                             break
-                        except Exception as e:
+                        except Exception:
                             if attempt == 2:
                                 print(f"  ch.{ch} heading {hh}: abandon après 3 essais", flush=True)
                             await asyncio.sleep(5)
-                    else:
-                        got2 = {}
                     for k, v in got2.items():
                         merged.setdefault(k, v)
                     await asyncio.sleep(1.2)
@@ -75,7 +67,6 @@ async def main():
     OUT.write_text(json.dumps(enum, ensure_ascii=False, indent=1), encoding="utf-8")
     total = sum(len(v) for v in chapters.values())
     print(f"TOTAL FINAL: {total}", flush=True)
-
 
 
 if __name__ == "__main__":

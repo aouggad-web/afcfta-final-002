@@ -160,9 +160,11 @@ def main():
     }
     OUT.write_text(json.dumps(doc, ensure_ascii=False, indent=1), encoding="utf-8")
     s = doc["stats"]
-    print(f"identiques: {s['identiques']} | changements: {s['changements_taux']} | "
-          f"nouveaux avec taux: {s['nouveaux_avec_taux']} | sans données 2026: {s['uniquement_old']} | "
-          f"nouveaux (2026 only): {s['uniquement_new']}")
+    print(
+        f"identiques: {s['identiques']} | changements: {s['changements_taux']} | "
+        f"nouveaux avec taux: {s['nouveaux_avec_taux']} | sans données 2026: {s['uniquement_old']} | "
+        f"nouveaux (2026 only): {s['uniquement_new']}"
+    )
     print(f"→ {OUT}")
     for c in changes[:15]:
         print(f"  {c['code']}: {c['changes']}")

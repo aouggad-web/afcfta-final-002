@@ -53,8 +53,12 @@ def test_kenya_endpoint_passes_authorization_to_legal_layer(monkeypatch):
     assert result["administrative_confirmation_required"] is True
     assert result["overall_status"] == "INFORMATIVE_PARTIAL"
     assert set(result["quality_dimensions"]) == {
-        "source", "temporal_validity", "classification", "taxes_and_levies",
-        "preference_and_origin", "formalities",
+        "source",
+        "temporal_validity",
+        "classification",
+        "taxes_and_levies",
+        "preference_and_origin",
+        "formalities",
     }
 
 
@@ -104,7 +108,9 @@ def test_api_quality_boundary_preserves_all_four_global_statuses(monkeypatch):
         "preference_and_origin": "NOT_APPLICABLE",
         "formalities": "NOT_APPLICABLE",
     }
-    monkeypatch.setattr(authentic_tariffs, "calculate_import_taxes", lambda **kwargs: _base_result())
+    monkeypatch.setattr(
+        authentic_tariffs, "calculate_import_taxes", lambda **kwargs: _base_result()
+    )
     for status in statuses:
         monkeypatch.setattr(
             authentic_tariffs,
@@ -113,12 +119,21 @@ def test_api_quality_boundary_preserves_all_four_global_statuses(monkeypatch):
         )
         result = asyncio.run(
             authentic_tariffs.calculate_taxes_endpoint(
-                country_iso3="KEN", hs_code="10019910", cif_value=10000,
-                language="fr", origin="UGA", calculation_date=date(2026, 7, 24),
+                country_iso3="KEN",
+                hs_code="10019910",
+                cif_value=10000,
+                language="fr",
+                origin="UGA",
+                calculation_date=date(2026, 7, 24),
                 remission_eligibility=RemissionEligibility.ELIGIBILITY_UNKNOWN,
-                authorization_reference=None, authorization_valid_from=None,
-                authorization_valid_to=None, authorization_hs_codes=None,
-                authorization_goods=None, beneficiary=None, import_purpose=None, quantity=None,
+                authorization_reference=None,
+                authorization_valid_from=None,
+                authorization_valid_to=None,
+                authorization_hs_codes=None,
+                authorization_goods=None,
+                beneficiary=None,
+                import_purpose=None,
+                quantity=None,
             )
         )
         assert result["overall_status"] == status

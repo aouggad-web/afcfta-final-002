@@ -388,7 +388,12 @@ def test_tariffs_54_files_physically_clean_of_synthetic_zlecaf_markers(client):
     from services.tariff_data_service import DATA_DIR, tariff_service
 
     files = sorted(DATA_DIR.glob("*_tariffs.json"))
-    assert len(files) == 54, f"précondition invalidée : {len(files)} fichiers trouvés, 54 attendus"
+    # Précondition alignée sur l'audit P0 du 2026-09-01 : 14 fichiers synthétiques
+    # `enhanced_v2` + la copie DZA périmée ont été retirés du service (voir
+    # backend/data/archive/synthetic_enhanced_v2/README.md et
+    # backend/data/archive/superseded/README.md). Le doctrine ZLECAf reste
+    # vérifié sur les 39 fichiers restants.
+    assert len(files) == 39, f"précondition invalidée : {len(files)} fichiers trouvés, 39 attendus"
 
     tariff_service.load()
 

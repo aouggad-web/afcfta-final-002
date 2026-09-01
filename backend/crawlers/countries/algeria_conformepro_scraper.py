@@ -385,6 +385,8 @@ class AlgeriaConformeproScraper:
         resume: bool = True,
         concurrency: int = 1,
     ):
+        if not isinstance(concurrency, int) or concurrency < 1:
+            raise ValueError(f"concurrency must be an integer >= 1, got {concurrency!r}")
         logger.info(f"Scraping sub-positions from {len(self.headings)} headings...")
         all_subs = []
         actual_start = start_heading_idx
