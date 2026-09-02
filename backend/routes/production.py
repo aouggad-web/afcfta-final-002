@@ -318,6 +318,49 @@ async def get_isic4_classification():
     }
 
 
+# =============================================================================
+# Correspondance ISIC Rev.4 (4 chiffres) <-> SH6 HS 2022 (utilisée par OEC)
+# Chaînage officiel WCO Table I + UNSD SH2017<->CPC2.1 + UNSD CPC2.1<->ISIC4
+# Voir backend/etl/isic4_hs6_correspondence.py
+# =============================================================================
+
+
+@router.get("/isic4-hs6/coverage")
+async def get_isic4_hs6_coverage():
+    """Statistiques de couverture de la correspondance SH6 (HS 2022) <-> ISIC4."""
+    from etl.isic4_hs6_correspondence import coverage_stats
+
+    return coverage_stats()
+
+
+@router.get("/isic4-hs6/isic4/{isic4_code}")
+async def get_hs6_for_isic4(isic4_code: str):
+    """Liste des codes SH6 (HS 2022) correspondant à une classe ISIC Rev.4 4 chiffres."""
+    from etl.isic4_hs6_correspondence import hs6_for_isic4
+
+    hs6_codes = hs6_for_isic4(isic4_code)
+    if not hs6_codes:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Aucun code SH6 mappé à ISIC {isic4_code}",
+        )
+    return {"isic4": isic4_code, "hs6_codes": hs6_codes, "total": len(hs6_codes)}
+
+
+@router.get("/isic4-hs6/hs6/{hs6_code}")
+async def get_isic4_for_hs6(hs6_code: str):
+    """Liste des classes ISIC Rev.4 4 chiffres correspondant à un code SH6 (HS 2022)."""
+    from etl.isic4_hs6_correspondence import isic4_for_hs6
+
+    isic4_codes = isic4_for_hs6(hs6_code)
+    if not isic4_codes:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Aucune classe ISIC4 mappée au SH6 {hs6_code}",
+        )
+    return {"hs6": hs6_code, "isic4_codes": isic4_codes, "total": len(isic4_codes)}
+
+
 @router.get("/unido/{country_iso3}")
 async def get_unido_country_data(country_iso3: str):
     """
