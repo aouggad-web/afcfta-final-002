@@ -142,9 +142,7 @@ def get_isic4_timeseries(country_iso3: str, isic4_code: str) -> Optional[Dict]:
     """Série temporelle complète (2018+) pour un pays et un code ISIC 4 chiffres donnés."""
     iso3 = country_iso3.upper()
     records = [
-        r
-        for r in _load_records()
-        if r["country_iso3"] == iso3 and r["isic_code"] == isic4_code
+        r for r in _load_records() if r["country_iso3"] == iso3 and r["isic_code"] == isic4_code
     ]
     if not records:
         return None
