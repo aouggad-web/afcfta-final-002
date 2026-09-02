@@ -144,9 +144,43 @@ function ProductionManufacturing({ language = 'fr' }) {
     isic4RequestCountry.current = requestedCountry;
     setIsic4Status('loading');
     try {
-      const response = await axios.get(`${API}/production/unido/isic4/${requestedCountry}`);
+      // Données réelles UNIDO IDSB/INDSTAT (2018-2024) en priorité, sinon
+      // repli sur la désagrégation estimée à partir des divisions 2 chiffres.
+      let dataSource = 'real';
+      let response;
+      try {
+        response = await axios.get(`${API}/production/unido/idsb/${requestedCountry}`);
+      } catch (realError) {
+        if (realError?.response?.status !== 404) throw realError;
+        dataSource = 'estimated';
+        response = await axios.get(`${API}/production/unido/isic4/${requestedCountry}`);
+      }
       if (isic4RequestCountry.current !== requestedCountry) return; // stale response, country changed since
-      setIsic4Data(response.data);
+
+      const normalized =
+        dataSource === 'real'
+          ? {
+              dataSource,
+              source: response.data.source,
+              breakdown: (response.data.sectors || []).map((s) => ({
+                isic4: s.isic4,
+                isic2: s.isic4?.slice(0, 2),
+                class_name: s.isic_description,
+                real: s.indicators,
+              })),
+            }
+          : {
+              dataSource,
+              source: response.data.source,
+              breakdown: (response.data.isic4_breakdown || []).map((c) => ({
+                isic4: c.isic4,
+                isic2: c.isic2,
+                class_name: c.class_name,
+                share_mva_estimated: c.share_mva_estimated,
+              })),
+            };
+
+      setIsic4Data(normalized);
       setIsic4Status('ready');
     } catch (error) {
       console.error('Error fetching ISIC 4-digit breakdown:', error);
@@ -167,8 +201,8 @@ function ProductionManufacturing({ language = 'fr' }) {
   };
 
   const getIsic4ForSector = (sectorIsic2) => {
-    if (!isic4Data?.isic4_breakdown) return [];
-    return isic4Data.isic4_breakdown.filter((c) => c.isic2 === sectorIsic2);
+    if (!isic4Data?.breakdown) return [];
+    return isic4Data.breakdown.filter((c) => c.isic2 === sectorIsic2);
   };
 
   const formatNumber = (num) => {
@@ -515,21 +549,48 @@ function ProductionManufacturing({ language = 'fr' }) {
                             </div>
                           )}
                           {isic4Status === 'ready' && getIsic4ForSector(sector.isic).map((cls) => (
-                            <div key={cls.isic4} className="flex items-center justify-between text-xs">
-                              <span className="text-gray-700">
-                                <span className="font-mono font-semibold text-blue-700">{cls.isic4}</span>{' '}
-                                {cls.class_name}
-                              </span>
-                              <span className="text-gray-500 whitespace-nowrap ml-2">
-                                {cls.share_mva_estimated}%
-                              </span>
+                            <div key={cls.isic4} className="text-xs border-b border-blue-50 last:border-0 pb-1.5">
+                              <div className="flex items-center justify-between">
+                                <span className="text-gray-700">
+                                  <span className="font-mono font-semibold text-blue-700">{cls.isic4}</span>{' '}
+                                  {cls.class_name}
+                                </span>
+                                {isic4Data?.dataSource === 'estimated' && (
+                                  <span className="text-gray-500 whitespace-nowrap ml-2">
+                                    {cls.share_mva_estimated}%
+                                  </span>
+                                )}
+                              </div>
+                              {isic4Data?.dataSource === 'real' && cls.real && (
+                                <div className="mt-1 grid grid-cols-2 gap-x-3 gap-y-0.5 text-[10px] text-gray-500">
+                                  {cls.real.output_usd && (
+                                    <span>{language === 'fr' ? 'Production' : 'Output'} ({cls.real.output_usd.year}): ${formatNumber(cls.real.output_usd.value)}</span>
+                                  )}
+                                  {cls.real.imports_world_usd && (
+                                    <span>{language === 'fr' ? 'Importations' : 'Imports'} ({cls.real.imports_world_usd.year}): ${formatNumber(cls.real.imports_world_usd.value)}</span>
+                                  )}
+                                  {cls.real.exports_world_usd && (
+                                    <span>{language === 'fr' ? 'Exportations' : 'Exports'} ({cls.real.exports_world_usd.year}): ${formatNumber(cls.real.exports_world_usd.value)}</span>
+                                  )}
+                                  {cls.real.apparent_consumption_usd && (
+                                    <span>{language === 'fr' ? 'Conso. apparente' : 'Apparent consumption'} ({cls.real.apparent_consumption_usd.year}): ${formatNumber(cls.real.apparent_consumption_usd.value)}</span>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           ))}
-                          {isic4Status === 'ready' && (
+                          {isic4Status === 'ready' && isic4Data?.dataSource === 'real' && (
                             <p className="text-[10px] text-gray-400 italic pt-1">
                               {language === 'fr'
-                                ? 'Estimation de structure ISIC 4 chiffres (UNSD ISIC Rev.4), secteurs principaux uniquement, répartition indicative de la division UNIDO INDSTAT4.'
-                                : 'ISIC 4-digit structure estimate (UNSD ISIC Rev.4), main sectors only, indicative split of the UNIDO INDSTAT4 division.'}
+                                ? 'Données réelles UNIDO IDSB/INDSTAT, ISIC Rev.4 (2018-2024, dernière année disponible par indicateur).'
+                                : 'Real UNIDO IDSB/INDSTAT data, ISIC Rev.4 (2018-2024, latest available year per indicator).'}
+                            </p>
+                          )}
+                          {isic4Status === 'ready' && isic4Data?.dataSource === 'estimated' && (
+                            <p className="text-[10px] text-gray-400 italic pt-1">
+                              {language === 'fr'
+                                ? 'Estimation de structure ISIC 4 chiffres (UNSD ISIC Rev.4), secteurs principaux uniquement, répartition indicative de la division UNIDO INDSTAT4 (pays non couvert par les données réelles UNIDO IDSB/INDSTAT).'
+                                : 'ISIC 4-digit structure estimate (UNSD ISIC Rev.4), main sectors only, indicative split of the UNIDO INDSTAT4 division (country not covered by real UNIDO IDSB/INDSTAT data).'}
                             </p>
                           )}
                         </div>

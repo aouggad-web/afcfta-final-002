@@ -318,6 +318,68 @@ async def get_isic4_classification():
     }
 
 
+# =============================================================================
+# UNIDO IDSB + INDSTAT - Données réelles ISIC Rev.4 4 chiffres (2018-2024)
+# Source: UNIDO Statistics Data Portal (stat.unido.org)
+# - IDSB: Output, Imports World, Exports World, Apparent Consumption
+#   (UNIDO_DERIVED_ESTIMATE)
+# - INDSTAT: Establishments, Employees, Wages, Output, Value added, GFCF
+#   (OFFICIAL_STATISTICS)
+# Couvre 20 pays africains uniquement — voir /unido/idsb/countries.
+# =============================================================================
+
+
+@router.get("/unido/idsb/countries")
+async def get_unido_idsb_countries():
+    """Liste des pays couverts par les données réelles UNIDO IDSB/INDSTAT ISIC 4 chiffres."""
+    from etl.isic4_idsb_data import list_covered_countries
+
+    countries = list_covered_countries()
+    return {
+        "countries": countries,
+        "total": len(countries),
+        "years_covered": "2018-2024",
+        "source": "UNIDO Statistics Data Portal — IDSB + INDSTAT, ISIC Rev.4",
+    }
+
+
+@router.get("/unido/idsb/{country_iso3}")
+async def get_unido_idsb_country(country_iso3: str):
+    """
+    Données réelles UNIDO (IDSB + INDSTAT) au niveau ISIC Rev.4 4 chiffres
+    pour un pays couvert : production (output), importations mondiales,
+    exportations mondiales, consommation apparente, valeur ajoutée,
+    emplois, établissements — par code ISIC 4 chiffres, dernière année
+    disponible par indicateur (2018-2024).
+    """
+    from etl.isic4_idsb_data import get_country_isic4_summary, list_covered_countries
+
+    summary = get_country_isic4_summary(country_iso3)
+    if summary is None:
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                f"Aucune donnée UNIDO IDSB/INDSTAT disponible pour {country_iso3.upper()}. "
+                f"Pays couverts: {', '.join(list_covered_countries())}"
+            ),
+        )
+    return summary
+
+
+@router.get("/unido/idsb/{country_iso3}/{isic4_code}")
+async def get_unido_idsb_isic4_timeseries(country_iso3: str, isic4_code: str):
+    """Série temporelle (2018-2024) UNIDO IDSB/INDSTAT pour un pays et un code ISIC 4 chiffres."""
+    from etl.isic4_idsb_data import get_isic4_timeseries
+
+    timeseries = get_isic4_timeseries(country_iso3, isic4_code)
+    if timeseries is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Aucune donnée pour {country_iso3.upper()} / ISIC {isic4_code}",
+        )
+    return timeseries
+
+
 @router.get("/unido/{country_iso3}")
 async def get_unido_country_data(country_iso3: str):
     """
