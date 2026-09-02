@@ -10,8 +10,9 @@ Fichier fourni par l'utilisateur, exporté depuis le portail UNIDO :
   Establishments, Employees, Female employees, Wages and salaries, Output,
   Value added, Gross fixed capital formation. Nature: OFFICIAL_STATISTICS.
 
-Couverture: 21 pays africains, années 2018-2024 (filtré depuis la source
-d'origine 2005-2024 sur demande), niveau ISIC 4 chiffres (isic_level=4).
+Couverture : 20 pays africains (voir `list_covered_countries()`), années
+2018-2024 (filtré depuis la source d'origine 2005-2024 sur demande),
+niveau ISIC 4 chiffres (isic_level=4).
 
 Ce module charge et indexe le CSV compressé une seule fois (cache en
 mémoire) et expose des fonctions d'agrégation utilisées par les routes

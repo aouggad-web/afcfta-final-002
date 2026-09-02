@@ -185,7 +185,11 @@ function ProductionManufacturing({ language = 'fr' }) {
       return;
     }
     setExpandedSector(sectorIsic2);
-    if (isic4Status === 'ready' || isic4Status === 'loading') return;
+    // Only 'idle' warrants a fetch. 'ready'/'loading'/'no_data' are terminal
+    // for the current country (fetchUnidoData resets the status to 'idle'
+    // on any country change), so re-clicking a sector must not re-fire the
+    // request — especially the 404 that produced 'no_data'.
+    if (isic4Status !== 'idle') return;
     fetchIsic4Data();
   };
 
@@ -758,8 +762,8 @@ function Isic4DetailPanel({ sector, status, data, getRows, onRetry, formatNumber
 
           <p className="text-[10px] text-gray-400 italic pt-3">
             {language === 'fr'
-              ? 'Données réelles UNIDO IDSB/INDSTAT, ISIC Rev.4 (2018-2024, dernière année disponible par indicateur). Aucune valeur estimée ou inventée.'
-              : 'Real UNIDO IDSB/INDSTAT data, ISIC Rev.4 (2018-2024, latest available year per indicator). No estimated or invented values.'}
+              ? 'Sources UNIDO, ISIC Rev.4 (2018-2024, dernière année disponible par indicateur) : INDSTAT4 (statistiques officielles nationales) pour production/valeur ajoutée/emplois ; IDSB pour importations/exportations/consommation apparente, publiées par UNIDO comme estimations dérivées (UNIDO_DERIVED_ESTIMATE) et non comme relevés bruts. Aucune désagrégation locale ajoutée par cette application.'
+              : 'UNIDO sources, ISIC Rev.4 (2018-2024, latest available year per indicator): INDSTAT4 (official national statistics) for output/value added/employment; IDSB for imports/exports/apparent consumption, published by UNIDO as derived estimates (UNIDO_DERIVED_ESTIMATE) rather than raw observations. No local disaggregation added by this application.'}
           </p>
         </>
       )}
