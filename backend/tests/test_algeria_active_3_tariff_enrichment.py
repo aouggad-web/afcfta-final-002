@@ -55,11 +55,9 @@ def test_statuses_are_canonical_and_missing_preferences_fail_closed():
 
 def test_registered_line_counts_and_national_depths_match_runtime_data():
     expected = {
-        # Comptes alignés sur les crawls authentiques du 2026-08/09 (voir
-        # audits/AUDIT_CALCULATEUR_DONNEES_TARIFAIRES_2026-09-01.md ; EGY
-        # recouvert par egypt_customs_official_scraper, TUN re-crawl complet
-        # de Tarif Web 2026). Les sha256 associés sont vérifiés dans
-        # `test_runtime_dataset_hashes_match_the_source_records`.
+        # CRAWL D'AOÛT 2026 (re-crawl intégral des sources officielles) :
+        # EGY customs.gov.eg → 8 818 positions 10 chiffres (8 746 en juin) ;
+        # TUN Tarif Web douane.gov.tn → 17 542 positions 11 chiffres (17 512 en juin).
         "EGY": (8818, {10}),
         "MUS": (5619, {6}),
         "TUN": (17542, {10, 11}),

@@ -367,40 +367,34 @@ _FABRICATED_ZLECAF_MARKERS = {
 
 def test_tariffs_54_files_physically_clean_of_synthetic_zlecaf_markers(client):
     """Vérification EXHAUSTIVE post-assainissement (100 % des fichiers, 100 %
-    des lignes, pas un sondage) : les fichiers `backend/data/tariffs/*.json`
-    — chemin PRIORITY 2, servi par `tariff_data_service.py`, distinct des
+    des lignes, pas un sondage) : les 54 fichiers `backend/data/tariffs/*.json`
+    — chemin PRIORITY 2, servi par `tariff_data_service.py`, distinct des 53
     fichiers actifs `backend/data/crawled/*.json` (PRIORITY 1, dont GHA fait
     partie ; les deux jeux de fichiers ne se recouvrent pas) — ne portent plus
     AUCUN des 3 marqueurs fabriqués historiquement présents sur 100 % de leurs
-    lignes (`"ZLECAf"`, `"ZLECAf (produit normal)"`,
+    ~293 000 lignes (`"ZLECAf"`, `"ZLECAf (produit normal)"`,
     `"ZLECAf (produit sensible)"` — cf. branche
     `claude/tariffs-zlecaf-synthetic-cleanup`) : ni `zlecaf_rate`, ni
     `zlecaf_source`, ni `zlecaf_total_taxes` ne doivent plus exister sur
     aucune ligne. Aucun champ non-ZLECAf n'a été touché par ce nettoyage
     (dd_rate, vat_rate, taxes_detail, sous-positions, etc. strictement
     préservés — vérifié séparément par hash structurel avant/après lors du
-    nettoyage, hors périmètre de ce test qui porte sur l'état final).
-
-    Depuis l'audit P0 du 2026-09-01, 14 fichiers synthétiques `enhanced_v2`
-    + la copie DZA périmée ont été retirés du service (39 fichiers restants,
-    voir la précondition ci-dessous) : le total de lignes couvertes est donc
-    plus bas qu'avant ce retrait (~293 000 sur 54 fichiers), mais toujours
-    substantiel — le seuil ci-dessous est calé sur le total réel constaté
-    (206 311 lignes) avec une marge de sécurité."""
+    nettoyage, hors périmètre de ce test qui porte sur l'état final)."""
     import json
 
     # Réutilise DATA_DIR de tariff_data_service (source unique de vérité pour
     # ce chemin) plutôt qu'un chemin absolu codé en dur — robuste à tout
     # emplacement de checkout (CI, autre poste).
+    #
+    # P0-1 (audit 2026-09-01) : 54 → 39 fichiers — les 14 pays synthétiques
+    # enhanced_v2 (AGO COM DJI ERI LBY MDG MOZ MRT MWI SDN STP SYC ZMB ZWE)
+    # et la copie DZA périmée de juin 2026 (P0-2) ont été archivés hors
+    # service dans backend/data/archive/ — doctrine : aucune donnée
+    # estimée/synthétique servie.
     from services.tariff_data_service import DATA_DIR, tariff_service
 
     files = sorted(DATA_DIR.glob("*_tariffs.json"))
-    # Précondition alignée sur l'audit P0 du 2026-09-01 : 14 fichiers synthétiques
-    # `enhanced_v2` + la copie DZA périmée ont été retirés du service (voir
-    # backend/data/archive/synthetic_enhanced_v2/README.md et
-    # backend/data/archive/superseded/README.md). Le doctrine ZLECAf reste
-    # vérifié sur les 39 fichiers restants.
-    assert len(files) == 39, f"précondition invalidée : {len(files)} fichiers trouvés, 39 attendus"
+    assert len(files) == 39, f"précondition invalidée : {len(files)} fichiers trouvés, 39 attendus (54 - 14 synthétiques archivés P0-1 - 1 copie DZA périmée P0-2)"
 
     tariff_service.load()
 
@@ -429,7 +423,7 @@ def test_tariffs_54_files_physically_clean_of_synthetic_zlecaf_markers(client):
 
     assert (
         total_lines_checked > 200_000
-    ), f"précondition invalidée : seulement {total_lines_checked} lignes lues sur 39 fichiers"
+    ), f"précondition invalidée : seulement {total_lines_checked} lignes lues sur 39 fichiers (~206 300 attendues après archivage P0)"
     assert lines_with_any_zlecaf_key == 0, (
         f"{lines_with_any_zlecaf_key} ligne(s) sur {total_lines_checked} portent encore "
         f"une clé zlecaf_rate/zlecaf_source/zlecaf_total_taxes — nettoyage incomplet"

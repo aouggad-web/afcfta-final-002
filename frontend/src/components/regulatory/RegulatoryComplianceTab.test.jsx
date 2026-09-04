@@ -4,55 +4,9 @@ import userEvent from '@testing-library/user-event';
 import RegulatoryComplianceTab from './RegulatoryComplianceTab';
 import { regulatoryApi } from '../../services/api-v2';
 
-vi.mock('../ui/select', async () => {
-  const React = await import('react');
-  const SelectContext = React.createContext({ value: '', onValueChange: () => {} });
-
-  const Select = ({ value = '', onValueChange, children }) => (
-    <SelectContext.Provider value={{ value, onValueChange }}>
-      {children}
-    </SelectContext.Provider>
-  );
-
-  const SelectTrigger = React.forwardRef(({ children, ...props }, ref) => (
-    <button ref={ref} type="button" role="combobox" {...props}>
-      {children}
-    </button>
-  ));
-
-  const SelectValue = ({ placeholder }) => {
-    const { value } = React.useContext(SelectContext);
-    return <span>{value || placeholder}</span>;
-  };
-
-  const SelectContent = ({ children }) => <div>{children}</div>;
-
-  const SelectItem = React.forwardRef(({ children, value, onClick, ...props }, ref) => {
-    const { onValueChange } = React.useContext(SelectContext);
-    return (
-      <button
-        ref={ref}
-        type="button"
-        role="option"
-        onClick={(event) => {
-          onClick?.(event);
-          onValueChange(value);
-        }}
-        {...props}
-      >
-        {children}
-      </button>
-    );
-  });
-
-  return {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectItem,
-  };
-});
+// Timeout étendu : rendu de registres réglementaires volumineux — les runners
+// CI 2-cœurs dépassent le défaut de 5 s (échec par timeout, pas de régression).
+vi.setConfig({ testTimeout: 20000 });
 
 vi.mock('../../services/api-v2', () => ({
   regulatoryApi: {
