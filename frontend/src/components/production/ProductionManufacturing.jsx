@@ -10,6 +10,9 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 const CHART_COLORS = ['#3b82f6', '#2563eb', '#1d4ed8', '#1e40af', '#1e3a8a', '#60a5fa', '#93c5fd', '#bfdbfe'];
+// Paire catégorielle validée (imports vs exports) — voir skill dataviz, palette de référence slots 1/2.
+const ISIC4_IMPORTS_COLOR = '#3b82f6';
+const ISIC4_EXPORTS_COLOR = '#eb6834';
 
 function ProductionManufacturing({ language = 'fr' }) {
   const [selectedCountry, setSelectedCountry] = useState('MAR');
@@ -18,7 +21,7 @@ function ProductionManufacturing({ language = 'fr' }) {
   const [mvaRanking, setMvaRanking] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isic4Data, setIsic4Data] = useState(null);
-  const [isic4Status, setIsic4Status] = useState('idle'); // idle | loading | error | ready
+  const [isic4Status, setIsic4Status] = useState('idle'); // idle | loading | error | no_data | ready
   const [expandedSector, setExpandedSector] = useState(null);
   const isic4RequestCountry = useRef(null);
 
@@ -144,13 +147,33 @@ function ProductionManufacturing({ language = 'fr' }) {
     isic4RequestCountry.current = requestedCountry;
     setIsic4Status('loading');
     try {
-      const response = await axios.get(`${API}/production/unido/isic4/${requestedCountry}`);
+      // Uniquement les données réelles UNIDO IDSB/INDSTAT (2018-2024).
+      // Aucune estimation de repli : un pays hors couverture affiche
+      // explicitement "non disponible", plutôt qu'une donnée inventée.
+      const response = await axios.get(`${API}/production/unido/idsb/${requestedCountry}`);
       if (isic4RequestCountry.current !== requestedCountry) return; // stale response, country changed since
-      setIsic4Data(response.data);
+
+      const normalized = {
+        dataSource: 'real',
+        source: response.data.source,
+        breakdown: (response.data.sectors || []).map((s) => ({
+          isic4: s.isic4,
+          isic2: s.isic4?.slice(0, 2),
+          class_name: s.isic_description,
+          real: s.indicators,
+        })),
+      };
+
+      setIsic4Data(normalized);
       setIsic4Status('ready');
     } catch (error) {
-      console.error('Error fetching ISIC 4-digit breakdown:', error);
       if (isic4RequestCountry.current !== requestedCountry) return;
+      if (error?.response?.status === 404) {
+        setIsic4Data(null);
+        setIsic4Status('no_data');
+        return;
+      }
+      console.error('Error fetching ISIC 4-digit breakdown:', error);
       setIsic4Data(null);
       setIsic4Status('error');
     }
@@ -162,13 +185,17 @@ function ProductionManufacturing({ language = 'fr' }) {
       return;
     }
     setExpandedSector(sectorIsic2);
-    if (isic4Status === 'ready' || isic4Status === 'loading') return;
+    // Only 'idle' warrants a fetch. 'ready'/'loading'/'no_data' are terminal
+    // for the current country (fetchUnidoData resets the status to 'idle'
+    // on any country change), so re-clicking a sector must not re-fire the
+    // request — especially the 404 that produced 'no_data'.
+    if (isic4Status !== 'idle') return;
     fetchIsic4Data();
   };
 
   const getIsic4ForSector = (sectorIsic2) => {
-    if (!isic4Data?.isic4_breakdown) return [];
-    return isic4Data.isic4_breakdown.filter((c) => c.isic2 === sectorIsic2);
+    if (!isic4Data?.breakdown) return [];
+    return isic4Data.breakdown.filter((c) => c.isic2 === sectorIsic2);
   };
 
   const formatNumber = (num) => {
@@ -494,49 +521,21 @@ function ProductionManufacturing({ language = 'fr' }) {
                       <p className="text-xs text-blue-500 mt-2 underline">
                         {expandedSector === sector.isic ? (language === 'fr' ? 'Masquer le détail ISIC 4 chiffres' : 'Hide ISIC 4-digit detail') : (language === 'fr' ? 'Voir le détail ISIC 4 chiffres' : 'View ISIC 4-digit detail')}
                       </p>
-                      {expandedSector === sector.isic && (
-                        <div className="mt-3 pt-3 border-t border-blue-100 space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                          {isic4Status === 'loading' && (
-                            <p className="text-xs text-gray-500">{language === 'fr' ? 'Chargement...' : 'Loading...'}</p>
-                          )}
-                          {isic4Status === 'error' && (
-                            <div className="text-xs text-red-600 flex items-center justify-between gap-2">
-                              <span>{language === 'fr' ? 'Erreur lors du chargement du détail.' : 'Failed to load detail.'}</span>
-                              <button
-                                type="button"
-                                className="underline hover:no-underline"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  fetchIsic4Data();
-                                }}
-                              >
-                                {language === 'fr' ? 'Réessayer' : 'Retry'}
-                              </button>
-                            </div>
-                          )}
-                          {isic4Status === 'ready' && getIsic4ForSector(sector.isic).map((cls) => (
-                            <div key={cls.isic4} className="flex items-center justify-between text-xs">
-                              <span className="text-gray-700">
-                                <span className="font-mono font-semibold text-blue-700">{cls.isic4}</span>{' '}
-                                {cls.class_name}
-                              </span>
-                              <span className="text-gray-500 whitespace-nowrap ml-2">
-                                {cls.share_mva_estimated}%
-                              </span>
-                            </div>
-                          ))}
-                          {isic4Status === 'ready' && (
-                            <p className="text-[10px] text-gray-400 italic pt-1">
-                              {language === 'fr'
-                                ? 'Estimation de structure ISIC 4 chiffres (UNSD ISIC Rev.4), secteurs principaux uniquement, répartition indicative de la division UNIDO INDSTAT4.'
-                                : 'ISIC 4-digit structure estimate (UNSD ISIC Rev.4), main sectors only, indicative split of the UNIDO INDSTAT4 division.'}
-                            </p>
-                          )}
-                        </div>
-                      )}
                     </div>
                   ))}
                 </div>
+
+                {expandedSector && (
+                  <Isic4DetailPanel
+                    sector={unidoData.top_sectors.find((s) => s.isic === expandedSector)}
+                    status={isic4Status}
+                    data={isic4Data}
+                    getRows={() => getIsic4ForSector(expandedSector)}
+                    onRetry={fetchIsic4Data}
+                    formatNumber={formatNumber}
+                    language={language}
+                  />
+                )}
               </CardContent>
             </Card>
           )}
@@ -624,6 +623,148 @@ function ProductionManufacturing({ language = 'fr' }) {
               </div>
             </CardContent>
           </Card>
+        </>
+      )}
+    </div>
+  );
+}
+
+function Isic4DetailPanel({ sector, status, data, getRows, onRetry, formatNumber, language }) {
+  if (!sector) return null;
+
+  const rows = status === 'ready' ? getRows() : [];
+
+  const chartData = rows
+    .filter((r) => r.real?.imports_world_usd || r.real?.exports_world_usd)
+    .map((r) => ({
+      code: r.isic4,
+      label: r.class_name?.length > 24 ? `${r.class_name.slice(0, 24)}…` : r.class_name,
+      fullLabel: r.class_name,
+      imports: r.real?.imports_world_usd?.value ?? 0,
+      exports: r.real?.exports_world_usd?.value ?? 0,
+    }))
+    .sort((a, b) => b.imports + b.exports - (a.imports + a.exports))
+    .slice(0, 8);
+
+  const CustomTooltip = ({ active, payload }) => {
+    if (!active || !payload?.length) return null;
+    const p = payload[0]?.payload;
+    return (
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg px-3 py-2 text-xs">
+        <p className="font-semibold text-gray-800 mb-1">{p.code} — {p.fullLabel}</p>
+        {payload.map((entry) => (
+          <p key={entry.dataKey} style={{ color: entry.color }}>
+            {entry.name}: ${formatNumber(entry.value)}
+          </p>
+        ))}
+      </div>
+    );
+  };
+
+  return (
+    <div className="mt-6 pt-6 border-t border-blue-100" onClick={(e) => e.stopPropagation()}>
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="font-bold text-gray-800 flex items-center gap-2">
+          <span className="font-mono text-blue-700">ISIC {sector.isic}</span>
+          <span className="text-gray-400">·</span>
+          {sector.name}
+        </h4>
+        {status === 'ready' && (
+          <Badge variant="outline" className="border-green-500 text-green-700">
+            {language === 'fr' ? 'Données réelles UNIDO' : 'Real UNIDO data'}
+          </Badge>
+        )}
+      </div>
+
+      {status === 'loading' && (
+        <p className="text-sm text-gray-500 py-6 text-center">
+          <Loader2 className="w-4 h-4 inline animate-spin mr-2" />
+          {language === 'fr' ? 'Chargement...' : 'Loading...'}
+        </p>
+      )}
+
+      {status === 'error' && (
+        <div className="text-sm text-red-600 flex items-center justify-between gap-2 py-4">
+          <span>{language === 'fr' ? 'Erreur lors du chargement du détail.' : 'Failed to load detail.'}</span>
+          <button type="button" className="underline hover:no-underline" onClick={onRetry}>
+            {language === 'fr' ? 'Réessayer' : 'Retry'}
+          </button>
+        </div>
+      )}
+
+      {status === 'no_data' && (
+        <p className="text-sm text-gray-500 py-4 flex items-center gap-2">
+          <Info className="w-4 h-4 shrink-0" />
+          {language === 'fr'
+            ? "Aucune donnée ISIC 4 chiffres réelle disponible pour ce pays. L'application n'affiche pas d'estimation en l'absence de source vérifiable — voir /api/production/unido/idsb/countries pour la liste des pays couverts."
+            : 'No real ISIC 4-digit data available for this country. The app does not display an estimate in the absence of a verifiable source — see /api/production/unido/idsb/countries for covered countries.'}
+        </p>
+      )}
+
+      {status === 'ready' && rows.length === 0 && (
+        <p className="text-sm text-gray-500 py-4">
+          {language === 'fr' ? 'Aucune donnée ISIC 4 chiffres disponible pour ce secteur.' : 'No ISIC 4-digit data available for this sector.'}
+        </p>
+      )}
+
+      {status === 'ready' && rows.length > 0 && (
+        <>
+          {chartData.length > 0 && (
+            <div className="mb-4" style={{ width: '100%', height: Math.max(180, chartData.length * 36) }}>
+              <ResponsiveContainer>
+                <BarChart data={chartData} layout="vertical" margin={{ top: 4, right: 16, bottom: 4, left: 4 }}>
+                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e5e7eb" />
+                  <XAxis type="number" tick={{ fontSize: 11, fill: '#6b7280' }} tickFormatter={(v) => `$${formatNumber(v)}`} />
+                  <YAxis type="category" dataKey="label" tick={{ fontSize: 11, fill: '#374151' }} width={150} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Legend wrapperStyle={{ fontSize: 12 }} />
+                  <Bar dataKey="imports" name={language === 'fr' ? 'Importations' : 'Imports'} fill={ISIC4_IMPORTS_COLOR} radius={[0, 4, 4, 0]} />
+                  <Bar dataKey="exports" name={language === 'fr' ? 'Exportations' : 'Exports'} fill={ISIC4_EXPORTS_COLOR} radius={[0, 4, 4, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs border-collapse">
+              <thead>
+                <tr className="border-b border-gray-200 text-left text-gray-500">
+                  <th className="py-2 pr-3 font-medium">ISIC 4</th>
+                  <th className="py-2 pr-3 font-medium">{language === 'fr' ? 'Libellé' : 'Label'}</th>
+                  <th className="py-2 pr-3 font-medium text-right">{language === 'fr' ? 'Production' : 'Output'}</th>
+                  <th className="py-2 pr-3 font-medium text-right">{language === 'fr' ? 'Importations' : 'Imports'}</th>
+                  <th className="py-2 pr-3 font-medium text-right">{language === 'fr' ? 'Exportations' : 'Exports'}</th>
+                  <th className="py-2 font-medium text-right">{language === 'fr' ? 'Conso. apparente' : 'Apparent consumption'}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r) => (
+                  <tr key={r.isic4} className="border-b border-gray-100 hover:bg-blue-50/50">
+                    <td className="py-1.5 pr-3 font-mono text-blue-700">{r.isic4}</td>
+                    <td className="py-1.5 pr-3 text-gray-700">{r.class_name}</td>
+                    <td className="py-1.5 pr-3 text-right text-gray-600">
+                      {r.real?.output_usd ? `$${formatNumber(r.real.output_usd.value)} (${r.real.output_usd.year})` : '—'}
+                    </td>
+                    <td className="py-1.5 pr-3 text-right text-gray-600">
+                      {r.real?.imports_world_usd ? `$${formatNumber(r.real.imports_world_usd.value)} (${r.real.imports_world_usd.year})` : '—'}
+                    </td>
+                    <td className="py-1.5 pr-3 text-right text-gray-600">
+                      {r.real?.exports_world_usd ? `$${formatNumber(r.real.exports_world_usd.value)} (${r.real.exports_world_usd.year})` : '—'}
+                    </td>
+                    <td className="py-1.5 text-right text-gray-600">
+                      {r.real?.apparent_consumption_usd ? `$${formatNumber(r.real.apparent_consumption_usd.value)} (${r.real.apparent_consumption_usd.year})` : '—'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p className="text-[10px] text-gray-400 italic pt-3">
+            {language === 'fr'
+              ? 'Sources UNIDO, ISIC Rev.4 (2018-2024, dernière année disponible par indicateur) : INDSTAT4 (statistiques officielles nationales) pour production/valeur ajoutée/emplois ; IDSB pour importations/exportations/consommation apparente, publiées par UNIDO comme estimations dérivées (UNIDO_DERIVED_ESTIMATE) et non comme relevés bruts. Aucune désagrégation locale ajoutée par cette application.'
+              : 'UNIDO sources, ISIC Rev.4 (2018-2024, latest available year per indicator): INDSTAT4 (official national statistics) for output/value added/employment; IDSB for imports/exports/apparent consumption, published by UNIDO as derived estimates (UNIDO_DERIVED_ESTIMATE) rather than raw observations. No local disaggregation added by this application.'}
+          </p>
         </>
       )}
     </div>
