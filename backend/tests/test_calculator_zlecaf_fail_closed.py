@@ -365,21 +365,24 @@ _FABRICATED_ZLECAF_MARKERS = {
 }
 
 
-def test_tariffs_54_files_physically_clean_of_synthetic_zlecaf_markers(client):
+def test_tariffs_39_files_physically_clean_of_synthetic_zlecaf_markers(client):
     """Vérification EXHAUSTIVE post-assainissement (100 % des fichiers, 100 %
-    des lignes, pas un sondage) : les 54 fichiers `backend/data/tariffs/*.json`
-    — chemin PRIORITY 2, servi par `tariff_data_service.py`, distinct des 53
-    fichiers actifs `backend/data/crawled/*.json` (PRIORITY 1, dont GHA fait
-    partie ; les deux jeux de fichiers ne se recouvrent pas) — ne portent plus
-    AUCUN des 3 marqueurs fabriqués historiquement présents sur 100 % de leurs
-    ~293 000 lignes (`"ZLECAf"`, `"ZLECAf (produit normal)"`,
-    `"ZLECAf (produit sensible)"` — cf. branche
+    des lignes, pas un sondage) : les 39 fichiers `backend/data/tariffs/*.json`
+    restants après l'archivage P0 du 2026-09-01 (14 synthétiques `enhanced_v2`
+    + 1 copie DZA périmée retirés du service — cf. audit
+    `AUDIT_CALCULATEUR_DONNEES_TARIFAIRES_2026-09-01.md`) — chemin PRIORITY 2,
+    servi par `tariff_data_service.py`, distinct des fichiers actifs
+    `backend/data/crawled/*.json` (PRIORITY 1, dont GHA fait partie ; les deux
+    jeux de fichiers ne se recouvrent pas) — ne portent plus AUCUN des 3
+    marqueurs fabriqués historiquement présents (`"ZLECAf"`,
+    `"ZLECAf (produit normal)"`, `"ZLECAf (produit sensible)"` — cf. branche
     `claude/tariffs-zlecaf-synthetic-cleanup`) : ni `zlecaf_rate`, ni
     `zlecaf_source`, ni `zlecaf_total_taxes` ne doivent plus exister sur
-    aucune ligne. Aucun champ non-ZLECAf n'a été touché par ce nettoyage
-    (dd_rate, vat_rate, taxes_detail, sous-positions, etc. strictement
-    préservés — vérifié séparément par hash structurel avant/après lors du
-    nettoyage, hors périmètre de ce test qui porte sur l'état final)."""
+    aucune des ~206 300 lignes couvertes. Aucun champ non-ZLECAf n'a été
+    touché par ce nettoyage (dd_rate, vat_rate, taxes_detail, sous-positions,
+    etc. strictement préservés — vérifié séparément par hash structurel
+    avant/après lors du nettoyage, hors périmètre de ce test qui porte sur
+    l'état final)."""
     import json
 
     # Réutilise DATA_DIR de tariff_data_service (source unique de vérité pour
@@ -394,7 +397,10 @@ def test_tariffs_54_files_physically_clean_of_synthetic_zlecaf_markers(client):
     from services.tariff_data_service import DATA_DIR, tariff_service
 
     files = sorted(DATA_DIR.glob("*_tariffs.json"))
-    assert len(files) == 39, f"précondition invalidée : {len(files)} fichiers trouvés, 39 attendus (54 - 14 synthétiques archivés P0-1 - 1 copie DZA périmée P0-2)"
+    assert len(files) == 39, (
+        f"précondition invalidée : {len(files)} fichiers trouvés, 39 attendus "
+        "(54 - 14 synthétiques archivés P0-1 - 1 copie DZA périmée P0-2)"
+    )
 
     tariff_service.load()
 
