@@ -85,6 +85,20 @@ def list_covered_countries() -> List[str]:
     return sorted({r["country_iso3"] for r in _load_records()})
 
 
+def list_covered_countries_filtered(official_only: bool = False) -> List[str]:
+    """
+    Liste des pays couverts, optionally filtered.
+
+    Args:
+        official_only: If True, return only countries with OFFICIAL_STATISTICS data.
+                      If False, return all countries (including those with only estimates).
+    """
+    records = _load_records()
+    if official_only:
+        return sorted({r["country_iso3"] for r in records if r["data_nature"] == "OFFICIAL_STATISTICS"})
+    return sorted({r["country_iso3"] for r in records})
+
+
 def is_country_covered(country_iso3: str) -> bool:
     return country_iso3.upper() in list_covered_countries()
 

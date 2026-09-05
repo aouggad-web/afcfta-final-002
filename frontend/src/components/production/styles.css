@@ -1,0 +1,177 @@
+.production-module {
+  padding: 20px;
+  background: white;
+  min-height: 100vh;
+  color: #333;
+}
+
+.production-header {
+  margin-bottom: 30px;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 15px;
+}
+
+.production-header h1 {
+  font-size: 2em;
+  color: #667eea;
+  margin-bottom: 5px;
+}
+
+.production-header p {
+  color: #666;
+  font-size: 0.95em;
+}
+
+.production-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 30px;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 6px;
+}
+
+.production-controls label {
+  font-weight: 600;
+  color: #333;
+}
+
+.country-select,
+.country-loading,
+.country-error {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9em;
+  background: white;
+  color: #333;
+}
+
+.country-select {
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.country-select:hover {
+  border-color: #667eea;
+}
+
+.country-select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.country-loading {
+  color: #667eea;
+  font-size: 0.9em;
+}
+
+.country-error {
+  color: #d32f2f;
+  background: #ffebee;
+  border-color: #ffcdd2;
+}
+
+.production-content {
+  margin-top: 20px;
+}
+
+/* Light theme (default) */
+.theme-light .production-module {
+  background: white;
+  color: #333;
+}
+
+.theme-light .production-header {
+  border-bottom-color: #667eea;
+}
+
+.theme-light .production-header h1 {
+  color: #667eea;
+}
+
+.theme-light .production-header p {
+  color: #666;
+}
+
+.theme-light .production-controls {
+  background: #f9f9f9;
+}
+
+.theme-light .production-controls label {
+  color: #333;
+}
+
+.theme-light .country-select {
+  background: white;
+  color: #333;
+  border-color: #ccc;
+}
+
+/* Dark theme */
+.theme-dark .production-module {
+  background: #1e1e1e;
+  color: #e0e0e0;
+}
+
+.theme-dark .production-header {
+  border-bottom-color: #667eea;
+}
+
+.theme-dark .production-header h1 {
+  color: #85a0ff;
+}
+
+.theme-dark .production-header p {
+  color: #aaa;
+}
+
+.theme-dark .production-controls {
+  background: #2a2a2a;
+}
+
+.theme-dark .production-controls label {
+  color: #e0e0e0;
+}
+
+.theme-dark .country-select {
+  background: #333;
+  color: #e0e0e0;
+  border-color: #404040;
+}
+
+.theme-dark .country-select:hover {
+  border-color: #667eea;
+}
+
+/* Fallback for system preference when no app theme is set */
+@media (prefers-color-scheme: dark) {
+  .production-module {
+    background: #1e1e1e;
+    color: #e0e0e0;
+  }
+
+  .production-header h1 {
+    color: #85a0ff;
+  }
+
+  .production-header p {
+    color: #aaa;
+  }
+
+  .production-controls {
+    background: #2a2a2a;
+  }
+
+  .production-controls label {
+    color: #e0e0e0;
+  }
+
+  .country-select {
+    background: #333;
+    color: #e0e0e0;
+    border-color: #404040;
+  }
+}
