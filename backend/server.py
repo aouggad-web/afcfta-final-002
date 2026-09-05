@@ -20,13 +20,18 @@ load_dotenv()
 
 # Initialize database on startup, cleanup on shutdown
 async def init_database():
-    """Initialize MongoDB connection if available"""
+    """Initialize MongoDB connection if available.
+
+    The route handlers (user_auth, billing, contact) call `await db.<coll>...`,
+    so the injected database must be an async Motor database, not a synchronous
+    pymongo one.
+    """
     try:
-        from pymongo import MongoClient
+        from motor.motor_asyncio import AsyncIOMotorClient
         mongo_url = os.getenv("MONGO_URL", "mongodb://localhost:27017")
-        client = MongoClient(mongo_url, serverSelectionTimeoutMS=2000)
-        # Test connection
-        client.admin.command('ping')
+        client = AsyncIOMotorClient(mongo_url, serverSelectionTimeoutMS=2000)
+        # Test connection (Motor's command is awaitable)
+        await client.admin.command("ping")
         db = client.get_database(os.getenv("MONGO_DB", "afcfta"))
         return db, client
     except Exception as e:
