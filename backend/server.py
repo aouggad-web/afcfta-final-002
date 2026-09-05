@@ -17,21 +17,6 @@ from dotenv import load_dotenv
 # Charge les variables d'environnement depuis backend/.env
 load_dotenv()
 
-# Importe tous les routeurs de modules
-from routes import (
-    billing,
-    contact,
-    insurance,
-    regulatory_compliance,
-    regulatory_master_registry,
-    regulatory_qa,
-    reports,
-    strategic_intelligence,
-    user_auth,
-    banking_enhancements,
-    production,
-)
-
 # Crée l'app FastAPI
 app = FastAPI(
     title="AFCFTA Trade & Production Platform",
@@ -51,24 +36,46 @@ cors_config = {
     "allow_headers": ["*"],
 }
 
-if os.getenv("ENVIRONMENT") == "production":
+# Check pour APP_ENV (utilisé par le système de déploiement)
+if os.getenv("APP_ENV") == "production":
     # En production, limiter à l'origine du domaine
     cors_config["allow_origins"] = [os.getenv("FRONTEND_URL", "https://example.com")]
 
 app.add_middleware(CORSMiddleware, **cors_config)
 
-# Enregistre tous les routeurs
-app.include_router(user_auth.router)
-app.include_router(billing.router)
-app.include_router(contact.router)
-app.include_router(insurance.router)
-app.include_router(regulatory_compliance.router)
-app.include_router(regulatory_master_registry.router)
-app.include_router(regulatory_qa.router)
-app.include_router(reports.router)
-app.include_router(strategic_intelligence.router)
-app.include_router(banking_enhancements.router)
+# Production router (auto-contained, no dependencies)
+from routes import production
 app.include_router(production.router)
+
+# Legacy routers mounted under /api prefix
+# These routers declare prefixes like /auth, /billing, etc.
+# Mounting them under /api means they become /api/auth, /api/billing, etc.
+from routes import (
+    billing,
+    contact,
+    insurance,
+    regulatory_compliance,
+    regulatory_master_registry,
+    regulatory_qa,
+    reports,
+    strategic_intelligence,
+    user_auth,
+    banking_enhancements,
+)
+
+api_router = FastAPI()
+api_router.include_router(user_auth.router)
+api_router.include_router(billing.router)
+api_router.include_router(contact.router)
+api_router.include_router(insurance.router)
+api_router.include_router(regulatory_compliance.router)
+api_router.include_router(regulatory_master_registry.router)
+api_router.include_router(regulatory_qa.router)
+api_router.include_router(reports.router)
+api_router.include_router(strategic_intelligence.router)
+api_router.include_router(banking_enhancements.router)
+
+app.mount("/api", api_router)
 
 
 # Health check endpoint

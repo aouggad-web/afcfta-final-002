@@ -11,12 +11,19 @@ import '../styles/isic4-table.css';
  * - Formatage des nombres avec unités
  * - Affichage de la source d'données (OFFICIAL_STATISTICS vs UNIDO_DERIVED_ESTIMATE)
  */
+const getBackendUrl = () => {
+  const viteUrl = import.meta.env.VITE_BACKEND_URL;
+  if (viteUrl) return viteUrl;
+  return '';
+};
+
 export default function ISIC4DetailTable({ countryISO3 }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [timeseriesByISIC, setTimeseriesByISIC] = useState({});
   const [expandedRows, setExpandedRows] = useState(new Set());
+  const timeseriesControllersRef = React.useRef({});
 
   // Charge les données ISIC4 du pays
   useEffect(() => {
@@ -27,8 +34,15 @@ export default function ISIC4DetailTable({ countryISO3 }) {
     setExpandedRows(new Set());
     setTimeseriesByISIC({});
 
+    // Cancel all pending timeseries requests when country changes
+    Object.values(timeseriesControllersRef.current).forEach(controller => {
+      controller.abort();
+    });
+    timeseriesControllersRef.current = {};
+
     const controller = new AbortController();
-    fetch(`/api/production/isic4/${countryISO3.toUpperCase()}`, { signal: controller.signal })
+    const backendUrl = getBackendUrl();
+    fetch(`${backendUrl}/api/production/isic4/${countryISO3.toUpperCase()}`, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`Erreur: ${res.status}`);
         return res.json();
@@ -57,9 +71,17 @@ export default function ISIC4DetailTable({ countryISO3 }) {
         delete updated[isic4Code];
         return updated;
       });
+      // Cancel the timeseries request for this code
+      if (timeseriesControllersRef.current[isic4Code]) {
+        timeseriesControllersRef.current[isic4Code].abort();
+        delete timeseriesControllersRef.current[isic4Code];
+      }
     } else {
       const controller = new AbortController();
-      fetch(`/api/production/isic4/${countryISO3.toUpperCase()}/${isic4Code}`, { signal: controller.signal })
+      timeseriesControllersRef.current[isic4Code] = controller;
+
+      const backendUrl = getBackendUrl();
+      fetch(`${backendUrl}/api/production/isic4/${countryISO3.toUpperCase()}/${isic4Code}`, { signal: controller.signal })
         .then((res) => {
           if (!res.ok) throw new Error(`Erreur: ${res.status}`);
           return res.json();
@@ -73,6 +95,9 @@ export default function ISIC4DetailTable({ countryISO3 }) {
           if (err.name !== 'AbortError') {
             console.error('Erreur chargement série:', err);
           }
+        })
+        .finally(() => {
+          delete timeseriesControllersRef.current[isic4Code];
         });
     }
   };

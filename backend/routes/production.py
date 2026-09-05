@@ -16,12 +16,18 @@ from etl.isic4_idsb_data import (
     list_covered_countries,
     is_country_covered,
 )
-from services.production_capacity_service import (
-    get_capacity,
-    get_country_profile,
-    get_continental_producers,
-    list_tracked_products,
-)
+
+# Production capacity service is optional (depends on production_data.py)
+try:
+    from services.production_capacity_service import (
+        get_capacity,
+        get_country_profile,
+        get_continental_producers,
+        list_tracked_products,
+    )
+    HAS_CAPACITY_SERVICE = True
+except (ImportError, ModuleNotFoundError):
+    HAS_CAPACITY_SERVICE = False
 
 router = APIRouter(prefix="/api/production", tags=["production"])
 
@@ -123,77 +129,85 @@ def get_isic4_timeseries_data(
 # CAPACITÉ DE PRODUCTION ENDPOINTS (FAO/USGS/UNIDO)
 # ═══════════════════════════════════════════════════════════════════════════════
 
+if HAS_CAPACITY_SERVICE:
+    @router.get(
+        "/capacity",
+        summary="Capacité de production — code HS + pays",
+        description="Retourne capacité réelle, classement continental, part africaine, "
+        "et scénarios d'intégration ZLECAf pour un code HS et un pays.",
+    )
+    def get_production_capacity(
+        country_iso3: str = Query(..., description="Code ISO3 du pays"),
+        hs_code: str = Query(..., description="Code HS (ex: 0901, 080390)"),
+    ):
+        """
+        GET /api/production/capacity?country_iso3=ETH&hs_code=0901
 
-@router.get(
-    "/capacity",
-    summary="Capacité de production — code HS + pays",
-    description="Retourne capacité réelle, classement continental, part africaine, "
-    "et scénarios d'intégration ZLECAf pour un code HS et un pays.",
-)
-def get_production_capacity(
-    country_iso3: str = Query(..., description="Code ISO3 du pays"),
-    hs_code: str = Query(..., description="Code HS (ex: 0901, 080390)"),
-):
-    """
-    GET /api/production/capacity?country_iso3=ETH&hs_code=0901
+        Retourne :
+        - Capacité réelle du pays (dernière année)
+        - CAGR 2021-2024
+        - Classement continental & part africaine
+        - Top 5 producteurs
+        - Scénarios : conservateur / ZLECAf / transformation locale
+        - Caveats de couverture & commodité
+        """
+        return get_capacity(country_iso3, hs_code)
 
-    Retourne :
-    - Capacité réelle du pays (dernière année)
-    - CAGR 2021-2024
-    - Classement continental & part africaine
-    - Top 5 producteurs
-    - Scénarios : conservateur / ZLECAf / transformation locale
-    - Caveats de couverture & commodité
-    """
-    return get_capacity(country_iso3, hs_code)
+    @router.get(
+        "/country-profile/{country_iso3}",
+        summary="Profil pays — tous produits avec capacité de production",
+        description="Retourne tous les produits que le pays produit réellement selon "
+        "FAO/USGS/UNIDO, trié par part africaine décroissante.",
+    )
+    def get_country_production_profile(
+        country_iso3: str = Path(..., description="Code ISO3"),
+        top_n: int = Query(20, ge=1, le=100, description="Nombre de top produits à retourner (1-100)"),
+    ):
+        """GET /api/production/country-profile/ETH?top_n=20"""
+        return get_country_profile(country_iso3, top_n)
 
+    @router.get(
+        "/continental-producers/{hs_code}",
+        summary="Top producteurs africains — par code HS",
+        description="Retourne les 10 principaux producteurs africains pour une commodité donnée.",
+    )
+    def get_continental_producers_data(
+        hs_code: str = Path(..., description="Code HS (ex: 0901)"),
+    ):
+        """GET /api/production/continental-producers/0901"""
+        return get_continental_producers(hs_code)
 
-@router.get(
-    "/country-profile/{country_iso3}",
-    summary="Profil pays — tous produits avec capacité de production",
-    description="Retourne tous les produits que le pays produit réellement selon "
-    "FAO/USGS/UNIDO, trié par part africaine décroissante.",
-)
-def get_country_production_profile(
-    country_iso3: str = Path(..., description="Code ISO3"),
-    top_n: int = Query(20, ge=1, le=100, description="Nombre de top produits à retourner (1-100)"),
-):
-    """GET /api/production/country-profile/ETH?top_n=20"""
-    return get_country_profile(country_iso3, top_n)
+    @router.get(
+        "/tracked-products",
+        summary="Univers de produits traçables — 330+ codes HS",
+        description="Retourne tous les codes HS mappés avec données FAO/USGS/UNIDO réelles.",
+    )
+    def list_tracked_products_data():
+        """
+        GET /api/production/tracked-products
 
-
-@router.get(
-    "/continental-producers/{hs_code}",
-    summary="Top producteurs africains — par code HS",
-    description="Retourne les 10 principaux producteurs africains pour une commodité donnée.",
-)
-def get_continental_producers_data(
-    hs_code: str = Path(..., description="Code HS (ex: 0901)"),
-):
-    """GET /api/production/continental-producers/0901"""
-    return get_continental_producers(hs_code)
-
-
-@router.get(
-    "/tracked-products",
-    summary="Univers de produits traçables — 330+ codes HS",
-    description="Retourne tous les codes HS mappés avec données FAO/USGS/UNIDO réelles.",
-)
-def list_tracked_products_data():
-    """
-    GET /api/production/tracked-products
-
-    Retourne [
-        {"hs_code": "0901", "dataset": "agri", "commodity": "Coffee"},
-        ...
-    ]
-    """
-    return {
-        "products": list_tracked_products(),
-        "total": len(list_tracked_products()),
-        "sources": [
-            "FAO FAOSTAT (agriculture)",
-            "UNIDO INDSTAT4 (manufacturier)",
-            "USGS/EIA/OPEC (mines & hydrocarbures)",
-        ],
-    }
+        Retourne [
+            {"hs_code": "0901", "dataset": "agri", "commodity": "Coffee"},
+            ...
+        ]
+        """
+        return {
+            "products": list_tracked_products(),
+            "total": len(list_tracked_products()),
+            "sources": [
+                "FAO FAOSTAT (agriculture)",
+                "UNIDO INDSTAT4 (manufacturier)",
+                "USGS/EIA/OPEC (mines & hydrocarbures)",
+            ],
+        }
+else:
+    # Capacity service not available - return 503
+    @router.get("/capacity")
+    @router.get("/country-profile/{country_iso3}")
+    @router.get("/continental-producers/{hs_code}")
+    @router.get("/tracked-products")
+    def capacity_service_unavailable():
+        raise HTTPException(
+            status_code=503,
+            detail="Production capacity service not available (missing data files)",
+        )
