@@ -1,0 +1,298 @@
+import React, { useState, useEffect } from 'react';
+import '../styles/isic4-table.css';
+
+/**
+ * Composant ISIC4DetailTable
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Affiche les données UNIDO ISIC Rev.4 dans un tableau responsive avec :
+ * - Scroll horizontal si trop de colonnes
+ * - Colonnes figées (ISIC4, description) pour contexte pendant scroll
+ * - Adaptabilité au nombre d'indicateurs par secteur
+ * - Formatage des nombres avec unités
+ * - Affichage de la source d'données (OFFICIAL_STATISTICS vs UNIDO_DERIVED_ESTIMATE)
+ */
+export default function ISIC4DetailTable({ countryISO3 }) {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedISIC4, setSelectedISIC4] = useState(null);
+  const [timeseries, setTimeseries] = useState(null);
+  const [expandedRows, setExpandedRows] = useState(new Set());
+
+  // Charge les données ISIC4 du pays
+  useEffect(() => {
+    if (!countryISO3) return;
+
+    setLoading(true);
+    setError(null);
+
+    fetch(`/api/production/isic4/${countryISO3.toUpperCase()}`)
+      .then((res) => {
+        if (!res.ok) throw new Error(`Erreur: ${res.status}`);
+        return res.json();
+      })
+      .then((json) => {
+        setData(json);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [countryISO3]);
+
+  // Charge la série temporelle quand un secteur est sélectionné
+  const handleRowExpand = (isic4Code) => {
+    if (expandedRows.has(isic4Code)) {
+      expandedRows.delete(isic4Code);
+      setExpandedRows(new Set(expandedRows));
+      setSelectedISIC4(null);
+      setTimeseries(null);
+    } else {
+      fetch(`/api/production/isic4/${countryISO3.toUpperCase()}/${isic4Code}`)
+        .then((res) => res.json())
+        .then((json) => {
+          setSelectedISIC4(isic4Code);
+          setTimeseries(json);
+          expandedRows.add(isic4Code);
+          setExpandedRows(new Set(expandedRows));
+        })
+        .catch((err) => console.error('Erreur chargement série:', err));
+    }
+  };
+
+  if (loading) {
+    return <div className="isic4-loading">⏳ Chargement données ISIC4...</div>;
+  }
+
+  if (error) {
+    return <div className="isic4-error">❌ {error}</div>;
+  }
+
+  if (!data || !data.sectors || data.sectors.length === 0) {
+    return <div className="isic4-empty">Aucune donnée ISIC4 pour ce pays</div>;
+  }
+
+  // Collecte tous les indicateurs uniques
+  const allIndicators = new Set();
+  data.sectors.forEach((sector) => {
+    Object.keys(sector.indicators || {}).forEach((ind) => allIndicators.add(ind));
+  });
+  const indicatorsList = Array.from(allIndicators).sort();
+
+  const formatValue = (value, unit) => {
+    if (value === undefined || value === null) return '—';
+    if (unit === 'percent') return `${value.toFixed(1)}%`;
+    if (unit === 'USD') {
+      if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(2)}B USD`;
+      if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M USD`;
+      return `${value.toLocaleString('fr-FR')} USD`;
+    }
+    if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(2)}M ${unit}`;
+    if (value >= 1_000) return `${(value / 1_000).toFixed(1)}k ${unit}`;
+    return `${value.toLocaleString('fr-FR')} ${unit}`;
+  };
+
+  const getDataNatureBadge = (dataNature) => {
+    if (dataNature === 'OFFICIAL_STATISTICS') {
+      return <span className="badge badge-official">✓ Stats officielles</span>;
+    }
+    if (dataNature === 'UNIDO_DERIVED_ESTIMATE') {
+      return <span className="badge badge-estimate">≈ Estimation UNIDO</span>;
+    }
+    return <span className="badge badge-unknown">?</span>;
+  };
+
+  return (
+    <div className="isic4-container">
+      <div className="isic4-header">
+        <h2>Secteurs manufacturiers — {data.country_name} ({data.country_iso3})</h2>
+        <div className="isic4-metadata">
+          <span className="meta-item">
+            <strong>{data.total_sectors}</strong> secteurs
+          </span>
+          <span className="meta-item">
+            Période : {data.years_covered}
+          </span>
+          <span className="meta-item source">
+            Source : <em>{data.source}</em>
+          </span>
+        </div>
+      </div>
+
+      {/* Légende des badges */}
+      <div className="isic4-legend">
+        <span className="legend-item">
+          <span className="badge badge-official">✓ Stats officielles</span> = OFFICIAL_STATISTICS
+        </span>
+        <span className="legend-item">
+          <span className="badge badge-estimate">≈ Estimation</span> = UNIDO_DERIVED_ESTIMATE
+        </span>
+      </div>
+
+      {/* Tableau principale avec scroll horizontal */}
+      <div className="isic4-table-wrapper">
+        <table className="isic4-table">
+          <thead>
+            <tr>
+              {/* Colonnes figées */}
+              <th className="sticky-col col-isic4">Code ISIC</th>
+              <th className="sticky-col col-description">Description secteur</th>
+
+              {/* Colonnes indicateurs (scrollable) */}
+              {indicatorsList.map((indicator) => (
+                <th key={indicator} className="col-indicator">
+                  <div className="indicator-header">
+                    <span className="indicator-name">{formatIndicatorLabel(indicator)}</span>
+                  </div>
+                </th>
+              ))}
+              <th className="col-expand"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.sectors.map((sector, idx) => (
+              <React.Fragment key={sector.isic4 || idx}>
+                {/* Ligne principale */}
+                <tr
+                  className={`sector-row ${expandedRows.has(sector.isic4) ? 'expanded' : ''}`}
+                  onClick={() => handleRowExpand(sector.isic4)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {/* Colonnes figées */}
+                  <td className="sticky-col col-isic4">{sector.isic4}</td>
+                  <td className="sticky-col col-description">{sector.description}</td>
+
+                  {/* Indicateurs */}
+                  {indicatorsList.map((indicator) => {
+                    const indData = sector.indicators[indicator];
+                    return (
+                      <td key={indicator} className="col-indicator">
+                        {indData ? (
+                          <div className="cell-value">
+                            <div className="value">
+                              {formatValue(indData.value, indData.unit)}
+                            </div>
+                            <div className="year">{indData.year}</div>
+                            {getDataNatureBadge(indData.data_nature)}
+                          </div>
+                        ) : (
+                          <span className="cell-empty">—</span>
+                        )}
+                      </td>
+                    );
+                  })}
+
+                  {/* Bouton expand */}
+                  <td className="col-expand">
+                    <button
+                      className={`expand-btn ${expandedRows.has(sector.isic4) ? 'open' : ''}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRowExpand(sector.isic4);
+                      }}
+                      title={
+                        expandedRows.has(sector.isic4)
+                          ? 'Fermer série temporelle'
+                          : 'Ouvrir série temporelle 2018-2024'
+                      }
+                    >
+                      {expandedRows.has(sector.isic4) ? '▼' : '▶'}
+                    </button>
+                  </td>
+                </tr>
+
+                {/* Ligne d'expansion : série temporelle */}
+                {expandedRows.has(sector.isic4) && timeseries && (
+                  <tr className="timeseries-row">
+                    <td colSpan={2 + indicatorsList.length + 1} className="timeseries-cell">
+                      <TimeseriesChart timeseries={timeseries} />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pied de page */}
+      <div className="isic4-footer">
+        <p>
+          💡 Cliquez sur une ligne pour voir la série temporelle complète 2018-2024 du secteur.
+          Les données sont issues directement du portail UNIDO (IDSB + INDSTAT, ISIC Rev.4).
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Composant TimeseriesChart
+// ─────────────────────────────────────────────────────────────────────────────
+
+function TimeseriesChart({ timeseries }) {
+  if (!timeseries || !timeseries.series) return null;
+
+  return (
+    <div className="timeseries-chart">
+      <h4>Série temporelle : {timeseries.isic_description}</h4>
+      <div className="series-list">
+        {Object.entries(timeseries.series).map(([indicator, years]) => (
+          <div key={indicator} className="series-item">
+            <h5>{formatIndicatorLabel(indicator)}</h5>
+            <table className="series-table">
+              <thead>
+                <tr>
+                  <th>Année</th>
+                  <th>Valeur</th>
+                  <th>Source</th>
+                </tr>
+              </thead>
+              <tbody>
+                {years.map((y, idx) => (
+                  <tr key={idx}>
+                    <td>{y.year}</td>
+                    <td>{y.value.toLocaleString('fr-FR')}</td>
+                    <td>
+                      <span
+                        className={
+                          y.data_nature === 'OFFICIAL_STATISTICS'
+                            ? 'badge badge-official'
+                            : 'badge badge-estimate'
+                        }
+                      >
+                        {y.data_nature === 'OFFICIAL_STATISTICS' ? '✓ Officiel' : '≈ Estimation'}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Utilitaires
+// ─────────────────────────────────────────────────────────────────────────────
+
+function formatIndicatorLabel(indicator) {
+  const labels = {
+    output_usd: 'Production (USD)',
+    imports_world_usd: 'Imports (USD)',
+    exports_world_usd: 'Exports (USD)',
+    apparent_consumption_usd: 'Consommation apparente (USD)',
+    establishments: 'Établissements',
+    employees: 'Salariés',
+    female_employees: 'Femmes salariées',
+    wages_salaries_usd: 'Masse salariale (USD)',
+    output_usd_official: 'Production (USD)',
+    value_added_usd: 'Valeur ajoutée (USD)',
+    gross_fixed_capital_formation_usd: 'FBCF (USD)',
+  };
+  return labels[indicator] || indicator;
+}
