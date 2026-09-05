@@ -1,0 +1,9 @@
+{
+ "schema_version": "1.0",
+ "country": "RWA",
+ "as_of": "2026-09-06",
+ "provenance": {
+  "source": "backend/data/RWA_tariffs.json (PARTIAL)",
+  "canonical_sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656"
+ }
+}

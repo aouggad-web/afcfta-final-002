@@ -1,115 +1,67 @@
 {
-  "schema_version": "1.0",
-  "country": "RWA",
-  "as_of": "2026-07-25",
-  "excise_rates": [
-    {
-      "record_id": "RWA-EXCISE-BEER-LOCAL-RAWMAT",
-      "legal_product_description": "Beer manufactured from local raw materials, excluding water, constituting at least 70% of its weight.",
-      "normalized_product_description": "beer from local raw materials",
-      "rate": "40%",
-      "rate_basis": "ad valorem",
-      "effective_from": "2025-05-27",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-MININJUST-OG-2025-05-29",
-      "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annex, item 5",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": [],
-      "notes": "hs_codes_explicit intentionally left empty (per Copilot review on PR #312): HS 2203.00.10/2203.00.90 cover both this and RWA-EXCISE-BEER-OTHER at a different rate (40% vs 65%); the distinguishing criterion (≥70% local raw material content by weight) is not representable by HS code alone, and applying both entries to the same HS line would double-count."
-    },
-    {
-      "record_id": "RWA-EXCISE-BEER-OTHER",
-      "legal_product_description": "Other beer.",
-      "normalized_product_description": "other beer",
-      "rate": "65%",
-      "rate_basis": "ad valorem",
-      "effective_from": "2025-05-27",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-MININJUST-OG-2025-05-29",
-      "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annex, item 6",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": [],
-      "notes": "hs_codes_explicit intentionally left empty (per Copilot review on PR #312): same HS codes as RWA-EXCISE-BEER-LOCAL-RAWMAT at a different rate; the distinguishing criterion (≥70% local raw material content) is not representable by HS code alone."
-    },
-    {
-      "record_id": "RWA-EXCISE-WINE-OTHER",
-      "legal_product_description": "Other wine.",
-      "normalized_product_description": "wine (other than locally produced)",
-      "rate": "70% of value, capped at FRW 40,000 per litre",
-      "rate_basis": "ad valorem capped by specific ceiling per litre",
-      "effective_from": "2025-05-27",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-MININJUST-OG-2025-05-29",
-      "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annex, item 8",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["2204.10.00", "2204.21.00", "2204.22.00", "2204.29.00", "2205.10.00", "2205.90.00"]
-    },
-    {
-      "record_id": "RWA-EXCISE-CIGARETTES",
-      "legal_product_description": "Cigarettes.",
-      "normalized_product_description": "cigarettes",
-      "rate": "36% of the value of a pack of 20 cigarettes, plus FRW 230 per pack",
-      "rate_basis": "ad valorem plus specific per pack",
-      "effective_from": "2025-05-27",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-MININJUST-OG-2025-05-29",
-      "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annex, item 13",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["2402.20.10", "2402.20.90", "2402.90.00"]
-    },
-    {
-      "record_id": "RWA-EXCISE-PETROL",
-      "legal_product_description": "Petrol (other than aviation fuel).",
-      "normalized_product_description": "petrol",
-      "rate": "FRW 183 per litre",
-      "rate_basis": "specific duty per litre",
-      "effective_from": "2025-05-27",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-MININJUST-OG-2025-05-29",
-      "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annex, item 17",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["2710.12.20"]
-    },
-    {
-      "record_id": "RWA-EXCISE-GASOIL",
-      "legal_product_description": "Gas oil (diesel).",
-      "normalized_product_description": "gas oil / diesel",
-      "rate": "FRW 150 per litre",
-      "rate_basis": "specific duty per litre",
-      "effective_from": "2025-05-27",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-MININJUST-OG-2025-05-29",
-      "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annex, item 18",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["2710.19.31"]
-    },
-    {
-      "record_id": "RWA-EXCISE-VEHICLES-UNDER-1500CC",
-      "legal_product_description": "Motor vehicles with engine capacity below 1500 cc.",
-      "normalized_product_description": "small motor vehicles (<1500cc)",
-      "rate": "5%",
-      "rate_basis": "ad valorem",
-      "effective_from": "2025-05-27",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-MININJUST-OG-2025-05-29",
-      "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annex, item 20",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": ["8703.21.90"]
-    }
-  ],
-  "notes": "Law nº 011/2025 of 27/05/2025 (Official Gazette n° Special of 29/05/2025) repealed and replaced the previous excise duty law (Law nº 050/2023). Its Annex lists approximately 27 excisable product/service categories with HS codes (juices, sodas, flavoured syrups, beer, wine, spirits, cigarettes, e-cigarettes, fuels, lubricants, motor vehicles by engine size, cosmetics, telecom airtime, money transfer fees, etc.). Only 7 representative items were transcribed and verified this cycle — NOT exhaustive."
+ "schema_version": "1.0",
+ "country": "RWA",
+ "as_of": "2026-09-06",
+ "excise_rates": [
+  {
+   "record_id": "RWA-EXCISE_EXCIS-30_0",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2017-07-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "supersedes_record_id": null,
+   "hs_codes_explicit": [
+    "22030010",
+    "22030090"
+   ],
+   "legal_reference": "East African Community — EAC Common External Tariff 2022 — colonne accise",
+   "source_id": "RWA-CANONICAL-TARIFF",
+   "verification_status": "VERIFIED_RUNTIME_DATASET"
+  },
+  {
+   "record_id": "RWA-EXCISE_EXCIS-36_0",
+   "rate": "36.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2017-07-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "supersedes_record_id": null,
+   "hs_codes_explicit": [
+    "24021000",
+    "24022010",
+    "24022090",
+    "24029000"
+   ],
+   "legal_reference": "East African Community — EAC Common External Tariff 2022 — colonne accise",
+   "source_id": "RWA-CANONICAL-TARIFF",
+   "verification_status": "VERIFIED_RUNTIME_DATASET"
+  },
+  {
+   "record_id": "RWA-EXCISE_EXCIS-40_0",
+   "rate": "40.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2017-07-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "supersedes_record_id": null,
+   "hs_codes_explicit": [
+    "22082000",
+    "22083000",
+    "22084000",
+    "22085000",
+    "22086000",
+    "22087000",
+    "22089010",
+    "22089090"
+   ],
+   "legal_reference": "East African Community — EAC Common External Tariff 2022 — colonne accise",
+   "source_id": "RWA-CANONICAL-TARIFF",
+   "verification_status": "VERIFIED_RUNTIME_DATASET"
+  }
+ ],
+ "provenance": {
+  "source": "backend/data/RWA_tariffs.json (PARTIAL)",
+  "canonical_sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656"
+ }
 }

@@ -1,70 +1,28 @@
 {
-  "schema_version": "1.0",
-  "country": "RWA",
-  "as_of": "2026-07-25",
-  "vat_rates": [
-    {
-      "record_id": "RWA-VAT-RATE-STANDARD-20230914",
-      "legal_product_description": "The rate of value added tax is 18% for goods and services supplied in Rwanda or imported, other than those zero-rated.",
-      "normalized_product_description": "standard rate of value added tax on goods and services supplied in Rwanda or imported",
-      "rate": "18%",
-      "rate_basis": "value of taxable goods or services",
-      "effective_from": "2023-09-14",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-RRA-LAW-049-2023-VAT",
-      "legal_reference": "Law nº 049/2023 of 05/09/2023 establishing the value added tax, Article 4(b)",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": []
-    }
-  ],
-  "vat_exemptions": [],
-  "vat_zero_rated": [
-    {
-      "record_id": "RWA-VAT-ZERO-EXPORTS-GOODS",
-      "legal_product_description": "Exported goods and their auxiliary services, including those already exempted.",
-      "normalized_product_description": "exported goods and auxiliary services",
-      "rate": "0%",
-      "rate_basis": "value of taxable goods or services",
-      "effective_from": "2023-09-14",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-RRA-LAW-049-2023-VAT",
-      "legal_reference": "Law nº 049/2023 of 05/09/2023, Article 4(a) and Article 7(1)(a)",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": []
-    },
-    {
-      "record_id": "RWA-VAT-ZERO-EXPORTS-SERVICES",
-      "legal_product_description": "Exported services.",
-      "normalized_product_description": "exported services",
-      "rate": "0%",
-      "rate_basis": "value of taxable goods or services",
-      "effective_from": "2023-09-14",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-RRA-LAW-049-2023-VAT",
-      "legal_reference": "Law nº 049/2023 of 05/09/2023, Article 4(a) and Article 7(1)(b)",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": []
-    },
-    {
-      "record_id": "RWA-VAT-ZERO-MINERALS-DOMESTIC",
-      "legal_product_description": "Minerals sold on the domestic market.",
-      "normalized_product_description": "minerals sold domestically",
-      "rate": "0%",
-      "rate_basis": "value of taxable goods or services",
-      "effective_from": "2023-09-14",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "RWA-RRA-LAW-049-2023-VAT",
-      "legal_reference": "Law nº 049/2023 of 05/09/2023, Article 7(1)(c)",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": []
-    }
-  ]
+ "schema_version": "1.0",
+ "country": "RWA",
+ "as_of": "2026-09-06",
+ "vat_rates": [
+  {
+   "record_id": "RWA-VAT-RATE-STANDARD-20230914",
+   "legal_product_description": "The rate of value added tax is 18% for goods and services supplied in Rwanda or imported, other than those zero-rated.",
+   "normalized_product_description": "standard rate of value added tax on goods and services supplied in Rwanda or imported",
+   "rate": "18%",
+   "rate_basis": "value of taxable goods or services",
+   "effective_from": "2023-09-14",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "supersedes_record_id": null,
+   "source_id": "RWA-RRA-LAW-049-2023-VAT",
+   "legal_reference": "Law nº 049/2023 of 05/09/2023 establishing the value added tax, Article 4(b)",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "hs_codes_explicit": []
+  }
+ ],
+ "vat_exemptions": [],
+ "vat_zero_rated": [],
+ "provenance": {
+  "source": "backend/data/RWA_tariffs.json (PARTIAL)",
+  "canonical_sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656"
+ }
 }
