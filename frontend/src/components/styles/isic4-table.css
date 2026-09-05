@@ -153,11 +153,13 @@
 .col-isic4 {
   width: 80px;
   min-width: 80px;
+  left: 0;
 }
 
 .col-description {
   width: 200px;
   min-width: 200px;
+  left: 80px;
 }
 
 .isic4-table .sticky-col {
@@ -509,6 +511,10 @@
     border-bottom-color: #667eea;
   }
 
+  .isic4-header h2 {
+    color: #e0e0e0;
+  }
+
   .isic4-metadata {
     color: #aaa;
   }
@@ -527,6 +533,7 @@
 
   .sticky-col {
     background: #2a2a2a;
+    color: #e0e0e0;
   }
 
   .isic4-table tbody tr:hover .sticky-col {
@@ -545,14 +552,32 @@
   .timeseries-chart {
     background: #2a2a2a;
     border-color: #404040;
+    color: #e0e0e0;
+  }
+
+  .timeseries-chart h4 {
+    color: #85a0ff;
   }
 
   .series-item {
     background: #333;
+    color: #e0e0e0;
+  }
+
+  .series-item h5 {
+    color: #e0e0e0;
+  }
+
+  .series-table {
+    color: #e0e0e0;
   }
 
   .series-table thead {
     background: #404040;
+  }
+
+  .series-table th {
+    color: #85a0ff;
   }
 
   .series-table th,
@@ -567,6 +592,11 @@
   .isic4-footer {
     border-top-color: #404040;
     color: #aaa;
+  }
+
+  .isic4-legend {
+    background: #2a2a2a;
+    color: #e0e0e0;
   }
 
   .cell-value .value {

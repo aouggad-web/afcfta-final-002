@@ -15,8 +15,7 @@ export default function ISIC4DetailTable({ countryISO3 }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedISIC4, setSelectedISIC4] = useState(null);
-  const [timeseries, setTimeseries] = useState(null);
+  const [timeseriesByISIC, setTimeseriesByISIC] = useState({});
   const [expandedRows, setExpandedRows] = useState(new Set());
 
   // Charge les données ISIC4 du pays
@@ -25,8 +24,11 @@ export default function ISIC4DetailTable({ countryISO3 }) {
 
     setLoading(true);
     setError(null);
+    setExpandedRows(new Set());
+    setTimeseriesByISIC({});
 
-    fetch(`/api/production/isic4/${countryISO3.toUpperCase()}`)
+    const controller = new AbortController();
+    fetch(`/api/production/isic4/${countryISO3.toUpperCase()}`, { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`Erreur: ${res.status}`);
         return res.json();
@@ -36,9 +38,13 @@ export default function ISIC4DetailTable({ countryISO3 }) {
         setLoading(false);
       })
       .catch((err) => {
-        setError(err.message);
-        setLoading(false);
+        if (err.name !== 'AbortError') {
+          setError(err.message);
+          setLoading(false);
+        }
       });
+
+    return () => controller.abort();
   }, [countryISO3]);
 
   // Charge la série temporelle quand un secteur est sélectionné
@@ -46,18 +52,28 @@ export default function ISIC4DetailTable({ countryISO3 }) {
     if (expandedRows.has(isic4Code)) {
       expandedRows.delete(isic4Code);
       setExpandedRows(new Set(expandedRows));
-      setSelectedISIC4(null);
-      setTimeseries(null);
+      setTimeseriesByISIC((prev) => {
+        const updated = { ...prev };
+        delete updated[isic4Code];
+        return updated;
+      });
     } else {
-      fetch(`/api/production/isic4/${countryISO3.toUpperCase()}/${isic4Code}`)
-        .then((res) => res.json())
+      const controller = new AbortController();
+      fetch(`/api/production/isic4/${countryISO3.toUpperCase()}/${isic4Code}`, { signal: controller.signal })
+        .then((res) => {
+          if (!res.ok) throw new Error(`Erreur: ${res.status}`);
+          return res.json();
+        })
         .then((json) => {
-          setSelectedISIC4(isic4Code);
-          setTimeseries(json);
+          setTimeseriesByISIC((prev) => ({ ...prev, [isic4Code]: json }));
           expandedRows.add(isic4Code);
           setExpandedRows(new Set(expandedRows));
         })
-        .catch((err) => console.error('Erreur chargement série:', err));
+        .catch((err) => {
+          if (err.name !== 'AbortError') {
+            console.error('Erreur chargement série:', err);
+          }
+        });
     }
   };
 
@@ -82,15 +98,16 @@ export default function ISIC4DetailTable({ countryISO3 }) {
 
   const formatValue = (value, unit) => {
     if (value === undefined || value === null) return '—';
-    if (unit === 'percent') return `${value.toFixed(1)}%`;
-    if (unit === 'USD') {
+    const normalizedUnit = unit === 'current_USD' ? 'USD' : unit;
+    if (normalizedUnit === 'percent') return `${value.toFixed(1)}%`;
+    if (normalizedUnit === 'USD') {
       if (value >= 1_000_000_000) return `${(value / 1_000_000_000).toFixed(2)}B USD`;
       if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M USD`;
       return `${value.toLocaleString('fr-FR')} USD`;
     }
-    if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(2)}M ${unit}`;
-    if (value >= 1_000) return `${(value / 1_000).toFixed(1)}k ${unit}`;
-    return `${value.toLocaleString('fr-FR')} ${unit}`;
+    if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(2)}M ${normalizedUnit}`;
+    if (value >= 1_000) return `${(value / 1_000).toFixed(1)}k ${normalizedUnit}`;
+    return `${value.toLocaleString('fr-FR')} ${normalizedUnit}`;
   };
 
   const getDataNatureBadge = (dataNature) => {
@@ -203,10 +220,10 @@ export default function ISIC4DetailTable({ countryISO3 }) {
                 </tr>
 
                 {/* Ligne d'expansion : série temporelle */}
-                {expandedRows.has(sector.isic4) && timeseries && (
+                {expandedRows.has(sector.isic4) && timeseriesByISIC[sector.isic4] && (
                   <tr className="timeseries-row">
                     <td colSpan={2 + indicatorsList.length + 1} className="timeseries-cell">
-                      <TimeseriesChart timeseries={timeseries} />
+                      <TimeseriesChart timeseries={timeseriesByISIC[sector.isic4]} />
                     </td>
                   </tr>
                 )}

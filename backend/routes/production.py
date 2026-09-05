@@ -7,7 +7,7 @@ Endpoints pour exposer :
   - Classements continentaux et scénarios d'intégration ZLECAf
 """
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Path, Query
 from typing import Optional, Dict, List
 
 from etl.isic4_idsb_data import (
@@ -32,13 +32,27 @@ router = APIRouter(prefix="/api/production", tags=["production"])
 
 
 @router.get(
+    "/isic4/countries",
+    summary="Liste des pays couverts UNIDO",
+    description="Retourne la liste ISO3 des pays ayant des données ISIC4.",
+)
+def list_isic4_countries():
+    """GET /api/production/isic4/countries"""
+    return {
+        "countries": list_covered_countries(),
+        "count": len(list_covered_countries()),
+        "source": "UNIDO IDSB + INDSTAT (2018-2024, ISIC Rev.4 4-digit class)",
+    }
+
+
+@router.get(
     "/isic4/{country_iso3}",
     summary="Données ISIC Rev.4 par pays — UNIDO IDSB + INDSTAT",
     description="Retourne tous les secteurs ISIC 4 chiffres pour un pays avec "
     "dernière année disponible par indicateur. Données : output, imports, exports, "
     "apparent consumption (IDSB), establishments, employees, wages, value added (INDSTAT).",
 )
-def get_isic4_country_data(country_iso3: str = Query(..., description="Code ISO3 du pays")):
+def get_isic4_country_data(country_iso3: str = Path(..., description="Code ISO3 du pays")):
     """
     GET /api/production/isic4/{country_iso3}
 
@@ -84,8 +98,8 @@ def get_isic4_country_data(country_iso3: str = Query(..., description="Code ISO3
     description="Retourne la série complète 2018-2024 pour un secteur ISIC4 et un pays donnés.",
 )
 def get_isic4_timeseries_data(
-    country_iso3: str = Query(..., description="Code ISO3"),
-    isic4_code: str = Query(..., description="Code ISIC 4 chiffres (ex: 1010, 2411)"),
+    country_iso3: str = Path(..., description="Code ISO3"),
+    isic4_code: str = Path(..., description="Code ISIC 4 chiffres (ex: 1010, 2411)"),
 ):
     """
     GET /api/production/isic4/{country_iso3}/{isic4_code}
@@ -103,20 +117,6 @@ def get_isic4_timeseries_data(
             detail=f"Pas de données pour ISIC {isic4_code} en {country_iso3}",
         )
     return timeseries
-
-
-@router.get(
-    "/isic4/countries",
-    summary="Liste des pays couverts UNIDO",
-    description="Retourne la liste ISO3 des pays ayant des données ISIC4.",
-)
-def list_isic4_countries():
-    """GET /api/production/isic4/countries"""
-    return {
-        "countries": list_covered_countries(),
-        "count": len(list_covered_countries()),
-        "source": "UNIDO IDSB + INDSTAT (2018-2024, ISIC Rev.4 4-digit class)",
-    }
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -155,8 +155,8 @@ def get_production_capacity(
     "FAO/USGS/UNIDO, trié par part africaine décroissante.",
 )
 def get_country_production_profile(
-    country_iso3: str = Query(..., description="Code ISO3"),
-    top_n: int = Query(20, description="Nombre de top produits à retourner"),
+    country_iso3: str = Path(..., description="Code ISO3"),
+    top_n: int = Query(20, ge=1, le=100, description="Nombre de top produits à retourner (1-100)"),
 ):
     """GET /api/production/country-profile/ETH?top_n=20"""
     return get_country_profile(country_iso3, top_n)
@@ -168,7 +168,7 @@ def get_country_production_profile(
     description="Retourne les 10 principaux producteurs africains pour une commodité donnée.",
 )
 def get_continental_producers_data(
-    hs_code: str = Query(..., description="Code HS (ex: 0901)"),
+    hs_code: str = Path(..., description="Code HS (ex: 0901)"),
 ):
     """GET /api/production/continental-producers/0901"""
     return get_continental_producers(hs_code)
