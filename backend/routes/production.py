@@ -14,6 +14,7 @@ from etl.isic4_idsb_data import (
     get_country_isic4_summary,
     get_isic4_timeseries,
     list_covered_countries,
+    list_covered_countries_filtered,
     is_country_covered,
 )
 
@@ -48,9 +49,10 @@ def list_isic4_countries(
     """GET /api/production/isic4/countries?include_estimates=true
 
     Retourne les pays couverts par UNIDO IDSB/INDSTAT.
-    Inclut par défaut les pays avec données officielles ET estimées.
+    - include_estimates=true (défaut): tous les pays avec données officielles ET estimées
+    - include_estimates=false: pays avec données officielles uniquement
     """
-    countries = list_covered_countries()
+    countries = list_covered_countries_filtered(official_only=not include_estimates)
     return {
         "countries": countries,
         "count": len(countries),

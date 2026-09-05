@@ -10,6 +10,7 @@ Démarrage :
 
 import os
 from datetime import datetime
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
@@ -17,11 +18,55 @@ from dotenv import load_dotenv
 # Charge les variables d'environnement depuis backend/.env
 load_dotenv()
 
-# Crée l'app FastAPI
+# Initialize database on startup, cleanup on shutdown
+async def init_database():
+    """Initialize MongoDB connection if available"""
+    try:
+        from pymongo import MongoClient
+        mongo_url = os.getenv("MONGO_URL", "mongodb://localhost:27017")
+        client = MongoClient(mongo_url, serverSelectionTimeoutMS=2000)
+        # Test connection
+        client.admin.command('ping')
+        db = client.get_database(os.getenv("MONGO_DB", "afcfta"))
+        return db, client
+    except Exception as e:
+        print(f"⚠️  MongoDB connection failed: {e}")
+        return None, None
+
+async def shutdown_database(client):
+    """Close MongoDB connection"""
+    if client:
+        try:
+            client.close()
+        except Exception as e:
+            print(f"Error closing MongoDB: {e}")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Initialize database
+    db, mongo_client = await init_database()
+
+    # Inject database into routers that need it
+    if db:
+        from routes import user_auth, billing, contact
+        user_auth.set_database(db)
+        billing.set_database(db)
+        contact.set_database(db)
+        print("✅ Database initialized and injected into routers")
+    else:
+        print("⚠️  Database not available; auth/billing/contact endpoints will return 503")
+
+    yield
+
+    # Shutdown: Close database
+    await shutdown_database(mongo_client)
+
+# Crée l'app FastAPI avec lifespan
 app = FastAPI(
     title="AFCFTA Trade & Production Platform",
     description="API pour la plateforme commerciale africaine et les statistiques de production",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 # Configuration CORS — accès depuis le frontend (localhost:5000 en dev)

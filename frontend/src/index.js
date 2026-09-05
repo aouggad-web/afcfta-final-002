@@ -2,28 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import AfcftaSidebar from './components/AfcftaSidebar';
 import { Production } from './components/production';
+import { AuthProvider } from './context/AuthContext';
+import AuthModal from './components/auth/AuthModal';
+import FinanceTab from './components/finance/FinanceTab';
+import ContactTab from './components/contact/ContactTab';
+import OpportunityReportTab from './components/reports/OpportunityReportTab';
+import BusinessAtlasModule from './components/tools/BusinessAtlasModule';
+import RegulatoryComplianceTab from './components/regulatory/RegulatoryComplianceTab';
 import './styles/index.css';
 
-// Simple Auth Context for basic user state management
-const AuthContext = React.createContext(null);
-
-function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-
-  const logout = () => setUser(null);
-
-  return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
-}
-
-function useAuth() {
-  return React.useContext(AuthContext) || { user: null, setUser: () => {}, logout: () => {} };
-}
-
-// Placeholder components for other modules that exist in the codebase
+// Placeholder for modules not yet implemented
 const ModulePlaceholder = ({ name }) => (
   <div style={{ padding: '40px', textAlign: 'center' }}>
     <h2>{name}</h2>
@@ -35,7 +23,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('production');
   const [language, setLanguage] = useState(() => localStorage.getItem('language') || 'fr');
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
-  const { user } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.className = `theme-${theme}`;
@@ -58,26 +46,28 @@ function App() {
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'production':
-        return <Production />;
+      case 'dashboard':
+        return <ModulePlaceholder name="Tableau de bord" />;
       case 'calculator':
         return <ModulePlaceholder name="Calculateur ZLECAf" />;
       case 'stats':
         return <ModulePlaceholder name="Statistiques Commerciales" />;
+      case 'production':
+        return <Production />;
       case 'logistics':
         return <ModulePlaceholder name="Logistique et Transport" />;
       case 'banking':
-        return <ModulePlaceholder name="Finance et Banque" />;
+        return <FinanceTab />;
       case 'tools':
-        return <ModulePlaceholder name="Outils" />;
+        return <BusinessAtlasModule />;
       case 'roo':
-        return <ModulePlaceholder name="Règles d'Origine" />;
+        return <RegulatoryComplianceTab />;
       case 'profiles':
         return <ModulePlaceholder name="Profils Pays" />;
       case 'reports':
-        return <ModulePlaceholder name="Opportunités" />;
+        return <OpportunityReportTab />;
       case 'contact':
-        return <ModulePlaceholder name="Contact" />;
+        return <ContactTab />;
       default:
         return <ModulePlaceholder name={activeTab} />;
     }
@@ -91,10 +81,16 @@ function App() {
         language={language}
         theme={theme}
         onThemeToggle={toggleTheme}
+        onOpenAuth={() => setAuthModalOpen(true)}
       />
       <main className="app-content">
         {renderContent()}
       </main>
+      <AuthModal
+        open={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        language={language}
+      />
     </div>
   );
 }

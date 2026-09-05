@@ -23,6 +23,7 @@ export default function ISIC4DetailTable({ countryISO3 }) {
   const [error, setError] = useState(null);
   const [timeseriesByISIC, setTimeseriesByISIC] = useState({});
   const [expandedRows, setExpandedRows] = useState(new Set());
+  const [loadingByISIC, setLoadingByISIC] = useState({});
   const timeseriesControllersRef = React.useRef({});
 
   // Charge les données ISIC4 du pays
@@ -77,8 +78,12 @@ export default function ISIC4DetailTable({ countryISO3 }) {
         delete timeseriesControllersRef.current[isic4Code];
       }
     } else {
+      // Suppress duplicate requests: if already loading, don't start another
+      if (loadingByISIC[isic4Code]) return;
+
       const controller = new AbortController();
       timeseriesControllersRef.current[isic4Code] = controller;
+      setLoadingByISIC((prev) => ({ ...prev, [isic4Code]: true }));
 
       const backendUrl = getBackendUrl();
       fetch(`${backendUrl}/api/production/isic4/${countryISO3.toUpperCase()}/${isic4Code}`, { signal: controller.signal })
@@ -87,9 +92,12 @@ export default function ISIC4DetailTable({ countryISO3 }) {
           return res.json();
         })
         .then((json) => {
-          setTimeseriesByISIC((prev) => ({ ...prev, [isic4Code]: json }));
-          expandedRows.add(isic4Code);
-          setExpandedRows(new Set(expandedRows));
+          // Only update if this is still the current controller for this code
+          if (timeseriesControllersRef.current[isic4Code] === controller) {
+            setTimeseriesByISIC((prev) => ({ ...prev, [isic4Code]: json }));
+            expandedRows.add(isic4Code);
+            setExpandedRows(new Set(expandedRows));
+          }
         })
         .catch((err) => {
           if (err.name !== 'AbortError') {
@@ -97,7 +105,15 @@ export default function ISIC4DetailTable({ countryISO3 }) {
           }
         })
         .finally(() => {
-          delete timeseriesControllersRef.current[isic4Code];
+          // Only delete the controller if it's still the one we created
+          if (timeseriesControllersRef.current[isic4Code] === controller) {
+            delete timeseriesControllersRef.current[isic4Code];
+          }
+          setLoadingByISIC((prev) => {
+            const updated = { ...prev };
+            delete updated[isic4Code];
+            return updated;
+          });
         });
     }
   };
