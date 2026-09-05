@@ -85,6 +85,47 @@ SUPPORTED_JURISDICTIONS: Dict[str, JurisdictionConfig] = {
 }
 
 
+def _discover_jurisdiction_configs() -> Dict[str, JurisdictionConfig]:
+    """Auto-découverte des juridictions déclarées par data/{slug}/jurisdiction_config.json.
+
+    Permet d'ajouter une juridiction (pays) sans modifier ce module : le builder
+    backend/scripts/build_jurisdiction_files.py génère les fichiers fiscaux +
+    le registre + cette déclaration de configuration.
+    """
+    import json as _json
+
+    discovered: Dict[str, JurisdictionConfig] = {}
+    data_root = _ROOT / "data"
+    if not data_root.is_dir():
+        return discovered
+    for slug_dir in sorted(data_root.iterdir()):
+        cfg_path = slug_dir / "jurisdiction_config.json"
+        if not cfg_path.is_file():
+            continue
+        try:
+            decl = _json.loads(cfg_path.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        iso3 = str(decl.get("iso3", "")).upper()
+        if not iso3 or iso3 in SUPPORTED_JURISDICTIONS:
+            continue
+        discovered[iso3] = JurisdictionConfig(
+            iso3=iso3,
+            fiscal_data_dir=slug_dir,
+            legal_overrides_path=slug_dir / "legal_overrides.json",
+            gazette_register_path=slug_dir / decl.get(
+                "gazette_register", f"{iso3.lower()}_gazette_register.json"
+            ),
+            default_currency=decl.get("currency", "USD"),
+            levy_tables=tuple((t, t) for t in decl.get("levy_tables", [])),
+            general_levy_tables=frozenset(decl.get("general_levy_tables", [])),
+        )
+    return discovered
+
+
+SUPPORTED_JURISDICTIONS.update(_discover_jurisdiction_configs())
+
+
 @lru_cache(maxsize=None)
 def _resources(iso3: str):
     config = SUPPORTED_JURISDICTIONS[iso3]
