@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.0",
+  "country": "UGA",
+  "as_of": "2026-07-25",
+  "excise_rates": [
+    {
+      "record_id": "UGA-EXCISE-CIGARETTES-SOFTCAP-LOCAL",
+      "legal_product_description": "Cigarettes, soft cap, locally manufactured",
+      "normalized_product_description": "locally manufactured soft cap cigarettes",
+      "rate": "Ushs. 55,000 per 1000 sticks",
+      "rate_basis": "specific duty per 1000 sticks",
+      "effective_from": "2023-12-31",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "UGA-URA-EXCISE-DUTY-ACT-2014",
+      "legal_reference": "Excise Duty Act, Cap. 336, Section 3(1), Schedule 2, Part I, item 1(a)(i)",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "UGA-EXCISE-CIGARETTES-SOFTCAP-IMPORTED",
+      "legal_product_description": "Cigarettes, soft cap, imported",
+      "normalized_product_description": "imported soft cap cigarettes",
+      "rate": "Ushs. 75,000 per 1000 sticks",
+      "rate_basis": "specific duty per 1000 sticks",
+      "effective_from": "2023-12-31",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "UGA-URA-EXCISE-DUTY-ACT-2014",
+      "legal_reference": "Excise Duty Act, Cap. 336, Section 3(1), Schedule 2, Part I, item 1(a)(ii)",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "UGA-EXCISE-BEER-MALT",
+      "legal_product_description": "Malt beer",
+      "normalized_product_description": "malt beer",
+      "rate": "60% or Ushs. 2,050 per litre, whichever is higher",
+      "rate_basis": "ad valorem or specific per litre, whichever higher",
+      "effective_from": "2023-12-31",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "UGA-URA-EXCISE-DUTY-ACT-2014",
+      "legal_reference": "Excise Duty Act, Cap. 336, Section 3(1), Schedule 2, Part I, item 2(a)",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "UGA-EXCISE-SPIRITS-IMPORTED-RAW",
+      "legal_product_description": "Undenatured spirits made from imported raw materials",
+      "normalized_product_description": "spirits from imported raw materials",
+      "rate": "100% or Ushs. 2,500 per litre, whichever is higher",
+      "rate_basis": "ad valorem or specific per litre, whichever higher",
+      "effective_from": "2023-12-31",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "UGA-URA-EXCISE-DUTY-ACT-2014",
+      "legal_reference": "Excise Duty Act, Cap. 336, Section 3(1), Schedule 2, Part I, item 3(b)",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    },
+    {
+      "record_id": "UGA-EXCISE-NONALCOHOLIC-BEVERAGES",
+      "legal_product_description": "Non-alcoholic beverages not including fruit or vegetable juices",
+      "normalized_product_description": "non-alcoholic beverages excluding juices",
+      "rate": "12% or Ushs. 250 per litre, whichever is higher",
+      "rate_basis": "ad valorem or specific per litre, whichever higher",
+      "effective_from": "2023-12-31",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "UGA-URA-EXCISE-DUTY-ACT-2014",
+      "legal_reference": "Excise Duty Act, Cap. 336, Section 3(1), Schedule 2, Part I, item 5(a)",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ],
+  "notes": "Schedule 2 to the Excise Duty Act covers many more categories (wine, other spirits, fuels, mobile money and airtime, motor vehicle registration, sugar, etc.) than transcribed here; only 5 representative items were captured and verified this cycle. Not exhaustive."
+}

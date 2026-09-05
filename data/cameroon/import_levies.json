@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "country": "CMR",
+  "as_of": "2026-07-25",
+  "centimes_additionnels_communaux": [
+    {
+      "record_id": "CMR-CAC-TVA-20210101",
+      "legal_product_description": "Centimes additionnels communaux : majoration de 10 % assise sur le montant de la Taxe sur la Valeur Ajoutée. Inclus au taux général, applicable aux biens et/ou services locaux et aux biens importés.",
+      "normalized_product_description": "communal additional centimes: 10% surcharge on the amount of value-added tax.",
+      "rate": "10%",
+      "rate_basis": "10% du montant de la TVA due (et non de la valeur en douane). Combiné au taux général de 17,5 %, le taux effectif de TVA ressort à 19,25 %.",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (2) : « Les centimes additionnels communaux inclus au taux général s'appliquent aux biens et/ou services locaux et aux biens importés. » Taux effectif de 19,25 % confirmé par l'arrêté d'application relatif à la retenue à la source (« au taux de 19,25% pour la TVA »), reproduit au même Code.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [],
+      "notes": "Assiette distincte des prélèvements ad valorem sur valeur en douane : le CAC porte sur le montant de TVA, pas sur la valeur du bien. Non branché sur DEFAULT_LEVY_TABLES du moteur, dont toutes les entrées calculent rate × customs_value ; un branchement correct exige une table de prélèvements propre au Cameroun (voir data/sources/cameroon/README.md)."
+    }
+  ],
+  "other_import_levies": []
+}

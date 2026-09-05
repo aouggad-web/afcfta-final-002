@@ -1,0 +1,4 @@
+- [Replit dev preview debugging](replit-dev-preview-debugging.md) — $REPLIT_DEV_DOMAIN returns empty to curl; use localhost:5000 for ground truth, and a colored-element screenshot to inspect real rendered geometry.
+- [Canvas preview width & mobile stats tables](canvas-iframe-and-responsive.md) — canvas = fixed 1920px iframe so media queries never fire there ("tiny/tangled" = zoom). Mobile stats tables = separate JSX cards toggled via Tailwind md:hidden, not CSS table→block.
+- [Reliable country-level data sources](country-data-sources.md) — use REAL_COUNTRY_DATA + GAI + trade constants; country-profile CSVs are stubs, AI profile 500s w/o key, inflation/unemployment/HDI-world-rank exist nowhere (null, never fabricate).
+- [react-leaflet marker clicks](react-leaflet-marker-clicks.md) — CircleMarker eventHandlers.click silently dies (v5 + React 19 + StrictMode); open detail views via a <Popup> button with React onClick, like the Air/Corridor maps.

@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "country": "MUS",
+  "as_of": "2026-07-29",
+  "sources": [
+    {
+      "source_id": "MUS-WITS-MFN-RUNTIME-20260705",
+      "official_title": "WITS / UNCTAD-TRAINS MFN applied tariff extract",
+      "institution": "World Bank WITS / UNCTAD-TRAINS",
+      "legal_date": null,
+      "url": null,
+      "sha256": "05df3901374610d771a9f1862be814e16cdb7ae566fd60627bd9e15dc5d2a2e2",
+      "verification_status": "PARTIAL_RUNTIME_DATASET",
+      "registry_path": "backend/data/crawled/MUS_tariffs.json",
+      "notes": "Empreinte du fichier runtime SH6 ; ne constitue pas le tarif national intégré MRA."
+    },
+    {
+      "source_id": "MUS-MRA-CUSTOMS-CHARGES-20260729",
+      "official_title": "Customs Charges — Calculation of Custom Charges",
+      "institution": "Mauritius Revenue Authority",
+      "legal_date": null,
+      "url": "https://www.mra.mu/customs1/travellers/13-customs/147-customs-charges",
+      "sha256": null,
+      "verification_status": "VERIFIED_OFFICIAL_GUIDE",
+      "notes": "Confirme une TVA de 15 % et son calcul sur la valeur en douane majorée du droit de douane ; fret et assurance sont inclus lorsque pertinents."
+    },
+    {
+      "source_id": "MUS-MRA-INTEGRATED-TARIFF-20260620",
+      "official_title": "Integrated Tariff as at 20 June 2026",
+      "institution": "Mauritius Revenue Authority",
+      "legal_date": "2026-06-20",
+      "url": "https://www.mra.mu/index.php/customs1/tariff-information",
+      "sha256": null,
+      "verification_status": "PENDING_PRIMARY_ARCHIVE",
+      "notes": "Portail national identifié ; barème non encore ingéré dans le runtime."
+    }
+  ]
+}

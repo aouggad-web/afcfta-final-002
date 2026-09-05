@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "country": "TCD",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "TCD-AFRICALAWS-CGI-2016",
+      "title": "Code Général des Impôts du Tchad — Édition 2016",
+      "institution": "Africa Laws (portail de législation africaine) — texte reproduit du Code officiel tchadien",
+      "legal_date": "2016-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.africa-laws.org/Chad/Tax%20Law/Code%20G%C3%A9n%C3%A9ral%20des%20imp%C3%B4ts%202016.pdf",
+      "local_file": "official/tcd-cgi-2016.pdf",
+      "sha256": "9b44b886e2d9d96ccc42e1da17d05f29c0311b4d7c8749974eb5650c917e90c5",
+      "coverage": "TVA taux standard 18% et taux zéro exportations (Article 238); base d'imposition (Article 235-237); régime des déductions",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Le portail institutionnel tchadien (finances.gouv.td, ministère des Finances et du Budget) est confirmé actif via recherche web mais bloque les requêtes automatisées (HTTP 403/500 constatés le 2026-07-25). Africa Laws est un agrégateur de législation africaine, pas l'autorité elle-même ; le texte a été vérifié article par article et correspond à la structure attendue d'un CGI CEMAC. Édition 2016 : une loi de finances 2026 mentionnée dans la presse tchadienne introduirait un taux réduit de 9% sur lait/viande produits localement — non confirmé sur texte primaire, voir README."
+    },
+    {
+      "source_id": "TCD-MINFIN-PORTAL-20260725",
+      "title": "Portail institutionnel du Ministère des Finances et du Budget",
+      "institution": "Ministère des Finances et du Budget — République du Tchad",
+      "legal_date": null,
+      "accessed_at": "2026-07-25",
+      "url": "https://finances.gouv.td/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "communiqués fiscaux; loi de finances annuelle; textes réglementaires",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Site confirmé existant (référencé par tchadinfos.com, contient une page \"communique-officiel-de-la-direction-generale-des-services-des-impots\") mais bloque les requêtes automatisées (403 avec user-agent navigateur, 500 par ailleurs). À re-tenter périodiquement."
+    },
+    {
+      "source_id": "TCD-DOUANES-PORTAL-20260725",
+      "title": "Portail institutionnel de la Direction Générale des Douanes",
+      "institution": "Direction Générale des Douanes — République du Tchad",
+      "legal_date": null,
+      "accessed_at": "2026-07-25",
+      "url": "https://douanes.td/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "tarif douanier CEMAC; procédures; régimes économiques",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Accessible (HTTP 200 vérifié 2026-07-25). Le Tchad applique le Tarif Extérieur Commun de la CEMAC, non encore archivé dans ce dépôt."
+    }
+  ]
+}

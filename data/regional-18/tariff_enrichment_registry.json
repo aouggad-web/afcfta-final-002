@@ -1,0 +1,345 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-07-29",
+  "coverage_scope": "EAC, SACU et CEMAC — 18 pays",
+  "canonical_statuses": [
+    "DOCUMENTED",
+    "PARTIAL",
+    "UNVERIFIED",
+    "NOT_AVAILABLE",
+    "NOT_APPLICABLE"
+  ],
+  "disclaimer": "Données réglementaires et tarifaires fournies à titre informatif, non opposables à l'administration douanière. Une donnée absente ou non traçable reste NOT_AVAILABLE et n'est jamais remplacée par une valeur simulée.",
+  "regions": {
+    "EAC": {
+      "members": ["BDI", "COD", "KEN", "RWA", "SSD", "TZA", "UGA"],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 5984,
+        "national_line_digits": [8],
+        "source_name": "EAC Common External Tariff 2022",
+        "scope_note": "Tarif extérieur commun régional. Une extension ou mesure nationale n'est exposée que si elle possède une source nationale distincte."
+      }
+    },
+    "SACU": {
+      "members": ["ZAF", "BWA", "LSO", "NAM", "SWZ"],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 8589,
+        "national_line_digits": [6, 8],
+        "source_name": "SARS Schedule 1 Part 1 / SACU common tariff",
+        "scope_note": "Tarif commun SACU. Les taxes intérieures restent propres à chaque État membre."
+      }
+    },
+    "CEMAC": {
+      "members": ["CMR", "CAF", "TCD", "COG", "GAB", "GNQ"],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 5239,
+        "national_line_digits": [8],
+        "source_name": "Tarif extérieur commun CEMAC",
+        "scope_note": "Tarif extérieur commun régional. Les prélèvements et formalités nationales nécessitent une source nationale."
+      }
+    }
+  },
+  "countries": {
+    "BDI": {
+      "region": "EAC",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
+      "required_document_records": [],
+      "anomalies": ["TVA 18 % documentée par l'OBR, mais fraîcheur 2025/26 non entièrement contrôlée."]
+    },
+    "COD": {
+      "region": "EAC",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "PARTIAL",
+      "source_paths": [
+        "data/drc/legal_sources.json",
+        "data/drc/vat_measures.json",
+        "data/drc/regulatory_measures.json"
+      ],
+      "required_document_records": ["COD-SEGUCE-SINGLE-WINDOW", "COD-OCC-CBCA", "COD-OGEFREM-FERI"],
+      "anomalies": ["La TVA est sourcée mais le profil national complet d'ordre de calcul reste partiel."]
+    },
+    "KEN": {
+      "region": "EAC",
+      "national_extension_status": "PARTIAL",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "DOCUMENTED",
+      "calculation_order_status": "DOCUMENTED",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": [
+        "data/kenya/legal_sources.json",
+        "data/kenya/vat_measures.json",
+        "data/kenya/excise_measures.json",
+        "data/kenya/import_levies.json",
+        "data/kenya/administrative_formalities.json"
+      ],
+      "vat_measure_path": "data/kenya/vat_measures.json",
+      "required_document_records": ["FORM-TPA-44A", "FORM-KRA-CLEARANCE-DOCS"],
+      "anomalies": ["Le CET est documenté ; les concessions ZLECAf par ligne restent NOT_AVAILABLE."]
+    },
+    "RWA": {
+      "region": "EAC",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/rwanda/legal_sources.json",
+        "data/rwanda/vat_measures.json",
+        "data/rwanda/excise_measures.json"
+      ],
+      "vat_measure_path": "data/rwanda/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": []
+    },
+    "SSD": {
+      "region": "EAC",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "NOT_APPLICABLE",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "NOT_AVAILABLE",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
+      "required_document_records": [],
+      "anomalies": [
+        "Le régime est une taxe sur les ventes à l'importation, pas une TVA.",
+        "Le taux 20 % est historique (FY 2023/24) ; le taux courant reste NOT_AVAILABLE."
+      ]
+    },
+    "TZA": {
+      "region": "EAC",
+      "national_extension_status": "PARTIAL",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/tanzania/legal_sources.json",
+        "data/tanzania/vat_measures.json",
+        "data/tanzania/excise_measures.json"
+      ],
+      "vat_measure_path": "data/tanzania/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": []
+    },
+    "UGA": {
+      "region": "EAC",
+      "national_extension_status": "PARTIAL",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/uganda/legal_sources.json",
+        "data/uganda/vat_measures.json",
+        "data/uganda/excise_measures.json"
+      ],
+      "required_document_records": [],
+      "anomalies": ["La loi délègue le taux standard à un texte d'application ; le texte fixant le taux doit encore être archivé."]
+    },
+    "ZAF": {
+      "region": "SACU",
+      "national_extension_status": "DOCUMENTED",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "DOCUMENTED",
+      "calculation_order_status": "DOCUMENTED",
+      "afcfta_status": "PARTIAL",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/south_africa/legal_sources.json",
+        "data/south_africa/vat_measures.json"
+      ],
+      "vat_measure_path": "data/south_africa/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": ["La préférence ZLECAf n'est affichable que sur les lignes SARS où la colonne AfCFTA est réellement renseignée."]
+    },
+    "BWA": {
+      "region": "SACU",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "NOT_AVAILABLE",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
+      "required_document_records": [],
+      "anomalies": ["La base de TVA à l'importation reste PARTIAL faute de référence d'article extraite."]
+    },
+    "LSO": {
+      "region": "SACU",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "DOCUMENTED",
+      "calculation_order_status": "DOCUMENTED",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
+      "required_document_records": [],
+      "anomalies": ["Le TAPL est produit-spécifique et ne doit jamais être appliqué hors tabac/alcool."]
+    },
+    "NAM": {
+      "region": "SACU",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "DOCUMENTED",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
+      "required_document_records": [],
+      "anomalies": ["Aucune inspection avant expédition générale n'est documentée."]
+    },
+    "SWZ": {
+      "region": "SACU",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "NOT_AVAILABLE",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "DOCUMENTED",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
+      "required_document_records": [],
+      "anomalies": [
+        "La base de TVA import reste NOT_AVAILABLE.",
+        "Le prélèvement alcool/tabac de 2019 doit être revalidé pour son maintien en 2026."
+      ]
+    },
+    "CMR": {
+      "region": "CEMAC",
+      "national_extension_status": "PARTIAL",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/cameroon/legal_sources.json",
+        "data/cameroon/vat_measures.json",
+        "data/cameroon/excise_measures.json",
+        "data/cameroon/import_levies.json"
+      ],
+      "vat_measure_path": "data/cameroon/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": []
+    },
+    "CAF": {
+      "region": "CEMAC",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "DOCUMENTED",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
+      "required_document_records": [],
+      "anomalies": [
+        "Le taux réduit de 5 % et les exonérations ne sont pas mappés aux codes SH.",
+        "La base TVA runtime CIF + DD + TCI ne correspond pas à la formule documentée."
+      ]
+    },
+    "TCD": {
+      "region": "CEMAC",
+      "national_extension_status": "PARTIAL",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/chad/legal_sources.json",
+        "data/chad/vat_measures.json"
+      ],
+      "required_document_records": [],
+      "anomalies": ["Conflit temporel à résoudre entre le taux runtime et l'archive fiscale antérieure ; aucune correction sans texte actuel."]
+    },
+    "COG": {
+      "region": "CEMAC",
+      "national_extension_status": "PARTIAL",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/congo-brazzaville/legal_sources.json",
+        "data/congo-brazzaville/vat_measures.json"
+      ],
+      "required_document_records": [],
+      "anomalies": []
+    },
+    "GAB": {
+      "region": "CEMAC",
+      "national_extension_status": "PARTIAL",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/gabon/legal_sources.json",
+        "data/gabon/vat_measures.json"
+      ],
+      "required_document_records": [],
+      "anomalies": ["L'archive locale couvre un taux réduit ; la source primaire du taux standard runtime reste à compléter."]
+    },
+    "GNQ": {
+      "region": "CEMAC",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "PARTIAL",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "DOCUMENTED",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": ["data/priority-08/national_enrichment.json"],
+      "national_measure_path": "data/priority-08/national_enrichment.json",
+      "required_document_records": [],
+      "anomalies": [
+        "Les taux temporaires 2026 à 0 % et 5 % sont décrits sans codes SH et ne sont pas appliqués automatiquement.",
+        "La base TVA runtime CIF + DD + TCI ne correspond pas à la formule nationale documentée."
+      ]
+    }
+  }
+}

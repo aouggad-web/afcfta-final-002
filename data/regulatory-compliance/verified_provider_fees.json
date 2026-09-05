@@ -1,0 +1,367 @@
+{
+  "schema_version": "1.0",
+  "dataset": "verified_provider_fees",
+  "as_of": "2026-08-09",
+  "tier": "AUTHORITATIVE_PRIMARY_SOURCED",
+  "purpose": "Frais de prestataires mandatés VÉRIFIÉS sur source primaire/gouvernementale, exploitables par le moteur de calcul (fee_status CALCULABLE). Distinct du backlog secondaire (data/research/…). Chaque entrée cite ses sources et sa date de vérification.",
+  "fees": [
+    {
+      "fee_id": "CIV-VOC-HONORAIRES",
+      "country_iso3": "CIV",
+      "side": "import",
+      "program": "VOC — Vérification de la Conformité aux normes",
+      "scope": "Produits soumis au programme dont la valeur FOB ≥ 1 000 000 FCFA (seuil de qualification).",
+      "providers": ["Bureau Veritas (BIVAC)", "COTECNA", "INTERTEK", "SGS"],
+      "mandating_authority": "Ministère du Commerce, de l'Artisanat et de la Promotion des PME (Côte d'Ivoire)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0030,
+        "rate_max": 0.0045,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond/seuil ci-dessous en FCFA (XOF), NON appliqués automatiquement pour éviter toute conversion de devise fabriquée.",
+        "floor_currency": "XOF",
+        "floor_min_xof": 167450,
+        "floor_max_xof": 197000,
+        "cap_min_xof": 2281400,
+        "cap_max_xof": 2684000,
+        "threshold_fob_xof": 1000000,
+        "conditions": "Taux 0,30% à 0,45% de la valeur FOB selon la route (A/B/C). Honoraire minimum de 167 450 à 197 000 FCFA et maximum de 2 281 400 à 2 684 000 FCFA selon la route. Ne s'applique qu'au-delà d'un seuil FOB de 1 000 000 FCFA. Plancher/plafond exprimés en FCFA (non convertis automatiquement).",
+        "effective_date": "2018-03-01"
+      },
+      "verification": {
+        "date": "2026-08-09",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Douanes ivoiriennes", "url": "https://www.douanes.ci/node/40794", "confirms": "Prestataires mandatés, seuil FOB 1 000 000 FCFA, routes A/B/C, paiement par l'exportateur."},
+          {"publisher": "Direction générale du Trésor (Gouvernement français)", "url": "https://www.tresor.economie.gouv.fr/Articles/2019/02/07/point-info-voc-verification-de-la-conformite-aux-normes-des-marchandises-importees-en-cote-d-ivoire", "confirms": "Taux 0,30%-0,45% FOB ; minimum 167 450-197 000 FCFA ; maximum 2 281 400-2 684 000 FCFA ; seuil 1 M FCFA."},
+          {"publisher": "Bureau Veritas / Verigates", "url": "https://verigates.bureauveritas.com/programmes/cote-divoire", "confirms": "Opérateur mandaté du programme VOC Côte d'Ivoire."}
+        ],
+        "notes": "La ventilation exacte du taux et des planchers/plafonds PAR route (A/B/C) n'est pas publiée : le frais est donc exprimé en FOURCHETTE bornée, jamais comme un montant unique."
+      }
+    },
+    {
+      "fee_id": "KEN-PVOC-HONORAIRES",
+      "country_iso3": "KEN",
+      "side": "import",
+      "program": "PVoC — Pre-Export Verification of Conformity (KEBS)",
+      "scope": "Marchandises réglementées importées au Kenya, contrôlées avant embarquement dans le pays d'exportation.",
+      "providers": ["Bureau Veritas", "COTECNA", "INTERTEK", "SGS", "QISJ (Quality Inspection Services Japan)"],
+      "mandating_authority": "Kenya Bureau of Standards (KEBS)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0050,
+        "rate_max": 0.0060,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond ci-dessous en USD, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "USD",
+        "floor_usd": 300,
+        "cap_usd": 3500,
+        "conditions": "Route A 0,60%, Route B 0,55%, Route C 0,50% de la valeur FOB. Minimum 300 USD, maximum 3500 USD par certificat, quelle que soit la route. Couvre vérification documentaire, inspection physique et échantillonnage.",
+        "effective_date": "2026-02-19"
+      },
+      "verification": {
+        "date": "2026-08-09",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Kenya Bureau of Standards (KEBS)", "url": "https://www.kebs.org/wp-content/uploads/2026/02/PVOC-MANUAL-VERSION-15.pdf", "confirms": "Grille officielle : Route A 0,60% / B 0,55% / C 0,50% FOB ; min 300 USD ; max 3500 USD (PVoC Manual v15, 19 fév. 2026)."},
+          {"publisher": "KEBS — page PVoC", "url": "https://www.kebs.org/pre-export-verification-of-conformity/", "confirms": "Programme PVoC officiel et organismes d'évaluation mandatés."},
+          {"publisher": "Cotecna", "url": "https://www.cotecna.com/en/media/news/cotecna-is-officially-contracted-as-a-conformity-assessment-body-for-the-kenya-pvoc-programme", "confirms": "Cotecna organisme d'évaluation contractuellement mandaté pour le PVoC Kenya."}
+        ],
+        "notes": "Taux route-dépendant (0,50%-0,60%) → FOURCHETTE bornée. Planchers/plafonds en USD conservés en conditions, non appliqués cross-devise."
+      }
+    },
+    {
+      "fee_id": "TZA-PVOC-HONORAIRES",
+      "country_iso3": "TZA",
+      "side": "import",
+      "program": "PVoC — Pre-Export Verification of Conformity (TBS)",
+      "scope": "Marchandises réglementées importées en Tanzanie, contrôlées avant embarquement dans le pays d'exportation.",
+      "providers": ["SGS", "Bureau Veritas", "INTERTEK", "TÜV Rheinland"],
+      "mandating_authority": "Tanzania Bureau of Standards (TBS)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0025,
+        "rate_max": 0.0053,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond ci-dessous en USD, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "USD",
+        "floor_usd": 250,
+        "cap_usd": 5000,
+        "conditions": "Route A 0,53%, Route B 0,45%, Route C 0,25% de la valeur FOB. Minimum 250 USD, maximum 5000 USD par certificat, quelle que soit la route.",
+        "effective_date": "2015-01-01"
+      },
+      "verification": {
+        "date": "2026-08-09",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Tanzania Trade Portal (Gouvernement de Tanzanie)", "url": "https://trade.tanzania.go.tz/media/PVoC_HARMONISED_PR0CEDURE_(SUMMARISED)_1.pdf", "confirms": "Procédure PVoC harmonisée TBS : routes et barème ad valorem FOB."},
+          {"publisher": "Tanzania Bureau of Standards (TBS)", "url": "https://www.tbs.go.tz/pages/inspection", "confirms": "Programme PVoC officiel et organismes mandatés."},
+          {"publisher": "SGS", "url": "https://www.sgs.com/en/services/tanzania-product-conformity-assessment-pca", "confirms": "Barème : Route A 0,53% / B 0,45% / C 0,25% FOB ; min 250 USD ; max 5000 USD."}
+        ],
+        "notes": "Taux route-dépendant (0,25%-0,53%) → FOURCHETTE bornée. Planchers/plafonds en USD conservés en conditions, non appliqués cross-devise."
+      }
+    },
+    {
+      "fee_id": "UGA-PVOC-HONORAIRES",
+      "country_iso3": "UGA",
+      "side": "import",
+      "program": "PVoC — Pre-Export Verification of Conformity (UNBS)",
+      "scope": "Marchandises réglementées importées en Ouganda (FOB > 2000 USD ; en deçà, inspection à destination par l'UNBS).",
+      "providers": ["SGS", "Bureau Veritas", "INTERTEK", "TÜV Rheinland"],
+      "mandating_authority": "Uganda National Bureau of Standards (UNBS)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0025,
+        "rate_max": 0.0050,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond/seuil ci-dessous en USD, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "USD",
+        "floor_usd": 235,
+        "cap_usd": 3000,
+        "threshold_fob_usd": 2000,
+        "conditions": "Route A 0,50%, Route B 0,45%, Route C 0,25% de la valeur FOB. Minimum 235 USD, maximum 3000 USD par certificat. Envois de valeur FOB ≤ 2000 USD exemptés du PVoC (inspection à destination). Hors essais laboratoire, scellés, enregistrement/licence facturés en sus.",
+        "effective_date": "2018-01-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "SGS — Uganda PCA datasheet", "url": "https://www.sgs.com/en/services/uganda-product-conformity-assessment-pca", "confirms": "Routes A/B/C 0,50%/0,45%/0,25% FOB ; min 235 USD ; max 3000 USD ; exemption FOB ≤ 2000 USD."},
+          {"publisher": "Intertek — Uganda regulated product list & fees update", "url": "https://www.intertek.com/government/export-import/regulatory-news-updates/news-uganda/update-to-uganda-regulated-product-list-and-fees/", "confirms": "Barème de frais PVoC Ouganda et liste des produits réglementés (UNBS)."},
+          {"publisher": "PVoC Exporter & Importer Guidelines (export2uganda)", "url": "http://www.export2uganda.com/resourcelibrary/managed/808cb1e9-b5e8-43aa-bdca-271554539d5b.pdf", "confirms": "Routes de certification et seuil d'exemption FOB 2000 USD (UNBS)."}
+        ],
+        "notes": "Taux route-dépendant (0,25%-0,50%) → FOURCHETTE bornée. Plancher/plafond/seuil USD en conditions, non appliqués cross-devise."
+      }
+    },
+    {
+      "fee_id": "CMR-PECAE-HONORAIRES",
+      "country_iso3": "CMR",
+      "side": "import",
+      "program": "PECAE — Programme d'Évaluation de la Conformité Avant Embarquement (ANOR)",
+      "scope": "Marchandises réglementées importées au Cameroun (FOB ≥ 2 000 000 XAF ; en deçà, exemption).",
+      "providers": ["SGS", "INTERTEK", "Bureau Veritas"],
+      "mandating_authority": "Agence des Normes et de la Qualité (ANOR), Cameroun",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0027,
+        "rate_max": 0.0045,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond/seuil ci-dessous en FCFA (XAF), NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "XAF",
+        "floor_xaf": 175218,
+        "cap_xaf": 4088420,
+        "threshold_fob_xaf": 2000000,
+        "legal_basis": "Décret n° 2015/1875/PM du 1er juillet 2015 instituant le PECAE",
+        "conditions": "Méthode A 0,45%, B 0,40%, C 0,27% de la valeur FOB. Plancher 175 218 XAF, plafond 4 088 420 XAF. Exemption si FOB < 2 000 000 XAF. Base légale : Décret n° 2015/1875/PM du 1er juillet 2015.",
+        "effective_date": "2015-07-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Osidimbea (encyclopédie du Cameroun) — fiche ANOR/PECAE", "url": "https://www.osidimbea.cm/entreprises/a-capitaux-publics/anor-pecae/", "confirms": "Méthodes A/B/C 0,45%/0,40%/0,27% FOB ; plancher 175 218 XAF ; plafond 4 088 420 XAF ; exemption FOB < 2 000 000 XAF ; base légale Décret n° 2015/1875/PM du 1er juillet 2015."},
+          {"publisher": "ANOR — plateforme PECAE", "url": "https://www.anor.cm/pecae", "confirms": "Programme PECAE officiel et organismes d'évaluation mandatés (ANOR)."},
+          {"publisher": "SGS — PECAE Cameroun", "url": "https://www.sgs.com/fr-fr/services/cameroun-evaluation-de-la-conformite-des-produits-avant-l-expedition-pecae", "confirms": "SGS organisme mandaté du PECAE Cameroun."}
+        ],
+        "notes": "Taux route-dépendant (0,27%-0,45%) → FOURCHETTE bornée. Plancher/plafond/seuil en XAF conservés en conditions, non appliqués cross-devise. Base légale (décret) citée."
+      }
+    },
+    {
+      "fee_id": "ZWE-CBCA-HONORAIRES",
+      "country_iso3": "ZWE",
+      "side": "import",
+      "program": "CBCA — Consignment Based Conformity Assessment (general goods)",
+      "scope": "Marchandises réglementées importées au Zimbabwe (general goods).",
+      "providers": ["Bureau Veritas"],
+      "mandating_authority": "Ministry of Industry & Commerce (Zimbabwe)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0025,
+        "rate_max": 0.0050,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond ci-dessous en USD, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "USD",
+        "floor_usd": 240,
+        "cap_usd": 2675,
+        "legal_basis": "Statutory Instrument 35 of 2024 (Control of Goods — CBCA Notice)",
+        "conditions": "General goods : Route A 0,50%, Route B 0,45%, Route C 0,25% de la valeur FOB. Minimum 240 USD, maximum 2675 USD. Consolidated goods soumis à un barème distinct (Route A 0,65% ; min 245 / max 2650 USD). Base légale : S.I. 35 of 2024.",
+        "effective_date": "2024-01-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Bureau Veritas / Verigates — grille CBCA Zimbabwe (general & consolidated goods)", "url": "https://verigates.bureauveritas.com/sites/verigates/files/2023-10/ZIMBABWE%20(CBCA)%20General%20Goods%20%20Consolidated%20goods%20Rev%2010.pdf", "confirms": "Routes A/B/C 0,50%/0,45%/0,25% FOB (general goods) ; min 240 USD ; max 2675 USD."},
+          {"publisher": "Veritas Zimbabwe — Statutory Instrument 35 of 2024 (CBCA Notice)", "url": "https://www.veritaszim.net/sites/veritas_d/files/SI%202024-035%20Control%20of%20Goods%20(Open%20General%20Import%20Licence)%20Standards%20Assessment%E2%80%93Consignment%20Based%20Conformity%20Assessment%20(CBCA)%20Notice,%202024.pdf", "confirms": "Base légale du programme CBCA (S.I. 35 of 2024)."},
+          {"publisher": "tralac — Pre-shipment inspection for goods exported to Zimbabwe", "url": "https://www.tralac.org/discussions/article/8087-pre-shipment-inspection-for-certain-goods-exported-to-zimbabwe-adding-to-the-cost-of-doing-business.html", "confirms": "Programme CBCA opéré par Bureau Veritas pour le Ministère de l'Industrie et du Commerce."}
+        ],
+        "notes": "Taux route-dépendant (0,25%-0,50%, general goods) → FOURCHETTE bornée. Plancher/plafond USD en conditions, non appliqués cross-devise. Base légale (S.I.) citée."
+      }
+    },
+    {
+      "fee_id": "GAB-PROGEC-HONORAIRES",
+      "country_iso3": "GAB",
+      "side": "import",
+      "program": "PROGEC — Programme Gabonais d'Évaluation de la Conformité (AGANOR)",
+      "scope": "Marchandises réglementées importées au Gabon.",
+      "providers": ["SGS", "INTERTEK", "COTECNA", "Bureau Veritas"],
+      "mandating_authority": "Agence Gabonaise de Normalisation (AGANOR)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0027,
+        "rate_max": 0.0053,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond ci-dessous en EUR, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "EUR",
+        "floor_eur": 300,
+        "cap_eur": 7000,
+        "conditions": "Route A 0,53%, Route B 0,45%, Route C 0,27% de la valeur FOB. Minimum 300 EUR, maximum 7000 EUR par certificat, nets de taxes. Couvrent vérification documentaire, inspection physique (si applicable) et conclusion (CoC ou NCR).",
+        "effective_date": "2016-05-20"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Bureau Veritas / Verigates — datasheet PROGEC Gabon", "url": "https://verigates.bureauveritas.com/sites/verigates/files/2022-02/GABON%20(PROGEC)%20Datasheet%20EN%20Rev%2013.pdf", "confirms": "Routes A/B/C 0,53%/0,45%/0,27% FOB ; min 300 EUR ; max 7000 EUR."},
+          {"publisher": "SGS — Programme Gabonais d'Évaluation de la Conformité (PROGEC)", "url": "https://www.sgs.com/-/media/sgscorp/documents/corporate/flyers-and-leaflets/sgsgispca-gabon-trypticha4fr1503web.cdn.fr-MA.pdf", "confirms": "Barème PROGEC ad valorem FOB par route (organisme mandaté SGS)."},
+          {"publisher": "SGS — Gabon PROGEC (page programme)", "url": "https://www.sgs.com/en/services/gabon-product-conformity-assessment-pca", "confirms": "PROGEC AGANOR, organismes mandatés (SGS, Intertek, Cotecna, Bureau Veritas)."}
+        ],
+        "notes": "Taux route-dépendant (0,27%-0,53%) → FOURCHETTE bornée. Plancher/plafond en EUR conservés en conditions, non appliqués cross-devise."
+      }
+    },
+    {
+      "fee_id": "COG-PCEC-HONORAIRES",
+      "country_iso3": "COG",
+      "side": "import",
+      "program": "PCEC — Programme Congolais d'Évaluation de la Conformité (ACONOQ) — République du Congo (Brazzaville)",
+      "scope": "Marchandises réglementées importées en République du Congo (Brazzaville) dont la valeur FOB ≥ 1 000 000 FCFA. À NE PAS confondre avec la R.D. Congo (COD).",
+      "providers": ["COTECNA", "Bureau Veritas", "TÜV Rheinland"],
+      "mandating_authority": "Agence Congolaise de Normalisation et de la Qualité (ACONOQ)",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate_min": 0.0027,
+        "rate_max": 0.0053,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond/seuil ci-dessous en EUR/FCFA, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "EUR",
+        "floor_eur_min": 220,
+        "floor_eur_max": 300,
+        "cap_eur": 7000,
+        "threshold_fob_xaf": 1000000,
+        "legal_basis": "Arrêté interministériel instituant/renforçant le PCEC (République du Congo)",
+        "conditions": "Route A 0,53%, Route B 0,45%, Route C 0,27% de la valeur FOB. Minimum 300 EUR (220 EUR pour la Route C), maximum 7000 EUR. Ne s'applique qu'au-delà d'un seuil FOB de 1 000 000 FCFA (~1524 EUR). Frais d'enregistrement distincts (375 EUR pour 15 produits + 20 EUR/produit supplémentaire).",
+        "effective_date": "2023-01-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Bureau Veritas / Verigates — datasheet PCEC République du Congo (Brazzaville) Rev 1.3", "url": "https://verigates.bureauveritas.com/sites/verigates/files/2023-06/REPUBLIC%20OF%20THE%20CONGO%20(PCEC)%20(BRAZAVILLE)%20%20Rev%201.3%20FR_0.pdf", "confirms": "Routes A/B/C 0,53%/0,45%/0,27% FOB ; min 300 EUR (220 EUR route C) ; max 7000 EUR ; seuil FOB 1 000 000 FCFA."},
+          {"publisher": "Cotecna — application officielle du PCEC au Congo", "url": "https://www.cotecna.com/fr/medias/actualites/mise-a-jour-importante-application-officielle-du-pcec-au-congo/", "confirms": "PCEC opéré par Cotecna sous mandat ACONOQ ; barème et seuil FOB."},
+          {"publisher": "Journal de Brazza — TÜV Rheinland autorisé par l'ACONOQ (PCEC)", "url": "https://www.journaldebrazza.com/tuv-rheinland-est-autorise-par-laconoq-a-fournir-des-services-devaluation-de-la-conformite-dans-le-cadre-du-programme-congolais-devaluation-de-la-conformite-pcec/", "confirms": "Programme PCEC officiel (ACONOQ) et organismes mandatés."}
+        ],
+        "notes": "Taux route-dépendant (0,27%-0,53%) → FOURCHETTE bornée. Plancher/plafond/seuil en EUR/FCFA conservés en conditions, non appliqués cross-devise. COG (Brazzaville) distinct de COD (RDC)."
+      }
+    },
+    {
+      "fee_id": "COD-OCC-REDEVANCE",
+      "country_iso3": "COD",
+      "side": "import",
+      "scope_kind": "formality",
+      "collector_type": "STATE_BODY",
+      "program": "Redevance de contrôle OCC (Office Congolais de Contrôle, organisme ÉTATIQUE de la RDC) — part d'exécution déléguée à BIVAC/Bureau Veritas",
+      "scope": "Contrôle de conformité/qualité des marchandises importées en R.D. Congo (COD). Prélèvement PUBLIC opéré par l'OCC, établissement public de l'État congolais. À NE PAS confondre avec le Congo-Brazzaville (COG).",
+      "providers": ["OCC (Office Congolais de Contrôle — établissement public de l'État, RDC)", "BIVAC / Bureau Veritas (prestataire mandaté, part d'exécution 0,75%)"],
+      "mandating_authority": "Office Congolais de Contrôle (OCC) — organisme étatique de la R.D. Congo",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_CIF",
+        "rate": 0.02,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur CIF saisie (assiette = valeur déclarée traitée comme CIF).",
+        "split": "0,75% pour le compte de BIVAC/Bureau Veritas (prestataire mandaté) + 1,25% pour le compte de l'OCC.",
+        "conditions": "Prélèvement PUBLIC de l'OCC (organisme étatique de la RDC) = 2% de la valeur CIF, réparti 0,75% pour BIVAC/Bureau Veritas (prestataire mandaté exécutant) + 1,25% pour l'OCC. Assiette CIF (≠ FOB). Classé comme perçu public (formalité), non comme frais de prestataire privé. NB : distinct de la « taxe santé » de 2% à l'importation instaurée séparément en RDC — ne pas cumuler par erreur.",
+        "effective_date": "2016-01-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Bureau Veritas / Verigates — datasheet R.D. Congo (Rev 22)", "url": "https://verigates.bureauveritas.com/sites/verigates/files/2020-12/CONGO%20(Rep%20Democratic%20of)%20%20FR%20Datasheet%20Rev%2022_1.pdf", "confirms": "BIVAC/Bureau Veritas prestataire mandaté du contrôle à l'importation en RDC sous l'OCC."},
+          {"publisher": "OMC — Examen des politiques commerciales (WT/TPR/S/240)", "url": "https://www.wto.org/french/tratop_f/tpr_f/s240-03_f.doc", "confirms": "Redevance OCC de 2% de la valeur CIF, répartie 0,75% BIVAC + 1,25% OCC."},
+          {"publisher": "OCC — Office Congolais de Contrôle (site officiel)", "url": "https://www.occ.cd/qui-sommes-nous/", "confirms": "OCC, organisme public de contrôle des importations en RDC."}
+        ],
+        "notes": "Taux FIXE (2% CIF, non route-dépendant) → montant unique. Assiette CIF supportée par le moteur (le calculateur transmet la valeur déclarée comme CIF). Split BIVAC/OCC documenté ; taxe santé distincte signalée."
+      }
+    },
+    {
+      "fee_id": "NGA-SONCAP-SC",
+      "country_iso3": "NGA",
+      "side": "import",
+      "scope_kind": "provider",
+      "program": "SONCAP — SONCAP Certificate (SC), par expédition (organismes privés mandatés par la SON)",
+      "scope": "Certificat SONCAP exigé par expédition de produits réglementés importés au Nigeria. Délivré par des organismes d'évaluation privés (IAF) mandatés par la Standards Organisation of Nigeria (SON).",
+      "providers": ["Bureau Veritas", "COTECNA Verification Services Nigeria", "Intertek / Intersip Quality Solutions", "China Certification and Inspection Group (CCIC)", "TÜV Rheinland"],
+      "mandating_authority": "Standards Organisation of Nigeria (SON)",
+      "payer": "IMPORTER",
+      "fee_detail": {
+        "calculation_method": "FIXED_AMOUNT",
+        "fixed_amount": 350,
+        "currency": "USD",
+        "conditions": "SONCAP Certificate (SC) = 350 USD par certificat (par expédition). Distinct des Certificats Produit (PC), facturés une fois par produit : PC1 500 USD / PC2 1000 USD / PC3 2000 USD (non inclus ici car non liés à l'expédition). La CISS (1% FOB) est un dispositif douanier séparé — ne pas cumuler.",
+        "effective_date": "2013-01-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Standards Organisation of Nigeria (SON) — SONCAP FAQ (site officiel)", "url": "https://son.gov.ng/soncap-faq/", "confirms": "SONCAP Certificate (SC) : 350 USD par certificat ; Product Certificate PC1/PC2/PC3 : 500/1000/2000 USD ; organismes IAF mandatés (Bureau Veritas, Cotecna, Intertek, CCIC…)."},
+          {"publisher": "SON — coût du SONCAP Product Certificate (FAQ)", "url": "https://son.gov.ng/helpie_faq/how-much-does-it-cost-to-apply-for-soncap-product-certificate/", "confirms": "Grille officielle des frais SONCAP (SC et PC) en USD."}
+        ],
+        "notes": "Frais FIXE par expédition (montant unique en USD) → DOCUMENTED_FIXED_AMOUNT. Les PC (par produit) et la CISS (1% FOB, douane) restent hors de cette ligne."
+      }
+    },
+    {
+      "fee_id": "MAR-VOC-HONORAIRES",
+      "country_iso3": "MAR",
+      "side": "import",
+      "scope_kind": "provider",
+      "program": "Programme de Vérification de la Conformité des produits industriels (Maroc)",
+      "scope": "Produits industriels réglementés importés au Maroc, contrôlés avant embarquement dans le pays d'exportation.",
+      "providers": ["Bureau Veritas", "SGS", "Applus", "TÜV Rheinland"],
+      "mandating_authority": "Ministère de l'Industrie et du Commerce (MCINET), Royaume du Maroc",
+      "payer": "EXPORTER",
+      "fee_detail": {
+        "calculation_method": "PERCENTAGE_OF_FOB",
+        "rate": 0.0045,
+        "currency": null,
+        "ad_valorem_note": "Part ad valorem exprimée dans l'unité de la valeur FOB saisie. Plancher/plafond ci-dessous en USD, NON appliqués automatiquement (anti-conversion de devise).",
+        "floor_currency": "USD",
+        "floor_usd_min": 218,
+        "floor_usd_max": 315,
+        "cap_usd_min": 2400,
+        "cap_usd_max": 2500,
+        "conditions": "0,45% de la valeur FOB pour toutes les routes (A/B/C). Minimum 218 à 315 USD et maximum 2400 à 2500 USD selon la route. Hors taxes ; couvre vérification documentaire, inspection (si applicable) et conclusion (CoC ou NCR). Obligatoire depuis le 1er février 2020.",
+        "effective_date": "2020-02-01"
+      },
+      "verification": {
+        "date": "2026-08-15",
+        "status": "VERIFIED_PRIMARY",
+        "sources": [
+          {"publisher": "Bureau Veritas / Verigates — datasheet VoC Maroc (Rev 2.5)", "url": "https://verigates.bureauveritas.com/sites/verigates/files/2024-02/MAROC%20(Voc)%20FR%20Datasheet%20Rev.2.5.pdf", "confirms": "0,45% FOB (routes A/B/C) ; min 218-315 USD ; max 2400-2500 USD."},
+          {"publisher": "SGS — datasheet PCA Maroc", "url": "https://www.sgs.com/fr/-/media/sgscorp/documents/corporate/technical-documents/technical-datasheets/sgsgispcamarocdatasheeta4fr21v1.cdn.en.pdf", "confirms": "Barème du programme de vérification de la conformité Maroc (organisme mandaté SGS)."},
+          {"publisher": "TÜV Rheinland — Vérification de la conformité Maroc", "url": "https://www.tuv.com/market-access-services/fr/certification-filter/verification-of-conformity-morocco/", "confirms": "Programme MCINET, organismes mandatés (BV, SGS, Applus, TÜV), obligatoire depuis le 1er février 2020."}
+        ],
+        "notes": "Taux unique 0,45% FOB (identique toutes routes) → montant unique. Plancher/plafond USD (variables par route) conservés en conditions, non appliqués cross-devise."
+      }
+    }
+  ]
+}

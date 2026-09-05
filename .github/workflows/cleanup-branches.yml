@@ -1,0 +1,101 @@
+name: Cleanup Old Branches
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (show what would be deleted, don't actually delete)"
+        required: false
+        default: "false"
+        type: choice
+        options:
+          - "true"
+          - "false"
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup GitHub CLI
+        run: |
+          # GitHub CLI is pre-installed on runners
+          gh --version
+
+      - name: Delete old branches
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          DELETED_COUNT=0
+          KEPT=("main" "claude/setup-github-cli-EngUf" "automated-data-update-135")
+
+          # Branches à supprimer (énumération explicite)
+          DELETE=(
+            # automated-data-update runs
+            "automated-data-update-1" "automated-data-update-2" "automated-data-update-3"
+            "automated-data-update-4" "automated-data-update-5" "automated-data-update-6"
+            "automated-data-update-7" "automated-data-update-8" "automated-data-update-9"
+            "automated-data-update-10" "automated-data-update-11" "automated-data-update-12"
+            "automated-data-update-13" "automated-data-update-14" "automated-data-update-15"
+            "automated-data-update-16" "automated-data-update-17" "automated-data-update-18"
+            "automated-data-update-19" "automated-data-update-20" "automated-data-update-21"
+            "automated-data-update-22" "automated-data-update-23" "automated-data-update-132"
+            "automated-data-update-133"
+            # session branches
+            "claude/format-black-isort" "claude/wto-auth-fix"
+            # codex branches
+            "codex/audit-apps-and-fix-pr-42" "codex/audit-et-securisation-git"
+            "codex/commencer-la-collecte-des-tarifs" "codex/compter-le-nombre-de-pays-crawle"
+            "codex/executer-le-workflow-crawl-country" "codex/fix-httperror-for-api-pages-site"
+            "codex/recollecter-les-tarifs-des-pays-africains" "codex/run-cleanup-and-security-phases"
+            # conflict branches
+            "conflict_020526_01444444444444444444" "conflict_050526_00499" "conflict_100726_1330"
+            "conflict_110726_145200000" "conflict_140626_2000-emergent-" "conflict_280226_2348"
+            # fix branches
+            "fix/ci-restore-yarn-frontend-build" "fix/cleanuo-security-phases-1-4-1"
+            "fix/cleanup-security-phases-1-4" "fix/deploy-pages-v5" "fix/update-deploy-pages-v5"
+            "fix/workflows-checkout-version"
+            # replit branches
+            "replit-new" "replit_logistique_production"
+          )
+
+          echo "🔍 Récupération des branches à supprimer..."
+
+          for branch in "${DELETE[@]}"; do
+            if [[ "$DRY_RUN" == "true" ]]; then
+              echo "🗑️  (dry-run) Serait supprimée: $branch"
+            else
+              echo "🗑️  Suppression: $branch"
+              if git ls-remote --exit-code --heads origin "$branch" >/dev/null 2>&1; then
+                if git push origin --delete "$branch"; then
+                  echo "  ✓ OK"
+                else
+                  echo "  ❌ Échec de suppression"
+                  exit 1
+                fi
+              else
+                echo "  ⚠️  Pas trouvée"
+              fi
+            fi
+            ((++DELETED_COUNT))
+          done
+
+          echo ""
+          echo "Branches gardées:"
+          for keep in "${KEPT[@]}"; do
+            echo "  ✓ $keep"
+          done
+
+          if [[ "$DRY_RUN" == "true" ]]; then
+            echo "✅ Dry run: $DELETED_COUNT branches auraient été supprimées"
+          else
+            echo "✅ Suppression: $DELETED_COUNT branches traitées"
+          fi

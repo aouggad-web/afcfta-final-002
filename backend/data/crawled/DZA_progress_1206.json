@@ -1,0 +1,63 @@
+{
+  "country": "DZA",
+  "source": "conformepro.dz",
+  "extracted_at": "2026-08-29T11:11:08.718026+00:00",
+  "note": "Rattrapage manuel des 2 sous-positions ch.98 absentes du crawl principal (session 2026-08-29)",
+  "count": 2,
+  "data": [
+    {
+      "raw_code": "98.10.100000",
+      "hs_code": "9810100000",
+      "display_code": "",
+      "heading": "98.10",
+      "chapter": "98",
+      "section": "XXI",
+      "name": "Marchandises destinées à être exposées ou faire l'objet d'une démonstration",
+      "description": "Marchandises destinées à être exposées ou faire l'objet d'une démonstration",
+      "taxes": {
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [],
+      "formalities": [],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/98.10.100000/marchandises-destin%C3%A9es-%C3%A0-%C3%AAtre-expos%C3%A9es-ou-faire-lobjet-dune-d%C3%A9monstration",
+      "designation_full": "Effets personnels > Marchandises destinees a etre exposees ou faire l'objet d'une demonstration. > Marchandises destinées à être exposées ou faire l'objet d'une démonstration"
+    },
+    {
+      "raw_code": "98.10.200000",
+      "hs_code": "9810200000",
+      "display_code": "",
+      "heading": "98.10",
+      "chapter": "98",
+      "section": "XXI",
+      "name": "Marchandises autres que celles destinées à l'exposition ou à la démonstration",
+      "description": "Marchandises autres que celles destinées à l'exposition ou à la démonstration",
+      "taxes": {
+        "TCS": {
+          "name": "TCS",
+          "rate": 3.0,
+          "raw": "3%"
+        },
+        "PRCT": {
+          "name": "PRCT",
+          "rate": 2.0,
+          "raw": "2%"
+        }
+      },
+      "advantages": [],
+      "formalities": [],
+      "source": "conformepro.dz",
+      "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/98.10.200000/marchandises-autres-que-celles-destin%C3%A9es-%C3%A0-lexposition-ou-%C3%A0-la-d%C3%A9monstration",
+      "designation_full": "Effets personnels > Marchandises destinees a etre exposees ou faire l'objet d'une demonstration. > Marchandises autres que celles destinées à l'exposition ou à la démonstration"
+    }
+  ]
+}

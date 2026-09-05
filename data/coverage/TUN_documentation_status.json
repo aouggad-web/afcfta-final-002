@@ -1,0 +1,2337 @@
+{
+  "country_iso3": "TUN",
+  "country_name": "Tunisie",
+  "audit_tool": "scripts/audit_tariff_documentation.py",
+  "consultation_date": "2026-08-29",
+  "read_only_audit": true,
+  "local_related_files": [
+    {
+      "path": "backend/data/TUN_tariffs.json",
+      "role": "primary_runtime_artifact",
+      "sha256": "c91f05a9259bf485b9cd6551047c8fca93ea32f00bca2d028fe9218b4453e217"
+    },
+    {
+      "path": "backend/data/tariffs/TUN_tariffs.json",
+      "role": "secondary_local_artifact",
+      "sha256": "c91f05a9259bf485b9cd6551047c8fca93ea32f00bca2d028fe9218b4453e217"
+    },
+    {
+      "path": "data/archive/csv/TARIF-DZA_CRAWLED_VALIDATION  AUTHENTIQUE .csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    },
+    {
+      "path": "docs/archive/attached_assets/TARIF-DZA_CRAWLED_VALIDATION_AUTHENTIQUE__1778803280738.csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    }
+  ],
+  "runtime_artifacts": {
+    "primary_tariff_file": "backend/data/TUN_tariffs.json",
+    "effective_national_file": "backend/data/crawled/TUN_tariffs.json",
+    "detail_override_file": "backend/data/crawled/TUN_tariffs.json",
+    "enriched_fallback_file": null,
+    "consumers": [
+      "backend/services/tariff_provider_service.py::get_tariff_line",
+      "backend/services/authentic_tariff_service.py::load_country_tariffs",
+      "backend/services/authentic_tariff_service.py::load_crawled_position_index",
+      "backend/routes/authentic_tariffs.py::get_tariff_line_endpoint",
+      "backend/routes/authentic_tariffs.py::get_sub_positions_endpoint",
+      "backend/routes/enhanced_calculator.py::_load_dza_authentic_line"
+    ],
+    "import_and_normalization_scripts": []
+  },
+  "source": {
+    "source_authority": "douane.gov.tn/tarifweb2025",
+    "source_title": "douane.gov.tn/tarifweb2025",
+    "source_url": "https://www.douane.gov.tn",
+    "source_root_url": null,
+    "official_authority_url": null,
+    "publication_date": null,
+    "effective_from": null,
+    "effective_to": null,
+    "hs_version": null,
+    "hs_version_declared_in_code": null,
+    "hs_version_status": "NOT_AVAILABLE",
+    "date_consulted": "2026-08-29",
+    "extracted_at": "2026-02-11T21:50:47.838713",
+    "source_hash_sha256": "edb6aa0dd1d29500319f03be6a01560e4b428b1169b783f0188deb56297207a3",
+    "archive_official_available": true,
+    "official_archive_candidates": [],
+    "official_archives_manifests": [
+      "data/sources/TUN/_manifest.json",
+      "24 documents SHA-256"
+    ],
+    "status": "DOCUMENTED",
+    "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés."
+  },
+  "position_availability": {
+    "total_positions": 17625,
+    "positions_simulatable": 12,
+    "positions_calculation_unavailable": 113,
+    "positions_review_required": 17500
+  },
+  "missing_dd_analysis": {
+    "total_missing_dd": 113,
+    "counts_by_cause": {
+      "DESCRIPTIVE_LINE": 111,
+      "EXPLICIT_FREE": 2
+    },
+    "records": [
+      {
+        "national_code": "03049910098",
+        "hs6": "030499",
+        "description": "Surimi congelee d'autres poissons",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04021019928",
+        "hs6": "040210",
+        "description": "Lait ,concentré,en poudre, en granulés ou sous d'autres formes solides,d'une teneur en poids de matières grasses égaleà 0 % ,sans addition de sucre ou d'autresédulcorants, en emballage immédiats d'un contenu net ex-cédant  2,5 kg ,autres destinations",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04021019939",
+        "hs6": "040210",
+        "description": "Crème de lait,concentrée,en poudre, en granulés ou sous d'autres formes solides,d'une teneur en poids de matières grasses égaleà 0 % ,sans addition de sucre ou d'autresédulcorants, en emballage immédiats d'un contenu net ex-cédant  2,5 kg ,autres destinations",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04022118119",
+        "hs6": "040221",
+        "description": "Lait, concentré, en poudre, en granulés ou sous d'autres formes solides, d'une teneur en poids de matières gras-ses excédant 1,5% mais  n'excédant pas 27% ,sans addition de sucre ou d'autres édulcorants, en emballages immédiats d'un contenu net excédant 2,5 kg, traité pour malades ou nourrissons",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04022191110",
+        "hs6": "040221",
+        "description": "Lait ,concentré,en poudre, en granulés ou sous d'autres formes solides,d'une teneur en poids de matières gras-ses excédant 27%  , sans addition de sucre ou d'autres édulco-rants en emballages immédiats d'un contenu net n'excédant pas 2,5 kg, traité pour malades ou nourrissons",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04022191198",
+        "hs6": "040221",
+        "description": "Crème de lait,concentrée,en poudre, en granulés ou sous d'autres formes solides,d'une teneur en poids de matières gras-ses excédant 27%  , sans addition de sucre ou d'autres édulco-rants en emballages immédiats d'un contenu net n'excédant pas 2,5 kg, traité pour malades ou nourrissons",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04022919112",
+        "hs6": "040229",
+        "description": "Lait ,concentré,en poudre, en granulés ou sous d'autres formes solides, d'une teneur en poids de matières grasses n'excédant pas 27%,avec addition de sucre ou d'autresédulcorants en emballages immédiats d'un contenu net excé-dant   2,5 kg, traité pour malades ou nourrissons",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04022919190",
+        "hs6": "040229",
+        "description": "Crème de lait,concentrée,en poudre, en granulés ou sous d'autres formes solides, d'une teneur en poids de matières grasses n'excédant pas 27%,avec addition de sucre ou d'autresédulcorants en emballages immédiats d'un contenu net excé-dant   2,5 kg, traité pour malades ou nourrissons",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "08051080073",
+        "hs6": "080510",
+        "description": "Autres oranges, douces, sèches",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "11063090017",
+        "hs6": "110630",
+        "description": "Farines,semoules et poudre de dattes",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "11063090095",
+        "hs6": "110630",
+        "description": "Farines,semoules et poudre d'autres produits du chapitre8",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "15156059013",
+        "hs6": "151560",
+        "description": "Huiles d'origine microbienne brute, concrètes, autrement présentées",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "15156059091",
+        "hs6": "151560",
+        "description": "Huiles d'origine microbienne brute, concrètes, fluides",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "27112900960",
+        "hs6": "271129",
+        "description": "Autres gaz de pétroleà l'état gazeux, d'origine algèrinne misà la consommation par la steg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "29096010005",
+        "hs6": "290960",
+        "description": "Peroxydes d'acétals et d'hémi-acétals",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "29301000090",
+        "hs6": "293010",
+        "description": "2-(n,n-diméthylamino) éthanethiol",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "36034000011",
+        "hs6": "360340",
+        "description": "capsules fulminantes pour armes de chasse ou de tir",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "36034000099",
+        "hs6": "360340",
+        "description": "Autres amorces  fulminantes,autres que pour armes de chasse ou de tir",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "36035000006",
+        "hs6": "360350",
+        "description": "Allumeurs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "36036000002",
+        "hs6": "360360",
+        "description": "Détonateurs électriques",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "38089190242",
+        "hs6": "380891",
+        "description": "Colliers antiparasitairesà base de deltaméthrine",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "38089190253",
+        "hs6": "380891",
+        "description": "Antiparasitaireà usage externe, contenant du fipronil et de perméthrine, en spot-on ou en spray contenant du fipronil et antiparasitaires a base amitraze, présentés dans des formeou emballages de vente au détail ou sous forme d'articles",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "38089190286",
+        "hs6": "380891",
+        "description": "Autres insecticides, présentés dans d'autres formes ou emballages de vente au détail ou sous forme d'articles, pour autres usages, autres que ceux des n°s 380852, 380859,380861, 380862, 380869",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "39232100017",
+        "hs6": "392321",
+        "description": "sacs et sachets de caisse, avec ou sans bretelles intégrées ou rapportées, en polymères de l'éthylène",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "39232100095",
+        "hs6": "392321",
+        "description": "Autres sacs, sachets; pochettes et cornets, en polymères de l'éthylène",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "44212000035",
+        "hs6": "442120",
+        "description": "Cercueils en bois, , autres que de fabrication artisanale",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "63049100083",
+        "hs6": "630491",
+        "description": "Autres articles d'ameublement, à l'exclusion de ceux du n°  94 04, en bonneterie, d'autres matières textiles",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "84852000008",
+        "hs6": "848520",
+        "description": "Machines pour la fabrication additive,par dépôt de matières  plastiques ou de caoutchouc",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "85149070015",
+        "hs6": "851490",
+        "description": "Parties et pieces detachees des fours electriques industriels ou de laboratoires",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "85149070093",
+        "hs6": "851490",
+        "description": "Parties des autres appareils industrils ou de laboratoires pour le traitement thermique des matieres par induction ou par pertes dielectriques",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "85176930006",
+        "hs6": "851769",
+        "description": "Appareils recepteurs pour la radiotelephonie ou  la radiotelegraphie",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87022010117",
+        "hs6": "870220",
+        "description": "Véh  auto pour le transp  de dix personnes ou plus,chauffeur inclus,équipés à la fois,pour la propulsion,d'un motr à piston à allumage par compr  (d ou semi-d) et d'un motr électrique,pouvant être chargés en se branchant à une source externe d'alimentation électrique,d'une cylindrée > 2500 cm3,neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87022010195",
+        "hs6": "870220",
+        "description": "Véh  auto pour le transp de dix personnes ou plus,chauffeur inclus,équipés à la fois,pour la propulsion,d'un motr à piston à allumage par compr  (d ou semi-d) et d'un motr électrique,pouvant être chargés en se branchant à une source externe d'alimentation électrique,d'une cylindrée > 2500 cm3,usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87022010913",
+        "hs6": "870220",
+        "description": "Véh  auto pour le transp  de dix pers  ou plus,chauffeur inclus,équipés à la fois,pour la propulsion,d'un motr à piston à allumage par compr  (d ou semi-d) et d'un motr électrique,autres que ceux pouvant être chargés en se branchant à une source externe d'alim  Élec ,d'une cylindrée > 2500 cm3,neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87022010991",
+        "hs6": "870220",
+        "description": "Véh  auto pour le transp de dix pers  ou plus,chauffeur inclus,équipés à la fois,pour la propulsion,d'un motr à piston à allumage par compr  (d ou semi-d) et d'un motr électrique,autres que ceux pouvant être chargés en se branchant à une source externe d'alim  Élec ,d'une cylindrée > 2500 cm3,usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87022090119",
+        "hs6": "870220",
+        "description": "Véh  auto pour le transp  de dix personnes ou plus,chauffeur inclus,équipés à la fois,pour la propulsion,d'un motr à piston à allumage par compr  (d ou semi-d) et d'un motr électrique,pouvant être chargés en se branchant à une source externe d'alim  Élec ,d'une cylindrée <= 2500 cm3,neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87022090197",
+        "hs6": "870220",
+        "description": "Véh  auto pour le transp  de dix personnes ou plus,chauffeur inclus,équipés à la fois,pour la propulsion,d'un motr à piston à allumage par compr  (d ou semi-d) et d'un motr électrique,pouvant être chargés en se branchant à une source externe d'alim  Élec ,d'une cylindrée <= 2500 cm3,usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87022090915",
+        "hs6": "870220",
+        "description": "Véh  auto pour le transp  de dix pers  ou plus,chauf  inclus,équipés à la fois,pour la propulsion,d'un motr à piston à allumage par compr  (d ou semi-d) et d'un motr électrique,autres que ceux pouvant être chargés en se branchant à une source externe d'alim  Élec ,d'une cylindrée <= 2500 cm3,neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87022090993",
+        "hs6": "870220",
+        "description": "Véh  auto pour le transp  de dix pers  ou plus,chauf  inclus,équipés à la fois,pour la propulsion,d'un motr à piston à allumage par compr  (d ou semi-d) et d'un motr électrique,autres que ceux pouvant être chargés en se branchant à une source externe d'alim  Élec ,d'une cylindrée <= 2500 cm3,usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87023010113",
+        "hs6": "870230",
+        "description": "Véh  auto pour le transport de dix personnes ou plus, chauffeur inclus, équipés à la fois, pour la propulsion, d'un motr à piston à allumage par étincelles et d'un motr électrique, pouvant être chargés en se branchant à une source externe d'alimentation électrique, d'une cylindrée > 2800 cm3, neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87023010191",
+        "hs6": "870230",
+        "description": "Véh  auto pour le transport de dix personnes ou plus, chauffeur inclus, équipés à la fois, pour la propulsion, d'un motr à piston à allumage par étincelles et d'un motr électrique, pouvant être chargés en se branchant à une source externe d'alimentation électrique, d'une cylindrée > 2800 cm3, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87023010919",
+        "hs6": "870230",
+        "description": "Véh  auto pour le transport de dix personnes ou plus, chauffeur inclus, équipés à la fois, pour la propulsion, d'un motr à piston à allumage par étincelles et d'un motr électrique, autres que ceux pouvant être chargés en se branchant à une source externe d'alimentation électrique, d'une cylindrée >",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87023010997",
+        "hs6": "870230",
+        "description": "Véh  auto pour le transport de dix personnes ou plus, chauffeur inclus, équipés à la fois, pour la propulsion, d'un motr à piston à allumage par étincelles et d'un motr électrique, autres que ceux pouvant être chargés en se branchant à une source externe d'alimentation électrique, d'une cylindrée >",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87023090115",
+        "hs6": "870230",
+        "description": "Véh  auto pour le transport de dix personnes ou plus, chauffeur inclus, équipés à la fois, pour la propulsion, d'un motr à piston à allumage par étincelles et d'un motr électrique, pouvant être chargés en se branchant à une source externe d'alimentation électrique, d'une cylindrée <= 2800 cm3, neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87023090193",
+        "hs6": "870230",
+        "description": "Véh  auto pour le transport de dix personnes ou plus, chauffeur inclus, équipés à la fois, pour la propulsion, d'un motr à piston à allumage par étincelles et d'un motr électrique, pouvant être chargés en se branchant à une source externe d'alimentation électrique, d'une cylindrée <= 2800 cm3, usagé",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87023090911",
+        "hs6": "870230",
+        "description": "Véh  auto pour le transport de dix personnes ou plus, chauffeur inclus, équipés à la fois, pour la propulsion, d'un motr à piston à allumage par étincelles et d'un motr électrique, autres que ceux pouvant être chargés en se branchant à une source externe d'alimentation électrique,d'une cylindrée <=",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87023090999",
+        "hs6": "870230",
+        "description": "Véh  auto pour le transp  de dix personnes ou plus,chauffeur inclus,équipés à la fois,pour la propulsion,d'un motr à piston à allumage par étincelles et d'un motr électrique,autres que ceux pouvant être chargés en se branchant à une source externe d'alim  Élec ,d'une cylindrée <= 2800 cm3,usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87032110131",
+        "hs6": "870321",
+        "description": "Quads  uniquement à moteur à piston à allumage par étincelles, d'une cylindrée n'excédant pas 1 000 cm3, neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87032190188",
+        "hs6": "870321",
+        "description": "Quads uniquement à moteur à piston à allumage par étincelles, d'une cylindrée n'excédant pas 1 000 cm3, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87032210170",
+        "hs6": "870322",
+        "description": "Quads uniquement à moteur à piston à allumage par étincelles,d'une cylindrée excédant 1 000 cm3,mais n'excédant pas 1 300 cm3,neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87032210181",
+        "hs6": "870322",
+        "description": "Quads uniquement à moteur à piston à allumage par étincelles,d'une cylindrée excédant 1 300cm3,mais n'excédant pas 1 500 cm3,neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87032290138",
+        "hs6": "870322",
+        "description": "Quads uniquement à moteur à piston à allumage par étincelles,d'une cylindrée excédant 1 000 cm3, mais n'excédant pas 1 300 cm3, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87032290149",
+        "hs6": "870322",
+        "description": "Quads uniquement à moteur à piston à allumage par étincelles,d'une cylindrée excédant 1 300 cm3, mais n'excédant pas 1 500cm3, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87032410910",
+        "hs6": "870324",
+        "description": "Autres véhicules  pour le transport  des personnes, uniquementà  moteurà pistonà allumage par étincelles, d'une cylindrée  excédant 3000 cm3, neufs, importés par les concessionnaires agréés  selon la réglementation en vigueur (8)",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87032410998",
+        "hs6": "870324",
+        "description": "Autres véhicules  pour le transport  des personnes, uniquementà  moteurà pistonà allumage par étincelles, d'une cylindrée  excédant 3000 cm3, neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87033110148",
+        "hs6": "870331",
+        "description": "Quads uniquement à moteur à piston à allumage par compression (diesel ou semi-diesel ), d'une cylindrée n'excédant pas 1 500 cm3, neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87033190184",
+        "hs6": "870331",
+        "description": "Quads uniquement à moteur à piston à allumage par compression (diesel ou semi-diesel ), d'une cylindrée n'excédant pas 1 500 cm3, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87038010121",
+        "hs6": "870380",
+        "description": "Quads équipés uniquement d'un moteur éléctrique pour la propulsion, neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87038090123",
+        "hs6": "870380",
+        "description": "Quads équipés uniquement d'un moteur éléctrique pour la propulsion, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044131197",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) pouvt êtr utilisé pr le transp de pers  que pr le trsp mchdse dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,pouvt êtr chrgé en se brancht à 1src ext d'alim  Élec,d'1 cylind> 2500cm3,neuf,d'1pds chg  max <= 2000k",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044131288",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) pouvt êtr utilsé pr trsp de pers  que pr trsp mchdse dt nbr de placs > 3 (chauf  inclu),équip à la fois pr la prop ,d'1 mtr à pistn à allum compr(d /½-d) et d'1 mtr Élec,autrs que cx pvt êtr chargé en se brcht à src ext  d'alimÉlec,d'une cylind> 2500cm3,neufs,d'1 pds chg max <= 2000kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044131313",
+        "hs6": "870441",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée excédant 2500 cm3, d'un poids en charge maximal n'excédant pas 2000 kg, neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044131391",
+        "hs6": "870441",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée excédant 2500 cm3, d'un poids en charge maximal n'excédant pas 2000 kg, neufs, autres que ceux",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044131426",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,pouvant être chargés en se branchant à une src ext d'alim éléc,d'1 cyl > 2500 cm3,neufs,d'1 pds tot ch max> 2000 kg et <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044131506",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,d'1 cyl > 2500 cm3,neufs,d'1 pds tot ch max> 2000 kg et <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044131619",
+        "hs6": "870441",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée excédant 2500 cm3, d'un poids en charge maximal excédant 2000 kg mais n'excéd",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044131697",
+        "hs6": "870441",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée excédant 2500 cm3, d'un poids en charge maximal excédant 2000 kg mais n'excédant pas 3500 kg, n",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044139191",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,pouvant être chargés en se branchant à une src ext d'alim éléc,d'1 cyl > 2500 cm3,usagés,d'1 pds tot ch max <= 2000 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044139282",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,d'1 cyl > 2500 cm3,usagés,d'1 pds tot ch max <= 2000 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044139317",
+        "hs6": "870441",
+        "description": "Véh  auto pour le transport de marchandises, de type \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée excédant 2500 cm3, d'un poids en charge maximal n'excédant pas 2000 kg, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044139395",
+        "hs6": "870441",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée excédant 2500 cm3, d'un poids en charge maximal n'excédant pas 2000 kg, usagés, autres que ceux",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044139408",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,pouvant être chargés en se branchant à une src ext d'alim éléc,d'1 cyl > 2500 cm3,usagés,d'1 pds tot ch max> 2000 kg et <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044139500",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,d'1 cyl > 2500 cm3,usagés,d'1 pds tot ch max> 2000 kg et <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044139613",
+        "hs6": "870441",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée excédant 2500 cm3, d'un poids en charge maximal excédant 2000 kg mais n'excéd",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044139691",
+        "hs6": "870441",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée excédant 2500 cm3, d'un poids en charge maximal excédant 2000 kg mais n'excédant pas 3500 kg, u",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044191191",
+        "hs6": "870441",
+        "description": "Autres véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,pouvant être chargés en se branchant à une src ext d'alim éléc,d'1 cyl  <= 2500 cm3,neufs,d'1 pds tot ch max <= 2000 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044191226",
+        "hs6": "870441",
+        "description": "Autres véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,d'1 cyl  <= 2100 cm3,neufs,d'1 pds tot ch max <= 2000 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044191282",
+        "hs6": "870441",
+        "description": "Autres véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,d'1 cyl  exédent 2100 cm3 et <= 2500 cm3,neufs,d'1 pds tot ch max <= 2000 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044191317",
+        "hs6": "870441",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée n'excédant pas 2500 cm3, d'un poids en charge maximal n'excédant pas 2000 kg,",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044191395",
+        "hs6": "870441",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée n'excédant pas 2500 cm3, d'un poids en charge maximal n'excédant pas 2000 kg, neufs, autres que",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044191408",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,pouvant être chargés en se branchant à une src ext d'alim éléc,d'1 cyl   2000 kg et <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044191511",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,d'1 cyl   2000 kg et <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044191599",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,d'1 cyl  exédent 2100 cm3 et  2000 kg et <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044191613",
+        "hs6": "870441",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée n'excédant pas 2500 cm3, d'un poids en charge maximal excédant 2000 kg mais n",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044191691",
+        "hs6": "870441",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée n'excédant pas 2500 cm3, d'un poids en charge maximal excédant 2000 kg mais n'excédant pas 3500",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044199195",
+        "hs6": "870441",
+        "description": "Autres véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,pouvant être chargés en se branchant à une src ext d'alim éléc,d'1 cyl  <= 2500 cm3,usagés,d'1 pds tot ch max <= 2000 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044199220",
+        "hs6": "870441",
+        "description": "Autres véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,d'1 cyl  <= 2100 cm3,usagés,d'1 pds tot ch max <= 2000 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044199286",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,d'1 cyl  > 2100 cm3 et <= 2500 cm3,usagés,d'1 pds tot ch max <= 2000 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044199311",
+        "hs6": "870441",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée n'excédant pas 2500 cm3, d'un poids en charge maximal n'excédant pas 2000 kg,",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044199399",
+        "hs6": "870441",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée n'excédant pas 2500 cm3, d'un poids en charge maximal n'excédant pas 2000 kg, usagés, autres qu",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044199402",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,pouvant être chargés en se branchant à une src ext d'alim éléc,d'1 cyl   2000 kg et <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044199515",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march   dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,d'1 cyl   2000 kg et <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044199593",
+        "hs6": "870441",
+        "description": "Véh  mxt (plv) per/march  dt le nbr de plces > 3 (chauf  inclu),equip à la fois pr la prop,d'1 mtr à pistn à allu compr(d/semi-d) et d'1 mtr Élec,autre que cx pouvant être chargés en se brancht à une src ext d'alim éléc,d'1 cyl  > 2100 cm3 et  2000 kg et <= 3500",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044199617",
+        "hs6": "870441",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée n'excédant pas 2500 cm3, d'un poids en charge maximal excédant 2000 kg mais n",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044199695",
+        "hs6": "870441",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'une cylindrée n'excédant pas 2500 cm3, d'un poids en charge maximal excédant 2000 kg mais pas 3500 kg, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87044299930",
+        "hs6": "870442",
+        "description": "Camions citernes pour le transport des marchandises,équipésà la fois pour la propulsion, d'un moteurà pistonà allumage par compression (diesel ou semi-diesel) et d'un moteur électrique, d'un poids en charge maximal excédant 10 tonnes mais n'excédant pas 20 tonnes, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045110910",
+        "hs6": "870451",
+        "description": "Véhicules automobiles spécialement conçus pour le transport des produits à forte radioactivité, équipés à la fois pour la propulsion, d'un  moteur à piston à allumage par étincelles et d'un moteur électrique, d'un poids en charge maximal excédant 3500 kg mais n'excédant pas  5000 kg, neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045131193",
+        "hs6": "870451",
+        "description": "Véh  mixtes (polyv) per/march nbr place> 3 (chauff inclus),équipés à la fois pour la propulsion,d'1 motr à piston à allumage par étincelles d'1 cyl > 2800 cm3 et d'1 motr élec ,pouvant être chargés en se branchant à une src ext d'alim éléc,neufs,d'1 pds tot ch max <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045131206",
+        "hs6": "870451",
+        "description": "Véh  mixtes (polyv) per/march nbr place> 3 (chauff inclus),équipés à la fois pour la propulsion,d'1 motr à piston à allumage par étincelles d'1 cyl > 2800 cm3 et d'1 motr élec ,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,neufs,d'1 pds tot ch max <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045131319",
+        "hs6": "870451",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par étincelles d'une cylindrée excédant 2800 cm3 et d'un moteur électrique, d'un poids en charge maximal n'excédant pas 3500 kg, neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045131397",
+        "hs6": "870451",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par étincelles d'une cylindrée excédant 2800 cm3 et d'un moteur électrique, d'un poids en charge maximal n'excédant pas 3500 kg, neufs, autres que ceux du n° 87045131 1",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045139197",
+        "hs6": "870451",
+        "description": "Véh  mixtes (polyv) per/march nbr place> 3 (chauff inclus),équipés à la fois pour la propulsion,d'1 motr à piston à allumage par étincelles d'1 cyl > 2800 cm3 et d'1 motr élec ,pouvant être chargés en se branchant à une src ext d'alim éléc,usagés,d'1 pds tot ch max <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045139200",
+        "hs6": "870451",
+        "description": "Véh  mixtes (polyv) per/march nbr place> 3 (chauff inclus),équipés à la fois pour la propulsion,d'1 motr à piston à allumage par étincelles d'1 cyl > 2800 cm3 et d'1 motr élec ,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,usagés,d'1 pds tot ch max <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045139313",
+        "hs6": "870451",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par étincelles d'une cylindrée excédant 2800 cm3 et d'un moteur électrique, d'un poids en charge maximal n'excédant pas 3500 kg, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045139391",
+        "hs6": "870451",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par étincelles d'une cylindrée excédant 2800 cm3 et d'un moteur électrique, d'un poids en charge maximal n'excédant pas 3500 kg, usagés, autres que ceux du n° 87045131 1",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045191197",
+        "hs6": "870451",
+        "description": "Véh  mixtes (polyv) per/march nbr place> 3 (chauff inclus),équipés à la fois pour la propulsion,d'1 motr à piston à allumage par par étincelles d'1 cyl  <= 2800 cm3 et d'1 motr élec ,pouvant être chargés en se branchant à une src ext d'alim éléc,neufs,d'1 pds tot ch max <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045191200",
+        "hs6": "870451",
+        "description": "Véh  mixtes (polyv) per/march nbr place> 3 (chauff inclus),équipés à la fois pour la propulsion,d'1 motr à piston à allumage par par étincelles d'1 cyl  <= 2800 cm3 et d'1 motr élec ,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,neufs,d'1 pds tot ch max <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045191313",
+        "hs6": "870451",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par étincelles d'une cylindrée n'excédant pas 2800 cm3 et d'un moteur électrique, d'un poids en charge maximal n'excédant pas 3500 kg, neufs",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045191391",
+        "hs6": "870451",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par étincelles d'une cylindrée n'excédant pas 2800 cm3 et d'un moteur électrique, d'un poids en charge max n'excédant pas 3500 kg, neufs, autres que ceux du n° 87045191 1",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045199191",
+        "hs6": "870451",
+        "description": "Véh  mixtes (polyv) per/march nbr place> 3 (chauff inclus),équipés à la fois pour la propulsion,d'1 motr à piston à allumage par étincelles d'1 cyl  <= 2800 cm3 et d'1 motr élec ,pouvant être chargés en se branchant à une src ext d'alim éléc,usagés,d'1 pds tot ch max <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045199204",
+        "hs6": "870451",
+        "description": "Véh  mixtes (polyv) per/march nbr place> 3 (chauff inclus),équipés à la fois pour la propulsion,d'1 motr à piston à allumage par étincelles d'1 cyl  <= 2800 cm3 et d'1 motr élec ,ne pouvt pas êtr chrgé en se brancht à 1src ext d'alim ,usagés,d'1 pds tot ch max <= 3500 kg",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045199317",
+        "hs6": "870451",
+        "description": "Véh  auto pour le transport de marchandises, de types \"fourgonnette\", équipés à la fois pour la propulsion, d'un moteur à piston à allumage par étincelles d'une cylindrée n'excédant pas 2800 cm3 et d'un moteur électrique, d'un poids en charge maximal n'excédant pas 3500 kg, usagés",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "87045199395",
+        "hs6": "870451",
+        "description": "Autres véh  auto pour le transport de marchandises, équipés à la fois pour la propulsion, d'un moteur à piston à allumage par étincelles d'une cylindrée n'excédant pas 2800 cm3 et d'un moteur électrique, d'un poids en charge maximal n'excédant pas 3500 kg, usagés, autres que ceux du n° 87045199 1",
+        "cause": "DESCRIPTIVE_LINE",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      }
+    ],
+    "examples": {
+      "DESCRIPTIVE_LINE": [
+        {
+          "national_code": "03049910098",
+          "hs6": "030499",
+          "description": "Surimi congelee d'autres poissons",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04022118119",
+          "hs6": "040221",
+          "description": "Lait, concentré, en poudre, en granulés ou sous d'autres formes solides, d'une teneur en poids de matières gras-ses excédant 1,5% mais  n'excédant pas 27% ,sans addition de sucre ou d'autres édulcorants, en emballages immédiats d'un contenu net excédant 2,5 kg, traité pour malades ou nourrissons",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04022191110",
+          "hs6": "040221",
+          "description": "Lait ,concentré,en poudre, en granulés ou sous d'autres formes solides,d'une teneur en poids de matières gras-ses excédant 27%  , sans addition de sucre ou d'autres édulco-rants en emballages immédiats d'un contenu net n'excédant pas 2,5 kg, traité pour malades ou nourrissons",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04022191198",
+          "hs6": "040221",
+          "description": "Crème de lait,concentrée,en poudre, en granulés ou sous d'autres formes solides,d'une teneur en poids de matières gras-ses excédant 27%  , sans addition de sucre ou d'autres édulco-rants en emballages immédiats d'un contenu net n'excédant pas 2,5 kg, traité pour malades ou nourrissons",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04022919112",
+          "hs6": "040229",
+          "description": "Lait ,concentré,en poudre, en granulés ou sous d'autres formes solides, d'une teneur en poids de matières grasses n'excédant pas 27%,avec addition de sucre ou d'autresédulcorants en emballages immédiats d'un contenu net excé-dant   2,5 kg, traité pour malades ou nourrissons",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04022919190",
+          "hs6": "040229",
+          "description": "Crème de lait,concentrée,en poudre, en granulés ou sous d'autres formes solides, d'une teneur en poids de matières grasses n'excédant pas 27%,avec addition de sucre ou d'autresédulcorants en emballages immédiats d'un contenu net excé-dant   2,5 kg, traité pour malades ou nourrissons",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "08051080073",
+          "hs6": "080510",
+          "description": "Autres oranges, douces, sèches",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "11063090017",
+          "hs6": "110630",
+          "description": "Farines,semoules et poudre de dattes",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "11063090095",
+          "hs6": "110630",
+          "description": "Farines,semoules et poudre d'autres produits du chapitre8",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "15156059013",
+          "hs6": "151560",
+          "description": "Huiles d'origine microbienne brute, concrètes, autrement présentées",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "15156059091",
+          "hs6": "151560",
+          "description": "Huiles d'origine microbienne brute, concrètes, fluides",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "27112900960",
+          "hs6": "271129",
+          "description": "Autres gaz de pétroleà l'état gazeux, d'origine algèrinne misà la consommation par la steg",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "29096010005",
+          "hs6": "290960",
+          "description": "Peroxydes d'acétals et d'hémi-acétals",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "29301000090",
+          "hs6": "293010",
+          "description": "2-(n,n-diméthylamino) éthanethiol",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "36034000011",
+          "hs6": "360340",
+          "description": "capsules fulminantes pour armes de chasse ou de tir",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "36034000099",
+          "hs6": "360340",
+          "description": "Autres amorces  fulminantes,autres que pour armes de chasse ou de tir",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "36035000006",
+          "hs6": "360350",
+          "description": "Allumeurs",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "36036000002",
+          "hs6": "360360",
+          "description": "Détonateurs électriques",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "38089190242",
+          "hs6": "380891",
+          "description": "Colliers antiparasitairesà base de deltaméthrine",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "38089190253",
+          "hs6": "380891",
+          "description": "Antiparasitaireà usage externe, contenant du fipronil et de perméthrine, en spot-on ou en spray contenant du fipronil et antiparasitaires a base amitraze, présentés dans des formeou emballages de vente au détail ou sous forme d'articles",
+          "cause": "DESCRIPTIVE_LINE",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        }
+      ],
+      "EXPLICIT_FREE": [
+        {
+          "national_code": "04021019928",
+          "hs6": "040210",
+          "description": "Lait ,concentré,en poudre, en granulés ou sous d'autres formes solides,d'une teneur en poids de matières grasses égaleà 0 % ,sans addition de sucre ou d'autresédulcorants, en emballage immédiats d'un contenu net ex-cédant  2,5 kg ,autres destinations",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04021019939",
+          "hs6": "040210",
+          "description": "Crème de lait,concentrée,en poudre, en granulés ou sous d'autres formes solides,d'une teneur en poids de matières grasses égaleà 0 % ,sans addition de sucre ou d'autresédulcorants, en emballage immédiats d'un contenu net ex-cédant  2,5 kg ,autres destinations",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        }
+      ]
+    },
+    "note": "Les causes sont documentaires; aucune cause n'est convertie en taux numérique."
+  },
+  "reconciliation_summary": {
+    "category_counts": {
+      "IDENTICAL": 12,
+      "ONLY_CANONICAL": 0,
+      "ONLY_CRAWLED": 113,
+      "RATE_DIFFERENCE": 17500,
+      "DESCRIPTION_DIFFERENCE": 347,
+      "NATIONAL_CODE_DIFFERENCE": 0,
+      "MISSING_RATE_CANONICAL": 0,
+      "MISSING_RATE_CRAWLED": 0
+    },
+    "runtime_preference_confirmed": true
+  },
+  "declared_metadata_not_used_for_status": {
+    "effective_source_quality_present": true,
+    "primary_data_status_present": true,
+    "primary_reliability_present": true,
+    "ignored_for_quality_status": true
+  },
+  "coverage": {
+    "effective_lines": 17625,
+    "unique_national_codes": 17625,
+    "unique_hs6": 5614,
+    "parent_lines_in_primary_file": 5611,
+    "national_sub_positions_in_primary_file": 17512,
+    "chapters_present": 96,
+    "code_lengths": {
+      "10": 1,
+      "11": 17624
+    }
+  },
+  "controls": {
+    "total_rows_audited": 17625,
+    "duplicate_codes": [],
+    "duplicate_code_count": 0,
+    "invalid_codes": [],
+    "invalid_code_count": 0,
+    "hs6_missing_count": 0,
+    "missing_descriptions": 0,
+    "missing_rates": 113,
+    "unparseable_rates": 0,
+    "specific_or_composite_rights_count": 0,
+    "specific_or_composite_examples": [],
+    "taxes_without_unit_count": 0,
+    "taxes_without_unit_examples": [],
+    "chapter_hs6_inconsistency_count": 0,
+    "chapter_hs6_inconsistency_examples": [],
+    "dates_missing": 17625,
+    "tax_types": {
+      "AIR/IMPORAV": 3269,
+      "D": 245,
+      "DC/ALCDRT": 461,
+      "DC/APDRT": 437,
+      "DC/APPAUT": 138,
+      "DC/ESSDROIT": 28,
+      "DC/GPLDRT": 20,
+      "DC/MTKDRT": 27,
+      "DC/RNTADRT": 27,
+      "DC/VOITDRT": 374,
+      "DCS/ALCSURTAX": 549,
+      "DCVBBADRT": 489,
+      "DD": 17512,
+      "DROIT": 68,
+      "DRT": 13,
+      "FDCSA/VTAXE": 90,
+      "P/BEUR/FRPREL": 57,
+      "P/FRUITSPRELEV": 85,
+      "P/H": 2,
+      "P/L": 97,
+      "P/VIANDEPRELV": 72,
+      "RPD/IMPORREDEV": 17512,
+      "T/MOTEURS": 35,
+      "T/PCEXT/PEAUX": 2,
+      "TAXE": 701,
+      "TAXE/APP": 6,
+      "TAXE/FERRAILLES": 44,
+      "TCATAXE": 621,
+      "TLFTAXE": 334,
+      "TM/ABATTTAXE": 319,
+      "TMTSTAXE": 4,
+      "TPETAXE": 1032,
+      "TVA": 17500
+    },
+    "row_sources": {},
+    "row_source_urls_count": 0
+  },
+  "sample_rows": [
+    {
+      "category": "agriculture",
+      "national_code": "01012100015",
+      "hs6": "010121",
+      "description": "Chevaux de course,reproducteurs de race pure,de pur sang arabe",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "36 %",
+          "normalized_rate_numeric": 36.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "D": {
+          "tax": "D",
+          "normalized_rate_raw": "0.100 dinars",
+          "normalized_rate_numeric": 0.1,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RPD/IMPORREDEV": {
+          "tax": "RPD/IMPORREDEV",
+          "normalized_rate_raw": "3 %",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "alimentation",
+      "national_code": "16010010006",
+      "hs6": "160100",
+      "description": "Saucisses,saucissions et produits similaires de fois",
+      "taxes": {
+        "TCATAXE": {
+          "tax": "TCATAXE",
+          "normalized_rate_raw": "1 %",
+          "normalized_rate_numeric": 1.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19 %",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "50 %",
+          "normalized_rate_numeric": 50.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "AIR/IMPORAV": {
+          "tax": "AIR/IMPORAV",
+          "normalized_rate_raw": "10 %",
+          "normalized_rate_numeric": 10.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RPD/IMPORREDEV": {
+          "tax": "RPD/IMPORREDEV",
+          "normalized_rate_raw": "3 %",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "médicament",
+      "national_code": "30012010004",
+      "hs6": "300120",
+      "description": "Extraits,a usages opotherapiques,de glandes ou d'autres organes ou de leurs secretions, d'orgine humaine",
+      "taxes": {
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "7 %",
+          "normalized_rate_numeric": 7.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RPD/IMPORREDEV": {
+          "tax": "RPD/IMPORREDEV",
+          "normalized_rate_raw": "3 %",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "textile",
+      "national_code": "50010000008",
+      "hs6": "500100",
+      "description": "Cocons de vers a soie propres au devidage",
+      "taxes": {
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19 %",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RPD/IMPORREDEV": {
+          "tax": "RPD/IMPORREDEV",
+          "normalized_rate_raw": "3 %",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "machine",
+      "national_code": "84011000000",
+      "hs6": "840110",
+      "description": "Reacteurs nucleaires",
+      "taxes": {
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19 %",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RPD/IMPORREDEV": {
+          "tax": "RPD/IMPORREDEV",
+          "normalized_rate_raw": "3 %",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "électronique",
+      "national_code": "85011010003",
+      "hs6": "850110",
+      "description": "Moteurs sunchrones d'une puissance n'excedant pas 18 w",
+      "taxes": {
+        "RPD/IMPORREDEV": {
+          "tax": "RPD/IMPORREDEV",
+          "normalized_rate_raw": "3 %",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19 %",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "véhicule",
+      "national_code": "87011000007",
+      "hs6": "870110",
+      "description": "Motoculteurs",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RPD/IMPORREDEV": {
+          "tax": "RPD/IMPORREDEV",
+          "normalized_rate_raw": "3 %",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit chimique",
+      "national_code": "28011000006",
+      "hs6": "280110",
+      "description": "Chlore",
+      "taxes": {
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19 %",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "30 %",
+          "normalized_rate_numeric": 30.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RPD/IMPORREDEV": {
+          "tax": "RPD/IMPORREDEV",
+          "normalized_rate_raw": "3 %",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "matière première",
+      "national_code": "25010010007",
+      "hs6": "250100",
+      "description": "Eau de mer et eaux mères de salines",
+      "taxes": {
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19 %",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0 %",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RPD/IMPORREDEV": {
+          "tax": "RPD/IMPORREDEV",
+          "normalized_rate_raw": "3 %",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit exonéré ou à taux nul",
+      "national_code": "02071130001",
+      "hs6": "020711",
+      "description": "Coqs et poules non découpés en morceaux,frais ou réfrigérés,présentés plumes,vides,sans la tete ni les pattes,mais avec le cou,le coeur,le  foie et le gesier,dénommés \"poulets 70%\"",
+      "taxes": {
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19 %",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "36 %",
+          "normalized_rate_numeric": 36.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TM/ABATTTAXE": {
+          "tax": "TM/ABATTTAXE",
+          "normalized_rate_raw": "0.012 dinars",
+          "normalized_rate_numeric": 0.012,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RPD/IMPORREDEV": {
+          "tax": "RPD/IMPORREDEV",
+          "normalized_rate_raw": "3 %",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    }
+  ],
+  "source_comparison": {
+    "country": "TUN",
+    "generated_at": "2026-08-29T22:23:34.401461+00:00",
+    "method": "Comparaison du fichier national avec les pages de détail LIVE de la source (douane.gov.tn/tarifwebnew, captures data/sources/TUN/tarifweb2026/detail_*.html)",
+    "status": "SAMPLE_VERIFIED_LIVE",
+    "lines_compared": 3,
+    "lines_matched": 3,
+    "lines_divergent": 0,
+    "note_nouveaux_codes": "84852000008 (nouveau code, source_gaps) : la source live publie DD 0 % / TVA 7 % / RPD 3 % — taux à intégrer lors du re-crawl complet.",
+    "results": [
+      {
+        "code": "01012100015",
+        "statut": "EXISTANT",
+        "taxes": [
+          {
+            "tax_source": "DD",
+            "raw_live": "36 %",
+            "raw_fichier": "36 %",
+            "match": true
+          },
+          {
+            "tax_source": "TVA/AP",
+            "raw_live": "0 %",
+            "raw_fichier": "0 %",
+            "match": true
+          },
+          {
+            "tax_source": "RPD/IMPOR",
+            "raw_live": "3 %",
+            "raw_fichier": "3 %",
+            "match": true
+          },
+          {
+            "tax_source": "RPD/EXPOR",
+            "raw_live": "0 %",
+            "raw_fichier": "0 %",
+            "match": true
+          }
+        ],
+        "match_complet": true
+      },
+      {
+        "code": "16010010006",
+        "statut": "EXISTANT",
+        "taxes": [
+          {
+            "tax_source": "TCA",
+            "raw_live": "1 %",
+            "raw_fichier": "1 %",
+            "match": true
+          },
+          {
+            "tax_source": "TVA/AP",
+            "raw_live": "19 %",
+            "raw_fichier": "19 %",
+            "match": true
+          },
+          {
+            "tax_source": "RPD/IMPOR",
+            "raw_live": "3 %",
+            "raw_fichier": "3 %",
+            "match": true
+          },
+          {
+            "tax_source": "AIR/IMPOR",
+            "raw_live": "10 %",
+            "raw_fichier": "10 %",
+            "match": true
+          },
+          {
+            "tax_source": "DD",
+            "raw_live": "50 %",
+            "raw_fichier": "50 %",
+            "match": true
+          },
+          {
+            "tax_source": "RPD/EXPOR",
+            "raw_live": "0 %",
+            "raw_fichier": "0 %",
+            "match": true
+          }
+        ],
+        "match_complet": true
+      },
+      {
+        "code": "84852000008",
+        "statut": "NOUVEAU_CODE(source_gaps)",
+        "taxes": [],
+        "match_complet": false
+      },
+      {
+        "code": "87034010116",
+        "statut": "EXISTANT",
+        "taxes": [
+          {
+            "tax_source": "RPD/IMPOR",
+            "raw_live": "3 %",
+            "raw_fichier": "3 %",
+            "match": true
+          },
+          {
+            "tax_source": "DC/VOIT",
+            "raw_live": "10 %",
+            "raw_fichier": "10 %",
+            "match": true
+          },
+          {
+            "tax_source": "TVA/AUTO",
+            "raw_live": "19 %",
+            "raw_fichier": "19 %",
+            "match": true
+          },
+          {
+            "tax_source": "RPD/EXPOR",
+            "raw_live": "0 %",
+            "raw_fichier": "0 %",
+            "match": true
+          }
+        ],
+        "match_complet": true
+      }
+    ]
+  },
+  "legal_framing": {
+    "saas_status": "INFORMATIF_NON_OPPOSABLE",
+    "fait_foi": "Les publications officielles de l'autorité douanière (tarif officiel, JO, arrêtés) seules sont opposables.",
+    "portee": "Le SaaS fournit des repères documentaires sourcés ; il ne constitue ni une décision douanière, ni un conseil juridique, ni une validation administrative.",
+    "rigueur": "La rigueur documentaire (SHA-256, verbatim, écarts documentés sans arbitrage, aucun taux inventé) reste exigée et ne confère pas d'opposabilité.",
+    "verification": {
+      "disclaimer_present": true,
+      "forbidden_claims_found": [],
+      "status": "DOCUMENTED"
+    }
+  },
+  "verbatim_integrity": {
+    "effective_path_clean": true,
+    "quarantined_or_suspicious_paths": [
+      "/Users/sayahfarid/afcfta-final-002/backend/data/crawled/QUARANTINE_SYNTHETIC/TUN_tariffs.json"
+    ],
+    "rows_with_forbidden_markers": 0,
+    "rows_with_forbidden_markers_examples": [],
+    "verbatim_policy_declared_in_metadata": true,
+    "rule": "Pas de mock, pas de synthèse, pas d'extrapolation : toute donnée non publiée par la source reste un écart documenté (source_gaps)."
+  },
+  "quality_dimensions": {
+    "source": "DOCUMENTED",
+    "temporal_validity": "PARTIAL",
+    "classification": "DOCUMENTED",
+    "taxes_and_levies": "PARTIAL",
+    "preference_and_origin": "PARTIAL",
+    "formalities": "PARTIAL",
+    "informative_framing": "DOCUMENTED",
+    "verbatim_integrity": "DOCUMENTED"
+  },
+  "overall_informative_status": "INFORMATIVE_PARTIAL",
+  "known_data_gaps": [
+    "Archive officielle tarifaire non retrouvée localement.",
+    "Date de publication et date d'effet documentées absentes.",
+    "Version SH explicite absente des métadonnées JSON consommées.",
+    "Écart entre les lignes canoniques et crawled; les divergences restent en revue."
+  ],
+  "actions_required": [
+    "Archiver le document tarifaire de l'autorité déclarée sans remplacer le fichier actuel.",
+    "Comparer un échantillon de lignes et conserver les empreintes des documents.",
+    "Documenter la version SH et les dates de publication/effet.",
+    "Résoudre les divergences entre artefacts avant une utilisation documentaire plus forte."
+  ]
+}

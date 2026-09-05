@@ -1,0 +1,333 @@
+{
+  "generated_at": "2026-06-16T22:47:14.710245",
+  "schema_version": "4.0",
+  "dry_run": false,
+  "summary": {
+    "countries": 40,
+    "lines_total": 279002,
+    "lines_marked": 0,
+    "lines_skipped_protected": 279002
+  },
+  "countries": {
+    "BDI": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
+    },
+    "BEN": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "BFA": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "BWA": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 8589,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8589,
+      "disclaimer": null
+    },
+    "CAF": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
+    },
+    "CIV": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "CMR": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
+    },
+    "COD": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
+    },
+    "COG": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
+    },
+    "CPV": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "DZA": {
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 17115,
+      "lines_marked": 0,
+      "lines_skipped_protected": 17115,
+      "disclaimer": null
+    },
+    "EGY": {
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 8746,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8746,
+      "disclaimer": null
+    },
+    "ETH": {
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 2063,
+      "lines_marked": 0,
+      "lines_skipped_protected": 2063,
+      "disclaimer": null
+    },
+    "GAB": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
+    },
+    "GHA": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "GIN": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "GMB": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "GNB": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "GNQ": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
+    },
+    "KEN": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
+    },
+    "LBR": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "LSO": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 8589,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8589,
+      "disclaimer": null
+    },
+    "MAR": {
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 13114,
+      "lines_marked": 0,
+      "lines_skipped_protected": 13114,
+      "disclaimer": null
+    },
+    "MLI": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "MUS": {
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 6073,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6073,
+      "disclaimer": null
+    },
+    "NAM": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 8589,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8589,
+      "disclaimer": null
+    },
+    "NER": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "NGA": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6363,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6363,
+      "disclaimer": null
+    },
+    "RWA": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
+    },
+    "SEN": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "SLE": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "SOM": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5943,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5943,
+      "disclaimer": null
+    },
+    "SSD": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
+    },
+    "SWZ": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 8589,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8589,
+      "disclaimer": null
+    },
+    "TCD": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5239,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5239,
+      "disclaimer": null
+    },
+    "TGO": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 6129,
+      "lines_marked": 0,
+      "lines_skipped_protected": 6129,
+      "disclaimer": null
+    },
+    "TUN": {
+      "data_status": "VERIFIED",
+      "reliability": "A",
+      "lines_total": 17512,
+      "lines_marked": 0,
+      "lines_skipped_protected": 17512,
+      "disclaimer": null
+    },
+    "TZA": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
+    },
+    "UGA": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 5984,
+      "lines_marked": 0,
+      "lines_skipped_protected": 5984,
+      "disclaimer": null
+    },
+    "ZAF": {
+      "data_status": "PARTIAL",
+      "reliability": "B",
+      "lines_total": 8589,
+      "lines_marked": 0,
+      "lines_skipped_protected": 8589,
+      "disclaimer": null
+    }
+  }
+}

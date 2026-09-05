@@ -1,0 +1,745 @@
+{
+ "country": "TUN",
+ "title": "Registre verbatim des codes de taxes et de leurs assiettes (méthode de calcul publiée par la source)",
+ "source": "douane.gov.tn/tarifweb2025 (données de juin 2026) — assiettes telles que publiées par la source, sans interprétation",
+ "generated_at": "2026-08-29T21:36:18.284974+00:00",
+ "note": "Chaque taxe de chaque sous-position du fichier national porte son assiette (base de calcul) dans le champ `assiette`. Les libellés d'assiette sont conservés tels que publiés (abréviations de la source, certains tronqués côté source). Les chapitres du Code des douanes archivés (CD_12 en particulier) fournissent la base légale des droits et taxes perçus par la douane.",
+ "taxes": [
+  {
+   "code": "AIR/IMPORAV",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "D",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DC/ALCDRT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DC/APDRT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DC/APPAUT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DC/ESSDROIT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DC/GPLDRT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DC/MTKDRT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DC/RNTADRT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DC/VOITDRT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DCS/ALCSURTAX",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DCVBBADRT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DD/AUT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DD/FUELDD/FUEL",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DD/MAZOUTDD/MAZOUT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DD/MTKDROIT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DD/PET",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DD/RNTADROIT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DD/VEH",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DDDROIT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DROIT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "DRT",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "FDCSA/VTAXE",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "P/BEUR/FRPREL",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "P/FRUITSPRELEV",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "P/H",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "P/L",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "P/VIANDEPRELV",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "RPD/EXPORREDEV",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "RPD/IMPORREDEV",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "T/MOTEURS",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "T/PCEXT/PEAUX",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TAXE",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TAXE/APP",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TAXE/FERRAILLES",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TCATAXE",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TLFTAXE",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TM/ABATTTAXE",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TMTSTAXE",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TPETAXE",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TVA/",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TVA/APTAXE",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TVA/AUTOTVA",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TVA/MTKTVA",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TVA/PPTVA",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  },
+  {
+   "code": "TVA/RNTATVA",
+   "libelles_source": [
+    ".PREST.DOUA/EXP"
+   ],
+   "assiettes_source": [
+    "SOMME D.T (G=0.1.2.3.4.",
+    "VALEUR DOUANE DINARS"
+   ],
+   "cotations": [
+    "export"
+   ],
+   "n_lignes": 17500,
+   "n_ad_valorem": 17500,
+   "n_specifique": 0
+  }
+ ]
+}

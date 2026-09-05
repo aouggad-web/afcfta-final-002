@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "country": "COG",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "COG-MINFIN-CGI-TOME1",
+      "title": "Code Général des Impôts — Tome I (Impôts d'État)",
+      "institution": "Ministère des Finances, du Budget et du Portefeuille Public — République du Congo",
+      "legal_date": "2002-12-31",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.finances.gouv.cg/sites/default/files/documents/CGI%20Tome%20I.pdf",
+      "local_file": "official/cog-cgi-tome1.pdf",
+      "sha256": "4e4cb79135782817fc26c18e0c8418c789888564b9576e92493676ecb7ff1f52",
+      "coverage": "TVA taux normal 18% et taux zéro (Article 17); champ d'application; base d'imposition; Annexe 5 (liste de biens soumis à un taux réduit, pourcentage non extrait de ce tome); Redevance audio-visuelle",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "PDF hébergé directement sur le domaine officiel du Ministère des Finances (finances.gouv.cg). Loi consolidée : dernière modification du taux normal par Loi n°10-2002 du 31 décembre 2002. 332 pages, texte vérifié article par article pour la section TVA."
+    },
+    {
+      "source_id": "COG-DGID-TAXONOMY-20260725",
+      "title": "Page « Impôt » du portail institutionnel",
+      "institution": "Direction Générale des Impôts et des Domaines (DGID) — République du Congo",
+      "legal_date": null,
+      "accessed_at": "2026-07-25",
+      "url": "https://www.finances.gouv.cg/taxonomy/term/29",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "actualités fiscales; formulaires",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Site accessible (HTTP 200 constaté 2026-07-25) mais WebFetch renvoie 403 (blocage du user-agent de l'outil) ; contenu non exploré en profondeur au-delà du PDF principal."
+    }
+  ]
+}
