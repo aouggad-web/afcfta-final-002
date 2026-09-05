@@ -427,18 +427,20 @@ async def sectoral_analysis(
     lang: str = Query(default="fr", description="Langue (fr/en)"),
 ):
     """
-    Enrichit une opportunité commerciale avec une analyse sectorielle ISIC4
-    et des indicateurs de base industrielle (IDSB) :
+    Rattache une opportunité à sa division industrielle **ISIC Rev.4** et
+    confronte l'offre de l'origine et la demande de la destination via les
+    données **UNIDO IDSB** (Industrial Demand-Supply Balance) + INDSTAT :
 
-    - Classification ISIC Rev.4 du produit
-    - Indice de fabricabilité et préparation export du secteur
-    - Chaîne de transformation (intrants → procédé → extrants)
-    - Barrières sectorielles à l'industralisation
-    - Score d'opportunité pondéré par profil sectoral
-    - Indice de compétitivité par pays
-    - Recommandations stratégiques de développement
+    - Classification ISIC Rev.4 du produit (correspondance officielle UNSD)
+    - Chaîne de transformation réelle (intrant → procédé → extrant)
+    - Base industrielle de l'origine : production, valeur ajoutée, exports,
+      emploi et principaux sous-secteurs (UNIDO IDSB/INDSTAT, 4 chiffres)
+    - Demande de la destination : consommation apparente et imports mondiaux
+    - Lecture offre-demande (verdict transparent, jamais un score opaque)
+    - Produits SH de diversification de la même division
 
-    Tous les chiffres sont réels ou marqués indisponibles (jamais inventés).
+    Couverture UNIDO : 20 pays africains, 2018-2024. Un pays ou une division
+    hors relevé est marqué indisponible — aucun chiffre n'est estimé.
     """
     from services.isic_idsb_opportunity_service import get_isic_idsb_service
 

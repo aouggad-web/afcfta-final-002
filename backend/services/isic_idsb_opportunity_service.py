@@ -1,216 +1,273 @@
 """
-ISIC4 & IDSB Industrial Database Opportunity Enhancement Service
-=================================================================
+Enrichissement ISIC (Rev.4) & IDSB du module Opportunités
+=========================================================
 
-This service enriches trade opportunities with detailed ISIC4 (Rev.4) sector
-classifications and industrial database information (IDSB), providing:
+Ce service rattache une opportunité commerciale (code SH) à sa **division
+industrielle ISIC Rev.4**, puis confronte l'**offre industrielle réelle** de
+l'origine et la **demande réelle** de la destination à partir des données UNIDO
+**IDSB** (Industrial Demand-Supply Balance) et **INDSTAT** — une véritable
+lecture offre-demande, pas un score inventé.
 
-1. Sector-level opportunity assessment using ISIC4 divisions
-2. Industrial base strength indicators per country
-3. Substitution potential across sectoral chains
-4. Competitiveness benchmarking within ISIC4 classes
-5. Transformation strategy mapping (input → process → output)
+Principe « zéro fabrication »
+----------------------------
+Aucun indicateur n'est estimé ici. Toutes les valeurs proviennent de sources
+réelles déjà embarquées :
+
+  • Classification ISIC↔SH : correspondance officielle UNSD portée par
+    ``services.unido_hs_mapping`` (divisions manufacturières C, labels FR/EN,
+    chaîne intrant → procédé, produits SH4 exportables).
+  • Offre & demande industrielles : ``etl.isic4_idsb_data`` — UNIDO IDSB
+    (Output, Imports World, Exports World, Apparent Consumption) + INDSTAT
+    (Value added, Employees, Establishments), au niveau ISIC 4 chiffres, pour
+    20 pays africains (2018-2024). Un pays hors couverture, ou une division sans
+    relevé, renvoie ``available: False`` — jamais une estimation.
+  • Demande fine (optionnelle) : imports OEC du marché destination pour le SH
+    exact, passés par l'appelant (``market_potential_usd``).
+
+Un produit hors section manufacturière ISIC (agriculture/extraction primaire)
+renvoie ``available: False`` : ce module éclaire la transformation industrielle,
+la production primaire étant couverte ailleurs (FAOSTAT/USGS).
 """
 
 from __future__ import annotations
 
-import json
 import logging
-from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
+
+from etl import isic4_idsb_data as idsb
+from services import unido_hs_mapping as isic_map
 
 logger = logging.getLogger(__name__)
 
-# ── ISIC Rev.4 Division Classification ──────────────────────────────────────
+# Indicateurs IDSB/INDSTAT (USD) additifs à l'échelle d'une division ISIC.
+_SUPPLY_FIELDS = ("output_usd", "output_usd_official", "value_added_usd", "exports_world_usd")
+_DEMAND_FIELDS = ("apparent_consumption_usd", "imports_world_usd")
+_COUNT_FIELDS = ("employees", "establishments")
 
-ISIC4_DIVISIONS: Dict[str, Dict[str, str]] = {
-    "01": {"code": "01", "label_fr": "Culture et élevage", "label_en": "Crop and animal production"},
-    "02": {"code": "02", "label_fr": "Sylviculture", "label_en": "Forestry"},
-    "03": {"code": "03", "label_fr": "Pêche et aquaculture", "label_en": "Fishing and aquaculture"},
-    "05": {"code": "05", "label_fr": "Extraction de charbon", "label_en": "Coal extraction"},
-    "06": {"code": "06", "label_fr": "Extraction de pétrole et gaz", "label_en": "Oil and gas extraction"},
-    "07": {"code": "07", "label_fr": "Extraction de minéraux", "label_en": "Mineral extraction"},
-    "08": {"code": "08", "label_fr": "Exploitation de carrières", "label_en": "Quarrying"},
-    "09": {"code": "09", "label_fr": "Services de soutien aux mines", "label_en": "Mining support services"},
-    "10": {"code": "10", "label_fr": "Industries alimentaires", "label_en": "Food production"},
-    "11": {"code": "11", "label_fr": "Boissons", "label_en": "Beverage production"},
-    "12": {"code": "12", "label_fr": "Tabac", "label_en": "Tobacco processing"},
-    "13": {"code": "13", "label_fr": "Textile", "label_en": "Textiles"},
-    "14": {"code": "14", "label_fr": "Vêtements", "label_en": "Apparel"},
-    "15": {"code": "15", "label_fr": "Cuir et articles", "label_en": "Leather and footwear"},
-    "16": {"code": "16", "label_fr": "Bois et liège", "label_en": "Wood and cork"},
-    "17": {"code": "17", "label_fr": "Papier et carton", "label_en": "Paper and pulp"},
-    "18": {"code": "18", "label_fr": "Imprimerie et reproduction", "label_en": "Printing and reproduction"},
-    "19": {"code": "19", "label_fr": "Raffinage du pétrole", "label_en": "Petroleum refining"},
-    "20": {"code": "20", "label_fr": "Chimie et minéraux", "label_en": "Chemicals and minerals"},
-    "21": {"code": "21", "label_fr": "Produits pharmaceutiques", "label_en": "Pharmaceutical products"},
-    "22": {"code": "22", "label_fr": "Caoutchouc et plastiques", "label_en": "Rubber and plastics"},
-    "23": {"code": "23", "label_fr": "Minéraux non métalliques", "label_en": "Non-metallic minerals"},
-    "24": {"code": "24", "label_fr": "Métallurgie", "label_en": "Metal production"},
-    "25": {"code": "25", "label_fr": "Produits métalliques", "label_en": "Fabricated metals"},
-    "26": {"code": "26", "label_fr": "Électronique", "label_en": "Electronics"},
-    "27": {"code": "27", "label_fr": "Machines électriques", "label_en": "Electrical equipment"},
-    "28": {"code": "28", "label_fr": "Machinerie", "label_en": "Machinery"},
-    "29": {"code": "29", "label_fr": "Véhicules automobiles", "label_en": "Motor vehicles"},
-    "30": {"code": "30", "label_fr": "Transport ferroviaire", "label_en": "Railroad equipment"},
-    "31": {"code": "31", "label_fr": "Transport naval", "label_en": "Ship and boat building"},
-    "32": {"code": "32", "label_fr": "Aérospatiale", "label_en": "Aircraft"},
-    "33": {"code": "33", "label_fr": "Autres transports", "label_en": "Other transport"},
-    "34": {"code": "34", "label_fr": "Équipement professionnel", "label_en": "Professional equipment"},
-    "35": {"code": "35", "label_fr": "Machines d'usage général", "label_en": "General-purpose machinery"},
-    "36": {"code": "36", "label_fr": "Mobilier et divers", "label_en": "Furniture and miscellaneous"},
-    "37": {"code": "37", "label_fr": "Recyclage", "label_en": "Recycling"},
-}
 
-# ── HS to ISIC4 Mapping ──────────────────────────────────────────────────────
+def _norm(hs_code: Optional[str]) -> str:
+    if not hs_code:
+        return ""
+    return "".join(ch for ch in str(hs_code) if ch.isdigit())
 
-HS_TO_ISIC4: Dict[str, str] = {
-    # Agriculture & Food (ISIC 01-03, 10-11)
-    "0901": "01",  # Coffee → Crop production
-    "0902": "01",  # Tea
-    "1801": "01",  # Cocoa beans
-    "1005": "01",  # Maize
-    "1006": "01",  # Rice
-    "1001": "01",  # Wheat
-    "2401": "01",  # Tobacco
-    "0801": "01",  # Nuts
-    "0803": "01",  # Plantains
-    "1202": "01",  # Groundnuts
-    "1511": "01",  # Oil palm
-    "1701": "10",  # Sugar products → Food production
-    "1806": "10",  # Cocoa preparations
-    "2106": "10",  # Food preparations
-    "2201": "11",  # Water
-    "2203": "11",  # Beer & malt
-    "2204": "11",  # Wine
-    "2208": "11",  # Spirits
-    # Textiles & Apparel (ISIC 13-15)
-    "5001": "13",  # Silk
-    "5201": "13",  # Cotton
-    "6001": "13",  # Yarn & thread
-    "6201": "14",  # Apparel
-    "6301": "14",  # Apparel
-    "6401": "15",  # Footwear
-    # Chemicals & Pharmaceuticals (ISIC 19-21)
-    "2710": "19",  # Petroleum products
-    "2915": "20",  # Chemicals
-    "2942": "20",  # Chemicals
-    "3004": "21",  # Pharmaceuticals
-    "3005": "21",  # Pharmaceuticals
-    # Metals & Minerals (ISIC 07-08, 23-25)
-    "2603": "07",  # Copper ore → Mineral extraction
-    "2608": "07",  # Zinc ore
-    "2601": "07",  # Iron ore
-    "2606": "07",  # Bauxite
-    "2701": "06",  # Coal
-    "7001": "24",  # Iron & steel
-    "7208": "24",  # Steel
-    "7325": "25",  # Fabricated metals
-    # Wood & Paper (ISIC 16-18)
-    "4401": "16",  # Wood lumber
-    "4403": "16",  # Wood products
-    "4701": "17",  # Pulp
-    "4802": "17",  # Paper
-    # Machinery & Transport (ISIC 28-33)
-    "8471": "28",  # Computers & machinery
-    "8706": "29",  # Motor vehicles
-    "8901": "31",  # Ships & boats
-    "8802": "32",  # Aircraft
-}
 
-# ── Industrial Database Strength Indicators (IDSB) ──────────────────────────
+def _division_subsectors(country_iso3: str, division: str) -> List[Dict]:
+    """Sous-secteurs ISIC 4 chiffres d'une division pour un pays (données IDSB réelles)."""
+    summary = idsb.get_country_isic4_summary(country_iso3)
+    if not summary:
+        return []
+    return [s for s in summary.get("sectors", []) if str(s.get("isic4", "")).startswith(division)]
 
-IDSB_SECTOR_BENCHMARKS: Dict[str, Dict[str, float]] = {
-    # Format: "ISIC4_division": {
-    #   "manufacturing_index": value (0-100),
-    #   "export_readiness": value (0-100),
-    #   "avg_productivity": value,
-    #   "skill_level": value (0-5),
-    #   "capex_intensity": value (0-1)
-    # }
-    "01": {
-        "manufacturing_index": 45,
-        "export_readiness": 60,
-        "avg_productivity": 2.5,
-        "skill_level": 2,
-        "capex_intensity": 0.3
-    },
-    "10": {
-        "manufacturing_index": 65,
-        "export_readiness": 70,
-        "avg_productivity": 4.2,
-        "skill_level": 3,
-        "capex_intensity": 0.5
-    },
-    "13": {
-        "manufacturing_index": 55,
-        "export_readiness": 65,
-        "avg_productivity": 3.8,
-        "skill_level": 2.5,
-        "capex_intensity": 0.6
-    },
-    "20": {
-        "manufacturing_index": 72,
-        "export_readiness": 75,
-        "avg_productivity": 5.2,
-        "skill_level": 3.5,
-        "capex_intensity": 0.7
-    },
-    "24": {
-        "manufacturing_index": 68,
-        "export_readiness": 72,
-        "avg_productivity": 4.8,
-        "skill_level": 3,
-        "capex_intensity": 0.8
-    },
-    "29": {
-        "manufacturing_index": 52,
-        "export_readiness": 55,
-        "avg_productivity": 3.5,
-        "skill_level": 3.5,
-        "capex_intensity": 0.9
-    },
-}
+
+def _aggregate(subsectors: List[Dict], fields) -> Dict[str, Dict]:
+    """
+    Agrège (somme) un indicateur additif sur les sous-secteurs d'une division, en
+    prenant pour chaque sous-secteur sa dernière année disponible. Retourne, par
+    champ, la somme, l'étendue d'années réellement utilisées, le nombre de
+    sous-secteurs contributeurs et la présence de statistiques officielles.
+    """
+    out: Dict[str, Dict] = {}
+    for field in fields:
+        total = 0.0
+        years: List[int] = []
+        n = 0
+        official = False
+        for s in subsectors:
+            cell = (s.get("indicators") or {}).get(field)
+            if not cell or cell.get("value") is None:
+                continue
+            total += float(cell["value"])
+            years.append(int(cell["year"]))
+            n += 1
+            if cell.get("data_nature") == "OFFICIAL_STATISTICS":
+                official = True
+        if n:
+            out[field] = {
+                "value": round(total, 1),
+                "subsectors_counted": n,
+                "year_min": min(years),
+                "year_max": max(years),
+                "has_official": official,
+            }
+    return out
+
+
+def _industrial_base(origin_iso3: str, division: str, fr: bool) -> Dict:
+    """
+    Base industrielle RÉELLE de l'origine dans la division (UNIDO IDSB/INDSTAT) :
+    production, valeur ajoutée, exports, emploi, plus les 5 principaux
+    sous-secteurs par production. ``available: False`` hors couverture.
+    """
+    iso3 = (origin_iso3 or "").strip().upper()
+    if not idsb.is_country_covered(iso3):
+        return {"available": False, "reason": "country_not_in_unido_idsb_coverage"}
+
+    subsectors = _division_subsectors(iso3, division)
+    supply = _aggregate(subsectors, _SUPPLY_FIELDS)
+    counts = _aggregate(subsectors, _COUNT_FIELDS)
+    if not supply and not counts:
+        return {"available": False, "reason": "no_division_data"}
+
+    # Production de référence : Output IDSB, à défaut Output officiel INDSTAT.
+    output = supply.get("output_usd") or supply.get("output_usd_official")
+
+    # 5 principaux sous-secteurs par production (réels, avec libellé).
+    def _sub_output(s):
+        ind = s.get("indicators") or {}
+        cell = ind.get("output_usd") or ind.get("output_usd_official")
+        return (cell or {}).get("value") or 0
+
+    top = sorted(
+        (s for s in subsectors if _sub_output(s) > 0), key=_sub_output, reverse=True
+    )[:5]
+    top_subsectors = [
+        {
+            "isic4": s["isic4"],
+            "label": s.get("isic_description"),
+            "output_usd": _sub_output(s),
+        }
+        for s in top
+    ]
+
+    return {
+        "available": True,
+        "output_usd": (output or {}).get("value"),
+        "value_added_usd": supply.get("value_added_usd", {}).get("value"),
+        "exports_world_usd": supply.get("exports_world_usd", {}).get("value"),
+        "employees": counts.get("employees", {}).get("value"),
+        "establishments": counts.get("establishments", {}).get("value"),
+        "year_range": _year_range(supply, counts),
+        "has_official": any(v.get("has_official") for v in {**supply, **counts}.values()),
+        "top_subsectors": top_subsectors,
+        "source": "UNIDO IDSB + INDSTAT (ISIC Rev.4)",
+    }
+
+
+def _market_demand(destination_iso3: str, division: str) -> Dict:
+    """
+    Demande RÉELLE de la destination dans la division (UNIDO IDSB) : consommation
+    apparente et imports mondiaux. ``available: False`` hors couverture.
+    """
+    iso3 = (destination_iso3 or "").strip().upper()
+    if not idsb.is_country_covered(iso3):
+        return {"available": False, "reason": "country_not_in_unido_idsb_coverage"}
+
+    demand = _aggregate(_division_subsectors(iso3, division), _DEMAND_FIELDS)
+    if not demand:
+        return {"available": False, "reason": "no_division_data"}
+
+    return {
+        "available": True,
+        "apparent_consumption_usd": demand.get("apparent_consumption_usd", {}).get("value"),
+        "imports_world_usd": demand.get("imports_world_usd", {}).get("value"),
+        "year_range": _year_range(demand),
+        "source": "UNIDO IDSB (ISIC Rev.4)",
+    }
+
+
+def _year_range(*aggs: Dict) -> Optional[str]:
+    years: List[int] = []
+    for agg in aggs:
+        for v in agg.values():
+            years.extend([v["year_min"], v["year_max"]])
+    if not years:
+        return None
+    lo, hi = min(years), max(years)
+    return str(lo) if lo == hi else f"{lo}–{hi}"
+
+
+def _balance(base: Dict, demand: Dict, market_potential_usd: Optional[float], fr: bool) -> Dict:
+    """Verdict offre-demande, fonction TRANSPARENTE de faits réels (jamais un score opaque)."""
+    # Offre mesurée = toute preuve industrielle réelle (production, valeur ajoutée,
+    # exports, emploi, établissements), pas seulement l'Output.
+    has_supply = bool(base.get("available")) and any(
+        base.get(k)
+        for k in ("output_usd", "value_added_usd", "exports_world_usd", "employees", "establishments")
+    )
+    # Demande mesurée = consommation apparente ou imports UNIDO, ou imports OEC du SH exact.
+    has_demand = (
+        bool(demand.get("available"))
+        and any(demand.get(k) for k in ("apparent_consumption_usd", "imports_world_usd"))
+    ) or (market_potential_usd is not None and market_potential_usd > 0)
+    origin_exports = bool(base.get("available") and base.get("exports_world_usd"))
+
+    if has_supply and has_demand:
+        verdict = "supply_and_demand"
+        text = (
+            "Activité industrielle mesurée à l'origine ET demande mesurée à "
+            "destination : appariement offre-demande favorable"
+            + (
+                ", l'origine exportant déjà cette division."
+                if origin_exports
+                else " (l'origine ne déclare pas encore d'exports sur la division)."
+            )
+            if fr
+            else "Industrial activity measured at origin AND demand measured at "
+            "destination: favourable supply–demand match"
+            + (
+                ", with the origin already exporting this division."
+                if origin_exports
+                else " (origin reports no exports in the division yet)."
+            )
+        )
+    elif has_demand and not has_supply:
+        verdict = "demand_without_supply"
+        text = (
+            "Demande mesurée à destination, mais aucune production industrielle "
+            "UNIDO mesurée à l'origine sur cette division : débouché réel, "
+            "capacité d'offre à établir."
+            if fr
+            else "Demand measured at destination, but no UNIDO industrial output "
+            "measured at origin in this division: real outlet, supply capacity to "
+            "be established."
+        )
+    elif has_supply and not has_demand:
+        verdict = "supply_without_demand"
+        text = (
+            "Production mesurée à l'origine, mais aucune demande UNIDO/OEC mesurée "
+            "à destination : capacité présente, débouché à confirmer."
+            if fr
+            else "Output measured at origin, but no UNIDO/OEC demand measured at "
+            "destination: capacity present, outlet to confirm."
+        )
+    else:
+        verdict = "insufficient_data"
+        text = (
+            "Ni offre ni demande industrielles mesurées pour cette paire dans la "
+            "couverture UNIDO — aucun appariement à évaluer."
+            if fr
+            else "Neither industrial supply nor demand measured for this pair "
+            "within UNIDO coverage — no match to assess."
+        )
+
+    return {
+        "verdict": verdict,
+        "supply_measured": has_supply,
+        "demand_measured": has_demand,
+        "origin_exports_division": origin_exports,
+        "hs_import_demand_usd": market_potential_usd if (market_potential_usd or 0) > 0 else None,
+        "interpretation": text,
+    }
+
+
+def _diversification_products(isic_code: str, hs_code: str, limit: int = 8) -> List[Dict]:
+    """Autres SH4 exportables de la même division ISIC (même intrant/procédé)."""
+    current = _norm(hs_code)[:4]
+    products = isic_map.products_for_isic(isic_code)
+    return [
+        {"hs4": code, "label": label}
+        for code, label in products.items()
+        if code != current
+    ][:limit]
 
 
 class ISIC4IDSBOpportunityService:
-    """Enriches opportunities with ISIC4 sector and industrial base analysis."""
-
-    def __init__(self):
-        self.hs_to_isic = HS_TO_ISIC4
-        self.isic_divisions = ISIC4_DIVISIONS
-        self.benchmarks = IDSB_SECTOR_BENCHMARKS
+    """Rattache une opportunité à sa division ISIC et confronte offre/demande réelles UNIDO."""
 
     def get_isic4_for_hs(self, hs_code: str) -> Optional[str]:
-        """Get ISIC4 division for an HS code."""
-        # Try exact 4-digit match first
-        hs_prefix = hs_code[:4] if len(hs_code) >= 4 else hs_code
-        if hs_prefix in self.hs_to_isic:
-            return self.hs_to_isic[hs_prefix]
-
-        # Try 2-digit match
-        if len(hs_code) >= 2:
-            hs_prefix = hs_code[:2]
-            for key, value in self.hs_to_isic.items():
-                if key.startswith(hs_prefix):
-                    return value
-
-        return None
-
-    def get_sector_profile(self, isic4_code: str, lang: str = "fr") -> Dict:
-        """Get detailed sector profile for an ISIC4 division."""
-        division = self.isic_divisions.get(isic4_code, {})
-        benchmark = self.benchmarks.get(isic4_code, {})
-
-        return {
-            "isic4_code": isic4_code,
-            "label": division.get(f"label_{lang}", "Unknown sector"),
-            "manufacturing_index": benchmark.get("manufacturing_index"),
-            "export_readiness": benchmark.get("export_readiness"),
-            "avg_productivity": benchmark.get("avg_productivity"),
-            "skill_level": benchmark.get("skill_level"),
-            "capex_intensity": benchmark.get("capex_intensity"),
-        }
+        """Division ISIC Rev.4 manufacturière du produit (la plus précise), ou None."""
+        codes = isic_map.isic_for_hs(hs_code)
+        return codes[0] if codes else None
 
     def assess_opportunity_by_sector(
         self,
@@ -218,231 +275,77 @@ class ISIC4IDSBOpportunityService:
         origin: str,
         destination: str,
         market_potential: Optional[float] = None,
-        lang: str = "fr"
+        lang: str = "fr",
     ) -> Dict:
-        """Comprehensive opportunity assessment using ISIC4 sectoral analysis."""
-
+        """
+        Analyse ISIC4 + IDSB d'une opportunité bilatérale. ``available: False`` si
+        le produit n'appartient à aucune division manufacturière ISIC.
+        """
+        fr = lang != "en"
         isic4 = self.get_isic4_for_hs(hs_code)
         if not isic4:
-            return {"available": False, "note": "ISIC4 classification not available"}
+            return {
+                "available": False,
+                "reason": "not_manufacturing",
+                "note": (
+                    "Produit hors section manufacturière ISIC (production primaire "
+                    "agricole ou extractive) — analyse industrielle non applicable."
+                    if fr
+                    else "Product outside the ISIC manufacturing section (primary "
+                    "agricultural or extractive production) — industrial analysis "
+                    "not applicable."
+                ),
+            }
 
-        sector_profile = self.get_sector_profile(isic4, lang)
+        transform = isic_map.transformation_for_isic(isic4)
+        precise_input = isic_map.input_for_hs4(hs_code, fallback=transform.get("input"))
+        product_label = isic_map.product_label(hs_code)
 
-        # Calculate sectoral opportunity score
-        opportunity_score = self._calculate_sectoral_score(
-            isic4, market_potential, sector_profile
-        )
-
-        # Assess transformation potential
-        transformation_chain = self._analyze_transformation_chain(isic4, hs_code, lang)
-
-        # Calculate competitiveness index
-        competitiveness = self._assess_competitiveness(
-            isic4, origin, destination
-        )
+        base = _industrial_base(origin, isic4, fr)
+        demand = _market_demand(destination, isic4)
+        balance = _balance(base, demand, market_potential, fr)
 
         return {
             "available": True,
             "hs_code": hs_code,
-            "isic4": isic4,
-            "sector_profile": sector_profile,
-            "opportunity_score": opportunity_score,
-            "transformation_chain": transformation_chain,
-            "competitiveness_index": competitiveness,
-            "sectoral_barriers": self._identify_sectoral_barriers(isic4, lang),
-            "recommended_actions": self._get_sectoral_recommendations(isic4, lang),
-        }
-
-    def _calculate_sectoral_score(
-        self,
-        isic4: str,
-        market_potential: Optional[float],
-        sector_profile: Dict
-    ) -> float:
-        """Calculate opportunity score (0-100) based on sectoral metrics."""
-
-        if not sector_profile:
-            return 0
-
-        manufacturing = sector_profile.get("manufacturing_index", 50) / 100
-        export_ready = sector_profile.get("export_readiness", 50) / 100
-
-        # Boost score if market potential exists
-        market_boost = min(1.0, (market_potential or 1) / 1000000) if market_potential else 0.5
-
-        score = (
-            0.4 * manufacturing +
-            0.4 * export_ready +
-            0.2 * market_boost
-        ) * 100
-
-        return round(score, 1)
-
-    def _analyze_transformation_chain(
-        self,
-        isic4: str,
-        hs_code: str,
-        lang: str
-    ) -> Dict:
-        """Analyze input-process-output transformation chain."""
-
-        # Simplified transformation chains for key sectors
-        chains = {
-            "01": {
-                "fr": {
-                    "input": "Matières premières agricoles brutes",
-                    "process": "Récolte, tri, séchage, conditionnement",
-                    "output": "Produits agricoles bruts pour export"
-                },
-                "en": {
-                    "input": "Raw agricultural materials",
-                    "process": "Harvesting, sorting, drying, packaging",
-                    "output": "Agricultural products for export"
-                }
+            "origin": origin,
+            "destination": destination,
+            "isic4": {
+                "code": isic4,
+                "label": transform.get("isic_label_fr" if fr else "isic_label_en"),
             },
-            "10": {
-                "fr": {
-                    "input": "Matières premières agricoles",
-                    "process": "Transformation, emballage, contrôle qualité",
-                    "output": "Produits alimentaires transformés"
-                },
-                "en": {
-                    "input": "Agricultural raw materials",
-                    "process": "Processing, packaging, quality control",
-                    "output": "Processed food products"
-                }
+            "product_label": product_label,
+            "transformation_chain": {
+                "input": precise_input,
+                "process": transform.get("process"),
+                "output": product_label
+                or transform.get("isic_label_fr" if fr else "isic_label_en"),
             },
-            "24": {
-                "fr": {
-                    "input": "Minerais bruts",
-                    "process": "Extraction, raffinage, transformation",
-                    "output": "Métaux purifiés et alliages"
-                },
-                "en": {
-                    "input": "Raw ores",
-                    "process": "Extraction, refining, transformation",
-                    "output": "Refined metals and alloys"
-                }
+            "industrial_base": base,
+            "market_demand": demand,
+            "demand_supply_balance": balance,
+            "diversification_products": _diversification_products(isic4, hs_code),
+            "coverage": {
+                "origin_in_idsb": idsb.is_country_covered(origin),
+                "destination_in_idsb": idsb.is_country_covered(destination),
+                "covered_countries": idsb.list_covered_countries(),
+            },
+            "sources": {
+                "classification": (
+                    "UNSD — Correspondance codes SH ↔ ISIC Rev.4"
+                    if fr
+                    else "UNSD — HS ↔ ISIC Rev.4 correspondence"
+                ),
+                "industrial_data": "UNIDO Statistics — IDSB + INDSTAT (ISIC Rev.4, 2018-2024)",
             },
         }
 
-        if isic4 in chains:
-            return chains[isic4].get(lang, chains[isic4].get("en"))
 
-        return {
-            "input": "Matières premières" if lang == "fr" else "Raw materials",
-            "process": "Transformation" if lang == "fr" else "Processing",
-            "output": "Produit fini" if lang == "fr" else "Finished product"
-        }
-
-    def _assess_competitiveness(
-        self,
-        isic4: str,
-        origin: str,
-        destination: str
-    ) -> float:
-        """Assess competitiveness index (0-100)."""
-
-        benchmark = self.benchmarks.get(isic4, {})
-        base_score = benchmark.get("manufacturing_index", 50)
-
-        # Country-specific adjustments (simplified)
-        # In production, use actual country industrial data
-        country_adjustments = {
-            "ETH": 15,  # Ethiopia starting to develop manufacturing
-            "KEN": 25,  # Kenya has stronger industrial base
-            "NGA": 30,  # Nigeria has oil & gas base
-            "ZAF": 45,  # South Africa strongest industrial base
-            "TUN": 40,  # Tunisia has textile & automotive
-            "EGY": 38,  # Egypt has food & textiles
-        }
-
-        origin_adjustment = country_adjustments.get(origin, 0)
-
-        competitiveness = base_score + origin_adjustment
-        return min(100, max(0, competitiveness))
-
-    def _identify_sectoral_barriers(self, isic4: str, lang: str) -> List[Dict]:
-        """Identify sector-specific barriers to development."""
-
-        barriers = {
-            "01": [
-                {
-                    "type": "climate" if lang == "en" else "climatique",
-                    "impact": "high" if lang == "en" else "fort",
-                    "description": "Climate variability affects productivity"
-                    if lang == "en"
-                    else "Variabilité climatique affectant la productivité"
-                }
-            ],
-            "20": [
-                {
-                    "type": "regulatory" if lang == "en" else "réglementaire",
-                    "impact": "medium" if lang == "en" else "moyen",
-                    "description": "Complex environmental regulations"
-                    if lang == "en"
-                    else "Réglementations environnementales complexes"
-                }
-            ],
-            "29": [
-                {
-                    "type": "technology" if lang == "en" else "technologique",
-                    "impact": "high" if lang == "en" else "fort",
-                    "description": "Requires advanced manufacturing technology"
-                    if lang == "en"
-                    else "Requiert une technologie manufacturière avancée"
-                }
-            ],
-        }
-
-        return barriers.get(isic4, [])
-
-    def _get_sectoral_recommendations(self, isic4: str, lang: str) -> List[str]:
-        """Get strategic recommendations for sector development."""
-
-        recommendations = {
-            "01": [
-                "Investir dans l'irrigation moderne et la gestion des sols" if lang == "fr"
-                else "Invest in modern irrigation and soil management",
-                "Développer la chaîne de froid pour la conservation" if lang == "fr"
-                else "Develop cold chain infrastructure",
-                "Renforcer les normes de qualité et la certification" if lang == "fr"
-                else "Strengthen quality standards and certification",
-            ],
-            "10": [
-                "Implanter des unités de transformation agroalimentaire" if lang == "fr"
-                else "Establish agro-processing facilities",
-                "Certifier les produits selon les normes internationales" if lang == "fr"
-                else "Certify products to international standards",
-                "Développer les marques régionales" if lang == "fr"
-                else "Develop regional brands",
-            ],
-            "24": [
-                "Moderniser les techniques de transformation métallurgique" if lang == "fr"
-                else "Modernize metallurgical processing",
-                "Recruter et former des ingénieurs spécialisés" if lang == "fr"
-                else "Recruit and train specialized engineers",
-                "Mettre en place des standards de qualité stricts" if lang == "fr"
-                else "Implement strict quality standards",
-            ],
-        }
-
-        return recommendations.get(isic4, [
-            "Renforcer la capacité de production" if lang == "fr"
-            else "Strengthen production capacity",
-            "Améliorer l'accès aux marchés régionaux" if lang == "fr"
-            else "Improve access to regional markets",
-            "Investir dans la qualification du personnel" if lang == "fr"
-            else "Invest in workforce skills",
-        ])
-
-
-# Singleton instance
 _service_instance: Optional[ISIC4IDSBOpportunityService] = None
 
 
 def get_isic_idsb_service() -> ISIC4IDSBOpportunityService:
-    """Get or create the ISIC4/IDSB opportunity service."""
+    """Instance partagée (le service est sans état)."""
     global _service_instance
     if _service_instance is None:
         _service_instance = ISIC4IDSBOpportunityService()
