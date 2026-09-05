@@ -1,0 +1,10 @@
+{
+ "schema_version": "1.0",
+ "country": "ZAF",
+ "as_of": "2026-09-06",
+ "excise_rates": [],
+ "provenance": {
+  "source": "backend/data/ZAF_tariffs.json (PARTIAL)",
+  "canonical_sha256": "cbea2f61f834e66ea3d2aecfdc880ac4486ef024792c0439451fa80ec11cb6fd"
+ }
+}

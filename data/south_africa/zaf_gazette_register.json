@@ -1,0 +1,50 @@
+{
+ "jurisdiction": "ZAF",
+ "as_of": "2026-09-06",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "Corpus : South African Revenue Service (SARS) — Schedule 1 Part 1 + corpus fiscal par position nationale."
+ },
+ "regional_cet_applicable": true,
+ "regional_note": "SACU — tarif commun (SARS)",
+ "base_tariff_documentation": {
+  "source_id": "ZAF-CANONICAL-TARIFF",
+  "source_name": "South African Revenue Service (SARS) — Schedule 1 Part 1",
+  "source_url": "https://www.sars.gov.za/customs-and-excise/tariff-books/schedules/",
+  "sha256": "cbea2f61f834e66ea3d2aecfdc880ac4486ef024792c0439451fa80ec11cb6fd",
+  "verification_status": "CRAWLED_AUTHENTIC",
+  "data_status": "PARTIAL",
+  "hs_version": "HS2022 — sous-positions nationales",
+  "effective_from": "2017-07-01",
+  "national_positions": 4260
+ },
+ "preference_and_origin_status": "DOCUMENTED",
+ "preference_evidence": {
+  "instrument": "ZLECAf Schedule ZAF (SARS) — préférences par ligne (fiscal_advantages)",
+  "sha256": "cbea2f61f834e66ea3d2aecfdc880ac4486ef024792c0439451fa80ec11cb6fd"
+ },
+ "documents": [
+  {
+   "file": "ZAF_tariffs.json (canonique)",
+   "title": "South African Revenue Service (SARS) — Schedule 1 Part 1 — 5619 lignes",
+   "source_url": "https://www.sars.gov.za/customs-and-excise/tariff-books/schedules/",
+   "sha256": "cbea2f61f834e66ea3d2aecfdc880ac4486ef024792c0439451fa80ec11cb6fd"
+  }
+ ],
+ "sources_officielles": [
+  "https://www.sars.gov.za/customs-and-excise/tariff-books/schedules/"
+ ],
+ "verification_taxes_interieures": {
+  "objet": "Taxes intérieures NON reprises dans le TEC (TVA, accises, prélèvements) — vérification sur sources gouvernementales locales",
+  "sources": [
+   {
+    "source": "SARS — Excise / VAT",
+    "url": "https://www.sars.gov.za/types-of-tax/excise-duty/",
+    "http_status": "200"
+   }
+  ],
+  "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
+ }
+}

@@ -1,24 +1,28 @@
 {
-  "schema_version": "1.0",
-  "country": "ZAF",
-  "as_of": "2026-07-25",
-  "vat_rates": [
-    {
-      "record_id": "ZAF-VAT-RATE-STANDARD-20180401",
-      "legal_product_description": "Standard rate of Value-Added Tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "normalized_product_description": "standard rate of value-added tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "rate": "15%",
-      "rate_basis": "customs value plus duty (import); consideration (domestic)",
-      "effective_from": "2018-04-01",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "ZAF-SARS-VAT-GUIDE-20260725",
-      "legal_reference": "Value-Added Tax Act, 1991 (Act 89 of 1991); rate confirmed current by SARS media releases of 12, 25 and 27 April 2025 following the reversal of the proposed 0.5-point increase originally scheduled for 1 May 2025",
-      "verification_status": "VERIFIED_OFFICIAL_GUIDE",
-      "hs_codes_explicit": []
-    }
-  ],
-  "vat_exemptions": [],
-  "vat_zero_rated": []
+ "schema_version": "1.0",
+ "country": "ZAF",
+ "as_of": "2026-09-06",
+ "vat_rates": [
+  {
+   "record_id": "ZAF-VAT-RATE-STANDARD-20180401",
+   "legal_product_description": "Standard rate of Value-Added Tax on the supply of goods and services by registered vendors, and on the importation of goods.",
+   "normalized_product_description": "standard rate of value-added tax on the supply of goods and services by registered vendors, and on the importation of goods.",
+   "rate": "15%",
+   "rate_basis": "customs value plus duty (import); consideration (domestic)",
+   "effective_from": "2018-04-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "supersedes_record_id": null,
+   "source_id": "ZAF-SARS-VAT-GUIDE-20260725",
+   "legal_reference": "Value-Added Tax Act, 1991 (Act 89 of 1991); rate confirmed current by SARS media releases of 12, 25 and 27 April 2025 following the reversal of the proposed 0.5-point increase originally scheduled for 1 May 2025",
+   "verification_status": "VERIFIED_OFFICIAL_GUIDE",
+   "hs_codes_explicit": []
+  }
+ ],
+ "vat_exemptions": [],
+ "vat_zero_rated": [],
+ "provenance": {
+  "source": "backend/data/ZAF_tariffs.json (PARTIAL)",
+  "canonical_sha256": "cbea2f61f834e66ea3d2aecfdc880ac4486ef024792c0439451fa80ec11cb6fd"
+ }
 }
