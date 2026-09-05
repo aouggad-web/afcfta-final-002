@@ -1,0 +1,50 @@
+{
+ "jurisdiction": "CMR",
+ "as_of": "2026-09-06",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "Corpus : CEMAC Tarif des Douanes (DGD Cameroun) + corpus fiscal par position nationale."
+ },
+ "regional_cet_applicable": true,
+ "regional_note": "CEMAC — TEC commun",
+ "base_tariff_documentation": {
+  "source_id": "CMR-CANONICAL-TARIFF",
+  "source_name": "CEMAC Tarif des Douanes (DGD Cameroun)",
+  "source_url": "https://www.douanescameroun.com",
+  "sha256": "15a0740048457f7ce78dc39aa276e04848e47f685a4a3ff4ed57c9f87a508e75",
+  "verification_status": "CRAWLED_AUTHENTIC",
+  "data_status": "PARTIAL",
+  "hs_version": "HS2022 — sous-positions nationales",
+  "effective_from": "2017-07-01",
+  "national_positions": 5239
+ },
+ "preference_and_origin_status": "DOCUMENTED",
+ "preference_evidence": {
+  "instrument": "ZLECAf — partenaire actif de l'Algérie (implémentation vérifiée)",
+  "sha256": "15a0740048457f7ce78dc39aa276e04848e47f685a4a3ff4ed57c9f87a508e75"
+ },
+ "documents": [
+  {
+   "file": "CMR_tariffs.json (canonique)",
+   "title": "CEMAC Tarif des Douanes (DGD Cameroun) — 4801 lignes",
+   "source_url": "https://www.douanescameroun.com",
+   "sha256": "15a0740048457f7ce78dc39aa276e04848e47f685a4a3ff4ed57c9f87a508e75"
+  }
+ ],
+ "sources_officielles": [
+  "https://www.douanescameroun.com"
+ ],
+ "verification_taxes_interieures": {
+  "objet": "Taxes intérieures NON reprises dans le TEC (TVA, accises, prélèvements) — vérification sur sources gouvernementales locales",
+  "sources": [
+   {
+    "source": "DGI Cameroun — impôts intérieurs",
+    "url": "https://www.impots.cm",
+    "http_status": "200"
+   }
+  ],
+  "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
+ }
+}

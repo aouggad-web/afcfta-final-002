@@ -1,0 +1,11 @@
+{
+ "iso3": "CMR",
+ "currency": "XAF",
+ "levy_tables": [
+  "ri",
+  "tci",
+  "excise_da"
+ ],
+ "general_levy_tables": [],
+ "gazette_register": "cmr_gazette_register.json"
+}
