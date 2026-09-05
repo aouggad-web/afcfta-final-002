@@ -1,40 +1,29 @@
 {
-  "schema_version": "1.0",
-  "country": "GHA",
-  "as_of": "2026-09-05",
-  "vat_rates": [
-    {
-      "record_id": "GHA-VAT-RATE-STANDARD-20070301",
-      "legal_product_description": "Standard rate of Value-Added Tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "normalized_product_description": "standard rate of value-added tax on the supply of goods and services by registered vendors, and on the importation of goods.",
-      "rate": "15%",
-      "rate_basis": "customs value plus duty (import); consideration (domestic)",
-      "effective_from": "2007-03-01",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "GHA-JOURNAL-CGI",
-      "legal_reference": "General Tax Code, enacted 2007-03-01 (Ghana Official Gazette). Rate confirmed current as of June 2026.",
-      "verification_status": "PENDING_OFFICIAL_CONSOLIDATION",
-      "hs_codes_explicit": []
-    },
-    {
-      "record_id": "GHA-VAT-RATE-STANDARD-20260101",
-      "legal_product_description": "Value Added Tax at the standard rate of 15% computed on the total price of the item (levies no longer added to the VAT base).",
-      "normalized_product_description": "standard rate of value added tax on taxable supplies in Ghana",
-      "rate": "15%",
-      "rate_basis": "total price of the item (post-reform base — GETFUND/NHIL/COVID levies no longer added before VAT)",
-      "effective_from": "2026-01-01",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": "GHA-VAT-RATE-STANDARD-20070301",
-      "source_id": "GHA-GRA-VAT-ACT-1151-PAGE",
-      "legal_reference": "Value Added Tax Act, 2025 (Act 1151) — page TVA officielle GRA : « These reforms passed under the Value Added Tax Act, 2025 (Act 1151) took effect from 1st January 2026 »",
-      "verification_status": "VERIFIED_OFFICIAL_CURRENT_PAGE",
-      "hs_codes_explicit": null,
-      "consolidation_note": "Consolidé depuis la page officielle GRA archivée le 2026-09-05 (SHA-256 4e693ade…). La copie du texte de loi (gazette) reste à archiver."
-    }
-  ],
-  "vat_exemptions": [],
-  "vat_zero_rated": []
+ "schema_version": "1.0",
+ "country": "GHA",
+ "as_of": "2026-09-06",
+ "vat_rates": [
+  {
+   "record_id": "GHA-VAT-RATE-STANDARD-20260101",
+   "legal_product_description": "Value Added Tax at the standard rate of 15% computed on the total price of the item (levies no longer added to the VAT base).",
+   "normalized_product_description": "standard rate of value added tax on taxable supplies in Ghana",
+   "rate": "15%",
+   "rate_basis": "total price of the item (post-reform base — GETFUND/NHIL/COVID levies no longer added before VAT)",
+   "effective_from": "2026-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "supersedes_record_id": "GHA-VAT-RATE-STANDARD-20070301",
+   "source_id": "GHA-GRA-VAT-ACT-1151-PAGE",
+   "legal_reference": "Value Added Tax Act, 2025 (Act 1151) — page TVA officielle GRA : « These reforms passed under the Value Added Tax Act, 2025 (Act 1151) took effect from 1st January 2026 »",
+   "verification_status": "VERIFIED_OFFICIAL_CURRENT_PAGE",
+   "hs_codes_explicit": null,
+   "consolidation_note": "Consolidé depuis la page officielle GRA archivée le 2026-09-05 (SHA-256 4e693ade…). La copie du texte de loi (gazette) reste à archiver."
+  }
+ ],
+ "vat_exemptions": [],
+ "vat_zero_rated": [],
+ "provenance": {
+  "source": "backend/data/GHA_tariffs.json (PARTIAL)",
+  "canonical_sha256": "cf49459e1210c8e459ef5650ed583afdfcd2987a7cf3a63783328795689b0f87"
+ }
 }

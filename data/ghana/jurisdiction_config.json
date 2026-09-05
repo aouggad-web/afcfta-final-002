@@ -1,0 +1,10 @@
+{
+ "iso3": "GHA",
+ "currency": "GHS",
+ "levy_tables": [
+  "getfl",
+  "nhil"
+ ],
+ "general_levy_tables": [],
+ "gazette_register": "gha_gazette_register.json"
+}

@@ -1,0 +1,50 @@
+{
+ "jurisdiction": "GHA",
+ "as_of": "2026-09-06",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "Corpus : Ghana Revenue Authority / TEC CEDEAO — TEC CEDEAO + corpus fiscal par position nationale."
+ },
+ "regional_cet_applicable": true,
+ "regional_note": "CEDEAO — TEC commun",
+ "base_tariff_documentation": {
+  "source_id": "GHA-CANONICAL-TARIFF",
+  "source_name": "Ghana Revenue Authority / TEC CEDEAO — TEC CEDEAO",
+  "source_url": "https://gra.gov.gh/customs/tariff/",
+  "sha256": "cf49459e1210c8e459ef5650ed583afdfcd2987a7cf3a63783328795689b0f87",
+  "verification_status": "CRAWLED_AUTHENTIC",
+  "data_status": "PARTIAL",
+  "hs_version": "HS2022 — sous-positions nationales",
+  "effective_from": "2017-07-01",
+  "national_positions": 6129
+ },
+ "preference_and_origin_status": "DOCUMENTED",
+ "preference_evidence": {
+  "instrument": "ZLECAf — partenaire actif de l'Algérie",
+  "sha256": "cf49459e1210c8e459ef5650ed583afdfcd2987a7cf3a63783328795689b0f87"
+ },
+ "documents": [
+  {
+   "file": "GHA_tariffs.json (canonique)",
+   "title": "Ghana Revenue Authority / TEC CEDEAO — TEC CEDEAO — 5387 lignes",
+   "source_url": "https://gra.gov.gh/customs/tariff/",
+   "sha256": "cf49459e1210c8e459ef5650ed583afdfcd2987a7cf3a63783328795689b0f87"
+  }
+ ],
+ "sources_officielles": [
+  "https://gra.gov.gh/customs/tariff/"
+ ],
+ "verification_taxes_interieures": {
+  "objet": "Taxes intérieures NON reprises dans le TEC (TVA, accises, prélèvements) — vérification sur sources gouvernementales locales",
+  "sources": [
+   {
+    "source": "GRA — VAT Act 1151 (vérifié 05/09)",
+    "url": "https://gra.gov.gh/domestic-tax/tax-types/vat/",
+    "http_status": "200"
+   }
+  ],
+  "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
+ }
+}
