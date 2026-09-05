@@ -95,9 +95,7 @@ def list_covered_countries_filtered(official_only: bool = False) -> List[str]:
     """
     records = _load_records()
     if official_only:
-        return sorted(
-            {r["country_iso3"] for r in records if r["data_nature"] == "OFFICIAL_STATISTICS"}
-        )
+        return sorted({r["country_iso3"] for r in records if r["data_nature"] == "OFFICIAL_STATISTICS"})
     return sorted({r["country_iso3"] for r in records})
 
 

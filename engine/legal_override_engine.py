@@ -410,8 +410,9 @@ class LegalOverrideResolver:
             for m in relevant_sources
         )
         source_documented = (base_source_ok or bool(relevant_sources)) and measures_ok
-        temporal_documented = coverage_complete and bool(
-            base_doc.get("hs_version") or base_doc.get("effective_from")
+        temporal_documented = (
+            coverage_complete
+            and bool(base_doc.get("hs_version") or base_doc.get("effective_from"))
         )
         quality_dimensions = {
             "source": (

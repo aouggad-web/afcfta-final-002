@@ -26,7 +26,6 @@ try:
         get_continental_producers,
         list_tracked_products,
     )
-
     HAS_CAPACITY_SERVICE = True
 except (ImportError, ModuleNotFoundError):
     HAS_CAPACITY_SERVICE = False
@@ -45,9 +44,7 @@ router = APIRouter(prefix="/api/production", tags=["production"])
     description="Retourne la liste ISO3 des pays ayant des données ISIC4 (officielles ou estimées).",
 )
 def list_isic4_countries(
-    include_estimates: bool = Query(
-        True, description="Inclure les pays avec données estimées UNIDO (par défaut: vrai)"
-    )
+    include_estimates: bool = Query(True, description="Inclure les pays avec données estimées UNIDO (par défaut: vrai)")
 ):
     """GET /api/production/isic4/countries?include_estimates=true
 
@@ -61,7 +58,7 @@ def list_isic4_countries(
         "count": len(countries),
         "include_estimates": include_estimates,
         "source": "UNIDO IDSB + INDSTAT (2018-2024, ISIC Rev.4 4-digit class)",
-        "note": "Les données incluent à la fois OFFICIAL_STATISTICS et UNIDO_DERIVED_ESTIMATE. Voir badges dans les réponses détaillées.",
+        "note": "Les données incluent à la fois OFFICIAL_STATISTICS et UNIDO_DERIVED_ESTIMATE. Voir badges dans les réponses détaillées."
     }
 
 
@@ -146,7 +143,6 @@ def get_isic4_timeseries_data(
 # ═══════════════════════════════════════════════════════════════════════════════
 
 if HAS_CAPACITY_SERVICE:
-
     @router.get(
         "/capacity",
         summary="Capacité de production — code HS + pays",
@@ -178,9 +174,7 @@ if HAS_CAPACITY_SERVICE:
     )
     def get_country_production_profile(
         country_iso3: str = Path(..., description="Code ISO3"),
-        top_n: int = Query(
-            20, ge=1, le=100, description="Nombre de top produits à retourner (1-100)"
-        ),
+        top_n: int = Query(20, ge=1, le=100, description="Nombre de top produits à retourner (1-100)"),
     ):
         """GET /api/production/country-profile/ETH?top_n=20"""
         return get_country_profile(country_iso3, top_n)
@@ -219,7 +213,6 @@ if HAS_CAPACITY_SERVICE:
                 "USGS/EIA/OPEC (mines & hydrocarbures)",
             ],
         }
-
 else:
     # Capacity service not available - return 503
     @router.get("/capacity")
@@ -231,7 +224,6 @@ else:
             status_code=503,
             detail="Production capacity service not available (missing data files)",
         )
-
 
 # ---------------------------------------------------------------------------
 # Routes legacy restaurées (fe425a8f) — Macro / Agriculture / Manufacturing /
@@ -260,6 +252,7 @@ try:
     from etl.unido_data import UNIDO_INDUSTRY_DATA
 except ImportError:
     UNIDO_INDUSTRY_DATA = {}
+
 
 
 @router.get("/statistics")

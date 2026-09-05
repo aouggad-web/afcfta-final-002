@@ -41,6 +41,7 @@ LF2026_JSON = (
 
 DD_SOURCE = "Direction Générale des Douanes — Algérie (DGD) via conformepro.dz"
 OTHER_TAX_CODES = ("PRCT", "TCS", "DAPS", "TIC")
+_NUMERIC_ONLY_FORMALITY = re.compile(r"^\d+(?:[.,]\d+)?$")
 
 
 def univoque(values: list) -> tuple:
@@ -121,7 +122,10 @@ def main() -> int:
         administrative_formalities = []
         for p in group:
             for f in p.get("formalities") or []:
-                txt = f.get("text_verbatim") if isinstance(f, dict) else f
+                txt = (f.get("text_verbatim") if isinstance(f, dict) else f) or ""
+                txt = txt.strip()
+                if not txt or _NUMERIC_ONLY_FORMALITY.fullmatch(txt):
+                    continue
                 if txt in seen_form:
                     continue
                 seen_form.add(txt)

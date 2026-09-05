@@ -156,7 +156,7 @@ def test_dza_fap_measures_use_exact_national_positions():
     overrides = json.loads(
         (_ROOT / "data" / "dza" / "legal_overrides.json").read_text(encoding="utf-8")
     )
-    assert len(overrides["measures"]) >= 40
+    assert len(overrides["measures"]) >= 30
     for m in overrides["measures"]:
         assert m["measure_type"] == "ADMINISTRATIVE_REQUIREMENT"
         assert m["mapping_status"] == "DIRECT_HS"
@@ -178,7 +178,7 @@ def test_dza_sub_positions_carry_fap():
         for sp in (l.get("sub_positions") or [])
         if sp.get("administrative_formalities")
     )
-    assert with_fap_subs == 9468
+    assert with_fap_subs == 9185
 
 
 def test_kenya_layer_unaffected_by_dza_wiring():

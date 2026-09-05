@@ -247,5 +247,7 @@ class NationalTaxScraper(BaseScraper):
         collection = self.database.national_tax_collection
         doc = dict(data)
         doc["updated_at"] = _now_iso()
-        await collection.replace_one({"country_code": self.country_code}, doc, upsert=True)
+        await collection.replace_one(
+            {"country_code": self.country_code}, doc, upsert=True
+        )
         return 1
