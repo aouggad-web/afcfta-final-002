@@ -170,6 +170,13 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 - Result: all 11 sidebar modules (Tableau de bord, Calculateur, Statistiques, Production, Logistique, Finance, Outils, R. d'Origine, Profils, Opportunités, Contact) now render with real content and the intended dark navy/gold-copper "Kente/zellige" themed design (previously a generic purple-gradient sidebar with plain unstyled text due to missing Tailwind CSS). Verified via `auto_frontend_testing_agent`: all 10+ modules tested, no placeholders remaining, no regressions on previously-working modules (Production, R. d'Origine, Contact, Finance, Opportunités).
 - Minor non-blocking items noted by testing agent: `/api/production/statistics` and `/api/production/macro/{iso3}` return 404 (Production module still functional overall); not fixed this session, low priority.
 
+## Session Update (Sept 2026) - Production module: /api/production/statistics + /api/production/macro endpoints
+- Added `GET /api/production/statistics` (years covered per dimension: value_added_macro/agriculture_faostat/manufacturing_unido/mining_usgs) and `GET /api/production/macro/{country_iso3}` (sectoral GDP value-added breakdown + GDP growth) to `backend/routes/production.py`, backed by real World Bank WDI data already committed in `backend/etl/macro_wdi_data.py` / `backend/etl/macro_extended.py` (previously unused/unwired).
+- Added small `get_covered_years()` helper to `backend/etl/isic4_idsb_data.py`.
+- Fixes the Production → Macro sub-tab, which previously showed "Aucune donnée disponible pour ce pays." because these two endpoints didn't exist.
+- Verified via `deep_testing_backend_v2` (41/42 endpoints passing, tested DZA/MAR/EGY/KEN/ZAF with varying real data, 404 on invalid country code, no regressions) and `auto_frontend_testing_agent` (Macro sub-tab renders real line/bar charts + GDP growth + sector cards, no console errors, no regressions on Agriculture/Manufacturing/Mining sub-tabs).
+- Known pre-existing gap, not in this session's scope: Manufacturing sub-tab's `/api/production/unido/*` endpoints and Mining sub-tab's `/api/production/mining/{iso3}` endpoint are still missing (404), though both sub-tabs degrade gracefully without crashing.
+
 ## Session Update (Sept 2026) - Lint cleanup
 Fixed 31 blocking lint errors reported by pre-completion checks:
 - Route shadowing fixed in backend/routes/logistics.py (ports/search, air/airports/search moved before parameterized routes) and backend/routes/tariffs.py (country-hs6-tariffs/available and /all moved before /{hs6_code})

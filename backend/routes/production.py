@@ -12,11 +12,13 @@ from typing import Optional, Dict, List
 
 from etl.isic4_idsb_data import (
     get_country_isic4_summary,
+    get_covered_years,
     get_isic4_timeseries,
     list_covered_countries,
     list_covered_countries_filtered,
     is_country_covered,
 )
+from etl.macro_extended import build_macro_series
 
 # Production capacity service is optional (depends on production_data.py)
 try:
@@ -136,6 +138,60 @@ def get_isic4_timeseries_data(
             detail=f"Pas de données pour ISIC {isic4_code} en {country_iso3}",
         )
     return timeseries
+
+
+@router.get(
+    "/statistics",
+    summary="Statistiques globales du module Production",
+    description="Retourne les années couvertes par chaque dimension du module Production "
+    "(macro Banque Mondiale, agriculture FAOSTAT, manufacturier UNIDO, mines USGS).",
+)
+def get_production_module_statistics():
+    """GET /api/production/statistics"""
+    from etl.macro_wdi_data import WDI_MACRO
+    from etl.mining_extended import build_all as build_mining_all
+    from services.faostat_service import get_faostat_statistics
+
+    macro_years = sorted({int(y) for country in WDI_MACRO.values() for y in country.keys()})
+    manuf_years = get_covered_years()
+    agri_years = get_faostat_statistics().get("years_available", [])
+    mining_years = sorted({r["year"] for r in build_mining_all()})
+
+    dimensions = {
+        "value_added_macro": {"years": macro_years, "source": "World Bank WDI"},
+        "agriculture_faostat": {"years": agri_years, "source": "FAOSTAT"},
+        "manufacturing_unido": {"years": manuf_years, "source": "UNIDO IDSB/INDSTAT"},
+        "mining_usgs": {"years": mining_years, "source": "USGS / AfDB"},
+    }
+    all_years = sorted(set(macro_years) | set(agri_years) | set(manuf_years) | set(mining_years))
+    return {"years_covered": all_years, "dimensions": dimensions}
+
+
+@router.get(
+    "/macro/{country_iso3}",
+    summary="Valeur ajoutée sectorielle du PIB — World Bank WDI",
+    description="Retourne la répartition sectorielle du PIB (agriculture, industrie, "
+    "manufacturier, services) et la croissance du PIB réel pour un pays donné.",
+)
+def get_production_macro_data(country_iso3: str = Path(..., description="Code ISO3 du pays")):
+    """GET /api/production/macro/{country_iso3}"""
+    records = [r for r in build_macro_series() if r["country_iso3"] == country_iso3.upper()]
+    if not records:
+        raise HTTPException(
+            status_code=404, detail=f"Aucune donnée macro World Bank pour {country_iso3}"
+        )
+
+    data_by_sector: Dict[str, List[Dict]] = {}
+    for r in records:
+        data_by_sector.setdefault(r["sector_detail"], []).append(r)
+
+    return {
+        "country_iso3": country_iso3.upper(),
+        "total_records": len(records),
+        "years_covered": sorted({r["year"] for r in records}),
+        "data_by_sector": data_by_sector,
+        "source": "World Bank, World Development Indicators (WDI)",
+    }
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

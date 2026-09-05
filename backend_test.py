@@ -115,6 +115,71 @@ def main():
     # 4. Production Endpoints
     print("4. PRODUCTION ENDPOINTS")
     print("-" * 80)
+    
+    # Test new production statistics endpoint
+    success, stats_data = test_get("/api/production/statistics", 200, "Production module statistics")
+    if success:
+        # Verify structure
+        if "years_covered" in stats_data and "dimensions" in stats_data:
+            years = stats_data.get("years_covered", [])
+            dimensions = stats_data.get("dimensions", {})
+            print(f"   → Years covered: {len(years)} years")
+            print(f"   → Dimensions: {', '.join(dimensions.keys())}")
+            
+            # Verify each dimension has years and source
+            for dim_name, dim_data in dimensions.items():
+                if "years" in dim_data and "source" in dim_data:
+                    print(f"   → {dim_name}: {len(dim_data['years'])} years, source: {dim_data['source']}")
+                else:
+                    log_test(f"/api/production/statistics [{dim_name}]", "❌ FAIL", 
+                            f"Missing 'years' or 'source' in dimension {dim_name}")
+        else:
+            log_test("/api/production/statistics", "❌ FAIL", 
+                    "Missing 'years_covered' or 'dimensions' in response")
+    
+    # Test new macro endpoint with multiple countries
+    print("   Testing macro endpoint with multiple countries:")
+    test_countries = ["DZA", "MAR", "EGY", "KEN", "ZAF"]
+    for country in test_countries:
+        success, macro_data = test_get(f"/api/production/macro/{country}", 200, 
+                                      f"Macro data for {country}")
+        if success:
+            # Verify structure
+            required_fields = ["country_iso3", "total_records", "years_covered", 
+                             "data_by_sector", "source"]
+            missing_fields = [f for f in required_fields if f not in macro_data]
+            if missing_fields:
+                log_test(f"/api/production/macro/{country}", "❌ FAIL", 
+                        f"Missing fields: {', '.join(missing_fields)}")
+            else:
+                sectors = macro_data.get("data_by_sector", {})
+                years = macro_data.get("years_covered", [])
+                records = macro_data.get("total_records", 0)
+                print(f"      → {country}: {len(sectors)} sectors, {len(years)} years, {records} records")
+                
+                # Verify we have multiple sectors
+                if len(sectors) < 3:
+                    log_test(f"/api/production/macro/{country}", "⚠️  WARN", 
+                            f"Only {len(sectors)} sectors found, expected at least 3")
+                
+                # Verify GDP growth indicator exists
+                has_gdp_growth = False
+                for sector_name, sector_records in sectors.items():
+                    for record in sector_records:
+                        if record.get("indicator_code") == "NY.GDP.MKTP.KD.ZG":
+                            has_gdp_growth = True
+                            break
+                    if has_gdp_growth:
+                        break
+                
+                if not has_gdp_growth:
+                    log_test(f"/api/production/macro/{country}", "⚠️  WARN", 
+                            "GDP growth indicator (NY.GDP.MKTP.KD.ZG) not found")
+    
+    # Test invalid country code (should return 404)
+    test_get("/api/production/macro/XXX", 404, "Invalid country code (expected 404)")
+    
+    # Test existing production endpoints (regression check)
     test_get("/api/production/tracked-products", 200, "List of tracked products")
     test_get("/api/production/isic4/countries", 200, "ISIC4 covered countries")
     success, data = test_get("/api/production/isic4/countries", 200, "Get ISIC4 countries")
@@ -183,8 +248,7 @@ def main():
     # 11. Currencies, Banking, Insurance
     print("11. FINANCIAL SERVICES ENDPOINTS")
     print("-" * 80)
-    # Note: currencies has double /api/api/ due to router prefix issue
-    test_get("/api/api/currencies/list", 200, "Currencies list endpoint (double /api/ bug)")
+    test_get("/api/currencies/list", 200, "Currencies list endpoint")
     test_get("/api/banking/countries", 200, "Banking countries list")
     test_get("/api/insurance/countries", 200, "Insurance countries list")
     print()
