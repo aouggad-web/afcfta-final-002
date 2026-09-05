@@ -161,6 +161,10 @@ export default function ISIC4DetailTable({ countryISO3 }) {
     return <span className="badge badge-unknown">?</span>;
   };
 
+  const dataQuality = data.data_quality || {};
+  const isFullyEstimated = dataQuality.is_fully_estimated;
+  const hasOfficial = dataQuality.has_official_statistics;
+
   return (
     <div className="isic4-container">
       <div className="isic4-header">
@@ -176,10 +180,23 @@ export default function ISIC4DetailTable({ countryISO3 }) {
             Source : <em>{data.source}</em>
           </span>
           <span className="meta-item data-types">
-            📊 Inclut données officielles et estimations UNIDO
+            {isFullyEstimated
+              ? '≈ Estimations UNIDO uniquement'
+              : hasOfficial
+              ? '📊 Données officielles + estimations UNIDO'
+              : '📊 Données UNIDO'}
           </span>
         </div>
       </div>
+
+      {/* Bannière : pays sans statistiques officielles → estimations UNIDO */}
+      {isFullyEstimated && (
+        <div className="isic4-estimate-banner" role="status">
+          <strong>≈ Aucune statistique officielle disponible pour ce pays.</strong>{' '}
+          Les valeurs affichées sont des <em>estimations dérivées par UNIDO</em>
+          {' '}(UNIDO_DERIVED_ESTIMATE) et doivent être interprétées avec prudence.
+        </div>
+      )}
 
       {/* Légende des badges */}
       <div className="isic4-legend">
