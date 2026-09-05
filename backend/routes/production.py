@@ -246,6 +246,7 @@ from production_data import (
     get_value_added,
     get_value_added_by_country,
 )
+from services import manufacturing_proxy_service, production_capacity_service
 
 try:
     from etl.unido_data import UNIDO_INDUSTRY_DATA
