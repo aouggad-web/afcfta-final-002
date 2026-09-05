@@ -59,19 +59,35 @@ def _division_subsectors(country_iso3: str, division: str) -> List[Dict]:
     return [s for s in summary.get("sectors", []) if str(s.get("isic4", "")).startswith(division)]
 
 
+def _provenance(natures: set) -> str:
+    """
+    Traduit l'ensemble des ``data_nature`` réels d'un agrégat en une provenance
+    honnête : INDSTAT = statistiques officielles, IDSB = estimations DÉRIVÉES par
+    UNIDO (pas des relevés bruts). Un mélange est signalé comme tel.
+    """
+    if natures == {"OFFICIAL_STATISTICS"}:
+        return "official"
+    if natures == {"UNIDO_DERIVED_ESTIMATE"}:
+        return "derived_estimate"
+    if natures:
+        return "mixed"
+    return "unknown"
+
+
 def _aggregate(subsectors: List[Dict], fields) -> Dict[str, Dict]:
     """
     Agrège (somme) un indicateur additif sur les sous-secteurs d'une division, en
     prenant pour chaque sous-secteur sa dernière année disponible. Retourne, par
     champ, la somme, l'étendue d'années réellement utilisées, le nombre de
-    sous-secteurs contributeurs et la présence de statistiques officielles.
+    sous-secteurs contributeurs et la **provenance réelle** (officielle INDSTAT vs
+    estimation dérivée IDSB) — jamais aplatie en un simple « officiel ».
     """
     out: Dict[str, Dict] = {}
     for field in fields:
         total = 0.0
         years: List[int] = []
         n = 0
-        official = False
+        natures: set = set()
         for s in subsectors:
             cell = (s.get("indicators") or {}).get(field)
             if not cell or cell.get("value") is None:
@@ -79,15 +95,15 @@ def _aggregate(subsectors: List[Dict], fields) -> Dict[str, Dict]:
             total += float(cell["value"])
             years.append(int(cell["year"]))
             n += 1
-            if cell.get("data_nature") == "OFFICIAL_STATISTICS":
-                official = True
+            if cell.get("data_nature"):
+                natures.add(cell["data_nature"])
         if n:
             out[field] = {
                 "value": round(total, 1),
                 "subsectors_counted": n,
                 "year_min": min(years),
                 "year_max": max(years),
-                "has_official": official,
+                "provenance": _provenance(natures),
             }
     return out
 
@@ -129,6 +145,18 @@ def _industrial_base(origin_iso3: str, division: str, fr: bool) -> Dict:
         for s in top
     ]
 
+    # Provenance RÉELLE par métrique : Output/Exports (IDSB) sont des estimations
+    # dérivées UNIDO ; Valeur ajoutée/Emploi/Établissements (INDSTAT) sont des
+    # statistiques officielles. On n'aplatit jamais en un seul « officiel ».
+    metrics = {
+        "output_usd": output,
+        "value_added_usd": supply.get("value_added_usd"),
+        "exports_world_usd": supply.get("exports_world_usd"),
+        "employees": counts.get("employees"),
+        "establishments": counts.get("establishments"),
+    }
+    provenance = {k: v["provenance"] for k, v in metrics.items() if v}
+
     return {
         "available": True,
         "output_usd": (output or {}).get("value"),
@@ -137,7 +165,7 @@ def _industrial_base(origin_iso3: str, division: str, fr: bool) -> Dict:
         "employees": counts.get("employees", {}).get("value"),
         "establishments": counts.get("establishments", {}).get("value"),
         "year_range": _year_range(supply, counts),
-        "has_official": any(v.get("has_official") for v in {**supply, **counts}.values()),
+        "provenance": provenance,
         "top_subsectors": top_subsectors,
         "source": "UNIDO IDSB + INDSTAT (ISIC Rev.4)",
     }
@@ -156,12 +184,17 @@ def _market_demand(destination_iso3: str, division: str) -> Dict:
     if not demand:
         return {"available": False, "reason": "no_division_data"}
 
+    # La demande IDSB (consommation apparente, imports) est une estimation
+    # dérivée UNIDO — signalée comme telle, jamais présentée comme officielle.
+    provenance = {k: v["provenance"] for k, v in demand.items()}
+
     return {
         "available": True,
         "apparent_consumption_usd": demand.get("apparent_consumption_usd", {}).get("value"),
         "imports_world_usd": demand.get("imports_world_usd", {}).get("value"),
         "year_range": _year_range(demand),
-        "source": "UNIDO IDSB (ISIC Rev.4)",
+        "provenance": provenance,
+        "source": "UNIDO IDSB — estimations dérivées (ISIC Rev.4)",
     }
 
 
@@ -191,19 +224,21 @@ def _balance(base: Dict, demand: Dict, market_potential_usd: Optional[float], fr
     ) or (market_potential_usd is not None and market_potential_usd > 0)
     origin_exports = bool(base.get("available") and base.get("exports_world_usd"))
 
+    # « Attestée » (et non « mesurée ») car l'offre/demande IDSB sont pour partie
+    # des estimations dérivées UNIDO ; la provenance fine est portée par métrique.
     if has_supply and has_demand:
         verdict = "supply_and_demand"
         text = (
-            "Activité industrielle mesurée à l'origine ET demande mesurée à "
-            "destination : appariement offre-demande favorable"
+            "Activité industrielle attestée à l'origine ET demande attestée à "
+            "destination (données UNIDO) : appariement offre-demande favorable"
             + (
                 ", l'origine exportant déjà cette division."
                 if origin_exports
                 else " (l'origine ne déclare pas encore d'exports sur la division)."
             )
             if fr
-            else "Industrial activity measured at origin AND demand measured at "
-            "destination: favourable supply–demand match"
+            else "Industrial activity recorded at origin AND demand recorded at "
+            "destination (UNIDO data): favourable supply–demand match"
             + (
                 ", with the origin already exporting this division."
                 if origin_exports
@@ -213,30 +248,30 @@ def _balance(base: Dict, demand: Dict, market_potential_usd: Optional[float], fr
     elif has_demand and not has_supply:
         verdict = "demand_without_supply"
         text = (
-            "Demande mesurée à destination, mais aucune production industrielle "
-            "UNIDO mesurée à l'origine sur cette division : débouché réel, "
+            "Demande attestée à destination, mais aucune activité industrielle "
+            "UNIDO attestée à l'origine sur cette division : débouché réel, "
             "capacité d'offre à établir."
             if fr
-            else "Demand measured at destination, but no UNIDO industrial output "
-            "measured at origin in this division: real outlet, supply capacity to "
+            else "Demand recorded at destination, but no UNIDO industrial activity "
+            "recorded at origin in this division: real outlet, supply capacity to "
             "be established."
         )
     elif has_supply and not has_demand:
         verdict = "supply_without_demand"
         text = (
-            "Production mesurée à l'origine, mais aucune demande UNIDO/OEC mesurée "
-            "à destination : capacité présente, débouché à confirmer."
+            "Activité industrielle attestée à l'origine, mais aucune demande "
+            "UNIDO/OEC attestée à destination : capacité présente, débouché à confirmer."
             if fr
-            else "Output measured at origin, but no UNIDO/OEC demand measured at "
-            "destination: capacity present, outlet to confirm."
+            else "Industrial activity recorded at origin, but no UNIDO/OEC demand "
+            "recorded at destination: capacity present, outlet to confirm."
         )
     else:
         verdict = "insufficient_data"
         text = (
-            "Ni offre ni demande industrielles mesurées pour cette paire dans la "
+            "Ni offre ni demande industrielles attestées pour cette paire dans la "
             "couverture UNIDO — aucun appariement à évaluer."
             if fr
-            else "Neither industrial supply nor demand measured for this pair "
+            else "Neither industrial supply nor demand recorded for this pair "
             "within UNIDO coverage — no match to assess."
         )
 
@@ -250,10 +285,12 @@ def _balance(base: Dict, demand: Dict, market_potential_usd: Optional[float], fr
     }
 
 
-def _diversification_products(isic_code: str, hs_code: str, limit: int = 8) -> List[Dict]:
+def _diversification_products(
+    isic_code: str, hs_code: str, lang: str = "fr", limit: int = 8
+) -> List[Dict]:
     """Autres SH4 exportables de la même division ISIC (même intrant/procédé)."""
     current = _norm(hs_code)[:4]
-    products = isic_map.products_for_isic(isic_code)
+    products = isic_map.products_for_isic(isic_code, lang=lang)
     return [
         {"hs4": code, "label": label}
         for code, label in products.items()
@@ -265,9 +302,15 @@ class ISIC4IDSBOpportunityService:
     """Rattache une opportunité à sa division ISIC et confronte offre/demande réelles UNIDO."""
 
     def get_isic4_for_hs(self, hs_code: str) -> Optional[str]:
-        """Division ISIC Rev.4 manufacturière du produit (la plus précise), ou None."""
+        """
+        Division ISIC Rev.4 manufacturière du produit, uniquement si elle est
+        **non ambiguë**. Si la correspondance renvoie plusieurs divisions
+        candidates (ex. chapitre 85 → 26 et 27, ou SH4 9403 → 31 et 32), on
+        renvoie None : le contrat « zéro fabrication » interdit de trancher par
+        simple ordre d'insertion.
+        """
         codes = isic_map.isic_for_hs(hs_code)
-        return codes[0] if codes else None
+        return codes[0] if len(codes) == 1 else None
 
     def assess_opportunity_by_sector(
         self,
@@ -279,10 +322,27 @@ class ISIC4IDSBOpportunityService:
     ) -> Dict:
         """
         Analyse ISIC4 + IDSB d'une opportunité bilatérale. ``available: False`` si
-        le produit n'appartient à aucune division manufacturière ISIC.
+        le produit n'appartient à aucune division manufacturière ISIC, ou si la
+        correspondance est ambiguë (plusieurs divisions candidates).
         """
         fr = lang != "en"
-        isic4 = self.get_isic4_for_hs(hs_code)
+        candidates = isic_map.isic_for_hs(hs_code)
+        if len(candidates) > 1:
+            return {
+                "available": False,
+                "reason": "ambiguous_isic_mapping",
+                "candidates": candidates,
+                "note": (
+                    f"Correspondance ISIC ambiguë pour ce code (divisions "
+                    f"{', '.join(candidates)}) — aucune ne peut être choisie sans "
+                    "arbitraire ; analyse industrielle non émise."
+                    if fr
+                    else f"Ambiguous ISIC mapping for this code (divisions "
+                    f"{', '.join(candidates)}) — none can be picked without "
+                    "guessing; industrial analysis withheld."
+                ),
+            }
+        isic4 = candidates[0] if candidates else None
         if not isic4:
             return {
                 "available": False,
@@ -297,9 +357,12 @@ class ISIC4IDSBOpportunityService:
                 ),
             }
 
-        transform = isic_map.transformation_for_isic(isic4)
-        precise_input = isic_map.input_for_hs4(hs_code, fallback=transform.get("input"))
-        product_label = isic_map.product_label(hs_code)
+        lang_code = "fr" if fr else "en"
+        transform = isic_map.transformation_for_isic(isic4, lang=lang_code)
+        precise_input = isic_map.input_for_hs4(
+            hs_code, fallback=transform.get("input"), lang=lang_code
+        )
+        product_label = isic_map.product_label(hs_code, lang=lang_code)
 
         base = _industrial_base(origin, isic4, fr)
         demand = _market_demand(destination, isic4)
@@ -324,7 +387,7 @@ class ISIC4IDSBOpportunityService:
             "industrial_base": base,
             "market_demand": demand,
             "demand_supply_balance": balance,
-            "diversification_products": _diversification_products(isic4, hs_code),
+            "diversification_products": _diversification_products(isic4, hs_code, lang=lang_code),
             "coverage": {
                 "origin_in_idsb": idsb.is_country_covered(origin),
                 "destination_in_idsb": idsb.is_country_covered(destination),

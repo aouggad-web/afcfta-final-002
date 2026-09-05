@@ -35,6 +35,54 @@ const moneyShort = (v) => {
 const intFmt = (v) =>
   v === null || v === undefined ? "—" : Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 });
 
+/* Provenance micro-badge: IDSB values are UNIDO DERIVED ESTIMATES, INDSTAT values
+   are OFFICIAL statistics. Never conflate the two — show each metric's real nature. */
+const provMeta = (nature, fr) => {
+  if (nature === "official")
+    return {
+      t: "off.",
+      title: fr ? "INDSTAT — statistique officielle UNIDO" : "INDSTAT — UNIDO official statistic",
+      fg: "#1a7f37",
+      bg: "rgba(26,127,55,0.12)",
+    };
+  if (nature === "derived_estimate")
+    return {
+      t: "est.",
+      title: fr ? "IDSB — estimation dérivée UNIDO" : "IDSB — UNIDO derived estimate",
+      fg: "#9a6700",
+      bg: "rgba(154,103,0,0.12)",
+    };
+  if (nature === "mixed")
+    return {
+      t: fr ? "mixte" : "mixed",
+      title: fr ? "Sources mêlées (officielle + estimation)" : "Mixed sources (official + estimate)",
+      fg: "#667",
+      bg: "rgba(102,102,102,0.12)",
+    };
+  return null;
+};
+
+function Prov({ nature, fr }) {
+  const m = provMeta(nature, fr);
+  if (!m) return null;
+  return (
+    <sup
+      title={m.title}
+      style={{
+        marginLeft: 4,
+        fontSize: 9,
+        fontWeight: 700,
+        padding: "1px 4px",
+        borderRadius: 4,
+        background: m.bg,
+        color: m.fg,
+      }}
+    >
+      {m.t}
+    </sup>
+  );
+}
+
 /* Colour per demand-supply verdict (IDSB reading). */
 const BALANCE_STYLE = {
   supply_and_demand: { bg: "rgba(26,127,55,0.12)", fg: "#1a7f37" },
@@ -184,10 +232,10 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
             <Chip ok={bal.supply_measured}>
-              {fr ? "Offre" : "Supply"} {bal.supply_measured ? (fr ? "mesurée ✓" : "measured ✓") : fr ? "non mesurée" : "not measured"}
+              {fr ? "Offre" : "Supply"} {bal.supply_measured ? (fr ? "attestée ✓" : "recorded ✓") : fr ? "non attestée" : "not recorded"}
             </Chip>
             <Chip ok={bal.demand_measured}>
-              {fr ? "Demande" : "Demand"} {bal.demand_measured ? (fr ? "mesurée ✓" : "measured ✓") : fr ? "non mesurée" : "not measured"}
+              {fr ? "Demande" : "Demand"} {bal.demand_measured ? (fr ? "attestée ✓" : "recorded ✓") : fr ? "non attestée" : "not recorded"}
             </Chip>
             {bal.origin_exports_division && (
               <Chip ok>{fr ? "Origine exporte déjà" : "Origin already exports"}</Chip>
@@ -216,25 +264,44 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 12 }}>
                 <div>
                   <div style={label}>{fr ? "Production" : "Output"}</div>
-                  <div style={{ fontSize: 17, fontWeight: 700 }}>{moneyShort(industrial_base.output_usd)}</div>
+                  <div style={{ fontSize: 17, fontWeight: 700 }}>
+                    {moneyShort(industrial_base.output_usd)}
+                    <Prov nature={industrial_base.provenance?.output_usd} fr={fr} />
+                  </div>
                 </div>
                 <div>
                   <div style={label}>{fr ? "Valeur ajoutée" : "Value added"}</div>
-                  <div style={{ fontSize: 17, fontWeight: 700 }}>{moneyShort(industrial_base.value_added_usd)}</div>
+                  <div style={{ fontSize: 17, fontWeight: 700 }}>
+                    {moneyShort(industrial_base.value_added_usd)}
+                    <Prov nature={industrial_base.provenance?.value_added_usd} fr={fr} />
+                  </div>
                 </div>
                 <div>
                   <div style={label}>{fr ? "Exports mondiaux" : "World exports"}</div>
-                  <div style={{ fontSize: 17, fontWeight: 700 }}>{moneyShort(industrial_base.exports_world_usd)}</div>
+                  <div style={{ fontSize: 17, fontWeight: 700 }}>
+                    {moneyShort(industrial_base.exports_world_usd)}
+                    <Prov nature={industrial_base.provenance?.exports_world_usd} fr={fr} />
+                  </div>
                 </div>
                 <div>
                   <div style={label}>{fr ? "Emplois" : "Employees"}</div>
-                  <div style={{ fontSize: 17, fontWeight: 700 }}>{intFmt(industrial_base.employees)}</div>
+                  <div style={{ fontSize: 17, fontWeight: 700 }}>
+                    {intFmt(industrial_base.employees)}
+                    <Prov nature={industrial_base.provenance?.employees} fr={fr} />
+                  </div>
                 </div>
               </div>
               {industrial_base.top_subsectors?.length > 0 && (
                 <div style={{ marginTop: 12 }}>
                   <div style={label}>{fr ? "Principaux sous-secteurs (production)" : "Top sub-sectors (output)"}</div>
                   <table style={{ width: "100%", fontSize: 12, borderCollapse: "collapse" }}>
+                    <thead>
+                      <tr>
+                        <th style={th} scope="col">{fr ? "ISIC" : "ISIC"}</th>
+                        <th style={th} scope="col">{fr ? "Sous-secteur" : "Sub-sector"}</th>
+                        <th style={{ ...th, textAlign: "right" }} scope="col">{fr ? "Production" : "Output"}</th>
+                      </tr>
+                    </thead>
                     <tbody>
                       {industrial_base.top_subsectors.map((sub) => (
                         <tr key={sub.isic4} style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}>
@@ -250,7 +317,11 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
               <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 10 }}>
                 {industrial_base.source}
                 {industrial_base.year_range ? ` · ${industrial_base.year_range}` : ""}
-                {industrial_base.has_official ? (fr ? " · stats officielles" : " · official stats") : ""}
+              </div>
+              <div style={{ fontSize: 10, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
+                {fr
+                  ? "est. = estimation dérivée UNIDO (IDSB) · off. = statistique officielle (INDSTAT)"
+                  : "est. = UNIDO derived estimate (IDSB) · off. = official statistic (INDSTAT)"}
               </div>
             </>
           ) : (
@@ -276,11 +347,17 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12 }}>
                 <div>
                   <div style={label}>{fr ? "Consommation apparente" : "Apparent consumption"}</div>
-                  <div style={{ fontSize: 17, fontWeight: 700 }}>{moneyShort(market_demand.apparent_consumption_usd)}</div>
+                  <div style={{ fontSize: 17, fontWeight: 700 }}>
+                    {moneyShort(market_demand.apparent_consumption_usd)}
+                    <Prov nature={market_demand.provenance?.apparent_consumption_usd} fr={fr} />
+                  </div>
                 </div>
                 <div>
                   <div style={label}>{fr ? "Imports mondiaux" : "World imports"}</div>
-                  <div style={{ fontSize: 17, fontWeight: 700 }}>{moneyShort(market_demand.imports_world_usd)}</div>
+                  <div style={{ fontSize: 17, fontWeight: 700 }}>
+                    {moneyShort(market_demand.imports_world_usd)}
+                    <Prov nature={market_demand.provenance?.imports_world_usd} fr={fr} />
+                  </div>
                 </div>
               </div>
               <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 10 }}>

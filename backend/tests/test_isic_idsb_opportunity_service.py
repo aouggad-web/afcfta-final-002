@@ -85,7 +85,11 @@ def test_real_supply_and_demand_are_aggregated_from_idsb():
     assert base["output_usd"] == 2_000_000_000.0
     assert base["exports_world_usd"] == 1_500_000_000.0
     assert base["value_added_usd"] == 900_000_000.0
-    assert base["has_official"] is True
+    # Provenance réelle par métrique : Output/Exports IDSB = estimations dérivées,
+    # Valeur ajoutée INDSTAT = statistique officielle (jamais aplati en un booléen).
+    assert base["provenance"]["output_usd"] == "derived_estimate"
+    assert base["provenance"]["exports_world_usd"] == "derived_estimate"
+    assert base["provenance"]["value_added_usd"] == "official"
     demand = r["market_demand"]
     assert demand["available"] is True
     assert demand["apparent_consumption_usd"] == 5_000_000_000.0
@@ -122,3 +126,38 @@ def test_diversification_lists_sibling_products_excluding_current():
     codes = {p["hs4"] for p in r["diversification_products"]}
     assert "1806" not in codes  # le produit courant est exclu
     assert codes  # d'autres produits SH4 de la division 10 sont proposés
+
+
+def test_ambiguous_hs_mapping_is_withheld_not_guessed():
+    """Un SH mappé sur plusieurs divisions ISIC → non émis, jamais choisi par défaut."""
+    with _patch_records():
+        # 9403 (meubles) est catalogué à la fois en division 31 et 32.
+        r = get_isic_idsb_service().assess_opportunity_by_sector("9403", "CIV", "EGY")
+    assert r["available"] is False
+    assert r["reason"] == "ambiguous_isic_mapping"
+    assert set(r["candidates"]) >= {"31", "32"}
+
+
+def test_english_lang_returns_english_text_no_french_leak():
+    """En lang=en, la chaîne de transformation et les libellés sont en anglais."""
+    with _patch_records():
+        r = get_isic_idsb_service().assess_opportunity_by_sector("1806", "CIV", "EGY", lang="en")
+    assert r["isic4"]["label"] == "Manufacture of food products"
+    assert r["product_label"] == "Chocolate & cocoa preparations"
+    chain = r["transformation_chain"]
+    assert chain["process"] == "agro-food processing (milling, refining, canning, crushing)"
+    # L'intrant précis n'existe qu'en français : en anglais on retombe sur
+    # l'intrant de division anglais, sans mélange de langues.
+    assert chain["input"] == "agricultural raw materials (cereals, oilseeds, milk, meat, fish, raw sugar)"
+    # Les libellés de diversification sont aussi en anglais.
+    assert all(not _looks_french(p["label"]) for p in r["diversification_products"])
+
+
+def _looks_french(text: str) -> bool:
+    """Heuristique légère : accents ou mots français fréquents dans les libellés."""
+    if not text:
+        return False
+    if any(c in text for c in "éèêàçùû"):
+        return True
+    lowered = f" {text.lower()} "
+    return any(w in lowered for w in (" de ", " en ", " et ", " lait", " sucre", " huile"))

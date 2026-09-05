@@ -1262,10 +1262,13 @@ export function BilateralView({ countries, fr, prefill }) {
           </div>
 
           {/* ── Sectoral Analysis (ISIC4 & IDSB) ──────────────────────── */}
+          {/* Ancré sur le rapport SOUMIS (report.inputs), pas sur les champs
+              du formulaire encore éditables — sinon cette carte irait chercher
+              un autre couloir pendant que le reste du rapport montre l'ancien. */}
           <SectoralAnalysis
-            hsCode={hsCode}
-            origin={origin}
-            destination={destination}
+            hsCode={report.inputs?.hs_code}
+            origin={report.inputs?.origin_iso3}
+            destination={report.inputs?.destination_iso3}
             fr={fr}
           />
 
