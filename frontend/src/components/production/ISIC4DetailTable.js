@@ -159,6 +159,9 @@ export default function ISIC4DetailTable({ countryISO3 }) {
           <span className="meta-item source">
             Source : <em>{data.source}</em>
           </span>
+          <span className="meta-item data-types">
+            📊 Inclut données officielles et estimations UNIDO
+          </span>
         </div>
       </div>
 

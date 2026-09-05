@@ -40,14 +40,23 @@ router = APIRouter(prefix="/api/production", tags=["production"])
 @router.get(
     "/isic4/countries",
     summary="Liste des pays couverts UNIDO",
-    description="Retourne la liste ISO3 des pays ayant des données ISIC4.",
+    description="Retourne la liste ISO3 des pays ayant des données ISIC4 (officielles ou estimées).",
 )
-def list_isic4_countries():
-    """GET /api/production/isic4/countries"""
+def list_isic4_countries(
+    include_estimates: bool = Query(True, description="Inclure les pays avec données estimées UNIDO (par défaut: vrai)")
+):
+    """GET /api/production/isic4/countries?include_estimates=true
+
+    Retourne les pays couverts par UNIDO IDSB/INDSTAT.
+    Inclut par défaut les pays avec données officielles ET estimées.
+    """
+    countries = list_covered_countries()
     return {
-        "countries": list_covered_countries(),
-        "count": len(list_covered_countries()),
+        "countries": countries,
+        "count": len(countries),
+        "include_estimates": include_estimates,
         "source": "UNIDO IDSB + INDSTAT (2018-2024, ISIC Rev.4 4-digit class)",
+        "note": "Les données incluent à la fois OFFICIAL_STATISTICS et UNIDO_DERIVED_ESTIMATE. Voir badges dans les réponses détaillées."
     }
 
 
@@ -55,8 +64,9 @@ def list_isic4_countries():
     "/isic4/{country_iso3}",
     summary="Données ISIC Rev.4 par pays — UNIDO IDSB + INDSTAT",
     description="Retourne tous les secteurs ISIC 4 chiffres pour un pays avec "
-    "dernière année disponible par indicateur. Données : output, imports, exports, "
-    "apparent consumption (IDSB), establishments, employees, wages, value added (INDSTAT).",
+    "dernière année disponible par indicateur (officielles et estimées). "
+    "Données : output, imports, exports, apparent consumption (IDSB), "
+    "establishments, employees, wages, value added (INDSTAT).",
 )
 def get_isic4_country_data(country_iso3: str = Path(..., description="Code ISO3 du pays")):
     """
@@ -86,6 +96,7 @@ def get_isic4_country_data(country_iso3: str = Path(..., description="Code ISO3 
         "source": summary["source"],
         "years_covered": summary["years_covered"],
         "total_sectors": len(summary["sectors"]),
+        "data_includes": "OFFICIAL_STATISTICS et UNIDO_DERIVED_ESTIMATE (voir champ 'data_nature' par indicateur)",
         "sectors": [
             {
                 "isic4": s["isic4"],
