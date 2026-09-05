@@ -9,11 +9,15 @@ Démarrage :
 """
 
 import os
+import sys
 from datetime import datetime
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
+
+# Ensure repo root is importable (for top-level packages like `engine`)
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Charge les variables d'environnement depuis backend/.env
 load_dotenv()
@@ -47,7 +51,7 @@ async def lifespan(app: FastAPI):
     db, mongo_client = await init_database()
 
     # Inject database into routers that need it
-    if db:
+    if db is not None:
         from routes import user_auth, billing, contact
         user_auth.set_database(db)
         billing.set_database(db)
@@ -92,33 +96,13 @@ app.add_middleware(CORSMiddleware, **cors_config)
 from routes import production
 app.include_router(production.router)
 
-# Legacy routers mounted under /api prefix
-# These routers declare prefixes like /auth, /billing, etc.
-# Mounting them under /api means they become /api/auth, /api/billing, etc.
-from routes import (
-    billing,
-    contact,
-    insurance,
-    regulatory_compliance,
-    regulatory_master_registry,
-    regulatory_qa,
-    reports,
-    strategic_intelligence,
-    user_auth,
-    banking_enhancements,
-)
+# All other routers (auth, billing, tariffs, countries, banking, etc.) are
+# wired centrally in routes.register_routes — mounting them under /api means
+# they become /api/auth, /api/billing, /api/tariffs, etc.
+from routes import register_routes
 
 api_router = FastAPI()
-api_router.include_router(user_auth.router)
-api_router.include_router(billing.router)
-api_router.include_router(contact.router)
-api_router.include_router(insurance.router)
-api_router.include_router(regulatory_compliance.router)
-api_router.include_router(regulatory_master_registry.router)
-api_router.include_router(regulatory_qa.router)
-api_router.include_router(reports.router)
-api_router.include_router(strategic_intelligence.router)
-api_router.include_router(banking_enhancements.router)
+register_routes(api_router)
 
 app.mount("/api", api_router)
 

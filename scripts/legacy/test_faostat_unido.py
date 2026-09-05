@@ -10,7 +10,7 @@ from datetime import datetime
 import requests
 
 # Configuration de l'API
-BASE_URL = "https://zlecaf-trade-ops.preview.emergentagent.com/api"
+BASE_URL = "https://git-sync-41.preview.emergentagent.com/api"
 TIMEOUT = 30
 
 

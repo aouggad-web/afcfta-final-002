@@ -22,7 +22,7 @@ from currencies import (
 from fastapi import APIRouter, HTTPException, Query
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/api/currencies")
+router = APIRouter(prefix="/currencies")
 
 
 @router.get("/list", response_model=List[CurrencyInfo])

@@ -155,6 +155,14 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 - PostgreSQL 15
 - Redis 7
 
+## Session Update (Sept 2026) - GitHub pull ("main" branch) + backend routing fix
+- Workspace was on a diverged local branch "Main" (capital M, 2 commits ahead of a common ancestor with the repo's real default branch). Per user's explicit choice ("celle qui contient le plus de fichiers"), hard-switched the workspace to `origin/main` (lowercase, default branch, commit c4478d55), replacing all prior content.
+- Backend failed to start post-pull; fixed two crashes in `backend/server.py`: (1) `ModuleNotFoundError: No module named 'engine'` — this is the SAME issue noted in the July/August log above where `sync_emergent.sh`'s self-test hits this, but here it broke the actual running server, not just the sync script's self-test — fixed by inserting the repo root into `sys.path` at import time so it doesn't depend on `sync_emergent.sh` being run; (2) `if db:` on a pymongo `Database` object raises `NotImplementedError` — changed to `if db is not None:`.
+- **Major regression found and fixed**: `server.py` was not calling `routes.register_routes(api_router)` — around 30 routers (oec, hs_codes, countries, tariffs, statistics, etl, substitution, gemini_analysis, rules_of_origin, hs6_database, authentic_tariffs, banking, insurance, currencies, mobile, graphql, regulatory_*, reports, strategic_intelligence, user_auth, billing, contact, health...) were unmounted, causing 404s on almost the entire `/api` surface except `production` and a hand-picked handful. Replaced the stale manual mounting block with `register_routes(api_router)`. Confirmed via testing agent: 33/35 endpoints now respond with real data.
+- Fixed `POST /api/contact` 500 (`await` on synchronous pymongo `insert_one()`) and `/api/currencies` double-`/api` prefix bug.
+- Corrected `frontend/.env` `REACT_APP_BACKEND_URL` to this pod's URL, installed backend/frontend deps, both services running.
+- **Known limitation, not touched pending user input**: frontend entry point `src/index.js` only wires 6 of 11 sidebar modules; Dashboard/Calculateur/Statistiques/Logistique/Profils show "Module en développement" placeholders. `src/App.js` has apparently fuller tab implementations but is not the active entry and its currency relative to `index.js`'s migrated modules is unverified — did not swap to avoid regressing the working modules (Production, R. d'Origine, Contact, Finance all verified working).
+
 ## Session Update (Sept 2026) - Lint cleanup
 Fixed 31 blocking lint errors reported by pre-completion checks:
 - Route shadowing fixed in backend/routes/logistics.py (ports/search, air/airports/search moved before parameterized routes) and backend/routes/tariffs.py (country-hs6-tariffs/available and /all moved before /{hs6_code})
