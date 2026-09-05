@@ -1,0 +1,18 @@
+{
+  "country_iso3": "ZWE",
+  "country_name": "ZWE",
+  "processed_lines": 5831,
+  "sub_positions": 16141,
+  "total_positions": 21972,
+  "chapters_covered": 98,
+  "vat_rate": 15.0,
+  "dd_range": {
+    "min": 0.0,
+    "max": 60.0,
+    "avg": 12.65
+  },
+  "data_format": "enhanced_v2",
+  "output_file": "/app/engine/output/ZWE_canonical.jsonl",
+  "record_count": 16571,
+  "generated_at": "2026-03-01T17:37:47.603610"
+}

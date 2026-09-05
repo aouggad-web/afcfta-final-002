@@ -1,0 +1,113 @@
+[
+  {
+    "test": "Trade Performance Endpoint",
+    "success": true,
+    "message": "✅ 46 pays avec données 2024 réelles (exports, imports, balance, GDP, HDI)",
+    "timestamp": "2025-10-17T15:03:02.260702",
+    "details": {
+      "total_countries": 46,
+      "countries_with_complete_data": 46,
+      "data_year": 2024
+    }
+  },
+  {
+    "test": "Enhanced Statistics Endpoint",
+    "success": true,
+    "message": "✅ Statistiques enrichies 2024 validées avec trade_evolution, top_exporters (ZAF: 108.2B, NGA: 68.5B, AGO: 42.8B)",
+    "timestamp": "2025-10-17T15:03:02.277467",
+    "details": {
+      "sections_validated": [
+        "trade_evolution",
+        "top_exporters_2024",
+        "top_importers_2024",
+        "product_analysis",
+        "regional_integration",
+        "sector_performance",
+        "zlecaf_impact_metrics",
+        "projections"
+      ],
+      "trade_2023": 192.4,
+      "trade_2024": 218.7,
+      "top_exporters_validated": [
+        [
+          "ZAF",
+          108.2,
+          108.2,
+          true
+        ],
+        [
+          "NGA",
+          68.5,
+          68.5,
+          true
+        ],
+        [
+          "AGO",
+          42.8,
+          42.8,
+          true
+        ]
+      ]
+    }
+  },
+  {
+    "test": "Country Profile ZAF Enriched",
+    "success": true,
+    "message": "✅ Profil ZAF enrichi validé - Exports: 108.2B, 5 produits export, 2 partenaires, Notations complètes",
+    "timestamp": "2025-10-17T15:03:02.290405",
+    "details": {
+      "exports_2024_billion_usd": 108.2,
+      "imports_2024_billion_usd": 98.5,
+      "trade_balance_2024": 9.7,
+      "export_products_count": 5,
+      "import_products_count": 5,
+      "export_partners_count": 2,
+      "import_partners_count": 2,
+      "ratings_available": [
+        "sp",
+        "moodys",
+        "fitch",
+        "scope",
+        "global_risk"
+      ]
+    }
+  },
+  {
+    "test": "Country Profile DZA Enriched",
+    "success": true,
+    "message": "✅ Profil DZA enrichi validé - Exports: 38.2B, 5 produits export, 2 partenaires, Notations complètes",
+    "timestamp": "2025-10-17T15:03:02.304532",
+    "details": {
+      "exports_2024_billion_usd": 38.2,
+      "imports_2024_billion_usd": 42.1,
+      "export_products_count": 5,
+      "import_products_count": 5,
+      "ratings_available": [
+        "sp",
+        "moodys",
+        "fitch",
+        "scope",
+        "global_risk"
+      ]
+    }
+  },
+  {
+    "test": "Tariff Calculation 2024 Corrections",
+    "success": true,
+    "message": "✅ Calcul tarifaire 2024 validé avec corrections - ZA→NG, HS 010121, 100K USD: Normal 25.0%, ZLECAf 0.0%, Économies 25000 USD (100.0%)",
+    "timestamp": "2025-10-17T15:03:03.179686",
+    "details": {
+      "origin_country": "ZA",
+      "destination_country": "NG",
+      "hs_code": "010121",
+      "value": 100000,
+      "normal_tariff_rate_pct": 25.0,
+      "zlecaf_tariff_rate_pct": 0.0,
+      "savings_usd": 25000.0,
+      "savings_percentage": 100.0,
+      "has_2024_traceability": true,
+      "computation_order_ref": "Ordre de calcul: DD → Accises → Levies → TVA (base cumulative)",
+      "confidence_level": "high"
+    }
+  }
+]

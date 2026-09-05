@@ -1,0 +1,20 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "source": "ZLECAf Annex 2"
+  },
+  "rules": {
+    "01": {
+      "chapter": "01",
+      "description": "Animaux vivants",
+      "rule": "Entièrement obtenus",
+      "regional_content": 100
+    },
+    "84": {
+      "chapter": "84",
+      "description": "Machines et appareils mécaniques",
+      "rule": "Changement de classification tarifaire ou 40% de contenu régional",
+      "regional_content": 40
+    }
+  }
+}

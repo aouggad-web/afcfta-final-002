@@ -1,0 +1,120 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Testing
+/coverage
+.coverage
+
+# Production builds
+/build
+dist/
+
+# Environment files — never commit actual secrets
+.env
+.env.*
+!.env.example
+*.env
+*.local
+.credentials
+credentials.json
+*.key
+*.pem
+
+# Secrets
+.github/secrets/
+
+# Generated tariff data (large files — regenerate with engine/migrate_all.py)
+backend/data/tariffs/
+engine/output/*.jsonl
+engine/output/indexes/
+
+# === Node.js ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+dump.rdb
+
+# IDE and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+*.egg-info/
+.eggs/
+
+# Development tools
+chainlit.md
+.chainlit
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+
+# Misc
+android-sdk/
+*.backup
+*.bak
+frontend/node_modules/.cache/default-development/14.pack
+frontend/node_modules/.cache/default-development/0.pack
+frontend/node_modules/.cache/default-development/3.pack
+frontend/node_modules/.cache/default-development/4.pack
+frontend/node_modules/.cache/default-development/5.pack
+frontend/node_modules/.cache/default-development/6.pack
+frontend/node_modules/.cache/default-development/1.pack
+
+# Fichiers sources tarifaires bruts (tracés dans engine/sources/README_sources.md)
+engine/sources/*
+!engine/sources/README_sources.md
+# Données sources brutes FAOSTAT/USGS (téléchargées par build_production_faostat_usgs.py)
+backend/engine/sources/*
+
+# Sorties generees par backend/scripts/smoke_opportunites.py
+test_reports/
+
+# Yarn install state can be generated in nested workspaces
+**/.yarn/install-state.gz
+
+# Local Yarn settings generated during ad hoc installs
+.yarnrc.yml
+**/.yarnrc.yml
+
+# Disk-backed cache tier (services/cache_service.py) — persisted OEC/API
+# responses for cold-start resilience without Redis, never source of truth
+backend/data/_cache/
+
+# Base GeoIP MaxMind (détection du pays de facturation).
+# JAMAIS committée : binaire de ~8 Mo republié deux fois par semaine (l'historique
+# git enflerait durablement) et la licence GeoLite2 restreint la redistribution.
+# Elle s'installe sur le serveur via `python scripts/geoip_update.py`.
+*.mmdb
+data/geoip/
+backend/data/geoip/
+
+# Emergent pod-runtime artefacts (régénérés à chaque déploiement, polluent
+# l'historique — visibles dans les commits « Auto-generated changes »).
+# job_id et created_at changent à chaque redéploiement, ils ne doivent pas
+# être versionnés.
+.emergent/emergent.yml
+.emergent/cron/webhook-crons
+.emergent/cron/applied.hash
+.emergent/markers/
+
+# Notes de session locales au pod (identifiants de test, URLs de preview
+# éphémères) — jamais de valeur en clair depuis le nettoyage du 2026-08-14,
+# mais toujours à tenir hors du dépôt par principe : ce fichier n'a de sens
+# que pour la session pod en cours, et son contenu se périme à chaque
+# redéploiement (nouvelle URL, nouveau compte de test).
+memory/test_credentials.md

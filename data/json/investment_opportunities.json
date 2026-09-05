@@ -1,0 +1,1082 @@
+{
+  "metadata": {
+    "title": "Investment Opportunity Rankings - African Free Zones",
+    "description": "Investment attractiveness metrics for African free trade and industrial zones",
+    "version": "1.0.0",
+    "generated_at": "2025-01-15T00:00:00Z",
+    "methodology": {
+      "scoring_scale": "0-100 (higher = more attractive)",
+      "grade_scale": "AAA (best) to D (worst)",
+      "dimensions": [
+        "ROI Potential",
+        "Market Access",
+        "Risk Assessment",
+        "Cost Competitiveness",
+        "Ease of Doing Business",
+        "Infrastructure Quality",
+        "Talent Availability"
+      ],
+      "data_sources": [
+        "World Bank Doing Business",
+        "Moody's Africa Outlook",
+        "AfDB Investment Climate",
+        "Zone Authority Reports",
+        "Economist Intelligence Unit",
+        "Expert Assessment 2024"
+      ]
+    },
+    "total_zones": 30
+  },
+  "zones": [
+    {
+      "zone_id": "MAR-TFZ-001",
+      "zone_name": "Tanger Med Zones (TMZ)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "investment_grade": "AA",
+      "scores": {
+        "roi_potential": 78,
+        "market_access": {
+          "regional": 85,
+          "continental": 80,
+          "global": 82,
+          "composite": 82.3
+        },
+        "risk_assessment": {
+          "political_stability": 75,
+          "operational_risk": 78,
+          "regulatory_risk": 76,
+          "composite_risk": 76.3
+        },
+        "cost_competitiveness": 80,
+        "ease_of_doing_business": 76,
+        "infrastructure_quality": 88,
+        "talent_availability": 75,
+        "overall_investment_score": 80.0
+      },
+      "rankings": {
+        "continental_rank": 2,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Strong",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MAR-KEN-001",
+      "zone_name": "Atlantic Free Zone (Kenitra)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "investment_grade": "A",
+      "scores": {
+        "roi_potential": 72,
+        "market_access": {
+          "regional": 78,
+          "continental": 74,
+          "global": 76,
+          "composite": 76.0
+        },
+        "risk_assessment": {
+          "political_stability": 74,
+          "operational_risk": 72,
+          "regulatory_risk": 72,
+          "composite_risk": 72.7
+        },
+        "cost_competitiveness": 78,
+        "ease_of_doing_business": 72,
+        "infrastructure_quality": 80,
+        "talent_availability": 70,
+        "overall_investment_score": 74.7
+      },
+      "rankings": {
+        "continental_rank": 5,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Strong",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "EGY-SCZ-001",
+      "zone_name": "Suez Canal Economic Zone (SCZone)",
+      "country_iso": "EGY",
+      "region": "North Africa",
+      "investment_grade": "A+",
+      "scores": {
+        "roi_potential": 80,
+        "market_access": {
+          "regional": 88,
+          "continental": 82,
+          "global": 88,
+          "composite": 86.0
+        },
+        "risk_assessment": {
+          "political_stability": 65,
+          "operational_risk": 70,
+          "regulatory_risk": 68,
+          "composite_risk": 67.7
+        },
+        "cost_competitiveness": 82,
+        "ease_of_doing_business": 68,
+        "infrastructure_quality": 85,
+        "talent_availability": 74,
+        "overall_investment_score": 79.4
+      },
+      "rankings": {
+        "continental_rank": 3,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Strong",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DJI-DIFTZ-001",
+      "zone_name": "Djibouti International Free Trade Zone",
+      "country_iso": "DJI",
+      "region": "East Africa",
+      "investment_grade": "A",
+      "scores": {
+        "roi_potential": 72,
+        "market_access": {
+          "regional": 82,
+          "continental": 78,
+          "global": 80,
+          "composite": 80.0
+        },
+        "risk_assessment": {
+          "political_stability": 68,
+          "operational_risk": 68,
+          "regulatory_risk": 65,
+          "composite_risk": 67.0
+        },
+        "cost_competitiveness": 70,
+        "ease_of_doing_business": 65,
+        "infrastructure_quality": 80,
+        "talent_availability": 60,
+        "overall_investment_score": 72.7
+      },
+      "rankings": {
+        "continental_rank": 7,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Strong",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NGA-LEK-001",
+      "zone_name": "Lekki Free Trade Zone",
+      "country_iso": "NGA",
+      "region": "West Africa",
+      "investment_grade": "BBB",
+      "scores": {
+        "roi_potential": 74,
+        "market_access": {
+          "regional": 80,
+          "continental": 82,
+          "global": 70,
+          "composite": 77.3
+        },
+        "risk_assessment": {
+          "political_stability": 55,
+          "operational_risk": 58,
+          "regulatory_risk": 55,
+          "composite_risk": 56.0
+        },
+        "cost_competitiveness": 72,
+        "ease_of_doing_business": 55,
+        "infrastructure_quality": 70,
+        "talent_availability": 72,
+        "overall_investment_score": 70.1
+      },
+      "rankings": {
+        "continental_rank": 9,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-TIN-001",
+      "zone_name": "Zone Franche de Tindouf",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "investment_grade": "BB",
+      "scores": {
+        "roi_potential": 60,
+        "market_access": {
+          "regional": 65,
+          "continental": 60,
+          "global": 55,
+          "composite": 60.0
+        },
+        "risk_assessment": {
+          "political_stability": 60,
+          "operational_risk": 58,
+          "regulatory_risk": 55,
+          "composite_risk": 57.7
+        },
+        "cost_competitiveness": 65,
+        "ease_of_doing_business": 52,
+        "infrastructure_quality": 60,
+        "talent_availability": 55,
+        "overall_investment_score": 58.9
+      },
+      "rankings": {
+        "continental_rank": 25,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Cautious",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-ELO-001",
+      "zone_name": "Zone Franche d'Oran (Bethioua)",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "investment_grade": "BB+",
+      "scores": {
+        "roi_potential": 64,
+        "market_access": {
+          "regional": 68,
+          "continental": 62,
+          "global": 60,
+          "composite": 63.3
+        },
+        "risk_assessment": {
+          "political_stability": 62,
+          "operational_risk": 60,
+          "regulatory_risk": 58,
+          "composite_risk": 60.0
+        },
+        "cost_competitiveness": 68,
+        "ease_of_doing_business": 55,
+        "infrastructure_quality": 65,
+        "talent_availability": 60,
+        "overall_investment_score": 62.4
+      },
+      "rankings": {
+        "continental_rank": 19,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GAB-NKO-001",
+      "zone_name": "Zone Economique Speciale de Nkok (GSEZ)",
+      "country_iso": "GAB",
+      "region": "Central Africa",
+      "investment_grade": "BBB-",
+      "scores": {
+        "roi_potential": 68,
+        "market_access": {
+          "regional": 65,
+          "continental": 65,
+          "global": 68,
+          "composite": 66.0
+        },
+        "risk_assessment": {
+          "political_stability": 58,
+          "operational_risk": 60,
+          "regulatory_risk": 58,
+          "composite_risk": 58.7
+        },
+        "cost_competitiveness": 65,
+        "ease_of_doing_business": 60,
+        "infrastructure_quality": 72,
+        "talent_availability": 58,
+        "overall_investment_score": 64.4
+      },
+      "rankings": {
+        "continental_rank": 17,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "SEN-DIS-001",
+      "zone_name": "Zone Economique Speciale (DAKAR)",
+      "country_iso": "SEN",
+      "region": "West Africa",
+      "investment_grade": "BBB",
+      "scores": {
+        "roi_potential": 68,
+        "market_access": {
+          "regional": 74,
+          "continental": 72,
+          "global": 68,
+          "composite": 71.3
+        },
+        "risk_assessment": {
+          "political_stability": 72,
+          "operational_risk": 68,
+          "regulatory_risk": 68,
+          "composite_risk": 69.3
+        },
+        "cost_competitiveness": 70,
+        "ease_of_doing_business": 65,
+        "infrastructure_quality": 70,
+        "talent_availability": 68,
+        "overall_investment_score": 69.4
+      },
+      "rankings": {
+        "continental_rank": 11,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BEN-GLO-001",
+      "zone_name": "Zone Economique Speciale (Glo-Djigbe)",
+      "country_iso": "BEN",
+      "region": "West Africa",
+      "investment_grade": "BB+",
+      "scores": {
+        "roi_potential": 62,
+        "market_access": {
+          "regional": 68,
+          "continental": 65,
+          "global": 58,
+          "composite": 63.7
+        },
+        "risk_assessment": {
+          "political_stability": 65,
+          "operational_risk": 60,
+          "regulatory_risk": 60,
+          "composite_risk": 61.7
+        },
+        "cost_competitiveness": 68,
+        "ease_of_doing_business": 58,
+        "infrastructure_quality": 60,
+        "talent_availability": 55,
+        "overall_investment_score": 61.7
+      },
+      "rankings": {
+        "continental_rank": 21,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TGO-PIA-001",
+      "zone_name": "Plateforme Industrielle d'Adetikope (PIA)",
+      "country_iso": "TGO",
+      "region": "West Africa",
+      "investment_grade": "BB+",
+      "scores": {
+        "roi_potential": 64,
+        "market_access": {
+          "regional": 70,
+          "continental": 68,
+          "global": 60,
+          "composite": 66.0
+        },
+        "risk_assessment": {
+          "political_stability": 65,
+          "operational_risk": 62,
+          "regulatory_risk": 62,
+          "composite_risk": 63.0
+        },
+        "cost_competitiveness": 70,
+        "ease_of_doing_business": 62,
+        "infrastructure_quality": 65,
+        "talent_availability": 58,
+        "overall_investment_score": 64.4
+      },
+      "rankings": {
+        "continental_rank": 18,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZAF-COE-001",
+      "zone_name": "Coega Special Economic Zone",
+      "country_iso": "ZAF",
+      "region": "Southern Africa",
+      "investment_grade": "A",
+      "scores": {
+        "roi_potential": 76,
+        "market_access": {
+          "regional": 82,
+          "continental": 80,
+          "global": 82,
+          "composite": 81.3
+        },
+        "risk_assessment": {
+          "political_stability": 68,
+          "operational_risk": 75,
+          "regulatory_risk": 76,
+          "composite_risk": 73.0
+        },
+        "cost_competitiveness": 72,
+        "ease_of_doing_business": 74,
+        "infrastructure_quality": 85,
+        "talent_availability": 82,
+        "overall_investment_score": 78.4
+      },
+      "rankings": {
+        "continental_rank": 4,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Strong",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MUS-MFP-001",
+      "zone_name": "Mauritius Freeport & Smart City",
+      "country_iso": "MUS",
+      "region": "East Africa",
+      "investment_grade": "AA+",
+      "scores": {
+        "roi_potential": 82,
+        "market_access": {
+          "regional": 80,
+          "continental": 78,
+          "global": 85,
+          "composite": 81.0
+        },
+        "risk_assessment": {
+          "political_stability": 88,
+          "operational_risk": 85,
+          "regulatory_risk": 88,
+          "composite_risk": 87.0
+        },
+        "cost_competitiveness": 72,
+        "ease_of_doing_business": 88,
+        "infrastructure_quality": 88,
+        "talent_availability": 82,
+        "overall_investment_score": 82.4
+      },
+      "rankings": {
+        "continental_rank": 1,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Strong",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ETH-HAW-001",
+      "zone_name": "Hawassa Industrial Park",
+      "country_iso": "ETH",
+      "region": "East Africa",
+      "investment_grade": "BB",
+      "scores": {
+        "roi_potential": 68,
+        "market_access": {
+          "regional": 65,
+          "continental": 68,
+          "global": 72,
+          "composite": 68.3
+        },
+        "risk_assessment": {
+          "political_stability": 52,
+          "operational_risk": 55,
+          "regulatory_risk": 52,
+          "composite_risk": 53.0
+        },
+        "cost_competitiveness": 85,
+        "ease_of_doing_business": 50,
+        "infrastructure_quality": 65,
+        "talent_availability": 60,
+        "overall_investment_score": 65.1
+      },
+      "rankings": {
+        "continental_rank": 15,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "KEN-EPZ-001",
+      "zone_name": "Nairobi Export Processing Zone",
+      "country_iso": "KEN",
+      "region": "East Africa",
+      "investment_grade": "BBB",
+      "scores": {
+        "roi_potential": 70,
+        "market_access": {
+          "regional": 75,
+          "continental": 75,
+          "global": 70,
+          "composite": 73.3
+        },
+        "risk_assessment": {
+          "political_stability": 65,
+          "operational_risk": 68,
+          "regulatory_risk": 65,
+          "composite_risk": 66.0
+        },
+        "cost_competitiveness": 72,
+        "ease_of_doing_business": 65,
+        "infrastructure_quality": 72,
+        "talent_availability": 72,
+        "overall_investment_score": 70.8
+      },
+      "rankings": {
+        "continental_rank": 8,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TUN-PAE-001",
+      "zone_name": "Parc d'Activites Economiques de Zarzis",
+      "country_iso": "TUN",
+      "region": "North Africa",
+      "investment_grade": "BBB-",
+      "scores": {
+        "roi_potential": 68,
+        "market_access": {
+          "regional": 72,
+          "continental": 68,
+          "global": 72,
+          "composite": 70.7
+        },
+        "risk_assessment": {
+          "political_stability": 62,
+          "operational_risk": 65,
+          "regulatory_risk": 65,
+          "composite_risk": 64.0
+        },
+        "cost_competitiveness": 72,
+        "ease_of_doing_business": 65,
+        "infrastructure_quality": 72,
+        "talent_availability": 70,
+        "overall_investment_score": 69.2
+      },
+      "rankings": {
+        "continental_rank": 12,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CMR-KRI-001",
+      "zone_name": "Zone Industrielle de Kribi (ZIK)",
+      "country_iso": "CMR",
+      "region": "Central Africa",
+      "investment_grade": "BB",
+      "scores": {
+        "roi_potential": 64,
+        "market_access": {
+          "regional": 65,
+          "continental": 65,
+          "global": 62,
+          "composite": 64.0
+        },
+        "risk_assessment": {
+          "political_stability": 58,
+          "operational_risk": 58,
+          "regulatory_risk": 55,
+          "composite_risk": 57.0
+        },
+        "cost_competitiveness": 65,
+        "ease_of_doing_business": 52,
+        "infrastructure_quality": 65,
+        "talent_availability": 55,
+        "overall_investment_score": 61.1
+      },
+      "rankings": {
+        "continental_rank": 24,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GHA-TEM-001",
+      "zone_name": "Tema Export Processing Zone",
+      "country_iso": "GHA",
+      "region": "West Africa",
+      "investment_grade": "BBB-",
+      "scores": {
+        "roi_potential": 68,
+        "market_access": {
+          "regional": 72,
+          "continental": 70,
+          "global": 65,
+          "composite": 69.0
+        },
+        "risk_assessment": {
+          "political_stability": 68,
+          "operational_risk": 65,
+          "regulatory_risk": 65,
+          "composite_risk": 66.0
+        },
+        "cost_competitiveness": 68,
+        "ease_of_doing_business": 62,
+        "infrastructure_quality": 68,
+        "talent_availability": 68,
+        "overall_investment_score": 67.4
+      },
+      "rankings": {
+        "continental_rank": 14,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "RWA-KSE-001",
+      "zone_name": "Kigali Special Economic Zone (KSEZ)",
+      "country_iso": "RWA",
+      "region": "East Africa",
+      "investment_grade": "A",
+      "scores": {
+        "roi_potential": 72,
+        "market_access": {
+          "regional": 70,
+          "continental": 72,
+          "global": 68,
+          "composite": 70.0
+        },
+        "risk_assessment": {
+          "political_stability": 80,
+          "operational_risk": 80,
+          "regulatory_risk": 82,
+          "composite_risk": 80.7
+        },
+        "cost_competitiveness": 72,
+        "ease_of_doing_business": 82,
+        "infrastructure_quality": 75,
+        "talent_availability": 70,
+        "overall_investment_score": 73.5
+      },
+      "rankings": {
+        "continental_rank": 6,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Strong",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CIV-PK-001",
+      "zone_name": "Parc Industriel de Koumassi (PIK)",
+      "country_iso": "CIV",
+      "region": "West Africa",
+      "investment_grade": "BB+",
+      "scores": {
+        "roi_potential": 65,
+        "market_access": {
+          "regional": 72,
+          "continental": 70,
+          "global": 62,
+          "composite": 68.0
+        },
+        "risk_assessment": {
+          "political_stability": 62,
+          "operational_risk": 62,
+          "regulatory_risk": 60,
+          "composite_risk": 61.3
+        },
+        "cost_competitiveness": 68,
+        "ease_of_doing_business": 58,
+        "infrastructure_quality": 65,
+        "talent_availability": 60,
+        "overall_investment_score": 64.6
+      },
+      "rankings": {
+        "continental_rank": 16,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TZA-EPZ-001",
+      "zone_name": "Benjamin William Mkapa SEZ (Morogoro)",
+      "country_iso": "TZA",
+      "region": "East Africa",
+      "investment_grade": "BB",
+      "scores": {
+        "roi_potential": 62,
+        "market_access": {
+          "regional": 65,
+          "continental": 65,
+          "global": 58,
+          "composite": 62.7
+        },
+        "risk_assessment": {
+          "political_stability": 65,
+          "operational_risk": 60,
+          "regulatory_risk": 60,
+          "composite_risk": 61.7
+        },
+        "cost_competitiveness": 72,
+        "ease_of_doing_business": 58,
+        "infrastructure_quality": 60,
+        "talent_availability": 55,
+        "overall_investment_score": 61.9
+      },
+      "rankings": {
+        "continental_rank": 20,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZMB-LSK-001",
+      "zone_name": "Lusaka South Multi-Facility Economic Zone",
+      "country_iso": "ZMB",
+      "region": "Southern Africa",
+      "investment_grade": "BB",
+      "scores": {
+        "roi_potential": 62,
+        "market_access": {
+          "regional": 65,
+          "continental": 65,
+          "global": 58,
+          "composite": 62.7
+        },
+        "risk_assessment": {
+          "political_stability": 62,
+          "operational_risk": 60,
+          "regulatory_risk": 60,
+          "composite_risk": 60.7
+        },
+        "cost_competitiveness": 68,
+        "ease_of_doing_business": 58,
+        "infrastructure_quality": 60,
+        "talent_availability": 58,
+        "overall_investment_score": 61.6
+      },
+      "rankings": {
+        "continental_rank": 23,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "AGO-ZEE-001",
+      "zone_name": "Zona Economica Especial de Luanda",
+      "country_iso": "AGO",
+      "region": "Southern Africa",
+      "investment_grade": "BB-",
+      "scores": {
+        "roi_potential": 62,
+        "market_access": {
+          "regional": 62,
+          "continental": 62,
+          "global": 65,
+          "composite": 63.0
+        },
+        "risk_assessment": {
+          "political_stability": 52,
+          "operational_risk": 52,
+          "regulatory_risk": 50,
+          "composite_risk": 51.3
+        },
+        "cost_competitiveness": 60,
+        "ease_of_doing_business": 48,
+        "infrastructure_quality": 58,
+        "talent_availability": 52,
+        "overall_investment_score": 57.8
+      },
+      "rankings": {
+        "continental_rank": 27,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Cautious",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MOZ-NAC-001",
+      "zone_name": "Nacala Special Economic Zone",
+      "country_iso": "MOZ",
+      "region": "Southern Africa",
+      "investment_grade": "BB-",
+      "scores": {
+        "roi_potential": 60,
+        "market_access": {
+          "regional": 62,
+          "continental": 62,
+          "global": 58,
+          "composite": 60.7
+        },
+        "risk_assessment": {
+          "political_stability": 55,
+          "operational_risk": 55,
+          "regulatory_risk": 52,
+          "composite_risk": 54.0
+        },
+        "cost_competitiveness": 70,
+        "ease_of_doing_business": 52,
+        "infrastructure_quality": 58,
+        "talent_availability": 50,
+        "overall_investment_score": 58.4
+      },
+      "rankings": {
+        "continental_rank": 26,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Cautious",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "COD-MAL-001",
+      "zone_name": "Zone Economique Speciale de Maluku",
+      "country_iso": "COD",
+      "region": "Central Africa",
+      "investment_grade": "B",
+      "scores": {
+        "roi_potential": 55,
+        "market_access": {
+          "regional": 60,
+          "continental": 62,
+          "global": 55,
+          "composite": 59.0
+        },
+        "risk_assessment": {
+          "political_stability": 38,
+          "operational_risk": 40,
+          "regulatory_risk": 38,
+          "composite_risk": 38.7
+        },
+        "cost_competitiveness": 65,
+        "ease_of_doing_business": 38,
+        "infrastructure_quality": 45,
+        "talent_availability": 45,
+        "overall_investment_score": 51.5
+      },
+      "rankings": {
+        "continental_rank": 30,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Cautious",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "UGA-NAM-001",
+      "zone_name": "Namanve Industrial & Business Park",
+      "country_iso": "UGA",
+      "region": "East Africa",
+      "investment_grade": "BB",
+      "scores": {
+        "roi_potential": 62,
+        "market_access": {
+          "regional": 65,
+          "continental": 65,
+          "global": 58,
+          "composite": 62.7
+        },
+        "risk_assessment": {
+          "political_stability": 60,
+          "operational_risk": 60,
+          "regulatory_risk": 58,
+          "composite_risk": 59.3
+        },
+        "cost_competitiveness": 70,
+        "ease_of_doing_business": 58,
+        "infrastructure_quality": 60,
+        "talent_availability": 58,
+        "overall_investment_score": 61.7
+      },
+      "rankings": {
+        "continental_rank": 22,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MWI-BLT-001",
+      "zone_name": "Blantyre Industrial Park",
+      "country_iso": "MWI",
+      "region": "Southern Africa",
+      "investment_grade": "BB-",
+      "scores": {
+        "roi_potential": 55,
+        "market_access": {
+          "regional": 55,
+          "continental": 55,
+          "global": 48,
+          "composite": 52.7
+        },
+        "risk_assessment": {
+          "political_stability": 58,
+          "operational_risk": 52,
+          "regulatory_risk": 52,
+          "composite_risk": 54.0
+        },
+        "cost_competitiveness": 72,
+        "ease_of_doing_business": 52,
+        "infrastructure_quality": 48,
+        "talent_availability": 48,
+        "overall_investment_score": 54.1
+      },
+      "rankings": {
+        "continental_rank": 29,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Cautious",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NAM-WAL-001",
+      "zone_name": "Walvis Bay Export Processing Zone",
+      "country_iso": "NAM",
+      "region": "Southern Africa",
+      "investment_grade": "A-",
+      "scores": {
+        "roi_potential": 68,
+        "market_access": {
+          "regional": 68,
+          "continental": 68,
+          "global": 72,
+          "composite": 69.3
+        },
+        "risk_assessment": {
+          "political_stability": 78,
+          "operational_risk": 75,
+          "regulatory_risk": 75,
+          "composite_risk": 76.0
+        },
+        "cost_competitiveness": 70,
+        "ease_of_doing_business": 72,
+        "infrastructure_quality": 72,
+        "talent_availability": 65,
+        "overall_investment_score": 70.1
+      },
+      "rankings": {
+        "continental_rank": 10,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BWA-SIR-001",
+      "zone_name": "Selebi-Phikwe Economic Diversification Unit (SPEDU)",
+      "country_iso": "BWA",
+      "region": "Southern Africa",
+      "investment_grade": "A-",
+      "scores": {
+        "roi_potential": 65,
+        "market_access": {
+          "regional": 65,
+          "continental": 65,
+          "global": 65,
+          "composite": 65.0
+        },
+        "risk_assessment": {
+          "political_stability": 80,
+          "operational_risk": 75,
+          "regulatory_risk": 78,
+          "composite_risk": 77.7
+        },
+        "cost_competitiveness": 68,
+        "ease_of_doing_business": 75,
+        "infrastructure_quality": 68,
+        "talent_availability": 65,
+        "overall_investment_score": 68.2
+      },
+      "rankings": {
+        "continental_rank": 13,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Moderate",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MDG-EHO-001",
+      "zone_name": "Zone Franche d'Ehoala (Fort-Dauphin)",
+      "country_iso": "MDG",
+      "region": "East Africa",
+      "investment_grade": "B",
+      "scores": {
+        "roi_potential": 56,
+        "market_access": {
+          "regional": 55,
+          "continental": 55,
+          "global": 58,
+          "composite": 56.0
+        },
+        "risk_assessment": {
+          "political_stability": 52,
+          "operational_risk": 50,
+          "regulatory_risk": 50,
+          "composite_risk": 50.7
+        },
+        "cost_competitiveness": 70,
+        "ease_of_doing_business": 48,
+        "infrastructure_quality": 50,
+        "talent_availability": 45,
+        "overall_investment_score": 54.2
+      },
+      "rankings": {
+        "continental_rank": 28,
+        "regional_rank": 8,
+        "total_zones_assessed": 30
+      },
+      "investment_outlook": "Cautious",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    }
+  ]
+}

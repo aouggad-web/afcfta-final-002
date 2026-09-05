@@ -1,0 +1,18 @@
+{
+  "country_iso3": "LSO",
+  "country_name": "LSO",
+  "processed_lines": 5831,
+  "sub_positions": 16140,
+  "total_positions": 21971,
+  "chapters_covered": 98,
+  "vat_rate": 15.0,
+  "dd_range": {
+    "min": 0.0,
+    "max": 45.0,
+    "avg": 15.52
+  },
+  "data_format": "enhanced_v2",
+  "output_file": "/app/engine/output/LSO_canonical.jsonl",
+  "record_count": 16570,
+  "generated_at": "2026-03-01T17:37:27.991663"
+}

@@ -1,0 +1,65 @@
+{
+  "summary": "Frontend-only testing completed. Calculator form, tariff calculation, NPF vs ZLECAf comparison tables, pie charts, and Formalités section all working correctly with good text contrast on dark theme.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "critical": [],
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_17.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A - Frontend only testing",
+    "frontend": "100% - All features working correctly"
+  },
+  "test_credentials": "N/A - Public calculator",
+  "seed_data_creation": "N/A",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Calculator tested with Algeria (DZA) → Senegal (SEN), HS code 090111 (coffee), value 50000 USD. All UI elements have good contrast on dark theme.",
+  "verified_features": {
+    "calculator_form": {
+      "status": "PASS",
+      "details": "Country selects (ISO3 codes), HS code smart search, value input all working. Use 'Utiliser ce code' button to select HS code before clicking Calculate."
+    },
+    "tariff_calculation": {
+      "status": "PASS",
+      "details": "API returns results with authentic data badge, showing 4 taxes for Senegal: D.D 20%, RS 1%, PCS 1%, T.V.A 18%"
+    },
+    "npf_vs_zlecaf_tables": {
+      "status": "PASS", 
+      "details": "Side-by-side comparison tables showing NPF ($70,800) vs ZLECAf ($59,000) with D.D exemption highlighted"
+    },
+    "pie_charts": {
+      "status": "PASS",
+      "details": "Tax distribution pie charts for both regimes with colored segments (D.D red, T.V.A yellow, RS/PCS blue) and percentage labels"
+    },
+    "formalities_section": {
+      "status": "PASS",
+      "details": "Complete documents section with 5 mandatory documents and 2 ZLECAf-specific documents (Certificate of Origin, Supplier Declaration)"
+    },
+    "savings_highlight": {
+      "status": "PASS",
+      "details": "Green savings card showing $11,800 savings (-16.7%)"
+    },
+    "text_contrast": {
+      "status": "PASS",
+      "details": "All text readable - White (#F5F5F5) on dark bg (#1B232C), Gold (#D4AF37) titles, Green (#10b981) for ZLECAf, Red (#EF4444) for NPF"
+    }
+  },
+  "screenshots": {
+    "initial_load": ".screenshots/initial_load.png",
+    "form_filled": ".screenshots/form_filled_selected.png",
+    "results_top": ".screenshots/results_top.png",
+    "pie_charts": ".screenshots/pie_charts.png",
+    "formalities_section": ".screenshots/formalities_section.png"
+  }
+}

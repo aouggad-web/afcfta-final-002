@@ -1,0 +1,1020 @@
+{
+  "metadata": {
+    "title": "Sustainability & ESG Metrics - African Free Zones",
+    "description": "Environmental, Social, and Governance scores for African free and industrial zones",
+    "version": "1.0.0",
+    "generated_at": "2025-01-15T00:00:00Z",
+    "methodology": {
+      "scoring_scale": "0-100 (higher = more sustainable)",
+      "esg_rating_scale": "A+ (best) to D- (worst)",
+      "dimensions": [
+        "Environmental Impact",
+        "Renewable Energy",
+        "Waste Management",
+        "Job Creation",
+        "Community Development",
+        "Governance Transparency"
+      ],
+      "data_sources": [
+        "UNEP Africa Environmental Outlook",
+        "IRENA Renewable Energy Statistics",
+        "IFC Environmental & Social Standards",
+        "Zone Authority ESG Reports",
+        "Expert Assessment 2024"
+      ]
+    },
+    "total_zones": 30
+  },
+  "zones": [
+    {
+      "zone_id": "MAR-TFZ-001",
+      "zone_name": "Tanger Med Zones (TMZ)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "esg_rating": "B+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 68,
+          "renewable_energy_percentage": 28,
+          "waste_management_score": 72,
+          "environmental_composite": 56.0
+        },
+        "social": {
+          "job_creation_score": 88,
+          "community_development_score": 75,
+          "social_composite": 81.5
+        },
+        "governance": {
+          "transparency_score": 72,
+          "governance_composite": 72
+        },
+        "overall_esg_score": 66.2
+      },
+      "rankings": {
+        "continental_rank": 3,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Achiever",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MAR-KEN-001",
+      "zone_name": "Atlantic Free Zone (Kenitra)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "esg_rating": "B",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 64,
+          "renewable_energy_percentage": 22,
+          "waste_management_score": 68,
+          "environmental_composite": 51.3
+        },
+        "social": {
+          "job_creation_score": 78,
+          "community_development_score": 70,
+          "social_composite": 74.0
+        },
+        "governance": {
+          "transparency_score": 70,
+          "governance_composite": 70
+        },
+        "overall_esg_score": 61.3
+      },
+      "rankings": {
+        "continental_rank": 6,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Achiever",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "EGY-SCZ-001",
+      "zone_name": "Suez Canal Economic Zone (SCZone)",
+      "country_iso": "EGY",
+      "region": "North Africa",
+      "esg_rating": "B-",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 60,
+          "renewable_energy_percentage": 18,
+          "waste_management_score": 62,
+          "environmental_composite": 46.7
+        },
+        "social": {
+          "job_creation_score": 82,
+          "community_development_score": 68,
+          "social_composite": 75.0
+        },
+        "governance": {
+          "transparency_score": 62,
+          "governance_composite": 62
+        },
+        "overall_esg_score": 58.1
+      },
+      "rankings": {
+        "continental_rank": 9,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Achiever",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DJI-DIFTZ-001",
+      "zone_name": "Djibouti International Free Trade Zone",
+      "country_iso": "DJI",
+      "region": "East Africa",
+      "esg_rating": "C+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 55,
+          "renewable_energy_percentage": 12,
+          "waste_management_score": 58,
+          "environmental_composite": 41.7
+        },
+        "social": {
+          "job_creation_score": 70,
+          "community_development_score": 62,
+          "social_composite": 66.0
+        },
+        "governance": {
+          "transparency_score": 60,
+          "governance_composite": 60
+        },
+        "overall_esg_score": 52.4
+      },
+      "rankings": {
+        "continental_rank": 20,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NGA-LEK-001",
+      "zone_name": "Lekki Free Trade Zone",
+      "country_iso": "NGA",
+      "region": "West Africa",
+      "esg_rating": "C",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 50,
+          "renewable_energy_percentage": 8,
+          "waste_management_score": 52,
+          "environmental_composite": 36.7
+        },
+        "social": {
+          "job_creation_score": 80,
+          "community_development_score": 65,
+          "social_composite": 72.5
+        },
+        "governance": {
+          "transparency_score": 50,
+          "governance_composite": 50
+        },
+        "overall_esg_score": 50.6
+      },
+      "rankings": {
+        "continental_rank": 24,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-TIN-001",
+      "zone_name": "Zone Franche de Tindouf",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "esg_rating": "C",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 50,
+          "renewable_energy_percentage": 15,
+          "waste_management_score": 48,
+          "environmental_composite": 37.7
+        },
+        "social": {
+          "job_creation_score": 60,
+          "community_development_score": 55,
+          "social_composite": 57.5
+        },
+        "governance": {
+          "transparency_score": 52,
+          "governance_composite": 52
+        },
+        "overall_esg_score": 46.2
+      },
+      "rankings": {
+        "continental_rank": 28,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-ELO-001",
+      "zone_name": "Zone Franche d'Oran (Bethioua)",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "esg_rating": "C+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 52,
+          "renewable_energy_percentage": 18,
+          "waste_management_score": 52,
+          "environmental_composite": 40.7
+        },
+        "social": {
+          "job_creation_score": 65,
+          "community_development_score": 58,
+          "social_composite": 61.5
+        },
+        "governance": {
+          "transparency_score": 54,
+          "governance_composite": 54
+        },
+        "overall_esg_score": 49.2
+      },
+      "rankings": {
+        "continental_rank": 25,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GAB-NKO-001",
+      "zone_name": "Zone Economique Speciale de Nkok (GSEZ)",
+      "country_iso": "GAB",
+      "region": "Central Africa",
+      "esg_rating": "B-",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 58,
+          "renewable_energy_percentage": 35,
+          "waste_management_score": 62,
+          "environmental_composite": 51.7
+        },
+        "social": {
+          "job_creation_score": 72,
+          "community_development_score": 68,
+          "social_composite": 70.0
+        },
+        "governance": {
+          "transparency_score": 58,
+          "governance_composite": 58
+        },
+        "overall_esg_score": 57.7
+      },
+      "rankings": {
+        "continental_rank": 10,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "SEN-DIS-001",
+      "zone_name": "Zone Economique Speciale (DAKAR)",
+      "country_iso": "SEN",
+      "region": "West Africa",
+      "esg_rating": "B-",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 58,
+          "renewable_energy_percentage": 20,
+          "waste_management_score": 60,
+          "environmental_composite": 46.0
+        },
+        "social": {
+          "job_creation_score": 74,
+          "community_development_score": 70,
+          "social_composite": 72.0
+        },
+        "governance": {
+          "transparency_score": 65,
+          "governance_composite": 65
+        },
+        "overall_esg_score": 57.2
+      },
+      "rankings": {
+        "continental_rank": 13,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BEN-GLO-001",
+      "zone_name": "Zone Economique Speciale (Glo-Djigbe)",
+      "country_iso": "BEN",
+      "region": "West Africa",
+      "esg_rating": "C+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 55,
+          "renewable_energy_percentage": 10,
+          "waste_management_score": 52,
+          "environmental_composite": 39.0
+        },
+        "social": {
+          "job_creation_score": 68,
+          "community_development_score": 65,
+          "social_composite": 66.5
+        },
+        "governance": {
+          "transparency_score": 60,
+          "governance_composite": 60
+        },
+        "overall_esg_score": 51.3
+      },
+      "rankings": {
+        "continental_rank": 22,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TGO-PIA-001",
+      "zone_name": "Plateforme Industrielle d'Adetikope (PIA)",
+      "country_iso": "TGO",
+      "region": "West Africa",
+      "esg_rating": "C+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 56,
+          "renewable_energy_percentage": 12,
+          "waste_management_score": 55,
+          "environmental_composite": 41.0
+        },
+        "social": {
+          "job_creation_score": 70,
+          "community_development_score": 65,
+          "social_composite": 67.5
+        },
+        "governance": {
+          "transparency_score": 62,
+          "governance_composite": 62
+        },
+        "overall_esg_score": 52.9
+      },
+      "rankings": {
+        "continental_rank": 19,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZAF-COE-001",
+      "zone_name": "Coega Special Economic Zone",
+      "country_iso": "ZAF",
+      "region": "Southern Africa",
+      "esg_rating": "B+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 65,
+          "renewable_energy_percentage": 25,
+          "waste_management_score": 72,
+          "environmental_composite": 54.0
+        },
+        "social": {
+          "job_creation_score": 82,
+          "community_development_score": 78,
+          "social_composite": 80.0
+        },
+        "governance": {
+          "transparency_score": 78,
+          "governance_composite": 78
+        },
+        "overall_esg_score": 65.8
+      },
+      "rankings": {
+        "continental_rank": 4,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Achiever",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MUS-MFP-001",
+      "zone_name": "Mauritius Freeport & Smart City",
+      "country_iso": "MUS",
+      "region": "East Africa",
+      "esg_rating": "A-",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 72,
+          "renewable_energy_percentage": 35,
+          "waste_management_score": 80,
+          "environmental_composite": 62.3
+        },
+        "social": {
+          "job_creation_score": 75,
+          "community_development_score": 80,
+          "social_composite": 77.5
+        },
+        "governance": {
+          "transparency_score": 85,
+          "governance_composite": 85
+        },
+        "overall_esg_score": 70.0
+      },
+      "rankings": {
+        "continental_rank": 1,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Leader",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ETH-HAW-001",
+      "zone_name": "Hawassa Industrial Park",
+      "country_iso": "ETH",
+      "region": "East Africa",
+      "esg_rating": "C+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 60,
+          "renewable_energy_percentage": 80,
+          "waste_management_score": 58,
+          "environmental_composite": 66.0
+        },
+        "social": {
+          "job_creation_score": 80,
+          "community_development_score": 72,
+          "social_composite": 76.0
+        },
+        "governance": {
+          "transparency_score": 48,
+          "governance_composite": 48
+        },
+        "overall_esg_score": 63.7
+      },
+      "rankings": {
+        "continental_rank": 5,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Achiever",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "KEN-EPZ-001",
+      "zone_name": "Nairobi Export Processing Zone",
+      "country_iso": "KEN",
+      "region": "East Africa",
+      "esg_rating": "B-",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 60,
+          "renewable_energy_percentage": 22,
+          "waste_management_score": 62,
+          "environmental_composite": 48.0
+        },
+        "social": {
+          "job_creation_score": 78,
+          "community_development_score": 72,
+          "social_composite": 75.0
+        },
+        "governance": {
+          "transparency_score": 68,
+          "governance_composite": 68
+        },
+        "overall_esg_score": 59.6
+      },
+      "rankings": {
+        "continental_rank": 8,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Achiever",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TUN-PAE-001",
+      "zone_name": "Parc d'Activites Economiques de Zarzis",
+      "country_iso": "TUN",
+      "region": "North Africa",
+      "esg_rating": "B-",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 60,
+          "renewable_energy_percentage": 20,
+          "waste_management_score": 62,
+          "environmental_composite": 47.3
+        },
+        "social": {
+          "job_creation_score": 70,
+          "community_development_score": 65,
+          "social_composite": 67.5
+        },
+        "governance": {
+          "transparency_score": 65,
+          "governance_composite": 65
+        },
+        "overall_esg_score": 56.3
+      },
+      "rankings": {
+        "continental_rank": 14,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CMR-KRI-001",
+      "zone_name": "Zone Industrielle de Kribi (ZIK)",
+      "country_iso": "CMR",
+      "region": "Central Africa",
+      "esg_rating": "C+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 55,
+          "renewable_energy_percentage": 40,
+          "waste_management_score": 55,
+          "environmental_composite": 50.0
+        },
+        "social": {
+          "job_creation_score": 68,
+          "community_development_score": 62,
+          "social_composite": 65.0
+        },
+        "governance": {
+          "transparency_score": 52,
+          "governance_composite": 52
+        },
+        "overall_esg_score": 54.0
+      },
+      "rankings": {
+        "continental_rank": 16,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GHA-TEM-001",
+      "zone_name": "Tema Export Processing Zone",
+      "country_iso": "GHA",
+      "region": "West Africa",
+      "esg_rating": "C+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 58,
+          "renewable_energy_percentage": 18,
+          "waste_management_score": 60,
+          "environmental_composite": 45.3
+        },
+        "social": {
+          "job_creation_score": 72,
+          "community_development_score": 68,
+          "social_composite": 70.0
+        },
+        "governance": {
+          "transparency_score": 65,
+          "governance_composite": 65
+        },
+        "overall_esg_score": 56.2
+      },
+      "rankings": {
+        "continental_rank": 15,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "RWA-KSE-001",
+      "zone_name": "Kigali Special Economic Zone (KSEZ)",
+      "country_iso": "RWA",
+      "region": "East Africa",
+      "esg_rating": "B+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 70,
+          "renewable_energy_percentage": 45,
+          "waste_management_score": 72,
+          "environmental_composite": 62.3
+        },
+        "social": {
+          "job_creation_score": 72,
+          "community_development_score": 78,
+          "social_composite": 75.0
+        },
+        "governance": {
+          "transparency_score": 85,
+          "governance_composite": 85
+        },
+        "overall_esg_score": 68.8
+      },
+      "rankings": {
+        "continental_rank": 2,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Achiever",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CIV-PK-001",
+      "zone_name": "Parc Industriel de Koumassi (PIK)",
+      "country_iso": "CIV",
+      "region": "West Africa",
+      "esg_rating": "C+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 55,
+          "renewable_energy_percentage": 22,
+          "waste_management_score": 55,
+          "environmental_composite": 44.0
+        },
+        "social": {
+          "job_creation_score": 70,
+          "community_development_score": 65,
+          "social_composite": 67.5
+        },
+        "governance": {
+          "transparency_score": 58,
+          "governance_composite": 58
+        },
+        "overall_esg_score": 53.4
+      },
+      "rankings": {
+        "continental_rank": 18,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TZA-EPZ-001",
+      "zone_name": "Benjamin William Mkapa SEZ (Morogoro)",
+      "country_iso": "TZA",
+      "region": "East Africa",
+      "esg_rating": "C+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 58,
+          "renewable_energy_percentage": 20,
+          "waste_management_score": 55,
+          "environmental_composite": 44.3
+        },
+        "social": {
+          "job_creation_score": 68,
+          "community_development_score": 65,
+          "social_composite": 66.5
+        },
+        "governance": {
+          "transparency_score": 60,
+          "governance_composite": 60
+        },
+        "overall_esg_score": 53.7
+      },
+      "rankings": {
+        "continental_rank": 17,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZMB-LSK-001",
+      "zone_name": "Lusaka South Multi-Facility Economic Zone",
+      "country_iso": "ZMB",
+      "region": "Southern Africa",
+      "esg_rating": "C+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 58,
+          "renewable_energy_percentage": 50,
+          "waste_management_score": 55,
+          "environmental_composite": 54.3
+        },
+        "social": {
+          "job_creation_score": 68,
+          "community_development_score": 62,
+          "social_composite": 65.0
+        },
+        "governance": {
+          "transparency_score": 62,
+          "governance_composite": 62
+        },
+        "overall_esg_score": 57.5
+      },
+      "rankings": {
+        "continental_rank": 12,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "AGO-ZEE-001",
+      "zone_name": "Zona Economica Especial de Luanda",
+      "country_iso": "AGO",
+      "region": "Southern Africa",
+      "esg_rating": "D+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 48,
+          "renewable_energy_percentage": 8,
+          "waste_management_score": 45,
+          "environmental_composite": 33.7
+        },
+        "social": {
+          "job_creation_score": 65,
+          "community_development_score": 55,
+          "social_composite": 60.0
+        },
+        "governance": {
+          "transparency_score": 45,
+          "governance_composite": 45
+        },
+        "overall_esg_score": 44.1
+      },
+      "rankings": {
+        "continental_rank": 30,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Lagging",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MOZ-NAC-001",
+      "zone_name": "Nacala Special Economic Zone",
+      "country_iso": "MOZ",
+      "region": "Southern Africa",
+      "esg_rating": "C",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 55,
+          "renewable_energy_percentage": 30,
+          "waste_management_score": 50,
+          "environmental_composite": 45.0
+        },
+        "social": {
+          "job_creation_score": 65,
+          "community_development_score": 60,
+          "social_composite": 62.5
+        },
+        "governance": {
+          "transparency_score": 50,
+          "governance_composite": 50
+        },
+        "overall_esg_score": 50.7
+      },
+      "rankings": {
+        "continental_rank": 23,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "COD-MAL-001",
+      "zone_name": "Zone Economique Speciale de Maluku",
+      "country_iso": "COD",
+      "region": "Central Africa",
+      "esg_rating": "D+",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 42,
+          "renewable_energy_percentage": 60,
+          "waste_management_score": 38,
+          "environmental_composite": 46.7
+        },
+        "social": {
+          "job_creation_score": 65,
+          "community_development_score": 52,
+          "social_composite": 58.5
+        },
+        "governance": {
+          "transparency_score": 35,
+          "governance_composite": 35
+        },
+        "overall_esg_score": 46.7
+      },
+      "rankings": {
+        "continental_rank": 26,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "UGA-NAM-001",
+      "zone_name": "Namanve Industrial & Business Park",
+      "country_iso": "UGA",
+      "region": "East Africa",
+      "esg_rating": "C",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 55,
+          "renewable_energy_percentage": 18,
+          "waste_management_score": 52,
+          "environmental_composite": 41.7
+        },
+        "social": {
+          "job_creation_score": 68,
+          "community_development_score": 62,
+          "social_composite": 65.0
+        },
+        "governance": {
+          "transparency_score": 58,
+          "governance_composite": 58
+        },
+        "overall_esg_score": 51.6
+      },
+      "rankings": {
+        "continental_rank": 21,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MWI-BLT-001",
+      "zone_name": "Blantyre Industrial Park",
+      "country_iso": "MWI",
+      "region": "Southern Africa",
+      "esg_rating": "C",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 52,
+          "renewable_energy_percentage": 12,
+          "waste_management_score": 45,
+          "environmental_composite": 36.3
+        },
+        "social": {
+          "job_creation_score": 60,
+          "community_development_score": 58,
+          "social_composite": 59.0
+        },
+        "governance": {
+          "transparency_score": 55,
+          "governance_composite": 55
+        },
+        "overall_esg_score": 46.6
+      },
+      "rankings": {
+        "continental_rank": 27,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NAM-WAL-001",
+      "zone_name": "Walvis Bay Export Processing Zone",
+      "country_iso": "NAM",
+      "region": "Southern Africa",
+      "esg_rating": "B",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 65,
+          "renewable_energy_percentage": 15,
+          "waste_management_score": 68,
+          "environmental_composite": 49.3
+        },
+        "social": {
+          "job_creation_score": 68,
+          "community_development_score": 70,
+          "social_composite": 69.0
+        },
+        "governance": {
+          "transparency_score": 75,
+          "governance_composite": 75
+        },
+        "overall_esg_score": 59.7
+      },
+      "rankings": {
+        "continental_rank": 7,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Achiever",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BWA-SIR-001",
+      "zone_name": "Selebi-Phikwe Economic Diversification Unit (SPEDU)",
+      "country_iso": "BWA",
+      "region": "Southern Africa",
+      "esg_rating": "B",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 62,
+          "renewable_energy_percentage": 10,
+          "waste_management_score": 65,
+          "environmental_composite": 45.7
+        },
+        "social": {
+          "job_creation_score": 65,
+          "community_development_score": 68,
+          "social_composite": 66.5
+        },
+        "governance": {
+          "transparency_score": 78,
+          "governance_composite": 78
+        },
+        "overall_esg_score": 57.7
+      },
+      "rankings": {
+        "continental_rank": 11,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MDG-EHO-001",
+      "zone_name": "Zone Franche d'Ehoala (Fort-Dauphin)",
+      "country_iso": "MDG",
+      "region": "East Africa",
+      "esg_rating": "C-",
+      "scores": {
+        "environmental": {
+          "environmental_impact_score": 52,
+          "renewable_energy_percentage": 18,
+          "waste_management_score": 45,
+          "environmental_composite": 38.3
+        },
+        "social": {
+          "job_creation_score": 60,
+          "community_development_score": 55,
+          "social_composite": 57.5
+        },
+        "governance": {
+          "transparency_score": 48,
+          "governance_composite": 48
+        },
+        "overall_esg_score": 45.7
+      },
+      "rankings": {
+        "continental_rank": 29,
+        "regional_rank": 8,
+        "total_zones_assessed": 30
+      },
+      "esg_tier": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    }
+  ]
+}

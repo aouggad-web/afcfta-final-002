@@ -1,0 +1,6260 @@
+{
+  "metadata": {
+    "source": "World Bank WDI API",
+    "collection_date": "2025-11-03T13:08:09.075682",
+    "countries_count": 54,
+    "indicators_count": 8
+  },
+  "countries": {
+    "DZA": {
+      "country_iso3": "DZA",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.45
+            },
+            {
+              "year": "2016",
+              "value": 2.769683
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.42
+            },
+            {
+              "year": "2016",
+              "value": 2.577318
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.13
+            },
+            {
+              "year": "2016",
+              "value": 2.368421
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.2
+            },
+            {
+              "year": "2018",
+              "value": 2.39
+            },
+            {
+              "year": "2016",
+              "value": 2.912498
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.6
+            },
+            {
+              "year": "2016",
+              "value": 2.856771
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 2.76
+            },
+            {
+              "year": "2016",
+              "value": 3.079681
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2020",
+              "value": 1541273
+            },
+            {
+              "year": "2019",
+              "value": 1793990
+            },
+            {
+              "year": "2018",
+              "value": 1844422
+            },
+            {
+              "year": "2017",
+              "value": 1725198
+            },
+            {
+              "year": "2016",
+              "value": 1831056
+            },
+            {
+              "year": "2015",
+              "value": 1694426
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:08:09.075697"
+    },
+    "AGO": {
+      "country_iso3": "AGO",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.05
+            },
+            {
+              "year": "2016",
+              "value": 2.241183
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 1.86
+            },
+            {
+              "year": "2016",
+              "value": 2.133789
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.7
+            },
+            {
+              "year": "2018",
+              "value": 1.57
+            },
+            {
+              "year": "2016",
+              "value": 1.796833
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2
+            },
+            {
+              "year": "2016",
+              "value": 2.31063
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2
+            },
+            {
+              "year": "2016",
+              "value": 2.211879
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.59
+            },
+            {
+              "year": "2016",
+              "value": 2.589369
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 654590
+            },
+            {
+              "year": "2021",
+              "value": 604987
+            },
+            {
+              "year": "2020",
+              "value": 563895
+            },
+            {
+              "year": "2019",
+              "value": 651273
+            },
+            {
+              "year": "2018",
+              "value": 572922
+            },
+            {
+              "year": "2017",
+              "value": 683548
+            },
+            {
+              "year": "2016",
+              "value": 541346
+            },
+            {
+              "year": "2015",
+              "value": 753286
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:08:10.439332"
+    },
+    "BEN": {
+      "country_iso3": "BEN",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2018",
+              "value": 2.75
+            },
+            {
+              "year": "2016",
+              "value": 2.428125
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.5
+            },
+            {
+              "year": "2016",
+              "value": 2.391474
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.56
+            },
+            {
+              "year": "2016",
+              "value": 2.19715
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3
+            },
+            {
+              "year": "2018",
+              "value": 2.5
+            },
+            {
+              "year": "2016",
+              "value": 2.471603
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.2
+            },
+            {
+              "year": "2018",
+              "value": 2.75
+            },
+            {
+              "year": "2016",
+              "value": 2.230769
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 3.42
+            },
+            {
+              "year": "2016",
+              "value": 2.690662
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 510895.6
+            },
+            {
+              "year": "2018",
+              "value": 321750
+            },
+            {
+              "year": "2017",
+              "value": 333000
+            },
+            {
+              "year": "2016",
+              "value": 310500
+            },
+            {
+              "year": "2015",
+              "value": 288000
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:08:11.178737"
+    },
+    "BWA": {
+      "country_iso3": "BWA",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.1
+            },
+            {
+              "year": "2016",
+              "value": 3.045458
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.1
+            },
+            {
+              "year": "2016",
+              "value": 2.95539
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3
+            },
+            {
+              "year": "2016",
+              "value": 3.049388
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.4
+            },
+            {
+              "year": "2016",
+              "value": 2.735162
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3
+            },
+            {
+              "year": "2016",
+              "value": 2.885162
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.3
+            },
+            {
+              "year": "2016",
+              "value": 3.71874
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:08:26.401046"
+    },
+    "BFA": {
+      "country_iso3": "BFA",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.62
+            },
+            {
+              "year": "2016",
+              "value": 2.73081
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.43
+            },
+            {
+              "year": "2016",
+              "value": 2.668512
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2
+            },
+            {
+              "year": "2018",
+              "value": 2.41
+            },
+            {
+              "year": "2016",
+              "value": 2.551724
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.46
+            },
+            {
+              "year": "2016",
+              "value": 2.78154
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.2
+            },
+            {
+              "year": "2018",
+              "value": 2.4
+            },
+            {
+              "year": "2016",
+              "value": 2.485244
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 3.04
+            },
+            {
+              "year": "2016",
+              "value": 3.132258
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:09:12.548977"
+    },
+    "BDI": {
+      "country_iso3": "BDI",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.06
+            },
+            {
+              "year": "2016",
+              "value": 2.509776
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 1.95
+            },
+            {
+              "year": "2016",
+              "value": 1.98495
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 1.69
+            },
+            {
+              "year": "2016",
+              "value": 2.016976
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.33
+            },
+            {
+              "year": "2016",
+              "value": 2.461408
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.01
+            },
+            {
+              "year": "2016",
+              "value": 2.677575
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.17
+            },
+            {
+              "year": "2016",
+              "value": 3.449404
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:10:26.420513"
+    },
+    "CMR": {
+      "country_iso3": "CMR",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.6
+            },
+            {
+              "year": "2016",
+              "value": 2.151499
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.57
+            },
+            {
+              "year": "2016",
+              "value": 2.205693
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.46
+            },
+            {
+              "year": "2016",
+              "value": 2.090909
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.6
+            },
+            {
+              "year": "2016",
+              "value": 2.316804
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.8
+            },
+            {
+              "year": "2018",
+              "value": 2.47
+            },
+            {
+              "year": "2016",
+              "value": 2.036961
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.57
+            },
+            {
+              "year": "2016",
+              "value": 2.286961
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2020",
+              "value": 366667
+            },
+            {
+              "year": "2019",
+              "value": 370685
+            },
+            {
+              "year": "2018",
+              "value": 387000
+            },
+            {
+              "year": "2017",
+              "value": 386367
+            },
+            {
+              "year": "2016",
+              "value": 370000
+            },
+            {
+              "year": "2015",
+              "value": 379915
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:11:32.203652"
+    },
+    "CPV": {
+      "country_iso3": "CPV",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": []
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": []
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": []
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": []
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": []
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": []
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 82871
+            },
+            {
+              "year": "2021",
+              "value": 79754
+            },
+            {
+              "year": "2020",
+              "value": 76139
+            },
+            {
+              "year": "2019",
+              "value": 91683
+            },
+            {
+              "year": "2018",
+              "value": 84041
+            },
+            {
+              "year": "2017",
+              "value": 74554
+            },
+            {
+              "year": "2016",
+              "value": 62112
+            },
+            {
+              "year": "2015",
+              "value": 52789
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:12:26.693677"
+    },
+    "CAF": {
+      "country_iso3": "CAF",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.15
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 1.93
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.24
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2018",
+              "value": 1.93
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.1
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 2.33
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:13:03.865686"
+    },
+    "TCD": {
+      "country_iso3": "TCD",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.42
+            },
+            {
+              "year": "2016",
+              "value": 2.164453
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.37
+            },
+            {
+              "year": "2016",
+              "value": 2.074374
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.15
+            },
+            {
+              "year": "2016",
+              "value": 2.077259
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.62
+            },
+            {
+              "year": "2016",
+              "value": 2.058635
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.37
+            },
+            {
+              "year": "2016",
+              "value": 2.071723
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.62
+            },
+            {
+              "year": "2016",
+              "value": 2.254151
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:13:16.573690"
+    },
+    "COM": {
+      "country_iso3": "COM",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.56
+            },
+            {
+              "year": "2016",
+              "value": 2.57914
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.25
+            },
+            {
+              "year": "2016",
+              "value": 2.36412
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.62
+            },
+            {
+              "year": "2016",
+              "value": 2.632571
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.21
+            },
+            {
+              "year": "2016",
+              "value": 2.604934
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.93
+            },
+            {
+              "year": "2016",
+              "value": 2.438267
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.8
+            },
+            {
+              "year": "2016",
+              "value": 2.819472
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 54358.54
+            },
+            {
+              "year": "2018",
+              "value": 55032.5
+            },
+            {
+              "year": "2017",
+              "value": 52673.2
+            },
+            {
+              "year": "2016",
+              "value": 73309.69
+            },
+            {
+              "year": "2015",
+              "value": 76096.89
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:13:49.674918"
+    },
+    "COG": {
+      "country_iso3": "COG",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 2.49
+            },
+            {
+              "year": "2016",
+              "value": 2.376768
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.07
+            },
+            {
+              "year": "2016",
+              "value": 2.59596
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.27
+            },
+            {
+              "year": "2016",
+              "value": 2
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2018",
+              "value": 2.28
+            },
+            {
+              "year": "2016",
+              "value": 2.262626
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.38
+            },
+            {
+              "year": "2016",
+              "value": 2.484848
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2018",
+              "value": 2.95
+            },
+            {
+              "year": "2016",
+              "value": 2.573449
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 999999
+            },
+            {
+              "year": "2021",
+              "value": 1003734
+            },
+            {
+              "year": "2020",
+              "value": 930000
+            },
+            {
+              "year": "2019",
+              "value": 921000
+            },
+            {
+              "year": "2018",
+              "value": 739000
+            },
+            {
+              "year": "2017",
+              "value": 650000
+            },
+            {
+              "year": "2016",
+              "value": 562889
+            },
+            {
+              "year": "2015",
+              "value": 571860
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:14:08.397933"
+    },
+    "COD": {
+      "country_iso3": "COD",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.43
+            },
+            {
+              "year": "2016",
+              "value": 2.375762
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.12
+            },
+            {
+              "year": "2016",
+              "value": 2.009918
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.37
+            },
+            {
+              "year": "2016",
+              "value": 2.223113
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.49
+            },
+            {
+              "year": "2016",
+              "value": 2.333415
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.51
+            },
+            {
+              "year": "2016",
+              "value": 2.369828
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.8
+            },
+            {
+              "year": "2018",
+              "value": 2.69
+            },
+            {
+              "year": "2016",
+              "value": 2.943389
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 42211
+            },
+            {
+              "year": "2018",
+              "value": 55599
+            },
+            {
+              "year": "2017",
+              "value": 52066
+            },
+            {
+              "year": "2016",
+              "value": 59133
+            },
+            {
+              "year": "2015",
+              "value": 45000
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:14:33.021935"
+    },
+    "CIV": {
+      "country_iso3": "CIV",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 3.08
+            },
+            {
+              "year": "2016",
+              "value": 2.602573
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.89
+            },
+            {
+              "year": "2016",
+              "value": 2.463248
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.78
+            },
+            {
+              "year": "2016",
+              "value": 2.666667
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 3.23
+            },
+            {
+              "year": "2016",
+              "value": 2.617236
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 3.14
+            },
+            {
+              "year": "2016",
+              "value": 2.61577
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 3.23
+            },
+            {
+              "year": "2016",
+              "value": 2.706679
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2021",
+              "value": 1042418
+            },
+            {
+              "year": "2020",
+              "value": 979517
+            },
+            {
+              "year": "2019",
+              "value": 994646
+            },
+            {
+              "year": "2018",
+              "value": 924596
+            },
+            {
+              "year": "2017",
+              "value": 907646
+            },
+            {
+              "year": "2016",
+              "value": 885750
+            },
+            {
+              "year": "2015",
+              "value": 927379
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:15:11.694860"
+    },
+    "DJI": {
+      "country_iso3": "DJI",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.63
+            },
+            {
+              "year": "2016",
+              "value": 2.32254
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.79
+            },
+            {
+              "year": "2016",
+              "value": 2.297812
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 2.35
+            },
+            {
+              "year": "2016",
+              "value": 2.374478
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.8
+            },
+            {
+              "year": "2018",
+              "value": 2.25
+            },
+            {
+              "year": "2016",
+              "value": 1.956725
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.85
+            },
+            {
+              "year": "2016",
+              "value": 2.090059
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.6
+            },
+            {
+              "year": "2018",
+              "value": 3.15
+            },
+            {
+              "year": "2016",
+              "value": 2.690058
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 635000
+            },
+            {
+              "year": "2021",
+              "value": 692000
+            },
+            {
+              "year": "2020",
+              "value": 860000
+            },
+            {
+              "year": "2019",
+              "value": 917000
+            },
+            {
+              "year": "2018",
+              "value": 859000
+            },
+            {
+              "year": "2017",
+              "value": 928000
+            },
+            {
+              "year": "2016",
+              "value": 987400
+            },
+            {
+              "year": "2015",
+              "value": 910165
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:15:34.533739"
+    },
+    "EGY": {
+      "country_iso3": "EGY",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.1
+            },
+            {
+              "year": "2018",
+              "value": 2.82
+            },
+            {
+              "year": "2016",
+              "value": 3.184964
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3
+            },
+            {
+              "year": "2018",
+              "value": 2.82
+            },
+            {
+              "year": "2016",
+              "value": 3.07241
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.8
+            },
+            {
+              "year": "2018",
+              "value": 2.6
+            },
+            {
+              "year": "2016",
+              "value": 2.74962
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2018",
+              "value": 2.82
+            },
+            {
+              "year": "2016",
+              "value": 3.203985
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2018",
+              "value": 2.72
+            },
+            {
+              "year": "2016",
+              "value": 3.150352
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.6
+            },
+            {
+              "year": "2018",
+              "value": 3.19
+            },
+            {
+              "year": "2016",
+              "value": 3.627932
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 7765482
+            },
+            {
+              "year": "2021",
+              "value": 7226065
+            },
+            {
+              "year": "2020",
+              "value": 7564385
+            },
+            {
+              "year": "2019",
+              "value": 7403472
+            },
+            {
+              "year": "2018",
+              "value": 6701763
+            },
+            {
+              "year": "2017",
+              "value": 6337413
+            },
+            {
+              "year": "2016",
+              "value": 5887541
+            },
+            {
+              "year": "2015",
+              "value": 6490063
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:16:50.557003"
+    },
+    "GNQ": {
+      "country_iso3": "GNQ",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.32
+            },
+            {
+              "year": "2016",
+              "value": 1.87919
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 1.88
+            },
+            {
+              "year": "2016",
+              "value": 1.5
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": []
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.25
+            },
+            {
+              "year": "2016",
+              "value": 1.75
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.12
+            },
+            {
+              "year": "2016",
+              "value": 1.890625
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.75
+            },
+            {
+              "year": "2016",
+              "value": 2.319196
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2020",
+              "value": 6207
+            },
+            {
+              "year": "2019",
+              "value": 13851
+            },
+            {
+              "year": "2018",
+              "value": 14716
+            },
+            {
+              "year": "2017",
+              "value": 13301
+            },
+            {
+              "year": "2016",
+              "value": 14281
+            },
+            {
+              "year": "2015",
+              "value": 13212
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:17:08.779437"
+    },
+    "ERI": {
+      "country_iso3": "ERI",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.09
+            },
+            {
+              "year": "2016",
+              "value": 2.171842
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 1.86
+            },
+            {
+              "year": "2016",
+              "value": 2.062937
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.13
+            },
+            {
+              "year": "2016",
+              "value": 2.006993
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.17
+            },
+            {
+              "year": "2016",
+              "value": 2.24864
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.17
+            },
+            {
+              "year": "2016",
+              "value": 2.026418
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.08
+            },
+            {
+              "year": "2016",
+              "value": 2.49662
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 27452.8
+            },
+            {
+              "year": "2018",
+              "value": 37259.65
+            },
+            {
+              "year": "2017",
+              "value": 12551.97
+            },
+            {
+              "year": "2016",
+              "value": 12551.97
+            },
+            {
+              "year": "2015",
+              "value": 12551.97
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:17:34.703951"
+    },
+    "SWZ": {
+      "country_iso3": "SWZ",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": []
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": []
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": []
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": []
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": []
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": []
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:17:36.920005"
+    },
+    "ETH": {
+      "country_iso3": "ETH",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.376767
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.117674
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.598943
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.367674
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.178113
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.370804
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:17:46.513247"
+    },
+    "GAB": {
+      "country_iso3": "GAB",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.16
+            },
+            {
+              "year": "2016",
+              "value": 2.19165
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.2
+            },
+            {
+              "year": "2018",
+              "value": 2.09
+            },
+            {
+              "year": "2016",
+              "value": 2.045943
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2
+            },
+            {
+              "year": "2018",
+              "value": 1.96
+            },
+            {
+              "year": "2016",
+              "value": 2.069849
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2
+            },
+            {
+              "year": "2018",
+              "value": 2.07
+            },
+            {
+              "year": "2016",
+              "value": 2.121169
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.07
+            },
+            {
+              "year": "2016",
+              "value": 2.06766
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3
+            },
+            {
+              "year": "2018",
+              "value": 2.67
+            },
+            {
+              "year": "2016",
+              "value": 2.522377
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2020",
+              "value": 180000
+            },
+            {
+              "year": "2019",
+              "value": 192998
+            },
+            {
+              "year": "2018",
+              "value": 156000
+            },
+            {
+              "year": "2017",
+              "value": 156000
+            },
+            {
+              "year": "2016",
+              "value": 146000
+            },
+            {
+              "year": "2015",
+              "value": 145700
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:17:50.466823"
+    },
+    "GMB": {
+      "country_iso3": "GMB",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.4
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": []
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.8
+            },
+            {
+              "year": "2018",
+              "value": 2.08
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.21
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.81
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 2.71
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 71469.72
+            },
+            {
+              "year": "2018",
+              "value": 61250
+            },
+            {
+              "year": "2017",
+              "value": 62500
+            },
+            {
+              "year": "2016",
+              "value": 60000
+            },
+            {
+              "year": "2015",
+              "value": 65000
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:18:18.550034"
+    },
+    "GHA": {
+      "country_iso3": "GHA",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.57
+            },
+            {
+              "year": "2016",
+              "value": 2.660931
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.44
+            },
+            {
+              "year": "2016",
+              "value": 2.484248
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.45
+            },
+            {
+              "year": "2016",
+              "value": 2.456894
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.51
+            },
+            {
+              "year": "2016",
+              "value": 2.538404
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.2
+            },
+            {
+              "year": "2018",
+              "value": 2.57
+            },
+            {
+              "year": "2016",
+              "value": 2.515365
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.87
+            },
+            {
+              "year": "2016",
+              "value": 3.209615
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1244245
+            },
+            {
+              "year": "2021",
+              "value": 1604724
+            },
+            {
+              "year": "2020",
+              "value": 1324504
+            },
+            {
+              "year": "2019",
+              "value": 1079247
+            },
+            {
+              "year": "2018",
+              "value": 1056785
+            },
+            {
+              "year": "2017",
+              "value": 1009755
+            },
+            {
+              "year": "2016",
+              "value": 942463
+            },
+            {
+              "year": "2015",
+              "value": 840595
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:18:24.822052"
+    },
+    "GIN": {
+      "country_iso3": "GIN",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.2
+            },
+            {
+              "year": "2016",
+              "value": 2.35896
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 1.56
+            },
+            {
+              "year": "2016",
+              "value": 2.011655
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": []
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.07
+            },
+            {
+              "year": "2016",
+              "value": 2.542346
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.7
+            },
+            {
+              "year": "2016",
+              "value": 2.542346
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.04
+            },
+            {
+              "year": "2016",
+              "value": 2.375447
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2020",
+              "value": 250000
+            },
+            {
+              "year": "2019",
+              "value": 248659
+            },
+            {
+              "year": "2018",
+              "value": 237366
+            },
+            {
+              "year": "2017",
+              "value": 203373
+            },
+            {
+              "year": "2016",
+              "value": 176167
+            },
+            {
+              "year": "2015",
+              "value": 169017
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:18:54.701738"
+    },
+    "GNB": {
+      "country_iso3": "GNB",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 2.39
+            },
+            {
+              "year": "2016",
+              "value": 2.370681
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 1.78
+            },
+            {
+              "year": "2016",
+              "value": 1.907407
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.01
+            },
+            {
+              "year": "2016",
+              "value": 2.444444
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2018",
+              "value": 2.28
+            },
+            {
+              "year": "2016",
+              "value": 2.074074
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.78
+            },
+            {
+              "year": "2016",
+              "value": 2.407407
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.86
+            },
+            {
+              "year": "2016",
+              "value": 2.740741
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 28699.98
+            },
+            {
+              "year": "2018",
+              "value": 47433.09
+            },
+            {
+              "year": "2017",
+              "value": 56819.16
+            },
+            {
+              "year": "2016",
+              "value": 26382.34
+            },
+            {
+              "year": "2015",
+              "value": 27136.36
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:20:09.183794"
+    },
+    "KEN": {
+      "country_iso3": "KEN",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.81
+            },
+            {
+              "year": "2016",
+              "value": 3.331295
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.55
+            },
+            {
+              "year": "2016",
+              "value": 3.209709
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.65
+            },
+            {
+              "year": "2016",
+              "value": 3.168623
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.81
+            },
+            {
+              "year": "2016",
+              "value": 3.244339
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 3.07
+            },
+            {
+              "year": "2016",
+              "value": 3.422938
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 3.18
+            },
+            {
+              "year": "2016",
+              "value": 3.696094
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1450000
+            },
+            {
+              "year": "2021",
+              "value": 1435565
+            },
+            {
+              "year": "2020",
+              "value": 1359579
+            },
+            {
+              "year": "2019",
+              "value": 1417000
+            },
+            {
+              "year": "2018",
+              "value": 1306283
+            },
+            {
+              "year": "2017",
+              "value": 1190000
+            },
+            {
+              "year": "2016",
+              "value": 1091000
+            },
+            {
+              "year": "2015",
+              "value": 1076118
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:20:42.044984"
+    },
+    "LSO": {
+      "country_iso3": "LSO",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.28
+            },
+            {
+              "year": "2016",
+              "value": 2.025983
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 1.96
+            },
+            {
+              "year": "2016",
+              "value": 1.961644
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.36
+            },
+            {
+              "year": "2016",
+              "value": 1.912907
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.03
+            },
+            {
+              "year": "2016",
+              "value": 2.164057
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.37
+            },
+            {
+              "year": "2016",
+              "value": 1.923316
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.7
+            },
+            {
+              "year": "2016",
+              "value": 2.353684
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:21:46.130185"
+    },
+    "LBR": {
+      "country_iso3": "LBR",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.23
+            },
+            {
+              "year": "2016",
+              "value": 2.203914
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 1.91
+            },
+            {
+              "year": "2016",
+              "value": 2.012614
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 1.91
+            },
+            {
+              "year": "2016",
+              "value": 2.065724
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.14
+            },
+            {
+              "year": "2016",
+              "value": 2.07425
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.05
+            },
+            {
+              "year": "2016",
+              "value": 2.07425
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 3.25
+            },
+            {
+              "year": "2016",
+              "value": 2.728634
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 91453.84
+            },
+            {
+              "year": "2018",
+              "value": 118750
+            },
+            {
+              "year": "2017",
+              "value": 125000
+            },
+            {
+              "year": "2016",
+              "value": 112500
+            },
+            {
+              "year": "2015",
+              "value": 100000
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:23:02.319041"
+    },
+    "LBY": {
+      "country_iso3": "LBY",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.9
+            },
+            {
+              "year": "2018",
+              "value": 2.11
+            },
+            {
+              "year": "2016",
+              "value": 2.264495
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.7
+            },
+            {
+              "year": "2018",
+              "value": 2.25
+            },
+            {
+              "year": "2016",
+              "value": 2.04072
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.9
+            },
+            {
+              "year": "2018",
+              "value": 1.95
+            },
+            {
+              "year": "2016",
+              "value": 1.884154
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.9
+            },
+            {
+              "year": "2018",
+              "value": 2.05
+            },
+            {
+              "year": "2016",
+              "value": 2.49697
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.8
+            },
+            {
+              "year": "2018",
+              "value": 1.64
+            },
+            {
+              "year": "2016",
+              "value": 1.850926
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.2
+            },
+            {
+              "year": "2018",
+              "value": 2.77
+            },
+            {
+              "year": "2016",
+              "value": 2.834259
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 271230.6
+            },
+            {
+              "year": "2018",
+              "value": 327096.8
+            },
+            {
+              "year": "2017",
+              "value": 212164.5
+            },
+            {
+              "year": "2016",
+              "value": 151551.5
+            },
+            {
+              "year": "2015",
+              "value": 558764.1
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:24:14.880890"
+    },
+    "MDG": {
+      "country_iso3": "MDG",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.39
+            },
+            {
+              "year": "2016",
+              "value": 2.154639
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.8
+            },
+            {
+              "year": "2018",
+              "value": 2.16
+            },
+            {
+              "year": "2016",
+              "value": 2.118222
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.8
+            },
+            {
+              "year": "2018",
+              "value": 2.32
+            },
+            {
+              "year": "2016",
+              "value": 2.331574
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.2
+            },
+            {
+              "year": "2018",
+              "value": 2.33
+            },
+            {
+              "year": "2016",
+              "value": 1.927087
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2
+            },
+            {
+              "year": "2018",
+              "value": 2.61
+            },
+            {
+              "year": "2016",
+              "value": 2.01042
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 2.73
+            },
+            {
+              "year": "2016",
+              "value": 2.347782
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 199712.5
+            },
+            {
+              "year": "2018",
+              "value": 179425
+            },
+            {
+              "year": "2017",
+              "value": 220000
+            },
+            {
+              "year": "2016",
+              "value": 138850
+            },
+            {
+              "year": "2015",
+              "value": 138500
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:24:44.303760"
+    },
+    "MWI": {
+      "country_iso3": "MWI",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.59
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.18
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.43
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.68
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": []
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.97
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:25:33.176086"
+    },
+    "MLI": {
+      "country_iso3": "MLI",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 2.59
+            },
+            {
+              "year": "2016",
+              "value": 2.503073
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2
+            },
+            {
+              "year": "2018",
+              "value": 2.3
+            },
+            {
+              "year": "2016",
+              "value": 2.299231
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 2.15
+            },
+            {
+              "year": "2016",
+              "value": 2.446283
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.45
+            },
+            {
+              "year": "2016",
+              "value": 2.464359
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 3.08
+            },
+            {
+              "year": "2016",
+              "value": 2.362795
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.1
+            },
+            {
+              "year": "2018",
+              "value": 2.83
+            },
+            {
+              "year": "2016",
+              "value": 2.928013
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:26:33.576338"
+    },
+    "MRT": {
+      "country_iso3": "MRT",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.33
+            },
+            {
+              "year": "2016",
+              "value": 1.866001
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2
+            },
+            {
+              "year": "2018",
+              "value": 2.26
+            },
+            {
+              "year": "2016",
+              "value": 1.542857
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.2
+            },
+            {
+              "year": "2016",
+              "value": 2.142857
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.19
+            },
+            {
+              "year": "2016",
+              "value": 1.742857
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.47
+            },
+            {
+              "year": "2016",
+              "value": 1.542857
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.8
+            },
+            {
+              "year": "2018",
+              "value": 2.68
+            },
+            {
+              "year": "2016",
+              "value": 2.142857
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 84457.99
+            },
+            {
+              "year": "2018",
+              "value": 80461.5
+            },
+            {
+              "year": "2017",
+              "value": 88400
+            },
+            {
+              "year": "2016",
+              "value": 72523
+            },
+            {
+              "year": "2015",
+              "value": 72582
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:27:01.262241"
+    },
+    "MUS": {
+      "country_iso3": "MUS",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.73
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.8
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.7
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.86
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2018",
+              "value": 3
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.1
+            },
+            {
+              "year": "2018",
+              "value": 3
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 407825
+            },
+            {
+              "year": "2021",
+              "value": 436398
+            },
+            {
+              "year": "2020",
+              "value": 438078
+            },
+            {
+              "year": "2019",
+              "value": 469011
+            },
+            {
+              "year": "2018",
+              "value": 451446
+            },
+            {
+              "year": "2017",
+              "value": 379371
+            },
+            {
+              "year": "2016",
+              "value": 388514
+            },
+            {
+              "year": "2015",
+              "value": 361109
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:27:03.698701"
+    },
+    "MAR": {
+      "country_iso3": "MAR",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.54
+            },
+            {
+              "year": "2016",
+              "value": 2.665994
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.43
+            },
+            {
+              "year": "2016",
+              "value": 2.46142
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.33
+            },
+            {
+              "year": "2016",
+              "value": 2.222222
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.49
+            },
+            {
+              "year": "2016",
+              "value": 2.58642
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.51
+            },
+            {
+              "year": "2016",
+              "value": 2.33642
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.88
+            },
+            {
+              "year": "2016",
+              "value": 3.199339
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 8835181
+            },
+            {
+              "year": "2021",
+              "value": 8457129
+            },
+            {
+              "year": "2020",
+              "value": 7000928
+            },
+            {
+              "year": "2019",
+              "value": 6068803
+            },
+            {
+              "year": "2018",
+              "value": 4715747
+            },
+            {
+              "year": "2017",
+              "value": 4509580
+            },
+            {
+              "year": "2016",
+              "value": 4106683
+            },
+            {
+              "year": "2015",
+              "value": 3987251
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:27:17.797516"
+    },
+    "MOZ": {
+      "country_iso3": "MOZ",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.684105
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.238017
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.491724
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.44495
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.751033
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 3.035055
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 420500
+            },
+            {
+              "year": "2021",
+              "value": 440582
+            },
+            {
+              "year": "2020",
+              "value": 417459
+            },
+            {
+              "year": "2019",
+              "value": 411938
+            },
+            {
+              "year": "2018",
+              "value": 372218
+            },
+            {
+              "year": "2015",
+              "value": 335200
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:27:58.831354"
+    },
+    "NAM": {
+      "country_iso3": "NAM",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2016",
+              "value": 2.744745
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.8
+            },
+            {
+              "year": "2016",
+              "value": 2.763889
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.8
+            },
+            {
+              "year": "2016",
+              "value": 2.647065
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2016",
+              "value": 2.630057
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.8
+            },
+            {
+              "year": "2016",
+              "value": 2.524659
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2016",
+              "value": 3.191326
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 160368
+            },
+            {
+              "year": "2021",
+              "value": 166545
+            },
+            {
+              "year": "2020",
+              "value": 154207
+            },
+            {
+              "year": "2019",
+              "value": 142957
+            },
+            {
+              "year": "2018",
+              "value": 144109
+            },
+            {
+              "year": "2017",
+              "value": 176335
+            },
+            {
+              "year": "2016",
+              "value": 203071
+            },
+            {
+              "year": "2015",
+              "value": 237546
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:28:41.094249"
+    },
+    "NER": {
+      "country_iso3": "NER",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.07
+            },
+            {
+              "year": "2016",
+              "value": 2.561951
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2
+            },
+            {
+              "year": "2016",
+              "value": 2.222419
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 1.77
+            },
+            {
+              "year": "2016",
+              "value": 2.587413
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.1
+            },
+            {
+              "year": "2016",
+              "value": 2.497692
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.22
+            },
+            {
+              "year": "2016",
+              "value": 2.345554
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.33
+            },
+            {
+              "year": "2016",
+              "value": 3.016939
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:29:15.326623"
+    },
+    "NGA": {
+      "country_iso3": "NGA",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.6
+            },
+            {
+              "year": "2018",
+              "value": 2.53
+            },
+            {
+              "year": "2016",
+              "value": 2.62809
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.56
+            },
+            {
+              "year": "2016",
+              "value": 2.398846
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 1.97
+            },
+            {
+              "year": "2016",
+              "value": 2.46198
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.4
+            },
+            {
+              "year": "2016",
+              "value": 2.735254
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.68
+            },
+            {
+              "year": "2016",
+              "value": 2.695249
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.1
+            },
+            {
+              "year": "2018",
+              "value": 3.07
+            },
+            {
+              "year": "2016",
+              "value": 3.041795
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1566109
+            },
+            {
+              "year": "2021",
+              "value": 1566109
+            },
+            {
+              "year": "2020",
+              "value": 1548622
+            },
+            {
+              "year": "2019",
+              "value": 1627142
+            },
+            {
+              "year": "2018",
+              "value": 1560000
+            },
+            {
+              "year": "2017",
+              "value": 1408000
+            },
+            {
+              "year": "2016",
+              "value": 1272000
+            },
+            {
+              "year": "2015",
+              "value": 1544183
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:29:23.255302"
+    },
+    "RWA": {
+      "country_iso3": "RWA",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.8
+            },
+            {
+              "year": "2018",
+              "value": 2.97
+            },
+            {
+              "year": "2016",
+              "value": 2.986229
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.9
+            },
+            {
+              "year": "2018",
+              "value": 2.76
+            },
+            {
+              "year": "2016",
+              "value": 2.621956
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.67
+            },
+            {
+              "year": "2016",
+              "value": 2.933449
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3
+            },
+            {
+              "year": "2018",
+              "value": 2.85
+            },
+            {
+              "year": "2016",
+              "value": 2.868034
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3
+            },
+            {
+              "year": "2018",
+              "value": 2.75
+            },
+            {
+              "year": "2016",
+              "value": 3.040086
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.1
+            },
+            {
+              "year": "2018",
+              "value": 3.35
+            },
+            {
+              "year": "2016",
+              "value": 3.351829
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:29:26.010745"
+    },
+    "STP": {
+      "country_iso3": "STP",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.65
+            },
+            {
+              "year": "2016",
+              "value": 2.325633
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.33
+            },
+            {
+              "year": "2016",
+              "value": 2.117817
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.71
+            },
+            {
+              "year": "2016",
+              "value": 2.239876
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.65
+            },
+            {
+              "year": "2016",
+              "value": 2.416119
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.78
+            },
+            {
+              "year": "2016",
+              "value": 2.135026
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 3.01
+            },
+            {
+              "year": "2016",
+              "value": 2.747457
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 49552.86
+            },
+            {
+              "year": "2018",
+              "value": 47989.86
+            },
+            {
+              "year": "2017",
+              "value": 62980.9
+            },
+            {
+              "year": "2016",
+              "value": 67523.29
+            },
+            {
+              "year": "2015",
+              "value": 84392.68
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:29:34.046630"
+    },
+    "SEN": {
+      "country_iso3": "SEN",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.25
+            },
+            {
+              "year": "2016",
+              "value": 2.327711
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.22
+            },
+            {
+              "year": "2016",
+              "value": 2.233494
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.17
+            },
+            {
+              "year": "2016",
+              "value": 2.314744
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.11
+            },
+            {
+              "year": "2016",
+              "value": 2.39391
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.11
+            },
+            {
+              "year": "2016",
+              "value": 2.151212
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.52
+            },
+            {
+              "year": "2016",
+              "value": 2.606071
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 738000
+            },
+            {
+              "year": "2021",
+              "value": 769358
+            },
+            {
+              "year": "2020",
+              "value": 696899
+            },
+            {
+              "year": "2019",
+              "value": 695698
+            },
+            {
+              "year": "2018",
+              "value": 674000
+            },
+            {
+              "year": "2017",
+              "value": 570500
+            },
+            {
+              "year": "2016",
+              "value": 540000
+            },
+            {
+              "year": "2015",
+              "value": 529724
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:29:55.816858"
+    },
+    "SYC": {
+      "country_iso3": "SYC",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": []
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": []
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": []
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": []
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": []
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": []
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 154423.4
+            },
+            {
+              "year": "2018",
+              "value": 106038.2
+            },
+            {
+              "year": "2017",
+              "value": 104572.7
+            },
+            {
+              "year": "2016",
+              "value": 132214.6
+            },
+            {
+              "year": "2015",
+              "value": 127803.1
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:29:58.830967"
+    },
+    "SLE": {
+      "country_iso3": "SLE",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.08
+            },
+            {
+              "year": "2016",
+              "value": 2.025402
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 1.82
+            },
+            {
+              "year": "2016",
+              "value": 2.069467
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 1.82
+            },
+            {
+              "year": "2016",
+              "value": 1.909091
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2
+            },
+            {
+              "year": "2016",
+              "value": 1.847245
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.27
+            },
+            {
+              "year": "2016",
+              "value": 1.736134
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.34
+            },
+            {
+              "year": "2016",
+              "value": 2.229302
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 78413
+            },
+            {
+              "year": "2018",
+              "value": 83621
+            },
+            {
+              "year": "2017",
+              "value": 89100
+            },
+            {
+              "year": "2016",
+              "value": 89063
+            },
+            {
+              "year": "2015",
+              "value": 90000
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:01.353538"
+    },
+    "SOM": {
+      "country_iso3": "SOM",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2
+            },
+            {
+              "year": "2018",
+              "value": 2.21
+            },
+            {
+              "year": "2016",
+              "value": 1.747098
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.9
+            },
+            {
+              "year": "2018",
+              "value": 1.81
+            },
+            {
+              "year": "2016",
+              "value": 1.571429
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.5
+            },
+            {
+              "year": "2018",
+              "value": 2
+            },
+            {
+              "year": "2016",
+              "value": 1.285714
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.8
+            },
+            {
+              "year": "2018",
+              "value": 2.3
+            },
+            {
+              "year": "2016",
+              "value": 1.846939
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1.8
+            },
+            {
+              "year": "2018",
+              "value": 2.23
+            },
+            {
+              "year": "2016",
+              "value": 1.513605
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.2
+            },
+            {
+              "year": "2016",
+              "value": 2.346939
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2019",
+              "value": 92238
+            },
+            {
+              "year": "2018",
+              "value": 115339.8
+            },
+            {
+              "year": "2017",
+              "value": 126312.9
+            },
+            {
+              "year": "2016",
+              "value": 104800.4
+            },
+            {
+              "year": "2015",
+              "value": 77094.9
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:04.160255"
+    },
+    "ZAF": {
+      "country_iso3": "ZAF",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.7
+            },
+            {
+              "year": "2018",
+              "value": 3.38
+            },
+            {
+              "year": "2016",
+              "value": 3.775321
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.6
+            },
+            {
+              "year": "2018",
+              "value": 3.19
+            },
+            {
+              "year": "2016",
+              "value": 3.776261
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.3
+            },
+            {
+              "year": "2018",
+              "value": 3.17
+            },
+            {
+              "year": "2016",
+              "value": 3.59546
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.8
+            },
+            {
+              "year": "2018",
+              "value": 3.19
+            },
+            {
+              "year": "2016",
+              "value": 3.747822
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.8
+            },
+            {
+              "year": "2018",
+              "value": 3.41
+            },
+            {
+              "year": "2016",
+              "value": 3.915447
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 3.8
+            },
+            {
+              "year": "2018",
+              "value": 3.74
+            },
+            {
+              "year": "2016",
+              "value": 4.018158
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 4053350
+            },
+            {
+              "year": "2021",
+              "value": 4415223
+            },
+            {
+              "year": "2020",
+              "value": 4075618
+            },
+            {
+              "year": "2019",
+              "value": 4529034
+            },
+            {
+              "year": "2018",
+              "value": 4892423
+            },
+            {
+              "year": "2017",
+              "value": 4563618
+            },
+            {
+              "year": "2016",
+              "value": 4354666
+            },
+            {
+              "year": "2015",
+              "value": 4662479
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:06.560353"
+    },
+    "SSD": {
+      "country_iso3": "SSD",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": []
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": []
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": []
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": []
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": []
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": []
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:08.904089"
+    },
+    "SDN": {
+      "country_iso3": "SDN",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.43
+            },
+            {
+              "year": "2016",
+              "value": 2.530408
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.18
+            },
+            {
+              "year": "2016",
+              "value": 2.201694
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.1
+            },
+            {
+              "year": "2018",
+              "value": 2.14
+            },
+            {
+              "year": "2016",
+              "value": 2.234106
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.51
+            },
+            {
+              "year": "2016",
+              "value": 2.360965
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.51
+            },
+            {
+              "year": "2016",
+              "value": 2.485154
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.62
+            },
+            {
+              "year": "2016",
+              "value": 3.275866
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2021",
+              "value": 320274
+            },
+            {
+              "year": "2020",
+              "value": 396267
+            },
+            {
+              "year": "2019",
+              "value": 422597
+            },
+            {
+              "year": "2018",
+              "value": 451712
+            },
+            {
+              "year": "2017",
+              "value": 487336
+            },
+            {
+              "year": "2016",
+              "value": 465355
+            },
+            {
+              "year": "2015",
+              "value": 481815
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:11.281241"
+    },
+    "TZA": {
+      "country_iso3": "TZA",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.990185
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.811586
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.775661
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.916767
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 2.983806
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2016",
+              "value": 3.443588
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 700000
+            },
+            {
+              "year": "2021",
+              "value": 700000
+            },
+            {
+              "year": "2020",
+              "value": 709881
+            },
+            {
+              "year": "2019",
+              "value": 726431
+            },
+            {
+              "year": "2018",
+              "value": 705231
+            },
+            {
+              "year": "2017",
+              "value": 617266
+            },
+            {
+              "year": "2016",
+              "value": 630290
+            },
+            {
+              "year": "2015",
+              "value": 639230
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:13.677505"
+    },
+    "TGO": {
+      "country_iso3": "TGO",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.45
+            },
+            {
+              "year": "2016",
+              "value": 2.617778
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.23
+            },
+            {
+              "year": "2016",
+              "value": 2.236628
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.31
+            },
+            {
+              "year": "2016",
+              "value": 2.490787
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 2.25
+            },
+            {
+              "year": "2016",
+              "value": 2.462016
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.45
+            },
+            {
+              "year": "2016",
+              "value": 2.598379
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.8
+            },
+            {
+              "year": "2018",
+              "value": 2.88
+            },
+            {
+              "year": "2016",
+              "value": 3.241372
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 1952879
+            },
+            {
+              "year": "2021",
+              "value": 1986131
+            },
+            {
+              "year": "2020",
+              "value": 1725270
+            },
+            {
+              "year": "2019",
+              "value": 1500611
+            },
+            {
+              "year": "2018",
+              "value": 1395730
+            },
+            {
+              "year": "2017",
+              "value": 1193841
+            },
+            {
+              "year": "2016",
+              "value": 821639
+            },
+            {
+              "year": "2015",
+              "value": 905700
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:16.169256"
+    },
+    "TUN": {
+      "country_iso3": "TUN",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.57
+            },
+            {
+              "year": "2016",
+              "value": 2.496688
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.1
+            },
+            {
+              "year": "2016",
+              "value": 2.444444
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.38
+            },
+            {
+              "year": "2016",
+              "value": 1.963889
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.3
+            },
+            {
+              "year": "2016",
+              "value": 2.588889
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.86
+            },
+            {
+              "year": "2016",
+              "value": 2.666667
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 3.24
+            },
+            {
+              "year": "2016",
+              "value": 3
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": [
+            {
+              "year": "2022",
+              "value": 464823
+            },
+            {
+              "year": "2021",
+              "value": 469658
+            },
+            {
+              "year": "2020",
+              "value": 483178
+            },
+            {
+              "year": "2019",
+              "value": 474222
+            },
+            {
+              "year": "2018",
+              "value": 493366
+            },
+            {
+              "year": "2017",
+              "value": 480619
+            },
+            {
+              "year": "2016",
+              "value": 489670
+            },
+            {
+              "year": "2015",
+              "value": 471248
+            }
+          ]
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:18.974076"
+    },
+    "UGA": {
+      "country_iso3": "UGA",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.58
+            },
+            {
+              "year": "2016",
+              "value": 3.043284
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.19
+            },
+            {
+              "year": "2016",
+              "value": 2.739724
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.61
+            },
+            {
+              "year": "2016",
+              "value": 2.97229
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.5
+            },
+            {
+              "year": "2016",
+              "value": 2.931229
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.41
+            },
+            {
+              "year": "2016",
+              "value": 3.009392
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.9
+            },
+            {
+              "year": "2016",
+              "value": 3.698085
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:21.285831"
+    },
+    "ZMB": {
+      "country_iso3": "ZMB",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.53
+            },
+            {
+              "year": "2016",
+              "value": 2.429813
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.3
+            },
+            {
+              "year": "2016",
+              "value": 2.262771
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.18
+            },
+            {
+              "year": "2016",
+              "value": 2.246019
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 2.48
+            },
+            {
+              "year": "2016",
+              "value": 2.415493
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 1.98
+            },
+            {
+              "year": "2016",
+              "value": 2.363155
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2018",
+              "value": 3.05
+            },
+            {
+              "year": "2016",
+              "value": 2.73847
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:23.615656"
+    },
+    "ZWE": {
+      "country_iso3": "ZWE",
+      "indicators": {
+        "lpi_overall": {
+          "code": "LP.LPI.OVRL.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.5
+            },
+            {
+              "year": "2018",
+              "value": 2.12
+            },
+            {
+              "year": "2016",
+              "value": 2.082408
+            }
+          ]
+        },
+        "lpi_infrastructure": {
+          "code": "LP.LPI.INFR.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.4
+            },
+            {
+              "year": "2018",
+              "value": 1.83
+            },
+            {
+              "year": "2016",
+              "value": 2.213516
+            }
+          ]
+        },
+        "lpi_customs": {
+          "code": "LP.LPI.CUST.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.2
+            },
+            {
+              "year": "2018",
+              "value": 2
+            },
+            {
+              "year": "2016",
+              "value": 1.995238
+            }
+          ]
+        },
+        "lpi_logistics_quality": {
+          "code": "LP.LPI.LOGS.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.3
+            },
+            {
+              "year": "2018",
+              "value": 2.16
+            },
+            {
+              "year": "2016",
+              "value": 2.12967
+            }
+          ]
+        },
+        "lpi_tracking": {
+          "code": "LP.LPI.TRAC.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.7
+            },
+            {
+              "year": "2018",
+              "value": 2.26
+            },
+            {
+              "year": "2016",
+              "value": 1.946337
+            }
+          ]
+        },
+        "lpi_timeliness": {
+          "code": "LP.LPI.TIME.XQ",
+          "values": [
+            {
+              "year": "2022",
+              "value": 2.8
+            },
+            {
+              "year": "2018",
+              "value": 2.39
+            },
+            {
+              "year": "2016",
+              "value": 2.131905
+            }
+          ]
+        },
+        "container_port_traffic": {
+          "code": "IS.SHP.GOOD.TU",
+          "values": []
+        },
+        "liner_connectivity": {
+          "code": "IS.SHP.LCON.XQ",
+          "values": []
+        }
+      },
+      "last_updated": "2025-11-03T13:30:26.072718"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+<analysis>/app/backend/trade_opportunities//app/frontend/src/modules/trade-opportunities/source_primarysource_yearconfidence_leveloec_trade_service.pytrade_opportunitiesoec_trade_service.pygit merge/app/backend/data//app/frontend/src/index.js/app/backend/.envSECRET_KEY/app/backend/data/tariffs/DZA_tariffs.json/app/backend/data/crawled/DZA_tariffs_enriched.json/app/backend/trade_opportunities/schemas.pyroutes.pyscoring_service.py/app/frontend/src/modules/trade-opportunities/TradeProductTradeFlowSubstitutionOpportunityOECTradeServiceDZA_DAPS_RATEScountry_taxes_algeria.pytariff_data_service.pycrawled_data_service.py7610909910/app/backend/data/auth.pyindex.js
+/app/
+├── backend/
+│   ├── api/
+│   ├── data/               # Offline JSONs/CSVs
+│   ├── trade_opportunities/# [TO BE CREATED] New domain for trade substitution
+│   ├── services/           #  (to be used as data seed)
+│   ├── server.py           
+│   └── auth.py             
+├── frontend/
+│   ├── src/
+│   │   ├── modules/
+│   │   │   └── trade-opportunities/ # [TO BE CREATED] New frontend domain
+│   │   ├── components/     
+│   │   ├── index.js        # Crucial X-API-Key Axios/fetch interceptors
+tariff_data_service.pyapi_keys{key_hash: str, tier: str, label: str, created_at: datetime}TradeProductTradeFlowSubstitutionOpportunityExportOpportunity/app/backend/services/tariff_data_service.pytaxes_detail/app/backend/services/crawled_data_service.py/app/backend/services/oec_trade_service.pyGET /api/trade-opportunities/imports/{country}GET /api/trade-opportunities/exports/{country}GET /api/trade-opportunities/products/{hs6_code}POST /api/calculator/calculate-tariffoec_trade_service.pyTradeOpportunity/api/trade-opportunities/src/modules/trade-opportunities//app/memory/PRD.mdoec_trade_service.pyzlecaf-frontend-public-keyzlecaf-admin-key/app/memory/PRD.md/app/backend/trade_opportunities/schemas.py/app/backend/trade_opportunities/routes.pyserver.py/app/backend/services/oec_trade_service.py/app/frontend/src/modules/trade-opportunities/pages/ImportsByCountryPage.jsx/app/frontend/src/App.js</analysis>

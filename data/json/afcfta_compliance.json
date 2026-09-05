@@ -1,0 +1,781 @@
+{
+  "metadata": {
+    "title": "AfCFTA Compliance Assessments - African Free Zones",
+    "description": "African Continental Free Trade Area readiness and compliance for free zones",
+    "version": "1.0.0",
+    "generated_at": "2025-01-15T00:00:00Z",
+    "methodology": {
+      "scoring_scale": "0-100 (higher = more compliant)",
+      "intra_african_trade_unit": "percentage of total zone exports",
+      "dimensions": [
+        "Rules of Origin",
+        "Tariff Liberalization",
+        "NTB Elimination",
+        "Protocol Compliance",
+        "Dispute Resolution",
+        "Regional Value Chains"
+      ],
+      "data_sources": [
+        "AfCFTA Secretariat",
+        "UNECA",
+        "AU Commission",
+        "WTO Tariff Database",
+        "Zone Authority Reports",
+        "Expert Assessment 2024"
+      ]
+    },
+    "total_zones": 30
+  },
+  "zones": [
+    {
+      "zone_id": "MAR-TFZ-001",
+      "zone_name": "Tanger Med Zones (TMZ)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "scores": {
+        "rules_of_origin_implementation": 80,
+        "tariff_liberalization_status": 75,
+        "non_tariff_barriers_elimination": 72,
+        "trade_protocol_compliance": 78,
+        "dispute_resolution_mechanisms": 75,
+        "regional_value_chain_integration": 80,
+        "intra_african_trade_percentage": 35,
+        "afcfta_readiness_score": 78,
+        "overall_compliance_score": 76.9
+      },
+      "rankings": {
+        "continental_rank": 2,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Fully Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MAR-KEN-001",
+      "zone_name": "Atlantic Free Zone (Kenitra)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "scores": {
+        "rules_of_origin_implementation": 76,
+        "tariff_liberalization_status": 72,
+        "non_tariff_barriers_elimination": 68,
+        "trade_protocol_compliance": 74,
+        "dispute_resolution_mechanisms": 70,
+        "regional_value_chain_integration": 74,
+        "intra_african_trade_percentage": 28,
+        "afcfta_readiness_score": 72,
+        "overall_compliance_score": 72.3
+      },
+      "rankings": {
+        "continental_rank": 5,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "EGY-SCZ-001",
+      "zone_name": "Suez Canal Economic Zone (SCZone)",
+      "country_iso": "EGY",
+      "region": "North Africa",
+      "scores": {
+        "rules_of_origin_implementation": 72,
+        "tariff_liberalization_status": 70,
+        "non_tariff_barriers_elimination": 65,
+        "trade_protocol_compliance": 72,
+        "dispute_resolution_mechanisms": 70,
+        "regional_value_chain_integration": 72,
+        "intra_african_trade_percentage": 22,
+        "afcfta_readiness_score": 70,
+        "overall_compliance_score": 70.1
+      },
+      "rankings": {
+        "continental_rank": 6,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DJI-DIFTZ-001",
+      "zone_name": "Djibouti International Free Trade Zone",
+      "country_iso": "DJI",
+      "region": "East Africa",
+      "scores": {
+        "rules_of_origin_implementation": 65,
+        "tariff_liberalization_status": 62,
+        "non_tariff_barriers_elimination": 60,
+        "trade_protocol_compliance": 65,
+        "dispute_resolution_mechanisms": 62,
+        "regional_value_chain_integration": 62,
+        "intra_african_trade_percentage": 40,
+        "afcfta_readiness_score": 65,
+        "overall_compliance_score": 63.0
+      },
+      "rankings": {
+        "continental_rank": 13,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NGA-LEK-001",
+      "zone_name": "Lekki Free Trade Zone",
+      "country_iso": "NGA",
+      "region": "West Africa",
+      "scores": {
+        "rules_of_origin_implementation": 62,
+        "tariff_liberalization_status": 58,
+        "non_tariff_barriers_elimination": 55,
+        "trade_protocol_compliance": 60,
+        "dispute_resolution_mechanisms": 58,
+        "regional_value_chain_integration": 60,
+        "intra_african_trade_percentage": 15,
+        "afcfta_readiness_score": 60,
+        "overall_compliance_score": 59.0
+      },
+      "rankings": {
+        "continental_rank": 20,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-TIN-001",
+      "zone_name": "Zone Franche de Tindouf",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "scores": {
+        "rules_of_origin_implementation": 60,
+        "tariff_liberalization_status": 55,
+        "non_tariff_barriers_elimination": 50,
+        "trade_protocol_compliance": 58,
+        "dispute_resolution_mechanisms": 55,
+        "regional_value_chain_integration": 52,
+        "intra_african_trade_percentage": 12,
+        "afcfta_readiness_score": 55,
+        "overall_compliance_score": 55.0
+      },
+      "rankings": {
+        "continental_rank": 24,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-ELO-001",
+      "zone_name": "Zone Franche d'Oran (Bethioua)",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "scores": {
+        "rules_of_origin_implementation": 62,
+        "tariff_liberalization_status": 58,
+        "non_tariff_barriers_elimination": 54,
+        "trade_protocol_compliance": 60,
+        "dispute_resolution_mechanisms": 58,
+        "regional_value_chain_integration": 55,
+        "intra_african_trade_percentage": 14,
+        "afcfta_readiness_score": 58,
+        "overall_compliance_score": 57.9
+      },
+      "rankings": {
+        "continental_rank": 23,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GAB-NKO-001",
+      "zone_name": "Zone Economique Speciale de Nkok (GSEZ)",
+      "country_iso": "GAB",
+      "region": "Central Africa",
+      "scores": {
+        "rules_of_origin_implementation": 65,
+        "tariff_liberalization_status": 62,
+        "non_tariff_barriers_elimination": 58,
+        "trade_protocol_compliance": 64,
+        "dispute_resolution_mechanisms": 62,
+        "regional_value_chain_integration": 65,
+        "intra_african_trade_percentage": 20,
+        "afcfta_readiness_score": 64,
+        "overall_compliance_score": 62.9
+      },
+      "rankings": {
+        "continental_rank": 14,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "SEN-DIS-001",
+      "zone_name": "Zone Economique Speciale (DAKAR)",
+      "country_iso": "SEN",
+      "region": "West Africa",
+      "scores": {
+        "rules_of_origin_implementation": 68,
+        "tariff_liberalization_status": 65,
+        "non_tariff_barriers_elimination": 62,
+        "trade_protocol_compliance": 68,
+        "dispute_resolution_mechanisms": 65,
+        "regional_value_chain_integration": 65,
+        "intra_african_trade_percentage": 25,
+        "afcfta_readiness_score": 68,
+        "overall_compliance_score": 65.9
+      },
+      "rankings": {
+        "continental_rank": 9,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BEN-GLO-001",
+      "zone_name": "Zone Economique Speciale (Glo-Djigbe)",
+      "country_iso": "BEN",
+      "region": "West Africa",
+      "scores": {
+        "rules_of_origin_implementation": 62,
+        "tariff_liberalization_status": 60,
+        "non_tariff_barriers_elimination": 58,
+        "trade_protocol_compliance": 62,
+        "dispute_resolution_mechanisms": 60,
+        "regional_value_chain_integration": 58,
+        "intra_african_trade_percentage": 30,
+        "afcfta_readiness_score": 62,
+        "overall_compliance_score": 60.3
+      },
+      "rankings": {
+        "continental_rank": 17,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TGO-PIA-001",
+      "zone_name": "Plateforme Industrielle d'Adetikope (PIA)",
+      "country_iso": "TGO",
+      "region": "West Africa",
+      "scores": {
+        "rules_of_origin_implementation": 65,
+        "tariff_liberalization_status": 62,
+        "non_tariff_barriers_elimination": 60,
+        "trade_protocol_compliance": 64,
+        "dispute_resolution_mechanisms": 62,
+        "regional_value_chain_integration": 62,
+        "intra_african_trade_percentage": 28,
+        "afcfta_readiness_score": 64,
+        "overall_compliance_score": 62.7
+      },
+      "rankings": {
+        "continental_rank": 15,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZAF-COE-001",
+      "zone_name": "Coega Special Economic Zone",
+      "country_iso": "ZAF",
+      "region": "Southern Africa",
+      "scores": {
+        "rules_of_origin_implementation": 75,
+        "tariff_liberalization_status": 72,
+        "non_tariff_barriers_elimination": 70,
+        "trade_protocol_compliance": 74,
+        "dispute_resolution_mechanisms": 75,
+        "regional_value_chain_integration": 75,
+        "intra_african_trade_percentage": 18,
+        "afcfta_readiness_score": 74,
+        "overall_compliance_score": 73.6
+      },
+      "rankings": {
+        "continental_rank": 3,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MUS-MFP-001",
+      "zone_name": "Mauritius Freeport & Smart City",
+      "country_iso": "MUS",
+      "region": "East Africa",
+      "scores": {
+        "rules_of_origin_implementation": 82,
+        "tariff_liberalization_status": 80,
+        "non_tariff_barriers_elimination": 78,
+        "trade_protocol_compliance": 82,
+        "dispute_resolution_mechanisms": 85,
+        "regional_value_chain_integration": 78,
+        "intra_african_trade_percentage": 20,
+        "afcfta_readiness_score": 82,
+        "overall_compliance_score": 81.0
+      },
+      "rankings": {
+        "continental_rank": 1,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Fully Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ETH-HAW-001",
+      "zone_name": "Hawassa Industrial Park",
+      "country_iso": "ETH",
+      "region": "East Africa",
+      "scores": {
+        "rules_of_origin_implementation": 58,
+        "tariff_liberalization_status": 52,
+        "non_tariff_barriers_elimination": 50,
+        "trade_protocol_compliance": 55,
+        "dispute_resolution_mechanisms": 52,
+        "regional_value_chain_integration": 55,
+        "intra_african_trade_percentage": 18,
+        "afcfta_readiness_score": 55,
+        "overall_compliance_score": 53.9
+      },
+      "rankings": {
+        "continental_rank": 25,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "KEN-EPZ-001",
+      "zone_name": "Nairobi Export Processing Zone",
+      "country_iso": "KEN",
+      "region": "East Africa",
+      "scores": {
+        "rules_of_origin_implementation": 68,
+        "tariff_liberalization_status": 65,
+        "non_tariff_barriers_elimination": 62,
+        "trade_protocol_compliance": 68,
+        "dispute_resolution_mechanisms": 68,
+        "regional_value_chain_integration": 68,
+        "intra_african_trade_percentage": 22,
+        "afcfta_readiness_score": 68,
+        "overall_compliance_score": 66.7
+      },
+      "rankings": {
+        "continental_rank": 8,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TUN-PAE-001",
+      "zone_name": "Parc d'Activites Economiques de Zarzis",
+      "country_iso": "TUN",
+      "region": "North Africa",
+      "scores": {
+        "rules_of_origin_implementation": 68,
+        "tariff_liberalization_status": 65,
+        "non_tariff_barriers_elimination": 62,
+        "trade_protocol_compliance": 66,
+        "dispute_resolution_mechanisms": 65,
+        "regional_value_chain_integration": 65,
+        "intra_african_trade_percentage": 16,
+        "afcfta_readiness_score": 65,
+        "overall_compliance_score": 65.1
+      },
+      "rankings": {
+        "continental_rank": 10,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CMR-KRI-001",
+      "zone_name": "Zone Industrielle de Kribi (ZIK)",
+      "country_iso": "CMR",
+      "region": "Central Africa",
+      "scores": {
+        "rules_of_origin_implementation": 60,
+        "tariff_liberalization_status": 58,
+        "non_tariff_barriers_elimination": 55,
+        "trade_protocol_compliance": 60,
+        "dispute_resolution_mechanisms": 58,
+        "regional_value_chain_integration": 58,
+        "intra_african_trade_percentage": 16,
+        "afcfta_readiness_score": 60,
+        "overall_compliance_score": 58.4
+      },
+      "rankings": {
+        "continental_rank": 21,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GHA-TEM-001",
+      "zone_name": "Tema Export Processing Zone",
+      "country_iso": "GHA",
+      "region": "West Africa",
+      "scores": {
+        "rules_of_origin_implementation": 65,
+        "tariff_liberalization_status": 62,
+        "non_tariff_barriers_elimination": 60,
+        "trade_protocol_compliance": 65,
+        "dispute_resolution_mechanisms": 65,
+        "regional_value_chain_integration": 62,
+        "intra_african_trade_percentage": 22,
+        "afcfta_readiness_score": 65,
+        "overall_compliance_score": 63.4
+      },
+      "rankings": {
+        "continental_rank": 12,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "RWA-KSE-001",
+      "zone_name": "Kigali Special Economic Zone (KSEZ)",
+      "country_iso": "RWA",
+      "region": "East Africa",
+      "scores": {
+        "rules_of_origin_implementation": 75,
+        "tariff_liberalization_status": 72,
+        "non_tariff_barriers_elimination": 70,
+        "trade_protocol_compliance": 75,
+        "dispute_resolution_mechanisms": 78,
+        "regional_value_chain_integration": 68,
+        "intra_african_trade_percentage": 28,
+        "afcfta_readiness_score": 75,
+        "overall_compliance_score": 73.3
+      },
+      "rankings": {
+        "continental_rank": 4,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CIV-PK-001",
+      "zone_name": "Parc Industriel de Koumassi (PIK)",
+      "country_iso": "CIV",
+      "region": "West Africa",
+      "scores": {
+        "rules_of_origin_implementation": 62,
+        "tariff_liberalization_status": 60,
+        "non_tariff_barriers_elimination": 58,
+        "trade_protocol_compliance": 62,
+        "dispute_resolution_mechanisms": 60,
+        "regional_value_chain_integration": 62,
+        "intra_african_trade_percentage": 30,
+        "afcfta_readiness_score": 62,
+        "overall_compliance_score": 60.9
+      },
+      "rankings": {
+        "continental_rank": 16,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TZA-EPZ-001",
+      "zone_name": "Benjamin William Mkapa SEZ (Morogoro)",
+      "country_iso": "TZA",
+      "region": "East Africa",
+      "scores": {
+        "rules_of_origin_implementation": 62,
+        "tariff_liberalization_status": 60,
+        "non_tariff_barriers_elimination": 58,
+        "trade_protocol_compliance": 62,
+        "dispute_resolution_mechanisms": 60,
+        "regional_value_chain_integration": 58,
+        "intra_african_trade_percentage": 20,
+        "afcfta_readiness_score": 60,
+        "overall_compliance_score": 60.0
+      },
+      "rankings": {
+        "continental_rank": 18,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZMB-LSK-001",
+      "zone_name": "Lusaka South Multi-Facility Economic Zone",
+      "country_iso": "ZMB",
+      "region": "Southern Africa",
+      "scores": {
+        "rules_of_origin_implementation": 62,
+        "tariff_liberalization_status": 60,
+        "non_tariff_barriers_elimination": 55,
+        "trade_protocol_compliance": 60,
+        "dispute_resolution_mechanisms": 60,
+        "regional_value_chain_integration": 58,
+        "intra_african_trade_percentage": 22,
+        "afcfta_readiness_score": 60,
+        "overall_compliance_score": 59.3
+      },
+      "rankings": {
+        "continental_rank": 19,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "AGO-ZEE-001",
+      "zone_name": "Zona Economica Especial de Luanda",
+      "country_iso": "AGO",
+      "region": "Southern Africa",
+      "scores": {
+        "rules_of_origin_implementation": 55,
+        "tariff_liberalization_status": 50,
+        "non_tariff_barriers_elimination": 48,
+        "trade_protocol_compliance": 52,
+        "dispute_resolution_mechanisms": 50,
+        "regional_value_chain_integration": 50,
+        "intra_african_trade_percentage": 10,
+        "afcfta_readiness_score": 52,
+        "overall_compliance_score": 51.0
+      },
+      "rankings": {
+        "continental_rank": 27,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MOZ-NAC-001",
+      "zone_name": "Nacala Special Economic Zone",
+      "country_iso": "MOZ",
+      "region": "Southern Africa",
+      "scores": {
+        "rules_of_origin_implementation": 55,
+        "tariff_liberalization_status": 52,
+        "non_tariff_barriers_elimination": 50,
+        "trade_protocol_compliance": 55,
+        "dispute_resolution_mechanisms": 52,
+        "regional_value_chain_integration": 52,
+        "intra_african_trade_percentage": 18,
+        "afcfta_readiness_score": 53,
+        "overall_compliance_score": 52.7
+      },
+      "rankings": {
+        "continental_rank": 26,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "COD-MAL-001",
+      "zone_name": "Zone Economique Speciale de Maluku",
+      "country_iso": "COD",
+      "region": "Central Africa",
+      "scores": {
+        "rules_of_origin_implementation": 45,
+        "tariff_liberalization_status": 42,
+        "non_tariff_barriers_elimination": 40,
+        "trade_protocol_compliance": 44,
+        "dispute_resolution_mechanisms": 42,
+        "regional_value_chain_integration": 42,
+        "intra_african_trade_percentage": 8,
+        "afcfta_readiness_score": 43,
+        "overall_compliance_score": 42.6
+      },
+      "rankings": {
+        "continental_rank": 30,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Non-Compliant",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "UGA-NAM-001",
+      "zone_name": "Namanve Industrial & Business Park",
+      "country_iso": "UGA",
+      "region": "East Africa",
+      "scores": {
+        "rules_of_origin_implementation": 60,
+        "tariff_liberalization_status": 58,
+        "non_tariff_barriers_elimination": 55,
+        "trade_protocol_compliance": 60,
+        "dispute_resolution_mechanisms": 58,
+        "regional_value_chain_integration": 58,
+        "intra_african_trade_percentage": 20,
+        "afcfta_readiness_score": 58,
+        "overall_compliance_score": 58.1
+      },
+      "rankings": {
+        "continental_rank": 22,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MWI-BLT-001",
+      "zone_name": "Blantyre Industrial Park",
+      "country_iso": "MWI",
+      "region": "Southern Africa",
+      "scores": {
+        "rules_of_origin_implementation": 52,
+        "tariff_liberalization_status": 50,
+        "non_tariff_barriers_elimination": 48,
+        "trade_protocol_compliance": 52,
+        "dispute_resolution_mechanisms": 50,
+        "regional_value_chain_integration": 48,
+        "intra_african_trade_percentage": 20,
+        "afcfta_readiness_score": 50,
+        "overall_compliance_score": 50.0
+      },
+      "rankings": {
+        "continental_rank": 28,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Partially Compliant",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NAM-WAL-001",
+      "zone_name": "Walvis Bay Export Processing Zone",
+      "country_iso": "NAM",
+      "region": "Southern Africa",
+      "scores": {
+        "rules_of_origin_implementation": 70,
+        "tariff_liberalization_status": 68,
+        "non_tariff_barriers_elimination": 65,
+        "trade_protocol_compliance": 70,
+        "dispute_resolution_mechanisms": 70,
+        "regional_value_chain_integration": 65,
+        "intra_african_trade_percentage": 22,
+        "afcfta_readiness_score": 68,
+        "overall_compliance_score": 68.0
+      },
+      "rankings": {
+        "continental_rank": 7,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BWA-SIR-001",
+      "zone_name": "Selebi-Phikwe Economic Diversification Unit (SPEDU)",
+      "country_iso": "BWA",
+      "region": "Southern Africa",
+      "scores": {
+        "rules_of_origin_implementation": 68,
+        "tariff_liberalization_status": 65,
+        "non_tariff_barriers_elimination": 62,
+        "trade_protocol_compliance": 66,
+        "dispute_resolution_mechanisms": 68,
+        "regional_value_chain_integration": 62,
+        "intra_african_trade_percentage": 20,
+        "afcfta_readiness_score": 65,
+        "overall_compliance_score": 65.1
+      },
+      "rankings": {
+        "continental_rank": 11,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Substantially Compliant",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MDG-EHO-001",
+      "zone_name": "Zone Franche d'Ehoala (Fort-Dauphin)",
+      "country_iso": "MDG",
+      "region": "East Africa",
+      "scores": {
+        "rules_of_origin_implementation": 50,
+        "tariff_liberalization_status": 48,
+        "non_tariff_barriers_elimination": 45,
+        "trade_protocol_compliance": 50,
+        "dispute_resolution_mechanisms": 48,
+        "regional_value_chain_integration": 48,
+        "intra_african_trade_percentage": 12,
+        "afcfta_readiness_score": 48,
+        "overall_compliance_score": 48.1
+      },
+      "rankings": {
+        "continental_rank": 29,
+        "regional_rank": 8,
+        "total_zones_assessed": 30
+      },
+      "compliance_status": "Non-Compliant",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    }
+  ]
+}
