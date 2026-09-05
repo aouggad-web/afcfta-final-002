@@ -130,6 +130,58 @@ def test_dza_gazette_register_integrity():
     )
 
 
+def test_dza_fap_attached_by_national_position():
+    """F.A.P — Dérogation sanitaire vétérinaire (D.S.V) attachée à 0101211100.
+
+    Les FAP proviennent du tarif DGD par position nationale (6 993 entrées,
+    propagées à 9 468 sous-positions 10 chiffres) et sont archivées SHA-256.
+    """
+    r = _calc("0101211100")
+    assert r["quality_dimensions"]["formalities"] == "DOCUMENTED"
+    reqs = r.get("administrative_requirements") or []
+    assert reqs, "au moins une FAP attendue sur la viande (010121)"
+    ids = {req.get("measure_id") for req in reqs}
+    assert any(i and i.startswith("DZA-FAP-") for i in ids)
+    for req in reqs:
+        assert req.get("legal_reference") and "F.A.P" in req["legal_reference"]
+
+
+def test_dza_fap_not_applied_outside_scope():
+    """Une position sans FAP documentée ne reçoit aucune exigence inventée."""
+    r = _calc("8471300000")  # machines de traitement de données — pas de FAP
+    assert r["quality_dimensions"]["formalities"] == "NOT_APPLICABLE"
+    assert (r.get("administrative_requirements") or []) == []
+
+
+def test_dza_fap_measures_use_exact_national_positions():
+    """Chaque mesure FAP porte des positions nationales 10 chiffres exactes
+    (mapping DIRECT_HS) et la source archivée du tarif DGD."""
+    overrides = json.loads(
+        (_ROOT / "data" / "dza" / "legal_overrides.json").read_text(encoding="utf-8")
+    )
+    assert len(overrides["measures"]) >= 40
+    for m in overrides["measures"]:
+        assert m["measure_type"] == "ADMINISTRATIVE_REQUIREMENT"
+        assert m["mapping_status"] == "DIRECT_HS"
+        assert m["mapping_confidence"] == 100
+        assert m["source_hash"]
+        assert m["verification_status"] == "SOURCE_ARCHIVED"
+        for code in m["hs_codes"]:
+            assert len(code) == 10 and code.isdigit(), code
+
+
+def test_dza_sub_positions_carry_fap():
+    """Chaque sous-position nationale concernée porte ses FAP (canonique enrichi)."""
+    canon = json.loads(
+        (_ROOT / "backend" / "data" / "DZA_tariffs.json").read_text(encoding="utf-8")
+    )
+    with_fap_subs = sum(
+        1
+        for l in canon["tariff_lines"]
+        for sp in (l.get("sub_positions") or [])
+        if sp.get("administrative_formalities")
+    )
+    assert with_fap_subs == 9468
 def test_kenya_layer_unaffected_by_dza_wiring():
     """Non-régression : la juridiction KEN garde son comportement (USD, registre EAC)."""
     assert SUPPORTED_JURISDICTIONS["KEN"].default_currency == "USD"
