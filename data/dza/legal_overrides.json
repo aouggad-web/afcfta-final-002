@@ -1,0 +1,7 @@
+{
+ "schema_version": "1.0",
+ "jurisdiction": "DZA",
+ "as_of": "2026-09-05",
+ "measures": [],
+ "note": "Aucune surcharge DD hors ligne canonique : les taux D.D, TVA, PRCT, TCS et DAPS sont portés PAR POSITION NATIONALE dans backend/data/DZA_tariffs.json (CRAWLED_AUTHENTIC — 17 115 sous-positions 10 chiffres, source douane.gov.dz). Les lois de finances 2020-2026 et le Code des douanes 79-07 sont archivés SHA-256 dans data/sources/DZA/legislation/_manifest.json."
+}

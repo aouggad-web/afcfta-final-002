@@ -168,6 +168,9 @@ class LegalOverrideResolver:
         on_date: date,
         base_rate: float,
         context: Optional[OverrideContext] = None,
+        base_tariff_documentation: Optional[dict] = None,
+        preference_and_origin_status: str = "UNVERIFIED",
+        regional_cet_applicable: bool = True,
     ) -> dict:
         context = context or OverrideContext()
         current_rate = base_rate
@@ -187,14 +190,18 @@ class LegalOverrideResolver:
         layer_sources = {layer: set() for layer in LegalLayer}
         eligibility_status = None
         requires_eligibility_input = False
-        coverage_complete = self.regional_coverage_complete and self.national_coverage_complete
+        base_doc = base_tariff_documentation or {}
+        regional_ok = self.regional_coverage_complete or not regional_cet_applicable
+        coverage_complete = regional_ok and self.national_coverage_complete
         status = "INFORMATIVE_COMPLETE" if coverage_complete else "INFORMATIVE_PARTIAL"
-        if not self.regional_coverage_complete:
+        if regional_cet_applicable and not self.regional_coverage_complete:
             missing.append("Regional gazette coverage is not complete for the requested date.")
         if not self.national_coverage_complete:
             missing.append(
                 f"{context.jurisdiction} national-measure coverage is not complete for the requested date."
             )
+        if base_doc.get("source_id"):
+            sources.add(base_doc.get("source_id"))
 
         potentially_relevant = [
             m
@@ -392,19 +399,29 @@ class LegalOverrideResolver:
             status = "INFORMATIVE_PARTIAL"
         serialized_trace = [step.model_dump() for step in trace]
         relevant_sources = [m for m in candidates if m.publication_url]
-        source_documented = bool(relevant_sources) and all(
+        base_source_ok = bool(
+            base_doc.get("sha256")
+            and base_doc.get("verification_status")
+            in {"SOURCE_ARCHIVED", "CRAWLED_AUTHENTIC", "OFFICIAL_SOURCE_IDENTIFIED"}
+        )
+        measures_ok = all(
             m.source_hash
             and m.verification_status in {"SOURCE_ARCHIVED", "OFFICIAL_SOURCE_IDENTIFIED"}
             for m in relevant_sources
+        )
+        source_documented = (base_source_ok or bool(relevant_sources)) and measures_ok
+        temporal_documented = (
+            coverage_complete
+            and bool(base_doc.get("hs_version") or base_doc.get("effective_from"))
         )
         quality_dimensions = {
             "source": (
                 "DOCUMENTED" if source_documented else ("PARTIAL" if sources else "UNVERIFIED")
             ),
-            "temporal_validity": "PARTIAL",
+            "temporal_validity": "DOCUMENTED" if temporal_documented else "PARTIAL",
             "classification": "DOCUMENTED" if len(str(hs_code)) >= 6 else "UNVERIFIED",
             "taxes_and_levies": "DOCUMENTED" if self.national_coverage_complete else "PARTIAL",
-            "preference_and_origin": "UNVERIFIED",
+            "preference_and_origin": preference_and_origin_status,
             "formalities": "DOCUMENTED" if requirements or restrictions else "NOT_APPLICABLE",
         }
         if status == "CONFLICT_REVIEW":

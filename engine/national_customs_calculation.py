@@ -174,6 +174,9 @@ def calculate_national_customs(
     coverage_complete: bool = False,
     currency_code: str = "USD",
     levy_tables: Tuple[Tuple[str, str], ...] = DEFAULT_LEVY_TABLES,
+    base_tariff_documentation: Optional[dict] = None,
+    preference_and_origin_status: str = "UNVERIFIED",
+    regional_cet_applicable: bool = True,
 ) -> dict:
     # Ensure context jurisdiction matches the input jurisdiction to prevent
     # accidental application of another jurisdiction's measures (e.g., Kenya
@@ -189,6 +192,9 @@ def calculate_national_customs(
         on_date=on_date,
         base_rate=base_cet_rate,
         context=context,
+        base_tariff_documentation=base_tariff_documentation,
+        preference_and_origin_status=preference_and_origin_status,
+        regional_cet_applicable=regional_cet_applicable,
     )
     customs_rate = override["applicable_customs_rate"]
     customs_duty = round(customs_value * customs_rate / 100, 2)
@@ -325,4 +331,10 @@ def calculate_national_customs(
         "display_warning": warning,
         "remission_eligibility_status": override["remission_eligibility_status"],
         "requires_eligibility_input": override["requires_eligibility_input"],
+        # Enveloppe de qualité documentaire (consommée par le calculateur) :
+        # dimensions + statut global produits par le resolver juridique.
+        "quality_dimensions": override.get("quality_dimensions"),
+        "overall_status": override.get("overall_status"),
+        "completeness_status": override.get("overall_status"),
+        "known_data_gaps": override.get("known_data_gaps", []),
     }
