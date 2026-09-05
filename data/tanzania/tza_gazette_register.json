@@ -1,0 +1,51 @@
+{
+ "jurisdiction": "TZA",
+ "as_of": "2026-09-06",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "Corpus : East African Community — EAC Common External Tariff 2022 + corpus fiscal par position nationale."
+ },
+ "regional_cet_applicable": true,
+ "regional_note": "EAC — CET commun",
+ "base_tariff_documentation": {
+  "source_id": "TZA-CANONICAL-TARIFF",
+  "source_name": "East African Community — EAC Common External Tariff 2022",
+  "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+  "sha256": "7c1ca2152472f0987f400789ef6f57d404f2c6aedcfffa9f887680cfaa06e359",
+  "verification_status": "CRAWLED_AUTHENTIC",
+  "data_status": "PARTIAL",
+  "hs_version": "HS2022 — sous-positions nationales",
+  "effective_from": "2017-07-01",
+  "national_positions": 5984
+ },
+ "preference_and_origin_status": "DOCUMENTED",
+ "preference_evidence": {
+  "instrument": "ZLECAf — partenaire actif de l'Algérie",
+  "sha256": "7c1ca2152472f0987f400789ef6f57d404f2c6aedcfffa9f887680cfaa06e359"
+ },
+ "documents": [
+  {
+   "file": "TZA_tariffs.json (canonique)",
+   "title": "East African Community — EAC Common External Tariff 2022 — 5604 lignes",
+   "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+   "sha256": "7c1ca2152472f0987f400789ef6f57d404f2c6aedcfffa9f887680cfaa06e359"
+  }
+ ],
+ "sources_officielles": [
+  "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
+ ],
+ "verification_taxes_interieures": {
+  "objet": "Taxes intérieures NON reprises dans le TEC (TVA, accises, prélèvements) — vérification sur sources gouvernementales locales",
+  "sources": [
+   {
+    "source": "TRA — VAT & excise",
+    "url": "https://www.tra.go.tz",
+    "http_status": "302",
+    "note": "portail officiel vérifié joignable ; page fiscale précise à localiser via navigation"
+   }
+  ],
+  "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
+ }
+}

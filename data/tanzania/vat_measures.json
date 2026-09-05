@@ -1,40 +1,28 @@
 {
-  "schema_version": "1.0",
-  "country": "TZA",
-  "as_of": "2026-07-25",
-  "vat_rates": [
-    {
-      "record_id": "TZA-VAT-RATE-STANDARD-20150701",
-      "legal_product_description": "Standard rate of Value Added Tax, calculated by multiplying the value of the taxable supply or import by the value added tax rate.",
-      "normalized_product_description": "standard rate of value added tax on taxable supplies and taxable imports",
-      "rate": "18%",
-      "rate_basis": "value of the supply or import",
-      "effective_from": "2015-07-01",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "TZA-TANZLII-VAT-ACT-2014",
-      "legal_reference": "Value Added Tax Act, 2014 (Act No. 5 of 2014), Section 5(1)",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": []
-    }
-  ],
-  "vat_exemptions": [],
-  "vat_zero_rated": [
-    {
-      "record_id": "TZA-VAT-ZERO-EXPORTS",
-      "legal_product_description": "Supply of goods where the goods are exported within the meaning of the term as used in customs legislation.",
-      "normalized_product_description": "zero-rated supply of exported goods",
-      "rate": "0%",
-      "rate_basis": "value of the supply",
-      "effective_from": "2015-07-01",
-      "effective_to": null,
-      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-      "supersedes_record_id": null,
-      "source_id": "TZA-TANZLII-VAT-ACT-2014",
-      "legal_reference": "Value Added Tax Act, 2014 (Act No. 5 of 2014), Section 5(2) and Section 55",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "hs_codes_explicit": []
-    }
-  ]
+ "schema_version": "1.0",
+ "country": "TZA",
+ "as_of": "2026-09-06",
+ "vat_rates": [
+  {
+   "record_id": "TZA-VAT-RATE-STANDARD-20150701",
+   "legal_product_description": "Standard rate of Value Added Tax, calculated by multiplying the value of the taxable supply or import by the value added tax rate.",
+   "normalized_product_description": "standard rate of value added tax on taxable supplies and taxable imports",
+   "rate": "18%",
+   "rate_basis": "value of the supply or import",
+   "effective_from": "2015-07-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "supersedes_record_id": null,
+   "source_id": "TZA-TANZLII-VAT-ACT-2014",
+   "legal_reference": "Value Added Tax Act, 2014 (Act No. 5 of 2014), Section 5(1)",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "hs_codes_explicit": []
+  }
+ ],
+ "vat_exemptions": [],
+ "vat_zero_rated": [],
+ "provenance": {
+  "source": "backend/data/TZA_tariffs.json (PARTIAL)",
+  "canonical_sha256": "7c1ca2152472f0987f400789ef6f57d404f2c6aedcfffa9f887680cfaa06e359"
+ }
 }
