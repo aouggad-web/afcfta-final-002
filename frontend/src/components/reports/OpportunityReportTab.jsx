@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import SubstitutionAnalysis from "../opportunities/SubstitutionAnalysis";
 import StrategicFlows from "../opportunities/StrategicFlows";
+import SectoralAnalysis from "../opportunities/SectoralAnalysis";
 import OpportunityPdfExport from "../opportunities/OpportunityPdfExport";
 import { opportunityPdfFilename } from "../../utils/opportunityPdf";
 
@@ -1259,6 +1260,14 @@ export function BilateralView({ countries, fr, prefill }) {
               </div>
             )}
           </div>
+
+          {/* ── Sectoral Analysis (ISIC4 & IDSB) ──────────────────────── */}
+          <SectoralAnalysis
+            hsCode={hsCode}
+            origin={origin}
+            destination={destination}
+            fr={fr}
+          />
 
           {/* ── Top producers benchmark ───────────────────────────────── */}
           {topProducers.available && topProducers.producers?.length > 0 && (

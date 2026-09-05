@@ -419,6 +419,50 @@ async def oec_health(year: int = Query(default=2022, description="Année de test
     }
 
 
+@router.get("/sectoral-analysis", summary="Analyse ISIC4 et IDSB d'une opportunité")
+async def sectoral_analysis(
+    hs_code: str = Query(..., description="Code SH du produit"),
+    origin: str = Query(..., description="Pays exportateur (ISO3)"),
+    destination: str = Query(..., description="Marché importateur (ISO3)"),
+    lang: str = Query(default="fr", description="Langue (fr/en)"),
+):
+    """
+    Enrichit une opportunité commerciale avec une analyse sectorielle ISIC4
+    et des indicateurs de base industrielle (IDSB) :
+
+    - Classification ISIC Rev.4 du produit
+    - Indice de fabricabilité et préparation export du secteur
+    - Chaîne de transformation (intrants → procédé → extrants)
+    - Barrières sectorielles à l'industralisation
+    - Score d'opportunité pondéré par profil sectoral
+    - Indice de compétitivité par pays
+    - Recommandations stratégiques de développement
+
+    Tous les chiffres sont réels ou marqués indisponibles (jamais inventés).
+    """
+    from services.isic_idsb_opportunity_service import get_isic_idsb_service
+
+    service = get_isic_idsb_service()
+
+    # Get market potential if available
+    market_potential = None
+    try:
+        from services.real_trade_data_service import real_trade_service
+        imports = await real_trade_service.get_country_product_imports(destination, hs_code)
+        if imports and imports.get("import_value_usd"):
+            market_potential = imports.get("import_value_usd")
+    except Exception:
+        pass
+
+    return service.assess_opportunity_by_sector(
+        hs_code=hs_code,
+        origin=origin,
+        destination=destination,
+        market_potential=market_potential,
+        lang=lang
+    )
+
+
 @router.get("/health", summary="Diagnostic de disponibilité des données du moteur")
 async def reports_health():
     """
