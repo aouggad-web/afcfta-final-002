@@ -1,8 +1,25 @@
 {
   "schema_version": "1.0",
   "country": "UGA",
-  "as_of": "2026-07-25",
-  "vat_rates": [],
+  "as_of": "2026-09-05",
+  "vat_rates": [
+    {
+      "record_id": "UGA-VAT-RATE-STANDARD-20050608",
+      "legal_product_description": "The rate of tax for— (a) every taxable supply made in Uganda by a taxable person; (b) every import of goods other than an exempt import; and (c) the supply of any imported services by any person, is 18% of the taxable value as defined in sections 21 and 23 of the Act.",
+      "normalized_product_description": "standard rate of value added tax on taxable supplies and imports in Uganda",
+      "rate": "18%",
+      "rate_basis": "taxable value as defined in sections 21 and 23 of the VAT Act Cap 349",
+      "effective_from": null,
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "UGA-URA-DT-LAWS-COMPENDIUM-2021",
+      "legal_reference": "Value Added Tax (Rate of Tax) Order, 2005, pris en vertu de l'article 78(2) de la Value Added Tax Act, Cap 349 — compendium URA des lois fiscales (juillet 2021), pages du décret : « this Order is made this 8th day of June, 2005 ».",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": null,
+      "consolidation_note": "Taux extrait le 2026-09-05 du PDF officiel URA archivé (SHA-256 e669e5cbe6feb47edbed6851f3d72cf044102b2934471535444d780aa2a29926) via PyMuPDF. Compendium au juillet 2021 : amendements ultérieurs à contrôler avant toute utilisation de déclaration en douane."
+    }
+  ],
   "vat_exemptions": [],
   "vat_zero_rated": [
     {

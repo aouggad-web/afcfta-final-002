@@ -1,0 +1,38 @@
+{
+  "UGA": {
+    "mode": "collect",
+    "country_code": "UGA",
+    "documents": [
+      {
+        "instrument": "URA — Compendium for various Domestic Tax Laws (loi TVA consolidée, juillet 2021)",
+        "url": "https://ura.go.ug/storage/2023/08/10580_DT_LAWS_JULY_2021.pdf",
+        "status": "RAW_ARCHIVED",
+        "http_status": 200,
+        "sha256": "e669e5cbe6feb47edbed6851f3d72cf044102b2934471535444d780aa2a29926",
+        "size_bytes": 4289929,
+        "archived_path": "national_taxes/raw/UGA/20260905T134910Z_c3a1038ad5.bin",
+        "archived_at": "2026-09-05T13:49:10.044878+00:00",
+        "rate_extraction": "FORBIDDEN_WITHOUT_DEDICATED_ADAPTER"
+      }
+    ],
+    "collected_at": "2026-09-05T13:49:10.044900+00:00"
+  },
+  "GHA": {
+    "mode": "collect",
+    "country_code": "GHA",
+    "documents": [
+      {
+        "instrument": "GRA — page officielle TVA (réforme Act 1151 en vigueur au 01/01/2026)",
+        "url": "https://gra.gov.gh/domestic-tax/tax-types/vat/",
+        "status": "RAW_ARCHIVED",
+        "http_status": 200,
+        "sha256": "4e693ade22d8fb4cf5f50bc471ea411f8cdc0a736a26d86807097cc3e4af424e",
+        "size_bytes": 175990,
+        "archived_path": "national_taxes/raw/GHA/20260905T134911Z_88b065e7e8.bin",
+        "archived_at": "2026-09-05T13:49:11.952938+00:00",
+        "rate_extraction": "FORBIDDEN_WITHOUT_DEDICATED_ADAPTER"
+      }
+    ],
+    "collected_at": "2026-09-05T13:49:11.952953+00:00"
+  }
+}

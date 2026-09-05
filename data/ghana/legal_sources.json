@@ -58,6 +58,20 @@
       "status": "source_pending_collection",
       "verification_status": "DOCUMENTED",
       "notes": "Clarification officielle GSA lue directement ; statut résiduel d'Intertek non confirmé."
+    },
+    {
+      "source_id": "GHA-GRA-VAT-ACT-1151-PAGE",
+      "title": "Value Added Tax Act, 2025 (Act 1151) — page TVA officielle GRA (réforme en vigueur au 01/01/2026)",
+      "institution": "Ghana Revenue Authority (GRA)",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-09-05",
+      "url": "https://gra.gov.gh/domestic-tax/tax-types/vat/",
+      "local_file": null,
+      "sha256": "4e693ade22d8fb4cf5f50bc471ea411f8cdc0a736a26d86807097cc3e4af424e",
+      "coverage": "Taux standard TVA et modalités de calcul post-réforme (base : prix total)",
+      "status": "VERIFIED_OFFICIAL_CURRENT_PAGE",
+      "notes": "Page officielle GRA archivée par national_tax_scraper (mode collect). Cite : « These reforms passed under the Value Added Tax Act, 2025 (Act 1151) took effect from 1st January 2026 » ; « VAT is now calculated as 15% of the total price of an item ».",
+      "verification_status": "VERIFIED_OFFICIAL_CURRENT_PAGE"
     }
   ]
 }

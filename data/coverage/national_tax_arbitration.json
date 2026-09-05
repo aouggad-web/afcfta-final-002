@@ -1,0 +1,300 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-09-05",
+  "purpose": "Arbitrage documenté des divergences dataset (data/{pays}/vat_measures.json) ↔ registres d'enrichissement (vat_status). Doctrine : arbitrage par l'examen des preuves sur disque et la nature des sources — jamais par estimation. Chaque décision cite sa preuve. Aucun taux n'est introduit par ce fichier.",
+  "decision_codes": {
+    "DATASET_EVIDENCE_RETAINED": "Mesure TVA vérifiée sur texte primaire hébergé par l'administration (VERIFIED_PRIMARY_TEXT, source_id enregistré dans legal_sources.json, URL gouvernementale). Le statut famille devient DOCUMENTED_PRIMARY_SOURCE ; le PARTIAL du registre porte sur la base de calcul complète (scope différent), divergence résolue.",
+    "REGISTRY_PRUDENCE_RETAINED": "La copie archivée du texte est une républication non gouvernementale — la prudence du registre (PARTIAL) est retenue. Statut famille PARTIAL_DOCUMENTED ; consolidation sur texte officiel (gazette/JO) requise.",
+    "REGISTRY_SUBSTANTIATED_BY_ENRICHMENT": "Le DOCUMENTED du registre est substantié par data/priority-08/national_enrichment.json (taux standard + textes VERIFIED_PRIMARY_TEXT) bien qu'aucun dataset vat_measures.json n'existe. Statut famille DOCUMENTED_PRIMARY_SOURCE avec limitation de périmètre (assiette à l'importation).",
+    "REGISTRY_CLAIM_UNSUBSTANTIATED": "Le DOCUMENTED du registre n'est substantié par aucun élément sur disque (absent de national_enrichment.json, dataset vide, anomalie du registre concédant l'absence). Statut famille dégradé à PARTIAL_DOCUMENTED.",
+    "OFFICIAL_CURRENT_PAGE_RETAINED": "Mesure consolidée depuis la page officielle courante de l'administration (VERIFIED_OFFICIAL_CURRENT_PAGE — précédent LSO-RSL-VAT-CURRENT du dépôt), page archivée SHA-256. Statut famille DOCUMENTED_PRIMARY_SOURCE ; la copie gazette reste à archiver.",
+    "OFFICIAL_PRIMARY_TEXT_EXTRACTED": "Taux extrait ET cité depuis un texte officiel archivé (SHA-256 vérifié) — le claim du registre devient substantié. Statut famille DOCUMENTED_PRIMARY_SOURCE avec note de consolidation (amendements postérieurs au compendium à contrôler).",
+    "ENRICHMENT_PARTIAL_SUBSTANTIATED": "Le statut PARTIAL du registre est substantié par data/priority-08/national_enrichment.json : taux standard documenté avec sources VERIFIED_PRIMARY_TEXT archivées. Statut famille PARTIAL_DOCUMENTED (limitation de périmètre indiquée) — progrès depuis PENDING sans promotion indu."
+  },
+  "decisions": [
+    {
+      "country": "AGO",
+      "family": "VAT",
+      "decision_code": "DATASET_EVIDENCE_RETAINED",
+      "evidence": {
+        "record_id": "AGO-VAT-RATE-STANDARD-20190424",
+        "verification_status": "VERIFIED_OFFICIAL_GUIDE",
+        "legal_reference": "Lei n.º 7/19, de 24 de abril de 2019 (Código do IVA), alterada pela Lei n.º 17/19",
+        "source_id": "AGO-MINFIN-PORTAL-CONTRIBUINTE",
+        "source_institution": "Administração Geral Tributária (AGT) / Ministério das Finanças (MINFIN)",
+        "source_url_governmental": true
+      },
+      "registry_status": "PARTIAL",
+      "registry_scope_note": "Le PARTIAL du registre (morocco-angola-2) porte sur l'étendue de la base de calcul, non sur l'existence de la mesure vérifiée."
+    },
+    {
+      "country": "BFA",
+      "family": "VAT",
+      "decision_code": "DATASET_EVIDENCE_RETAINED",
+      "evidence": {
+        "record_id": "BFA-VAT-RATE-STANDARD-20230101",
+        "verification_status": "VERIFIED_PRIMARY_TEXT",
+        "legal_reference": "Code Général des Impôts, Article 352 et seq (consolidated 2023)",
+        "source_id": "BFA-DGI-CGI-2023",
+        "source_institution": "Direction Générale des Impôts (DGI) — Burkina Faso",
+        "source_url_governmental": true
+      },
+      "registry_status": "PARTIAL"
+    },
+    {
+      "country": "COD",
+      "family": "VAT",
+      "decision_code": "DATASET_EVIDENCE_RETAINED",
+      "evidence": {
+        "record_id": "COD-VAT-RATE-STANDARD-20120101",
+        "verification_status": "VERIFIED_PRIMARY_TEXT",
+        "legal_reference": "Ordonnance-loi n° 10/001 du 20 août 2010 portant institution de la Taxe sur la Valeur Ajoutée",
+        "source_id": "COD-LEGANET-OL-10-001-2010-T",
+        "source_institution": "LEGANET.CD (portail de législation de la RDC)",
+        "source_url_governmental": true
+      },
+      "registry_status": "PARTIAL"
+    },
+    {
+      "country": "COG",
+      "family": "VAT",
+      "decision_code": "DATASET_EVIDENCE_RETAINED",
+      "evidence": {
+        "record_id": "COG-VAT-RATE-STANDARD-20021231",
+        "verification_status": "VERIFIED_PRIMARY_TEXT",
+        "legal_reference": "Code Général des Impôts, Livre TVA, Chapitre IV, Section II, Article 17",
+        "source_id": "COG-MINFIN-CGI-TOME1",
+        "source_institution": "Ministère des Finances, du Budget et du Portefeuille Public — Congo",
+        "source_url_governmental": true
+      },
+      "registry_status": "PARTIAL"
+    },
+    {
+      "country": "GIN",
+      "family": "VAT",
+      "decision_code": "DATASET_EVIDENCE_RETAINED",
+      "evidence": {
+        "record_id": "GIN-VAT-RATE-STANDARD-20220101",
+        "verification_status": "VERIFIED_PRIMARY_TEXT",
+        "legal_reference": "Code Général des Impôts, Article 373-I",
+        "source_id": "GIN-DGI-CGI-2022-2023",
+        "source_institution": "Ministère du Budget / Direction Générale des Impôts (Guinée)",
+        "source_url_governmental": true
+      },
+      "registry_status": "PARTIAL"
+    },
+    {
+      "country": "LBR",
+      "family": "VAT",
+      "decision_code": "DATASET_EVIDENCE_RETAINED",
+      "evidence": {
+        "record_id": "LBR-VAT-GOODS-TAX-STANDARD-20200801",
+        "verification_status": "VERIFIED_PRIMARY_TEXT",
+        "legal_reference": "Liberia Revenue Code As Amended, Section 1000(b)(3)",
+        "source_id": "LBR-LRA-REVENUE-CODE-2020",
+        "source_institution": "Liberia Revenue Authority (LRA)",
+        "source_url_governmental": true
+      },
+      "registry_status": "PARTIAL"
+    },
+    {
+      "country": "MLI",
+      "family": "VAT",
+      "decision_code": "DATASET_EVIDENCE_RETAINED",
+      "evidence": {
+        "record_id": "MLI-VAT-RATE-STANDARD",
+        "verification_status": "VERIFIED_PRIMARY_TEXT",
+        "legal_reference": "Code Général des Impôts, Article 229 (Loi n°11-078)",
+        "source_id": "MLI-DGI-CGI",
+        "source_institution": "Direction Générale des Impôts (DGI Mali)",
+        "source_url_governmental": true
+      },
+      "registry_status": "PARTIAL"
+    },
+    {
+      "country": "NER",
+      "family": "VAT",
+      "decision_code": "DATASET_EVIDENCE_RETAINED",
+      "evidence": {
+        "record_id": "NER-VAT-RATE-STANDARD-20230101",
+        "verification_status": "VERIFIED_PRIMARY_TEXT",
+        "legal_reference": "Code Général des Impôts, Article 226",
+        "source_id": "NER-DGI-CGI-2023",
+        "source_institution": "Direction Générale des Impôts (DGI) — République du Niger",
+        "source_url_governmental": true
+      },
+      "registry_status": "PARTIAL"
+    },
+    {
+      "country": "SEN",
+      "family": "VAT",
+      "decision_code": "REGISTRY_PRUDENCE_RETAINED",
+      "evidence": {
+        "record_id": "SEN-VAT-RATE-STANDARD-20150323",
+        "verification_status": "VERIFIED_PRIMARY_TEXT",
+        "legal_reference": "Code Général des Impôts, Article 369 (Loi n°2015-06 du 23 mars 2015)",
+        "source_id": "SEN-CGI-2019",
+        "source_institution": "ONES / cabinet fiscal (republication du texte officiel) — kof-experts.sn",
+        "source_url_governmental": false,
+        "registry_anomaly_quoted": "La republication archivée n'est pas gouvernementale et les amendements récents restent à contrôler."
+      },
+      "registry_status": "PARTIAL",
+      "resolution": "Consolidation sur texte officiel (JO Sénégal / DGID) requise avant DOCUMENTED. Note : impots.gouv.sn et journal-officiel.gouv.sn injoignables depuis l'environnement le 2026-09-05 (HTTP 000)."
+    },
+    {
+      "country": "SLE",
+      "family": "VAT",
+      "decision_code": "REGISTRY_PRUDENCE_RETAINED",
+      "evidence": {
+        "record_id": "SLE-VAT-RATE-STANDARD-20090901",
+        "verification_status": "VERIFIED_PRIMARY_TEXT",
+        "legal_reference": "Goods and Services Tax Act 2009, Section 14(3)",
+        "source_id": "SLE-GOV-GST-ACT-2009",
+        "source_institution": "sierra-leone.org (miroir légal non officiel)",
+        "source_url_governmental": false
+      },
+      "registry_status": "PARTIAL",
+      "resolution": "Consolidation sur Sierra Leone Gazette officielle requise avant DOCUMENTED."
+    },
+    {
+      "country": "BWA",
+      "family": "VAT",
+      "decision_code": "REGISTRY_SUBSTANTIATED_BY_ENRICHMENT",
+      "evidence": {
+        "enrichment_file": "data/priority-08/national_enrichment.json",
+        "status_in_enrichment": "DOCUMENTED",
+        "standard_rate_source": "BWA-BURS-VAT-ACT-2026 [VERIFIED_PRIMARY_TEXT] Value Added Tax Act 2026",
+        "import_base_status": "PARTIAL"
+      },
+      "registry_status": "DOCUMENTED",
+      "scope_limitation": "Taux standard substantié ; assiette à l'importation PARTIAL (anomalie registre : « faute de référence d'article extraite »)."
+    },
+    {
+      "country": "LSO",
+      "family": "VAT",
+      "decision_code": "REGISTRY_SUBSTANTIATED_BY_ENRICHMENT",
+      "evidence": {
+        "enrichment_file": "data/priority-08/national_enrichment.json",
+        "status_in_enrichment": "DOCUMENTED",
+        "standard_rate_source": "LSO-RSL-VAT-ACT-2001 [VERIFIED_PRIMARY_TEXT] Value Added Tax Act 2001",
+        "import_base_status": "DOCUMENTED"
+      },
+      "registry_status": "DOCUMENTED"
+    },
+    {
+      "country": "SWZ",
+      "family": "VAT",
+      "decision_code": "REGISTRY_SUBSTANTIATED_BY_ENRICHMENT",
+      "evidence": {
+        "enrichment_file": "data/priority-08/national_enrichment.json",
+        "status_in_enrichment": "DOCUMENTED",
+        "standard_rate_source": "SWZ-GAZETTE-VAT-2018 [VERIFIED_PRIMARY_TEXT] VAT Rates Amendment, Legal Notice 112 of 2018",
+        "import_base_status": "NOT_AVAILABLE"
+      },
+      "registry_status": "DOCUMENTED",
+      "scope_limitation": "Assiette à l'importation NOT_AVAILABLE."
+    },
+    {
+      "country": "NAM",
+      "family": "VAT",
+      "decision_code": "REGISTRY_SUBSTANTIATED_BY_ENRICHMENT",
+      "evidence": {
+        "enrichment_file": "data/priority-08/national_enrichment.json",
+        "status_in_enrichment": "DOCUMENTED",
+        "standard_rate_source": "NAM-NAMRA-VAT-ACT-2000 [VERIFIED_PRIMARY_TEXT] Value Added Tax Act 10 of 2000",
+        "import_base_status": "DOCUMENTED"
+      },
+      "registry_status": "DOCUMENTED"
+    },
+    {
+      "country": "UGA",
+      "family": "VAT",
+      "decision_code": "OFFICIAL_PRIMARY_TEXT_EXTRACTED",
+      "evidence": {
+        "absent_from": "data/priority-08/national_enrichment.json",
+        "dataset_state": "data/uganda/vat_measures.json : 0 taux vérifié (PENDING_OFFICIAL_CONSOLIDATION)",
+        "registry_anomaly_quoted": "La loi délègue le taux standard à un texte d'application ; le texte fixant le taux doit encore être archivé.",
+        "archived_document": {
+          "file": "backend/data/national_taxes/raw/UGA/20260905T134910Z_c3a1038ad5.bin",
+          "sha256": "e669e5cbe6feb47edbed6851f3d72cf044102b2934471535444d780aa2a29926",
+          "size_bytes": 4289929,
+          "source_id": "UGA-URA-DT-LAWS-COMPENDIUM-2021",
+          "note": "Compendium URA (lois fiscales consolidées, juillet 2021) archivé le 2026-09-05."
+        },
+        "extracted_quote": "Rate of tax The rate of tax for— (a) every taxable supply made in Uganda by a taxable person; (b) every import of goods other than an exempt import; and (c) the supply of any imported services by any person, is 18% of the taxable value as defined in sections 21 and 23 of the Act.",
+        "extraction_method": "PyMuPDF sur PDF officiel archivé (SHA-256 e669e5cb…)",
+        "record_id": "UGA-VAT-RATE-STANDARD-20050608"
+      },
+      "registry_status": "DOCUMENTED",
+      "resolution": "Claim DOCUMENTED du registre désormais substantié par le texte officiel archivé et cité. Statut famille DOCUMENTED_PRIMARY_SOURCE ; amendements post-juillet 2021 à contrôler."
+    },
+    {
+      "country": "GHA",
+      "family": "VAT",
+      "decision_code": "OFFICIAL_CURRENT_PAGE_RETAINED",
+      "evidence": {
+        "record_id": "GHA-VAT-RATE-STANDARD-20260101",
+        "verification_status": "VERIFIED_OFFICIAL_CURRENT_PAGE",
+        "legal_reference": "Value Added Tax Act, 2025 (Act 1151) — en vigueur au 01/01/2026",
+        "source_id": "GHA-GRA-VAT-ACT-1151-PAGE",
+        "source_institution": "Ghana Revenue Authority (GRA)",
+        "source_url_governmental": true,
+        "archived_sha256": "4e693ade22d8fb4cf5f50bc471ea411f8cdc0a736a26d86807097cc3e4af424e",
+        "quoted": "These reforms passed under the Value Added Tax Act, 2025 (Act 1151) took effect from 1st January 2026."
+      },
+      "registry_status": "PARTIAL",
+      "resolution": "Taux standard 15 % consolidé sur page officielle GRA archivée ; gazette Act 1151 à archiver pour VERIFIED_PRIMARY_TEXT."
+    },
+    {
+      "country": "BDI",
+      "family": "VAT",
+      "decision_code": "ENRICHMENT_PARTIAL_SUBSTANTIATED",
+      "evidence": {
+        "enrichment_file": "data/priority-08/national_enrichment.json",
+        "status_in_enrichment": "PARTIAL",
+        "standard_rate_documented": 18.0,
+        "import_base_status": "NOT_AVAILABLE",
+        "verified_sources": [
+          "BDI-OBR-VAT-2009 [VERIFIED_PRIMARY_TEXT] Loi n°1/02 du 17 février 2009 portant institution de la TVA",
+          "BDI-OBR-VAT-AMEND-2020 [VERIFIED_PRIMARY_TEXT] Loi n°1/10 du 16 novembre 2020 modifiant la législation TVA"
+        ]
+      },
+      "registry_status": "PARTIAL",
+      "scope_limitation": "Assiette à l'importation NOT_AVAILABLE (conflit customs_value vs CIF+DD à résoudre article par article)."
+    },
+    {
+      "country": "CAF",
+      "family": "VAT",
+      "decision_code": "ENRICHMENT_PARTIAL_SUBSTANTIATED",
+      "evidence": {
+        "enrichment_file": "data/priority-08/national_enrichment.json",
+        "status_in_enrichment": "PARTIAL",
+        "standard_rate_documented": 19.0,
+        "import_base_status": "DOCUMENTED",
+        "verified_sources": [
+          "CAF-DGID-CGI-2023 [VERIFIED_PRIMARY_TEXT] Code général des impôts de la République centrafricaine, mise à jour 2",
+          "CAF-MFB-REPORT-2025 [VERIFIED_PRIMARY_TEXT] Rapport définitif du 21 octobre 2025"
+        ]
+      },
+      "registry_status": "PARTIAL",
+      "scope_limitation": "Assiette DOCUMENTED — le PARTIAL porte sur l'étendue nationale."
+    },
+    {
+      "country": "GNQ",
+      "family": "VAT",
+      "decision_code": "ENRICHMENT_PARTIAL_SUBSTANTIATED",
+      "evidence": {
+        "enrichment_file": "data/priority-08/national_enrichment.json",
+        "status_in_enrichment": "PARTIAL",
+        "standard_rate_documented": 15.0,
+        "import_base_status": "DOCUMENTED",
+        "verified_sources": [
+          "GNQ-TAX-LAW-4-2004 [VERIFIED_PRIMARY_TEXT] Ley 4/2004 Reguladora del Sistema Tributario",
+          "GNQ-BUDGET-LAW-9-2025 [VERIFIED_PRIMARY_TEXT] Ley 9/2025 de Presupuestos Generales del Estado para 2026"
+        ]
+      },
+      "registry_status": "PARTIAL",
+      "scope_limitation": "Assiette DOCUMENTED — le PARTIAL porte sur l'étendue nationale."
+    }
+  ]
+}

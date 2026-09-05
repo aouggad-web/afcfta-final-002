@@ -1,13 +1,16 @@
 """
-Vérifications d'intégrité de la collecte Ouganda (EAC) : TVA — taux standard
-délibérément NON enregistré (délégué à un arrêté ministériel non archivé),
-seul le mécanisme de taux zéro est vérifié — et accises vérifiées (5 lignes
-représentatives du Schedule 2).
+Vérifications d'intégrité de la collecte Ouganda (EAC) : TVA — le taux standard
+(18%) est enregistré UNIQUEMENT car le texte qui le fixe est désormais archivé
+et cité : le Value Added Tax (Rate of Tax) Order, 2005 (art. 78(2), Cap. 349),
+extrait du compendium URA des lois fiscales archivé SHA-256 le 2026-09-05 —
+et accises vérifiées (5 lignes représentatives du Schedule 2).
 
-Cette collecte corrige une passe antérieure fusionnée avec des références
-légales fictives ("Value Added Tax Act 1997, Act No. 106 of 1997" — cette loi
-n'existe pas ; la loi réelle est le Cap. 349 de 1996) et des statuts non
-conformes au schéma. Voir data/sources/uganda/README.md.
+Historique : cette collecte corrige une passe antérieure fusionnée avec des
+références légales fictives ("Value Added Tax Act 1997, Act No. 106 of 1997" —
+cette loi n'existe pas ; la loi réelle est le Cap. 349 de 1996) et des statuts
+non conformes au schéma. Le garde-fou ``vat_rates == []`` (taux délégué à un
+arrêté non archivé) a été levé le 2026-09-05 APRÈS archivage vérifiable du
+décret — les exigences de preuve ci-dessous verrouillent cette promotion.
 
 UGA n'est pas enregistrée dans SUPPORTED_JURISDICTIONS ni dans
 NATIONAL_OFFER_REGISTRY.
@@ -23,10 +26,34 @@ _DATA_DIR = _ROOT / "data" / "uganda"
 _SOURCES_DIR = _ROOT / "data" / "sources" / "uganda"
 
 
-def test_uga_vat_standard_rate_not_verified():
-    """Garde-fou : aucune entrée VAT-RATE-STANDARD (taux délégué à un arrêté ministériel non archivé)."""
+def test_uga_vat_standard_rate_verified_from_archived_order():
+    """Le taux standard n'existe que SI le décret officiel archivé le prouve.
+
+    Exigences (toutes obligatoires) : VERIFIED_PRIMARY_TEXT, source du
+    compendium URA archivé, référence au décret pris en vertu de l'art. 78(2)
+    du Cap 349, citation verbatim du texte, SHA-256 du fichier local conforme.
+    """
     data = json.loads((_DATA_DIR / "vat_measures.json").read_text(encoding="utf-8"))
-    assert data["vat_rates"] == []
+    standards = [r for r in data["vat_rates"] if "STANDARD" in r.get("record_id", "")]
+    assert len(standards) == 1
+    rec = standards[0]
+
+    assert rec["verification_status"] == "VERIFIED_PRIMARY_TEXT"
+    assert rec["source_id"] == "UGA-URA-DT-LAWS-COMPENDIUM-2021"
+    assert "78(2)" in rec["legal_reference"] and "Cap" in rec["legal_reference"]
+    assert "18%" in rec["legal_product_description"]
+
+    # La source doit être enregistrée avec un document local vérifiable
+    sources = json.loads((_DATA_DIR / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
+    src = next(s for s in sources if s["source_id"] == rec["source_id"])
+    assert src.get("verification_status") == "VERIFIED_PRIMARY_TEXT"
+    assert src.get("sha256") and src.get("local_file")
+
+    # Le fichier archivé existe et son SHA-256 correspond (preuve sur disque)
+    local = _ROOT / src["local_file"]
+    assert local.exists(), f"document archivé introuvable: {local}"
+    digest = hashlib.sha256(local.read_bytes()).hexdigest()
+    assert digest == src["sha256"]
 
 
 def test_uga_vat_zero_rated_exports():
