@@ -359,10 +359,27 @@
   border: 1px solid #ffeaa7;
 }
 
+.badge-mixed {
+  background-color: #e7e0f5;
+  color: #4a3673;
+  border: 1px solid #d3c6ee;
+}
+
 .badge-unknown {
   background-color: #e2e3e5;
   color: #383d41;
   border: 1px solid #d6d8db;
+}
+
+/* Badge de nature au niveau du secteur (encadré ISIC), dans la colonne description */
+.col-description .sector-nature {
+  display: inline-block;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.sector-description-text {
+  vertical-align: middle;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
