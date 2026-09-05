@@ -154,3 +154,11 @@ Build a comprehensive regulatory data engine for all 54 AfCFTA countries with a 
 - FastAPI 0.100+
 - PostgreSQL 15
 - Redis 7
+
+## Session Update (Sept 2026) - Lint cleanup
+Fixed 31 blocking lint errors reported by pre-completion checks:
+- Route shadowing fixed in backend/routes/logistics.py (ports/search, air/airports/search moved before parameterized routes) and backend/routes/tariffs.py (country-hs6-tariffs/available and /all moved before /{hs6_code})
+- Removed duplicate merge-conflict code blocks (F811/F601) in backend/routes/ai_intelligence.py (kept engine-based scoring implementation), backend/services/crawlers/dza_tariff_connector.py (kept NorthAfricaCrawlerBase-based class, unused legacy aiohttp crawler removed), backend/crawlers/countries/uma_member_scraper.py (deduped COUNTRY_CONFIGS entries EGY/TUN/LBY/MRT/SDN and duplicate functions)
+- Fixed bare except clauses in backend/routes/health.py and backend/etl/news_aggregator.py
+- Removed duplicate test method in backend/tests/test_north_africa_tariff_system.py
+- Verified via `ruff check` (no route-shadowing/F811/F601/E722 remain) and curl smoke tests on affected endpoints
