@@ -1,0 +1,9 @@
+{
+ "iso3": "MUS",
+ "currency": "MUR",
+ "levy_tables": [
+  "excise_excise"
+ ],
+ "general_levy_tables": [],
+ "gazette_register": "mus_gazette_register.json"
+}

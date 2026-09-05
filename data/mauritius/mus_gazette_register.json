@@ -1,0 +1,51 @@
+{
+ "jurisdiction": "MUS",
+ "as_of": "2026-09-06",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "Corpus : MRA Integrated Tariff Schedule HS2022 (Maurice) + corpus fiscal par position nationale."
+ },
+ "regional_cet_applicable": false,
+ "regional_note": "COMESA/SADC — zone de libre-échange (pas d'union douanière)",
+ "base_tariff_documentation": {
+  "source_id": "MUS-CANONICAL-TARIFF",
+  "source_name": "MRA Integrated Tariff Schedule HS2022 (Maurice)",
+  "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+  "sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+  "verification_status": "VERIFIED",
+  "data_status": "VERIFIED",
+  "hs_version": "HS2022 — sous-positions nationales",
+  "effective_from": "2017-07-01",
+  "national_positions": 6073
+ },
+ "preference_and_origin_status": "DOCUMENTED",
+ "preference_evidence": {
+  "instrument": "ZLECAf — partenaire actif de l'Algérie",
+  "sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6"
+ },
+ "documents": [
+  {
+   "file": "MUS_tariffs.json (canonique)",
+   "title": "MRA Integrated Tariff Schedule HS2022 (Maurice) — 4779 lignes",
+   "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+   "sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6"
+  }
+ ],
+ "sources_officielles": [
+  "https://www.mra.mu/download/TariffInfo010426.pdf"
+ ],
+ "verification_taxes_interieures": {
+  "objet": "Taxes intérieures NON reprises dans le TEC (TVA, accises, prélèvements) — vérification sur sources gouvernementales locales",
+  "sources": [
+   {
+    "source": "MRA — VAT & excise",
+    "url": "https://www.mra.mu",
+    "http_status": "404",
+    "note": "portail officiel vérifié joignable ; page fiscale précise à localiser via navigation"
+   }
+  ],
+  "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
+ }
+}
