@@ -230,10 +230,10 @@ self.addEventListener('notificationclick', (event) => {
   if (event.action === 'dismiss') return;
   const url = event.notification.data?.url || '/';
   event.waitUntil(
-    clients.matchAll({ type: 'window' }).then((windowClients) => {
+    self.clients.matchAll({ type: 'window' }).then((windowClients) => {
       const existing = windowClients.find((c) => c.url === url && 'focus' in c);
       if (existing) return existing.focus();
-      return clients.openWindow(url);
+      return self.clients.openWindow(url);
     })
   );
 });
