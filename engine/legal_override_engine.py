@@ -402,7 +402,12 @@ class LegalOverrideResolver:
         base_source_ok = bool(
             base_doc.get("sha256")
             and base_doc.get("verification_status")
-            in {"SOURCE_ARCHIVED", "CRAWLED_AUTHENTIC", "OFFICIAL_SOURCE_IDENTIFIED"}
+            in {
+                "SOURCE_ARCHIVED",
+                "CRAWLED_AUTHENTIC",
+                "OFFICIAL_SOURCE_IDENTIFIED",
+                "VERIFIED",
+            }
         )
         measures_ok = all(
             m.source_hash

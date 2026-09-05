@@ -36,6 +36,7 @@ _EAC_DATA = _ROOT / "data" / "eac"
 _EAC_LEGAL_OVERRIDES = _EAC_DATA / "legal_overrides.json"
 _EAC_GAZETTE_REGISTER = _EAC_DATA / "eac_gazette_register.json"
 _DZA_DATA = _ROOT / "data" / "dza"
+_EGY_DATA = _ROOT / "data" / "egypt"
 
 
 @dataclass(frozen=True)
@@ -68,6 +69,18 @@ SUPPORTED_JURISDICTIONS: Dict[str, JurisdictionConfig] = {
         default_currency="DZD",
         levy_tables=(("prct", "prct"), ("tcs", "tcs"), ("daps", "daps")),
         general_levy_tables=frozenset({"prct"}),
+    ),
+    # Égypte : tarif national VERIFIED (customs.gov.eg, 8 746 sous-positions
+    # 10 chiffres), TVA 14 % (VAT Law 67/2016) + taux spécifiques par position,
+    # Taxe de Table (TJ/ضريبة الجدول), 225 F.A.P trilingues AR/FR/EN.
+    "EGY": JurisdictionConfig(
+        iso3="EGY",
+        fiscal_data_dir=_EGY_DATA,
+        legal_overrides_path=_EGY_DATA / "legal_overrides.json",
+        gazette_register_path=_EGY_DATA / "egypt_gazette_register.json",
+        default_currency="EGP",
+        levy_tables=(("schedule_table_tax", "schedule_table_tax"),),
+        general_levy_tables=frozenset(),
     ),
 }
 
