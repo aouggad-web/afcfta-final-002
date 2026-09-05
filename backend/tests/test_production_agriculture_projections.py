@@ -3,11 +3,14 @@ PR #428 merge. Focus on the /api/faostat/country-detail/{iso3} endpoint which
 must now expose the enriched crops list plus the `projections` and
 `has_projections` keys while keeping the existing keys intact.
 """
+
 import os
 import pytest
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://commerce-viewer.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get(
+    "REACT_APP_BACKEND_URL", "https://commerce-viewer.preview.emergentagent.com"
+).rstrip("/")
 
 COUNTRIES = ["NGA", "GHA", "DZA", "CIV", "SEN"]
 
@@ -30,7 +33,9 @@ def test_country_detail_status_and_shape(session, iso3):
     payload = data.get("data", data)
     # Existing keys still present (non-regression)
     for k in EXISTING_KEYS:
-        assert k in payload, f"{iso3} missing existing key '{k}'. Keys present: {list(payload.keys())[:20]}"
+        assert (
+            k in payload
+        ), f"{iso3} missing existing key '{k}'. Keys present: {list(payload.keys())[:20]}"
     # New keys
     assert "projections" in payload, f"{iso3} missing 'projections' key"
     assert "has_projections" in payload, f"{iso3} missing 'has_projections' key"
@@ -74,9 +79,22 @@ def test_cultures_no_fr_en_duplicates_and_no_animals(session):
         if n:
             names.append(n)
     # No duplicates
-    assert len(names) == len(set(names)), f"Duplicate cultures found: {[n for n in names if names.count(n) > 1][:5]}"
+    assert len(names) == len(
+        set(names)
+    ), f"Duplicate cultures found: {[n for n in names if names.count(n) > 1][:5]}"
     # No obvious animal products
-    banned = ["meat", "viande", "milk", "lait", "eggs", "oeufs", "cattle", "poulet", "chicken", "bovine"]
+    banned = [
+        "meat",
+        "viande",
+        "milk",
+        "lait",
+        "eggs",
+        "oeufs",
+        "cattle",
+        "poulet",
+        "chicken",
+        "bovine",
+    ]
     hits = [n for n in names if any(b in n for b in banned)]
     assert not hits, f"Animal products leaked into cultures: {hits[:5]}"
 

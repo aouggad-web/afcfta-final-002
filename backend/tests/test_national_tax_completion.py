@@ -44,9 +44,9 @@ def test_registry_has_no_tax_rates():
     forbidden_keys = {"rate", "vat_rate", "dd_rate", "tax_rate", "percentage", "amount"}
     for iso3, cfg in NATIONAL_TAX_SOURCES.items():
         blob = _iter_keys(cfg)
-        assert not (forbidden_keys & blob), (
-            f"{iso3}: clés de taux interdites trouvées: {forbidden_keys & blob}"
-        )
+        assert not (
+            forbidden_keys & blob
+        ), f"{iso3}: clés de taux interdites trouvées: {forbidden_keys & blob}"
 
 
 def _iter_keys(obj):
@@ -240,6 +240,7 @@ def test_arbitration_registry_claim_unsubstantiated():
     """Le code REGISTRY_CLAIM_UNSUBSTANTIATED existe pour les claims sans preuve
     (UGA a été dégradé sous ce code avant consolidation, cf. audit trail)."""
     import json as _json
+
     arb = _json.load(open("data/coverage/national_tax_arbitration.json"))
     assert "REGISTRY_CLAIM_UNSUBSTANTIATED" in arb["decision_codes"]
     # Audit trail : la décision UGA a un historique de dégradation documenté.

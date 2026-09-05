@@ -124,10 +124,7 @@ def test_dza_gazette_register_integrity():
         )
     )
     by_file = {d["file"]: d["sha256"] for d in manifest["documents"]}
-    assert (
-        reg["base_tariff_documentation"]["sha256"]
-        == by_file["tarif_d_usage_2020.pdf"]
-    )
+    assert reg["base_tariff_documentation"]["sha256"] == by_file["tarif_d_usage_2020.pdf"]
 
 
 def test_dza_fap_attached_by_national_position():
@@ -182,6 +179,8 @@ def test_dza_sub_positions_carry_fap():
         if sp.get("administrative_formalities")
     )
     assert with_fap_subs == 9468
+
+
 def test_kenya_layer_unaffected_by_dza_wiring():
     """Non-régression : la juridiction KEN garde son comportement (USD, registre EAC)."""
     assert SUPPORTED_JURISDICTIONS["KEN"].default_currency == "USD"

@@ -207,16 +207,18 @@ def discover_measure_datasets() -> Dict[str, Dict[str, Dict[str, Any]]]:
             dataset = _read_json(path) or {}
             records = _measure_records(dataset, family)
             verified = [
-                r
-                for r in records
-                if str(r.get("verification_status") or "").startswith("VERIFIED")
+                r for r in records if str(r.get("verification_status") or "").startswith("VERIFIED")
             ]
             discovered.setdefault(iso3, {})[family] = {
                 "dataset_path": os.path.relpath(path, os.path.dirname(ROOT_DATA_DIR)),
                 "records": len(records),
                 "verified_records": len(verified),
                 "verification_statuses": sorted(
-                    {str(r.get("verification_status")) for r in records if r.get("verification_status")}
+                    {
+                        str(r.get("verification_status"))
+                        for r in records
+                        if r.get("verification_status")
+                    }
                 ),
             }
     return discovered
@@ -519,8 +521,7 @@ def write_completion_report_md(out_path: str) -> str:
         f"**{counts.get(STATUS_DOCUMENTED_NATIONAL, 0)}**",
         f"- Taxes nationales partiellement documentées : "
         f"**{counts.get(STATUS_PARTIAL_DOCUMENTED, 0)}**",
-        f"- En attente de collecte officielle : "
-        f"**{counts.get(STATUS_PENDING_OFFICIAL, 0)}**",
+        f"- En attente de collecte officielle : " f"**{counts.get(STATUS_PENDING_OFFICIAL, 0)}**",
         f"- TVA documentée (dataset sourcé) : **{len(report['vat_documented_countries'])}** "
         f"pays — {', '.join(report['vat_documented_countries'])}",
         f"- Accises documentées (dataset sourcé) : "
@@ -534,9 +535,7 @@ def write_completion_report_md(out_path: str) -> str:
         f"**{len(report['dataset_registry_divergences'])}**",
         f"- Décisions d'arbitrage appliquées (preuves citées) : "
         f"**{report['arbitration']['decisions_applied']}** — "
-        + ", ".join(
-            f"{k}: {v}" for k, v in report["arbitration"]["by_decision_code"].items()
-        ),
+        + ", ".join(f"{k}: {v}" for k, v in report["arbitration"]["by_decision_code"].items()),
         "",
         "| Pays | Statut global | VAT | EXCISE | DTE | Para-fiscal national |",
         "|---|---|---|---|---|---|",
@@ -551,9 +550,7 @@ def write_completion_report_md(out_path: str) -> str:
                 cell += f" ({f['verified_records']} vérifiés)"
             cells.append(cell)
         pf = fams["PARAFISCAL_NATIONAL"]
-        cells.append(
-            f"{pf['status']} ({', '.join(pf.get('documented_levies') or []) or '—'})"
-        )
+        cells.append(f"{pf['status']} ({', '.join(pf.get('documented_levies') or []) or '—'})")
         lines.append(f"| {code} | {st['overall_status']} | " + " | ".join(cells) + " |")
 
     lines += [
