@@ -99,6 +99,7 @@ def get_isic4_country_data(country_iso3: str = Path(..., description="Code ISO3 
         "years_covered": summary["years_covered"],
         "total_sectors": len(summary["sectors"]),
         "data_includes": "OFFICIAL_STATISTICS et UNIDO_DERIVED_ESTIMATE (voir champ 'data_nature' par indicateur)",
+        "data_quality": summary.get("data_quality", {}),
         "sectors": [
             {
                 "isic4": s["isic4"],
