@@ -45,7 +45,9 @@
    "product_description": "AGRIINPUT — Autorisation d'importation d'intrants agricoles (engrais / pesticides)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   },
   {
    "measure_id": "RWA-FAP-002-ARMAUTH",
@@ -118,7 +120,9 @@
    "product_description": "ARMAUTH — Autorisation préalable d'importation d'armes et matériels de sécurité",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   },
   {
    "measure_id": "RWA-FAP-003-ENERGYAUTH",
@@ -204,7 +208,9 @@
    "product_description": "ENERGYAUTH — Autorisation d'importation d'hydrocarbures / produits pétroliers",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   },
   {
    "measure_id": "RWA-FAP-004-ENVDECL",
@@ -1103,7 +1109,9 @@
    "product_description": "ENVDECL — Déclaration de conformité environnementale / Fiche de Données de Sécurité (FDS)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   },
   {
    "measure_id": "RWA-FAP-005-FOODCERT",
@@ -1696,7 +1704,9 @@
    "product_description": "FOODCERT — Attestation de conformité alimentaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   },
   {
    "measure_id": "RWA-FAP-006-FOODCERT",
@@ -2142,7 +2152,9 @@
    "product_description": "FOODCERT — Attestation de libre commercialisation / conformité sanitaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   },
   {
    "measure_id": "RWA-FAP-007-IMPDEC",
@@ -8097,7 +8109,9 @@
    "product_description": "IMPDEC — Déclaration en Douane (DAU — Document Administratif Unique)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   },
   {
    "measure_id": "RWA-FAP-008-PHARMAUTH",
@@ -8165,7 +8179,9 @@
    "product_description": "PHARMAUTH — Autorisation d'importation de médicaments / Autorisation de Mise sur le Marché (AMM)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   },
   {
    "measure_id": "RWA-FAP-009-PHYTOCERT",
@@ -8758,7 +8774,9 @@
    "product_description": "PHYTOCERT — Certificat phytosanitaire du pays d'origine",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   },
   {
    "measure_id": "RWA-FAP-010-STDCERT",
@@ -10019,7 +10037,9 @@
    "product_description": "STDCERT — Certificat de conformité aux normes nationales",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   },
   {
    "measure_id": "RWA-FAP-011-VETCERT",
@@ -10465,7 +10485,9 @@
    "product_description": "VETCERT — Certificat sanitaire vétérinaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_TARIFF — autorités nationales réelles, mais les exigences documentaires dérivent du schéma IMPDEC/VETCERT/buckets et du tarif EAC, sans texte rwandais établissant chaque document"
   }
  ],
  "provenance": {
@@ -10473,6 +10495,7 @@
   "note_invariant": "Aucune F.A.P à contenu purement numérique (invariant ^\\d+([.,]\\d+)?$)",
   "canonical_sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656",
   "fap_par_formalite": 11,
-  "source_formalites": "etl/africa_formalities.py (buckets produits × autorités nationales réelles — 54 pays)"
+  "source_formalites": "etl/africa_formalities.py (buckets produits × autorités nationales réelles — 54 pays)",
+  "integrity_watch": "mapping_confidence dégradé à 70 et legal_text_verified=false — formalités dérivées du tarif régional, à confirmer par les textes rwandais"
  }
 }

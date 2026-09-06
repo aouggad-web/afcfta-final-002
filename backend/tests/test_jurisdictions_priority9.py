@@ -48,9 +48,24 @@ def test_jurisdiction_registered_and_documented(iso3):
     assert q["source"] == "DOCUMENTED", (iso3, q)
     assert q["temporal_validity"] == "DOCUMENTED", (iso3, q)
     assert q["taxes_and_levies"] == "DOCUMENTED", (iso3, q)
-    assert r["overall_status"] == "INFORMATIVE_COMPLETE", (iso3, q, r.get("known_data_gaps"))
-    gaps = " ".join(r.get("known_data_gaps", []) + r.get("missing_elements", []))
-    assert "gazette coverage" not in gaps and "national-measure coverage" not in gaps
+    # Garde-fou Integrity Watch : la préférence ZLECAf sans instrument
+    # d'implémentation indépendant ne doit JAMAIS être présentée comme
+    # appliquée — le statut global reste INFORMATIVE_PARTIAL tant que
+    # la préférence est OFFER_ONLY (RWA au 2026-09-06).
+    if iso3 == "RWA":
+        assert r["overall_status"] == "INFORMATIVE_PARTIAL", (iso3, q, r.get("known_data_gaps"))
+        # Garde au niveau des données : la preuve de préférence doit être
+        # classée OFFER_ONLY (jamais DOCUMENTED sans instrument indépendant)
+        reg = json.loads(
+            next((_ROOT / "data" / "rwanda").glob("*gazette_register.json")).read_text(
+                encoding="utf-8"
+            )
+        )
+        assert reg["preference_and_origin_status"] == "OFFER_ONLY", iso3
+    else:
+        assert r["overall_status"] == "INFORMATIVE_COMPLETE", (iso3, q, r.get("known_data_gaps"))
+        gaps = " ".join(r.get("known_data_gaps", []) + r.get("missing_elements", []))
+        assert "gazette coverage" not in gaps and "national-measure coverage" not in gaps
     assert r["currency_code"] == CURRENCIES[iso3]
 
 

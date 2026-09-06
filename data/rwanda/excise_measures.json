@@ -4,43 +4,123 @@
  "as_of": "2026-09-06",
  "excise_rates": [
   {
-   "record_id": "RWA-EXCISE_EXCIS-30_0",
-   "rate": "30.0%",
-   "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "record_id": "RWA-EXCISE-BEER-OTHER",
+   "rate": "65%",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem",
+   "effective_from": "2025-07-01",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
-   "supersedes_record_id": null,
+   "legal_status": "IN_FORCE_PRIMARY_TEXT",
+   "supersedes_record_id": "RWA-EXCISE_EXCIS-30_0",
    "hs_codes_explicit": [
     "22030010",
     "22030090"
    ],
-   "legal_reference": "East African Community — EAC Common External Tariff 2022 — colonne accise",
-   "source_id": "RWA-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — bière (autre que brassée localement à partir de matières premières locales) ; traitement préférentiel 40 % (BEER-LOCAL-RAWMAT) subordonné à la qualification du producteur, non dérivable du code SH",
+   "source_id": "RWA-LAW-011-2025",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "notes": "La mesure BEER-LOCAL-RAWMAT (40 %) est conservée sans hs_codes_explicit : elle dépend d'une qualification producteur, pas du code tarifaire — le moteur applique le taux général 65 %."
   },
   {
-   "record_id": "RWA-EXCISE_EXCIS-36_0",
-   "rate": "36.0%",
-   "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "record_id": "RWA-EXCISE-WINE-OTHER",
+   "rate": "70% of value, capped at FRW 40,000 per litre",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem plafonné par un montant spécifique par litre",
+   "effective_from": "2025-07-01",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "IN_FORCE_PRIMARY_TEXT",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
-    "24021000",
-    "24022010",
-    "24022090",
-    "24029000"
+    "2204.10.00",
+    "2204.21.00",
+    "2204.22.00",
+    "2204.29.00",
+    "2205.10.00",
+    "2205.90.00"
    ],
-   "legal_reference": "East African Community — EAC Common External Tariff 2022 — colonne accise",
-   "source_id": "RWA-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — vins et autres boissons fermentées",
+   "source_id": "RWA-LAW-011-2025",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "RWA-EXCISE-CIGARETTES",
+   "rate": "36% of the value of a pack of 20 cigarettes, plus FRW 230 per pack",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem PLUS composante spécifique par paquet (exige la quantité)",
+   "effective_from": "2025-07-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_PRIMARY_TEXT",
+   "supersedes_record_id": "RWA-EXCISE_EXCIS-36_0",
+   "hs_codes_explicit": [
+    "2402.20.10",
+    "2402.20.90",
+    "2402.90.00",
+    "2402.10.00"
+   ],
+   "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — cigarettes",
+   "source_id": "RWA-LAW-011-2025",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "RWA-EXCISE-PETROL",
+   "rate": "FRW 183 per litre",
+   "rate_basis": "spécifique par litre (quantité exigée — non calculable sans quantité)",
+   "effective_from": "2025-07-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_PRIMARY_TEXT",
+   "supersedes_record_id": null,
+   "hs_codes_explicit": [
+    "2710.12.20"
+   ],
+   "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — essence",
+   "source_id": "RWA-LAW-011-2025",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "RWA-EXCISE-GASOIL",
+   "rate": "FRW 150 per litre",
+   "rate_basis": "spécifique par litre (quantité exigée — non calculable sans quantité)",
+   "effective_from": "2025-07-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_PRIMARY_TEXT",
+   "supersedes_record_id": null,
+   "hs_codes_explicit": [
+    "2710.19.31"
+   ],
+   "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — gasoil",
+   "source_id": "RWA-LAW-011-2025",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "RWA-EXCISE-VEHICLES-UNDER-1500CC",
+   "rate": "5%",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem",
+   "effective_from": "2025-07-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_PRIMARY_TEXT",
+   "supersedes_record_id": null,
+   "hs_codes_explicit": [
+    "8703.21.90"
+   ],
+   "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — véhicules ≤ 1500 cc",
+   "source_id": "RWA-LAW-011-2025",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "RWA-EXCISE-BEER-LOCAL-RAWMAT",
+   "rate": "40%",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem",
+   "effective_from": "2025-07-01",
+   "effective_to": null,
+   "legal_status": "CONDITIONAL_PRIMARY_TEXT",
+   "supersedes_record_id": null,
+   "hs_codes_explicit": [],
+   "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — bière brassée localement à partir de matières premières locales (qualification producteur exigée)",
+   "source_id": "RWA-LAW-011-2025",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "notes": "Documentation seule : jamais appliquée automatiquement (hs vide)."
   },
   {
    "record_id": "RWA-EXCISE_EXCIS-40_0",
    "rate": "40.0%",
-   "rate_basis": "valeur en douane (CIF)",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "effective_from": "2017-07-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
@@ -63,5 +143,14 @@
  "provenance": {
   "source": "backend/data/RWA_tariffs.json (PARTIAL)",
   "canonical_sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656"
+ },
+ "primary_law_restored": {
+  "law": "Law nº 011/2025 of 27/05/2025 establishing the excise duty",
+  "records_restored": 7,
+  "runtime_removed": [
+   "RWA-EXCISE_EXCIS-30_0",
+   "RWA-EXCISE_EXCIS-36_0"
+  ],
+  "reason": "les taux de la colonne EAC (bière 30 %, cigarettes 36 %) contredisaient la loi primaire nº 011/2025 (bière 40/65 %, cigarettes 36 % + FRW 230/pack) — la loi rwandaise fait foi, la colonne EAC 2017 n'est pas la loi en vigueur"
  }
 }
