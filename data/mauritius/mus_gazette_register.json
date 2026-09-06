@@ -26,10 +26,11 @@
    "pdf_sha256": null
   }
  },
- "preference_and_origin_status": "DOCUMENTED",
+ "preference_and_origin_status": "PARTIAL",
  "preference_evidence": {
-  "instrument": "ZLECAf — partenaire actif de l'Algérie",
-  "sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6"
+  "instrument": "ZLECAf — aucune offre MUS ligne à ligne archivée",
+  "status": "PARTIAL",
+  "note": "application effective démontrée (GTI) mais pas de schedule MUS ligne à ligne — la préférence n'est JAMAIS appliquée par le calculateur"
  },
  "documents": [
   {
@@ -60,5 +61,33 @@
   "zlecaf_afcfta": null,
   "zlecaf_npf_crosscheck": null,
   "note_corrections": "1 309 lignes / 1 508 sous-positions sans TVA publiée dans le tarif MRA HS2022 documentées comme exonérations explicites par position (66 enregistrements par chapitre, codes SP explicites — jamais comblées au taux standard) ; cadre : Value Added Tax Act 1998 (PwC Mauritius)."
+ },
+ "afcfta_application_evidence": {
+  "gti_participant": true,
+  "gti_launch": "2022-10-07",
+  "source_url": "https://au-afcfta.org/guided-trade-initiative/",
+  "source_title": "AfCFTA Secretariat — Guided Trade Initiative (GTI)",
+  "note": "l'application effective des préférences ZLECAf par les douanes mauriciennes est démontrée par le Secrétariat (GTI) — la portée ligne à ligne reste contrôlée par zlecaf_implementation_registry.py",
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité)"
+  },
+  "schedule_published": "aucune offre MUS ligne à ligne archivée (NOT_AVAILABLE)"
+ },
+ "coverage_scope": {
+  "base_tariff": "VERIFIED — 6 073 sous-positions MRA HS2022 (colonne TVA incluse)",
+  "national_layer": "PARTIAL — prélèvements nationaux omis non modélisés ; accises documentées (assiette alignée moteur) ; TVA avec exemptions par position"
+ },
+ "currency_note": "customs_value attendu dans la devise de la juridiction (MUR) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés MUR",
+ "integrity_watch_fixes": {
+  "as_of": "2026-09-06",
+  "excise_rate_basis_aligned_with_engine": true,
+  "excise_backdating_removed": true,
+  "preference_downgraded_to_partial": true,
+  "coverage_scope_documented": true,
+  "currency_expectation_documented": true,
+  "sh6_principle_documented": true
  }
 }

@@ -6,8 +6,8 @@
   {
    "record_id": "MUS-EXCISE_EXCIS-5_0",
    "rate": "5.0%",
-   "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (assiette alignée sur le moteur)",
+   "effective_from": "2026-04-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
    "supersedes_record_id": null,
@@ -129,13 +129,14 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "source explicite : MRA Integrated Tariff Schedule HS2022 (schedule avril 2026) — la source ne documente PAS de validité rétroactive depuis 2017 ; aucune série historique affirmée"
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-10_0",
    "rate": "10.0%",
-   "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (assiette alignée sur le moteur)",
+   "effective_from": "2026-04-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
    "supersedes_record_id": null,
@@ -240,13 +241,14 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "source explicite : MRA Integrated Tariff Schedule HS2022 (schedule avril 2026) — la source ne documente PAS de validité rétroactive depuis 2017 ; aucune série historique affirmée"
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-15_0",
    "rate": "15.0%",
-   "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (assiette alignée sur le moteur)",
+   "effective_from": "2026-04-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
    "supersedes_record_id": null,
@@ -306,13 +308,14 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "source explicite : MRA Integrated Tariff Schedule HS2022 (schedule avril 2026) — la source ne documente PAS de validité rétroactive depuis 2017 ; aucune série historique affirmée"
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-25_0",
    "rate": "25.0%",
-   "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (assiette alignée sur le moteur)",
+   "effective_from": "2026-04-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
    "supersedes_record_id": null,
@@ -347,13 +350,14 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "source explicite : MRA Integrated Tariff Schedule HS2022 (schedule avril 2026) — la source ne documente PAS de validité rétroactive depuis 2017 ; aucune série historique affirmée"
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-30_0",
    "rate": "30.0%",
-   "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (assiette alignée sur le moteur)",
+   "effective_from": "2026-04-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
    "supersedes_record_id": null,
@@ -366,13 +370,14 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "source explicite : MRA Integrated Tariff Schedule HS2022 (schedule avril 2026) — la source ne documente PAS de validité rétroactive depuis 2017 ; aucune série historique affirmée"
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-100_0",
    "rate": "100.0%",
-   "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (assiette alignée sur le moteur)",
+   "effective_from": "2026-04-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
    "supersedes_record_id": null,
@@ -384,13 +389,14 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "source explicite : MRA Integrated Tariff Schedule HS2022 (schedule avril 2026) — la source ne documente PAS de validité rétroactive depuis 2017 ; aucune série historique affirmée"
   },
   {
    "record_id": "MUS-EXCISE_EXCIS-230_0",
    "rate": "230.0%",
-   "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (assiette alignée sur le moteur)",
+   "effective_from": "2026-04-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
    "supersedes_record_id": null,
@@ -409,11 +415,13 @@
    ],
    "legal_reference": "MRA Integrated Tariff Schedule HS2022 (Maurice) — colonne accise",
    "source_id": "MUS-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "source explicite : MRA Integrated Tariff Schedule HS2022 (schedule avril 2026) — la source ne documente PAS de validité rétroactive depuis 2017 ; aucune série historique affirmée"
   }
  ],
  "provenance": {
   "source": "backend/data/MUS_tariffs.json (VERIFIED)",
   "canonical_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6"
- }
+ },
+ "assiette_note": "assiette ad valorem = CIF + droits de douane (alignée sur le moteur) ; les composantes spécifiques exigent la quantité (non calculables sans elle)"
 }
