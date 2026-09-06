@@ -162,14 +162,14 @@ def main() -> int:
 
     # ── 4+6. Registre : préférence NOT_AVAILABLE + couverture scannée + devise ──
     reg = json.loads(REGISTER.read_text(encoding="utf-8"))
-    reg["preference_and_origin_status"] = "NOT_AVAILABLE"
+    reg["preference_and_origin_status"] = "PARTIAL"
     reg["preference_evidence"] = {
         "instrument": "ZLECAf — aucune offre TZA archivée dans l'e-Tariff Book",
-        "status": "NOT_AVAILABLE",
+        "status": "PARTIAL",
         "note": (
-            "aucun snapshot d'offre tanzanien ni instrument d'implémentation "
-            "vérifié au 2026-09-06 — la préférence n'est JAMAIS appliquée par le "
-            "calculateur (NOT_AVAILABLE, jamais zéro ni deviné)"
+            "application effective démontrée (GTI du Secrétariat ZLECAf depuis le "
+            "07/10/2022) mais aucune offre tanzanienne ligne à ligne archivée — "
+            "la préférence n'est JAMAIS appliquée par le calculateur"
         ),
     }
     reg["coverage_scope"] = {

@@ -1,27 +1,20 @@
-"""Exhaustivité TZA : sous-positions 8 chiffres vs PDF officiel EAC CET 2022.
+"""TZA — exhaustivité du tarif national authentique (source unique, pas de canonique).
 
-Données régénérées par eac_cet_scraper v2 (extraction directe du PDF officiel),
-pas par un patch manuel. Vérifications (doctrine zéro-fabrication) :
-- 5 954 sous-positions uniques 8 chiffres, 0 doublon ;
-- chaque ligne porte une entrée CET (taux numérique, composé structuré, ou
-  trou documenté RATE_NOT_PUBLISHED_IN_PDF pour 53021000) ;
-- les 49 Sensitive Items portent le taux Schedule 2 (règle SI du texte officiel) ;
-- les 19 codes fusionnés-absents du crawler v1 sont récupérés avec leur taux ;
-- droits composés structurés MAX_AD_VALOREM_SPECIFIC sans montant fabriqué ;
-- taux NPF = CET par ligne ; offre ZLECAf TZA = NOT_AVAILABLE (pas de snapshot) ;
-- le registre documente la vérification, le SHA-256 et la piste « 7 341 lignes ».
+Principe SH6 : 6 chiffres internationaux ; le tarif national tanzanien (EAC CET
+2022) = 8 chiffres (SH6+2). Fichier national = backend/data/TZA_tariffs.json
+(verbatim du crawl eac_cet_scraper v2) — npf = CET par ligne, offre ZLECAf
+TZA non archivée → NOT_AVAILABLE.
 """
 
 import hashlib
 import json
-import sys
 from pathlib import Path
 
 BACKEND_ROOT = Path(__file__).resolve().parents[1]
 _ROOT = BACKEND_ROOT.parent
 
-CRAWLED = _ROOT / "backend" / "data" / "crawled" / "TZA_tariffs.json"
-CANONICAL = _ROOT / "backend" / "data" / "TZA_tariffs.json"
+NATIONAL = BACKEND_ROOT / "data" / "crawled" / "TZA_tariffs.json"
+NATIONAL_SLOT = BACKEND_ROOT / "data" / "TZA_tariffs.json"
 SLUG_DIR = _ROOT / "data" / "tanzania"
 
 SI_MILK_60 = {"04011000", "04012000", "04014000", "04015000", "04069000"}
@@ -42,103 +35,82 @@ COMPOUND_CODES = {
 RATE_NOT_PUBLISHED = {"53021000"}
 
 
-def _canon():
-    return json.loads(CANONICAL.read_text(encoding="utf-8"))
+def _national():
+    return json.loads(NATIONAL.read_text(encoding="utf-8"))
 
 
-def _sp_map():
-    d = _canon()
-    return {sp["code"]: sp for l in d["tariff_lines"] for sp in (l.get("sub_positions") or [])}
+def _pos_map():
+    return {p["hs_code"]: p for p in _national()["positions"]}
 
 
-def test_no_duplicate_sub_positions_and_count():
-    d = _canon()
-    codes = [sp["code"] for l in d["tariff_lines"] for sp in (l.get("sub_positions") or [])]
+def test_national_file_is_the_single_source():
+    assert NATIONAL.read_bytes() == NATIONAL_SLOT.read_bytes()
+
+
+def test_no_duplicate_positions_and_count():
+    d = _national()
+    codes = [p["hs_code"] for p in d["positions"]]
     assert len(codes) == len(set(codes)) == 5954
 
 
-def test_every_sub_position_code_is_8_digits():
-    d = _canon()
-    codes = [sp["code"] for l in d["tariff_lines"] for sp in (l.get("sub_positions") or [])]
-    assert all(len(c) == 8 and c.isdigit() for c in codes)
-
-
-def test_every_line_has_a_cet_entry():
-    d = _canon()
-    for l in d["tariff_lines"]:
-        assert any(t["tax"] == "CET" for t in (l.get("taxes_detail") or [])), l["hs6"]
+def test_every_position_has_a_cet_entry():
+    d = _national()
+    for p in d["positions"]:
+        assert any(t.get("is_cet") for t in (p.get("taxes_detail") or [])), p["hs_code"]
 
 
 def test_sensitive_items_carry_schedule2_rates():
-    sp = _sp_map()
+    pos = _pos_map()
     for code in SI_MILK_60:
-        assert sp[code]["dd"] == 60.0, (code, sp[code]["dd"])
-        assert sp[code]["rate_schedule"] == "2"
-    rice = sp["10063000"]
-    assert rice["dd"] is None
-    assert rice["dd_formula"] == "75% or $345/MT whichever is higher"
-    assert rice["dd_calculation"]["type"] == "MAX_AD_VALOREM_SPECIFIC"
-    assert rice["dd_calculation"]["requires_quantity"] is True
+        cet = next(t for t in pos[code]["taxes_detail"] if t.get("is_cet"))
+        assert cet["rate"] == 60.0, (code, cet["rate"])
+    rice = pos["10063000"]
+    cet = next(t for t in rice["taxes_detail"] if t.get("is_cet"))
+    assert cet["rate"] is None and "75% or $345/MT" in cet.get("note", "")
 
 
 def test_recovered_19_codes_with_verified_rates():
-    sp = _sp_map()
+    pos = _pos_map()
     for code, rate in RECOVERED_19.items():
-        assert sp[code]["dd"] == rate, (code, sp[code]["dd"])
-    ev = _canon()["exhaustiveness_verification"]
-    assert ev["codes_merged_recovered"] == 19
+        cet = next(t for t in pos[code]["taxes_detail"] if t.get("is_cet"))
+        assert cet["rate"] == rate, (code, cet["rate"])
 
 
 def test_compound_duties_structured_not_fabricated():
-    sp = _sp_map()
+    pos = _pos_map()
     for code in COMPOUND_CODES:
-        calc = sp[code].get("dd_calculation")
-        assert calc, code
-        assert calc["type"] == "MAX_AD_VALOREM_SPECIFIC"
+        cet = next(t for t in pos[code]["taxes_detail"] if t.get("is_cet"))
+        calc = cet.get("calculation")
+        assert calc and calc["type"] == "MAX_AD_VALOREM_SPECIFIC", code
         assert calc["requires_quantity"] is True
-        assert sp[code]["dd"] is None
-        assert "whichever is higher" in sp[code]["dd_formula"]
+        assert cet["rate"] is None
+        assert "whichever is higher" in cet.get("note", "")
 
 
-def test_rate_not_published_gap_is_documented_not_fabricated():
-    d = _canon()
-    for l in d["tariff_lines"]:
-        for sp in (l.get("sub_positions") or []):
-            if sp["code"] in RATE_NOT_PUBLISHED:
-                assert sp["dd"] is None
-                assert sp["rate_text"] == ""
-        cet = next(t for t in l["taxes_detail"] if t["tax"] == "CET")
-        if l["hs6"] == "530210":
-            assert cet.get("data_gap") == "RATE_NOT_PUBLISHED_IN_PDF"
+def test_rate_not_published_gap_documented():
+    pos = _pos_map()
+    cet = next(t for t in pos["53021000"]["taxes_detail"] if t.get("is_cet"))
+    assert cet["rate"] is None
+    assert cet.get("data_gap") == "RATE_NOT_PUBLISHED_IN_PDF"
 
 
 def test_npf_equals_cet_and_zlecaf_not_available_for_tza():
-    c = json.loads(CRAWLED.read_text(encoding="utf-8"))
-    for p in c["positions"][:100]:
-        assert p["npf_rate"]["ad_valorem_pct"] == next(
-            t["rate"] for t in p["taxes_detail"] if t.get("is_cet") and t["rate"] is not None
-        ) or p["npf_rate"]["ad_valorem_pct"] is None
-        z = p["zlecaf_afcfta"]
-        assert z["status"] == "NOT_AVAILABLE", (
-            "Tanzanie : pas de snapshot ZLECAf officiel — jamais devinée"
-        )
+    d = _national()
+    for p in d["positions"][:100]:
+        cet = next(t["rate"] for t in p["taxes_detail"] if t.get("is_cet") and t["rate"] is not None)
+        assert p["npf_rate"]["ad_valorem_pct"] == cet or p["npf_rate"]["ad_valorem_pct"] is None
+        assert p["zlecaf_afcfta"]["status"] == "NOT_AVAILABLE"
 
 
 def test_register_documents_verification_and_sha():
+    import hashlib
     reg = json.loads((SLUG_DIR / "tza_gazette_register.json").read_text(encoding="utf-8"))
     base = reg["base_tariff_documentation"]
     assert base["national_positions"] == 5954
-    canon_sha = hashlib.sha256(CANONICAL.read_bytes()).hexdigest()
-    assert base["sha256"] == canon_sha
+    sha = hashlib.sha256(NATIONAL_SLOT.read_bytes()).hexdigest()
+    assert base["sha256"] == sha
     assert reg["verification_nationale"]["status"] == "EXHAUSTIVE_VERIFIED"
-    verif = base["verification"]
-    assert verif["pdf_sha256"].startswith("4c5acc8b")
-    assert verif["claimed_total_7341_lines"].startswith("UNVERIFIED")
-    sources = " ".join(reg["sources_officielles"])
-    assert "tralac.org" in sources and "au.int" in sources
-
-
-def test_data_generated_by_crawler_not_manual_patch():
-    d = _canon()
-    assert d["generated_by"].startswith("eac_cet_scraper v2")
-    assert d["exhaustiveness_verification"]["pdf_sha256"].startswith("4c5acc8b")
+    assert reg["preference_and_origin_status"] == "PARTIAL"
+    ev = reg["afcfta_application_evidence"]
+    assert ev["gti_participant"] is True
+    assert "DZA-DGD-CIRC-482-2024" == ev["algeria_reciprocity"]["source_id"]

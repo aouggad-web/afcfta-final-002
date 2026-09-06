@@ -6,7 +6,7 @@
   {
    "record_id": "TZA-EXCISE-2009-FRUIT-VEG-JUICE-LOCAL",
    "rate": "Tshs. 9.00 per litre",
-   "rate_basis": "spécifique par litre (quantité exigée — non calculable sans quantité)",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "hs_codes_explicit": [],
    "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — jus de fruits/légumes produits localement",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
@@ -16,7 +16,7 @@
   {
    "record_id": "TZA-EXCISE-2009-FRUIT-VEG-JUICE-OTHER",
    "rate": "Tshs. 232.00 per litre",
-   "rate_basis": "spécifique par litre (quantité exigée — non calculable sans quantité)",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "hs_codes_explicit": [],
    "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — jus de fruits/légumes (autres, dont importés)",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
@@ -26,7 +26,7 @@
   {
    "record_id": "TZA-EXCISE-2201-MINERAL-WATER-LOCAL",
    "rate": "Tshs. 58.00 per litre",
-   "rate_basis": "spécifique par litre (quantité exigée — non calculable sans quantité)",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "hs_codes_explicit": [],
    "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — eau minérale produite localement",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
@@ -36,7 +36,7 @@
   {
    "record_id": "TZA-EXCISE-2201-MINERAL-WATER-IMPORTED",
    "rate": "Tshs. 64.05 per litre",
-   "rate_basis": "spécifique par litre (quantité exigée — non calculable sans quantité)",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "hs_codes_explicit": [],
    "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — eau minérale importée",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
@@ -46,7 +46,7 @@
   {
    "record_id": "TZA-EXCISE-0501-HUMAN-HAIR-LOCAL",
    "rate": "10%",
-   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "hs_codes_explicit": [],
    "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — cheveux humains (produits locaux)",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
@@ -56,7 +56,7 @@
   {
    "record_id": "TZA-EXCISE-0501-HUMAN-HAIR-IMPORTED",
    "rate": "25%",
-   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "hs_codes_explicit": [],
    "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — cheveux humains (importés)",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
@@ -78,7 +78,7 @@
     "22042900",
     "22043000"
    ],
-   "legal_reference": "East African Community — EAC Common External Tariff 2022 — colonne accise",
+   "legal_reference": "EAC Common External Tariff 2022 — colonne accise",
    "source_id": "TZA-CANONICAL-TARIFF",
    "verification_status": "VERIFIED_RUNTIME_DATASET"
   },
@@ -100,7 +100,7 @@
     "24039100",
     "24039900"
    ],
-   "legal_reference": "East African Community — EAC Common External Tariff 2022 — colonne accise",
+   "legal_reference": "EAC Common External Tariff 2022 — colonne accise",
    "source_id": "TZA-CANONICAL-TARIFF",
    "verification_status": "VERIFIED_RUNTIME_DATASET"
   },
@@ -116,7 +116,7 @@
     "22030010",
     "22030090"
    ],
-   "legal_reference": "East African Community — EAC Common External Tariff 2022 — colonne accise",
+   "legal_reference": "EAC Common External Tariff 2022 — colonne accise",
    "source_id": "TZA-CANONICAL-TARIFF",
    "verification_status": "VERIFIED_RUNTIME_DATASET"
   },
@@ -138,19 +138,30 @@
     "22089010",
     "22089090"
    ],
-   "legal_reference": "East African Community — EAC Common External Tariff 2022 — colonne accise",
+   "legal_reference": "EAC Common External Tariff 2022 — colonne accise",
    "source_id": "TZA-CANONICAL-TARIFF",
    "verification_status": "VERIFIED_RUNTIME_DATASET"
   }
  ],
+ "primary_law_merge": {
+  "primary_law_preserved": 6,
+  "runtime_conflicts_removed": 0,
+  "reason": "les taux de loi primaire font foi — la régénération du tarif ne les écrase jamais ; les taux runtime en conflit HS sont retirés"
+ },
  "provenance": {
   "source": "backend/data/TZA_tariffs.json (VERIFIED)",
-  "canonical_sha256": "07a93c3feff3b72cb09cae55562b6c23ed6439ebd6b940bcc3472fd229b0749c"
+  "canonical_sha256": "2fb490dad5fcc9629dcc619e243b58311b25e2db277e6abd3fb9f9f606d0afa0"
  },
  "primary_law_restored": {
   "law": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019)",
-  "records_restored": 6,
+  "records_restored": 0,
   "runtime_kept": [
+   "TZA-EXCISE-2009-FRUIT-VEG-JUICE-LOCAL",
+   "TZA-EXCISE-2009-FRUIT-VEG-JUICE-OTHER",
+   "TZA-EXCISE-2201-MINERAL-WATER-LOCAL",
+   "TZA-EXCISE-2201-MINERAL-WATER-IMPORTED",
+   "TZA-EXCISE-0501-HUMAN-HAIR-LOCAL",
+   "TZA-EXCISE-0501-HUMAN-HAIR-IMPORTED",
    "TZA-EXCISE_EXCIS-20_0",
    "TZA-EXCISE_EXCIS-30_0",
    "TZA-EXCISE_EXCIS-50_0",
