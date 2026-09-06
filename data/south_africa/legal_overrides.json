@@ -15,12 +15,40 @@
    "verification_status": "OFFICIAL_SOURCE_IDENTIFIED",
    "effective_from": "2020-01-01",
    "effective_to": null,
-   "hs_codes": [],
+   "hs_codes": [
+    "31010000",
+    "31021000",
+    "31022100",
+    "31022900",
+    "31023000",
+    "31024000",
+    "31025000",
+    "31026000",
+    "31028000",
+    "31029000",
+    "31031100",
+    "31031900",
+    "31039000",
+    "31042000",
+    "31043000",
+    "31049000",
+    "31051000",
+    "31052000",
+    "31053000",
+    "31054000",
+    "31055100",
+    "31055900",
+    "31056000",
+    "31059000"
+   ],
    "hs_version": "HS2022",
    "product_description": "AGRIINPUT — Autorisation d'importation d'intrants agricoles (engrais / pesticides)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "scope_note": "engrais — chapitre 31 (scope réel, non match-all)",
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   },
   {
    "measure_id": "ZAF-FAP-002-ARMAUTH",
@@ -99,7 +127,9 @@
    "product_description": "ARMAUTH — Autorisation préalable d'importation d'armes et matériels de sécurité",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   },
   {
    "measure_id": "ZAF-FAP-003-ENERGYAUTH",
@@ -181,7 +211,9 @@
    "product_description": "ENERGYAUTH — Autorisation d'importation d'hydrocarbures / produits pétroliers",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   },
   {
    "measure_id": "ZAF-FAP-004-ENVDECL",
@@ -781,7 +813,9 @@
    "product_description": "ENVDECL — Déclaration de conformité environnementale / Fiche de Données de Sécurité (FDS)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   },
   {
    "measure_id": "ZAF-FAP-005-FOODCERT",
@@ -1346,7 +1380,9 @@
    "product_description": "FOODCERT — Attestation de conformité alimentaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   },
   {
    "measure_id": "ZAF-FAP-006-FOODCERT",
@@ -1711,7 +1747,9 @@
    "product_description": "FOODCERT — Attestation de libre commercialisation / conformité sanitaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   },
   {
    "measure_id": "ZAF-FAP-007-IMPDEC",
@@ -5991,7 +6029,9 @@
    "product_description": "IMPDEC — Déclaration en Douane (DA 306 / DA 306A) — SARS eFiling",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   },
   {
    "measure_id": "ZAF-FAP-008-PHARMAUTH",
@@ -6129,7 +6169,9 @@
    "product_description": "PHARMAUTH — Autorisation d'importation de médicaments / Autorisation de Mise sur le Marché (AMM)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   },
   {
    "measure_id": "ZAF-FAP-009-PHYTOCERT",
@@ -6694,7 +6736,9 @@
    "product_description": "PHYTOCERT — Certificat phytosanitaire du pays d'origine",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   },
   {
    "measure_id": "ZAF-FAP-010-STDCERT",
@@ -7499,7 +7543,9 @@
    "product_description": "STDCERT — Certificat de conformité aux normes nationales",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   },
   {
    "measure_id": "ZAF-FAP-011-VETCERT",
@@ -7864,7 +7910,9 @@
    "product_description": "VETCERT — Certificat sanitaire vétérinaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — autorités réelles, exigences à confirmer par les textes sud-africains"
   }
  ],
  "provenance": {
@@ -7872,6 +7920,7 @@
   "note_invariant": "Aucune F.A.P à contenu purement numérique (invariant ^\\d+([.,]\\d+)?$)",
   "canonical_sha256": "cbea2f61f834e66ea3d2aecfdc880ac4486ef024792c0439451fa80ec11cb6fd",
   "fap_par_formalite": 11,
-  "source_formalites": "etl/africa_formalities.py (buckets produits × autorités nationales réelles — 54 pays)"
+  "source_formalites": "etl/africa_formalities.py (buckets produits × autorités nationales réelles — 54 pays)",
+  "integrity_watch": "AGRIINPUT scopé au chapitre 31 ; toutes les formalités dégradées (legal_text_verified=false) — à confirmer par les textes sud-africains"
  }
 }

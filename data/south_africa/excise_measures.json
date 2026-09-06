@@ -3,8 +3,9 @@
  "country": "ZAF",
  "as_of": "2026-09-06",
  "excise_rates": [],
+ "status": "NOT_AVAILABLE",
+ "note": "les accises sud-africaines figurent dans le Schedule Part 2 du Customs and Excise Act (document séparé, non archivé à ce jour) — NOT_AVAILABLE, jamais deviné ; action : archiver le Schedule Part 2",
  "provenance": {
-  "source": "backend/data/ZAF_tariffs.json (PARTIAL)",
-  "canonical_sha256": "cbea2f61f834e66ea3d2aecfdc880ac4486ef024792c0439451fa80ec11cb6fd"
+  "source": "SARS Schedule Part 2 (à archiver)"
  }
 }
