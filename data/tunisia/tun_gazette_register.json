@@ -13,7 +13,7 @@
   "source_id": "TUN-CANONICAL-TARIFF",
   "source_name": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew)",
   "source_url": "https://www.douane.gov.tn/tarifwebnew/",
-  "sha256": "2fe87bd7d9dbb83eeb6c1fc5c231f6c7b2fb738c41d4ed6b309724e224914e34",
+  "sha256": "dbb5f04ba986ff81535d5052f906bd89e0ff3e3d5027445ae75023e060d76667",
   "verification_status": "VERIFIED",
   "data_status": "VERIFIED",
   "hs_version": "HS2022 — sous-positions nationales",
@@ -26,17 +26,18 @@
    "pdf_sha256": null
   }
  },
- "preference_and_origin_status": "DOCUMENTED",
+ "preference_and_origin_status": "PARTIAL",
  "preference_evidence": {
-  "instrument": "ZLECAf — partenaire actif de l'Algérie (circulaire DGD 482/2024, liste d'application)",
-  "sha256": "2fe87bd7d9dbb83eeb6c1fc5c231f6c7b2fb738c41d4ed6b309724e224914e34"
+  "instrument": "ZLECAf — offre TUN publiée dans l'e-Tariff Book (9 chiffres, OFFER_ONLY, 2 périodes 5/10 ans)",
+  "status": "PARTIAL",
+  "note": "application effective démontrée (GTI) mais l'offre ligne à ligne n'est PAS exécutable sans instrument d'implémentation + origine vérifiée (porte zlecaf_implementation_registry)"
  },
  "documents": [
   {
    "file": "TUN_tariffs.json (canonique)",
    "title": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) — 5614 lignes",
    "source_url": "https://www.douane.gov.tn/tarifwebnew/",
-   "sha256": "2fe87bd7d9dbb83eeb6c1fc5c231f6c7b2fb738c41d4ed6b309724e224914e34"
+   "sha256": "dbb5f04ba986ff81535d5052f906bd89e0ff3e3d5027445ae75023e060d76667"
   }
  ],
  "sources_officielles": [
@@ -106,5 +107,41 @@
    ]
   },
   "note_corrections": "Canonique reconstruit du re-crawl complet Tarif Web 2026 (2026-08-30, 17 542 codes = 17 542 codes de l'énumération officielle du 2026-08-29, 0 manquant, 0 superflu, tous avec taux publiés) : 16 divergences DD juin→re-crawl documentées une à une (taux officiel retenu), 15 lignes sans DD résolues, 83 codes retirés de la source conservés et flaggés, formalités riches préservées (2 018 lignes), offre ZLECAf par ligne (9 chiffres, OFFER_ONLY, 2 périodes 5/10 ans)."
+ },
+ "afcfta_application_evidence": {
+  "gti_participant": true,
+  "gti_launch": "2022-10-07",
+  "source_url": "https://au-afcfta.org/guided-trade-initiative/",
+  "source_title": "AfCFTA Secretariat — Guided Trade Initiative (GTI)",
+  "note": "l'application effective des préférences ZLECAf par la douane tunisienne est démontrée par le Secrétariat (GTI) ; l'offre TUN est publiée dans l'e-Tariff Book (9 chiffres, OFFER_ONLY) — la portée ligne à ligne reste contrôlée par zlecaf_implementation_registry.py",
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité) — l'acceptation algérienne des partenaires ZLECAf prouve la réciprocité de l'accord"
+  },
+  "schedule_published": "e-Tariff Book (snapshot TUN — 9 373 lignes à 9 chiffres, 2 périodes)"
+ },
+ "coverage_scope": {
+  "base_tariff": "VERIFIED — exhaustivité prouvée vs énumération officielle (17 542 = 17 542)",
+  "national_layer": "PARTIAL — taxes par ligne re-crawlées (assiettes verbatim) ; droits spécifiques fondés sur quantité documentés mais NON modélisés dans le moteur ; réglementations d'import portées par sous-position"
+ },
+ "data_gaps": [
+  "droits spécifiques fondés sur quantité (P/*, TM/*, T/MOTEURS…) documentés avec assiettes verbatim mais non modélisés dans le moteur",
+  "le décompte exact des positions interdites (~1 545 selon la revue) n'est pas vérifiable dans les données archivées — UNVERIFIED ; les réglementations d'import (26 codes officiels, dont 243 dérogations monopole d'État) sont portées par sous-position",
+  "83 codes retirés de la source conservés avec valid_to=2026-08-30 et statut RETIRED_FROM_SOURCE",
+  "assiette RPD (somme des droits et taxes) non câblée"
+ ],
+ "currency_note": "customs_value attendu dans la devise de la juridiction (TND) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés TND",
+ "integrity_watch_fixes": {
+  "as_of": "2026-09-06",
+  "preference_downgraded_to_partial": true,
+  "vat_retroactivity_removed": true,
+  "rpd_assiette_not_wired": true,
+  "retired_codes_validity_set": 83,
+  "import_regulations_carried": 7790,
+  "prohibitions_count_unverified": true,
+  "coverage_scope_documented": true,
+  "currency_expectation_documented": true
  }
 }

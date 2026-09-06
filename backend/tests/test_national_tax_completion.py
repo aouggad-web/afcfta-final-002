@@ -163,7 +163,11 @@ def test_report_aggregates_without_rates():
     # national_enrichment (BWA, LSO, SWZ, NAM) + 1 consolidation officielle
     # GRA (GHA, Act 1151 en vigueur 01/01/2026) + 1 extraction texte officiel
     # URA (UGA, VAT Rate Order 2005) = 27.
-    assert len(report["vat_documented_countries"]) == 27
+    # + 1 TUN (2026-09-06) : re-crawl complet Tarif Web 2026 du 2026-08-30
+    # (17 542 codes = énumération officielle, tous avec taux publiés) — TVA
+    # documentée par position avec assiettes verbatim ; registre
+    # d'enrichissement réconcilié à la source (anomalie marquée RÉSOLU). = 28.
+    assert len(report["vat_documented_countries"]) == 28
     assert len(report["excise_documented_countries"]) >= 5
     assert "Aucun taux inventé" in report["doctrine"]
 

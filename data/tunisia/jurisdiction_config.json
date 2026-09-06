@@ -21,5 +21,7 @@
   "tva_rnta"
  ],
  "general_levy_tables": [],
- "gazette_register": "tun_gazette_register.json"
+ "gazette_register": "tun_gazette_register.json",
+ "levy_tables_not_wired": [],
+ "note": "les tables RPD sont documentées mais NON câblées (assiette = somme des droits et taxes, verbatim source) — jamais calculées sur CIF"
 }

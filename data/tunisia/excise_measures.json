@@ -5,6 +5,6 @@
  "excise_rates": [],
  "provenance": {
   "source": "backend/data/TUN_tariffs.json (VERIFIED)",
-  "canonical_sha256": "2fe87bd7d9dbb83eeb6c1fc5c231f6c7b2fb738c41d4ed6b309724e224914e34"
+  "canonical_sha256": "dbb5f04ba986ff81535d5052f906bd89e0ff3e3d5027445ae75023e060d76667"
  }
 }

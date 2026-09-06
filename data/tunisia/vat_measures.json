@@ -7,22 +7,23 @@
    "record_id": "TUN-VAT-RATE-STANDARD",
    "rate": "19.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-08-30",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_GUIDE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [],
    "legal_reference": "Direction Générale des Douanes — Tunisie (douane.gov.tn) — colonne TVA (taux standard)",
    "source_id": "TUN-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "taux publiés par le re-crawl Tarif Web 2026 du 2026-08-30 — la source ne documente PAS de validité rétroactive ; aucune série historique n'est affirmée"
   },
   {
    "record_id": "TUN-VAT-RATE-0_0",
    "rate": "0.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-08-30",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_GUIDE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
     "01012100015",
@@ -747,15 +748,16 @@
    ],
    "legal_reference": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) — colonne TVA, taux 0.0% par position nationale",
    "source_id": "TUN-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "taux publiés par le re-crawl Tarif Web 2026 du 2026-08-30 — la source ne documente PAS de validité rétroactive ; aucune série historique n'est affirmée"
   },
   {
    "record_id": "TUN-VAT-RATE-7_0",
    "rate": "7.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-08-30",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_GUIDE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
     "07112010005",
@@ -1876,15 +1878,16 @@
    ],
    "legal_reference": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) — colonne TVA, taux 7.0% par position nationale",
    "source_id": "TUN-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "taux publiés par le re-crawl Tarif Web 2026 du 2026-08-30 — la source ne documente PAS de validité rétroactive ; aucune série historique n'est affirmée"
   },
   {
    "record_id": "TUN-VAT-RATE-13_0",
    "rate": "13.0%",
    "rate_basis": "valeur en douane (CIF)",
-   "effective_from": "2017-07-01",
+   "effective_from": "2026-08-30",
    "effective_to": null,
-   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "legal_status": "CURRENT_OFFICIAL_GUIDE",
    "supersedes_record_id": null,
    "hs_codes_explicit": [
     "27111211104",
@@ -1917,13 +1920,14 @@
    ],
    "legal_reference": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) — colonne TVA, taux 13.0% par position nationale",
    "source_id": "TUN-CANONICAL-TARIFF",
-   "verification_status": "VERIFIED_RUNTIME_DATASET"
+   "verification_status": "VERIFIED_RUNTIME_DATASET",
+   "notes": "taux publiés par le re-crawl Tarif Web 2026 du 2026-08-30 — la source ne documente PAS de validité rétroactive ; aucune série historique n'est affirmée"
   }
  ],
  "vat_exemptions": [],
  "vat_zero_rated": [],
  "provenance": {
   "source": "backend/data/TUN_tariffs.json (VERIFIED)",
-  "canonical_sha256": "2fe87bd7d9dbb83eeb6c1fc5c231f6c7b2fb738c41d4ed6b309724e224914e34"
+  "canonical_sha256": "dbb5f04ba986ff81535d5052f906bd89e0ff3e3d5027445ae75023e060d76667"
  }
 }

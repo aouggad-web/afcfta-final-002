@@ -152,6 +152,10 @@ def main() -> int:
                     "source": "Tarif Web 2025 (crawl juin 2026) — code absent de "
                               "l'énumération du 2026-08-30, conservé",
                     "consolidation_flag": "CODE_ABSENT_ENUMERATION_2026-08-30",
+                    "valid_to": "2026-08-30",
+                    "status": "RETIRED_FROM_SOURCE — taux de juin 2026 conservés "
+                              "à titre documentaire ; ne pas utiliser pour les "
+                              "déclarations courantes sans vérification douanière",
                 }
                 if sp["dd"] is not None:
                     dd_rates.append(sp["dd"])
@@ -175,6 +179,10 @@ def main() -> int:
                     t["code"]: t.get("assiette")
                     for t in taxes_import if t.get("assiette")
                 },
+                "import_regulations": [
+                    {"code": r.get("code"), "description": r.get("description")}
+                    for r in (s.get("reglementation_import") or [])
+                ],
             }
             if dd is not None:
                 dd_rates.append(dd)
