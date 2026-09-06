@@ -53,21 +53,15 @@ ASYM = {
 
 
 def main() -> int:
-    import os
-    cc = os.environ.get("ISO3") or Path("backend/data").glob("*_tariffs.json") and None
-    # trouve le slug de la branche courante : le registre * _gazette_register.json modifié
-    candidates = sorted(Path(ROOT / "data").glob("*/*_gazette_register.json"))
-    target = None
-    for path in candidates:
-        try:
-            reg = json.loads(path.read_text(encoding="utf-8"))
-        except Exception:
-            continue
-        if "zlecaf_asymetrie_partenaires" not in reg:
-            target = path
-            break
-    if target is None:
-        print("aucun registre sans la doctrine — rien à faire")
+    import argparse
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--register", required=True,
+                    help="chemin du registre (ex. data/rwanda/rwa_gazette_register.json)")
+    args = ap.parse_args()
+    target = Path(args.register)
+    if not target.is_file():
+        print(f"{target}: absent de cette branche — rien à faire")
         return 0
     reg = json.loads(target.read_text(encoding="utf-8"))
     reg["zlecaf_asymetrie_partenaires"] = ASYM
