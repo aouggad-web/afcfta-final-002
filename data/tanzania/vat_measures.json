@@ -20,7 +20,22 @@
   }
  ],
  "vat_exemptions": [],
- "vat_zero_rated": [],
+ "vat_zero_rated": [
+  {
+   "record_id": "TZA-VAT-ZERO-EXPORTS",
+   "rate": "0%",
+   "rate_basis": "non applicable à l'importation — régime des exportations",
+   "effective_from": "2015-07-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_PRIMARY_TEXT",
+   "supersedes_record_id": null,
+   "hs_codes_explicit": [],
+   "legal_reference": "Value Added Tax Act, 2014 (Act No. 5 of 2014), Section 5(2) and Section 55 — exportations au taux zéro",
+   "source_id": "TZA-TANZLII-VAT-ACT-2014",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "notes": "documentation seule — le zéro-rated exportations dépend de la nature de l'opération, pas du code SH : jamais appliqué automatiquement aux lignes d'import"
+  }
+ ],
  "provenance": {
   "source": "backend/data/TZA_tariffs.json (VERIFIED)",
   "canonical_sha256": "07a93c3feff3b72cb09cae55562b6c23ed6439ebd6b940bcc3472fd229b0749c"

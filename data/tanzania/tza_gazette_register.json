@@ -27,10 +27,11 @@
    "claimed_total_7341_lines": "UNVERIFIED — un total de 7 341 lignes tarifaires pour l'EAC CET 2022 a été signalé mais non confirmé par les sources consultées (tralac.org, au.int) au 2026-09-06. La référence vérifiable reste le PDF officiel lui-même (5 954 codes uniques Schedule 1 + 49 Schedule 2 = 6 003 occurrences)."
   }
  },
- "preference_and_origin_status": "DOCUMENTED",
+ "preference_and_origin_status": "PARTIAL",
  "preference_evidence": {
-  "instrument": "ZLECAf — partenaire actif de l'Algérie",
-  "sha256": "07a93c3feff3b72cb09cae55562b6c23ed6439ebd6b940bcc3472fd229b0749c"
+  "instrument": "ZLECAf — aucune offre TZA archivée dans l'e-Tariff Book",
+  "status": "PARTIAL — application effective démontrée (GTI), offre ligne à ligne non archivée",
+  "note": "aucun snapshot d'offre tanzanien ni instrument d'implémentation vérifié au 2026-09-06 — la préférence n'est JAMAIS appliquée par le calculateur (NOT_AVAILABLE, jamais zéro ni deviné)"
  },
  "documents": [
   {
@@ -63,5 +64,34 @@
    "note": "aucune offre ZLECAf par ligne pour ce pays — NOT_AVAILABLE, jamais zéro"
   },
   "note_corrections": "Extraction directe du PDF officiel par eac_cet_scraper v2 : règle SI appliquée (49 Sensitive Items → Schedule 2), 19 codes fusionnés-absents récupérés, droits composés structurés MAX_AD_VALOREM_SPECIFIC, taux NPF = CET par ligne, offre ZLECAf TANZANIE NON COUVERTE par le snapshot e-Tariff Book → NOT_AVAILABLE (jamais devinée)."
+ },
+ "coverage_scope": {
+  "base_tariff": "VERIFIED — exhaustivité prouvée vs PDF officiel (5 954 SP)",
+  "national_layer": "PARTIAL — lois de finances, amendements et accises nationales non re-vérifiés texte primaire par texte primaire ; mesures Cap. 147 et VAT Act restaurées (documentation) ; colonne accise EAC câblée"
+ },
+ "currency_note": "customs_value attendu dans la devise de la juridiction (TZS) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés TZS",
+ "integrity_watch_fixes": {
+  "as_of": "2026-09-06",
+  "excise_primary_law_restored": 6,
+  "excise_rate_basis_aligned_with_engine": true,
+  "vat_zero_rated_restored": 1,
+  "preference_downgraded_to_not_available": true,
+  "legal_sources_canonical_added": true,
+  "coverage_scope_documented": true,
+  "currency_expectation_documented": true
+ },
+ "afcfta_application_evidence": {
+  "gti_participant": true,
+  "gti_launch": "2022-10-07",
+  "source_url": "https://au-afcfta.org/guided-trade-initiative/",
+  "source_title": "AfCFTA Secretariat — Guided Trade Initiative (GTI)",
+  "note": "L'Initiative du Commerce Guidé du Secrétariat ZLECAf (lancée le 7 octobre 2022) démontre l'application effective des préférences ZLECAf par les administrations douanières des États participants — expéditions préférentielles documentées par le Secrétariat. Preuve officielle d'application ; la portée ligne à ligne reste contrôlée par zlecaf_implementation_registry.py.",
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité) — l'acceptation algérienne des partenaires ZLECAf prouve la réciprocité de l'accord"
+  },
+  "schedule_published": "offre TZA non archivée dans l'e-Tariff Book (NOT_AVAILABLE)"
  }
 }

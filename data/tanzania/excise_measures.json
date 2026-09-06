@@ -4,9 +4,69 @@
  "as_of": "2026-09-06",
  "excise_rates": [
   {
+   "record_id": "TZA-EXCISE-2009-FRUIT-VEG-JUICE-LOCAL",
+   "rate": "Tshs. 9.00 per litre",
+   "rate_basis": "spécifique par litre (quantité exigée — non calculable sans quantité)",
+   "hs_codes_explicit": [],
+   "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — jus de fruits/légumes produits localement",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
+   "notes": "documentation seule (hs vide — application automatique impossible)"
+  },
+  {
+   "record_id": "TZA-EXCISE-2009-FRUIT-VEG-JUICE-OTHER",
+   "rate": "Tshs. 232.00 per litre",
+   "rate_basis": "spécifique par litre (quantité exigée — non calculable sans quantité)",
+   "hs_codes_explicit": [],
+   "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — jus de fruits/légumes (autres, dont importés)",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
+   "notes": "documentation seule (hs vide — application automatique impossible)"
+  },
+  {
+   "record_id": "TZA-EXCISE-2201-MINERAL-WATER-LOCAL",
+   "rate": "Tshs. 58.00 per litre",
+   "rate_basis": "spécifique par litre (quantité exigée — non calculable sans quantité)",
+   "hs_codes_explicit": [],
+   "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — eau minérale produite localement",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
+   "notes": "documentation seule (hs vide)"
+  },
+  {
+   "record_id": "TZA-EXCISE-2201-MINERAL-WATER-IMPORTED",
+   "rate": "Tshs. 64.05 per litre",
+   "rate_basis": "spécifique par litre (quantité exigée — non calculable sans quantité)",
+   "hs_codes_explicit": [],
+   "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — eau minérale importée",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
+   "notes": "documentation seule (hs vide)"
+  },
+  {
+   "record_id": "TZA-EXCISE-0501-HUMAN-HAIR-LOCAL",
+   "rate": "10%",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem",
+   "hs_codes_explicit": [],
+   "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — cheveux humains (produits locaux)",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
+   "notes": "documentation seule (hs vide)"
+  },
+  {
+   "record_id": "TZA-EXCISE-0501-HUMAN-HAIR-IMPORTED",
+   "rate": "25%",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem",
+   "hs_codes_explicit": [],
+   "legal_reference": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019) — cheveux humains (importés)",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
+   "notes": "documentation seule (hs vide)"
+  },
+  {
    "record_id": "TZA-EXCISE_EXCIS-20_0",
    "rate": "20.0%",
-   "rate_basis": "valeur en douane (CIF)",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "effective_from": "2017-07-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
@@ -25,7 +85,7 @@
   {
    "record_id": "TZA-EXCISE_EXCIS-30_0",
    "rate": "30.0%",
-   "rate_basis": "valeur en douane (CIF)",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "effective_from": "2017-07-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
@@ -47,7 +107,7 @@
   {
    "record_id": "TZA-EXCISE_EXCIS-50_0",
    "rate": "50.0%",
-   "rate_basis": "valeur en douane (CIF)",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "effective_from": "2017-07-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
@@ -63,7 +123,7 @@
   {
    "record_id": "TZA-EXCISE_EXCIS-60_0",
    "rate": "60.0%",
-   "rate_basis": "valeur en douane (CIF)",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
    "effective_from": "2017-07-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
@@ -86,5 +146,16 @@
  "provenance": {
   "source": "backend/data/TZA_tariffs.json (VERIFIED)",
   "canonical_sha256": "07a93c3feff3b72cb09cae55562b6c23ed6439ebd6b940bcc3472fd229b0749c"
+ },
+ "primary_law_restored": {
+  "law": "Excise (Management and Tariff) Act, Cap. 147 (R.E. 2019)",
+  "records_restored": 6,
+  "runtime_kept": [
+   "TZA-EXCISE_EXCIS-20_0",
+   "TZA-EXCISE_EXCIS-30_0",
+   "TZA-EXCISE_EXCIS-50_0",
+   "TZA-EXCISE_EXCIS-60_0"
+  ],
+  "reason": "les mesures Cap. 147 couvrent des produits (2009, 2201, 0501) non couverts par la colonne accise EAC (2203/2204/2208/2402/2403) — aucun conflit, aucune double comptage ; assiette alignée sur le moteur"
  }
 }
