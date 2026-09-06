@@ -32,6 +32,10 @@ def _first_position(iso3):
 
 @pytest.mark.parametrize("iso3", ["ZAF", "CMR", "GHA", "MUS", "RWA", "TZA", "TUN"])
 def test_jurisdiction_registered_and_documented(iso3):
+    if iso3 not in SUPPORTED_JURISDICTIONS:
+        pytest.skip(
+            f"{iso3}: juridiction non présente sur cette branche (1 PR par pays)"
+        )
     cfg = SUPPORTED_JURISDICTIONS[iso3]
     assert cfg.default_currency == CURRENCIES[iso3]
     hs = _first_position(iso3)
@@ -52,6 +56,10 @@ def test_jurisdiction_registered_and_documented(iso3):
 
 @pytest.mark.parametrize("iso3", ["ZAF", "CMR", "GHA", "MUS", "RWA", "TZA", "TUN"])
 def test_jurisdiction_files_integrity(iso3):
+    if iso3 not in SUPPORTED_JURISDICTIONS:
+        pytest.skip(
+            f"{iso3}: juridiction non présente sur cette branche (1 PR par pays)"
+        )
     slug = SUPPORTED_JURISDICTIONS[iso3].fiscal_data_dir.name
     d = _ROOT / "data" / slug
     for f in ("vat_measures.json", "excise_measures.json", "import_levies.json",

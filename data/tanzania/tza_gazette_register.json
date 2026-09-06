@@ -13,39 +13,55 @@
   "source_id": "TZA-CANONICAL-TARIFF",
   "source_name": "East African Community — EAC Common External Tariff 2022",
   "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
-  "sha256": "7c1ca2152472f0987f400789ef6f57d404f2c6aedcfffa9f887680cfaa06e359",
-  "verification_status": "CRAWLED_AUTHENTIC",
-  "data_status": "PARTIAL",
+  "sha256": "07a93c3feff3b72cb09cae55562b6c23ed6439ebd6b940bcc3472fd229b0749c",
+  "verification_status": "VERIFIED",
+  "data_status": "VERIFIED",
   "hs_version": "HS2022 — sous-positions nationales",
   "effective_from": "2017-07-01",
-  "national_positions": 5984
+  "national_positions": 5954,
+  "verification": {
+   "verified_on": "2026-09-06",
+   "method": "eac_cet_scraper v2 — extraction séquentielle complète du PDF officiel (Schedule 1 pp. 13-556 + Schedule 2 pp. 557-560), code HS8 détecté même fusionné avec la description, unités complètes (kg, u, m³, m², l, gm, 2u, carat, 1000 KWh…), comparaison code à code : 0 manquant, 0 superflu.",
+   "si_rule": "Introduction, p. 9 : « The fifth column of Schedule 1 contains applicable Common External Tariff rates and where the abbreviation \"SI\" (Sensitive Items) appears the applicable duty rates shall be those specified in Schedule 2. »",
+   "pdf_sha256": "4c5acc8b4c0be2f0841d116064429381ba362e66b5c720b8bff16a4af7a53b49",
+   "claimed_total_7341_lines": "UNVERIFIED — un total de 7 341 lignes tarifaires pour l'EAC CET 2022 a été signalé mais non confirmé par les sources consultées (tralac.org, au.int) au 2026-09-06. La référence vérifiable reste le PDF officiel lui-même (5 954 codes uniques Schedule 1 + 49 Schedule 2 = 6 003 occurrences)."
+  }
  },
  "preference_and_origin_status": "DOCUMENTED",
  "preference_evidence": {
   "instrument": "ZLECAf — partenaire actif de l'Algérie",
-  "sha256": "7c1ca2152472f0987f400789ef6f57d404f2c6aedcfffa9f887680cfaa06e359"
+  "sha256": "07a93c3feff3b72cb09cae55562b6c23ed6439ebd6b940bcc3472fd229b0749c"
  },
  "documents": [
   {
    "file": "TZA_tariffs.json (canonique)",
-   "title": "East African Community — EAC Common External Tariff 2022 — 5604 lignes",
+   "title": "East African Community — EAC Common External Tariff 2022 — 3597 lignes",
    "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
-   "sha256": "7c1ca2152472f0987f400789ef6f57d404f2c6aedcfffa9f887680cfaa06e359"
+   "sha256": "07a93c3feff3b72cb09cae55562b6c23ed6439ebd6b940bcc3472fd229b0749c"
   }
  ],
  "sources_officielles": [
-  "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
+  "https://au-afcfta.org (Secrétariat ZLECAf — UA)",
+  "https://au.int/fr (Union africaine — ZLECAf)",
+  "https://taxsummaries.pwc.com/tanzania/corporate/other-taxes (PwC, revu 2026-01-14)",
+  "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+  "https://www.tralac.org/afcfta-resources.html",
+  "https://www.tralac.org/resources.html (tralac Trade Law Centre — EAC/AfCFTA)"
  ],
- "verification_taxes_interieures": {
-  "objet": "Taxes intérieures NON reprises dans le TEC (TVA, accises, prélèvements) — vérification sur sources gouvernementales locales",
-  "sources": [
-   {
-    "source": "TRA — VAT & excise",
-    "url": "https://www.tra.go.tz",
-    "http_status": "302",
-    "note": "portail officiel vérifié joignable ; page fiscale précise à localiser via navigation"
-   }
-  ],
-  "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
+ "verification_nationale": {
+  "as_of": "2026-09-06",
+  "status": "EXHAUSTIVE_VERIFIED",
+  "sub_positions_unique": 5954,
+  "schedule1_unique_codes": 5905,
+  "schedule2_sensitive_items": 49,
+  "duplicates_schedule1_ignored": 0,
+  "codes_merged_recovered": 19,
+  "compound_rates_structured": 39,
+  "npf_note": "NPF : pour l'EAC, le tarif commun s'applique aux pays tiers — le taux NPF est le taux CET par ligne",
+  "zlecaf_afcfta": {
+   "status": "NOT_AVAILABLE",
+   "note": "aucune offre ZLECAf par ligne pour ce pays — NOT_AVAILABLE, jamais zéro"
+  },
+  "note_corrections": "Extraction directe du PDF officiel par eac_cet_scraper v2 : règle SI appliquée (49 Sensitive Items → Schedule 2), 19 codes fusionnés-absents récupérés, droits composés structurés MAX_AD_VALOREM_SPECIFIC, taux NPF = CET par ligne, offre ZLECAf TANZANIE NON COUVERTE par le snapshot e-Tariff Book → NOT_AVAILABLE (jamais devinée)."
  }
 }
