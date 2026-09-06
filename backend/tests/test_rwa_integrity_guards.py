@@ -76,6 +76,15 @@ def test_preference_status_is_offer_only():
     assert reg["preference_evidence"]["status"] == "OFFER_ONLY"
 
 
+def test_afcfta_application_evidence_documented():
+    reg = _load("rwa_gazette_register.json")
+    ev = reg["afcfta_application_evidence"]
+    assert ev["gti_participant"] is True
+    assert "guided-trade-initiative" in ev["source_url"]
+    assert ev["algeria_reciprocity"]["source_id"] == "DZA-DGD-CIRC-482-2024"
+    assert ev["schedule_published"]
+
+
 def test_coverage_complete_requires_verified_base_tariff():
     reg = _load("rwa_gazette_register.json")
     if reg.get("coverage_complete"):
