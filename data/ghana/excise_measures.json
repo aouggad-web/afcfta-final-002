@@ -1,0 +1,10 @@
+{
+ "schema_version": "1.0",
+ "country": "GHA",
+ "as_of": "2026-09-06",
+ "excise_rates": [],
+ "provenance": {
+  "source": "backend/data/GHA_tariffs.json (PARTIAL)",
+  "canonical_sha256": "cf49459e1210c8e459ef5650ed583afdfcd2987a7cf3a63783328795689b0f87"
+ }
+}
