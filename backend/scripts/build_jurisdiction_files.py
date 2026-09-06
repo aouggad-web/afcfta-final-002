@@ -107,11 +107,77 @@ for _cc in EAC_ENRICHMENT:
     EAC_ENRICHMENT[_cc]["pdf_sha256"] = EAC_PDF_SHA256
 
 
+def _tun_national_mode(nat: dict, canon_sha: str) -> tuple:
+    """Mode NATIONAL TUN — le tarif national authentique (Tarif Web 2026,
+    SH6 + 5 chiffres nationaux = 11 caractères) est la source unique.
+    Retourne (vat_rates_rows, levy_tables, fap_groups, table_names)."""
+    from collections import defaultdict as _dd
+
+    vat_rates = _dd(set)
+    levy_tables = _dd(lambda: _dd(set))
+    fap_groups = _dd(lambda: {"positions": set(), "labels": set(), "code": None})
+    not_wired = set()
+    for sp in nat["sub_positions"]:
+        code = sp["hs_code"]
+        for t in (sp.get("taxes_import") or []):
+            tcode = str(t.get("code") or "").strip()
+            rate = t.get("rate_pct")
+            if tcode.startswith("DD"):
+                continue  # le DD est la colonne douane, pas un prélèvement
+            if tcode.startswith("TVA"):
+                if rate is not None:
+                    vat_rates[rate].add(code)
+                continue
+            if tcode.startswith("RPD"):
+                # assiette source = SOMME D.T (somme des droits et taxes) —
+                # PAS la valeur en douane : documenté, JAMAIS câblé sur CIF
+                not_wired.add(norm_table(tcode))
+                continue
+            if tcode.startswith(("D.S.V", "DSV")):
+                continue  # droit sanitaire vétérinaire spécifique (QCS) — non ad valorem
+            if rate is not None:
+                levy_tables[norm_table(tcode)][rate].add(code)
+        for r in (sp.get("reglementation_import") or []):
+            doc = (r.get("description") or "").strip()
+            rcode = r.get("code")
+            if not doc:
+                continue
+            key = f"code:{rcode}"
+            g = fap_groups[key]
+            g["positions"].add(code)
+            g["labels"].add(doc)
+            g["code"] = rcode
+    table_names = []
+    levies_rows = {}
+    for table, rates in sorted(levy_tables.items()):
+        table_names.append(table)
+        levies_rows[table] = {
+            rate: sorted(positions) for rate, positions in sorted(rates.items())
+        }
+    return (
+        {rate: sorted(positions) for rate, positions in sorted(vat_rates.items())},
+        levies_rows,
+        fap_groups,
+        table_names,
+        sorted(not_wired),
+    )
+
+
 def main(iso3: str, slug: str) -> int:
     meta = META[iso3]
     canon_path = ROOT / "backend" / "data" / f"{iso3}_tariffs.json"
     canon = json.loads(canon_path.read_text(encoding="utf-8"))
-    summary = canon["summary"]
+    NATIONAL_MODE = iso3 == "TUN" and "tariff_lines" not in canon
+    if NATIONAL_MODE:
+        # TUN : le tarif national authentique est la source unique (pas de canonique dérivé)
+        summary = {
+            "source_name": nat_src["source"] if (nat_src := canon) else "",
+            "source_url": canon.get("source_url", ""),
+            "data_status": "VERIFIED",
+            "total_sub_positions": len(canon.get("sub_positions", [])),
+        }
+    else:
+        summary = canon["summary"]
     canon_sha = hashlib.sha256(canon_path.read_bytes()).hexdigest()
     out = ROOT / "data" / slug
     out.mkdir(parents=True, exist_ok=True)
@@ -122,38 +188,58 @@ def main(iso3: str, slug: str) -> int:
     fap_groups = defaultdict(lambda: {"positions": set(), "labels": set(), "code": None})
     vat_std_rate = None
 
-    for line in canon["tariff_lines"]:
-        positions = {sp["code"] for sp in (line.get("sub_positions") or []) if sp.get("code")}
-        if not positions:
-            hs6 = line.get("hs6")
-            positions = {hs6} if hs6 else set()
-        for t in line.get("taxes_detail") or []:
-            code = str(t.get("tax") or "").strip().upper()
-            rate = t.get("rate")
-            if rate is None or not isinstance(rate, (int, float)):
-                continue
-            if code in VAT_CODES:
-                vat_rates[rate] |= positions
-            elif code in DD_CODES or code.startswith("DD"):
-                continue
-            elif code in EXCISE_CODES:
-                excise_rates[code]  # noqa
-                levy_tables[f"excise_{norm_table(code)}"][rate] |= positions
-            else:
-                levy_tables[norm_table(code)][rate] |= positions
-        for f in line.get("administrative_formalities") or []:
-            if not isinstance(f, dict):
-                continue
-            doc = (f.get("document_fr") or f.get("document_en") or "").strip()
-            if not doc or NUM.fullmatch(doc):
-                continue
-            code = f.get("code")
-            key = f"code:{code}" if code else f"lbl:{re.sub(r'[^a-z0-9]', '', doc.lower())[:40]}"
-            g = fap_groups[key]
-            g["positions"] |= positions
-            g["labels"].add(doc)
-            if code:
-                g["code"] = code
+    levy_tables_not_wired = []
+    if NATIONAL_MODE:
+        # Principe SH6 : les 6 premiers chiffres sont internationaux ; chaque
+        # pays développe son tarif national au-delà (TUN : 10 chiffres = SH6+4,
+        # + 1 chiffre de clé de validation de la déclaration en douane = 11
+        # caractères publiés par le Tarif Web). Le tarif national authentique
+        # est la source unique — pas de canonique dérivé.
+        vat_nat, levies_nat, fap_nat, tables_nat, not_wired = _tun_national_mode(
+            canon, canon_sha
+        )
+        levy_tables_not_wired = not_wired
+        for rate, positions in vat_nat.items():
+            vat_rates[float(rate)] |= set(positions)
+        for table, rates in levies_nat.items():
+            for rate, positions in rates.items():
+                levy_tables[table][float(rate)] |= set(positions)
+        fap_groups = nat_fap if (nat_fap := fap_nat) else fap_groups
+        table_names = tables_nat
+
+    if not NATIONAL_MODE:
+        for line in canon["tariff_lines"]:
+            positions = {sp["code"] for sp in (line.get("sub_positions") or []) if sp.get("code")}
+            if not positions:
+                hs6 = line.get("hs6")
+                positions = {hs6} if hs6 else set()
+            for t in line.get("taxes_detail") or []:
+                code = str(t.get("tax") or "").strip().upper()
+                rate = t.get("rate")
+                if rate is None or not isinstance(rate, (int, float)):
+                    continue
+                if code in VAT_CODES:
+                    vat_rates[rate] |= positions
+                elif code in DD_CODES or code.startswith("DD"):
+                    continue
+                elif code in EXCISE_CODES:
+                    excise_rates[code]  # noqa
+                    levy_tables[f"excise_{norm_table(code)}"][rate] |= positions
+                else:
+                    levy_tables[norm_table(code)][rate] |= positions
+            for f in line.get("administrative_formalities") or []:
+                if not isinstance(f, dict):
+                    continue
+                doc = (f.get("document_fr") or f.get("document_en") or "").strip()
+                if not doc or NUM.fullmatch(doc):
+                    continue
+                code = f.get("code")
+                key = f"code:{code}" if code else f"lbl:{re.sub(r'[^a-z0-9]', '', doc.lower())[:40]}"
+                g = fap_groups[key]
+                g["positions"] |= positions
+                g["labels"].add(doc)
+                if code:
+                    g["code"] = code
 
     # ---------- TVA ----------
     rows = []
@@ -214,11 +300,13 @@ def main(iso3: str, slug: str) -> int:
     levies_doc = {"schema_version": "1.0", "country": iso3, "as_of": "2026-09-06",
                   "provenance": {"source": f"backend/data/{iso3}_tariffs.json ({summary.get('data_status')})",
                                  "canonical_sha256": canon_sha}}
-    table_names = []
+    if not NATIONAL_MODE:
+        table_names = []
     for table, rates in sorted(levy_tables.items()):
         if table.startswith("excise_"):
             continue
-        table_names.append(table)
+        if NATIONAL_MODE:
+            table_names.append(table)
         lrows = []
         for rate, positions in sorted(rates.items()):
             lrows.append({
@@ -438,8 +526,16 @@ def main(iso3: str, slug: str) -> int:
     # ---------- jurisdiction_config.json ----------
     config = {
         "iso3": iso3, "currency": meta["currency"],
-        "levy_tables": table_names, "general_levy_tables": [],
+        "levy_tables": [t for t in table_names if t not in levy_tables_not_wired],
+        "levy_tables_not_wired": levy_tables_not_wired,
+        "general_levy_tables": [],
         "gazette_register": f"{iso3.lower()}_gazette_register.json",
+        "sh6_principle": (
+            "les 6 premiers chiffres (SH) sont internationaux ; le tarif national "
+            "se développe au-delà du 6e chiffre — TUN : 10 chiffres (SH6+4) + 1 "
+            "chiffre de clé de validation de la déclaration en douane (11 caractères "
+            "publiés par le Tarif Web) ; le tarif national authentique est la source unique"
+        ),
     }
     (out / "jurisdiction_config.json").write_text(
         json.dumps(config, ensure_ascii=False, indent=1), encoding="utf-8")

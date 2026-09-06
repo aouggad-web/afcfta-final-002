@@ -88,9 +88,8 @@ def main() -> int:
             )
     lev["assiette_gaps"] = {
         "RPD": (
-            "assiette = somme des droits et taxes (verbatim source) — non câblée : "
-            "le moteur n'applique PAS cette redevance tant que son câblage n'est "
-            "pas testé"
+            "assiette = somme des droits et taxes (verbatim source) — tables "
+            "exclues du câblage moteur par le builder (jamais calculées sur CIF)"
         )
     }
     LEVIES.write_text(json.dumps(lev, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -141,6 +140,12 @@ def main() -> int:
     reg["currency_note"] = (
         "customs_value attendu dans la devise de la juridiction (TND) : toute valeur "
         "USD doit être convertie avant l'appel — les montants calculés sont étiquetés TND"
+    )
+    reg["national_tariff_note"] = (
+        "TUN : tarif national à 10 chiffres (SH6+4) ; le 11e chiffre publié par le "
+        "Tarif Web est la CLÉ DE VALIDATION DÉFINITIVE de la déclaration en douane — "
+        "1 seule sous-position sans DD publiée (27090090967, huiles brutes de "
+        "pétrole — régime pétrolier spécifique), trou documenté"
     )
     reg["integrity_watch_fixes"] = {
         "as_of": "2026-09-06",

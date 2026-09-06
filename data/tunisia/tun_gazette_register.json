@@ -5,15 +5,15 @@
  "coverage_window": {
   "from": "2017-07-01",
   "to": null,
-  "note": "Corpus : Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) + corpus fiscal par position nationale."
+  "note": "Corpus : douane.gov.tn/tarifwebnew (Tarif Web 2026, portail officiel de la Douane) + corpus fiscal par position nationale."
  },
  "regional_cet_applicable": false,
  "regional_note": "UMA — pas de TEC régional en vigueur",
  "base_tariff_documentation": {
   "source_id": "TUN-CANONICAL-TARIFF",
-  "source_name": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew)",
-  "source_url": "https://www.douane.gov.tn/tarifwebnew/",
-  "sha256": "dbb5f04ba986ff81535d5052f906bd89e0ff3e3d5027445ae75023e060d76667",
+  "source_name": "douane.gov.tn/tarifwebnew (Tarif Web 2026, portail officiel de la Douane)",
+  "source_url": "https://www.douane.gov.tn/tarifweb2026/",
+  "sha256": "f21f2a8b6f74dbe6de65c017d019a996be953fbaec4e39c6cbb894c42056a2ea",
   "verification_status": "VERIFIED",
   "data_status": "VERIFIED",
   "hs_version": "HS2022 — sous-positions nationales",
@@ -34,78 +34,32 @@
  },
  "documents": [
   {
-   "file": "TUN_tariffs.json (canonique)",
-   "title": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) — 5614 lignes",
-   "source_url": "https://www.douane.gov.tn/tarifwebnew/",
-   "sha256": "dbb5f04ba986ff81535d5052f906bd89e0ff3e3d5027445ae75023e060d76667"
+   "file": "TUN_tariffs.json (tarif national — source unique)",
+   "title": "Tarif Web 2026 — 17 625 sous-positions nationales (10 chiffres + clé DUM)",
+   "source_url": "https://www.douane.gov.tn/tarifweb2026/",
+   "sha256": "f21f2a8b6f74dbe6de65c017d019a996be953fbaec4e39c6cbb894c42056a2ea"
   }
  ],
  "sources_officielles": [
   "https://au-afcfta.org (Secrétariat ZLECAf — UA — e-Tariff Book, offre TUN 9 chiffres)",
   "https://au.int/fr (Union africaine — ZLECAf)",
   "https://taxsummaries.pwc.com/tunisia/corporate/other-taxes (PwC)",
-  "https://www.douane.gov.tn/tarifwebnew/",
+  "https://www.douane.gov.tn/tarifweb2026/",
   "https://www.douane.gov.tn/tarifwebnew/ (Tarif Web 2026 — douane tunisienne, source officielle)",
   "https://www.tralac.org/resources.html (tralac Trade Law Centre)"
  ],
  "verification_nationale": {
   "as_of": "2026-09-06",
   "status": "EXHAUSTIVE_VERIFIED",
-  "sub_positions_unique": 17625,
+  "sub_positions_unique": 17542,
   "schedule1_unique_codes": null,
   "schedule2_sensitive_items": null,
   "duplicates_schedule1_ignored": null,
   "codes_merged_recovered": null,
   "compound_rates_structured": null,
   "npf_note": null,
-  "zlecaf_afcfta": {
-   "status": "OFFER_ONLY",
-   "codes_covered": 13446,
-   "legal_gate": "exécution gated par zlecaf_implementation_registry.py — jamais calculée sans instrument d'implémentation + liste de partenaires réciproques + preuve d'origine",
-   "source_title": "AfCFTA e-Tariff Book — Tariff Concession Schedule",
-   "source_url": "https://etariff.au-afcfta.org/",
-   "collected_at": "2026-08-17",
-   "legal_effect_status": "OFFER_ONLY",
-   "execution_authorized": false,
-   "destination_query_code": "TN"
-  },
-  "zlecaf_npf_crosscheck": {
-   "matched_codes": 13445,
-   "npf_matches": 8573,
-   "npf_mismatches": 4872,
-   "npf_mismatch_examples": [
-    {
-     "code": "01061100003",
-     "dd_recrawl": 15.0,
-     "offre_mfn": 36.0,
-     "note": "offre ZLECAf (base de négociation) ≠ tarif national"
-    },
-    {
-     "code": "01061300105",
-     "dd_recrawl": 15.0,
-     "offre_mfn": 36.0,
-     "note": "offre ZLECAf (base de négociation) ≠ tarif national"
-    },
-    {
-     "code": "01061300912",
-     "dd_recrawl": 15.0,
-     "offre_mfn": 36.0,
-     "note": "offre ZLECAf (base de négociation) ≠ tarif national"
-    },
-    {
-     "code": "01061300990",
-     "dd_recrawl": 15.0,
-     "offre_mfn": 36.0,
-     "note": "offre ZLECAf (base de négociation) ≠ tarif national"
-    },
-    {
-     "code": "01061410104",
-     "dd_recrawl": 15.0,
-     "offre_mfn": 36.0,
-     "note": "offre ZLECAf (base de négociation) ≠ tarif national"
-    }
-   ]
-  },
+  "zlecaf_afcfta": null,
+  "zlecaf_npf_crosscheck": null,
   "note_corrections": "Canonique reconstruit du re-crawl complet Tarif Web 2026 (2026-08-30, 17 542 codes = 17 542 codes de l'énumération officielle du 2026-08-29, 0 manquant, 0 superflu, tous avec taux publiés) : 16 divergences DD juin→re-crawl documentées une à une (taux officiel retenu), 15 lignes sans DD résolues, 83 codes retirés de la source conservés et flaggés, formalités riches préservées (2 018 lignes), offre ZLECAf par ligne (9 chiffres, OFFER_ONLY, 2 périodes 5/10 ans)."
  },
  "afcfta_application_evidence": {
@@ -133,6 +87,7 @@
   "assiette RPD (somme des droits et taxes) non câblée"
  ],
  "currency_note": "customs_value attendu dans la devise de la juridiction (TND) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés TND",
+ "national_tariff_note": "TUN : tarif national à 10 chiffres (SH6+4) ; le 11e chiffre publié par le Tarif Web est la CLÉ DE VALIDATION DÉFINITIVE de la déclaration en douane — 1 seule sous-position sans DD publiée (27090090967, huiles brutes de pétrole — régime pétrolier spécifique), trou documenté",
  "integrity_watch_fixes": {
   "as_of": "2026-09-06",
   "preference_downgraded_to_partial": true,
@@ -143,5 +98,245 @@
   "prohibitions_count_unverified": true,
   "coverage_scope_documented": true,
   "currency_expectation_documented": true
+ },
+ "dd_divergences_juin_vs_recrawl": [
+  {
+   "code": "73090090109",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 30.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "84248970900",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 15.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "85042300103",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 15.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "85043300109",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 15.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "85352100104",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 15.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "85352900104",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 15.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90031100003",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90031900105",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90031900901",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90039000017",
+   "dd_juin_2026": 15.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90039000028",
+   "dd_juin_2026": 15.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90039000095",
+   "dd_juin_2026": 15.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90049010212",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90049010290",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90049090214",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90049090292",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  }
+ ],
+ "import_regulations_officielles": {
+  "count_codes": 26,
+  "positions_couvertes": 7790,
+  "codes": [
+   {
+    "code": "677",
+    "description": "ACC.PREA.IMPORT MC/MI/INSSPA",
+    "positions": 2998
+   },
+   {
+    "code": "685",
+    "description": "CET. DE CONTROLE TECH.",
+    "positions": 2032
+   },
+   {
+    "code": "705",
+    "description": "PR CERTIFICAT SANITAIRE",
+    "positions": 1884
+   },
+   {
+    "code": "695",
+    "description": "CONT.TEC.PAR CAHIER CHARGE/IMP",
+    "positions": 1394
+   },
+   {
+    "code": "700",
+    "description": "PR CERTIF INSP OFITEC",
+    "positions": 1107
+   },
+   {
+    "code": "696",
+    "description": "FICHE TECH.DE CONFORMITE/IMP.",
+    "positions": 502
+   },
+   {
+    "code": "671",
+    "description": "FICHE INFORMATION/MC(DGCE)/IMP",
+    "positions": 349
+   },
+   {
+    "code": "120",
+    "description": "DEROG. MONOPOLE ETAT",
+    "positions": 243
+   },
+   {
+    "code": "711",
+    "description": "CERT.NON CONTAM.RADIOAC",
+    "positions": 141
+   },
+   {
+    "code": "626",
+    "description": "ATTEST MIN AGR/IMP MISE CONS",
+    "positions": 110
+   },
+   {
+    "code": "706",
+    "description": "PR CERTIFICAT PHYTOSANI",
+    "positions": 71
+   },
+   {
+    "code": "609",
+    "description": "PR AC REC INSP INST/POI",
+    "positions": 64
+   },
+   {
+    "code": "666",
+    "description": "PR.VISA/FACTURE ANGED/IMP.",
+    "positions": 55
+   },
+   {
+    "code": "719",
+    "description": "CAHIER CHARGE N°2 OU 3 ANGED",
+    "positions": 23
+   },
+   {
+    "code": "613",
+    "description": "PR CERTIFICAT QUALITE",
+    "positions": 21
+   },
+   {
+    "code": "664",
+    "description": "AUT MIN ECO NAT ET ANPE",
+    "positions": 21
+   },
+   {
+    "code": "717",
+    "description": "AUTORISAT MINISTR ENVIRON",
+    "positions": 20
+   },
+   {
+    "code": "602",
+    "description": "PR PERMIS INTROD ARMES",
+    "positions": 19
+   },
+   {
+    "code": "718",
+    "description": "DECISION MINISTR ENVIOU ENERGI",
+    "positions": 15
+   },
+   {
+    "code": "651",
+    "description": "PR CERTIF APPEL ORIGINE",
+    "positions": 14
+   },
+   {
+    "code": "611",
+    "description": "PR ACCORD MIN AFF CULT",
+    "positions": 10
+   },
+   {
+    "code": "690",
+    "description": "ATTEST.DE CERTIFICATION",
+    "positions": 8
+   },
+   {
+    "code": "654",
+    "description": "PR ACCORD MIN COMMERCE",
+    "positions": 6
+   },
+   {
+    "code": "667",
+    "description": "AUT.C.R.D.A/AM.AG/19/02/02/IMP",
+    "positions": 5
+   },
+   {
+    "code": "659",
+    "description": "PR CERTIF ANALYS CONFOR",
+    "positions": 3
+   },
+   {
+    "code": "601",
+    "description": "PR AVIS TECHN FAV GIAF",
+    "positions": 1
+   }
+  ],
+  "note": "codes de réglementation d'import publiés par le Tarif Web 2026 — autorités émettrices nommées dans les libellés (MC/DGCE, ANGED, MINISTRE ENVIRONNEMENT, MIN. AGRICULTURE, OFITEC, INSSPA, GIAF, ANPE…)"
+ },
+ "zlecaf_source_preferences": {
+  "lines_with_zlecaf_preference": 14075,
+  "source": "Tarif Web 2026 — colonne préférences par pays partenaire (zone ZLECAf)",
+  "note": "la douane tunisienne publie elle-même, par sous-position, le taux préférentiel ZLECAf applicable par pays partenaire — source authentique de premier niveau (au-delà de l'offre e-Tariff Book UA)"
  }
 }
