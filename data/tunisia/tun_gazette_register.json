@@ -338,5 +338,25 @@
   "lines_with_zlecaf_preference": 14075,
   "source": "Tarif Web 2026 — colonne préférences par pays partenaire (zone ZLECAf)",
   "note": "la douane tunisienne publie elle-même, par sous-position, le taux préférentiel ZLECAf applicable par pays partenaire — source authentique de premier niveau (au-delà de l'offre e-Tariff Book UA)"
+ },
+ "zlecaf_asymetrie_partenaires": {
+  "principe": "LE TAUX ZLECAf EST ASYMÉTRIQUE PAR PARTENAIRE : le même produit n'a PAS le même avantage selon le sens du commerce. Le taux applicable à un produit importé en Tunisie depuis un partenaire Z dépend du CALENDRIER DE DÉMANTÈLEMENT bilatéral Tunisie↔Z (publié par la douane tunisienne dans la colonne préférences du Tarif Web) ; le même produit exporté de Tunisie vers Z dépend du calendrier de Z.",
+  "preuve_source": {
+   "description": "la douane tunisienne publie elle-même, par sous-position, un taux ZLECAf DIFFÉRENT PAR PARTENAIRE : ex. 01012100015 (DD 36%) → Tanzanie 0% (démantèlement complet, commerce effectif sous GTI) mais Cameroun/Ghana/Afrique du Sud/Kenya 40% (démantèlement en cours)",
+   "lignes_avec_taux_variables_par_partenaire": 14075,
+   "lignes_avec_taux_uniformes": 0,
+   "partenaires_publiés": [
+    "Cameroun",
+    "Nigéria",
+    "Ghana",
+    "Afrique du Sud",
+    "Tanzanie",
+    "Kenya",
+    "Maurice",
+    "Rwanda"
+   ],
+   "algerie": "l'Algérie ne figure PAS encore dans les préférences ZLECAf tunisiennes publiées (démantèlement bilatéral Tunisie-Algérie non publié dans le Tarif Web au 2026-09-06) — pour un produit algérien exporté vers la Tunisie, le taux applicable dépendra du calendrier bilatéral dès sa publication"
+  },
+  "implication_calcul": "le calculateur doit résoudre le taux ZLECAf par COUPLE (pays importateur, pays origine) et jamais par produit seul — le taux du pays importateur (son calendrier de démantèlement envers l'origine) s'applique ; le côté Algérie utilise la circulaire DGD 482/2024 (listes A/B/C, calendriers standard/réciprocité)"
  }
 }

@@ -120,3 +120,29 @@ def test_register_documents_verification_and_sha():
     assert "tralac.org" in " ".join(reg["sources_officielles"])
     assert "au.int" in " ".join(reg["sources_officielles"])
     assert "CLÉ DE VALIDATION" in reg.get("national_tariff_note", "")
+
+
+def test_zlecaf_rates_are_partner_asymmetric():
+    """Doctrine ZLECAf : le taux préférentiel dépend du COUPLE (importateur,
+    origine) — le calendrier de démantèlement du pays importateur envers
+    l'origine s'applique. La source tunisienne le publie elle-même : 14 075
+    lignes ZLECAf à taux variables par partenaire (ex. Tanzanie 0% vs
+    Cameroun 40% sur la même ligne nationale)."""
+    d = _national()
+    var = uniform = 0
+    partner_variants = set()
+    for sp in d["sub_positions"]:
+        zl = [(p.get("country_name"), p.get("rate")) for p in (sp.get("preferences") or []) if p.get("zone") == "ZLECAf"]
+        if not zl:
+            continue
+        rates = {r for _, r in zl}
+        if len(rates) > 1:
+            var += 1
+        else:
+            uniform += 1
+        for name, rate in zl:
+            partner_variants.add(name)
+    assert var == 14075 and uniform == 0
+    assert {"TANZANIE", "CAMEROUN", "KENYA"} <= partner_variants
+    reg = json.loads((SLUG_DIR / "tun_gazette_register.json").read_text(encoding="utf-8"))
+    assert reg["zlecaf_asymetrie_partenaires"]["preuve_source"]["lignes_avec_taux_variables_par_partenaire"] == 14075
