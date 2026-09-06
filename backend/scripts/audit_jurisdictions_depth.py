@@ -41,5 +41,8 @@ for cc, slug in SLUGS.items():
                   if isinstance(f, dict) and (f.get("document_fr") or f.get("description"))
                   and NUM.fullmatch((f.get("document_fr") or f.get("description") or "").strip()))
     ov = json.loads((slug_dir / "legal_overrides.json").read_text(encoding="utf-8"))
-    orphan = sum(1 for m in ov["measures"] for c in m["hs_codes"] if c not in pos)
+    # correspondance SH6 (comme le moteur _hs_match) : une mesure portant un
+    # code ch.31xxxx00 est couverte si le SH6 (310100) est publié par la source
+    published_hs6 = {l.get("hs6") for l in d.get("tariff_lines", []) if l.get("hs6")} | {c[:6] for c in pos}
+    orphan = sum(1 for m in ov["measures"] for c in m["hs_codes"] if c[:6] not in published_hs6)
     print(f"{cc}: SP={len(pos)} | lignes={n_lines} | hs6_sans_SP={hs6_sans_sp} | sha_OK={sha_ok} | FAP_num_bad={num_bad} | mesures_orphelines={orphan} | DD_manquantes={dd_missing}")
