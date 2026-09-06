@@ -70,7 +70,12 @@
    "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
    "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité) — l'acceptation algérienne des partenaires ZLECAf prouve la réciprocité de l'accord"
   },
-  "schedule_published": "offre TZA non archivée dans l'e-Tariff Book (NOT_AVAILABLE)"
+  "schedule_published": "offre TZA non archivée dans l'e-Tariff Book (NOT_AVAILABLE)",
+  "live_api_verification": {
+   "verified_on": "2026-09-06",
+   "method": "requêtes directes sur l'API officielle du Secrétariat ZLECAf (e-Tariff Book, prod-afcfta-api.azurewebsites.net) — 40 codes du snapshot EAC archivé comparés au live : 40/40 identiques (MFN + catégories)",
+   "result": "SNAPSHOT_CONFORME_40_40"
+  }
  },
  "currency_note": "customs_value attendu dans la devise de la juridiction (TZS) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés TZS",
  "coverage_scope": {
