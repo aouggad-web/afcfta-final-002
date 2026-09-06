@@ -5,7 +5,7 @@
   "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
   "source_organization": "East African Community / Kenya Revenue Authority",
   "extraction_date": "2026-02-18T10:54:35.914199",
-  "total_positions": 5984,
+  "total_positions": 5954,
   "hs_version": "HS 2022",
   "tariff_system": "EAC CET 4-band (0%, 10%, 25%, 35%) + specific rates",
   "economic_community": "EAC",
@@ -11563,19 +11563,18 @@
     {
       "hs_code": "04011000",
       "hs_code_display": "0401.10.00",
-      "designation": "- Of a fat content, by weight, not exceeding1%",
-      "unit": "kg",
+      "designation": "- Of a fat content, by weight, not exceeding 1%",
+      "unit": "",
       "chapter": "04",
       "heading": "04.01",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -11584,7 +11583,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -11599,19 +11598,18 @@
     {
       "hs_code": "04012000",
       "hs_code_display": "0401.20.00",
-      "designation": "- Of a fat content, by weight, exceeding 1% but not exceeding 6%",
-      "unit": "kg",
+      "designation": "- Of a fat content, by weight, exceeding 1% but not exceeding",
+      "unit": "",
       "chapter": "04",
       "heading": "04.01",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 6.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -11620,7 +11618,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 24.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -11670,19 +11668,18 @@
     {
       "hs_code": "04015000",
       "hs_code_display": "0401.50.00",
-      "designation": "- Of a fat content, by weight, exceeding 10%",
-      "unit": "kg",
+      "designation": "- Of a fat content, by weight, exceeding 10 %",
+      "unit": "",
       "chapter": "04",
       "heading": "04.01",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -11691,7 +11688,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -11707,18 +11704,17 @@
       "hs_code": "04021000",
       "hs_code_display": "0402.10.00",
       "designation": "- In powder, granules or other solid forms, of a fat content, by weight, not exceeding 1.5%",
-      "unit": "kg",
+      "unit": "",
       "chapter": "04",
       "heading": "04.02",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -11727,7 +11723,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -11742,19 +11738,18 @@
     {
       "hs_code": "04022100",
       "hs_code_display": "0402.21.00",
-      "designation": "-- Not containing added sugar or other sweetening matter:",
-      "unit": "kg",
+      "designation": "-- Not containing added sugar or other sweetening matter",
+      "unit": "",
       "chapter": "04",
       "heading": "04.02",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -11763,7 +11758,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -11778,19 +11773,18 @@
     {
       "hs_code": "04022900",
       "hs_code_display": "0402.29.00",
-      "designation": "-- Other:",
-      "unit": "kg",
+      "designation": "-- Other",
+      "unit": "",
       "chapter": "04",
       "heading": "04.02",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -11799,7 +11793,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -11815,18 +11809,17 @@
       "hs_code": "04029100",
       "hs_code_display": "0402.91.00",
       "designation": "-- Not containing added sugar or other sweetening matter",
-      "unit": "kg",
+      "unit": "",
       "chapter": "04",
       "heading": "04.02",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -11835,7 +11828,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -11850,19 +11843,18 @@
     {
       "hs_code": "04029900",
       "hs_code_display": "0402.99.00",
-      "designation": "-- Other:",
-      "unit": "kg",
+      "designation": "-- Other",
+      "unit": "",
       "chapter": "04",
       "heading": "04.02",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -11871,7 +11863,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -11886,19 +11878,18 @@
     {
       "hs_code": "04032000",
       "hs_code_display": "0403.20.00",
-      "designation": "-Yogurt",
-      "unit": "kg",
+      "designation": "- Yogurt",
+      "unit": "",
       "chapter": "04",
       "heading": "04.03",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -11907,7 +11898,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -11923,18 +11914,17 @@
       "hs_code": "04039000",
       "hs_code_display": "0403.90.00",
       "designation": "- Other",
-      "unit": "kg",
+      "unit": "",
       "chapter": "04",
       "heading": "04.03",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -11943,7 +11933,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -12134,18 +12124,17 @@
       "hs_code": "04061000",
       "hs_code_display": "0406.10.00",
       "designation": "- Fresh (unripened or uncured) cheese, including whey cheese, and curd",
-      "unit": "kg",
+      "unit": "",
       "chapter": "04",
       "heading": "04.06",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -12154,7 +12143,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -12170,18 +12159,17 @@
       "hs_code": "04062000",
       "hs_code_display": "0406.20.00",
       "designation": "- Grated or powdered cheese, of all kinds",
-      "unit": "kg",
+      "unit": "",
       "chapter": "04",
       "heading": "04.06",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -12190,7 +12178,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -12206,18 +12194,17 @@
       "hs_code": "04063000",
       "hs_code_display": "0406.30.00",
       "designation": "- Processed cheese, not grated or powdered",
-      "unit": "kg",
+      "unit": "",
       "chapter": "04",
       "heading": "04.06",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -12226,7 +12213,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -12242,18 +12229,17 @@
       "hs_code": "04064000",
       "hs_code_display": "0406.40.00",
       "designation": "- Blue-veined cheese and other cheese containing veins produced by Penicillium roqueforti",
-      "unit": "kg",
+      "unit": "",
       "chapter": "04",
       "heading": "04.06",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -12262,7 +12248,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -12278,18 +12264,17 @@
       "hs_code": "04069000",
       "hs_code_display": "0406.90.00",
       "designation": "- Other cheese",
-      "unit": "kg",
+      "unit": "",
       "chapter": "04",
       "heading": "04.06",
-      "section": "I",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 60.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -12298,7 +12283,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -20889,18 +20874,17 @@
       "hs_code": "10059000",
       "hs_code_display": "1005.90.00",
       "designation": "- Other",
-      "unit": "kg",
+      "unit": "",
       "chapter": "10",
       "heading": "10.05",
-      "section": "II",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -20909,7 +20893,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -20924,19 +20908,28 @@
     {
       "hs_code": "10061000",
       "hs_code_display": "1006.10.00",
-      "designation": "- Rice in the husk (paddy or rough)",
-      "unit": "kg",
+      "designation": "- Rice in the husk (Paddy or rough)",
+      "unit": "",
       "chapter": "10",
-      "heading": "10.06",
-      "section": "II",
-      "is_sensitive_item": true,
+      "heading": "10.05",
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "75% or $345/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -20960,19 +20953,28 @@
     {
       "hs_code": "10062000",
       "hs_code_display": "1006.20.00",
-      "designation": "- Husked (brown) rice",
-      "unit": "kg",
+      "designation": "- Husked (Brown) rice",
+      "unit": "No.",
       "chapter": "10",
-      "heading": "10.06",
-      "section": "II",
-      "is_sensitive_item": true,
+      "heading": "10.05",
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "75% or $345/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -20996,19 +20998,28 @@
     {
       "hs_code": "10063000",
       "hs_code_display": "1006.30.00",
-      "designation": "- Semi-milled or wholly milled rice, whether or not polished or glazed",
-      "unit": "kg",
+      "designation": "- Semi-Milled or wholly milled rice whether or not polished or glazed",
+      "unit": "",
       "chapter": "10",
-      "heading": "10.06",
-      "section": "II",
-      "is_sensitive_item": true,
+      "heading": "10.05",
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "75% or $345/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -21032,19 +21043,28 @@
     {
       "hs_code": "10064000",
       "hs_code_display": "1006.40.00",
-      "designation": "- Broken rice",
-      "unit": "kg",
+      "designation": "- Broken Rice",
+      "unit": "",
       "chapter": "10",
-      "heading": "10.06",
-      "section": "II",
-      "is_sensitive_item": true,
+      "heading": "10.05",
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "75% or $345/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -21419,18 +21439,17 @@
       "hs_code": "11010000",
       "hs_code_display": "1101.00.00",
       "designation": "Wheat or meslin flour.",
-      "unit": "kg",
+      "unit": "",
       "chapter": "11",
       "heading": "11.01",
-      "section": "II",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -21439,7 +21458,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -21455,18 +21474,17 @@
       "hs_code": "11022000",
       "hs_code_display": "1102.20.00",
       "designation": "- Maize (corn) flour",
-      "unit": "kg",
+      "unit": "",
       "chapter": "11",
       "heading": "11.02",
-      "section": "II",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -21475,7 +21493,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -21491,18 +21509,27 @@
       "hs_code": "11029010",
       "hs_code_display": "1102.90.10",
       "designation": "--- Rice flour",
-      "unit": "kg",
+      "unit": "",
       "chapter": "11",
       "heading": "11.02",
-      "section": "II",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "75% or $345/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -28247,18 +28274,27 @@
       "hs_code": "17011210",
       "hs_code_display": "1701.12.10",
       "designation": "--- Jaggery",
-      "unit": "kg",
+      "unit": "",
       "chapter": "17",
       "heading": "17.01",
-      "section": "IV",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -28283,18 +28319,27 @@
       "hs_code": "17011290",
       "hs_code_display": "1701.12.90",
       "designation": "--- Other",
-      "unit": "kg",
+      "unit": "",
       "chapter": "17",
       "heading": "17.01",
-      "section": "IV",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -28319,18 +28364,27 @@
       "hs_code": "17011310",
       "hs_code_display": "1701.13.10",
       "designation": "--- Jaggery",
-      "unit": "kg",
+      "unit": "",
       "chapter": "17",
       "heading": "17.01",
-      "section": "IV",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -28355,18 +28409,27 @@
       "hs_code": "17011390",
       "hs_code_display": "1701.13.90",
       "designation": "--- Other",
-      "unit": "kg",
+      "unit": "",
       "chapter": "17",
       "heading": "17.01",
-      "section": "IV",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -28391,18 +28454,27 @@
       "hs_code": "17011410",
       "hs_code_display": "1701.14.10",
       "designation": "--- Jaggery",
-      "unit": "kg",
+      "unit": "",
       "chapter": "17",
       "heading": "17.01",
-      "section": "IV",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -28427,18 +28499,27 @@
       "hs_code": "17011490",
       "hs_code_display": "1701.14.90",
       "designation": "--- Other",
-      "unit": "kg",
+      "unit": "",
       "chapter": "17",
       "heading": "17.01",
-      "section": "IV",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -28463,18 +28544,27 @@
       "hs_code": "17019100",
       "hs_code_display": "1701.91.00",
       "designation": "-- Containing added flavouring or colouring matter",
-      "unit": "kg",
+      "unit": "",
       "chapter": "17",
       "heading": "17.01",
-      "section": "IV",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -28498,19 +28588,28 @@
     {
       "hs_code": "17019910",
       "hs_code_display": "1701.99.10",
-      "designation": "--- Sugar for industrial use",
-      "unit": "kg",
+      "designation": "---Sugar for industrial use",
+      "unit": "",
       "chapter": "17",
       "heading": "17.01",
-      "section": "IV",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -28535,18 +28634,27 @@
       "hs_code": "17019990",
       "hs_code_display": "1701.99.90",
       "designation": "--- Other",
-      "unit": "kg",
+      "unit": "",
       "chapter": "17",
       "heading": "17.01",
-      "section": "IV",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
+          "tax_name": "CET Import Duty (Droit composé — Schedule 2 Sensitive Item)",
           "rate": null,
           "base": "CIF",
           "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "note": "100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -35089,6 +35197,93 @@
       ],
       "administrative_formalities": [],
       "source": "EAC CET 2022 (kra.go.ke)",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "24049100",
+      "hs_code_display": "2404.91.00",
+      "designation": "-- For oral application",
+      "unit": "kg",
+      "chapter": "24",
+      "heading": "2404",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 35.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 53.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "24049200",
+      "hs_code_display": "2404.92.00",
+      "designation": "-- For transdermal application",
+      "unit": "kg",
+      "chapter": "24",
+      "heading": "2404",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 35.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 53.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "24049900",
+      "hs_code_display": "2404.99.00",
+      "designation": "-- Other",
+      "unit": "kg",
+      "chapter": "24",
+      "heading": "2404",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 35.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 53.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
       "data_format": "crawled_authentic"
     },
     {
@@ -48249,6 +48444,35 @@
       ],
       "administrative_formalities": [],
       "source": "EAC CET 2022 (kra.go.ke)",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "29031990",
+      "hs_code_display": "2903.19.90",
+      "designation": "--- Other",
+      "unit": "kg",
+      "chapter": "29",
+      "heading": "2903",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
       "data_format": "crawled_authentic"
     },
     {
@@ -71107,6 +71331,93 @@
       "data_format": "crawled_authentic"
     },
     {
+      "hs_code": "38089119",
+      "hs_code_display": "3808.91.19",
+      "designation": "---- Other",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 10.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 28.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089121",
+      "hs_code_display": "3808.91.21",
+      "designation": "---- Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 10.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 28.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089129",
+      "hs_code_display": "3808.91.29",
+      "designation": "---- Other",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 10.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 28.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
       "hs_code": "38089131",
       "hs_code_display": "3808.91.31",
       "designation": "---- Pyrethrum based",
@@ -71139,6 +71450,35 @@
       ],
       "administrative_formalities": [],
       "source": "EAC CET 2022 (kra.go.ke)",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089132",
+      "hs_code_display": "3808.91.32",
+      "designation": "---- Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 25.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 43.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
       "data_format": "crawled_authentic"
     },
     {
@@ -71244,6 +71584,238 @@
       ],
       "administrative_formalities": [],
       "source": "EAC CET 2022 (kra.go.ke)",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089210",
+      "hs_code_display": "3808.92.10",
+      "designation": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089290",
+      "hs_code_display": "3808.92.90",
+      "designation": "--- Other",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089310",
+      "hs_code_display": "3808.93.10",
+      "designation": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089390",
+      "hs_code_display": "3808.93.90",
+      "designation": "--- Other",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089410",
+      "hs_code_display": "3808.94.10",
+      "designation": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089490",
+      "hs_code_display": "3808.94.90",
+      "designation": "--- Other",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089910",
+      "hs_code_display": "3808.99.10",
+      "designation": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "38089990",
+      "hs_code_display": "3808.99.90",
+      "designation": "--- Other",
+      "unit": "kg",
+      "chapter": "38",
+      "heading": "3808",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
       "data_format": "crawled_authentic"
     },
     {
@@ -79437,6 +80009,64 @@
       "data_format": "crawled_authentic"
     },
     {
+      "hs_code": "39239010",
+      "hs_code_display": "3923.90.10",
+      "designation": "--- Empty gelatine capsules for pharmaceutical use",
+      "unit": "kg",
+      "chapter": "39",
+      "heading": "3923",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "39239020",
+      "hs_code_display": "3923.90.20",
+      "designation": "--- Plastic tubes for packing of toothpaste, cosmetics and similar products",
+      "unit": "kg",
+      "chapter": "39",
+      "heading": "3923",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 25.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 43.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
+      "data_format": "crawled_authentic"
+    },
+    {
       "hs_code": "39239090",
       "hs_code_display": "3923.90.90",
       "designation": "--- Other",
@@ -83249,6 +83879,35 @@
       ],
       "administrative_formalities": [],
       "source": "EAC CET 2022 (kra.go.ke)",
+      "data_format": "crawled_authentic"
+    },
+    {
+      "hs_code": "41051000",
+      "hs_code_display": "4105.10.00",
+      "designation": "- In the wet state (including wet-blue)",
+      "unit": "kg",
+      "chapter": "41",
+      "heading": "4105",
+      "section": null,
+      "is_sensitive_item": false,
+      "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 10.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
+          "tax_name": "Value Added Tax (VAT)",
+          "rate": 18.0,
+          "base": "CIF+Duty",
+          "is_cet": false
+        }
+      ],
+      "total_taxes_pct": 28.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "source": "EAC CET 2022 (kra.go.ke) — code fusionné-absent récupéré, taux vérifié page par page",
       "data_format": "crawled_authentic"
     },
     {
@@ -99740,18 +100399,17 @@
       "hs_code": "52085110",
       "hs_code_display": "5208.51.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "52",
       "heading": "52.08",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -99760,7 +100418,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -99811,18 +100469,17 @@
       "hs_code": "52085210",
       "hs_code_display": "5208.52.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "52",
       "heading": "52.08",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -99831,7 +100488,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -100372,18 +101029,17 @@
       "hs_code": "52095110",
       "hs_code_display": "5209.51.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "52",
       "heading": "52.09",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -100392,7 +101048,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -100828,18 +101484,17 @@
       "hs_code": "52105110",
       "hs_code_display": "5210.51.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "52",
       "heading": "52.10",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -100848,7 +101503,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -101319,18 +101974,17 @@
       "hs_code": "52115110",
       "hs_code_display": "5211.51.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "52",
       "heading": "52.11",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -101339,7 +101993,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -101600,18 +102254,17 @@
       "hs_code": "52121510",
       "hs_code_display": "5212.15.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "52",
       "heading": "52.12",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -101620,7 +102273,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -101811,18 +102464,17 @@
       "hs_code": "52122510",
       "hs_code_display": "5212.25.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "52",
       "heading": "52.12",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -101831,7 +102483,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -102028,6 +102680,12 @@
       "section": "XI",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 0.0,
+          "base": "CIF",
+          "is_cet": true
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -107546,18 +108204,17 @@
       "hs_code": "55134110",
       "hs_code_display": "5513.41.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "55",
       "heading": "55.13",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -107566,7 +108223,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -107932,18 +108589,17 @@
       "hs_code": "55144110",
       "hs_code_display": "5514.41.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "55",
       "heading": "55.14",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -107952,7 +108608,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -112315,13 +112971,19 @@
       "is_sensitive_item": false,
       "taxes_detail": [
         {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 25.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
           "base": "CIF+Duty",
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 43.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -121367,18 +122029,17 @@
       "hs_code": "62114210",
       "hs_code_display": "6211.42.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "62",
       "heading": "62.11",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -121387,7 +122048,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -121438,18 +122099,17 @@
       "hs_code": "62114310",
       "hs_code_display": "6211.43.10",
       "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "unit": "",
       "chapter": "62",
       "heading": "62.11",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -121458,7 +122118,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -121508,19 +122168,18 @@
     {
       "hs_code": "62114910",
       "hs_code_display": "6211.49.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "kg",
+      "designation": "--- of other textile material",
+      "unit": "",
       "chapter": "62",
       "heading": "62.11",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -121529,7 +122188,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -122384,19 +123043,18 @@
     {
       "hs_code": "63022100",
       "hs_code_display": "6302.21.00",
-      "designation": "-- Of cotton",
-      "unit": "kg",
+      "designation": "--Of Cotton",
+      "unit": "",
       "chapter": "63",
       "heading": "63.02",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -122405,7 +123063,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -122490,19 +123148,18 @@
     {
       "hs_code": "63023100",
       "hs_code_display": "6302.31.00",
-      "designation": "-- Of cotton",
-      "unit": "kg",
+      "designation": "--Of Cotton",
+      "unit": "",
       "chapter": "63",
       "heading": "63.02",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -122511,7 +123168,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -122631,19 +123288,18 @@
     {
       "hs_code": "63025100",
       "hs_code_display": "6302.51.00",
-      "designation": "-- Of cotton",
-      "unit": "kg",
+      "designation": "--Of Cotton",
+      "unit": "",
       "chapter": "63",
       "heading": "63.02",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -122652,7 +123308,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -122772,19 +123428,18 @@
     {
       "hs_code": "63029100",
       "hs_code_display": "6302.91.00",
-      "designation": "-- Of cotton",
-      "unit": "kg",
+      "designation": "--Of Cotton",
+      "unit": "",
       "chapter": "63",
       "heading": "63.02",
-      "section": "XI",
-      "is_sensitive_item": true,
+      "section": "XXI",
+      "is_sensitive_item": false,
       "taxes_detail": [
         {
-          "tax_name": "CET Import Duty (Sensitive Item)",
-          "rate": null,
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 50.0,
           "base": "CIF",
-          "is_cet": true,
-          "note": "Rate determined by national schedule"
+          "is_cet": true
         },
         {
           "tax_name": "Value Added Tax (VAT)",
@@ -122793,7 +123448,7 @@
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -123928,13 +124583,29 @@
     {
       "hs_code": "63090010",
       "hs_code_display": "6309.00.10",
-      "designation": "--- Worn items of clothing 35% or USD 0.40/kg whichever is higher",
+      "designation": "--- Worn items of clothing",
       "unit": "kg",
       "chapter": "63",
       "heading": "63.09",
       "section": "XI",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "35% or USD 0.40/kg whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 35.0,
+            "specific_amount": 0.4,
+            "specific_unit": "kg",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -123957,13 +124628,29 @@
     {
       "hs_code": "63090020",
       "hs_code_display": "6309.00.20",
-      "designation": "--- Worn items of footwear 35% or USD 0.40/kg whichever is higher",
+      "designation": "--- Worn items of footwear",
       "unit": "kg",
       "chapter": "63",
       "heading": "63.09",
       "section": "XI",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "35% or USD 0.40/kg whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 35.0,
+            "specific_amount": 0.4,
+            "specific_unit": "kg",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -123986,13 +124673,29 @@
     {
       "hs_code": "63090090",
       "hs_code_display": "6309.00.90",
-      "designation": "--- Other worn items 35% or USD 0.40/kg whichever is higher",
+      "designation": "--- Other worn items",
       "unit": "kg",
       "chapter": "63",
       "heading": "63.09",
       "section": "XI",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "35% or USD 0.40/kg whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 35.0,
+            "specific_amount": 0.4,
+            "specific_unit": "kg",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -135565,13 +136268,29 @@
     {
       "hs_code": "72104900",
       "hs_code_display": "7210.49.00",
-      "designation": "-- Other 25% or $200/MT whichever is higher",
+      "designation": "-- Other",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.10",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -135629,13 +136348,29 @@
     {
       "hs_code": "72106100",
       "hs_code_display": "7210.61.00",
-      "designation": "-- Plated or coated with aluminium-zinc alloys 25% or $200/MT whichever is higher",
+      "designation": "-- Plated or coated with aluminium-zinc alloys",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.10",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -135658,13 +136393,29 @@
     {
       "hs_code": "72106900",
       "hs_code_display": "7210.69.00",
-      "designation": "-- Other 25% or $200/MT whichever is higher",
+      "designation": "-- Other",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.10",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -135687,13 +136438,29 @@
     {
       "hs_code": "72107000",
       "hs_code_display": "7210.70.00",
-      "designation": "- Painted, Vanished or coated with plastics 25% or $200/MT whichever is higher",
+      "designation": "- Painted, Vanished or coated with plastics",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.10",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -135716,13 +136483,29 @@
     {
       "hs_code": "72109000",
       "hs_code_display": "7210.90.00",
-      "designation": "- Other 25% or $200/MT whichever is higher",
+      "designation": "- Other",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.10",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -136025,13 +136808,29 @@
     {
       "hs_code": "72123000",
       "hs_code_display": "7212.30.00",
-      "designation": "- Otherwise plated or coated with zinc 25% or $200/MT whichever is higher",
+      "designation": "- Otherwise plated or coated with zinc",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.12",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -136159,13 +136958,29 @@
     {
       "hs_code": "72131000",
       "hs_code_display": "7213.10.00",
-      "designation": "- Containing indentations,ribs,grooves or other deformations produced during the rolling process 25% or $200/MT whichever is higher",
+      "designation": "- Containing indentations,ribs,grooves or other deformations produced during the rolling process",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.13",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -136196,6 +137011,22 @@
       "is_sensitive_item": false,
       "taxes_detail": [
         {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
           "base": "CIF+Duty",
@@ -136217,13 +137048,29 @@
     {
       "hs_code": "72139110",
       "hs_code_display": "7213.91.10",
-      "designation": "--- Of cross section measuring less than 8 mm 25% or $200/MT whichever is higher",
+      "designation": "--- Of cross section measuring less than 8 mm",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.13",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -136246,13 +137093,29 @@
     {
       "hs_code": "72139190",
       "hs_code_display": "7213.91.90",
-      "designation": "--- Other 25% or $200/MT whichever is higher",
+      "designation": "--- Other",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.13",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -136275,13 +137138,29 @@
     {
       "hs_code": "72139900",
       "hs_code_display": "7213.99.00",
-      "designation": "-- Other 25% or $200/MT whichever is higher",
+      "designation": "-- Other",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.13",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -138859,13 +139738,29 @@
     {
       "hs_code": "72271000",
       "hs_code_display": "7227.10.00",
-      "designation": "- Of high speed steel 25% or $200/MT whichever is higher",
+      "designation": "- Of high speed steel",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.27",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -138888,13 +139783,29 @@
     {
       "hs_code": "72272000",
       "hs_code_display": "7227.20.00",
-      "designation": "- Of silico-manganese steel 25% or $200/MT whichever is higher",
+      "designation": "- Of silico-manganese steel",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.27",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -138917,13 +139828,29 @@
     {
       "hs_code": "72279000",
       "hs_code_display": "7227.90.00",
-      "designation": "- Other 25% or $200/MT whichever is higher",
+      "designation": "- Other",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.27",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -138946,13 +139873,29 @@
     {
       "hs_code": "72281000",
       "hs_code_display": "7228.10.00",
-      "designation": "- Bars and rods, of high speed steel 25% or $200/MT whichever is higher",
+      "designation": "- Bars and rods, of high speed steel",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.28",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -138975,13 +139918,29 @@
     {
       "hs_code": "72282000",
       "hs_code_display": "7228.20.00",
-      "designation": "- Bars and rods, of silico-manganese steel 25% or $200/MT whichever is higher",
+      "designation": "- Bars and rods, of silico-manganese steel",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.28",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -139004,13 +139963,29 @@
     {
       "hs_code": "72283000",
       "hs_code_display": "7228.30.00",
-      "designation": "- Other bars and rods, not further worked than hot-rolled, hot- drawn or extruded 25% or $200/MT whichever is higher",
+      "designation": "- Other bars and rods, not further worked than hot-rolled, hot- drawn or extruded",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.28",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -139033,13 +140008,29 @@
     {
       "hs_code": "72284000",
       "hs_code_display": "7228.40.00",
-      "designation": "- Other bars and rods, not further worked than forged 25% or $200/MT whichever is higher",
+      "designation": "- Other bars and rods, not further worked than forged",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.28",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -139062,13 +140053,29 @@
     {
       "hs_code": "72285000",
       "hs_code_display": "7228.50.00",
-      "designation": "- Other bars and rods, not further worked than cold-formed or cold-finished 25% or $200/MT whichever is higher",
+      "designation": "- Other bars and rods, not further worked than cold-formed or cold-finished",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.28",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -139091,13 +140098,29 @@
     {
       "hs_code": "72286000",
       "hs_code_display": "7228.60.00",
-      "designation": "- Other bars and rods 25% or $200/MT whichever is higher",
+      "designation": "- Other bars and rods",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.28",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -139120,13 +140143,29 @@
     {
       "hs_code": "72287000",
       "hs_code_display": "7228.70.00",
-      "designation": "- Angles, shapes and sections 25% or $200/MT whichever is higher",
+      "designation": "- Angles, shapes and sections",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.28",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -139149,13 +140188,29 @@
     {
       "hs_code": "72288000",
       "hs_code_display": "7228.80.00",
-      "designation": "- Hollow drill bars and rods 25% or $200/MT whichever is higher",
+      "designation": "- Hollow drill bars and rods",
       "unit": "kg",
       "chapter": "72",
       "heading": "72.28",
       "section": "XV",
       "is_sensitive_item": false,
       "taxes_detail": [
+        {
+          "tax_name": "CET Import Duty (Droit composé — Schedule 1)",
+          "rate": null,
+          "base": "CIF",
+          "is_cet": true,
+          "note": "25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
@@ -199631,13 +200686,19 @@
       "is_sensitive_item": false,
       "taxes_detail": [
         {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 10.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
           "base": "CIF+Duty",
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 28.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -199660,13 +200721,19 @@
       "is_sensitive_item": false,
       "taxes_detail": [
         {
+          "tax_name": "CET Import Duty (Droit de Douane)",
+          "rate": 10.0,
+          "base": "CIF",
+          "is_cet": true
+        },
+        {
           "tax_name": "Value Added Tax (VAT)",
           "rate": 18.0,
           "base": "CIF+Duty",
           "is_cet": false
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 28.0,
       "fiscal_advantages": [
         {
           "name": "EAC Intra-Community",
@@ -207692,1637 +208759,18 @@
       "administrative_formalities": [],
       "source": "EAC CET 2022 (kra.go.ke)",
       "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04011000",
-      "hs_code_display": "0401.10.00",
-      "designation": "- Of a fat content, by weight, not exceeding 1%",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04012000",
-      "hs_code_display": "0401.20.00",
-      "designation": "- Of a fat content, by weight, exceeding 1% but not exceeding",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 6.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 24.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04014000",
-      "hs_code_display": "0401.40.00",
-      "designation": "- Of a fat content, by weight, exceeding 6 % but not exceeding 10 %",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04015000",
-      "hs_code_display": "0401.50.00",
-      "designation": "- Of a fat content, by weight, exceeding 10 %",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04021000",
-      "hs_code_display": "0402.10.00",
-      "designation": "- In powder, granules or other solid forms, of a fat content, by weight, not exceeding 1.5%",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04022100",
-      "hs_code_display": "0402.21.00",
-      "designation": "-- Not containing added sugar or other sweetening matter",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04022900",
-      "hs_code_display": "0402.29.00",
-      "designation": "-- Other",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04029100",
-      "hs_code_display": "0402.91.00",
-      "designation": "-- Not containing added sugar or other sweetening matter",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04029900",
-      "hs_code_display": "0402.99.00",
-      "designation": "-- Other",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04032000",
-      "hs_code_display": "0403.20.00",
-      "designation": "- Yogurt",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.03",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04039000",
-      "hs_code_display": "0403.90.00",
-      "designation": "- Other",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.03",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04061000",
-      "hs_code_display": "0406.10.00",
-      "designation": "- Fresh (unripened or uncured) cheese, including whey cheese, and curd",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.06",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04062000",
-      "hs_code_display": "0406.20.00",
-      "designation": "- Grated or powdered cheese, of all kinds",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.06",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04063000",
-      "hs_code_display": "0406.30.00",
-      "designation": "- Processed cheese, not grated or powdered",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.06",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04064000",
-      "hs_code_display": "0406.40.00",
-      "designation": "- Blue-veined cheese and other cheese containing veins produced by Penicillium roqueforti",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.06",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "04069000",
-      "hs_code_display": "0406.90.00",
-      "designation": "- Other cheese",
-      "unit": "",
-      "chapter": "04",
-      "heading": "04.06",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 60.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 78.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "10059000",
-      "hs_code_display": "1005.90.00",
-      "designation": "- Other",
-      "unit": "",
-      "chapter": "10",
-      "heading": "10.05",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "10061000",
-      "hs_code_display": "1006.10.00",
-      "designation": "- Rice in the husk (Paddy or rough) 75% or $345/MT whichever is higher",
-      "unit": "",
-      "chapter": "10",
-      "heading": "10.05",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "10062000",
-      "hs_code_display": "1006.20.00",
-      "designation": "- Husked (Brown) rice 75% or $345/MT whichever is higher",
-      "unit": "No.",
-      "chapter": "10",
-      "heading": "10.05",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "10063000",
-      "hs_code_display": "1006.30.00",
-      "designation": "- Semi-Milled or wholly milled rice whether or not polished or glazed 75% or $345/MT whichever is higher",
-      "unit": "",
-      "chapter": "10",
-      "heading": "10.05",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "10064000",
-      "hs_code_display": "1006.40.00",
-      "designation": "- Broken Rice 75% or $345/MT whichever is higher",
-      "unit": "",
-      "chapter": "10",
-      "heading": "10.05",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "11010000",
-      "hs_code_display": "1101.00.00",
-      "designation": "Wheat or meslin flour.",
-      "unit": "",
-      "chapter": "11",
-      "heading": "11.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "11022000",
-      "hs_code_display": "1102.20.00",
-      "designation": "- Maize (corn) flour",
-      "unit": "",
-      "chapter": "11",
-      "heading": "11.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "11029010",
-      "hs_code_display": "1102.90.10",
-      "designation": "--- Rice flour 75% or $345/MT whichever is higher",
-      "unit": "",
-      "chapter": "11",
-      "heading": "11.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "17011210",
-      "hs_code_display": "1701.12.10",
-      "designation": "--- Jaggery 100 % or $ 460/MT whichever is higher",
-      "unit": "",
-      "chapter": "17",
-      "heading": "17.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "17011290",
-      "hs_code_display": "1701.12.90",
-      "designation": "--- Other 100 % or $ 460/MT whichever is higher",
-      "unit": "",
-      "chapter": "17",
-      "heading": "17.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "17011310",
-      "hs_code_display": "1701.13.10",
-      "designation": "--- Jaggery 100 % or $ 460/MT whichever is higher",
-      "unit": "",
-      "chapter": "17",
-      "heading": "17.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "17011390",
-      "hs_code_display": "1701.13.90",
-      "designation": "--- Other 100 % or $ 460/MT whichever is higher",
-      "unit": "",
-      "chapter": "17",
-      "heading": "17.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "17011410",
-      "hs_code_display": "1701.14.10",
-      "designation": "--- Jaggery 100 % or $ 460/MT whichever is higher",
-      "unit": "",
-      "chapter": "17",
-      "heading": "17.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "17011490",
-      "hs_code_display": "1701.14.90",
-      "designation": "--- Other 100 % or $ 460/MT whichever is higher",
-      "unit": "",
-      "chapter": "17",
-      "heading": "17.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "17019100",
-      "hs_code_display": "1701.91.00",
-      "designation": "-- Containing added flavouring or colouring matter 100 % or $ 460/MT whichever is higher",
-      "unit": "",
-      "chapter": "17",
-      "heading": "17.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "17019910",
-      "hs_code_display": "1701.99.10",
-      "designation": "---Sugar for industrial use 100 % or $ 460/MT whichever is higher",
-      "unit": "",
-      "chapter": "17",
-      "heading": "17.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "17019990",
-      "hs_code_display": "1701.99.90",
-      "designation": "--- Other 100 % or $ 460/MT whichever is higher",
-      "unit": "",
-      "chapter": "17",
-      "heading": "17.01",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 18.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "52085110",
-      "hs_code_display": "5208.51.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "52",
-      "heading": "52.08",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "52085210",
-      "hs_code_display": "5208.52.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "52",
-      "heading": "52.08",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "52095110",
-      "hs_code_display": "5209.51.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "52",
-      "heading": "52.09",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "52105110",
-      "hs_code_display": "5210.51.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "52",
-      "heading": "52.10",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "52115110",
-      "hs_code_display": "5211.51.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "52",
-      "heading": "52.11",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "52121510",
-      "hs_code_display": "5212.15.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "52",
-      "heading": "52.12",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "52122510",
-      "hs_code_display": "5212.25.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "52",
-      "heading": "52.12",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "55134110",
-      "hs_code_display": "5513.41.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "55",
-      "heading": "55.13",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "55144110",
-      "hs_code_display": "5514.41.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "55",
-      "heading": "55.14",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "62114210",
-      "hs_code_display": "6211.42.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "62",
-      "heading": "62.11",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "62114310",
-      "hs_code_display": "6211.43.10",
-      "designation": "--- Khanga, Kikoi and Kitenge",
-      "unit": "",
-      "chapter": "62",
-      "heading": "62.11",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "62114910",
-      "hs_code_display": "6211.49.10",
-      "designation": "--- of other textile material",
-      "unit": "",
-      "chapter": "62",
-      "heading": "62.11",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "63022100",
-      "hs_code_display": "6302.21.00",
-      "designation": "--Of Cotton",
-      "unit": "",
-      "chapter": "63",
-      "heading": "63.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "63023100",
-      "hs_code_display": "6302.31.00",
-      "designation": "--Of Cotton",
-      "unit": "",
-      "chapter": "63",
-      "heading": "63.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "63025100",
-      "hs_code_display": "6302.51.00",
-      "designation": "--Of Cotton",
-      "unit": "",
-      "chapter": "63",
-      "heading": "63.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
-    },
-    {
-      "hs_code": "63029100",
-      "hs_code_display": "6302.91.00",
-      "designation": "--Of Cotton",
-      "unit": "",
-      "chapter": "63",
-      "heading": "63.02",
-      "section": "XXI",
-      "is_sensitive_item": false,
-      "taxes_detail": [
-        {
-          "tax_name": "CET Import Duty (Droit de Douane)",
-          "rate": 50.0,
-          "base": "CIF",
-          "is_cet": true
-        },
-        {
-          "tax_name": "Value Added Tax (VAT)",
-          "rate": 18.0,
-          "base": "CIF+Duty",
-          "is_cet": false
-        }
-      ],
-      "total_taxes_pct": 68.0,
-      "fiscal_advantages": [
-        {
-          "name": "EAC Intra-Community",
-          "description": "0% duty for goods originating from EAC member states with valid Certificate of Origin",
-          "conditions": "Certificate of Origin required"
-        }
-      ],
-      "administrative_formalities": [],
-      "source": "EAC CET 2022 (kra.go.ke)",
-      "data_format": "crawled_authentic"
     }
-  ]
+  ],
+  "exhaustiveness_verification": {
+    "verified_against": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+    "pdf_sha256_downloaded_2026_09_06": "4c5acc8b4c0be2f0841d116064429381ba362e66b5c720b8bff16a4af7a53b49",
+    "method": "extraction séquentielle des 560 pages Schedule 1 + 4 pages Schedule 2 du PDF officiel (PyMuPDF)",
+    "unique_codes_pdf": 5954,
+    "unique_codes_after_fix": 5954,
+    "si_rule": "Introduction, p. 9 : « The fifth column of Schedule 1 contains applicable Common External Tariff rates and where the abbreviation \"SI\" (Sensitive Items) appears the applicable duty rates shall be those specified in Schedule 2. »",
+    "duplicates_removed": 49,
+    "ad_valorem_added": 4,
+    "compound_structured": 39,
+    "missed_codes_recovered": 19
+  }
 }

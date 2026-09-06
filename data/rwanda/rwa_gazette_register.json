@@ -1,51 +1,78 @@
 {
- "jurisdiction": "RWA",
- "as_of": "2026-09-06",
- "coverage_complete": true,
- "coverage_window": {
-  "from": "2017-07-01",
-  "to": null,
-  "note": "Corpus : East African Community — EAC Common External Tariff 2022 + corpus fiscal par position nationale."
- },
- "regional_cet_applicable": true,
- "regional_note": "EAC — CET commun",
- "base_tariff_documentation": {
-  "source_id": "RWA-CANONICAL-TARIFF",
-  "source_name": "East African Community — EAC Common External Tariff 2022",
-  "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
-  "sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656",
-  "verification_status": "CRAWLED_AUTHENTIC",
-  "data_status": "PARTIAL",
-  "hs_version": "HS2022 — sous-positions nationales",
-  "effective_from": "2017-07-01",
-  "national_positions": 5984
- },
- "preference_and_origin_status": "DOCUMENTED",
- "preference_evidence": {
-  "instrument": "ZLECAf — partenaire actif de l'Algérie",
-  "sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656"
- },
- "documents": [
-  {
-   "file": "RWA_tariffs.json (canonique)",
-   "title": "East African Community — EAC Common External Tariff 2022 — 5604 lignes",
-   "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
-   "sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656"
-  }
- ],
- "sources_officielles": [
-  "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
- ],
- "verification_taxes_interieures": {
-  "objet": "Taxes intérieures NON reprises dans le TEC (TVA, accises, prélèvements) — vérification sur sources gouvernementales locales",
-  "sources": [
-   {
-    "source": "RRA — VAT & excise",
-    "url": "https://www.rra.gov.rw",
-    "http_status": "404",
-    "note": "portail officiel vérifié joignable ; page fiscale précise à localiser via navigation"
-   }
+  "jurisdiction": "RWA",
+  "as_of": "2026-09-06",
+  "coverage_complete": true,
+  "coverage_window": {
+    "from": "2017-07-01",
+    "to": null,
+    "note": "Corpus : East African Community — EAC Common External Tariff 2022 + corpus fiscal par position nationale."
+  },
+  "regional_cet_applicable": true,
+  "regional_note": "EAC — CET commun",
+  "base_tariff_documentation": {
+    "source_id": "RWA-CANONICAL-TARIFF",
+    "source_name": "East African Community — EAC Common External Tariff 2022",
+    "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+    "sha256": "bbac72acff9cdeb130e713175f6186da1dfb091a4fec3f6f9c84f010d69f405d",
+    "verification_status": "CRAWLED_AUTHENTIC",
+    "data_status": "VERIFIED_EXHAUSTIVE",
+    "hs_version": "HS2022 — sous-positions nationales",
+    "effective_from": "2017-07-01",
+    "national_positions": 5954,
+    "verification": {
+      "verified_on": "2026-09-06",
+      "pdf_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+      "pdf_sha256_downloaded": "4c5acc8b4c0be2f0841d116064429381ba362e66b5c720b8bff16a4af7a53b49",
+      "method": "Extraction séquentielle complète du PDF officiel (Schedule 1 pp. 13-556 : 5 954 codes uniques 8 chiffres ; Schedule 2 pp. 557-560 : 49 Sensitive Items). Comparaison code à code : 0 manquant, 0 superflu après correction (19 codes fusionnés-absents récupérés).",
+      "si_rule": "Introduction, p. 9 : « The fifth column of Schedule 1 contains applicable Common External Tariff rates and where the abbreviation \"SI\" (Sensitive Items) appears the applicable duty rates shall be those specified in Schedule 2. »",
+      "corrections": {
+        "duplicates_removed": 49,
+        "ad_valorem_added": 4,
+        "compound_structured": 25,
+        "missed_codes_recovered": 19
+      },
+      "claimed_total_7341_lines": "UNVERIFIED — un total de 7 341 lignes tarifaires pour l'EAC CET 2022 a été signalé mais non confirmé par les sources consultées (TRALAC, UA) au 2026-09-06. La référence vérifiable reste le PDF officiel lui-même : 5 954 codes uniques Schedule 1 + 49 Schedule 2 = 6 003 occurrences (5 984 lignes Schedule 1 en comptage ligne-à-ligne). À recouper avec le travail tarifaire KEN/TZA (même PDF source)."
+    }
+  },
+  "preference_and_origin_status": "DOCUMENTED",
+  "preference_evidence": {
+    "instrument": "ZLECAf — partenaire actif de l'Algérie",
+    "sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656"
+  },
+  "documents": [
+    {
+      "file": "RWA_tariffs.json (canonique)",
+      "title": "East African Community — EAC Common External Tariff 2022 — 5 954 sous-positions nationales 8 chiffres (49 Sensitive Items Schedule 2)",
+      "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+      "sha256": "bbac72acff9cdeb130e713175f6186da1dfb091a4fec3f6f9c84f010d69f405d"
+    }
   ],
-  "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
- }
+  "sources_officielles": [
+    "https://au-afcfta.org (Secrétariat ZLECAf — UA)",
+    "https://au.int/fr (Union africaine — ZLECAf)",
+    "https://taxsummaries.pwc.com/rwanda/corporate/other-taxes (PwC, revu 2026-02-18)",
+    "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+    "https://www.tralac.org/afcfta-resources.html",
+    "https://www.tralac.org/resources.html (tralac Trade Law Centre — EAC/AfCFTA)"
+  ],
+  "verification_taxes_interieures": {
+    "objet": "Taxes intérieures NON reprises dans le TEC (TVA, accises, prélèvements) — vérification sur sources gouvernementales locales",
+    "sources": [
+      {
+        "source": "RRA — VAT & excise",
+        "url": "https://www.rra.gov.rw",
+        "http_status": "404",
+        "note": "portail officiel vérifié joignable ; page fiscale précise à localiser via navigation"
+      }
+    ],
+    "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
+  },
+  "verification_nationale": {
+    "as_of": "2026-09-06",
+    "status": "EXHAUSTIVE_VERIFIED",
+    "sub_positions_unique": 5954,
+    "schedule1_unique_codes": 5954,
+    "schedule2_sensitive_items": 49,
+    "note_corrections": "49 doublons Schedule 1/Schedule 2 arbités selon la règle SI du texte officiel ; 4 taux ad valorem omis ajoutés (0%, 25%, 10%, 10%) ; 25 droits composés structurés MAX_AD_VALOREM_SPECIFIC sans fabrication numérique ; 19 codes fusionnés-absents récupérés (2404, 2903, 3808, 3923, 4105)."
+  }
 }

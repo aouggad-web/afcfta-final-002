@@ -3,23 +3,24 @@
   "generated_at": "2026-06-16T22:25:17.758987",
   "data_format": "canonical_v4",
   "summary": {
-    "total_tariff_lines": 5604,
-    "total_sub_positions": 5984,
-    "total_positions": 5984,
-    "lines_with_sub_positions": 5604,
+    "total_tariff_lines": 5612,
+    "total_sub_positions": 5954,
+    "total_positions": 5954,
+    "lines_with_sub_positions": 5612,
     "vat_rate_pct": 18.0,
     "other_taxes_pct": 0.0746,
     "dd_rate_range": {
       "min": 0.0,
-      "max": 35.0,
-      "avg": 12.9518
+      "max": 60.0,
+      "avg": 13.5478
     },
     "chapters_covered": 96,
     "has_detailed_taxes": true,
     "data_status": "PARTIAL",
     "reliability": "B",
     "source_name": "East African Community — EAC Common External Tariff 2022",
-    "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
+    "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+    "lines_without_dd": 0
   },
   "tariff_lines": [
     {
@@ -12420,15 +12421,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -12436,24 +12437,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "04011000",
           "digits": 8,
-          "dd": null,
+          "dd": 60.0,
           "description_fr": "- Of a fat content, by weight, not exceeding1%",
           "description_en": "- Of a fat content, by weight, not exceeding1%",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "04011000",
-          "digits": 8,
-          "dd": 60.0,
-          "description_fr": "- Of a fat content, by weight, not exceeding 1%",
-          "description_en": "- Of a fat content, by weight, not exceeding 1%",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -12466,15 +12459,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -12482,24 +12475,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "04012000",
           "digits": 8,
-          "dd": null,
+          "dd": 60.0,
           "description_fr": "- Of a fat content, by weight, exceeding 1% but not exceeding 6%",
           "description_en": "- Of a fat content, by weight, exceeding 1% but not exceeding 6%",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "04012000",
-          "digits": 8,
-          "dd": 6.0,
-          "description_fr": "- Of a fat content, by weight, exceeding 1% but not exceeding",
-          "description_en": "- Of a fat content, by weight, exceeding 1% but not exceeding",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -12512,14 +12497,14 @@
       "category": null,
       "unit": "",
       "sensitivity": "normal",
-      "dd_rate": 10.0,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": 10.0,
+          "rate": 60.0,
           "observation": "CET Import Duty (Droit de Douane)"
         },
         {
@@ -12528,24 +12513,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 28.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "04014000",
           "digits": 8,
-          "dd": 10.0,
+          "dd": 60.0,
           "description_fr": "- Of a fat content, by weight, exceeding 6% but not exceeding",
           "description_en": "- Of a fat content, by weight, exceeding 6% but not exceeding",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "04014000",
-          "digits": 8,
-          "dd": 60.0,
-          "description_fr": "- Of a fat content, by weight, exceeding 6 % but not exceeding 10 %",
-          "description_en": "- Of a fat content, by weight, exceeding 6 % but not exceeding 10 %",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -12558,15 +12535,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -12574,24 +12551,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "04015000",
           "digits": 8,
-          "dd": null,
+          "dd": 60.0,
           "description_fr": "- Of a fat content, by weight, exceeding 10%",
           "description_en": "- Of a fat content, by weight, exceeding 10%",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "04015000",
-          "digits": 8,
-          "dd": 60.0,
-          "description_fr": "- Of a fat content, by weight, exceeding 10 %",
-          "description_en": "- Of a fat content, by weight, exceeding 10 %",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -12604,15 +12573,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -12620,18 +12589,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "04021000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- In powder, granules or other solid forms, of a fat content, by weight, not exceeding 1.5%",
-          "description_en": "- In powder, granules or other solid forms, of a fat content, by weight, not exceeding 1.5%",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "04021000",
           "digits": 8,
@@ -12650,15 +12611,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -12666,24 +12627,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "04022100",
           "digits": 8,
-          "dd": null,
+          "dd": 60.0,
           "description_fr": "-- Not containing added sugar or other sweetening matter:",
           "description_en": "-- Not containing added sugar or other sweetening matter:",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "04022100",
-          "digits": 8,
-          "dd": 60.0,
-          "description_fr": "-- Not containing added sugar or other sweetening matter",
-          "description_en": "-- Not containing added sugar or other sweetening matter",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -12696,15 +12649,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -12712,24 +12665,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "04022900",
           "digits": 8,
-          "dd": null,
+          "dd": 60.0,
           "description_fr": "-- Other:",
           "description_en": "-- Other:",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "04022900",
-          "digits": 8,
-          "dd": 60.0,
-          "description_fr": "-- Other",
-          "description_en": "-- Other",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -12742,15 +12687,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -12758,18 +12703,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "04029100",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "-- Not containing added sugar or other sweetening matter",
-          "description_en": "-- Not containing added sugar or other sweetening matter",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "04029100",
           "digits": 8,
@@ -12788,15 +12725,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -12804,24 +12741,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "04029900",
           "digits": 8,
-          "dd": null,
+          "dd": 60.0,
           "description_fr": "-- Other:",
           "description_en": "-- Other:",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "04029900",
-          "digits": 8,
-          "dd": 60.0,
-          "description_fr": "-- Other",
-          "description_en": "-- Other",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -12834,15 +12763,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -12850,24 +12779,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "04032000",
           "digits": 8,
-          "dd": null,
+          "dd": 60.0,
           "description_fr": "-Yogurt",
           "description_en": "-Yogurt",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "04032000",
-          "digits": 8,
-          "dd": 60.0,
-          "description_fr": "- Yogurt",
-          "description_en": "- Yogurt",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -12880,15 +12801,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -12896,18 +12817,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "04039000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Other",
-          "description_en": "- Other",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "04039000",
           "digits": 8,
@@ -13116,15 +13029,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -13132,18 +13045,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "04061000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Fresh (unripened or uncured) cheese, including whey cheese, and curd",
-          "description_en": "- Fresh (unripened or uncured) cheese, including whey cheese, and curd",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "04061000",
           "digits": 8,
@@ -13162,15 +13067,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -13178,18 +13083,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "04062000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Grated or powdered cheese, of all kinds",
-          "description_en": "- Grated or powdered cheese, of all kinds",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "04062000",
           "digits": 8,
@@ -13208,15 +13105,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -13224,18 +13121,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "04063000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Processed cheese, not grated or powdered",
-          "description_en": "- Processed cheese, not grated or powdered",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "04063000",
           "digits": 8,
@@ -13254,15 +13143,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -13270,18 +13159,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "04064000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Blue-veined cheese and other cheese containing veins produced by Penicillium roqueforti",
-          "description_en": "- Blue-veined cheese and other cheese containing veins produced by Penicillium roqueforti",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "04064000",
           "digits": 8,
@@ -13300,15 +13181,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 60.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 60.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -13316,18 +13197,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 78.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "04069000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Other cheese",
-          "description_en": "- Other cheese",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "04069000",
           "digits": 8,
@@ -22386,15 +22259,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -22402,18 +22275,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "10059000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Other",
-          "description_en": "- Other",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "10059000",
           "digits": 8,
@@ -22440,7 +22305,16 @@
         {
           "tax": "CET",
           "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "observation": "CET Import Duty (Droit composé) : 75% or $345/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax": "VALUE_ADDE",
@@ -22458,17 +22332,29 @@
           "dd": null,
           "description_fr": "- Rice in the husk (paddy or rough)",
           "description_en": "- Rice in the husk (paddy or rough)",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "10061000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Rice in the husk (Paddy or rough) 75% or $345/MT whichever is higher",
-          "description_en": "- Rice in the husk (Paddy or rough) 75% or $345/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "75% or $345/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "75% or $345/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 75.0,
+        "specific_amount": 345.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "100620",
@@ -22486,7 +22372,16 @@
         {
           "tax": "CET",
           "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "observation": "CET Import Duty (Droit composé) : 75% or $345/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax": "VALUE_ADDE",
@@ -22504,17 +22399,29 @@
           "dd": null,
           "description_fr": "- Husked (brown) rice",
           "description_en": "- Husked (brown) rice",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "10062000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Husked (Brown) rice 75% or $345/MT whichever is higher",
-          "description_en": "- Husked (Brown) rice 75% or $345/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "75% or $345/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "75% or $345/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 75.0,
+        "specific_amount": 345.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "100630",
@@ -22532,7 +22439,16 @@
         {
           "tax": "CET",
           "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "observation": "CET Import Duty (Droit composé) : 75% or $345/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax": "VALUE_ADDE",
@@ -22550,17 +22466,29 @@
           "dd": null,
           "description_fr": "- Semi-milled or wholly milled rice, whether or not polished or glazed",
           "description_en": "- Semi-milled or wholly milled rice, whether or not polished or glazed",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "10063000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Semi-Milled or wholly milled rice whether or not polished or glazed 75% or $345/MT whichever is higher",
-          "description_en": "- Semi-Milled or wholly milled rice whether or not polished or glazed 75% or $345/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "75% or $345/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "75% or $345/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 75.0,
+        "specific_amount": 345.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "100640",
@@ -22578,7 +22506,16 @@
         {
           "tax": "CET",
           "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "observation": "CET Import Duty (Droit composé) : 75% or $345/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax": "VALUE_ADDE",
@@ -22596,17 +22533,29 @@
           "dd": null,
           "description_fr": "- Broken rice",
           "description_en": "- Broken rice",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "10064000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Broken Rice 75% or $345/MT whichever is higher",
-          "description_en": "- Broken Rice 75% or $345/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "75% or $345/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "75% or $345/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 75.0,
+        "specific_amount": 345.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "100710",
@@ -22996,15 +22945,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -23012,18 +22961,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "11010000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "Wheat or meslin flour.",
-          "description_en": "Wheat or meslin flour.",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "11010000",
           "digits": 8,
@@ -23042,15 +22983,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -23058,18 +22999,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "11022000",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "- Maize (corn) flour",
-          "description_en": "- Maize (corn) flour",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "11022000",
           "digits": 8,
@@ -23096,7 +23029,16 @@
         {
           "tax": "CET",
           "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "observation": "CET Import Duty (Droit composé) : 75% or $345/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax": "VALUE_ADDE",
@@ -23114,15 +23056,17 @@
           "dd": null,
           "description_fr": "--- Rice flour",
           "description_en": "--- Rice flour",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "11029010",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Rice flour 75% or $345/MT whichever is higher",
-          "description_en": "--- Rice flour 75% or $345/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "75% or $345/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 75.0,
+            "specific_amount": 345.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "code": "11029090",
@@ -23132,7 +23076,17 @@
           "description_en": "--- Other",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
-      ]
+      ],
+      "dd_formula": "75% or $345/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 75.0,
+        "specific_amount": 345.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "110311",
@@ -30228,7 +30182,16 @@
         {
           "tax": "CET",
           "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "observation": "CET Import Duty (Droit composé) : 100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax": "VALUE_ADDE",
@@ -30246,15 +30209,17 @@
           "dd": null,
           "description_fr": "--- Jaggery",
           "description_en": "--- Jaggery",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "17011210",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Jaggery 100 % or $ 460/MT whichever is higher",
-          "description_en": "--- Jaggery 100 % or $ 460/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "100% or $460/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "code": "17011290",
@@ -30262,17 +30227,29 @@
           "dd": null,
           "description_fr": "--- Other",
           "description_en": "--- Other",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "17011290",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Other 100 % or $ 460/MT whichever is higher",
-          "description_en": "--- Other 100 % or $ 460/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "100% or $460/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "100% or $460/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 100.0,
+        "specific_amount": 460.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "170113",
@@ -30290,7 +30267,16 @@
         {
           "tax": "CET",
           "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "observation": "CET Import Duty (Droit composé) : 100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax": "VALUE_ADDE",
@@ -30308,15 +30294,17 @@
           "dd": null,
           "description_fr": "--- Jaggery",
           "description_en": "--- Jaggery",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "17011310",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Jaggery 100 % or $ 460/MT whichever is higher",
-          "description_en": "--- Jaggery 100 % or $ 460/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "100% or $460/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "code": "17011390",
@@ -30324,17 +30312,29 @@
           "dd": null,
           "description_fr": "--- Other",
           "description_en": "--- Other",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "17011390",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Other 100 % or $ 460/MT whichever is higher",
-          "description_en": "--- Other 100 % or $ 460/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "100% or $460/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "100% or $460/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 100.0,
+        "specific_amount": 460.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "170114",
@@ -30352,7 +30352,16 @@
         {
           "tax": "CET",
           "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "observation": "CET Import Duty (Droit composé) : 100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax": "VALUE_ADDE",
@@ -30370,15 +30379,17 @@
           "dd": null,
           "description_fr": "--- Jaggery",
           "description_en": "--- Jaggery",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "17011410",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Jaggery 100 % or $ 460/MT whichever is higher",
-          "description_en": "--- Jaggery 100 % or $ 460/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "100% or $460/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "code": "17011490",
@@ -30386,17 +30397,29 @@
           "dd": null,
           "description_fr": "--- Other",
           "description_en": "--- Other",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "17011490",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Other 100 % or $ 460/MT whichever is higher",
-          "description_en": "--- Other 100 % or $ 460/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "100% or $460/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "100% or $460/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 100.0,
+        "specific_amount": 460.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "170191",
@@ -30414,7 +30437,16 @@
         {
           "tax": "CET",
           "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "observation": "CET Import Duty (Droit composé) : 100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax": "VALUE_ADDE",
@@ -30432,17 +30464,29 @@
           "dd": null,
           "description_fr": "-- Containing added flavouring or colouring matter",
           "description_en": "-- Containing added flavouring or colouring matter",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "17019100",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "-- Containing added flavouring or colouring matter 100 % or $ 460/MT whichever is higher",
-          "description_en": "-- Containing added flavouring or colouring matter 100 % or $ 460/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "100% or $460/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "100% or $460/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 100.0,
+        "specific_amount": 460.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "170199",
@@ -30460,7 +30504,16 @@
         {
           "tax": "CET",
           "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "observation": "CET Import Duty (Droit composé) : 100% or $460/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "tax": "VALUE_ADDE",
@@ -30478,15 +30531,17 @@
           "dd": null,
           "description_fr": "--- Sugar for industrial use",
           "description_en": "--- Sugar for industrial use",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "17019910",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "---Sugar for industrial use 100 % or $ 460/MT whichever is higher",
-          "description_en": "---Sugar for industrial use 100 % or $ 460/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "100% or $460/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "code": "17019990",
@@ -30494,17 +30549,29 @@
           "dd": null,
           "description_fr": "--- Other",
           "description_en": "--- Other",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "17019990",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Other 100 % or $ 460/MT whichever is higher",
-          "description_en": "--- Other 100 % or $ 460/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "100% or $460/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 100.0,
+            "specific_amount": 460.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "100% or $460/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 100.0,
+        "specific_amount": 460.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "170211",
@@ -50667,6 +50734,14 @@
           "dd": 0.0,
           "description_fr": "--- 1,1,1-Trichloroethane (methyl chloroform)",
           "description_en": "--- 1,1,1-Trichloroethane (methyl chloroform)",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
+        {
+          "code": "29031990",
+          "digits": 8,
+          "dd": 0.0,
+          "description_fr": "--- Other",
+          "description_en": "--- Other",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -74854,11 +74929,43 @@
           "source": "East African Community — EAC Common External Tariff 2022"
         },
         {
+          "code": "38089119",
+          "digits": 8,
+          "dd": 10.0,
+          "description_fr": "---- Other",
+          "description_en": "---- Other",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
+        {
+          "code": "38089121",
+          "digits": 8,
+          "dd": 10.0,
+          "description_fr": "---- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "description_en": "---- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
+        {
+          "code": "38089129",
+          "digits": 8,
+          "dd": 10.0,
+          "description_fr": "---- Other",
+          "description_en": "---- Other",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
+        {
           "code": "38089131",
           "digits": 8,
           "dd": 25.0,
           "description_fr": "---- Pyrethrum based",
           "description_en": "---- Pyrethrum based",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
+        {
+          "code": "38089132",
+          "digits": 8,
+          "dd": 25.0,
+          "description_fr": "---- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "description_en": "---- Containing bromomethane (methyl bromide) or bromochloro-methane",
           "source": "East African Community — EAC Common External Tariff 2022"
         },
         {
@@ -82847,6 +82954,22 @@
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
+        {
+          "code": "39239010",
+          "digits": 8,
+          "dd": 0.0,
+          "description_fr": "--- Empty gelatine capsules for pharmaceutical use",
+          "description_en": "--- Empty gelatine capsules for pharmaceutical use",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
+        {
+          "code": "39239020",
+          "digits": 8,
+          "dd": 25.0,
+          "description_fr": "--- Plastic tubes for packing of toothpaste, cosmetics and similar products",
+          "description_en": "--- Plastic tubes for packing of toothpaste, cosmetics and similar products",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
         {
           "code": "39239090",
           "digits": 8,
@@ -104357,15 +104480,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -104373,18 +104496,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "52085110",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "52085110",
           "digits": 8,
@@ -104411,15 +104526,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -104427,18 +104542,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "52085210",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "52085210",
           "digits": 8,
@@ -104997,15 +105104,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -105013,18 +105120,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "52095110",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "52095110",
           "digits": 8,
@@ -105469,15 +105568,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -105485,18 +105584,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "52105110",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "52105110",
           "digits": 8,
@@ -105979,15 +106070,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -105995,18 +106086,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "52115110",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "52115110",
           "digits": 8,
@@ -106261,15 +106344,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -106277,18 +106360,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "52121510",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "52121510",
           "digits": 8,
@@ -106467,15 +106542,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -106483,18 +106558,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "52122510",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "52122510",
           "digits": 8,
@@ -106673,11 +106740,16 @@
       "category": null,
       "unit": "",
       "sensitivity": "normal",
-      "dd_rate": null,
+      "dd_rate": 0.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 0.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
         {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
@@ -106691,7 +106763,7 @@
         {
           "code": "53021000",
           "digits": 8,
-          "dd": null,
+          "dd": 0.0,
           "description_fr": "- True hemp raw or retted",
           "description_en": "- True hemp raw or retted",
           "source": "East African Community — EAC Common External Tariff 2022"
@@ -112672,15 +112744,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -112688,18 +112760,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "55134110",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "55134110",
           "digits": 8,
@@ -113068,15 +113132,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -113084,18 +113148,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "55144110",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "55144110",
           "digits": 8,
@@ -117766,25 +117822,30 @@
       "category": null,
       "unit": "",
       "sensitivity": "normal",
-      "dd_rate": null,
+      "dd_rate": 25.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 25.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
         {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 43.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "58110000",
           "digits": 8,
-          "dd": null,
+          "dd": 25.0,
           "description_fr": "Quilted textile products in the piece, composed of one or more layers of textile materials assembled with padding by stitching or otherwise, other than embroidery of heading",
           "description_en": "Quilted textile products in the piece, composed of one or more layers of textile materials assembled with padding by stitching or otherwise, other than embroidery of heading",
           "source": "East African Community — EAC Common External Tariff 2022"
@@ -127603,15 +127664,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -127619,18 +127680,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "62114210",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "62114210",
           "digits": 8,
@@ -127657,15 +127710,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -127673,18 +127726,10 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
-        {
-          "code": "62114310",
-          "digits": 8,
-          "dd": null,
-          "description_fr": "--- Khanga, Kikoi and Kitenge",
-          "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
         {
           "code": "62114310",
           "digits": 8,
@@ -127711,15 +127756,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -127727,24 +127772,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "62114910",
           "digits": 8,
-          "dd": null,
+          "dd": 50.0,
           "description_fr": "--- Khanga, Kikoi and Kitenge",
           "description_en": "--- Khanga, Kikoi and Kitenge",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "62114910",
-          "digits": 8,
-          "dd": 50.0,
-          "description_fr": "--- of other textile material",
-          "description_en": "--- of other textile material",
           "source": "East African Community — EAC Common External Tariff 2022"
         },
         {
@@ -128639,15 +128676,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -128655,24 +128692,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "63022100",
           "digits": 8,
-          "dd": null,
+          "dd": 50.0,
           "description_fr": "-- Of cotton",
           "description_en": "-- Of cotton",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "63022100",
-          "digits": 8,
-          "dd": 50.0,
-          "description_fr": "--Of Cotton",
-          "description_en": "--Of Cotton",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -128761,15 +128790,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -128777,24 +128806,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "63023100",
           "digits": 8,
-          "dd": null,
+          "dd": 50.0,
           "description_fr": "-- Of cotton",
           "description_en": "-- Of cotton",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "63023100",
-          "digits": 8,
-          "dd": 50.0,
-          "description_fr": "--Of Cotton",
-          "description_en": "--Of Cotton",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -128921,15 +128942,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -128937,24 +128958,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "63025100",
           "digits": 8,
-          "dd": null,
+          "dd": 50.0,
           "description_fr": "-- Of cotton",
           "description_en": "-- Of cotton",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "63025100",
-          "digits": 8,
-          "dd": 50.0,
-          "description_fr": "--Of Cotton",
-          "description_en": "--Of Cotton",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -129081,15 +129094,15 @@
       "category": null,
       "unit": "kg",
       "sensitivity": "sensible",
-      "dd_rate": null,
+      "dd_rate": 50.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
           "tax": "CET",
-          "rate": null,
-          "observation": "CET Import Duty (Sensitive Item)"
+          "rate": 50.0,
+          "observation": "CET Import Duty (Droit de Douane)"
         },
         {
           "tax": "VALUE_ADDE",
@@ -129097,24 +129110,16 @@
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 68.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "63029100",
           "digits": 8,
-          "dd": null,
+          "dd": 50.0,
           "description_fr": "-- Of cotton",
           "description_en": "-- Of cotton",
-          "source": "East African Community — EAC Common External Tariff 2022"
-        },
-        {
-          "code": "63029100",
-          "digits": 8,
-          "dd": 50.0,
-          "description_fr": "--Of Cotton",
-          "description_en": "--Of Cotton",
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
@@ -130319,6 +130324,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 35% or USD 0.40/kg whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 35.0,
+            "specific_amount": 0.4,
+            "specific_unit": "kg",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -130332,27 +130351,67 @@
           "code": "63090010",
           "digits": 8,
           "dd": null,
-          "description_fr": "--- Worn items of clothing 35% or USD 0.40/kg whichever is higher",
-          "description_en": "--- Worn items of clothing 35% or USD 0.40/kg whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "--- Worn items of clothing",
+          "description_en": "--- Worn items of clothing",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "35% or USD 0.40/kg whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 35.0,
+            "specific_amount": 0.4,
+            "specific_unit": "kg",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "code": "63090020",
           "digits": 8,
           "dd": null,
-          "description_fr": "--- Worn items of footwear 35% or USD 0.40/kg whichever is higher",
-          "description_en": "--- Worn items of footwear 35% or USD 0.40/kg whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "--- Worn items of footwear",
+          "description_en": "--- Worn items of footwear",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "35% or USD 0.40/kg whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 35.0,
+            "specific_amount": 0.4,
+            "specific_unit": "kg",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "code": "63090090",
           "digits": 8,
           "dd": null,
-          "description_fr": "--- Other worn items 35% or USD 0.40/kg whichever is higher",
-          "description_en": "--- Other worn items 35% or USD 0.40/kg whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "--- Other worn items",
+          "description_en": "--- Other worn items",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "35% or USD 0.40/kg whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 35.0,
+            "specific_amount": 0.4,
+            "specific_unit": "kg",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "35% or USD 0.40/kg whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 35.0,
+        "specific_amount": 0.4,
+        "specific_unit": "kg",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "631010",
@@ -142578,6 +142637,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -142591,11 +142664,31 @@
           "code": "72104900",
           "digits": 8,
           "dd": null,
-          "description_fr": "-- Other 25% or $200/MT whichever is higher",
-          "description_en": "-- Other 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "-- Other",
+          "description_en": "-- Other",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "721050",
@@ -142649,6 +142742,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -142662,11 +142769,31 @@
           "code": "72106100",
           "digits": 8,
           "dd": null,
-          "description_fr": "-- Plated or coated with aluminium-zinc alloys 25% or $200/MT whichever is higher",
-          "description_en": "-- Plated or coated with aluminium-zinc alloys 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "-- Plated or coated with aluminium-zinc alloys",
+          "description_en": "-- Plated or coated with aluminium-zinc alloys",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "721069",
@@ -142682,6 +142809,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -142695,11 +142836,31 @@
           "code": "72106900",
           "digits": 8,
           "dd": null,
-          "description_fr": "-- Other 25% or $200/MT whichever is higher",
-          "description_en": "-- Other 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "-- Other",
+          "description_en": "-- Other",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "721070",
@@ -142715,6 +142876,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -142728,11 +142903,31 @@
           "code": "72107000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Painted, Vanished or coated with plastics 25% or $200/MT whichever is higher",
-          "description_en": "- Painted, Vanished or coated with plastics 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Painted, Vanished or coated with plastics",
+          "description_en": "- Painted, Vanished or coated with plastics",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "721090",
@@ -142748,6 +142943,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -142761,11 +142970,31 @@
           "code": "72109000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Other 25% or $200/MT whichever is higher",
-          "description_en": "- Other 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Other",
+          "description_en": "- Other",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "721113",
@@ -143085,6 +143314,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -143098,11 +143341,31 @@
           "code": "72123000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Otherwise plated or coated with zinc 25% or $200/MT whichever is higher",
-          "description_en": "- Otherwise plated or coated with zinc 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Otherwise plated or coated with zinc",
+          "description_en": "- Otherwise plated or coated with zinc",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "721240",
@@ -143232,6 +143495,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -143245,11 +143522,31 @@
           "code": "72131000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Containing indentations,ribs,grooves or other deformations produced during the rolling process 25% or $200/MT whichever is higher",
-          "description_en": "- Containing indentations,ribs,grooves or other deformations produced during the rolling process 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Containing indentations,ribs,grooves or other deformations produced during the rolling process",
+          "description_en": "- Containing indentations,ribs,grooves or other deformations produced during the rolling process",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "721320",
@@ -143264,6 +143561,20 @@
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
         {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
@@ -143280,9 +143591,29 @@
           "dd": null,
           "description_fr": "- Other, of free-cutting steel 25% or $200/MT whichever is higher - Other : -- Of circular cross-section measuring less than 14 mm in diameter:",
           "description_en": "- Other, of free-cutting steel 25% or $200/MT whichever is higher - Other : -- Of circular cross-section measuring less than 14 mm in diameter:",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "721391",
@@ -143298,6 +143629,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -143311,19 +143656,49 @@
           "code": "72139110",
           "digits": 8,
           "dd": null,
-          "description_fr": "--- Of cross section measuring less than 8 mm 25% or $200/MT whichever is higher",
-          "description_en": "--- Of cross section measuring less than 8 mm 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "--- Of cross section measuring less than 8 mm",
+          "description_en": "--- Of cross section measuring less than 8 mm",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         },
         {
           "code": "72139190",
           "digits": 8,
           "dd": null,
-          "description_fr": "--- Other 25% or $200/MT whichever is higher",
-          "description_en": "--- Other 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "--- Other",
+          "description_en": "--- Other",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "721399",
@@ -143339,6 +143714,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -143352,11 +143741,31 @@
           "code": "72139900",
           "digits": 8,
           "dd": null,
-          "description_fr": "-- Other 25% or $200/MT whichever is higher",
-          "description_en": "-- Other 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "-- Other",
+          "description_en": "-- Other",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "721410",
@@ -145996,6 +146405,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146009,11 +146432,31 @@
           "code": "72271000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Of high speed steel 25% or $200/MT whichever is higher",
-          "description_en": "- Of high speed steel 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Of high speed steel",
+          "description_en": "- Of high speed steel",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722720",
@@ -146029,6 +146472,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146042,11 +146499,31 @@
           "code": "72272000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Of silico-manganese steel 25% or $200/MT whichever is higher",
-          "description_en": "- Of silico-manganese steel 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Of silico-manganese steel",
+          "description_en": "- Of silico-manganese steel",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722790",
@@ -146062,6 +146539,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146075,11 +146566,31 @@
           "code": "72279000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Other 25% or $200/MT whichever is higher",
-          "description_en": "- Other 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Other",
+          "description_en": "- Other",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722810",
@@ -146095,6 +146606,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146108,11 +146633,31 @@
           "code": "72281000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Bars and rods, of high speed steel 25% or $200/MT whichever is higher",
-          "description_en": "- Bars and rods, of high speed steel 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Bars and rods, of high speed steel",
+          "description_en": "- Bars and rods, of high speed steel",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722820",
@@ -146128,6 +146673,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146141,11 +146700,31 @@
           "code": "72282000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Bars and rods, of silico-manganese steel 25% or $200/MT whichever is higher",
-          "description_en": "- Bars and rods, of silico-manganese steel 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Bars and rods, of silico-manganese steel",
+          "description_en": "- Bars and rods, of silico-manganese steel",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722830",
@@ -146161,6 +146740,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146174,11 +146767,31 @@
           "code": "72283000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Other bars and rods, not further worked than hot-rolled, hot- drawn or extruded 25% or $200/MT whichever is higher",
-          "description_en": "- Other bars and rods, not further worked than hot-rolled, hot- drawn or extruded 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Other bars and rods, not further worked than hot-rolled, hot- drawn or extruded",
+          "description_en": "- Other bars and rods, not further worked than hot-rolled, hot- drawn or extruded",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722840",
@@ -146194,6 +146807,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146207,11 +146834,31 @@
           "code": "72284000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Other bars and rods, not further worked than forged 25% or $200/MT whichever is higher",
-          "description_en": "- Other bars and rods, not further worked than forged 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Other bars and rods, not further worked than forged",
+          "description_en": "- Other bars and rods, not further worked than forged",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722850",
@@ -146227,6 +146874,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146240,11 +146901,31 @@
           "code": "72285000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Other bars and rods, not further worked than cold-formed or cold-finished 25% or $200/MT whichever is higher",
-          "description_en": "- Other bars and rods, not further worked than cold-formed or cold-finished 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Other bars and rods, not further worked than cold-formed or cold-finished",
+          "description_en": "- Other bars and rods, not further worked than cold-formed or cold-finished",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722860",
@@ -146260,6 +146941,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146273,11 +146968,31 @@
           "code": "72286000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Other bars and rods 25% or $200/MT whichever is higher",
-          "description_en": "- Other bars and rods 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Other bars and rods",
+          "description_en": "- Other bars and rods",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722870",
@@ -146293,6 +147008,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146306,11 +147035,31 @@
           "code": "72287000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Angles, shapes and sections 25% or $200/MT whichever is higher",
-          "description_en": "- Angles, shapes and sections 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Angles, shapes and sections",
+          "description_en": "- Angles, shapes and sections",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722880",
@@ -146326,6 +147075,20 @@
       "other_taxes_rate": 0,
       "taxes_detail": [
         {
+          "tax": "CET",
+          "rate": null,
+          "observation": "CET Import Duty (Droit composé) : 25% or $200/MT whichever is higher",
+          "calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
+        },
+        {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
@@ -146339,11 +147102,31 @@
           "code": "72288000",
           "digits": 8,
           "dd": null,
-          "description_fr": "- Hollow drill bars and rods 25% or $200/MT whichever is higher",
-          "description_en": "- Hollow drill bars and rods 25% or $200/MT whichever is higher",
-          "source": "East African Community — EAC Common External Tariff 2022"
+          "description_fr": "- Hollow drill bars and rods",
+          "description_en": "- Hollow drill bars and rods",
+          "source": "East African Community — EAC Common External Tariff 2022",
+          "dd_formula": "25% or $200/MT whichever is higher",
+          "dd_calculation": {
+            "type": "MAX_AD_VALOREM_SPECIFIC",
+            "rule_text": "whichever is higher (le plus élevé des deux montants)",
+            "ad_valorem_pct": 25.0,
+            "specific_amount": 200.0,
+            "specific_unit": "MT",
+            "specific_currency": "USD",
+            "requires_quantity": true
+          }
         }
-      ]
+      ],
+      "dd_formula": "25% or $200/MT whichever is higher",
+      "dd_calculation": {
+        "type": "MAX_AD_VALOREM_SPECIFIC",
+        "rule_text": "whichever is higher (le plus élevé des deux montants)",
+        "ad_valorem_pct": 25.0,
+        "specific_amount": 200.0,
+        "specific_unit": "MT",
+        "specific_currency": "USD",
+        "requires_quantity": true
+      }
     },
     {
       "hs6": "722920",
@@ -208649,25 +209432,30 @@
       "category": null,
       "unit": "",
       "sensitivity": "normal",
-      "dd_rate": null,
+      "dd_rate": 10.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 10.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
         {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 28.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "92099200",
           "digits": 8,
-          "dd": null,
+          "dd": 10.0,
           "description_fr": "-- Parts and accessories for the musical instruments of heading",
           "description_en": "-- Parts and accessories for the musical instruments of heading",
           "source": "East African Community — EAC Common External Tariff 2022"
@@ -208682,25 +209470,30 @@
       "category": null,
       "unit": "",
       "sensitivity": "normal",
-      "dd_rate": null,
+      "dd_rate": 10.0,
       "dd_source": "East African Community — EAC Common External Tariff 2022",
       "vat_rate": 18.0,
       "other_taxes_rate": 0,
       "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 10.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
         {
           "tax": "VALUE_ADDE",
           "rate": 18.0,
           "observation": "Value Added Tax (VAT)"
         }
       ],
-      "total_taxes_pct": 18.0,
+      "total_taxes_pct": 28.0,
       "fiscal_advantages": [],
       "administrative_formalities": [],
       "sub_positions": [
         {
           "code": "92099400",
           "digits": 8,
-          "dd": null,
+          "dd": 10.0,
           "description_fr": "-- Parts and accessories for the musical instruments of heading",
           "description_en": "-- Parts and accessories for the musical instruments of heading",
           "source": "East African Community — EAC Common External Tariff 2022"
@@ -215938,6 +216731,357 @@
           "source": "East African Community — EAC Common External Tariff 2022"
         }
       ]
+    },
+    {
+      "hs6": "240491",
+      "chapter": "24",
+      "description_fr": "For oral application",
+      "description_en": "For oral application",
+      "category": null,
+      "unit": "kg",
+      "sensitivity": "normal",
+      "dd_rate": 35.0,
+      "dd_source": "East African Community — EAC Common External Tariff 2022",
+      "vat_rate": 18.0,
+      "other_taxes_rate": 0,
+      "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 35.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "tax": "VALUE_ADDE",
+          "rate": 18.0,
+          "observation": "Value Added Tax (VAT)"
+        }
+      ],
+      "total_taxes_pct": 53.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "sub_positions": [
+        {
+          "code": "24049100",
+          "digits": 8,
+          "dd": 35.0,
+          "description_fr": "-- For oral application",
+          "description_en": "-- For oral application",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        }
+      ]
+    },
+    {
+      "hs6": "240492",
+      "chapter": "24",
+      "description_fr": "For transdermal application",
+      "description_en": "For transdermal application",
+      "category": null,
+      "unit": "kg",
+      "sensitivity": "normal",
+      "dd_rate": 35.0,
+      "dd_source": "East African Community — EAC Common External Tariff 2022",
+      "vat_rate": 18.0,
+      "other_taxes_rate": 0,
+      "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 35.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "tax": "VALUE_ADDE",
+          "rate": 18.0,
+          "observation": "Value Added Tax (VAT)"
+        }
+      ],
+      "total_taxes_pct": 53.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "sub_positions": [
+        {
+          "code": "24049200",
+          "digits": 8,
+          "dd": 35.0,
+          "description_fr": "-- For transdermal application",
+          "description_en": "-- For transdermal application",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        }
+      ]
+    },
+    {
+      "hs6": "240499",
+      "chapter": "24",
+      "description_fr": "Other",
+      "description_en": "Other",
+      "category": null,
+      "unit": "kg",
+      "sensitivity": "normal",
+      "dd_rate": 35.0,
+      "dd_source": "East African Community — EAC Common External Tariff 2022",
+      "vat_rate": 18.0,
+      "other_taxes_rate": 0,
+      "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 35.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "tax": "VALUE_ADDE",
+          "rate": 18.0,
+          "observation": "Value Added Tax (VAT)"
+        }
+      ],
+      "total_taxes_pct": 53.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "sub_positions": [
+        {
+          "code": "24049900",
+          "digits": 8,
+          "dd": 35.0,
+          "description_fr": "-- Other",
+          "description_en": "-- Other",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        }
+      ]
+    },
+    {
+      "hs6": "380892",
+      "chapter": "38",
+      "description_fr": "Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "description_en": "Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "category": null,
+      "unit": "kg",
+      "sensitivity": "normal",
+      "dd_rate": 0.0,
+      "dd_source": "East African Community — EAC Common External Tariff 2022",
+      "vat_rate": 18.0,
+      "other_taxes_rate": 0,
+      "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 0.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "tax": "VALUE_ADDE",
+          "rate": 18.0,
+          "observation": "Value Added Tax (VAT)"
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "sub_positions": [
+        {
+          "code": "38089210",
+          "digits": 8,
+          "dd": 0.0,
+          "description_fr": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "description_en": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
+        {
+          "code": "38089290",
+          "digits": 8,
+          "dd": 0.0,
+          "description_fr": "--- Other",
+          "description_en": "--- Other",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        }
+      ]
+    },
+    {
+      "hs6": "380893",
+      "chapter": "38",
+      "description_fr": "Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "description_en": "Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "category": null,
+      "unit": "kg",
+      "sensitivity": "normal",
+      "dd_rate": 0.0,
+      "dd_source": "East African Community — EAC Common External Tariff 2022",
+      "vat_rate": 18.0,
+      "other_taxes_rate": 0,
+      "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 0.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "tax": "VALUE_ADDE",
+          "rate": 18.0,
+          "observation": "Value Added Tax (VAT)"
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "sub_positions": [
+        {
+          "code": "38089310",
+          "digits": 8,
+          "dd": 0.0,
+          "description_fr": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "description_en": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
+        {
+          "code": "38089390",
+          "digits": 8,
+          "dd": 0.0,
+          "description_fr": "--- Other",
+          "description_en": "--- Other",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        }
+      ]
+    },
+    {
+      "hs6": "380894",
+      "chapter": "38",
+      "description_fr": "Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "description_en": "Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "category": null,
+      "unit": "kg",
+      "sensitivity": "normal",
+      "dd_rate": 0.0,
+      "dd_source": "East African Community — EAC Common External Tariff 2022",
+      "vat_rate": 18.0,
+      "other_taxes_rate": 0,
+      "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 0.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "tax": "VALUE_ADDE",
+          "rate": 18.0,
+          "observation": "Value Added Tax (VAT)"
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "sub_positions": [
+        {
+          "code": "38089410",
+          "digits": 8,
+          "dd": 0.0,
+          "description_fr": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "description_en": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
+        {
+          "code": "38089490",
+          "digits": 8,
+          "dd": 0.0,
+          "description_fr": "--- Other",
+          "description_en": "--- Other",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        }
+      ]
+    },
+    {
+      "hs6": "380899",
+      "chapter": "38",
+      "description_fr": "Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "description_en": "Containing bromomethane (methyl bromide) or bromochloro-methane",
+      "category": null,
+      "unit": "kg",
+      "sensitivity": "normal",
+      "dd_rate": 0.0,
+      "dd_source": "East African Community — EAC Common External Tariff 2022",
+      "vat_rate": 18.0,
+      "other_taxes_rate": 0,
+      "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 0.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "tax": "VALUE_ADDE",
+          "rate": 18.0,
+          "observation": "Value Added Tax (VAT)"
+        }
+      ],
+      "total_taxes_pct": 18.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "sub_positions": [
+        {
+          "code": "38089910",
+          "digits": 8,
+          "dd": 0.0,
+          "description_fr": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "description_en": "--- Containing bromomethane (methyl bromide) or bromochloro-methane",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        },
+        {
+          "code": "38089990",
+          "digits": 8,
+          "dd": 0.0,
+          "description_fr": "--- Other",
+          "description_en": "--- Other",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        }
+      ]
+    },
+    {
+      "hs6": "410510",
+      "chapter": "41",
+      "description_fr": "In the wet state (including wet-blue)",
+      "description_en": "In the wet state (including wet-blue)",
+      "category": null,
+      "unit": "kg",
+      "sensitivity": "normal",
+      "dd_rate": 10.0,
+      "dd_source": "East African Community — EAC Common External Tariff 2022",
+      "vat_rate": 18.0,
+      "other_taxes_rate": 0,
+      "taxes_detail": [
+        {
+          "tax": "CET",
+          "rate": 10.0,
+          "observation": "CET Import Duty (Droit de Douane)"
+        },
+        {
+          "tax": "VALUE_ADDE",
+          "rate": 18.0,
+          "observation": "Value Added Tax (VAT)"
+        }
+      ],
+      "total_taxes_pct": 28.0,
+      "fiscal_advantages": [],
+      "administrative_formalities": [],
+      "sub_positions": [
+        {
+          "code": "41051000",
+          "digits": 8,
+          "dd": 10.0,
+          "description_fr": "- In the wet state (including wet-blue)",
+          "description_en": "- In the wet state (including wet-blue)",
+          "source": "East African Community — EAC Common External Tariff 2022"
+        }
+      ]
     }
-  ]
+  ],
+  "exhaustiveness_verification": {
+    "verified_against": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+    "pdf_sha256_downloaded_2026_09_06": "4c5acc8b4c0be2f0841d116064429381ba362e66b5c720b8bff16a4af7a53b49",
+    "si_rule": "Introduction, p. 9 : « The fifth column of Schedule 1 contains applicable Common External Tariff rates and where the abbreviation \"SI\" (Sensitive Items) appears the applicable duty rates shall be those specified in Schedule 2. »",
+    "schedule2_sensitive_items": 49,
+    "ad_valorem_fixes": {
+      "53021000": 0.0,
+      "58110000": 25.0,
+      "92099200": 10.0,
+      "92099400": 10.0
+    },
+    "compound_structured": 25,
+    "duplicates_removed": 49,
+    "missed_codes_recovered": 19
+  }
 }

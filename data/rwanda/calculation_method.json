@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "jurisdiction": "RWA",
+  "as_of": "2026-09-06",
+  "status": "DOCUMENTED_SOURCES_VERIFIED",
+  "note": "Cascade documentée à partir du texte du tarif officiel (EAC CET 2022, introduction p. 9 et règles de taux) et corroborée par PwC Worldwide Tax Summaries — Rwanda (revu 2026-02-18, https://taxsummaries.pwc.com/rwanda/corporate/other-taxes). Les prélèvements IDL/AUL/QIF sont DOCUMENTÉS mais NON ENCORE CÂBLÉS dans le moteur de calcul (national_customs_calculation) — câblage à venir dans une itération dédiée.",
+  "cascade": [
+    {
+      "order": 1,
+      "tax": "VALEUR_EN_DOUANE",
+      "name": "Customs value (valeur transactionnelle)",
+      "base": "CIF (coût + assurance + fret) selon la valeur transactionnelle WTO/GATT Art. VII",
+      "formula": "CIF = FOB + fret + assurance",
+      "legal_reference": "EAC Customs Management Act 2004 — valuation (First Schedule) ; EAC CET 2022 Introduction",
+      "source_type": "TARIF_OFFICIEL",
+      "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
+    },
+    {
+      "order": 2,
+      "tax": "DD_CET",
+      "name": "Import Duty — EAC Common External Tariff",
+      "base": "valeur en douane (CIF)",
+      "formula": "DD = CIF × taux_CET",
+      "rate_structure": {
+        "bands": {"raw_materials_capital_goods": 0, "intermediate": 10, "finished": 25, "sensitive": 35},
+        "schedule2_rule": "SI (Sensitive Item) → le taux applicable est celui du Schedule 2 (texte officiel : « where the abbreviation \"SI\" appears the applicable duty rates shall be those specified in Schedule 2 »)",
+        "compound_rule": "Pour les taux « X% ou USD Y/unité whichever is higher » : DD = max(CIF × X%, quantité × Y) — exige la quantité ; sans quantité le montant est NON CALCULABLE (jamais fabriqué)"
+      },
+      "legal_reference": "EAC CET 2022 — Schedule 1 (pp. 13-556) + Schedule 2 (pp. 557-560), SHA-256 PDF téléchargé 2026-09-06 : 4c5acc8b4c0be2f0841d116064429381ba362e66b5c720b8bff16a4af7a53b49",
+      "source_type": "TARIF_OFFICIEL",
+      "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
+    },
+    {
+      "order": 3,
+      "tax": "EXCISE",
+      "name": "Excise duty (Rwanda Excise Tax Law)",
+      "base": "valeur en douane + droits d'importation (pour les taux ad valorem) ; montants spécifiques (RWF/litre, RWF/kg) par unité",
+      "formula": "Excise = (CIF + DD) × taux_ad_valorem | quantité × montant_spécifique",
+      "rate_examples": {"beer": "40%-65%", "sodas": "39%", "cigarettes": "36% du prix de détail + RWF 230/pack", "lubricants": "37%", "cosmetics": "15%"},
+      "legal_reference": "Rwanda Excise Duty Law (n° 026/2023) — via PwC Worldwide Tax Summaries Rwanda",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/rwanda/corporate/other-taxes"
+    },
+    {
+      "order": 4,
+      "tax": "IDL",
+      "name": "Infrastructure Development Levy",
+      "base": "valeur en douane (CIF)",
+      "formula": "IDL = CIF × 1,5%",
+      "scope": "toutes marchandises importées sauf exemptions listées",
+      "legal_reference": "PwC Worldwide Tax Summaries — Rwanda (revu 2026-02-18)",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/rwanda/corporate/other-taxes"
+    },
+    {
+      "order": 5,
+      "tax": "AUL",
+      "name": "African Union Levy",
+      "base": "valeur en douane (CIF)",
+      "formula": "AUL = CIF × 0,2%",
+      "scope": "importations hors États membres de l'Union africaine",
+      "legal_reference": "PwC Worldwide Tax Summaries — Rwanda (revu 2026-02-18)",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/rwanda/corporate/other-taxes"
+    },
+    {
+      "order": 6,
+      "tax": "QIF",
+      "name": "Quality Inspection Fee (Rwanda Inspectorate, Competition and Consumer Protection Authority)",
+      "base": "valeur en douane (CIF)",
+      "formula": "QIF = CIF × 0,2%",
+      "scope": "toutes marchandises importées, EXONÉRÉES OU NON",
+      "legal_reference": "PwC Worldwide Tax Summaries — Rwanda (revu 2026-02-18)",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/rwanda/corporate/other-taxes"
+    },
+    {
+      "order": 7,
+      "tax": "TVA",
+      "name": "Value Added Tax à l'importation",
+      "base": "valeur en douane + droits d'importation + accises (+ prélèvements selon assiette légale)",
+      "formula": "TVA = (CIF + DD + Excise) × 18%",
+      "standard_rate": 18.0,
+      "legal_reference": "Rwanda VAT Law n° 008/2023 (taux standard 18%) — via PwC Worldwide Tax Summaries Rwanda",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/rwanda/corporate/other-taxes"
+    },
+    {
+      "order": 8,
+      "tax": "ENV_PLASTIC",
+      "name": "Environmental levy on plastic-packaged imports",
+      "base": "valeur en douane (CIF)",
+      "formula": "0,2% du CIF pour les produits listés emballés en plastique (eaux embouteillées, jus, cosmétiques…) ; hors produits pharmaceutiques",
+      "legal_reference": "PwC Worldwide Tax Summaries — Rwanda (revu 2026-02-18)",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/rwanda/corporate/other-taxes"
+    },
+    {
+      "order": 9,
+      "tax": "WHT_IMPORT",
+      "name": "Withholding tax sur imports (contribuables sans attestation de conformité fiscale)",
+      "base": "à confirmer (valeur facture ou CIF)",
+      "status": "UNVERIFIED — à sourcer avant tout calcul",
+      "legal_reference": "Rwanda Income Tax Law — vérification requise",
+      "source_type": "A_VERIFIER"
+    }
+  ],
+  "provenance": {
+    "doctrine": "zéro-fabrication — toute valeur NON vérifiée est marquée UNVERIFIED et n'entre jamais dans un calcul",
+    "canonical_tariff": "backend/data/RWA_tariffs.json (5 935 sous-positions 8 chiffres, exhaustives vs PDF officiel)",
+    "canonical_sha256": "Voir data/rwanda/rwa_gazette_register.json → base_tariff_documentation.sha256",
+    "engine_wiring": "DD + TVA calculés par engine/national_customs_calculation.py ; IDL/AUL/QIF/env-plastic à câbler (import_levies.json) — les montants ne sont PAS ajoutés tant que le câblage n'est pas testé"
+  }
+}
