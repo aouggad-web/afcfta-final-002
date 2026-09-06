@@ -1,63 +1,69 @@
 {
-  "schema_version": "1.0",
-  "country": "TZA",
-  "as_of": "2026-07-25",
-  "sources": [
-    {
-      "source_id": "TZA-TANZLII-VAT-ACT-2014",
-      "title": "Value Added Tax Act, Chapter 148 (consolidated as at 30 November 2019)",
-      "institution": "TanzLII (Tanzania Legal Information Institute) / Laws.Africa",
-      "legal_date": "2014-12-11",
-      "accessed_at": "2026-07-25",
-      "url": "https://media.tanzlii.org/media/legislation/847/source_file/54b680fe5e6a4cb3/2014-5.pdf",
-      "local_file": "official/tza-vat-act-2014.pdf",
-      "sha256": "eb18d07c2afabf00135ddcc26ea8bd039b93aa6ad4540e7472d6474c88d4e1e7",
-      "coverage": "standard VAT rate (Section 5(1)); zero-rating mechanism (Section 5(2)); zero-rated exports (Section 55)",
-      "status": "official_downloaded",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "notes": "Value Added Tax Act, 2014 (Act No. 5 of 2014), assented to 11 December 2014, commenced 1 July 2015, repealing the 1997 VAT Act (Cap 148, Act No. 24 of 1997). Consolidated text as at 30 November 2019 by TanzLII/Laws.Africa; there may be updates since this consolidation."
-    },
-    {
-      "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
-      "title": "The Excise (Management and Tariff) Act, Chapter 147 (R.E. 2019)",
-      "institution": "Wizara ya Fedha na Mipango (Ministry of Finance and Planning, Tanzania)",
-      "legal_date": "2019-01-01",
-      "accessed_at": "2026-07-25",
-      "url": "https://www.mof.go.tz/uploads/documents/en-1676545092-THE%20EXCISE%20(MANAGEMENT%20AND%20TARIFF)%20ACT,%20CAP%20147%20R.E%202019.pdf",
-      "local_file": "official/tza-excise-act-cap147-re2019.pdf",
-      "sha256": "045baad38a9e506a49733d41c92553e983b204dcf1ba88c09260545bdc09f9c0",
-      "coverage": "excise duty imposition (Section 124); Fourth Schedule rates for a subset of excisable goods (fruit/vegetable juices, mineral/aerated waters)",
-      "status": "official_downloaded",
-      "verification_status": "VERIFIED_PRIMARY_TEXT",
-      "notes": "Downloaded directly from the Ministry of Finance and Planning (primary government source, not a legislation aggregator). Revised Edition 2019; TanzLII notes outstanding amendments (Acts of 2020-2024) not yet applied to this consolidation. The Fourth Schedule covers dozens of HS headings; only a representative subset was transcribed into excise_measures.json this cycle."
-    },
-    {
-      "source_id": "TZA-TANZLII-FINANCE-ACT-2026",
-      "title": "Finance Act, 2026",
-      "institution": "TanzLII (Tanzania Legal Information Institute)",
-      "legal_date": "2026-06-30",
-      "accessed_at": "2026-07-25",
-      "url": "https://www.tanzlii.org/akn/tz/act/2026/finance",
-      "local_file": null,
-      "sha256": null,
-      "coverage": "fiscal year 2026/27 tax rates and measures; potential VAT/excise changes",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "URL not re-verified this cycle (carried over from prior pass); not downloaded, not archived, not used for any rate in this collection."
-    },
-    {
-      "source_id": "TZA-TRA-TARIFF-GUIDE-2026",
-      "title": "Customs Tariff and Import Duty Guide 2026",
-      "institution": "Tanzania Revenue Authority (TRA)",
-      "legal_date": "2026-01-01",
-      "accessed_at": "2026-07-25",
-      "url": "https://www.tra.go.tz/en/tariff-guide",
-      "local_file": null,
-      "sha256": null,
-      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
-      "status": "source_pending_collection",
-      "verification_status": "PENDING_COLLECTION",
-      "notes": "Not downloaded, not archived, not used for any rate in this collection."
-    }
-  ]
+ "schema_version": "1.0",
+ "country": "TZA",
+ "as_of": "2026-07-25",
+ "sources": [
+  {
+   "source_id": "TZA-TANZLII-VAT-ACT-2014",
+   "title": "Value Added Tax Act, Chapter 148 (consolidated as at 30 November 2019)",
+   "institution": "TanzLII (Tanzania Legal Information Institute) / Laws.Africa",
+   "legal_date": "2014-12-11",
+   "accessed_at": "2026-07-25",
+   "url": "https://media.tanzlii.org/media/legislation/847/source_file/54b680fe5e6a4cb3/2014-5.pdf",
+   "local_file": "official/tza-vat-act-2014.pdf",
+   "sha256": "eb18d07c2afabf00135ddcc26ea8bd039b93aa6ad4540e7472d6474c88d4e1e7",
+   "coverage": "standard VAT rate (Section 5(1)); zero-rating mechanism (Section 5(2)); zero-rated exports (Section 55)",
+   "status": "official_downloaded",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "notes": "Value Added Tax Act, 2014 (Act No. 5 of 2014), assented to 11 December 2014, commenced 1 July 2015, repealing the 1997 VAT Act (Cap 148, Act No. 24 of 1997). Consolidated text as at 30 November 2019 by TanzLII/Laws.Africa; there may be updates since this consolidation."
+  },
+  {
+   "source_id": "TZA-MOF-EXCISE-ACT-CAP147",
+   "title": "The Excise (Management and Tariff) Act, Chapter 147 (R.E. 2019)",
+   "institution": "Wizara ya Fedha na Mipango (Ministry of Finance and Planning, Tanzania)",
+   "legal_date": "2019-01-01",
+   "accessed_at": "2026-07-25",
+   "url": "https://www.mof.go.tz/uploads/documents/en-1676545092-THE%20EXCISE%20(MANAGEMENT%20AND%20TARIFF)%20ACT,%20CAP%20147%20R.E%202019.pdf",
+   "local_file": "official/tza-excise-act-cap147-re2019.pdf",
+   "sha256": "045baad38a9e506a49733d41c92553e983b204dcf1ba88c09260545bdc09f9c0",
+   "coverage": "excise duty imposition (Section 124); Fourth Schedule rates for a subset of excisable goods (fruit/vegetable juices, mineral/aerated waters)",
+   "status": "official_downloaded",
+   "verification_status": "VERIFIED_PRIMARY_TEXT",
+   "notes": "Downloaded directly from the Ministry of Finance and Planning (primary government source, not a legislation aggregator). Revised Edition 2019; TanzLII notes outstanding amendments (Acts of 2020-2024) not yet applied to this consolidation. The Fourth Schedule covers dozens of HS headings; only a representative subset was transcribed into excise_measures.json this cycle."
+  },
+  {
+   "source_id": "TZA-TANZLII-FINANCE-ACT-2026",
+   "title": "Finance Act, 2026",
+   "institution": "TanzLII (Tanzania Legal Information Institute)",
+   "legal_date": "2026-06-30",
+   "accessed_at": "2026-07-25",
+   "url": "https://www.tanzlii.org/akn/tz/act/2026/finance",
+   "local_file": null,
+   "sha256": null,
+   "coverage": "fiscal year 2026/27 tax rates and measures; potential VAT/excise changes",
+   "status": "source_pending_collection",
+   "verification_status": "PENDING_COLLECTION",
+   "notes": "URL not re-verified this cycle (carried over from prior pass); not downloaded, not archived, not used for any rate in this collection."
+  },
+  {
+   "source_id": "TZA-TRA-TARIFF-GUIDE-2026",
+   "title": "Customs Tariff and Import Duty Guide 2026",
+   "institution": "Tanzania Revenue Authority (TRA)",
+   "legal_date": "2026-01-01",
+   "accessed_at": "2026-07-25",
+   "url": "https://www.tra.go.tz/en/tariff-guide",
+   "local_file": null,
+   "sha256": null,
+   "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+   "status": "source_pending_collection",
+   "verification_status": "PENDING_COLLECTION",
+   "notes": "Not downloaded, not archived, not used for any rate in this collection."
+  },
+  {
+   "source_id": "TZA-CANONICAL-TARIFF",
+   "title": "East African Community — EAC Common External Tariff 2022 (canonique TZA)",
+   "url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+   "note": "dataset d'exécution dérivé du PDF officiel (eac_cet_scraper v2, SHA-256 4c5acc8b…) — référencé par les mesures VERIFIED_RUNTIME_DATASET"
+  }
+ ]
 }

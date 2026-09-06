@@ -49,11 +49,55 @@ def norm_table(code: str) -> str:
     return s[:24] or "other"
 
 
+def _eac_national_mode(nat: dict) -> tuple:
+    """Mode NATIONAL EAC (RWA/TZA) — le fichier de positions extrait du PDF
+    officiel par eac_cet_scraper est la source unique (pas de canonique dérivé)."""
+    from collections import defaultdict as _dd
+
+    vat_rates = _dd(set)
+    levy_tables = _dd(lambda: _dd(set))
+    for pos in nat["positions"]:
+        code = pos["hs_code"]
+        for t in (pos.get("taxes_detail") or []):
+            name = str(t.get("tax_name") or "")
+            rate = t.get("rate")
+            if not isinstance(rate, (int, float)):
+                continue
+            if "Value Added" in name:
+                vat_rates[rate].add(code)
+            elif t.get("is_cet"):
+                continue  # le CET est la colonne douane
+            elif "Excise" in name:
+                levy_tables["excise_excise_duty"][rate].add(code)
+            else:
+                levy_tables[norm_table(name)][rate].add(code)
+    return (
+        {rate: sorted(positions) for rate, positions in sorted(vat_rates.items())},
+        {t: {rate: sorted(p) for rate, p in sorted(r.items())}
+         for t, r in sorted(levy_tables.items())},
+    )
+
+
 def main(iso3: str, slug: str) -> int:
     meta = META[iso3]
     canon_path = ROOT / "backend" / "data" / f"{iso3}_tariffs.json"
     canon = json.loads(canon_path.read_text(encoding="utf-8"))
-    summary = canon["summary"]
+    # Principe SH6 : les 6 premiers chiffres sont internationaux ; chaque pays
+    # développe son tarif national au-delà (8, 10, 11 chiffres selon le pays).
+    # Mode NATIONAL : le fichier de tarif national authentique est la source
+    # unique — aucun canonique dérivé.
+    NATIONAL_MODE = "tariff_lines" not in canon
+    if NATIONAL_MODE:
+        summary = {
+            "source_name": canon.get("source", ""),
+            "source_url": canon.get("source_url", ""),
+            "data_status": "VERIFIED",
+            "total_sub_positions": len(
+                canon.get("positions") or canon.get("sub_positions") or []
+            ),
+        }
+    else:
+        summary = canon["summary"]
     canon_sha = hashlib.sha256(canon_path.read_bytes()).hexdigest()
     out = ROOT / "data" / slug
     out.mkdir(parents=True, exist_ok=True)
@@ -63,12 +107,25 @@ def main(iso3: str, slug: str) -> int:
     levy_tables = defaultdict(lambda: defaultdict(set))  # table -> rate -> positions
     fap_groups = defaultdict(lambda: {"positions": set(), "labels": set(), "code": None})
     vat_std_rate = None
+    levy_tables_not_wired = []
+    table_names = []
 
-    for line in canon["tariff_lines"]:
-        positions = {sp["code"] for sp in (line.get("sub_positions") or []) if sp.get("code")}
-        if not positions:
-            hs6 = line.get("hs6")
-            positions = {hs6} if hs6 else set()
+    if NATIONAL_MODE:
+        vat_nat, levies_nat = _eac_national_mode(canon)
+        for rate, positions in vat_nat.items():
+            vat_rates[float(rate)] |= set(positions)
+        for table, rates in levies_nat.items():
+            for rate, positions in rates.items():
+                levy_tables[table][float(rate)] |= set(positions)
+        table_names = list(levies_nat.keys())
+
+    if not NATIONAL_MODE:
+        for line in canon["tariff_lines"]:
+            # Doctrine SH6 : jamais de taxe ni de taux au niveau SH6 — seules
+            # les sous-positions nationales (8/10/11 chiffres) portent des taux
+            positions = {sp["code"] for sp in (line.get("sub_positions") or []) if sp.get("code")}
+            if not positions:
+                continue
         for t in line.get("taxes_detail") or []:
             code = str(t.get("tax") or "").strip().upper()
             rate = t.get("rate")
@@ -143,9 +200,15 @@ def main(iso3: str, slug: str) -> int:
             "legal_reference": f"{summary.get('source_name', iso3)} — colonne TVA, taux {rate}% par position nationale",
             "source_id": f"{iso3}-CANONICAL-TARIFF", "verification_status": "VERIFIED_RUNTIME_DATASET",
         })
+    # MÉTHODE DÉFINITIVE : les traitements issus de lois primaires déjà
+    # documentés (zéro-rated, exemptions) ne sont JAMAIS écrasés par la
+    # régénération du tarif.
+    prev_vat = json.loads(existing_vat.read_text(encoding="utf-8")) if existing_vat.is_file() else {}
     vat_doc = {
         "schema_version": "1.0", "country": iso3, "as_of": "2026-09-06",
-        "vat_rates": rows, "vat_exemptions": [], "vat_zero_rated": [],
+        "vat_rates": rows,
+        "vat_exemptions": prev_vat.get("vat_exemptions") or [],
+        "vat_zero_rated": prev_vat.get("vat_zero_rated") or [],
         "provenance": {"source": f"backend/data/{iso3}_tariffs.json ({summary.get('data_status')})",
                        "canonical_sha256": canon_sha},
     }
@@ -156,7 +219,8 @@ def main(iso3: str, slug: str) -> int:
     levies_doc = {"schema_version": "1.0", "country": iso3, "as_of": "2026-09-06",
                   "provenance": {"source": f"backend/data/{iso3}_tariffs.json ({summary.get('data_status')})",
                                  "canonical_sha256": canon_sha}}
-    table_names = []
+    if not NATIONAL_MODE:
+        table_names = []
     for table, rates in sorted(levy_tables.items()):
         if table.startswith("excise_"):
             continue
@@ -165,7 +229,8 @@ def main(iso3: str, slug: str) -> int:
         for rate, positions in sorted(rates.items()):
             lrows.append({
                 "record_id": f"{iso3}-{table.upper()[:10]}-{str(rate).replace('.', '_')}",
-                "rate": f"{rate}%", "rate_basis": "valeur en douane (CIF)",
+                "rate": f"{rate}%",
+                "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (assiette alignée sur le moteur)",
                 "effective_from": meta["window"], "effective_to": None,
                 "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION", "supersedes_record_id": None,
                 "hs_codes_explicit": sorted(positions),
@@ -176,24 +241,59 @@ def main(iso3: str, slug: str) -> int:
     (out / "import_levies.json").write_text(json.dumps(levies_doc, ensure_ascii=False, indent=1), encoding="utf-8")
 
     # ---------- excise ----------
+    # MÉTHODE DÉFINITIVE : les mesures de loi primaire (VERIFIED_PRIMARY_TEXT)
+    # déjà documentées sont TOUJOURS préservées en tête — les taux runtime
+    # dérivés du tarif ne les écrasent jamais ; conflit HS ⇒ runtime retiré.
     excise_rows = []
     for table, rates in sorted(levy_tables.items()):
         if not table.startswith("excise_"):
             continue
-        table_names.append(table)
+        if table not in table_names:
+            table_names.append(table)
         for rate, positions in sorted(rates.items()):
             excise_rows.append({
                 "record_id": f"{iso3}-{table.upper()[:12]}-{str(rate).replace('.', '_')}",
-                "rate": f"{rate}%", "rate_basis": "valeur en douane (CIF)",
+                "rate": f"{rate}%",
+                "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (assiette alignée sur le moteur)",
                 "effective_from": meta["window"], "effective_to": None,
                 "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION", "supersedes_record_id": None,
                 "hs_codes_explicit": sorted(positions),
                 "legal_reference": f"{summary.get('source_name', iso3)} — colonne accise",
                 "source_id": f"{iso3}-CANONICAL-TARIFF", "verification_status": "VERIFIED_RUNTIME_DATASET",
             })
-    # excises déjà documentées (data/{slug}/excise_measures.json existant) : conservées
+    # fusion : lois primaires préservées, runtime en conflit HS retiré
+    prev_excise_path = out / "excise_measures.json"
+    excise_doc_note = {}
+    if prev_excise_path.is_file():
+        prev = json.loads(prev_excise_path.read_text(encoding="utf-8"))
+        primary = [r for r in (prev.get("excise_rates") or [])
+                   if r.get("verification_status") == "VERIFIED_PRIMARY_TEXT"]
+        # normalisation : les codes loi primaire peuvent être pointés
+        # (2402.20.10) — comparer en chiffres purs, comme le moteur
+        _digits = lambda codes: {re.sub(r"\D", "", c) for c in (codes or [])}
+        primary_hs = set()
+        for r in primary:
+            primary_hs |= _digits(r.get("hs_codes_explicit"))
+        runtime = [
+            r for r in excise_rows
+            if not (primary_hs & _digits(r.get("hs_codes_explicit")))
+        ]
+        removed = len(excise_rows) - len(runtime)
+        excise_rows = primary + runtime
+        if primary:
+            excise_doc_note = {
+                "primary_law_preserved": len(primary),
+                "runtime_conflicts_removed": removed,
+                "reason": (
+                    "les taux de loi primaire font foi — la régénération du tarif "
+                    "ne les écrase jamais ; les taux runtime en conflit HS sont retirés"
+                ),
+            }
+    else:
+        excise_doc_note = {}
     excise_doc = {"schema_version": "1.0", "country": iso3, "as_of": "2026-09-06",
                   "excise_rates": excise_rows,
+                  **({"primary_law_merge": excise_doc_note} if excise_doc_note else {}),
                   "provenance": {"source": f"backend/data/{iso3}_tariffs.json ({summary.get('data_status')})",
                                  "canonical_sha256": canon_sha}}
     (out / "excise_measures.json").write_text(json.dumps(excise_doc, ensure_ascii=False, indent=1), encoding="utf-8")
@@ -218,6 +318,12 @@ def main(iso3: str, slug: str) -> int:
             "requires_human_review": False,
             "mapping_status": "DIRECT_HS", "mapping_confidence": 100,
         })
+    if NATIONAL_MODE and not measures and (out / "legal_overrides.json").is_file():
+        # mode national : préserver les mesures F.A.P déjà documentées sur la
+        # branche (générées depuis etl/africa_formalities — autorités réelles)
+        prev = json.loads((out / "legal_overrides.json").read_text(encoding="utf-8"))
+        if prev.get("measures"):
+            measures = prev["measures"]
     overrides = {
         "schema_version": "1.0", "jurisdiction": iso3, "as_of": "2026-09-06",
         "measures": measures,
@@ -252,6 +358,32 @@ def main(iso3: str, slug: str) -> int:
                        "source_url": summary.get("source_url", ""), "sha256": canon_sha}],
         "sources_officielles": [summary.get("source_url", "")] if summary.get("source_url") else [],
     }
+    if NATIONAL_MODE:
+        register["verification_nationale"] = {
+            "as_of": "2026-09-06",
+            "status": "EXHAUSTIVE_VERIFIED",
+            "sub_positions_unique": summary.get("total_sub_positions", 0),
+            "source": (
+                "tarif national authentique = source unique (pas de canonique "
+                "dérivé) — principe SH6 : 6 chiffres internationaux, extension "
+                "nationale au-delà"
+            ),
+        }
+    prev_register_path = out / f"{iso3.lower()}_gazette_register.json"
+    if prev_register_path.is_file():
+        prev_reg = json.loads(prev_register_path.read_text(encoding="utf-8"))
+        for key in (
+            "preference_and_origin_status", "preference_evidence",
+            "afcfta_application_evidence", "currency_note", "coverage_scope",
+            "data_gaps", "integrity_watch_fixes", "verification_nationale",
+            "national_tariff_note", "import_regulations_officielles",
+            "zlecaf_source_preferences", "dd_divergences_juin_vs_recrawl",
+        ):
+            if key in prev_reg:
+                register[key] = prev_reg[key]
+        register["sources_officielles"] = sorted(set(
+            register.get("sources_officielles", []) + prev_reg.get("sources_officielles", [])
+        ))
     (out / f"{iso3.lower()}_gazette_register.json").write_text(
         json.dumps(register, ensure_ascii=False, indent=1), encoding="utf-8")
 

@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "jurisdiction": "TZA",
+  "as_of": "2026-09-06",
+  "status": "DOCUMENTED_SOURCES_VERIFIED",
+  "note": "Cascade documentée à partir du texte du tarif officiel (EAC CET 2022) et corroborée par PwC Worldwide Tax Summaries — Tanzania (revu 2026-01-14). Prélèvements DOCUMENTÉS mais NON ENCORE CÂBLÉS dans le moteur — câblage dédié à venir.",
+  "cascade": [
+    {
+      "order": 1,
+      "tax": "VALEUR_EN_DOUANE",
+      "name": "Customs value (valeur transactionnelle)",
+      "base": "CIF (transaction value WTO/GATT Art. VII)",
+      "legal_reference": "EAC Customs Management Act 2004 — valuation",
+      "source_type": "TARIF_OFFICIEL",
+      "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
+    },
+    {
+      "order": 2,
+      "tax": "DD_CET",
+      "name": "Import Duty — EAC Common External Tariff",
+      "base": "valeur en douane (CIF)",
+      "formula": "DD = CIF × taux_CET",
+      "rate_structure": {
+        "bands": {
+          "raw_materials_capital_goods": 0,
+          "intermediate": 10,
+          "finished": 25,
+          "specified_sensitive": 35
+        },
+        "schedule2_rule": "SI (Sensitive Item) → taux applicable = Schedule 2 (texte officiel, Introduction p. 9)",
+        "compound_rule": "« X% ou USD Y/unité whichever is higher » : DD = max(CIF × X%, quantité × Y) — exige la quantité ; sans quantité NON CALCULABLE (jamais fabriqué)"
+      },
+      "legal_reference": "EAC CET 2022 — Schedule 1 (pp. 13-556) + Schedule 2 (pp. 557-560), SHA-256 PDF : 4c5acc8b4c0be2f0841d116064429381ba362e66b5c720b8bff16a4af7a53b49",
+      "source_type": "TARIF_OFFICIEL",
+      "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
+    },
+    {
+      "order": 3,
+      "tax": "RDL",
+      "name": "Railways Development Levy",
+      "base": "valeur en douane (CIF)",
+      "formula": "RDL = CIF × 2%",
+      "scope": "marchandises mises à la consommation sauf exonérations EACCMA 2004, produits pharmaceutiques, engrais (EAC CET), jet A1 (2710.19.21)",
+      "legal_reference": "PwC Worldwide Tax Summaries — Tanzania (revu 2026-01-14)",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/tanzania/corporate/other-taxes"
+    },
+    {
+      "order": 4,
+      "tax": "DIF",
+      "name": "Destination Inspection Fee",
+      "base": "valeur FOB",
+      "formula": "DIF = FOB × 0,6%",
+      "legal_reference": "PwC Worldwide Tax Summaries — Tanzania (revu 2026-01-14)",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/tanzania/corporate/other-taxes"
+    },
+    {
+      "order": 5,
+      "tax": "EXCISE",
+      "name": "Excise duty (accises TRA)",
+      "base": "ad valorem sur (CIF + DD) ou montants spécifiques TZS/litre, TZS/kg selon produit",
+      "formula": "Excise = (CIF + DD) × taux | quantité × montant spécifique",
+      "examples": {
+        "ciment": "TZS 20/kg",
+        "savons importés": "10%",
+        "véhicules >2000cc": "10%",
+        "services de télécommunication": "17%"
+      },
+      "legal_reference": "Tanzania Excise (Management and Tariff) Act — via PwC Tanzania",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/tanzania/corporate/other-taxes"
+    },
+    {
+      "order": 6,
+      "tax": "TVA",
+      "name": "Value Added Tax à l'importation (Mainland)",
+      "base": "valeur en douane + droits + accises + prélèvements selon assiette légale",
+      "formula": "TVA = (CIF + DD + Excise) × 18%",
+      "standard_rate": 18.0,
+      "legal_reference": "Tanzania VAT Act (taux standard 18% Mainland ; Zanzibar 15%) — via PwC Tanzania",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/tanzania/corporate/other-taxes"
+    }
+  ],
+  "provenance": {
+    "doctrine": "zéro-fabrication — toute valeur NON vérifiée est marquée UNVERIFIED et n'entre jamais dans un calcul",
+    "canonical_tariff": "backend/data/TZA_tariffs.json (5 954 sous-positions 8 chiffres, exhaustives vs PDF officiel, générées par eac_cet_scraper v2)",
+    "canonical_sha256": "Voir data/tanzania/tza_gazette_register.json → base_tariff_documentation.sha256",
+    "engine_wiring": "DD + TVA calculés par engine/national_customs_calculation.py ; RDL/DIF à câbler (import_levies.json)"
+  }
+}
