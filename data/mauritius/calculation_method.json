@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "jurisdiction": "MUS",
+  "as_of": "2026-09-06",
+  "status": "DOCUMENTED_SOURCES_VERIFIED",
+  "note": "Cascade documentée à partir du tarif MRA Integrated Tariff Schedule HS2022 (source des taux par ligne) et corroborée par PwC Mauritius (revu 2026-06-15). Prélèvements DOCUMENTÉS ; câblage dédié à venir pour l'accise import.",
+  "cascade": [
+    {
+      "order": 1,
+      "tax": "VALEUR_EN_DOUANE",
+      "name": "Customs value (valeur transactionnelle, fret et assurance inclus le cas échéant)",
+      "base": "customs transaction value (CIF) — assiette MRA : « customs transaction value including freight and insurance where applicable »",
+      "legal_reference": "MRA Customs Charges — Calculation of Custom Charges ; Customs Tariff Act",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/mauritius/corporate/other-taxes"
+    },
+    {
+      "order": 2,
+      "tax": "D.D",
+      "name": "Droit de douane (Customs Tariff Act)",
+      "base": "valeur en douane (CIF)",
+      "formula": "DD = CIF × taux publié par ligne (tarif MRA HS2022, colonne D.D)",
+      "rate_structure": "taux en vigueur sous le Customs Tariff Act au moment de la validation du bill of entry ; exonérations et concessions prévues par le même Acte",
+      "legal_reference": "Customs Tariff Act — via PwC Mauritius ; taux par ligne = tarif MRA HS2022",
+      "source_type": "TARIF_OFFICIEL",
+      "source_url": "https://mra.mu/index.php/taxes-and-duty/customs"
+    },
+    {
+      "order": 3,
+      "tax": "EXCISE",
+      "name": "Excise duty à l'importation",
+      "base": "ad valorem ou spécifique selon produit (alcools/spiritueux, véhicules, produits pétroliers)",
+      "formula": "Excise = assiette produit × taux prescrit",
+      "rate_structure": "70 lignes du canonique portent une accise (tarif MRA HS2022, colonne EXCISE)",
+      "legal_reference": "Excise Act ; taux par ligne = tarif MRA HS2022",
+      "source_type": "TARIF_OFFICIEL",
+      "source_url": "https://mra.mu/index.php/taxes-and-duty/customs"
+    },
+    {
+      "order": 4,
+      "tax": "T.V.A",
+      "name": "Value Added Tax à l'importation",
+      "base": "valeur en douane + droits de douane (assiette MRA : « customs transaction value … plus customs duty »)",
+      "formula": "TVA = (CIF + DD) × 15% pour les lignes taxables",
+      "standard_rate": 15.0,
+      "exemptions": "1 309 lignes / 1 508 sous-positions SANS TVA publiée dans le tarif MRA = exonérées à l'importation (documentées explicitement par position dans vat_measures.json → vat_exemptions, treatment EXEMPT rate 0 dans le moteur) — jamais comblées au taux standard",
+      "legal_reference": "MRA Integrated Tariff Schedule HS2022 — colonne TVA ; Value Added Tax Act 1998 (corroboration PwC Mauritius, revu 2026-06-15)",
+      "source_type": "TARIF_OFFICIEL",
+      "source_url": "https://mra.mu/index.php/taxes-and-duty/customs"
+    }
+  ],
+  "provenance": {
+    "doctrine": "zéro-fabrication — toute valeur NON vérifiée est marquée UNVERIFIED et n'entre jamais dans un calcul",
+    "canonical_tariff": "backend/data/MUS_tariffs.json (6 073 sous-positions 8 chiffres, MRA Integrated Tariff Schedule HS2022)",
+    "canonical_sha256": "Voir data/mauritius/mus_gazette_register.json → base_tariff_documentation.sha256",
+    "engine_wiring": "DD + TVA (avec exemptions EXEMPT par position) calculés par engine/national_customs_calculation.py via vat_measures/excise_measures/import_levies"
+  }
+}

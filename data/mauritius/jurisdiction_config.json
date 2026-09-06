@@ -1,0 +1,10 @@
+{
+ "iso3": "MUS",
+ "currency": "MUR",
+ "levy_tables": [
+  "excise_excise"
+ ],
+ "general_levy_tables": [],
+ "gazette_register": "mus_gazette_register.json",
+ "sh6_principle": "les 6 premiers chiffres (SH) sont internationaux ; le tarif national se développe au-delà du 6e chiffre (MUS : 8 chiffres = SH6+2) — le tarif national authentique est la source unique"
+}

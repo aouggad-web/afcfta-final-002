@@ -1,0 +1,104 @@
+{
+ "jurisdiction": "MUS",
+ "as_of": "2026-09-06",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "Corpus : MRA Integrated Tariff Schedule HS2022 (Maurice) + corpus fiscal par position nationale."
+ },
+ "regional_cet_applicable": false,
+ "regional_note": "COMESA/SADC — zone de libre-échange (pas d'union douanière)",
+ "base_tariff_documentation": {
+  "source_id": "MUS-CANONICAL-TARIFF",
+  "source_name": "MRA Integrated Tariff Schedule HS2022 (Maurice)",
+  "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+  "sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6",
+  "verification_status": "VERIFIED",
+  "data_status": "VERIFIED",
+  "hs_version": "HS2022 — sous-positions nationales",
+  "effective_from": "2017-07-01",
+  "national_positions": 6073,
+  "verification": {
+   "verified_on": "2026-09-06",
+   "method": "Extraction des lignes sans colonne TVA publiée du tarif MRA Integrated Tariff Schedule HS2022 + génération vat_exemptions consommées par le moteur (treatment EXEMPT).",
+   "si_rule": null,
+   "pdf_sha256": null
+  }
+ },
+ "preference_and_origin_status": "PARTIAL",
+ "preference_evidence": {
+  "instrument": "ZLECAf — aucune offre MUS ligne à ligne archivée",
+  "status": "PARTIAL",
+  "note": "application effective démontrée (GTI) mais pas de schedule MUS ligne à ligne — la préférence n'est JAMAIS appliquée par le calculateur"
+ },
+ "documents": [
+  {
+   "file": "MUS_tariffs.json (canonique)",
+   "title": "MRA Integrated Tariff Schedule HS2022 (Maurice) — 4779 lignes",
+   "source_url": "https://www.mra.mu/download/TariffInfo010426.pdf",
+   "sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6"
+  }
+ ],
+ "sources_officielles": [
+  "https://au-afcfta.org (Secrétariat ZLECAf — UA)",
+  "https://au.int/fr (Union africaine — ZLECAf)",
+  "https://mra.mu/index.php/taxes-and-duty/customs (MRA — autorité officielle)",
+  "https://taxsummaries.pwc.com/mauritius/corporate/other-taxes (PwC, revu 2026-06-15)",
+  "https://www.mra.mu/download/TariffInfo010426.pdf",
+  "https://www.tralac.org/resources.html (tralac Trade Law Centre)"
+ ],
+ "verification_nationale": {
+  "as_of": "2026-09-06",
+  "status": "EXHAUSTIVE_VERIFIED",
+  "sub_positions_unique": 6073,
+  "schedule1_unique_codes": null,
+  "schedule2_sensitive_items": null,
+  "duplicates_schedule1_ignored": null,
+  "codes_merged_recovered": null,
+  "compound_rates_structured": null,
+  "npf_note": null,
+  "zlecaf_afcfta": null,
+  "zlecaf_npf_crosscheck": null,
+  "note_corrections": "1 309 lignes / 1 508 sous-positions sans TVA publiée dans le tarif MRA HS2022 documentées comme exonérations explicites par position (66 enregistrements par chapitre, codes SP explicites — jamais comblées au taux standard) ; cadre : Value Added Tax Act 1998 (PwC Mauritius)."
+ },
+ "afcfta_application_evidence": {
+  "gti_participant": true,
+  "gti_launch": "2022-10-07",
+  "source_url": "https://au-afcfta.org/guided-trade-initiative/",
+  "source_title": "AfCFTA Secretariat — Guided Trade Initiative (GTI)",
+  "note": "l'application effective des préférences ZLECAf par les douanes mauriciennes est démontrée par le Secrétariat (GTI) — la portée ligne à ligne reste contrôlée par zlecaf_implementation_registry.py",
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité)"
+  },
+  "schedule_published": "aucune offre MUS ligne à ligne archivée (NOT_AVAILABLE)"
+ },
+ "coverage_scope": {
+  "base_tariff": "VERIFIED — 6 073 sous-positions MRA HS2022 (colonne TVA incluse)",
+  "national_layer": "PARTIAL — prélèvements nationaux omis non modélisés ; accises documentées (assiette alignée moteur) ; TVA avec exemptions par position"
+ },
+ "currency_note": "customs_value attendu dans la devise de la juridiction (MUR) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés MUR",
+ "integrity_watch_fixes": {
+  "as_of": "2026-09-06",
+  "excise_rate_basis_aligned_with_engine": true,
+  "excise_backdating_removed": true,
+  "preference_downgraded_to_partial": true,
+  "coverage_scope_documented": true,
+  "currency_expectation_documented": true,
+  "sh6_principle_documented": true
+ },
+ "zlecaf_asymetrie_partenaires": {
+  "principe": "LE TAUX ZLECAf EST ASYMÉTRIQUE PAR PARTENAIRE : le même produit n'a PAS le même avantage selon le sens du commerce. Le taux applicable à un produit importé depuis un partenaire Z dépend du CALENDRIER DE DÉMANTÈLEMENT du pays importateur envers Z ; le même produit exporté vers Z dépend du calendrier de Z envers le pays exportateur.",
+  "preuve_source": "TUN (Tarif Web 2026) : la douane tunisienne publie elle-même, par sous-position, des taux ZLECAf DIFFÉRENTS PAR PARTENAIRE — 14 075 lignes à taux variables, 0 à taux uniformes (ex. 01012100015 : Tanzanie 0%, démantèlement complet sous GTI, vs Cameroun/Ghana/Afrique du Sud/Kenya 40% sur la même ligne nationale)",
+  "implication_calcul": "le calculateur doit résoudre le taux ZLECAf par COUPLE (pays importateur, pays origine) et jamais par produit seul — le côté Algérie utilise la circulaire DGD 482/2024 (listes A/B/C, calendriers standard/réciprocité) ; le côté destination utilise le calendrier du pays importateur (colonne AfCFTA SARS pour ZAF, colonne préférences Tarif Web pour TUN, offres e-Tariff Book pour les autres)",
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité) — l'acceptation algérienne des partenaires ZLECAf prouve la réciprocité de l'accord"
+  }
+ }
+}
