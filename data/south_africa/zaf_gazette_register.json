@@ -1,0 +1,194 @@
+{
+ "jurisdiction": "ZAF",
+ "as_of": "2026-09-06",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "Corpus : South African Revenue Service (SARS) — Schedule 1 Part 1 + corpus fiscal par position nationale."
+ },
+ "regional_cet_applicable": true,
+ "regional_note": "SACU — tarif commun (SARS)",
+ "base_tariff_documentation": {
+  "source_id": "ZAF-CANONICAL-TARIFF",
+  "source_name": "South African Revenue Service (SARS) — Schedule 1 Part 1",
+  "source_url": "https://www.sars.gov.za/customs-and-excise/tariff-books/schedules/",
+  "sha256": "cbea2f61f834e66ea3d2aecfdc880ac4486ef024792c0439451fa80ec11cb6fd",
+  "verification_status": "CRAWLED_AUTHENTIC",
+  "data_status": "VERIFIED",
+  "hs_version": "HS2022 — sous-positions nationales",
+  "effective_from": "2017-07-01",
+  "national_positions": 4260,
+  "sars_verification": {
+   "verified_on": "2026-09-06",
+   "source_pdf": "SARS Schedule 1 Part 1 (2026-08-28, 704 pages) — archivé localement",
+   "codes_sars_officiels_8_digits": 4263,
+   "sub_positions_couvertes": 4258,
+   "codes_retires_documentes": [
+    "39173920",
+    "39173990"
+   ],
+   "note_8592": "les 8 592 lignes = les taux AfCFTA publiés par le SARS (4 329 SH6 + 4 263 codes 8 chiffres) — couche séparée de la base nationale 8 chiffres (4 260 SPs), les deux niveaux coexistent dans le tarif sud-africain"
+  }
+ },
+ "preference_and_origin_status": "IMPLEMENTED_OFFER",
+ "preference_evidence": {
+  "instrument": "ZLECAf — colonne AfCFTA du SARS Schedule 1 Part 1 (tarif national sud-africain en vigueur), source : SARS, mise à jour 2026-08-06",
+  "status": "IMPLEMENTED_OFFER",
+  "line_count": 8592,
+  "rate_kinds": {
+   "AD_VALOREM": 3617,
+   "COMPOUND": 140,
+   "FREE": 4663,
+   "SPECIFIC": 172
+  },
+  "source_pdf_sha256": "e45e6d797a6372e881ef88063f4fde8eecbbcdf3c5f68d9c8183932478f90560",
+  "note": "le SARS publie et applique lui-même les taux ZLECAf ligne à ligne dans son tarif national — exécution contrôlée par zlecaf_schedule_zaf.py (porte légale : origine réciproque + certificat d'origine)"
+ },
+ "documents": [
+  {
+   "file": "ZAF_tariffs.json (canonique)",
+   "title": "South African Revenue Service (SARS) — Schedule 1 Part 1 — 5619 lignes",
+   "source_url": "https://www.sars.gov.za/customs-and-excise/tariff-books/schedules/",
+   "sha256": "cbea2f61f834e66ea3d2aecfdc880ac4486ef024792c0439451fa80ec11cb6fd"
+  }
+ ],
+ "sources_officielles": [
+  "https://www.sars.gov.za/customs-and-excise/tariff-books/schedules/"
+ ],
+ "verification_taxes_interieures": {
+  "objet": "Taxes intérieures NON reprises dans le TEC (TVA, accises, prélèvements) — vérification sur sources gouvernementales locales",
+  "sources": [
+   {
+    "source": "SARS — Excise / VAT",
+    "url": "https://www.sars.gov.za/types-of-tax/excise-duty/",
+    "http_status": "200"
+   }
+  ],
+  "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
+ },
+ "afcfta_application_evidence": {
+  "sars_afcfta_column": true,
+  "lines_published": 8592,
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité)"
+  },
+  "dza_eligible_partner": {
+   "proof": "PwC South Africa (revu 2026-05-29) : « On 31 January 2024, South Africa launched the start of preferential trade under the Agreement, and the following countries are now eligible to trade with South Africa under the Agreement: ALGERIA, Burundi, Cameroon, Egypt, Ethiopia, The Gambia, Ghana, Kenya, Morocco, Nigeria, Rwanda, Tunisia, and Uganda. »",
+   "source_url": "https://taxsummaries.pwc.com/south-africa/corporate/other-taxes",
+   "implication": "corridor DZA→ZAF éligible au traitement préférentiel ZLECAf — les taux de la colonne AfCFTA du SARS sont applicables aux marchandises originaires d'Algérie (certificat d'origine exigé)"
+  }
+ },
+ "coverage_scope": {
+  "base_tariff": "VERIFIED — 4 260 SPs nationales vs codes SARS officiels (4 263)",
+  "national_layer": "PARTIAL — accises NON incluses (Schedule Part 2 séparé, à archiver) ; préférence AfCFTA = colonne officielle SARS (exécutable gated)"
+ },
+ "data_gaps": [
+  "codes retirés du tarif SARS actuel conservés dans le canonique : 39173920, 39173990",
+  "accises : Schedule Part 2A/2B ARCHIVÉS (data/sources/ZAF/schedules/, SHA-256 dans manifest) — extraction ligne par ligne et câblage à faire"
+ ],
+ "currency_note": "customs_value attendu dans la devise de la juridiction (ZAR) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés ZAR",
+ "integrity_watch_fixes": {
+  "as_of": "2026-09-06",
+  "preference_bound_to_sars_afcfta_column": true,
+  "coverage_scoped_and_verified": true,
+  "codes_8592_explained": true,
+  "retired_codes_documented": 2,
+  "excise_not_available_documented": true,
+  "formalities_downgraded": true,
+  "currency_expectation_documented": true
+ },
+ "taxes_locales_cascade": {
+  "source": "PwC South Africa (revu 2026-05-29) + SARS Schedule 1 (PDF archivé)",
+  "cascade": [
+   {
+    "order": 1,
+    "tax": "VALEUR_EN_DOUANE",
+    "base": "valeur transactionnelle (Customs and Excise Act, s.65)"
+   },
+   {
+    "order": 2,
+    "tax": "DD",
+    "name": "Customs duty (Schedule 1 Part 1)",
+    "base": "valeur en douane",
+    "range": "0%–45% (taux par ligne, colonne General)",
+    "note": "SACU : pas de droits entre ZA/BW/LS/NA/SZ"
+   },
+   {
+    "order": 3,
+    "tax": "AD_VALOREM",
+    "name": "Droits de douane ad valorem (Schedule 1 Part 3)",
+    "base": "valeur en douane",
+    "scope": "biens de luxe et véhicules (tarif SARS)"
+   },
+   {
+    "order": 4,
+    "tax": "EXCISE",
+    "name": "Accises (Schedule Part 2)",
+    "base": "spécifique (tabac, alcool) ou ad valorem (luxe, véhicules)",
+    "status": "NOT_AVAILABLE — Schedule Part 2 à archiver"
+   },
+   {
+    "order": 5,
+    "tax": "LEVIES_ENV_SANTÉ",
+    "name": "Levies environnementales et santé",
+    "items": [
+     "taxe émissions CO2 véhicules : ZAR 146/g/km >95 g (particulières), ZAR 195/g/km >175 g (utilitaires) — dès 2024-04-01",
+     "tyre levy : ZAR 2,30/kg",
+     "Health Promotion Levy (sugary beverages) : 2,1 c/g de sucre >4 g/100 ml",
+     "fuel levy / carbon fuel levy (produits pétroliers)"
+    ],
+    "status": "DOCUMENTÉS — câblage par ligne à venir (Schedule Part 2 pour les taux par ligne)"
+   },
+   {
+    "order": 6,
+    "tax": "TVA",
+    "name": "VAT à l'importation",
+    "base": "valeur en douane + droits + accises + ad valorem",
+    "rate": "15%",
+    "exemptions": "annexe du VAT Act (biens exonérés à l'importation)",
+    "zero_rated": "biens alimentaires de base, carburants soumis au fuel levy, biens agricoles spécifiés"
+   },
+   {
+    "order": 7,
+    "tax": "ANTI_DUMPING",
+    "name": "Droits anti-dumping et compensateurs",
+    "range": "jusqu'à 150%",
+    "status": "DOCUMENTÉ — par ligne non modélisé"
+   }
+  ],
+  "zlecaf": {
+   "preferential_trade_since": "2024-01-31",
+   "eligible_partners": [
+    "ALGÉRIE",
+    "Burundi",
+    "Cameroun",
+    "Égypte",
+    "Éthiopie",
+    "Gambie",
+    "Ghana",
+    "Kenya",
+    "Maroc",
+    "Nigéria",
+    "Rwanda",
+    "Tunisie",
+    "Ouganda"
+   ],
+   "rates": "colonne AfCFTA du SARS Schedule 1 Part 1 (8 592 lignes, exécutable gated)"
+  }
+ },
+ "zlecaf_asymetrie_partenaires": {
+  "principe": "LE TAUX ZLECAf EST ASYMÉTRIQUE PAR PARTENAIRE : le même produit n'a PAS le même avantage selon le sens du commerce. Le taux applicable à un produit importé depuis un partenaire Z dépend du CALENDRIER DE DÉMANTÈLEMENT du pays importateur envers Z ; le même produit exporté vers Z dépend du calendrier de Z envers le pays exportateur.",
+  "preuve_source": "TUN (Tarif Web 2026) : la douane tunisienne publie elle-même, par sous-position, des taux ZLECAf DIFFÉRENTS PAR PARTENAIRE — 14 075 lignes à taux variables, 0 à taux uniformes (ex. 01012100015 : Tanzanie 0%, démantèlement complet sous GTI, vs Cameroun/Ghana/Afrique du Sud/Kenya 40% sur la même ligne nationale)",
+  "implication_calcul": "le calculateur doit résoudre le taux ZLECAf par COUPLE (pays importateur, pays origine) et jamais par produit seul — le côté Algérie utilise la circulaire DGD 482/2024 (listes A/B/C, calendriers standard/réciprocité) ; le côté destination utilise le calendrier du pays importateur (colonne AfCFTA SARS pour ZAF, colonne préférences Tarif Web pour TUN, offres e-Tariff Book pour les autres)",
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité) — l'acceptation algérienne des partenaires ZLECAf prouve la réciprocité de l'accord"
+  }
+ }
+}

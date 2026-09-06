@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "jurisdiction": "ZAF",
+  "as_of": "2026-09-06",
+  "status": "DOCUMENTED_SOURCES_VERIFIED",
+  "note": "Cascade documentée à partir du tarif SARS Schedule 1 Part 1 (PDF officiel archivé, 704 pages) et corroborée par PwC South Africa (revu 2026-05-29). Prélèvements environnementaux/santé DOCUMENTÉS (taux forfaitaires) ; accises par ligne NOT_AVAILABLE (Schedule Part 2 à archiver) ; câblage dédié à venir.",
+  "cascade": [
+    {
+      "order": 1,
+      "tax": "VALEUR_EN_DOUANE",
+      "name": "Customs value (valeur transactionnelle)",
+      "base": "valeur transactionnelle selon le Customs and Excise Act 1964, section 65 (coûts de transport/assurance inclus selon incoterm)",
+      "legal_reference": "Customs and Excise Act 1964, s.65 ; SARS Schedule 1",
+      "source_type": "TARIF_OFFICIEL",
+      "source_url": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/"
+    },
+    {
+      "order": 2,
+      "tax": "DD",
+      "name": "Customs duty (Schedule 1 Part 1)",
+      "base": "valeur en douane",
+      "formula": "DD = valeur en douane × taux de la ligne (colonne General)",
+      "rate_structure": {
+        "range": "0%–45% par ligne (4 260 sous-positions nationales 8 chiffres)",
+        "sacu": "aucun droit entre ZA/BW/LS/NA/SZ (SACU)",
+        "afcfta": "colonne AfCFTA du SARS = taux préférentiels appliqués (8 592 lignes : 4 329 SH6 + 4 263 codes 8 chiffres) — Algérie partenaire éligible depuis le 31/01/2024"
+      },
+      "legal_reference": "Customs Tariff Act ; SARS Schedule 1 Part 1 (PDF 2026-08-28)",
+      "source_type": "TARIF_OFFICIEL",
+      "source_url": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/"
+    },
+    {
+      "order": 3,
+      "tax": "AD_VALOREM",
+      "name": "Droits de douane ad valorem (Schedule 1 Part 3)",
+      "base": "valeur en douane",
+      "formula": "AD = valeur en douane × taux (biens de luxe, véhicules)",
+      "legal_reference": "SARS Schedule 1 Part 3",
+      "source_type": "TARIF_OFFICIEL"
+    },
+    {
+      "order": 4,
+      "tax": "EXCISE",
+      "name": "Excise duties (Schedule Part 2)",
+      "base": "spécifique (tabac, alcool) ou ad valorem (luxe, véhicules)",
+      "status": "NOT_AVAILABLE — Schedule Part 2 SARS à archiver (jamais deviné)",
+      "legal_reference": "Customs and Excise Act ; Rates and Monetary Amounts Amendment Act No. 3 of 2026",
+      "source_type": "A_ARCHIVER"
+    },
+    {
+      "order": 5,
+      "tax": "LEVIES",
+      "name": "Levies environnementales et santé (importation)",
+      "items": {
+        "emissions_CO2_vehicules": "ZAR 146/g/km >95 g (voitures particulières) ; ZAR 195/g/km >175 g (utilitaires et double cab) — dès 2024-04-01",
+        "tyre_levy": "ZAR 2,30/kg",
+        "health_promotion_levy": "2,1 cents/g de sucre >4 g/100 ml (boissons sucrées)",
+        "fuel_levy": "general fuel levy + carbon fuel levy (produits pétroliers)"
+      },
+      "legal_reference": "PwC South Africa (revu 2026-05-29) — taux à lier aux lignes via Schedule Part 2",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/south-africa/corporate/other-taxes"
+    },
+    {
+      "order": 6,
+      "tax": "TVA",
+      "name": "VAT à l'importation",
+      "base": "valeur en douane + droits de douane + accises + ad valorem",
+      "formula": "TVA = (valeur en douane + DD + AD + Excise) × 15%",
+      "standard_rate": 15.0,
+      "exemptions": "annexe du VAT Act 89 de 1991 — biens exonérés à l'importation",
+      "zero_rated": "biens alimentaires de base, carburants soumis au fuel levy, biens agricoles spécifiés",
+      "legal_reference": "Value-Added Tax Act 89 de 1991 — via PwC South Africa",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL",
+      "source_url": "https://taxsummaries.pwc.com/south-africa/corporate/other-taxes"
+    },
+    {
+      "order": 7,
+      "tax": "ANTI_DUMPING",
+      "name": "Droits anti-dumping et compensateurs",
+      "base": "variable par ligne",
+      "range": "jusqu'à 150%",
+      "status": "DOCUMENTÉ — par ligne non modélisé (décisions ITAC)",
+      "legal_reference": "PwC South Africa (revu 2026-05-29)",
+      "source_type": "CORROBORE_NON_GOUVERNEMENTAL"
+    }
+  ],
+  "provenance": {
+    "doctrine": "zéro-fabrication — toute valeur NON vérifiée est marquée NOT_AVAILABLE et n'entre jamais dans un calcul",
+    "canonical_tariff": "backend/data/ZAF_tariffs.json (4 260 sous-positions nationales 8 chiffres vs codes SARS officiels)",
+    "canonical_sha256": "Voir data/south_africa/zaf_gazette_register.json → base_tariff_documentation.sha256",
+    "zlecaf": {
+      "preferential_trade_since": "2024-01-31",
+      "algeria_eligible": true,
+      "rates": "colonne AfCFTA du SARS Schedule 1 Part 1 — exécution gated (zlecaf_schedule_zaf.py)"
+    },
+    "engine_wiring": "DD + TVA calculés par le moteur ; AD (Part 3), levies et anti-dumping à câbler par ligne — jamais appliqués sans câblage testé"
+  }
+}

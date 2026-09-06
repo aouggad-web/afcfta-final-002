@@ -1,0 +1,29 @@
+{
+ "schema_version": "1.0",
+ "country": "ZAF",
+ "as_of": "2026-09-06",
+ "excise_rates": [],
+ "status": "ARCHIVED_DOCUMENTATION",
+ "note": "les accises sud-africaines sont publiées dans le Schedule 1 Part 2 du Customs and Excise Act (Part 2A = spécifiques, Part 2B = ad valorem) — documents officiels ARCHIVÉS dans data/sources/ZAF/schedules/ avec SHA-256 (manifest) ; l'extraction ligne par ligne vers le format excise_rates et le câblage moteur restent à faire — jamais devinés",
+ "provenance": {
+  "source": "SARS Schedule Part 2 (à archiver)"
+ },
+ "archived_documents": [
+  {
+   "file": "Sch1_Part2A_Specific_Excise_Duties.pdf",
+   "description": "accises spécifiques (localement fabriqués ou importés de même classe)"
+  },
+  {
+   "file": "Sch1_Part2B_AdValorem_Excise_Duties.pdf",
+   "description": "accises ad valorem (luxe, véhicules)"
+  },
+  {
+   "file": "Sch1_Part3D_Env_Levy_CO2_Vehicles.pdf",
+   "description": "levy environnemental CO2 véhicules"
+  },
+  {
+   "file": "Sch1_Part7A_Health_Promotion_Levy.pdf",
+   "description": "Health Promotion Levy (boissons sucrées)"
+  }
+ ]
+}

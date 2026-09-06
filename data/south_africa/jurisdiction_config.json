@@ -1,0 +1,8 @@
+{
+ "iso3": "ZAF",
+ "currency": "ZAR",
+ "levy_tables": [],
+ "general_levy_tables": [],
+ "gazette_register": "zaf_gazette_register.json",
+ "sh6_principle": "les 6 premiers chiffres (SH) sont internationaux ; le tarif national se développe au-delà (ZAF : 8 chiffres) — le tarif national authentique (SARS Schedule 1 Part 1) est la source unique ; la colonne AfCFTA du SARS publie en outre 8 592 taux préférentiels appliqués"
+}
