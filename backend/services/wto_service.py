@@ -17,7 +17,7 @@ from requests.exceptions import HTTPError
 logger = logging.getLogger(__name__)
 
 
-def make_wto_request_with_retry(url, params=None, max_retries=5):
+def make_wto_request_with_retry(url, params=None, max_retries=5, headers=None):
     """
     Make WTO API request with exponential backoff for rate limits
 
@@ -25,6 +25,8 @@ def make_wto_request_with_retry(url, params=None, max_retries=5):
         url: API endpoint URL
         params: Optional query parameters
         max_retries: Maximum number of retry attempts (default: 5)
+        headers: Optional request headers (e.g. the Ocp-Apim-Subscription-Key
+            auth header required by the WTO API).
 
     Returns:
         Response object or None if all retries failed
@@ -38,7 +40,7 @@ def make_wto_request_with_retry(url, params=None, max_retries=5):
 
     for attempt in range(max_retries):
         try:
-            response = requests.get(url, params=params, timeout=30)
+            response = requests.get(url, params=params, headers=headers, timeout=30)
             response.raise_for_status()
             return response
         except HTTPError as e:
@@ -93,6 +95,10 @@ class WTOService:
         self._cache = {}
         self._cache_ttl = 7200  # 2 hours cache (tariffs don't change often)
 
+    def _auth_headers(self):
+        """Auth header required by the WTO API (Azure APIM). None when no key is set."""
+        return {"Ocp-Apim-Subscription-Key": self.api_key} if self.api_key else None
+
     def _get_cache_key(self, *args) -> str:
         return "-".join(str(a) for a in args)
 
@@ -135,7 +141,9 @@ class WTOService:
             params["pc"] = hs_code
 
         try:
-            response = make_wto_request_with_retry(endpoint, params=params, max_retries=5)
+            response = make_wto_request_with_retry(
+                endpoint, params=params, max_retries=5, headers=self._auth_headers()
+            )
 
             if response is None:
                 return None
@@ -197,7 +205,9 @@ class WTOService:
             params["pc"] = product_code
 
         try:
-            response = make_wto_request_with_retry(endpoint, params=params, max_retries=5)
+            response = make_wto_request_with_retry(
+                endpoint, params=params, max_retries=5, headers=self._auth_headers()
+            )
 
             if response is None:
                 return None
@@ -304,7 +314,9 @@ class WTOService:
         params = {"i": indicator, "r": country_code, "ps": "last", "max": 100, "fmt": "json"}
 
         try:
-            response = make_wto_request_with_retry(endpoint, params=params, max_retries=5)
+            response = make_wto_request_with_retry(
+                endpoint, params=params, max_retries=5, headers=self._auth_headers()
+            )
 
             if response is None:
                 return None
