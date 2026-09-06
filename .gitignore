@@ -118,3 +118,5 @@ backend/data/geoip/
 # que pour la session pod en cours, et son contenu se périme à chaque
 # redéploiement (nouvelle URL, nouveau compte de test).
 memory/test_credentials.md
+backend/.venv311/
+backend/data/pdfs/

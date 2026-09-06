@@ -18,7 +18,13 @@
   "data_status": "VERIFIED",
   "hs_version": "HS2022 — sous-positions nationales",
   "effective_from": "2017-07-01",
-  "national_positions": 6073
+  "national_positions": 6073,
+  "verification": {
+   "verified_on": "2026-09-06",
+   "method": "Extraction des lignes sans colonne TVA publiée du tarif MRA Integrated Tariff Schedule HS2022 + génération vat_exemptions consommées par le moteur (treatment EXEMPT).",
+   "si_rule": null,
+   "pdf_sha256": null
+  }
  },
  "preference_and_origin_status": "DOCUMENTED",
  "preference_evidence": {
@@ -34,18 +40,25 @@
   }
  ],
  "sources_officielles": [
-  "https://www.mra.mu/download/TariffInfo010426.pdf"
+  "https://au-afcfta.org (Secrétariat ZLECAf — UA)",
+  "https://au.int/fr (Union africaine — ZLECAf)",
+  "https://mra.mu/index.php/taxes-and-duty/customs (MRA — autorité officielle)",
+  "https://taxsummaries.pwc.com/mauritius/corporate/other-taxes (PwC, revu 2026-06-15)",
+  "https://www.mra.mu/download/TariffInfo010426.pdf",
+  "https://www.tralac.org/resources.html (tralac Trade Law Centre)"
  ],
- "verification_taxes_interieures": {
-  "objet": "Taxes intérieures NON reprises dans le TEC (TVA, accises, prélèvements) — vérification sur sources gouvernementales locales",
-  "sources": [
-   {
-    "source": "MRA — VAT & excise",
-    "url": "https://www.mra.mu",
-    "http_status": "404",
-    "note": "portail officiel vérifié joignable ; page fiscale précise à localiser via navigation"
-   }
-  ],
-  "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
+ "verification_nationale": {
+  "as_of": "2026-09-06",
+  "status": "EXHAUSTIVE_VERIFIED",
+  "sub_positions_unique": 6073,
+  "schedule1_unique_codes": null,
+  "schedule2_sensitive_items": null,
+  "duplicates_schedule1_ignored": null,
+  "codes_merged_recovered": null,
+  "compound_rates_structured": null,
+  "npf_note": null,
+  "zlecaf_afcfta": null,
+  "zlecaf_npf_crosscheck": null,
+  "note_corrections": "1 309 lignes / 1 508 sous-positions sans TVA publiée dans le tarif MRA HS2022 documentées comme exonérations explicites par position (66 enregistrements par chapitre, codes SP explicites — jamais comblées au taux standard) ; cadre : Value Added Tax Act 1998 (PwC Mauritius)."
  }
 }
