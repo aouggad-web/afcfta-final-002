@@ -1,0 +1,9 @@
+{
+ "iso3": "RWA",
+ "currency": "RWF",
+ "levy_tables": [
+  "excise_excise_duty"
+ ],
+ "general_levy_tables": [],
+ "gazette_register": "rwa_gazette_register.json"
+}

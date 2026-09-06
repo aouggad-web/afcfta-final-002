@@ -1,0 +1,86 @@
+{
+ "jurisdiction": "RWA",
+ "as_of": "2026-09-06",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "Corpus : EAC Common External Tariff 2022 + corpus fiscal par position nationale."
+ },
+ "regional_cet_applicable": true,
+ "regional_note": "EAC — CET commun",
+ "base_tariff_documentation": {
+  "source_id": "RWA-CANONICAL-TARIFF",
+  "source_name": "EAC Common External Tariff 2022",
+  "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+  "sha256": "002828bf0da8011ee3c018efc22facab9bddcdb951ee319e53a13c408b54cfcf",
+  "verification_status": "VERIFIED",
+  "data_status": "VERIFIED",
+  "hs_version": "HS2022 — sous-positions nationales",
+  "effective_from": "2017-07-01",
+  "national_positions": 5954
+ },
+ "preference_and_origin_status": "OFFER_ONLY",
+ "preference_evidence": {
+  "instrument": "ZLECAf — offre e-Tariff Book (au-afcfta.org), OFFER_ONLY",
+  "note": "aucun instrument d'implémentation rwandais ni liste officielle d'origines réciproques vérifié au 2026-09-06 — la préférence n'est JAMAIS appliquée par le calculateur (porte zlecaf_implementation_registry)",
+  "status": "OFFER_ONLY"
+ },
+ "documents": [
+  {
+   "file": "RWA_tariffs.json (canonique)",
+   "title": "EAC Common External Tariff 2022 — ? lignes",
+   "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+   "sha256": "002828bf0da8011ee3c018efc22facab9bddcdb951ee319e53a13c408b54cfcf"
+  }
+ ],
+ "sources_officielles": [
+  "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf"
+ ],
+ "verification_nationale": {
+  "as_of": "2026-09-06",
+  "status": "EXHAUSTIVE_VERIFIED",
+  "sub_positions_unique": 5954,
+  "source": "tarif national authentique = source unique (pas de canonique dérivé) — principe SH6 : 6 chiffres internationaux, extension nationale au-delà"
+ },
+ "afcfta_application_evidence": {
+  "gti_participant": true,
+  "gti_launch": "2022-10-07",
+  "source_url": "https://au-afcfta.org/guided-trade-initiative/",
+  "source_title": "AfCFTA Secretariat — Guided Trade Initiative (GTI)",
+  "note": "l'application effective des préférences ZLECAf par les douanes rwandaises est démontrée par le Secrétariat (GTI) — la portée ligne à ligne reste contrôlée par zlecaf_implementation_registry.py",
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité)"
+  },
+  "schedule_published": "e-Tariff Book (snapshot EAC archivé — 4 970 lignes)",
+  "live_api_verification": {
+   "verified_on": "2026-09-06",
+   "method": "requêtes directes sur l'API officielle du Secrétariat ZLECAf (prod-afcfta-api.azurewebsites.net/TariffSchedule/TariffScheduleSearch, source de l'e-Tariff Book) — 40 codes tirés au hasard du snapshot archivé comparés au live : 40/40 MFN et catégories identiques",
+   "result": "SNAPSHOT_CONFORME_40_40"
+  }
+ },
+ "currency_note": "customs_value attendu dans la devise de la juridiction (RWF) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés RWF",
+ "integrity_watch_fixes": {
+  "as_of": "2026-09-06",
+  "excise_primary_law_restored": true,
+  "excise_rate_basis_aligned_with_engine": true,
+  "formalities_confidence_downgraded": true,
+  "vat_zero_rated_restored": 3,
+  "preference_downgraded_to_offer_only": true,
+  "currency_expectation_documented": true
+ },
+ "zlecaf_asymetrie_partenaires": {
+  "principe": "LE TAUX ZLECAf EST ASYMÉTRIQUE PAR PARTENAIRE : le même produit n'a PAS le même avantage selon le sens du commerce. Le taux applicable à un produit importé depuis un partenaire Z dépend du CALENDRIER DE DÉMANTÈLEMENT du pays importateur envers Z ; le même produit exporté vers Z dépend du calendrier de Z envers le pays exportateur.",
+  "preuve_source": "TUN (Tarif Web 2026) : la douane tunisienne publie elle-même, par sous-position, des taux ZLECAf DIFFÉRENTS PAR PARTENAIRE — 14 075 lignes à taux variables, 0 à taux uniformes (ex. 01012100015 : Tanzanie 0%, démantèlement complet sous GTI, vs Cameroun/Ghana/Afrique du Sud/Kenya 40% sur la même ligne nationale)",
+  "implication_calcul": "le calculateur doit résoudre le taux ZLECAf par COUPLE (pays importateur, pays origine) et jamais par produit seul — le côté Algérie utilise la circulaire DGD 482/2024 (listes A/B/C, calendriers standard/réciprocité) ; le côté destination utilise le calendrier du pays importateur (colonne AfCFTA SARS pour ZAF, colonne préférences Tarif Web pour TUN, offres e-Tariff Book pour les autres)",
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité) — l'acceptation algérienne des partenaires ZLECAf prouve la réciprocité de l'accord"
+  }
+ }
+}
