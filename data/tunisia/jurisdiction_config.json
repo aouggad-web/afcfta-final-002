@@ -1,0 +1,31 @@
+{
+ "iso3": "TUN",
+ "currency": "TND",
+ "levy_tables": [
+  "air_impor",
+  "dc_ap",
+  "dc_mtk",
+  "dc_rnta",
+  "dc_voit",
+  "dcvbba",
+  "tca",
+  "tlf",
+  "tmts",
+  "tpe",
+  "air_impor",
+  "dc_ap",
+  "dc_mtk",
+  "dc_rnta",
+  "dc_voit",
+  "dcvbba",
+  "tca",
+  "tlf",
+  "tmts",
+  "tpe"
+ ],
+ "levy_tables_not_wired": [],
+ "general_levy_tables": [],
+ "gazette_register": "tun_gazette_register.json",
+ "sh6_principle": "les 6 premiers chiffres (SH) sont internationaux ; le tarif national se développe au-delà du 6e chiffre — TUN : 10 chiffres (SH6+4) + 1 chiffre de clé de validation de la déclaration en douane (11 caractères publiés par le Tarif Web) ; le tarif national authentique est la source unique",
+ "note": "les tables RPD sont documentées mais NON câblées (assiette = somme des droits et taxes, verbatim source) — jamais calculées sur CIF"
+}

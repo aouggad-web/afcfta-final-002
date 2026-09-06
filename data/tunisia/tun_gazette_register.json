@@ -1,0 +1,388 @@
+{
+ "jurisdiction": "TUN",
+ "as_of": "2026-09-06",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "Corpus : douane.gov.tn/tarifwebnew (Tarif Web 2026, portail officiel de la Douane) + corpus fiscal par position nationale."
+ },
+ "regional_cet_applicable": false,
+ "regional_note": "UMA — pas de TEC régional en vigueur",
+ "base_tariff_documentation": {
+  "source_id": "TUN-CANONICAL-TARIFF",
+  "source_name": "douane.gov.tn/tarifwebnew (Tarif Web 2026, portail officiel de la Douane)",
+  "source_url": "https://www.douane.gov.tn/tarifweb2026/",
+  "sha256": "f21f2a8b6f74dbe6de65c017d019a996be953fbaec4e39c6cbb894c42056a2ea",
+  "verification_status": "VERIFIED",
+  "data_status": "VERIFIED",
+  "hs_version": "HS2022 — sous-positions nationales",
+  "effective_from": "2017-07-01",
+  "national_positions": 17625,
+  "verification": {
+   "verified_on": "2026-09-06",
+   "method": "Re-crawl complet de l'endpoint de détail tarifwebnew/getresultat.php (re-publie les taux, vérifié live le 2026-08-29) ; exhaustivité prouvée contre l'énumération officielle du 2026-08-29 (17 542 = 17 542).",
+   "si_rule": null,
+   "pdf_sha256": null
+  }
+ },
+ "preference_and_origin_status": "PARTIAL",
+ "preference_evidence": {
+  "instrument": "ZLECAf — offre TUN publiée dans l'e-Tariff Book (9 chiffres, OFFER_ONLY, 2 périodes 5/10 ans)",
+  "status": "PARTIAL",
+  "note": "application effective démontrée (GTI) mais l'offre ligne à ligne n'est PAS exécutable sans instrument d'implémentation + origine vérifiée (porte zlecaf_implementation_registry)"
+ },
+ "documents": [
+  {
+   "file": "TUN_tariffs.json (tarif national — source unique)",
+   "title": "Tarif Web 2026 — 17 625 sous-positions nationales (10 chiffres + clé DUM)",
+   "source_url": "https://www.douane.gov.tn/tarifweb2026/",
+   "sha256": "f21f2a8b6f74dbe6de65c017d019a996be953fbaec4e39c6cbb894c42056a2ea"
+  }
+ ],
+ "sources_officielles": [
+  "https://au-afcfta.org (Secrétariat ZLECAf — UA — e-Tariff Book, offre TUN 9 chiffres)",
+  "https://au.int/fr (Union africaine — ZLECAf)",
+  "https://taxsummaries.pwc.com/tunisia/corporate/other-taxes (PwC)",
+  "https://www.douane.gov.tn/tarifweb2026/",
+  "https://www.douane.gov.tn/tarifwebnew/ (Tarif Web 2026 — douane tunisienne, source officielle)",
+  "https://www.tralac.org/resources.html (tralac Trade Law Centre)"
+ ],
+ "verification_nationale": {
+  "as_of": "2026-09-06",
+  "status": "EXHAUSTIVE_VERIFIED",
+  "sub_positions_unique": 17542,
+  "schedule1_unique_codes": null,
+  "schedule2_sensitive_items": null,
+  "duplicates_schedule1_ignored": null,
+  "codes_merged_recovered": null,
+  "compound_rates_structured": null,
+  "npf_note": null,
+  "zlecaf_afcfta": null,
+  "zlecaf_npf_crosscheck": null,
+  "note_corrections": "Canonique reconstruit du re-crawl complet Tarif Web 2026 (2026-08-30, 17 542 codes = 17 542 codes de l'énumération officielle du 2026-08-29, 0 manquant, 0 superflu, tous avec taux publiés) : 16 divergences DD juin→re-crawl documentées une à une (taux officiel retenu), 15 lignes sans DD résolues, 83 codes retirés de la source conservés et flaggés, formalités riches préservées (2 018 lignes), offre ZLECAf par ligne (9 chiffres, OFFER_ONLY, 2 périodes 5/10 ans)."
+ },
+ "afcfta_application_evidence": {
+  "gti_participant": true,
+  "gti_launch": "2022-10-07",
+  "source_url": "https://au-afcfta.org/guided-trade-initiative/",
+  "source_title": "AfCFTA Secretariat — Guided Trade Initiative (GTI)",
+  "note": "l'application effective des préférences ZLECAf par la douane tunisienne est démontrée par le Secrétariat (GTI) ; l'offre TUN est publiée dans l'e-Tariff Book (9 chiffres, OFFER_ONLY) — la portée ligne à ligne reste contrôlée par zlecaf_implementation_registry.py",
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité) — l'acceptation algérienne des partenaires ZLECAf prouve la réciprocité de l'accord"
+  },
+  "schedule_published": "e-Tariff Book (snapshot TUN — 9 373 lignes à 9 chiffres, 2 périodes)",
+  "implementation_instrument": {
+   "instrument_id": "JORT n°16-2023 du 06/04/2023",
+   "instrument_title": "Texte d'application de l'Accord ZLECAf en Tunisie — Journal Officiel de la Douane Tunisienne n°16-2023 du 6 avril 2023",
+   "effective_from": "2023-04-06",
+   "evidence_source": "document local « 1.-Introduction-sur-la-ZLECAf.pdf » (présentation officielle ZLECAf Tunisie) : entrée en application publiée au JORT, 1er certificat d'origine ZLECAf délivré le 17 mai 2023 (CCI Tunis)",
+   "note": "instrument d'implémentation national EN FORCE — à archiver (Bulletin Officiel de la Douane n°16-2023) pour la conformité complète ; le taux applicable à une origine donnée reste celui de la colonne préférences du Tarif Web (asymétrie par partenaire)",
+   "archiving_status": "PENDING — portail douane.gov.tn inaccessible (HTTP 000 timeout, 2026-09-06) ;Bulletin Officiel de la Douane n°16-2023 du 06/04/2023 non récupérable sans accès au portail douanier",
+   "archival_retry_2026_09_06": {
+    "attempt": "retry #2 — recherche exhaustive",
+    "sources_tried": [
+     {"source": "douane.gov.tn", "result": "HTTP 000 (timeout 75s) — racine, /tarifwebnew/, /tarifweb2025/, /tarifweb2026/ tous injoignables"},
+     {"source": "jort.tn (portail JORT national indépendant)", "result": "HTTP 200 — moteur de recherche retourne 0 résultat pour tout terme (ZLECAf, AfCFTA, Afrique, continentale, loi, 2023) ; moteur non fonctionnel"},
+     {"source": "lake.jort.tn/journal-officiel/fr/2023/NNN.pdf", "result": "PDFs accessibles (HTTP 200) — 60 numéros 2023 (FR) téléchargés et OCR'd via PyMuPDF : 0 occurrence de ZLECAf/AfCFTA/continentale dans le JORT national"},
+     {"source": "lake.jort.tn/journal-officiel/ar/2023/NNN.pdf", "result": "60 numéros 2023 (AR) téléchargés : 0 occurrence de 'تجارة حرة قارية' / 'منطقة التجارة' / 'ZLECAf' ; seules mentions 'إفريق' = Tunis Afrique Presse (agence), Afrique du Sud (recherche agronomique), Afrique Centrale (casque bleus ONU)"},
+     {"source": "JORT national 2021 (ratification)", "result": "70 numéros FR 2021 OCR'd : aucune loi/décret de ratification AfCFTA trouvé — 'ratification' ne coexiste jamais avec 'Afrique/africaine/continentale' dans le même texte"},
+     {"source": "JORT national 2019-2020 (ratification anticipée)", "result": "70+70 numéros OCR'd : 0 occurrence ZLECAf/AfCFTA (seul 'Continental' = marque de semences 'Continental Semences' JRT 2019 n°011)"},
+     {"source": "web.archive.org/cdx (Wayback Machine)", "result": "0 capture de douane.gov.tn (toutes dates confondues) — site jamais archivé par l'IA"},
+     {"source": "commerce.gov.tn (Ministère du Commerce)", "result": "HTTP 000 (timeout)"},
+     {"source": "finances.gov.tn (Ministère des Finances)", "result": "HTTP 000 (timeout)"},
+     {"source": "iort.gov.tn (Imprimerie Officielle)", "result": "HTTP 200 racine mais 404 sur pages internes — pas de recherche JORT accessible"},
+     {"source": "tunisie.gov.tn (Portail Gouvernemental)", "result": "HTTP 200 — recherche 'ZLECAf' → 0 résultat ; pas de lien vers le Bulletin de la Douane"}
+    ],
+    "finding": "L'instrument n°16-2023 du 06/04/2023 n'est PAS publié dans le JORT national (Journal Officiel de la République Tunisienne) — vérifié par OCR exhaustif (260+ PDFs JORT 2019-2023 FR+AR). Il s'agit du Bulletin Officiel de la Douane Tunisienne (publication distincte éditée par la Douane, non l'Imprimerie Officielle). Ce bulletin n'est disponible que via douane.gov.tn, actuellement injoignable. Aucune source alternative (Wayback, portails ministériels) ne l'héberge.",
+    "next_retry": "réessayer douane.gov.tn à prochaine session ; en cas d'échec persistant, considérer une demande d'accès directe à la DGD Tunisienne"
+   }
+  }
+ },
+ "coverage_scope": {
+  "base_tariff": "VERIFIED — exhaustivité prouvée vs énumération officielle (17 542 = 17 542)",
+  "national_layer": "PARTIAL — taxes par ligne re-crawlées (assiettes verbatim) ; droits spécifiques fondés sur quantité documentés mais NON modélisés dans le moteur ; réglementations d'import portées par sous-position"
+ },
+ "data_gaps": [
+  "droits spécifiques fondés sur quantité (P/*, TM/*, T/MOTEURS…) documentés avec assiettes verbatim mais non modélisés dans le moteur",
+  "le décompte exact des positions interdites (~1 545 selon la revue) n'est pas vérifiable dans les données archivées — UNVERIFIED ; les réglementations d'import (26 codes officiels, dont 243 dérogations monopole d'État) sont portées par sous-position",
+  "83 codes retirés de la source conservés avec valid_to=2026-08-30 et statut RETIRED_FROM_SOURCE",
+  "assiette RPD (somme des droits et taxes) non câblée"
+ ],
+ "currency_note": "customs_value attendu dans la devise de la juridiction (TND) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés TND",
+ "national_tariff_note": "TUN : tarif national à 10 chiffres (SH6+4) ; le 11e chiffre publié par le Tarif Web est la CLÉ DE VALIDATION DÉFINITIVE de la déclaration en douane — 1 seule sous-position sans DD publiée (27090090967, huiles brutes de pétrole — régime pétrolier spécifique), trou documenté",
+ "integrity_watch_fixes": {
+  "as_of": "2026-09-06",
+  "preference_downgraded_to_partial": true,
+  "vat_retroactivity_removed": true,
+  "rpd_assiette_not_wired": true,
+  "retired_codes_validity_set": 83,
+  "import_regulations_carried": 7790,
+  "prohibitions_count_unverified": true,
+  "coverage_scope_documented": true,
+  "currency_expectation_documented": true
+ },
+ "dd_divergences_juin_vs_recrawl": [
+  {
+   "code": "73090090109",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 30.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "84248970900",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 15.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "85042300103",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 15.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "85043300109",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 15.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "85352100104",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 15.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "85352900104",
+   "dd_juin_2026": 0.0,
+   "dd_recrawl_2026_08_30": 15.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90031100003",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90031900105",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90031900901",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90039000017",
+   "dd_juin_2026": 15.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90039000028",
+   "dd_juin_2026": 15.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90039000095",
+   "dd_juin_2026": 15.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90049010212",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90049010290",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90049090214",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  },
+  {
+   "code": "90049090292",
+   "dd_juin_2026": 43.0,
+   "dd_recrawl_2026_08_30": 10.0,
+   "resolution": "taux du re-crawl officiel retenu"
+  }
+ ],
+ "import_regulations_officielles": {
+  "count_codes": 26,
+  "positions_couvertes": 7790,
+  "codes": [
+   {
+    "code": "677",
+    "description": "ACC.PREA.IMPORT MC/MI/INSSPA",
+    "positions": 2998
+   },
+   {
+    "code": "685",
+    "description": "CET. DE CONTROLE TECH.",
+    "positions": 2032
+   },
+   {
+    "code": "705",
+    "description": "PR CERTIFICAT SANITAIRE",
+    "positions": 1884
+   },
+   {
+    "code": "695",
+    "description": "CONT.TEC.PAR CAHIER CHARGE/IMP",
+    "positions": 1394
+   },
+   {
+    "code": "700",
+    "description": "PR CERTIF INSP OFITEC",
+    "positions": 1107
+   },
+   {
+    "code": "696",
+    "description": "FICHE TECH.DE CONFORMITE/IMP.",
+    "positions": 502
+   },
+   {
+    "code": "671",
+    "description": "FICHE INFORMATION/MC(DGCE)/IMP",
+    "positions": 349
+   },
+   {
+    "code": "120",
+    "description": "DEROG. MONOPOLE ETAT",
+    "positions": 243
+   },
+   {
+    "code": "711",
+    "description": "CERT.NON CONTAM.RADIOAC",
+    "positions": 141
+   },
+   {
+    "code": "626",
+    "description": "ATTEST MIN AGR/IMP MISE CONS",
+    "positions": 110
+   },
+   {
+    "code": "706",
+    "description": "PR CERTIFICAT PHYTOSANI",
+    "positions": 71
+   },
+   {
+    "code": "609",
+    "description": "PR AC REC INSP INST/POI",
+    "positions": 64
+   },
+   {
+    "code": "666",
+    "description": "PR.VISA/FACTURE ANGED/IMP.",
+    "positions": 55
+   },
+   {
+    "code": "719",
+    "description": "CAHIER CHARGE N°2 OU 3 ANGED",
+    "positions": 23
+   },
+   {
+    "code": "613",
+    "description": "PR CERTIFICAT QUALITE",
+    "positions": 21
+   },
+   {
+    "code": "664",
+    "description": "AUT MIN ECO NAT ET ANPE",
+    "positions": 21
+   },
+   {
+    "code": "717",
+    "description": "AUTORISAT MINISTR ENVIRON",
+    "positions": 20
+   },
+   {
+    "code": "602",
+    "description": "PR PERMIS INTROD ARMES",
+    "positions": 19
+   },
+   {
+    "code": "718",
+    "description": "DECISION MINISTR ENVIOU ENERGI",
+    "positions": 15
+   },
+   {
+    "code": "651",
+    "description": "PR CERTIF APPEL ORIGINE",
+    "positions": 14
+   },
+   {
+    "code": "611",
+    "description": "PR ACCORD MIN AFF CULT",
+    "positions": 10
+   },
+   {
+    "code": "690",
+    "description": "ATTEST.DE CERTIFICATION",
+    "positions": 8
+   },
+   {
+    "code": "654",
+    "description": "PR ACCORD MIN COMMERCE",
+    "positions": 6
+   },
+   {
+    "code": "667",
+    "description": "AUT.C.R.D.A/AM.AG/19/02/02/IMP",
+    "positions": 5
+   },
+   {
+    "code": "659",
+    "description": "PR CERTIF ANALYS CONFOR",
+    "positions": 3
+   },
+   {
+    "code": "601",
+    "description": "PR AVIS TECHN FAV GIAF",
+    "positions": 1
+   }
+  ],
+  "note": "codes de réglementation d'import publiés par le Tarif Web 2026 — autorités émettrices nommées dans les libellés (MC/DGCE, ANGED, MINISTRE ENVIRONNEMENT, MIN. AGRICULTURE, OFITEC, INSSPA, GIAF, ANPE…)"
+ },
+ "zlecaf_source_preferences": {
+  "lines_with_zlecaf_preference": 14075,
+  "source": "Tarif Web 2026 — colonne préférences par pays partenaire (zone ZLECAf)",
+  "note": "la douane tunisienne publie elle-même, par sous-position, le taux préférentiel ZLECAf applicable par pays partenaire — source authentique de premier niveau (au-delà de l'offre e-Tariff Book UA)"
+ },
+ "zlecaf_asymetrie_partenaires": {
+  "principe": "LE TAUX ZLECAf EST ASYMÉTRIQUE PAR PARTENAIRE : le même produit n'a PAS le même avantage selon le sens du commerce. Le taux applicable à un produit importé en Tunisie depuis un partenaire Z dépend du CALENDRIER DE DÉMANTÈLEMENT bilatéral Tunisie↔Z (publié par la douane tunisienne dans la colonne préférences du Tarif Web) ; le même produit exporté de Tunisie vers Z dépend du calendrier de Z.",
+  "preuve_source": {
+   "description": "la douane tunisienne publie elle-même, par sous-position, un taux ZLECAf DIFFÉRENT PAR PARTENAIRE : ex. 01012100015 (DD 36%) → Tanzanie 0% (démantèlement complet, commerce effectif sous GTI) mais Cameroun/Ghana/Afrique du Sud/Kenya 40% (démantèlement en cours)",
+   "lignes_avec_taux_variables_par_partenaire": 14075,
+   "lignes_avec_taux_uniformes": 0,
+   "partenaires_publiés": [
+    "Cameroun",
+    "Nigéria",
+    "Ghana",
+    "Afrique du Sud",
+    "Tanzanie",
+    "Kenya",
+    "Maurice",
+    "Rwanda"
+   ],
+   "algerie": "l'Algérie ne figure PAS encore dans les préférences ZLECAf tunisiennes publiées (démantèlement bilatéral Tunisie-Algérie non publié dans le Tarif Web au 2026-09-06) — pour un produit algérien exporté vers la Tunisie, le taux applicable dépendra du calendrier bilatéral dès sa publication"
+  },
+  "implication_calcul": "le calculateur doit résoudre le taux ZLECAf par COUPLE (pays importateur, pays origine) et jamais par produit seul — le taux du pays importateur (son calendrier de démantèlement envers l'origine) s'applique ; le côté Algérie utilise la circulaire DGD 482/2024 (listes A/B/C, calendriers standard/réciprocité)"
+ }
+}
