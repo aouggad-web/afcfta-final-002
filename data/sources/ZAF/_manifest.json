@@ -1,0 +1,33 @@
+{
+ "country": "ZAF",
+ "generated_at": "2026-09-06T19:37:27.858509+00:00",
+ "description": "Archives officielles SARS — Schedules du Customs and Excise Act 1964",
+ "source_page": "https://www.sars.gov.za/legal-counsel/primary-legislation/schedules-to-the-customs-and-excise-act-1964/",
+ "documents": [
+  {
+   "file": "ZAF/schedules/Sch1_Part2A_Specific_Excise_Duties.pdf",
+   "title": "SCHEDULE 1 / PART 2 SPECIFIC EXCISE DUTIES ON LOCALLY MANUFACTURED OR ON IMPORTED GOODS OF THE SAME CLASS OR KIND NOTES:",
+   "pages": 10,
+   "sha256": "59d7f909ece3289fedc7147d6a513edf3815a7281ca27693660a09c8acf08d2e"
+  },
+  {
+   "file": "ZAF/schedules/Sch1_Part2B_AdValorem_Excise_Duties.pdf",
+   "title": "SCHEDULE 1 / PART 2 SPECIFIC EXCISE DUTIES ON LOCALLY MANUFACTURED OR ON IMPORTED GOODS OF THE SAME CLASS OR KIND NOTES:",
+   "pages": 11,
+   "sha256": "e9c75ab3700fb2ea6f67f5cef530f89cfd8155c8adc3abb4d5b8c9bf36777915"
+  },
+  {
+   "file": "ZAF/schedules/Sch1_Part3D_Env_Levy_CO2_Vehicles.pdf",
+   "title": "SCHEDULE 1 PART 3 ENVIRONMENTAL LEVY NOTES: 1. Whenever the tariff heading or subheading under which any goods are class",
+   "pages": 4,
+   "sha256": "01691d5634af2a5c92523766c23435c62709f069243b682d3006a3952e588a74"
+  },
+  {
+   "file": "ZAF/schedules/Sch1_Part7A_Health_Promotion_Levy.pdf",
+   "title": "PART 7 HEALTH PROMOTION LEVY NOTES: 1. Whenever the tariff heading or subheading under which any goods are classified in",
+   "pages": 4,
+   "sha256": "d23842afd6d9ee8c553acdc9a59a8104d23571a6e5b55a293e53ef6632e5861e"
+  }
+ ],
+ "note": "Schedule 1 Part 1 (tarif douanier, 704 pages) archivé séparément dans backend/temp + snapshot AfCFTA (8 592 lignes) dans backend/data/official_preferential/ZAF_afcfta_2026-08-06.json.gz — les excises Part 2A/2B résolvent le statut NOT_AVAILABLE"
+}

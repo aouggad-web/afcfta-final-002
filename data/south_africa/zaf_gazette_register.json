@@ -87,8 +87,8 @@
   "national_layer": "PARTIAL — accises NON incluses (Schedule Part 2 séparé, à archiver) ; préférence AfCFTA = colonne officielle SARS (exécutable gated)"
  },
  "data_gaps": [
-  "accises : Schedule Part 2 SARS non archivé — excise NOT_AVAILABLE",
-  "codes retirés du tarif SARS actuel conservés dans le canonique : 39173920, 39173990"
+  "codes retirés du tarif SARS actuel conservés dans le canonique : 39173920, 39173990",
+  "accises : Schedule Part 2A/2B ARCHIVÉS (data/sources/ZAF/schedules/, SHA-256 dans manifest) — extraction ligne par ligne et câblage à faire"
  ],
  "currency_note": "customs_value attendu dans la devise de la juridiction (ZAR) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés ZAR",
  "integrity_watch_fixes": {
