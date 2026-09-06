@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "jurisdiction": "TUN",
+  "as_of": "2026-09-06",
+  "status": "DOCUMENTED_SOURCES_VERIFIED",
+  "note": "Cascade documentée à partir des ASSIETTES PUBLIÉES PAR LA SOURCE elle-même (Tarif Web 2026, champ `assiette` verbatim par taxe et par sous-position — voir data/sources/TUN/tarifweb2026/tax_codes_and_assiettes.json et le bloc calculation_method du fichier national) et de la base légale archivée : Code des douanes (loi n°2008-34 du 2 juin 2008), section CD_12 « Droits et taxes divers perçus par la douane ». Prélèvements DOCUMENTÉS ; câblage moteur dédié à venir.",
+  "cascade": [
+    {
+      "order": 1,
+      "tax": "VALEUR_EN_DOUANE",
+      "name": "Valeur en douane (dinars)",
+      "base": "valeur transactionnelle (CIF) — assiette source : « VALEUR DOUANE DINARS »",
+      "legal_reference": "Code des douanes tunisien (loi n°2008-34) — data/sources/TUN/code_douanes/",
+      "source_type": "SOURCE_OFFICIELLE",
+      "source_url": "https://www.douane.gov.tn/tarifwebnew/"
+    },
+    {
+      "order": 2,
+      "tax": "DD",
+      "name": "Droit de douane ad valorem à l'importation (DDDROIT ; variantes DD/VEH, DD/AUT)",
+      "base": "assiette source verbatim : « VALEUR DOUANE DINARS »",
+      "formula": "DD = valeur en douane × taux",
+      "legal_reference": "Tarif Web 2026 (colonne taux + assiette publiées par ligne)",
+      "source_type": "SOURCE_OFFICIELLE",
+      "source_url": "https://www.douane.gov.tn/tarifwebnew/"
+    },
+    {
+      "order": 3,
+      "tax": "DC/*",
+      "name": "Droits de consommation (DC/ALCDRT, DC/VOITDRT, DC/ESSDROIT, DC/MTKDRT…)",
+      "base": "ad valorem sur « VALEUR DOUANE DINARS » ou spécifique sur « QCI »/« QCS » (quantités)",
+      "formula": "DC = valeur en douane × taux | quantité × montant spécifique",
+      "legal_reference": "Code des douanes CD_12 ; Tarif Web 2026 par ligne",
+      "source_type": "SOURCE_OFFICIELLE",
+      "source_url": "https://www.douane.gov.tn/tarifwebnew/"
+    },
+    {
+      "order": 4,
+      "tax": "P/* TM/*",
+      "name": "Prélèvements spécifiques (P/L, P/H, P/BEUR/FRPREL, P/FRUITSPRELEV, P/VIANDEPRELV, TM/ABATTTAXE, T/MOTEURS…)",
+      "base": "assiette source verbatim : « PN (KG) » (poids net) — spécifiques",
+      "formula": "Prélèvement = poids net × montant",
+      "legal_reference": "Code des douanes CD_12 ; Tarif Web 2026 par ligne",
+      "source_type": "SOURCE_OFFICIELLE",
+      "source_url": "https://www.douane.gov.tn/tarifwebnew/"
+    },
+    {
+      "order": 5,
+      "tax": "AIR/IMPORAV",
+      "name": "Impôt de réparation à l'importation",
+      "base": "assiette source verbatim : « VAL DOUANE+ SOMME DT » (valeur en douane + somme des droits et taxes)",
+      "formula": "AIR = (valeur en douane + Σ droits et taxes) × taux",
+      "legal_reference": "Code des douanes CD_12 ; Tarif Web 2026 par ligne",
+      "source_type": "SOURCE_OFFICIELLE",
+      "source_url": "https://www.douane.gov.tn/tarifwebnew/"
+    },
+    {
+      "order": 6,
+      "tax": "RPD/IMPOR",
+      "name": "Redevance de prestations douanières à l'importation",
+      "base": "assiette source verbatim : « SOMME D.T (G=0.1.2.3.4. » (somme droits et taxes, tronquée côté source)",
+      "formula": "RPD = Σ droits et taxes × 3% (taux le plus courant, publié par ligne)",
+      "legal_reference": "Tarif Web 2026 par ligne ; registre 46 codes : data/sources/TUN/tarifweb2026/tax_codes_and_assiettes.json",
+      "source_type": "SOURCE_OFFICIELLE",
+      "source_url": "https://www.douane.gov.tn/tarifwebnew/"
+    },
+    {
+      "order": 7,
+      "tax": "TVA/AP",
+      "name": "Taxe sur la valeur ajoutée à l'importation",
+      "base": "assiette source verbatim : « VAL.DOU(D)+R(DT) GR.0 » (valeur en douane + droits et taxes)",
+      "formula": "TVA = (valeur en douane + Σ droits et taxes) × taux publié par ligne (0/7/13/19 %)",
+      "legal_reference": "TVA tunisienne ; Tarif Web 2026 par ligne",
+      "source_type": "SOURCE_OFFICIELLE",
+      "source_url": "https://www.douane.gov.tn/tarifwebnew/"
+    },
+    {
+      "order": 8,
+      "tax": "D",
+      "name": "Droit sanitaire et vétérinaire (D.S.V.)",
+      "base": "assiette source verbatim : « QCS » ou « PN(KG)/100 EXCES »",
+      "formula": "montant spécifique par quantité déclarée / excès",
+      "legal_reference": "Tarif Web 2026 par ligne",
+      "source_type": "SOURCE_OFFICIELLE",
+      "source_url": "https://www.douane.gov.tn/tarifwebnew/"
+    }
+  ],
+  "provenance": {
+    "doctrine": "zéro-fabrication — les assiettes sont celles publiées verbatim par la source ; toute valeur NON vérifiée est marquée UNVERIFIED et n'entre jamais dans un calcul",
+    "canonical_tariff": "backend/data/TUN_tariffs.json (17 625 sous-positions nationales 11 caractères — 17 542 re-crawlées 2026-08-30 + 83 conservées flaggées)",
+    "canonical_sha256": "Voir data/tunisia/tun_gazette_register.json → base_tariff_documentation.sha256",
+    "engine_wiring": "câblage de la cascade multi-taxes TUN (DD → DC/P → AIR → RPD → TVA) à faire dans une itération dédiée — les assiettes publiées sont déjà par ligne dans taxes_detail"
+  }
+}

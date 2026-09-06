@@ -147,7 +147,9 @@
     "04021019279",
     "04021019280",
     "04021019927",
+    "04021019928",
     "04021019938",
+    "04021019939",
     "04021019973",
     "04021019984",
     "04021091120",
@@ -181,13 +183,16 @@
     "04022111914",
     "04022111992",
     "04022118118",
+    "04022118119",
     "04022118197",
     "04022118211",
     "04022118299",
     "04022118915",
     "04022118993",
+    "04022191110",
     "04022191115",
     "04022191193",
+    "04022191198",
     "04022191212",
     "04022191290",
     "04022191916",
@@ -206,6 +211,8 @@
     "04022915916",
     "04022915994",
     "04022919111",
+    "04022919112",
+    "04022919190",
     "04022919199",
     "04022919214",
     "04022919292",
@@ -628,10 +635,6 @@
     "73052000005",
     "73062100007",
     "73062900007",
-    "82071300009",
-    "82071910003",
-    "82071990016",
-    "82071990094",
     "84072900025",
     "84072900036",
     "84072900070",
@@ -742,7 +745,7 @@
     "90219090026",
     "90219090082"
    ],
-   "legal_reference": "Direction Générale des Douanes — Tunisie (douane.gov.tn) — colonne TVA, taux 0.0% par position nationale",
+   "legal_reference": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) — colonne TVA, taux 0.0% par position nationale",
    "source_id": "TUN-CANONICAL-TARIFF",
    "verification_status": "VERIFIED_RUNTIME_DATASET"
   },
@@ -1523,6 +1526,7 @@
     "84811099905",
     "84851000002",
     "84852000007",
+    "84852000008",
     "84853010008",
     "84853090000",
     "84858000004",
@@ -1641,8 +1645,6 @@
     "85354000101",
     "85354000918",
     "85354000996",
-    "85414200009",
-    "85414300004",
     "85431000005",
     "85433040003",
     "85433070005",
@@ -1872,7 +1874,7 @@
     "90328900499",
     "90328900900"
    ],
-   "legal_reference": "Direction Générale des Douanes — Tunisie (douane.gov.tn) — colonne TVA, taux 7.0% par position nationale",
+   "legal_reference": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) — colonne TVA, taux 7.0% par position nationale",
    "source_id": "TUN-CANONICAL-TARIFF",
    "verification_status": "VERIFIED_RUNTIME_DATASET"
   },
@@ -1913,7 +1915,7 @@
     "27111900920",
     "27111900997"
    ],
-   "legal_reference": "Direction Générale des Douanes — Tunisie (douane.gov.tn) — colonne TVA, taux 13.0% par position nationale",
+   "legal_reference": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) — colonne TVA, taux 13.0% par position nationale",
    "source_id": "TUN-CANONICAL-TARIFF",
    "verification_status": "VERIFIED_RUNTIME_DATASET"
   }
@@ -1922,6 +1924,6 @@
  "vat_zero_rated": [],
  "provenance": {
   "source": "backend/data/TUN_tariffs.json (VERIFIED)",
-  "canonical_sha256": "27e151763133a946096c179eb3de9a90aa577640158834659c777bb6a919d2f1"
+  "canonical_sha256": "2fe87bd7d9dbb83eeb6c1fc5c231f6c7b2fb738c41d4ed6b309724e224914e34"
  }
 }

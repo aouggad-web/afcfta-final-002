@@ -5,35 +5,106 @@
  "coverage_window": {
   "from": "2017-07-01",
   "to": null,
-  "note": "Corpus : Direction Générale des Douanes — Tunisie (douane.gov.tn) + corpus fiscal par position nationale."
+  "note": "Corpus : Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) + corpus fiscal par position nationale."
  },
  "regional_cet_applicable": false,
  "regional_note": "UMA — pas de TEC régional en vigueur",
  "base_tariff_documentation": {
   "source_id": "TUN-CANONICAL-TARIFF",
-  "source_name": "Direction Générale des Douanes — Tunisie (douane.gov.tn)",
-  "source_url": "https://www.douane.gov.tn/tarifweb2025",
-  "sha256": "27e151763133a946096c179eb3de9a90aa577640158834659c777bb6a919d2f1",
+  "source_name": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew)",
+  "source_url": "https://www.douane.gov.tn/tarifwebnew/",
+  "sha256": "2fe87bd7d9dbb83eeb6c1fc5c231f6c7b2fb738c41d4ed6b309724e224914e34",
   "verification_status": "VERIFIED",
   "data_status": "VERIFIED",
   "hs_version": "HS2022 — sous-positions nationales",
   "effective_from": "2017-07-01",
-  "national_positions": 17512
+  "national_positions": 17625,
+  "verification": {
+   "verified_on": "2026-09-06",
+   "method": "Re-crawl complet de l'endpoint de détail tarifwebnew/getresultat.php (re-publie les taux, vérifié live le 2026-08-29) ; exhaustivité prouvée contre l'énumération officielle du 2026-08-29 (17 542 = 17 542).",
+   "si_rule": null,
+   "pdf_sha256": null
+  }
  },
  "preference_and_origin_status": "DOCUMENTED",
  "preference_evidence": {
   "instrument": "ZLECAf — partenaire actif de l'Algérie (circulaire DGD 482/2024, liste d'application)",
-  "sha256": "27e151763133a946096c179eb3de9a90aa577640158834659c777bb6a919d2f1"
+  "sha256": "2fe87bd7d9dbb83eeb6c1fc5c231f6c7b2fb738c41d4ed6b309724e224914e34"
  },
  "documents": [
   {
    "file": "TUN_tariffs.json (canonique)",
-   "title": "Direction Générale des Douanes — Tunisie (douane.gov.tn) — 5611 lignes",
-   "source_url": "https://www.douane.gov.tn/tarifweb2025",
-   "sha256": "27e151763133a946096c179eb3de9a90aa577640158834659c777bb6a919d2f1"
+   "title": "Tarif Web 2026 — Douane tunisienne (douane.gov.tn/tarifwebnew) — 5614 lignes",
+   "source_url": "https://www.douane.gov.tn/tarifwebnew/",
+   "sha256": "2fe87bd7d9dbb83eeb6c1fc5c231f6c7b2fb738c41d4ed6b309724e224914e34"
   }
  ],
  "sources_officielles": [
-  "https://www.douane.gov.tn/tarifweb2025"
- ]
+  "https://au-afcfta.org (Secrétariat ZLECAf — UA — e-Tariff Book, offre TUN 9 chiffres)",
+  "https://au.int/fr (Union africaine — ZLECAf)",
+  "https://taxsummaries.pwc.com/tunisia/corporate/other-taxes (PwC)",
+  "https://www.douane.gov.tn/tarifwebnew/",
+  "https://www.douane.gov.tn/tarifwebnew/ (Tarif Web 2026 — douane tunisienne, source officielle)",
+  "https://www.tralac.org/resources.html (tralac Trade Law Centre)"
+ ],
+ "verification_nationale": {
+  "as_of": "2026-09-06",
+  "status": "EXHAUSTIVE_VERIFIED",
+  "sub_positions_unique": 17625,
+  "schedule1_unique_codes": null,
+  "schedule2_sensitive_items": null,
+  "duplicates_schedule1_ignored": null,
+  "codes_merged_recovered": null,
+  "compound_rates_structured": null,
+  "npf_note": null,
+  "zlecaf_afcfta": {
+   "status": "OFFER_ONLY",
+   "codes_covered": 13446,
+   "legal_gate": "exécution gated par zlecaf_implementation_registry.py — jamais calculée sans instrument d'implémentation + liste de partenaires réciproques + preuve d'origine",
+   "source_title": "AfCFTA e-Tariff Book — Tariff Concession Schedule",
+   "source_url": "https://etariff.au-afcfta.org/",
+   "collected_at": "2026-08-17",
+   "legal_effect_status": "OFFER_ONLY",
+   "execution_authorized": false,
+   "destination_query_code": "TN"
+  },
+  "zlecaf_npf_crosscheck": {
+   "matched_codes": 13445,
+   "npf_matches": 8573,
+   "npf_mismatches": 4872,
+   "npf_mismatch_examples": [
+    {
+     "code": "01061100003",
+     "dd_recrawl": 15.0,
+     "offre_mfn": 36.0,
+     "note": "offre ZLECAf (base de négociation) ≠ tarif national"
+    },
+    {
+     "code": "01061300105",
+     "dd_recrawl": 15.0,
+     "offre_mfn": 36.0,
+     "note": "offre ZLECAf (base de négociation) ≠ tarif national"
+    },
+    {
+     "code": "01061300912",
+     "dd_recrawl": 15.0,
+     "offre_mfn": 36.0,
+     "note": "offre ZLECAf (base de négociation) ≠ tarif national"
+    },
+    {
+     "code": "01061300990",
+     "dd_recrawl": 15.0,
+     "offre_mfn": 36.0,
+     "note": "offre ZLECAf (base de négociation) ≠ tarif national"
+    },
+    {
+     "code": "01061410104",
+     "dd_recrawl": 15.0,
+     "offre_mfn": 36.0,
+     "note": "offre ZLECAf (base de négociation) ≠ tarif national"
+    }
+   ]
+  },
+  "note_corrections": "Canonique reconstruit du re-crawl complet Tarif Web 2026 (2026-08-30, 17 542 codes = 17 542 codes de l'énumération officielle du 2026-08-29, 0 manquant, 0 superflu, tous avec taux publiés) : 16 divergences DD juin→re-crawl documentées une à une (taux officiel retenu), 15 lignes sans DD résolues, 83 codes retirés de la source conservés et flaggés, formalités riches préservées (2 018 lignes), offre ZLECAf par ligne (9 chiffres, OFFER_ONLY, 2 périodes 5/10 ans)."
+ }
 }
