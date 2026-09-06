@@ -1,0 +1,12 @@
+{
+ "iso3": "CMR",
+ "currency": "XAF",
+ "levy_tables": [
+  "ri",
+  "tci",
+  "excise_da"
+ ],
+ "general_levy_tables": [],
+ "gazette_register": "cmr_gazette_register.json",
+ "sh6_principle": "les 6 premiers chiffres (SH) sont internationaux ; le tarif CEMAC commun se développe sur 8 chiffres (SH6+2) — vérifié contre le snapshot e-Tariff CEMAC (5 284 codes, tous à 8 chiffres) ; le tarif national authentique (DGD Cameroun) est la source unique"
+}
