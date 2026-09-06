@@ -419,6 +419,52 @@ async def oec_health(year: int = Query(default=2022, description="Année de test
     }
 
 
+@router.get("/sectoral-analysis", summary="Analyse ISIC4 et IDSB d'une opportunité")
+async def sectoral_analysis(
+    hs_code: str = Query(..., description="Code SH du produit"),
+    origin: str = Query(..., description="Pays exportateur (ISO3)"),
+    destination: str = Query(..., description="Marché importateur (ISO3)"),
+    lang: str = Query(default="fr", description="Langue (fr/en)"),
+):
+    """
+    Rattache une opportunité à sa division industrielle **ISIC Rev.4** et
+    confronte l'offre de l'origine et la demande de la destination via les
+    données **UNIDO IDSB** (Industrial Demand-Supply Balance) + INDSTAT :
+
+    - Classification ISIC Rev.4 du produit (correspondance officielle UNSD)
+    - Chaîne de transformation réelle (intrant → procédé → extrant)
+    - Base industrielle de l'origine : production, valeur ajoutée, exports,
+      emploi et principaux sous-secteurs (UNIDO IDSB/INDSTAT, 4 chiffres)
+    - Demande de la destination : consommation apparente et imports mondiaux
+    - Lecture offre-demande (verdict transparent, jamais un score opaque)
+    - Produits SH de diversification de la même division
+
+    Couverture UNIDO : 20 pays africains, 2018-2024. Un pays ou une division
+    hors relevé est marqué indisponible — aucun chiffre n'est estimé.
+    """
+    from services.isic_idsb_opportunity_service import get_isic_idsb_service
+
+    service = get_isic_idsb_service()
+
+    # Get market potential if available
+    market_potential = None
+    try:
+        from services.real_trade_data_service import real_trade_service
+        imports = await real_trade_service.get_country_product_imports(destination, hs_code)
+        if imports and imports.get("import_value_usd"):
+            market_potential = imports.get("import_value_usd")
+    except Exception:
+        pass
+
+    return service.assess_opportunity_by_sector(
+        hs_code=hs_code,
+        origin=origin,
+        destination=destination,
+        market_potential=market_potential,
+        lang=lang
+    )
+
+
 @router.get("/health", summary="Diagnostic de disponibilité des données du moteur")
 async def reports_health():
     """

@@ -588,12 +588,18 @@ HS4_INPUT: Dict[str, str] = {
 }
 
 
-def input_for_hs4(hs_code: str, fallback: Optional[str] = None) -> Optional[str]:
+def input_for_hs4(hs_code: str, fallback: Optional[str] = None, lang: str = "fr") -> Optional[str]:
     """
     Matière première PRÉCISE d'un produit SH4 (ex. 1701 -> « sucre brut »),
     avec repli sur l'intrant de division (``fallback``) si le SH4 n'est pas
     nommément couvert.
+
+    ``HS4_INPUT`` n'est renseigné qu'en français : en ``lang="en"`` on ne renvoie
+    donc PAS l'intrant précis français (pour ne pas mélanger les langues) et on
+    laisse le repli anglais (``fallback``, l'intrant de division en anglais) jouer.
     """
+    if lang == "en":
+        return fallback
     code = _norm(hs_code)
     if len(code) >= 4 and code[:4] in HS4_INPUT:
         return HS4_INPUT[code[:4]]
@@ -632,9 +638,19 @@ def isic_codes() -> List[str]:
     return list(ISIC_HS.keys())
 
 
-def products_for_isic(isic_code: str) -> Dict[str, str]:
-    """Produits SH4 (code -> libellé) susceptibles d'être produits par la division."""
-    return dict(ISIC_HS.get(str(isic_code), {}).get("hs4", {}))
+def products_for_isic(isic_code: str, lang: str = "fr") -> Dict[str, str]:
+    """
+    Produits SH4 (code -> libellé) susceptibles d'être produits par la division.
+
+    ``lang="en"`` renvoie les libellés anglais quand disponibles, avec repli
+    français par produit non traduit.
+    """
+    isic = str(isic_code)
+    fr_labels = ISIC_HS.get(isic, {}).get("hs4", {})
+    if lang != "en":
+        return dict(fr_labels)
+    en_labels = ISIC_HS_EN.get(isic, {}).get("hs4_en", {})
+    return {code: en_labels.get(code) or label for code, label in fr_labels.items()}
 
 
 def hs4_codes_for_isic(isic_code: str) -> List[str]:
@@ -642,12 +658,25 @@ def hs4_codes_for_isic(isic_code: str) -> List[str]:
     return list(ISIC_HS.get(str(isic_code), {}).get("hs4", {}).keys())
 
 
-def transformation_for_isic(isic_code: str) -> Dict[str, Optional[str]]:
-    """Chaîne de transformation type (intrant, procédé, libellés) d'une division."""
-    block = ISIC_HS.get(str(isic_code), {})
+def transformation_for_isic(isic_code: str, lang: str = "fr") -> Dict[str, Optional[str]]:
+    """
+    Chaîne de transformation type (intrant, procédé, libellés) d'une division.
+
+    ``input``/``process`` suivent ``lang`` (anglais via ``ISIC_HS_EN`` avec repli
+    français) ; les deux libellés ISIC restent toujours exposés.
+    """
+    isic = str(isic_code)
+    block = ISIC_HS.get(isic, {})
+    en = ISIC_HS_EN.get(isic, {})
+    if lang == "en":
+        input_ = en.get("input_en") or block.get("input")
+        process = en.get("process_en") or block.get("process")
+    else:
+        input_ = block.get("input")
+        process = block.get("process")
     return {
-        "input": block.get("input"),
-        "process": block.get("process"),
+        "input": input_,
+        "process": process,
         "isic_label_fr": block.get("isic_label_fr"),
         "isic_label_en": block.get("isic_label_en"),
     }
@@ -671,14 +700,311 @@ def isic_for_hs(hs_code: str) -> List[str]:
     return []
 
 
-def product_label(hs_code: str) -> Optional[str]:
-    """Libellé SH4 du produit dans le mapping (ou None si non couvert)."""
+def product_label(hs_code: str, lang: str = "fr") -> Optional[str]:
+    """
+    Libellé SH4 du produit dans le mapping (ou None si non couvert).
+
+    ``lang="en"`` renvoie le libellé anglais (``ISIC_HS_EN``) quand il existe,
+    sinon retombe sur le libellé français — jamais None juste parce que la
+    traduction manque.
+    """
     code = _norm(hs_code)
     if len(code) < 4:
         return None
     hs4 = code[:4]
+    if lang == "en":
+        for isic, block in ISIC_HS.items():
+            if hs4 in block.get("hs4", {}):
+                en = (ISIC_HS_EN.get(isic, {}).get("hs4_en", {})).get(hs4)
+                return en or block["hs4"][hs4]
+        return None
     for block in ISIC_HS.values():
         label = block.get("hs4", {}).get(hs4)
         if label:
             return label
     return None
+
+
+# --------------------------------------------------------------------------- #
+# Couche anglaise (labels des produits SH4, intrant & procédé par division).
+#
+# ``unido_hs_mapping`` était français-only pour ``input``/``process`` et les
+# libellés SH4 ; l'API Opportunités contractualise pourtant ``lang=en``. Cette
+# couche additive fournit les équivalents anglais SANS toucher aux clés
+# françaises existantes (les autres consommateurs restent inchangés). Un code ou
+# une division absent ici retombe proprement sur le français.
+# --------------------------------------------------------------------------- #
+ISIC_HS_EN: Dict[str, Dict] = {
+    "10": {
+        "input_en": "agricultural raw materials (cereals, oilseeds, milk, meat, fish, raw sugar)",
+        "process_en": "agro-food processing (milling, refining, canning, crushing)",
+        "hs4_en": {
+            "0402": "Concentrated/powdered milk",
+            "0406": "Cheese",
+            "1101": "Wheat flour",
+            "1507": "Soybean oil",
+            "1511": "Palm oil",
+            "1512": "Sunflower oil",
+            "1517": "Margarine & prepared fats",
+            "1601": "Sausages & meat preparations",
+            "1604": "Fish preparations & preserves",
+            "1701": "Cane or beet sugar",
+            "1704": "Sugar confectionery (no cocoa)",
+            "1806": "Chocolate & cocoa preparations",
+            "1902": "Pasta",
+            "1905": "Bakery & biscuit products",
+            "2005": "Prepared/preserved vegetables",
+            "2009": "Fruit & vegetable juices",
+            "2101": "Coffee/tea extracts",
+            "2103": "Sauces & condiments",
+            "2106": "Miscellaneous food preparations",
+            "2304": "Soybean cake (animal feed)",
+            "2309": "Animal feed preparations",
+        },
+    },
+    "11": {
+        "input_en": "water, concentrates, malt, sugar, fruit",
+        "process_en": "bottling, brewing, fermentation, distillation",
+        "hs4_en": {
+            "2201": "Mineral waters",
+            "2202": "Non-alcoholic beverages (sodas, juices)",
+            "2203": "Malt beer",
+            "2204": "Wine",
+            "2208": "Spirits & liqueurs",
+        },
+    },
+    "12": {
+        "input_en": "raw tobacco",
+        "process_en": "drying, blending, making",
+        "hs4_en": {"2402": "Cigars & cigarettes", "2403": "Other manufactured tobacco"},
+    },
+    "13": {
+        "input_en": "cotton, wool, synthetic fibres",
+        "process_en": "spinning, weaving, finishing",
+        "hs4_en": {
+            "5205": "Cotton yarn",
+            "5208": "Cotton fabrics",
+            "5209": "Cotton fabrics (heavy)",
+            "5407": "Synthetic filament fabrics",
+            "5513": "Synthetic staple fabrics",
+            "5701": "Knotted carpets",
+            "5703": "Tufted carpets",
+            "6302": "Bed/table/toilet linen",
+            "6305": "Packing sacks",
+        },
+    },
+    "14": {
+        "input_en": "fabrics & yarns (chapters 50-60)",
+        "process_en": "garment making (cutting, assembly, finishing)",
+        "hs4_en": {
+            "6109": "T-shirts & knitted vests",
+            "6110": "Jerseys & pullovers",
+            "6203": "Men's suits/ensembles",
+            "6204": "Women's suits/ensembles",
+            "6205": "Men's shirts",
+            "6206": "Women's blouses",
+            "6211": "Tracksuits & sportswear",
+            "6212": "Brassieres & corsetry",
+        },
+    },
+    "16": {
+        "input_en": "logs & rough wood",
+        "process_en": "sawing, slicing, panelling, joinery",
+        "hs4_en": {
+            "4407": "Sawn wood",
+            "4408": "Veneer sheets",
+            "4410": "Particle board",
+            "4411": "Fibreboard (MDF)",
+            "4412": "Plywood",
+            "4418": "Builders' joinery",
+        },
+    },
+    "17": {
+        "input_en": "wood pulp, recovered paper",
+        "process_en": "forming, coating, converting",
+        "hs4_en": {
+            "4802": "Writing/printing paper",
+            "4804": "Kraft paper",
+            "4810": "Coated paper",
+            "4818": "Household paper (tissue, handkerchiefs)",
+            "4819": "Cartons & boxes",
+        },
+    },
+    "19": {
+        "input_en": "crude oil, field gas",
+        "process_en": "refining (distillation, cracking, reforming)",
+        "hs4_en": {
+            "2710": "Refined petroleum products (gasoline, diesel, kerosene)",
+            "2711": "Petroleum gases (LPG) & gaseous hydrocarbons",
+            "2713": "Petroleum coke & petroleum bitumen",
+            "2715": "Bituminous mixtures",
+        },
+    },
+    "20": {
+        "input_en": "natural gas, phosphates, salt, chemical intermediates",
+        "process_en": "chemical synthesis & formulation",
+        "hs4_en": {
+            "2814": "Ammonia",
+            "2815": "Caustic soda",
+            "3102": "Nitrogen fertilizers (urea, ammonium nitrate)",
+            "3103": "Phosphate fertilizers",
+            "3105": "Compound fertilizers (NPK)",
+            "3204": "Synthetic dyes & pigments",
+            "3208": "Paints & varnishes (non-aqueous)",
+            "3209": "Paints & varnishes (aqueous)",
+            "3401": "Soaps",
+            "3402": "Surfactants & detergents",
+            "3808": "Insecticides & pesticides",
+            "3814": "Solvents & thinners",
+            "3901": "Ethylene polymers (PE)",
+            "3902": "Propylene polymers (PP)",
+        },
+    },
+    "21": {
+        "input_en": "active ingredients (API), excipients",
+        "process_en": "pharmaceutical formulation & packaging",
+        "hs4_en": {
+            "3002": "Vaccines, blood & immunological products",
+            "3003": "Medicaments (bulk)",
+            "3004": "Medicaments (packaged for retail)",
+            "3006": "Miscellaneous pharmaceutical preparations",
+        },
+    },
+    "22": {
+        "input_en": "base polymers, natural/synthetic rubber",
+        "process_en": "extrusion, moulding, injection, vulcanisation",
+        "hs4_en": {
+            "3917": "Plastic tubes & pipes",
+            "3920": "Plastic sheets & films",
+            "3923": "Plastic packaging",
+            "3924": "Plastic household articles",
+            "3926": "Miscellaneous plastic articles",
+            "4011": "New pneumatic tyres",
+            "4016": "Vulcanised rubber articles",
+        },
+    },
+    "23": {
+        "input_en": "non-metallic minerals (limestone, clay, silica, feldspar)",
+        "process_en": "firing / calcination / glass melting",
+        "hs4_en": {
+            "2523": "Cement (incl. clinker)",
+            "6802": "Worked dimension stone (marble, granite)",
+            "6810": "Cement/concrete articles",
+            "6907": "Ceramic tiles",
+            "6908": "Glazed ceramic tiles (earthenware)",
+            "6910": "Ceramic sanitary ware",
+            "6911": "Porcelain tableware",
+            "7010": "Glass bottles & jars",
+            "7013": "Table & kitchen glassware",
+            "7019": "Glass fibres",
+        },
+    },
+    "24": {
+        "input_en": "ores, scrap, semi-finished metal products",
+        "process_en": "reduction, smelting, rolling, wire drawing",
+        "hs4_en": {
+            "7201": "Pig iron",
+            "7202": "Ferro-alloys",
+            "7207": "Semi-finished iron/steel",
+            "7208": "Flat-rolled products (hot-rolled)",
+            "7210": "Coated flat products",
+            "7213": "Iron/steel wire rod",
+            "7214": "Iron/steel bars",
+            "7216": "Iron/steel sections",
+            "7217": "Iron/steel wire",
+            "7402": "Unrefined copper",
+            "7403": "Refined copper",
+            "7601": "Unwrought aluminium",
+            "7604": "Aluminium profiles",
+            "7606": "Aluminium plates & strips",
+        },
+    },
+    "25": {
+        "input_en": "steel products (sheets, bars, sections)",
+        "process_en": "forming, welding, surface treatment",
+        "hs4_en": {
+            "7301": "Sheet piling & welded sections",
+            "7304": "Seamless tubes",
+            "7306": "Other iron/steel tubes",
+            "7308": "Metal structures",
+            "7310": "Metal tanks & drums",
+            "7318": "Bolts & screws",
+            "8207": "Interchangeable tools",
+            "8215": "Table cutlery",
+        },
+    },
+    "26": {
+        "input_en": "electronic components, boards (PCBA), SKD/CKD kits",
+        "process_en": "electronic assembly (SMT, integration, testing)",
+        "hs4_en": {
+            "8471": "Data-processing machines (computers)",
+            "8517": "Telephones & telecom equipment",
+            "8528": "Television receivers & monitors",
+            "8541": "Semiconductors & photovoltaic cells",
+            "8542": "Integrated circuits",
+            "9018": "Medical instruments",
+            "9027": "Analysis instruments",
+        },
+    },
+    "27": {
+        "input_en": "copper, aluminium, electrical components, kits",
+        "process_en": "winding, electrotechnical assembly",
+        "hs4_en": {
+            "8501": "Electric motors & generators",
+            "8504": "Transformers & converters",
+            "8506": "Primary cells & batteries",
+            "8507": "Electric accumulators",
+            "8536": "Switchgear (< 1000 V)",
+            "8539": "Electric lamps & tubes",
+            "8544": "Insulated wires & cables",
+        },
+    },
+    "28": {
+        "input_en": "steels, mechanical components, motors",
+        "process_en": "machining & mechanical assembly",
+        "hs4_en": {
+            "8413": "Liquid pumps",
+            "8418": "Refrigerators & freezers",
+            "8419": "Heat-treatment equipment",
+            "8422": "Washing/packing machines",
+            "8450": "Laundry washing machines",
+            "8481": "Taps & valves",
+        },
+    },
+    "29": {
+        "input_en": "CKD/SKD kits, sheet metal, automotive components",
+        "process_en": "vehicle assembly (stamping, mounting)",
+        "hs4_en": {
+            "8702": "Public-transport vehicles (buses)",
+            "8703": "Passenger cars",
+            "8704": "Goods-transport vehicles",
+            "8708": "Automotive parts & accessories",
+            "8716": "Trailers & semi-trailers",
+        },
+    },
+    "30": {
+        "input_en": "steels, aluminium, components",
+        "process_en": "transport-equipment assembly",
+        "hs4_en": {
+            "8711": "Motorcycles",
+            "8712": "Bicycles",
+            "8901": "Cargo vessels",
+            "8904": "Tugs",
+        },
+    },
+    "31": {
+        "input_en": "wood, panels, metal, foam",
+        "process_en": "joinery & furniture assembly",
+        "hs4_en": {"9401": "Seats", "9403": "Other furniture"},
+    },
+    "32": {
+        "input_en": "precious metals, stones, various materials",
+        "process_en": "cutting, setting, shaping",
+        "hs4_en": {
+            "7102": "Diamonds",
+            "7103": "Precious/semi-precious stones",
+            "7113": "Jewellery articles",
+            "9403": "Furniture",
+        },
+    },
+}
