@@ -20,10 +20,11 @@
   "effective_from": "2017-07-01",
   "national_positions": 6129
  },
- "preference_and_origin_status": "DOCUMENTED",
+ "preference_and_origin_status": "PARTIAL",
  "preference_evidence": {
-  "instrument": "ZLECAf — partenaire actif de l'Algérie",
-  "sha256": "cf49459e1210c8e459ef5650ed583afdfcd2987a7cf3a63783328795689b0f87"
+  "instrument": "ZLECAf — offre ECOWAS/Ghana publiée dans l'e-Tariff Book du Secrétariat (5 578 lignes à 10 chiffres, OFFER_ONLY)",
+  "status": "PARTIAL",
+  "note": "membre du Guided Trade Initiative (application effective démontrée par le Secrétariat depuis le 07/10/2022) — l'offre ligne à ligne n'est PAS exécutable sans instrument d'implémentation + origine vérifiée (porte zlecaf_implementation_registry)"
  },
  "documents": [
   {
@@ -46,5 +47,104 @@
    }
   ],
   "reperage_canonique": "TVA + taxes intérieures portées par position nationale dans backend/data/{CC}_tariffs.json (source douane/administration fiscale)"
+ },
+ "afcfta_application_evidence": {
+  "gti_participant": true,
+  "gti_launch": "2022-10-07",
+  "source_url": "https://au-afcfta.org/guided-trade-initiative/",
+  "offer_published": "e-Tariff Book ECOWAS (snapshot archivé 2026-08-17)",
+  "npf_crosscheck": {
+   "codes_comparés": 5576,
+   "npf_matches": 5572,
+   "npf_mismatches": 4,
+   "mismatch_examples": [
+    {
+     "code": "0701900000",
+     "national_dd": 20.0,
+     "snapshot_mfn": "35"
+    },
+    {
+     "code": "0703100000",
+     "national_dd": 20.0,
+     "snapshot_mfn": "35"
+    },
+    {
+     "code": "1511100000",
+     "national_dd": 5.0,
+     "snapshot_mfn": "10"
+    },
+    {
+     "code": "5208521000",
+     "national_dd": 20.0,
+     "snapshot_mfn": "35"
+    }
+   ],
+   "note": "4 divergences non arbitrées — le TEC CEDEAO en vigueur au Ghana diffère de la soumission ECOWAS pour quelques produits (oignons, pommes de terre, huile de palme, tissus)"
+  },
+  "enumeration_gaps": {
+   "national_hors_snapshot": 553,
+   "snapshot_hors_national": 2,
+   "note": "codes nationaux ghanéens additionnels (SH10), documentés"
+  },
+  "algeria_reciprocity": {
+   "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+   "source_id": "DZA-DGD-CIRC-482-2024",
+   "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+   "note": "l'Algérie applique la ZLECAf à l'importation (17 322 lignes classées A/B/C, calendriers standard et réciprocité)"
+  }
+ },
+ "coverage_scope": {
+  "base_tariff": "VERIFIED vs source GRA/TEC CEDEAO — 6 129 SPs nationales 10 chiffres ; 5 576 communes avec le snapshot e-Tariff ECOWAS (5 572 NPF identiques)",
+  "national_layer": "PARTIAL — GETFL/NHIL câblés, VAT 15% (VAT Act 870 consolidé 2026, primaire) ; levies additionnelles (import duty, special import levy, ECOWAS levy, AU levy) à documenter"
+ },
+ "taxes_locales_cascade": {
+  "source": "GRA — Ghana's tax and duty rates ; VAT Act 870 (consolidé 2026)",
+  "cascade": [
+   {
+    "order": 1,
+    "tax": "DD",
+    "name": "Import duty (TEC CEDEAO)",
+    "base": "CIF",
+    "range": "0-35%"
+   },
+   {
+    "order": 2,
+    "tax": "GETFL",
+    "name": "Ghana Education Trust Fund Levy",
+    "base": "CIF + DD",
+    "rate": "2,5%"
+   },
+   {
+    "order": 3,
+    "tax": "NHIL",
+    "name": "National Health Insurance Levy",
+    "base": "CIF + DD",
+    "rate": "2,5%"
+   },
+   {
+    "order": 4,
+    "tax": "VAT",
+    "name": "VAT à l'importation",
+    "base": "CIF + DD + GETFL + NHIL",
+    "rate": "15%"
+   }
+  ],
+  "additional_documented": [
+   "Import duty (special import levy)",
+   "ECOWAS levy 0,5%",
+   "AU levy 0,2%",
+   "EXIM levy",
+   "Ghana Shippers Authority levy — à documenter par ligne"
+  ]
+ },
+ "currency_note": "customs_value attendu dans la devise de la juridiction (GHS) : toute valeur USD doit être convertie avant l'appel — les montants calculés sont étiquetés GHS",
+ "integrity_watch_fixes": {
+  "as_of": "2026-09-06",
+  "preference_downgraded_to_partial": true,
+  "npf_crosscheck_documented": true,
+  "enumeration_gaps_documented": true,
+  "formalities_downgraded": true,
+  "cascade_documented": true,
+  "currency_expectation_documented": true
  }
 }

@@ -45,7 +45,9 @@
    "product_description": "AGRIINPUT — Autorisation d'importation d'intrants agricoles (engrais / pesticides)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   },
   {
    "measure_id": "GHA-FAP-002-ARMAUTH",
@@ -125,7 +127,9 @@
    "product_description": "ARMAUTH — Autorisation préalable d'importation d'armes et matériels de sécurité",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   },
   {
    "measure_id": "GHA-FAP-003-ENERGYAUTH",
@@ -206,7 +210,9 @@
    "product_description": "ENERGYAUTH — Autorisation d'importation d'hydrocarbures / produits pétroliers",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   },
   {
    "measure_id": "GHA-FAP-004-ENVDECL",
@@ -1088,7 +1094,9 @@
    "product_description": "ENVDECL — Déclaration de conformité environnementale / Fiche de Données de Sécurité (FDS)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   },
   {
    "measure_id": "GHA-FAP-005-FOODCERT",
@@ -1782,7 +1790,9 @@
    "product_description": "FOODCERT — Attestation de conformité alimentaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   },
   {
    "measure_id": "GHA-FAP-006-FOODCERT",
@@ -2247,7 +2257,9 @@
    "product_description": "FOODCERT — Attestation de libre commercialisation / conformité sanitaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   },
   {
    "measure_id": "GHA-FAP-007-IMPDEC",
@@ -8396,7 +8408,9 @@
    "product_description": "IMPDEC — Déclaration en Douane (CUSDEC)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   },
   {
    "measure_id": "GHA-FAP-008-PHARMAUTH",
@@ -8462,7 +8476,9 @@
    "product_description": "PHARMAUTH — Autorisation d'importation de médicaments / Autorisation de Mise sur le Marché (AMM)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   },
   {
    "measure_id": "GHA-FAP-009-PHYTOCERT",
@@ -9156,7 +9172,9 @@
    "product_description": "PHYTOCERT — Certificat phytosanitaire du pays d'origine",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   },
   {
    "measure_id": "GHA-FAP-010-STDCERT",
@@ -10451,7 +10469,9 @@
    "product_description": "STDCERT — Certificat de conformité aux normes nationales",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   },
   {
    "measure_id": "GHA-FAP-011-VETCERT",
@@ -10916,7 +10936,9 @@
    "product_description": "VETCERT — Certificat sanitaire vétérinaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes ghanéens (GRA, Customs Act)"
   }
  ],
  "provenance": {
@@ -10924,6 +10946,7 @@
   "note_invariant": "Aucune F.A.P à contenu purement numérique (invariant ^\\d+([.,]\\d+)?$)",
   "canonical_sha256": "cf49459e1210c8e459ef5650ed583afdfcd2987a7cf3a63783328795689b0f87",
   "fap_par_formalite": 11,
-  "source_formalites": "etl/africa_formalities.py (buckets produits × autorités nationales réelles — 54 pays)"
+  "source_formalites": "etl/africa_formalities.py (buckets produits × autorités nationales réelles — 54 pays)",
+  "integrity_watch": "formalités dégradées — à confirmer par les textes ghanéens"
  }
 }

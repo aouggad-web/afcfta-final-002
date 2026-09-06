@@ -6,5 +6,6 @@
   "nhil"
  ],
  "general_levy_tables": [],
- "gazette_register": "gha_gazette_register.json"
+ "gazette_register": "gha_gazette_register.json",
+ "sh6_principle": "les 6 premiers chiffres (SH) sont internationaux ; le tarif national ghanéen se développe sur 10 chiffres (SH6+4) — le tarif national authentique (GRA/TEC CEDEAO) est la source unique"
 }
