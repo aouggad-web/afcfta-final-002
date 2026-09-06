@@ -10491,11 +10491,8 @@
   }
  ],
  "provenance": {
-  "fap_distinctes": 0,
+  "fap_distinctes": 11,
   "note_invariant": "Aucune F.A.P à contenu purement numérique (invariant ^\\d+([.,]\\d+)?$)",
-  "canonical_sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656",
-  "fap_par_formalite": 11,
-  "source_formalites": "etl/africa_formalities.py (buckets produits × autorités nationales réelles — 54 pays)",
-  "integrity_watch": "mapping_confidence dégradé à 70 et legal_text_verified=false — formalités dérivées du tarif régional, à confirmer par les textes rwandais"
+  "canonical_sha256": "002828bf0da8011ee3c018efc22facab9bddcdb951ee319e53a13c408b54cfcf"
  }
 }

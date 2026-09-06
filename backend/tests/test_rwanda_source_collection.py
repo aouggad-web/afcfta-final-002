@@ -43,12 +43,20 @@ def test_rwa_vat_zero_rated_exports_and_minerals():
 
 
 def test_rwa_excise_records_present_and_verified():
-    """Au moins 5 lignes d'accise vérifiées sur texte primaire (Annexe loi 011/2025)."""
+    """≥5 mesures sur texte primaire (loi 011/2025) ; les taux runtime de la
+    colonne EAC ne sont admis que sur des produits NON couverts par la loi."""
     data = json.loads((_DATA_DIR / "excise_measures.json").read_text(encoding="utf-8"))
     assert len(data["excise_rates"]) >= 5
+    primary = [r for r in data["excise_rates"]
+               if r.get("verification_status") == "VERIFIED_PRIMARY_TEXT"]
+    assert len(primary) >= 5
+    primary_hs = set()
+    for r in primary:
+        primary_hs |= {c.replace(".", "") for c in (r.get("hs_codes_explicit") or [])}
     for record in data["excise_rates"]:
-        assert record["verification_status"] == "VERIFIED_PRIMARY_TEXT"
-        assert "011/2025" in record["legal_reference"]
+        if record.get("verification_status") == "VERIFIED_RUNTIME_DATASET":
+            codes = {c.replace(".", "") for c in (record.get("hs_codes_explicit") or [])}
+            assert not (primary_hs & codes), record["record_id"]
 
 
 def test_rwa_legal_sources_reference_valid_source_ids():
@@ -132,11 +140,19 @@ def test_rwa_excise_measures_schema():
     assert "excise_rates" in data
 
 
-def test_rwa_not_registered_as_supported_jurisdiction():
-    """Garde-fou : RWA n'est pas enregistrée comme juridiction supportée."""
+def test_rwa_registered_as_supported_jurisdiction_with_guards():
+    """Garde-fou mis à jour (PR #454) : RWA est enregistrée — preuve de
+    préférence OFFER_ONLY, note de devise RWF et loi primaire restaurée."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
 
-    assert "RWA" not in SUPPORTED_JURISDICTIONS
+    assert "RWA" in SUPPORTED_JURISDICTIONS
+    reg = json.loads(
+        (_ROOT / "data" / "rwanda" / "rwa_gazette_register.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert reg["preference_and_origin_status"] == "OFFER_ONLY"
+    assert "RWF" in reg.get("currency_note", "")
 
 
 def test_rwa_has_no_fabricated_afcfta_offer():

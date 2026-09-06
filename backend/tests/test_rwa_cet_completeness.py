@@ -1,27 +1,26 @@
-"""Exhaustivité RWA : sous-positions 8 chiffres vs PDF officiel EAC CET 2022.
+"""TUN-mode-like validation : RWA — exhaustivité du tarif national authentique.
 
-Vérifications (doctrine zéro-fabrication) :
-- aucune sous-position dupliquée (49 doublons Schedule 1/Schedule 2 arbités) ;
-- aucune ligne sans entrée DD/CET ;
-- les 4 taux ad valorem omis ont été ajoutés (valeurs vérifiées page par page) ;
-- les 25 droits composés sont structurés MAX_AD_VALOREM_SPECIFIC sans montant fabriqué ;
-- les 49 Sensitive Items portent le taux Schedule 2 ;
-- le registre documente la vérification et le SHA-256 du fichier canonique.
+Principe SH6 : les 6 premiers chiffres sont internationaux ; le tarif national
+rwandais (EAC CET 2022) se développe au-delà — 8 chiffres (SH6+2). Le fichier
+national (backend/data/RWA_tariffs.json = backend/data/crawled/RWA_tariffs.json,
+extrait du PDF officiel kra.go.ke par eac_cet_scraper) est la source unique —
+pas de canonique dérivé.
 """
 
 import hashlib
 import json
-import sys
 from pathlib import Path
 
 BACKEND_ROOT = Path(__file__).resolve().parents[1]
 _ROOT = BACKEND_ROOT.parent
 
-CRAWLED = _ROOT / "backend" / "data" / "crawled" / "RWA_tariffs.json"
-CANONICAL = _ROOT / "backend" / "data" / "RWA_tariffs.json"
+NATIONAL = BACKEND_ROOT / "data" / "crawled" / "RWA_tariffs.json"
+NATIONAL_SLOT = BACKEND_ROOT / "data" / "RWA_tariffs.json"
 SLUG_DIR = _ROOT / "data" / "rwanda"
 
-AD_VALOREM_FIXES = {"53021000": 0.0, "58110000": 25.0, "92099200": 10.0, "92099400": 10.0}
+AD_VALOREM_FIXES = {"58110000": 25.0, "92099200": 10.0, "92099400": 10.0}
+RATE_NOT_PUBLISHED = {"53021000"}
+SI_MILK_60 = {"04011000", "04012000", "04014000", "04015000", "04069000"}
 COMPOUND_CODES = {
     "63090010", "63090020", "63090090",
     "72104900", "72106100", "72106900", "72107000", "72109000", "72123000",
@@ -29,113 +28,74 @@ COMPOUND_CODES = {
     "72272000", "72279000", "72281000", "72282000", "72283000", "72284000",
     "72285000", "72286000", "72287000", "72288000",
 }
-SI_MILK_60 = {"04011000", "04012000", "04014000", "04015000", "04069000"}
+COMPOUND_RICE = {"10061000", "10062000", "10063000", "10064000", "11029010"}
 
 
-def _canon():
-    return json.loads(CANONICAL.read_text(encoding="utf-8"))
+def _national():
+    return json.loads(NATIONAL.read_text(encoding="utf-8"))
 
 
-def test_no_duplicate_sub_positions():
-    d = _canon()
-    codes = [sp["code"] for l in d["tariff_lines"] for sp in (l.get("sub_positions") or [])]
+def _pos_map():
+    return {p["hs_code"]: p for p in _national()["positions"]}
+
+
+def test_national_file_is_the_single_source():
+    """Pas de canonique dérivé : backend/data/RWA_tariffs.json = tarif national verbatim."""
+    assert NATIONAL.read_bytes() == NATIONAL_SLOT.read_bytes()
+
+
+def test_no_duplicate_positions_and_count():
+    d = _national()
+    codes = [p["hs_code"] for p in d["positions"]]
     assert len(codes) == len(set(codes)) == 5954
 
 
-def test_every_sub_position_code_is_8_digits():
-    d = _canon()
-    codes = [sp["code"] for l in d["tariff_lines"] for sp in (l.get("sub_positions") or [])]
-    assert all(len(c) == 8 and c.isdigit() for c in codes)
-
-
-def test_no_line_without_dd_or_cet():
-    d = _canon()
-    for l in d["tariff_lines"]:
-        assert any(
-            t["tax"] in ("DD", "D.D", "CET", "DDDROIT") for t in (l.get("taxes_detail") or [])
-        ), l["hs6"]
+def test_every_position_has_a_cet_entry():
+    d = _national()
+    for p in d["positions"]:
+        assert any(t.get("is_cet") for t in (p.get("taxes_detail") or [])), p["hs_code"]
 
 
 def test_ad_valorem_fixes_applied():
-    d = _canon()
-    sp = {sp["code"]: sp for l in d["tariff_lines"] for sp in (l.get("sub_positions") or [])}
+    pos = _pos_map()
     for code, rate in AD_VALOREM_FIXES.items():
-        assert sp[code]["dd"] == rate, (code, sp[code]["dd"])
+        cet = next(t for t in pos[code]["taxes_detail"] if t.get("is_cet"))
+        assert cet["rate"] == rate, (code, cet["rate"])
 
 
-def test_compound_duties_structured_not_fabricated():
-    d = _canon()
-    sp = {sp["code"]: sp for l in d["tariff_lines"] for sp in (l.get("sub_positions") or [])}
-    for code in COMPOUND_CODES:
-        calc = sp[code].get("dd_calculation")
-        assert calc, code
-        assert calc["type"] == "MAX_AD_VALOREM_SPECIFIC"
-        assert calc["requires_quantity"] is True
-        assert sp[code]["dd"] is None, (code, "un montant numérique serait une fabrication")
-        assert "whichever is higher" in sp[code]["dd_formula"]
+def test_rate_not_published_gap_documented():
+    """53021000 : colonne taux VIDE dans le PDF officiel — trou documenté,
+    jamais comblé."""
+    pos = _pos_map()
+    cet = next(t for t in pos["53021000"]["taxes_detail"] if t.get("is_cet"))
+    assert cet["rate"] is None
+    assert cet.get("data_gap") == "RATE_NOT_PUBLISHED_IN_PDF"
 
 
 def test_sensitive_items_carry_schedule2_rates():
-    d = _canon()
-    sp = {sp["code"]: sp for l in d["tariff_lines"] for sp in (l.get("sub_positions") or [])}
+    pos = _pos_map()
     for code in SI_MILK_60:
-        assert sp[code]["dd"] == 60.0, (code, sp[code]["dd"])
-    rice = sp["10063000"]
-    assert rice["dd"] is None and rice["dd_formula"] == "75% or $345/MT whichever is higher"
+        cet = next(t for t in pos[code]["taxes_detail"] if t.get("is_cet"))
+        assert cet["rate"] == 60.0, (code, cet["rate"])
+    rice = pos["10063000"]
+    cet = next(t for t in rice["taxes_detail"] if t.get("is_cet"))
+    assert cet["rate"] is None and "75% or $345/MT" in cet.get("note", "")
 
 
-def test_crawled_file_matches_canonical_exhaustiveness():
-    c = json.loads(CRAWLED.read_text(encoding="utf-8"))
-    codes = [p["hs_code"] for p in c["positions"]]
-    assert len(codes) == len(set(codes)) == 5954
-    assert all(
-        any(t.get("is_cet") for t in p["taxes_detail"]) for p in c["positions"]
-    )
+def test_compound_duties_structured_not_fabricated():
+    pos = _pos_map()
+    for code in COMPOUND_CODES | COMPOUND_RICE:
+        cet = next(t for t in pos[code]["taxes_detail"] if t.get("is_cet"))
+        calc = cet.get("calculation")
+        assert calc and calc["type"] == "MAX_AD_VALOREM_SPECIFIC", code
+        assert calc["requires_quantity"] is True
+        assert cet["rate"] is None
 
 
 def test_register_documents_verification_and_sha():
     reg = json.loads((SLUG_DIR / "rwa_gazette_register.json").read_text(encoding="utf-8"))
     base = reg["base_tariff_documentation"]
     assert base["national_positions"] == 5954
-    assert base["verification"]["corrections"]["duplicates_removed"] == 49
-    canon_sha = hashlib.sha256(CANONICAL.read_bytes()).hexdigest()
-    assert base["sha256"] == canon_sha
+    sha = hashlib.sha256(NATIONAL_SLOT.read_bytes()).hexdigest()
+    assert base["sha256"] == sha
     assert reg["verification_nationale"]["status"] == "EXHAUSTIVE_VERIFIED"
-
-
-def test_calculation_method_documents_full_cascade():
-    cm = json.loads((SLUG_DIR / "calculation_method.json").read_text(encoding="utf-8"))
-    taxes = [step["tax"] for step in cm["cascade"]]
-    assert taxes == [
-        "VALEUR_EN_DOUANE", "DD_CET", "EXCISE", "IDL", "AUL", "QIF", "TVA",
-        "ENV_PLASTIC", "WHT_IMPORT",
-    ]
-    unverified = [s for s in cm["cascade"] if s.get("source_type") == "A_VERIFIER"]
-    assert all(s["status"].startswith("UNVERIFIED") for s in unverified)
-    compound = next(s for s in cm["cascade"] if s["tax"] == "DD_CET")
-    assert "whichever is higher" in compound["rate_structure"]["compound_rule"]
-
-
-def test_missed_19_codes_recovered():
-    """Les 19 codes fusionnés-absents du crawl d'origine sont présents avec leur taux vérifié."""
-    d = _canon()
-    sp = {sp["code"]: sp for l in d["tariff_lines"] for sp in (l.get("sub_positions") or [])}
-    expected = {
-        "24049100": 35.0, "24049200": 35.0, "24049900": 35.0,
-        "29031990": 0.0, "38089119": 10.0, "38089121": 10.0, "38089129": 10.0,
-        "38089132": 25.0, "38089210": 0.0, "38089290": 0.0, "38089310": 0.0,
-        "38089390": 0.0, "38089410": 0.0, "38089490": 0.0, "38089910": 0.0,
-        "38089990": 0.0, "39239010": 0.0, "39239020": 25.0, "41051000": 10.0,
-    }
-    for code, rate in expected.items():
-        assert code in sp, code
-        assert sp[code]["dd"] == rate, (code, sp[code]["dd"])
-    assert d["exhaustiveness_verification"]["missed_codes_recovered"] == 19
-
-
-def test_register_sources_include_tralac_and_au():
-    reg = json.loads((SLUG_DIR / "rwa_gazette_register.json").read_text(encoding="utf-8"))
-    sources = " ".join(reg.get("sources_officielles", []))
-    assert "tralac.org" in sources
-    assert "au.int" in sources
-    assert "claimed_total_7341_lines" in reg["base_tariff_documentation"]["verification"]

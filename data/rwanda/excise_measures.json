@@ -16,7 +16,7 @@
     "22030090"
    ],
    "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — bière (autre que brassée localement à partir de matières premières locales) ; traitement préférentiel 40 % (BEER-LOCAL-RAWMAT) subordonné à la qualification du producteur, non dérivable du code SH",
-   "source_id": "RWA-LAW-011-2025",
+   "source_id": "RWA-MININJUST-OG-2025-05-29",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
    "notes": "La mesure BEER-LOCAL-RAWMAT (40 %) est conservée sans hs_codes_explicit : elle dépend d'une qualification producteur, pas du code tarifaire — le moteur applique le taux général 65 %."
   },
@@ -37,7 +37,7 @@
     "2205.90.00"
    ],
    "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — vins et autres boissons fermentées",
-   "source_id": "RWA-LAW-011-2025",
+   "source_id": "RWA-MININJUST-OG-2025-05-29",
    "verification_status": "VERIFIED_PRIMARY_TEXT"
   },
   {
@@ -55,7 +55,7 @@
     "2402.10.00"
    ],
    "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — cigarettes",
-   "source_id": "RWA-LAW-011-2025",
+   "source_id": "RWA-MININJUST-OG-2025-05-29",
    "verification_status": "VERIFIED_PRIMARY_TEXT"
   },
   {
@@ -70,7 +70,7 @@
     "2710.12.20"
    ],
    "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — essence",
-   "source_id": "RWA-LAW-011-2025",
+   "source_id": "RWA-MININJUST-OG-2025-05-29",
    "verification_status": "VERIFIED_PRIMARY_TEXT"
   },
   {
@@ -85,7 +85,7 @@
     "2710.19.31"
    ],
    "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — gasoil",
-   "source_id": "RWA-LAW-011-2025",
+   "source_id": "RWA-MININJUST-OG-2025-05-29",
    "verification_status": "VERIFIED_PRIMARY_TEXT"
   },
   {
@@ -100,7 +100,7 @@
     "8703.21.90"
    ],
    "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — véhicules ≤ 1500 cc",
-   "source_id": "RWA-LAW-011-2025",
+   "source_id": "RWA-MININJUST-OG-2025-05-29",
    "verification_status": "VERIFIED_PRIMARY_TEXT"
   },
   {
@@ -113,14 +113,14 @@
    "supersedes_record_id": null,
    "hs_codes_explicit": [],
    "legal_reference": "Law nº 011/2025 of 27/05/2025 establishing the excise duty, Annexe — bière brassée localement à partir de matières premières locales (qualification producteur exigée)",
-   "source_id": "RWA-LAW-011-2025",
+   "source_id": "RWA-MININJUST-OG-2025-05-29",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
    "notes": "Documentation seule : jamais appliquée automatiquement (hs vide)."
   },
   {
    "record_id": "RWA-EXCISE_EXCIS-40_0",
    "rate": "40.0%",
-   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (source : colonne accise du tarif EAC CET 2022)",
+   "rate_basis": "valeur en douane + droits de douane (CIF + DD) — ad valorem (assiette alignée sur le moteur)",
    "effective_from": "2017-07-01",
    "effective_to": null,
    "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
@@ -135,22 +135,18 @@
     "22089010",
     "22089090"
    ],
-   "legal_reference": "East African Community — EAC Common External Tariff 2022 — colonne accise",
+   "legal_reference": "EAC Common External Tariff 2022 — colonne accise",
    "source_id": "RWA-CANONICAL-TARIFF",
    "verification_status": "VERIFIED_RUNTIME_DATASET"
   }
  ],
- "provenance": {
-  "source": "backend/data/RWA_tariffs.json (PARTIAL)",
-  "canonical_sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656"
+ "primary_law_merge": {
+  "primary_law_preserved": 7,
+  "runtime_conflicts_removed": 2,
+  "reason": "les taux de loi primaire font foi — la régénération du tarif ne les écrase jamais ; les taux runtime en conflit HS sont retirés"
  },
- "primary_law_restored": {
-  "law": "Law nº 011/2025 of 27/05/2025 establishing the excise duty",
-  "records_restored": 7,
-  "runtime_removed": [
-   "RWA-EXCISE_EXCIS-30_0",
-   "RWA-EXCISE_EXCIS-36_0"
-  ],
-  "reason": "les taux de la colonne EAC (bière 30 %, cigarettes 36 %) contredisaient la loi primaire nº 011/2025 (bière 40/65 %, cigarettes 36 % + FRW 230/pack) — la loi rwandaise fait foi, la colonne EAC 2017 n'est pas la loi en vigueur"
+ "provenance": {
+  "source": "backend/data/RWA_tariffs.json (VERIFIED)",
+  "canonical_sha256": "002828bf0da8011ee3c018efc22facab9bddcdb951ee319e53a13c408b54cfcf"
  }
 }

@@ -3,7 +3,7 @@
  "country": "RWA",
  "as_of": "2026-09-06",
  "provenance": {
-  "source": "backend/data/RWA_tariffs.json (PARTIAL)",
-  "canonical_sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656"
+  "source": "backend/data/RWA_tariffs.json (VERIFIED)",
+  "canonical_sha256": "002828bf0da8011ee3c018efc22facab9bddcdb951ee319e53a13c408b54cfcf"
  }
 }

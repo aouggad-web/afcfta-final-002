@@ -31,7 +31,7 @@
    "supersedes_record_id": null,
    "hs_codes_explicit": [],
    "legal_reference": "Law nº 049/2023 of 05/09/2023, Article 4(a) and Article 7(1)(a)",
-   "source_id": "RWA-LAW-049-2023",
+   "source_id": "RWA-RRA-LAW-049-2023-VAT",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
    "notes": "Exportation de biens — taux zéro — documentation seule (pas d'application HS automatique)."
   },
@@ -45,7 +45,7 @@
    "supersedes_record_id": null,
    "hs_codes_explicit": [],
    "legal_reference": "Law nº 049/2023 of 05/09/2023, Article 4(a) and Article 7(1)(b)",
-   "source_id": "RWA-LAW-049-2023",
+   "source_id": "RWA-RRA-LAW-049-2023-VAT",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
    "notes": "Exportation de services — taux zéro — documentation seule (pas d'application HS automatique)."
   },
@@ -59,13 +59,13 @@
    "supersedes_record_id": null,
    "hs_codes_explicit": [],
    "legal_reference": "Law nº 049/2023 of 05/09/2023, Article 7(1)(c)",
-   "source_id": "RWA-LAW-049-2023",
+   "source_id": "RWA-RRA-LAW-049-2023-VAT",
    "verification_status": "VERIFIED_PRIMARY_TEXT",
    "notes": "Fourniture de minéraux extraits localement — taux zéro — documentation seule (pas d'application HS automatique)."
   }
  ],
  "provenance": {
-  "source": "backend/data/RWA_tariffs.json (PARTIAL)",
-  "canonical_sha256": "b4fa289acd36d09437652a826c726e02b3bebe347d1a9500c1e2f1550c21f656"
+  "source": "backend/data/RWA_tariffs.json (VERIFIED)",
+  "canonical_sha256": "002828bf0da8011ee3c018efc22facab9bddcdb951ee319e53a13c408b54cfcf"
  }
 }

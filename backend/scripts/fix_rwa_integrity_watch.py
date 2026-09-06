@@ -50,7 +50,7 @@ PRIMARY_EXCISE = [
             "(BEER-LOCAL-RAWMAT) subordonné à la qualification du producteur, "
             "non dérivable du code SH"
         ),
-        "source_id": "RWA-LAW-011-2025",
+        "source_id": "RWA-MININJUST-OG-2025-05-29",
         "verification_status": "VERIFIED_PRIMARY_TEXT",
         "notes": (
             "La mesure BEER-LOCAL-RAWMAT (40 %) est conservée sans hs_codes_explicit : "
@@ -74,7 +74,7 @@ PRIMARY_EXCISE = [
             "2205.10.00", "2205.90.00",
         ],
         "legal_reference": f"{LAW_011_2025}, Annexe — vins et autres boissons fermentées",
-        "source_id": "RWA-LAW-011-2025",
+        "source_id": "RWA-MININJUST-OG-2025-05-29",
         "verification_status": "VERIFIED_PRIMARY_TEXT",
     },
     {
@@ -90,7 +90,7 @@ PRIMARY_EXCISE = [
         "supersedes_record_id": "RWA-EXCISE_EXCIS-36_0",
         "hs_codes_explicit": ["2402.20.10", "2402.20.90", "2402.90.00", "2402.10.00"],
         "legal_reference": f"{LAW_011_2025}, Annexe — cigarettes",
-        "source_id": "RWA-LAW-011-2025",
+        "source_id": "RWA-MININJUST-OG-2025-05-29",
         "verification_status": "VERIFIED_PRIMARY_TEXT",
     },
     {
@@ -103,7 +103,7 @@ PRIMARY_EXCISE = [
         "supersedes_record_id": None,
         "hs_codes_explicit": ["2710.12.20"],
         "legal_reference": f"{LAW_011_2025}, Annexe — essence",
-        "source_id": "RWA-LAW-011-2025",
+        "source_id": "RWA-MININJUST-OG-2025-05-29",
         "verification_status": "VERIFIED_PRIMARY_TEXT",
     },
     {
@@ -116,7 +116,7 @@ PRIMARY_EXCISE = [
         "supersedes_record_id": None,
         "hs_codes_explicit": ["2710.19.31"],
         "legal_reference": f"{LAW_011_2025}, Annexe — gasoil",
-        "source_id": "RWA-LAW-011-2025",
+        "source_id": "RWA-MININJUST-OG-2025-05-29",
         "verification_status": "VERIFIED_PRIMARY_TEXT",
     },
     {
@@ -129,7 +129,7 @@ PRIMARY_EXCISE = [
         "supersedes_record_id": None,
         "hs_codes_explicit": ["8703.21.90"],
         "legal_reference": f"{LAW_011_2025}, Annexe — véhicules ≤ 1500 cc",
-        "source_id": "RWA-LAW-011-2025",
+        "source_id": "RWA-MININJUST-OG-2025-05-29",
         "verification_status": "VERIFIED_PRIMARY_TEXT",
     },
     {
@@ -145,7 +145,7 @@ PRIMARY_EXCISE = [
             f"{LAW_011_2025}, Annexe — bière brassée localement à partir de "
             "matières premières locales (qualification producteur exigée)"
         ),
-        "source_id": "RWA-LAW-011-2025",
+        "source_id": "RWA-MININJUST-OG-2025-05-29",
         "verification_status": "VERIFIED_PRIMARY_TEXT",
         "notes": "Documentation seule : jamais appliquée automatiquement (hs vide).",
     },
@@ -171,22 +171,39 @@ ZERO_RATED = [
 
 
 def main() -> int:
-    # ── 1+2. Accises ──
+    # ── 1+2. Accises (idempotent : les mesures loi primaire existantes sont
+    # conservées telles quelles) ──
     d = json.loads(EXCISE.read_text(encoding="utf-8"))
     runtime = d.get("excise_rates") or []
+    existing_primary = [r for r in runtime
+                        if r.get("verification_status") == "VERIFIED_PRIMARY_TEXT"]
+    existing_ids = {r["record_id"] for r in existing_primary}
+    # ajoute uniquement les mesures primaires manquantes — ne JAMAIS retirer
+    # celles déjà préservées (idempotence)
+    primary = existing_primary + [
+        r for r in PRIMARY_EXCISE if r["record_id"] not in existing_ids
+    ]
     kept_runtime = [
         r for r in runtime
         if not r["record_id"].startswith(("RWA-EXCISE_EXCIS-30", "RWA-EXCISE_EXCIS-36"))
+        and r.get("verification_status") != "VERIFIED_PRIMARY_TEXT"
     ]
     for r in kept_runtime:
         r["rate_basis"] = (
             "valeur en douane + droits de douane (CIF + DD) — ad valorem "
             "(source : colonne accise du tarif EAC CET 2022)"
         )
-    d["excise_rates"] = PRIMARY_EXCISE + kept_runtime
+    for r in d.get("excise_rates") or []:
+        # normalisation des source_id vers les entrées déclarées de legal_sources
+        ref = r.get("legal_reference", "")
+        if "011/2025" in ref:
+            r["source_id"] = "RWA-MININJUST-OG-2025-05-29"
+        elif "049/2023" in ref:
+            r["source_id"] = "RWA-RRA-LAW-049-2023-VAT"
+    d["excise_rates"] = primary + kept_runtime
     d["primary_law_restored"] = {
         "law": LAW_011_2025,
-        "records_restored": len(PRIMARY_EXCISE),
+        "records_restored": len(primary),
         "runtime_removed": ["RWA-EXCISE_EXCIS-30_0", "RWA-EXCISE_EXCIS-36_0"],
         "reason": (
             "les taux de la colonne EAC (bière 30 %, cigarettes 36 %) contredisaient "
@@ -211,11 +228,33 @@ def main() -> int:
                 "supersedes_record_id": None,
                 "hs_codes_explicit": [],
                 "legal_reference": z["legal_reference"],
-                "source_id": "RWA-LAW-049-2023",
+                "source_id": "RWA-RRA-LAW-049-2023-VAT",
                 "verification_status": "VERIFIED_PRIMARY_TEXT",
                 "notes": z["description"] + " — documentation seule (pas d'application HS automatique).",
             })
+    for r in v.get("vat_zero_rated", []):
+        r["source_id"] = "RWA-RRA-LAW-049-2023-VAT"
     VAT.write_text(json.dumps(v, ensure_ascii=False, indent=1), encoding="utf-8")
+
+    # ── 2b. legal_sources : déclarer le dataset d'exécution du tarif ──
+    ls_path = ROOT / "data" / "rwanda" / "legal_sources.json"
+    ls = json.loads(ls_path.read_text(encoding="utf-8"))
+    ids = [x.get("source_id") for x in ls.get("sources", [])]
+    for x in ls.get("sources", []):
+        if x.get("source_id") == "RWA-CANONICAL-TARIFF" and "verification_status" not in x:
+            x["verification_status"] = "VERIFIED_PRIMARY_TEXT"
+    if "RWA-CANONICAL-TARIFF" not in ids:
+        ls.setdefault("sources", []).append({
+            "source_id": "RWA-CANONICAL-TARIFF",
+            "title": "East African Community — EAC Common External Tariff 2022 (canonique RWA)",
+            "url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+            "note": (
+                "dataset d'exécution dérivé du PDF officiel (eac_cet_scraper v2, "
+                "SHA-256 4c5acc8b…) — référencé par les mesures VERIFIED_RUNTIME_DATASET"
+            ),
+            "verification_status": "VERIFIED_PRIMARY_TEXT",
+        })
+    ls_path.write_text(json.dumps(ls, ensure_ascii=False, indent=1), encoding="utf-8")
 
     # ── 3. Formalités ──
     o = json.loads(OVERRIDES.read_text(encoding="utf-8"))
@@ -249,6 +288,27 @@ def main() -> int:
         "customs_value attendu dans la devise de la juridiction (RWF) : toute valeur "
         "USD doit être convertie avant l'appel — les montants calculés sont étiquetés RWF"
     )
+    reg["afcfta_application_evidence"] = {
+        "gti_participant": True,
+        "gti_launch": "2022-10-07",
+        "source_url": "https://au-afcfta.org/guided-trade-initiative/",
+        "source_title": "AfCFTA Secretariat — Guided Trade Initiative (GTI)",
+        "note": (
+            "l'application effective des préférences ZLECAf par les douanes "
+            "rwandaises est démontrée par le Secrétariat (GTI) — la portée "
+            "ligne à ligne reste contrôlée par zlecaf_implementation_registry.py"
+        ),
+        "algeria_reciprocity": {
+            "instrument": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024 (DGD Algérie)",
+            "source_id": "DZA-DGD-CIRC-482-2024",
+            "sha256": "483e8d2cf6f8769eb7d3bbfc9dda1a3df2132b6fe504bbd554f7bab1c80bdc99",
+            "note": (
+                "l'Algérie applique la ZLECAf à l'importation (17 322 lignes "
+                "classées A/B/C, calendriers standard et réciprocité)"
+            ),
+        },
+        "schedule_published": "e-Tariff Book (snapshot EAC archivé — 4 970 lignes)",
+    }
     reg["integrity_watch_fixes"] = {
         "as_of": "2026-09-06",
         "excise_primary_law_restored": True,
