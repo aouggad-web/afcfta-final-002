@@ -45,7 +45,9 @@
    "product_description": "AGRIINPUT — Autorisation d'importation d'intrants agricoles (engrais / pesticides)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-002-ARMAUTH",
@@ -85,7 +87,9 @@
    "product_description": "ARMAUTH — Autorisation préalable d'importation d'armes et matériels de sécurité",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-003-ECTN",
@@ -5344,7 +5348,9 @@
    "product_description": "ECTN — ECTN/BSC — Bon de Suivi des Cargaisons / Electronic Cargo Tracking Note (fret maritime — obligatoire pour toutes importations par voie maritime) — CNCC Cameroun",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-004-ENERGYAUTH",
@@ -5418,7 +5424,9 @@
    "product_description": "ENERGYAUTH — Autorisation d'importation d'hydrocarbures / produits pétroliers",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-005-ENVDECL",
@@ -6161,7 +6169,9 @@
    "product_description": "ENVDECL — Déclaration de conformité environnementale / Fiche de Données de Sécurité (FDS)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-006-FOODCERT",
@@ -6740,7 +6750,9 @@
    "product_description": "FOODCERT — Attestation de conformité alimentaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-007-FOODCERT",
@@ -7028,7 +7040,9 @@
    "product_description": "FOODCERT — Attestation de libre commercialisation / conformité sanitaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-008-IMPDEC",
@@ -12287,7 +12301,9 @@
    "product_description": "IMPDEC — Déclaration en Douane (DAU — Document Administratif Unique)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-009-PHARMAUTH",
@@ -12340,7 +12356,9 @@
    "product_description": "PHARMAUTH — Autorisation d'importation de médicaments / Autorisation de Mise sur le Marché (AMM)",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-010-PHYTOCERT",
@@ -12919,7 +12937,9 @@
    "product_description": "PHYTOCERT — Certificat phytosanitaire du pays d'origine",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-011-STDCERT",
@@ -14009,7 +14029,9 @@
    "product_description": "STDCERT — Certificat de conformité aux normes nationales",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   },
   {
    "measure_id": "CMR-FAP-012-VETCERT",
@@ -14297,7 +14319,9 @@
    "product_description": "VETCERT — Certificat sanitaire vétérinaire",
    "requires_human_review": false,
    "mapping_status": "DIRECT_HS",
-   "mapping_confidence": 100
+   "mapping_confidence": 70,
+   "legal_text_verified": false,
+   "provenance_quality": "DERIVED_FROM_REGIONAL_SCHEME — à confirmer par les textes camerounais (PECAE, instructions douanières)"
   }
  ],
  "provenance": {
@@ -14305,6 +14329,7 @@
   "note_invariant": "Aucune F.A.P à contenu purement numérique (invariant ^\\d+([.,]\\d+)?$)",
   "canonical_sha256": "15a0740048457f7ce78dc39aa276e04848e47f685a4a3ff4ed57c9f87a508e75",
   "fap_par_formalite": 12,
-  "source_formalites": "etl/africa_formalities.py (buckets produits × autorités nationales réelles — 54 pays)"
+  "source_formalites": "etl/africa_formalities.py (buckets produits × autorités nationales réelles — 54 pays)",
+  "integrity_watch": "formalités dégradées (legal_text_verified=false) — à confirmer par les textes camerounais"
  }
 }

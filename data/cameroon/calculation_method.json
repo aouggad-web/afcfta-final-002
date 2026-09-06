@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "jurisdiction": "CMR",
+  "as_of": "2026-09-06",
+  "status": "DOCUMENTED_SOURCES_VERIFIED",
+  "note": "Cascade CEMAC documentée depuis le tarif DGD Cameroun (codes RI/TCI/DA par ligne) + Code Général des Impôts 2021 (TVA, VERIFIED_PRIMARY_TEXT) + PwC ; sources officielles archivées (PECAE, PVI, portails).",
+  "cascade": [
+    {
+      "order": 1,
+      "tax": "VALEUR_EN_DOUANE",
+      "name": "Valeur en douane (CIF)",
+      "base": "valeur transactionnelle CIF",
+      "legal_reference": "Code des douanes CEMAC ; Tarif des Douanes DGD Cameroun",
+      "source_type": "TARIF_OFFICIEL"
+    },
+    {
+      "order": 2,
+      "tax": "DD",
+      "name": "Droit de douane (TEC CEMAC)",
+      "base": "valeur en douane (CIF)",
+      "formula": "DD = CIF × taux (catégories 5/10/20/30% + lignes spécifiques)",
+      "legal_reference": "Tarif Extérieur Commun CEMAC — colonne DD par ligne",
+      "source_type": "TARIF_OFFICIEL"
+    },
+    {
+      "order": 3,
+      "tax": "RI",
+      "name": "Redevance informatique",
+      "base": "valeur en douane (CIF)",
+      "formula": "RI = CIF × 0,45%",
+      "legal_reference": "Tarif DGD Cameroun — colonne RI (import_levies.json, câblée)",
+      "source_type": "TARIF_OFFICIEL"
+    },
+    {
+      "order": 4,
+      "tax": "TCI",
+      "name": "Taxe communautaire d'intégration (CEMAC)",
+      "base": "valeur en douane (CIF)",
+      "formula": "TCI = CIF × 1%",
+      "legal_reference": "Convention CEMAC n°02/03-CEMAC-UAC-CM ; colonne TCI par ligne (câblée)",
+      "source_type": "TARIF_OFFICIEL"
+    },
+    {
+      "order": 5,
+      "tax": "DA",
+      "name": "Droit d'accise (CEMAC)",
+      "base": "par ligne (ad valorem sur CIF ou spécifique)",
+      "status": "documenté par ligne dans le canonique (codes DA) — câblage dédié à venir",
+      "legal_reference": "Convention CEMAC sur les droits d'accise",
+      "source_type": "TARIF_OFFICIEL"
+    },
+    {
+      "order": 6,
+      "tax": "TVA",
+      "name": "Taxe sur la valeur ajoutée à l'importation",
+      "base": "valeur en douane + DD + RI + TCI + DA",
+      "formula": "TVA = (CIF + droits et taxes) × taux",
+      "rates": {
+        "17.5%": "CGI 2021 art. 142 (VERIFIED_PRIMARY_TEXT)",
+        "19.25%": "taux runtime courant — ARBITRAGE À FAIRE entre les deux statuts"
+      },
+      "legal_reference": "Code Général des Impôts 2021, art. 142",
+      "source_type": "PRIMARY_TEXT + RUNTIME"
+    }
+  ],
+  "provenance": {
+    "doctrine": "zéro-fabrication — toute valeur NON vérifiée est marquée UNVERIFIED et n'entre jamais dans un calcul",
+    "canonical_tariff": "backend/data/CMR_tariffs.json (5 239 sous-positions nationales 8 chiffres CEMAC)",
+    "canonical_sha256": "Voir data/cameroon/cmr_gazette_register.json → base_tariff_documentation.sha256",
+    "sources_officielles": [
+      "CMR-DGI-CGI-2021",
+      "CMR-DOUANES-PORTAL-20260725",
+      "CMR-PECAE-DECRETS-2015-2021"
+    ],
+    "engine_wiring": "DD + RI + TCI + TVA calculés ; DA (accises) et arbitrage TVA 17,5/19,25 à finaliser"
+  }
+}
