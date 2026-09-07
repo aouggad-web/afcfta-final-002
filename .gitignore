@@ -11,3 +11,8 @@ venv/
 
 # Node
 node_modules/
+
+# Build output
+frontend/build/
+frontend/dist/
+dist/

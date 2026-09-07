@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import './styles/tailwind.css';
 import AfcftaSidebar from './components/AfcftaSidebar';
 import { Production } from './components/production';
 import { AuthProvider } from './context/AuthContext';
