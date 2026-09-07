@@ -1,0 +1,13 @@
+{
+  "country_code": "ERI",
+  "country_name": "Érythrée",
+  "source": "Ministry of Finance — Eritrea",
+  "source_url": "https://www.mof.gov.er/",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.mof.gov.er/ non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:16.434258",
+  "notes": "Accès web très limité. Données à obtenir via OMC/ITC MacMap.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.mof.gov.er/ pour obtenir les taux réels. Méthode prévue : pending. Ne pas utiliser de données générées par IA/template."
+}

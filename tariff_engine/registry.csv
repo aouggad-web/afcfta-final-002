@@ -1,0 +1,2 @@
+bloc,country,hs_version,local_path,parser
+EAC,MULTI,HS2022,tariff_engine/pdf_sources/EAC/eac_cet_2022.pdf,eac_parser

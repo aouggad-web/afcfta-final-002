@@ -1,0 +1,84 @@
+{
+  "summary": "Testing new 'Formalités et Documents Nécessaires' feature. Backend API working correctly, returns authentic tariff data with formalities. CRITICAL BUG: Frontend React error in <RegimeBreakdown> component inside DetailedCalculationBreakdown.jsx prevents results from rendering. The component expects different data structure than what authentic tariff API provides.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "critical": [
+      {
+        "component": "DetailedCalculationBreakdown.jsx > RegimeBreakdown",
+        "issue": "React error when rendering with authentic tariff data - data structure mismatch. Component expects tax_lines, fob_value, freight, insurance but authentic API returns dd, vat, other_taxes structure",
+        "error_message": "An error occurred in the <RegimeBreakdown> component",
+        "priority": "CRITICAL",
+        "selector": "N/A - component crash"
+      }
+    ],
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Calculator with authentic tariff data",
+        "issue": "Results section fails to render due to RegimeBreakdown component error. API call succeeds (console shows '✅ Using AUTHENTIC tariff data for SEN') but React component tree crashes",
+        "affected_selectors": ["[data-testid='authentic-data-badge']", "[data-testid='formalities-section']", "[data-testid='all-taxes-table']"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_15.json"
+  ],
+  "action_items": [
+    "FIX CRITICAL: RegimeBreakdown component data structure mismatch with authentic tariff API",
+    "Option A: Adapt authentic API response to match expected structure (tax_lines format) before passing to DetailedCalculationBreakdown",
+    "Option B: Check data_source and skip DetailedCalculationBreakdown for authentic_tariff data since main results UI already handles it correctly",
+    "Option C: Create separate DetailedCalculationBreakdown variant for authentic tariff data",
+    "Add Error Boundary around DetailedCalculationBreakdown to prevent full component tree crash"
+  ],
+  "critical_code_review_comments": [
+    "DetailedCalculationBreakdown.jsx expects result.npf_calculation.tax_lines, result.npf_calculation.fob_value etc but authentic API returns result.npf_calculation.dd, result.npf_calculation.vat structure",
+    "Main results section in CalculatorTab (lines 656-1161) correctly handles authentic data with data_source === 'authentic_tariff' checks",
+    "The formalities section code (lines 960-1161) is correctly implemented with all required documents but won't render due to React crash",
+    "No error boundary exists in the app to gracefully handle component errors"
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% - API /api/authentic-tariffs/calculate working correctly, returns formalities, taxes_detail, fiscal_advantages",
+    "frontend": "0% - Results fail to render due to RegimeBreakdown component crash"
+  },
+  "test_credentials": "N/A - Public APIs",
+  "seed_data_creation": "N/A",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The formalities section code EXISTS and is correctly implemented (lines 960-1161 in CalculatorTab.jsx). Backend API works correctly and returns administrative_formalities, fiscal_advantages, taxes_detail. However, a bug in DetailedCalculationBreakdown.jsx (specifically the RegimeBreakdown sub-component) causes React error that prevents entire results section from rendering. Main agent needs to fix data structure mismatch between authentic tariff API response and what DetailedCalculationBreakdown expects.",
+  "verified_features": {
+    "backend_api": {
+      "status": "PASS",
+      "details": "GET /api/authentic-tariffs/calculate/SEN/870323?value=100000&language=fr returns correct data with administrative_formalities, taxes_detail, fiscal_advantages"
+    },
+    "formalities_section_code": {
+      "status": "PASS",
+      "details": "Code exists at lines 960-1161, includes: Facture Commerciale, Liste de Colisage, Connaissement, Déclaration en Douane, Certificat d'Origine ZLECAf, Déclaration du Fournisseur"
+    },
+    "formalities_section_rendering": {
+      "status": "BLOCKED",
+      "details": "Cannot verify rendering due to RegimeBreakdown component crash"
+    },
+    "select_components_fix": {
+      "status": "PASS",
+      "details": "Select components working correctly - verified in screenshot showing Maroc and Sénégal selections"
+    }
+  },
+  "rca_of_the_issue": {
+    "root_cause": "Data structure mismatch between authentic tariff API response and DetailedCalculationBreakdown component expectations",
+    "reproduction_steps": [
+      "1. Navigate to Calculator tab",
+      "2. Select Origin: Maroc, Destination: Sénégal",
+      "3. Enter HS code: 870323, Value: 100000",
+      "4. Click 'Calculer avec Données Officielles'",
+      "5. Observe: Console shows '✅ Using AUTHENTIC tariff data for SEN' but results don't render",
+      "6. Console shows React error in RegimeBreakdown component"
+    ],
+    "technical_details": "DetailedCalculationBreakdown receives authenticResult which has npf_calculation.dd, npf_calculation.vat structure but RegimeBreakdown tries to access calculation.tax_lines, calculation.fob_value which don't exist",
+    "mitigation": "Either transform authentic API response to match expected format, or conditionally skip DetailedCalculationBreakdown for authentic_tariff data_source, or add error boundary"
+  }
+}

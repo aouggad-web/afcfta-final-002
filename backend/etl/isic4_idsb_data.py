@@ -143,12 +143,35 @@ def get_country_isic4_summary(country_iso3: str) -> Optional[Dict]:
             }
 
     country_name = records[0]["country_name"]
+
+    # Qualité des données : compte les indicateurs affichés (dernière année) par
+    # nature, pour signaler au niveau du pays s'il repose entièrement sur des
+    # estimations UNIDO faute de statistiques officielles.
+    official_indicators = 0
+    estimated_indicators = 0
+    for sector in by_isic.values():
+        for ind in sector["indicators"].values():
+            if ind["data_nature"] == "OFFICIAL_STATISTICS":
+                official_indicators += 1
+            elif ind["data_nature"] == "UNIDO_DERIVED_ESTIMATE":
+                estimated_indicators += 1
+
+    data_quality = {
+        "official_indicators": official_indicators,
+        "estimated_indicators": estimated_indicators,
+        "has_official_statistics": official_indicators > 0,
+        # Vrai quand le pays n'a AUCUNE statistique officielle : les valeurs
+        # affichées sont uniquement des estimations UNIDO (à indiquer à l'écran).
+        "is_fully_estimated": official_indicators == 0 and estimated_indicators > 0,
+    }
+
     return {
         "country_iso3": iso3,
         "country_name": country_name,
         "classification": "ISIC Rev.4 (4 chiffres / classe)",
         "source": "UNIDO Statistics Data Portal — IDSB + INDSTAT, ISIC Rev.4",
         "years_covered": "2018-2024 (filtré depuis la source d'origine 2005-2024)",
+        "data_quality": data_quality,
         "sectors": sorted(by_isic.values(), key=lambda x: x["isic4"]),
     }
 

@@ -1,0 +1,13 @@
+{
+  "country_code": "DJI",
+  "country_name": "Djibouti",
+  "source": "Direction Générale des Douanes — Djibouti",
+  "source_url": "https://www.douanesdj.gouv.dj/tarif/",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.douanesdj.gouv.dj/tarif/ non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:15.433615",
+  "notes": "Djibouti zone franche — pas de TVA générale. DD 0-33%. Membre COMESA+IGAD.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.douanesdj.gouv.dj/tarif/ pour obtenir les taux réels. Méthode prévue : html_scrape. Ne pas utiliser de données générées par IA/template."
+}

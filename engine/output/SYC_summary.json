@@ -1,0 +1,18 @@
+{
+  "country_iso3": "SYC",
+  "country_name": "SYC",
+  "processed_lines": 5831,
+  "sub_positions": 16140,
+  "total_positions": 21971,
+  "chapters_covered": 98,
+  "vat_rate": 15.0,
+  "dd_range": {
+    "min": 0.0,
+    "max": 25.0,
+    "avg": 7.24
+  },
+  "data_format": "enhanced_v2",
+  "output_file": "/app/engine/output/SYC_canonical.jsonl",
+  "record_count": 16570,
+  "generated_at": "2026-03-01T17:37:41.482004"
+}
