@@ -1,0 +1,1047 @@
+{
+ "schema_version": "1.0",
+ "country": "DZA",
+ "as_of": "2026-09-05",
+ "excise_rates": [
+  {
+   "record_id": "DZA-TIC-030213",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "030213"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-030214",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "030214"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-030311",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "030311"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-030312",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "030312"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-030313",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "030313"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-030319",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "030319"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-030399",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "030399"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-030541",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "030541"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-080132",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "080132"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-080212",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "080212"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-080390",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "080390"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-080430",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "080430"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-080620",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "080620"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-081050",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "081050"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-081320",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "081320"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-090111",
+   "rate": "10.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "090111"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-090112",
+   "rate": "10.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "090112"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-090121",
+   "rate": "10.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "090121"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-090122",
+   "rate": "10.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "090122"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-090190",
+   "rate": "10.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "090190"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-090411",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "090411"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-160431",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "160431"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-160432",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "160432"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-170490",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "170490"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-210112",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "210112"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-210500",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "210500"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-284330",
+   "rate": "60.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "284330"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-360500",
+   "rate": "20.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "360500"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-630900",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "630900"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710110",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710110"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710121",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710121"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710122",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710122"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710210",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710210"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710221",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710221"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710229",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710229"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710231",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710231"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710239",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710239"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710310",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710310"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710391",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710391"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710399",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710399"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710410",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710410"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710421",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710421"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710429",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710429"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710491",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710491"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-710499",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "710499"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-711610",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "711610"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-711620",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "711620"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-853110",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "853110"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-854340",
+   "rate": "40.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "854340"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-870321",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "870321"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-870323",
+   "rate": "60.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "870323"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-870324",
+   "rate": "60.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "870324"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-870332",
+   "rate": "60.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "870332"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-870333",
+   "rate": "60.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "870333"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-870350",
+   "rate": "60.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "870350"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-870370",
+   "rate": "60.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "870370"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-871120",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "871120"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-871130",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "871130"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-871140",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "871140"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-871150",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "871150"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890311",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890311"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890312",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890312"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890319",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890319"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890321",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890321"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890322",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890322"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890323",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890323"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890331",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890331"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890332",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890332"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890333",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890333"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890393",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890393"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-890399",
+   "rate": "30.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "890399"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-961310",
+   "rate": "20.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "961310"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-961320",
+   "rate": "20.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "961320"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  },
+  {
+   "record_id": "DZA-TIC-961380",
+   "rate": "20.0%",
+   "rate_basis": "valeur en douane (CIF)",
+   "effective_from": "2020-01-01",
+   "effective_to": null,
+   "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+   "hs_codes_explicit": [
+    "961380"
+   ],
+   "legal_reference": "Taxe Intérieure de Consommation (T.I.C) — Tarif d'usage DGD (édition LF 2020), colonne T.I.C",
+   "source_id": "DZA-DGD-TARIF-USAGE-2020",
+   "verification_status": "VERIFIED_PRIMARY_TEXT"
+  }
+ ],
+ "provenance": {
+  "source": "backend/data/DZA_tariffs.json (CRAWLED_AUTHENTIC — douane.gov.dz)",
+  "note": "T.I.C extraite par position depuis le canonique DGD ; autres taxes spécifiques (T.S.V, D.C.A, T.A.P.T, T.C.L.S…) portées par le canonique et la nomenclature officielle dgd_tax_codes_and_fap.json."
+ }
+}

@@ -1,0 +1,1200 @@
+[
+  {
+    "test": "API Root Endpoint",
+    "success": true,
+    "message": "Point d'entrée accessible avec message ZLECAf",
+    "timestamp": "2025-12-31T10:13:39.089012",
+    "details": {
+      "response": {
+        "message": "Système Commercial ZLECAf API - Version Complète"
+      }
+    }
+  },
+  {
+    "test": "Countries List",
+    "success": true,
+    "message": "Liste complète de 54 pays avec structure correcte",
+    "timestamp": "2025-12-31T10:13:39.101945",
+    "details": {
+      "sample_countries": [
+        {
+          "code": "DZ",
+          "name": "Algérie",
+          "region": "Afrique du Nord",
+          "iso3": "DZA",
+          "wb_code": "DZA",
+          "population": 44700000
+        },
+        {
+          "code": "AO",
+          "name": "Angola",
+          "region": "Afrique Centrale",
+          "iso3": "AGO",
+          "wb_code": "AGO",
+          "population": 32800000
+        },
+        {
+          "code": "BJ",
+          "name": "Bénin",
+          "region": "Afrique de l'Ouest",
+          "iso3": "BEN",
+          "wb_code": "BEN",
+          "population": 12100000
+        }
+      ]
+    }
+  },
+  {
+    "test": "Country Profile NG",
+    "success": false,
+    "message": "PIB incorrect: 268500000000.0 au lieu de 374.984",
+    "timestamp": "2025-12-31T10:13:39.162452",
+    "details": {
+      "actual_gdp": 268500000000.0,
+      "expected_gdp": 374.984
+    }
+  },
+  {
+    "test": "Country Profile DZ",
+    "success": false,
+    "message": "PIB incorrect: 260100000000.00003 au lieu de 269.128",
+    "timestamp": "2025-12-31T10:13:39.176116",
+    "details": {
+      "actual_gdp": 260100000000.00003,
+      "expected_gdp": 269.128
+    }
+  },
+  {
+    "test": "Country Profile ZA",
+    "success": false,
+    "message": "PIB incorrect: 377782000000.0 au lieu de 377.782",
+    "timestamp": "2025-12-31T10:13:39.187346",
+    "details": {
+      "actual_gdp": 377782000000.0,
+      "expected_gdp": 377.782
+    }
+  },
+  {
+    "test": "Country Profile EG",
+    "success": false,
+    "message": "PIB incorrect: 348000000000.0 au lieu de 331.59",
+    "timestamp": "2025-12-31T10:13:39.202013",
+    "details": {
+      "actual_gdp": 348000000000.0,
+      "expected_gdp": 331.59
+    }
+  },
+  {
+    "test": "Rules of Origin 010121",
+    "success": true,
+    "message": "Règles d'origine complètes pour 010121 - Entièrement obtenus",
+    "timestamp": "2025-12-31T10:13:39.211206",
+    "details": {
+      "rule_type": "Entièrement obtenus",
+      "regional_content": 100,
+      "requirement": "100% africain"
+    }
+  },
+  {
+    "test": "Rules of Origin 847989",
+    "success": true,
+    "message": "Règles d'origine complètes pour 847989 - Transformation substantielle",
+    "timestamp": "2025-12-31T10:13:39.261130",
+    "details": {
+      "rule_type": "Transformation substantielle",
+      "regional_content": 45,
+      "requirement": "45% valeur ajoutée africaine"
+    }
+  },
+  {
+    "test": "Tax Implementation SN->CI",
+    "success": true,
+    "message": "✅ Implémentation des taxes validée - TVA: 18.0%, Économies totales: 29500.00 USD (19.6%)",
+    "timestamp": "2025-12-31T10:13:41.791108",
+    "details": {
+      "vat_rate": "18.0%",
+      "vat_amount": 22950.0,
+      "statistical_fee": 1000.0,
+      "community_levy": 500.0,
+      "ecowas_levy": 1000.0,
+      "normal_total": 150450.0,
+      "zlecaf_total": 120950.0,
+      "total_savings": 29500.0,
+      "savings_percentage": 19.607843137254903
+    }
+  },
+  {
+    "test": "Tariff Calculation",
+    "success": true,
+    "message": "Calcul tarifaire réussi - Économies: 25000.00 USD (100.0%)",
+    "timestamp": "2025-12-31T10:13:43.886159",
+    "details": {
+      "normal_tariff": "25.0%",
+      "zlecaf_tariff": "0.0%",
+      "savings_usd": 25000.0,
+      "savings_percent": 100.0,
+      "calculation_id": "f001c454-35ee-4c29-aa15-64d7f3afbc03"
+    }
+  },
+  {
+    "test": "Statistics",
+    "success": true,
+    "message": "Statistiques complètes - 54 pays, 1247 calculs",
+    "timestamp": "2025-12-31T10:13:43.905035",
+    "details": {
+      "countries": 54,
+      "calculations": 1247,
+      "population": 1318000000,
+      "gdp": 2706000000000,
+      "tariff_reduction": "90%"
+    }
+  },
+  {
+    "test": "Algeria Profile - ongoing_projects & infrastructure_ranking",
+    "success": false,
+    "message": "Problèmes de validation - Projects valid: False, Ranking valid: True",
+    "timestamp": "2025-12-31T10:13:43.916649",
+    "details": {
+      "projects": {
+        "missing_fields": [
+          "name",
+          "status",
+          "budget_usd",
+          "start_date"
+        ],
+        "sample_project": {
+          "titre": "Ligne Ferroviaire Minière Béchar-Tindouf-Gara Djebilet",
+          "secteur": "Mines & Transport",
+          "statut": "En construction (Avancé)",
+          "budget": "Est. 1.5 - 2 Mrd USD (Rail)",
+          "echeance": "Janvier 2026 (Premier train)",
+          "description": "Mégaprojet ferroviaire de 950 km reliant le gisement de fer de Gara Djebilet (Tindouf) au réseau national à Béchar. Le projet est crucial pour l'exploitation de l'une des plus grandes réserves de fer au monde (3.5 Mrd tonnes).",
+          "impact": "Acheminement de 40-50M tonnes/an de minerai vers le port d'Arzew/Oran. Création de 15,000 emplois directs. Désenclavement du Sud-Ouest.",
+          "partenaires": "Partenariat Algéro-Chinois (CRCC)",
+          "source": "Ministère des Travaux Publics / ANESRIF 2025"
+        }
+      },
+      "infrastructure_ranking": {
+        "available_fields": [
+          "africa_rank"
+        ],
+        "africa_rank": 8,
+        "global_rank": null,
+        "score": null
+      }
+    }
+  },
+  {
+    "test": "Egypt Profile - ongoing_projects & infrastructure_ranking",
+    "success": false,
+    "message": "Problèmes de validation - Projects valid: False, Ranking valid: True",
+    "timestamp": "2025-12-31T10:13:43.926903",
+    "details": {
+      "projects": {
+        "missing_fields": [
+          "name",
+          "status",
+          "budget_usd",
+          "start_date"
+        ],
+        "sample_project": {
+          "titre": "Nouvelle Capitale Administrative",
+          "secteur": "Urbanisme & Infrastructure",
+          "statut": "En construction (Phase 1 opérationnelle)",
+          "budget": "58 Milliards USD",
+          "echeance": "2025-2030 (Phases successives)",
+          "description": "Construction d'une nouvelle ville intelligente à 45km du Caire pour désengorger la capitale. Inclut le plus haut gratte-ciel d'Afrique (Iconic Tower).",
+          "impact": "Centre administratif et économique moderne pour 6.5 millions d'habitants.",
+          "partenaires": "CSCEC (Chine), Gouvernement Égyptien",
+          "source": "ACUD Egypt"
+        }
+      },
+      "infrastructure_ranking": {
+        "available_fields": [
+          "africa_rank"
+        ],
+        "africa_rank": 4,
+        "global_rank": null,
+        "score": null
+      }
+    }
+  },
+  {
+    "test": "Tanger Med Port - Performance & Authority",
+    "success": true,
+    "message": "✅ Port de Tanger Med: Performance metrics (3 métriques) et authority details (3 infos) présents et valides",
+    "timestamp": "2025-12-31T10:13:43.948177",
+    "details": {
+      "port_name": "Port de Tanger Med",
+      "port_id": "MAR-TAN-001",
+      "performance_metrics": {
+        "found_fields": [
+          "container_throughput_teu",
+          "cargo_throughput_tons",
+          "vessel_calls"
+        ],
+        "values": {
+          "container_throughput_teu": 8200000,
+          "cargo_throughput_tons": 96000000,
+          "vessel_calls": 4200
+        },
+        "count": 3
+      },
+      "authority_details": {
+        "found_fields": [
+          "name",
+          "website",
+          "contact_email"
+        ],
+        "values": {
+          "name": "Tanger Med Port Authority (TMPA)",
+          "website": "https://www.tangermed.ma",
+          "contact_email": "contact@tangermed.ma"
+        },
+        "count": 3
+      }
+    }
+  },
+  {
+    "test": "Production Statistics",
+    "success": false,
+    "message": "Nombre de pays incorrect: 54 au lieu de 10",
+    "timestamp": "2025-12-31T10:13:43.955676",
+    "details": {
+      "total_countries": 54
+    }
+  },
+  {
+    "test": "Production Macro",
+    "success": false,
+    "message": "Champs manquants dans les enregistrements: ['sector', 'source']",
+    "timestamp": "2025-12-31T10:13:43.986945",
+    "details": {
+      "sample_record": {
+        "country_name": "Afrique du Sud",
+        "country_iso3": "ZAF",
+        "year": 2021,
+        "sector_isic_section": "A",
+        "sector_detail": "Agriculture, forestry and fishing",
+        "indicator_code": "NV.AGR.TOTL.ZS",
+        "indicator_label": "Agriculture, value added (% of GDP)",
+        "value": 2.4,
+        "unit": "percent",
+        "currency": null,
+        "price_base_year": null,
+        "source_institution": "World Bank",
+        "source_dataset": "World Development Indicators",
+        "source_url": "https://data.worldbank.org/indicator/NV.AGR.TOTL.ZS",
+        "wb_indicator_code": "NV.AGR.TOTL.ZS"
+      }
+    }
+  },
+  {
+    "test": "Production Macro ZAF",
+    "success": true,
+    "message": "Données macro ZAF organisées par secteur - 3 secteurs",
+    "timestamp": "2025-12-31T10:13:43.995227",
+    "details": {
+      "country": "ZAF",
+      "sectors_count": 3,
+      "sectors": [
+        "Agriculture, forestry and fishing",
+        "Industry (including construction)",
+        "Manufacturing"
+      ]
+    }
+  },
+  {
+    "test": "Production Agriculture",
+    "success": false,
+    "message": "Champs manquants dans les enregistrements: ['commodity', 'source']",
+    "timestamp": "2025-12-31T10:13:44.025873",
+    "details": {
+      "sample_record": {
+        "country_name": "Afrique du Sud",
+        "country_iso3": "ZAF",
+        "year": 2021,
+        "sector_isic_section": "A",
+        "sector_detail": "Crops",
+        "indicator_code": "QCL_PROD",
+        "indicator_label": "Production",
+        "value": 15360428,
+        "unit": "tonnes",
+        "currency": null,
+        "price_base_year": null,
+        "source_institution": "FAO",
+        "source_dataset": "FAOSTAT - Production",
+        "source_url": "https://www.fao.org/faostat/",
+        "faostat_domain": "QCL",
+        "commodity_code": "0455",
+        "commodity_label": "Maize (corn)",
+        "element_code": "5510",
+        "element_label": "Production"
+      }
+    }
+  },
+  {
+    "test": "Production Agriculture ZAF",
+    "success": true,
+    "message": "Données agricoles ZAF organisées par culture - 3 cultures",
+    "timestamp": "2025-12-31T10:13:44.033331",
+    "details": {
+      "country": "ZAF",
+      "commodities_count": 3,
+      "commodities": [
+        "Maize (corn)",
+        "Sugarcane",
+        "Wheat"
+      ]
+    }
+  },
+  {
+    "test": "Production Manufacturing",
+    "success": false,
+    "message": "Champs manquants dans les enregistrements: ['source']",
+    "timestamp": "2025-12-31T10:13:44.058811",
+    "details": {
+      "sample_record": {
+        "country_name": "Afrique du Sud",
+        "country_iso3": "ZAF",
+        "year": 2021,
+        "sector_isic_section": "C",
+        "sector_detail": "Manufacture of food products",
+        "indicator_code": "INDSTAT_VA",
+        "indicator_label": "Value added",
+        "value": 31588069818,
+        "unit": "USD",
+        "currency": "USD",
+        "price_base_year": "2015",
+        "source_institution": "UNIDO",
+        "source_dataset": "INDSTAT4",
+        "source_url": "https://stat.unido.org/",
+        "unido_dataset": "INDSTAT4",
+        "isic_revision": "4",
+        "isic_code": "10",
+        "isic_label": "Manufacture of food products"
+      }
+    }
+  },
+  {
+    "test": "Production Manufacturing ZAF",
+    "success": true,
+    "message": "Données manufacturières ZAF organisées par secteur ISIC - 2 secteurs",
+    "timestamp": "2025-12-31T10:13:44.066378",
+    "details": {
+      "country": "ZAF",
+      "isic_sectors_count": 2,
+      "isic_sectors": [
+        "10 - Manufacture of food products",
+        "24 - Manufacture of basic metals"
+      ]
+    }
+  },
+  {
+    "test": "Production Mining",
+    "success": false,
+    "message": "Champs manquants dans les enregistrements: ['commodity', 'source']",
+    "timestamp": "2025-12-31T10:13:44.087981",
+    "details": {
+      "sample_record": {
+        "country_name": "Afrique du Sud",
+        "country_iso3": "ZAF",
+        "year": 2021,
+        "sector_isic_section": "B",
+        "sector_detail": "Mining and quarrying",
+        "indicator_code": "USGS_PROD",
+        "indicator_label": "Mine production",
+        "value": 435109,
+        "unit": "tonnes",
+        "currency": null,
+        "price_base_year": null,
+        "source_institution": "USGS",
+        "source_dataset": "Mineral Commodity Summaries 2023",
+        "source_url": "https://www.usgs.gov/centers/national-minerals-information-center/mineral-commodity-summaries",
+        "commodity_code": "GO",
+        "commodity_label": "Gold",
+        "usgs_table_name": "Table 1 - Gold mine production"
+      }
+    }
+  },
+  {
+    "test": "Production Mining ZAF",
+    "success": true,
+    "message": "Données minières ZAF organisées par minerai - 2 minerais",
+    "timestamp": "2025-12-31T10:13:44.095121",
+    "details": {
+      "country": "ZAF",
+      "commodities_count": 2,
+      "commodities": [
+        "Gold",
+        "Platinum"
+      ]
+    }
+  },
+  {
+    "test": "Production Overview ZAF",
+    "success": true,
+    "message": "Vue complète ZAF validée - 4 dimensions avec 16 enregistrements totaux",
+    "timestamp": "2025-12-31T10:13:44.103712",
+    "details": {
+      "country": "ZAF",
+      "dimensions": 4,
+      "total_records": 16,
+      "value_added_count": "dict",
+      "agriculture_count": "dict",
+      "manufacturing_count": "dict",
+      "mining_count": "dict"
+    }
+  },
+  {
+    "test": "Production Filtering Country",
+    "success": true,
+    "message": "Filtrage par pays ZAF validé - 12 enregistrements",
+    "timestamp": "2025-12-31T10:13:44.111000",
+    "details": {
+      "filtered_records": 12,
+      "country": "ZAF"
+    }
+  },
+  {
+    "test": "Production Filtering Year",
+    "success": true,
+    "message": "Filtrage par année 2024 validé - 162 enregistrements",
+    "timestamp": "2025-12-31T10:13:44.123456",
+    "details": {
+      "filtered_records": 162,
+      "year": 2024
+    }
+  },
+  {
+    "test": "Production Filtering Commodity",
+    "success": true,
+    "message": "Filtrage par commodity Maize validé - 116 enregistrements",
+    "timestamp": "2025-12-31T10:13:44.133309",
+    "details": {
+      "filtered_records": 116,
+      "commodity": "Maize"
+    }
+  },
+  {
+    "test": "FAOSTAT Statistics",
+    "success": true,
+    "message": "Statistiques FAOSTAT validées - 54 pays, 47 commodités, année 2023",
+    "timestamp": "2025-12-31T10:13:44.140662",
+    "details": {
+      "total_countries": 54,
+      "total_commodities": 47,
+      "data_year": 2023
+    }
+  },
+  {
+    "test": "FAOSTAT CIV",
+    "success": true,
+    "message": "Données CIV validées - Côte d'Ivoire, région Afrique de l'Ouest, Cacao présent",
+    "timestamp": "2025-12-31T10:13:44.189833",
+    "details": {
+      "country_name": "Côte d'Ivoire",
+      "region": "Afrique de l'Ouest",
+      "main_crops": [
+        "Cacao",
+        "Café",
+        "Hévéa",
+        "Noix de cajou",
+        "Palmier à huile",
+        "Banane"
+      ]
+    }
+  },
+  {
+    "test": "FAOSTAT EGY",
+    "success": true,
+    "message": "Données EGY validées - Égypte, Blé et Riz présents",
+    "timestamp": "2025-12-31T10:13:44.196868",
+    "details": {
+      "country_name": "Égypte",
+      "production_2023": {
+        "Blé": {
+          "value": 9500000,
+          "unit": "tonnes",
+          "rank_africa": 1,
+          "area_ha": 1400000,
+          "yield_kg_ha": 6786
+        },
+        "Maïs": {
+          "value": 7800000,
+          "unit": "tonnes",
+          "rank_africa": 3,
+          "area_ha": 1000000,
+          "yield_kg_ha": 7800
+        },
+        "Riz": {
+          "value": 4200000,
+          "unit": "tonnes",
+          "rank_africa": 1,
+          "area_ha": 450000,
+          "yield_kg_ha": 9333
+        },
+        "Canne à sucre": {
+          "value": 16000000,
+          "unit": "tonnes",
+          "rank_africa": 2,
+          "area_ha": 200000,
+          "yield_kg_ha": 80000
+        },
+        "Agrumes": {
+          "value": 5500000,
+          "unit": "tonnes",
+          "rank_africa": 1,
+          "area_ha": 220000,
+          "yield_kg_ha": 25000
+        },
+        "Tomate": {
+          "value": 6500000,
+          "unit": "tonnes",
+          "rank_africa": 1,
+          "area_ha": 180000,
+          "yield_kg_ha": 36111
+        }
+      }
+    }
+  },
+  {
+    "test": "FAOSTAT Top Producers Cacao",
+    "success": false,
+    "message": "La réponse n'est pas une liste",
+    "timestamp": "2025-12-31T10:13:44.204061",
+    "details": {
+      "response_type": "dict"
+    }
+  },
+  {
+    "test": "FAOSTAT Commodities",
+    "success": false,
+    "message": "La réponse n'est pas une liste",
+    "timestamp": "2025-12-31T10:13:44.210786",
+    "details": {
+      "response_type": "dict"
+    }
+  },
+  {
+    "test": "FAOSTAT Fisheries",
+    "success": true,
+    "message": "Données de pêche et aquaculture validées",
+    "timestamp": "2025-12-31T10:13:44.258701",
+    "details": {
+      "fisheries_data": {
+        "capture": [
+          {
+            "rank": 1,
+            "country": "MAR",
+            "name": "Maroc",
+            "production_tonnes": 1500000
+          },
+          {
+            "rank": 2,
+            "country": "MRT",
+            "name": "Mauritanie",
+            "production_tonnes": 900000
+          },
+          {
+            "rank": 3,
+            "country": "NGA",
+            "name": "Nigéria",
+            "production_tonnes": 780000
+          },
+          {
+            "rank": 4,
+            "country": "ZAF",
+            "name": "Afrique du Sud",
+            "production_tonnes": 550000
+          },
+          {
+            "rank": 5,
+            "country": "NAM",
+            "name": "Namibie",
+            "production_tonnes": 550000
+          }
+        ],
+        "aquaculture": [
+          {
+            "rank": 1,
+            "country": "EGY",
+            "name": "Égypte",
+            "production_tonnes": 1600000
+          },
+          {
+            "rank": 2,
+            "country": "NGA",
+            "name": "Nigéria",
+            "production_tonnes": 380000
+          },
+          {
+            "rank": 3,
+            "country": "UGA",
+            "name": "Ouganda",
+            "production_tonnes": 130000
+          },
+          {
+            "rank": 4,
+            "country": "GHA",
+            "name": "Ghana",
+            "production_tonnes": 78000
+          }
+        ]
+      }
+    }
+  },
+  {
+    "test": "UNIDO Statistics",
+    "success": true,
+    "message": "Statistiques UNIDO validées - 54 pays, MVA total $289.9B",
+    "timestamp": "2025-12-31T10:13:44.265848",
+    "details": {
+      "total_countries": 54,
+      "total_mva_bln_usd": 289.9
+    }
+  },
+  {
+    "test": "UNIDO MAR",
+    "success": true,
+    "message": "Données MAR validées - Maroc, MVA $32500M, MVA/PIB 24.8%",
+    "timestamp": "2025-12-31T10:13:44.272561",
+    "details": {
+      "country_name": "Maroc",
+      "mva_2023_mln_usd": 32500,
+      "mva_gdp_percent": 24.8
+    }
+  },
+  {
+    "test": "UNIDO ZAF",
+    "success": true,
+    "message": "Données ZAF validées - Afrique du Sud, automobile présent dans top_sectors",
+    "timestamp": "2025-12-31T10:13:44.320603",
+    "details": {
+      "country_name": "Afrique du Sud",
+      "top_sectors": [
+        {
+          "isic": "10",
+          "name": "Produits alimentaires",
+          "share_mva": 18.5,
+          "value_mln_usd": 8973
+        },
+        {
+          "isic": "29",
+          "name": "Véhicules automobiles",
+          "share_mva": 14.2,
+          "value_mln_usd": 6887
+        },
+        {
+          "isic": "24",
+          "name": "Métallurgie de base",
+          "share_mva": 12.1,
+          "value_mln_usd": 5869
+        },
+        {
+          "isic": "20",
+          "name": "Produits chimiques",
+          "share_mva": 10.8,
+          "value_mln_usd": 5238
+        },
+        {
+          "isic": "19",
+          "name": "Raffinage pétrolier",
+          "share_mva": 8.5,
+          "value_mln_usd": 4123
+        }
+      ]
+    }
+  },
+  {
+    "test": "UNIDO Ranking",
+    "success": false,
+    "message": "La réponse n'est pas une liste",
+    "timestamp": "2025-12-31T10:13:44.328295",
+    "details": {
+      "response_type": "dict"
+    }
+  },
+  {
+    "test": "UNIDO Sector Analysis 10",
+    "success": true,
+    "message": "Analyse du secteur alimentaire (ISIC 10) validée",
+    "timestamp": "2025-12-31T10:13:44.335777",
+    "details": {
+      "sector_analysis": {
+        "isic_code": "10",
+        "sector_name": "Produits alimentaires",
+        "countries": [
+          {
+            "country_iso3": "NGA",
+            "country_name": "Nigéria",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 35.2,
+            "value_mln_usd": 13552
+          },
+          {
+            "country_iso3": "EGY",
+            "country_name": "Égypte",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 22.4,
+            "value_mln_usd": 9587
+          },
+          {
+            "country_iso3": "ZAF",
+            "country_name": "Afrique du Sud",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 18.5,
+            "value_mln_usd": 8973
+          },
+          {
+            "country_iso3": "MAR",
+            "country_name": "Maroc",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 19.8,
+            "value_mln_usd": 6435
+          },
+          {
+            "country_iso3": "CIV",
+            "country_name": "Côte d'Ivoire",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 42.5,
+            "value_mln_usd": 4165
+          },
+          {
+            "country_iso3": "DZA",
+            "country_name": "Algérie",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 18.2,
+            "value_mln_usd": 3367
+          },
+          {
+            "country_iso3": "ETH",
+            "country_name": "Éthiopie",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 38.5,
+            "value_mln_usd": 3003
+          },
+          {
+            "country_iso3": "KEN",
+            "country_name": "Kenya",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 32.5,
+            "value_mln_usd": 2665
+          },
+          {
+            "country_iso3": "GHA",
+            "country_name": "Ghana",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 38.5,
+            "value_mln_usd": 2618
+          },
+          {
+            "country_iso3": "TZA",
+            "country_name": "Tanzanie",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 42.8,
+            "value_mln_usd": 2226
+          },
+          {
+            "country_iso3": "CMR",
+            "country_name": "Cameroun",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 35.5,
+            "value_mln_usd": 2059
+          },
+          {
+            "country_iso3": "SEN",
+            "country_name": "Sénégal",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 38.5,
+            "value_mln_usd": 1733
+          },
+          {
+            "country_iso3": "UGA",
+            "country_name": "Ouganda",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 45.2,
+            "value_mln_usd": 1718
+          },
+          {
+            "country_iso3": "COD",
+            "country_name": "RD Congo",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 45.5,
+            "value_mln_usd": 1593
+          },
+          {
+            "country_iso3": "TUN",
+            "country_name": "Tunisie",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 12.8,
+            "value_mln_usd": 1088
+          },
+          {
+            "country_iso3": "ZMB",
+            "country_name": "Zambie",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 38.5,
+            "value_mln_usd": 1078
+          },
+          {
+            "country_iso3": "AGO",
+            "country_name": "Angola",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 25.2,
+            "value_mln_usd": 1058
+          },
+          {
+            "country_iso3": "ZWE",
+            "country_name": "Zimbabwe",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 35.5,
+            "value_mln_usd": 781
+          },
+          {
+            "country_iso3": "NAM",
+            "country_name": "Namibie",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 45.2,
+            "value_mln_usd": 678
+          },
+          {
+            "country_iso3": "MUS",
+            "country_name": "Maurice",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 28.5,
+            "value_mln_usd": 513
+          },
+          {
+            "country_iso3": "RWA",
+            "country_name": "Rwanda",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 42.5,
+            "value_mln_usd": 510
+          },
+          {
+            "country_iso3": "BWA",
+            "country_name": "Botswana",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 35.5,
+            "value_mln_usd": 302
+          },
+          {
+            "country_iso3": "BEN",
+            "country_name": "Bénin",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 38.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "BFA",
+            "country_name": "Burkina Faso",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 42.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "MLI",
+            "country_name": "Mali",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 45.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "NER",
+            "country_name": "Niger",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 52.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "TGO",
+            "country_name": "Togo",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 28.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "GIN",
+            "country_name": "Guinée",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 42.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "MOZ",
+            "country_name": "Mozambique",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 28.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "MDG",
+            "country_name": "Madagascar",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 38.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "MWI",
+            "country_name": "Malawi",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 45.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "BDI",
+            "country_name": "Burundi",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 52.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "GAB",
+            "country_name": "Gabon",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 18.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "COG",
+            "country_name": "République du Congo",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 22.8,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "TCD",
+            "country_name": "Tchad",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 28.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "CAF",
+            "country_name": "République Centrafricaine",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 55.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "SDN",
+            "country_name": "Soudan",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 42.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "LBY",
+            "country_name": "Libye",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 12.8,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "SYC",
+            "country_name": "Seychelles",
+            "sector_name": "Produits alimentaires (poisson)",
+            "share_mva": 65.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "CPV",
+            "country_name": "Cap-Vert",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 45.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "COM",
+            "country_name": "Comores",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 52.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "DJI",
+            "country_name": "Djibouti",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 48.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "ERI",
+            "country_name": "Érythrée",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 42.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "GNQ",
+            "country_name": "Guinée Équatoriale",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 22.8,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "GMB",
+            "country_name": "Gambie",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 52.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "GNB",
+            "country_name": "Guinée-Bissau",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 65.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "LBR",
+            "country_name": "Libéria",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 42.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "LSO",
+            "country_name": "Lesotho",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 22.8,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "MRT",
+            "country_name": "Mauritanie",
+            "sector_name": "Produits alimentaires (poisson)",
+            "share_mva": 52.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "SLE",
+            "country_name": "Sierra Leone",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 48.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "SOM",
+            "country_name": "Somalie",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 55.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "SSD",
+            "country_name": "Soudan du Sud",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 58.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "STP",
+            "country_name": "São Tomé-et-Príncipe",
+            "sector_name": "Produits alimentaires",
+            "share_mva": 62.5,
+            "value_mln_usd": 0
+          },
+          {
+            "country_iso3": "SWZ",
+            "country_name": "Eswatini",
+            "sector_name": "Produits alimentaires (sucre)",
+            "share_mva": 42.5,
+            "value_mln_usd": 0
+          }
+        ]
+      }
+    }
+  },
+  {
+    "test": "UNIDO ISIC Sectors",
+    "success": false,
+    "message": "La réponse n'est pas une liste",
+    "timestamp": "2025-12-31T10:13:44.342279",
+    "details": {
+      "response_type": "dict"
+    }
+  },
+  {
+    "test": "Maritime Ports List",
+    "success": true,
+    "message": "Liste des 68 ports validée avec contacts complets",
+    "timestamp": "2025-12-31T10:13:44.367071",
+    "details": {
+      "total_ports": 68,
+      "sample_port": "Port d'Alger",
+      "sample_authority": "Entreprise Portuaire d'Alger (EPAL)",
+      "sample_website": "https://www.portalger.com.dz",
+      "sample_phone": "+213 21 42 34 48"
+    }
+  },
+  {
+    "test": "Port d'Alger Specific Data",
+    "success": true,
+    "message": "Données spécifiques du Port d'Alger validées",
+    "timestamp": "2025-12-31T10:13:44.376637",
+    "details": {
+      "port_name": "Port d'Alger",
+      "authority_name": "Entreprise Portuaire d'Alger (EPAL)",
+      "phone": "+213 21 42 34 48",
+      "website": "https://www.portalger.com.dz",
+      "email": "contact@portalger.com.dz"
+    }
+  },
+  {
+    "test": "Port de Tanger Med Specific Data",
+    "success": true,
+    "message": "Données spécifiques du Port de Tanger Med validées",
+    "timestamp": "2025-12-31T10:13:44.386991",
+    "details": {
+      "port_name": "Port de Tanger Med",
+      "authority_name": "Tanger Med Port Authority (TMPA)",
+      "website": "https://www.tangermed.ma",
+      "phone": "+212 539 337 000",
+      "email": "contact@tangermed.ma"
+    }
+  },
+  {
+    "test": "Port de Dakar Specific Data",
+    "success": true,
+    "message": "Données spécifiques du Port de Dakar validées",
+    "timestamp": "2025-12-31T10:13:44.395396",
+    "details": {
+      "port_name": "Port de Dakar",
+      "authority_name": "Port Autonome de Dakar (PAD)",
+      "website": "https://www.portdakar.sn",
+      "phone": "+221 33 849 45 45",
+      "email": "pad@portdakar.sn"
+    }
+  },
+  {
+    "test": "Shipping Agents Contacts",
+    "success": true,
+    "message": "288 agents de transport validés avec contacts mis à jour",
+    "timestamp": "2025-12-31T10:13:44.419479",
+    "details": {
+      "total_agents": 288,
+      "agents_with_website": 206,
+      "agents_with_phone": 158,
+      "agents_with_email": 158,
+      "website_coverage": "71.5%",
+      "phone_coverage": "54.9%",
+      "email_coverage": "54.9%"
+    }
+  },
+  {
+    "test": "Port Details Endpoint",
+    "success": true,
+    "message": "Détails du port DZA-ALG-001 validés avec autorité et 3 agents",
+    "timestamp": "2025-12-31T10:13:44.428328",
+    "details": {
+      "port_id": "DZA-ALG-001",
+      "port_name": "Port d'Alger",
+      "authority_name": "Entreprise Portuaire d'Alger (EPAL)",
+      "agents_count": 3,
+      "website": "https://www.portalger.com.dz",
+      "phone": "+213 21 42 34 48"
+    }
+  }
+]

@@ -1,209 +1,185 @@
 /**
- * Référentiel des pays africains (Union africaine : 54 États + RASD/Sahara
- * occidental = 55 entrées), avec codes ISO3/ISO2, noms FR/EN, région UN et
- * quelques indicateurs (signataire ZLECAf, présence de données commerciales).
- *
- * Les drapeaux emoji sont dérivés du code ISO2 (symboles indicateurs
- * régionaux) — pas de table de drapeaux à maintenir.
+ * Mapping centralisé des codes pays ISO pour l'Afrique
+ * Standard: ISO 3166-1 (ISO3 comme référence principale)
+ * 
+ * Ce fichier centralise tous les codes pays utilisés dans l'application
+ * pour assurer la cohérence des données.
+ * 
+ * Dernière mise à jour: Janvier 2025
  */
 
-// iso3 -> { iso2, name_en, name_fr, region, zlecafSignatory?, hasTradeData? }
-// zlecafSignatory et hasTradeData valent true par défaut, sauf indication.
-const _RAW = {
-  // Afrique du Nord
-  DZA: { iso2: 'DZ', name_en: 'Algeria', name_fr: 'Algérie', region: 'North Africa' },
-  EGY: { iso2: 'EG', name_en: 'Egypt', name_fr: 'Égypte', region: 'North Africa' },
-  LBY: { iso2: 'LY', name_en: 'Libya', name_fr: 'Libye', region: 'North Africa' },
-  MAR: { iso2: 'MA', name_en: 'Morocco', name_fr: 'Maroc', region: 'North Africa' },
-  SDN: { iso2: 'SD', name_en: 'Sudan', name_fr: 'Soudan', region: 'North Africa' },
-  TUN: { iso2: 'TN', name_en: 'Tunisia', name_fr: 'Tunisie', region: 'North Africa' },
-  ESH: {
-    iso2: 'EH',
-    name_en: 'Western Sahara',
-    name_fr: 'Sahara occidental',
-    region: 'North Africa',
-    hasTradeData: false,
-  },
+// =============================================================================
+// MAPPING COMPLET DES 54 PAYS AFRICAINS
+// =============================================================================
 
-  // Afrique de l'Ouest
-  BEN: { iso2: 'BJ', name_en: 'Benin', name_fr: 'Bénin', region: 'West Africa' },
-  BFA: { iso2: 'BF', name_en: 'Burkina Faso', name_fr: 'Burkina Faso', region: 'West Africa' },
-  CPV: { iso2: 'CV', name_en: 'Cabo Verde', name_fr: 'Cap-Vert', region: 'West Africa' },
-  CIV: { iso2: 'CI', name_en: "Côte d'Ivoire", name_fr: "Côte d'Ivoire", region: 'West Africa' },
-  GMB: { iso2: 'GM', name_en: 'Gambia', name_fr: 'Gambie', region: 'West Africa' },
-  GHA: { iso2: 'GH', name_en: 'Ghana', name_fr: 'Ghana', region: 'West Africa' },
-  GIN: { iso2: 'GN', name_en: 'Guinea', name_fr: 'Guinée', region: 'West Africa' },
-  GNB: { iso2: 'GW', name_en: 'Guinea-Bissau', name_fr: 'Guinée-Bissau', region: 'West Africa' },
-  LBR: { iso2: 'LR', name_en: 'Liberia', name_fr: 'Libéria', region: 'West Africa' },
-  MLI: { iso2: 'ML', name_en: 'Mali', name_fr: 'Mali', region: 'West Africa' },
-  MRT: { iso2: 'MR', name_en: 'Mauritania', name_fr: 'Mauritanie', region: 'West Africa' },
-  NER: { iso2: 'NE', name_en: 'Niger', name_fr: 'Niger', region: 'West Africa' },
-  NGA: { iso2: 'NG', name_en: 'Nigeria', name_fr: 'Nigéria', region: 'West Africa' },
-  SEN: { iso2: 'SN', name_en: 'Senegal', name_fr: 'Sénégal', region: 'West Africa' },
-  SLE: { iso2: 'SL', name_en: 'Sierra Leone', name_fr: 'Sierra Leone', region: 'West Africa' },
-  TGO: { iso2: 'TG', name_en: 'Togo', name_fr: 'Togo', region: 'West Africa' },
-
-  // Afrique centrale
-  AGO: { iso2: 'AO', name_en: 'Angola', name_fr: 'Angola', region: 'Central Africa' },
-  CMR: { iso2: 'CM', name_en: 'Cameroon', name_fr: 'Cameroun', region: 'Central Africa' },
-  CAF: {
-    iso2: 'CF',
-    name_en: 'Central African Republic',
-    name_fr: 'République centrafricaine',
-    region: 'Central Africa',
-  },
-  TCD: { iso2: 'TD', name_en: 'Chad', name_fr: 'Tchad', region: 'Central Africa' },
-  COG: { iso2: 'CG', name_en: 'Congo', name_fr: 'Congo', region: 'Central Africa' },
-  COD: {
-    iso2: 'CD',
-    name_en: 'DR Congo',
-    name_fr: 'RD Congo',
-    region: 'Central Africa',
-  },
-  GNQ: {
-    iso2: 'GQ',
-    name_en: 'Equatorial Guinea',
-    name_fr: 'Guinée équatoriale',
-    region: 'Central Africa',
-  },
-  GAB: { iso2: 'GA', name_en: 'Gabon', name_fr: 'Gabon', region: 'Central Africa' },
-  STP: {
-    iso2: 'ST',
-    name_en: 'São Tomé and Príncipe',
-    name_fr: 'Sao Tomé-et-Principe',
-    region: 'Central Africa',
-  },
-
-  // Afrique de l'Est
-  BDI: { iso2: 'BI', name_en: 'Burundi', name_fr: 'Burundi', region: 'East Africa' },
-  COM: { iso2: 'KM', name_en: 'Comoros', name_fr: 'Comores', region: 'East Africa' },
-  DJI: { iso2: 'DJ', name_en: 'Djibouti', name_fr: 'Djibouti', region: 'East Africa' },
-  ERI: {
-    iso2: 'ER',
-    name_en: 'Eritrea',
-    name_fr: 'Érythrée',
-    region: 'East Africa',
-    zlecafSignatory: false,
-  },
-  ETH: { iso2: 'ET', name_en: 'Ethiopia', name_fr: 'Éthiopie', region: 'East Africa' },
-  KEN: { iso2: 'KE', name_en: 'Kenya', name_fr: 'Kenya', region: 'East Africa' },
-  MDG: { iso2: 'MG', name_en: 'Madagascar', name_fr: 'Madagascar', region: 'East Africa' },
-  MWI: { iso2: 'MW', name_en: 'Malawi', name_fr: 'Malawi', region: 'East Africa' },
-  MUS: { iso2: 'MU', name_en: 'Mauritius', name_fr: 'Maurice', region: 'East Africa' },
-  MOZ: { iso2: 'MZ', name_en: 'Mozambique', name_fr: 'Mozambique', region: 'East Africa' },
-  RWA: { iso2: 'RW', name_en: 'Rwanda', name_fr: 'Rwanda', region: 'East Africa' },
-  SYC: { iso2: 'SC', name_en: 'Seychelles', name_fr: 'Seychelles', region: 'East Africa' },
-  SOM: { iso2: 'SO', name_en: 'Somalia', name_fr: 'Somalie', region: 'East Africa' },
-  SSD: { iso2: 'SS', name_en: 'South Sudan', name_fr: 'Soudan du Sud', region: 'East Africa' },
-  TZA: { iso2: 'TZ', name_en: 'Tanzania', name_fr: 'Tanzanie', region: 'East Africa' },
-  UGA: { iso2: 'UG', name_en: 'Uganda', name_fr: 'Ouganda', region: 'East Africa' },
-  ZMB: { iso2: 'ZM', name_en: 'Zambia', name_fr: 'Zambie', region: 'East Africa' },
-  ZWE: { iso2: 'ZW', name_en: 'Zimbabwe', name_fr: 'Zimbabwe', region: 'East Africa' },
-
-  // Afrique australe
-  BWA: { iso2: 'BW', name_en: 'Botswana', name_fr: 'Botswana', region: 'Southern Africa' },
-  SWZ: { iso2: 'SZ', name_en: 'Eswatini', name_fr: 'Eswatini', region: 'Southern Africa' },
-  LSO: { iso2: 'LS', name_en: 'Lesotho', name_fr: 'Lesotho', region: 'Southern Africa' },
-  NAM: { iso2: 'NA', name_en: 'Namibia', name_fr: 'Namibie', region: 'Southern Africa' },
-  ZAF: { iso2: 'ZA', name_en: 'South Africa', name_fr: 'Afrique du Sud', region: 'Southern Africa' },
+export const AFRICAN_COUNTRIES = {
+  "DZA": { iso2: "DZ", name_fr: "Algérie", name_en: "Algeria", region: "North Africa", flag: "🇩🇿" },
+  "AGO": { iso2: "AO", name_fr: "Angola", name_en: "Angola", region: "Southern Africa", flag: "🇦🇴" },
+  "BEN": { iso2: "BJ", name_fr: "Bénin", name_en: "Benin", region: "West Africa", flag: "🇧🇯" },
+  "BWA": { iso2: "BW", name_fr: "Botswana", name_en: "Botswana", region: "Southern Africa", flag: "🇧🇼" },
+  "BFA": { iso2: "BF", name_fr: "Burkina Faso", name_en: "Burkina Faso", region: "West Africa", flag: "🇧🇫" },
+  "BDI": { iso2: "BI", name_fr: "Burundi", name_en: "Burundi", region: "East Africa", flag: "🇧🇮" },
+  "CPV": { iso2: "CV", name_fr: "Cap-Vert", name_en: "Cape Verde", region: "West Africa", flag: "🇨🇻" },
+  "CMR": { iso2: "CM", name_fr: "Cameroun", name_en: "Cameroon", region: "Central Africa", flag: "🇨🇲" },
+  "CAF": { iso2: "CF", name_fr: "République Centrafricaine", name_en: "Central African Republic", region: "Central Africa", flag: "🇨🇫" },
+  "TCD": { iso2: "TD", name_fr: "Tchad", name_en: "Chad", region: "Central Africa", flag: "🇹🇩" },
+  "COM": { iso2: "KM", name_fr: "Comores", name_en: "Comoros", region: "East Africa", flag: "🇰🇲" },
+  "COG": { iso2: "CG", name_fr: "République du Congo", name_en: "Republic of the Congo", region: "Central Africa", flag: "🇨🇬" },
+  "COD": { iso2: "CD", name_fr: "République Démocratique du Congo", name_en: "Democratic Republic of the Congo", region: "Central Africa", flag: "🇨🇩" },
+  "CIV": { iso2: "CI", name_fr: "Côte d'Ivoire", name_en: "Ivory Coast", region: "West Africa", flag: "🇨🇮" },
+  "DJI": { iso2: "DJ", name_fr: "Djibouti", name_en: "Djibouti", region: "East Africa", flag: "🇩🇯" },
+  "EGY": { iso2: "EG", name_fr: "Égypte", name_en: "Egypt", region: "North Africa", flag: "🇪🇬" },
+  "GNQ": { iso2: "GQ", name_fr: "Guinée Équatoriale", name_en: "Equatorial Guinea", region: "Central Africa", flag: "🇬🇶" },
+  "ERI": { iso2: "ER", name_fr: "Érythrée", name_en: "Eritrea", region: "East Africa", flag: "🇪🇷", zlecafSignatory: false, note: "Seul membre UA non signataire" },
+  "SWZ": { iso2: "SZ", name_fr: "Eswatini", name_en: "Eswatini", region: "Southern Africa", flag: "🇸🇿" },
+  "ETH": { iso2: "ET", name_fr: "Éthiopie", name_en: "Ethiopia", region: "East Africa", flag: "🇪🇹" },
+  "GAB": { iso2: "GA", name_fr: "Gabon", name_en: "Gabon", region: "Central Africa", flag: "🇬🇦" },
+  "GMB": { iso2: "GM", name_fr: "Gambie", name_en: "Gambia", region: "West Africa", flag: "🇬🇲" },
+  "GHA": { iso2: "GH", name_fr: "Ghana", name_en: "Ghana", region: "West Africa", flag: "🇬🇭" },
+  "GIN": { iso2: "GN", name_fr: "Guinée", name_en: "Guinea", region: "West Africa", flag: "🇬🇳" },
+  "GNB": { iso2: "GW", name_fr: "Guinée-Bissau", name_en: "Guinea-Bissau", region: "West Africa", flag: "🇬🇼" },
+  "KEN": { iso2: "KE", name_fr: "Kenya", name_en: "Kenya", region: "East Africa", flag: "🇰🇪" },
+  "LSO": { iso2: "LS", name_fr: "Lesotho", name_en: "Lesotho", region: "Southern Africa", flag: "🇱🇸" },
+  "LBR": { iso2: "LR", name_fr: "Libéria", name_en: "Liberia", region: "West Africa", flag: "🇱🇷" },
+  "LBY": { iso2: "LY", name_fr: "Libye", name_en: "Libya", region: "North Africa", flag: "🇱🇾" },
+  "MDG": { iso2: "MG", name_fr: "Madagascar", name_en: "Madagascar", region: "East Africa", flag: "🇲🇬" },
+  "MWI": { iso2: "MW", name_fr: "Malawi", name_en: "Malawi", region: "Southern Africa", flag: "🇲🇼" },
+  "MLI": { iso2: "ML", name_fr: "Mali", name_en: "Mali", region: "West Africa", flag: "🇲🇱" },
+  "MRT": { iso2: "MR", name_fr: "Mauritanie", name_en: "Mauritania", region: "West Africa", flag: "🇲🇷" },
+  "MUS": { iso2: "MU", name_fr: "Maurice", name_en: "Mauritius", region: "East Africa", flag: "🇲🇺" },
+  "MAR": { iso2: "MA", name_fr: "Maroc", name_en: "Morocco", region: "North Africa", flag: "🇲🇦" },
+  "MOZ": { iso2: "MZ", name_fr: "Mozambique", name_en: "Mozambique", region: "Southern Africa", flag: "🇲🇿" },
+  "NAM": { iso2: "NA", name_fr: "Namibie", name_en: "Namibia", region: "Southern Africa", flag: "🇳🇦" },
+  "NER": { iso2: "NE", name_fr: "Niger", name_en: "Niger", region: "West Africa", flag: "🇳🇪" },
+  "NGA": { iso2: "NG", name_fr: "Nigéria", name_en: "Nigeria", region: "West Africa", flag: "🇳🇬" },
+  "RWA": { iso2: "RW", name_fr: "Rwanda", name_en: "Rwanda", region: "East Africa", flag: "🇷🇼" },
+  // RASD - République Arabe Sahraouie Démocratique (Sahara Occidental)
+  // Membre fondateur de l'Union Africaine - Signataire de la ZLECAf
+  // ATTENTION: Pas de données commerciales disponibles
+  "ESH": { iso2: "EH", name_fr: "RASD (Sahara Occidental)", name_en: "Sahrawi Arab Democratic Republic", region: "North Africa", flag: "🇪🇭", hasTradeData: false, note: "Membre UA - Pas de statistiques commerciales" },
+  "STP": { iso2: "ST", name_fr: "São Tomé-et-Príncipe", name_en: "São Tomé and Príncipe", region: "Central Africa", flag: "🇸🇹" },
+  "SEN": { iso2: "SN", name_fr: "Sénégal", name_en: "Senegal", region: "West Africa", flag: "🇸🇳" },
+  "SYC": { iso2: "SC", name_fr: "Seychelles", name_en: "Seychelles", region: "East Africa", flag: "🇸🇨" },
+  "SLE": { iso2: "SL", name_fr: "Sierra Leone", name_en: "Sierra Leone", region: "West Africa", flag: "🇸🇱" },
+  "SOM": { iso2: "SO", name_fr: "Somalie", name_en: "Somalia", region: "East Africa", flag: "🇸🇴" },
+  "ZAF": { iso2: "ZA", name_fr: "Afrique du Sud", name_en: "South Africa", region: "Southern Africa", flag: "🇿🇦" },
+  "SSD": { iso2: "SS", name_fr: "Soudan du Sud", name_en: "South Sudan", region: "East Africa", flag: "🇸🇸" },
+  "SDN": { iso2: "SD", name_fr: "Soudan", name_en: "Sudan", region: "North Africa", flag: "🇸🇩" },
+  "TZA": { iso2: "TZ", name_fr: "Tanzanie", name_en: "Tanzania", region: "East Africa", flag: "🇹🇿" },
+  "TGO": { iso2: "TG", name_fr: "Togo", name_en: "Togo", region: "West Africa", flag: "🇹🇬" },
+  "TUN": { iso2: "TN", name_fr: "Tunisie", name_en: "Tunisia", region: "North Africa", flag: "🇹🇳" },
+  "UGA": { iso2: "UG", name_fr: "Ouganda", name_en: "Uganda", region: "East Africa", flag: "🇺🇬" },
+  "ZMB": { iso2: "ZM", name_fr: "Zambie", name_en: "Zambia", region: "Southern Africa", flag: "🇿🇲" },
+  "ZWE": { iso2: "ZW", name_fr: "Zimbabwe", name_en: "Zimbabwe", region: "Southern Africa", flag: "🇿🇼" },
 };
 
-/** Drapeau emoji à partir d'un code ISO2 (symboles indicateurs régionaux). */
-function iso2ToFlag(iso2) {
-  if (!iso2 || iso2.length !== 2) return '🌍';
-  const cc = iso2.toUpperCase();
-  const A = 0x1f1e6;
-  const base = 'A'.charCodeAt(0);
-  return String.fromCodePoint(A + (cc.charCodeAt(0) - base), A + (cc.charCodeAt(1) - base));
-}
+// =============================================================================
+// MAPPINGS INVERSÉS POUR CONVERSIONS RAPIDES
+// =============================================================================
 
-// Table publique : chaque entrée porte iso3, iso2, noms, région, flags + flag emoji.
-export const AFRICAN_COUNTRIES = Object.fromEntries(
-  Object.entries(_RAW).map(([iso3, v]) => [
-    iso3,
-    {
-      iso3,
-      iso2: v.iso2,
-      name_en: v.name_en,
-      name_fr: v.name_fr,
-      region: v.region,
-      zlecafSignatory: v.zlecafSignatory !== false,
-      hasTradeData: v.hasTradeData !== false,
-      flag: iso2ToFlag(v.iso2),
-    },
-  ])
-);
-
-// Mappings inversés bijectifs
-export const ISO3_TO_ISO2 = Object.fromEntries(
-  Object.entries(AFRICAN_COUNTRIES).map(([iso3, v]) => [iso3, v.iso2])
-);
+// ISO2 -> ISO3
 export const ISO2_TO_ISO3 = Object.fromEntries(
-  Object.entries(AFRICAN_COUNTRIES).map(([iso3, v]) => [v.iso2, iso3])
+  Object.entries(AFRICAN_COUNTRIES).map(([iso3, info]) => [info.iso2, iso3])
 );
 
-/** Drapeau depuis un code ISO3 ou ISO2 (insensible à la casse). '🌍' si inconnu. */
-export function getCountryFlag(code) {
-  if (!code || typeof code !== 'string') return '🌍';
-  const up = code.toUpperCase();
-  if (up.length === 3 && AFRICAN_COUNTRIES[up]) return AFRICAN_COUNTRIES[up].flag;
-  if (up.length === 2 && ISO2_TO_ISO3[up]) return AFRICAN_COUNTRIES[ISO2_TO_ISO3[up]].flag;
+// ISO3 -> ISO2
+export const ISO3_TO_ISO2 = Object.fromEntries(
+  Object.entries(AFRICAN_COUNTRIES).map(([iso3, info]) => [iso3, info.iso2])
+);
+
+// =============================================================================
+// FONCTIONS UTILITAIRES
+// =============================================================================
+
+/**
+ * Obtient le drapeau emoji pour un code pays (supporte ISO2 et ISO3)
+ */
+export const getCountryFlag = (code) => {
+  if (!code) return '🌍';
+  const upperCode = code.toUpperCase();
+  
+  // Si ISO3
+  if (AFRICAN_COUNTRIES[upperCode]) {
+    return AFRICAN_COUNTRIES[upperCode].flag;
+  }
+  
+  // Si ISO2, convertir en ISO3
+  const iso3 = ISO2_TO_ISO3[upperCode];
+  if (iso3 && AFRICAN_COUNTRIES[iso3]) {
+    return AFRICAN_COUNTRIES[iso3].flag;
+  }
+  
   return '🌍';
-}
+};
 
-/** ISO2 -> ISO3 (ou null). */
-export function getISO3FromISO2(iso2) {
-  if (!iso2 || typeof iso2 !== 'string') return null;
-  return ISO2_TO_ISO3[iso2.toUpperCase()] || null;
-}
+/**
+ * Convertit un code ISO2 en ISO3
+ */
+export const getISO3FromISO2 = (iso2) => {
+  return ISO2_TO_ISO3[iso2?.toUpperCase()] || null;
+};
 
-/** ISO3 -> ISO2 (ou null). */
-export function getISO2FromISO3(iso3) {
-  if (!iso3 || typeof iso3 !== 'string') return null;
-  return ISO3_TO_ISO2[iso3.toUpperCase()] || null;
-}
+/**
+ * Convertit un code ISO3 en ISO2
+ */
+export const getISO2FromISO3 = (iso3) => {
+  return ISO3_TO_ISO2[iso3?.toUpperCase()] || null;
+};
 
-/** Résout un pays depuis un code ISO3 ou ISO2 ; renvoie l'entrée (avec iso3) ou null. */
-export function getCountryInfo(code) {
-  if (!code || typeof code !== 'string') return null;
-  const up = code.toUpperCase();
-  if (up.length === 3 && AFRICAN_COUNTRIES[up]) return AFRICAN_COUNTRIES[up];
-  if (up.length === 2 && ISO2_TO_ISO3[up]) return AFRICAN_COUNTRIES[ISO2_TO_ISO3[up]];
+/**
+ * Obtient les informations complètes d'un pays (supporte ISO2 et ISO3)
+ */
+export const getCountryInfo = (code) => {
+  if (!code) return null;
+  const upperCode = code.toUpperCase();
+  
+  // Si ISO3
+  if (AFRICAN_COUNTRIES[upperCode]) {
+    return { iso3: upperCode, ...AFRICAN_COUNTRIES[upperCode] };
+  }
+  
+  // Si ISO2
+  const iso3 = ISO2_TO_ISO3[upperCode];
+  if (iso3) {
+    return { iso3, ...AFRICAN_COUNTRIES[iso3] };
+  }
+  
   return null;
-}
+};
 
-/** Liste des pays { iso3, name, flag, ... } triée par nom localisé. */
-export function getAllCountries(lang = 'fr') {
-  const key = lang === 'en' ? 'name_en' : 'name_fr';
-  return Object.values(AFRICAN_COUNTRIES)
-    .map((c) => ({ ...c, name: c[key] }))
+/**
+ * Obtient la liste de tous les pays africains triés
+ */
+export const getAllCountries = (lang = 'fr') => {
+  const nameKey = `name_${lang}`;
+  return Object.entries(AFRICAN_COUNTRIES)
+    .map(([iso3, info]) => ({
+      iso3,
+      iso2: info.iso2,
+      name: info[nameKey] || info.name_en,
+      ...info
+    }))
     .sort((a, b) => a.name.localeCompare(b.name));
-}
+};
 
-/** Pays d'une région donnée (même forme que getAllCountries). */
-export function getCountriesByRegion(region, lang = 'fr') {
-  return getAllCountries(lang).filter((c) => c.region === region);
-}
+/**
+ * Obtient les pays d'une région spécifique
+ */
+export const getCountriesByRegion = (region, lang = 'fr') => {
+  return getAllCountries(lang).filter(c => c.region === region);
+};
 
-// Communautés économiques régionales (membres par code ISO3).
+// =============================================================================
+// RÉGIONS ÉCONOMIQUES
+// =============================================================================
+
 export const ECONOMIC_COMMUNITIES = {
-  CEMAC: ['CMR', 'CAF', 'TCD', 'COG', 'GNQ', 'GAB'],
-  UEMOA: ['BEN', 'BFA', 'CIV', 'GNB', 'MLI', 'NER', 'SEN', 'TGO'],
-  ECOWAS: [
-    'BEN', 'BFA', 'CPV', 'CIV', 'GMB', 'GHA', 'GIN', 'GNB',
-    'LBR', 'MLI', 'NER', 'NGA', 'SEN', 'SLE', 'TGO',
-  ],
-  EAC: ['BDI', 'COD', 'KEN', 'RWA', 'SSD', 'TZA', 'UGA'],
-  SADC: [
-    'AGO', 'BWA', 'COD', 'SWZ', 'LSO', 'MDG', 'MWI', 'MUS',
-    'MOZ', 'NAM', 'SYC', 'ZAF', 'TZA', 'ZMB', 'ZWE',
-  ],
-  AMU: ['DZA', 'LBY', 'MRT', 'MAR', 'TUN'],
-  COMESA: [
-    'BDI', 'COM', 'COD', 'DJI', 'EGY', 'ERI', 'ETH', 'KEN', 'LBY',
-    'MDG', 'MWI', 'MUS', 'RWA', 'SYC', 'SOM', 'SDN', 'SWZ', 'TUN',
-    'UGA', 'ZMB', 'ZWE',
-  ],
+  UEMOA: ["BEN", "BFA", "CIV", "GNB", "MLI", "NER", "SEN", "TGO"],
+  CEMAC: ["CMR", "CAF", "TCD", "COG", "GNQ", "GAB"],
+  CEDEAO: ["BEN", "BFA", "CPV", "CIV", "GMB", "GHA", "GIN", "GNB", "LBR", "MLI", "NER", "NGA", "SEN", "SLE", "TGO"],
+  EAC: ["BDI", "COD", "KEN", "RWA", "SSD", "TZA", "UGA"],
+  SACU: ["BWA", "LSO", "NAM", "ZAF", "SWZ"],
+  SADC: ["AGO", "BWA", "COM", "COD", "SWZ", "LSO", "MDG", "MWI", "MUS", "MOZ", "NAM", "SYC", "ZAF", "TZA", "ZMB", "ZWE"],
 };
 
 export default AFRICAN_COUNTRIES;

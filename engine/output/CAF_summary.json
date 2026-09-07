@@ -1,0 +1,18 @@
+{
+  "country_iso3": "CAF",
+  "country_name": "CAF",
+  "processed_lines": 5831,
+  "sub_positions": 16138,
+  "total_positions": 21969,
+  "chapters_covered": 98,
+  "vat_rate": 19.0,
+  "dd_range": {
+    "min": 0.0,
+    "max": 30.0,
+    "avg": 14.02
+  },
+  "data_format": "enhanced_v2",
+  "output_file": "/app/engine/output/CAF_canonical.jsonl",
+  "record_count": 16568,
+  "generated_at": "2026-03-01T17:37:15.532758"
+}

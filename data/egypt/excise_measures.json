@@ -1,0 +1,10 @@
+{
+ "schema_version": "1.0",
+ "country": "EGY",
+ "as_of": "2026-09-05",
+ "excise_rates": [],
+ "provenance": {
+  "source": "backend/data/EGY_tariffs.json (VERIFIED)",
+  "note": "Aucune accise distincte documentée dans ce canonique — les taxes spécifiques (TJ) sont portées par import_levies.json (table schedule_table_tax)."
+ }
+}

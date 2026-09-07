@@ -1,0 +1,1162 @@
+{
+  "metadata": {
+    "title": "Sector Specialization Analysis - African Free Zones",
+    "description": "Industry-specific capabilities and value chain opportunities in African free zones",
+    "version": "1.0.0",
+    "generated_at": "2025-01-15T00:00:00Z",
+    "methodology": {
+      "scoring_scale": "0-100 (higher = stronger sector capabilities)",
+      "dimensions": [
+        "Manufacturing Readiness",
+        "Technology & Innovation",
+        "Export Market Access",
+        "Value Chain Integration",
+        "Sector Infrastructure",
+        "Skills Availability"
+      ],
+      "data_sources": [
+        "UNIDO Industrial Development Report",
+        "ITC Trade Map",
+        "AfDB Sector Analysis",
+        "Zone Authority Reports",
+        "Expert Assessment 2024"
+      ]
+    },
+    "total_zones": 30
+  },
+  "zones": [
+    {
+      "zone_id": "MAR-TFZ-001",
+      "zone_name": "Tanger Med Zones (TMZ)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Automotive",
+          "Aerospace",
+          "Textile & Apparel",
+          "Logistics"
+        ],
+        "secondary_sectors": [
+          "Electronics",
+          "Food Processing"
+        ],
+        "emerging_sectors": [
+          "EV Components",
+          "Green Hydrogen"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 90,
+        "technology_innovation_focus": 70,
+        "export_market_access": 85,
+        "value_chain_integration": 85,
+        "sector_specific_infrastructure": 88,
+        "skills_availability_by_sector": 78,
+        "overall_sector_score": 82.7
+      },
+      "rankings": {
+        "continental_rank": 1,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Highly Specialized",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MAR-KEN-001",
+      "zone_name": "Atlantic Free Zone (Kenitra)",
+      "country_iso": "MAR",
+      "region": "North Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Automotive Assembly",
+          "Wire Harness"
+        ],
+        "secondary_sectors": [
+          "Plastics",
+          "Rubber"
+        ],
+        "emerging_sectors": [
+          "Battery Packs",
+          "Charging Infrastructure"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 85,
+        "technology_innovation_focus": 60,
+        "export_market_access": 78,
+        "value_chain_integration": 78,
+        "sector_specific_infrastructure": 80,
+        "skills_availability_by_sector": 72,
+        "overall_sector_score": 75.5
+      },
+      "rankings": {
+        "continental_rank": 5,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Highly Specialized",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "EGY-SCZ-001",
+      "zone_name": "Suez Canal Economic Zone (SCZone)",
+      "country_iso": "EGY",
+      "region": "North Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Petrochemicals",
+          "Manufacturing",
+          "Logistics",
+          "Shipbuilding"
+        ],
+        "secondary_sectors": [
+          "Electronics",
+          "Textiles",
+          "Food Processing"
+        ],
+        "emerging_sectors": [
+          "Renewables",
+          "LNG Processing"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 82,
+        "technology_innovation_focus": 65,
+        "export_market_access": 88,
+        "value_chain_integration": 80,
+        "sector_specific_infrastructure": 85,
+        "skills_availability_by_sector": 74,
+        "overall_sector_score": 79.0
+      },
+      "rankings": {
+        "continental_rank": 4,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Highly Specialized",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DJI-DIFTZ-001",
+      "zone_name": "Djibouti International Free Trade Zone",
+      "country_iso": "DJI",
+      "region": "East Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Logistics & Warehousing",
+          "Re-export Trade",
+          "Transshipment"
+        ],
+        "secondary_sectors": [
+          "Light Manufacturing",
+          "Food Processing"
+        ],
+        "emerging_sectors": [
+          "Data Centers",
+          "Cold Chain"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 68,
+        "technology_innovation_focus": 55,
+        "export_market_access": 82,
+        "value_chain_integration": 70,
+        "sector_specific_infrastructure": 80,
+        "skills_availability_by_sector": 60,
+        "overall_sector_score": 69.2
+      },
+      "rankings": {
+        "continental_rank": 8,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Diversified",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NGA-LEK-001",
+      "zone_name": "Lekki Free Trade Zone",
+      "country_iso": "NGA",
+      "region": "West Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Manufacturing",
+          "Petrochemicals",
+          "Consumer Goods"
+        ],
+        "secondary_sectors": [
+          "Agriculture Processing",
+          "Pharmaceuticals"
+        ],
+        "emerging_sectors": [
+          "Fintech",
+          "E-commerce"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 72,
+        "technology_innovation_focus": 68,
+        "export_market_access": 70,
+        "value_chain_integration": 65,
+        "sector_specific_infrastructure": 70,
+        "skills_availability_by_sector": 68,
+        "overall_sector_score": 68.8
+      },
+      "rankings": {
+        "continental_rank": 9,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Diversified",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-TIN-001",
+      "zone_name": "Zone Franche de Tindouf",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Mining Support",
+          "Construction Materials"
+        ],
+        "secondary_sectors": [
+          "Agriculture"
+        ],
+        "emerging_sectors": [
+          "Solar Energy",
+          "Desert Tourism"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 55,
+        "technology_innovation_focus": 40,
+        "export_market_access": 55,
+        "value_chain_integration": 50,
+        "sector_specific_infrastructure": 58,
+        "skills_availability_by_sector": 52,
+        "overall_sector_score": 51.7
+      },
+      "rankings": {
+        "continental_rank": 27,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "DZA-ELO-001",
+      "zone_name": "Zone Franche d'Oran (Bethioua)",
+      "country_iso": "DZA",
+      "region": "North Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Petrochemical",
+          "Steel",
+          "Fertilizers"
+        ],
+        "secondary_sectors": [
+          "Plastics",
+          "Packaging"
+        ],
+        "emerging_sectors": [
+          "Green Ammonia",
+          "Blue Hydrogen"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 60,
+        "technology_innovation_focus": 45,
+        "export_market_access": 60,
+        "value_chain_integration": 55,
+        "sector_specific_infrastructure": 62,
+        "skills_availability_by_sector": 58,
+        "overall_sector_score": 56.7
+      },
+      "rankings": {
+        "continental_rank": 24,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GAB-NKO-001",
+      "zone_name": "Zone Economique Speciale de Nkok (GSEZ)",
+      "country_iso": "GAB",
+      "region": "Central Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Timber Processing",
+          "Special Economic Zone"
+        ],
+        "secondary_sectors": [
+          "Mining",
+          "Agriculture"
+        ],
+        "emerging_sectors": [
+          "Carbon Credits",
+          "Eco-Tourism"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 72,
+        "technology_innovation_focus": 52,
+        "export_market_access": 68,
+        "value_chain_integration": 68,
+        "sector_specific_infrastructure": 72,
+        "skills_availability_by_sector": 58,
+        "overall_sector_score": 65.0
+      },
+      "rankings": {
+        "continental_rank": 14,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Diversified",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "SEN-DIS-001",
+      "zone_name": "Zone Economique Speciale (DAKAR)",
+      "country_iso": "SEN",
+      "region": "West Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Fishing & Aquaculture",
+          "Light Manufacturing",
+          "Services"
+        ],
+        "secondary_sectors": [
+          "Textiles",
+          "IT Services"
+        ],
+        "emerging_sectors": [
+          "Digital Services",
+          "Clean Energy"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 68,
+        "technology_innovation_focus": 62,
+        "export_market_access": 72,
+        "value_chain_integration": 68,
+        "sector_specific_infrastructure": 70,
+        "skills_availability_by_sector": 65,
+        "overall_sector_score": 67.5
+      },
+      "rankings": {
+        "continental_rank": 11,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Diversified",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BEN-GLO-001",
+      "zone_name": "Zone Economique Speciale (Glo-Djigbe)",
+      "country_iso": "BEN",
+      "region": "West Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Cotton Processing",
+          "Agriculture Value Chain"
+        ],
+        "secondary_sectors": [
+          "Light Manufacturing"
+        ],
+        "emerging_sectors": [
+          "Cashew Processing",
+          "Textile Manufacturing"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 62,
+        "technology_innovation_focus": 48,
+        "export_market_access": 65,
+        "value_chain_integration": 60,
+        "sector_specific_infrastructure": 60,
+        "skills_availability_by_sector": 52,
+        "overall_sector_score": 57.8
+      },
+      "rankings": {
+        "continental_rank": 21,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TGO-PIA-001",
+      "zone_name": "Plateforme Industrielle d'Adetikope (PIA)",
+      "country_iso": "TGO",
+      "region": "West Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Cement",
+          "Food Processing",
+          "Textiles"
+        ],
+        "secondary_sectors": [
+          "Pharmaceuticals",
+          "Plastics"
+        ],
+        "emerging_sectors": [
+          "Agricultural Equipment",
+          "Solar"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 65,
+        "technology_innovation_focus": 50,
+        "export_market_access": 68,
+        "value_chain_integration": 62,
+        "sector_specific_infrastructure": 65,
+        "skills_availability_by_sector": 55,
+        "overall_sector_score": 60.8
+      },
+      "rankings": {
+        "continental_rank": 17,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZAF-COE-001",
+      "zone_name": "Coega Special Economic Zone",
+      "country_iso": "ZAF",
+      "region": "Southern Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Automotive",
+          "Chemicals",
+          "Metals",
+          "Energy"
+        ],
+        "secondary_sectors": [
+          "Agro-processing",
+          "Electronics"
+        ],
+        "emerging_sectors": [
+          "Green Hydrogen",
+          "Battery Storage"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 82,
+        "technology_innovation_focus": 78,
+        "export_market_access": 82,
+        "value_chain_integration": 80,
+        "sector_specific_infrastructure": 85,
+        "skills_availability_by_sector": 82,
+        "overall_sector_score": 81.5
+      },
+      "rankings": {
+        "continental_rank": 3,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Highly Specialized",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MUS-MFP-001",
+      "zone_name": "Mauritius Freeport & Smart City",
+      "country_iso": "MUS",
+      "region": "East Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Finance & Banking",
+          "ICT/BPO",
+          "Luxury Tourism"
+        ],
+        "secondary_sectors": [
+          "Textile",
+          "Seafood Processing"
+        ],
+        "emerging_sectors": [
+          "Biotech",
+          "Smart City Tech"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 72,
+        "technology_innovation_focus": 85,
+        "export_market_access": 88,
+        "value_chain_integration": 78,
+        "sector_specific_infrastructure": 88,
+        "skills_availability_by_sector": 82,
+        "overall_sector_score": 82.2
+      },
+      "rankings": {
+        "continental_rank": 2,
+        "regional_rank": 1,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Highly Specialized",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ETH-HAW-001",
+      "zone_name": "Hawassa Industrial Park",
+      "country_iso": "ETH",
+      "region": "East Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Textile & Apparel",
+          "Garments"
+        ],
+        "secondary_sectors": [
+          "Leather Products",
+          "Food Processing"
+        ],
+        "emerging_sectors": [
+          "Pharmaceuticals",
+          "Electronics Assembly"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 72,
+        "technology_innovation_focus": 42,
+        "export_market_access": 70,
+        "value_chain_integration": 60,
+        "sector_specific_infrastructure": 65,
+        "skills_availability_by_sector": 52,
+        "overall_sector_score": 60.2
+      },
+      "rankings": {
+        "continental_rank": 18,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "KEN-EPZ-001",
+      "zone_name": "Nairobi Export Processing Zone",
+      "country_iso": "KEN",
+      "region": "East Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Garments",
+          "Horticulture",
+          "ICT/BPO"
+        ],
+        "secondary_sectors": [
+          "Leather Products",
+          "Agro-processing"
+        ],
+        "emerging_sectors": [
+          "Fintech",
+          "Solar Manufacturing"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 70,
+        "technology_innovation_focus": 72,
+        "export_market_access": 74,
+        "value_chain_integration": 70,
+        "sector_specific_infrastructure": 72,
+        "skills_availability_by_sector": 72,
+        "overall_sector_score": 71.7
+      },
+      "rankings": {
+        "continental_rank": 6,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Diversified",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TUN-PAE-001",
+      "zone_name": "Parc d'Activites Economiques de Zarzis",
+      "country_iso": "TUN",
+      "region": "North Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Automotive Components",
+          "Mechanical Engineering",
+          "Electronics"
+        ],
+        "secondary_sectors": [
+          "Textiles",
+          "Plastics"
+        ],
+        "emerging_sectors": [
+          "Aerospace",
+          "Smart Manufacturing"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 70,
+        "technology_innovation_focus": 60,
+        "export_market_access": 72,
+        "value_chain_integration": 65,
+        "sector_specific_infrastructure": 72,
+        "skills_availability_by_sector": 68,
+        "overall_sector_score": 67.8
+      },
+      "rankings": {
+        "continental_rank": 10,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Diversified",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CMR-KRI-001",
+      "zone_name": "Zone Industrielle de Kribi (ZIK)",
+      "country_iso": "CMR",
+      "region": "Central Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Forestry Processing",
+          "Petrochemicals"
+        ],
+        "secondary_sectors": [
+          "Agro-processing",
+          "Mining"
+        ],
+        "emerging_sectors": [
+          "LNG",
+          "Renewable Energy"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 65,
+        "technology_innovation_focus": 45,
+        "export_market_access": 62,
+        "value_chain_integration": 60,
+        "sector_specific_infrastructure": 65,
+        "skills_availability_by_sector": 52,
+        "overall_sector_score": 58.2
+      },
+      "rankings": {
+        "continental_rank": 19,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "GHA-TEM-001",
+      "zone_name": "Tema Export Processing Zone",
+      "country_iso": "GHA",
+      "region": "West Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Aluminium",
+          "Cocoa Processing",
+          "Manufacturing"
+        ],
+        "secondary_sectors": [
+          "Pharmaceuticals",
+          "Consumer Goods"
+        ],
+        "emerging_sectors": [
+          "Lithium Processing",
+          "EVs"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 68,
+        "technology_innovation_focus": 65,
+        "export_market_access": 70,
+        "value_chain_integration": 65,
+        "sector_specific_infrastructure": 68,
+        "skills_availability_by_sector": 65,
+        "overall_sector_score": 66.8
+      },
+      "rankings": {
+        "continental_rank": 12,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Diversified",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "RWA-KSE-001",
+      "zone_name": "Kigali Special Economic Zone (KSEZ)",
+      "country_iso": "RWA",
+      "region": "East Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "ICT/Digital Services",
+          "Logistics",
+          "Light Manufacturing"
+        ],
+        "secondary_sectors": [
+          "Pharmaceuticals",
+          "Agro-processing"
+        ],
+        "emerging_sectors": [
+          "AI & Data Services",
+          "EdTech"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 65,
+        "technology_innovation_focus": 78,
+        "export_market_access": 65,
+        "value_chain_integration": 65,
+        "sector_specific_infrastructure": 75,
+        "skills_availability_by_sector": 70,
+        "overall_sector_score": 69.7
+      },
+      "rankings": {
+        "continental_rank": 7,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Diversified",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "CIV-PK-001",
+      "zone_name": "Parc Industriel de Koumassi (PIK)",
+      "country_iso": "CIV",
+      "region": "West Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Cocoa & Chocolate",
+          "Agro-processing",
+          "Textiles"
+        ],
+        "secondary_sectors": [
+          "Rubber",
+          "Cashew Processing"
+        ],
+        "emerging_sectors": [
+          "Digital Economy",
+          "Green Manufacturing"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 65,
+        "technology_innovation_focus": 52,
+        "export_market_access": 68,
+        "value_chain_integration": 62,
+        "sector_specific_infrastructure": 65,
+        "skills_availability_by_sector": 58,
+        "overall_sector_score": 61.7
+      },
+      "rankings": {
+        "continental_rank": 16,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "TZA-EPZ-001",
+      "zone_name": "Benjamin William Mkapa SEZ (Morogoro)",
+      "country_iso": "TZA",
+      "region": "East Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Textiles",
+          "Agriculture Processing",
+          "Mining Support"
+        ],
+        "secondary_sectors": [
+          "Leather",
+          "Fish Processing"
+        ],
+        "emerging_sectors": [
+          "Tourism Services",
+          "Renewables"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 62,
+        "technology_innovation_focus": 48,
+        "export_market_access": 62,
+        "value_chain_integration": 58,
+        "sector_specific_infrastructure": 60,
+        "skills_availability_by_sector": 52,
+        "overall_sector_score": 57.0
+      },
+      "rankings": {
+        "continental_rank": 23,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "ZMB-LSK-001",
+      "zone_name": "Lusaka South Multi-Facility Economic Zone",
+      "country_iso": "ZMB",
+      "region": "Southern Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Copper Processing",
+          "Mining Inputs",
+          "Agriculture"
+        ],
+        "secondary_sectors": [
+          "Textiles",
+          "Construction"
+        ],
+        "emerging_sectors": [
+          "Green Mining",
+          "EV Batteries"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 62,
+        "technology_innovation_focus": 48,
+        "export_market_access": 60,
+        "value_chain_integration": 58,
+        "sector_specific_infrastructure": 60,
+        "skills_availability_by_sector": 55,
+        "overall_sector_score": 57.2
+      },
+      "rankings": {
+        "continental_rank": 22,
+        "regional_rank": 4,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "AGO-ZEE-001",
+      "zone_name": "Zona Economica Especial de Luanda",
+      "country_iso": "AGO",
+      "region": "Southern Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Petrochemicals",
+          "Oil Services"
+        ],
+        "secondary_sectors": [
+          "Construction",
+          "Food Processing"
+        ],
+        "emerging_sectors": [
+          "Natural Gas",
+          "Solar Energy"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 55,
+        "technology_innovation_focus": 42,
+        "export_market_access": 62,
+        "value_chain_integration": 52,
+        "sector_specific_infrastructure": 58,
+        "skills_availability_by_sector": 48,
+        "overall_sector_score": 52.8
+      },
+      "rankings": {
+        "continental_rank": 25,
+        "regional_rank": 5,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MOZ-NAC-001",
+      "zone_name": "Nacala Special Economic Zone",
+      "country_iso": "MOZ",
+      "region": "Southern Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Coal",
+          "Natural Gas",
+          "Agriculture"
+        ],
+        "secondary_sectors": [
+          "Logistics",
+          "Light Manufacturing"
+        ],
+        "emerging_sectors": [
+          "LNG",
+          "Green Ammonia"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 58,
+        "technology_innovation_focus": 40,
+        "export_market_access": 58,
+        "value_chain_integration": 55,
+        "sector_specific_infrastructure": 58,
+        "skills_availability_by_sector": 48,
+        "overall_sector_score": 52.8
+      },
+      "rankings": {
+        "continental_rank": 26,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "COD-MAL-001",
+      "zone_name": "Zone Economique Speciale de Maluku",
+      "country_iso": "COD",
+      "region": "Central Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Minerals Processing",
+          "Agriculture"
+        ],
+        "secondary_sectors": [
+          "Construction",
+          "Energy"
+        ],
+        "emerging_sectors": [
+          "Critical Minerals (Cobalt/Lithium)",
+          "Hydropower"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 48,
+        "technology_innovation_focus": 35,
+        "export_market_access": 55,
+        "value_chain_integration": 45,
+        "sector_specific_infrastructure": 45,
+        "skills_availability_by_sector": 42,
+        "overall_sector_score": 45.0
+      },
+      "rankings": {
+        "continental_rank": 30,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "UGA-NAM-001",
+      "zone_name": "Namanve Industrial & Business Park",
+      "country_iso": "UGA",
+      "region": "East Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Agro-processing",
+          "Light Manufacturing"
+        ],
+        "secondary_sectors": [
+          "Leather",
+          "Textiles"
+        ],
+        "emerging_sectors": [
+          "ICT",
+          "Pharmaceuticals"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 62,
+        "technology_innovation_focus": 52,
+        "export_market_access": 62,
+        "value_chain_integration": 58,
+        "sector_specific_infrastructure": 60,
+        "skills_availability_by_sector": 55,
+        "overall_sector_score": 58.2
+      },
+      "rankings": {
+        "continental_rank": 20,
+        "regional_rank": 6,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MWI-BLT-001",
+      "zone_name": "Blantyre Industrial Park",
+      "country_iso": "MWI",
+      "region": "Southern Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Tobacco Processing",
+          "Tea",
+          "Sugar"
+        ],
+        "secondary_sectors": [
+          "Textiles",
+          "Light Manufacturing"
+        ],
+        "emerging_sectors": [
+          "Pharmaceuticals",
+          "Gemstones"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 52,
+        "technology_innovation_focus": 38,
+        "export_market_access": 50,
+        "value_chain_integration": 48,
+        "sector_specific_infrastructure": 48,
+        "skills_availability_by_sector": 45,
+        "overall_sector_score": 46.8
+      },
+      "rankings": {
+        "continental_rank": 28,
+        "regional_rank": 7,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "NAM-WAL-001",
+      "zone_name": "Walvis Bay Export Processing Zone",
+      "country_iso": "NAM",
+      "region": "Southern Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Fish Processing",
+          "Mining Support",
+          "Logistics"
+        ],
+        "secondary_sectors": [
+          "Textiles",
+          "Light Manufacturing"
+        ],
+        "emerging_sectors": [
+          "Green Hydrogen",
+          "Solar"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 68,
+        "technology_innovation_focus": 58,
+        "export_market_access": 72,
+        "value_chain_integration": 65,
+        "sector_specific_infrastructure": 72,
+        "skills_availability_by_sector": 65,
+        "overall_sector_score": 66.7
+      },
+      "rankings": {
+        "continental_rank": 13,
+        "regional_rank": 2,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Diversified",
+      "data_quality": "High",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "BWA-SIR-001",
+      "zone_name": "Selebi-Phikwe Economic Diversification Unit (SPEDU)",
+      "country_iso": "BWA",
+      "region": "Southern Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Diamond",
+          "Copper-Nickel",
+          "Beef Processing"
+        ],
+        "secondary_sectors": [
+          "Tourism Services",
+          "Light Manufacturing"
+        ],
+        "emerging_sectors": [
+          "Solar",
+          "Fintech"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 62,
+        "technology_innovation_focus": 58,
+        "export_market_access": 65,
+        "value_chain_integration": 60,
+        "sector_specific_infrastructure": 68,
+        "skills_availability_by_sector": 65,
+        "overall_sector_score": 63.0
+      },
+      "rankings": {
+        "continental_rank": 15,
+        "regional_rank": 3,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Diversified",
+      "data_quality": "Medium",
+      "last_updated": "2025-01-15T00:00:00Z"
+    },
+    {
+      "zone_id": "MDG-EHO-001",
+      "zone_name": "Zone Franche d'Ehoala (Fort-Dauphin)",
+      "country_iso": "MDG",
+      "region": "East Africa",
+      "sector_focus": {
+        "primary_sectors": [
+          "Mining (Ilmenite)",
+          "Vanilla & Spices",
+          "Textiles"
+        ],
+        "secondary_sectors": [
+          "Seafood",
+          "Tourism"
+        ],
+        "emerging_sectors": [
+          "Rare Earths",
+          "Eco-Tourism"
+        ]
+      },
+      "scores": {
+        "manufacturing_readiness": 50,
+        "technology_innovation_focus": 35,
+        "export_market_access": 52,
+        "value_chain_integration": 48,
+        "sector_specific_infrastructure": 50,
+        "skills_availability_by_sector": 42,
+        "overall_sector_score": 46.2
+      },
+      "rankings": {
+        "continental_rank": 29,
+        "regional_rank": 8,
+        "total_zones_assessed": 30
+      },
+      "specialization_level": "Developing",
+      "data_quality": "Low",
+      "last_updated": "2025-01-15T00:00:00Z"
+    }
+  ]
+}

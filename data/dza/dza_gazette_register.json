@@ -1,0 +1,157 @@
+{
+ "jurisdiction": "DZA",
+ "as_of": "2026-09-05",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2020-01-01",
+  "to": null,
+  "note": "Corpus législatif archivé : lois de finances 2020 → 2026 + Code des douanes 79-07 + notes DGD d'amendement du tarif (559/2023, 4121/2024)."
+ },
+ "regional_cet_applicable": false,
+ "regional_note": "DZA est membre de l'UMA — aucune union douanière ni TEC régional en vigueur ; le droit de douane applicable est le tarif national DGD.",
+ "base_tariff_documentation": {
+  "source_id": "DZA-DGD-TARIF-USAGE-2020",
+  "source_name": "Direction Générale des Douanes — Algérie (DGD) via conformepro.dz",
+  "source_url": "https://www.douane.gov.dz/spip.php?article154",
+  "consultation_pages": [
+   "https://www.douane.gov.dz/spip.php?article805",
+   "https://conformepro.dz"
+  ],
+  "sha256": "75474d4227ce8a06b7fe9c4f2a976ab51a6a2b9fa51b5dd5ed0042d97bc10d72",
+  "verification_status": "SOURCE_ARCHIVED",
+  "data_status": "CRAWLED_AUTHENTIC",
+  "hs_version": "HS2022 — tarif national DGD, sous-positions 10 chiffres",
+  "effective_from": "2020-01-01",
+  "national_positions": 17115,
+  "legal_refs": [
+   {
+    "ref": "Loi n° 79-07 du 21 juillet 1979 portant code des douanes, modifiée et complétée",
+    "doc": "data/sources/DZA/legislation/code_douanes_79-07.pdf"
+   },
+   {
+    "ref": "Tarif Douanier d'usage — DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020)",
+    "doc": "data/sources/DZA/legislation/tarif_d_usage_2020.pdf"
+   },
+   {
+    "ref": "Loi de finances pour l'année 2026 — JO n° 88 du 31 décembre 2025",
+    "doc": "data/sources/DZA/legislation/JO_2026-88_loi_finances_2026.pdf"
+   },
+   {
+    "ref": "Nomenclature F.A.P — Tarif d'usage DGD (pages 1-2)",
+    "doc": "data/sources/DZA/legislation/dgd_tax_codes_and_fap.json"
+   }
+  ]
+ },
+ "preference_and_origin_status": "DOCUMENTED",
+ "preference_evidence": {
+  "instrument": "Circulaire DGD n° 482/2024 — offre ZLECAf Algérie (listes B = 1 163 codes, C = 456 codes)",
+  "ratification": "Loi n° 20-10 du 22 octobre 2020 portant approbation de l'accord ZLECAf (JO n° 80)",
+  "sha256": "15ca950833395b2ab598f36d392eda3b9ab033150d914bb0a40137f4b882d3e4",
+  "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2020/F2020080.pdf"
+ },
+ "documents": [
+  {
+   "file": "JO_2019-81_loi_finances_2020.pdf",
+   "title": "Loi n° 19-14 du 14 Rabie Ethani 1441 (11 décembre 2019) portant loi de finances pour 2020 — JO n° 81 du 30/12/2019",
+   "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2019/F2019081.pdf",
+   "sha256": "1bdad5863bbe87389989102df13c7701a15aa1cfe86a89a576c1e31de8214935"
+  },
+  {
+   "file": "JO_2020-33_lfc2020_loi_20-07.pdf",
+   "title": "Loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020) portant loi de finances complémentaire pour 2020 — JO n° 33 du 04/06/2020 ",
+   "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2020/F2020033.pdf",
+   "sha256": "b014690918a7da1ed981d9a5783c27bd80704622e84919bbea3c1e4b42514ab2"
+  },
+  {
+   "file": "JO_2020-80_ratification_zlecaf.pdf",
+   "title": "Loi n° 20-10 du 22 octobre 2020 portant approbation de l'accord portant création de la Zone de Libre-Échange Continental",
+   "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2020/F2020080.pdf",
+   "sha256": "15ca950833395b2ab598f36d392eda3b9ab033150d914bb0a40137f4b882d3e4"
+  },
+  {
+   "file": "JO_2020-83_loi_finances_2021.pdf",
+   "title": "Loi n° 20-19 du 14 Joumada El Oula 1442 (31 décembre 2020) portant loi de finances pour 2021 — JO n° 83 du 31/12/2020 — ",
+   "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2020/F2020083.pdf",
+   "sha256": "4f1e7be3ffd71e1e64b5ecdfec51623e174e9c7687a2b40d48f369829253ddd3"
+  },
+  {
+   "file": "JO_2021-100_loi_finances_2022.pdf",
+   "title": "Loi n° 21-16 du 25 Joumada El Oula 1443 (30 décembre 2021) portant loi de finances pour 2022 — JO n° 100 du 30/12/2021",
+   "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2021/F2021100.pdf",
+   "sha256": "884c2d7d98c03f0b4d39664fde2961c420ea55d70ee731d18375c399b4c24436"
+  },
+  {
+   "file": "JO_2022-89_loi_finances_2023.pdf",
+   "title": "Loi n° 22-33 du 6 Joumada El Oula 1444 (29 décembre 2022) portant loi de finances pour 2023 — JO n° 89 du 28/12/2022",
+   "source_url": "https://www.joradp.dz/FTP/JO-FRANCAIS/2022/F2022089.pdf",
+   "sha256": "0ad2298a51f9a7129d469fdb97e15bbb4bf54fd19c03edef8d615f77cf88b8b8"
+  },
+  {
+   "file": "JO_2025_loi_finances_2025.pdf",
+   "title": "Loi de finances pour 2025 (loi n° 24-08 du 22 Joumada El Oula 1446, 24 novembre 2024) — JO n° 84 du 26/12/2024",
+   "source_url": "https://www.douane.gov.dz/IMG/pdf/loi_de_finances_pour_2025.pdf",
+   "sha256": "ad7e4915a05e0a53bb85bf74b4f48f02c2e48643a7aff1b08a35434fd7967126"
+  },
+  {
+   "file": "JO_2026-88_loi_finances_2026.pdf",
+   "title": "Loi de finances pour l'année 2026 — JO de la République Algérienne N° 88 du 11 Rajab 1447 (31 décembre 2025)",
+   "source_url": "https://www.douane.gov.dz/IMG/pdf/loi_de_finance_2026.pdf",
+   "sha256": "e95ac0ca486683d940a56a679b5b7c3875f1bb08f98a78be94a60c93e4b37a7c"
+  },
+  {
+   "file": "annexes_tarif_d_usage_2020.pdf",
+   "title": "Annexes tarif douanier d'usage (dispositions LF 2020)",
+   "source_url": "https://www.douane.gov.dz/IMG/pdf/annexes_tarif_d_usague_2020.pdf",
+   "sha256": "d2321cc3c598dc1ed8f60b0e693dc80d147e9f405833cb362a90fd8626f67423"
+  },
+  {
+   "file": "code_douanes_79-07.pdf",
+   "title": "Loi n° 79-07 du 21 juillet 1979 portant code des douanes, modifiée et complétée",
+   "source_url": "https://www.douane.gov.dz/IMG/pdf/loi_no79-07_du_21_juillet_1979.pdf",
+   "sha256": "37c8bc3f614ffb127e2104dd70205ed279160d2ca522b9b523505fca7015b09a"
+  },
+  {
+   "file": "correlation_amendements_2023.pdf",
+   "title": "Amendements de la structure du tarif douanier — table de corrélation (mars 2023)",
+   "source_url": "https://www.douane.gov.dz/IMG/pdf/amendement_structure_tarif_-_spt_autres-_table_de_correlation-_mars_2023-2.pdf",
+   "sha256": "3c1daa6427012470a1e103b97750b2c2c4dfe020c84ea7736819894df080a9cf"
+  },
+  {
+   "file": "correlation_eclatements_2024.pdf",
+   "title": "Amendements de la structure du tarif douanier — table de corrélation éclatements SPT 'Autres' 2024",
+   "source_url": "https://www.douane.gov.dz/IMG/pdf/table_de_correlation_-_eclatement_tarifaire_spt_autres2024_.pdf",
+   "sha256": "b6561fdafe95923b41d2e71021558c7f7c0ce61649ecad22634053dd467f9d6e"
+  },
+  {
+   "file": "loi_23-22_finances_2024.pdf",
+   "title": "Loi n° 23-22 portant loi de finances pour 2024",
+   "source_url": "https://www.douane.gov.dz/IMG/pdf/loi_no_23-22_du_loi_de_finances_pour_2024.pdf",
+   "sha256": "b7d03bc0b7fbd13554dc7cec527379c3a6c0f13391368a71f72c26fe44cd8faa"
+  },
+  {
+   "file": "note_4121_amendements_2024.pdf",
+   "title": "Note N°4121/DGD/SP/D042/23 — Amendements de la structure du tarif douanier (applicables 01/01/2024)",
+   "source_url": "https://www.douane.gov.dz/IMG/pdf/note_no4121_du_28.12_2023.pdf",
+   "sha256": "f463429a0676eb61eefaf5612f5ccb17e93fff6a589fa406bfad1c387b4d48df"
+  },
+  {
+   "file": "note_559_amendements_2023.pdf",
+   "title": "Note N°559/DGD/SP/D042/23 — Amendements de la structure du tarif douanier applicables à partir du 1er mars 2023",
+   "source_url": "https://www.douane.gov.dz/IMG/pdf/note_amendement_structure_tarif_-_spt_autres-_mars_2023-2.pdf",
+   "sha256": "01569395cb5f2f9e658b04a181dabd916f762f841f45ad37dbebd9319dcfea65"
+  },
+  {
+   "file": "tarif_d_usage_2020.pdf",
+   "title": "Mise à jour du Tarif Douanier d'usage (dispositions de la Loi de Finances 2020) — DGD, Direction de la Fiscalité et des ",
+   "source_url": "https://www.douane.gov.dz/IMG/pdf/mise_a_jour_du_tarif_2020.pdf",
+   "sha256": "75474d4227ce8a06b7fe9c4f2a976ab51a6a2b9fa51b5dd5ed0042d97bc10d72"
+  }
+ ],
+ "sources_officielles": [
+  "https://www.douane.gov.dz (DGD — tarif, notes et circulaires)",
+  "https://www.douane.gov.dz/spip.php?article805",
+  "https://www.joradp.dz (SGG — Journal Officiel de la République Algérienne)",
+  "https://www.mcommerce.gov.dz (Ministère du Commerce)",
+  "https://conformepro.dz (service de consultation agréé DGD)"
+ ]
+}

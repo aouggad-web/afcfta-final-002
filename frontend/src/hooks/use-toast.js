@@ -1,93 +1,155 @@
-/**
- * use-toast — notification toast autonome.
- *
- * Le code applicatif n'importe que `toast({ title, description, variant })`
- * et aucun composant <Toaster/> n'est monté. Cette implémentation légère rend
- * donc elle-même une notification éphémère dans document.body puis la retire,
- * sans dépendre d'un provider. Sûre côté SSR/tests : no-op si `document` est
- * absent.
- */
+"use client";
+// Inspired by react-hot-toast library
+import * as React from "react"
 
-const CONTAINER_ID = 'app-toast-container';
+const TOAST_LIMIT = 1
+const TOAST_REMOVE_DELAY = 1000000
 
-function ensureContainer() {
-  if (typeof document === 'undefined') return null;
-  let container = document.getElementById(CONTAINER_ID);
-  if (!container) {
-    container = document.createElement('div');
-    container.id = CONTAINER_ID;
-    container.style.cssText = [
-      'position:fixed',
-      'top:16px',
-      'right:16px',
-      'z-index:9999',
-      'display:flex',
-      'flex-direction:column',
-      'gap:8px',
-      'max-width:360px',
-      'pointer-events:none',
-    ].join(';');
-    document.body.appendChild(container);
-  }
-  return container;
+const actionTypes = {
+  ADD_TOAST: "ADD_TOAST",
+  UPDATE_TOAST: "UPDATE_TOAST",
+  DISMISS_TOAST: "DISMISS_TOAST",
+  REMOVE_TOAST: "REMOVE_TOAST"
 }
 
-export function toast({ title, description, variant = 'default', duration = 4000 } = {}) {
-  const container = ensureContainer();
-  if (!container) return { dismiss: () => {} };
+let count = 0
 
-  const el = document.createElement('div');
-  const isDestructive = variant === 'destructive';
-  el.style.cssText = [
-    'pointer-events:auto',
-    'padding:12px 14px',
-    'border-radius:8px',
-    'box-shadow:0 4px 14px rgba(0,0,0,0.15)',
-    'font-size:0.9em',
-    'line-height:1.35',
-    `background:${isDestructive ? '#fdecea' : '#f0f7ff'}`,
-    `border:1px solid ${isDestructive ? '#f5c6cb' : '#c9def5'}`,
-    `color:${isDestructive ? '#721c24' : '#0b3d66'}`,
-    'opacity:0',
-    'transform:translateY(-6px)',
-    'transition:opacity .18s ease, transform .18s ease',
-  ].join(';');
+function genId() {
+  count = (count + 1) % Number.MAX_SAFE_INTEGER
+  return count.toString();
+}
 
-  if (title) {
-    const t = document.createElement('div');
-    t.style.fontWeight = '600';
-    t.textContent = title;
-    el.appendChild(t);
-  }
-  if (description) {
-    const d = document.createElement('div');
-    d.textContent = description;
-    el.appendChild(d);
+const toastTimeouts = new Map()
+
+const addToRemoveQueue = (toastId) => {
+  if (toastTimeouts.has(toastId)) {
+    return
   }
 
-  container.appendChild(el);
-  requestAnimationFrame(() => {
-    el.style.opacity = '1';
-    el.style.transform = 'translateY(0)';
-  });
+  const timeout = setTimeout(() => {
+    toastTimeouts.delete(toastId)
+    dispatch({
+      type: "REMOVE_TOAST",
+      toastId: toastId,
+    })
+  }, TOAST_REMOVE_DELAY)
 
-  const remove = () => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(-6px)';
-    setTimeout(() => el.remove(), 200);
-  };
-  const timer = setTimeout(remove, duration);
+  toastTimeouts.set(toastId, timeout)
+}
+
+export const reducer = (state, action) => {
+  switch (action.type) {
+    case "ADD_TOAST":
+      return {
+        ...state,
+        toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
+      };
+
+    case "UPDATE_TOAST":
+      return {
+        ...state,
+        toasts: state.toasts.map((t) =>
+          t.id === action.toast.id ? { ...t, ...action.toast } : t),
+      };
+
+    case "DISMISS_TOAST": {
+      const { toastId } = action
+
+      // ! Side effects ! - This could be extracted into a dismissToast() action,
+      // but I'll keep it here for simplicity
+      if (toastId) {
+        addToRemoveQueue(toastId)
+      } else {
+        state.toasts.forEach((toast) => {
+          addToRemoveQueue(toast.id)
+        })
+      }
+
+      return {
+        ...state,
+        toasts: state.toasts.map((t) =>
+          t.id === toastId || toastId === undefined
+            ? {
+                ...t,
+                open: false,
+              }
+            : t),
+      };
+    }
+    case "REMOVE_TOAST":
+      if (action.toastId === undefined) {
+        return {
+          ...state,
+          toasts: [],
+        }
+      }
+      return {
+        ...state,
+        toasts: state.toasts.filter((t) => t.id !== action.toastId),
+      };
+  }
+}
+
+const listeners = []
+
+let memoryState = { toasts: [] }
+
+function dispatch(action) {
+  memoryState = reducer(memoryState, action)
+  listeners.forEach((listener) => {
+    listener(memoryState)
+  })
+}
+
+function toast({
+  ...props
+}) {
+  const id = genId()
+
+  const update = (props) =>
+    dispatch({
+      type: "UPDATE_TOAST",
+      toast: { ...props, id },
+    })
+  const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id })
+
+  dispatch({
+    type: "ADD_TOAST",
+    toast: {
+      ...props,
+      id,
+      open: true,
+      onOpenChange: (open) => {
+        if (!open) dismiss()
+      },
+    },
+  })
 
   return {
-    dismiss: () => {
-      clearTimeout(timer);
-      remove();
-    },
+    id: id,
+    dismiss,
+    update,
+  }
+}
+
+function useToast() {
+  const [state, setState] = React.useState(memoryState)
+
+  React.useEffect(() => {
+    listeners.push(setState)
+    return () => {
+      const index = listeners.indexOf(setState)
+      if (index > -1) {
+        listeners.splice(index, 1)
+      }
+    };
+  }, [state])
+
+  return {
+    ...state,
+    toast,
+    dismiss: (toastId) => dispatch({ type: "DISMISS_TOAST", toastId }),
   };
 }
 
-export function useToast() {
-  return { toast };
-}
-
-export default useToast;
+export { useToast, toast }

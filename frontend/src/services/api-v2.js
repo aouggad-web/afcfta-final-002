@@ -1,42 +1,118 @@
-import axios from 'axios';
+import { csrfFetch } from './csrf';
+
+const API_BASE = import.meta.env.VITE_BACKEND_URL || '';
 
 /**
- * Client API "v2" pour le module réglementaire (RegulatoryComplianceTab,
- * RegulatoryQAPanel). Chaque méthode interroge le backend et renvoie
- * `response.data`. La base URL suit la convention du reste de l'app
- * (VITE_BACKEND_URL, requêtes relatives /api par défaut).
+ * Default request timeout in milliseconds.
  */
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
-const API = `${BACKEND_URL}/api`;
+const DEFAULT_TIMEOUT_MS = 30000;
 
-const client = axios.create({
-  baseURL: API,
-  withCredentials: true,
-});
+/**
+ * Enhanced API fetch with timeout, detailed error handling, and content-type validation.
+ */
+async function apiFetch(path, options = {}, timeoutMs = DEFAULT_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
-async function get(path, params) {
-  const { data } = await client.get(path, params ? { params } : undefined);
-  return data;
+  try {
+    const response = await csrfFetch(`${API_BASE}${path}`, {
+      headers: { 'Content-Type': 'application/json', ...options.headers },
+      signal: controller.signal,
+      ...options,
+    });
+
+    if (!response.ok) {
+      let message = `API error ${response.status}`;
+      try {
+        const body = await response.json();
+        if (body?.detail) {
+          message = Array.isArray(body.detail)
+            ? body.detail.map((d) => d.msg || d).join('; ')
+            : String(body.detail);
+        }
+      } catch {
+        // ignore JSON parse errors on error responses
+      }
+      const error = new Error(message);
+      error.status = response.status;
+      throw error;
+    }
+
+    // Reject HTML responses (e.g. SPA 404 fallback pages)
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('text/html')) {
+      const error = new Error('Received HTML instead of JSON – is the backend running?');
+      error.status = 0;
+      throw error;
+    }
+
+    return response.json();
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      const error = new Error(`Request timed out after ${timeoutMs / 1000}s`);
+      error.status = 408;
+      throw error;
+    }
+    throw err;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
-export const regulatoryApi = {
-  /** Pays supportés par le module de conformité réglementaire. */
-  getSupportedCountries: () => get('/regulatory/countries'),
+export const apiV2 = {
+  comprehensiveSearch: (query, filters = {}, pagination = { page: 1, limit: 10 }) =>
+    apiFetch('/api/v2/search/comprehensive', {
+      method: 'POST',
+      body: JSON.stringify({ query, filters, pagination }),
+    }),
 
-  /** Conformité réglementaire détaillée pour un pays (ISO3). */
-  getCountryCompliance: (iso3) => get(`/regulatory/compliance/${iso3}`),
+  bulkTariffCalculation: (products, routes) =>
+    apiFetch('/api/v2/tariffs/bulk', {
+      method: 'POST',
+      body: JSON.stringify({ products, routes }),
+    }),
 
-  /** Pays présents dans le registre maître réglementaire. */
-  getMasterRegistryCountries: () => get('/regulatory/master-registry/countries'),
+  bulkInvestmentAnalysis: (opportunities, criteria) =>
+    apiFetch('/api/v2/investment/bulk-analysis', {
+      method: 'POST',
+      body: JSON.stringify({ opportunities, criteria }),
+    }),
 
-  /** Contradictions détectées par le contrôle qualité (QA). */
-  getQAContradictions: () => get('/regulatory/qa/contradictions'),
+  getDashboardAnalytics: () => apiFetch('/api/v2/analytics/dashboard'),
 
-  /** Rapport de couverture du contrôle qualité. */
-  getQACoverageReport: () => get('/regulatory/qa/coverage'),
+  getAIRecommendations: (userProfile) =>
+    apiFetch('/api/v2/ai/recommendations', {
+      method: 'POST',
+      body: JSON.stringify({ userProfile }),
+    }),
 
-  /** Pays dont les données réglementaires sont périmées. */
-  getQAStaleCountries: () => get('/regulatory/qa/stale-countries'),
+  mobileQuickLookup: (hsCode, country) =>
+    apiFetch(
+      `/api/v2/mobile/lookup?hs_code=${encodeURIComponent(hsCode)}&country=${encodeURIComponent(country)}`
+    ),
 };
 
-export default regulatoryApi;
+/**
+ * Regulatory compliance API (LOT 5, issue #360) — special import formalities and
+ * government-mandated service providers. Informational only: never mixed with
+ * the ZLECAf/MFN tariff calculator, never computes fees for unproven amounts.
+ */
+export const regulatoryApi = {
+  getSupportedCountries: () => apiFetch('/api/regulatory-compliance/countries'),
+
+  getCountryCompliance: (countryIso3) =>
+    apiFetch(`/api/regulatory-compliance/country/${encodeURIComponent(countryIso3)}`),
+
+  getMasterRegistryCountries: () => apiFetch('/api/regulatory-master-registry/countries'),
+
+  getMasterRegistry: () => apiFetch('/api/regulatory-master-registry/registry'),
+
+  getMasterRegistryCountry: (countryIso3) =>
+    apiFetch(`/api/regulatory-master-registry/country/${encodeURIComponent(countryIso3)}`),
+
+  getQACoverageReport: () => apiFetch('/api/regulatory-qa/coverage-report'),
+
+  getQAContradictions: () => apiFetch('/api/regulatory-qa/contradictions'),
+
+  getQAStaleCountries: () => apiFetch('/api/regulatory-qa/stale-countries'),
+};
