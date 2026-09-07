@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Badge } from '../ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
+import ISIC4DetailTable from './ISIC4DetailTable';
 import { Factory, TrendingUp, Award, Building2, Package, Loader2, AlertTriangle, Info, DollarSign, Users } from 'lucide-react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -53,6 +54,8 @@ function ProductionManufacturing({ language = 'fr' }) {
       top10Africa: "Top 10 Africain - Valeur Ajoutée Manufacturière",
       otherCountries: "Autres pays",
       selectedCountry: "Pays sélectionné",
+      detailedIsicTitle: "Détail complet par secteur ISIC 4 chiffres",
+      detailedIsicSubtitle: "Données réelles UNIDO (IDSB/INDSTAT), toutes années et tous indicateurs, avec badges réel/estimé",
       source: "Source:",
       sourceNote: "Les données proviennent de la base UNIDO INDSTAT4 (Organisation des Nations Unies pour le Développement Industriel). La classification sectorielle suit la nomenclature ISIC Rev.4.",
       value: "Valeur"
@@ -86,6 +89,8 @@ function ProductionManufacturing({ language = 'fr' }) {
       top10Africa: "African Top 10 - Manufacturing Value Added",
       otherCountries: "Other countries",
       selectedCountry: "Selected country",
+      detailedIsicTitle: "Full breakdown by ISIC 4-digit sector",
+      detailedIsicSubtitle: "Real UNIDO data (IDSB/INDSTAT), all years and indicators, with real/estimated badges",
       source: "Source:",
       sourceNote: "Data comes from the UNIDO INDSTAT4 database (United Nations Industrial Development Organization). Sectoral classification follows the ISIC Rev.4 nomenclature.",
       value: "Value"
@@ -609,6 +614,19 @@ function ProductionManufacturing({ language = 'fr' }) {
               </CardContent>
             </Card>
           )}
+
+          {/* Détail complet ISIC4 réel — UNIDO IDSB/INDSTAT, réel/estimé par indicateur/année */}
+          <Card className="shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-slate-50 to-blue-50">
+              <CardTitle className="text-xl text-slate-700 flex items-center gap-2">
+                <Building2 className="w-5 h-5" /> {t.detailedIsicTitle}
+              </CardTitle>
+              <CardDescription>{t.detailedIsicSubtitle}</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <ISIC4DetailTable countryISO3={selectedCountry} />
+            </CardContent>
+          </Card>
 
           {/* Source Information */}
           <Card className="bg-gray-50 border-gray-200">
