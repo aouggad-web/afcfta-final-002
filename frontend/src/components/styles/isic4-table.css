@@ -283,6 +283,93 @@
   font-weight: 600;
 }
 
+.detail-isic-code {
+  color: #888;
+  font-weight: 400;
+}
+
+/* Tableau de détail complet (indicateurs × années) */
+.detail-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85em;
+  background: white;
+}
+
+.detail-table th,
+.detail-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #eee;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.detail-table thead th {
+  background: #f5f5f7;
+  color: #444;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+}
+
+.detail-indicator-col {
+  text-align: left !important;
+  position: sticky;
+  left: 0;
+  background: #fafafa;
+  font-weight: 500;
+  z-index: 1;
+}
+
+.detail-table thead .detail-indicator-col {
+  z-index: 2;
+}
+
+.detail-cell .detail-value {
+  font-variant-numeric: tabular-nums;
+}
+
+.detail-cell .detail-mark {
+  margin-left: 4px;
+  font-size: 0.9em;
+  opacity: 0.75;
+}
+
+.detail-official {
+  color: #1b5e20;
+}
+
+.detail-estimate {
+  color: #8a6d00;
+  background: #fffdf5;
+}
+
+.detail-empty {
+  color: #bbb;
+  text-align: center !important;
+}
+
+.detail-nature-col {
+  text-align: center !important;
+}
+
+.detail-legend {
+  margin: 10px 0 0 0;
+  font-size: 0.8em;
+  color: #777;
+}
+
+.detail-empty-note {
+  font-size: 0.85em;
+  color: #999;
+}
+
 .series-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -599,6 +686,48 @@
 :root:not([data-theme="light"]) .theme-dark .timeseries-chart h4,
 .theme-dark .timeseries-chart h4 {
   color: #85a0ff;
+}
+
+/* Tableau de détail complet — thème sombre */
+.theme-dark .detail-table-wrapper {
+  border-color: #404040;
+}
+
+.theme-dark .detail-table {
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.theme-dark .detail-table th,
+.theme-dark .detail-table td {
+  border-bottom-color: #404040;
+}
+
+.theme-dark .detail-table thead th {
+  background: #333;
+  color: #ccc;
+}
+
+.theme-dark .detail-indicator-col {
+  background: #262626;
+}
+
+.theme-dark .detail-official {
+  color: #8fe0a0;
+}
+
+.theme-dark .detail-estimate {
+  color: #e8cf7a;
+  background: #2f2b1e;
+}
+
+.theme-dark .detail-empty {
+  color: #666;
+}
+
+.theme-dark .detail-legend,
+.theme-dark .detail-isic-code {
+  color: #999;
 }
 
 :root:not([data-theme="light"]) .theme-dark .series-item,
