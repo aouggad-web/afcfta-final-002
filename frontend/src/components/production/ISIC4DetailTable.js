@@ -161,6 +161,10 @@ export default function ISIC4DetailTable({ countryISO3 }) {
     return <span className="badge badge-unknown">?</span>;
   };
 
+  const dataQuality = data.data_quality || {};
+  const isFullyEstimated = dataQuality.is_fully_estimated;
+  const hasOfficial = dataQuality.has_official_statistics;
+
   return (
     <div className="isic4-container">
       <div className="isic4-header">
@@ -176,18 +180,34 @@ export default function ISIC4DetailTable({ countryISO3 }) {
             Source : <em>{data.source}</em>
           </span>
           <span className="meta-item data-types">
-            📊 Inclut données officielles et estimations UNIDO
+            {isFullyEstimated
+              ? '≈ Estimations UNIDO uniquement'
+              : hasOfficial
+              ? '📊 Données officielles + estimations UNIDO'
+              : '📊 Données UNIDO'}
           </span>
         </div>
       </div>
 
+      {/* Bannière : pays sans statistiques officielles → estimations UNIDO */}
+      {isFullyEstimated && (
+        <div className="isic4-estimate-banner" role="status">
+          <strong>≈ Aucune statistique officielle disponible pour ce pays.</strong>{' '}
+          Les valeurs affichées sont des <em>estimations dérivées par UNIDO</em>
+          {' '}(UNIDO_DERIVED_ESTIMATE) et doivent être interprétées avec prudence.
+        </div>
+      )}
+
       {/* Légende des badges */}
       <div className="isic4-legend">
         <span className="legend-item">
-          <span className="badge badge-official">✓ Stats officielles</span> = OFFICIAL_STATISTICS
+          <span className="badge badge-official">✓ Réel</span> = secteur 100% données réelles (OFFICIAL_STATISTICS)
         </span>
         <span className="legend-item">
-          <span className="badge badge-estimate">≈ Estimation</span> = UNIDO_DERIVED_ESTIMATE
+          <span className="badge badge-mixed">◐ Mixte</span> = réel + estimations selon l'indicateur
+        </span>
+        <span className="legend-item">
+          <span className="badge badge-estimate">≈ Estimé</span> = secteur 100% estimations UNIDO (UNIDO_DERIVED_ESTIMATE)
         </span>
       </div>
 
@@ -222,7 +242,10 @@ export default function ISIC4DetailTable({ countryISO3 }) {
                 >
                   {/* Colonnes figées */}
                   <td className="sticky-col col-isic4">{sector.isic4}</td>
-                  <td className="sticky-col col-description">{sector.description}</td>
+                  <td className="sticky-col col-description">
+                    <span className="sector-description-text">{sector.description}</span>
+                    {getSectorNatureBadge(sector)}
+                  </td>
 
                   {/* Indicateurs */}
                   {indicatorsList.map((indicator) => {
@@ -280,8 +303,10 @@ export default function ISIC4DetailTable({ countryISO3 }) {
       {/* Pied de page */}
       <div className="isic4-footer">
         <p>
-          💡 Cliquez sur une ligne pour voir la série temporelle complète 2018-2024 du secteur.
-          Les données sont issues directement du portail UNIDO (IDSB + INDSTAT, ISIC Rev.4).
+          💡 Cliquez sur une ligne pour déplier le <strong>tableau détaillé complet</strong> du
+          secteur : tous les indicateurs, toutes les années (2018-2024), avec pour chaque valeur
+          l'indication réel (✓) ou estimé (≈). Données issues du portail UNIDO (IDSB + INDSTAT,
+          ISIC Rev.4).
         </p>
       </div>
     </div>
@@ -295,44 +320,102 @@ export default function ISIC4DetailTable({ countryISO3 }) {
 function TimeseriesChart({ timeseries }) {
   if (!timeseries || !timeseries.series) return null;
 
+  const series = timeseries.series;
+  const indicators = Object.keys(series);
+  if (indicators.length === 0) {
+    return (
+      <div className="timeseries-chart">
+        <h4>Détail complet : {timeseries.isic_description}</h4>
+        <p className="detail-empty-note">Aucune donnée détaillée pour ce secteur.</p>
+      </div>
+    );
+  }
+
+  // Toutes les années couvertes, tous indicateurs confondus (ordre croissant)
+  const yearsSet = new Set();
+  indicators.forEach((ind) => (series[ind] || []).forEach((pt) => yearsSet.add(pt.year)));
+  const years = Array.from(yearsSet).sort((a, b) => a - b);
+
+  // Résumé de la nature d'un indicateur (réel / estimé / mixte)
+  const indicatorNature = (points) => {
+    const natures = points.map((p) => p.data_nature);
+    const hasOfficial = natures.includes('OFFICIAL_STATISTICS');
+    const hasEstimate = natures.includes('UNIDO_DERIVED_ESTIMATE');
+    if (hasOfficial && hasEstimate) return 'mixed';
+    if (hasOfficial) return 'official';
+    if (hasEstimate) return 'estimated';
+    return 'unknown';
+  };
+
   return (
     <div className="timeseries-chart">
-      <h4>Série temporelle : {timeseries.isic_description}</h4>
-      <div className="series-list">
-        {Object.entries(timeseries.series).map(([indicator, years]) => (
-          <div key={indicator} className="series-item">
-            <h5>{formatIndicatorLabel(indicator)}</h5>
-            <table className="series-table">
-              <thead>
-                <tr>
-                  <th>Année</th>
-                  <th>Valeur</th>
-                  <th>Source</th>
-                </tr>
-              </thead>
-              <tbody>
-                {years.map((y, idx) => (
-                  <tr key={idx}>
-                    <td>{y.year}</td>
-                    <td>{y.value.toLocaleString('fr-FR')}</td>
-                    <td>
-                      <span
-                        className={
-                          y.data_nature === 'OFFICIAL_STATISTICS'
-                            ? 'badge badge-official'
-                            : 'badge badge-estimate'
-                        }
+      <h4>
+        Détail complet — {timeseries.isic_description}{' '}
+        <span className="detail-isic-code">({timeseries.isic4})</span>
+      </h4>
+
+      <div className="detail-table-wrapper">
+        <table className="detail-table">
+          <thead>
+            <tr>
+              <th className="detail-indicator-col">Indicateur</th>
+              {years.map((y) => (
+                <th key={y} className="detail-year-col">{y}</th>
+              ))}
+              <th className="detail-nature-col">Nature</th>
+            </tr>
+          </thead>
+          <tbody>
+            {indicators.map((ind) => {
+              const points = series[ind] || [];
+              const byYear = {};
+              points.forEach((pt) => {
+                byYear[pt.year] = pt;
+              });
+              const nature = indicatorNature(points);
+              return (
+                <tr key={ind}>
+                  <td className="detail-indicator-col">{formatIndicatorLabel(ind)}</td>
+                  {years.map((y) => {
+                    const pt = byYear[y];
+                    if (!pt || pt.value === undefined || pt.value === null) {
+                      return (
+                        <td key={y} className="detail-cell detail-empty">—</td>
+                      );
+                    }
+                    const isOfficial = pt.data_nature === 'OFFICIAL_STATISTICS';
+                    return (
+                      <td
+                        key={y}
+                        className={`detail-cell ${isOfficial ? 'detail-official' : 'detail-estimate'}`}
+                        title={isOfficial ? 'Donnée réelle (statistique officielle)' : 'Estimation dérivée UNIDO'}
                       >
-                        {y.data_nature === 'OFFICIAL_STATISTICS' ? '✓ Officiel' : '≈ Estimation'}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ))}
+                        <span className="detail-value">{pt.value.toLocaleString('fr-FR')}</span>
+                        <span className="detail-mark">{isOfficial ? '✓' : '≈'}</span>
+                      </td>
+                    );
+                  })}
+                  <td className="detail-nature-col">
+                    {nature === 'official' && (
+                      <span className="badge badge-official">✓ Réel</span>
+                    )}
+                    {nature === 'estimated' && (
+                      <span className="badge badge-estimate">≈ Estimé</span>
+                    )}
+                    {nature === 'mixed' && (
+                      <span className="badge badge-mixed">◐ Mixte</span>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
+
+      <p className="detail-legend">
+        ✓ = donnée réelle (officielle) · ≈ = estimation UNIDO · — = non disponible
+      </p>
     </div>
   );
 }
@@ -340,6 +423,50 @@ function TimeseriesChart({ timeseries }) {
 // ─────────────────────────────────────────────────────────────────────────────
 // Utilitaires
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Nature des données d'un secteur ISIC (encadré) à partir de ses indicateurs :
+ * - 'official'  : tous les indicateurs affichés sont OFFICIAL_STATISTICS
+ * - 'estimated' : tous les indicateurs affichés sont des estimations UNIDO
+ * - 'mixed'     : mélange officiel + estimation
+ * - null        : aucun indicateur
+ */
+function getSectorDataNature(sector) {
+  const natures = Object.values(sector.indicators || {}).map((ind) => ind.data_nature);
+  if (natures.length === 0) return null;
+  const hasOfficial = natures.includes('OFFICIAL_STATISTICS');
+  const hasEstimate = natures.includes('UNIDO_DERIVED_ESTIMATE');
+  if (hasOfficial && hasEstimate) return 'mixed';
+  if (hasOfficial) return 'official';
+  if (hasEstimate) return 'estimated';
+  return null;
+}
+
+function getSectorNatureBadge(sector) {
+  const nature = getSectorDataNature(sector);
+  if (nature === 'estimated') {
+    return (
+      <span className="sector-nature badge badge-estimate" title="Toutes les valeurs de ce secteur sont des estimations UNIDO">
+        ≈ Estimé
+      </span>
+    );
+  }
+  if (nature === 'mixed') {
+    return (
+      <span className="sector-nature badge badge-mixed" title="Ce secteur mêle données réelles (officielles) et estimations UNIDO">
+        ◐ Mixte
+      </span>
+    );
+  }
+  if (nature === 'official') {
+    return (
+      <span className="sector-nature badge badge-official" title="Toutes les valeurs affichées de ce secteur sont des données réelles (statistiques officielles)">
+        ✓ Réel
+      </span>
+    );
+  }
+  return null;
+}
 
 function formatIndicatorLabel(indicator) {
   const labels = {

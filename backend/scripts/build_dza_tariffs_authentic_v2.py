@@ -27,6 +27,7 @@ import glob
 import hashlib
 import json
 import os
+import re
 import shutil
 import sys
 import unicodedata
@@ -85,6 +86,9 @@ def _norm(s: str) -> str:
     return "".join(c for c in s if unicodedata.category(c) != "Mn").strip()
 
 
+_NUMERIC_ONLY_FORMALITY = re.compile(r"^\d+(?:[.,]\d+)?$")
+
+
 def load_progress_positions() -> tuple[dict, dict]:
     """Charge tous les DZA_progress_*.json; déduplique par hs_code (dernier crawl gagne)."""
     pattern = str(CRAWLED_DIR / "DZA_progress_*.json")
@@ -137,6 +141,9 @@ def map_formalities(formalities: list[str], fap_list: dict) -> list:
     fap_norm = {_norm(v.split("(")[0]): k for k, v in fap_list.items()}
     fap_norm2 = {_norm(k): k for k in fap_list}
     for raw in formalities:
+        raw = (raw or "").strip()
+        if not raw or _NUMERIC_ONLY_FORMALITY.fullmatch(raw):
+            continue
         entry: dict = {"text_verbatim": raw, "source": SOURCE_NAME}
         base = raw.split("(")[0].strip()
         key = fap_norm.get(_norm(base)) or fap_norm2.get(_norm(raw))
