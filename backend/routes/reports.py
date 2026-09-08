@@ -446,13 +446,19 @@ async def sectoral_analysis(
 
     service = get_isic_idsb_service()
 
-    # Get market potential if available
+    # Signal de demande OEC pour le SH EXACT à destination — on passe la structure
+    # COMPLÈTE (valeur + année + source d'observation), pas seulement le montant,
+    # pour que la carte puisse afficher l'année et la provenance (finding S1).
     market_potential = None
     try:
         from services.real_trade_data_service import real_trade_service
         imports = await real_trade_service.get_country_product_imports(destination, hs_code)
         if imports and imports.get("import_value_usd"):
-            market_potential = imports.get("import_value_usd")
+            market_potential = {
+                "value": imports.get("import_value_usd"),
+                "year": imports.get("year"),
+                "source": imports.get("source"),
+            }
     except Exception:
         pass
 

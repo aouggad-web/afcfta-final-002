@@ -120,6 +120,7 @@ function Chip({ ok, children }) {
 
 function SectoralAnalysis({ hsCode, origin, destination, fr }) {
   const [analysis, setAnalysis] = useState(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -128,6 +129,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
     // to the new report while the new request runs — and an emptied input leaves
     // nothing lingering.
     setAnalysis(null);
+    setError(false);
     if (!hsCode || !origin || !destination) {
       return () => {
         cancelled = true;
@@ -145,7 +147,9 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
         const res = await axios.get(`${API}/reports/sectoral-analysis?${params.toString()}`);
         if (!cancelled) setAnalysis(res.data);
       } catch (e) {
-        if (!cancelled) setAnalysis(null);
+        // Distinguish a real request failure from the loading / no-section case,
+        // so users don't mistake an unavailable service for "no sectoral data".
+        if (!cancelled) setError(true);
       }
     };
 
@@ -155,11 +159,25 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
     };
   }, [hsCode, origin, destination, fr]);
 
+  // Request failed — surface it instead of silently vanishing like loading does.
+  if (error) {
+    return (
+      <div style={{ ...card, color: "#9a6700", fontSize: 13, lineHeight: 1.6 }}>
+        <div style={{ ...label, marginBottom: 4, fontWeight: 700 }}>
+          {fr ? "Analyse sectorielle (ISIC4 / IDSB)" : "Sectoral analysis (ISIC4 / IDSB)"}
+        </div>
+        {fr
+          ? "Service momentanément indisponible — analyse sectorielle non chargée."
+          : "Service temporarily unavailable — sectoral analysis could not be loaded."}
+      </div>
+    );
+  }
+
   // No request yet / still loading — render nothing.
   if (!analysis) return null;
 
-  // Not applicable (primary agri/extractive product, ambiguous ISIC mapping…):
-  // surface the honest note rather than silently dropping the whole section.
+  // Not applicable (uncatalogued HS code, ambiguous ISIC mapping…): surface the
+  // honest note rather than silently dropping the whole section.
   if (!analysis.available) {
     return analysis.note ? (
       <div style={{ ...card, color: "var(--afcfta-muted,#667)", fontSize: 13, lineHeight: 1.6 }}>
@@ -271,15 +289,23 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
             {bal.origin_exports_division && (
               <Chip ok>{fr ? "Origine exporte déjà" : "Origin already exports"}</Chip>
             )}
-            {bal.hs_import_demand_usd != null && (
+            {bal.hs_import_demand?.value != null && (
               <Chip ok>
-                {fr ? "Imports OEC (SH exact)" : "OEC imports (exact HS)"} · {money(bal.hs_import_demand_usd)}
+                {fr ? "Imports OEC (SH exact)" : "OEC imports (exact HS)"} · {money(bal.hs_import_demand.value)}
+                {bal.hs_import_demand.year ? ` (${bal.hs_import_demand.year})` : ""}
               </Chip>
             )}
           </div>
           <div style={{ fontSize: 13, color: "var(--afcfta-muted,#667)", lineHeight: 1.6 }}>
             {bal.interpretation}
           </div>
+          {bal.hs_import_demand?.source && (
+            <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 6 }}>
+              {fr ? "Source demande (SH exact)" : "Demand source (exact HS)"} :{" "}
+              {srcText(bal.hs_import_demand.source)}
+              {bal.hs_import_demand.year ? ` · ${bal.hs_import_demand.year}` : ""}
+            </div>
+          )}
         </div>
       )}
 
@@ -321,6 +347,18 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                     <Prov nature={industrial_base.provenance?.employees} fr={fr} />
                   </div>
                 </div>
+                {/* Establishments counts toward "supply recorded" on the backend,
+                    so it must be visible — otherwise a division with only this
+                    metric shows every value as — yet claims supply. */}
+                {industrial_base.establishments != null && (
+                  <div>
+                    <div style={label}>{fr ? "Établissements" : "Establishments"}</div>
+                    <div style={{ fontSize: 17, fontWeight: 700 }}>
+                      {intFmt(industrial_base.establishments)}
+                      <Prov nature={industrial_base.provenance?.establishments} fr={fr} />
+                    </div>
+                  </div>
+                )}
               </div>
               {industrial_base.top_subsectors?.length > 0 && (
                 <div style={{ marginTop: 12 }}>
@@ -421,8 +459,8 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
           <table style={{ width: "100%", fontSize: 12, borderCollapse: "collapse" }}>
             <thead>
               <tr>
-                <th style={th}>{fr ? "Code SH" : "HS code"}</th>
-                <th style={th}>{fr ? "Produit exportable" : "Exportable product"}</th>
+                <th style={th} scope="col">{fr ? "Code SH" : "HS code"}</th>
+                <th style={th} scope="col">{fr ? "Produit exportable" : "Exportable product"}</th>
               </tr>
             </thead>
             <tbody>

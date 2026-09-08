@@ -68,12 +68,12 @@ def test_manufacturing_product_classified_via_unsd_mapping():
     assert r["product_label"]  # libellé SH4 réel
 
 
-def test_primary_product_flagged_not_manufacturing():
-    """0901 (café vert) n'est pas manufacturier → analyse non applicable, pas d'invention."""
+def test_uncatalogued_hs_flagged_unmapped_not_invented():
+    """0901 (café vert) n'a pas de SH4 catalogué → « unmapped_hs4 », pas d'invention."""
     with _patch_records():
         r = get_isic_idsb_service().assess_opportunity_by_sector("0901", "ETH", "EGY")
     assert r["available"] is False
-    assert r["reason"] == "not_manufacturing"
+    assert r["reason"] == "unmapped_hs4"
 
 
 def test_primary_product_not_manufactured_via_hs2_chapter_sibling():
@@ -88,10 +88,29 @@ def test_primary_product_not_manufactured_via_hs2_chapter_sibling():
         cocoa = svc.assess_opportunity_by_sector("1801", "CIV", "EGY")
         crude = svc.assess_opportunity_by_sector("2709", "NGA", "EGY")
         chocolate = svc.assess_opportunity_by_sector("1806", "CIV", "EGY")
-    assert cocoa["available"] is False and cocoa["reason"] == "not_manufacturing"
-    assert crude["available"] is False and crude["reason"] == "not_manufacturing"
+    # Sans SH4 exact catalogué → « unmapped_hs4 » (non tranché), jamais une
+    # analyse manufacturière héritée du chapitre.
+    assert cocoa["available"] is False and cocoa["reason"] == "unmapped_hs4"
+    assert crude["available"] is False and crude["reason"] == "unmapped_hs4"
     # Le produit manufacturé du même chapitre reste, lui, classé.
     assert chocolate["available"] is True and chocolate["isic4"]["code"] == "10"
+
+
+def test_manufactured_but_unmapped_is_not_claimed_primary():
+    """
+    Un produit MANUFACTURÉ absent de la liste curatée (non exhaustive) ne doit
+    PAS être présenté comme primaire : la pâte de cacao SH 1803 (manufacturée)
+    n'est pas dans ``ISIC_HS`` → « unmapped_hs4 », sans revendiquer « primaire »
+    ni « manufacturier ». Le chocolat SH 1806 (catalogué) reste, lui, classé.
+    """
+    with _patch_records():
+        paste = get_isic_idsb_service().assess_opportunity_by_sector("1803", "CIV", "EGY", lang="en")
+        chocolate = get_isic_idsb_service().assess_opportunity_by_sector("1806", "CIV", "EGY")
+    assert paste["available"] is False and paste["reason"] == "unmapped_hs4"
+    # Ne revendique pas « primaire » : au contraire le note dit explicitement
+    # « neither confirmed manufactured nor confirmed primary ».
+    assert "neither confirmed manufactured nor confirmed primary" in paste["note"]
+    assert chocolate["available"] is True
 
 
 def test_real_supply_and_demand_are_aggregated_from_idsb():
@@ -127,15 +146,56 @@ def test_uncovered_country_is_flagged_never_estimated():
     assert r["demand_supply_balance"]["verdict"] == "demand_without_supply"
 
 
-def test_hs_import_demand_counts_as_demand_signal():
-    """Les imports OEC du SH exact activent la demande même hors IDSB destination."""
+def test_hs_import_demand_counts_as_demand_signal_with_year_source():
+    """
+    Les imports OEC du SH exact activent la demande même hors IDSB destination, et
+    l'année + la source d'observation sont conservées (finding S1) ; la source de
+    demande est attribuée à l'OEC, pas à UNIDO (finding N3).
+    """
     with _patch_records():
         r = get_isic_idsb_service().assess_opportunity_by_sector(
-            "1806", "CIV", "MAR", market_potential=750_000.0
+            "1806",
+            "CIV",
+            "MAR",
+            market_potential={"value": 750_000.0, "year": 2022, "source": "OEC BACI"},
         )
+    bal = r["demand_supply_balance"]
     # MAR absent du jeu IDSB mocké → demande IDSB indisponible, mais OEC la porte.
-    assert r["demand_supply_balance"]["demand_measured"] is True
-    assert r["demand_supply_balance"]["hs_import_demand_usd"] == 750_000.0
+    assert bal["demand_measured"] is True
+    assert bal["hs_import_demand"] == {"value": 750_000.0, "year": 2022, "source": "OEC BACI"}
+    # La demande vient de l'OEC seul — surtout pas attribuée à UNIDO.
+    assert bal["demand_sources"] == ["OEC"]
+    assert "UNIDO/OEC" not in bal["interpretation"]
+
+
+def test_output_coalesced_across_idsb_and_official_subsectors():
+    """
+    La Production de division somme, PAR sous-secteur, l'Output IDSB puis à défaut
+    l'Output officiel INDSTAT — un sous-secteur « officiel seul » n'est pas perdu.
+    """
+    records = [
+        {  # sous-secteur A : Output IDSB
+            "dataset_code": "IDSB_R4", "country_iso3": "KEN", "country_name": "Kenya",
+            "isic_code": "2410", "isic_description": "Basic iron and steel",
+            "year": 2023, "indicator_code": "100", "indicator_name": "Output",
+            "value": 100.0, "unit": "current_USD", "data_nature": "UNIDO_DERIVED_ESTIMATE",
+        },
+        {  # sous-secteur B : Output officiel INDSTAT UNIQUEMENT
+            "dataset_code": "INDSTAT_R4", "country_iso3": "KEN", "country_name": "Kenya",
+            "isic_code": "2420", "isic_description": "Basic precious metals",
+            "year": 2022, "indicator_code": "14", "indicator_name": "Output",
+            "value": 40.0, "unit": "current_USD", "data_nature": "OFFICIAL_STATISTICS",
+        },
+    ]
+    isic4_idsb_data._load_records.cache_clear()
+    isic4_idsb_data.list_covered_countries.cache_clear()
+    with patch.object(isic4_idsb_data, "_load_records", lambda: list(records)):
+        r = get_isic_idsb_service().assess_opportunity_by_sector("7208", "KEN", "KEN")
+    base = r["industrial_base"]
+    # 100 (IDSB) + 40 (officiel) — le sous-secteur officiel-seul n'est pas écrasé.
+    assert base["output_usd"] == 140.0
+    # Provenance mixte car les deux natures contribuent.
+    assert base["provenance"]["output_usd"] == "mixed"
 
 
 def test_diversification_lists_sibling_products_excluding_current():
