@@ -176,13 +176,16 @@ def test_lot3_source_ids_registered_in_legal_sources():
 
 def test_lot3_regulatory_work_does_not_add_new_supported_jurisdictions():
     """KEN était déjà une SUPPORTED_JURISDICTION avant ce lot (calcul TVA/accises,
-    indépendant des formalités réglementaires) ; CMR/GHA/NGA ne doivent pas être
-    ajoutés au calculateur tarifaire par ce lot réglementaire."""
+    indépendant des formalités réglementaires) ; ce lot RÉGLEMENTAIRE n'ajoute
+    lui-même aucune juridiction au calculateur tarifaire.
+
+    CMR et GHA ont depuis été promus juridictions supportées par un chantier
+    distinct (couche légale nationale générée — cf. test_jurisdictions_priority9),
+    et ne sont donc plus attendus absents ici ; NGA reste non enregistré."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
 
     assert "KEN" in SUPPORTED_JURISDICTIONS
-    for iso3 in ("CMR", "GHA", "NGA"):
-        assert iso3 not in SUPPORTED_JURISDICTIONS
+    assert "NGA" not in SUPPORTED_JURISDICTIONS
 
 
 def test_lot3_has_no_fabricated_afcfta_offer():

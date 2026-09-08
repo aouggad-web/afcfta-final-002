@@ -4,11 +4,13 @@ TVA, droit d'accises (barème complet HS-codé) et centimes additionnels
 communaux (CAC), tous vérifiés sur le Code Général des Impôts, édition 2021
 (Article 142 et Annexe II), archivé et haché.
 
-Cette collecte est délibérément partielle (le TEC CEMAC n'est pas archivé,
-donc aucun base_cet_rate n'est calculable ; le CAC est assis sur le montant
-de TVA et non sur la valeur en douane, incompatible avec DEFAULT_LEVY_TABLES
-tel quel) — voir data/sources/cameroon/README.md — donc CMR n'est pas
-enregistrée dans SUPPORTED_JURISDICTIONS ni dans NATIONAL_OFFER_REGISTRY.
+Cette collecte reste partielle sur le plan régional (le TEC CEMAC n'est pas
+archivé ; le CAC est assis sur le montant de TVA et non sur la valeur en douane,
+incompatible avec DEFAULT_LEVY_TABLES tel quel) — voir
+data/sources/cameroon/README.md. CMR est désormais enregistrée dans
+SUPPORTED_JURISDICTIONS (couche légale nationale générée à partir du canonique)
+mais reste absente de NATIONAL_OFFER_REGISTRY (aucune offre nationale ZLECAf
+fabriquée).
 """
 
 import csv
@@ -134,12 +136,14 @@ def test_cmr_inventory_csv_structure():
     assert pending, "au moins une source doit être marquée pending"
 
 
-def test_cmr_not_registered_as_supported_jurisdiction():
-    """Garde-fou : CMR n'est pas enregistrée comme juridiction supportée
-    (pas de base_cet_rate calculable sans le TEC CEMAC)."""
+def test_cmr_registered_as_supported_jurisdiction():
+    """CMR est désormais enregistrée comme juridiction supportée (couche légale
+    nationale générée par backend/scripts/build_jurisdiction_files.py — TVA,
+    accises, prélèvements et registre gazette par position nationale)."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
 
-    assert "CMR" not in SUPPORTED_JURISDICTIONS
+    assert "CMR" in SUPPORTED_JURISDICTIONS
+    assert SUPPORTED_JURISDICTIONS["CMR"].default_currency == "XAF"
 
 
 def test_cmr_has_no_fabricated_afcfta_offer():

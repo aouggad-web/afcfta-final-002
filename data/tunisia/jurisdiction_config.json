@@ -1,0 +1,26 @@
+{
+ "iso3": "TUN",
+ "currency": "TND",
+ "levy_tables": [
+  "air_imporav",
+  "dc_apdrt",
+  "dc_rntadrt",
+  "dc_voitdrt",
+  "dcvbbadrt",
+  "droit",
+  "rpd_exporredev",
+  "rpd_imporredev",
+  "t_pcext_peaux",
+  "taxe",
+  "tcataxe",
+  "tlftaxe",
+  "tmtstaxe",
+  "tpetaxe",
+  "tva",
+  "tva_autotva",
+  "tva_pptva",
+  "tva_rntatva"
+ ],
+ "general_levy_tables": [],
+ "gazette_register": "tun_gazette_register.json"
+}
