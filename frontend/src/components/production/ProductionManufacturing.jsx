@@ -491,52 +491,85 @@ function ProductionManufacturing({ language = 'fr' }) {
                           ${formatNumber(sector.value_mln_usd * 1000000)}
                         </p>
                       )}
-                      <p className="text-xs text-blue-500 mt-2 underline">
-                        {expandedSector === sector.isic ? (language === 'fr' ? 'Masquer le détail ISIC 4 chiffres' : 'Hide ISIC 4-digit detail') : (language === 'fr' ? 'Voir le détail ISIC 4 chiffres' : 'View ISIC 4-digit detail')}
+                      <p className={`text-xs mt-2 underline ${expandedSector === sector.isic ? 'text-blue-700 font-semibold' : 'text-blue-500'}`}>
+                        {expandedSector === sector.isic ? (language === 'fr' ? '▼ Masquer le détail ISIC 4 chiffres' : '▼ Hide ISIC 4-digit detail') : (language === 'fr' ? '▶ Voir le détail ISIC 4 chiffres' : '▶ View ISIC 4-digit detail')}
                       </p>
-                      {expandedSector === sector.isic && (
-                        <div className="mt-3 pt-3 border-t border-blue-100 space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                          {isic4Status === 'loading' && (
-                            <p className="text-xs text-gray-500">{language === 'fr' ? 'Chargement...' : 'Loading...'}</p>
-                          )}
-                          {isic4Status === 'error' && (
-                            <div className="text-xs text-red-600 flex items-center justify-between gap-2">
-                              <span>{language === 'fr' ? 'Erreur lors du chargement du détail.' : 'Failed to load detail.'}</span>
-                              <button
-                                type="button"
-                                className="underline hover:no-underline"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  fetchIsic4Data();
-                                }}
-                              >
-                                {language === 'fr' ? 'Réessayer' : 'Retry'}
-                              </button>
-                            </div>
-                          )}
-                          {isic4Status === 'ready' && getIsic4ForSector(sector.isic).map((cls) => (
-                            <div key={cls.isic4} className="flex items-center justify-between text-xs">
-                              <span className="text-gray-700">
-                                <span className="font-mono font-semibold text-blue-700">{cls.isic4}</span>{' '}
-                                {cls.class_name}
-                              </span>
-                              <span className="text-gray-500 whitespace-nowrap ml-2">
-                                {cls.share_mva_estimated}%
-                              </span>
-                            </div>
-                          ))}
-                          {isic4Status === 'ready' && (
-                            <p className="text-[10px] text-gray-400 italic pt-1">
-                              {language === 'fr'
-                                ? 'Estimation de structure ISIC 4 chiffres (UNSD ISIC Rev.4), secteurs principaux uniquement, répartition indicative de la division UNIDO INDSTAT4.'
-                                : 'ISIC 4-digit structure estimate (UNSD ISIC Rev.4), main sectors only, indicative split of the UNIDO INDSTAT4 division.'}
-                            </p>
-                          )}
-                        </div>
-                      )}
                     </div>
                   ))}
                 </div>
+
+                {/* Détail ISIC 4 chiffres — panneau pleine largeur (lisible, hors de la grille) */}
+                {expandedSector && (() => {
+                  const sec = unidoData.top_sectors.find((s) => s.isic === expandedSector);
+                  const rows = getIsic4ForSector(expandedSector);
+                  return (
+                    <div className="mt-6 rounded-xl border border-blue-200 bg-blue-50/40 overflow-hidden">
+                      <div className="flex items-center justify-between gap-3 px-4 py-3 bg-blue-100/60 border-b border-blue-200">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Badge className="bg-blue-600 text-white text-xs shrink-0">ISIC {expandedSector}</Badge>
+                          <h4 className="font-bold text-gray-800 truncate">
+                            {sec?.name} — {language === 'fr' ? 'détail ISIC 4 chiffres' : 'ISIC 4-digit detail'}
+                          </h4>
+                        </div>
+                        <button
+                          type="button"
+                          className="text-xs text-blue-700 underline hover:no-underline shrink-0"
+                          onClick={() => setExpandedSector(null)}
+                        >
+                          {language === 'fr' ? 'Fermer' : 'Close'}
+                        </button>
+                      </div>
+
+                      {isic4Status === 'loading' && (
+                        <p className="text-sm text-gray-500 px-4 py-4">{language === 'fr' ? 'Chargement...' : 'Loading...'}</p>
+                      )}
+                      {isic4Status === 'error' && (
+                        <div className="text-sm text-red-600 flex items-center justify-between gap-2 px-4 py-4">
+                          <span>{language === 'fr' ? 'Erreur lors du chargement du détail.' : 'Failed to load detail.'}</span>
+                          <button type="button" className="underline hover:no-underline" onClick={fetchIsic4Data}>
+                            {language === 'fr' ? 'Réessayer' : 'Retry'}
+                          </button>
+                        </div>
+                      )}
+                      {isic4Status === 'ready' && rows.length > 0 && (
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="text-left text-xs uppercase tracking-wide text-gray-500 border-b border-blue-200">
+                                <th className="px-4 py-2 font-semibold whitespace-nowrap w-20">{language === 'fr' ? 'Code' : 'Code'}</th>
+                                <th className="px-4 py-2 font-semibold">{language === 'fr' ? 'Classe ISIC 4 chiffres' : 'ISIC 4-digit class'}</th>
+                                <th className="px-4 py-2 font-semibold text-right w-40 whitespace-nowrap">{language === 'fr' ? 'Part MVA (est.)' : 'MVA share (est.)'}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {rows.map((cls, i) => (
+                                <tr key={cls.isic4} className={i % 2 ? 'bg-white/60' : 'bg-transparent'}>
+                                  <td className="px-4 py-2 font-mono font-semibold text-blue-700 align-top whitespace-nowrap">{cls.isic4}</td>
+                                  <td className="px-4 py-2 text-gray-700">{cls.class_name}</td>
+                                  <td className="px-4 py-2 text-right text-gray-600 whitespace-nowrap align-top">
+                                    {cls.share_mva_estimated}%
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                      {isic4Status === 'ready' && rows.length === 0 && (
+                        <p className="text-sm text-gray-500 px-4 py-4">
+                          {language === 'fr' ? 'Aucune classe ISIC 4 chiffres disponible pour ce secteur.' : 'No ISIC 4-digit class available for this sector.'}
+                        </p>
+                      )}
+                      {isic4Status === 'ready' && rows.length > 0 && (
+                        <p className="text-[11px] text-gray-400 italic px-4 py-2 border-t border-blue-100">
+                          {language === 'fr'
+                            ? 'Estimation de structure ISIC 4 chiffres (UNSD ISIC Rev.4), secteurs principaux uniquement, répartition indicative de la division UNIDO INDSTAT4.'
+                            : 'ISIC 4-digit structure estimate (UNSD ISIC Rev.4), main sectors only, indicative split of the UNIDO INDSTAT4 division.'}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })()}
               </CardContent>
             </Card>
           )}

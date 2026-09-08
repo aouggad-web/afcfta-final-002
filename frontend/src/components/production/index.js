@@ -1,3 +1,4 @@
-// Export all production components
-export { default as ISIC4DetailTable } from './ISIC4DetailTable';
-export { default as Production } from './Production';
+// Production module entry point.
+// The production UI is composed of ProductionTab (with its Macro / Agriculture /
+// Manufacturing / Mining sub-tabs), imported directly by src/App.js.
+export { default as ProductionTab } from './ProductionTab';
