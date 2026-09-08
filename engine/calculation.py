@@ -17,6 +17,7 @@ Exemple Algérie (séquence réelle, Circ. 419 DGD) :
 """
 
 from dataclasses import dataclass, field
+from math import isfinite
 from typing import Dict, List, Optional
 
 from schemas.canonical_model import (
@@ -61,6 +62,94 @@ class CalculationResult:
     warnings: List[str] = field(default_factory=list)
 
 
+class CalculationUnavailable(ValueError):
+    """Incomplete inputs must never be turned into a complete tax total."""
+
+    code = "CALCULATION_UNAVAILABLE"
+
+    def __init__(self, issues: List[str]):
+        self.issues = tuple(issues)
+        super().__init__("; ".join(issues))
+
+
+def _validate_inputs(line, cif_value, quantity, currency, regime):
+    issues = []
+
+    def nonnegative(value):
+        return (
+            isinstance(value, (int, float))
+            and not isinstance(value, bool)
+            and isfinite(value)
+            and value >= 0
+        )
+
+    if not nonnegative(cif_value) or cif_value == 0:
+        issues.append("cif_value: positive finite value required")
+    if quantity is not None and (not nonnegative(quantity) or quantity == 0):
+        issues.append("quantity: positive finite value required")
+    if regime not in {"NPF", "ZLECAF"}:
+        issues.append("regime: NPF or ZLECAF required")
+    if not isinstance(currency, str) or not currency.strip():
+        issues.append("currency: explicit currency required")
+    provenance = line.provenance
+    if provenance.data_status == DataStatus.SYNTHETIC:
+        issues.append("provenance: synthetic tariff data is not calculable")
+    if not (provenance.source_name or "").strip() or not (
+        (provenance.source_url or "").strip() or (provenance.source_document or "").strip()
+    ):
+        issues.append("provenance: source name and source document or URL required")
+    if not line.measures:
+        issues.append("measures: no documented measures supplied")
+
+    previous = set()
+    for measure in sorted(line.measures, key=lambda m: m.sequence):
+        code = measure.code
+        if not code.strip() or code in previous:
+            issues.append(f"{code}: empty or duplicate measure code")
+        if (
+            measure.country_iso3 != line.commodity.country_iso3
+            or measure.national_code != line.commodity.national_code
+        ):
+            issues.append(f"{code}: measure does not belong to this national position")
+        if measure.basis in (DutyBasis.OTHER, DutyBasis.FOB):
+            issues.append(f"{code}: explicit {measure.basis.value} input or method required")
+        if measure.basis == DutyBasis.CIF_PLUS_INCLUDED:
+            if any(c not in previous for c in measure.basis_includes):
+                issues.append(f"{code}: unresolved basis dependency")
+            if len(measure.basis_includes) != len(set(measure.basis_includes)):
+                issues.append(f"{code}: duplicate basis dependency")
+        if measure.rate_type != RateType.EXEMPT:
+            rate = measure.rate_pct
+            if regime == "ZLECAF" and measure.is_zlecaf_applicable:
+                rate = measure.zlecaf_rate_pct
+                if rate is None:
+                    issues.append(f"{code}: documented preferential rate required")
+            if measure.rate_type in (RateType.AD_VALOREM, RateType.MIXED) and not nonnegative(rate):
+                issues.append(f"{code}: finite nonnegative ad valorem rate required")
+            if measure.rate_type in (RateType.SPECIFIC, RateType.MIXED):
+                if regime == "ZLECAF" and measure.is_zlecaf_applicable:
+                    issues.append(f"{code}: preferential specific amount is not modeled")
+                if not nonnegative(measure.specific_amount):
+                    issues.append(f"{code}: finite nonnegative specific amount required")
+                if not (measure.specific_unit or "").strip():
+                    issues.append(f"{code}: specific unit required")
+                elif (
+                    "/" not in measure.specific_unit
+                    or not measure.specific_unit.split("/", 1)[1].strip()
+                    or measure.specific_unit.split("/", 1)[0].strip().upper()
+                    != str(currency).upper()
+                ):
+                    issues.append(f"{code}: specific unit currency must match calculation currency")
+                if quantity is None:
+                    issues.append(f"{code}: quantity required")
+            if measure.basis == DutyBasis.QUANTITY and measure.rate_type != RateType.SPECIFIC:
+                # A percentage of a physical quantity has no monetary meaning.
+                issues.append(f"{code}: quantity basis requires a specific rate")
+        previous.add(code)
+    if issues:
+        raise CalculationUnavailable(issues)
+
+
 def compute_duties(
     line: CanonicalTariffLine,
     cif_value: float,
@@ -72,13 +161,14 @@ def compute_duties(
     Calcule l'ensemble des droits et taxes d'une ligne tarifaire.
 
     Args:
-        line:      ligne tarifaire canonique (schéma v4 ; v3 accepté, assiette CAF
-                   et séquence par défaut seront alors appliquées avec avertissement)
+        line:      ligne tarifaire canonique sourcée, mesures complètes et
+                   dépendances d'assiette résolues ; sinon CalculationUnavailable
         cif_value: valeur CAF dans la monnaie du pays
         quantity:  quantité physique (requise si une mesure est SPECIFIC/MIXED)
         regime:    "NPF" ou "ZLECAF"
     """
-    regime = regime.upper()
+    regime = regime.upper() if isinstance(regime, str) else ""
+    _validate_inputs(line, cif_value, quantity, currency, regime)
     result = CalculationResult(
         country_iso3=line.commodity.country_iso3,
         national_code=line.commodity.national_code,
@@ -151,6 +241,8 @@ def compute_duties(
                 else:
                     amount += spec * quantity
 
+        if not isfinite(amount) or not isfinite(basis_amount):
+            raise CalculationUnavailable([f"{m.code}: non-finite calculation result"])
         amount = round(amount, 2)
         computed[m.code] = amount
 
@@ -170,6 +262,8 @@ def compute_duties(
 
     result.total_duties_taxes = round(sum(l.amount for l in result.lines), 2)
     result.landed_cost = round(cif_value + result.total_duties_taxes, 2)
+    if not isfinite(result.total_duties_taxes) or not isfinite(result.landed_cost):
+        raise CalculationUnavailable(["total: non-finite calculation result"])
     result.effective_rate_pct = (
         round(result.total_duties_taxes / cif_value * 100.0, 2) if cif_value else 0.0
     )

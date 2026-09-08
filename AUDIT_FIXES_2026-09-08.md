@@ -1,4 +1,4 @@
-# Correctifs d'audit — lot 1
+# Correctifs d'audit — lots 1 et 2
 
 Base : 8e1db7055b2f200030c45c6f449df21f3071a9bb.
 
@@ -39,3 +39,11 @@ Ne pas réactiver les anciennes estimations pour contourner une indisponibilité
 5. Recomposition de la couverture pays par pays à partir des sources officielles et des données réellement servies.
 
 Ce lot réduit des risques confirmés ; il ne vaut pas validation globale de mise en production.
+
+## Lot 2 — validation du moteur canonique
+
+`CalculationUnavailable` interrompt le calcul avant publication d'un total si les entrées indispensables sont absentes : taux/quantités non finis ou négatifs, taux manquant, mesures absentes/dupliquées, dépendances d'assiette non résolues, source manquante ou synthétique. Les assiettes FOB/OTHER ne sont plus remplacées implicitement par CAF. Un droit spécifique exige un montant, une quantité et une unité monétaire compatible ; une préférence spécifique non représentable par le schéma est refusée. Les vrais taux zéro restent valides.
+
+Validation : 29 nouveaux tests de garde-fous et les 4 tests arithmétiques DZA existants réussissent. Ce résultat valide les contrats et la non-régression arithmétique ; il ne revalide pas juridiquement les données de référence DZA.
+
+Ce moteur reste distinct du calculateur principal et de PostgreSQL. Le raccordement à une source serveur, les positions ambiguës et la convergence des chemins restent nécessaires. Les endpoints v2 suspendus ne sont pas réactivés par ce lot.
