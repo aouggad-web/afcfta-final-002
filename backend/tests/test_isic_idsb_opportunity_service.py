@@ -229,6 +229,10 @@ def test_english_lang_returns_english_text_no_french_leak():
     assert chain["input"] == "agricultural raw materials (cereals, oilseeds, milk, meat, fish, raw sugar)"
     # Les libellés de diversification sont aussi en anglais.
     assert all(not _looks_french(p["label"]) for p in r["diversification_products"])
+    # Le nom de source de la demande UNIDO ne doit pas fuir de français (« estimations
+    # dérivées ») en lang=en — il est neutre linguistiquement.
+    assert r["market_demand"]["available"] is True
+    assert "dérivé" not in r["market_demand"]["source"] and "estimation" not in r["market_demand"]["source"].lower()
 
 
 def _looks_french(text: str) -> bool:

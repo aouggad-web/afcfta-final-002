@@ -32,7 +32,7 @@ la production primaire étant couverte ailleurs (FAOSTAT/USGS).
 from __future__ import annotations
 
 import logging
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from etl import isic4_idsb_data as idsb
 from services import unido_hs_mapping as isic_map
@@ -55,7 +55,7 @@ def _norm(hs_code: Optional[str]) -> str:
     return "".join(ch for ch in str(hs_code) if ch.isdigit())
 
 
-def _normalize_hs_demand(market_potential) -> Optional[Dict]:
+def _normalize_hs_demand(market_potential: Optional[Union[float, Dict]]) -> Optional[Dict]:
     """
     Normalise le signal de demande OEC (SH exact) en ``{value, year, source}``.
 
@@ -256,7 +256,10 @@ def _market_demand(destination_iso3: str, division: str) -> Dict:
         "imports_world_usd": demand.get("imports_world_usd", {}).get("value"),
         "year_range": _year_range(demand),
         "provenance": provenance,
-        "source": "UNIDO IDSB — estimations dérivées (ISIC Rev.4)",
+        # Nom de source neutre linguistiquement (pas de « estimations dérivées »
+        # français qui fuirait en lang=en) — la nature dérivée est déjà portée,
+        # par métrique, dans ``provenance``.
+        "source": "UNIDO IDSB (ISIC Rev.4)",
     }
 
 
@@ -398,7 +401,7 @@ class ISIC4IDSBOpportunityService:
         hs_code: str,
         origin: str,
         destination: str,
-        market_potential: Optional[float] = None,
+        market_potential: Optional[Union[float, Dict]] = None,
         lang: str = "fr",
     ) -> Dict:
         """

@@ -35,6 +35,14 @@ const moneyShort = (v) => {
 const intFmt = (v) =>
   v === null || v === undefined ? "—" : Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 });
 
+/* Source may be a plain string or {institution, dataset, url}. */
+const srcText = (s) =>
+  !s
+    ? ""
+    : typeof s === "string"
+    ? s
+    : [s.institution, s.dataset].filter(Boolean).join(" · ");
+
 /* Provenance micro-badge: IDSB values are UNIDO DERIVED ESTIMATES, INDSTAT values
    are OFFICIAL statistics. Never conflate the two — show each metric's real nature. */
 const provMeta = (nature, fr) => {
