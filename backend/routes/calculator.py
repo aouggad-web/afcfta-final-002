@@ -216,7 +216,15 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         pass  # la doctrine ne doit jamais interrompre le calcul légitime
 
     # Clean and normalize HS code
-    hs_code_clean = request.hs_code.replace(".", "").replace(" ", "")
+    from services.national_position_selection import (
+        NationalPositionRequired,
+        normalize_calculation_code,
+    )
+
+    try:
+        hs_code_clean = normalize_calculation_code(request.hs_code)
+    except NationalPositionRequired as exc:
+        raise HTTPException(status_code=422, detail=exc.detail) from exc
     hs6_code = hs_code_clean[:6].zfill(6)
     sector_code = hs6_code[:2]
 
@@ -260,7 +268,18 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # PRIORITY 1: Authentic crawled data (official sources)
     # ============================================================
     if crawled_service.is_loaded():
-        crawled_result = crawled_service.lookup(dest_iso3, hs_code_clean)
+        from services.national_position_selection import (
+            NationalPositionRequired,
+            select_calculation_position,
+        )
+
+        candidates = crawled_service.lookup_by_hs6(dest_iso3, hs6_code)
+        try:
+            crawled_result = (
+                select_calculation_position(hs_code_clean, candidates) if candidates else None
+            )
+        except NationalPositionRequired as exc:
+            raise HTTPException(status_code=422, detail=exc.detail) from exc
         if crawled_result:
             # WITS/UNCTAD-TRAINS n'est qu'une source de niveau 3 (agrégat MFN
             # SimpleAverage au SH6, pas une position tarifaire nationale) :
@@ -678,15 +697,14 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
     # DZA : le DAPS est exonéré pour les listes (A)/(B) non gelées avec un
     # partenaire ZLECAf actif (circulaire 482/2024, partie II-2 + art. 2 de
     # la loi de finances complémentaire 2018) — provision distincte du
-    # calendrier de démantèlement du DD, donc le DAPS doit être retiré du
-    # détail envoyé au moteur fiscal, pas seulement du taux DD affiché.
+    # calendrier de démantèlement du DD. Conserver le DAPS dans le scénario
+    # NPF et ne l'exonérer que dans le scénario préférentiel.
+    _zlecaf_exempt_codes = set()
     if dest_iso3 == "DZA":
         from services.zlecaf_schedule_dza import daps_exempt
 
         if daps_exempt(hs_code_clean, origin_country.get("iso3", "") if origin_country else ""):
-            _engine_lines = [
-                ln for ln in _engine_lines if str(ln.get("code", "")).upper() != "DAPS"
-            ]
+            _zlecaf_exempt_codes.add("DAPS")
 
     legal_refs = {
         "cif": {
@@ -738,6 +756,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         npf_dd_rate_pct=round(normal_rate * 100, 4),
         zlecaf_dd_rate_pct=round(zlecaf_rate * 100, 4),
         caps=_caps,
+        zlecaf_exempt_codes=_zlecaf_exempt_codes,
     )
     taxes_breakdown = _dual["breakdown"]
     taxes_summary = _dual["summary"]

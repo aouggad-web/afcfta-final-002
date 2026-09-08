@@ -1584,7 +1584,23 @@ def calculate_import_taxes(
 
     Returns a dict compatible with the frontend CalculatorTab component.
     """
-    hs_code_clean = hs_code.replace(".", "").replace(" ", "")
+    from services.national_position_selection import (
+        NationalPositionRequired,
+        normalize_calculation_code,
+        select_calculation_position,
+    )
+
+    try:
+        hs_code_clean = normalize_calculation_code(hs_code)
+        selected = select_calculation_position(
+            hs_code_clean, get_sub_positions(country_iso3, hs_code_clean[:6])
+        )
+        if selected:
+            hs_code_clean = normalize_calculation_code(
+                selected.get("code_raw") or selected.get("code") or selected.get("national_code")
+            )
+    except NationalPositionRequired as exc:
+        return {"error": str(exc), "error_detail": exc.detail}
     hs6 = hs_code_clean[:6]
 
     country_data = load_country_tariffs(country_iso3)

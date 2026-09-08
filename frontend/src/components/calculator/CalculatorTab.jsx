@@ -752,7 +752,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       console.error('Calculation error:', error);
       toast({
         title: t.calculationError,
-        description: error.response?.data?.detail || t.calculationError,
+        description: error.response?.data?.detail?.message
+          || (typeof error.response?.data?.detail === 'string' ? error.response.data.detail : t.calculationError),
         variant: "destructive"
       });
     } finally {
@@ -1994,4 +1995,3 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     </div>
   );
 }
-

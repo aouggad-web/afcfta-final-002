@@ -1,4 +1,4 @@
-# Correctifs d'audit — lots 1 et 2
+# Correctifs d'audit — lots 1 à 3
 
 Base : 8e1db7055b2f200030c45c6f449df21f3071a9bb.
 
@@ -47,3 +47,13 @@ Ce lot réduit des risques confirmés ; il ne vaut pas validation globale de mis
 Validation : 29 nouveaux tests de garde-fous et les 4 tests arithmétiques DZA existants réussissent. Ce résultat valide les contrats et la non-régression arithmétique ; il ne revalide pas juridiquement les données de référence DZA.
 
 Ce moteur reste distinct du calculateur principal et de PostgreSQL. Le raccordement à une source serveur, les positions ambiguës et la convergence des chemins restent nécessaires. Les endpoints v2 suspendus ne sont pas réactivés par ce lot.
+
+## Lot 3 — DAPS et sélection nationale
+
+Le DAPS reste dans le scénario NPF. Une exemption documentée est transmise séparément au scénario ZLECAf ; les assiettes dépendantes, dont la TVA, sont recalculées. Le détail conserve les montants et taux propres aux deux régimes.
+
+Le service de calcul authentique refuse les positions nationales absentes et les SH6 à plusieurs enfants, avec une erreur structurée et les candidats (maximum 200 codes dans la réponse). Le calculateur principal utilise également une sélection exacte sur ses données crawled, au lieu de prendre la première ligne par préfixe. Un enfant unique peut être sélectionné ; aucun suffixe national n'est inventé. Les SH2/SH4 servent à naviguer et ne sont plus acceptés comme codes de calcul. Un SH6 sans énumération nationale conserve sa politique existante de disponibilité, sans être transformé en position nationale.
+
+Impact : un SH6 auparavant calculé arbitrairement peut maintenant demander une sélection. Le message est rendu lisiblement dans le frontend. Les routes de calcul PostgreSQL directes et les autres replis ETL restent à harmoniser ; cette correction ne certifie pas tous les chemins.
+
+Validation du lot : 14 tests de sélection, dont 2 sur le service authentique réel avant repli, 6 tests DAPS et 15 tests fiscaux préexistants passent. Le test préexistant de change hors ligne n'est pas exécuté dans la copie locale partielle, faute des modules/données currencies ; aucun test n'est retiré ou désactivé dans le dépôt. La CI le conserve.

@@ -492,6 +492,8 @@ async def calculate_taxes_endpoint(
     )
 
     if "error" in result:
+        if "error_detail" in result:
+            raise HTTPException(status_code=422, detail=result["error_detail"])
         raise HTTPException(status_code=404, detail=result["error"])
 
     country = country_iso3.upper()
