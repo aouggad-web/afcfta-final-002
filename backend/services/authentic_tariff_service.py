@@ -459,8 +459,9 @@ _VAT_EQUIVALENT_CODES = ("TVA", "IVA", "VAT", "TVAI")
 # Preferential duty columns describe an alternative trade regime. They remain
 # available verbatim on the crawled row but must never be added to the NPF tax
 # cascade alongside the general customs duty.
+# D2R is the Ethiopian source's COMESA preferential duty column.
 _PREFERENTIAL_RATE_CODES = frozenset(
-    {"AFCFTA", "ZLECAF", "SADC", "COMESA", "EU_UK", "EUUK", "EFTA", "MERCOSUR"}
+    {"AFCFTA", "ZLECAF", "SADC", "COMESA", "D2R", "EU_UK", "EUUK", "EFTA", "MERCOSUR"}
 )
 
 
@@ -524,6 +525,8 @@ def _normalise_crawled_tax_details(raw_taxes) -> dict:
         if not code or rate is None:
             continue
         canonical = _canonical_tax_code(code, label)
+        if canonical in _PREFERENTIAL_RATE_CODES:
+            continue
         details[canonical] = {
             "label": label or _TAX_LABELS.get(canonical, canonical),
             "rate": rate,
@@ -1774,6 +1777,8 @@ def calculate_import_taxes(
     # ── Resolve PRCT / TCS when not explicitly in taxes_detail ───────────────
     # Only add PRCT fallback if other_taxes_pct is not already covered by an
     # explicit individual tax (e.g. TPI for MAR already covers the 0.25%).
+    # A selected national row has its own tax details. Its parent's aggregate
+    # may describe different taxes and cannot manufacture a missing PRCT.
     _covered_other = sum(
         t["rate_pct"]
         for t in individual_taxes
@@ -1781,6 +1786,7 @@ def calculate_import_taxes(
     )
     if (
         prct_rate_pct == 0
+        and not (crawled_sp_entry and _has_legacy_crawled_tax_details)
         and other_taxes_pct > 0
         and round(_covered_other, 4) < round(other_taxes_pct, 4)
     ):

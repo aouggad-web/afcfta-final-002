@@ -63,3 +63,11 @@ Validation du lot : 14 tests de sélection, dont 2 sur le service authentique r�
 Le moteur canonique accepte explicitement les types AD_VALOREM, SPECIFIC, MIXED et EXEMPT. ALTERNATIVE est refusé avec CalculationUnavailable, même lorsque ses composantes sont renseignées : aucune méthode alternative n'est implémentée et un montant nul silencieux serait trompeur. Deux tests couvrent ce refus en NPF et ZLECAf. Les 31 tests de garde-fous et les 4 tests DZA passent localement.
 
 La CI du lot 3 a validé le lint et le build frontend, mais reste bloquante côté backend : 7 échecs, 2182 succès et 339 tests ignorés. Quatre échecs concernent des appels SH6 devenus ambigus ; trois concernent les méthodes nationales ETH/CMR/TUN après sélection nationale. Les attentes fiscales ne doivent pas être modifiées sans inspection des lignes sources. Les gros fichiers de données nationaux n'ont pas pu être récupérés par le connecteur dans cette session. Aucun de ces tests n'est supprimé, désactivé ou affaibli dans ce lot. La PR reste en brouillon et ne doit pas être fusionnée en l'état.
+
+## Lot 5 — régressions CI et séparation des sources
+
+Le dépôt complet a été récupéré : le blocage d'accès aux gros fichiers est levé. Les tests CMR/TUN/DZA/ZAF utilisent maintenant les positions nationales présentes dans les données, au lieu d'un SH6 ambigu. Deux tests HTTP supplémentaires vérifient le refus 422 et les candidats pour DZA et ZAF.
+
+Pour ETH/02011000000, le fichier crawled identifie D2R comme « COMESA Preferential Duty ». Le normaliseur exclut les colonnes préférentielles du cumul des taxes ordinaires, tout en conservant les données brutes. Le calcul n'invente plus de PRCT à partir de l'agrégat other_taxes_rate du parent SH6 lorsque la position nationale dispose de son propre détail de taxes.
+
+Le test national ETH contrôle DD=350, TVA=202,50 et WHR=30 pour une valeur de 1 000, soit 582,50 d'après cette ligne du dépôt. Un test distinct conserve le contrôle de la cascade avec SR du miroir SH6 (737,75), sans confondre les deux sources. Ces montants sont des assertions de cohérence des données existantes ; ils ne certifient pas leur exhaustivité ni leur actualité juridique. Aucun fichier tarifaire ni taux source n'est modifié.
