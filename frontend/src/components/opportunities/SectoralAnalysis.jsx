@@ -91,6 +91,16 @@ const BALANCE_STYLE = {
   insufficient_data: { bg: "rgba(102,102,102,0.12)", fg: "#667" },
 };
 
+/* Localized label per verdict — never show the raw wire-format enum. */
+const VERDICT_LABEL = {
+  supply_and_demand: { fr: "Offre & demande", en: "Supply & demand" },
+  demand_without_supply: { fr: "Demande sans offre", en: "Demand without supply" },
+  supply_without_demand: { fr: "Offre sans demande", en: "Supply without demand" },
+  insufficient_data: { fr: "Données insuffisantes", en: "Insufficient data" },
+};
+const verdictLabel = (verdict, fr) =>
+  VERDICT_LABEL[verdict]?.[fr ? "fr" : "en"] || (verdict || "—").replace(/_/g, " ");
+
 function Chip({ ok, children }) {
   return (
     <span
@@ -112,8 +122,17 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
   const [analysis, setAnalysis] = useState(null);
 
   useEffect(() => {
-    if (!hsCode || !origin || !destination) return;
     let cancelled = false;
+    // Clear any prior result immediately, so changing the submitted report or
+    // the language never leaves a stale corridor/language analysis visible next
+    // to the new report while the new request runs — and an emptied input leaves
+    // nothing lingering.
+    setAnalysis(null);
+    if (!hsCode || !origin || !destination) {
+      return () => {
+        cancelled = true;
+      };
+    }
 
     const fetchAnalysis = async () => {
       try {
@@ -136,9 +155,21 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
     };
   }, [hsCode, origin, destination, fr]);
 
-  // Non-manufacturing products (primary agri/extractive) are covered by the
-  // production/supply views elsewhere — this industrial lens doesn't apply.
-  if (!analysis || !analysis.available) return null;
+  // No request yet / still loading — render nothing.
+  if (!analysis) return null;
+
+  // Not applicable (primary agri/extractive product, ambiguous ISIC mapping…):
+  // surface the honest note rather than silently dropping the whole section.
+  if (!analysis.available) {
+    return analysis.note ? (
+      <div style={{ ...card, color: "var(--afcfta-muted,#667)", fontSize: 13, lineHeight: 1.6 }}>
+        <div style={{ ...label, marginBottom: 4, fontWeight: 700 }}>
+          {fr ? "Analyse sectorielle (ISIC4 / IDSB)" : "Sectoral analysis (ISIC4 / IDSB)"}
+        </div>
+        {analysis.note}
+      </div>
+    ) : null;
+  }
 
   const {
     isic4,
@@ -227,7 +258,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                 textTransform: "uppercase",
               }}
             >
-              {(bal.verdict || "—").replace(/_/g, " ")}
+              {verdictLabel(bal.verdict, fr)}
             </span>
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>

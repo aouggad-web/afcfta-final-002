@@ -76,6 +76,24 @@ def test_primary_product_flagged_not_manufacturing():
     assert r["reason"] == "not_manufacturing"
 
 
+def test_primary_product_not_manufactured_via_hs2_chapter_sibling():
+    """
+    Un produit PRIMAIRE sans SH4 catalogué ne doit PAS hériter d'une division via
+    un autre produit du même chapitre (repli SH2). Ex. fèves de cacao brut SH 1801
+    (le chapitre 18 contient le chocolat SH 1806, division 10) et pétrole brut
+    SH 2709 (le chapitre 27 contient le raffinage SH 2710, division 19).
+    """
+    svc = get_isic_idsb_service()
+    with _patch_records():
+        cocoa = svc.assess_opportunity_by_sector("1801", "CIV", "EGY")
+        crude = svc.assess_opportunity_by_sector("2709", "NGA", "EGY")
+        chocolate = svc.assess_opportunity_by_sector("1806", "CIV", "EGY")
+    assert cocoa["available"] is False and cocoa["reason"] == "not_manufacturing"
+    assert crude["available"] is False and crude["reason"] == "not_manufacturing"
+    # Le produit manufacturé du même chapitre reste, lui, classé.
+    assert chocolate["available"] is True and chocolate["isic4"]["code"] == "10"
+
+
 def test_real_supply_and_demand_are_aggregated_from_idsb():
     """Offre origine et demande destination agrégées depuis les vraies mesures UNIDO."""
     with _patch_records():

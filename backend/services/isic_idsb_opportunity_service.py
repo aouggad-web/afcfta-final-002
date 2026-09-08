@@ -303,13 +303,14 @@ class ISIC4IDSBOpportunityService:
 
     def get_isic4_for_hs(self, hs_code: str) -> Optional[str]:
         """
-        Division ISIC Rev.4 manufacturière du produit, uniquement si elle est
-        **non ambiguë**. Si la correspondance renvoie plusieurs divisions
-        candidates (ex. chapitre 85 → 26 et 27, ou SH4 9403 → 31 et 32), on
-        renvoie None : le contrat « zéro fabrication » interdit de trancher par
-        simple ordre d'insertion.
+        Division ISIC Rev.4 manufacturière du produit, uniquement par
+        **correspondance SH4 EXACTE et non ambiguë**. Un repli par chapitre SH2
+        classerait un produit primaire comme manufacturé (SH 1801 fèves de cacao
+        → division 10 via le chocolat SH 1806) ; le contrat « zéro fabrication »
+        l'interdit. Plusieurs divisions candidates (ex. SH4 9403 → 31 et 32) →
+        None également.
         """
-        codes = isic_map.isic_for_hs(hs_code)
+        codes = isic_map.isic_for_hs_exact(hs_code)
         return codes[0] if len(codes) == 1 else None
 
     def assess_opportunity_by_sector(
@@ -326,7 +327,7 @@ class ISIC4IDSBOpportunityService:
         correspondance est ambiguë (plusieurs divisions candidates).
         """
         fr = lang != "en"
-        candidates = isic_map.isic_for_hs(hs_code)
+        candidates = isic_map.isic_for_hs_exact(hs_code)
         if len(candidates) > 1:
             return {
                 "available": False,

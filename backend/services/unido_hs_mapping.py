@@ -700,6 +700,24 @@ def isic_for_hs(hs_code: str) -> List[str]:
     return []
 
 
+def isic_for_hs_exact(hs_code: str) -> List[str]:
+    """
+    Codes ISIC pour un SH — **correspondance SH4 exacte uniquement**, sans repli
+    par chapitre SH2.
+
+    Le repli SH2 de ``isic_for_hs`` classe à tort un produit PRIMAIRE comme
+    manufacturé dès qu'un autre produit du même chapitre est catalogué (ex. les
+    fèves de cacao brut SH 1801 héritent de la division 10 « alimentaire » via le
+    chocolat SH 1806 ; le pétrole brut SH 2709 hérite du raffinage via SH 2710).
+    Pour un usage « zéro fabrication » (analyse sectorielle industrielle), on
+    exige donc que le SH4 lui-même soit catalogué. Retourne ``[]`` sinon.
+    """
+    code = _norm(hs_code)
+    if len(code) >= 4:
+        return list(_hs4_to_isic().get(code[:4], []))
+    return []
+
+
 def product_label(hs_code: str, lang: str = "fr") -> Optional[str]:
     """
     Libellé SH4 du produit dans le mapping (ou None si non couvert).
