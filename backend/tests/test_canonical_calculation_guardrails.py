@@ -106,6 +106,15 @@ def test_documented_zero_is_valid():
     assert result.landed_cost == 100
 
 
+@pytest.mark.parametrize("regime", ["NPF", "ZLECAF"])
+def test_alternative_rate_is_rejected_even_with_complete_components(regime):
+    line = line_with(
+        rate_type="ALTERNATIVE", rate_pct=10, specific_amount=1, specific_unit="DZD/kg"
+    )
+    with pytest.raises(CalculationUnavailable, match="unsupported rate type"):
+        compute_duties(line, 100, quantity=2, currency="DZD", regime=regime)
+
+
 def test_missing_preference_does_not_silently_use_npf():
     with pytest.raises(CalculationUnavailable, match="preferential rate"):
         compute_duties(line_with(is_zlecaf_applicable=True), 100, regime="ZLECAF")

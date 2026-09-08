@@ -118,6 +118,13 @@ def _validate_inputs(line, cif_value, quantity, currency, regime):
                 issues.append(f"{code}: unresolved basis dependency")
             if len(measure.basis_includes) != len(set(measure.basis_includes)):
                 issues.append(f"{code}: duplicate basis dependency")
+        if measure.rate_type not in {
+            RateType.AD_VALOREM,
+            RateType.SPECIFIC,
+            RateType.MIXED,
+            RateType.EXEMPT,
+        }:
+            issues.append(f"{code}: unsupported rate type {measure.rate_type}")
         if measure.rate_type != RateType.EXEMPT:
             rate = measure.rate_pct
             if regime == "ZLECAF" and measure.is_zlecaf_applicable:

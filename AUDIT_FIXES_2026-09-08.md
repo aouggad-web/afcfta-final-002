@@ -57,3 +57,9 @@ Le service de calcul authentique refuse les positions nationales absentes et les
 Impact : un SH6 auparavant calculé arbitrairement peut maintenant demander une sélection. Le message est rendu lisiblement dans le frontend. Les routes de calcul PostgreSQL directes et les autres replis ETL restent à harmoniser ; cette correction ne certifie pas tous les chemins.
 
 Validation du lot : 14 tests de sélection, dont 2 sur le service authentique réel avant repli, 6 tests DAPS et 15 tests fiscaux préexistants passent. Le test préexistant de change hors ligne n'est pas exécuté dans la copie locale partielle, faute des modules/données currencies ; aucun test n'est retiré ou désactivé dans le dépôt. La CI le conserve.
+
+## Lot 4 — refus des types de taux non pris en charge
+
+Le moteur canonique accepte explicitement les types AD_VALOREM, SPECIFIC, MIXED et EXEMPT. ALTERNATIVE est refusé avec CalculationUnavailable, même lorsque ses composantes sont renseignées : aucune méthode alternative n'est implémentée et un montant nul silencieux serait trompeur. Deux tests couvrent ce refus en NPF et ZLECAf. Les 31 tests de garde-fous et les 4 tests DZA passent localement.
+
+La CI du lot 3 a validé le lint et le build frontend, mais reste bloquante côté backend : 7 échecs, 2182 succès et 339 tests ignorés. Quatre échecs concernent des appels SH6 devenus ambigus ; trois concernent les méthodes nationales ETH/CMR/TUN après sélection nationale. Les attentes fiscales ne doivent pas être modifiées sans inspection des lignes sources. Les gros fichiers de données nationaux n'ont pas pu être récupérés par le connecteur dans cette session. Aucun de ces tests n'est supprimé, désactivé ou affaibli dans ce lot. La PR reste en brouillon et ne doit pas être fusionnée en l'état.
