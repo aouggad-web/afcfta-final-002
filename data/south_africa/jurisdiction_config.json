@@ -1,0 +1,7 @@
+{
+ "iso3": "ZAF",
+ "currency": "ZAR",
+ "levy_tables": [],
+ "general_levy_tables": [],
+ "gazette_register": "zaf_gazette_register.json"
+}

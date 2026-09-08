@@ -8,10 +8,10 @@ légales incorrectes et des statuts VERIFIED_PARTIAL non conformes au schéma
 (sha256 "pending_collection", verification_status "PENDING_OFFICIAL_
 CONSOLIDATION"). Voir data/sources/tanzania/README.md.
 
-Collecte délibérément incomplète : accises non exhaustives (Fourth Schedule
-couvre des dizaines de positions SH), pas de Finance Act 2026, pas de TEC EAC
-relié. TZA n'est donc pas enregistrée dans SUPPORTED_JURISDICTIONS ni dans
-NATIONAL_OFFER_REGISTRY.
+Collecte des accises non exhaustive (Fourth Schedule couvre des dizaines de
+positions SH). TZA est désormais enregistrée dans SUPPORTED_JURISDICTIONS
+(couche légale nationale générée à partir du canonique) mais reste absente de
+NATIONAL_OFFER_REGISTRY (aucune offre nationale ZLECAf fabriquée).
 """
 
 import csv
@@ -132,11 +132,13 @@ def test_tza_excise_measures_schema():
     assert "excise_rates" in data
 
 
-def test_tza_not_registered_as_supported_jurisdiction():
-    """Garde-fou : TZA n'est pas enregistrée comme juridiction supportée."""
+def test_tza_registered_as_supported_jurisdiction():
+    """TZA est désormais enregistrée comme juridiction supportée (couche légale
+    nationale générée par backend/scripts/build_jurisdiction_files.py)."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
 
-    assert "TZA" not in SUPPORTED_JURISDICTIONS
+    assert "TZA" in SUPPORTED_JURISDICTIONS
+    assert SUPPORTED_JURISDICTIONS["TZA"].default_currency == "TZS"
 
 
 def test_tza_has_no_fabricated_afcfta_offer():

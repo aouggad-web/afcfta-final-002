@@ -1,9 +1,10 @@
 """
 Vérifications d'intégrité de la collecte Afrique du Sud (ZAF) :
 taux TVA standard, registre de sources et offre ZLECAf ligne à ligne — voir
-data/sources/south_africa/README.md — donc ZAF n'est pas enregistrée dans
-SUPPORTED_JURISDICTIONS ni dans NATIONAL_OFFER_REGISTRY : ces tests
-vérifient les données collectées elles-mêmes, pas un calcul de bout en bout.
+data/sources/south_africa/README.md. ZAF est désormais enregistrée dans
+SUPPORTED_JURISDICTIONS (couche légale nationale générée à partir du canonique)
+mais reste absente de NATIONAL_OFFER_REGISTRY : ces tests vérifient les données
+collectées elles-mêmes, pas un calcul de bout en bout.
 """
 
 import csv
@@ -98,13 +99,15 @@ def test_inventory_csv_has_required_columns_and_extracted_schedule_row():
     )
 
 
-def test_zaf_is_not_registered_as_a_supported_jurisdiction_yet():
-    """Garde-fou de sincérité : tant que la couche fiscale ZAF est
-    incomplète (TVA seule, pas d'accises/prélèvements/offre ZLECAf), le
-    calculateur ne doit pas prétendre servir un calcul vérifié pour ZAF."""
+def test_zaf_registered_as_supported_jurisdiction():
+    """ZAF est désormais enregistrée comme juridiction supportée : la couche
+    fiscale nationale (TVA, accises, prélèvements, registre gazette par position
+    nationale) est générée par backend/scripts/build_jurisdiction_files.py à
+    partir du canonique."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
 
-    assert "ZAF" not in SUPPORTED_JURISDICTIONS
+    assert "ZAF" in SUPPORTED_JURISDICTIONS
+    assert SUPPORTED_JURISDICTIONS["ZAF"].default_currency == "ZAR"
 
 
 def test_zaf_category_registry_remains_separate_from_exact_rate_registry():

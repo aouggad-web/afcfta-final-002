@@ -115,7 +115,13 @@ def main(iso3: str, slug: str) -> int:
         vat_std_rate = std_rate
     if std_src:
         std_src = dict(std_src)
-        std_src.setdefault("effective_from", meta["window"])
+        # Normalisation effective_from : setdefault ne remplace pas une valeur
+        # None déjà présente dans le fichier vat_measures.json existant — or le
+        # moteur (engine/national_customs_calculation._active) compare
+        # effective_from à une date ISO et lève TypeError sur None. On force donc
+        # la fenêtre de couverture quand la valeur est absente OU nulle.
+        if not std_src.get("effective_from"):
+            std_src["effective_from"] = meta["window"]
         std_src.setdefault("legal_status", "IN_FORCE_AS_OF_CONSOLIDATION")
         rows.append(std_src)
         std_rate_str = std_src.get("rate")
@@ -149,7 +155,15 @@ def main(iso3: str, slug: str) -> int:
         "provenance": {"source": f"backend/data/{iso3}_tariffs.json ({summary.get('data_status')})",
                        "canonical_sha256": canon_sha},
     }
-    (out / "vat_measures.json").write_text(json.dumps(vat_doc, ensure_ascii=False, indent=1), encoding="utf-8")
+    # Non-destructif : un vat_measures.json déjà présent est une donnée fiscale
+    # CURÉE À LA MAIN (exonérations, taux zéro, références légales officielles,
+    # source_id déclarés dans legal_sources.json) sur laquelle reposent les
+    # tests source_collection par pays. La régénérer depuis le seul canonique
+    # écraserait vat_exemptions / vat_zero_rated et réattribuerait les source_id
+    # à {iso3}-CANONICAL-TARIFF, cassant ces suites. On ne l'écrit donc QUE si
+    # elle est absente.
+    if not (out / "vat_measures.json").is_file():
+        (out / "vat_measures.json").write_text(json.dumps(vat_doc, ensure_ascii=False, indent=1), encoding="utf-8")
 
     # ---------- import_levies (tables non-excise) ----------
     levy_tables_final = {}
@@ -173,7 +187,9 @@ def main(iso3: str, slug: str) -> int:
                 "source_id": f"{iso3}-CANONICAL-TARIFF", "verification_status": "VERIFIED_RUNTIME_DATASET",
             })
         levies_doc[table] = lrows
-    (out / "import_levies.json").write_text(json.dumps(levies_doc, ensure_ascii=False, indent=1), encoding="utf-8")
+    # Non-destructif (cf. vat_measures) : un import_levies.json curé est conservé.
+    if not (out / "import_levies.json").is_file():
+        (out / "import_levies.json").write_text(json.dumps(levies_doc, ensure_ascii=False, indent=1), encoding="utf-8")
 
     # ---------- excise ----------
     excise_rows = []
@@ -192,11 +208,13 @@ def main(iso3: str, slug: str) -> int:
                 "source_id": f"{iso3}-CANONICAL-TARIFF", "verification_status": "VERIFIED_RUNTIME_DATASET",
             })
     # excises déjà documentées (data/{slug}/excise_measures.json existant) : conservées
+    # telles quelles — non-destructif (cf. vat_measures / import_levies).
     excise_doc = {"schema_version": "1.0", "country": iso3, "as_of": "2026-09-06",
                   "excise_rates": excise_rows,
                   "provenance": {"source": f"backend/data/{iso3}_tariffs.json ({summary.get('data_status')})",
                                  "canonical_sha256": canon_sha}}
-    (out / "excise_measures.json").write_text(json.dumps(excise_doc, ensure_ascii=False, indent=1), encoding="utf-8")
+    if not (out / "excise_measures.json").is_file():
+        (out / "excise_measures.json").write_text(json.dumps(excise_doc, ensure_ascii=False, indent=1), encoding="utf-8")
 
     # ---------- FAP ----------
     measures = []
@@ -256,15 +274,25 @@ def main(iso3: str, slug: str) -> int:
         json.dumps(register, ensure_ascii=False, indent=1), encoding="utf-8")
 
     # ---------- jurisdiction_config.json ----------
+    # levy_tables doit refléter les tables RÉELLEMENT présentes dans le
+    # import_levies.json servi (le moteur lit self.levies.get(table)) : si un
+    # import_levies.json curé a été conservé, on liste ses tables plutôt que
+    # celles dérivées du canonique, pour éviter que la config référence des
+    # tables absentes du fichier ou en oublie.
+    levies_on_disk = json.loads((out / "import_levies.json").read_text(encoding="utf-8"))
+    _meta_keys = {"schema_version", "country", "as_of", "provenance"}
+    config_levy_tables = sorted(
+        k for k, v in levies_on_disk.items() if k not in _meta_keys and isinstance(v, list)
+    )
     config = {
         "iso3": iso3, "currency": meta["currency"],
-        "levy_tables": table_names, "general_levy_tables": [],
+        "levy_tables": config_levy_tables, "general_levy_tables": [],
         "gazette_register": f"{iso3.lower()}_gazette_register.json",
     }
     (out / "jurisdiction_config.json").write_text(
         json.dumps(config, ensure_ascii=False, indent=1), encoding="utf-8")
 
-    print(f"{iso3}: TVA {len(rows)} taux | levies {len(table_names)} tables | "
+    print(f"{iso3}: TVA {len(rows)} taux | levies {len(config_levy_tables)} tables | "
           f"excise {len(excise_rows)} | FAP {len(measures)} | config OK")
     return 0
 
