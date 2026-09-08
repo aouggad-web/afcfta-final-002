@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import SubstitutionAnalysis from "../opportunities/SubstitutionAnalysis";
 import StrategicFlows from "../opportunities/StrategicFlows";
+import SectoralAnalysis from "../opportunities/SectoralAnalysis";
 import OpportunityPdfExport from "../opportunities/OpportunityPdfExport";
 import { opportunityPdfFilename } from "../../utils/opportunityPdf";
 
@@ -1259,6 +1260,17 @@ export function BilateralView({ countries, fr, prefill }) {
               </div>
             )}
           </div>
+
+          {/* ── Sectoral Analysis (ISIC4 & IDSB) ──────────────────────── */}
+          {/* Ancré sur le rapport SOUMIS (report.inputs), pas sur les champs
+              du formulaire encore éditables — sinon cette carte irait chercher
+              un autre couloir pendant que le reste du rapport montre l'ancien. */}
+          <SectoralAnalysis
+            hsCode={report.inputs?.hs_code}
+            origin={report.inputs?.origin_iso3}
+            destination={report.inputs?.destination_iso3}
+            fr={fr}
+          />
 
           {/* ── Top producers benchmark ───────────────────────────────── */}
           {topProducers.available && topProducers.producers?.length > 0 && (
