@@ -1,0 +1,11 @@
+{
+ "schema_version": "1.0",
+ "jurisdiction": "ZAF",
+ "as_of": "2026-09-06",
+ "measures": [],
+ "provenance": {
+  "fap_distinctes": 0,
+  "note_invariant": "Aucune F.A.P à contenu purement numérique (invariant ^\\d+([.,]\\d+)?$)",
+  "canonical_sha256": "cbea2f61f834e66ea3d2aecfdc880ac4486ef024792c0439451fa80ec11cb6fd"
+ }
+}

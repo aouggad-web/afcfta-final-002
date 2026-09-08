@@ -1,0 +1,9 @@
+{
+ "schema_version": "1.0",
+ "country": "TZA",
+ "as_of": "2026-09-06",
+ "provenance": {
+  "source": "backend/data/TZA_tariffs.json (PARTIAL)",
+  "canonical_sha256": "7c1ca2152472f0987f400789ef6f57d404f2c6aedcfffa9f887680cfaa06e359"
+ }
+}

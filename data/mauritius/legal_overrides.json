@@ -1,0 +1,11 @@
+{
+ "schema_version": "1.0",
+ "jurisdiction": "MUS",
+ "as_of": "2026-09-06",
+ "measures": [],
+ "provenance": {
+  "fap_distinctes": 0,
+  "note_invariant": "Aucune F.A.P à contenu purement numérique (invariant ^\\d+([.,]\\d+)?$)",
+  "canonical_sha256": "b671e60f6b41cbd5f4b30e905bcd4f77bf4b3323a3b3e7dba3d27dca059fa1e6"
+ }
+}

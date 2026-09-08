@@ -47,10 +47,16 @@ def _pct(value) -> Optional[float]:
 
 def _active(rows, on_date: date):
     iso = on_date.isoformat()
+    # ``effective_from`` may be absent OR present-but-null in curated datasets
+    # (e.g. a standard VAT rate whose start date was never back-filled). dict.get
+    # only substitutes the default for an absent key, so a null value would reach
+    # the ``<=`` comparison and raise ``TypeError: '<=' not supported between
+    # NoneType and str``. Coalesce a falsy value to the same sentinel so a null
+    # start date is treated exactly like a missing one (conservatively excluded).
     return [
         row
         for row in rows
-        if row.get("effective_from", "9999-12-31") <= iso
+        if (row.get("effective_from") or "9999-12-31") <= iso
         and (not row.get("effective_to") or iso <= row["effective_to"])
         and row.get("legal_status") not in {"REPEALED", "EXPIRED"}
     ]

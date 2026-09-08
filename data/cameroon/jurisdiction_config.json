@@ -1,0 +1,10 @@
+{
+ "iso3": "CMR",
+ "currency": "XAF",
+ "levy_tables": [
+  "centimes_additionnels_communaux",
+  "other_import_levies"
+ ],
+ "general_levy_tables": [],
+ "gazette_register": "cmr_gazette_register.json"
+}
