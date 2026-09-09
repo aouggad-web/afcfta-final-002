@@ -1,0 +1,127 @@
+name: Update Production Data (FAOSTAT)
+
+on:
+  # Mensuel — FAOSTAT met à jour le domaine QCL quelques fois par an ;
+  # un passage par mois suffit largement pour capter chaque nouvelle vague.
+  schedule:
+    - cron: '0 4 3 * *'
+
+  # Déclenchement manuel possible
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Le script est en stdlib pure (csv/zipfile/json) pour ce chemin —
+      # aucune dépendance à installer. Il télécharge le bulk FAOSTAT QCL
+      # Afrique (réseau ouvert sur les runners GitHub, contrairement aux
+      # sandbox de développement) et retombe sur les données curées si le
+      # réseau échoue — jamais de valeur inventée.
+      #
+      # UNIDO (manufacturing) n'est PAS automatisable ici : INDSTAT4 n'a pas
+      # d'endpoint de téléchargement libre (portail avec licence). La section
+      # manufacturing reste donc curée dans backend/etl/unido_data.py, et le
+      # backend affiche un garde-fou de couverture (coverage_caveat) partout
+      # où moins de 3 pays sont disponibles pour un secteur.
+      - name: Rebuild production dataset from FAOSTAT bulk
+        run: python backend/scripts/build_production_faostat_usgs.py --force-download
+
+      - name: Validate rebuilt dataset against backend services
+        run: |
+          python - <<'EOF'
+          import json, sys
+          sys.path.insert(0, 'backend')
+
+          data = json.load(open('data/json/production_africaine.json'))
+          counts = data['metadata']['record_counts']
+          # Garde-fous anti-régression : le bulk FAOSTAT Afrique fait ~9-10k
+          # enregistrements ; une chute sous 5 000 signale un zip tronqué ou
+          # un changement de format — on échoue plutôt que de committer.
+          assert counts['agriculture'] >= 5000, f"agri: {counts['agriculture']} < 5000"
+          assert counts['mining'] >= 100, f"mining: {counts['mining']} < 100"
+
+          from services import production_capacity_service as pcs
+          # Vérités de terrain stables : la Côte d'Ivoire doit rester visible
+          # parmi les producteurs de cacao, l'Éthiopie parmi ceux du café.
+          cocoa = pcs.get_continental_producers('1801')
+          assert cocoa['available'] and any(
+              p['country_iso3'] == 'CIV' for p in cocoa['top_producers']
+          ), 'CIV absent du top cacao — ingestion suspecte'
+          coffee = pcs.get_continental_producers('0901')
+          assert coffee['available'] and any(
+              p['country_iso3'] == 'ETH' for p in coffee['top_producers']
+          ), 'ETH absent du top café — ingestion suspecte'
+          latest = max(r['year'] for r in data['agri_faostat'])
+          print(f"OK — agri {counts['agriculture']}, mines {counts['mining']}, "
+                f"dernière année agri {latest}")
+          EOF
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --quiet -- data/json/production_africaine.json || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Create Pull Request
+        if: steps.check_changes.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(data): production africaine FAOSTAT du mois (update_production_data #${{ github.run_number }})"
+          committer: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
+          author: afcfta-data-bot <afcfta-data-bot@users.noreply.github.com>
+          branch: automated-production-data
+          delete-branch: true
+          title: "chore(data): mise à jour mensuelle production africaine (FAOSTAT)"
+          body: |
+            ## Mise à jour automatique des données de production
+
+            Rafraîchit `data/json/production_africaine.json` depuis le bulk
+            officiel FAOSTAT QCL Afrique (production agricole, 54 pays,
+            toutes les années publiées). Lu par
+            `backend/services/production_capacity_service.py` (module
+            Opportunités : producteurs continentaux, capacités, scénarios).
+
+            **Run :** #${{ github.run_number }} · **Déclencheur :** ${{ github.event_name }}
+
+            Validations passées avant cette PR : volume d'enregistrements
+            (≥ 5 000 agri), vérités de terrain (CIV dans le top cacao, ETH
+            dans le top café), lisibilité par le backend.
+
+            **Périmètre** : agriculture (FAOSTAT, automatique) et
+            mines/énergie (USGS, table curée multi-années). La section
+            manufacturing (UNIDO INDSTAT4) n'a pas d'endpoint public de
+            téléchargement — elle reste curée à la main et le backend
+            affiche un garde-fou de couverture là où elle est incomplète.
+
+            La branche est fixe (`automated-production-data`) : si une PR
+            de données est déjà ouverte, elle est mise à jour au lieu d'en
+            créer une nouvelle chaque mois.
+          labels: |
+            automated
+            data-update
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Production africaine — $(date +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.check_changes.outputs.changes }}" == "true" ]; then
+            echo "✅ Données mises à jour — PR créée/actualisée" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ Aucun changement de données FAOSTAT" >> $GITHUB_STEP_SUMMARY
+          fi

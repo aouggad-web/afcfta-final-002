@@ -1,0 +1,1271 @@
+{
+  "source": "Afreximbank, African Trade Report 2026 (Research Division)",
+  "source_url": "https://doi.org/10.82349/atr.2026",
+  "reference_year": 2025,
+  "currency": "USD billions",
+  "notes": "Discrete factual indicators extracted from the report (facts, with attribution). Continental figures are as stated by Afreximbank; per-country intra-African trade is from the report's 'Intra-African Trade by Country, 2021-2025' table.",
+  "continental_indicators_2025": {
+    "real_gdp_growth_pct": 4.5,
+    "real_gdp_growth_pct_2024": 3.4,
+    "inflation_pct": 13.1,
+    "inflation_pct_2024": 21.6,
+    "merchandise_trade_busd_approx": 1500,
+    "merchandise_trade_growth_pct": 6.1,
+    "intra_african_trade_busd": 213.8,
+    "intra_african_trade_growth_pct": 5.5,
+    "merchandise_exports_busd": 685.2
+  },
+  "intra_african_trade_total_busd_2025": 213.83,
+  "intra_african_trade_by_country": {
+    "ZAF": {
+      "name": "South Africa",
+      "series_2021_2025": [
+        35.06,
+        39.87,
+        39.19,
+        42.14,
+        41.15
+      ],
+      "intra_african_2025_busd": 41.15,
+      "share_2025_pct": 19.24
+    },
+    "COD": {
+      "name": "Congo Dem. Rep. of",
+      "series_2021_2025": [
+        8.22,
+        6.61,
+        10.76,
+        9.61,
+        14.4
+      ],
+      "intra_african_2025_busd": 14.4,
+      "share_2025_pct": 6.74
+    },
+    "CIV": {
+      "name": "Côte d'Ivoire",
+      "series_2021_2025": [
+        8.9,
+        13.07,
+        9.39,
+        8.49,
+        10.34
+      ],
+      "intra_african_2025_busd": 10.34,
+      "share_2025_pct": 4.83
+    },
+    "UGA": {
+      "name": "Uganda",
+      "series_2021_2025": [
+        4.32,
+        3.94,
+        5.9,
+        7.36,
+        9.59
+      ],
+      "intra_african_2025_busd": 9.59,
+      "share_2025_pct": 4.48
+    },
+    "MAR": {
+      "name": "Morocco",
+      "series_2021_2025": [
+        5.09,
+        6.06,
+        5.17,
+        7.87,
+        9.54
+      ],
+      "intra_african_2025_busd": 9.54,
+      "share_2025_pct": 4.46
+    },
+    "EGY": {
+      "name": "Egypt",
+      "series_2021_2025": [
+        6.57,
+        7.44,
+        8.29,
+        9.59,
+        9.31
+      ],
+      "intra_african_2025_busd": 9.31,
+      "share_2025_pct": 4.35
+    },
+    "ZMB": {
+      "name": "Zambia",
+      "series_2021_2025": [
+        5.32,
+        7.06,
+        6.9,
+        7.45,
+        9.27
+      ],
+      "intra_african_2025_busd": 9.27,
+      "share_2025_pct": 4.33
+    },
+    "NGA": {
+      "name": "Nigeria",
+      "series_2021_2025": [
+        7.39,
+        25.05,
+        8.12,
+        7.47,
+        9.02
+      ],
+      "intra_african_2025_busd": 9.02,
+      "share_2025_pct": 4.22
+    },
+    "ZWE": {
+      "name": "Zimbabwe",
+      "series_2021_2025": [
+        8.1,
+        8.08,
+        8.19,
+        8.15,
+        7.79
+      ],
+      "intra_african_2025_busd": 7.79,
+      "share_2025_pct": 3.64
+    },
+    "NAM": {
+      "name": "Namibia",
+      "series_2021_2025": [
+        6.87,
+        5.93,
+        6.26,
+        7.18,
+        7.39
+      ],
+      "intra_african_2025_busd": 7.39,
+      "share_2025_pct": 3.46
+    },
+    "BWA": {
+      "name": "Botswana",
+      "series_2021_2025": [
+        5.5,
+        6.73,
+        5.75,
+        6.31,
+        6.64
+      ],
+      "intra_african_2025_busd": 6.64,
+      "share_2025_pct": 3.1
+    },
+    "KEN": {
+      "name": "Kenya",
+      "series_2021_2025": [
+        4.87,
+        5.29,
+        5.03,
+        5.14,
+        5.61
+      ],
+      "intra_african_2025_busd": 5.61,
+      "share_2025_pct": 2.62
+    },
+    "TZA": {
+      "name": "Tanzania",
+      "series_2021_2025": [
+        3.72,
+        4.25,
+        4.17,
+        5.36,
+        5.29
+      ],
+      "intra_african_2025_busd": 5.29,
+      "share_2025_pct": 2.47
+    },
+    "DJI": {
+      "name": "Djibouti",
+      "series_2021_2025": [
+        3.52,
+        4.36,
+        4.46,
+        3.67,
+        4.97
+      ],
+      "intra_african_2025_busd": 4.97,
+      "share_2025_pct": 2.33
+    },
+    "TUN": {
+      "name": "Tunisia",
+      "series_2021_2025": [
+        3.04,
+        4.3,
+        4.64,
+        4.72,
+        4.93
+      ],
+      "intra_african_2025_busd": 4.93,
+      "share_2025_pct": 2.3
+    },
+    "DZA": {
+      "name": "Algeria",
+      "series_2021_2025": [
+        3.1,
+        3.96,
+        4.66,
+        4.84,
+        4.88
+      ],
+      "intra_african_2025_busd": 4.88,
+      "share_2025_pct": 2.28
+    },
+    "MLI": {
+      "name": "Mali",
+      "series_2021_2025": [
+        2.73,
+        3.96,
+        3.92,
+        4.14,
+        4.11
+      ],
+      "intra_african_2025_busd": 4.11,
+      "share_2025_pct": 1.92
+    },
+    "SWZ": {
+      "name": "Eswatini",
+      "series_2021_2025": [
+        3.53,
+        3.49,
+        3.46,
+        3.84,
+        4.06
+      ],
+      "intra_african_2025_busd": 4.06,
+      "share_2025_pct": 1.9
+    },
+    "MOZ": {
+      "name": "Mozambique",
+      "series_2021_2025": [
+        4.16,
+        4.43,
+        4.31,
+        4.31,
+        3.62
+      ],
+      "intra_african_2025_busd": 3.62,
+      "share_2025_pct": 1.69
+    },
+    "SEN": {
+      "name": "Senegal",
+      "series_2021_2025": [
+        3.37,
+        3.66,
+        4.32,
+        3.71,
+        3.62
+      ],
+      "intra_african_2025_busd": 3.62,
+      "share_2025_pct": 1.69
+    },
+    "GHA": {
+      "name": "Ghana",
+      "series_2021_2025": [
+        5.52,
+        5.48,
+        5.12,
+        9.52,
+        3.22
+      ],
+      "intra_african_2025_busd": 3.22,
+      "share_2025_pct": 1.51
+    },
+    "BFA": {
+      "name": "Burkina Faso",
+      "series_2021_2025": [
+        1.65,
+        2.1,
+        2.51,
+        2.74,
+        3.03
+      ],
+      "intra_african_2025_busd": 3.03,
+      "share_2025_pct": 1.42
+    },
+    "SDN": {
+      "name": "Sudan",
+      "series_2021_2025": [
+        1.89,
+        2.69,
+        1.42,
+        1.17,
+        2.61
+      ],
+      "intra_african_2025_busd": 2.61,
+      "share_2025_pct": 1.22
+    },
+    "ETH": {
+      "name": "Ethiopia",
+      "series_2021_2025": [
+        1.61,
+        2.48,
+        2.04,
+        1.69,
+        2.13
+      ],
+      "intra_african_2025_busd": 2.13,
+      "share_2025_pct": 1.0
+    },
+    "LSO": {
+      "name": "Lesotho",
+      "series_2021_2025": [
+        1.91,
+        2.02,
+        1.79,
+        2.0,
+        2.13
+      ],
+      "intra_african_2025_busd": 2.13,
+      "share_2025_pct": 1.0
+    },
+    "AGO": {
+      "name": "Angola",
+      "series_2021_2025": [
+        2.63,
+        1.52,
+        3.64,
+        2.98,
+        2.01
+      ],
+      "intra_african_2025_busd": 2.01,
+      "share_2025_pct": 0.94
+    },
+    "RWA": {
+      "name": "Rwanda",
+      "series_2021_2025": [
+        1.67,
+        1.95,
+        2.01,
+        2.46,
+        1.97
+      ],
+      "intra_african_2025_busd": 1.97,
+      "share_2025_pct": 0.92
+    },
+    "GIN": {
+      "name": "Guinea",
+      "series_2021_2025": [
+        1.72,
+        1.81,
+        1.81,
+        1.8,
+        1.94
+      ],
+      "intra_african_2025_busd": 1.94,
+      "share_2025_pct": 0.91
+    },
+    "TGO": {
+      "name": "Togo",
+      "series_2021_2025": [
+        1.17,
+        1.26,
+        1.34,
+        1.35,
+        1.75
+      ],
+      "intra_african_2025_busd": 1.75,
+      "share_2025_pct": 0.82
+    },
+    "COG": {
+      "name": "Congo Republic",
+      "series_2021_2025": [
+        1.18,
+        2.58,
+        1.87,
+        1.69,
+        1.66
+      ],
+      "intra_african_2025_busd": 1.66,
+      "share_2025_pct": 0.78
+    },
+    "MWI": {
+      "name": "Malawi",
+      "series_2021_2025": [
+        1.28,
+        0.8,
+        1.42,
+        1.48,
+        1.59
+      ],
+      "intra_african_2025_busd": 1.59,
+      "share_2025_pct": 0.74
+    },
+    "NER": {
+      "name": "Niger",
+      "series_2021_2025": [
+        1.09,
+        0.84,
+        0.58,
+        0.72,
+        1.31
+      ],
+      "intra_african_2025_busd": 1.31,
+      "share_2025_pct": 0.61
+    },
+    "GAB": {
+      "name": "Gabon",
+      "series_2021_2025": [
+        2.21,
+        1.42,
+        1.48,
+        1.3,
+        1.3
+      ],
+      "intra_african_2025_busd": 1.3,
+      "share_2025_pct": 0.61
+    },
+    "CMR": {
+      "name": "Cameroon",
+      "series_2021_2025": [
+        1.22,
+        1.52,
+        1.42,
+        1.21,
+        1.22
+      ],
+      "intra_african_2025_busd": 1.22,
+      "share_2025_pct": 0.57
+    },
+    "MRT": {
+      "name": "Mauritania",
+      "series_2021_2025": [
+        0.7,
+        1.06,
+        1.1,
+        1.1,
+        1.19
+      ],
+      "intra_african_2025_busd": 1.19,
+      "share_2025_pct": 0.56
+    },
+    "MUS": {
+      "name": "Mauritius",
+      "series_2021_2025": [
+        1.09,
+        1.34,
+        1.22,
+        1.2,
+        1.14
+      ],
+      "intra_african_2025_busd": 1.14,
+      "share_2025_pct": 0.53
+    },
+    "SSD": {
+      "name": "South Sudan",
+      "series_2021_2025": [
+        0.75,
+        0.9,
+        0.91,
+        0.95,
+        1.11
+      ],
+      "intra_african_2025_busd": 1.11,
+      "share_2025_pct": 0.52
+    },
+    "BEN": {
+      "name": "Benin",
+      "series_2021_2025": [
+        0.67,
+        0.75,
+        0.94,
+        0.81,
+        0.98
+      ],
+      "intra_african_2025_busd": 0.98,
+      "share_2025_pct": 0.46
+    },
+    "TCD": {
+      "name": "Chad",
+      "series_2021_2025": [
+        0.28,
+        0.3,
+        0.41,
+        0.53,
+        0.9
+      ],
+      "intra_african_2025_busd": 0.9,
+      "share_2025_pct": 0.42
+    },
+    "LBR": {
+      "name": "Liberia",
+      "series_2021_2025": [
+        0.27,
+        0.58,
+        0.81,
+        0.72,
+        0.78
+      ],
+      "intra_african_2025_busd": 0.78,
+      "share_2025_pct": 0.37
+    },
+    "MDG": {
+      "name": "Madagascar",
+      "series_2021_2025": [
+        0.66,
+        0.78,
+        0.71,
+        0.78,
+        0.78
+      ],
+      "intra_african_2025_busd": 0.78,
+      "share_2025_pct": 0.36
+    },
+    "GNQ": {
+      "name": "Equatorial Guinea",
+      "series_2021_2025": [
+        0.44,
+        0.21,
+        0.21,
+        0.42,
+        0.77
+      ],
+      "intra_african_2025_busd": 0.77,
+      "share_2025_pct": 0.36
+    },
+    "SOM": {
+      "name": "Somalia",
+      "series_2021_2025": [
+        0.67,
+        0.59,
+        0.56,
+        0.59,
+        0.71
+      ],
+      "intra_african_2025_busd": 0.71,
+      "share_2025_pct": 0.33
+    },
+    "BDI": {
+      "name": "Burundi",
+      "series_2021_2025": [
+        0.34,
+        0.38,
+        0.39,
+        0.42,
+        0.56
+      ],
+      "intra_african_2025_busd": 0.56,
+      "share_2025_pct": 0.26
+    },
+    "GMB": {
+      "name": "Gambia",
+      "series_2021_2025": [
+        0.33,
+        0.41,
+        0.33,
+        0.42,
+        0.34
+      ],
+      "intra_african_2025_busd": 0.34,
+      "share_2025_pct": 0.16
+    },
+    "CAF": {
+      "name": "Central African Republic",
+      "series_2021_2025": [
+        0.24,
+        0.32,
+        0.26,
+        0.32,
+        0.29
+      ],
+      "intra_african_2025_busd": 0.29,
+      "share_2025_pct": 0.14
+    },
+    "SLE": {
+      "name": "Sierra Leone",
+      "series_2021_2025": [
+        0.22,
+        0.26,
+        0.3,
+        0.23,
+        0.24
+      ],
+      "intra_african_2025_busd": 0.24,
+      "share_2025_pct": 0.11
+    },
+    "SYC": {
+      "name": "Seychelles",
+      "series_2021_2025": [
+        0.43,
+        0.2,
+        0.19,
+        0.22,
+        0.22
+      ],
+      "intra_african_2025_busd": 0.22,
+      "share_2025_pct": 0.1
+    },
+    "STP": {
+      "name": "São Tomé and Príncipe",
+      "series_2021_2025": [
+        0.04,
+        0.07,
+        0.06,
+        0.17,
+        0.19
+      ],
+      "intra_african_2025_busd": 0.19,
+      "share_2025_pct": 0.09
+    },
+    "GNB": {
+      "name": "Guinea, Bissau",
+      "series_2021_2025": [
+        0.11,
+        0.1,
+        0.16,
+        0.11,
+        0.14
+      ],
+      "intra_african_2025_busd": 0.14,
+      "share_2025_pct": 0.06
+    },
+    "CPV": {
+      "name": "Cabo Verde",
+      "series_2021_2025": [
+        0.06,
+        0.11,
+        0.04,
+        0.07,
+        0.07
+      ],
+      "intra_african_2025_busd": 0.07,
+      "share_2025_pct": 0.03
+    },
+    "COM": {
+      "name": "Comoros",
+      "series_2021_2025": [
+        0.03,
+        0.04,
+        0.03,
+        0.04,
+        0.03
+      ],
+      "intra_african_2025_busd": 0.03,
+      "share_2025_pct": 0.01
+    },
+    "ERI": {
+      "name": "Eritrea",
+      "series_2021_2025": [
+        0.03,
+        0.02,
+        0.07,
+        0.03,
+        0.03
+      ],
+      "intra_african_2025_busd": 0.03,
+      "share_2025_pct": 0.01
+    },
+    "LBY": {
+      "name": "Libya",
+      "series_2021_2025": [
+        0.84,
+        0.23,
+        0.07,
+        0.15,
+        0.01
+      ],
+      "intra_african_2025_busd": 0.01,
+      "share_2025_pct": 0.0
+    }
+  },
+  "merchandise_exports_total_busd_2025": 685.2,
+  "merchandise_exports_by_country": {
+    "ZAF": {
+      "series_2021_2025": [
+        122.35,
+        123.39,
+        110.53,
+        111.47,
+        116.39
+      ],
+      "value_2025_busd": 116.39,
+      "share_2025_pct": 16.99
+    },
+    "MAR": {
+      "series_2021_2025": [
+        36.53,
+        42.0,
+        42.43,
+        72.45,
+        86.83
+      ],
+      "value_2025_busd": 86.83,
+      "share_2025_pct": 12.67
+    },
+    "EGY": {
+      "series_2021_2025": [
+        40.7,
+        48.4,
+        39.86,
+        44.39,
+        50.19
+      ],
+      "value_2025_busd": 50.19,
+      "share_2025_pct": 7.32
+    },
+    "NGA": {
+      "series_2021_2025": [
+        46.93,
+        84.78,
+        63.22,
+        53.32,
+        49.17
+      ],
+      "value_2025_busd": 49.17,
+      "share_2025_pct": 7.18
+    },
+    "DZA": {
+      "series_2021_2025": [
+        38.43,
+        60.32,
+        54.77,
+        51.44,
+        42.6
+      ],
+      "value_2025_busd": 42.6,
+      "share_2025_pct": 6.22
+    },
+    "COD": {
+      "series_2021_2025": [
+        23.33,
+        25.37,
+        26.13,
+        31.14,
+        37.92
+      ],
+      "value_2025_busd": 37.92,
+      "share_2025_pct": 5.53
+    },
+    "AGO": {
+      "series_2021_2025": [
+        35.12,
+        50.8,
+        38.71,
+        39.31,
+        32.39
+      ],
+      "value_2025_busd": 32.39,
+      "share_2025_pct": 4.73
+    },
+    "LBY": {
+      "series_2021_2025": [
+        30.97,
+        39.2,
+        33.08,
+        30.19,
+        29.01
+      ],
+      "value_2025_busd": 29.01,
+      "share_2025_pct": 4.23
+    },
+    "CIV": {
+      "series_2021_2025": [
+        29.27,
+        34.73,
+        18.85,
+        21.1,
+        27.82
+      ],
+      "value_2025_busd": 27.82,
+      "share_2025_pct": 4.06
+    },
+    "TUN": {
+      "series_2021_2025": [
+        16.68,
+        18.56,
+        20.06,
+        19.87,
+        20.66
+      ],
+      "value_2025_busd": 20.66,
+      "share_2025_pct": 3.02
+    },
+    "GHA": {
+      "series_2021_2025": [
+        14.82,
+        17.56,
+        16.83,
+        24.07,
+        18.42
+      ],
+      "value_2025_busd": 18.42,
+      "share_2025_pct": 2.69
+    },
+    "ZMB": {
+      "series_2021_2025": [
+        11.14,
+        11.65,
+        10.44,
+        11.28,
+        18.08
+      ],
+      "value_2025_busd": 18.08,
+      "share_2025_pct": 2.64
+    },
+    "UGA": {
+      "series_2021_2025": [
+        3.97,
+        3.53,
+        6.19,
+        8.05,
+        12.48
+      ],
+      "value_2025_busd": 12.48,
+      "share_2025_pct": 1.82
+    },
+    "TZA": {
+      "series_2021_2025": [
+        6.39,
+        6.82,
+        7.27,
+        8.7,
+        10.74
+      ],
+      "value_2025_busd": 10.74,
+      "share_2025_pct": 1.57
+    },
+    "GAB": {
+      "series_2021_2025": [
+        8.03,
+        10.47,
+        12.68,
+        10.99,
+        10.73
+      ],
+      "value_2025_busd": 10.73,
+      "share_2025_pct": 1.57
+    },
+    "MOZ": {
+      "series_2021_2025": [
+        5.7,
+        8.3,
+        8.28,
+        8.21,
+        9.26
+      ],
+      "value_2025_busd": 9.26,
+      "share_2025_pct": 1.35
+    },
+    "BFA": {
+      "series_2021_2025": [
+        5.04,
+        4.54,
+        4.45,
+        5.29,
+        9.24
+      ],
+      "value_2025_busd": 9.24,
+      "share_2025_pct": 1.35
+    },
+    "SEN": {
+      "series_2021_2025": [
+        5.19,
+        5.71,
+        5.32,
+        6.36,
+        8.88
+      ],
+      "value_2025_busd": 8.88,
+      "share_2025_pct": 1.3
+    },
+    "KEN": {
+      "series_2021_2025": [
+        6.75,
+        7.37,
+        7.17,
+        8.12,
+        8.86
+      ],
+      "value_2025_busd": 8.86,
+      "share_2025_pct": 1.29
+    },
+    "ZWE": {
+      "series_2021_2025": [
+        6.04,
+        6.59,
+        7.23,
+        7.43,
+        8.56
+      ],
+      "value_2025_busd": 8.56,
+      "share_2025_pct": 1.25
+    },
+    "COG": {
+      "series_2021_2025": [
+        2.37,
+        8.88,
+        9.47,
+        8.93,
+        8.02
+      ],
+      "value_2025_busd": 8.02,
+      "share_2025_pct": 1.17
+    },
+    "GIN": {
+      "series_2021_2025": [
+        6.23,
+        6.22,
+        5.11,
+        4.93,
+        7.33
+      ],
+      "value_2025_busd": 7.33,
+      "share_2025_pct": 1.07
+    },
+    "NAM": {
+      "series_2021_2025": [
+        5.48,
+        4.89,
+        5.69,
+        6.53,
+        7.26
+      ],
+      "value_2025_busd": 7.26,
+      "share_2025_pct": 1.06
+    },
+    "ETH": {
+      "series_2021_2025": [
+        3.06,
+        3.09,
+        2.86,
+        3.53,
+        5.36
+      ],
+      "value_2025_busd": 5.36,
+      "share_2025_pct": 0.78
+    },
+    "DJI": {
+      "series_2021_2025": [
+        3.83,
+        4.61,
+        4.79,
+        3.83,
+        5.28
+      ],
+      "value_2025_busd": 5.28,
+      "share_2025_pct": 0.77
+    },
+    "CMR": {
+      "series_2021_2025": [
+        4.3,
+        5.62,
+        4.97,
+        5.36,
+        4.96
+      ],
+      "value_2025_busd": 4.96,
+      "share_2025_pct": 0.72
+    },
+    "MRT": {
+      "series_2021_2025": [
+        3.29,
+        3.81,
+        4.09,
+        4.17,
+        4.88
+      ],
+      "value_2025_busd": 4.88,
+      "share_2025_pct": 0.71
+    },
+    "TCD": {
+      "series_2021_2025": [
+        2.87,
+        4.58,
+        4.23,
+        4.53,
+        4.05
+      ],
+      "value_2025_busd": 4.05,
+      "share_2025_pct": 0.59
+    },
+    "GNQ": {
+      "series_2021_2025": [
+        4.8,
+        7.55,
+        4.64,
+        4.07,
+        3.35
+      ],
+      "value_2025_busd": 3.35,
+      "share_2025_pct": 0.49
+    },
+    "BWA": {
+      "series_2021_2025": [
+        6.99,
+        8.14,
+        5.25,
+        3.44,
+        3.27
+      ],
+      "value_2025_busd": 3.27,
+      "share_2025_pct": 0.48
+    },
+    "MDG": {
+      "series_2021_2025": [
+        2.71,
+        3.55,
+        3.1,
+        2.56,
+        2.46
+      ],
+      "value_2025_busd": 2.46,
+      "share_2025_pct": 0.36
+    },
+    "SWZ": {
+      "series_2021_2025": [
+        2.07,
+        1.99,
+        2.1,
+        2.35,
+        2.41
+      ],
+      "value_2025_busd": 2.41,
+      "share_2025_pct": 0.35
+    },
+    "SDN": {
+      "series_2021_2025": [
+        5.03,
+        4.36,
+        6.48,
+        3.13,
+        2.16
+      ],
+      "value_2025_busd": 2.16,
+      "share_2025_pct": 0.32
+    },
+    "NER": {
+      "series_2021_2025": [
+        0.74,
+        0.42,
+        0.47,
+        0.75,
+        1.98
+      ],
+      "value_2025_busd": 1.98,
+      "share_2025_pct": 0.29
+    },
+    "TGO": {
+      "series_2021_2025": [
+        1.06,
+        1.35,
+        1.46,
+        1.37,
+        1.6
+      ],
+      "value_2025_busd": 1.6,
+      "share_2025_pct": 0.23
+    },
+    "MUS": {
+      "series_2021_2025": [
+        1.67,
+        1.65,
+        1.63,
+        1.59,
+        1.48
+      ],
+      "value_2025_busd": 1.48,
+      "share_2025_pct": 0.22
+    },
+    "MLI": {
+      "series_2021_2025": [
+        2.57,
+        2.39,
+        2.19,
+        1.65,
+        1.46
+      ],
+      "value_2025_busd": 1.46,
+      "share_2025_pct": 0.21
+    },
+    "RWA": {
+      "series_2021_2025": [
+        1.2,
+        1.56,
+        1.61,
+        2.07,
+        1.44
+      ],
+      "value_2025_busd": 1.44,
+      "share_2025_pct": 0.21
+    },
+    "SOM": {
+      "series_2021_2025": [
+        0.5,
+        0.73,
+        0.99,
+        1.12,
+        1.11
+      ],
+      "value_2025_busd": 1.11,
+      "share_2025_pct": 0.16
+    },
+    "BEN": {
+      "series_2021_2025": [
+        1.03,
+        0.91,
+        1.05,
+        1.11,
+        1.07
+      ],
+      "value_2025_busd": 1.07,
+      "share_2025_pct": 0.16
+    },
+    "MWI": {
+      "series_2021_2025": [
+        1.01,
+        0.9,
+        0.97,
+        0.96,
+        1.0
+      ],
+      "value_2025_busd": 1.0,
+      "share_2025_pct": 0.15
+    },
+    "LSO": {
+      "series_2021_2025": [
+        1.07,
+        1.05,
+        0.96,
+        0.96,
+        0.85
+      ],
+      "value_2025_busd": 0.85,
+      "share_2025_pct": 0.12
+    },
+    "ERI": {
+      "series_2021_2025": [
+        0.5,
+        0.6,
+        0.48,
+        0.57,
+        0.81
+      ],
+      "value_2025_busd": 0.81,
+      "share_2025_pct": 0.12
+    },
+    "SSD": {
+      "series_2021_2025": [
+        0.52,
+        0.53,
+        0.65,
+        0.53,
+        0.81
+      ],
+      "value_2025_busd": 0.81,
+      "share_2025_pct": 0.12
+    },
+    "SYC": {
+      "series_2021_2025": [
+        0.62,
+        0.6,
+        0.55,
+        0.59,
+        0.76
+      ],
+      "value_2025_busd": 0.76,
+      "share_2025_pct": 0.11
+    },
+    "GNB": {
+      "series_2021_2025": [
+        0.48,
+        0.51,
+        0.43,
+        0.5,
+        0.59
+      ],
+      "value_2025_busd": 0.59,
+      "share_2025_pct": 0.09
+    },
+    "SLE": {
+      "series_2021_2025": [
+        0.41,
+        0.48,
+        0.35,
+        0.4,
+        0.47
+      ],
+      "value_2025_busd": 0.47,
+      "share_2025_pct": 0.07
+    },
+    "CPV": {
+      "series_2021_2025": [
+        1.37,
+        0.52,
+        0.56,
+        0.3,
+        0.31
+      ],
+      "value_2025_busd": 0.31,
+      "share_2025_pct": 0.05
+    },
+    "LBR": {
+      "series_2021_2025": [
+        0.17,
+        0.2,
+        0.15,
+        0.13,
+        0.15
+      ],
+      "value_2025_busd": 0.15,
+      "share_2025_pct": 0.02
+    },
+    "BDI": {
+      "series_2021_2025": [
+        0.12,
+        0.16,
+        0.13,
+        0.08,
+        0.12
+      ],
+      "value_2025_busd": 0.12,
+      "share_2025_pct": 0.02
+    },
+    "CAF": {
+      "series_2021_2025": [
+        0.06,
+        0.12,
+        0.12,
+        0.15,
+        0.08
+      ],
+      "value_2025_busd": 0.08,
+      "share_2025_pct": 0.01
+    },
+    "GMB": {
+      "series_2021_2025": [
+        0.03,
+        0.06,
+        2.83,
+        0.05,
+        0.06
+      ],
+      "value_2025_busd": 0.06,
+      "share_2025_pct": 0.01
+    },
+    "COM": {
+      "series_2021_2025": [
+        0.03,
+        0.05,
+        0.03,
+        0.01,
+        0.01
+      ],
+      "value_2025_busd": 0.01,
+      "share_2025_pct": 0.0
+    },
+    "STP": {
+      "series_2021_2025": [
+        0.02,
+        0.02,
+        0.02,
+        0.0,
+        0.0
+      ],
+      "value_2025_busd": 0.0,
+      "share_2025_pct": 0.0
+    }
+  },
+  "tables": [
+    "continental_indicators_2025 (GDP growth, inflation, merchandise & intra-African trade)",
+    "intra_african_trade_by_country 2021-2025 (Total Intra-African Trade, 54 countries)",
+    "merchandise_exports_by_country 2021-2025 (Table 4.3, 54 countries)"
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "title": "Loi de Finances pour l'année 2026 — dispositions douanières par sous-position tarifaire",
+  "source_document": "Loi n° 25-XX de finances pour 2026, publiée au Journal Officiel de la République Algérienne N° 88 du 11 Rajab 1447 correspondant au 31 décembre 2025",
+  "source_url": "https://www.douane.gov.dz/spip.php?breve74",
+  "source_pdf_local": "data/sources/DZA/legislation/JO_2026-88_loi_finances_2026.pdf",
+  "source_pdf_origin": "https://www.douane.gov.dz/IMG/pdf/loi_de_finance_2026.pdf",
+  "extraction": {
+    "method": "extraction textuelle verbatim (PyMuPDF), pages 63-71 du PDF du JO n°88",
+    "date_consulted": "2026-08-29",
+    "note": "Les intitulés de sous-positions et les taux sont reproduits tels que publiés dans la loi. Les désignations de produits des tableaux officiels sont conservées."
+  },
+  "articles": [
+    {
+      "article": "Art. 120",
+      "pages": 64,
+      "objet": "Foire commerciale intra-africaine (IATF-2025) — admission temporaire et exonérations",
+      "sous_positions": [],
+      "texte_cle": "Les marchandises importées dans le cadre de la foire commerciale intra-africaine (IATF-2025), tenue du 4 au 10 septembre 2025 à Alger, sont admises sous le régime douanier de l'admission temporaire, en dispense de la caution exigible en la matière. Les marchandises vendues à l'occasion de cette foire sont dédouanées pour la mise à la consommation, en dispense des formalités de contrôle du commerce extérieur et des changes et en exonération des droits et taxes exigibles à l'importation, y compris la contribution de solidarité et le droit additionnel provisoire de sauvegarde, à l'exception des redevances douanières.",
+      "conditions": ["Exonération dans la limite d'une valeur de vingt mille dollars (20.000 USD) par exposant"],
+      "autorites": []
+    },
+    {
+      "article": "Art. 121",
+      "pages": 64,
+      "objet": "Exemption DD, TVA, taxe de domiciliation bancaire, contribution de solidarité et précompte — cheptels vifs Aïd El Adha",
+      "sous_positions": ["0104.10.91.10", "0102.29.91.10", "0102.29.91.20", "0102.29.91.30"],
+      "texte_cle": "Sont exemptés des droits de douane, de la taxe sur la valeur ajoutée, de la taxe de domiciliation bancaire, de la contribution de solidarité ainsi que du précompte applicable sur les importations de marchandises destinées exclusivement à la revente en l'état : — les têtes ovines vivantes des espèces domestiques destinées à l'abattage relevant de la sous-position tarifaire 0104.10.91.10, importées à l'occasion de l'Aïd El Adha, durant la période allant du 15 avril 2025 au 30 juin 2026. — cheptels bovins vifs destinés à l'abattage relevant des sous-positions tarifaires : 0102.29.91.10, 0102.29.91.20 et 0102.29.91.30 importés durant la période allant du 15 novembre 2025 au 30 juin 2026, nonobstant les dispositions de l'article 139 de la présente loi.",
+      "conditions": ["Importations destinées exclusivement à la revente en l'état", "Périodes citées"],
+      "autorites": []
+    },
+    {
+      "article": "Art. 131",
+      "pages": 67,
+      "objet": "DD taux 15% — chauffe-eaux solaires à usage domestique",
+      "sous_positions": ["8419.12.10.00"],
+      "texte_cle": "Sont soumises aux droits de douane au taux de 15%, les opérations d'importation des chauffe-eaux solaires à usage domestique, relevant de la sous-position tarifaire 8419.12.10.00.",
+      "conditions": [],
+      "autorites": []
+    },
+    {
+      "article": "Art. 132",
+      "pages": 67,
+      "objet": "Exonération DD — électrolyseurs destinés à la production de l'hydrogène",
+      "sous_positions": ["ex 8543.30.00.00"],
+      "texte_cle": "Sont exonérées des droits de douane, les opérations d'importation d'électrolyseurs destinés à la production de l'hydrogène, repris dans le tableau ci-après : [Sous-position tarifaire Ex 8543.30.00.00 — Désignation : Electrolyseurs destinés à la production de l'hydrogène]",
+      "conditions": ["Le bénéfice du taux réduit des droits de douane est subordonné à la production d'une attestation délivrée par les services habilités du ministère chargé de l'énergie, exigible au dédouanement (page 68)"],
+      "autorites": ["Ministère chargé de l'énergie"]
+    },
+    {
+      "article": "Art. 133",
+      "pages": 68,
+      "objet": "DD taux réduit 5% — produits destinés à la fabrication des panneaux solaires photovoltaïques",
+      "sous_positions": ["ex 3506.91.10.00", "ex 3810.90.11.00", "ex 3919.10.10.00", "ex 3920.10.99.20", "ex 7007.19.90.00", "ex 7409.11.10.00", "ex 7616.99.99.00", "ex 8535.90.10.00", "8541.42.00.00"],
+      "texte_cle": "Sont soumises au taux réduit de 5% des droits de douane, les opérations d'importation des produits repris ci-dessous, destinés à la fabrication des panneaux solaires photovoltaïques : [tableau officiel : Adhésifs à base de silicone ; Flux à arc immergé pour soudure à l'arc ; Bande adhésive en matières plastiques ; Plaques en EVA ; Feuilles en EVA ; Pellicules en EVA ; Bandes en EVA ; Lames en EVA ; Verres de sécurité, trempés ; Ruban de soudure en cuivre affiné ; Cadre en aluminium anodisé ; Boîtes de jonction ; Cellules photovoltaïques non assemblées en modules ni constituées en panneaux]",
+      "conditions": [],
+      "autorites": []
+    },
+    {
+      "article": "Art. 135",
+      "pages": 68,
+      "objet": "Exonération de tous droits et taxes — véhicules automobiles pour transport de dix personnes ou plus (position 87.02)",
+      "sous_positions": ["87.02 (position)"],
+      "texte_cle": "Les véhicules automobiles pour le transport de dix personnes ou plus, chauffeurs inclus, relevant de la position tarifaire 87.02 importés, présentés à l'état fini ou non monté, dans la limite de dix mille (10.000) unités, sont exonérés de tous les droits et taxes, y compris le droit additionnel provisoire de sauvegarde, la contribution de solidarité et le précompte. Cette exonération est, également, applicable aux pièces et composants constituant le kit, pour les véhicules non montés, lorsqu'ils sont importés séparément.",
+      "conditions": ["Limite de 10.000 unités", "Le dédouanement est subordonné à la présentation d'une autorisation délivrée par les services du ministère chargé de l'industrie à laquelle est annexée une fiche précisant les quantités des véhicules à importer (page 69)", "Prend effet à compter du 1er octobre 2025", "Modalités fixées par arrêté conjoint des ministres chargés de l'industrie, du commerce extérieur, du transport et des finances"],
+      "autorites": ["Ministère chargé de l'industrie", "Arrêté conjoint : industrie / commerce extérieur / transport / finances"]
+    },
+    {
+      "article": "Art. 138",
+      "pages": 70,
+      "objet": "Exemption DD + TVA taux réduit — matières premières entrant dans la fabrication d'aliments destinés à l'élevage des produits aquacoles",
+      "sous_positions": ["ex 0306.39.21.00", "ex 1212.29.10.00", "ex 1504.10.19.00", "ex 1504.10.99.00", "ex 1504.20.11.00", "ex 1504.20.20.00", "ex 1504.20.90.00", "ex 2301.20.11.00", "ex 2301.20.21.00", "ex 2302.10.91.00", "ex 2302.30.91.00", "ex 2302.40.91.10", "ex 2302.40.99.10", "ex 2302.50.91.00"],
+      "texte_cle": "Bénéficient de l'exemption des droits de douane et de l'application du taux réduit de la TVA, les opérations d'importation de matières premières entrant dans la fabrication d'aliments destinés à l'élevage des produits aquacoles. [Liste officielle : Artémia ; Souche de phytoplancton ; Huile de foie de morue ; Huile de foie des autres poissons ; Fractions solides des graisses et huiles de poissons ; Acides gras polyinsaturés ; Autres graisses et huiles de poissons ; Farines, poudres et agglomérés de poissons ; de crustacés, mollusques ; Farine de maïs ; de froment ; de riz ; d'autres céréales ; de légumineuses]",
+      "conditions": ["L'exemption des droits de douane et l'application du taux réduit de la TVA à l'importation sont subordonnées à la production d'une attestation délivrée par les services habilités du ministère chargé de la pêche, exigible au dédouanement"],
+      "autorites": ["Ministère chargé de la pêche"]
+    },
+    {
+      "article": "Art. 139",
+      "pages": 70,
+      "objet": "DD taux réduit 5% jusqu'au 31/12/2026 — cheptels bovins et ovins vifs destinés à l'abattage et viandes fraîches réfrigérées bovines et ovines sous-vide",
+      "sous_positions": ["0102.29.91.10", "0102.29.91.20", "0102.29.91.30", "0104.10.91.10", "0201.10.11.00", "0201.10.19.00", "0201.20.10.00", "0201.20.20.00", "0201.30.91.00", "0204.10.10.00", "0204.21.10.00", "0204.22.11.00", "0204.22.19.00", "0204.23.91.00"],
+      "texte_cle": "Sont soumis au taux réduit de 5% des droits de douane, jusqu'au 31 décembre 2026, les opérations d'importation de cheptels bovin et ovin, vifs destinés à l'abattage relevant des sous-positions tarifaires 0102.29.91.10, 0102.29.91.20, 0102.29.91.30 et 0104.10.91.10 ainsi que les viandes fraîches réfrigérées bovines et ovines sous-vide, relevant des sous-positions tarifaires : 0201.10.11.00, 0201.10.19.00, 0201.20.10.00, 0201.20.20.00, 0201.30.91.00, 0204.10.10.00, 0204.21.10.00, 0204.22.11.00, 0204.22.19.00 et 0204.23.91.00.",
+      "conditions": ["Jusqu'au 31 décembre 2026"],
+      "autorites": []
+    },
+    {
+      "article": "Art. 140",
+      "pages": 71,
+      "objet": "Exonération TVA + DD taux réduit 5% jusqu'au 31/12/2026 — viandes blanches congelées",
+      "sous_positions": ["0207.12.10.00", "0207.12.20.00", "0207.12.90.00", "0207.14.24.00", "0207.14.25.00"],
+      "texte_cle": "Peuvent bénéficier d'une exonération de la taxe sur la valeur ajoutée et sont soumises aux taux réduits de 5% des droits de douane jusqu'au 31 décembre 2026 les opérations de l'importation de viandes blanches congelées relevant des sous-positions tarifaires suivantes : 0207.12.10.00, 0207.12.20.00, 0207.12.90.00, 0207.14.24.00 et 0207.14.25.00.",
+      "conditions": ["Jusqu'au 31 décembre 2026"],
+      "autorites": []
+    },
+    {
+      "article": "Art. 142",
+      "pages": 71,
+      "objet": "Exonération TVA + taxe intérieure de consommation + DD taux réduit 5% jusqu'au 31/12/2026 — café",
+      "sous_positions": ["0901.11.10.00", "0901.11.20.00"],
+      "texte_cle": "Nonobstant les dispositions de l'article 25 du code des taxes sur le chiffre d'affaires, sont exonérées de la taxe sur la valeur ajoutée et de la taxe intérieure de consommation, et soumises au taux réduit des droits de douane à hauteur de 5%, jusqu'au 31 décembre 2026, les opérations d'importation du café relevant des sous-positions tarifaires : 0901.11.10.00 et 0901.11.20.00.",
+      "conditions": ["Jusqu'au 31 décembre 2026"],
+      "autorites": []
+    },
+    {
+      "article": "Art. 143",
+      "pages": 71,
+      "objet": "Micro-importation par auto-entrepreneur — DD taux réduit 5%, exemption TVA/redevances/C.S/DAPS, impôt forfaitaire unique 0,5%",
+      "sous_positions": [],
+      "texte_cle": "Les opérations d'importation réalisées par l'auto-entrepreneur exerçant l'activité de la micro-importation sont soumises au taux réduit de 5% des droits de douane et exemptées du paiement de la taxe sur la valeur ajoutée, des redevances douanières et des autres droits et taxes exigibles à l'importation, y compris la contribution de solidarité et le droit additionnel provisoire de sauvegarde. Le dédouanement s'effectue au vu d'une déclaration en douane simplifiée. Les contribuables exerçant l'activité de micro-importation sont soumis à chaque opération d'importation, à l'impôt forfaitaire unique fixé au taux de 0,5% libératoire, calculé sur la base de la valeur en douane, augmentée des droits de douane et d'une marge forfaitaire de 30%.",
+      "conditions": ["Applicables à compter du 28 juin 2025", "Statut d'auto-entrepreneur requis"],
+      "autorites": []
+    },
+    {
+      "article": "Art. 136",
+      "pages": 69,
+      "objet": "Contribution de solidarité 3% — réglementation des exonérations",
+      "sous_positions": [],
+      "texte_cle": "Il est institué une contribution de solidarité au taux de 3% [...] Aucune exonération ne peut être accordée au titre de la contribution de solidarité à l'exception [...] des importations de marchandises relevant du wakf public, bénéficiant d'exonérations des droits et taxes ; des importations de marchandises dans le cadre des dispositifs de soutien à l'investissement.",
+      "conditions": [],
+      "autorites": []
+    },
+    {
+      "article": "Art. 137",
+      "pages": 69,
+      "objet": "Droit additionnel provisoire de sauvegarde — réglementation des exonérations",
+      "sous_positions": [],
+      "texte_cle": "Il est institué un droit additionnel provisoire de sauvegarde [...] Aucune exonération ne peut être accordée au titre du droit additionnel provisoire de sauvegarde à l'exception [...] des importations de marchandises effectuées directement par l'agence algérienne de coopération internationale pour la solidarité et le développement, destinées soit à la réalisation des projets entrant dans le cadre des actions de coopération et de solidarité internationales ou être consenties directement à titre de don, au profit d'un pays, dans le cadre des actions citées ci-dessus ; des importations des dons et des biens wakfs publics importés exonérés des droits et taxes.",
+      "conditions": [],
+      "autorites": []
+    }
+  ]
+}

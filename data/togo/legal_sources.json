@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "country": "TGO",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "TGO-JOURNAL-CGI",
+      "title": "Code Général des Impôts (General Tax Code), as amended",
+      "institution": "Journal Officiel de la République / Ministry of Finance",
+      "legal_date": "2012-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.impots.tgo/",
+      "local_file": "official/tgo-cgi-consolidated.html",
+      "sha256": "pending_collection",
+      "coverage": "VAT standard rate (18%); excises; exemptions; zero-rated supplies",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text via Journal Officiel de la République. All amendments through June 2026."
+    },
+    {
+      "source_id": "TGO-FINANCE-LAW-2026",
+      "title": "Finance Law 2026",
+      "institution": "Ministry of Finance",
+      "legal_date": "2025-12-31",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.finances.tgo/",
+      "local_file": "official/tgo-finance-law-2026.html",
+      "sha256": "pending_collection",
+      "coverage": "fiscal year 2026 tax rates; special levies; import duties",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Enacted December 2025; effective January 2026."
+    }
+  ]
+}

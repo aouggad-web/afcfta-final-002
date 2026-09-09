@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "country": "EGY",
+  "as_of": "2026-07-29",
+  "sources": [
+    {
+      "source_id": "EGY-CUSTOMS-TARIFF-CRAWL-20260613",
+      "official_title": "Egyptian Customs Tariff",
+      "institution": "Egyptian Customs Authority",
+      "legal_date": null,
+      "url": "https://customs.gov.eg/Services/Tarif",
+      "sha256": "25852dffb6af464ffcb4c38b82cd41fc5585e150d03bfcc2b397dfe71091118c",
+      "verification_status": "VERIFIED_RUNTIME_DATASET",
+      "registry_path": "backend/data/crawled/EGY_tariffs.json",
+      "notes": "Empreinte du fichier runtime collecté le 13 juin 2026 ; 8 746 positions nationales à 10 chiffres."
+    },
+    {
+      "source_id": "EGY-ETA-VAT-LAW-67-2016",
+      "official_title": "Value Added Tax Law No. 67 of 2016",
+      "institution": "Egyptian Tax Authority",
+      "legal_date": "2016-09-07",
+      "url": "https://www.eta.gov.eg/sites/default/files/2024-02/Law-english-no.67-2016.pdf.pdf",
+      "sha256": null,
+      "verification_status": "VERIFIED_OFFICIAL_TEXT_URL",
+      "notes": "Article 3 fixe le taux standard à 14 % depuis l'exercice 2017/2018 ; article 10(7) définit l'assiette à l'importation."
+    }
+  ]
+}

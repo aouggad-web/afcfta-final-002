@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "country": "GIN",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "GIN-DGI-CGI-2022-2023",
+      "title": "Code Général des Impôts (General Tax Code), consolidated with 2023 Finance Law amendments",
+      "institution": "Ministère du Budget / Direction Générale des Impôts (DGI)",
+      "legal_date": "2022-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://mbudget.gov.gn/wp-content/uploads/2022/05/Code-General-des-Impots-2022-2.pdf",
+      "local_file": "official/gin-cgi-2023.pdf",
+      "sha256": "0b29ebac94c892f385d4ed97c834d4a01f05ecc07678bcd3248f7aec92a2fe48",
+      "coverage": "VAT standard rate (Art. 373); zero-rated exports (Art. 373-II); VAT exemptions (Art. 362); excise duties on 16 product categories (Art. 435)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Adopted by law n°L/2021/032/AN of 4 July 2021, applicable since 1 January 2022, updated with the rectifying finance law of 24 September 2022 and the 2023 finance law of 28 December 2022. Downloaded directly from the official Ministère du Budget portal (mbudget.gov.gn), text-based PDF (not scanned)."
+    }
+  ]
+}

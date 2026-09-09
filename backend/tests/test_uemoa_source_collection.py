@@ -1,0 +1,380 @@
+"""
+Vérifications d'intégrité de la collecte UEMOA (Sénégal, Bénin, Mali) :
+sources localisées, taux de TVA enregistrés, structure d'inventaire.
+Cette collecte est délibérément partielle (VAT seule, offres ZLECAf non ingérées
+et pas encore localisées au niveau des schémas d'offre nationale par HS10) — voir
+data/sources/{sen,ben,mli}/README.md — donc SEN/BEN/MLI ne sont pas enregistrées
+dans SUPPORTED_JURISDICTIONS ni dans NATIONAL_OFFER_REGISTRY : ces tests
+vérifient les données collectées elles-mêmes, pas un calcul de bout en bout.
+"""
+
+import csv
+import json
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parents[2]
+
+_COUNTRY_MAP = {
+    "SEN": "senegal",
+    "BEN": "benin",
+    "MLI": "mali",
+    "CIV": "cote-d-ivoire",
+    "BFA": "burkina-faso",
+    "TGO": "togo",
+    "NER": "niger",
+    "GNB": "guinea-bissau",
+}
+
+
+def _country_dirs(iso3: str) -> tuple:
+    country_name = _COUNTRY_MAP[iso3]
+    data_dir = _ROOT / "data" / country_name
+    sources_dir = _ROOT / "data" / "sources" / country_name
+    return data_dir, sources_dir
+
+
+# ============================================================================
+# Senegal (SEN)
+# ============================================================================
+
+
+def test_sen_vat_measures_standard_rate():
+    """Sénégal : taux VAT standard 18%."""
+    data_dir, _ = _country_dirs("SEN")
+    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
+    assert standard["rate"] == "18%"
+    assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
+    assert standard["source_id"]
+    assert standard["legal_reference"]
+
+
+def test_sen_legal_sources_reference_valid_source_ids():
+    """Les source_id cités en VAT measures doivent être dans le registre des sources."""
+    data_dir, _ = _country_dirs("SEN")
+    sources = json.loads((data_dir / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
+    vat = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    vat_source_ids = {r["source_id"] for r in vat["vat_rates"]}
+    registered_ids = {s["source_id"] for s in sources}
+    assert vat_source_ids <= registered_ids
+
+
+def test_sen_inventory_csv_structure():
+    """Inventaire CSV conforme : colonnes requises et statut pending."""
+    _, sources_dir = _country_dirs("SEN")
+    with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
+        rows = list(csv.DictReader(f))
+    required_columns = {
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
+    }
+    assert required_columns <= set(rows[0].keys())
+    pending = [r for r in rows if r["status"] == "source_pending_collection"]
+    assert pending, "au moins une source doit être marquée pending"
+
+
+def test_sen_not_registered_as_supported_jurisdiction():
+    """Garde-fou : SEN n'est pas enregistrée comme juridiction supportée."""
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
+    assert "SEN" not in SUPPORTED_JURISDICTIONS
+
+
+def test_sen_has_no_fabricated_afcfta_offer():
+    """Garde-fou : SEN n'a pas d'offre nationale ZLECAf fictive."""
+    from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+
+    assert "SEN" not in NATIONAL_OFFER_REGISTRY
+    assert check_conformity("SEN")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
+
+
+# ============================================================================
+# Benin (BEN)
+# ============================================================================
+
+
+def test_ben_vat_measures_standard_rate():
+    """Bénin : taux VAT standard 18%."""
+    data_dir, _ = _country_dirs("BEN")
+    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
+    assert standard["rate"] == "18%"
+    assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
+    assert standard["source_id"]
+    assert standard["legal_reference"]
+
+
+def test_ben_legal_sources_reference_valid_source_ids():
+    """Les source_id cités en VAT measures doivent être dans le registre des sources."""
+    data_dir, _ = _country_dirs("BEN")
+    sources = json.loads((data_dir / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
+    vat = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    vat_source_ids = {r["source_id"] for r in vat["vat_rates"]}
+    registered_ids = {s["source_id"] for s in sources}
+    assert vat_source_ids <= registered_ids
+
+
+def test_ben_inventory_csv_structure():
+    """Inventaire CSV conforme : colonnes requises présentes."""
+    _, sources_dir = _country_dirs("BEN")
+    with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
+        rows = list(csv.DictReader(f))
+    required_columns = {
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
+    }
+    assert required_columns <= set(rows[0].keys())
+
+
+def test_ben_not_registered_as_supported_jurisdiction():
+    """Garde-fou : BEN n'est pas enregistrée comme juridiction supportée."""
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
+    assert "BEN" not in SUPPORTED_JURISDICTIONS
+
+
+def test_ben_has_no_fabricated_afcfta_offer():
+    """Garde-fou : BEN n'a pas d'offre nationale ZLECAf fictive."""
+    from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+
+    assert "BEN" not in NATIONAL_OFFER_REGISTRY
+    assert check_conformity("BEN")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
+
+
+# ============================================================================
+# Mali (MLI)
+# ============================================================================
+
+
+def test_mli_vat_measures_standard_rate():
+    """Mali : taux VAT standard 18%."""
+    data_dir, _ = _country_dirs("MLI")
+    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
+    assert standard["rate"] == "18%"
+    assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
+    assert standard["source_id"]
+    assert standard["legal_reference"]
+
+
+def test_mli_legal_sources_reference_valid_source_ids():
+    """Les source_id cités en VAT measures doivent être dans le registre des sources."""
+    data_dir, _ = _country_dirs("MLI")
+    sources = json.loads((data_dir / "legal_sources.json").read_text(encoding="utf-8"))["sources"]
+    vat = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    vat_source_ids = {r["source_id"] for r in vat["vat_rates"]}
+    registered_ids = {s["source_id"] for s in sources}
+    assert vat_source_ids <= registered_ids
+
+
+def test_mli_inventory_csv_structure():
+    """Inventaire CSV conforme : colonnes requises et statut pending."""
+    _, sources_dir = _country_dirs("MLI")
+    with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
+        rows = list(csv.DictReader(f))
+    required_columns = {
+        "id",
+        "institution",
+        "title",
+        "legal_date",
+        "accessed_at",
+        "url",
+        "local_file",
+        "sha256",
+        "coverage",
+        "status",
+        "notes",
+    }
+    assert required_columns <= set(rows[0].keys())
+    pending = [r for r in rows if r["status"] == "source_pending_collection"]
+    assert pending, "au moins une source doit être marquée pending"
+
+
+def test_mli_not_registered_as_supported_jurisdiction():
+    """Garde-fou : MLI n'est pas enregistrée comme juridiction supportée."""
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
+    assert "MLI" not in SUPPORTED_JURISDICTIONS
+
+
+def test_mli_has_no_fabricated_afcfta_offer():
+    """Garde-fou : MLI n'a pas d'offre nationale ZLECAf fictive."""
+    from etl.afcfta_national_offers import NATIONAL_OFFER_REGISTRY, check_conformity
+
+    assert "MLI" not in NATIONAL_OFFER_REGISTRY
+    assert check_conformity("MLI")["status"] == "NO_NATIONAL_OFFER_REGISTERED"
+
+
+# ============================================================================
+# Cross-country consistency
+# ============================================================================
+
+
+def test_uemoa_trio_all_have_18_percent_vat():
+    """Les trois pays UEMOA (SEN, BEN, MLI) ont tous 18% de TVA (harmonisation)."""
+    for iso3 in ["SEN", "BEN", "MLI"]:
+        data_dir, _ = _country_dirs(iso3)
+        data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+        standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
+        assert standard["rate"] == "18%", f"{iso3}: taux VAT != 18%"
+
+
+def test_uemoa_all_pending_collection_status():
+    """Tous les pays UEMOA ont un fichier inventaire avec au moins une source enregistrée."""
+    for iso3 in ["SEN", "BEN", "MLI", "CIV", "BFA", "TGO", "NER", "GNB"]:
+        _, sources_dir = _country_dirs(iso3)
+        with open(sources_dir / "inventory.csv", encoding="utf-8", newline="") as f:
+            rows = list(csv.DictReader(f))
+        assert len(rows) > 0, f"{iso3}: aucune source enregistrée dans l'inventaire"
+
+
+# ============================================================================
+# Côte d'Ivoire (CIV)
+# ============================================================================
+
+
+def test_civ_vat_measures_standard_rate():
+    """Côte d'Ivoire : taux VAT standard 18%."""
+    data_dir, _ = _country_dirs("CIV")
+    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
+    assert standard["rate"] == "18%"
+    assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
+
+
+def test_civ_not_registered_as_supported_jurisdiction():
+    """Garde-fou : CIV n'est pas enregistrée comme juridiction supportée."""
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
+    assert "CIV" not in SUPPORTED_JURISDICTIONS
+
+
+# ============================================================================
+# Burkina Faso (BFA)
+# ============================================================================
+
+
+def test_bfa_vat_measures_standard_rate():
+    """Burkina Faso : taux VAT standard 18%."""
+    data_dir, _ = _country_dirs("BFA")
+    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
+    assert standard["rate"] == "18%"
+    assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
+
+
+def test_bfa_not_registered_as_supported_jurisdiction():
+    """Garde-fou : BFA n'est pas enregistrée comme juridiction supportée."""
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
+    assert "BFA" not in SUPPORTED_JURISDICTIONS
+
+
+# ============================================================================
+# Togo (TGO)
+# ============================================================================
+
+
+def test_tgo_vat_measures_standard_rate():
+    """Togo : taux VAT standard 18%."""
+    data_dir, _ = _country_dirs("TGO")
+    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
+    assert standard["rate"] == "18%"
+    assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
+
+
+def test_tgo_not_registered_as_supported_jurisdiction():
+    """Garde-fou : TGO n'est pas enregistrée comme juridiction supportée."""
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
+    assert "TGO" not in SUPPORTED_JURISDICTIONS
+
+
+# ============================================================================
+# Niger (NER)
+# ============================================================================
+
+
+def test_ner_vat_measures_standard_rate():
+    """Niger : taux VAT standard 19% (relevé à 19 % par le CGI 2023, art. 226)."""
+    data_dir, _ = _country_dirs("NER")
+    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
+    assert standard["rate"] == "19%"
+    assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
+
+
+def test_ner_not_registered_as_supported_jurisdiction():
+    """Garde-fou : NER n'est pas enregistrée comme juridiction supportée."""
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
+    assert "NER" not in SUPPORTED_JURISDICTIONS
+
+
+# ============================================================================
+# Guinea-Bissau (GNB)
+# ============================================================================
+
+
+def test_gnb_vat_measures_standard_rate():
+    """Guinée-Bissau : taux VAT standard 18%."""
+    data_dir, _ = _country_dirs("GNB")
+    data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+    standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
+    assert standard["rate"] == "18%"
+    assert standard["legal_status"] == "IN_FORCE_AS_OF_CONSOLIDATION"
+
+
+def test_gnb_not_registered_as_supported_jurisdiction():
+    """Garde-fou : GNB n'est pas enregistrée comme juridiction supportée."""
+    from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
+
+    assert "GNB" not in SUPPORTED_JURISDICTIONS
+
+
+# ============================================================================
+# Full UEMOA consistency (all 8 countries)
+# ============================================================================
+
+
+def test_all_8_uemoa_countries_have_18_percent_vat():
+    """Les pays UEMOA ont une TVA harmonisée (18% ou taux national en vigueur).
+
+    Note : le Niger a relevé son taux à 19 % en 2023 (CGI, art. 226).
+    """
+    EXPECTED_RATES = {
+        "SEN": "18%",
+        "BEN": "18%",
+        "MLI": "18%",
+        "CIV": "18%",
+        "BFA": "18%",
+        "TGO": "18%",
+        "NER": "19%",
+        "GNB": "18%",
+    }
+    for iso3 in ["SEN", "BEN", "MLI", "CIV", "BFA", "TGO", "NER", "GNB"]:
+        data_dir, _ = _country_dirs(iso3)
+        data = json.loads((data_dir / "vat_measures.json").read_text(encoding="utf-8"))
+        standard = next(r for r in data["vat_rates"] if "STANDARD" in r["record_id"])
+        assert (
+            standard["rate"] == EXPECTED_RATES[iso3]
+        ), f"{iso3}: taux VAT != {EXPECTED_RATES[iso3]}"

@@ -1,0 +1,297 @@
+{
+  "schema_version": "1.0",
+  "country": "CMR",
+  "as_of": "2026-07-25",
+  "excise_rates": [
+    {
+      "record_id": "CMR-EXCISE-SUPER-ELEVE-HYDROQUINONE",
+      "legal_product_description": "Hydroquinone de la position tarifaire 2907.22.00.000 et produits cosmétiques importés du chapitre 33 contenant de l'hydroquinone.",
+      "normalized_product_description": "hydroquinone and imported cosmetic products of chapter 33 containing hydroquinone.",
+      "rate": "50%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux super élevé : 50 % » et Article 142 (6) d) : le taux super élevé s'applique à l'hydroquinone de la position tarifaire 29072200000 et aux produits cosmétiques importés du chapitre 33 contenant de l'hydroquinone.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "2907.22.00.000"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-ELEVE-TABACS",
+      "legal_product_description": "Cigares, cigarettes et autres tabacs du chapitre 24 ; pipes et leurs parties, tabacs et préparations pour pipes.",
+      "normalized_product_description": "cigars, cigarettes and other tobacco of chapter 24; pipes and parts thereof, tobacco and pipe preparations.",
+      "rate": "30%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux élevé : 30 % » et Article 142 (6) e) : le taux élevé s'applique aux cigares, cigarettes et autres tabacs du chapitre 24 ; les pipes et leurs parties, les tabacs et préparations pour pipes des positions tarifaires 2403.11.00.000, 2403.19.90.000 et 9614.00.000.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "2402",
+        "2403.11.00.000",
+        "2403.19.90.000",
+        "9614.00.000"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-MOYEN-MOTOCYCLES-GRANDE-CYLINDREE",
+      "legal_product_description": "Motocycles d'une cylindrée supérieure à 250 cm3 des positions 8711.30, 8711.40 et 8711.50.",
+      "normalized_product_description": "motorcycles of a cylinder capacity exceeding 250 cm3.",
+      "rate": "12.5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux moyen : 12,5 % » et Article 142 (6) a) : le taux moyen s'applique aux motocycles d'une cylindrée supérieure à 250 cm3 des positions 8711.30, 8711.40 et 8711.50.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "8711.30",
+        "8711.40",
+        "8711.50"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-MOYEN-PARTIES-MOTOCYCLES",
+      "legal_product_description": "Parties de tous les motocycles des positions 8714.10, 8714.91 à 8714.99.",
+      "normalized_product_description": "parts of all motorcycles.",
+      "rate": "12.5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux moyen : 12,5 % » et Article 142 (6) a) : parties de tous les motocycles des positions 8714.10, 8714.91 à 871499.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "8714.10",
+        "8714.91",
+        "8714.92",
+        "8714.93",
+        "8714.94",
+        "8714.95",
+        "8714.96",
+        "8714.99"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-MOYEN-CHEVEUX-PERRUQUES",
+      "legal_product_description": "Cheveux, perruques, laines, barbes, sourcils, cils, mèches et autres matières textiles préparés pour la fabrication de perruques ou d'articles similaires en cheveux, des positions tarifaires 6703 à 6704.",
+      "normalized_product_description": "hair, wigs, and prepared textile materials for the manufacture of wigs or similar hair articles.",
+      "rate": "12.5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux moyen : 12,5 % » et Article 142 (6) a) : cheveux, perruques et autres matières textiles préparés pour la fabrication de perruques, positions tarifaires 6703. à 6704.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "6703",
+        "6704"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-MOYEN-FRIPERIE",
+      "legal_product_description": "Articles de friperie de la position tarifaire 6309.00.00.000.",
+      "normalized_product_description": "second-hand clothing articles.",
+      "rate": "12.5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux moyen : 12,5 % » et Article 142 (6) a) : articles de friperie de la position tarifaire 6309.00.00.000.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "6309.00.00.000"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-MOYEN-PNEUMATIQUES-OCCASION",
+      "legal_product_description": "Pneumatiques d'occasion des positions tarifaires 4012.20.00.100 à 4012.20.00.900.",
+      "normalized_product_description": "used pneumatic tyres.",
+      "rate": "12.5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux moyen : 12,5 % » et Article 142 (6) a) : pneumatiques d'occasion des positions tarifaires 4012.20.00.100 à 4012.20.00.900.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "4012.20"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-REDUIT-SUCRERIES",
+      "legal_product_description": "Sucreries sans cacao de la position 1704.",
+      "normalized_product_description": "sugar confectionery not containing cocoa.",
+      "rate": "5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux réduit : 5 % » et Article 142 (6) b) : sucreries sans cacao de la position 1704.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "1704"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-REDUIT-CHOCOLATS",
+      "legal_product_description": "Chocolats et autres préparations alimentaires à forte teneur de cacao des positions 1806.20 à 1806.90.",
+      "normalized_product_description": "chocolate and other food preparations with high cocoa content.",
+      "rate": "5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux réduit : 5 % » et Article 142 (6) b) : chocolats et autres préparations alimentaires à forte teneur de cacao des positions 1806.20 à 180690.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "1806.20",
+        "1806.31",
+        "1806.32",
+        "1806.90"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-REDUIT-PREPARATIONS-CONSOMMATION",
+      "legal_product_description": "Préparations pour consommation des positions tarifaires 2103 à 2104.",
+      "normalized_product_description": "sauces, condiments, soups and broths preparations.",
+      "rate": "5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux réduit : 5 % » et Article 142 (6) b) : préparations pour consommation des positions tarifaires 2103 à 2104.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "2103",
+        "2104"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-REDUIT-GLACES-CONSOMMATION",
+      "legal_product_description": "Glaces de consommation de la position 2105.",
+      "normalized_product_description": "ice cream and other edible ice.",
+      "rate": "5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux réduit : 5 % » et Article 142 (6) b) : les glaces de consommation du 2105.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "2105"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-REDUIT-GRUAUX-MAIS-IMPORTES",
+      "legal_product_description": "Gruaux de maïs importés de la sous-position tarifaire 1103.13.00.000.",
+      "normalized_product_description": "imported maize groats and meal.",
+      "rate": "5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises ; applicable aux seuls produits importés",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux réduit : 5 % » et Article 142 (6) b) : aux gruaux de maïs importés de la sous-position tarifaire 1103.13 00 000.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "1103.13.00.000"
+      ]
+    },
+    {
+      "record_id": "CMR-EXCISE-REDUIT-MAYONNAISE-IMPORTEE",
+      "legal_product_description": "Mayonnaise importée de la sous-position 2103.90.00.000.",
+      "normalized_product_description": "imported mayonnaise.",
+      "rate": "5%",
+      "rate_basis": "ad valorem sur la base d'imposition au droit d'accises ; applicable aux seuls produits importés",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) b) « Taux réduit : 5 % » et Article 142 (6) b) : à la mayonnaise importée de la sous-position 2103.90 00 000.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "2103.90.00.000"
+      ]
+    }
+  ],
+  "excise_specific_duties_pending_quantity_data": [
+    {
+      "record_id": "CMR-EXCISE-SPECIFIQUE-TABACS-MINIMUM",
+      "legal_product_description": "Produits finis de tabac importés : le droit d'accises résultant du taux de 25 % ne peut être inférieur à 5 000 F CFA pour 1000 tiges de cigarettes.",
+      "rate": "5000 XAF per 1000 sticks (plancher)",
+      "rate_basis": "specific floor; requires quantity in sticks",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (7).",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "2402.20"
+      ],
+      "notes": "Droit spécifique : non calculable sans donnée de quantité. Le moteur remonte ce cas en missing_elements (VERIFIED_PARTIAL) plutôt que de l'ignorer."
+    },
+    {
+      "record_id": "CMR-EXCISE-SPECIFIQUE-BIERES",
+      "legal_product_description": "Bières : droit d'accises additionnel spécifique de 75 F CFA pour les bières de 65 centilitres et 37,5 F CFA pour les bières de 33 centilitres, en sus du taux de 25 %.",
+      "rate": "75 XAF per 65cl bottle; 37.5 XAF per 33cl bottle",
+      "rate_basis": "specific, additional to ad valorem; requires quantity and container size",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (8) (nouveau).",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "2203.00.00"
+      ],
+      "notes": "Droit spécifique : non calculable sans donnée de quantité et de contenance."
+    },
+    {
+      "record_id": "CMR-EXCISE-SPECIFIQUE-VINS-SPIRITUEUX-LOCAUX",
+      "legal_product_description": "Vins, spiritueux, whiskies et champagnes produits localement : 2 F CFA par centilitre pour les spiritueux dits alcools mix et pour les vins ; 8 F CFA par centilitre pour les whiskies ; 25 F CFA par centilitre pour les champagnes.",
+      "rate": "2 XAF/cl (alcools mix, vins); 8 XAF/cl (whiskies); 25 XAF/cl (champagnes)",
+      "rate_basis": "specific per centilitre, additional to ad valorem; locally produced",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (8) (nouveau).",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": [
+        "2204",
+        "2205",
+        "2208"
+      ],
+      "notes": "Droit spécifique : non calculable sans volume. Les taux applicables aux vins et spiritueux importés diffèrent et n'ont pas été extraits intégralement du texte ; à compléter."
+    }
+  ]
+}

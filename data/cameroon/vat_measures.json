@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "country": "CMR",
+  "as_of": "2026-07-25",
+  "vat_rates": [
+    {
+      "record_id": "CMR-VAT-RATE-STANDARD-20210101",
+      "legal_product_description": "Taux général de la Taxe sur la Valeur Ajoutée applicable à toutes les opérations non soumises au taux zéro, tant pour les biens et services produits localement que pour les biens importés.",
+      "normalized_product_description": "general rate of value-added tax on all operations not subject to the zero rate, for locally produced goods and services as well as imported goods.",
+      "rate": "17.5%",
+      "rate_basis": "customs value plus duty and excise (import); consideration (domestic). Hors centimes additionnels communaux.",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Titre I, Section V, Article 142 (1) a) : « Taxe sur la Valeur Ajoutée : Taux général …… 17,5 % ». Article 142 (2) : les taux sont applicables aussi bien aux biens et/ou services produits localement qu'aux biens importés. Article 142 (3) : le taux général s'applique à toutes les opérations non soumises au taux zéro.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ],
+  "vat_exemptions": [],
+  "vat_zero_rated": [
+    {
+      "record_id": "CMR-VAT-ZERO-EXPORTS-20210101",
+      "legal_product_description": "Exportations de produits taxables.",
+      "normalized_product_description": "exports of taxable products.",
+      "rate": "0%",
+      "effective_from": "2021-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "CMR-DGI-CGI-2021",
+      "legal_reference": "Code Général des Impôts, édition 2021, Article 142 (1) a) : « Taux zéro …… 0 % » ; Article 142 (4) : le taux zéro s'applique aux exportations de produits taxables.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ]
+}

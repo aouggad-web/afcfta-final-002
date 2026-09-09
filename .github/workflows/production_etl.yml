@@ -1,0 +1,101 @@
+name: Production — Ingestion FAOSTAT + USGS
+
+# Ingestion des données de production africaine (réseau ouvert sur runner GitHub) :
+#   • FAOSTAT bulk QCL (Production Crops & Livestock — Afrique), 2019-2024 ;
+#   • USGS Mineral Commodity Summaries (données curées multi-années intégrées) ;
+#   • UNIDO INDSTAT (valeur ajoutée manufacturière, curée).
+# Le script filtre FAOSTAT via FAOSTAT_ITEM_TO_COMMODITY : élargir cette table
+# (fait) importe davantage de produits. Aucune valeur inventée : réseau
+# indisponible -> conserve les données existantes.
+#
+# Sortie : data/json/production_africaine.json (committé si commit_data=true).
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_data:
+        description: 'Committer le dataset produit sur la branche'
+        required: false
+        type: boolean
+        default: true
+      faostat_only:
+        description: 'FAOSTAT uniquement (ignorer USGS/UNIDO)'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  ingest-production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Comptage produits AVANT
+        run: |
+          python3 - <<'PY'
+          import json
+          d = json.load(open("data/json/production_africaine.json"))
+          for k in ("agri_faostat", "mining_usgs", "manufacturing_unido"):
+              recs = d.get(k, [])
+              labels = {r.get("commodity_label") or r.get("isic_label") or r.get("sector_detail") for r in recs}
+              print(f"AVANT {k}: {len(recs)} lignes, {len(labels)} commodités")
+          PY
+
+      - name: Ingestion FAOSTAT + USGS
+        working-directory: backend
+        # Non bloquant : en cas d'indisponibilité réseau FAOSTAT, le script
+        # conserve les données existantes (jamais de valeur inventée).
+        continue-on-error: true
+        run: |
+          FLAG=""
+          if [ "${{ inputs.faostat_only }}" = "true" ]; then FLAG="--faostat-only"; fi
+          python3 scripts/build_production_faostat_usgs.py $FLAG
+
+      - name: Comptage produits APRÈS
+        run: |
+          python3 - <<'PY'
+          import json
+          d = json.load(open("data/json/production_africaine.json"))
+          for k in ("agri_faostat", "mining_usgs", "manufacturing_unido"):
+              recs = d.get(k, [])
+              labels = {r.get("commodity_label") or r.get("isic_label") or r.get("sector_detail") for r in recs}
+              print(f"APRÈS {k}: {len(recs)} lignes, {len(labels)} commodités")
+          PY
+
+      - name: Upload dataset en artefact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production_africaine
+          path: data/json/production_africaine.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Committer le dataset sur la branche
+        if: ${{ inputs.commit_data }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -f data/json/production_africaine.json ]; then git add data/json/production_africaine.json; fi
+          if git diff --cached --quiet; then
+            echo "Dataset production inchangé — rien à committer."
+          else
+            git commit -m "data: production africaine (FAOSTAT + USGS) via workflow"
+            git push
+          fi

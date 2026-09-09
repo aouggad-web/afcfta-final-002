@@ -1,0 +1,68 @@
+{
+ "country_iso3": "MAR",
+ "verification_date": "2026-09-01T00:17:16.850903+00:00",
+ "official_source_url": "https://www.douane.gov.ma/adil",
+ "sample_size": 4,
+ "positions_checked": [
+  "8419909000",
+  "1806104090",
+  "0304450000",
+  "8714100010"
+ ],
+ "matches": 0,
+ "mismatches": [],
+ "unverifiable_source_unreachable_or_silent": [
+  {
+   "hs_code": "8419909000",
+   "stored_dd_rate_pct": 2.5,
+   "official_dd_rate_pct": null,
+   "error": ""
+  },
+  {
+   "hs_code": "1806104090",
+   "stored_dd_rate_pct": 17.5,
+   "official_dd_rate_pct": null,
+   "error": ""
+  },
+  {
+   "hs_code": "0304450000",
+   "stored_dd_rate_pct": 10.0,
+   "official_dd_rate_pct": null,
+   "error": ""
+  },
+  {
+   "hs_code": "8714100010",
+   "stored_dd_rate_pct": 30.0,
+   "official_dd_rate_pct": null,
+   "error": ""
+  }
+ ],
+ "errors": [],
+ "results": [
+  {
+   "hs_code": "8419909000",
+   "stored_dd_rate_pct": 2.5,
+   "official_dd_rate_pct": null,
+   "error": ""
+  },
+  {
+   "hs_code": "1806104090",
+   "stored_dd_rate_pct": 17.5,
+   "official_dd_rate_pct": null,
+   "error": ""
+  },
+  {
+   "hs_code": "0304450000",
+   "stored_dd_rate_pct": 10.0,
+   "official_dd_rate_pct": null,
+   "error": ""
+  },
+  {
+   "hs_code": "8714100010",
+   "stored_dd_rate_pct": 30.0,
+   "official_dd_rate_pct": null,
+   "error": ""
+  }
+ ],
+ "note": "Vérification échantillonnaire en direct contre la source gouvernementale. Les écarts listés exigent une correction ligne par ligne — aucune correction automatique silencieuse (doctrine). Les positions 'non vérifiables' (source injoignable depuis l'environnement d'exécution ou page muette) sont à reprogrammer depuis l'environnement de crawl."
+}

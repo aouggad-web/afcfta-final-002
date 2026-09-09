@@ -1,0 +1,74 @@
+{
+ "country_iso3": "DZA",
+ "verification_date": "2026-09-01T00:15:37.394926+00:00",
+ "official_source_url": "https://conformepro.dz/resources/tarif-douanier (données DGD douane.gov.dz)",
+ "sample_size": 4,
+ "positions_checked": [
+  "0101211100",
+  "2930100000",
+  "2930200000",
+  "8708991000"
+ ],
+ "matches": 4,
+ "mismatches": [],
+ "errors": [],
+ "results": [
+  {
+   "hs_code": "0101211100",
+   "stored_dd_rate_pct": 5.0,
+   "official_dd_rate_pct": 5.0,
+   "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.211100/chevaux-reproducteurs-de-race-pure-de-course-de-pur-sang-arabe",
+   "http_status": 200,
+   "official_taxes": {
+    "Droit de douane": 5.0,
+    "TVA": 9.0,
+    "TCS": 3.0,
+    "PRCT": 2.0
+   },
+   "match": true
+  },
+  {
+   "hs_code": "2930100000",
+   "stored_dd_rate_pct": 15.0,
+   "official_dd_rate_pct": 15.0,
+   "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/29.30.100000/2-nn-dimethylamino-ethanethiol",
+   "http_status": 200,
+   "official_taxes": {
+    "Droit de douane": 15.0,
+    "TVA": 19.0,
+    "TCS": 3.0,
+    "PRCT": 2.0
+   },
+   "match": true
+  },
+  {
+   "hs_code": "2930200000",
+   "stored_dd_rate_pct": 15.0,
+   "official_dd_rate_pct": 15.0,
+   "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/29.30.200000/thiocarbamates-et-dithiocarbamates",
+   "http_status": 200,
+   "official_taxes": {
+    "Droit de douane": 15.0,
+    "TVA": 19.0,
+    "TCS": 3.0,
+    "PRCT": 2.0
+   },
+   "match": true
+  },
+  {
+   "hs_code": "8708991000",
+   "stored_dd_rate_pct": 15.0,
+   "official_dd_rate_pct": 15.0,
+   "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.08.991000/organes-de-transmission-autres-que-les-boites-de-vitesse-et-les-ponts",
+   "http_status": 200,
+   "official_taxes": {
+    "Droit de douane": 15.0,
+    "TVA": 19.0,
+    "TCS": 3.0,
+    "PRCT": 2.0
+   },
+   "match": true
+  }
+ ],
+ "note": "Vérification échantillonnaire en direct contre la source gouvernementale. Les écarts listés exigent une correction ligne par ligne — aucune correction automatique silencieuse (doctrine)."
+}

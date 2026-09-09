@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "country": "BFA",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "BFA-DGI-CGI-2023",
+      "title": "Code Général des Impôts (General Tax Code) — Edition 2023",
+      "institution": "Direction Générale des Impôts (DGI) — Burkina Faso",
+      "legal_date": "2023-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.dgi.bf/code-general-impots",
+      "local_file": "official/bfa-cgi-2023.pdf",
+      "sha256": "01565200e1e8a9edb50aa81d225aed6b3d64ace8554feaeb9a125c3f0f8d9118",
+      "coverage": "VAT standard rate (18%); reduced rates; exemptions; zero-rated supplies; import VAT; excise duties (barème by product category)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "PDF 3.8 MB, downloaded 2026-07-25 from official DGI portal. Consolidated text effective 2023. Article 352 et seq (VAT rates), Article 414 et seq (excise duties)."
+    },
+    {
+      "source_id": "BFA-DOUANES-TARIFF-2026",
+      "title": "Customs Tariff Guide 2026",
+      "institution": "Direction Générale des Douanes — Burkina Faso",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.douanes.bf/tarif",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Awaiting confirmation of public accessibility and consolidated text availability."
+    }
+  ]
+}

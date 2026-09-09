@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "country": "AGO",
+  "as_of": "2026-08-05",
+  "vat_rates": [
+    {
+      "record_id": "AGO-VAT-RATE-STANDARD-20190424",
+      "legal_product_description": "Imposto sobre o Valor Acrescentado (IVA) devido à importação, taxa geral.",
+      "normalized_product_description": "standard VAT/IVA on imported goods",
+      "rate": "14%",
+      "rate_basis": "valor CIF (custo, seguro e frete) acrescido dos direitos de importação",
+      "effective_from": "2019-10-01",
+      "effective_to": null,
+      "legal_status": "CURRENT_OFFICIAL_GUIDE",
+      "supersedes_record_id": null,
+      "source_id": "AGO-MINFIN-PORTAL-CONTRIBUINTE-IVA",
+      "legal_reference": "Lei n.º 7/19, de 24 de abril de 2019 (Código do IVA), alterada pela Lei n.º 17/19, de 13 de agosto de 2019",
+      "verification_status": "VERIFIED_OFFICIAL_GUIDE",
+      "hs_codes_explicit": []
+    }
+  ],
+  "vat_exemptions": [],
+  "vat_zero_rated": []
+}

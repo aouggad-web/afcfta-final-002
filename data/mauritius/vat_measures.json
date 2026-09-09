@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "country": "MUS",
+  "as_of": "2026-07-29",
+  "vat_rates": [
+    {
+      "record_id": "MUS-VAT-RATE-STANDARD-20260729",
+      "legal_product_description": "Value Added Tax payable on imported goods under the standard customs-charges calculation.",
+      "normalized_product_description": "standard VAT on imported goods",
+      "rate": "15%",
+      "rate_basis": "customs transaction value including freight and insurance where applicable, plus customs duty",
+      "effective_from": null,
+      "effective_to": null,
+      "legal_status": "CURRENT_OFFICIAL_GUIDE",
+      "supersedes_record_id": null,
+      "source_id": "MUS-MRA-CUSTOMS-CHARGES-20260729",
+      "legal_reference": "Mauritius Revenue Authority, Customs Charges — Calculation of Custom Charges",
+      "verification_status": "VERIFIED_OFFICIAL_GUIDE",
+      "hs_codes_explicit": []
+    }
+  ],
+  "vat_exemptions": [],
+  "vat_zero_rated": []
+}

@@ -1,0 +1,22 @@
+exclude:
+  - attached_assets/
+  - audits/
+  - backend/
+  - data/
+  - docs/
+  - engine/
+  - frontend/
+  - memory/
+  - migrations/
+  - scripts/
+  - tariff_engine/
+  - test_reports/
+  - tests/
+  - docker-compose.yml
+  - Dockerfile
+  - pyproject.toml
+  - requirements.txt
+  - requests.http
+  - replit.md
+  - start.sh
+  - sync_emergent.sh

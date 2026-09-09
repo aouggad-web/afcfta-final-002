@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "country": "NGA",
+  "as_of": "2026-08-08",
+  "sources": [
+    {
+      "source_id": "NGA-JOURNAL-CGI",
+      "title": "General Tax Code / VAT Act, as amended",
+      "institution": "Federal Gazette of Nigeria / Ministry of Finance",
+      "legal_date": "2020-02-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://firs.gov.ng/",
+      "local_file": "official/nga-tax-code-consolidated.html",
+      "sha256": "pending_collection",
+      "coverage": "VAT standard rate (7.5%); excises; exemptions; zero-rated supplies",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Consolidated text via Federal Gazette of Nigeria. All amendments through June 2026."
+    },
+    {
+      "source_id": "NGA-FINANCE-LAW-2026",
+      "title": "Finance Law 2026",
+      "institution": "Ministry of Finance",
+      "legal_date": "2025-12-31",
+      "accessed_at": "2026-07-25",
+      "url": "https://firs.gov.ng/",
+      "local_file": "official/nga-finance-law-2026.html",
+      "sha256": "pending_collection",
+      "coverage": "fiscal year 2026 tax rates; special levies; import duties",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Enacted December 2025; effective January 2026."
+    },
+    {
+      "source_id": "NGA-SON-SONCAP-PORTAL",
+      "title": "SONCAP — Standards Organisation of Nigeria Conformity Assessment Programme",
+      "institution": "Standards Organisation of Nigeria (SON)",
+      "legal_date": null,
+      "accessed_at": "2026-08-08",
+      "url": "https://son.gov.ng/soncapservice/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "SONCAP — prestataires IAF (listes partiellement contradictoires entre deux pages officielles), documents délivrés",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "notes": "Deux pages officielles son.gov.ng consultées (soncapservice, soncap-faq) donnent des listes de prestataires partiellement différentes ; seul COTECNA apparaît sur les deux."
+    },
+    {
+      "source_id": "NGA-NAFDAC-CRIA-PORTAL",
+      "title": "NAFDAC — Pre-Shipment Inspection and Testing Agents",
+      "institution": "National Agency for Food and Drug Administration and Control (NAFDAC)",
+      "legal_date": null,
+      "accessed_at": "2026-08-08",
+      "url": "https://nafdac.gov.ng/regulatory-resources/pre-shipment-inspection-and-testing-agents/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "CRIA — programme d'inspection avant expédition NAFDAC",
+      "status": "source_pending_collection",
+      "verification_status": "UNVERIFIED",
+      "notes": "Page officielle identifiée mais liste actuelle des agents non extraite ce cycle."
+    }
+  ]
+}

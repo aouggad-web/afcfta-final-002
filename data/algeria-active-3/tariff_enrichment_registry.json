@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-07-29",
+  "disclaimer": "Simulation informative — non opposable à l'administration douanière. Les taux, documents et préférences absents ou insuffisamment prouvés restent NOT_AVAILABLE.",
+  "regions": {
+    "EGY_NATIONAL": {
+      "members": ["EGY"],
+      "tariff": {
+        "status": "DOCUMENTED",
+        "line_count_per_country": 8746,
+        "national_line_digits": [10],
+        "source_name": "Egyptian Customs Authority — national tariff",
+        "scope_note": "Tarif national à 10 chiffres. Les valeurs ZLECAf physiques ne sont pas exposées comme préférences tant que leur calendrier ligne par ligne n'est pas intégralement réconcilié."
+      }
+    },
+    "MUS_MFN": {
+      "members": ["MUS"],
+      "tariff": {
+        "status": "PARTIAL",
+        "line_count_per_country": 5619,
+        "national_line_digits": [6],
+        "source_name": "WITS / UNCTAD-TRAINS — NPF appliqué SH6",
+        "scope_note": "Référentiel NPF SH6 indicatif. Le tarif intégré national MRA n'est pas encore ingéré et aucune extension nationale n'est déduite."
+      }
+    },
+    "TUN_NATIONAL": {
+      "members": ["TUN"],
+      "tariff": {
+        "status": "PARTIAL",
+        "line_count_per_country": 17512,
+        "national_line_digits": [10, 11],
+        "source_name": "Douane tunisienne — Tarif Web 2025",
+        "scope_note": "Tarif national détaillé avec droits, taxes et signaux réglementaires. Une actualisation depuis Tarif Web 2026 reste nécessaire."
+      }
+    }
+  },
+  "countries": {
+    "EGY": {
+      "region": "EGY_NATIONAL",
+      "national_extension_status": "DOCUMENTED",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "DOCUMENTED",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/egypt/legal_sources.json",
+        "data/egypt/vat_measures.json"
+      ],
+      "vat_measure_path": "data/egypt/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": [
+        "2 276 lignes physiques recopient le taux NPF sans instruction ZLECAf associée et 53 lignes portent explicitement null ; ces valeurs ne sont pas publiées comme préférence.",
+        "Les documents exigibles ne sont pas encore normalisés par position."
+      ]
+    },
+    "MUS": {
+      "region": "MUS_MFN",
+      "national_extension_status": "NOT_AVAILABLE",
+      "vat_status": "DOCUMENTED",
+      "other_taxes_status": "NOT_AVAILABLE",
+      "calculation_order_status": "DOCUMENTED",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "NOT_AVAILABLE",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/mauritius/legal_sources.json",
+        "data/mauritius/vat_measures.json"
+      ],
+      "vat_measure_path": "data/mauritius/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": [
+        "Le fichier runtime est limité au SH6 WITS/TRAINS ; le tarif intégré national MRA doit être collecté séparément.",
+        "Le calendrier réciproque ZLECAf et les documents exigibles restent NOT_AVAILABLE."
+      ]
+    },
+    "TUN": {
+      "region": "TUN_NATIONAL",
+      "national_extension_status": "DOCUMENTED",
+      "vat_status": "NOT_AVAILABLE",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
+      "afcfta_status": "NOT_AVAILABLE",
+      "regulatory_status": "PARTIAL",
+      "required_documents_status": "NOT_AVAILABLE",
+      "source_paths": [
+        "data/tunisia/legal_sources.json",
+        "data/tunisia/vat_measures.json"
+      ],
+      "vat_measure_path": "data/tunisia/vat_measures.json",
+      "required_document_records": [],
+      "anomalies": [
+        "La donnée runtime provient de Tarif Web 2025 alors que le portail officiel publie Tarif Web 2026.",
+        "La page fiscale générale consultée n'est pas suffisamment datée pour publier un taux national courant ; la TVA consolidée reste NOT_AVAILABLE.",
+        "Les signaux réglementaires ligne par ligne ne sont pas encore convertis en fiches documentaires normalisées.",
+        "Le calendrier réciproque ZLECAf n'est pas encore source-bound."
+      ]
+    }
+  }
+}

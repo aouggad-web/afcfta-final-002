@@ -1,0 +1,23 @@
+{
+  "date": "2026-08-29T11:11:39.900916+00:00",
+  "backup_file": "data/archive/crawled_backup/DZA_tariffs_20260829T111320Z.json",
+  "backup_sha256": "0160e361b9769104c1456aaa5c4a3a5f5136f9d808d939807de409ec608abe76",
+  "new_file": "backend/data/crawled/DZA_tariffs.json",
+  "new_sha256": "bba159c9fb60e713b6512d52acf4838c446fafdbec2a50789bdef3e91092efde",
+  "stats": {
+    "total": 17115,
+    "crawled_authentic": 17115,
+    "legacy_unverified": 0,
+    "formalities_present": 9069,
+    "advantages_present": 17048,
+    "lf2026_linked": 46,
+    "rate_changes_vs_previous": 0,
+    "missing_dd_crawled": 299
+  },
+  "progress_stats": {
+    "progress_files": 242,
+    "unique_positions": 17115,
+    "duplicates_overwritten": 2111880
+  },
+  "rate_changes_sample": []
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "country": "MAR",
+  "as_of": "2026-07-29",
+  "vat_rates": [
+    {
+      "record_id": "MAR-VAT-RATE-STANDARD-20260101",
+      "legal_product_description": "Taxe sur la Valeur Ajoutée applicable à l'importation, taux normal de droit commun.",
+      "normalized_product_description": "standard VAT on imported goods",
+      "rate": "20%",
+      "rate_basis": "valeur en douane (CAF) majorée du Droit d'Importation et de la Taxe Parafiscale à l'Importation (0,25 %)",
+      "effective_from": "2026-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "MAR-CGI-TVA-STANDARD-20260101-PARTIAL",
+      "legal_reference": "Code Général des Impôts, Titre III (TVA), articles 96-116 et 121 ; Loi de finances n° 50-25 pour l'exercice 2026 (simplification à 3 taux 0/10/20 %, suppression du taux de 14 %)",
+      "verification_status": "PARTIAL",
+      "hs_codes_explicit": []
+    }
+  ],
+  "vat_exemptions": [],
+  "vat_zero_rated": []
+}

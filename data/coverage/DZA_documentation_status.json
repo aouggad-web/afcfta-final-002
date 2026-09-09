@@ -1,0 +1,3885 @@
+{
+  "country_iso3": "DZA",
+  "country_name": "Algérie",
+  "audit_tool": "scripts/audit_tariff_documentation.py",
+  "consultation_date": "2026-07-24",
+  "read_only_audit": true,
+  "local_related_files": [
+    {
+      "path": "backend/data/DZA_tariffs.json",
+      "role": "primary_runtime_artifact",
+      "sha256": "d2ea15d53046b7b35586860c8cfd98327ddc63b6b079b068a082b2f481f8895b"
+    },
+    {
+      "path": "backend/data/tariffs/DZA_tariffs.json",
+      "role": "secondary_local_artifact",
+      "sha256": "d2ea15d53046b7b35586860c8cfd98327ddc63b6b079b068a082b2f481f8895b"
+    },
+    {
+      "path": "backend/data/crawled/DZA_tariffs_enriched.json",
+      "role": "calculator_fallback_artifact",
+      "sha256": "3baf5dfbe8be2d6271845c04b4f3f56fa472bc2e458d1d950f09f0e6afde7ff1"
+    },
+    {
+      "path": "data/archive/csv/TARIF-DZA_CRAWLED_VALIDATION  AUTHENTIQUE .csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    },
+    {
+      "path": "docs/archive/attached_assets/TARIF-DZA_CRAWLED_VALIDATION_AUTHENTIQUE__1778803280738.csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    }
+  ],
+  "runtime_artifacts": {
+    "primary_tariff_file": "backend/data/DZA_tariffs.json",
+    "effective_national_file": "backend/data/crawled/DZA_tariffs.json",
+    "detail_override_file": "backend/data/crawled/DZA_tariffs.json",
+    "enriched_fallback_file": "backend/data/crawled/DZA_tariffs_enriched.json",
+    "consumers": [
+      "backend/services/tariff_provider_service.py::get_tariff_line",
+      "backend/services/authentic_tariff_service.py::load_country_tariffs",
+      "backend/services/authentic_tariff_service.py::load_crawled_position_index",
+      "backend/routes/authentic_tariffs.py::get_tariff_line_endpoint",
+      "backend/routes/authentic_tariffs.py::get_sub_positions_endpoint",
+      "backend/routes/enhanced_calculator.py::_load_dza_authentic_line"
+    ],
+    "import_and_normalization_scripts": [
+      "backend/scripts/build_dza_tariffs_complete.py",
+      "backend/scripts/enrich_dza_fast_json.py",
+      "backend/etl/dza_tariff_connector.py",
+      "engine/converters/dza_converter.py",
+      "engine/adapters/dza_conformepro_adapter.py"
+    ]
+  },
+  "source": {
+    "source_authority": "conformepro.dz (données douane.gov.dz)",
+    "source_title": "Tarif national intégré — données de crawl conformepro.dz",
+    "source_url": "https://conformepro.dz/resources/tarif-douanier/sous-position/01.01.211100/chevaux-reproducteurs-de-race-pure-de-course-de-pur-sang-arabe",
+    "source_root_url": "https://conformepro.dz/resources/tarif-douanier",
+    "official_authority_url": "https://www.douane.gov.dz",
+    "publication_date": null,
+    "effective_from": null,
+    "effective_to": null,
+    "hs_version": null,
+    "hs_version_declared_in_code": "HS2022",
+    "hs_version_status": "UNVERIFIED",
+    "date_consulted": "2026-07-24",
+    "extracted_at": "2026-06-17T20:33:09.090295",
+    "source_hash_sha256": "ade8c03f10217a6c4d58916a9adc99e305802a80783266837fa03a09a543d3d2",
+    "archive_official_available": false,
+    "official_archive_candidates": [],
+    "status": "UNVERIFIED",
+    "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés."
+  },
+  "position_availability": {
+    "total_positions": 17061,
+    "positions_simulatable": 139,
+    "positions_calculation_unavailable": 0,
+    "positions_review_required": 16922
+  },
+  "missing_dd_analysis": {
+    "total_missing_dd": 236,
+    "counts_by_cause": {
+      "EXPLICIT_EXEMPT": 131,
+      "TRUE_MISSING": 105
+    },
+    "records": [
+      {
+        "national_code": "3002411000",
+        "hs6": "300241",
+        "description": "Vaccins destinés à la médecine humaine, spécifiquement contre le virus de l'influenza (grippe).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3002419000",
+        "hs6": "300241",
+        "description": "Autres vaccins destinés à la médecine humaine, à l'exception du vaccin contre l'influenza.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3006910000",
+        "hs6": "300691",
+        "description": "Préparations et articles pharmaceutiques spécifiques : Appareillages identifiables de stomie (sacs, poches, systèmes de collecte).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "4014100000",
+        "hs6": "401410",
+        "description": "Description: Préservatifs masculins en caoutchouc, classés comme articles d'hygiène ou de pharmacie.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "6602001000",
+        "hs6": "660200",
+        "description": "Parapluies, ombrelles, parasols, cannes, cannes-sieges, fouets, cravaches et leurs parties. > Cannes, cannes-sièges, fouets, cravaches et articles similaires. > Cannes pliantes ou non pour aveugles",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "7108200000",
+        "hs6": "710820",
+        "description": "Or sous toutes formes brutes ou mi-ouvrées, ou en poudre, destiné à l'usage monétaire (par exemple, pour la frappe de pièces de monnaie ou en lingots monétaires).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8421291000",
+        "hs6": "842129",
+        "description": "Équipement médical spécialisé (dialyseurs) utilisé pour filtrer et purifier le sang chez les patients dont les reins ne fonctionnent pas correctement (hémodialyse).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8470502110",
+        "hs6": "847050",
+        "description": "Kits de composants destinés à l'assemblage de terminaux de paiement électronique (TPE) utilisés pour les transactions par carte bancaire (débit ou crédit).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8470502190",
+        "hs6": "847050",
+        "description": "Terminaux de paiement électronique (TPE) assemblés et complets, utilisés pour traiter les paiements par carte de débit ou de crédit dans les points de vente.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8472902000",
+        "hs6": "847290",
+        "description": "Machines ou appareils de bureau spécialisés pour la production, l'impression ou la lecture de documents en Braille.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8524117000",
+        "hs6": "852411",
+        "description": "Modules d'affichage à écran plat LCD, SANS pilotes, conçus pour les véhicules aériens du Chapitre 88 (écrans de cockpit, instruments de vol).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8524127000",
+        "hs6": "852412",
+        "description": "Modules d'affichage à écran plat (autres que LCD), SANS pilotes, conçus pour les véhicules aériens du Chapitre 88 (avions, drones, hélicoptères).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8524197000",
+        "hs6": "852419",
+        "description": "Modules d'affichage à écran plat (autres technologies), SANS pilotes, conçus pour les véhicules aériens du Chapitre 88.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8524917000",
+        "hs6": "852491",
+        "description": "Modules d'affichage à écran plat LCD, comprenant des pilotes ou circuits de commande, conçus pour les véhicules aériens du Chapitre 88.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8524927000",
+        "hs6": "852492",
+        "description": "Modules d'affichage à écran plat OLED, conçus pour les véhicules aériens du Chapitre 88.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8524997000",
+        "hs6": "852499",
+        "description": "Modules d'affichage à écran plat basés sur d'autres technologies, comprenant des pilotes ou circuits de commande, conçus pour les véhicules aériens du Chapitre 88.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8701211000",
+        "hs6": "870121",
+        "description": "Collections (CKD/SKD) de tracteurs routiers pour semi-remorques, équipés uniquement d'un moteur diesel ou semi-diesel, destinées aux industries de montage.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8701221000",
+        "hs6": "870122",
+        "description": "Collections (CKD/SKD) de tracteurs routiers pour semi-remorques, équipés d'un moteur hybride (moteur essence à piston à allumage par étincelles et moteur électrique), destinées aux industries de montage.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8701231000",
+        "hs6": "870123",
+        "description": "Collections (CKD/SKD) de tracteurs routiers pour semi-remorques, équipés d'un moteur hybride (moteur essence à piston à allumage par étincelles et moteur électrique), destinées aux industries de montage (Répétition ou sous-catégorie spécifique).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8701241000",
+        "hs6": "870124",
+        "description": "Collections (CKD/SKD) de tracteurs routiers pour semi-remorques, équipés uniquement d'un moteur électrique pour la propulsion, destinées aux industries de montage.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8701291000",
+        "hs6": "870129",
+        "description": "Collections (CKD/SKD) d'autres types de tracteurs routiers pour semi-remorques (e.g., gaz naturel, GPL, ou autres types de moteurs) destinées aux industries de montage.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8702101000",
+        "hs6": "870210",
+        "description": "Véhicules automobiles pour le transport de dix personnes ou plus, chauffeur inclus, à moteur à piston à allumage par compression (diesel ou semi-diesel), collections destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8702201000",
+        "hs6": "870220",
+        "description": "Véhicules pour 10+ personnes, équipés d'un moteur diesel/semi-diesel et d'un moteur électrique (Hybrides Diesel), collections destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703211000",
+        "hs6": "870321",
+        "description": "Voitures de tourisme (berlines/breaks/courses), uniquement à moteur à piston essence, cylindrée n'excédant pas 1000 cm3, collections destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703221000",
+        "hs6": "870322",
+        "description": "Voitures de tourisme (berlines/breaks/courses), uniquement à moteur à piston essence, cylindrée 1000 < X ≤ 1500 cm3, collections destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703231100",
+        "hs6": "870323",
+        "description": "Voitures de tourisme (essence), cylindrée 1500 < X ≤ 1800 cm3, collections destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703231200",
+        "hs6": "870323",
+        "description": "Voitures de tourisme (essence), cylindrée 1800 < X ≤ 3000 cm3, collections destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703241000",
+        "hs6": "870324",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme (y compris break et voitures de course)، à moteur à piston à allumage par étincelles، de cylindrée excédant 3.000 cm³.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703311000",
+        "hs6": "870331",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme (y compris break et voitures de course)، à moteur à piston à allumage par compression (diesel)، de cylindrée n'excédant pas 1.500 cm³.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703321000",
+        "hs6": "870332",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme (y compris break et voitures de course)، à moteur à piston à allumage par compression (diesel)، de cylindrée excédant 1.500 cm³ mais n'excédant pas 2.500 cm³.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703331000",
+        "hs6": "870333",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme (y compris break et voitures de course)، à moteur à piston à allumage par compression (diesel)، de cylindrée excédant 2.500 cm³.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703401100",
+        "hs6": "870340",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (essence/électrique, non rechargeables par source externe)، de cylindrée n'excédant pas 1.000 cm³.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703402100",
+        "hs6": "870340",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (essence/électrique, non rechargeables par source externe)، de cylindrée excédant 1.000 cm³ mais n'excédant pas 1.500 cm³.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703403110",
+        "hs6": "870340",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (essence/électrique, non rechargeables par source externe)، de cylindrée excédant 1.500 cm³ mais n'excédant pas 1.800 cm³.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703403120",
+        "hs6": "870340",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (essence/électrique, non rechargeables par source externe)، de cylindrée excédant 1.500 cm³ mais n'excédant pas 3.000 cm³ (dont > 1800 cm³ ≤ 3000 cm³).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703404100",
+        "hs6": "870340",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (essence/électrique, non rechargeables par source externe)، de cylindrée excédant 3.000 cm³.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703501100",
+        "hs6": "870350",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (diesel/électrique, non rechargeables par source externe)، de cylindrée n'excédant pas 1.500 cm³.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703502100",
+        "hs6": "870350",
+        "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (diesel/électrique, non rechargeables par source externe)، de cylindrée excédant 1.500 cm³ mais n'excédant pas 2.500 cm³.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703503100",
+        "hs6": "870350",
+        "description": "Collections de voitures de tourisme hybrides (diesel/électrique, non rechargeables par l'extérieur) d'une cylindrée excédant 2500 cm³, destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703601100",
+        "hs6": "870360",
+        "description": "Collections de voitures de tourisme hybrides rechargeables (essence/électrique) d'une cylindrée n'excédant pas 1000 cm³, destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703602100",
+        "hs6": "870360",
+        "description": "Collections de voitures de tourisme hybrides rechargeables (essence/électrique) d'une cylindrée excédant 1000 cm³ mais n'excédant pas 1500 cm³, destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703603110",
+        "hs6": "870360",
+        "description": "Collections de voitures de tourisme hybrides rechargeables (essence/électrique) d'une cylindrée excédant 1500 cm³ mais n'excédant pas 1800 cm³, destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703603120",
+        "hs6": "870360",
+        "description": "Collections de voitures de tourisme hybrides rechargeables (essence/électrique) d'une cylindrée excédant 1800 cm³ mais n'excédant pas 3000 cm³, destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703604100",
+        "hs6": "870360",
+        "description": "Collections de voitures de tourisme hybrides rechargeables (essence/électrique) d'une cylindrée excédant 3000 cm³, destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703701100",
+        "hs6": "870370",
+        "description": "Collections de voitures de tourisme hybrides rechargeables (diesel/électrique) d'une cylindrée n'excédant pas 1500 cm³, destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703702100",
+        "hs6": "870370",
+        "description": "Collections de voitures de tourisme hybrides rechargeables (diesel/électrique) d'une cylindrée excédant 1500 cm³ mais n'excédant pas 2500 cm³, destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8703703100",
+        "hs6": "870370",
+        "description": "Collections de voitures de tourisme hybrides rechargeables (diesel/électrique) d'une cylindrée excédant 2500 cm³, destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8704211000",
+        "hs6": "870421",
+        "description": "Collections de véhicules automobiles pour le transport de marchandises, équipés uniquement d'un moteur diesel, d'un poids maximal en charge n'excédant pas 5 tonnes, destinées aux industries de montage.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8704221000",
+        "hs6": "870422",
+        "description": "Ensembles complets ou incomplets (CKD/SKD) de véhicules automobiles pour le transport de marchandises (camions lourds), à moteur diesel/semi-diesel, avec un poids en charge maximal supérieur à 5 tonnes mais n'excédant pas 20 tonnes, destinés aux industries de montage.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8704231000",
+        "hs6": "870423",
+        "description": "Ensembles complets ou incomplets (CKD/SKD) de véhicules automobiles pour le transport de marchandises (camions très lourds), à moteur diesel/semi-diesel, avec un poids en charge maximal excédant 20 tonnes, destinés aux industries de montage.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8704411000",
+        "hs6": "870441",
+        "description": "Ensembles complets ou incomplets (CKD/SKD) de véhicules automobiles pour le transport de marchandises (camionnettes/petits camions), équipés à la fois d'un moteur diesel et d'un moteur électrique (hybride diesel), avec un poids en charge maximal n'excédant pas 5 tonnes, destinés aux industries de mo",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8704421000",
+        "hs6": "870442",
+        "description": "Collections (kits CKD/SKD) de véhicules automobiles hybrides (moteur diesel et électrique) pour le transport de marchandises, d'un poids en charge maximal excédant 5 tonnes mais n'excédant pas 20 tonnes, destinées à l'assemblage local.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8704431000",
+        "hs6": "870443",
+        "description": "Collections (kits CKD/SKD) de véhicules automobiles hybrides (moteur diesel et électrique) pour le transport de marchandises, d'un poids en charge maximal excédant 20 tonnes, destinées à l'assemblage local.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8708401100",
+        "hs6": "870840",
+        "description": "Boîtes de vitesses pour véhicules automobiles importées sous forme de collections incomplètes (CKD - Completely Knocked Down) pour assemblage local.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8710001000",
+        "hs6": "871000",
+        "description": "Chars de combat blindés, qu'ils soient armés ou non, destinés à des usages militaires ou de défense.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8710002000",
+        "hs6": "871000",
+        "description": "Automobiles blindées de combat (véhicules de transport de troupes, véhicules de reconnaissance, etc.), qu'elles soient armées ou non.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8710009000",
+        "hs6": "871000",
+        "description": "Parties et accessoires destinés aux chars de combat et aux automobiles blindées de combat.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8713100000",
+        "hs6": "871310",
+        "description": "Fauteuils roulants manuels et autres véhicules non motorisés destinés aux personnes invalides.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8713901000",
+        "hs6": "871390",
+        "description": "Fauteuils roulants et autres véhicules pour invalides équipés d'un moteur électrique pour la propulsion.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8713909000",
+        "hs6": "871390",
+        "description": "Fauteuils roulants et véhicules pour invalides équipés d'un mécanisme de propulsion autre qu'électrique (ex: moteur thermique).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8714200000",
+        "hs6": "871420",
+        "description": "Pièces détachées et accessoires destinés exclusivement aux fauteuils roulants et autres véhicules pour invalides (HS 87.13).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8802110000",
+        "hs6": "880211",
+        "description": "Hélicoptères légers, souvent utilisés pour l'entraînement, le transport privé ou des missions légères.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8802120000",
+        "hs6": "880212",
+        "description": "Hélicoptères moyens à lourds, utilisés pour le transport de passagers, le fret, le sauvetage ou les applications militaires.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8802200000",
+        "hs6": "880220",
+        "description": "Avions légers et aéronefs de petite taille (avions de tourisme, avions d'entraînement) dont le poids à vide est inférieur ou égal à 2 tonnes.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8802300000",
+        "hs6": "880230",
+        "description": "Avions de taille moyenne (avions d'affaires, petits avions régionaux, avions cargo légers) dont le poids à vide est compris entre 2 et 15 tonnes.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8802400000",
+        "hs6": "880240",
+        "description": "Avions de grande taille (avions de ligne commerciaux, gros porteurs, avions cargo lourds) dont le poids à vide excède 15 tonnes.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8802601000",
+        "hs6": "880260",
+        "description": "Vaisseaux spatiaux, sondes, et satellites (qu'ils soient de communication, d'observation ou scientifiques).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8802602000",
+        "hs6": "880260",
+        "description": "Fusées et boosters conçus pour placer des véhicules spatiaux en orbite ou pour effectuer des vols balistiques suborbitaux.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8804001000",
+        "hs6": "880400",
+        "description": "Dispositifs de freinage aérodynamique conçus pour ralentir la chute d'un objet ou d'une personne (parachutes classiques et parachutes directionnels).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8804002000",
+        "hs6": "880400",
+        "description": "Voiles légères et gonflables utilisées pour le vol libre, souvent décollant à pied depuis une pente.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8804003000",
+        "hs6": "880400",
+        "description": "Combinaisons de parachute et de rotor, rarement utilisées, destinées à ralentir une descente en utilisant un mouvement de rotation.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8804004000",
+        "hs6": "880400",
+        "description": "Harnais, sangles, voiles de rechange et autres composants pour parachutes, parapentes et rotochutes.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8805101000",
+        "hs6": "880510",
+        "description": "Systèmes utilisés pour le lancement des aéronefs, y compris les catapultes sur porte-avions ou les systèmes de lancement de drones.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8805109000",
+        "hs6": "880510",
+        "description": "Systèmes d'arrêt d'aéronefs, comme les brins d'arrêt sur les porte-avions, ou dispositifs de récupération de drones.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8805210000",
+        "hs6": "880521",
+        "description": "Équipements de simulation au sol utilisés pour former les pilotes aux scénarios de combat aérien.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8805291000",
+        "hs6": "880529",
+        "description": "Appareils reproduisant l'environnement de vol pour l'entraînement des pilotes (à l'exclusion des simulateurs de combat).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8805299000",
+        "hs6": "880529",
+        "description": "Autres dispositifs ou parties pour l'entraînement au sol, non classés comme simulateurs de vol ou de combat.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806100000",
+        "hs6": "880610",
+        "description": "Drones ou véhicules autonomes de grande taille destinés au transport de personnes.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806219000",
+        "hs6": "880621",
+        "description": "Drones très légers (moins de 250g) télécommandés, sans équipement photographique ou caméra.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806229000",
+        "hs6": "880622",
+        "description": "Drones télécommandés de poids moyen (250g à 7kg), sans équipement photographique ou caméra.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806239000",
+        "hs6": "880623",
+        "description": "Drones télécommandés plus lourds (7kg à 25kg) sans équipement photographique ou caméra.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806249000",
+        "hs6": "880624",
+        "description": "Drones lourds télécommandés (25kg à 150kg) sans équipement photographique ou caméra.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806299000",
+        "hs6": "880629",
+        "description": "Drones très lourds (> 150 kg) télécommandés, sans équipement photographique ou caméra.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806919000",
+        "hs6": "880691",
+        "description": "Autres drones très légers (moins de 250g), non limités à la téléguidage pur, sans caméra.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806929000",
+        "hs6": "880692",
+        "description": "Autres drones de poids moyen (250g à 7kg), ayant des capacités d'autonomie ou des fonctions spécifiques autres que le simple téléguidage, sans caméra.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806939000",
+        "hs6": "880693",
+        "description": "Autres drones professionnels (7kg à 25kg) avec capacités avancées, sans caméra.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806949000",
+        "hs6": "880694",
+        "description": "Drones lourds (25kg à 150kg) avec capacités avancées/autonomes, sans caméra.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8806999000",
+        "hs6": "880699",
+        "description": "Drones très lourds (> 150 kg) avec capacités avancées, sans équipement photographique ou caméra.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8807100000",
+        "hs6": "880710",
+        "description": "Pales, moyeux et mécanismes de contrôle des hélices pour avions et des rotors pour hélicoptères.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8807200000",
+        "hs6": "880720",
+        "description": "Ensemble des roues, amortisseurs et mécanismes de rétraction utilisés pour le décollage et l'atterrissage des aéronefs.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8807300000",
+        "hs6": "880730",
+        "description": "Pièces structurelles, de contrôle et autres non incluses dans les hélices/rotors ou trains d'atterrissage, pour avions, hélicoptères et drones.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8807901000",
+        "hs6": "880790",
+        "description": "Pièces et accessoires spécifiquement conçus pour les cerfs-volants.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8807902000",
+        "hs6": "880790",
+        "description": "Pièces structurelles ou fonctionnelles des véhicules spatiaux, des satellites et de leurs composants.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8807903000",
+        "hs6": "880790",
+        "description": "Composants et parties des fusées et autres lanceurs utilisés pour propulser des charges utiles dans l'espace ou des véhicules sous-orbitaux.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8807909000",
+        "hs6": "880790",
+        "description": "Toutes les autres parties non spécifiées pour les aéronefs, véhicules spatiaux ou leurs lanceurs.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8901101000",
+        "hs6": "890110",
+        "description": "Grands navires de transport de passagers, y compris les navires de luxe utilisés pour les croisières.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8901102000",
+        "hs6": "890110",
+        "description": "Navires utilisés pour traverser des plans d'eau sur des routes régulières, transportant souvent des véhicules et des passagers (ferries).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8901201000",
+        "hs6": "890120",
+        "description": "Navires-citernes spécialisés dans le transport maritime de pétrole brut ou de produits pétroliers raffinés.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8901202000",
+        "hs6": "890120",
+        "description": "Navires-citernes conçus pour transporter divers produits chimiques liquides en vrac.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8901203000",
+        "hs6": "890120",
+        "description": "Navires spécialisés dans le transport de gaz naturels liquéfiés (GNL, méthaniers) ou de gaz de pétrole liquéfié (GPL, butaniers).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8901209000",
+        "hs6": "890120",
+        "description": "Autres types de navires-citernes non spécifiés, comme ceux pour le transport de jus, de vin, ou d'eau.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8901300000",
+        "hs6": "890130",
+        "description": "Navires équipés de systèmes de réfrigération ou de congélation pour le transport de denrées périssables.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8901901000",
+        "hs6": "890190",
+        "description": "Navires spécialisés dans le transport intermodal de marchandises par conteneurs standardisés.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8901909000",
+        "hs6": "890190",
+        "description": "Inclut les vraquiers, les cargos polyvalents, et autres navires destinés au transport de marchandises diverses ou de personnes et marchandises combinées, non classés ailleurs.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8904001000",
+        "hs6": "890400",
+        "description": "Navires conçus pour manœuvrer d'autres navires ou structures flottantes, notamment dans les ports ou en haute mer.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8904002000",
+        "hs6": "890400",
+        "description": "Navires conçus pour pousser des barges ou autres navires, principalement utilisés en navigation intérieure (fleuves et canaux).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8905100000",
+        "hs6": "890510",
+        "description": "Navires spécialisés dans le dragage (enlèvement de sédiments ou de matériaux du fond marin) pour maintenir ou approfondir les voies navigables.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8905201000",
+        "hs6": "890520",
+        "description": "Structures marines mobiles ou semi-submersibles utilisées pour le forage de puits de pétrole ou de gaz en mer.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8905202000",
+        "hs6": "890520",
+        "description": "Structures marines utilisées pour l'extraction, le traitement et le stockage des hydrocarbures extraits des puits sous-marins.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8905901000",
+        "hs6": "890590",
+        "description": "Navires ou pontons équipés de grues lourdes pour des travaux maritimes (construction offshore, sauvetage, levage).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8905902000",
+        "hs6": "890590",
+        "description": "Navires stationnaires équipés d'une source lumineuse puissante, utilisés comme aides à la navigation maritime lorsque la construction d'un phare fixe n'est pas possible.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8905903000",
+        "hs6": "890590",
+        "description": "Bateaux équipés de pompes et de lances à incendie, utilisés pour lutter contre les feux sur d'autres navires ou sur des installations portuaires.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8905904000",
+        "hs6": "890590",
+        "description": "Structures flottantes servant à l'entretien, la réparation ou la construction de navires, permettant de soulever les bateaux hors de l'eau.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8905909000",
+        "hs6": "890590",
+        "description": "Autres bateaux pour lesquels la navigation n'est qu'accessoire par rapport à leur fonction principale (tels que les bateaux-dragueurs, pontons-grues, plates-formes d'exploitation non militaires, etc.).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8906100000",
+        "hs6": "890610",
+        "description": "Navires de guerre de tous types (corvettes, frégates, destroyers, sous-marins, etc.), conçus et équipés pour le combat.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8906901000",
+        "hs6": "890690",
+        "description": "Bateaux de sauvetage motorisés ou à voile, utilisés pour la recherche et le sauvetage en mer, autres que ceux propulsés uniquement par rames.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8906902000",
+        "hs6": "890690",
+        "description": "Bateaux et navires équipés spécialement pour la recherche océanographique, hydrologique ou toute autre forme de recherche scientifique marine, incluant les navires laboratoires.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8906903000",
+        "hs6": "890690",
+        "description": "Bateaux rapides utilisés pour transporter les pilotes maritimes vers et depuis les grands navires qui entrent ou sortent des ports.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8906909100",
+        "hs6": "890690",
+        "description": "Autres types de bateaux et engins flottants, tels que petits canots, kayaks ou bateaux pneumatiques, d'un poids unitaire n'excédant pas 100 kg.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8906909900",
+        "hs6": "890690",
+        "description": "Autres bateaux non classés spécifiquement, d'un poids unitaire excédant 100 kg (y compris les bateaux de pêche, de plaisance non classés ailleurs, etc.).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8907100000",
+        "hs6": "890710",
+        "description": "Radeaux gonflables, généralement utilisés comme équipement de sécurité et de survie en mer, mais aussi pour le loisir.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8907901000",
+        "hs6": "890790",
+        "description": "Bouées fixes ou flottantes utilisées pour marquer les canaux, les dangers, les limites des zones maritimes ou les points d'ancrage importants (balises).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8907902000",
+        "hs6": "890790",
+        "description": "Sphères flottantes utilisées pour des mesures de profondeur, des expériences océanographiques ou comme dispositifs de marquage spécifiques.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8907903000",
+        "hs6": "890790",
+        "description": "Bouées et dispositifs flottants utilisés pour l'amarrage des navires, offrant des points d'ancrage sûrs.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8907904000",
+        "hs6": "890790",
+        "description": "Structures flottantes sous forme de cages, utilisées principalement pour l'aquaculture (élevage de poissons ou de fruits de mer en mer ou en eau douce).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8907909000",
+        "hs6": "890790",
+        "description": "Autres engins flottants non classés spécifiquement, tels que des caissons, des réservoirs flottants ou des coffres d'amarrage.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "8908000000",
+        "hs6": "890800",
+        "description": "Bateaux et autres engins flottants (navires, plates-formes) destinés à être démantelés et réduits en ferraille ou pour la récupération de matériaux.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9018901000",
+        "hs6": "901890",
+        "description": "Instruments et appareils d'optique, de photographie ou de cinematographie, de mesure, de controle ou de precision, instruments et appareils medico-chirurgicaux, parties et accessoires de ces instruments ou appareils. > Instruments et appareils pour la medecine, la chirurgie, l'art dentaire ou l'art ",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9018903000",
+        "hs6": "901890",
+        "description": "Instruments et appareils d'optique, de photographie ou de cinematographie, de mesure, de controle ou de precision, instruments et appareils medico-chirurgicaux, parties et accessoires de ces instruments ou appareils. > Instruments et appareils pour la medecine, la chirurgie, l'art dentaire ou l'art ",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9018905000",
+        "hs6": "901890",
+        "description": "Instruments et appareils d'optique, de photographie ou de cinematographie, de mesure, de controle ou de precision, instruments et appareils medico-chirurgicaux, parties et accessoires de ces instruments ou appareils. > Instruments et appareils pour la medecine, la chirurgie, l'art dentaire ou l'art ",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021101000",
+        "hs6": "902110",
+        "description": "Articles et appareils utilisés pour prévenir ou corriger des déformations du corps ou pour soutenir des parties du corps après une blessure ou une intervention chirurgicale (par exemple, corsets orthopédiques, chaussures spéciales, supports).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021102000",
+        "hs6": "902110",
+        "description": "Béquilles, attelles, gouttières et autres articles et appareils spécialement conçus pour le traitement et le maintien des fractures.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021103000",
+        "hs6": "902110",
+        "description": "Appareil orthopédique d'aide à la marche, souvent appelé déambulateur ou rollator, utilisé pour soutenir les personnes ayant des difficultés à se déplacer.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021291000",
+        "hs6": "902129",
+        "description": "Autres prothèses dentaires complètes ou partielles (cadres, couronnes, ponts, etc.), à l'exclusion des dents artificielles, fabriquées en métaux précieux ou en métaux plaqués ou doublés de métaux précieux.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021292000",
+        "hs6": "902129",
+        "description": "Autres prothèses dentaires (telles que bases de prothèses, appareils d'orthodontie, couronnes, ponts) fabriquées principalement en matières plastiques.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021299000",
+        "hs6": "902129",
+        "description": "Autres prothèses dentaires (non constituées de dents artificielles) fabriquées en matières autres que les métaux précieux ou les matières plastiques (par exemple, céramique, métaux non précieux).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021310000",
+        "hs6": "902131",
+        "description": "Articles de prothèse destinés à remplacer ou restaurer la fonction d'une articulation (exemples : prothèses de hanche, de genou).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021391000",
+        "hs6": "902139",
+        "description": "Prothèses oculaires (yeux artificiels) utilisées pour remplacer l'œil manquant.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021392000",
+        "hs6": "902139",
+        "description": "Dispositifs implantables conçus pour remplacer ou réparer les valves cardiaques défectueuses.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021393000",
+        "hs6": "902139",
+        "description": "Tous les autres articles et appareils de prothèse non spécifiquement mentionnés (exemples : membres artificiels, seins artificiels).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021400000",
+        "hs6": "902140",
+        "description": "Appareils auditifs utilisés par les personnes sourdes ou malentendantes pour amplifier le son, à l'exclusion de leurs pièces et accessoires.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021500000",
+        "hs6": "902150",
+        "description": "Appareils implantables (pacemakers) qui régulent le rythme cardiaque, à l'exclusion de leurs pièces et accessoires.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9021900000",
+        "hs6": "902190",
+        "description": "Tous les autres articles et appareils (y compris les parties et accessoires de stimulateurs cardiaques et d'appareils auditifs) conçus pour compenser une déficience ou une infirmité.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301101000",
+        "hs6": "930110",
+        "description": "Canons, obusiers et mortiers montés sur des châssis motorisés, capables de se déplacer par leurs propres moyens (artillerie mobile).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301109000",
+        "hs6": "930110",
+        "description": "Canons, obusiers et mortiers qui ne sont pas auto-propulsés (artillerie remorquée ou fixe).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301200000",
+        "hs6": "930120",
+        "description": "Systèmes de lancement d'armes spécifiques, y compris les lance-roquettes, lance-flammes portatifs, lance-grenades et tubes lance-torpilles.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301901000",
+        "hs6": "930190",
+        "description": "Armes longues de guerre entièrement automatiques, y compris les fusils d'assaut et les carabines, dont le canon est lisse (non rayé).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301902100",
+        "hs6": "930190",
+        "description": "Fusils et carabines de guerre actionnés manuellement (à verrou ou à culasse).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301902200",
+        "hs6": "930190",
+        "description": "Fusils et carabines de guerre à tir semi-automatique (nécessitent une nouvelle pression sur la détente pour chaque coup, mais le rechargement est automatique).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301902300",
+        "hs6": "930190",
+        "description": "Fusils et carabines de guerre capables de tirer en rafale ou en mode continu (armes d'assaut).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301902900",
+        "hs6": "930190",
+        "description": "Tous les autres fusils et carabines de guerre non spécifiés dans les catégories précédentes.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301903000",
+        "hs6": "930190",
+        "description": "Armes à feu automatiques à tir rapide conçues pour une utilisation soutenue (mitrailleuses lourdes ou légères).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301904100",
+        "hs6": "930190",
+        "description": "Armes de poing entièrement automatiques (capables de tirer en rafale), souvent de la catégorie des pistolets-mitrailleurs.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301904900",
+        "hs6": "930190",
+        "description": "Autres armes de type pistolet-mitrailleur ou submachine gun, généralement semi-automatiques ou non classées comme pistolets entièrement automatiques.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9301909000",
+        "hs6": "930190",
+        "description": "Tous les autres types d'armes de guerre non classés ailleurs (par exemple, certains fusils de tireur d'élite, armes prototypes).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9302001000",
+        "hs6": "930200",
+        "description": "Armes de poing à barillet rotatif, excluant les armes de guerre ou les armes à blanc/signalisation. Ces revolvers sont généralement civils ou de police.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9302002100",
+        "hs6": "930200",
+        "description": "Pistolets (armes de poing) à un seul canon, capables de tirer de manière semi-automatique (rechargement automatique après chaque tir).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9302002900",
+        "hs6": "930200",
+        "description": "Pistolets à canon simple qui ne sont ni semi-automatiques ni de guerre (par exemple, pistolets à un coup).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9302003000",
+        "hs6": "930200",
+        "description": "Pistolets équipés de deux canons ou plus (souvent des armes de collection ou très spécifiques).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305101000",
+        "hs6": "930510",
+        "description": "Composants mécaniques essentiels des revolvers ou pistolets assurant le processus d'allumage ou de mise à feu de la munition.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305102000",
+        "hs6": "930510",
+        "description": "La partie principale (carcasse ou récepteur) des revolvers ou pistolets sur laquelle sont montés les autres composants.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305103000",
+        "hs6": "930510",
+        "description": "Canons rayés ou lisses destinés à être montés sur des revolvers ou pistolets.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305104000",
+        "hs6": "930510",
+        "description": "Pièces mobiles internes telles que les pistons, les systèmes de verrouillage (crochets) ou les dispositifs de réduction de recul/gaz (amortisseurs à gaz) pour pistolets et revolvers.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305105000",
+        "hs6": "930510",
+        "description": "Chargeurs amovibles ou fixes utilisés pour alimenter les pistolets en munitions, ainsi que toutes les pièces constitutives de ces chargeurs.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305106000",
+        "hs6": "930510",
+        "description": "Dispositifs conçus pour réduire le bruit généré par la détonation d'une arme à feu (silencieux), ainsi que leurs pièces détachées.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305107000",
+        "hs6": "930510",
+        "description": "Pièces de maintien ou de support, comme les crosses, les plaquettes de crosse (poignées) et les plaques de couche, utilisées sur les pistolets et revolvers.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305108000",
+        "hs6": "930510",
+        "description": "Mécanismes spécifiques aux pistolets semi-automatiques (coulisses) et aux revolvers (barillets/cylindres) qui contiennent les munitions ou participent au cycle de tir.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305109000",
+        "hs6": "930510",
+        "description": "Toutes autres pièces et accessoires non spécifiquement mentionnés destinés aux revolvers ou pistolets.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305911100",
+        "hs6": "930591",
+        "description": "Mécanismes de mise à feu utilisés spécifiquement dans les armes de guerre classées sous la position 93.01 (mitrailleuses, mitraillettes, fusils militaires).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305911200",
+        "hs6": "930591",
+        "description": "Carcasses et récepteurs destinés aux armes de guerre de la position 93.01 (mitrailleuses, mitraillettes, fusils militaires).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305911300",
+        "hs6": "930591",
+        "description": "Canons destinés aux armes de guerre (mitrailleuses, pistolets-mitrailleurs, fusils et carabines militaires) de la position 93.01.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305911400",
+        "hs6": "930591",
+        "description": "Composants internes mobiles assurant le cycle de fonctionnement et le verrouillage dans les armes de guerre automatiques ou semi-automatiques (93.01).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305911500",
+        "hs6": "930591",
+        "description": "Chargeurs et pièces associées conçus pour l'alimentation des armes de guerre (mitrailleuses, fusils d'assaut, etc.) de la position 93.01.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305911600",
+        "hs6": "930591",
+        "description": "Silencieux et leurs pièces de rechange spécifiquement conçus pour les armes de guerre de la position 93.01.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305911700",
+        "hs6": "930591",
+        "description": "Dispositifs anti-lueur (cache-flammes) et leurs composants, destinés aux armes de guerre de la position 93.01.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305911800",
+        "hs6": "930591",
+        "description": "Composants du mécanisme de culasse (y compris la culasse, les verrous et le boîtier) pour les armes de guerre classées sous 93.01.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305911900",
+        "hs6": "930591",
+        "description": "Toutes autres pièces et accessoires non spécifiquement mentionnés destinés aux mitrailleuses, pistolets-mitrailleurs, fusils ou carabines de guerre.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9305919000",
+        "hs6": "930591",
+        "description": "Parties et accessoires destinés aux autres armes de guerre de la position 93.01 non couvertes par les sous-catégories précédentes (par exemple, pièces d'artillerie, lance-roquettes).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9306301000",
+        "hs6": "930630",
+        "description": "Cartouches de munitions et leurs parties, conçues spécifiquement pour les armes de guerre de la position 93.01 (calibres militaires, balles perforantes, etc.).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9306901000",
+        "hs6": "930690",
+        "description": "Bombes, grenades, torpilles, mines, missiles et autres projectiles de gros calibre ou dispositifs explosifs, ainsi que leurs parties, destinés aux armes de guerre.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9306909000",
+        "hs6": "930690",
+        "description": "Autres munitions ou projectiles non classés spécifiquement, y compris les amorces, les douilles vides ou d'autres pièces de cartouches non mentionnées.",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701211000",
+        "hs6": "970121",
+        "description": "Tableaux, peintures et dessins faits entièrement à la main, considérés comme des œuvres d'art originales et ayant une ancienneté de plus de cent ans (antiquités).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701219100",
+        "hs6": "970121",
+        "description": "Œuvres d'art non originales ou de nature différente (collages, copies) de plus de 100 ans, réalisées sur des supports en bois.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701219200",
+        "hs6": "970121",
+        "description": "Œuvres d'art non originales de plus de 100 ans, réalisées sur des supports en liège (cork).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701219300",
+        "hs6": "970121",
+        "description": "Peintures ou dessins réalisés par collage ou application de sable, considérés comme des antiquités (plus de 100 ans).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701219900",
+        "hs6": "970121",
+        "description": "Toutes les autres peintures et dessins, non originales ou sur des supports divers, ayant plus de 100 ans.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701220000",
+        "hs6": "970122",
+        "description": "Œuvres d'art composées de petites pièces (tesselles) assemblées, considérées comme des antiquités (plus de 100 ans).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701291000",
+        "hs6": "970129",
+        "description": "Collages, tableautins et œuvres similaires entièrement faits à la main, considérés comme des œuvres d'art originales de plus de 100 ans.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701299100",
+        "hs6": "970129",
+        "description": "Collages et panneaux décoratifs similaires, non originaux, de plus de 100 ans, réalisés sur des supports en bois.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701299200",
+        "hs6": "970129",
+        "description": "Collages et panneaux décoratifs similaires, non originaux, de plus de 100 ans, réalisés sur des supports en liège.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701299900",
+        "hs6": "970129",
+        "description": "Collages et tableautins similaires, non originaux, de plus de 100 ans, sur tout autre support.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701911000",
+        "hs6": "970191",
+        "description": "Tableaux, peintures et dessins faits entièrement à la main, considérés comme des œuvres d'art originales et ayant une ancienneté de moins de cent ans (art moderne ou contemporain).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701919100",
+        "hs6": "970191",
+        "description": "Œuvres d'art non originales (copies, reproductions, impressions améliorées) de moins de 100 ans, réalisées sur des supports en bois.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701919200",
+        "hs6": "970191",
+        "description": "Œuvres d'art non originales de moins de 100 ans, réalisées sur des supports en liège.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701919300",
+        "hs6": "970191",
+        "description": "Peintures ou dessins modernes (moins de 100 ans) réalisés par application ou collage de sable.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701919900",
+        "hs6": "970191",
+        "description": "Toutes les autres peintures et dessins, non originales ou sur des supports divers, ayant moins de 100 ans.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701920000",
+        "hs6": "970192",
+        "description": "Œuvres d'art modernes (moins de 100 ans) composées de petites pièces assemblées (mosaïque).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701991000",
+        "hs6": "970199",
+        "description": "Collages, tableautins et œuvres similaires entièrement faits à la main, considérés comme des œuvres d'art originales de moins de 100 ans.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701999100",
+        "hs6": "970199",
+        "description": "Collages et panneaux décoratifs similaires, non originaux, de moins de 100 ans, réalisés sur des supports en bois.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701999200",
+        "hs6": "970199",
+        "description": "Œuvres d'art originales (tableaux, peintures, dessins, collages, mosaïques) réalisées entièrement à la main, dont le support ou la matière principale est le liège.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9701999900",
+        "hs6": "970199",
+        "description": "Œuvres d'art originales (tableaux, peintures, dessins, collages, mosaïques) réalisées entièrement à la main, dont la matière principale est autre que le liège ou la soie.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9702100000",
+        "hs6": "970210",
+        "description": "Gravures, estampes et lithographies originales, considérées comme des antiquités car leur ancienneté dépasse cent ans.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9702900000",
+        "hs6": "970290",
+        "description": "Gravures, estampes et lithographies originales, autres que les antiquités (c'est-à-dire celles ayant moins de 100 ans d'âge).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9703101000",
+        "hs6": "970310",
+        "description": "Statues et sculptures originales en bronze, considérées comme des antiquités ayant plus de 100 ans d'âge.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9703102000",
+        "hs6": "970310",
+        "description": "Statues et sculptures originales en plâtre, considérées comme des antiquités ayant plus de 100 ans d'âge.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9703103000",
+        "hs6": "970310",
+        "description": "Statues et sculptures originales en marbre, considérées comme des antiquités ayant plus de 100 ans d'âge.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9703109000",
+        "hs6": "970310",
+        "description": "Statues et sculptures originales réalisées dans d'autres matières (bois, pierre, ivoire, etc.), considérées comme des antiquités ayant plus de 100 ans d'âge.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9703901000",
+        "hs6": "970390",
+        "description": "Statues et sculptures originales en bronze, récentes (ayant moins de 100 ans d'âge).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9703902000",
+        "hs6": "970390",
+        "description": "Statues et sculptures originales en plâtre, récentes (ayant moins de 100 ans d'âge).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9703903000",
+        "hs6": "970390",
+        "description": "Statues et sculptures originales en marbre, récentes (ayant moins de 100 ans d'âge).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9703909000",
+        "hs6": "970390",
+        "description": "Statues et sculptures originales réalisées dans d'autres matières (bois, pierre, ivoire, etc.), récentes.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9704000000",
+        "hs6": "970400",
+        "description": "Articles de collection philatélique et similaires, y compris les timbres-poste, les timbres fiscaux et les enveloppes premier jour, qu'ils soient oblitérés (utilisés) ou non oblitérés (neufs).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705100000",
+        "hs6": "970510",
+        "description": "Collections d'objets ou pièces isolées d'un intérêt particulier concernant l'archéologie, l'ethnographie (études des peuples et cultures) ou l'histoire.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705210000",
+        "hs6": "970521",
+        "description": "Spécimens humains (corps, squelettes, organes ou autres parties) destinés à des collections d'intérêt anatomique, médical, ou anthropologique.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705220000",
+        "hs6": "970522",
+        "description": "Pièces de collection provenant d'espèces animales ou végétales éteintes ou menacées d'extinction (souvent réglementées par CITES).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705291100",
+        "hs6": "970529",
+        "description": "Ours polaires naturalisés (empaillés) par la méthode de taxidermie traditionnelle, conservés comme pièces de collection zoologique.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705291900",
+        "hs6": "970529",
+        "description": "Ours polaires naturalisés (empaillés) par des méthodes de taxidermie modernes ou autres, conservés comme pièces de collection zoologique.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705292100",
+        "hs6": "970529",
+        "description": "Oiseaux naturalisés (empaillés) par la méthode de taxidermie traditionnelle, conservés comme pièces de collection zoologique.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705292900",
+        "hs6": "970529",
+        "description": "Oiseaux naturalisés (empaillés) par des méthodes de taxidermie modernes ou autres, conservés comme pièces de collection zoologique.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705293100",
+        "hs6": "970529",
+        "description": "Têtes et épaules d'élan naturalisées (taxidermie), utilisées à des fins décoratives et réalisées selon la méthode traditionnelle.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705293900",
+        "hs6": "970529",
+        "description": "Têtes et épaules d'élan naturalisées (taxidermie), utilisées à des fins décoratives et réalisées par des méthodes autres que la méthode traditionnelle.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705299100",
+        "hs6": "970529",
+        "description": "Autres pièces de collection d'intérêt zoologique, botanique, minéralogique, anatomique ou paléontologique, préparées par méthode traditionnelle (hors spécimens humains et espèces spécifiques déjà mentionnées).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705299900",
+        "hs6": "970529",
+        "description": "Toutes les autres pièces de collection d'intérêt zoologique, botanique, minéralogique, anatomique ou paléontologique (préparées par des méthodes non traditionnelles ou non spécifiées).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705310000",
+        "hs6": "970531",
+        "description": "Collections de pièces numismatiques (monnaies, billets, médailles) considérées comme des antiquités, ayant plus de cent ans d'âge.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9705390000",
+        "hs6": "970539",
+        "description": "Collections de pièces numismatiques (monnaies, billets, médailles) récentes, n'atteignant pas le critère d'ancienneté (moins de 100 ans).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9706101000",
+        "hs6": "970610",
+        "description": "Meubles considérés comme des objets d'antiquité, ayant une ancienneté de plus de 250 ans.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9706102000",
+        "hs6": "970610",
+        "description": "Livres rares, y compris les incunables (imprimés avant 1501) et autres livres ayant plus de 250 ans d'âge.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9706109000",
+        "hs6": "970610",
+        "description": "Tous autres objets d'antiquité non classés ailleurs, ayant plus de 250 ans d'âge (céramiques, métaux, bijoux, etc.).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9706901000",
+        "hs6": "970690",
+        "description": "Meubles considérés comme des objets d'antiquité, mais dont l'ancienneté est comprise entre 100 ans et 250 ans.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9706902000",
+        "hs6": "970690",
+        "description": "Incunables et autres livres objets d'antiquité dont l'ancienneté est comprise entre 100 ans et 250 ans.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9706909000",
+        "hs6": "970690",
+        "description": "Tous autres objets d'antiquité non classés ailleurs, dont l'ancienneté est comprise entre 100 ans et 250 ans.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9800000000",
+        "hs6": "980000",
+        "description": "Vêtements, articles de toilette et autres biens neufs ou usagés destinés à l'usage personnel du voyageur (souvent exemptés de droits/taxes à l'importation).",
+        "cause": "EXPLICIT_EXEMPT",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": true,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9810100000",
+        "hs6": "981010",
+        "description": "Marchandises importées temporairement pour être présentées lors d'expositions, de foires, de congrès ou à des fins de démonstration technique ou commerciale.",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "9810200000",
+        "hs6": "981020",
+        "description": "Marchandises importées temporairement pour des raisons autres que l'exposition ou la démonstration (par exemple, matériel professionnel, instruments scientifiques).",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3403111000",
+        "hs6": "340311",
+        "description": "Preparations pour le traitement des matieres textiles, du cuir, des pelleteries ou d'autres matieres > A la sortie des usines exercees",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "3403191000",
+        "hs6": "340319",
+        "description": "Preparations lubrifiantes > Contenant des huiles de petrole ou de mineraux bitumineux > Autres > A la sortie des usines exercees",
+        "cause": "TRUE_MISSING",
+        "evidence": {
+          "free_or_zero_found": false,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      }
+    ],
+    "examples": {
+      "EXPLICIT_EXEMPT": [
+        {
+          "national_code": "3002411000",
+          "hs6": "300241",
+          "description": "Vaccins destinés à la médecine humaine, spécifiquement contre le virus de l'influenza (grippe).",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "3002419000",
+          "hs6": "300241",
+          "description": "Autres vaccins destinés à la médecine humaine, à l'exception du vaccin contre l'influenza.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "3006910000",
+          "hs6": "300691",
+          "description": "Préparations et articles pharmaceutiques spécifiques : Appareillages identifiables de stomie (sacs, poches, systèmes de collecte).",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "4014100000",
+          "hs6": "401410",
+          "description": "Description: Préservatifs masculins en caoutchouc, classés comme articles d'hygiène ou de pharmacie.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8421291000",
+          "hs6": "842129",
+          "description": "Équipement médical spécialisé (dialyseurs) utilisé pour filtrer et purifier le sang chez les patients dont les reins ne fonctionnent pas correctement (hémodialyse).",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8470502110",
+          "hs6": "847050",
+          "description": "Kits de composants destinés à l'assemblage de terminaux de paiement électronique (TPE) utilisés pour les transactions par carte bancaire (débit ou crédit).",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8470502190",
+          "hs6": "847050",
+          "description": "Terminaux de paiement électronique (TPE) assemblés et complets, utilisés pour traiter les paiements par carte de débit ou de crédit dans les points de vente.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8472902000",
+          "hs6": "847290",
+          "description": "Machines ou appareils de bureau spécialisés pour la production, l'impression ou la lecture de documents en Braille.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8524117000",
+          "hs6": "852411",
+          "description": "Modules d'affichage à écran plat LCD, SANS pilotes, conçus pour les véhicules aériens du Chapitre 88 (écrans de cockpit, instruments de vol).",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8524127000",
+          "hs6": "852412",
+          "description": "Modules d'affichage à écran plat (autres que LCD), SANS pilotes, conçus pour les véhicules aériens du Chapitre 88 (avions, drones, hélicoptères).",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8524197000",
+          "hs6": "852419",
+          "description": "Modules d'affichage à écran plat (autres technologies), SANS pilotes, conçus pour les véhicules aériens du Chapitre 88.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8524917000",
+          "hs6": "852491",
+          "description": "Modules d'affichage à écran plat LCD, comprenant des pilotes ou circuits de commande, conçus pour les véhicules aériens du Chapitre 88.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8524927000",
+          "hs6": "852492",
+          "description": "Modules d'affichage à écran plat OLED, conçus pour les véhicules aériens du Chapitre 88.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8524997000",
+          "hs6": "852499",
+          "description": "Modules d'affichage à écran plat basés sur d'autres technologies, comprenant des pilotes ou circuits de commande, conçus pour les véhicules aériens du Chapitre 88.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8701211000",
+          "hs6": "870121",
+          "description": "Collections (CKD/SKD) de tracteurs routiers pour semi-remorques, équipés uniquement d'un moteur diesel ou semi-diesel, destinées aux industries de montage.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8701221000",
+          "hs6": "870122",
+          "description": "Collections (CKD/SKD) de tracteurs routiers pour semi-remorques, équipés d'un moteur hybride (moteur essence à piston à allumage par étincelles et moteur électrique), destinées aux industries de montage.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8701231000",
+          "hs6": "870123",
+          "description": "Collections (CKD/SKD) de tracteurs routiers pour semi-remorques, équipés d'un moteur hybride (moteur essence à piston à allumage par étincelles et moteur électrique), destinées aux industries de montage (Répétition ou sous-catégorie spécifique).",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8701241000",
+          "hs6": "870124",
+          "description": "Collections (CKD/SKD) de tracteurs routiers pour semi-remorques, équipés uniquement d'un moteur électrique pour la propulsion, destinées aux industries de montage.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8701291000",
+          "hs6": "870129",
+          "description": "Collections (CKD/SKD) d'autres types de tracteurs routiers pour semi-remorques (e.g., gaz naturel, GPL, ou autres types de moteurs) destinées aux industries de montage.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8704221000",
+          "hs6": "870422",
+          "description": "Ensembles complets ou incomplets (CKD/SKD) de véhicules automobiles pour le transport de marchandises (camions lourds), à moteur diesel/semi-diesel, avec un poids en charge maximal supérieur à 5 tonnes mais n'excédant pas 20 tonnes, destinés aux industries de montage.",
+          "cause": "EXPLICIT_EXEMPT",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": true,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        }
+      ],
+      "TRUE_MISSING": [
+        {
+          "national_code": "6602001000",
+          "hs6": "660200",
+          "description": "Parapluies, ombrelles, parasols, cannes, cannes-sieges, fouets, cravaches et leurs parties. > Cannes, cannes-sièges, fouets, cravaches et articles similaires. > Cannes pliantes ou non pour aveugles",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "7108200000",
+          "hs6": "710820",
+          "description": "Or sous toutes formes brutes ou mi-ouvrées, ou en poudre, destiné à l'usage monétaire (par exemple, pour la frappe de pièces de monnaie ou en lingots monétaires).",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8702101000",
+          "hs6": "870210",
+          "description": "Véhicules automobiles pour le transport de dix personnes ou plus, chauffeur inclus, à moteur à piston à allumage par compression (diesel ou semi-diesel), collections destinées aux industries de montage.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8702201000",
+          "hs6": "870220",
+          "description": "Véhicules pour 10+ personnes, équipés d'un moteur diesel/semi-diesel et d'un moteur électrique (Hybrides Diesel), collections destinées aux industries de montage.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703211000",
+          "hs6": "870321",
+          "description": "Voitures de tourisme (berlines/breaks/courses), uniquement à moteur à piston essence, cylindrée n'excédant pas 1000 cm3, collections destinées aux industries de montage.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703221000",
+          "hs6": "870322",
+          "description": "Voitures de tourisme (berlines/breaks/courses), uniquement à moteur à piston essence, cylindrée 1000 < X ≤ 1500 cm3, collections destinées aux industries de montage.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703231100",
+          "hs6": "870323",
+          "description": "Voitures de tourisme (essence), cylindrée 1500 < X ≤ 1800 cm3, collections destinées aux industries de montage.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703231200",
+          "hs6": "870323",
+          "description": "Voitures de tourisme (essence), cylindrée 1800 < X ≤ 3000 cm3, collections destinées aux industries de montage.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703241000",
+          "hs6": "870324",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme (y compris break et voitures de course)، à moteur à piston à allumage par étincelles، de cylindrée excédant 3.000 cm³.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703311000",
+          "hs6": "870331",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme (y compris break et voitures de course)، à moteur à piston à allumage par compression (diesel)، de cylindrée n'excédant pas 1.500 cm³.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703321000",
+          "hs6": "870332",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme (y compris break et voitures de course)، à moteur à piston à allumage par compression (diesel)، de cylindrée excédant 1.500 cm³ mais n'excédant pas 2.500 cm³.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703331000",
+          "hs6": "870333",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme (y compris break et voitures de course)، à moteur à piston à allumage par compression (diesel)، de cylindrée excédant 2.500 cm³.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703401100",
+          "hs6": "870340",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (essence/électrique, non rechargeables par source externe)، de cylindrée n'excédant pas 1.000 cm³.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703402100",
+          "hs6": "870340",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (essence/électrique, non rechargeables par source externe)، de cylindrée excédant 1.000 cm³ mais n'excédant pas 1.500 cm³.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703403110",
+          "hs6": "870340",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (essence/électrique, non rechargeables par source externe)، de cylindrée excédant 1.500 cm³ mais n'excédant pas 1.800 cm³.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703403120",
+          "hs6": "870340",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (essence/électrique, non rechargeables par source externe)، de cylindrée excédant 1.500 cm³ mais n'excédant pas 3.000 cm³ (dont > 1800 cm³ ≤ 3000 cm³).",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703404100",
+          "hs6": "870340",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (essence/électrique, non rechargeables par source externe)، de cylindrée excédant 3.000 cm³.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703501100",
+          "hs6": "870350",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (diesel/électrique, non rechargeables par source externe)، de cylindrée n'excédant pas 1.500 cm³.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703502100",
+          "hs6": "870350",
+          "description": "Collections destinées aux industries de montage (CKD/SKD) pour voitures de tourisme hybrides (diesel/électrique, non rechargeables par source externe)، de cylindrée excédant 1.500 cm³ mais n'excédant pas 2.500 cm³.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "8703503100",
+          "hs6": "870350",
+          "description": "Collections de voitures de tourisme hybrides (diesel/électrique, non rechargeables par l'extérieur) d'une cylindrée excédant 2500 cm³, destinées aux industries de montage.",
+          "cause": "TRUE_MISSING",
+          "evidence": {
+            "free_or_zero_found": false,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        }
+      ]
+    },
+    "note": "Les causes sont documentaires; aucune cause n'est convertie en taux numérique."
+  },
+  "reconciliation_summary": {
+    "category_counts": {
+      "IDENTICAL": 139,
+      "ONLY_CANONICAL": 54,
+      "ONLY_CRAWLED": 0,
+      "RATE_DIFFERENCE": 15731,
+      "DESCRIPTION_DIFFERENCE": 16744,
+      "NATIONAL_CODE_DIFFERENCE": 0,
+      "MISSING_RATE_CANONICAL": 11,
+      "MISSING_RATE_CRAWLED": 236
+    },
+    "runtime_preference_confirmed": true
+  },
+  "declared_metadata_not_used_for_status": {
+    "effective_source_quality_present": true,
+    "primary_data_status_present": true,
+    "primary_reliability_present": true,
+    "ignored_for_quality_status": true
+  },
+  "coverage": {
+    "effective_lines": 17061,
+    "unique_national_codes": 17061,
+    "unique_hs6": 5515,
+    "parent_lines_in_primary_file": 5533,
+    "national_sub_positions_in_primary_file": 17115,
+    "chapters_present": 95,
+    "code_lengths": {
+      "10": 17061
+    }
+  },
+  "controls": {
+    "total_rows_audited": 17061,
+    "duplicate_codes": [],
+    "duplicate_code_count": 0,
+    "invalid_codes": [],
+    "invalid_code_count": 0,
+    "hs6_missing_count": 0,
+    "missing_descriptions": 0,
+    "missing_rates": 236,
+    "unparseable_rates": 0,
+    "specific_or_composite_rights_count": 0,
+    "specific_or_composite_examples": [],
+    "taxes_without_unit_count": 0,
+    "taxes_without_unit_examples": [],
+    "chapter_hs6_inconsistency_count": 0,
+    "chapter_hs6_inconsistency_examples": [],
+    "dates_missing": 17061,
+    "tax_types": {
+      "DAPS": 779,
+      "DD": 16825,
+      "PRCT": 17061,
+      "TCS": 15762,
+      "TIC": 160,
+      "TVA": 16805
+    },
+    "row_sources": {
+      "conformepro.dz": 17061
+    },
+    "row_source_urls_count": 17061
+  },
+  "sample_rows": [
+    {
+      "category": "agriculture",
+      "national_code": "0101211100",
+      "hs6": "010121",
+      "description": "Chevaux vivants de pur-sang arabe, destinés à la reproduction de race pure et à la course.",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "15%",
+          "normalized_rate_numeric": 15.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "PRCT": {
+          "tax": "PRCT",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TCS": {
+          "tax": "TCS",
+          "normalized_rate_raw": "3%",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19%",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "alimentation",
+      "national_code": "1601001000",
+      "hs6": "160100",
+      "description": "Préparations alimentaires à base de viande (hachée ou transformée) conditionnées en boyaux ou contenants similaires (charcuterie), excluant la volaille ou le foie.",
+      "taxes": {
+        "DAPS": {
+          "tax": "DAPS",
+          "normalized_rate_raw": "60%",
+          "normalized_rate_numeric": 60.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "30%",
+          "normalized_rate_numeric": 30.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "PRCT": {
+          "tax": "PRCT",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TCS": {
+          "tax": "TCS",
+          "normalized_rate_raw": "3%",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19%",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "médicament",
+      "national_code": "3001201000",
+      "hs6": "300120",
+      "description": "Extraits de glandes ou d'autres organes ou de leurs sécrétions, d'origine humaine, à usages opothérapiques (thérapie organique).",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "5%",
+          "normalized_rate_numeric": 5.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TCS": {
+          "tax": "TCS",
+          "normalized_rate_raw": "3%",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "PRCT": {
+          "tax": "PRCT",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "textile",
+      "national_code": "5001000000",
+      "hs6": "500100",
+      "description": "Cocons de vers à soie propres au dévidage (aptes à être déroulés pour obtenir du fil de soie).",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "5%",
+          "normalized_rate_numeric": 5.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19%",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TCS": {
+          "tax": "TCS",
+          "normalized_rate_raw": "3%",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "PRCT": {
+          "tax": "PRCT",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "machine",
+      "national_code": "8401100000",
+      "hs6": "840110",
+      "description": "Installations complexes conçues pour initier, soutenir et contrôler une réaction nucléaire en chaîne, utilisées principalement pour la production d'énergie électrique, la recherche ou la production d'isotopes.",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "5%",
+          "normalized_rate_numeric": 5.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19%",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TCS": {
+          "tax": "TCS",
+          "normalized_rate_raw": "3%",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "PRCT": {
+          "tax": "PRCT",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "électronique",
+      "national_code": "8501101100",
+      "hs6": "850110",
+      "description": "Moteurs électriques universels, d'une puissance n'excédant pas 37,5 W, spécifiquement d'une puissance inférieure à 18,65 W.",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "15%",
+          "normalized_rate_numeric": 15.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19%",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TCS": {
+          "tax": "TCS",
+          "normalized_rate_raw": "3%",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "PRCT": {
+          "tax": "PRCT",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "véhicule",
+      "national_code": "8701101000",
+      "hs6": "870110",
+      "description": "Collections (CKD/SKD) de tracteurs à essieu simple, généralement utilisés pour le labour et la culture dans les petites exploitations agricoles (motoculteurs), destinés aux industries de montage.",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "5%",
+          "normalized_rate_numeric": 5.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19%",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TCS": {
+          "tax": "TCS",
+          "normalized_rate_raw": "3%",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "PRCT": {
+          "tax": "PRCT",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit chimique",
+      "national_code": "2801100000",
+      "hs6": "280110",
+      "description": "Élément chimique non métallique, le Chlore (Cl), souvent utilisé comme agent désinfectant ou dans l'industrie chimique.",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "5%",
+          "normalized_rate_numeric": 5.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "PRCT": {
+          "tax": "PRCT",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "19%",
+          "normalized_rate_numeric": 19.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "matière première",
+      "national_code": "2501001000",
+      "hs6": "250100",
+      "description": "Sel pur (chlorure de sodium) d'une grande pureté, utilisé dans diverses applications chimiques, pharmaceutiques ou industrielles.",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "5%",
+          "normalized_rate_numeric": 5.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "PRCT": {
+          "tax": "PRCT",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "9%",
+          "normalized_rate_numeric": 9.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit exonéré ou à taux nul",
+      "national_code": "9800000000",
+      "hs6": "980000",
+      "description": "Vêtements, articles de toilette et autres biens neufs ou usagés destinés à l'usage personnel du voyageur (souvent exemptés de droits/taxes à l'importation).",
+      "taxes": {
+        "TCS": {
+          "tax": "TCS",
+          "normalized_rate_raw": "3%",
+          "normalized_rate_numeric": 3.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "PRCT": {
+          "tax": "PRCT",
+          "normalized_rate_raw": "2%",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    }
+  ],
+  "source_comparison": {
+    "status": "NOT_AVAILABLE",
+    "official_lines_compared": 0,
+    "note": "Aucune copie officielle tarifaire archivée dans le dépôt; les dix lignes restent non comparées."
+  },
+  "quality_dimensions": {
+    "source": "UNVERIFIED",
+    "temporal_validity": "PARTIAL",
+    "classification": "DOCUMENTED",
+    "taxes_and_levies": "PARTIAL",
+    "preference_and_origin": "PARTIAL",
+    "formalities": "PARTIAL"
+  },
+  "overall_informative_status": "INFORMATIVE_PARTIAL",
+  "known_data_gaps": [
+    "Archive officielle tarifaire non retrouvée localement.",
+    "Date de publication et date d'effet documentées absentes.",
+    "Version SH explicite absente des métadonnées JSON consommées.",
+    "Écart entre les lignes canoniques et crawled; les divergences restent en revue."
+  ],
+  "actions_required": [
+    "Archiver le document tarifaire de l'autorité déclarée sans remplacer le fichier actuel.",
+    "Comparer un échantillon de lignes et conserver les empreintes des documents.",
+    "Documenter la version SH et les dates de publication/effet.",
+    "Résoudre les divergences entre artefacts avant une utilisation documentaire plus forte."
+  ]
+}

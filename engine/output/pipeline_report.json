@@ -1,0 +1,192 @@
+{
+  "started_at": "2026-03-01T17:37:10.740050",
+  "countries_processed": [
+    {
+      "country": "AGO",
+      "records": 16571
+    },
+    {
+      "country": "BDI",
+      "records": 16569
+    },
+    {
+      "country": "BEN",
+      "records": 16571
+    },
+    {
+      "country": "BFA",
+      "records": 16570
+    },
+    {
+      "country": "BWA",
+      "records": 16570
+    },
+    {
+      "country": "CAF",
+      "records": 16568
+    },
+    {
+      "country": "CMR",
+      "records": 16572
+    },
+    {
+      "country": "COD",
+      "records": 16569
+    },
+    {
+      "country": "COG",
+      "records": 16570
+    },
+    {
+      "country": "COM",
+      "records": 16570
+    },
+    {
+      "country": "CPV",
+      "records": 16570
+    },
+    {
+      "country": "DJI",
+      "records": 16570
+    },
+    {
+      "country": "ERI",
+      "records": 16570
+    },
+    {
+      "country": "ETH",
+      "records": 16572
+    },
+    {
+      "country": "GAB",
+      "records": 16570
+    },
+    {
+      "country": "GIN",
+      "records": 16569
+    },
+    {
+      "country": "GMB",
+      "records": 16570
+    },
+    {
+      "country": "GNB",
+      "records": 16570
+    },
+    {
+      "country": "GNQ",
+      "records": 16569
+    },
+    {
+      "country": "LBR",
+      "records": 16569
+    },
+    {
+      "country": "LBY",
+      "records": 16573
+    },
+    {
+      "country": "LSO",
+      "records": 16570
+    },
+    {
+      "country": "MDG",
+      "records": 16569
+    },
+    {
+      "country": "MLI",
+      "records": 16569
+    },
+    {
+      "country": "MOZ",
+      "records": 16567
+    },
+    {
+      "country": "MRT",
+      "records": 16569
+    },
+    {
+      "country": "MUS",
+      "records": 16569
+    },
+    {
+      "country": "MWI",
+      "records": 16570
+    },
+    {
+      "country": "NAM",
+      "records": 16572
+    },
+    {
+      "country": "NER",
+      "records": 16568
+    },
+    {
+      "country": "RWA",
+      "records": 16571
+    },
+    {
+      "country": "SDN",
+      "records": 16570
+    },
+    {
+      "country": "SEN",
+      "records": 16569
+    },
+    {
+      "country": "SLE",
+      "records": 16569
+    },
+    {
+      "country": "SOM",
+      "records": 16571
+    },
+    {
+      "country": "SSD",
+      "records": 16572
+    },
+    {
+      "country": "STP",
+      "records": 16570
+    },
+    {
+      "country": "SWZ",
+      "records": 16570
+    },
+    {
+      "country": "SYC",
+      "records": 16570
+    },
+    {
+      "country": "TCD",
+      "records": 16569
+    },
+    {
+      "country": "TGO",
+      "records": 16569
+    },
+    {
+      "country": "TUN",
+      "records": 16570
+    },
+    {
+      "country": "TZA",
+      "records": 16569
+    },
+    {
+      "country": "UGA",
+      "records": 16569
+    },
+    {
+      "country": "ZMB",
+      "records": 16569
+    },
+    {
+      "country": "ZWE",
+      "records": 16571
+    }
+  ],
+  "countries_failed": [],
+  "total_records": 762213,
+  "completed_at": "2026-03-01T17:37:47.610586"
+}

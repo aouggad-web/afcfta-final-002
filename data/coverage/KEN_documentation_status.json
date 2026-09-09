@@ -1,0 +1,1972 @@
+{
+  "country_iso3": "KEN",
+  "country_name": "Kenya",
+  "audit_tool": "scripts/audit_tariff_documentation.py",
+  "consultation_date": "2026-07-24",
+  "read_only_audit": true,
+  "local_related_files": [
+    {
+      "path": "backend/data/KEN_tariffs.json",
+      "role": "primary_runtime_artifact",
+      "sha256": "62e02e30e41f8b324e85902e18b2fd018d0c1d882333fefaa9b7bea4b82b63dd"
+    },
+    {
+      "path": "backend/data/tariffs/KEN_tariffs.json",
+      "role": "secondary_local_artifact",
+      "sha256": "62e02e30e41f8b324e85902e18b2fd018d0c1d882333fefaa9b7bea4b82b63dd"
+    },
+    {
+      "path": "data/archive/csv/TARIF-DZA_CRAWLED_VALIDATION  AUTHENTIQUE .csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    },
+    {
+      "path": "docs/archive/attached_assets/TARIF-DZA_CRAWLED_VALIDATION_AUTHENTIQUE__1778803280738.csv",
+      "role": "secondary_local_artifact",
+      "sha256": "cea2125b8fef362a1302796f11899e4dbaa877d32b51cbec1924c9032c467510"
+    }
+  ],
+  "runtime_artifacts": {
+    "primary_tariff_file": "backend/data/KEN_tariffs.json",
+    "effective_national_file": "backend/data/crawled/KEN_tariffs.json",
+    "detail_override_file": "backend/data/crawled/KEN_tariffs.json",
+    "enriched_fallback_file": null,
+    "consumers": [
+      "backend/services/tariff_provider_service.py::get_tariff_line",
+      "backend/services/authentic_tariff_service.py::load_country_tariffs",
+      "backend/services/authentic_tariff_service.py::load_crawled_position_index",
+      "backend/routes/authentic_tariffs.py::get_tariff_line_endpoint",
+      "backend/routes/authentic_tariffs.py::get_sub_positions_endpoint",
+      "backend/routes/enhanced_calculator.py::_load_dza_authentic_line"
+    ],
+    "import_and_normalization_scripts": []
+  },
+  "source": {
+    "source_authority": "EAC Common External Tariff 2022",
+    "source_title": "EAC Common External Tariff 2022",
+    "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+    "source_root_url": null,
+    "official_authority_url": null,
+    "publication_date": null,
+    "effective_from": null,
+    "effective_to": null,
+    "hs_version": "HS 2022",
+    "hs_version_declared_in_code": null,
+    "hs_version_status": "DOCUMENTED",
+    "date_consulted": "2026-07-24",
+    "extracted_at": null,
+    "source_hash_sha256": "d89c40259421ef386880c25f5f38519fb5d380ba1752558a84288b23bd37a09e",
+    "archive_official_available": false,
+    "official_archive_candidates": [],
+    "status": "UNVERIFIED",
+    "status_basis": "Les champs data_status/reliability/source_quality du fichier ne sont pas utilisés."
+  },
+  "position_availability": {
+    "total_positions": 5984,
+    "positions_simulatable": 0,
+    "positions_calculation_unavailable": 0,
+    "positions_review_required": 5984
+  },
+  "missing_dd_analysis": {
+    "total_missing_dd": 91,
+    "counts_by_cause": {
+      "EXPLICIT_FREE": 91
+    },
+    "records": [
+      {
+        "national_code": "04011000",
+        "hs6": "040110",
+        "description": "- Of a fat content, by weight, not exceeding1%",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04012000",
+        "hs6": "040120",
+        "description": "- Of a fat content, by weight, exceeding 1% but not exceeding 6%",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04015000",
+        "hs6": "040150",
+        "description": "- Of a fat content, by weight, exceeding 10%",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04021000",
+        "hs6": "040210",
+        "description": "- In powder, granules or other solid forms, of a fat content, by weight, not exceeding 1.5%",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04022100",
+        "hs6": "040221",
+        "description": "-- Not containing added sugar or other sweetening matter:",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04022900",
+        "hs6": "040229",
+        "description": "-- Other:",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04029100",
+        "hs6": "040291",
+        "description": "-- Not containing added sugar or other sweetening matter",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04029900",
+        "hs6": "040299",
+        "description": "-- Other:",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04032000",
+        "hs6": "040320",
+        "description": "-Yogurt",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04039000",
+        "hs6": "040390",
+        "description": "- Other",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04061000",
+        "hs6": "040610",
+        "description": "- Fresh (unripened or uncured) cheese, including whey cheese, and curd",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04062000",
+        "hs6": "040620",
+        "description": "- Grated or powdered cheese, of all kinds",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04063000",
+        "hs6": "040630",
+        "description": "- Processed cheese, not grated or powdered",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04064000",
+        "hs6": "040640",
+        "description": "- Blue-veined cheese and other cheese containing veins produced by Penicillium roqueforti",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "04069000",
+        "hs6": "040690",
+        "description": "- Other cheese",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "10059000",
+        "hs6": "100590",
+        "description": "- Other",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "10061000",
+        "hs6": "100610",
+        "description": "- Rice in the husk (paddy or rough)",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "10062000",
+        "hs6": "100620",
+        "description": "- Husked (brown) rice",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "10063000",
+        "hs6": "100630",
+        "description": "- Semi-milled or wholly milled rice, whether or not polished or glazed",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "10064000",
+        "hs6": "100640",
+        "description": "- Broken rice",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "11010000",
+        "hs6": "110100",
+        "description": "Wheat or meslin flour.",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "11022000",
+        "hs6": "110220",
+        "description": "- Maize (corn) flour",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "11029010",
+        "hs6": "110290",
+        "description": "--- Rice flour",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011210",
+        "hs6": "170112",
+        "description": "--- Jaggery",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011290",
+        "hs6": "170112",
+        "description": "--- Other",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011310",
+        "hs6": "170113",
+        "description": "--- Jaggery",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011390",
+        "hs6": "170113",
+        "description": "--- Other",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011410",
+        "hs6": "170114",
+        "description": "--- Jaggery",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011490",
+        "hs6": "170114",
+        "description": "--- Other",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17019100",
+        "hs6": "170191",
+        "description": "-- Containing added flavouring or colouring matter",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17019910",
+        "hs6": "170199",
+        "description": "--- Sugar for industrial use",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17019990",
+        "hs6": "170199",
+        "description": "--- Other",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "52085110",
+        "hs6": "520851",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "52085210",
+        "hs6": "520852",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "52095110",
+        "hs6": "520951",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "52105110",
+        "hs6": "521051",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "52115110",
+        "hs6": "521151",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "52121510",
+        "hs6": "521215",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "52122510",
+        "hs6": "521225",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "53021000",
+        "hs6": "530210",
+        "description": "- True hemp raw or retted",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "55134110",
+        "hs6": "551341",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "55144110",
+        "hs6": "551441",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "58110000",
+        "hs6": "581100",
+        "description": "Quilted textile products in the piece, composed of one or more layers of textile materials assembled with padding by stitching or otherwise, other than embroidery of heading",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "62114210",
+        "hs6": "621142",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "62114310",
+        "hs6": "621143",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "62114910",
+        "hs6": "621149",
+        "description": "--- Khanga, Kikoi and Kitenge",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "63022100",
+        "hs6": "630221",
+        "description": "-- Of cotton",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "63023100",
+        "hs6": "630231",
+        "description": "-- Of cotton",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "63025100",
+        "hs6": "630251",
+        "description": "-- Of cotton",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "63029100",
+        "hs6": "630291",
+        "description": "-- Of cotton",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "63090010",
+        "hs6": "630900",
+        "description": "--- Worn items of clothing 35% or USD 0.40/kg whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "63090020",
+        "hs6": "630900",
+        "description": "--- Worn items of footwear 35% or USD 0.40/kg whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "63090090",
+        "hs6": "630900",
+        "description": "--- Other worn items 35% or USD 0.40/kg whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72104900",
+        "hs6": "721049",
+        "description": "-- Other 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72106100",
+        "hs6": "721061",
+        "description": "-- Plated or coated with aluminium-zinc alloys 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72106900",
+        "hs6": "721069",
+        "description": "-- Other 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72107000",
+        "hs6": "721070",
+        "description": "- Painted, Vanished or coated with plastics 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72109000",
+        "hs6": "721090",
+        "description": "- Other 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72123000",
+        "hs6": "721230",
+        "description": "- Otherwise plated or coated with zinc 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72131000",
+        "hs6": "721310",
+        "description": "- Containing indentations,ribs,grooves or other deformations produced during the rolling process 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72132000",
+        "hs6": "721320",
+        "description": "- Other, of free-cutting steel 25% or $200/MT whichever is higher - Other : -- Of circular cross-section measuring less than 14 mm in diameter:",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72139110",
+        "hs6": "721391",
+        "description": "--- Of cross section measuring less than 8 mm 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72139190",
+        "hs6": "721391",
+        "description": "--- Other 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72139900",
+        "hs6": "721399",
+        "description": "-- Other 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72271000",
+        "hs6": "722710",
+        "description": "- Of high speed steel 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72272000",
+        "hs6": "722720",
+        "description": "- Of silico-manganese steel 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72279000",
+        "hs6": "722790",
+        "description": "- Other 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72281000",
+        "hs6": "722810",
+        "description": "- Bars and rods, of high speed steel 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72282000",
+        "hs6": "722820",
+        "description": "- Bars and rods, of silico-manganese steel 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72283000",
+        "hs6": "722830",
+        "description": "- Other bars and rods, not further worked than hot-rolled, hot- drawn or extruded 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72284000",
+        "hs6": "722840",
+        "description": "- Other bars and rods, not further worked than forged 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72285000",
+        "hs6": "722850",
+        "description": "- Other bars and rods, not further worked than cold-formed or cold-finished 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72286000",
+        "hs6": "722860",
+        "description": "- Other bars and rods 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72287000",
+        "hs6": "722870",
+        "description": "- Angles, shapes and sections 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "72288000",
+        "hs6": "722880",
+        "description": "- Hollow drill bars and rods 25% or $200/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "92099200",
+        "hs6": "920992",
+        "description": "-- Parts and accessories for the musical instruments of heading",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "92099400",
+        "hs6": "920994",
+        "description": "-- Parts and accessories for the musical instruments of heading",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "10061000",
+        "hs6": "100610",
+        "description": "- Rice in the husk (Paddy or rough) 75% or $345/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "10062000",
+        "hs6": "100620",
+        "description": "- Husked (Brown) rice 75% or $345/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "10063000",
+        "hs6": "100630",
+        "description": "- Semi-Milled or wholly milled rice whether or not polished or glazed 75% or $345/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "10064000",
+        "hs6": "100640",
+        "description": "- Broken Rice 75% or $345/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "11029010",
+        "hs6": "110290",
+        "description": "--- Rice flour 75% or $345/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011210",
+        "hs6": "170112",
+        "description": "--- Jaggery 100 % or $ 460/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011290",
+        "hs6": "170112",
+        "description": "--- Other 100 % or $ 460/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011310",
+        "hs6": "170113",
+        "description": "--- Jaggery 100 % or $ 460/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011390",
+        "hs6": "170113",
+        "description": "--- Other 100 % or $ 460/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011410",
+        "hs6": "170114",
+        "description": "--- Jaggery 100 % or $ 460/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17011490",
+        "hs6": "170114",
+        "description": "--- Other 100 % or $ 460/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17019100",
+        "hs6": "170191",
+        "description": "-- Containing added flavouring or colouring matter 100 % or $ 460/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17019910",
+        "hs6": "170199",
+        "description": "---Sugar for industrial use 100 % or $ 460/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      },
+      {
+        "national_code": "17019990",
+        "hs6": "170199",
+        "description": "--- Other 100 % or $ 460/MT whichever is higher",
+        "cause": "EXPLICIT_FREE",
+        "evidence": {
+          "free_or_zero_found": true,
+          "exempt_found": false,
+          "suspended_found": false,
+          "other_dd_field_found": false
+        }
+      }
+    ],
+    "examples": {
+      "EXPLICIT_FREE": [
+        {
+          "national_code": "04011000",
+          "hs6": "040110",
+          "description": "- Of a fat content, by weight, not exceeding1%",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04012000",
+          "hs6": "040120",
+          "description": "- Of a fat content, by weight, exceeding 1% but not exceeding 6%",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04015000",
+          "hs6": "040150",
+          "description": "- Of a fat content, by weight, exceeding 10%",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04021000",
+          "hs6": "040210",
+          "description": "- In powder, granules or other solid forms, of a fat content, by weight, not exceeding 1.5%",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04022100",
+          "hs6": "040221",
+          "description": "-- Not containing added sugar or other sweetening matter:",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04022900",
+          "hs6": "040229",
+          "description": "-- Other:",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04029100",
+          "hs6": "040291",
+          "description": "-- Not containing added sugar or other sweetening matter",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04029900",
+          "hs6": "040299",
+          "description": "-- Other:",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04032000",
+          "hs6": "040320",
+          "description": "-Yogurt",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04039000",
+          "hs6": "040390",
+          "description": "- Other",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04061000",
+          "hs6": "040610",
+          "description": "- Fresh (unripened or uncured) cheese, including whey cheese, and curd",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04062000",
+          "hs6": "040620",
+          "description": "- Grated or powdered cheese, of all kinds",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04063000",
+          "hs6": "040630",
+          "description": "- Processed cheese, not grated or powdered",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04064000",
+          "hs6": "040640",
+          "description": "- Blue-veined cheese and other cheese containing veins produced by Penicillium roqueforti",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "04069000",
+          "hs6": "040690",
+          "description": "- Other cheese",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "10059000",
+          "hs6": "100590",
+          "description": "- Other",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "10061000",
+          "hs6": "100610",
+          "description": "- Rice in the husk (paddy or rough)",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "10062000",
+          "hs6": "100620",
+          "description": "- Husked (brown) rice",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "10063000",
+          "hs6": "100630",
+          "description": "- Semi-milled or wholly milled rice, whether or not polished or glazed",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        },
+        {
+          "national_code": "10064000",
+          "hs6": "100640",
+          "description": "- Broken rice",
+          "cause": "EXPLICIT_FREE",
+          "evidence": {
+            "free_or_zero_found": true,
+            "exempt_found": false,
+            "suspended_found": false,
+            "other_dd_field_found": false
+          }
+        }
+      ]
+    },
+    "note": "Les causes sont documentaires; aucune cause n'est convertie en taux numérique."
+  },
+  "reconciliation_summary": {
+    "category_counts": {
+      "IDENTICAL": 0,
+      "ONLY_CANONICAL": 0,
+      "ONLY_CRAWLED": 0,
+      "RATE_DIFFERENCE": 5935,
+      "DESCRIPTION_DIFFERENCE": 0,
+      "NATIONAL_CODE_DIFFERENCE": 0,
+      "MISSING_RATE_CANONICAL": 5935,
+      "MISSING_RATE_CRAWLED": 43
+    },
+    "runtime_preference_confirmed": true
+  },
+  "declared_metadata_not_used_for_status": {
+    "effective_source_quality_present": false,
+    "primary_data_status_present": true,
+    "primary_reliability_present": true,
+    "ignored_for_quality_status": true
+  },
+  "coverage": {
+    "effective_lines": 5984,
+    "unique_national_codes": 5935,
+    "unique_hs6": 5604,
+    "parent_lines_in_primary_file": 5604,
+    "national_sub_positions_in_primary_file": 5984,
+    "chapters_present": 96,
+    "code_lengths": {
+      "8": 5984
+    }
+  },
+  "controls": {
+    "total_rows_audited": 5984,
+    "duplicate_codes": [
+      "04011000",
+      "04012000",
+      "04014000",
+      "04015000",
+      "04021000",
+      "04022100",
+      "04022900",
+      "04029100",
+      "04029900",
+      "04032000",
+      "04039000",
+      "04061000",
+      "04062000",
+      "04063000",
+      "04064000",
+      "04069000",
+      "10059000",
+      "10061000",
+      "10062000",
+      "10063000",
+      "10064000",
+      "11010000",
+      "11022000",
+      "11029010",
+      "17011210",
+      "17011290",
+      "17011310",
+      "17011390",
+      "17011410",
+      "17011490",
+      "17019100",
+      "17019910",
+      "17019990",
+      "52085110",
+      "52085210",
+      "52095110",
+      "52105110",
+      "52115110",
+      "52121510",
+      "52122510",
+      "55134110",
+      "55144110",
+      "62114210",
+      "62114310",
+      "62114910",
+      "63022100",
+      "63023100",
+      "63025100",
+      "63029100"
+    ],
+    "duplicate_code_count": 49,
+    "invalid_codes": [],
+    "invalid_code_count": 0,
+    "hs6_missing_count": 0,
+    "missing_descriptions": 0,
+    "missing_rates": 91,
+    "unparseable_rates": 0,
+    "specific_or_composite_rights_count": 0,
+    "specific_or_composite_examples": [],
+    "taxes_without_unit_count": 0,
+    "taxes_without_unit_examples": [],
+    "chapter_hs6_inconsistency_count": 0,
+    "chapter_hs6_inconsistency_examples": [],
+    "dates_missing": 5984,
+    "tax_types": {
+      "DD": 5941,
+      "EXCISE DUTY": 65,
+      "IMPORT DECLARATION FEE (IDF)": 5984,
+      "RAILWAY DEVELOPMENT LEVY (RDL)": 5984,
+      "TVA": 5984
+    },
+    "row_sources": {
+      "EAC CET 2022 (kra.go.ke)": 5984
+    },
+    "row_source_urls_count": 0
+  },
+  "sample_rows": [
+    {
+      "category": "agriculture",
+      "national_code": "01012100",
+      "hs6": "010121",
+      "description": "-- Pure-bred breeding animals",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0.0",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "IMPORT DECLARATION FEE (IDF)": {
+          "tax": "IMPORT DECLARATION FEE (IDF)",
+          "normalized_rate_raw": "3.5",
+          "normalized_rate_numeric": 3.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RAILWAY DEVELOPMENT LEVY (RDL)": {
+          "tax": "RAILWAY DEVELOPMENT LEVY (RDL)",
+          "normalized_rate_raw": "2.0",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "16.0",
+          "normalized_rate_numeric": 16.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "alimentation",
+      "national_code": "16010000",
+      "hs6": "160100",
+      "description": "Sausages and similar products, of meat, meat offal, blood or insects; food preparations based on these products.",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "35.0",
+          "normalized_rate_numeric": 35.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "IMPORT DECLARATION FEE (IDF)": {
+          "tax": "IMPORT DECLARATION FEE (IDF)",
+          "normalized_rate_raw": "3.5",
+          "normalized_rate_numeric": 3.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RAILWAY DEVELOPMENT LEVY (RDL)": {
+          "tax": "RAILWAY DEVELOPMENT LEVY (RDL)",
+          "normalized_rate_raw": "2.0",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "16.0",
+          "normalized_rate_numeric": 16.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "médicament",
+      "national_code": "30012000",
+      "hs6": "300120",
+      "description": "- Extracts of glands or other organs or of their secretions",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0.0",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "IMPORT DECLARATION FEE (IDF)": {
+          "tax": "IMPORT DECLARATION FEE (IDF)",
+          "normalized_rate_raw": "3.5",
+          "normalized_rate_numeric": 3.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RAILWAY DEVELOPMENT LEVY (RDL)": {
+          "tax": "RAILWAY DEVELOPMENT LEVY (RDL)",
+          "normalized_rate_raw": "2.0",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "16.0",
+          "normalized_rate_numeric": 16.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "textile",
+      "national_code": "50010000",
+      "hs6": "500100",
+      "description": "Silk-worm cocoons suitable for reeling.",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0.0",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "IMPORT DECLARATION FEE (IDF)": {
+          "tax": "IMPORT DECLARATION FEE (IDF)",
+          "normalized_rate_raw": "3.5",
+          "normalized_rate_numeric": 3.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RAILWAY DEVELOPMENT LEVY (RDL)": {
+          "tax": "RAILWAY DEVELOPMENT LEVY (RDL)",
+          "normalized_rate_raw": "2.0",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "16.0",
+          "normalized_rate_numeric": 16.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "machine",
+      "national_code": "84011000",
+      "hs6": "840110",
+      "description": "- Nuclear reactors",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0.0",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "IMPORT DECLARATION FEE (IDF)": {
+          "tax": "IMPORT DECLARATION FEE (IDF)",
+          "normalized_rate_raw": "3.5",
+          "normalized_rate_numeric": 3.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RAILWAY DEVELOPMENT LEVY (RDL)": {
+          "tax": "RAILWAY DEVELOPMENT LEVY (RDL)",
+          "normalized_rate_raw": "2.0",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "16.0",
+          "normalized_rate_numeric": 16.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "électronique",
+      "national_code": "85011000",
+      "hs6": "850110",
+      "description": "- Motors of an output not exceeding 37.5 W",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0.0",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "IMPORT DECLARATION FEE (IDF)": {
+          "tax": "IMPORT DECLARATION FEE (IDF)",
+          "normalized_rate_raw": "3.5",
+          "normalized_rate_numeric": 3.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RAILWAY DEVELOPMENT LEVY (RDL)": {
+          "tax": "RAILWAY DEVELOPMENT LEVY (RDL)",
+          "normalized_rate_raw": "2.0",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "16.0",
+          "normalized_rate_numeric": 16.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "véhicule",
+      "national_code": "87011000",
+      "hs6": "870110",
+      "description": "- Single axle tractors",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0.0",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "IMPORT DECLARATION FEE (IDF)": {
+          "tax": "IMPORT DECLARATION FEE (IDF)",
+          "normalized_rate_raw": "3.5",
+          "normalized_rate_numeric": 3.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RAILWAY DEVELOPMENT LEVY (RDL)": {
+          "tax": "RAILWAY DEVELOPMENT LEVY (RDL)",
+          "normalized_rate_raw": "2.0",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "16.0",
+          "normalized_rate_numeric": 16.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit chimique",
+      "national_code": "28011000",
+      "hs6": "280110",
+      "description": "- Chlorine",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "0.0",
+          "normalized_rate_numeric": 0.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "IMPORT DECLARATION FEE (IDF)": {
+          "tax": "IMPORT DECLARATION FEE (IDF)",
+          "normalized_rate_raw": "3.5",
+          "normalized_rate_numeric": 3.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RAILWAY DEVELOPMENT LEVY (RDL)": {
+          "tax": "RAILWAY DEVELOPMENT LEVY (RDL)",
+          "normalized_rate_raw": "2.0",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "16.0",
+          "normalized_rate_numeric": 16.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "matière première",
+      "national_code": "25010010",
+      "hs6": "250100",
+      "description": "--- Raw salt",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": "25.0",
+          "normalized_rate_numeric": 25.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "IMPORT DECLARATION FEE (IDF)": {
+          "tax": "IMPORT DECLARATION FEE (IDF)",
+          "normalized_rate_raw": "3.5",
+          "normalized_rate_numeric": 3.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RAILWAY DEVELOPMENT LEVY (RDL)": {
+          "tax": "RAILWAY DEVELOPMENT LEVY (RDL)",
+          "normalized_rate_raw": "2.0",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "16.0",
+          "normalized_rate_numeric": 16.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    },
+    {
+      "category": "produit exonéré ou à taux nul",
+      "national_code": "04015000",
+      "hs6": "040150",
+      "description": "- Of a fat content, by weight, exceeding 10%",
+      "taxes": {
+        "DD": {
+          "tax": "DD",
+          "normalized_rate_raw": null,
+          "normalized_rate_numeric": null,
+          "rate_type": "UNPARSED",
+          "rate_unit": null,
+          "rate_parse_status": "MISSING"
+        },
+        "IMPORT DECLARATION FEE (IDF)": {
+          "tax": "IMPORT DECLARATION FEE (IDF)",
+          "normalized_rate_raw": "3.5",
+          "normalized_rate_numeric": 3.5,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "RAILWAY DEVELOPMENT LEVY (RDL)": {
+          "tax": "RAILWAY DEVELOPMENT LEVY (RDL)",
+          "normalized_rate_raw": "2.0",
+          "normalized_rate_numeric": 2.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        },
+        "TVA": {
+          "tax": "TVA",
+          "normalized_rate_raw": "16.0",
+          "normalized_rate_numeric": 16.0,
+          "rate_type": "AD_VALOREM",
+          "rate_unit": null,
+          "rate_parse_status": "PARSED"
+        }
+      },
+      "source_comparison": "NOT_AVAILABLE",
+      "comparison_note": "Aucune archive officielle locale retrouvée."
+    }
+  ],
+  "source_comparison": {
+    "status": "NOT_AVAILABLE",
+    "official_lines_compared": 0,
+    "note": "Aucune copie officielle tarifaire archivée dans le dépôt; les dix lignes restent non comparées."
+  },
+  "quality_dimensions": {
+    "source": "UNVERIFIED",
+    "temporal_validity": "NOT_AVAILABLE",
+    "classification": "DOCUMENTED",
+    "taxes_and_levies": "PARTIAL",
+    "preference_and_origin": "PARTIAL",
+    "formalities": "NOT_AVAILABLE"
+  },
+  "overall_informative_status": "INFORMATIVE_PARTIAL",
+  "known_data_gaps": [
+    "Archive officielle tarifaire non retrouvée localement.",
+    "Date de publication et date d'effet documentées absentes.",
+    "Date d'effet juridiquement documentée absente.",
+    "Écart entre les lignes canoniques et crawled; les divergences restent en revue."
+  ],
+  "actions_required": [
+    "Archiver le document tarifaire de l'autorité déclarée sans remplacer le fichier actuel.",
+    "Comparer un échantillon de lignes et conserver les empreintes des documents.",
+    "Documenter la version SH et les dates de publication/effet.",
+    "Résoudre les divergences entre artefacts avant une utilisation documentaire plus forte."
+  ]
+}

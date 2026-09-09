@@ -1,0 +1,212 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-09-08",
+  "description": "Registre des sources officielles pour TIC, DA, et taxes nationales africaines. Chaque source est classée par type : gouvernemental, journal officiel, cabinet, organisation internationale, académique.",
+  "source_types": {
+    "governmental": "Site officiel du gouvernement (DGI, douanes, ministère)",
+    "journal_officiel": "Journal Officiel du pays (publication des lois de finances)",
+    "international_cabinet": "Cabinet de premier ordre (PwC, KPMG, Deloitte, EY) — réflexion de sources officielles",
+    "regional_org": "Organisation régionale (UEMOA, CEMAC, CEDEAO, EAC, SACU)",
+    "international_org": "Organisation internationale (Banque mondiale, FMI, BAD, ATAF, UNCTAD)",
+    "academic": "Université, institut de recherche, thèses"
+  },
+  "countries": {
+    "DZA": {
+      "taxes": ["TIC", "TAPT", "DPE", "TSV", "TSP", "T.PNEUS", "T.HUILES", "TPP", "TPI"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Algérie", "url": "http://www.mfdgi.gov.dz", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Ministère des Finances", "url": "http://www.mf.gov.dz", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Douanes Algérie (DGD)", "url": "https://www.douane.gov.dz", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "conformepro.dz (tarif douanier)", "url": "https://conformepro.dz/resources/tarif-douanier", "format": "HTML"},
+        {"type": "journal_officiel", "name": "Journal Officiel de la République Algérienne (JORADP)", "url": "https://www.joradp.dz", "format": "PDF"},
+        {"type": "international_cabinet", "name": "KPMG Algérie — Tax in Algeria", "url": "https://kpmg.com/dz", "format": "PDF/HTML"},
+        {"type": "international_cabinet", "name": "Deloitte ME — Doing Business in Algeria", "url": "https://www2.deloitte.com/me", "format": "PDF"}
+      ]
+    },
+    "MAR": {
+      "taxes": ["TIC", "DCT", "TPI"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Maroc", "url": "http://tax.gov.ma", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "ADII (Douanes Maroc)", "url": "https://www.douane.gov.ma", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Ministère des Finances Maroc", "url": "https://www.finances.gov.ma", "format": "HTML/PDF"},
+        {"type": "journal_officiel", "name": "Bulletin Officiel du Royaume du Maroc (BO)", "url": "http://www.sgg.gov.ma", "format": "PDF"},
+        {"type": "international_cabinet", "name": "PwC Maroc — Worldwide Tax Summaries", "url": "https://taxsummaries.pwc.com/morocco/corporate/other-taxes", "format": "HTML", "note": "Description sans taux chiffrés — voir CGI Maroc"},
+        {"type": "international_cabinet", "name": "PwC Maroc (local)", "url": "http://pwcmaroc.pwc.fr/", "format": "PDF"}
+      ]
+    },
+    "TUN": {
+      "taxes": ["DC", "FODEC", "TPE", "TLF", "TCA", "TMTS"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Tunisie (Jibaya)", "url": "https://www.jibaya.tn", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Ministère des Finances Tunisie", "url": "https://www.finances.gov.tn", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Douanes Tunisiennes", "url": "https://www.douane.gov.tn", "format": "HTML/PDF"},
+        {"type": "journal_officiel", "name": "Journal Officiel de la République Tunisienne (JORT)", "url": "http://www.iort.gov.tn", "format": "PDF"},
+        {"type": "international_cabinet", "name": "PwC Tunisie", "url": "https://taxsummaries.pwc.com/tunisia/corporate/other-taxes", "format": "HTML", "note": "Pas d'accise en Tunisie — DC (droit de consommation) déjà crawlé par scraper TUN"}
+      ]
+    },
+    "EGY": {
+      "taxes": ["TABLE_TAX", "HEALTH_INS", "TOBACCO_CHAMBER", "TEXTILE_CHAMBER", "LEATHER_CHAMBER"],
+      "sources": [
+        {"type": "governmental", "name": "Egyptian Tax Authority (ETA)", "url": "http://www.eta.gov.eg", "format": "HTML/Arabe"},
+        {"type": "governmental", "name": "Ministry of Finance Egypt", "url": "https://www.mof.gov.eg", "format": "HTML/Arabe"},
+        {"type": "governmental", "name": "Autorité des Douanes", "url": "https://www.customs.gov.eg", "format": "HTML/Arabe+JSON"},
+        {"type": "journal_officiel", "name": "Al-Waqa'i'a al-Misriyya (Journal Officiel Égyptien)", "url": "http://www.egypt.gov.eg", "format": "PDF/Arabe"},
+        {"type": "international_cabinet", "name": "PwC Egypt — Worldwide Tax Summaries", "url": "https://taxsummaries.pwc.com/egypt/corporate/other-taxes", "format": "HTML", "crawled": true, "excise_count": 9}
+      ]
+    },
+    "BEN": {
+      "taxes": ["TIC"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Bénin", "url": "http://www.impots.bj", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Douanes Bénin", "url": "http://www.douanes.bj", "format": "HTML"},
+        {"type": "governmental", "name": "Ministère de l'Économie et des Finances Bénin", "url": "http://www.finances.bj", "format": "HTML/PDF"},
+        {"type": "regional_org", "name": "Directive UEMOA sur droits d'accise/TIC", "url": "https://www.uemoa.int", "format": "PDF"},
+        {"type": "academic", "name": "droit-afrique.com — CGI Bénin", "url": "https://www.droit-afrique.com", "format": "HTML"}
+      ]
+    },
+    "SEN": {
+      "taxes": ["TIC"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Sénégal", "url": "http://www.impots.gouv.sn", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Douanes Sénégal", "url": "https://www.douanes.sn", "format": "HTML"},
+        {"type": "governmental", "name": "Ministère des Finances Sénégal", "url": "http://www.finances.gouv.sn", "format": "HTML/PDF"},
+        {"type": "journal_officiel", "name": "Journal Officiel du Sénégal", "url": "N/A", "format": "PDF"},
+        {"type": "international_cabinet", "name": "PwC Sénégal — Worldwide Tax Summaries", "url": "https://taxsummaries.pwc.com/senegal/corporate/other-taxes", "format": "HTML", "crawled": true, "excise_count": 39, "last_reviewed": "07 August 2026"},
+        {"type": "academic", "name": "droit-afrique.com — CGI Sénégal", "url": "https://www.droit-afrique.com", "format": "HTML"}
+      ]
+    },
+    "CIV": {
+      "taxes": ["DUS", "TIC"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Côte d'Ivoire", "url": "http://www.dgi.gouv.ci", "format": "HTML"},
+        {"type": "governmental", "name": "GUCE CIV", "url": "https://guce.gouv.ci", "format": "XLS/HTML"},
+        {"type": "governmental", "name": "Douanes CIV", "url": "http://www.douanes.ci", "format": "HTML"},
+        {"type": "governmental", "name": "Ministère des Finances CIV", "url": "http://www.finances.gouv.ci", "format": "HTML/PDF"},
+        {"type": "journal_officiel", "name": "Journal Officiel de Côte d'Ivoire", "url": "N/A", "format": "PDF"},
+        {"type": "international_cabinet", "name": "PwC CIV — Worldwide Tax Summaries", "url": "https://taxsummaries.pwc.com/ivory-coast/corporate/other-taxes", "format": "HTML", "crawled": true, "excise_count": 3, "last_reviewed": "11 March 2026"},
+        {"type": "academic", "name": "droit-afrique.com — CGI CIV", "url": "https://www.droit-afrique.com", "format": "HTML"}
+      ]
+    },
+    "CMR": {
+      "taxes": ["DA"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Cameroun", "url": "http://www.impots.cm", "format": "HTML/PDF", "note": "CGI 2025 sur page d'accueil"},
+        {"type": "governmental", "name": "Douanes Cameroun", "url": "http://www.douanes.cm", "format": "HTML"},
+        {"type": "governmental", "name": "MINFI Cameroun", "url": "http://www.minfi.gov.cm", "format": "HTML/PDF"},
+        {"type": "journal_officiel", "name": "Journal Officiel du Cameroun", "url": "N/A", "format": "PDF"},
+        {"type": "regional_org", "name": "Directive CEMAC n°10/99-CD droits d'accise", "url": "https://www.cemac.int", "format": "PDF"},
+        {"type": "academic", "name": "droit-afrique.com — CGI Cameroun", "url": "https://www.droit-afrique.com", "format": "HTML"}
+      ]
+    },
+    "BFA": {
+      "taxes": ["TIC"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Burkina Faso", "url": "http://www.impots.gov.bf", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Ministère des Finances Burkina Faso", "url": "http://www.finances.gov.bf", "format": "HTML/PDF"},
+        {"type": "journal_officiel", "name": "Journal Officiel du Burkina Faso (PATS)", "url": "N/A", "format": "PDF"},
+        {"type": "regional_org", "name": "Directive UEMOA droits d'accise", "url": "https://www.uemoa.int", "format": "PDF"},
+        {"type": "academic", "name": "droit-afrique.com — CGI Burkina Faso", "url": "https://www.droit-afrique.com", "format": "HTML"}
+      ]
+    },
+    "MLI": {
+      "taxes": ["TIC"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Mali", "url": "http://www.dgi.gouv.ml", "format": "HTML/PDF", "note": "Annexe Fiscale 2022 PDF avec taux TIC"},
+        {"type": "governmental", "name": "Douanes Mali", "url": "http://www.douanes.gouv.ml", "format": "HTML"},
+        {"type": "governmental", "name": "Ministère des Finances Mali", "url": "http://www.finances.gov.ml", "format": "HTML/PDF"},
+        {"type": "journal_officiel", "name": "Journal Officiel du Mali", "url": "N/A", "format": "PDF"},
+        {"type": "regional_org", "name": "Directive UEMOA droits d'accise", "url": "https://www.uemoa.int", "format": "PDF"},
+        {"type": "academic", "name": "droit-afrique.com — CGI Mali", "url": "https://www.droit-afrique.com", "format": "HTML"}
+      ]
+    },
+    "NER": {
+      "taxes": ["TIC"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Niger", "url": "http://www.impots.gouv.ne", "format": "HTML"},
+        {"type": "governmental", "name": "Douanes Niger", "url": "http://www.douanes.gov.ne", "format": "HTML"},
+        {"type": "journal_officiel", "name": "Journal Officiel du Niger", "url": "N/A", "format": "PDF"},
+        {"type": "regional_org", "name": "Directive UEMOA droits d'accise", "url": "https://www.uemoa.int", "format": "PDF"},
+        {"type": "academic", "name": "droit-afrique.com — CGI Niger", "url": "https://www.droit-afrique.com", "format": "HTML"}
+      ]
+    },
+    "TGO": {
+      "taxes": ["TIC", "TAF"],
+      "sources": [
+        {"type": "governmental", "name": "OTR Togo", "url": "http://www.otr.tg", "format": "HTML/PDF", "note": "Cahier Fiscal 2026 PDF 2.41MB"},
+        {"type": "governmental", "name": "Douanes Togo", "url": "http://www.douanes.tg", "format": "HTML"},
+        {"type": "journal_officiel", "name": "Journal Officiel du Togo", "url": "N/A", "format": "PDF"},
+        {"type": "regional_org", "name": "Directive UEMOA droits d'accise", "url": "https://www.uemoa.int", "format": "PDF"}
+      ]
+    },
+    "GAB": {
+      "taxes": ["DA"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Gabon", "url": "http://www.impots.gouv.ga", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Douanes Gabon", "url": "http://www.douanes.gabon.ga", "format": "HTML"},
+        {"type": "governmental", "name": "Ministère des Finances Gabon", "url": "http://www.finances.gouv.ga", "format": "HTML/PDF"},
+        {"type": "journal_officiel", "name": "Journal Officiel du Gabon", "url": "N/A", "format": "PDF"},
+        {"type": "regional_org", "name": "Directive CEMAC n°10/99-CD droits d'accise", "url": "https://www.cemac.int", "format": "PDF"},
+        {"type": "international_cabinet", "name": "PwC Gabon — Worldwide Tax Summaries", "url": "https://taxsummaries.pwc.com/gabon/corporate/other-taxes", "format": "HTML", "crawled": true, "excise_count": 17, "last_reviewed": "06 August 2026"}
+      ]
+    },
+    "COG": {
+      "taxes": ["DA"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Congo", "url": "http://www.impots-congo.com", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Douanes Congo", "url": "http://www.douanes-congo.com", "format": "HTML"},
+        {"type": "governmental", "name": "Ministère des Finances Congo", "url": "http://www.finances.gouv.cg", "format": "HTML/PDF", "note": "Filtre 'Code général des impôts' en documentation"},
+        {"type": "journal_officiel", "name": "Journal Officiel du Congo", "url": "N/A", "format": "PDF"},
+        {"type": "regional_org", "name": "Directive CEMAC n°10/99-CD droits d'accise", "url": "https://www.cemac.int", "format": "PDF"}
+      ]
+    },
+    "TCD": {
+      "taxes": ["DA"],
+      "sources": [
+        {"type": "governmental", "name": "DGI Tchad", "url": "http://www.dgi.gouv.td", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "Ministère des Finances Tchad", "url": "http://www.finances.gouv.td", "format": "HTML/PDF"},
+        {"type": "journal_officiel", "name": "Journal Officiel du Tchad", "url": "N/A", "format": "PDF"},
+        {"type": "regional_org", "name": "Directive CEMAC n°10/99-CD droits d'accise", "url": "https://www.cemac.int", "format": "PDF"},
+        {"type": "international_cabinet", "name": "PwC Tchad — Worldwide Tax Summaries", "url": "https://taxsummaries.pwc.com/chad/corporate/other-taxes", "format": "HTML", "crawled": true, "excise_count": 7, "last_reviewed": "12 August 2024"}
+      ]
+    },
+    "CAF": {
+      "taxes": ["DA"],
+      "sources": [
+        {"type": "governmental", "name": "Ministère des Finances RCA", "url": "http://www.finances.gouv.cf", "format": "HTML/PDF", "note": "Page 'La fiscalité en RCA' disponible"},
+        {"type": "governmental", "name": "DGI Centrafrique", "url": "http://www.impots.cf", "format": "HTML/PDF"},
+        {"type": "governmental", "name": "e-Douane Centrafrique", "url": "N/A", "format": "HTML"},
+        {"type": "journal_officiel", "name": "Journal Officiel de la RCA", "url": "N/A", "format": "PDF"},
+        {"type": "regional_org", "name": "Directive CEMAC n°10/99-CD droits d'accise", "url": "https://www.cemac.int", "format": "PDF"},
+        {"type": "academic", "name": "droit-afrique.com — CGI Centrafrique", "url": "https://www.droit-afrique.com", "format": "HTML"}
+      ]
+    }
+  },
+  "transversal_sources": [
+    {"type": "regional_org", "name": "Union Africaine (UA) — Traité ZLECAf", "url": "https://au.int/en/treaties/agreement-establishing-african-continental-free-trade-area", "format": "PDF/HTML", "note": "Accord établissant la ZLECAf — cadre juridique"},
+    {"type": "regional_org", "name": "Secrétariat de la ZLECAf (AfCFTA Secretariat)", "url": "https://www.afcfta.int", "format": "HTML/PDF", "note": "Tariff concessions, schedules de démantèlement, rules of origin,annexes"},
+    {"type": "regional_org", "name": "TRALAC (Trade Law Centre) — Publications ZLECAf", "url": "https://www.tralac.org/publications", "format": "PDF/HTML", "note": "Analyses juridiques ZLECAf, guides par pays, monitoring ratifications"},
+    {"type": "regional_org", "name": "UEMOA — Directives sur les droits d'accise/TIC", "url": "https://www.uemoa.int", "format": "PDF"},
+    {"type": "regional_org", "name": "CEMAC — Directive n°10/99-CD droits d'accise", "url": "https://www.cemac.int", "format": "PDF"},
+    {"type": "international_cabinet", "name": "PwC Worldwide Tax Summaries", "url": "https://taxsummaries.pwc.com", "format": "HTML", "crawled": true, "countries_covered": 7},
+    {"type": "academic", "name": "droit-afrique.com — CGI par pays", "url": "https://www.droit-afrique.com", "format": "HTML"},
+    {"type": "academic", "name": "IZF (Portail de l'investissement UE)", "url": "https://www.izf.net", "format": "HTML"},
+    {"type": "international_org", "name": "ATAF (African Tax Administration Forum)", "url": "https://ataftax.org/publications/", "format": "PDF/HTML"},
+    {"type": "international_org", "name": "Banque Mondiale — Fiscal Policy & Growth", "url": "https://www.worldbank.org/en/topic/fiscal-policy-and-growth", "format": "PDF/HTML"},
+    {"type": "international_org", "name": "FMI — Fiscal policy publications", "url": "https://www.imf.org/en/topics/fiscal-policy", "format": "PDF"},
+    {"type": "international_org", "name": "BAD — Africa Tax Outlook (co-édition ATAF)", "url": "https://www.afdb.org/en", "format": "PDF"},
+    {"type": "international_org", "name": "UNCTAD — Tax & development", "url": "https://unctad.org/topic/tax-and-development", "format": "PDF/HTML"}
+  ],
+  ],
+  "pwc_crawl_results": {
+    "crawled_at": "2026-09-08",
+    "countries": {
+      "SEN": {"excise_count": 39, "last_reviewed": "07 August 2026", "status": "crawled"},
+      "GAB": {"excise_count": 17, "last_reviewed": "06 August 2026", "status": "crawled"},
+      "EGY": {"excise_count": 9, "last_reviewed": "17 August 2026", "status": "crawled"},
+      "TCD": {"excise_count": 7, "last_reviewed": "12 August 2024", "status": "crawled"},
+      "CIV": {"excise_count": 3, "last_reviewed": "11 March 2026", "status": "crawled"},
+      "MAR": {"excise_count": 0, "last_reviewed": "30 April 2026", "status": "no_rates_published", "note": "PwC ne publie pas les taux — voir CGI Maroc (tax.gov.ma)"},
+      "TUN": {"excise_count": 0, "last_reviewed": "29 June 2026", "status": "no_excise", "note": "Pas d'accise en Tunisie — DC (droit de consommation) déjà crawlé"}
+    }
+  }
+}

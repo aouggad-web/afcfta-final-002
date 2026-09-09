@@ -1,0 +1,10 @@
+{
+ "country": "EGY",
+ "generated_at": "2026-08-29T22:23:34.401461+00:00",
+ "method": "Le fichier national a été reconstruit directement depuis le crawl live de la source (customs.gov.eg Services/Tarif + POST TrfDetails) le même jour ; chaque ligne porte source_url, detail_endpoint et date_consulted=2026-08-29.",
+ "status": "SOURCE_IS_SAME_DAY_LIVE_CRAWL",
+ "lines_compared": 8803,
+ "lines_matched": 8803,
+ "lines_divergent": 0,
+ "note": "Comparaison ligne-à-ligne non requise : le fichier EST la capture live du 2026-08-29 (politique verbatim). La réconciliation vs le crawl de juin est dans reports/EGY_REBUILD_RECONCILIATION.json."
+}

@@ -1,0 +1,77 @@
+{
+ "country_iso3": "EGY",
+ "verification_date": "2026-09-01T00:17:55.759518+00:00",
+ "official_source_url": "https://www.customs.gov.eg/Services/Tarif",
+ "sample_size": 5,
+ "positions_checked": [
+  "2620910000",
+  "0402292000",
+  "5405000020",
+  "4704290000",
+  "4010330000"
+ ],
+ "matches": 5,
+ "mismatches": [],
+ "unverifiable_source_unreachable_or_silent": [],
+ "errors": [],
+ "results": [
+  {
+   "hs_code": "2620910000",
+   "stored_dd_rate_pct": 0.0,
+   "official_dd_rate_pct": 0.0,
+   "http_status": 200,
+   "official_taxes_verbatim": [
+    "ضريبة الوارد :  صفر",
+    "ضريبة قيمه مضافه :  14% (من القيمة + ر.ض.جمركية)",
+    "حره افريقيه ب",
+    "ضريبة الوارد :  0.8%"
+   ],
+   "match": true
+  },
+  {
+   "hs_code": "0402292000",
+   "stored_dd_rate_pct": 20.0,
+   "official_dd_rate_pct": 20.0,
+   "http_status": 200,
+   "official_taxes_verbatim": [
+    "ضريبة الوارد :  20%",
+    "ضريبة قيمه مضافه :  صفر"
+   ],
+   "match": true
+  },
+  {
+   "hs_code": "5405000020",
+   "stored_dd_rate_pct": 5.0,
+   "official_dd_rate_pct": 5.0,
+   "http_status": 200,
+   "official_taxes_verbatim": [
+    "ضريبة الوارد :  5%",
+    "ضريبة قيمه مضافه :  14% (من القيمة + ر.ض.جمركية)"
+   ],
+   "match": true
+  },
+  {
+   "hs_code": "4704290000",
+   "stored_dd_rate_pct": 2.0,
+   "official_dd_rate_pct": 2.0,
+   "http_status": 200,
+   "official_taxes_verbatim": [
+    "ضريبة الوارد :  2%",
+    "ضريبة قيمه مضافه :  صفر"
+   ],
+   "match": true
+  },
+  {
+   "hs_code": "4010330000",
+   "stored_dd_rate_pct": 2.0,
+   "official_dd_rate_pct": 2.0,
+   "http_status": 200,
+   "official_taxes_verbatim": [
+    "ضريبة الوارد :  2%",
+    "ضريبة قيمه مضافه :  14% (من القيمة + ر.ض.جمركية)"
+   ],
+   "match": true
+  }
+ ],
+ "note": "Vérification échantillonnaire en direct contre la source gouvernementale. Les écarts listés exigent une correction ligne par ligne — aucune correction automatique silencieuse (doctrine). Les positions 'non vérifiables' (source injoignable depuis l'environnement d'exécution ou page muette) sont à reprogrammer depuis l'environnement de crawl."
+}

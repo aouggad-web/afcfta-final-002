@@ -1,0 +1,48 @@
+# Tests des endpoints Opportunités — extension VS Code "REST Client".
+# Démarre le backend (port 8000) puis clique "Send Request" au-dessus de chaque appel.
+
+@host = http://localhost:8000/api
+
+### Diagnostic OEC (à lancer en premier) — attendu: "reachable": true
+GET {{host}}/reports/oec-health
+
+### Diagnostic des sources du moteur
+GET {{host}}/reports/health
+
+### S3 — Besoin national + signal d'import observé (OEC)
+GET {{host}}/reports/national-need?hs_code=180100&country=NGA&with_observed_imports=true
+
+### Trouver des marchés (producteur) — la DEMANDE se remplit via OEC
+GET {{host}}/reports/market-seeking?hs_code=180100
+
+### S2 — Production → export direct (marchés classés)
+GET {{host}}/reports/direct-export?hs_code=1801&producer=CIV&top_k=5
+
+### S1 — Import intrants → production → export
+GET {{host}}/reports/transformation?input_hs_code=1801&input_origin=GHA&producer=CIV&finished_hs_code=1803&destination=NGA&input_value_usd=40000&finished_value_usd=70000
+
+### Rapport bilatéral ultra-fin
+GET {{host}}/reports/opportunity?hs_code=180100&origin=CIV&destination=NGA&goods_value_usd=50000&mode=ultra_fine
+
+### Profil macro d'un pays
+GET {{host}}/reports/macro/NGA
+
+### S4 — Meilleures opportunités d'IMPORTATION pour un pays (miroir de S2)
+GET {{host}}/reports/import-opportunities?country=DZA&top_k=6
+
+### S4 avec imports observés (OEC, canal partagé — 1 réponse cachée par pays)
+GET {{host}}/reports/import-opportunities?country=DZA&top_k=6&with_observed_imports=true
+
+# ── Exemple cajou : Guinée-Bissau → Algérie (docs/EXEMPLE_CAJOU_GNB.md) ──────
+
+### Cajou S2 — marchés classés pour le cajou brut (080131) de GNB
+GET {{host}}/reports/direct-export?hs_code=080131&producer=GNB&top_k=5
+
+### Cajou S3 — besoin national algérien
+GET {{host}}/reports/national-need?hs_code=080131&country=DZA
+
+### Cajou — bilatéral ultra-fin GNB → DZA (NPF 30 % : ZLECAf non activé pour GNB en Algérie)
+GET {{host}}/reports/opportunity?hs_code=080131&origin=GNB&destination=DZA&goods_value_usd=50000&mode=ultra_fine
+
+### Cajou S1 — brut GNB → décorticage local → export du décortiqué (080132)
+GET {{host}}/reports/transformation?input_hs_code=080131&input_origin=GNB&producer=CIV&finished_hs_code=080132&destination=DZA&input_value_usd=40000&finished_value_usd=70000

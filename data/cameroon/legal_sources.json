@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "country": "CMR",
+  "as_of": "2026-08-08",
+  "sources": [
+    {
+      "source_id": "CMR-DGI-CGI-2021",
+      "title": "Code Général des Impôts du Cameroun — Édition 2021 (édition officielle)",
+      "institution": "Direction Générale des Impôts (DGI) — République du Cameroun",
+      "legal_date": "2021-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://impots.cm/sites/default/files/documents/CGI%202021.pdf",
+      "local_file": "official/cmr-cgi-2021-art142-annexe2-extract.txt",
+      "sha256": "5fd88963855daf393e65a1b494ce6cf3d467fc6b33407ee2d23dbc45db8e0d55",
+      "source_document_sha256": "68d0e539f3a85d14af8a739417de15d66f30997f626a6b86e6e8d03a02c1d1fe",
+      "coverage": "TVA taux général 17,5% et taux zéro (Art. 142(1)a, (3), (4)); centimes additionnels communaux 10% (Art. 142(2)); droit d'accises — barème complet 50/30/25/12,5/5/2% (Art. 142(1)b) et affectation par position tarifaire (Art. 142(5)-(6)); droits spécifiques tabacs et boissons alcoolisées (Art. 142(7)-(8)); Annexe II liste des produits soumis aux droits d'accises avec positions tarifaires",
+      "status": "official_downloaded_extract",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "PDF source de 968 pages / 8,2 Mo dépassant la politique de poids du dépôt (plus lourd que le plus gros PDF Kenya archivé, 4,6 Mo). Archive limitée à l'extrait textuel des parties juridiquement opérantes (Article 142 et Annexe II), avec le SHA-256 du PDF complet enregistré sous source_document_sha256 pour vérification par re-téléchargement."
+    },
+    {
+      "source_id": "CMR-DGI-PORTAL-DOCUMENTATION-20260725",
+      "title": "Portail de documentation de la Direction Générale des Impôts",
+      "institution": "Direction Générale des Impôts (DGI) — République du Cameroun",
+      "legal_date": null,
+      "accessed_at": "2026-07-25",
+      "url": "https://www.impots.cm/fr/documentation",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "éditions successives du Code Général des Impôts; circulaires; formulaires",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Accessible (HTTP 200 vérifié 2026-07-25). À explorer pour localiser une édition du CGI postérieure à 2021 et les lois de finances annuelles subséquentes."
+    },
+    {
+      "source_id": "CMR-DOUANES-PORTAL-20260725",
+      "title": "Portail institutionnel de la Direction Générale des Douanes",
+      "institution": "Direction Générale des Douanes — République du Cameroun",
+      "legal_date": null,
+      "accessed_at": "2026-07-25",
+      "url": "https://www.douanes.cm/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "tarif douanier CEMAC; procédures; régimes économiques; formalités",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Le Cameroun applique le Tarif Extérieur Commun de la CEMAC, non encore archivé dans ce dépôt. Le TEC CEMAC est requis avant tout calcul douanier de bout en bout pour le Cameroun."
+    },
+    {
+      "source_id": "CMR-PECAE-DECRETS-2015-2021",
+      "title": "Communiqué ANOR référençant les décrets n°2015/1875/PM et n°2021/3306/PM instituant et étendant le PECAE (source secondaire, textes des décrets non lus)",
+      "institution": "Agence des Normes et de la Qualité (ANOR) / Primature du Cameroun",
+      "legal_date": "2021-05-31",
+      "accessed_at": "2026-08-08",
+      "url": "https://anor.cm/articles/tuv-rheinland-3eme-prestataire-mandate-par-le-gouvernement-du-cameroun-pour-les-operations-devaluation-de-la-conformite-des-produits-soumis-au-peca",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "PECAE — mandats Intertek/SGS/TÜV Rheinland, produits concernés, exemptions",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "notes": "Décrets identifiés via articles ANOR et presse économique (communiqué, pas le texte des décrets lui-même) ; textes primaires des décrets non archivés ce cycle."
+    },
+    {
+      "source_id": "CMR-PVI-INSTRUCTION-2016",
+      "title": "Guide de l'Importateur SGS Cameroun (novembre 2021), citant l'Instruction Ministérielle N°000625/MINFI/CAB et la Circulaire N°006024/MINFI/CAB du 30 novembre 2016 (source secondaire, textes MINFI non lus)",
+      "institution": "SGS Cameroun S.A. (citant le Ministère des Finances — MINFI — République du Cameroun)",
+      "legal_date": "2016-11-30",
+      "accessed_at": "2026-08-08",
+      "url": "https://www.sgs.com/fr-cm/-/media/SGSCorp/Documents/Corporate/Technical-Documents/Technical-Guidelines-and-Policies/Guide-des-Importateurs-Cameroun-FR.cdn.fr-cm.pdf",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "PVI (mandat SGS, seuil FOB, exemptions) et CIVIC (identification des véhicules importés, mandat SGS)",
+      "status": "source_pending_collection",
+      "verification_status": "PARTIAL",
+      "notes": "Référence légale citée dans le guide de l'importateur SGS (novembre 2021), pas le texte primaire MINFI lui-même ; texte primaire MINFI non archivé ce cycle. Ce guide est aussi la source de la mesure CIVIC."
+    },
+    {
+      "source_id": "CMR-CNCC-BESC-PORTAL",
+      "title": "Plateforme officielle BESC du Conseil National des Chargeurs du Cameroun (CNCC)",
+      "institution": "Conseil National des Chargeurs du Cameroun (CNCC)",
+      "legal_date": null,
+      "accessed_at": "2026-08-08",
+      "url": "https://besc.cncc.cm",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "BESC — autorité, plateforme, entrée en vigueur BESC 3.0",
+      "status": "source_pending_collection",
+      "verification_status": "UNVERIFIED",
+      "notes": "Base légale (arrêté n°00557/MINT du 11/07/2006) identifiée uniquement via source secondaire, non lue sur texte officiel primaire."
+    }
+  ]
+}

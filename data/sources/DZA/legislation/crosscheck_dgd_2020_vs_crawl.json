@@ -1,0 +1,2569 @@
+{
+  "title": "Croisement crawl conformepro.dz (2026-08-29) vs Tarif Douanier d'usage DGD (LF 2020)",
+  "date_consulted": "2026-08-29",
+  "pdf_source": "data/sources/DZA/legislation/tarif_d_usage_2020.pdf",
+  "pdf_rows_parsed": 898,
+  "results": {
+    "concordant": 848,
+    "divergent": 20,
+    "absent_from_crawl": 30,
+    "resolved": 20,
+    "open": 0
+  },
+  "note_divergences": "Toutes les divergences TVA (kits CKD 87.03) ont été résolues le 2026-08-29 par lecture des textes : TVA 19% en vigueur (art. 60 LFC 2020, JO n° 33 du 04/06/2020), le 9% du tarif imprimé 2020 étant antérieur. Le DD 'ex' imprimé en 2020 reste cohérent avec l'absence de bloc DD sur la page live. Aucune modification ultérieure de l'art. 60 LFC 2020 n'a été trouvée dans les LF 2022-2026.",
+  "divergences": [
+    {
+      "code": "8703241000",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 27
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.241000/collections-pour-montage-essence-3000-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703311000",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 27
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.311000/collections-pour-montage-diesel-1500-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703321000",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 28
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.321000/collections-pour-montage-diesel-1500-cm%C2%B3-2500-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703331000",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 28
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.331000/collections-pour-montage-diesel-2500-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703401100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 28
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.401100/collections-pour-montage-hev-essence-1000-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703402100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 28
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.402100/collections-pour-montage-hev-essence-1000-cm%C2%B3-1500-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703403110",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 29
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.403110/collections-pour-montage-hev-essence-1500-cm%C2%B3-1800-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703403120",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 29
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.403120/collections-pour-montage-hev-essence-1800-cm%C2%B3-3000-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703404100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 29
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.404100/collections-pour-montage-hev-essence-3000-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703501100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 29
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.501100/collections-pour-montage-hev-diesel-1500-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703502100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 30
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.502100/collections-pour-montage-hev-diesel-1500-cm%C2%B3-2500-cm%C2%B3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703503100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 30
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.503100/collections-destinees-aux-industries-de-montage",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703601100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 30
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.601100/collections-destinees-aux-industries-de-montage",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703602100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 30
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.602100/collections-destinees-aux-industries-de-montage",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703603110",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 31
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.603110/collections-destinees-aux-industries-de-montage-dune-cylindree-excedant-1500-cm3-mais-nexcedant-pas-1800-cm3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703603120",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 31
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.603120/collections-destinees-aux-industries-de-montage-dune-cylindree-excedant-1800-cm3-mais-nexcedant-pas-3000-cm3",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703604100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 31
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.604100/collection-destinees-aux-industries-de-montage",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703701100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 32
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.701100/collections-destinees-aux-industries-de-montage",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703702100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 32
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.702100/collections-destinees-aux-industries-de-montage",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    },
+    {
+      "code": "8703703100",
+      "type": "KIT_CKD_TVA",
+      "dgd_2020": {
+        "dd": 7,
+        "tva": 9,
+        "page": 32
+      },
+      "conformepro_live": {
+        "dd": null,
+        "tva": "19%"
+      },
+      "url": "https://conformepro.dz/resources/tarif-douanier/sous-position/87.03.703100/collections-destinees-aux-industries-de-montage",
+      "note": "Vérification live 2026-08-29 (ex. 87.03.241000) : la page source affiche TVA 19% et ne publie pas de bloc DD ; le tarif imprimé DGD 2020 porte DD 'ex' et TVA 9%. Conflit documenté, non arbitré.",
+      "resolution": {
+        "resolution": "RESOLU — TVA 19% en vigueur",
+        "legal_chain": [
+          {
+            "ref": "LFC 2020 — loi n° 20-07 du 12 Chaoual 1441 (4 juin 2020), art. 60, JO n° 33 du 04/06/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-33_lfc2020_loi_20-07.pdf",
+            "texte_cle": "Sont exemptés des droits de douane et de la taxe sur la valeur ajoutée, les matières premières importées ou acquises localement, ainsi que les composants acquis auprès de sous-traitants [...] De même que sont soumis au taux de 5% de droits de douane et au taux de 19% de la taxe sur la valeur ajoutée, tous les ensembles, sous-ensembles et accessoires, importés séparément ou groupés, par les opérateurs ayant atteint le taux d'intégration consigné dans le cahier des charges de leur filière, sur la base d'une liste quantitative annexée à la décision d'évaluation technique accordée par le ministre chargé de l'industrie."
+          },
+          {
+            "ref": "LF 2021 — loi n° 20-19 du 31/12/2020, art. 149 (modifiant l'art. 51 de la loi 99-11/LF 2000) et art. 150 (note complémentaire chapitres 73, 84, 85, 87), JO n° 83 du 31/12/2020",
+            "doc": "data/sources/DZA/legislation/JO_2020-83_loi_finances_2021.pdf",
+            "texte_cle": "Les Collections en kits « SKD » et « CKD » destinées aux entreprises auxquelles sont associés des établissements publics à caractère industriel et commercial relevant du secteur économique de l'Armée Nationale Populaire, dans le cadre des activités de production ou de montage de véhicules, sont exemptées de droits de douanes et de la taxe sur la valeur ajoutée. [...] L'admission dans les sous-positions relatives aux collections destinées aux industries de montage et aux collections dites CKD [...] est subordonnée aux conditions fixées par la réglementation en vigueur."
+          },
+          {
+            "ref": "LF 2022-2026 : aucune modification de l'art. 60 de la LFC 2020 (vérifié : seuls les art. 34/50/70 en 2022, 57 en 2023, 50 en 2025, 36/52 en 2026 ont été modifiés)",
+            "doc": "data/sources/DZA/legislation/JO_2021-100_loi_finances_2022.pdf + JO_2022-89_loi_finances_2023.pdf + loi_23-22_finances_2024.pdf + JO_2025_loi_finances_2025.pdf + JO_2026-88_loi_finances_2026.pdf"
+          }
+        ],
+        "conclusion": "La TVA de 9% portée par le Tarif Douanier d'usage imprimé (édition LF 2020, antérieure à juin 2020) est supplantée par l'art. 60 de la LFC 2020 : TVA 19% pour les ensembles, sous-ensembles et accessoires importés. La source live conformepro.dz (TVA 19%, pas de bloc DD) est cohérente avec ce texte. Les régimes dérogatoires (exemption DD+TVA pour les EPIC du secteur ANP — LF 2021 art. 149 ; exemption matières premières et DD 5% ensembles pour opérateurs agréés — LFC 2020 art. 60) sont conditionnels et ne modifient pas le taux générique de la ligne tarifaire."
+      },
+      "arbitrated_value": {
+        "tva": "19%",
+        "source": "conformepro.dz live — cohérent avec l'art. 60 LFC 2020"
+      }
+    }
+  ],
+  "absent_from_crawl_sample": [
+    {
+      "code": "8413820000",
+      "pdf_page": 8
+    },
+    {
+      "code": "8450909000",
+      "pdf_page": 14
+    },
+    {
+      "code": "8517121000",
+      "pdf_page": 18
+    },
+    {
+      "code": "8517129100",
+      "pdf_page": 18
+    },
+    {
+      "code": "8517129200",
+      "pdf_page": 18
+    },
+    {
+      "code": "8517129900",
+      "pdf_page": 18
+    },
+    {
+      "code": "8517629900",
+      "pdf_page": 19
+    },
+    {
+      "code": "8517701100",
+      "pdf_page": 19
+    },
+    {
+      "code": "8517701200",
+      "pdf_page": 19
+    },
+    {
+      "code": "8517701900",
+      "pdf_page": 19
+    },
+    {
+      "code": "8517702000",
+      "pdf_page": 19
+    },
+    {
+      "code": "8517703000",
+      "pdf_page": 19
+    },
+    {
+      "code": "8517704000",
+      "pdf_page": 19
+    },
+    {
+      "code": "8517705000",
+      "pdf_page": 19
+    },
+    {
+      "code": "8517709000",
+      "pdf_page": 19
+    },
+    {
+      "code": "8519500000",
+      "pdf_page": 20
+    },
+    {
+      "code": "8525801100",
+      "pdf_page": 21
+    },
+    {
+      "code": "8525801200",
+      "pdf_page": 21
+    },
+    {
+      "code": "8525801900",
+      "pdf_page": 21
+    },
+    {
+      "code": "8525809100",
+      "pdf_page": 21
+    },
+    {
+      "code": "8525809200",
+      "pdf_page": 21
+    },
+    {
+      "code": "8525809300",
+      "pdf_page": 21
+    },
+    {
+      "code": "8529909200",
+      "pdf_page": 24
+    },
+    {
+      "code": "8541401220",
+      "pdf_page": 25
+    },
+    {
+      "code": "8541401290",
+      "pdf_page": 25
+    },
+    {
+      "code": "8541402000",
+      "pdf_page": 25
+    },
+    {
+      "code": "8541409000",
+      "pdf_page": 25
+    },
+    {
+      "code": "8541500000",
+      "pdf_page": 25
+    },
+    {
+      "code": "8542390000",
+      "pdf_page": 25
+    },
+    {
+      "code": "8543704000",
+      "pdf_page": 25
+    }
+  ],
+  "absent_from_crawl_analysis": {
+    "date": "2026-08-29",
+    "total": 30,
+    "summary": {
+      "RESTRUCTURE_NATIONAL_DGD_2023_2024": 4,
+      "TRANSITION_SH2022": 26,
+      "NON_EXPLIQUE": 0
+    },
+    "conclusion": "Les 30 codes du Tarif imprimé 2020 absents du portail sont tous expliqués : 4 par les éclatements nationaux DGD de 2023/2024 (codes cités dans les tables de corrélation archivées) et 26 par la transition SH2017→SH2022 (successeurs vérifiés sur le portail). Aucun code manquant inexpliqué.",
+    "details": [
+      {
+        "code_tarif_2020": "8413820000",
+        "status": "RESTRUCTURE_NATIONAL_DGD_2023_2024",
+        "detail": "code cité dans les tables de corrélation DGD (note 559/2023 ou 4121/2024)",
+        "portail_meme_sh6": [
+          "8413821000",
+          "8413829000"
+        ],
+        "portail_meme_sh4": null,
+        "evidence": "code cité dans les tables de corrélation DGD archivées : correlation_amendements_2023.pdf (note 559/DGD/SP/D042/23) ou correlation_eclatements_2024.pdf (note 4121/DGD/SP/D042/23)",
+        "successeurs_sh2022_portail": [
+          "8413821000",
+          "8413829000"
+        ]
+      },
+      {
+        "code_tarif_2020": "8450909000",
+        "status": "RESTRUCTURE_NATIONAL_DGD_2023_2024",
+        "detail": "code cité dans les tables de corrélation DGD (note 559/2023 ou 4121/2024)",
+        "portail_meme_sh6": [
+          "8450901000",
+          "8450909100",
+          "8450909200",
+          "8450909300",
+          "8450909900"
+        ],
+        "portail_meme_sh4": null,
+        "evidence": "code cité dans les tables de corrélation DGD archivées : correlation_amendements_2023.pdf (note 559/DGD/SP/D042/23) ou correlation_eclatements_2024.pdf (note 4121/DGD/SP/D042/23)",
+        "successeurs_sh2022_portail": [
+          "8450901000",
+          "8450909100",
+          "8450909200",
+          "8450909300",
+          "8450909900"
+        ]
+      },
+      {
+        "code_tarif_2020": "8517121000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900"
+        ],
+        "successeurs_prefixes": [
+          "851713",
+          "851714"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517129100",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900"
+        ],
+        "successeurs_prefixes": [
+          "851713",
+          "851714"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517129200",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900"
+        ],
+        "successeurs_prefixes": [
+          "851713",
+          "851714"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517129900",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900"
+        ],
+        "successeurs_prefixes": [
+          "851713",
+          "851714"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517629900",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999"
+        ],
+        "portail_meme_sh4": null,
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517701100",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_prefixes": [
+          "851771",
+          "851777",
+          "851779"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517701200",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_prefixes": [
+          "851771",
+          "851777",
+          "851779"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517701900",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_prefixes": [
+          "851771",
+          "851777",
+          "851779"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517702000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_prefixes": [
+          "851771",
+          "851777",
+          "851779"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517703000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_prefixes": [
+          "851771",
+          "851777",
+          "851779"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517704000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_prefixes": [
+          "851771",
+          "851777",
+          "851779"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517705000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_prefixes": [
+          "851771",
+          "851777",
+          "851779"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8517709000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8517111000",
+          "8517112000",
+          "8517131000",
+          "8517139000",
+          "8517141000",
+          "8517149100",
+          "8517149200",
+          "8517149900",
+          "8517181000",
+          "8517189100",
+          "8517189900",
+          "8517611000",
+          "8517612000",
+          "8517619000",
+          "8517621100",
+          "8517621910",
+          "8517621990",
+          "8517622000",
+          "8517629100",
+          "8517629200",
+          "8517629300",
+          "8517629910",
+          "8517629920",
+          "8517629930",
+          "8517629940",
+          "8517629950",
+          "8517629960",
+          "8517629970",
+          "8517629980",
+          "8517629991",
+          "8517629999",
+          "8517691000",
+          "8517692000",
+          "8517693100",
+          "8517693200",
+          "8517694000",
+          "8517699000",
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_sh2022_portail": [
+          "8517711100",
+          "8517711200",
+          "8517711900",
+          "8517712000",
+          "8517791100",
+          "8517791200",
+          "8517791300",
+          "8517791400",
+          "8517791900",
+          "8517792000",
+          "8517793000",
+          "8517799100",
+          "8517799200",
+          "8517799300",
+          "8517799400",
+          "8517799900"
+        ],
+        "successeurs_prefixes": [
+          "851771",
+          "851777",
+          "851779"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8519500000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8519200000",
+          "8519301000",
+          "8519302000",
+          "8519811100",
+          "8519811200",
+          "8519811300",
+          "8519811910",
+          "8519811990",
+          "8519812100",
+          "8519812900",
+          "8519813100",
+          "8519813200",
+          "8519813910",
+          "8519813990",
+          "8519814100",
+          "8519814900",
+          "8519891000",
+          "8519892000",
+          "8519893000",
+          "8519899000"
+        ],
+        "successeurs_sh2022_portail": [
+          "8519811100",
+          "8519811200",
+          "8519811300",
+          "8519811910",
+          "8519811990",
+          "8519812100",
+          "8519812900",
+          "8519813100",
+          "8519813200",
+          "8519813910",
+          "8519813990",
+          "8519814100",
+          "8519814900",
+          "8519891000",
+          "8519892000",
+          "8519893000",
+          "8519899000"
+        ],
+        "successeurs_prefixes": [
+          "851981",
+          "851989"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8525801100",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8525501100",
+          "8525501900",
+          "8525502000",
+          "8525601000",
+          "8525602000",
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_sh2022_portail": [
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_prefixes": [
+          "852581",
+          "852582",
+          "852583",
+          "852589"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8525801200",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8525501100",
+          "8525501900",
+          "8525502000",
+          "8525601000",
+          "8525602000",
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_sh2022_portail": [
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_prefixes": [
+          "852581",
+          "852582",
+          "852583",
+          "852589"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8525801900",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8525501100",
+          "8525501900",
+          "8525502000",
+          "8525601000",
+          "8525602000",
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_sh2022_portail": [
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_prefixes": [
+          "852581",
+          "852582",
+          "852583",
+          "852589"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8525809100",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8525501100",
+          "8525501900",
+          "8525502000",
+          "8525601000",
+          "8525602000",
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_sh2022_portail": [
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_prefixes": [
+          "852581",
+          "852582",
+          "852583",
+          "852589"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8525809200",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8525501100",
+          "8525501900",
+          "8525502000",
+          "8525601000",
+          "8525602000",
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_sh2022_portail": [
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_prefixes": [
+          "852581",
+          "852582",
+          "852583",
+          "852589"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8525809300",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8525501100",
+          "8525501900",
+          "8525502000",
+          "8525601000",
+          "8525602000",
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_sh2022_portail": [
+          "8525811000",
+          "8525812000",
+          "8525821000",
+          "8525822000",
+          "8525831000",
+          "8525832000",
+          "8525891100",
+          "8525891200",
+          "8525891900",
+          "8525892100",
+          "8525892200"
+        ],
+        "successeurs_prefixes": [
+          "852581",
+          "852582",
+          "852583",
+          "852589"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8529909200",
+        "status": "RESTRUCTURE_NATIONAL_DGD_2023_2024",
+        "detail": "code cité dans les tables de corrélation DGD (note 559/2023 ou 4121/2024)",
+        "portail_meme_sh6": [
+          "8529901000",
+          "8529909110",
+          "8529909120",
+          "8529909130",
+          "8529909140",
+          "8529909150",
+          "8529909160",
+          "8529909210",
+          "8529909220",
+          "8529909230",
+          "8529909290"
+        ],
+        "portail_meme_sh4": null,
+        "evidence": "code cité dans les tables de corrélation DGD archivées : correlation_amendements_2023.pdf (note 559/DGD/SP/D042/23) ou correlation_eclatements_2024.pdf (note 4121/DGD/SP/D042/23)",
+        "successeurs_sh2022_portail": [
+          "8529901000",
+          "8529909110",
+          "8529909120",
+          "8529909130",
+          "8529909140",
+          "8529909150",
+          "8529909160",
+          "8529909210",
+          "8529909220",
+          "8529909230",
+          "8529909290"
+        ]
+      },
+      {
+        "code_tarif_2020": "8541401220",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8541101000",
+          "8541102000",
+          "8541103000",
+          "8541104000",
+          "8541105000",
+          "8541109000",
+          "8541210000",
+          "8541290000",
+          "8541300000",
+          "8541410000",
+          "8541420000",
+          "8541431000",
+          "8541432000",
+          "8541439100",
+          "8541439200",
+          "8541490000",
+          "8541510000",
+          "8541590000",
+          "8541601000",
+          "8541602000",
+          "8541609000",
+          "8541900000"
+        ],
+        "successeurs_sh2022_portail": [
+          "8541420000",
+          "8541431000",
+          "8541432000",
+          "8541439100",
+          "8541439200"
+        ],
+        "successeurs_prefixes": [
+          "854142",
+          "854143"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8541401290",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8541101000",
+          "8541102000",
+          "8541103000",
+          "8541104000",
+          "8541105000",
+          "8541109000",
+          "8541210000",
+          "8541290000",
+          "8541300000",
+          "8541410000",
+          "8541420000",
+          "8541431000",
+          "8541432000",
+          "8541439100",
+          "8541439200",
+          "8541490000",
+          "8541510000",
+          "8541590000",
+          "8541601000",
+          "8541602000",
+          "8541609000",
+          "8541900000"
+        ],
+        "successeurs_sh2022_portail": [
+          "8541420000",
+          "8541431000",
+          "8541432000",
+          "8541439100",
+          "8541439200"
+        ],
+        "successeurs_prefixes": [
+          "854142",
+          "854143"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8541402000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8541101000",
+          "8541102000",
+          "8541103000",
+          "8541104000",
+          "8541105000",
+          "8541109000",
+          "8541210000",
+          "8541290000",
+          "8541300000",
+          "8541410000",
+          "8541420000",
+          "8541431000",
+          "8541432000",
+          "8541439100",
+          "8541439200",
+          "8541490000",
+          "8541510000",
+          "8541590000",
+          "8541601000",
+          "8541602000",
+          "8541609000",
+          "8541900000"
+        ],
+        "successeurs_sh2022_portail": [
+          "8541420000",
+          "8541431000",
+          "8541432000",
+          "8541439100",
+          "8541439200"
+        ],
+        "successeurs_prefixes": [
+          "854142",
+          "854143"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8541409000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8541101000",
+          "8541102000",
+          "8541103000",
+          "8541104000",
+          "8541105000",
+          "8541109000",
+          "8541210000",
+          "8541290000",
+          "8541300000",
+          "8541410000",
+          "8541420000",
+          "8541431000",
+          "8541432000",
+          "8541439100",
+          "8541439200",
+          "8541490000",
+          "8541510000",
+          "8541590000",
+          "8541601000",
+          "8541602000",
+          "8541609000",
+          "8541900000"
+        ],
+        "successeurs_sh2022_portail": [
+          "8541420000",
+          "8541431000",
+          "8541432000",
+          "8541439100",
+          "8541439200"
+        ],
+        "successeurs_prefixes": [
+          "854142",
+          "854143"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8541500000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [],
+        "portail_meme_sh4": [
+          "8541101000",
+          "8541102000",
+          "8541103000",
+          "8541104000",
+          "8541105000",
+          "8541109000",
+          "8541210000",
+          "8541290000",
+          "8541300000",
+          "8541410000",
+          "8541420000",
+          "8541431000",
+          "8541432000",
+          "8541439100",
+          "8541439200",
+          "8541490000",
+          "8541510000",
+          "8541590000",
+          "8541601000",
+          "8541602000",
+          "8541609000",
+          "8541900000"
+        ],
+        "successeurs_sh2022_portail": [
+          "8541510000",
+          "8541590000"
+        ],
+        "successeurs_prefixes": [
+          "854151",
+          "854159"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      },
+      {
+        "code_tarif_2020": "8542390000",
+        "status": "RESTRUCTURE_NATIONAL_DGD_2023_2024",
+        "detail": "code cité dans les tables de corrélation DGD (note 559/2023 ou 4121/2024)",
+        "portail_meme_sh6": [
+          "8542391000",
+          "8542399000"
+        ],
+        "portail_meme_sh4": null,
+        "evidence": "code cité dans les tables de corrélation DGD archivées : correlation_amendements_2023.pdf (note 559/DGD/SP/D042/23) ou correlation_eclatements_2024.pdf (note 4121/DGD/SP/D042/23)",
+        "successeurs_sh2022_portail": [
+          "8542391000",
+          "8542399000"
+        ]
+      },
+      {
+        "code_tarif_2020": "8543704000",
+        "status": "TRANSITION_SH2022",
+        "detail": "code SH2017 absent du portail (SH2022) ; structure SH2022 publiée par le portail sous la même position",
+        "portail_meme_sh6": [
+          "8543701000",
+          "8543702000",
+          "8543703000",
+          "8543705000",
+          "8543706000",
+          "8543707000",
+          "8543708000",
+          "8543709000"
+        ],
+        "portail_meme_sh4": null,
+        "successeurs_sh2022_portail": [
+          "8543701000",
+          "8543702000",
+          "8543703000",
+          "8543705000",
+          "8543706000",
+          "8543707000",
+          "8543708000",
+          "8543709000"
+        ],
+        "successeurs_prefixes": [
+          "854370"
+        ],
+        "evidence": "code de nomenclature SH2017 (Tarif imprimé 2020) remplacé par la révision SH 2022 ; le portail conformepro.dz publie la structure SH2022 correspondante (successeurs listés)"
+      }
+    ]
+  }
+}

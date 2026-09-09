@@ -1,0 +1,7 @@
+{
+ "iso3": "TZA",
+ "currency": "TZS",
+ "levy_tables": [],
+ "general_levy_tables": [],
+ "gazette_register": "tza_gazette_register.json"
+}

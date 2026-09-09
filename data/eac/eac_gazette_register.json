@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-07-24",
+  "coverage_complete": false,
+  "gazettes": [
+    {
+      "reference": "EAC Gazette Vol. AT 1 No. 19",
+      "date": "2025-06-30",
+      "territory": "EAC; Kenya",
+      "measure_types": ["STAY_OF_APPLICATION", "DUTY_REMISSION", "EAC_CET_AMENDMENT"],
+      "official_url": "https://www.eac.int/documents?controller=download&file=6d9a30be-8655-479c-a5e3-bc5ed0db5c3d&name=EAC+Vol+AT+1+NO+19+JUNE+2025.pdf&task=download.file",
+      "official_mirror_url": null,
+      "archive_path": "data/sources/eac/official/EAC_Vol_AT_1_No_19_2025-06-30.pdf",
+      "sha256": "a0eba597d0865ad6bd0d89b2dabdddcf9fe3fe192d05f4c4345185fd0733a4b5",
+      "access_status": "DOWNLOADED_OFFICIAL",
+      "extraction_status": "PARTIAL_KENYA_PRIORITY",
+      "validation_status": "OFFICIAL_HASHED",
+      "tariff_lines_extracted": 11,
+      "priority": "HISTORICAL_HIGH"
+    },
+    {
+      "reference": "EAC Gazette Vol. AT 1 No. 26",
+      "date": "2025-08-14",
+      "territory": "EAC; Kenya and other Partner States",
+      "measure_types": ["CORRIGENDUM", "DUTY_REMISSION"],
+      "official_url": "https://www.eac.int/documents?controller=download&file=8539eff1-59e7-4f23-b714-4f9e168850c2&name=EAC+Vol+AT+1+NO+26+AUGUST+2025.pdf&task=download.file",
+      "official_mirror_url": null,
+      "archive_path": "data/sources/eac/official/EAC_Vol_AT_1_No_26_2025-08-14.pdf",
+      "sha256": "1ce290fca48b0d5defe38f4024d9f852756d3b4fd425e610e9889a812b6dbf47",
+      "access_status": "DOWNLOADED_OFFICIAL",
+      "extraction_status": "REVIEWED_NO_KENYA_LINE_INTEGRATED",
+      "validation_status": "OFFICIAL_HASHED",
+      "tariff_lines_extracted": 0,
+      "priority": "HISTORICAL_MEDIUM"
+    },
+    {
+      "reference": "EAC Gazette Vol. AT 1 No. 16",
+      "date": "2026-06-30",
+      "territory": "EAC; Kenya, Tanzanie, Ouganda, Rwanda, Burundi (extraction partielle)",
+      "measure_types": ["STAY_OF_APPLICATION", "DUTY_REMISSION", "EAC_CET_AMENDMENT"],
+      "official_url": "https://www.eac.int/documents?controller=download&file=a3c7fa5a-b765-48ed-befa-b6b65bf5b3cc&name=EAC+Vol.+AT+1+NO.+16+JUNE+2026.pdf.pdf&task=download.file",
+      "official_mirror_url": null,
+      "archive_path": "data/sources/eac/official/EAC_Vol_AT_1_No_16_2026-06-30.pdf",
+      "sha256": "555b8fdd7cc817ae5f729762913c5f8205e503a28170bad86a8a0f66e4c93907",
+      "access_status": "DOWNLOADED_OFFICIAL",
+      "extraction_status": "PARTIAL_EAC_BLOC",
+      "extraction_note": "Legal Notice EAC/160/2026, Table I : 325 lignes au total. 15 lignes Kenya extraites (priorité initiale) + 12 lignes Tanzanie/Ouganda/Rwanda/Burundi extraites (lignes 1-11 et 320, disposant d'un code SH explicite et non ambiguës — dont 2 exclues, lignes 1-2, car sans code SH, de nature procédurale). ~296 lignes restantes de la Table I, et les Tables II/III (spécifiques à l'Ouganda et au Kenya) non extraites.",
+      "validation_status": "OFFICIAL_HASHED",
+      "tariff_lines_extracted": 27,
+      "priority": "CURRENT_CRITICAL"
+    },
+    {
+      "reference": "EAC Gazette publications not yet acquired individually through 2026-07-24",
+      "date": null,
+      "territory": "EAC; Kenya",
+      "measure_types": ["ALL_OVERRIDE_TYPES"],
+      "official_url": "https://www.eac.int/documents/category/gazettes",
+      "official_mirror_url": null,
+      "archive_path": null,
+      "sha256": null,
+      "access_status": "SOURCE_PENDING",
+      "extraction_status": "NOT_EXTRACTED",
+      "validation_status": "GAP",
+      "tariff_lines_extracted": 0,
+      "priority": "CURRENT_CRITICAL"
+    }
+  ]
+}

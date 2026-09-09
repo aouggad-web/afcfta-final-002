@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "country": "COD",
+  "as_of": "2026-07-25",
+  "vat_rates": [
+    {
+      "record_id": "COD-VAT-RATE-STANDARD-20120101",
+      "legal_product_description": "Taux de la taxe sur la valeur ajoutée applicable aux opérations imposables, y compris les importations.",
+      "normalized_product_description": "standard rate of value-added tax on taxable operations, including imports.",
+      "rate": "16%",
+      "rate_basis": "customs value plus duty (import); consideration (domestic)",
+      "effective_from": "2012-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "COD-LEGANET-OL-10-001-2010-TVA",
+      "legal_reference": "Ordonnance-loi n° 10/001 du 20 août 2010 portant institution de la Taxe sur la Valeur Ajoutée, Article 35, alinéa 1er : \"Le taux de la taxe sur la valeur ajoutée est fixé à 16 %.\" Entrée en vigueur effective le 1er janvier 2012.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ],
+  "vat_exemptions": [],
+  "vat_zero_rated": [
+    {
+      "record_id": "COD-VAT-ZERO-EXPORTS-20120101",
+      "legal_product_description": "Exportations de produits taxables et opérations assimilées.",
+      "normalized_product_description": "exports of taxable products and assimilated operations.",
+      "rate": "0%",
+      "effective_from": "2012-01-01",
+      "effective_to": null,
+      "legal_status": "IN_FORCE_AS_OF_CONSOLIDATION",
+      "supersedes_record_id": null,
+      "source_id": "COD-LEGANET-OL-10-001-2010-TVA",
+      "legal_reference": "Ordonnance-loi n° 10/001 du 20 août 2010, Article 35, alinéa 2 : taux zéro sur les exportations.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "hs_codes_explicit": []
+    }
+  ]
+}

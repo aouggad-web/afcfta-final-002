@@ -1,0 +1,20 @@
+[flake8]
+# Minimal blocking gate: real-bug codes only.
+#   E9  — runtime/syntax errors
+#   F63 — broken comparisons / assertion mistakes
+#   F7  — misplaced statements (break/continue/return outside scope, ...)
+#   F82 — undefined names (latent NameError)
+# Style and import-hygiene codes (F401 unused imports, F541 empty f-strings,
+# E501 line length, ...) are intentionally NOT enforced yet — they are tracked
+# as a separate progressive-cleanup effort to avoid a "red wall" on day one.
+select = E9,F63,F7,F82
+max-line-length = 100
+exclude =
+    .git,
+    __pycache__,
+    node_modules,
+    build,
+    dist,
+    .venv,
+    venv,
+    frontend

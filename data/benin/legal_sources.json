@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "country": "BEN",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "BEN-DGI-CGI-2025",
+      "title": "Code Général des Impôts (General Tax Code) — Edition 2025",
+      "institution": "Direction Générale des Impôts (DGI) — République du Bénin",
+      "legal_date": "2025-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.impots.bj/code-general-impots",
+      "local_file": "official/ben-cgi-2025.pdf",
+      "sha256": "c34a3539c25e4aab577508a2e7e95076360b2ebca6cc2403026d315805f4b0ba",
+      "coverage": "VAT standard rate (18%); reduced rates; exemptions; zero-rated supplies; import VAT",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "PDF 1.1 MB, downloaded 2026-07-25 from official DGI portal. Consolidated text effective 2025. VAT standard rate at Article 241. Excise duties not extracted in this cycle."
+    },
+    {
+      "source_id": "BEN-DOUANES-TARIFF-2026",
+      "title": "Customs Tariff Guide 2026",
+      "institution": "Direction des Douanes — République du Bénin",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.douanes.bj/tarif",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Awaiting confirmation of public accessibility and consolidated text availability."
+    }
+  ]
+}

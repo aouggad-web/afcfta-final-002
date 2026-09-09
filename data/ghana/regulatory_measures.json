@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "country": "GHA",
+  "as_of": "2026-08-08",
+  "measure_type": "import_regulatory_compliance",
+  "notes": "Premier lot réglementaire Ghana : formalités et contrôles obligatoires à l'importation, distincts des taux fiscaux (vat_measures.json). Deux institutions distinctes portent des acronymes proches : la Ghana Standards Authority (normalisation/conformité) et la Ghana Shippers' Authority (transport maritime/chargeurs) — ne pas les confondre. Le régime historique d'inspection à destination (GCNet/West Blue/BIVAC/Webb Fontaine/Ghana Link) a cessé le 1er juin 2020, remplacé par ICUMS opéré par Ghana Link Network Services. Le programme EasyPASS (conformité produits) a été repris en gestion directe par la Ghana Standards Authority depuis le 1er juillet 2026, écartant Bureau Veritas ; le statut d'Intertek après cette date n'est pas confirmé. Le Smart Port Note (équivalent CTN, Ghana Shippers' Authority / IOMLI) a été reporté sine die depuis le 20 janvier 2026 et n'est PAS en vigueur.",
+  "regulatory_measures": [
+    {
+      "record_id": "GHA-GRA-ICUMS",
+      "measure_name": "Integrated Customs Management System (ICUMS)",
+      "measure_category": "single_window",
+      "scope": "Plateforme électronique intégrée de dédouanement (déclarations, paiements, gestion des risques, valorisation, classement) opérée pour le compte de la Ghana Revenue Authority (GRA) — Division des Douanes.",
+      "products": "Toutes importations/exportations dédouanées au Ghana.",
+      "transport": "Tous modes.",
+      "conditions": "En fonctionnement depuis le 1er juin 2020, remplaçant le système antérieur (GCMS, opéré par GCNet et West Blue Consulting, dont les activités ont cessé à cette date).",
+      "exemptions": "NOT_AVAILABLE",
+      "mandated_actors": [
+        {
+          "actor_name": "Ghana Link Network Services Ltd (GLNS)",
+          "actor_type": "TECHNICAL_OPERATOR",
+          "legal_status": "Prestataire technique privé mandaté par contrat gouvernemental — acteur d'exécution technique, sans pouvoir réglementaire propre.",
+          "mandating_authority": "Ministère du Commerce et de l'Industrie, pour le compte de la Ghana Revenue Authority (GRA).",
+          "mission": "Fourniture et exploitation du système intégré de facilitation des échanges et de gestion douanière (ICUMS, plateforme UNIPASS), y compris les scanners non intrusifs aux principaux points d'entrée/sortie.",
+          "mandate_basis": "Contrat signé le 29 mars 2018 entre le Ministère du Commerce et de l'Industrie et Ghana Link Services ; prise en charge effective des opérations le 1er juin 2020.",
+          "mandate_status": "CONFIRMED_UNDATED_END",
+          "mandate_status_notes": "Mandat confirmé actif au moins jusqu'en 2025 (article GRA mentionnant un nouveau centre de données ICUMS) ; aucune date d'expiration de contrat trouvée.",
+          "mandate_duration": "Depuis le 1er juin 2020 ; échéance non trouvée.",
+          "mandate_evidence": [
+            {
+              "date": "2026-08-08",
+              "title": "ICUMS",
+              "publisher": "Ghana Revenue Authority (GRA)",
+              "url": "https://gra.gov.gh/customs/icums/"
+            }
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Numéro de référence unique de cargaison (Unique Consignment Reference, UCR).",
+          "verification_status": "PARTIAL",
+          "pending_primary_archive": true,
+          "notes": "Base légale précise (texte de loi ou décret fondant ICUMS) non trouvée dans les sources consultées."
+        }
+      ],
+      "documents": [
+        "Unique Consignment Reference (UCR)"
+      ],
+      "authority": "Ghana Revenue Authority (GRA), Division des Douanes.",
+      "platform": "https://external.unipassghana.com/login/login.do",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "GHA-GRA-ICUMS-PORTAL",
+      "legal_reference": "Accord gouvernemental du 29 mars 2018 (Ministère du Commerce et de l'Industrie / Ghana Link Services) — base légale précise non trouvée.",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "DOCUMENTED"
+    },
+    {
+      "record_id": "GHA-GSA-EASYPASS",
+      "measure_name": "EasyPASS — Programme de vérification de conformité à l'importation",
+      "measure_category": "conformity_assessment",
+      "scope": "Contrôle de conformité obligatoire de certaines catégories de produits importés, sanctionné par un Certificat de Conformité (CoC/certificat EasyPASS) exigé au dédouanement.",
+      "products": "12 catégories publiées par la GSA : jouets, équipements électroniques, produits chimiques, appareils mécaniques et à gaz, papier, mobilier, matériaux de construction, carburants, textiles, verrerie, équipements miniers, certains produits d'occasion (vêtements/chaussures usagés).",
+      "transport": "Maritime (programme de vérification pré-embarquement).",
+      "conditions": "Depuis le 1er juillet 2026 (date d'expédition), la Ghana Standards Authority (GSA) gère directement la délivrance de tous les certificats EasyPASS ; les demandes sont soumises directement à la GSA, sans intermédiaire privé.",
+      "exemptions": "NOT_AVAILABLE",
+      "mandated_actors": [
+        {
+          "actor_name": "Bureau Veritas",
+          "actor_type": "TECHNICAL_OPERATOR",
+          "legal_status": "Ancien prestataire privé mandaté jusqu'au 30 juin 2026 — n'a plus de rôle dans le programme depuis le 1er juillet 2026, classé opérateur technique historique.",
+          "mandating_authority": "Ghana Standards Authority (GSA).",
+          "mission": "Vérification de conformité des produits importés pour le compte de la GSA (jusqu'au 30 juin 2026).",
+          "mandate_basis": "Mandaté depuis juillet 2019 jusqu'au 30 juin 2026 (avis GSA de transition, mai 2026).",
+          "mandate_status": "TERMINATED",
+          "mandate_status_notes": "Cessation confirmée par la GSA elle-même (clarification officielle de juillet 2026) et par Bureau Veritas/Verigates (annonce de sa propre sortie du programme) — mandat terminé au 1er juillet 2026, jamais présenté comme actif après cette date.",
+          "mandate_duration": "Juillet 2019 au 30 juin 2026.",
+          "mandate_evidence": [
+            {
+              "date": "2026-07-01",
+              "title": "GSA, GUTA Clarify New EasyPASS Directive",
+              "publisher": "Ghana Standards Authority (GSA)",
+              "url": "https://gsa.gov.gh/2026/07/gsa-guta-clarify-new-easypass-directive/"
+            },
+            {
+              "date": "2026-07-01",
+              "title": "Ghana — EasyPass Program Transition to Destination-Based Control",
+              "publisher": "Bureau Veritas / Verigates",
+              "url": "https://verigates.bureauveritas.com/news/ghana-easypass-program-transition-destination-based-control"
+            }
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Certificat de Conformité (CoC/EasyPASS), jusqu'au 30 juin 2026.",
+          "verification_status": "DOCUMENTED",
+          "pending_primary_archive": true,
+          "notes": ""
+        },
+        {
+          "actor_name": "Intertek",
+          "actor_type": "TECHNICAL_OPERATOR",
+          "legal_status": "Ancien prestataire privé mandaté depuis juin 2019 — statut après le 1er juillet 2026 non confirmé par une source officielle.",
+          "mandating_authority": "Ghana Standards Authority (GSA).",
+          "mission": "Vérification de conformité des produits importés pour le compte de la GSA.",
+          "mandate_basis": "Nommé en juin 2019 par le Conseil d'administration de la GSA.",
+          "mandate_status": "UNVERIFIED",
+          "mandate_status_notes": "La GSA ne mentionne pas explicitement le sort d'Intertek dans sa clarification de juillet 2026 sur la reprise en direct du programme — statut post-juillet 2026 non confirmé, ni présenté comme actif ni comme terminé par une source primaire.",
+          "mandate_duration": "Depuis juin 2019 ; statut après le 1er juillet 2026 non confirmé.",
+          "mandate_evidence": [
+            {
+              "date": "2026-08-08",
+              "title": "Conformity Assessment Program EasyPASS for Exports to Ghana",
+              "publisher": "Intertek",
+              "url": "https://www.intertek.com/government/product-conformity/ghana/"
+            }
+          ],
+          "authorized_fees": null,
+          "authorized_fees_status": "NOT_AVAILABLE",
+          "delivered_document": "Certificat de Conformité (CoC/EasyPASS), statut actuel non confirmé.",
+          "verification_status": "UNVERIFIED",
+          "pending_primary_archive": true,
+          "notes": ""
+        }
+      ],
+      "documents": [
+        "Certificat de Conformité (CoC/EasyPASS)"
+      ],
+      "authority": "Ghana Standards Authority (GSA), sous le Standards Authority Act, 1973.",
+      "platform": "https://gsa.gov.gh/noeasy-pass/",
+      "fees": null,
+      "fees_status": "NOT_AVAILABLE",
+      "source_id": "GHA-GSA-EASYPASS-PORTAL",
+      "legal_reference": "Standards Authority Act, 1973 (compétence générale de la GSA en évaluation de la conformité) ; aucun texte réglementaire spécifique nommant EasyPASS identifié.",
+      "verification_status": "PARTIAL",
+      "pending_primary_archive": true,
+      "hs_codes_explicit": [],
+      "mandated_actor_status": "NOT_APPLICABLE"
+    }
+  ]
+}

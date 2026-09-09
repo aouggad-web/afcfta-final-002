@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "country": "MLI",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "MLI-DGI-CGI",
+      "title": "Code Général des Impôts du Mali",
+      "institution": "Direction Générale des Impôts (DGI Mali)",
+      "legal_date": "2026-07-25",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.dgi.gouv.ml/CGI/",
+      "local_file": "official/mli-dgi-cgi.html",
+      "sha256": "32cbd24e5cbd327d8a6c1e6b327cd62de5ffda541aa1f33c80bdb52012b737f5",
+      "coverage": "VAT rates, standard and reduced (Article 229)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Downloaded directly from the official DGI Mali portal (primary government source). Article 229 cites Loi n°11-078 as its amending instrument; the consolidation date of the portal page itself is not separately stated."
+    },
+    {
+      "source_id": "MLI-DOUANES-TARIFF-2026",
+      "title": "Customs Tariff Guide 2026",
+      "institution": "Mali Customs Authority (Direction Nationale des Douanes)",
+      "legal_date": "2026-01-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.douanes.mali.org/tarif",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "customs duty rates; import procedures; VAT treatment at border; formalities",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Not downloaded, not archived, not used for any rate in this collection."
+    },
+    {
+      "source_id": "MLI-FINANCE-LAW-2026",
+      "title": "Finance Law 2026 (Loi de Finances 2026)",
+      "institution": "Ministry of Finance",
+      "legal_date": "2025-12-27",
+      "accessed_at": "2026-07-25",
+      "url": "https://www.finances.gouv.ml/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "fiscal year 2026 tax measures; VAT/excise changes; special levies",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Not downloaded, not archived, not used for any rate in this collection. URL not re-verified this cycle."
+    }
+  ]
+}

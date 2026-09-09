@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "country": "LBR",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "LBR-LRA-REVENUE-CODE-2020",
+      "title": "Liberia Revenue Code, As Amended (2020 consolidation)",
+      "institution": "Liberia Revenue Authority (LRA)",
+      "legal_date": "2020-08-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://revenue.lra.gov.lr/wp-content/uploads/2021/08/REVENUE-CODE-LIBERIA-REVENUE-CODE-AMENDEMENT-2020-min.pdf",
+      "local_file": "official/lbr-revenue-code-2020.pdf",
+      "sha256": "b96f4d43bca76d72a9b7d56544049c2fe6d715ca29f15d1dae01a8d170da39bd",
+      "coverage": "Goods tax rate (Section 1000); services tax rate (Section 1021); excise tax framework/structure (Section 1108-1114, rate schedule 'Schedule I' not embedded in this text extraction)",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Downloaded directly from the official LRA portal (revenue.lra.gov.lr), text-based PDF (250 pages, not scanned). Represents the 2020 consolidation; later amendments exist (see LBR-LRA-AMENDMENT-DEC2024, LBR-LRA-AMENDMENT-DEC2025) but were not text-extractable (scanned/image PDFs, no OCR tooling available in this environment)."
+    },
+    {
+      "source_id": "LBR-LRA-AMENDMENT-DEC2024",
+      "title": "Tax Amendment Act of December 2024, Amending the Liberia Consolidated Revenue Code",
+      "institution": "Liberia Revenue Authority (LRA) / Ministry of Foreign Affairs (Monrovia)",
+      "legal_date": "2024-12-01",
+      "accessed_at": "2026-07-25",
+      "url": "https://revenue.lra.gov.lr/wp-content/uploads/2025/02/TAX-AMENDMENT-ACT-OF-DECEMBER-2024-AMENDING-THE-LIBERIA-CONSOLIDATED-REVENUE-CODE-AS-AMENDED.pdf",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "Unknown — scanned/image PDF, text not extractable without OCR",
+      "status": "source_blocked",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "A secondary source (vatcalc.com) claims the goods/services tax rate increased from 10% to 12% effective April 2025, ahead of a planned transition to a 15% VAT system in January 2027. This PDF is the most likely primary text for that change but is image-based (pdftotext extracts only 15 bytes); OCR tooling (tesseract) is not available in this collection environment. NOT used to verify any rate — see LBR-LRA-REVENUE-CODE-2020 for the last text-verifiable rate (10%)."
+    },
+    {
+      "source_id": "LBR-LRA-AMENDMENT-DEC2025",
+      "title": "Liberia Tax Amendment Act of December 2025",
+      "institution": "Liberia Revenue Authority (LRA) / Ministry of Foreign Affairs (Monrovia)",
+      "legal_date": "2026-03-24",
+      "accessed_at": "2026-07-25",
+      "url": "https://revenue.lra.gov.lr/wp-content/uploads/2026/04/LRC-Amendment-December-2025.pdf",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "Unknown — scanned/image PDF, text not extractable without OCR",
+      "status": "source_blocked",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "Approved 24 March 2026, printed 1 April 2026. Same OCR blocker as LBR-LRA-AMENDMENT-DEC2024 — cover page text extracts, body is image-based."
+    }
+  ]
+}

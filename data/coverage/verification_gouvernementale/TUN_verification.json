@@ -1,0 +1,320 @@
+{
+ "country_iso3": "TUN",
+ "verification_date": "2026-09-01T00:15:02.151412+00:00",
+ "official_source_url": "https://www.douane.gov.tn/tarifwebnew/",
+ "sample_size": 6,
+ "positions_checked": [
+  "22042224009",
+  "03055310002",
+  "57029290019",
+  "48131000097",
+  "43018000092",
+  "27129091101"
+ ],
+ "matches": 6,
+ "mismatches": [],
+ "errors": [],
+ "results": [
+  {
+   "hs_code": "22042224009",
+   "designation_official": "Autres vins de beaujolais, produits dans l'union europeenne, avec oppellation d'origine protegee (aop), ayant un titre alcoomÉtrique volumique acquis n'excÉdant pas 15% vol, en rÉcipients d'une contenance excÉdant 2 litres mais n'excedant pas 10 litres",
+   "stored_dd_rate_pct": 50.0,
+   "official_dd_rate_pct": 50.0,
+   "official_taxes_import": [
+    {
+     "code": "TVA/APTAXE",
+     "name": "VALEUR AJOUTEE",
+     "raw_value": "19 %",
+     "rate_pct": 19.0,
+     "specific_value": "",
+     "assiette": "VAL.DOU(D)+R(DT) GR.0"
+    },
+    {
+     "code": "DDDROIT",
+     "name": "DOUANE ADV.IMP",
+     "raw_value": "50 %",
+     "rate_pct": 50.0,
+     "specific_value": "",
+     "assiette": "VALEUR DOUANE DINARS"
+    },
+    {
+     "code": "DCVBBADRT",
+     "name": ".CONS.V.N/B/BALC.",
+     "raw_value": "0.48 dinars",
+     "rate_pct": null,
+     "specific_value": "0.48 dinars",
+     "assiette": "QCS"
+    },
+    {
+     "code": "RPD/IMPORREDEV",
+     "name": ".PREST.DOUA/IM",
+     "raw_value": "3 %",
+     "rate_pct": 3.0,
+     "specific_value": "",
+     "assiette": "SOMME D.T (G=0.1.2.3.4."
+    }
+   ],
+   "stored_taxes_import_codes": [
+    "TVA/AP",
+    "DD",
+    "DCVBBA",
+    "RPD/IMPOR"
+   ],
+   "official_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "stored_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "match": true
+  },
+  {
+   "hs_code": "03055310002",
+   "designation_official": "Morues polaires (boreogadus saida) seches, autres que ses abats comestibles, meme sales mais non fumes",
+   "stored_dd_rate_pct": 36.0,
+   "official_dd_rate_pct": 36.0,
+   "official_taxes_import": [
+    {
+     "code": "TVA/APTAXE",
+     "name": "VALEUR AJOUTEE",
+     "raw_value": "19 %",
+     "rate_pct": 19.0,
+     "specific_value": "",
+     "assiette": "VAL.DOU(D)+R(DT) GR.0"
+    },
+    {
+     "code": "RPD/IMPORREDEV",
+     "name": ".PREST.DOUA/IM",
+     "raw_value": "3 %",
+     "rate_pct": 3.0,
+     "specific_value": "",
+     "assiette": "SOMME D.T (G=0.1.2.3.4."
+    },
+    {
+     "code": "DDDROIT",
+     "name": "DOUANE ADV.IMP",
+     "raw_value": "36 %",
+     "rate_pct": 36.0,
+     "specific_value": "",
+     "assiette": "VALEUR DOUANE DINARS"
+    },
+    {
+     "code": "TAXE",
+     "name": "SUR PRODUITS DE PECHETAXE SUR LES PRODUITS PECHE",
+     "raw_value": "2 %",
+     "rate_pct": 2.0,
+     "specific_value": "",
+     "assiette": "VALEUR DOUANE DINARS"
+    }
+   ],
+   "stored_taxes_import_codes": [
+    "TVA/AP",
+    "RPD/IMPOR",
+    "DD"
+   ],
+   "official_taxes_export_codes": [
+    "RPD/EXPOR",
+    "TAXE"
+   ],
+   "stored_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "match": true
+  },
+  {
+   "hs_code": "57029290019",
+   "designation_official": "Autres tapis,sans velours,confectionnÉs,d'autres matiÈres textiles synthÉtiques ou artificielles",
+   "stored_dd_rate_pct": 50.0,
+   "official_dd_rate_pct": 50.0,
+   "official_taxes_import": [
+    {
+     "code": "TVA/APTAXE",
+     "name": "VALEUR AJOUTEE",
+     "raw_value": "19 %",
+     "rate_pct": 19.0,
+     "specific_value": "",
+     "assiette": "VAL.DOU(D)+R(DT) GR.0"
+    },
+    {
+     "code": "AIR/IMPORAV",
+     "name": ".IMPOT RPPETSTE",
+     "raw_value": "10 %",
+     "rate_pct": 10.0,
+     "specific_value": "",
+     "assiette": "VAL DOUANE+ SOMME DT"
+    },
+    {
+     "code": "DDDROIT",
+     "name": "DOUANE ADV.IMP",
+     "raw_value": "50 %",
+     "rate_pct": 50.0,
+     "specific_value": "",
+     "assiette": "VALEUR DOUANE DINARS"
+    },
+    {
+     "code": "RPD/IMPORREDEV",
+     "name": ".PREST.DOUA/IM",
+     "raw_value": "3 %",
+     "rate_pct": 3.0,
+     "specific_value": "",
+     "assiette": "SOMME D.T (G=0.1.2.3.4."
+    }
+   ],
+   "stored_taxes_import_codes": [
+    "TVA/AP",
+    "AIR/IMPOR",
+    "DD",
+    "RPD/IMPOR"
+   ],
+   "official_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "stored_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "match": true
+  },
+  {
+   "hs_code": "48131000097",
+   "designation_official": "Papier a cigarettes, meme decoupe, presente en tubes",
+   "stored_dd_rate_pct": 15.0,
+   "official_dd_rate_pct": 15.0,
+   "official_taxes_import": [
+    {
+     "code": "TVA/APTAXE",
+     "name": "VALEUR AJOUTEE",
+     "raw_value": "19 %",
+     "rate_pct": 19.0,
+     "specific_value": "",
+     "assiette": "VAL.DOU(D)+R(DT) GR.0"
+    },
+    {
+     "code": "DC/APDRT",
+     "name": "CONS.AUT.PRODUIT",
+     "raw_value": "40 %",
+     "rate_pct": 40.0,
+     "specific_value": "",
+     "assiette": "VALEUR DOUANE DINARS"
+    },
+    {
+     "code": "RPD/IMPORREDEV",
+     "name": ".PREST.DOUA/IM",
+     "raw_value": "3 %",
+     "rate_pct": 3.0,
+     "specific_value": "",
+     "assiette": "SOMME D.T (G=0.1.2.3.4."
+    },
+    {
+     "code": "DDDROIT",
+     "name": "DOUANE ADV.IMP",
+     "raw_value": "15 %",
+     "rate_pct": 15.0,
+     "specific_value": "",
+     "assiette": "VALEUR DOUANE DINARS"
+    }
+   ],
+   "stored_taxes_import_codes": [
+    "TVA/AP",
+    "DC/AP",
+    "RPD/IMPOR",
+    "DD"
+   ],
+   "official_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "stored_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "match": true
+  },
+  {
+   "hs_code": "43018000092",
+   "designation_official": "Autres pelleteries,entieres,meme sans les tetes,queues ou pattes",
+   "stored_dd_rate_pct": 30.0,
+   "official_dd_rate_pct": 30.0,
+   "official_taxes_import": [
+    {
+     "code": "TVA/APTAXE",
+     "name": "VALEUR AJOUTEE",
+     "raw_value": "19 %",
+     "rate_pct": 19.0,
+     "specific_value": "",
+     "assiette": "VAL.DOU(D)+R(DT) GR.0"
+    },
+    {
+     "code": "DDDROIT",
+     "name": "DOUANE ADV.IMP",
+     "raw_value": "30 %",
+     "rate_pct": 30.0,
+     "specific_value": "",
+     "assiette": "VALEUR DOUANE DINARS"
+    },
+    {
+     "code": "RPD/IMPORREDEV",
+     "name": ".PREST.DOUA/IM",
+     "raw_value": "3 %",
+     "rate_pct": 3.0,
+     "specific_value": "",
+     "assiette": "SOMME D.T (G=0.1.2.3.4."
+    }
+   ],
+   "stored_taxes_import_codes": [
+    "TVA/AP",
+    "DD",
+    "RPD/IMPOR"
+   ],
+   "official_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "stored_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "match": true
+  },
+  {
+   "hs_code": "27129091101",
+   "designation_official": "MÉlange de 1-alcÈnes contenant en poids 80% ou plus de 1-alcÈnes d'une longueur de chaine de 24 atomes de carbone ou plus mais n'excÉdant pas 28 atomes de carbone,a la sortie des usines exercant sous le regime de la transformation pour le marche local",
+   "stored_dd_rate_pct": 0.0,
+   "official_dd_rate_pct": 0.0,
+   "official_taxes_import": [
+    {
+     "code": "TVA/APTAXE",
+     "name": "VALEUR AJOUTEE",
+     "raw_value": "19 %",
+     "rate_pct": 19.0,
+     "specific_value": "",
+     "assiette": "VAL.DOU(D)+R(DT) GR.0"
+    },
+    {
+     "code": "RPD/IMPORREDEV",
+     "name": ".PREST.DOUA/IM",
+     "raw_value": "3 %",
+     "rate_pct": 3.0,
+     "specific_value": "",
+     "assiette": "SOMME D.T (G=0.1.2.3.4."
+    },
+    {
+     "code": "DDDROIT",
+     "name": "DOUANE ADV.IMP",
+     "raw_value": "0 %",
+     "rate_pct": 0.0,
+     "specific_value": "",
+     "assiette": "VALEUR DOUANE DINARS"
+    }
+   ],
+   "stored_taxes_import_codes": [
+    "TVA/AP",
+    "RPD/IMPOR",
+    "DD"
+   ],
+   "official_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "stored_taxes_export_codes": [
+    "RPD/EXPOR"
+   ],
+   "match": true
+  }
+ ],
+ "note": "Vérification échantillonnaire en direct contre la source gouvernementale. Les écarts listés exigent une correction ligne par ligne — aucune correction automatique silencieuse (doctrine)."
+}

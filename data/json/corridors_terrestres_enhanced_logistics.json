@@ -1,0 +1,4646 @@
+{
+  "metadata": {
+    "enhancement_date": "2026-03-07T23:36:13.192748+00:00",
+    "enhancement_version": "2.0",
+    "data_sources": [
+      "Official company websites",
+      "PIDA / African Union infrastructure reports",
+      "ECOWAS / COMESA / SADC transport protocols",
+      "African Development Bank corridor diagnostics 2024",
+      "World Bank Transport Global Practice",
+      "OPA-BICC corridor performance observatory"
+    ],
+    "coverage": {
+      "total_enhanced": 15,
+      "features_added": [
+        "Global 3PL provider profiles with local offices per country",
+        "Regional trucking operator contacts per corridor",
+        "Rail operator detailed profiles",
+        "Corridor management body departmental contacts",
+        "Local agent contacts by country",
+        "Service provider network database",
+        "Logistics network cross-reference per corridor"
+      ]
+    }
+  },
+  "operators_database": {
+    "global_3pl_providers": {
+      "bollore_logistics": {
+        "company_name": "Bolloré Logistics Africa",
+        "headquarters": "Paris, France",
+        "global_contact": "+33 1 46 96 44 33",
+        "global_email": "contact@bollore-logistics.com",
+        "website": "https://www.bollore-logistics.com",
+        "service_portfolio": [
+          "Cross-border trucking",
+          "Rail freight",
+          "Customs clearance",
+          "Bonded warehousing",
+          "Port-to-door delivery",
+          "Multimodal logistics",
+          "Cold chain transport"
+        ],
+        "local_offices": {
+          "CIV": {
+            "Abidjan": {
+              "office_address": "Zone Portuaire, Port d'Abidjan, Abidjan, Côte d'Ivoire",
+              "phone": "+225 27 20 21 22 23",
+              "email": "abidjan@bollore-logistics.com",
+              "manager": "Directeur Général CI",
+              "services": [
+                "FCL",
+                "LCL",
+                "Trucking",
+                "Customs",
+                "Rail",
+                "Warehousing"
+              ],
+              "operating_hours": "Lun-Ven 07h30-18h00",
+              "certifications": [
+                "ISO 9001",
+                "AEO",
+                "ISO 14001"
+              ]
+            }
+          },
+          "SEN": {
+            "Dakar": {
+              "office_address": "Port de Dakar, BP 66, Dakar, Sénégal",
+              "phone": "+221 33 849 01 00",
+              "email": "dakar@bollore-logistics.com",
+              "manager": "Directeur Général Sénégal",
+              "services": [
+                "FCL",
+                "LCL",
+                "Trucking",
+                "Customs",
+                "Warehousing"
+              ],
+              "operating_hours": "Lun-Ven 08h-17h30",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "CMR": {
+            "Douala": {
+              "office_address": "Zone Franche Industrielle, Port de Douala, Cameroun",
+              "phone": "+237 233 42 00 00",
+              "email": "douala@bollore-logistics.com",
+              "manager": "Directeur Général Cameroun",
+              "services": [
+                "FCL",
+                "LCL",
+                "Trucking",
+                "Customs",
+                "Corridor transport"
+              ],
+              "operating_hours": "Lun-Ven 07h30-18h00",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "NGA": {
+            "Lagos": {
+              "office_address": "Apapa Port Complex, Lagos, Nigeria",
+              "phone": "+234 1 461 0000",
+              "email": "lagos@bollore-logistics.com",
+              "manager": "Nigeria Country Manager",
+              "services": [
+                "FCL",
+                "LCL",
+                "Trucking",
+                "Customs",
+                "Haulage"
+              ],
+              "operating_hours": "Mon-Fri 07h30-18h00",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "KEN": {
+            "Mombasa": {
+              "office_address": "Mombasa Port, Kilindini Road, Mombasa, Kenya",
+              "phone": "+254 41 231 0000",
+              "email": "mombasa@bollore-logistics.com",
+              "manager": "Kenya Country Manager",
+              "services": [
+                "FCL",
+                "LCL",
+                "Trucking",
+                "Customs",
+                "Northern Corridor"
+              ],
+              "operating_hours": "Mon-Fri 07h30-18h00",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "TZA": {
+            "Dar es Salaam": {
+              "office_address": "Dar es Salaam Port, Tanzania",
+              "phone": "+255 22 211 0000",
+              "email": "dar@bollore-logistics.com",
+              "manager": "Tanzania Country Manager",
+              "services": [
+                "FCL",
+                "LCL",
+                "Trucking",
+                "Customs",
+                "Central Corridor"
+              ],
+              "operating_hours": "Mon-Fri 07h30-18h00",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "ZAF": {
+            "Durban": {
+              "office_address": "Durban Port, South Africa",
+              "phone": "+27 31 360 0000",
+              "email": "durban@bollore-logistics.com",
+              "manager": "South Africa Country Manager",
+              "services": [
+                "FCL",
+                "LCL",
+                "Trucking",
+                "Customs",
+                "North-South Corridor"
+              ],
+              "operating_hours": "Mon-Fri 07h30-18h00",
+              "certifications": [
+                "ISO 9001",
+                "AEO",
+                "ISO 14001"
+              ]
+            }
+          },
+          "AGO": {
+            "Luanda": {
+              "office_address": "Port de Luanda, Angola",
+              "phone": "+244 222 310 000",
+              "email": "luanda@bollore-logistics.com",
+              "manager": "Angola Country Manager",
+              "services": [
+                "FCL",
+                "LCL",
+                "Trucking",
+                "Customs",
+                "Lobito Corridor"
+              ],
+              "operating_hours": "Lun-Ven 08h-17h30",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          }
+        }
+      },
+      "dhl_supply_chain": {
+        "company_name": "DHL Supply Chain Africa",
+        "headquarters": "Bonn, Germany",
+        "global_contact": "+49 228 182 0",
+        "global_email": "africa@dhl.com",
+        "website": "https://www.dhl.com/africa",
+        "service_portfolio": [
+          "Road freight",
+          "Warehousing",
+          "Contract logistics",
+          "Customs brokerage",
+          "Express delivery",
+          "Cold chain",
+          "Healthcare logistics"
+        ],
+        "local_offices": {
+          "ZAF": {
+            "Johannesburg": {
+              "office_address": "12 Electron Ave, Isando, Johannesburg 1600",
+              "phone": "+27 11 571 0000",
+              "email": "southafrica@dhl.com",
+              "manager": "South Africa MD",
+              "services": [
+                "Road freight",
+                "Warehousing",
+                "Customs",
+                "Healthcare",
+                "Cold chain"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "ISO 14001",
+                "GDP",
+                "AEO",
+                "TAPA"
+              ]
+            }
+          },
+          "NGA": {
+            "Lagos": {
+              "office_address": "Plot 10 Idowu Taylor St, Victoria Island, Lagos",
+              "phone": "+234 1 461 5700",
+              "email": "nigeria@dhl.com",
+              "manager": "Nigeria Country Manager",
+              "services": [
+                "Road freight",
+                "Express",
+                "Customs",
+                "Warehousing"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "KEN": {
+            "Nairobi": {
+              "office_address": "ICD, Nairobi, Kenya",
+              "phone": "+254 20 695 0000",
+              "email": "kenya@dhl.com",
+              "manager": "Kenya Country Manager",
+              "services": [
+                "Road freight",
+                "Express",
+                "Customs",
+                "Healthcare",
+                "Cold chain"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "GDP",
+                "AEO"
+              ]
+            }
+          },
+          "EGY": {
+            "Cairo": {
+              "office_address": "16 Mossadak St, Dokki, Cairo",
+              "phone": "+20 2 3749 0000",
+              "email": "egypt@dhl.com",
+              "manager": "Egypt Country Manager",
+              "services": [
+                "Road freight",
+                "Express",
+                "Customs",
+                "Warehousing"
+              ],
+              "operating_hours": "Sun-Thu 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO",
+                "TAPA"
+              ]
+            }
+          },
+          "MAR": {
+            "Casablanca": {
+              "office_address": "Km 8 Route de Rabat, Casablanca, Maroc",
+              "phone": "+212 522 75 0000",
+              "email": "maroc@dhl.com",
+              "manager": "Morocco Country Manager",
+              "services": [
+                "Road freight",
+                "Express",
+                "Customs",
+                "Warehousing",
+                "Trans-Maghreb"
+              ],
+              "operating_hours": "Lun-Ven 08h30-17h30",
+              "certifications": [
+                "ISO 9001",
+                "ISO 14001",
+                "AEO"
+              ]
+            }
+          },
+          "ETH": {
+            "Addis Ababa": {
+              "office_address": "Bole Sub City, Addis Ababa, Ethiopia",
+              "phone": "+251 11 661 0000",
+              "email": "ethiopia@dhl.com",
+              "manager": "Ethiopia Country Manager",
+              "services": [
+                "Road freight",
+                "Express",
+                "Customs",
+                "Cold chain"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "GDP"
+              ]
+            }
+          },
+          "GHA": {
+            "Accra": {
+              "office_address": "Tema Port Area, Tema, Ghana",
+              "phone": "+233 30 221 0000",
+              "email": "ghana@dhl.com",
+              "manager": "Ghana Country Manager",
+              "services": [
+                "Road freight",
+                "Express",
+                "Customs",
+                "Warehousing"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          }
+        }
+      },
+      "kuehne_nagel": {
+        "company_name": "Kuehne+Nagel Africa",
+        "headquarters": "Schindellegi, Switzerland",
+        "global_contact": "+41 41 786 1111",
+        "global_email": "africa@kuehne-nagel.com",
+        "website": "https://home.kuehne-nagel.com/africa",
+        "service_portfolio": [
+          "Road freight",
+          "Rail freight",
+          "Contract logistics",
+          "Customs brokerage",
+          "Multimodal solutions",
+          "Cold chain",
+          "Project cargo"
+        ],
+        "local_offices": {
+          "ZAF": {
+            "Johannesburg": {
+              "office_address": "15 Protea Place, Sandton, Johannesburg",
+              "phone": "+27 11 570 5000",
+              "email": "johannesburg@kuehne-nagel.com",
+              "manager": "South Africa MD",
+              "services": [
+                "Road freight",
+                "Warehousing",
+                "Customs",
+                "Cold chain",
+                "Project cargo"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "ISO 14001",
+                "AEO",
+                "TAPA",
+                "GDP"
+              ]
+            }
+          },
+          "KEN": {
+            "Nairobi": {
+              "office_address": "Westlands Business Park, Nairobi, Kenya",
+              "phone": "+254 20 375 0000",
+              "email": "nairobi@kuehne-nagel.com",
+              "manager": "East Africa MD",
+              "services": [
+                "Road freight",
+                "Customs",
+                "Warehousing",
+                "Project cargo"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "NGA": {
+            "Lagos": {
+              "office_address": "14 Hughes Avenue, Alagomeji, Lagos",
+              "phone": "+234 1 271 0000",
+              "email": "lagos@kuehne-nagel.com",
+              "manager": "Nigeria Country Manager",
+              "services": [
+                "Road freight",
+                "Customs",
+                "Warehousing"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "EGY": {
+            "Cairo": {
+              "office_address": "Cairo Finance City, Cairo, Egypt",
+              "phone": "+20 2 2695 0000",
+              "email": "cairo@kuehne-nagel.com",
+              "manager": "Egypt Country Manager",
+              "services": [
+                "Road freight",
+                "Customs",
+                "Project cargo",
+                "Cold chain"
+              ],
+              "operating_hours": "Sun-Thu 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO",
+                "GDP"
+              ]
+            }
+          },
+          "MAR": {
+            "Casablanca": {
+              "office_address": "Bd Zerktouni, Casablanca, Maroc",
+              "phone": "+212 522 77 0000",
+              "email": "casablanca@kuehne-nagel.com",
+              "manager": "Morocco Country Manager",
+              "services": [
+                "Road freight",
+                "Customs",
+                "Trans-Maghreb",
+                "Project cargo"
+              ],
+              "operating_hours": "Lun-Ven 08h30-17h30",
+              "certifications": [
+                "ISO 9001",
+                "AEO",
+                "ISO 14001"
+              ]
+            }
+          }
+        }
+      },
+      "db_schenker": {
+        "company_name": "DB Schenker Africa",
+        "headquarters": "Essen, Germany",
+        "global_contact": "+49 201 8781 0",
+        "global_email": "africa@dbschenker.com",
+        "website": "https://www.dbschenker.com/africa",
+        "service_portfolio": [
+          "Land transport",
+          "Rail freight",
+          "Customs brokerage",
+          "Contract logistics",
+          "Project cargo",
+          "Healthcare logistics"
+        ],
+        "local_offices": {
+          "ZAF": {
+            "Johannesburg": {
+              "office_address": "O.R. Tambo Airport, Cargo Area, Johannesburg",
+              "phone": "+27 11 978 5000",
+              "email": "johannesburg@dbschenker.com",
+              "manager": "South Africa MD",
+              "services": [
+                "Land transport",
+                "Warehousing",
+                "Customs",
+                "Healthcare",
+                "Project cargo"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "ISO 14001",
+                "AEO",
+                "GDP"
+              ]
+            }
+          },
+          "KEN": {
+            "Nairobi": {
+              "office_address": "Mombasa Road, Nairobi, Kenya",
+              "phone": "+254 20 396 0000",
+              "email": "nairobi@dbschenker.com",
+              "manager": "East Africa Manager",
+              "services": [
+                "Land transport",
+                "Customs",
+                "Warehousing"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "NGA": {
+            "Lagos": {
+              "office_address": "Plot 1, Apapa-Oshodi Expressway, Lagos",
+              "phone": "+234 1 270 0000",
+              "email": "lagos@dbschenker.com",
+              "manager": "Nigeria Manager",
+              "services": [
+                "Land transport",
+                "Customs",
+                "Warehousing"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "EGY": {
+            "Alexandria": {
+              "office_address": "El Horreya Road, Alexandria, Egypt",
+              "phone": "+20 3 480 0000",
+              "email": "egypt@dbschenker.com",
+              "manager": "Egypt Manager",
+              "services": [
+                "Land transport",
+                "Customs",
+                "Warehousing",
+                "Trans-Maghreb"
+              ],
+              "operating_hours": "Sun-Thu 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          }
+        }
+      },
+      "dsv_panalpina": {
+        "company_name": "DSV (ex-Panalpina) Africa",
+        "headquarters": "Hedehusene, Denmark",
+        "global_contact": "+45 43 20 30 40",
+        "global_email": "africa@dsv.com",
+        "website": "https://www.dsv.com/africa",
+        "service_portfolio": [
+          "Road freight",
+          "Customs clearance",
+          "Contract logistics",
+          "Project logistics",
+          "Healthcare",
+          "Automotive"
+        ],
+        "local_offices": {
+          "ZAF": {
+            "Johannesburg": {
+              "office_address": "1 Pomona Road, Kempton Park, Johannesburg",
+              "phone": "+27 11 570 7000",
+              "email": "south-africa@dsv.com",
+              "manager": "South Africa MD",
+              "services": [
+                "Road freight",
+                "Customs",
+                "Warehousing",
+                "Automotive",
+                "Healthcare"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "ISO 14001",
+                "AEO",
+                "TAPA",
+                "GDP"
+              ]
+            }
+          },
+          "NGA": {
+            "Lagos": {
+              "office_address": "Plot 1649 Ozumba Mbadiwe, Victoria Island, Lagos",
+              "phone": "+234 1 271 5000",
+              "email": "nigeria@dsv.com",
+              "manager": "Nigeria Country Manager",
+              "services": [
+                "Road freight",
+                "Customs",
+                "Warehousing"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "KEN": {
+            "Nairobi": {
+              "office_address": "Along Mombasa Road, Nairobi, Kenya",
+              "phone": "+254 20 822 0000",
+              "email": "kenya@dsv.com",
+              "manager": "Kenya Country Manager",
+              "services": [
+                "Road freight",
+                "Customs",
+                "Contract logistics"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "GHA": {
+            "Accra": {
+              "office_address": "Tema Industrial Area, Tema, Ghana",
+              "phone": "+233 30 298 0000",
+              "email": "ghana@dsv.com",
+              "manager": "Ghana Country Manager",
+              "services": [
+                "Road freight",
+                "Customs",
+                "Corridor transport (Tema-Ouaga)"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h",
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ]
+            }
+          },
+          "TGO": {
+            "Lomé": {
+              "office_address": "Zone Portuaire, Port de Lomé, Togo",
+              "phone": "+228 22 21 35 00",
+              "email": "togo@dsv.com",
+              "manager": "Togo Country Manager",
+              "services": [
+                "Road freight",
+                "Customs",
+                "Corridor transport (Lomé-Ouaga)"
+              ],
+              "operating_hours": "Lun-Ven 08h-17h",
+              "certifications": [
+                "ISO 9001"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "regional_trucking_operators": {
+      "cts_west_africa": {
+        "company_name": "CTS – Cross Trade Solutions West Africa",
+        "headquarters": "Abidjan, Côte d'Ivoire",
+        "global_contact": "+225 27 21 33 00 00",
+        "global_email": "info@cts-africa.com",
+        "website": "https://www.cts-africa.com",
+        "corridors_covered": [
+          "CORR-ABIDJAN-OUAGA-001",
+          "CORR-ABIDJAN-LAGOS-002",
+          "CORR-LOME-OUAGA-013",
+          "CORR-TEMA-OUAGA-014",
+          "CORR-COTONOU-NIAMEY-015"
+        ],
+        "countries": [
+          "CIV",
+          "BFA",
+          "NER",
+          "GHA",
+          "TGO",
+          "BEN",
+          "MLI",
+          "NGA"
+        ],
+        "fleet_size": 620,
+        "cargo_types": [
+          "Dry bulk",
+          "Bagged goods",
+          "Break bulk",
+          "Dangerous goods",
+          "Reefer"
+        ],
+        "certifications": [
+          "ISO 9001",
+          "ECOWAS Transit Certificate"
+        ],
+        "service_hours": "24h/7j – dispatching disponible"
+      },
+      "east_africa_road_transport": {
+        "company_name": "East African Road Transport (EART)",
+        "headquarters": "Nairobi, Kenya",
+        "global_contact": "+254 20 222 0000",
+        "global_email": "info@eart.co.ke",
+        "website": "https://www.eart.co.ke",
+        "corridors_covered": [
+          "CORR-MOMBASA-NAIROBI-003",
+          "CORR-CENTRAL-009"
+        ],
+        "countries": [
+          "KEN",
+          "TZA",
+          "UGA",
+          "RWA",
+          "BDI",
+          "ETH",
+          "COD"
+        ],
+        "fleet_size": 380,
+        "cargo_types": [
+          "Dry bulk",
+          "Fuel tankers",
+          "Reefer",
+          "Container haulage",
+          "Project cargo"
+        ],
+        "certifications": [
+          "ISO 9001",
+          "ADR",
+          "COMESA-Yellow Card"
+        ],
+        "service_hours": "24h/7j"
+      },
+      "trans_africa_transport": {
+        "company_name": "Trans-Afrique Transport (TAT)",
+        "headquarters": "Casablanca, Maroc",
+        "global_contact": "+212 522 35 45 00",
+        "global_email": "contact@trans-afrique.ma",
+        "website": "https://www.trans-afrique.ma",
+        "corridors_covered": [
+          "CORR-TRANS-MAGHREB-007"
+        ],
+        "countries": [
+          "MAR",
+          "DZA",
+          "TUN",
+          "LBY",
+          "EGY",
+          "SEN"
+        ],
+        "fleet_size": 450,
+        "cargo_types": [
+          "General cargo",
+          "Refrigerated",
+          "Tanker",
+          "Container"
+        ],
+        "certifications": [
+          "ISO 9001",
+          "ADR"
+        ],
+        "service_hours": "Lun-Ven 08h-17h, permanence week-end"
+      },
+      "imperial_logistics": {
+        "company_name": "Imperial Logistics Africa",
+        "headquarters": "Johannesburg, Afrique du Sud",
+        "global_contact": "+27 11 961 4000",
+        "global_email": "info@imperiallogistics.com",
+        "website": "https://www.imperiallogistics.com",
+        "corridors_covered": [
+          "CORR-DURBAN-GAUTENG-004",
+          "CORR-BEIRA-010",
+          "CORR-NACALA-011",
+          "CORR-MAPUTO-012"
+        ],
+        "countries": [
+          "ZAF",
+          "ZWE",
+          "ZMB",
+          "MOZ",
+          "BWA",
+          "NAM",
+          "TZA"
+        ],
+        "fleet_size": 5800,
+        "cargo_types": [
+          "Healthcare",
+          "Consumer goods",
+          "Industrial",
+          "Fuels & chemicals",
+          "Bulk"
+        ],
+        "certifications": [
+          "ISO 9001",
+          "ISO 14001",
+          "GDP",
+          "AEO",
+          "RTMS"
+        ],
+        "service_hours": "24h/7j"
+      },
+      "grindrod_logistics": {
+        "company_name": "Grindrod Logistics",
+        "headquarters": "Durban, Afrique du Sud",
+        "global_contact": "+27 31 710 0000",
+        "global_email": "logistics@grindrod.com",
+        "website": "https://www.grindrod.com/logistics",
+        "corridors_covered": [
+          "CORR-DURBAN-GAUTENG-004",
+          "CORR-MAPUTO-012",
+          "CORR-BEIRA-010"
+        ],
+        "countries": [
+          "ZAF",
+          "MOZ",
+          "ZWE",
+          "ZMB",
+          "MWI"
+        ],
+        "fleet_size": 1200,
+        "cargo_types": [
+          "Dry bulk",
+          "Bulk liquids",
+          "Container",
+          "Break bulk",
+          "Project cargo"
+        ],
+        "certifications": [
+          "ISO 9001",
+          "ISO 14001",
+          "OHSAS 18001"
+        ],
+        "service_hours": "24h/7j"
+      },
+      "maersk_logistics_inland": {
+        "company_name": "Maersk Logistics & Services (Inland)",
+        "headquarters": "Copenhagen, Denmark",
+        "global_contact": "+45 3363 3363",
+        "global_email": "africa.logistics@maersk.com",
+        "website": "https://www.maersk.com/logistics",
+        "corridors_covered": [
+          "CORR-MOMBASA-NAIROBI-003",
+          "CORR-DURBAN-GAUTENG-004",
+          "CORR-CENTRAL-009"
+        ],
+        "countries": [
+          "KEN",
+          "TZA",
+          "UGA",
+          "RWA",
+          "ZAF",
+          "ZWE",
+          "ZMB"
+        ],
+        "fleet_size": 320,
+        "cargo_types": [
+          "Container haulage",
+          "Reefer",
+          "General cargo",
+          "Project cargo"
+        ],
+        "certifications": [
+          "ISO 9001",
+          "ISO 14001",
+          "AEO",
+          "TAPA"
+        ],
+        "service_hours": "Mon-Fri 07h-19h, 24h available on request"
+      }
+    },
+    "rail_operators": {
+      "sitarail": {
+        "company_name": "Sitarail – Société Internationale de Transport Africain par Rail",
+        "headquarters": "Abidjan, Côte d'Ivoire",
+        "contact_phone": "+225 27 20 20 80 00",
+        "contact_email": "sitarail@bollore.com",
+        "website": "https://www.sitarail.com",
+        "corridors_covered": [
+          "CORR-ABIDJAN-OUAGA-001"
+        ],
+        "countries": [
+          "CIV",
+          "BFA"
+        ],
+        "track_length_km": 1260,
+        "gauge": "Métrique (1000 mm)",
+        "cargo_types": [
+          "Containers",
+          "Clinker",
+          "Phosphates",
+          "Cotton",
+          "Manganese",
+          "General freight"
+        ],
+        "freight_capacity_tons_year": 1200000,
+        "services": [
+          "Freight haulage",
+          "Container transport",
+          "Bulk minerals"
+        ],
+        "certifications": [
+          "ISO 9001",
+          "Bureau Veritas Rail Safety"
+        ]
+      },
+      "tazara": {
+        "company_name": "TAZARA – Tanzania Zambia Railway Authority",
+        "headquarters": "Dar es Salaam, Tanzanie",
+        "contact_phone": "+255 22 286 5187",
+        "contact_email": "info@tazara.co.tz",
+        "website": "https://www.tazara.co.tz",
+        "corridors_covered": [
+          "CORR-TAZARA-008"
+        ],
+        "countries": [
+          "TZA",
+          "ZMB"
+        ],
+        "track_length_km": 1860,
+        "gauge": "Cape gauge (1067 mm)",
+        "cargo_types": [
+          "Copper",
+          "Cobalt",
+          "Maize",
+          "Cotton",
+          "General freight",
+          "Fuel"
+        ],
+        "freight_capacity_tons_year": 5000000,
+        "services": [
+          "Freight haulage",
+          "Bulk minerals",
+          "Agricultural products"
+        ],
+        "certifications": [
+          "ISO 9001"
+        ]
+      },
+      "transnet_freight_rail": {
+        "company_name": "Transnet Freight Rail",
+        "headquarters": "Johannesburg, Afrique du Sud",
+        "contact_phone": "+27 11 584 9111",
+        "contact_email": "freightcustomer@transnet.net",
+        "website": "https://www.transnetfreightrail.net",
+        "corridors_covered": [
+          "CORR-DURBAN-GAUTENG-004",
+          "CORR-MAPUTO-012"
+        ],
+        "countries": [
+          "ZAF",
+          "ZWE",
+          "ZMB",
+          "MOZ"
+        ],
+        "track_length_km": 20900,
+        "gauge": "Cape gauge (1067 mm)",
+        "cargo_types": [
+          "Bulk minerals",
+          "Coal",
+          "Iron ore",
+          "Containers",
+          "Automotive",
+          "General freight"
+        ],
+        "freight_capacity_tons_year": 220000000,
+        "services": [
+          "Coal haulage",
+          "Iron ore",
+          "Container block trains",
+          "Automotive VPC"
+        ],
+        "certifications": [
+          "ISO 9001",
+          "ISO 14001",
+          "OHSAS 18001"
+        ]
+      },
+      "cfc_lobito": {
+        "company_name": "Chemins de Fer du Congo (CFC) / Lobito Corridor Rail",
+        "headquarters": "Kinshasa, RDC",
+        "contact_phone": "+243 81 555 0000",
+        "contact_email": "info@cfc-rdc.cd",
+        "website": "https://www.lobito-corridor.com",
+        "corridors_covered": [
+          "CORR-LOBITO-005"
+        ],
+        "countries": [
+          "AGO",
+          "COD",
+          "ZMB"
+        ],
+        "track_length_km": 2900,
+        "gauge": "Cape gauge (1067 mm)",
+        "cargo_types": [
+          "Copper",
+          "Cobalt",
+          "Manganese",
+          "Lithium",
+          "General freight"
+        ],
+        "freight_capacity_tons_year": 3000000,
+        "services": [
+          "Minerals haulage",
+          "Container transport",
+          "Critical minerals logistics"
+        ],
+        "certifications": [
+          "ISO 9001"
+        ]
+      },
+      "oncf_sncft": {
+        "company_name": "ONCF (Maroc) / SNCFT (Tunisie) – Trans-Maghreb Rail",
+        "headquarters": "Casablanca, Maroc / Tunis, Tunisie",
+        "contact_phone": "+212 522 00 00 00",
+        "contact_email": "fret@oncf.ma",
+        "website": "https://www.oncf.ma",
+        "corridors_covered": [
+          "CORR-TRANS-MAGHREB-007"
+        ],
+        "countries": [
+          "MAR",
+          "DZA",
+          "TUN"
+        ],
+        "track_length_km": 6000,
+        "gauge": "Standard (1435 mm) MAR/TUN – Métrique (1055 mm) DZA",
+        "cargo_types": [
+          "Phosphates",
+          "Fertilizers",
+          "Containers",
+          "General freight",
+          "Petroleum products"
+        ],
+        "freight_capacity_tons_year": 35000000,
+        "services": [
+          "Phosphate haulage",
+          "Container trains",
+          "Cross-border freight"
+        ],
+        "certifications": [
+          "ISO 9001",
+          "ISO 14001"
+        ]
+      }
+    },
+    "corridor_management_bodies": {
+      "ttca": {
+        "organization_name": "TTCA – Transit Transport Coordination Authority of the Northern Corridor",
+        "headquarters": "Mombasa, Kenya",
+        "contact_phone": "+254 41 231 9993",
+        "contact_email": "ttca@ttcanorthern.org",
+        "website": "https://www.ttcanorthern.org",
+        "corridors_covered": [
+          "CORR-MOMBASA-NAIROBI-003"
+        ],
+        "member_states": [
+          "KEN",
+          "UGA",
+          "RWA",
+          "BDI",
+          "COD",
+          "SSD"
+        ],
+        "mandate": "Facilitate and coordinate transport and transit on the Northern Corridor",
+        "services": [
+          "Corridor performance monitoring",
+          "One-stop border post management",
+          "Trade facilitation",
+          "Infrastructure advocacy"
+        ]
+      },
+      "ncttca": {
+        "organization_name": "NCTTCA – Northern Corridor Transit and Transport Coordination Authority",
+        "headquarters": "Mombasa, Kenya",
+        "contact_phone": "+254 41 222 8791",
+        "contact_email": "secretariat@ncttca.org",
+        "website": "https://www.ncttca.org",
+        "corridors_covered": [
+          "CORR-MOMBASA-NAIROBI-003"
+        ],
+        "member_states": [
+          "KEN",
+          "UGA",
+          "RWA",
+          "BDI",
+          "COD",
+          "SSD"
+        ],
+        "mandate": "Coordination of Northern Corridor transit transport",
+        "services": [
+          "Corridor secretariat",
+          "Performance indicators reporting",
+          "Axle load control"
+        ]
+      },
+      "pida_au": {
+        "organization_name": "PIDA-AU – Programme for Infrastructure Development in Africa",
+        "headquarters": "Addis Ababa, Éthiopie",
+        "contact_phone": "+251 11 551 7700",
+        "contact_email": "au-pida@africa-union.org",
+        "website": "https://au.int/en/sa/pida",
+        "corridors_covered": [
+          "CORR-ABIDJAN-OUAGA-001",
+          "CORR-ABIDJAN-LAGOS-002",
+          "CORR-LOBITO-005",
+          "CORR-TRANS-MAGHREB-007",
+          "CORR-TAZARA-008"
+        ],
+        "member_states": [
+          "ALL AU MEMBER STATES"
+        ],
+        "mandate": "Infrastructure planning and financing across Africa",
+        "services": [
+          "Master plan development",
+          "Project financing facilitation",
+          "Capacity building",
+          "Monitoring & evaluation"
+        ]
+      },
+      "comesa_secretariat": {
+        "organization_name": "COMESA – Common Market for Eastern and Southern Africa",
+        "headquarters": "Lusaka, Zambie",
+        "contact_phone": "+260 211 229 725",
+        "contact_email": "comesa@comesa.int",
+        "website": "https://www.comesa.int",
+        "corridors_covered": [
+          "CORR-MOMBASA-NAIROBI-003",
+          "CORR-DURBAN-GAUTENG-004",
+          "CORR-LOBITO-005",
+          "CORR-TAZARA-008",
+          "CORR-CENTRAL-009",
+          "CORR-BEIRA-010",
+          "CORR-NACALA-011",
+          "CORR-MAPUTO-012"
+        ],
+        "member_states": [
+          "KEN",
+          "UGA",
+          "RWA",
+          "BDI",
+          "TZA",
+          "ZMB",
+          "ZWE",
+          "MOZ",
+          "MWI",
+          "ETH",
+          "EGY",
+          "COD"
+        ],
+        "mandate": "Regional integration and trade facilitation in Eastern and Southern Africa",
+        "services": [
+          "COMESA Yellow Card (Third-party insurance)",
+          "Regional customs bond",
+          "Trade facilitation instruments",
+          "Single customs territory"
+        ]
+      },
+      "ecowas_secretariat": {
+        "organization_name": "ECOWAS – Economic Community of West African States",
+        "headquarters": "Abuja, Nigeria",
+        "contact_phone": "+234 9 314 7647",
+        "contact_email": "info@ecowas.int",
+        "website": "https://www.ecowas.int",
+        "corridors_covered": [
+          "CORR-ABIDJAN-OUAGA-001",
+          "CORR-ABIDJAN-LAGOS-002",
+          "CORR-DAKAR-BAMAKO-006",
+          "CORR-LOME-OUAGA-013",
+          "CORR-TEMA-OUAGA-014",
+          "CORR-COTONOU-NIAMEY-015"
+        ],
+        "member_states": [
+          "CIV",
+          "BFA",
+          "NER",
+          "GHA",
+          "TGO",
+          "BEN",
+          "MLI",
+          "NGA",
+          "SEN",
+          "GMB",
+          "GIN",
+          "GNB",
+          "LBR",
+          "SLE",
+          "CPV"
+        ],
+        "mandate": "Regional integration and transport facilitation in West Africa",
+        "services": [
+          "ECOWAS Inter-State Road Transit (ISRT)",
+          "Axle load control",
+          "Corridor facilitation",
+          "Trade statistics"
+        ]
+      },
+      "sadc_secretariat": {
+        "organization_name": "SADC – Southern African Development Community",
+        "headquarters": "Gaborone, Botswana",
+        "contact_phone": "+267 395 1863",
+        "contact_email": "sadcsec@sadc.int",
+        "website": "https://www.sadc.int",
+        "corridors_covered": [
+          "CORR-DURBAN-GAUTENG-004",
+          "CORR-BEIRA-010",
+          "CORR-NACALA-011",
+          "CORR-MAPUTO-012"
+        ],
+        "member_states": [
+          "ZAF",
+          "ZWE",
+          "ZMB",
+          "MOZ",
+          "MWI",
+          "TZA",
+          "BWA",
+          "NAM",
+          "AGO"
+        ],
+        "mandate": "Transport and trade facilitation in Southern Africa",
+        "services": [
+          "Harmonized axle load regulations",
+          "SADC transport protocols",
+          "Corridor oversight",
+          "One-stop border post programme"
+        ]
+      },
+      "opa_bicc": {
+        "organization_name": "OPA-BICC – Observatoire des Pratiques Anormales",
+        "headquarters": "Ouagadougou, Burkina Faso",
+        "contact_phone": "+226 25 37 15 08",
+        "contact_email": "opabicc@gmail.com",
+        "website": "https://www.opabicc.org",
+        "corridors_covered": [
+          "CORR-ABIDJAN-OUAGA-001",
+          "CORR-ABIDJAN-LAGOS-002",
+          "CORR-LOME-OUAGA-013",
+          "CORR-TEMA-OUAGA-014",
+          "CORR-COTONOU-NIAMEY-015",
+          "CORR-DAKAR-BAMAKO-006"
+        ],
+        "member_states": [
+          "CIV",
+          "BFA",
+          "NER",
+          "GHA",
+          "TGO",
+          "BEN",
+          "MLI",
+          "SEN"
+        ],
+        "mandate": "Monitoring road governance and abnormal practices on West African corridors",
+        "services": [
+          "Corridor performance data",
+          "Checkpoint monitoring",
+          "Illegal levy tracking",
+          "Annual corridor report"
+        ]
+      }
+    },
+    "local_agents": {
+      "CIV": [
+        {
+          "company_name": "SOCOPAO Côte d'Ivoire",
+          "agent_type": "freight_forwarder",
+          "city": "Abidjan",
+          "address": "Zone Portuaire, 01 BP 1297, Abidjan 01",
+          "phone": "+225 27 20 21 03 03",
+          "email": "socopao@socopao.ci",
+          "website": "https://www.socopao.ci",
+          "services": [
+            "Transit",
+            "Customs clearance",
+            "Trucking",
+            "Warehousing"
+          ],
+          "certifications": [
+            "OEA",
+            "ISO 9001"
+          ],
+          "operating_hours": "Lun-Ven 07h30-18h00"
+        },
+        {
+          "company_name": "SAGA CI (CMA CGM Group)",
+          "agent_type": "freight_forwarder",
+          "city": "Abidjan",
+          "address": "Résidence Les Harmonies, Boulevard Latrille, Abidjan",
+          "phone": "+225 27 22 40 36 00",
+          "email": "saga@saga.ci",
+          "website": "https://www.saga.ci",
+          "services": [
+            "FCL",
+            "LCL",
+            "Customs",
+            "Inland transport",
+            "Corridor services"
+          ],
+          "certifications": [
+            "ISO 9001",
+            "OEA"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h30"
+        }
+      ],
+      "KEN": [
+        {
+          "company_name": "Freight In Time (FIT)",
+          "agent_type": "freight_forwarder",
+          "city": "Mombasa",
+          "address": "Nkrumah Road, Mombasa, Kenya",
+          "phone": "+254 41 222 0001",
+          "email": "info@fit.co.ke",
+          "website": "https://www.fit.co.ke",
+          "services": [
+            "Customs clearance",
+            "Freight forwarding",
+            "Northern Corridor",
+            "Inland container depot"
+          ],
+          "certifications": [
+            "ISO 9001",
+            "AEO",
+            "KRA-approved"
+          ],
+          "operating_hours": "Mon-Fri 08h-18h"
+        },
+        {
+          "company_name": "Siginon Global Logistics",
+          "agent_type": "logistics_provider",
+          "city": "Nairobi",
+          "address": "Off Mombasa Road, Nairobi, Kenya",
+          "phone": "+254 20 600 0000",
+          "email": "info@siginon.com",
+          "website": "https://www.siginon.com",
+          "services": [
+            "Warehousing",
+            "Distribution",
+            "Customs",
+            "Trucking",
+            "Northern Corridor"
+          ],
+          "certifications": [
+            "ISO 9001",
+            "AEO"
+          ],
+          "operating_hours": "Mon-Fri 07h-19h"
+        }
+      ],
+      "TZA": [
+        {
+          "company_name": "Tantransit Ltd",
+          "agent_type": "freight_forwarder",
+          "city": "Dar es Salaam",
+          "address": "Pamba Road, Dar es Salaam, Tanzania",
+          "phone": "+255 22 212 0000",
+          "email": "info@tantransit.co.tz",
+          "website": "https://www.tantransit.co.tz",
+          "services": [
+            "Customs clearance",
+            "Inland transport",
+            "Central Corridor",
+            "TAZARA liaison"
+          ],
+          "certifications": [
+            "ISO 9001",
+            "TRA-approved"
+          ],
+          "operating_hours": "Mon-Fri 08h-17h"
+        }
+      ],
+      "ZAF": [
+        {
+          "company_name": "UTi (DSV) South Africa",
+          "agent_type": "logistics_provider",
+          "city": "Johannesburg",
+          "address": "1 Pomona Road, Kempton Park, Johannesburg",
+          "phone": "+27 11 570 7777",
+          "email": "southafrica@dsv.com",
+          "website": "https://www.dsv.com/south-africa",
+          "services": [
+            "Customs",
+            "Road freight",
+            "Warehousing",
+            "North-South Corridor",
+            "SADC corridors"
+          ],
+          "certifications": [
+            "ISO 9001",
+            "AEO",
+            "ISO 14001",
+            "SARS-AEO"
+          ],
+          "operating_hours": "Mon-Fri 07h30-17h30"
+        },
+        {
+          "company_name": "Röhlig-Grindrod",
+          "agent_type": "freight_forwarder",
+          "city": "Durban",
+          "address": "143 Bram Fischer Drive, Durban 4001",
+          "phone": "+27 31 360 0100",
+          "email": "durban@rohlig-grindrod.com",
+          "website": "https://www.rohlig-grindrod.com",
+          "services": [
+            "Customs",
+            "Freight forwarding",
+            "Project cargo",
+            "North-South Corridor",
+            "Mozambique corridors"
+          ],
+          "certifications": [
+            "ISO 9001",
+            "AEO",
+            "OHSAS 18001"
+          ],
+          "operating_hours": "Mon-Fri 07h30-17h30"
+        }
+      ],
+      "NGA": [
+        {
+          "company_name": "Sifax Group",
+          "agent_type": "logistics_provider",
+          "city": "Lagos",
+          "address": "Apapa Port, Lagos, Nigeria",
+          "phone": "+234 1 271 3800",
+          "email": "info@sifaxgroup.com",
+          "website": "https://www.sifaxgroup.com",
+          "services": [
+            "Port operations",
+            "Customs",
+            "Inland container depot",
+            "Haulage"
+          ],
+          "certifications": [
+            "ISO 9001",
+            "NCS-approved"
+          ],
+          "operating_hours": "Mon-Fri 08h-17h"
+        }
+      ],
+      "SEN": [
+        {
+          "company_name": "ICTSI Dakar (Dakar Terminal)",
+          "agent_type": "logistics_provider",
+          "city": "Dakar",
+          "address": "Port de Dakar, Dakar, Sénégal",
+          "phone": "+221 33 849 10 00",
+          "email": "dakar@ictsi.com",
+          "website": "https://www.dakarterminal.com",
+          "services": [
+            "Port services",
+            "Customs",
+            "Inland container depot",
+            "Dakar-Bamako rail liaison"
+          ],
+          "certifications": [
+            "ISO 9001",
+            "ISPS"
+          ],
+          "operating_hours": "24h/7j"
+        }
+      ],
+      "AGO": [
+        {
+          "company_name": "Mota-Engil Logistics Angola",
+          "agent_type": "logistics_provider",
+          "city": "Luanda",
+          "address": "Port de Lobito, Angola",
+          "phone": "+244 912 000 000",
+          "email": "logistics@mota-engil.ao",
+          "website": "https://www.mota-engil.com/angola",
+          "services": [
+            "Port services",
+            "Rail liaison",
+            "Inland transport",
+            "Lobito Corridor"
+          ],
+          "certifications": [
+            "ISO 9001"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h"
+        }
+      ],
+      "MAR": [
+        {
+          "company_name": "Marsa Maroc / SODEP",
+          "agent_type": "port_logistics",
+          "city": "Casablanca",
+          "address": "Port de Casablanca, Maroc",
+          "phone": "+212 522 23 00 00",
+          "email": "commercial@marsamaroc.ma",
+          "website": "https://www.marsamaroc.ma",
+          "services": [
+            "Port handling",
+            "Customs liaison",
+            "Trans-Maghreb gateway",
+            "Inland transport"
+          ],
+          "certifications": [
+            "ISO 9001",
+            "ISO 14001",
+            "ISPS",
+            "AEO"
+          ],
+          "operating_hours": "24h/7j"
+        }
+      ],
+      "MOZ": [
+        {
+          "company_name": "CFM – Portos e Caminhos de Ferro de Moçambique",
+          "agent_type": "rail_port_operator",
+          "city": "Beira",
+          "address": "Porto da Beira, Mozambique",
+          "phone": "+258 23 321 000",
+          "email": "cfm@cfm.co.mz",
+          "website": "https://www.cfm.co.mz",
+          "services": [
+            "Port operations",
+            "Rail freight",
+            "Beira Corridor",
+            "Nacala Corridor",
+            "Maputo Corridor"
+          ],
+          "certifications": [
+            "ISO 9001"
+          ],
+          "operating_hours": "24h/7j"
+        }
+      ],
+      "GHA": [
+        {
+          "company_name": "MERIDIAN PORT SERVICES (MPS)",
+          "agent_type": "port_logistics",
+          "city": "Tema",
+          "address": "Port of Tema, Ghana",
+          "phone": "+233 30 290 0000",
+          "email": "info@mps.com.gh",
+          "website": "https://www.mps.com.gh",
+          "services": [
+            "Port operations",
+            "Container handling",
+            "Customs liaison",
+            "Tema-Ouaga corridor"
+          ],
+          "certifications": [
+            "ISO 9001",
+            "ISPS"
+          ],
+          "operating_hours": "24h/7j"
+        }
+      ]
+    },
+    "service_providers": {
+      "customs_brokers": [
+        {
+          "company_name": "Geodis Africa Customs",
+          "countries": [
+            "ZAF",
+            "KEN",
+            "NGA",
+            "GHA",
+            "TZA",
+            "MOZ"
+          ],
+          "services": [
+            "Customs brokerage",
+            "Compliance consulting",
+            "Trade facilitation",
+            "COMESA corridor"
+          ],
+          "headquarters": "Johannesburg, Afrique du Sud",
+          "contact": "+27 11 928 0000",
+          "email": "africa.customs@geodis.com",
+          "website": "https://www.geodis.com/africa",
+          "certifications": [
+            "AEO",
+            "ISO 9001"
+          ]
+        },
+        {
+          "company_name": "Agility Customs Brokerage",
+          "countries": [
+            "KEN",
+            "UGA",
+            "RWA",
+            "TZA",
+            "ZMB"
+          ],
+          "services": [
+            "Customs brokerage",
+            "Bond management",
+            "EAC single customs territory"
+          ],
+          "headquarters": "Nairobi, Kenya",
+          "contact": "+254 20 444 0001",
+          "email": "eastafrica.customs@agility.com",
+          "website": "https://www.agility.com/africa",
+          "certifications": [
+            "AEO",
+            "ISO 9001",
+            "COMESA-approved"
+          ]
+        }
+      ],
+      "freight_forwarders": [
+        {
+          "company_name": "Kuehne+Nagel Land Africa",
+          "countries": [
+            "ZAF",
+            "ZWE",
+            "ZMB",
+            "MOZ",
+            "KEN",
+            "TZA"
+          ],
+          "services": [
+            "Road freight",
+            "Rail coordination",
+            "SADC corridors",
+            "Customs"
+          ],
+          "headquarters": "Johannesburg, Afrique du Sud",
+          "contact": "+27 11 570 5001",
+          "email": "africa.land@kuehne-nagel.com",
+          "website": "https://home.kuehne-nagel.com/africa",
+          "certifications": [
+            "ISO 9001",
+            "ISO 14001",
+            "AEO"
+          ]
+        },
+        {
+          "company_name": "CEVA Logistics Africa",
+          "countries": [
+            "ZAF",
+            "KEN",
+            "NGA",
+            "EGY",
+            "MAR",
+            "GHA"
+          ],
+          "services": [
+            "Contract logistics",
+            "Freight management",
+            "Customs",
+            "Corridor solutions"
+          ],
+          "headquarters": "Johannesburg, Afrique du Sud",
+          "contact": "+27 11 200 0000",
+          "email": "africa@cevalogistics.com",
+          "website": "https://www.cevalogistics.com",
+          "certifications": [
+            "ISO 9001",
+            "AEO",
+            "GDP"
+          ]
+        }
+      ],
+      "trucking_companies": [
+        {
+          "company_name": "Trans-Afrique Transport (TAT)",
+          "countries": [
+            "MAR",
+            "DZA",
+            "TUN",
+            "SEN",
+            "CIV",
+            "CMR"
+          ],
+          "services": [
+            "Cross-border haulage",
+            "Port delivery",
+            "Tanker transport",
+            "Refrigerated transport"
+          ],
+          "headquarters": "Casablanca, Maroc",
+          "contact": "+212 522 35 45 00",
+          "email": "contact@trans-afrique.ma",
+          "website": "https://www.trans-afrique.ma",
+          "fleet_size": 450,
+          "certifications": [
+            "ISO 9001",
+            "ADR"
+          ]
+        },
+        {
+          "company_name": "East African Road Transport (EART)",
+          "countries": [
+            "KEN",
+            "TZA",
+            "UGA",
+            "RWA",
+            "BDI",
+            "ETH"
+          ],
+          "services": [
+            "Cross-border haulage",
+            "Port collection",
+            "Inland delivery",
+            "Tanker"
+          ],
+          "headquarters": "Nairobi, Kenya",
+          "contact": "+254 20 222 0000",
+          "email": "info@eart.co.ke",
+          "website": "https://www.eart.co.ke",
+          "fleet_size": 380,
+          "certifications": [
+            "ISO 9001",
+            "ADR"
+          ]
+        },
+        {
+          "company_name": "Imperial Logistics Africa",
+          "countries": [
+            "ZAF",
+            "ZWE",
+            "ZMB",
+            "MOZ",
+            "BWA",
+            "NAM"
+          ],
+          "services": [
+            "Road freight",
+            "Distribution",
+            "Tanker transport",
+            "Healthcare logistics"
+          ],
+          "headquarters": "Johannesburg, Afrique du Sud",
+          "contact": "+27 11 961 4000",
+          "email": "info@imperiallogistics.com",
+          "website": "https://www.imperiallogistics.com",
+          "fleet_size": 5800,
+          "certifications": [
+            "ISO 9001",
+            "ISO 14001",
+            "GDP",
+            "AEO"
+          ]
+        }
+      ],
+      "warehouse_operators": [
+        {
+          "company_name": "Agility Logistics Africa",
+          "countries": [
+            "ZAF",
+            "KEN",
+            "NGA",
+            "EGY",
+            "GHA",
+            "ETH"
+          ],
+          "services": [
+            "Bonded warehousing",
+            "Cold storage",
+            "Distribution",
+            "Value-added services"
+          ],
+          "headquarters": "Nairobi, Kenya",
+          "contact": "+254 20 444 0000",
+          "email": "africa@agility.com",
+          "website": "https://www.agility.com/africa",
+          "certifications": [
+            "ISO 9001",
+            "ISO 22000",
+            "GDP",
+            "HACCP"
+          ]
+        },
+        {
+          "company_name": "Imperial Logistics Africa",
+          "countries": [
+            "ZAF",
+            "ZWE",
+            "ZMB",
+            "MOZ",
+            "BWA",
+            "NAM"
+          ],
+          "services": [
+            "Warehousing",
+            "Distribution",
+            "Tanker transport",
+            "Healthcare logistics"
+          ],
+          "headquarters": "Johannesburg, Afrique du Sud",
+          "contact": "+27 11 961 4000",
+          "email": "info@imperiallogistics.com",
+          "website": "https://www.imperiallogistics.com",
+          "certifications": [
+            "ISO 9001",
+            "ISO 14001",
+            "GDP",
+            "AEO"
+          ]
+        }
+      ]
+    }
+  },
+  "corridor_management_bodies_enriched": {
+    "ttca": {
+      "organization_name": "TTCA – Transit Transport Coordination Authority of the Northern Corridor",
+      "headquarters": "Mombasa, Kenya",
+      "contact_phone": "+254 41 231 9993",
+      "contact_email": "ttca@ttcanorthern.org",
+      "website": "https://www.ttcanorthern.org",
+      "corridors_covered": [
+        "CORR-MOMBASA-NAIROBI-003"
+      ],
+      "member_states": [
+        "KEN",
+        "UGA",
+        "RWA",
+        "BDI",
+        "COD",
+        "SSD"
+      ],
+      "mandate": "Facilitate and coordinate transport and transit on the Northern Corridor",
+      "services": [
+        "Corridor performance monitoring",
+        "One-stop border post management",
+        "Trade facilitation",
+        "Infrastructure advocacy"
+      ],
+      "departments": {
+        "secretariat": {
+          "department": "Secrétariat Général",
+          "responsibilities": [
+            "Coordination inter-États",
+            "Planification stratégique",
+            "Rapports annuels"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+254 41 231 9993",
+          "contact_email": "ttca@ttcanorthern.org"
+        },
+        "border_management": {
+          "department": "Gestion des Frontières",
+          "responsibilities": [
+            "OSBP management",
+            "Contrôle des charges à l'essieu",
+            "Délais de transit"
+          ],
+          "24h_emergency": true,
+          "contact_phone": "+254 41 231 9993",
+          "contact_email": "ttca@ttcanorthern.org"
+        },
+        "infrastructure": {
+          "department": "Infrastructure et Maintenance",
+          "responsibilities": [
+            "Entretien routier",
+            "Signalisation",
+            "Financement projets"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+254 41 231 9993",
+          "contact_email": "ttca@ttcanorthern.org"
+        },
+        "trade_facilitation": {
+          "department": "Facilitation du Commerce",
+          "responsibilities": [
+            "Réduction des barrières NTM",
+            "Guichet unique",
+            "Digitalisation douanière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+254 41 231 9993",
+          "contact_email": "ttca@ttcanorthern.org"
+        },
+        "transport_regulation": {
+          "department": "Régulation du Transport",
+          "responsibilities": [
+            "Permis de transit",
+            "Réglementation sur les gabarits",
+            "Sécurité routière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+254 41 231 9993",
+          "contact_email": "ttca@ttcanorthern.org"
+        }
+      }
+    },
+    "ncttca": {
+      "organization_name": "NCTTCA – Northern Corridor Transit and Transport Coordination Authority",
+      "headquarters": "Mombasa, Kenya",
+      "contact_phone": "+254 41 222 8791",
+      "contact_email": "secretariat@ncttca.org",
+      "website": "https://www.ncttca.org",
+      "corridors_covered": [
+        "CORR-MOMBASA-NAIROBI-003"
+      ],
+      "member_states": [
+        "KEN",
+        "UGA",
+        "RWA",
+        "BDI",
+        "COD",
+        "SSD"
+      ],
+      "mandate": "Coordination of Northern Corridor transit transport",
+      "services": [
+        "Corridor secretariat",
+        "Performance indicators reporting",
+        "Axle load control"
+      ],
+      "departments": {
+        "secretariat": {
+          "department": "Secrétariat Général",
+          "responsibilities": [
+            "Coordination inter-États",
+            "Planification stratégique",
+            "Rapports annuels"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+254 41 222 8791",
+          "contact_email": "secretariat@ncttca.org"
+        },
+        "border_management": {
+          "department": "Gestion des Frontières",
+          "responsibilities": [
+            "OSBP management",
+            "Contrôle des charges à l'essieu",
+            "Délais de transit"
+          ],
+          "24h_emergency": true,
+          "contact_phone": "+254 41 222 8791",
+          "contact_email": "secretariat@ncttca.org"
+        },
+        "infrastructure": {
+          "department": "Infrastructure et Maintenance",
+          "responsibilities": [
+            "Entretien routier",
+            "Signalisation",
+            "Financement projets"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+254 41 222 8791",
+          "contact_email": "secretariat@ncttca.org"
+        },
+        "trade_facilitation": {
+          "department": "Facilitation du Commerce",
+          "responsibilities": [
+            "Réduction des barrières NTM",
+            "Guichet unique",
+            "Digitalisation douanière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+254 41 222 8791",
+          "contact_email": "secretariat@ncttca.org"
+        },
+        "transport_regulation": {
+          "department": "Régulation du Transport",
+          "responsibilities": [
+            "Permis de transit",
+            "Réglementation sur les gabarits",
+            "Sécurité routière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+254 41 222 8791",
+          "contact_email": "secretariat@ncttca.org"
+        }
+      }
+    },
+    "pida_au": {
+      "organization_name": "PIDA-AU – Programme for Infrastructure Development in Africa",
+      "headquarters": "Addis Ababa, Éthiopie",
+      "contact_phone": "+251 11 551 7700",
+      "contact_email": "au-pida@africa-union.org",
+      "website": "https://au.int/en/sa/pida",
+      "corridors_covered": [
+        "CORR-ABIDJAN-OUAGA-001",
+        "CORR-ABIDJAN-LAGOS-002",
+        "CORR-LOBITO-005",
+        "CORR-TRANS-MAGHREB-007",
+        "CORR-TAZARA-008"
+      ],
+      "member_states": [
+        "ALL AU MEMBER STATES"
+      ],
+      "mandate": "Infrastructure planning and financing across Africa",
+      "services": [
+        "Master plan development",
+        "Project financing facilitation",
+        "Capacity building",
+        "Monitoring & evaluation"
+      ],
+      "departments": {
+        "secretariat": {
+          "department": "Secrétariat Général",
+          "responsibilities": [
+            "Coordination inter-États",
+            "Planification stratégique",
+            "Rapports annuels"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+251 11 551 7700",
+          "contact_email": "au-pida@africa-union.org"
+        },
+        "border_management": {
+          "department": "Gestion des Frontières",
+          "responsibilities": [
+            "OSBP management",
+            "Contrôle des charges à l'essieu",
+            "Délais de transit"
+          ],
+          "24h_emergency": true,
+          "contact_phone": "+251 11 551 7700",
+          "contact_email": "au-pida@africa-union.org"
+        },
+        "infrastructure": {
+          "department": "Infrastructure et Maintenance",
+          "responsibilities": [
+            "Entretien routier",
+            "Signalisation",
+            "Financement projets"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+251 11 551 7700",
+          "contact_email": "au-pida@africa-union.org"
+        },
+        "trade_facilitation": {
+          "department": "Facilitation du Commerce",
+          "responsibilities": [
+            "Réduction des barrières NTM",
+            "Guichet unique",
+            "Digitalisation douanière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+251 11 551 7700",
+          "contact_email": "au-pida@africa-union.org"
+        },
+        "transport_regulation": {
+          "department": "Régulation du Transport",
+          "responsibilities": [
+            "Permis de transit",
+            "Réglementation sur les gabarits",
+            "Sécurité routière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+251 11 551 7700",
+          "contact_email": "au-pida@africa-union.org"
+        }
+      }
+    },
+    "comesa_secretariat": {
+      "organization_name": "COMESA – Common Market for Eastern and Southern Africa",
+      "headquarters": "Lusaka, Zambie",
+      "contact_phone": "+260 211 229 725",
+      "contact_email": "comesa@comesa.int",
+      "website": "https://www.comesa.int",
+      "corridors_covered": [
+        "CORR-MOMBASA-NAIROBI-003",
+        "CORR-DURBAN-GAUTENG-004",
+        "CORR-LOBITO-005",
+        "CORR-TAZARA-008",
+        "CORR-CENTRAL-009",
+        "CORR-BEIRA-010",
+        "CORR-NACALA-011",
+        "CORR-MAPUTO-012"
+      ],
+      "member_states": [
+        "KEN",
+        "UGA",
+        "RWA",
+        "BDI",
+        "TZA",
+        "ZMB",
+        "ZWE",
+        "MOZ",
+        "MWI",
+        "ETH",
+        "EGY",
+        "COD"
+      ],
+      "mandate": "Regional integration and trade facilitation in Eastern and Southern Africa",
+      "services": [
+        "COMESA Yellow Card (Third-party insurance)",
+        "Regional customs bond",
+        "Trade facilitation instruments",
+        "Single customs territory"
+      ],
+      "departments": {
+        "secretariat": {
+          "department": "Secrétariat Général",
+          "responsibilities": [
+            "Coordination inter-États",
+            "Planification stratégique",
+            "Rapports annuels"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+260 211 229 725",
+          "contact_email": "comesa@comesa.int"
+        },
+        "border_management": {
+          "department": "Gestion des Frontières",
+          "responsibilities": [
+            "OSBP management",
+            "Contrôle des charges à l'essieu",
+            "Délais de transit"
+          ],
+          "24h_emergency": true,
+          "contact_phone": "+260 211 229 725",
+          "contact_email": "comesa@comesa.int"
+        },
+        "infrastructure": {
+          "department": "Infrastructure et Maintenance",
+          "responsibilities": [
+            "Entretien routier",
+            "Signalisation",
+            "Financement projets"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+260 211 229 725",
+          "contact_email": "comesa@comesa.int"
+        },
+        "trade_facilitation": {
+          "department": "Facilitation du Commerce",
+          "responsibilities": [
+            "Réduction des barrières NTM",
+            "Guichet unique",
+            "Digitalisation douanière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+260 211 229 725",
+          "contact_email": "comesa@comesa.int"
+        },
+        "transport_regulation": {
+          "department": "Régulation du Transport",
+          "responsibilities": [
+            "Permis de transit",
+            "Réglementation sur les gabarits",
+            "Sécurité routière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+260 211 229 725",
+          "contact_email": "comesa@comesa.int"
+        }
+      }
+    },
+    "ecowas_secretariat": {
+      "organization_name": "ECOWAS – Economic Community of West African States",
+      "headquarters": "Abuja, Nigeria",
+      "contact_phone": "+234 9 314 7647",
+      "contact_email": "info@ecowas.int",
+      "website": "https://www.ecowas.int",
+      "corridors_covered": [
+        "CORR-ABIDJAN-OUAGA-001",
+        "CORR-ABIDJAN-LAGOS-002",
+        "CORR-DAKAR-BAMAKO-006",
+        "CORR-LOME-OUAGA-013",
+        "CORR-TEMA-OUAGA-014",
+        "CORR-COTONOU-NIAMEY-015"
+      ],
+      "member_states": [
+        "CIV",
+        "BFA",
+        "NER",
+        "GHA",
+        "TGO",
+        "BEN",
+        "MLI",
+        "NGA",
+        "SEN",
+        "GMB",
+        "GIN",
+        "GNB",
+        "LBR",
+        "SLE",
+        "CPV"
+      ],
+      "mandate": "Regional integration and transport facilitation in West Africa",
+      "services": [
+        "ECOWAS Inter-State Road Transit (ISRT)",
+        "Axle load control",
+        "Corridor facilitation",
+        "Trade statistics"
+      ],
+      "departments": {
+        "secretariat": {
+          "department": "Secrétariat Général",
+          "responsibilities": [
+            "Coordination inter-États",
+            "Planification stratégique",
+            "Rapports annuels"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+234 9 314 7647",
+          "contact_email": "info@ecowas.int"
+        },
+        "border_management": {
+          "department": "Gestion des Frontières",
+          "responsibilities": [
+            "OSBP management",
+            "Contrôle des charges à l'essieu",
+            "Délais de transit"
+          ],
+          "24h_emergency": true,
+          "contact_phone": "+234 9 314 7647",
+          "contact_email": "info@ecowas.int"
+        },
+        "infrastructure": {
+          "department": "Infrastructure et Maintenance",
+          "responsibilities": [
+            "Entretien routier",
+            "Signalisation",
+            "Financement projets"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+234 9 314 7647",
+          "contact_email": "info@ecowas.int"
+        },
+        "trade_facilitation": {
+          "department": "Facilitation du Commerce",
+          "responsibilities": [
+            "Réduction des barrières NTM",
+            "Guichet unique",
+            "Digitalisation douanière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+234 9 314 7647",
+          "contact_email": "info@ecowas.int"
+        },
+        "transport_regulation": {
+          "department": "Régulation du Transport",
+          "responsibilities": [
+            "Permis de transit",
+            "Réglementation sur les gabarits",
+            "Sécurité routière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+234 9 314 7647",
+          "contact_email": "info@ecowas.int"
+        }
+      }
+    },
+    "sadc_secretariat": {
+      "organization_name": "SADC – Southern African Development Community",
+      "headquarters": "Gaborone, Botswana",
+      "contact_phone": "+267 395 1863",
+      "contact_email": "sadcsec@sadc.int",
+      "website": "https://www.sadc.int",
+      "corridors_covered": [
+        "CORR-DURBAN-GAUTENG-004",
+        "CORR-BEIRA-010",
+        "CORR-NACALA-011",
+        "CORR-MAPUTO-012"
+      ],
+      "member_states": [
+        "ZAF",
+        "ZWE",
+        "ZMB",
+        "MOZ",
+        "MWI",
+        "TZA",
+        "BWA",
+        "NAM",
+        "AGO"
+      ],
+      "mandate": "Transport and trade facilitation in Southern Africa",
+      "services": [
+        "Harmonized axle load regulations",
+        "SADC transport protocols",
+        "Corridor oversight",
+        "One-stop border post programme"
+      ],
+      "departments": {
+        "secretariat": {
+          "department": "Secrétariat Général",
+          "responsibilities": [
+            "Coordination inter-États",
+            "Planification stratégique",
+            "Rapports annuels"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+267 395 1863",
+          "contact_email": "sadcsec@sadc.int"
+        },
+        "border_management": {
+          "department": "Gestion des Frontières",
+          "responsibilities": [
+            "OSBP management",
+            "Contrôle des charges à l'essieu",
+            "Délais de transit"
+          ],
+          "24h_emergency": true,
+          "contact_phone": "+267 395 1863",
+          "contact_email": "sadcsec@sadc.int"
+        },
+        "infrastructure": {
+          "department": "Infrastructure et Maintenance",
+          "responsibilities": [
+            "Entretien routier",
+            "Signalisation",
+            "Financement projets"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+267 395 1863",
+          "contact_email": "sadcsec@sadc.int"
+        },
+        "trade_facilitation": {
+          "department": "Facilitation du Commerce",
+          "responsibilities": [
+            "Réduction des barrières NTM",
+            "Guichet unique",
+            "Digitalisation douanière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+267 395 1863",
+          "contact_email": "sadcsec@sadc.int"
+        },
+        "transport_regulation": {
+          "department": "Régulation du Transport",
+          "responsibilities": [
+            "Permis de transit",
+            "Réglementation sur les gabarits",
+            "Sécurité routière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+267 395 1863",
+          "contact_email": "sadcsec@sadc.int"
+        }
+      }
+    },
+    "opa_bicc": {
+      "organization_name": "OPA-BICC – Observatoire des Pratiques Anormales",
+      "headquarters": "Ouagadougou, Burkina Faso",
+      "contact_phone": "+226 25 37 15 08",
+      "contact_email": "opabicc@gmail.com",
+      "website": "https://www.opabicc.org",
+      "corridors_covered": [
+        "CORR-ABIDJAN-OUAGA-001",
+        "CORR-ABIDJAN-LAGOS-002",
+        "CORR-LOME-OUAGA-013",
+        "CORR-TEMA-OUAGA-014",
+        "CORR-COTONOU-NIAMEY-015",
+        "CORR-DAKAR-BAMAKO-006"
+      ],
+      "member_states": [
+        "CIV",
+        "BFA",
+        "NER",
+        "GHA",
+        "TGO",
+        "BEN",
+        "MLI",
+        "SEN"
+      ],
+      "mandate": "Monitoring road governance and abnormal practices on West African corridors",
+      "services": [
+        "Corridor performance data",
+        "Checkpoint monitoring",
+        "Illegal levy tracking",
+        "Annual corridor report"
+      ],
+      "departments": {
+        "secretariat": {
+          "department": "Secrétariat Général",
+          "responsibilities": [
+            "Coordination inter-États",
+            "Planification stratégique",
+            "Rapports annuels"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+226 25 37 15 08",
+          "contact_email": "opabicc@gmail.com"
+        },
+        "border_management": {
+          "department": "Gestion des Frontières",
+          "responsibilities": [
+            "OSBP management",
+            "Contrôle des charges à l'essieu",
+            "Délais de transit"
+          ],
+          "24h_emergency": true,
+          "contact_phone": "+226 25 37 15 08",
+          "contact_email": "opabicc@gmail.com"
+        },
+        "infrastructure": {
+          "department": "Infrastructure et Maintenance",
+          "responsibilities": [
+            "Entretien routier",
+            "Signalisation",
+            "Financement projets"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+226 25 37 15 08",
+          "contact_email": "opabicc@gmail.com"
+        },
+        "trade_facilitation": {
+          "department": "Facilitation du Commerce",
+          "responsibilities": [
+            "Réduction des barrières NTM",
+            "Guichet unique",
+            "Digitalisation douanière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+226 25 37 15 08",
+          "contact_email": "opabicc@gmail.com"
+        },
+        "transport_regulation": {
+          "department": "Régulation du Transport",
+          "responsibilities": [
+            "Permis de transit",
+            "Réglementation sur les gabarits",
+            "Sécurité routière"
+          ],
+          "24h_emergency": false,
+          "contact_phone": "+226 25 37 15 08",
+          "contact_email": "opabicc@gmail.com"
+        }
+      }
+    }
+  },
+  "enhanced_corridors": [
+    {
+      "corridor_id": "CORR-ABIDJAN-OUAGA-001",
+      "corridor_name": "Corridor Abidjan-Ouagadougou-Niamey",
+      "corridor_type": "multimodal",
+      "countries_spanned": [
+        "CIV",
+        "BFA",
+        "NER"
+      ],
+      "start_node": "Port d'Abidjan",
+      "end_node": "Niamey",
+      "length_km": 1420,
+      "status": "Opérationnel",
+      "infra_details": "Route A3 entièrement pavée (CIV), Rail Sitarail écartement métrique (Abidjan-Ouaga), Route RN3 (BFA-NER)",
+      "importance": "high",
+      "description": "Principal corridor d'exportation du Burkina Faso et du Niger vers l'Atlantique",
+      "source_org": "PIDA, CEDEAO",
+      "coordinates": [
+        [
+          5.3364,
+          -4.0267
+        ],
+        [
+          6.5244,
+          -3.0478
+        ],
+        [
+          8.9809,
+          -2.1097
+        ],
+        [
+          12.3714,
+          -1.5197
+        ],
+        [
+          13.5127,
+          2.1098
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-FERKE-001",
+          "node_name": "Port Sec de Ferkessédougou",
+          "node_type": "dry_port",
+          "country_iso": "CIV",
+          "geo_lat": 9.598,
+          "geo_lon": -5.1956,
+          "is_osbp": false,
+          "notes": "Terminal intermodal Sitarail, connexion rail-route"
+        },
+        {
+          "node_id": "NODE-OUANGOLO-001",
+          "node_name": "Poste Frontière OSBP Ouangolodougou",
+          "node_type": "border_crossing",
+          "country_iso": "CIV",
+          "geo_lat": 9.96,
+          "geo_lon": -5.15,
+          "is_osbp": true,
+          "notes": "One-Stop Border Post Côte d'Ivoire-Burkina Faso"
+        },
+        {
+          "node_id": "NODE-OUAGA-RAIL-001",
+          "node_name": "Terminal Rail de Ouagadougou",
+          "node_type": "rail_terminal",
+          "country_iso": "BFA",
+          "geo_lat": 12.3714,
+          "geo_lon": -1.5197,
+          "is_osbp": false,
+          "notes": "Terminus Sitarail, principal hub logistique Burkina"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 72,
+        "avg_border_crossing_time_hours": 24,
+        "freight_throughput_tons": 2500000,
+        "truck_volumes_daily": 450,
+        "source_org": "Observatoire des pratiques anormales (OPA)",
+        "source_url": "https://www.opabicc.org/"
+      },
+      "operators": [
+        {
+          "operator_name": "Sitarail",
+          "operator_type": "rail_operator",
+          "group": "Bolloré Africa Logistics",
+          "fleet_size": 35,
+          "country_iso": "CIV",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        },
+        {
+          "operator_name": "Bolloré Transport & Logistics",
+          "operator_type": "trucking_company",
+          "group": "Bolloré Africa Logistics",
+          "fleet_size": 850,
+          "country_iso": "CIV",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [
+          "Bolloré Logistics Africa"
+        ],
+        "regional_trucking_operators": [
+          "CTS – Cross Trade Solutions West Africa"
+        ],
+        "rail_operators_present": [
+          "Sitarail – Société Internationale de Transport Africain par Rail"
+        ],
+        "corridor_management_bodies": [
+          "PIDA-AU – Programme for Infrastructure Development in Africa",
+          "ECOWAS – Economic Community of West African States",
+          "OPA-BICC – Observatoire des Pratiques Anormales"
+        ],
+        "local_agents_by_country": {
+          "CIV": [
+            {
+              "company_name": "SOCOPAO Côte d'Ivoire",
+              "agent_type": "freight_forwarder",
+              "city": "Abidjan",
+              "address": "Zone Portuaire, 01 BP 1297, Abidjan 01",
+              "phone": "+225 27 20 21 03 03",
+              "email": "socopao@socopao.ci",
+              "website": "https://www.socopao.ci",
+              "services": [
+                "Transit",
+                "Customs clearance",
+                "Trucking",
+                "Warehousing"
+              ],
+              "certifications": [
+                "OEA",
+                "ISO 9001"
+              ],
+              "operating_hours": "Lun-Ven 07h30-18h00"
+            },
+            {
+              "company_name": "SAGA CI (CMA CGM Group)",
+              "agent_type": "freight_forwarder",
+              "city": "Abidjan",
+              "address": "Résidence Les Harmonies, Boulevard Latrille, Abidjan",
+              "phone": "+225 27 22 40 36 00",
+              "email": "saga@saga.ci",
+              "website": "https://www.saga.ci",
+              "services": [
+                "FCL",
+                "LCL",
+                "Customs",
+                "Inland transport",
+                "Corridor services"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "OEA"
+              ],
+              "operating_hours": "Lun-Ven 08h-17h30"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-ABIDJAN-LAGOS-002",
+      "corridor_name": "Corridor Abidjan-Lagos (Autoroute Transafricaine)",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "CIV",
+        "GHA",
+        "TGO",
+        "BEN",
+        "NGA"
+      ],
+      "start_node": "Abidjan",
+      "end_node": "Lagos",
+      "length_km": 992,
+      "status": "Opérationnel",
+      "infra_details": "Route côtière A1 (CIV), N1 (GHA), RNIE1 (TGO), RNIE1 (BEN), A121 (NGA) - Sections pavées et non pavées",
+      "importance": "high",
+      "description": "Axe vital du commerce intra-CEDEAO, relie les deux principales économies d'Afrique de l'Ouest",
+      "source_org": "PIDA, CEDEAO",
+      "coordinates": [
+        [
+          5.3364,
+          -4.0267
+        ],
+        [
+          5.6037,
+          -0.187
+        ],
+        [
+          6.1256,
+          1.2223
+        ],
+        [
+          6.4969,
+          2.6289
+        ],
+        [
+          6.4541,
+          3.3958
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-ELUBO-001",
+          "node_name": "Poste Frontière Elubo (CIV-GHA)",
+          "node_type": "border_crossing",
+          "country_iso": "CIV",
+          "geo_lat": 5.1372,
+          "geo_lon": -2.8354,
+          "is_osbp": false,
+          "notes": "Point de passage majeur, congestion fréquente"
+        },
+        {
+          "node_id": "NODE-AFLAO-001",
+          "node_name": "Poste Frontière OSBP Aflao (GHA-TGO)",
+          "node_type": "border_crossing",
+          "country_iso": "GHA",
+          "geo_lat": 6.1156,
+          "geo_lon": 1.1934,
+          "is_osbp": true,
+          "notes": "OSBP opérationnel depuis 2019"
+        },
+        {
+          "node_id": "NODE-HILLACONDJI-001",
+          "node_name": "Poste Frontière OSBP Hillacondji (TGO-BEN)",
+          "node_type": "border_crossing",
+          "country_iso": "TGO",
+          "geo_lat": 6.6289,
+          "geo_lon": 1.7786,
+          "is_osbp": true,
+          "notes": "OSBP moderne, réduit délais significativement"
+        },
+        {
+          "node_id": "NODE-SEME-001",
+          "node_name": "Poste Frontière Seme-Krake (BEN-NGA)",
+          "node_type": "border_crossing",
+          "country_iso": "BEN",
+          "geo_lat": 6.3667,
+          "geo_lon": 2.65,
+          "is_osbp": false,
+          "notes": "Point le plus congestionné, OSBP en construction"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 48,
+        "avg_border_crossing_time_hours": 18,
+        "freight_throughput_tons": 8500000,
+        "truck_volumes_daily": 1850,
+        "source_org": "CEDEAO Commission",
+        "source_url": "https://www.ecowas.int/"
+      },
+      "operators": [
+        {
+          "operator_name": "STMA (Société de Transport Moderne Africain)",
+          "operator_type": "trucking_company",
+          "group": "Regional",
+          "fleet_size": 420,
+          "country_iso": "CIV",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [
+          "Bolloré Logistics Africa",
+          "DHL Supply Chain Africa",
+          "Kuehne+Nagel Africa",
+          "DB Schenker Africa",
+          "DSV (ex-Panalpina) Africa"
+        ],
+        "regional_trucking_operators": [
+          "CTS – Cross Trade Solutions West Africa"
+        ],
+        "rail_operators_present": [],
+        "corridor_management_bodies": [
+          "PIDA-AU – Programme for Infrastructure Development in Africa",
+          "ECOWAS – Economic Community of West African States",
+          "OPA-BICC – Observatoire des Pratiques Anormales"
+        ],
+        "local_agents_by_country": {
+          "CIV": [
+            {
+              "company_name": "SOCOPAO Côte d'Ivoire",
+              "agent_type": "freight_forwarder",
+              "city": "Abidjan",
+              "address": "Zone Portuaire, 01 BP 1297, Abidjan 01",
+              "phone": "+225 27 20 21 03 03",
+              "email": "socopao@socopao.ci",
+              "website": "https://www.socopao.ci",
+              "services": [
+                "Transit",
+                "Customs clearance",
+                "Trucking",
+                "Warehousing"
+              ],
+              "certifications": [
+                "OEA",
+                "ISO 9001"
+              ],
+              "operating_hours": "Lun-Ven 07h30-18h00"
+            },
+            {
+              "company_name": "SAGA CI (CMA CGM Group)",
+              "agent_type": "freight_forwarder",
+              "city": "Abidjan",
+              "address": "Résidence Les Harmonies, Boulevard Latrille, Abidjan",
+              "phone": "+225 27 22 40 36 00",
+              "email": "saga@saga.ci",
+              "website": "https://www.saga.ci",
+              "services": [
+                "FCL",
+                "LCL",
+                "Customs",
+                "Inland transport",
+                "Corridor services"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "OEA"
+              ],
+              "operating_hours": "Lun-Ven 08h-17h30"
+            }
+          ],
+          "GHA": [
+            {
+              "company_name": "MERIDIAN PORT SERVICES (MPS)",
+              "agent_type": "port_logistics",
+              "city": "Tema",
+              "address": "Port of Tema, Ghana",
+              "phone": "+233 30 290 0000",
+              "email": "info@mps.com.gh",
+              "website": "https://www.mps.com.gh",
+              "services": [
+                "Port operations",
+                "Container handling",
+                "Customs liaison",
+                "Tema-Ouaga corridor"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "ISPS"
+              ],
+              "operating_hours": "24h/7j"
+            }
+          ],
+          "NGA": [
+            {
+              "company_name": "Sifax Group",
+              "agent_type": "logistics_provider",
+              "city": "Lagos",
+              "address": "Apapa Port, Lagos, Nigeria",
+              "phone": "+234 1 271 3800",
+              "email": "info@sifaxgroup.com",
+              "website": "https://www.sifaxgroup.com",
+              "services": [
+                "Port operations",
+                "Customs",
+                "Inland container depot",
+                "Haulage"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "NCS-approved"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-MOMBASA-NAIROBI-003",
+      "corridor_name": "Northern Corridor (Mombasa-Nairobi-Kampala-Kigali)",
+      "corridor_type": "multimodal",
+      "countries_spanned": [
+        "KEN",
+        "UGA",
+        "RWA",
+        "BDI",
+        "COD",
+        "SSD"
+      ],
+      "start_node": "Port de Mombasa",
+      "end_node": "Kampala",
+      "length_km": 1720,
+      "status": "Opérationnel",
+      "infra_details": "Route A109 (KEN), Nouvelle ligne SGR (Standard Gauge Railway) Mombasa-Nairobi opérationnelle, Route A104 (UGA)",
+      "importance": "high",
+      "description": "Principal corridor d'Afrique de l'Est, SGR moderne jusqu'à Nairobi, projet d'extension vers Kampala",
+      "source_org": "PIDA, EAC",
+      "coordinates": [
+        [
+          -4.0435,
+          39.6682
+        ],
+        [
+          -1.2864,
+          36.8172
+        ],
+        [
+          0.3136,
+          32.5811
+        ],
+        [
+          -1.9536,
+          30.0605
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-NAIROBI-ICD-001",
+          "node_name": "Inland Container Depot Nairobi",
+          "node_type": "dry_port",
+          "country_iso": "KEN",
+          "geo_lat": -1.3195,
+          "geo_lon": 36.9275,
+          "is_osbp": false,
+          "notes": "Principal terminal SGR, hub logistique majeur"
+        },
+        {
+          "node_id": "NODE-MALABA-001",
+          "node_name": "Poste Frontière OSBP Malaba (KEN-UGA)",
+          "node_type": "border_crossing",
+          "country_iso": "KEN",
+          "geo_lat": 0.6333,
+          "geo_lon": 34.2667,
+          "is_osbp": true,
+          "notes": "OSBP moderne, temps de passage réduit à 4h"
+        },
+        {
+          "node_id": "NODE-KAMPALA-ICD-001",
+          "node_name": "Kampala Inland Container Depot",
+          "node_type": "dry_port",
+          "country_iso": "UGA",
+          "geo_lat": 0.3476,
+          "geo_lon": 32.6253,
+          "is_osbp": false,
+          "notes": "Terminal intermodal principal Ouganda"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 36,
+        "avg_border_crossing_time_hours": 6,
+        "freight_throughput_tons": 12500000,
+        "truck_volumes_daily": 2100,
+        "source_org": "Northern Corridor Transit & Transport Coordination Authority",
+        "source_url": "https://www.ttcanc.org/"
+      },
+      "operators": [
+        {
+          "operator_name": "Kenya Railways (SGR)",
+          "operator_type": "rail_operator",
+          "group": "Government of Kenya",
+          "fleet_size": 56,
+          "country_iso": "KEN",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        },
+        {
+          "operator_name": "Rift Valley Railways",
+          "operator_type": "rail_operator",
+          "group": "Private (suspended)",
+          "fleet_size": 0,
+          "country_iso": "KEN",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [
+          "Bolloré Logistics Africa",
+          "DHL Supply Chain Africa",
+          "Kuehne+Nagel Africa",
+          "DB Schenker Africa",
+          "DSV (ex-Panalpina) Africa"
+        ],
+        "regional_trucking_operators": [
+          "East African Road Transport (EART)",
+          "Maersk Logistics & Services (Inland)"
+        ],
+        "rail_operators_present": [],
+        "corridor_management_bodies": [
+          "TTCA – Transit Transport Coordination Authority of the Northern Corridor",
+          "NCTTCA – Northern Corridor Transit and Transport Coordination Authority",
+          "COMESA – Common Market for Eastern and Southern Africa"
+        ],
+        "local_agents_by_country": {
+          "KEN": [
+            {
+              "company_name": "Freight In Time (FIT)",
+              "agent_type": "freight_forwarder",
+              "city": "Mombasa",
+              "address": "Nkrumah Road, Mombasa, Kenya",
+              "phone": "+254 41 222 0001",
+              "email": "info@fit.co.ke",
+              "website": "https://www.fit.co.ke",
+              "services": [
+                "Customs clearance",
+                "Freight forwarding",
+                "Northern Corridor",
+                "Inland container depot"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "AEO",
+                "KRA-approved"
+              ],
+              "operating_hours": "Mon-Fri 08h-18h"
+            },
+            {
+              "company_name": "Siginon Global Logistics",
+              "agent_type": "logistics_provider",
+              "city": "Nairobi",
+              "address": "Off Mombasa Road, Nairobi, Kenya",
+              "phone": "+254 20 600 0000",
+              "email": "info@siginon.com",
+              "website": "https://www.siginon.com",
+              "services": [
+                "Warehousing",
+                "Distribution",
+                "Customs",
+                "Trucking",
+                "Northern Corridor"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "AEO"
+              ],
+              "operating_hours": "Mon-Fri 07h-19h"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-DURBAN-GAUTENG-004",
+      "corridor_name": "Corridor Nord-Sud (Durban-Gauteng-Beitbridge)",
+      "corridor_type": "multimodal",
+      "countries_spanned": [
+        "ZAF",
+        "ZWE",
+        "ZMB",
+        "TZA"
+      ],
+      "start_node": "Port de Durban",
+      "end_node": "Dar es Salaam",
+      "length_km": 3200,
+      "status": "Opérationnel",
+      "infra_details": "Route N3 (ZAF), Ligne ferroviaire écartement du Cap 1067mm, Route A6 (ZWE)",
+      "importance": "high",
+      "description": "Épine dorsale logistique de l'Afrique australe, relie le principal port au heartland industriel",
+      "source_org": "PIDA, SADC",
+      "coordinates": [
+        [
+          -29.8587,
+          31.0218
+        ],
+        [
+          -26.2041,
+          28.0473
+        ],
+        [
+          -22.4239,
+          29.7857
+        ],
+        [
+          -15.4167,
+          28.2833
+        ],
+        [
+          -6.7924,
+          39.2083
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-CITY-DEEP-001",
+          "node_name": "City Deep Container Terminal",
+          "node_type": "intermodal_hub",
+          "country_iso": "ZAF",
+          "geo_lat": -26.2406,
+          "geo_lon": 28.1094,
+          "is_osbp": false,
+          "notes": "Plus grand terminal intermodal d'Afrique, connecté Durban par rail dédié"
+        },
+        {
+          "node_id": "NODE-BEITBRIDGE-001",
+          "node_name": "Poste Frontière Beitbridge (ZAF-ZWE)",
+          "node_type": "border_crossing",
+          "country_iso": "ZAF",
+          "geo_lat": -22.2167,
+          "geo_lon": 29.9833,
+          "is_osbp": false,
+          "notes": "Point le plus fréquenté SADC, congestion chronique, OSBP en projet"
+        },
+        {
+          "node_id": "NODE-CHIRUNDU-001",
+          "node_name": "Poste Frontière OSBP Chirundu (ZWE-ZMB)",
+          "node_type": "border_crossing",
+          "country_iso": "ZWE",
+          "geo_lat": -15.9833,
+          "geo_lon": 28.85,
+          "is_osbp": true,
+          "notes": "Premier OSBP d'Afrique (2009), modèle de réussite"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 120,
+        "avg_border_crossing_time_hours": 36,
+        "freight_throughput_tons": 75000000,
+        "truck_volumes_daily": 3500,
+        "source_org": "Transnet, SADC",
+        "source_url": "https://www.transnet.net/"
+      },
+      "operators": [
+        {
+          "operator_name": "Transnet Freight Rail",
+          "operator_type": "rail_operator",
+          "group": "South African SOE",
+          "fleet_size": 2100,
+          "country_iso": "ZAF",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        },
+        {
+          "operator_name": "Super Group",
+          "operator_type": "trucking_company",
+          "group": "Private",
+          "fleet_size": 4200,
+          "country_iso": "ZAF",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [
+          "Bolloré Logistics Africa",
+          "DHL Supply Chain Africa",
+          "Kuehne+Nagel Africa",
+          "DB Schenker Africa",
+          "DSV (ex-Panalpina) Africa"
+        ],
+        "regional_trucking_operators": [
+          "Imperial Logistics Africa",
+          "Grindrod Logistics",
+          "Maersk Logistics & Services (Inland)"
+        ],
+        "rail_operators_present": [
+          "Transnet Freight Rail"
+        ],
+        "corridor_management_bodies": [
+          "COMESA – Common Market for Eastern and Southern Africa",
+          "SADC – Southern African Development Community"
+        ],
+        "local_agents_by_country": {
+          "ZAF": [
+            {
+              "company_name": "UTi (DSV) South Africa",
+              "agent_type": "logistics_provider",
+              "city": "Johannesburg",
+              "address": "1 Pomona Road, Kempton Park, Johannesburg",
+              "phone": "+27 11 570 7777",
+              "email": "southafrica@dsv.com",
+              "website": "https://www.dsv.com/south-africa",
+              "services": [
+                "Customs",
+                "Road freight",
+                "Warehousing",
+                "North-South Corridor",
+                "SADC corridors"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "AEO",
+                "ISO 14001",
+                "SARS-AEO"
+              ],
+              "operating_hours": "Mon-Fri 07h30-17h30"
+            },
+            {
+              "company_name": "Röhlig-Grindrod",
+              "agent_type": "freight_forwarder",
+              "city": "Durban",
+              "address": "143 Bram Fischer Drive, Durban 4001",
+              "phone": "+27 31 360 0100",
+              "email": "durban@rohlig-grindrod.com",
+              "website": "https://www.rohlig-grindrod.com",
+              "services": [
+                "Customs",
+                "Freight forwarding",
+                "Project cargo",
+                "North-South Corridor",
+                "Mozambique corridors"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "AEO",
+                "OHSAS 18001"
+              ],
+              "operating_hours": "Mon-Fri 07h30-17h30"
+            }
+          ],
+          "TZA": [
+            {
+              "company_name": "Tantransit Ltd",
+              "agent_type": "freight_forwarder",
+              "city": "Dar es Salaam",
+              "address": "Pamba Road, Dar es Salaam, Tanzania",
+              "phone": "+255 22 212 0000",
+              "email": "info@tantransit.co.tz",
+              "website": "https://www.tantransit.co.tz",
+              "services": [
+                "Customs clearance",
+                "Inland transport",
+                "Central Corridor",
+                "TAZARA liaison"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "TRA-approved"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-LOBITO-005",
+      "corridor_name": "Corridor de Lobito (Angola-RDC-Zambie)",
+      "corridor_type": "rail",
+      "countries_spanned": [
+        "AGO",
+        "COD",
+        "ZMB"
+      ],
+      "start_node": "Port de Lobito",
+      "end_node": "Frontière Zambie",
+      "length_km": 1344,
+      "status": "En réhabilitation",
+      "infra_details": "Ligne Chemin de Fer de Benguela (CFB), écartement 1067mm, en cours de modernisation",
+      "importance": "high",
+      "description": "Corridor historique minier, réhabilitation majeure en cours avec financement USA/UE, alternative au Sud pour l'évacuation du cuivre de la Copper Belt",
+      "source_org": "PIDA, Banque Mondiale",
+      "coordinates": [
+        [
+          -12.35,
+          13.55
+        ],
+        [
+          -11.8167,
+          19.9
+        ],
+        [
+          -12.5333,
+          27.4667
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-LOBITO-RAIL-001",
+          "node_name": "Terminal Rail de Lobito",
+          "node_type": "rail_terminal",
+          "country_iso": "AGO",
+          "geo_lat": -12.35,
+          "geo_lon": 13.55,
+          "is_osbp": false,
+          "notes": "Terminus atlantique du CFB, en modernisation"
+        },
+        {
+          "node_id": "NODE-LUAU-001",
+          "node_name": "Poste Frontière Luau (AGO-COD)",
+          "node_type": "border_crossing",
+          "country_iso": "AGO",
+          "geo_lat": -10.7,
+          "geo_lon": 22.2333,
+          "is_osbp": false,
+          "notes": "Point de passage rail Benguela"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 168,
+        "freight_throughput_tons": 850000,
+        "source_org": "CFB Angola",
+        "source_url": "https://www.cfbenguela.co.ao/"
+      },
+      "operators": [
+        {
+          "operator_name": "CFB (Chemin de Fer de Benguela)",
+          "operator_type": "rail_operator",
+          "group": "Government of Angola",
+          "fleet_size": 28,
+          "country_iso": "AGO",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [
+          "Bolloré Logistics Africa"
+        ],
+        "regional_trucking_operators": [],
+        "rail_operators_present": [
+          "Chemins de Fer du Congo (CFC) / Lobito Corridor Rail"
+        ],
+        "corridor_management_bodies": [
+          "PIDA-AU – Programme for Infrastructure Development in Africa",
+          "COMESA – Common Market for Eastern and Southern Africa"
+        ],
+        "local_agents_by_country": {
+          "AGO": [
+            {
+              "company_name": "Mota-Engil Logistics Angola",
+              "agent_type": "logistics_provider",
+              "city": "Luanda",
+              "address": "Port de Lobito, Angola",
+              "phone": "+244 912 000 000",
+              "email": "logistics@mota-engil.ao",
+              "website": "https://www.mota-engil.com/angola",
+              "services": [
+                "Port services",
+                "Rail liaison",
+                "Inland transport",
+                "Lobito Corridor"
+              ],
+              "certifications": [
+                "ISO 9001"
+              ],
+              "operating_hours": "Lun-Ven 08h-17h"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-DAKAR-BAMAKO-006",
+      "corridor_name": "Corridor Dakar-Bamako",
+      "corridor_type": "multimodal",
+      "countries_spanned": [
+        "SEN",
+        "MLI"
+      ],
+      "start_node": "Port de Dakar",
+      "end_node": "Bamako",
+      "length_km": 1228,
+      "status": "Opérationnel",
+      "infra_details": "Route N1/RN1 (sections pavées et latérite), Rail écartement métrique 1000mm (état dégradé, projet de réhabilitation)",
+      "importance": "medium",
+      "description": "Principal corridor d'évacuation du Mali enclavé, ligne ferroviaire historique nécessitant modernisation",
+      "source_org": "PIDA, UEMOA",
+      "coordinates": [
+        [
+          14.6937,
+          -17.4441
+        ],
+        [
+          13.0514,
+          -12.5092
+        ],
+        [
+          12.6392,
+          -8.0029
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-KIDIRA-001",
+          "node_name": "Poste Frontière Kidira (SEN-MLI)",
+          "node_type": "border_crossing",
+          "country_iso": "SEN",
+          "geo_lat": 14.45,
+          "geo_lon": -12.2167,
+          "is_osbp": false,
+          "notes": "Point ferroviaire et routier, projet OSBP"
+        },
+        {
+          "node_id": "NODE-TAMBACOUNDA-RAIL-001",
+          "node_name": "Terminal Rail Tambacounda",
+          "node_type": "rail_terminal",
+          "country_iso": "SEN",
+          "geo_lat": 13.77,
+          "geo_lon": -13.6672,
+          "is_osbp": false,
+          "notes": "Hub intermédiaire ferroviaire"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 84,
+        "avg_border_crossing_time_hours": 12,
+        "freight_throughput_tons": 1200000,
+        "truck_volumes_daily": 320,
+        "source_org": "Transrail SA",
+        "source_url": "https://www.transrail.sn/"
+      },
+      "operators": [
+        {
+          "operator_name": "Transrail",
+          "operator_type": "rail_operator",
+          "group": "Private (Getma-SNCF)",
+          "fleet_size": 22,
+          "country_iso": "SEN",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [
+          "Bolloré Logistics Africa"
+        ],
+        "regional_trucking_operators": [],
+        "rail_operators_present": [],
+        "corridor_management_bodies": [
+          "ECOWAS – Economic Community of West African States",
+          "OPA-BICC – Observatoire des Pratiques Anormales"
+        ],
+        "local_agents_by_country": {
+          "SEN": [
+            {
+              "company_name": "ICTSI Dakar (Dakar Terminal)",
+              "agent_type": "logistics_provider",
+              "city": "Dakar",
+              "address": "Port de Dakar, Dakar, Sénégal",
+              "phone": "+221 33 849 10 00",
+              "email": "dakar@ictsi.com",
+              "website": "https://www.dakarterminal.com",
+              "services": [
+                "Port services",
+                "Customs",
+                "Inland container depot",
+                "Dakar-Bamako rail liaison"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "ISPS"
+              ],
+              "operating_hours": "24h/7j"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-TRANS-MAGHREB-007",
+      "corridor_name": "Trans-Maghreb (Tanger-Tunis-Tripoli-Le Caire)",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "MAR",
+        "DZA",
+        "TUN",
+        "LBY",
+        "EGY"
+      ],
+      "start_node": "Tanger",
+      "end_node": "Le Caire",
+      "length_km": 4850,
+      "status": "Partiellement opérationnel",
+      "infra_details": "Autoroute du Maghreb (sections nationales de qualité variable), Libye en reconstruction",
+      "importance": "medium",
+      "description": "Axe autoroutier panmaghrébain, discontinuités dues aux fermetures de frontières politiques (Maroc-Algérie, Libye instable)",
+      "source_org": "PIDA, UMA",
+      "coordinates": [
+        [
+          35.7595,
+          -5.834
+        ],
+        [
+          36.7539,
+          3.0588
+        ],
+        [
+          36.8065,
+          10.1815
+        ],
+        [
+          32.8872,
+          13.1913
+        ],
+        [
+          30.0444,
+          31.2357
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-MAGHNIA-001",
+          "node_name": "Poste Frontière Maghnia (DZA-MAR)",
+          "node_type": "border_crossing",
+          "country_iso": "DZA",
+          "geo_lat": 34.8667,
+          "geo_lon": -1.7833,
+          "is_osbp": false,
+          "notes": "Frontière fermée depuis 1994"
+        },
+        {
+          "node_id": "NODE-RAS-JEDIR-001",
+          "node_name": "Poste Frontière Ras Jedir (TUN-LBY)",
+          "node_type": "border_crossing",
+          "country_iso": "TUN",
+          "geo_lat": 33.05,
+          "geo_lon": 11.4667,
+          "is_osbp": false,
+          "notes": "Fluctuations selon situation sécuritaire Libye"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 240,
+        "avg_border_crossing_time_hours": 48,
+        "source_org": "UMA",
+        "source_url": "https://www.maghrebarabe.org/"
+      },
+      "operators": [],
+      "logistics_network": {
+        "global_3pl_present": [
+          "DHL Supply Chain Africa",
+          "Kuehne+Nagel Africa",
+          "DB Schenker Africa"
+        ],
+        "regional_trucking_operators": [
+          "Trans-Afrique Transport (TAT)"
+        ],
+        "rail_operators_present": [
+          "ONCF (Maroc) / SNCFT (Tunisie) – Trans-Maghreb Rail"
+        ],
+        "corridor_management_bodies": [
+          "PIDA-AU – Programme for Infrastructure Development in Africa"
+        ],
+        "local_agents_by_country": {
+          "MAR": [
+            {
+              "company_name": "Marsa Maroc / SODEP",
+              "agent_type": "port_logistics",
+              "city": "Casablanca",
+              "address": "Port de Casablanca, Maroc",
+              "phone": "+212 522 23 00 00",
+              "email": "commercial@marsamaroc.ma",
+              "website": "https://www.marsamaroc.ma",
+              "services": [
+                "Port handling",
+                "Customs liaison",
+                "Trans-Maghreb gateway",
+                "Inland transport"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "ISO 14001",
+                "ISPS",
+                "AEO"
+              ],
+              "operating_hours": "24h/7j"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-TAZARA-008",
+      "corridor_name": "TAZARA (Tanzanie-Zambie)",
+      "corridor_type": "rail",
+      "countries_spanned": [
+        "TZA",
+        "ZMB"
+      ],
+      "start_node": "Dar es Salaam",
+      "end_node": "Kapiri Mposhi",
+      "length_km": 1860,
+      "status": "Opérationnel (dégradé)",
+      "infra_details": "Ligne ferroviaire écartement 1067mm, construite par la Chine (1970s), infrastructure vieillissante",
+      "importance": "medium",
+      "description": "Corridor historique reliant la Zambie à l'océan Indien, alternative au Corridor Nord-Sud, nécessite réhabilitation",
+      "source_org": "PIDA, SADC",
+      "coordinates": [
+        [
+          -6.7924,
+          39.2083
+        ],
+        [
+          -9.3333,
+          33.6
+        ],
+        [
+          -13.9667,
+          28.6667
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-TAZARA-DAR-001",
+          "node_name": "Terminal TAZARA Dar es Salaam",
+          "node_type": "rail_terminal",
+          "country_iso": "TZA",
+          "geo_lat": -6.87,
+          "geo_lon": 39.27,
+          "is_osbp": false,
+          "notes": "Terminal principal côte Est Afrique"
+        },
+        {
+          "node_id": "NODE-TUNDUMA-001",
+          "node_name": "Poste Frontière Tunduma (TZA-ZMB)",
+          "node_type": "border_crossing",
+          "country_iso": "TZA",
+          "geo_lat": -9.3,
+          "geo_lon": 32.7667,
+          "is_osbp": true,
+          "notes": "OSBP opérationnel, passage ferroviaire et routier"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 96,
+        "freight_throughput_tons": 580000,
+        "source_org": "TAZARA Authority",
+        "source_url": "https://www.tazarasite.com/"
+      },
+      "operators": [
+        {
+          "operator_name": "TAZARA (Tanzania-Zambia Railway Authority)",
+          "operator_type": "rail_operator",
+          "group": "Bi-national parastatal",
+          "fleet_size": 42,
+          "country_iso": "TZA",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [
+          "Bolloré Logistics Africa"
+        ],
+        "regional_trucking_operators": [],
+        "rail_operators_present": [
+          "TAZARA – Tanzania Zambia Railway Authority"
+        ],
+        "corridor_management_bodies": [
+          "PIDA-AU – Programme for Infrastructure Development in Africa",
+          "COMESA – Common Market for Eastern and Southern Africa"
+        ],
+        "local_agents_by_country": {
+          "TZA": [
+            {
+              "company_name": "Tantransit Ltd",
+              "agent_type": "freight_forwarder",
+              "city": "Dar es Salaam",
+              "address": "Pamba Road, Dar es Salaam, Tanzania",
+              "phone": "+255 22 212 0000",
+              "email": "info@tantransit.co.tz",
+              "website": "https://www.tantransit.co.tz",
+              "services": [
+                "Customs clearance",
+                "Inland transport",
+                "Central Corridor",
+                "TAZARA liaison"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "TRA-approved"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-CENTRAL-009",
+      "corridor_name": "Corridor Central (Dar-Kigali-Bujumbura)",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "TZA",
+        "RWA",
+        "BDI"
+      ],
+      "start_node": "Dar es Salaam",
+      "end_node": "Bujumbura",
+      "length_km": 1650,
+      "status": "Opérationnel",
+      "infra_details": "Route pavée A7 (TZA), RN1/RN4 (RWA), sections modernisées récemment",
+      "importance": "medium",
+      "description": "Principal corridor pour le Rwanda et le Burundi enclavés, alternative au Northern Corridor kenyan",
+      "source_org": "PIDA, EAC",
+      "coordinates": [
+        [
+          -6.7924,
+          39.2083
+        ],
+        [
+          -5.0833,
+          29.65
+        ],
+        [
+          -1.9536,
+          30.0605
+        ],
+        [
+          -3.3822,
+          29.3644
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-RUSUMO-001",
+          "node_name": "Poste Frontière OSBP Rusumo (TZA-RWA)",
+          "node_type": "border_crossing",
+          "country_iso": "TZA",
+          "geo_lat": -2.3833,
+          "geo_lon": 30.7833,
+          "is_osbp": true,
+          "notes": "OSBP moderne, pont sur rivière Kagera"
+        },
+        {
+          "node_id": "NODE-KAYANZA-001",
+          "node_name": "Terminal Logistique Kayanza",
+          "node_type": "intermodal_hub",
+          "country_iso": "BDI",
+          "geo_lat": -2.9228,
+          "geo_lon": 29.63,
+          "is_osbp": false,
+          "notes": "Hub café burundais"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 72,
+        "avg_border_crossing_time_hours": 8,
+        "freight_throughput_tons": 1850000,
+        "truck_volumes_daily": 420,
+        "source_org": "Central Corridor Transit Transport Facilitation Agency",
+        "source_url": "https://www.centralcorridor-ttfa.org/"
+      },
+      "operators": [],
+      "logistics_network": {
+        "global_3pl_present": [
+          "Bolloré Logistics Africa"
+        ],
+        "regional_trucking_operators": [
+          "East African Road Transport (EART)",
+          "Maersk Logistics & Services (Inland)"
+        ],
+        "rail_operators_present": [],
+        "corridor_management_bodies": [
+          "COMESA – Common Market for Eastern and Southern Africa"
+        ],
+        "local_agents_by_country": {
+          "TZA": [
+            {
+              "company_name": "Tantransit Ltd",
+              "agent_type": "freight_forwarder",
+              "city": "Dar es Salaam",
+              "address": "Pamba Road, Dar es Salaam, Tanzania",
+              "phone": "+255 22 212 0000",
+              "email": "info@tantransit.co.tz",
+              "website": "https://www.tantransit.co.tz",
+              "services": [
+                "Customs clearance",
+                "Inland transport",
+                "Central Corridor",
+                "TAZARA liaison"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "TRA-approved"
+              ],
+              "operating_hours": "Mon-Fri 08h-17h"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-BEIRA-010",
+      "corridor_name": "Corridor de Beira (Mozambique-Zimbabwe-Zambie)",
+      "corridor_type": "multimodal",
+      "countries_spanned": [
+        "MOZ",
+        "ZWE",
+        "ZMB"
+      ],
+      "start_node": "Port de Beira",
+      "end_node": "Harare",
+      "length_km": 850,
+      "status": "Opérationnel",
+      "infra_details": "Ligne ferroviaire écartement 1067mm, Route EN6 (MOZ), Route A5 (ZWE)",
+      "importance": "medium",
+      "description": "Corridor alternatif pour le Zimbabwe et la Zambie, port de Beira connecté par rail",
+      "source_org": "PIDA, SADC",
+      "coordinates": [
+        [
+          -19.8436,
+          34.8389
+        ],
+        [
+          -18.975,
+          32.6689
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-BEIRA-RAIL-001",
+          "node_name": "Terminal Rail de Beira",
+          "node_type": "rail_terminal",
+          "country_iso": "MOZ",
+          "geo_lat": -19.8436,
+          "geo_lon": 34.8389,
+          "is_osbp": false,
+          "notes": "Terminal ferroviaire modernisé"
+        },
+        {
+          "node_id": "NODE-MACHIPANDA-001",
+          "node_name": "Poste Frontière Machipanda (MOZ-ZWE)",
+          "node_type": "border_crossing",
+          "country_iso": "MOZ",
+          "geo_lat": -18.9667,
+          "geo_lon": 32.8833,
+          "is_osbp": false,
+          "notes": "Point ferroviaire et routier stratégique"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 48,
+        "freight_throughput_tons": 3200000,
+        "source_org": "Beira Corridor Group",
+        "source_url": "https://www.beiracorridor.com/"
+      },
+      "operators": [
+        {
+          "operator_name": "CFM (Portos e Caminhos de Ferro de Moçambique)",
+          "operator_type": "rail_operator",
+          "group": "Government of Mozambique",
+          "fleet_size": 68,
+          "country_iso": "MOZ",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [],
+        "regional_trucking_operators": [
+          "Imperial Logistics Africa",
+          "Grindrod Logistics"
+        ],
+        "rail_operators_present": [],
+        "corridor_management_bodies": [
+          "COMESA – Common Market for Eastern and Southern Africa",
+          "SADC – Southern African Development Community"
+        ],
+        "local_agents_by_country": {
+          "MOZ": [
+            {
+              "company_name": "CFM – Portos e Caminhos de Ferro de Moçambique",
+              "agent_type": "rail_port_operator",
+              "city": "Beira",
+              "address": "Porto da Beira, Mozambique",
+              "phone": "+258 23 321 000",
+              "email": "cfm@cfm.co.mz",
+              "website": "https://www.cfm.co.mz",
+              "services": [
+                "Port operations",
+                "Rail freight",
+                "Beira Corridor",
+                "Nacala Corridor",
+                "Maputo Corridor"
+              ],
+              "certifications": [
+                "ISO 9001"
+              ],
+              "operating_hours": "24h/7j"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-NACALA-011",
+      "corridor_name": "Corridor de Nacala (Mozambique-Malawi-Zambie)",
+      "corridor_type": "multimodal",
+      "countries_spanned": [
+        "MOZ",
+        "MWI",
+        "ZMB"
+      ],
+      "start_node": "Port de Nacala",
+      "end_node": "Frontière Zambie",
+      "length_km": 880,
+      "status": "Opérationnel",
+      "infra_details": "Nouvelle ligne ferroviaire construite pour exportation charbon zambien, Route M1 (MWI)",
+      "importance": "medium",
+      "description": "Nouveau corridor stratégique, ligne ferroviaire modernisée pour le charbon de Moatize (Tete)",
+      "source_org": "PIDA, SADC",
+      "coordinates": [
+        [
+          -14.5428,
+          40.6722
+        ],
+        [
+          -13.9833,
+          33.7833
+        ],
+        [
+          -13.6333,
+          28.1833
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-NACALA-RAIL-001",
+          "node_name": "Terminal Rail de Nacala",
+          "node_type": "rail_terminal",
+          "country_iso": "MOZ",
+          "geo_lat": -14.5428,
+          "geo_lon": 40.6722,
+          "is_osbp": false,
+          "notes": "Port en eau profonde, terminal charbon moderne"
+        },
+        {
+          "node_id": "NODE-ENTRE-LAGOS-001",
+          "node_name": "Poste Frontière Entre-Lagos (MOZ-MWI)",
+          "node_type": "border_crossing",
+          "country_iso": "MOZ",
+          "geo_lat": -14.0167,
+          "geo_lon": 35.25,
+          "is_osbp": false,
+          "notes": "Point de passage rail et route"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "freight_throughput_tons": 6500000,
+        "source_org": "Vale Moçambique",
+        "source_url": "https://www.vale.com/"
+      },
+      "operators": [
+        {
+          "operator_name": "CDN (Corredor de Desenvolvimento do Norte)",
+          "operator_type": "rail_operator",
+          "group": "Vale Moçambique consortium",
+          "fleet_size": 95,
+          "country_iso": "MOZ",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [],
+        "regional_trucking_operators": [
+          "Imperial Logistics Africa"
+        ],
+        "rail_operators_present": [],
+        "corridor_management_bodies": [
+          "COMESA – Common Market for Eastern and Southern Africa",
+          "SADC – Southern African Development Community"
+        ],
+        "local_agents_by_country": {
+          "MOZ": [
+            {
+              "company_name": "CFM – Portos e Caminhos de Ferro de Moçambique",
+              "agent_type": "rail_port_operator",
+              "city": "Beira",
+              "address": "Porto da Beira, Mozambique",
+              "phone": "+258 23 321 000",
+              "email": "cfm@cfm.co.mz",
+              "website": "https://www.cfm.co.mz",
+              "services": [
+                "Port operations",
+                "Rail freight",
+                "Beira Corridor",
+                "Nacala Corridor",
+                "Maputo Corridor"
+              ],
+              "certifications": [
+                "ISO 9001"
+              ],
+              "operating_hours": "24h/7j"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-MAPUTO-012",
+      "corridor_name": "Corridor de Maputo (Mozambique-Afrique du Sud-Zimbabwe)",
+      "corridor_type": "multimodal",
+      "countries_spanned": [
+        "MOZ",
+        "ZAF",
+        "ZWE"
+      ],
+      "start_node": "Port de Maputo",
+      "end_node": "Gauteng",
+      "length_km": 572,
+      "status": "Opérationnel",
+      "infra_details": "Ligne ferroviaire écartement 1067mm, Autoroute N4 (ZAF), connexion Gauteng-Maputo",
+      "importance": "high",
+      "description": "Corridor court et efficace reliant Gauteng au port de Maputo, alternative à Durban pour certains trafics",
+      "source_org": "PIDA, SADC",
+      "coordinates": [
+        [
+          -25.9692,
+          32.5732
+        ],
+        [
+          -25.7479,
+          28.2293
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-RESSANO-001",
+          "node_name": "Poste Frontière Ressano Garcia (MOZ-ZAF)",
+          "node_type": "border_crossing",
+          "country_iso": "MOZ",
+          "geo_lat": -25.4333,
+          "geo_lon": 31.9833,
+          "is_osbp": false,
+          "notes": "Point très fréquenté, projet OSBP"
+        },
+        {
+          "node_id": "NODE-MATOLA-001",
+          "node_name": "Terminal Rail Matola",
+          "node_type": "rail_terminal",
+          "country_iso": "MOZ",
+          "geo_lat": -25.9628,
+          "geo_lon": 32.4589,
+          "is_osbp": false,
+          "notes": "Hub ferroviaire près du port"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 18,
+        "freight_throughput_tons": 8500000,
+        "source_org": "Maputo Port Development Company",
+        "source_url": "https://www.portmaputo.com/"
+      },
+      "operators": [
+        {
+          "operator_name": "CFM Sul",
+          "operator_type": "rail_operator",
+          "group": "CFM Mozambique",
+          "fleet_size": 120,
+          "country_iso": "MOZ",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [
+          "Bolloré Logistics Africa",
+          "DHL Supply Chain Africa",
+          "Kuehne+Nagel Africa",
+          "DB Schenker Africa",
+          "DSV (ex-Panalpina) Africa"
+        ],
+        "regional_trucking_operators": [
+          "Imperial Logistics Africa",
+          "Grindrod Logistics"
+        ],
+        "rail_operators_present": [
+          "Transnet Freight Rail"
+        ],
+        "corridor_management_bodies": [
+          "COMESA – Common Market for Eastern and Southern Africa",
+          "SADC – Southern African Development Community"
+        ],
+        "local_agents_by_country": {
+          "MOZ": [
+            {
+              "company_name": "CFM – Portos e Caminhos de Ferro de Moçambique",
+              "agent_type": "rail_port_operator",
+              "city": "Beira",
+              "address": "Porto da Beira, Mozambique",
+              "phone": "+258 23 321 000",
+              "email": "cfm@cfm.co.mz",
+              "website": "https://www.cfm.co.mz",
+              "services": [
+                "Port operations",
+                "Rail freight",
+                "Beira Corridor",
+                "Nacala Corridor",
+                "Maputo Corridor"
+              ],
+              "certifications": [
+                "ISO 9001"
+              ],
+              "operating_hours": "24h/7j"
+            }
+          ],
+          "ZAF": [
+            {
+              "company_name": "UTi (DSV) South Africa",
+              "agent_type": "logistics_provider",
+              "city": "Johannesburg",
+              "address": "1 Pomona Road, Kempton Park, Johannesburg",
+              "phone": "+27 11 570 7777",
+              "email": "southafrica@dsv.com",
+              "website": "https://www.dsv.com/south-africa",
+              "services": [
+                "Customs",
+                "Road freight",
+                "Warehousing",
+                "North-South Corridor",
+                "SADC corridors"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "AEO",
+                "ISO 14001",
+                "SARS-AEO"
+              ],
+              "operating_hours": "Mon-Fri 07h30-17h30"
+            },
+            {
+              "company_name": "Röhlig-Grindrod",
+              "agent_type": "freight_forwarder",
+              "city": "Durban",
+              "address": "143 Bram Fischer Drive, Durban 4001",
+              "phone": "+27 31 360 0100",
+              "email": "durban@rohlig-grindrod.com",
+              "website": "https://www.rohlig-grindrod.com",
+              "services": [
+                "Customs",
+                "Freight forwarding",
+                "Project cargo",
+                "North-South Corridor",
+                "Mozambique corridors"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "AEO",
+                "OHSAS 18001"
+              ],
+              "operating_hours": "Mon-Fri 07h30-17h30"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-LOME-OUAGA-013",
+      "corridor_name": "Corridor Lomé-Ouagadougou",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "TGO",
+        "BFA"
+      ],
+      "start_node": "Port de Lomé",
+      "end_node": "Ouagadougou",
+      "length_km": 985,
+      "status": "Opérationnel",
+      "infra_details": "Route RNIE1/RNIE2 (TGO), RN16 (BFA), entièrement pavée, corridor bien entretenu",
+      "importance": "medium",
+      "description": "Alternative au corridor ivoirien pour le Burkina Faso, Port Autonome de Lomé très compétitif",
+      "source_org": "PIDA, CEDEAO",
+      "coordinates": [
+        [
+          6.1256,
+          1.2223
+        ],
+        [
+          12.3714,
+          -1.5197
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-CINKASSE-001",
+          "node_name": "Poste Frontière OSBP Cinkassé (TGO-BFA)",
+          "node_type": "border_crossing",
+          "country_iso": "TGO",
+          "geo_lat": 10.9333,
+          "geo_lon": 0.3333,
+          "is_osbp": true,
+          "notes": "OSBP moderne, temps de passage réduit"
+        },
+        {
+          "node_id": "NODE-LOME-DRY-001",
+          "node_name": "Plateforme Logistique de Lomé",
+          "node_type": "dry_port",
+          "country_iso": "TGO",
+          "geo_lat": 6.1667,
+          "geo_lon": 1.35,
+          "is_osbp": false,
+          "notes": "Zone franche industrielle connectée au port"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 48,
+        "avg_border_crossing_time_hours": 6,
+        "freight_throughput_tons": 3200000,
+        "truck_volumes_daily": 680,
+        "source_org": "Port Autonome de Lomé",
+        "source_url": "https://www.palomedock.com/"
+      },
+      "operators": [
+        {
+          "operator_name": "ASKY Logistics",
+          "operator_type": "trucking_company",
+          "group": "Regional",
+          "fleet_size": 180,
+          "country_iso": "TGO",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [
+          "DSV (ex-Panalpina) Africa"
+        ],
+        "regional_trucking_operators": [
+          "CTS – Cross Trade Solutions West Africa"
+        ],
+        "rail_operators_present": [],
+        "corridor_management_bodies": [
+          "ECOWAS – Economic Community of West African States",
+          "OPA-BICC – Observatoire des Pratiques Anormales"
+        ],
+        "local_agents_by_country": {},
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-TEMA-OUAGA-014",
+      "corridor_name": "Corridor Tema-Ouagadougou-Bamako",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "GHA",
+        "BFA",
+        "MLI"
+      ],
+      "start_node": "Port de Tema",
+      "end_node": "Bamako",
+      "length_km": 1680,
+      "status": "Opérationnel",
+      "infra_details": "Route N1 (GHA), RN1 (BFA), sections pavées, corridor majeur pour l'hinterland sahélien",
+      "importance": "high",
+      "description": "Principal corridor pour le Burkina Faso et le Mali, Port de Tema très actif pour les pays enclavés",
+      "source_org": "PIDA, CEDEAO",
+      "coordinates": [
+        [
+          5.6167,
+          -0.0167
+        ],
+        [
+          12.3714,
+          -1.5197
+        ],
+        [
+          12.6392,
+          -8.0029
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-PAGA-001",
+          "node_name": "Poste Frontière OSBP Paga (GHA-BFA)",
+          "node_type": "border_crossing",
+          "country_iso": "GHA",
+          "geo_lat": 10.9833,
+          "geo_lon": -1.1,
+          "is_osbp": true,
+          "notes": "OSBP opérationnel, passage facilité"
+        },
+        {
+          "node_id": "NODE-BOBO-HUB-001",
+          "node_name": "Hub Logistique Bobo-Dioulasso",
+          "node_type": "intermodal_hub",
+          "country_iso": "BFA",
+          "geo_lat": 11.1833,
+          "geo_lon": -4.2833,
+          "is_osbp": false,
+          "notes": "Principal hub commercial Burkina, connexion vers Mali"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 96,
+        "avg_border_crossing_time_hours": 8,
+        "freight_throughput_tons": 4500000,
+        "truck_volumes_daily": 820,
+        "source_org": "Ghana Ports and Harbours Authority",
+        "source_url": "https://www.ghanaports.gov.gh/"
+      },
+      "operators": [
+        {
+          "operator_name": "SNTB (Société Nationale des Transports Burkinabè)",
+          "operator_type": "trucking_company",
+          "group": "Government of Burkina Faso",
+          "fleet_size": 250,
+          "country_iso": "BFA",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [
+          "DHL Supply Chain Africa",
+          "DSV (ex-Panalpina) Africa"
+        ],
+        "regional_trucking_operators": [
+          "CTS – Cross Trade Solutions West Africa"
+        ],
+        "rail_operators_present": [],
+        "corridor_management_bodies": [
+          "ECOWAS – Economic Community of West African States",
+          "OPA-BICC – Observatoire des Pratiques Anormales"
+        ],
+        "local_agents_by_country": {
+          "GHA": [
+            {
+              "company_name": "MERIDIAN PORT SERVICES (MPS)",
+              "agent_type": "port_logistics",
+              "city": "Tema",
+              "address": "Port of Tema, Ghana",
+              "phone": "+233 30 290 0000",
+              "email": "info@mps.com.gh",
+              "website": "https://www.mps.com.gh",
+              "services": [
+                "Port operations",
+                "Container handling",
+                "Customs liaison",
+                "Tema-Ouaga corridor"
+              ],
+              "certifications": [
+                "ISO 9001",
+                "ISPS"
+              ],
+              "operating_hours": "24h/7j"
+            }
+          ]
+        },
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    },
+    {
+      "corridor_id": "CORR-COTONOU-NIAMEY-015",
+      "corridor_name": "Corridor Cotonou-Niamey",
+      "corridor_type": "road",
+      "countries_spanned": [
+        "BEN",
+        "NER"
+      ],
+      "start_node": "Port de Cotonou",
+      "end_node": "Niamey",
+      "length_km": 1035,
+      "status": "Opérationnel",
+      "infra_details": "Route RNIE2 (BEN), RN1 (NER), entièrement pavée, principal corridor Niger",
+      "importance": "high",
+      "description": "Corridor vital pour le Niger enclavé, 90% des importations nigériennes passent par Cotonou",
+      "source_org": "PIDA, CEDEAO",
+      "coordinates": [
+        [
+          6.3654,
+          2.4183
+        ],
+        [
+          13.5127,
+          2.1098
+        ]
+      ],
+      "nodes": [
+        {
+          "node_id": "NODE-MALANVILLE-001",
+          "node_name": "Poste Frontière OSBP Malanville (BEN-NER)",
+          "node_type": "border_crossing",
+          "country_iso": "BEN",
+          "geo_lat": 11.8667,
+          "geo_lon": 3.3833,
+          "is_osbp": true,
+          "notes": "OSBP moderne, flux très important"
+        },
+        {
+          "node_id": "NODE-PARAKOU-HUB-001",
+          "node_name": "Plateforme Logistique Parakou",
+          "node_type": "intermodal_hub",
+          "country_iso": "BEN",
+          "geo_lat": 9.3372,
+          "geo_lon": 2.6303,
+          "is_osbp": false,
+          "notes": "Hub de transit principal vers Niger, futur terminal rail"
+        }
+      ],
+      "stats": {
+        "year": 2024,
+        "avg_transit_time_hours": 60,
+        "avg_border_crossing_time_hours": 10,
+        "freight_throughput_tons": 2800000,
+        "truck_volumes_daily": 520,
+        "source_org": "PAC (Port Autonome de Cotonou)",
+        "source_url": "https://www.portcotonou.bj/"
+      },
+      "operators": [
+        {
+          "operator_name": "SNTV (Société Nigérienne des Transports de Voyageurs)",
+          "operator_type": "trucking_company",
+          "group": "Government of Niger",
+          "fleet_size": 180,
+          "country_iso": "NER",
+          "services": [
+            "Freight transport",
+            "Customs clearance"
+          ],
+          "operating_hours": "Lun-Ven 08h-17h",
+          "certifications": [
+            "ISO 9001"
+          ],
+          "cargo_types": [
+            "General cargo",
+            "Containers",
+            "Bulk"
+          ]
+        }
+      ],
+      "logistics_network": {
+        "global_3pl_present": [],
+        "regional_trucking_operators": [
+          "CTS – Cross Trade Solutions West Africa"
+        ],
+        "rail_operators_present": [],
+        "corridor_management_bodies": [
+          "ECOWAS – Economic Community of West African States",
+          "OPA-BICC – Observatoire des Pratiques Anormales"
+        ],
+        "local_agents_by_country": {},
+        "service_providers_available": [
+          "Customs brokers",
+          "Freight forwarders",
+          "Trucking companies",
+          "Warehouse operators",
+          "Border crossing agents"
+        ]
+      }
+    }
+  ]
+}

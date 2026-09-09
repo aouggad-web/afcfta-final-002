@@ -1,0 +1,63 @@
+{
+  "country": "ZAF",
+  "generated_at": "2026-08-30T10:55:04.790196+00:00",
+  "description": "Actes juridiques officiels sud-africains archivés avec empreintes SHA-256 (méthode DZA).",
+  "documents": [
+    {
+      "file": "legislation/sars_schedule1_part1_ch1-99.pdf",
+      "title": "SARS — Schedule n°1 Partie 1, chapitres 1-99 (tarif douanier + taux préférentiels EU/UK, EFTA, SADC, MERCOSUR, AfCFTA)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P1Chpt1-to-99-Schedule-No-1-Part-1-Chapters-1-to-99.pdf",
+      "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "sha256": "442ed3d758d741e283a7d8fa513fe53cd94a813d0ef13cafcb0a3a9c2749c65c",
+      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+    },
+    {
+      "file": "legislation/Sch1P2A-Schedule-No-1-Part-2A.pdf",
+      "title": "Schedule n°1 Partie 2A — droits d'accise spécifiques (date PDF 2026-04-30)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P2A-Schedule-No-1-Part-2A.pdf",
+      "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "sha256": "59d7f909ece3289fedc7147d6a513edf3815a7281ca27693660a09c8acf08d2e",
+      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+    },
+    {
+      "file": "legislation/Sch1P2B-Schedule-No-1-Part-2B.pdf",
+      "title": "Schedule n°1 Partie 2B — droits d'accise spécifiques (date PDF 2025-04-01)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch1P2B-Schedule-No-1-Part-2B.pdf",
+      "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "sha256": "e9c75ab3700fb2ea6f67f5cef530f89cfd8155c8adc3abb4d5b8c9bf36777915",
+      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+    },
+    {
+      "file": "legislation/Sch2-Schedule-No-2.pdf",
+      "title": "Schedule n°2 — droits anti-dumping (Part 1), compensateurs (Part 2), sauvegarde (Part 3) (date PDF 2026-07-24)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch2-Schedule-No-2.pdf",
+      "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "sha256": "c34cbb0565c3914061aa8c8fc194f3861bb4355ca9218c3217821b4e7b2736c7",
+      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+    },
+    {
+      "file": "legislation/Sch3-Schedule-No-3.pdf",
+      "title": "Schedule n°3 — rebates industriels de droits de douane (date PDF 2026-06-19)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch3-Schedule-No-3.pdf",
+      "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "sha256": "aa04c5e2b1c0fd9eba79d2986cd9efc4b91882e8d320b8eaa6df6548112d4293",
+      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+    },
+    {
+      "file": "legislation/Sch8-Schedule-No-8.pdf",
+      "title": "Schedule n°8 — licences et frais (entrepôts de stockage…)",
+      "source_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Legal-LPrim-CE-Sch8-Schedule-No-8.pdf",
+      "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "sha256": "debfa1531f8f0060736d1273234d8ac8b758b7bfa65345fe1065ed665ef49142",
+      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+    },
+    {
+      "file": "legislation/itac_definitive_duties_2022-12-31.pdf",
+      "title": "ITAC — mesures anti-dumping définitives en vigueur au 31/12/2022 (références Government Gazette)",
+      "source_url": "https://itac.org.za/wp-content/uploads/Definitive-measures-in-place-as-on-31-December-2022-1.pdf",
+      "referencing_page": "https://www.sars.gov.za/ (tariff book) / https://itac.org.za/",
+      "sha256": "62a17ad67e1df31e6239b221936c8152ca9fc806c43fb47e3f13288f16745673",
+      "archived_at": "2026-08-30T10:55:04.790196+00:00"
+    }
+  ]
+}

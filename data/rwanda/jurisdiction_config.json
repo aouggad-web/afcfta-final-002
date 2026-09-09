@@ -1,0 +1,7 @@
+{
+ "iso3": "RWA",
+ "currency": "RWF",
+ "levy_tables": [],
+ "general_levy_tables": [],
+ "gazette_register": "rwa_gazette_register.json"
+}

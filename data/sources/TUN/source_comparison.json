@@ -1,0 +1,123 @@
+{
+ "country": "TUN",
+ "generated_at": "2026-08-29T22:23:34.401461+00:00",
+ "method": "Comparaison du fichier national avec les pages de détail LIVE de la source (douane.gov.tn/tarifwebnew, captures data/sources/TUN/tarifweb2026/detail_*.html)",
+ "status": "SAMPLE_VERIFIED_LIVE",
+ "lines_compared": 3,
+ "lines_matched": 3,
+ "lines_divergent": 0,
+ "note_nouveaux_codes": "84852000008 (nouveau code, source_gaps) : la source live publie DD 0 % / TVA 7 % / RPD 3 % — taux à intégrer lors du re-crawl complet.",
+ "results": [
+  {
+   "code": "01012100015",
+   "statut": "EXISTANT",
+   "taxes": [
+    {
+     "tax_source": "DD",
+     "raw_live": "36 %",
+     "raw_fichier": "36 %",
+     "match": true
+    },
+    {
+     "tax_source": "TVA/AP",
+     "raw_live": "0 %",
+     "raw_fichier": "0 %",
+     "match": true
+    },
+    {
+     "tax_source": "RPD/IMPOR",
+     "raw_live": "3 %",
+     "raw_fichier": "3 %",
+     "match": true
+    },
+    {
+     "tax_source": "RPD/EXPOR",
+     "raw_live": "0 %",
+     "raw_fichier": "0 %",
+     "match": true
+    }
+   ],
+   "match_complet": true
+  },
+  {
+   "code": "16010010006",
+   "statut": "EXISTANT",
+   "taxes": [
+    {
+     "tax_source": "TCA",
+     "raw_live": "1 %",
+     "raw_fichier": "1 %",
+     "match": true
+    },
+    {
+     "tax_source": "TVA/AP",
+     "raw_live": "19 %",
+     "raw_fichier": "19 %",
+     "match": true
+    },
+    {
+     "tax_source": "RPD/IMPOR",
+     "raw_live": "3 %",
+     "raw_fichier": "3 %",
+     "match": true
+    },
+    {
+     "tax_source": "AIR/IMPOR",
+     "raw_live": "10 %",
+     "raw_fichier": "10 %",
+     "match": true
+    },
+    {
+     "tax_source": "DD",
+     "raw_live": "50 %",
+     "raw_fichier": "50 %",
+     "match": true
+    },
+    {
+     "tax_source": "RPD/EXPOR",
+     "raw_live": "0 %",
+     "raw_fichier": "0 %",
+     "match": true
+    }
+   ],
+   "match_complet": true
+  },
+  {
+   "code": "84852000008",
+   "statut": "NOUVEAU_CODE(source_gaps)",
+   "taxes": [],
+   "match_complet": false
+  },
+  {
+   "code": "87034010116",
+   "statut": "EXISTANT",
+   "taxes": [
+    {
+     "tax_source": "RPD/IMPOR",
+     "raw_live": "3 %",
+     "raw_fichier": "3 %",
+     "match": true
+    },
+    {
+     "tax_source": "DC/VOIT",
+     "raw_live": "10 %",
+     "raw_fichier": "10 %",
+     "match": true
+    },
+    {
+     "tax_source": "TVA/AUTO",
+     "raw_live": "19 %",
+     "raw_fichier": "19 %",
+     "match": true
+    },
+    {
+     "tax_source": "RPD/EXPOR",
+     "raw_live": "0 %",
+     "raw_fichier": "0 %",
+     "match": true
+    }
+   ],
+   "match_complet": true
+  }
+ ]
+}

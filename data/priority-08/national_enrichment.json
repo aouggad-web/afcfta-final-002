@@ -1,0 +1,408 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-07-30",
+  "disclaimer": "Données informatives et non opposables. Une absence de preuve est exposée comme NOT_AVAILABLE; aucune valeur n'est estimée.",
+  "countries": {
+    "BDI": {
+      "consumption_tax": {
+        "tax_type": "VAT",
+        "status": "PARTIAL",
+        "standard_rate": 18.0,
+        "standard_rate_source_id": "BDI-OBR-VAT-AMEND-2020",
+        "rate_effective_from": null,
+        "import_base": null,
+        "base_status": "NOT_AVAILABLE",
+        "notes": "Le taux standard de 18 % est documenté par les textes OBR archivés. L'assiette à l'importation reste NOT_AVAILABLE: le registre indiquait customs_value alors que le moteur runtime utilise CIF + droit de douane. Ce conflit doit être résolu par extraction article par article avant tout calcul présenté comme documenté; la loi budgétaire 2025/26 n'a pas été entièrement extraite pour exclure une modification plus récente."
+      },
+      "national_tariff_extension": {"status": "NOT_AVAILABLE", "digits": null},
+      "other_import_taxes": [],
+      "required_documents": [],
+      "inspection_before_shipment": {"status": "NOT_AVAILABLE"},
+      "sources": [
+        {
+          "source_id": "BDI-OBR-VAT-2009",
+          "title": "Loi n°1/02 du 17 février 2009 portant institution de la TVA",
+          "institution": "Office Burundais des Recettes",
+          "legal_date": "2009-02-17",
+          "url": "https://www.obr.bi/images/PDF/ValueAddedTaxLawinBurundi.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        },
+        {
+          "source_id": "BDI-OBR-VAT-AMEND-2020",
+          "title": "Loi n°1/10 du 16 novembre 2020 modifiant la législation TVA",
+          "institution": "Office Burundais des Recettes",
+          "legal_date": "2020-11-16",
+          "url": "https://www.obr.bi/images/LOI_N1_10_DU_16_NOVEMBRE_2020_PORTANT_MODIFICATION_DE_LA_LOI_N1_12_DU_29_JUILLET_2013_PORTANT_REVISION_DE_LA_LOI_N1_02_DU_17_FEVRIER_2009_PORTANT_INSTITUTION_DE_LA_TAXE_SUR_LA_VALEUR_AJOUTEE_TVA_.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        }
+      ]
+    },
+    "SSD": {
+      "consumption_tax": {
+        "tax_type": "IMPORT_SALES_TAX",
+        "status": "NOT_AVAILABLE",
+        "standard_rate": null,
+        "rate_effective_from": null,
+        "import_base": null,
+        "base_status": "NOT_AVAILABLE",
+        "historical_record": {
+          "fiscal_year": "2023/24",
+          "rate": 20.0,
+          "import_base": "customs_value_plus_excise_duty_plus_customs_duty",
+          "status": "HISTORICAL_NOT_CURRENT"
+        },
+        "notes": "Le pays applique une taxe sur les ventes à l'importation, pas une TVA. Le taux courant reste indisponible faute de texte intégral 2024/25 vérifié."
+      },
+      "national_tariff_extension": {"status": "NOT_AVAILABLE", "digits": null},
+      "other_import_taxes": [],
+      "required_documents": [
+        {
+          "document_id": "SSD-CUSTOMS-DECLARATION-SET",
+          "title": "Déclaration en douane et pièces justificatives",
+          "status": "DOCUMENTED",
+          "scope": "Importation générale; permis, licence et certificat d'origine uniquement lorsque leur condition juridique s'applique.",
+          "documents": ["customs_declaration", "invoice"],
+          "conditional_documents": ["insurance_policy", "bill_of_lading_or_waybill", "permit_or_licence", "certificate_of_origin"],
+          "source_id": "SSD-CUSTOMS-ACT-2013-RE2022",
+          "hs_codes_explicit": []
+        }
+      ],
+      "inspection_before_shipment": {"status": "NOT_AVAILABLE"},
+      "sources": [
+        {
+          "source_id": "SSD-FINANCE-ACT-2023-24",
+          "title": "Financial Act FY 2023/2024",
+          "institution": "South Sudan National Revenue Authority",
+          "legal_date": null,
+          "url": "https://cms.nra.gov.ss/uploads/FINANCIAL_Act_FY_2023_2024_MAIL_97b32cab38.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT",
+          "temporal_status": "HISTORICAL"
+        },
+        {
+          "source_id": "SSD-CUSTOMS-ACT-2013-RE2022",
+          "title": "Customs Service Act 2013, Revised Edition 2022",
+          "institution": "South Sudan National Revenue Authority",
+          "legal_date": "2013-01-01",
+          "url": "https://cms.nra.gov.ss/uploads/CUSTOMS_SERVICE_ACT_2013_R_E_2022_68bd20069c.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        }
+      ]
+    },
+    "BWA": {
+      "consumption_tax": {
+        "tax_type": "VAT",
+        "status": "DOCUMENTED",
+        "standard_rate": 14.0,
+        "rate_effective_from": null,
+        "import_base": "customs_value_plus_applicable_duties_taxes_freight_and_insurance",
+        "base_status": "PARTIAL"
+      },
+      "national_tariff_extension": {"status": "NOT_AVAILABLE", "digits": null},
+      "other_import_taxes": [],
+      "required_documents": [
+        {
+          "document_id": "BWA-CUSTOMS-IMPORT-SET",
+          "title": "Pièces générales de déclaration à l'importation",
+          "status": "DOCUMENTED",
+          "scope": "Importation générale; origine, permis et licences seulement lorsqu'applicables.",
+          "documents": ["cargo_manifest", "customs_bill_of_entry", "supplier_invoice", "transport_document"],
+          "conditional_documents": ["certificate_of_origin", "permit_or_licence"],
+          "source_id": "BWA-BURS-IMPORTER-GUIDE",
+          "hs_codes_explicit": []
+        }
+      ],
+      "inspection_before_shipment": {"status": "NOT_AVAILABLE"},
+      "sources": [
+        {
+          "source_id": "BWA-BURS-VAT-ACT-2026",
+          "title": "Value Added Tax Act 2026",
+          "institution": "Botswana Unified Revenue Service",
+          "legal_date": "2026-06-30",
+          "url": "https://www.burs.org.bw/index.php/tax/tax-laws-2026?download=958%3Avalue-added-tax-act-2026",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        },
+        {
+          "source_id": "BWA-BURS-IMPORTER-GUIDE",
+          "title": "Importers and Exporters Guide",
+          "institution": "Botswana Unified Revenue Service",
+          "legal_date": null,
+          "url": "https://ecustoms.burs.org.bw/TFBSEW/docs/IMPORTERS%20%20EXPORTERS.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        }
+      ]
+    },
+    "LSO": {
+      "consumption_tax": {
+        "tax_type": "VAT",
+        "status": "DOCUMENTED",
+        "standard_rate": 15.0,
+        "rate_effective_from": null,
+        "import_base": "customs_value_plus_customs_excise_duties_other_non_vat_taxes_and_incidental_costs_not_already_included",
+        "base_status": "DOCUMENTED"
+      },
+      "national_tariff_extension": {"status": "NOT_AVAILABLE", "digits": null},
+      "other_import_taxes": [
+        {
+          "tax_id": "LSO-TAPL",
+          "name": "Tobacco and Alcoholic Products Levy",
+          "status": "DOCUMENTED",
+          "effective_from": "2025-04-01",
+          "rates": [{"product": "tobacco", "rate": 20.0}, {"product": "alcohol", "rate": 10.0}],
+          "source_id": "LSO-RSL-TAPL"
+        }
+      ],
+      "required_documents": [
+        {
+          "document_id": "LSO-EXTRA-SACU-IMPORT-SET",
+          "title": "Pièces d'importation extra-SACU",
+          "status": "DOCUMENTED",
+          "scope": "Importations provenant de l'extérieur de la SACU.",
+          "documents": ["SAD_or_CE306", "commercial_invoice", "transport_document"],
+          "conditional_documents": [],
+          "source_id": "LSO-RSL-EXTRA-SACU-GUIDE",
+          "hs_codes_explicit": []
+        }
+      ],
+      "inspection_before_shipment": {"status": "NOT_AVAILABLE"},
+      "sources": [
+        {
+          "source_id": "LSO-RSL-VAT-ACT-2001",
+          "title": "Value Added Tax Act 2001",
+          "institution": "Revenue Services Lesotho",
+          "legal_date": "2001-01-01",
+          "url": "https://www.rsl.org.ls/sites/default/files/2024-05/VAT%20ACT%20-%202001.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        },
+        {
+          "source_id": "LSO-RSL-VAT-CURRENT",
+          "title": "Value Added Tax",
+          "institution": "Revenue Services Lesotho",
+          "legal_date": null,
+          "url": "https://www.rsl.org.ls/value-added-tax-vat",
+          "verification_status": "VERIFIED_OFFICIAL_CURRENT_PAGE"
+        },
+        {
+          "source_id": "LSO-RSL-TAPL",
+          "title": "Tobacco and Alcoholic Products Levy",
+          "institution": "Revenue Services Lesotho",
+          "legal_date": "2025-04-01",
+          "url": "https://www.rsl.org.ls/tobacco-and-alcoholic-products-levy-tapl",
+          "verification_status": "VERIFIED_OFFICIAL_CURRENT_PAGE"
+        },
+        {
+          "source_id": "LSO-RSL-EXTRA-SACU-GUIDE",
+          "title": "Guidelines for Extra-SACU Importation and Exportation",
+          "institution": "Revenue Services Lesotho",
+          "legal_date": null,
+          "url": "https://www.rsl.org.ls/sites/default/files/2024-06/Guidelines%20for%20Extra%20SACU%20Importation%20and%20Exportation%202010.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        }
+      ]
+    },
+    "NAM": {
+      "consumption_tax": {
+        "tax_type": "VAT",
+        "status": "DOCUMENTED",
+        "standard_rate": 15.0,
+        "rate_effective_from": null,
+        "import_base": "greater_of_fob_plus_10_percent_or_open_market_value",
+        "base_status": "DOCUMENTED"
+      },
+      "national_tariff_extension": {"status": "NOT_AVAILABLE", "digits": null},
+      "other_import_taxes": [],
+      "required_documents": [
+        {
+          "document_id": "NAM-CUSTOMS-IMPORT-SET",
+          "title": "Pièces générales de déclaration à l'importation",
+          "status": "DOCUMENTED",
+          "scope": "Importation commerciale; permis, licence et origine uniquement lorsque requis.",
+          "documents": ["goods_declaration", "invoice", "bill_of_lading_or_air_waybill", "SAD"],
+          "conditional_documents": ["import_licence", "certificate_of_origin"],
+          "source_id": "NAM-NAMRA-IMPORT-GUIDE",
+          "hs_codes_explicit": []
+        }
+      ],
+      "inspection_before_shipment": {"status": "NOT_AVAILABLE"},
+      "sources": [
+        {
+          "source_id": "NAM-NAMRA-VAT-ACT-2000",
+          "title": "Value Added Tax Act 10 of 2000",
+          "institution": "Namibia Revenue Agency",
+          "legal_date": "2000-01-01",
+          "url": "https://www.namra.org.na/documents/cms/uploaded/value-added-tax-act-10-of-2000-8d9c425ffc.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        },
+        {
+          "source_id": "NAM-NAMRA-IMPORT-GUIDE",
+          "title": "Importation of Goods Guidelines",
+          "institution": "Namibia Revenue Agency",
+          "legal_date": null,
+          "url": "https://www.namra.org.na/documents/cms/uploaded/importation-of-goods-guidelines-9cb5fdcdee.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        }
+      ]
+    },
+    "SWZ": {
+      "consumption_tax": {
+        "tax_type": "VAT",
+        "status": "DOCUMENTED",
+        "standard_rate": 15.0,
+        "rate_effective_from": "2018-08-01",
+        "import_base": null,
+        "base_status": "NOT_AVAILABLE"
+      },
+      "national_tariff_extension": {"status": "NOT_AVAILABLE", "digits": null},
+      "other_import_taxes": [
+        {
+          "tax_id": "SWZ-ALCOHOL-TOBACCO-LEVY-2019",
+          "name": "Alcohol and Tobacco Levy",
+          "status": "PARTIAL",
+          "effective_from": "2019-08-23",
+          "rates": [{"product": "alcohol_except_traditional_beer", "rate": 7.0}, {"product": "manufactured_tobacco", "rate": 7.0}],
+          "source_id": "SWZ-GAZETTE-LEVY-2019",
+          "notes": "Texte primaire vérifié; maintien du taux en 2026 non revalidé."
+        }
+      ],
+      "required_documents": [
+        {
+          "document_id": "SWZ-SAD500",
+          "title": "SAD 500",
+          "status": "DOCUMENTED",
+          "scope": "Déclarations d'importation, d'exportation et de transit dans ASYCUDAWorld.",
+          "documents": ["SAD_500"],
+          "conditional_documents": [],
+          "source_id": "SWZ-SRA-SAD500-GUIDE",
+          "hs_codes_explicit": []
+        }
+      ],
+      "inspection_before_shipment": {"status": "NOT_AVAILABLE"},
+      "sources": [
+        {
+          "source_id": "SWZ-GAZETTE-VAT-2018",
+          "title": "VAT Rates Amendment, Legal Notice 112 of 2018",
+          "institution": "Government of Eswatini",
+          "legal_date": "2018-08-01",
+          "url": "https://www.gov.sz/images/justice/GAZETTES/Extra-Ord-No.-102-VAT-Rates-Amendment.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        },
+        {
+          "source_id": "SWZ-SRA-SAD500-GUIDE",
+          "title": "ASYCUDAWorld SAD500 User Completion Guide",
+          "institution": "Eswatini Revenue Service",
+          "legal_date": null,
+          "url": "https://asyw.sra.org.sz/guides/ASYW%20SAD500%20User%20Completion%20Guide%20-%20Final.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        },
+        {
+          "source_id": "SWZ-GAZETTE-LEVY-2019",
+          "title": "Alcohol and Tobacco Levy Act 7 of 2019",
+          "institution": "Government of Eswatini",
+          "legal_date": "2019-08-23",
+          "url": "https://gov.sz/images/justice/GAZETTES/SEPTEMBER/Extra-Ord.-No.-102-2019.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        }
+      ]
+    },
+    "CAF": {
+      "consumption_tax": {
+        "tax_type": "VAT",
+        "status": "PARTIAL",
+        "standard_rate": 19.0,
+        "reduced_rates": [{"rate": 5.0, "hs_mapping_status": "NOT_AVAILABLE"}],
+        "rate_effective_from": null,
+        "import_base": "cemac_customs_value_plus_customs_duty_plus_applicable_excise_duty",
+        "base_status": "DOCUMENTED",
+        "notes": "Le taux réduit et les exonérations ne peuvent pas être appliqués par ligne sans annexe SH exhaustive."
+      },
+      "national_tariff_extension": {"status": "NOT_AVAILABLE", "digits": null},
+      "other_import_taxes": [
+        {
+          "tax_id": "CAF-TCI",
+          "name": "Taxe communautaire d'intégration",
+          "status": "PARTIAL",
+          "rate": 1.0,
+          "base": "customs_value",
+          "source_id": "CAF-MFB-REPORT-2025",
+          "notes": "Mécanisme décrit par une publication ministérielle; acte communautaire général non archivé."
+        }
+      ],
+      "required_documents": [],
+      "inspection_before_shipment": {"status": "NOT_AVAILABLE"},
+      "sources": [
+        {
+          "source_id": "CAF-DGID-CGI-2023",
+          "title": "Code général des impôts de la République centrafricaine, mise à jour 2023",
+          "institution": "Ministère des Finances et du Budget / DGID",
+          "legal_date": "2023-01-01",
+          "url": "https://www.finances.gouv.cf/sites/default/files/2023-05/CGI%20RCA%202017%20mise%20%C3%A0%20jour%202023.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        },
+        {
+          "source_id": "CAF-MFB-REPORT-2025",
+          "title": "Rapport définitif du 21 octobre 2025",
+          "institution": "Ministère des Finances et du Budget",
+          "legal_date": "2025-10-21",
+          "url": "https://www.finances.gouv.cf/sites/default/files/2026-01/25253%20Rapport%20de%CC%81finitif%20date%20du%2021%20oct%202025.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        }
+      ]
+    },
+    "GNQ": {
+      "consumption_tax": {
+        "tax_type": "VAT",
+        "status": "PARTIAL",
+        "standard_rate": 15.0,
+        "standard_rate_source_id": "GNQ-TAX-LAW-4-2004",
+        "reduced_rates": [
+          {
+            "rate": 6.0,
+            "hs_mapping_status": "NOT_AVAILABLE",
+            "source_id": "GNQ-TAX-LAW-4-2004"
+          },
+          {
+            "rate": 5.0,
+            "temporary_year": 2026,
+            "effective_from": "2026-01-01",
+            "hs_mapping_status": "NOT_AVAILABLE",
+            "source_id": "GNQ-BUDGET-LAW-9-2025"
+          },
+          {
+            "rate": 0.0,
+            "temporary_year": 2026,
+            "effective_from": "2026-01-01",
+            "hs_mapping_status": "NOT_AVAILABLE",
+            "source_id": "GNQ-BUDGET-LAW-9-2025"
+          }
+        ],
+        "rate_effective_from": null,
+        "import_base": "cemac_customs_value_plus_customs_duty_plus_applicable_derecho_especial",
+        "import_base_source_id": "GNQ-TAX-LAW-4-2004",
+        "base_status": "DOCUMENTED",
+        "notes": "Les catégories temporaires 2026 sont décrites sans codes SH; aucun taux réduit n'est donc appliqué automatiquement. Chaque taux est désormais lié au texte juridique qui le supporte."
+      },
+      "national_tariff_extension": {"status": "NOT_AVAILABLE", "digits": null},
+      "other_import_taxes": [],
+      "required_documents": [],
+      "inspection_before_shipment": {"status": "NOT_AVAILABLE"},
+      "sources": [
+        {
+          "source_id": "GNQ-TAX-LAW-4-2004",
+          "title": "Ley 4/2004 Reguladora del Sistema Tributario",
+          "institution": "Ministerio de Hacienda y Presupuestos",
+          "legal_date": "2004-01-01",
+          "url": "https://www.minhacienda-gob.com/uploads/2020/01/LEY-TRIBUTARIA-1.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        },
+        {
+          "source_id": "GNQ-BUDGET-LAW-9-2025",
+          "title": "Ley 9/2025 de Presupuestos Generales del Estado para 2026",
+          "institution": "Ministerio de Hacienda y Presupuestos",
+          "legal_date": "2025-12-09",
+          "effective_from": "2026-01-01",
+          "url": "https://minhacienda-gob.com/uploads/2026/05/libro-lpge-2026-bcb5ebfc7795.pdf",
+          "verification_status": "VERIFIED_PRIMARY_TEXT"
+        }
+      ]
+    }
+  }
+}

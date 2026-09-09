@@ -1,0 +1,702 @@
+{
+  "_meta": {
+    "description": "Base de connaissance d'intelligence industrielle par pays: champions industriels, chaînes de transformation (intrant -> procédé -> extrant), et capacités futures adossées aux projets structurants. Sert à enrichir les flux d'export en 'flux stratégiques' (rationale, stratégie de transformation, signal High Growth).",
+    "schema_version": 1,
+    "units_note": "capacity.value en unités/an; product = extrant exporté; hs_products = codes SH6 des extrants exportables.",
+    "future_capacity.linked_project": "doit correspondre au champ 'titre' d'un projet dans projets_structurants_afrique.json (même pays)."
+  },
+  "DZA": {
+    "country_name_fr": "Algérie",
+    "champions": [
+      {
+        "name": "Sorfert / AOA / Fertial",
+        "sector": "Engrais azotés",
+        "hs_products": [
+          "310210",
+          "310280",
+          "281410"
+        ],
+        "output_product": "Urée & ammoniac",
+        "capacity": {
+          "value": 2500000,
+          "unit": "tonnes/an",
+          "product": "Urée"
+        },
+        "input_source": "Gaz naturel domestique",
+        "input_sourcing": "Domestique",
+        "process": "Extraction de gaz naturel domestique transformé via procédé Haber-Bosch en ammoniac, puis synthétisé en urée pour l'export.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie a bâti une capacité massive d'engrais azotés (Sorfert, AOA) en valorisant son gaz naturel domestique. De nombreux marchés africains ont une forte demande d'intrants agricoles aujourd'hui importés hors du continent."
+      },
+      {
+        "name": "Industrie pharmaceutique (Saidal, Novo Nordisk Algérie)",
+        "sector": "Industrie pharmaceutique & biotechnologie",
+        "hs_products": [
+          "300431",
+          "300490",
+          "300215",
+          "300220"
+        ],
+        "output_product": "Insuline, anticancéreux & médicaments",
+        "capacity": {
+          "value": 200,
+          "unit": "médicaments (dont 30 anticancéreux)",
+          "product": "Médicaments finis"
+        },
+        "input_source": "Principes actifs (partiellement importés ; matières premières localisées à Sétif dès 2025)",
+        "input_sourcing": "Mixte (localisation en cours)",
+        "process": "Localisation de la production d'insuline (site de Constantine, Saidal-Novo Nordisk : procédé complet initié, objectif fabrication 100 % locale) et d'anticancéreux (transfert technologique de la biotech Biocad pour 5 molécules ; unités de Constantine et matières premières à Sétif), pour la souveraineté pharmaceutique et l'export africain.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie localise sa production d'insuline et d'anticancéreux : Saidal est passé de 8 à 30 traitements anticancéreux en 2024 (cible 35 % d'un marché national de 600 M$ en 2025) et Novo Nordisk Algérie exporte déjà des stylos à insuline vers l'Afrique (et 2,5 M de stylos vers l'Arabie saoudite). La demande africaine de médicaments, aujourd'hui massivement importée hors continent, en fait un débouché ZLECAf majeur."
+      },
+      {
+        "name": "Condor Electronics",
+        "sector": "Électronique grand public & électroménager",
+        "hs_products": [
+          "852872",
+          "841810",
+          "841821",
+          "845011"
+        ],
+        "output_product": "Téléviseurs, réfrigérateurs, électroménager",
+        "capacity": {
+          "value": 1500000,
+          "unit": "unités/an",
+          "product": "Téléviseurs assemblés"
+        },
+        "input_capacity": {
+          "value": 1000000,
+          "unit": "unités/an",
+          "product": "Dalles LCD/LED & cartes PCBA (SKD/CKD)"
+        },
+        "input_source": "Dalles LCD/LED & cartes PCBA importées (SKD/CKD)",
+        "input_sourcing": "Importé (assemblage local)",
+        "process": "Importation de kits SKD/CKD (dalles, cartes/puces), injection locale des coques, assemblage final et contrôle qualité en téléviseurs et électroménager, exportés en volume et qualité croissants vers le marché régional.",
+        "status": "operational",
+        "price_competitiveness": "Moderate",
+        "rationale": "Les marques électroniques algériennes (Condor…) ont bâti de solides réseaux d'après-vente locaux et étendent agressivement leurs exports vers les marchés voisins (Libye, Sahel, Afrique de l'Ouest) où l'équipement des ménages progresse vite."
+      },
+      {
+        "name": "Raffinage de sucre (Cevital & filière)",
+        "sector": "Agroalimentaire (raffinage de sucre)",
+        "hs_products": [
+          "170199",
+          "170191"
+        ],
+        "output_product": "Sucre blanc raffiné",
+        "capacity": {
+          "value": 2000000,
+          "unit": "tonnes/an",
+          "product": "Sucre raffiné"
+        },
+        "input_capacity": {
+          "value": 1960000,
+          "unit": "tonnes/an",
+          "product": "Sucre brut de canne (importé)"
+        },
+        "input_source": "Sucre brut de canne importé (SH 170114)",
+        "input_sourcing": "Importé (raffinage local)",
+        "process": "Importation de sucre brut de canne (~2 Mt/an, SH 170114), raffiné localement en sucre blanc de consommation. La raffinerie de Cevital est l'une des plus grandes au monde (2 Mt/an) ; les exports actuels restent modestes mais la capacité excédentaire vise les marchés africains sous la ZLECAf.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie importe ~2 Mt de sucre brut par an et le raffine (Cevital, 1re raffinerie mondiale par la taille). Le surplus de capacité, aujourd'hui peu exporté, devient un flux majeur d'export vers l'Afrique de l'Ouest/Sahel une fois l'accès marché ZLECAf ouvert."
+      },
+      {
+        "name": "Raffinage d'huiles (Cevital & filière)",
+        "sector": "Agroalimentaire (raffinage d'huiles)",
+        "hs_products": [
+          "150790",
+          "151219",
+          "151710",
+          "151800",
+          "151190",
+          "151790"
+        ],
+        "output_product": "Huile de table raffinée & margarine",
+        "capacity": {
+          "value": 570000,
+          "unit": "tonnes/an",
+          "product": "Huiles raffinées"
+        },
+        "input_capacity": {
+          "value": 465000,
+          "unit": "tonnes/an",
+          "product": "Huiles brutes (soja) importées"
+        },
+        "input_source": "Huiles brutes importées (soja SH 150710, tournesol, palme)",
+        "input_sourcing": "Importé (raffinage local)",
+        "process": "Importation d'huiles brutes (soja brut ~465 M$/an, SH 150710) raffinées et conditionnées en huile de table et margarine. La raffinerie d'huile de Cevital est la plus grande d'Afrique (570 000 t/an) ; exports actuels modestes, capacité excédentaire orientable vers la ZLECAf.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie importe des huiles brutes et les raffine à grande échelle (Cevital, 1re raffinerie d'huile d'Afrique). Cette capacité de transformation, aujourd'hui peu exportée, est un fort potentiel d'export d'huile raffinée et de margarine sous la ZLECAf."
+      },
+      {
+        "name": "Semoulerie & pâtes (SIM, Benamor, Métidji, Amor, La Belle)",
+        "sector": "Agroalimentaire (transformation céréalière)",
+        "hs_products": [
+          "110100",
+          "110311",
+          "190219",
+          "190230",
+          "190531",
+          "190532",
+          "190590"
+        ],
+        "output_product": "Farine, semoule, pâtes, couscous & biscuits",
+        "capacity": {
+          "value": 2500000,
+          "unit": "tonnes/an",
+          "product": "Farine, semoule, pâtes & couscous"
+        },
+        "input_capacity": {
+          "value": 1800000,
+          "unit": "tonnes/an",
+          "product": "Blé (tendre & dur) importé"
+        },
+        "input_source": "Blé tendre & dur importé (SH 100199, 100119)",
+        "input_sourcing": "Importé (transformation locale)",
+        "process": "Importation de blé (~1,8 Md$/an) transformé par une puissante filière semoulière/minotière (SIM, Groupe Benamor, Métidji, Amor Benamor, La Belle…) en farine, semoule, pâtes, couscous et biscuits, aujourd'hui exportés de façon encore limitée.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie possède une des plus fortes capacités semoulières et de pâtes/couscous d'Afrique (SIM et Benamor leaders, ~25 000 q/j de trituration chacun). Ces capacités, sous-exploitées à l'export, deviennent un flux majeur de produits finis céréaliers (couscous, pâtes, semoule) vers l'Afrique sous la ZLECAf."
+      },
+      {
+        "name": "Boissons & jus (Ifri, NCA-Rouiba, Hamoud Boualem)",
+        "sector": "Agroalimentaire (boissons)",
+        "hs_products": [
+          "220210",
+          "220299",
+          "200919",
+          "200929",
+          "200989",
+          "200897"
+        ],
+        "output_product": "Eaux aromatisées, sodas & jus de fruits",
+        "capacity": {
+          "value": 3000000000,
+          "unit": "litres/an",
+          "product": "Boissons & jus"
+        },
+        "input_source": "Eau, concentrés & fruits (domestiques + importés)",
+        "input_sourcing": "Mixte",
+        "process": "Embouteillage et production de boissons (eaux aromatisées, sodas, jus de fruits) par des groupes établis (Ifri, NCA-Rouiba, Hamoud Boualem) disposant de grandes capacités industrielles, avec un potentiel d'export régional encore peu exploité.",
+        "status": "operational",
+        "price_competitiveness": "Medium",
+        "rationale": "L'industrie algérienne des boissons et jus (Ifri, NCA-Rouiba, Hamoud Boualem) dispose de fortes capacités d'embouteillage. Le marché africain des boissons, en croissance rapide, constitue un débouché naturel sous la ZLECAf."
+      },
+      {
+        "name": "GICA / LafargeHolcim Algérie",
+        "sector": "Matériaux de construction (ciment)",
+        "hs_products": [
+          "252310",
+          "252329"
+        ],
+        "output_product": "Clinker & ciment",
+        "capacity": {
+          "value": 40000000,
+          "unit": "tonnes/an",
+          "product": "Ciment & clinker"
+        },
+        "input_source": "Calcaire & argile domestiques",
+        "input_sourcing": "Domestique",
+        "process": "Extraction de calcaire domestique, cuisson en clinker puis broyage en ciment, avec un excédent structurel désormais orienté vers l'export.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie est passée d'importateur à exportateur net de ciment/clinker. La surcapacité nationale cherche des débouchés régionaux (Afrique de l'Ouest, Sahel) où la construction est en forte croissance."
+      },
+      {
+        "name": "Tosyali Algérie / AQS",
+        "sector": "Sidérurgie",
+        "hs_products": [
+          "721420",
+          "721070",
+          "720110"
+        ],
+        "output_product": "Ronds à béton (rebars) & produits sidérurgiques",
+        "capacity": {
+          "value": 4000000,
+          "unit": "tonnes/an",
+          "product": "Acier & rebars"
+        },
+        "input_source": "Minerai de fer / DRI (gaz domestique)",
+        "input_sourcing": "Mixte (domestique + intrants)",
+        "process": "Réduction directe (DRI au gaz naturel) et laminage en ronds à béton et produits longs, avec capacité excédentaire orientée export.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "La sidérurgie algérienne (Tosyali, AQS) dispose d'une capacité de laminage supérieure au marché intérieur, positionnant les rebars pour l'export vers les marchés africains en construction."
+      },
+      {
+        "name": "Verre plat (MFG - Mediterranean Float Glass)",
+        "sector": "Verre plat",
+        "hs_products": [
+          "700529",
+          "700510",
+          "700521"
+        ],
+        "output_product": "Verre float",
+        "capacity": {
+          "value": 600000,
+          "unit": "tonnes/an",
+          "product": "Verre float"
+        },
+        "input_source": "Sable siliceux domestique",
+        "input_sourcing": "Domestique",
+        "process": "Fusion de sable siliceux domestique en verre float (MFG), adossée au bâtiment et à l'export régional.",
+        "status": "operational",
+        "price_competitiveness": "Medium",
+        "rationale": "L'Algérie produit du verre plat à partir d'intrants domestiques et d'une énergie compétitive, avec un potentiel d'export vers les marchés africains de la construction."
+      },
+      {
+        "name": "Carreaux céramiques & faïence (Cerata, Groupe Cerard)",
+        "sector": "Céramique (carreaux & faïence)",
+        "hs_products": [
+          "690721",
+          "690722",
+          "690723",
+          "690740",
+          "690890"
+        ],
+        "output_product": "Carreaux céramiques & faïence",
+        "capacity": {
+          "value": 200000000,
+          "unit": "m²/an",
+          "product": "Carreaux céramiques & faïence"
+        },
+        "input_source": "Argile & feldspath domestiques (+ émaux/pigments importés)",
+        "input_sourcing": "Mixte",
+        "process": "Transformation d'argile et de feldspath domestiques, émaillage (émaux/pigments partiellement importés) et cuisson en carreaux céramiques et faïence, aujourd'hui exportés de façon croissante.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie dispose d'une forte capacité de carreaux céramiques et de faïence (intrants domestiques, énergie bon marché). Le marché africain du bâtiment, en forte croissance, en fait un débouché ZLECAf naturel."
+      },
+      {
+        "name": "Filière dattes (Deglet Nour)",
+        "sector": "Agriculture (dattes)",
+        "hs_products": [
+          "080410"
+        ],
+        "output_product": "Dattes fraîches ou séchées",
+        "capacity": {
+          "value": 1200000,
+          "unit": "tonnes/an",
+          "product": "Dattes"
+        },
+        "input_source": "Production oasienne domestique",
+        "input_sourcing": "Domestique",
+        "process": "Récolte, conditionnement et transformation des dattes Deglet Nour, produit d'exportation traditionnel à forte valeur.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Algérie est un des premiers producteurs mondiaux de dattes de qualité (Deglet Nour), avec un potentiel d'export intra-africain sous-exploité."
+      },
+      {
+        "name": "Peintures & revêtements (ENAP, Sika Algérie)",
+        "sector": "Chimie (peintures, vernis & adhésifs)",
+        "hs_products": [
+          "320890",
+          "320990",
+          "321000",
+          "321410",
+          "350691"
+        ],
+        "output_product": "Peintures, vernis, enduits & adhésifs",
+        "capacity": {
+          "value": 150000,
+          "unit": "tonnes/an",
+          "product": "Peintures & vernis"
+        },
+        "input_capacity": {
+          "value": 100000,
+          "unit": "tonnes/an",
+          "product": "Résines, pigments & solvants (partiellement importés)"
+        },
+        "input_source": "Résines, pigments, solvants (partiellement importés)",
+        "input_sourcing": "Mixte (formulation locale)",
+        "process": "Formulation de peintures, vernis, enduits et adhésifs à partir de résines et pigments (ENAP, 150 000 t/an, 1er producteur national ; Sika Algérie), réduisant les imports et dégageant un potentiel d'export.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'industrie algérienne des peintures (ENAP, Sika Algérie) a une forte capacité de production qui a réduit les imports nationaux. Le marché africain du bâtiment offre un débouché d'export ZLECAf."
+      }
+    ],
+    "future_capacity": [
+      {
+        "linked_project": "Mine de Fer Gara Djebilet - Phase de Production",
+        "hs_products": [
+          "260111",
+          "260112",
+          "720110"
+        ],
+        "product": "Minerai de fer",
+        "online": "2025-2026",
+        "signal": "High Growth",
+        "logistics": "Évacuation via la ligne ferroviaire Béchar-Tindouf-Gara Djebilet (950 km) en construction.",
+        "impact": "Ouverture d'une nouvelle capacité massive d'export de minerai de fer et d'intrant sidérurgique pour la région, l'un des plus grands gisements au monde (~3,5 Mds t).",
+        "rationale": "La mise en production de Gara Djebilet (2e semestre) crée un flux structurel de minerai de fer, à la fois exportable et intrant de la sidérurgie régionale ZLECAf."
+      },
+      {
+        "linked_project": "Projet Phosphate Intégré (PPI) - Bled El Hadba",
+        "hs_products": [
+          "251010",
+          "310310",
+          "310530",
+          "310390"
+        ],
+        "product": "Phosphates & engrais phosphatés",
+        "online": "2025-H2",
+        "signal": "High Growth",
+        "logistics": "Évacuation par voie ferrée El Hadba -> Annaba pour l'export maritime.",
+        "impact": "Production intégrée de phosphate et d'engrais phosphatés, adossée à la voie ferrée El Hadba-Annaba, ciblant l'export vers les marchés agricoles africains.",
+        "rationale": "Le complexe phosphaté de Bled El Hadba (démarrage 2e semestre de l'année) ajoute une capacité d'export d'engrais phosphatés reliée par rail au port d'Annaba, complétant la filière azotée existante."
+      }
+    ]
+  },
+  "MAR": {
+    "country_name_fr": "Maroc",
+    "champions": [
+      {
+        "name": "OCP Group",
+        "sector": "Phosphates & engrais",
+        "hs_products": [
+          "251010",
+          "280920",
+          "310530",
+          "310540",
+          "310310"
+        ],
+        "output_product": "Roche de phosphate, acide phosphorique & engrais (DAP/NPK)",
+        "capacity": {
+          "value": 12000000,
+          "unit": "tonnes/an",
+          "product": "Engrais phosphatés"
+        },
+        "input_source": "Réserves de phosphate domestiques (>70% des réserves mondiales)",
+        "input_sourcing": "Domestique",
+        "process": "Extraction de phosphate domestique transformé en acide phosphorique puis en engrais (DAP/NPK) sur la plateforme de Jorf Lasfar, 1re plateforme mondiale d'engrais phosphatés.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "OCP est le 1er producteur et exportateur mondial de phosphate et d'engrais phosphatés (54% des exports africains, ~9,76 Md$ de CA 2024). La demande agricole africaine, largement importée hors continent, en fait un débouché ZLECAf majeur."
+      },
+      {
+        "name": "Automobile (Renault Tanger, Stellantis Kénitra)",
+        "sector": "Automobile",
+        "hs_products": [
+          "870322",
+          "870323",
+          "870899"
+        ],
+        "output_product": "Véhicules de tourisme & composants",
+        "capacity": {
+          "value": 700000,
+          "unit": "véhicules/an",
+          "product": "Véhicules assemblés"
+        },
+        "input_capacity": {
+          "value": 700000,
+          "unit": "kits/an",
+          "product": "Composants & CKD importés"
+        },
+        "input_source": "Composants importés + intégration locale croissante",
+        "input_sourcing": "Mixte (assemblage local)",
+        "process": "Assemblage automobile (Renault Tanger, Stellantis Kénitra) à fort taux d'intégration locale, faisant du Maroc le 1er exportateur africain de véhicules.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "Le Maroc est le premier exportateur automobile d'Afrique. Sous la ZLECAf, les véhicules et composants marocains ciblent une demande africaine en forte croissance, aujourd'hui satisfaite hors continent."
+      },
+      {
+        "name": "Cosumar",
+        "sector": "Agroalimentaire (sucre)",
+        "hs_products": [
+          "170199",
+          "170191"
+        ],
+        "output_product": "Sucre blanc raffiné",
+        "capacity": {
+          "value": 1650000,
+          "unit": "tonnes/an",
+          "product": "Sucre raffiné"
+        },
+        "input_source": "Sucre brut importé + betterave/canne domestiques",
+        "input_sourcing": "Mixte (raffinage local)",
+        "process": "Raffinage de sucre brut importé et transformation de betterave/canne domestiques en sucre blanc (Cosumar, opérateur sucrier national), avec un surplus orientable vers l'export régional.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "Cosumar dispose d'une forte capacité sucrière nationale. Le marché africain du sucre, importateur net, constitue un débouché ZLECAf naturel."
+      }
+    ],
+    "future_capacity": []
+  },
+  "NGA": {
+    "country_name_fr": "Nigéria",
+    "champions": [
+      {
+        "name": "Dangote Cement",
+        "sector": "Ciment",
+        "hs_products": [
+          "252310",
+          "252329"
+        ],
+        "output_product": "Ciment & clinker",
+        "capacity": {
+          "value": 52000000,
+          "unit": "tonnes/an",
+          "product": "Ciment"
+        },
+        "input_source": "Calcaire domestique",
+        "input_sourcing": "Domestique",
+        "process": "Extraction de calcaire domestique, cuisson en clinker et broyage en ciment ; premier cimentier d'Afrique, déjà présent dans plus de 10 pays africains.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "Dangote Cement est le premier producteur de ciment d'Afrique. Sa surcapacité alimente déjà l'export intra-africain, renforcé par la ZLECAf."
+      },
+      {
+        "name": "Dangote Refinery",
+        "sector": "Raffinage pétrolier",
+        "hs_products": [
+          "271012",
+          "271019",
+          "271000"
+        ],
+        "output_product": "Essence, diesel & kérosène",
+        "capacity": {
+          "value": 650000,
+          "unit": "barils/jour",
+          "product": "Produits pétroliers raffinés"
+        },
+        "input_source": "Pétrole brut domestique",
+        "input_sourcing": "Domestique",
+        "process": "Raffinage de brut domestique (650 000 b/j, plus grande raffinerie mono-train au monde) en essence, diesel et kérosène, déjà exportés vers l'Afrique, l'Europe et les États-Unis.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "La raffinerie de Dangote transforme le Nigéria d'importateur en exportateur de carburants raffinés — un débouché majeur pour les marchés africains sous la ZLECAf, aujourd'hui dépendants d'importations hors continent."
+      },
+      {
+        "name": "Dangote Fertilizer / Indorama",
+        "sector": "Engrais azotés",
+        "hs_products": [
+          "310210",
+          "281410"
+        ],
+        "output_product": "Urée & ammoniac",
+        "capacity": {
+          "value": 3000000,
+          "unit": "tonnes/an",
+          "product": "Urée"
+        },
+        "input_source": "Gaz naturel domestique",
+        "input_sourcing": "Domestique",
+        "process": "Valorisation du gaz naturel domestique en ammoniac puis urée (usine Dangote 3 Mt/an, 3e mondiale) ; le surplus, exporté vers les USA, l'Inde, le Brésil, cible aussi l'agriculture africaine.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "Le Nigéria dispose d'une des plus grandes capacités d'urée au monde. La demande d'intrants agricoles africaine, importée hors continent, en fait un débouché ZLECAf majeur."
+      },
+      {
+        "name": "Dangote Sugar / BUA Foods",
+        "sector": "Agroalimentaire (sucre)",
+        "hs_products": [
+          "170199",
+          "170191"
+        ],
+        "output_product": "Sucre blanc raffiné",
+        "capacity": {
+          "value": 1440000,
+          "unit": "tonnes/an",
+          "product": "Sucre raffiné"
+        },
+        "input_capacity": {
+          "value": 1500000,
+          "unit": "tonnes/an",
+          "product": "Sucre brut de canne importé"
+        },
+        "input_source": "Sucre brut de canne importé",
+        "input_sourcing": "Importé (raffinage local)",
+        "process": "Raffinage de sucre brut de canne importé en sucre blanc (Dangote Sugar 1,44 Mt/an, BUA 1,5 Mt/an), avec un potentiel d'export vers l'Afrique de l'Ouest.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "Le Nigéria (Dangote, BUA) possède parmi les plus grandes capacités de raffinage de sucre d'Afrique. Le marché régional, importateur net, est un débouché ZLECAf."
+      }
+    ],
+    "future_capacity": []
+  },
+  "EGY": {
+    "country_name_fr": "Égypte",
+    "champions": [
+      {
+        "name": "Ezz Steel (EZDK)",
+        "sector": "Sidérurgie",
+        "hs_products": [
+          "721420",
+          "720110",
+          "721070"
+        ],
+        "output_product": "Ronds à béton (rebars) & acier",
+        "capacity": {
+          "value": 7000000,
+          "unit": "tonnes/an",
+          "product": "Acier & rebars"
+        },
+        "input_source": "Minerai/DRI (gaz domestique) & ferraille",
+        "input_sourcing": "Mixte",
+        "process": "Réduction directe (DRI au gaz) et laminage en ronds à béton et produits longs ; Ezz Steel, 1er sidérurgiste d'Égypte et du Moyen-Orient (exports de rebars 1,54 Mt en 2023).",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "Ezz Steel dispose d'une capacité de laminage supérieure au marché intérieur. Les rebars égyptiens ciblent les marchés africains de la construction sous la ZLECAf."
+      },
+      {
+        "name": "Elsewedy Electric",
+        "sector": "Équipements électriques",
+        "hs_products": [
+          "854442",
+          "854449",
+          "850440"
+        ],
+        "output_product": "Câbles électriques & transformateurs",
+        "capacity": {
+          "value": 500000,
+          "unit": "tonnes/an",
+          "product": "Câbles & équipements électriques"
+        },
+        "input_source": "Cuivre, aluminium & intrants (mixte)",
+        "input_sourcing": "Mixte",
+        "process": "Fabrication de câbles électriques et de transformateurs (Elsewedy Electric, leader régional), exportés vers l'Afrique et le Moyen-Orient.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "Elsewedy Electric est un producteur de câbles et d'équipements électriques de premier plan, bien positionné pour l'électrification et les infrastructures africaines sous la ZLECAf."
+      },
+      {
+        "name": "Abu Qir / MOPCO",
+        "sector": "Engrais azotés",
+        "hs_products": [
+          "310210",
+          "310530",
+          "281410"
+        ],
+        "output_product": "Engrais azotés & ammoniac",
+        "capacity": {
+          "value": 2000000,
+          "unit": "tonnes/an",
+          "product": "Engrais azotés"
+        },
+        "input_source": "Gaz naturel domestique",
+        "input_sourcing": "Domestique",
+        "process": "Valorisation du gaz domestique en ammoniac et engrais azotés (Abu Qir Fertilizers, ~50% de la production nationale), avec un surplus exportable.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Égypte dispose d'une forte capacité d'engrais azotés. La demande agricole africaine en fait un débouché ZLECAf."
+      },
+      {
+        "name": "Industrie pharmaceutique (EIPICO, Pharco)",
+        "sector": "Industrie pharmaceutique",
+        "hs_products": [
+          "300490",
+          "300431",
+          "300420",
+          "300215"
+        ],
+        "output_product": "Médicaments génériques & spécialités",
+        "capacity": {
+          "value": 400,
+          "unit": "médicaments",
+          "product": "Médicaments finis"
+        },
+        "input_source": "Principes actifs (partiellement importés)",
+        "input_sourcing": "Mixte",
+        "process": "Formulation de médicaments génériques et spécialités (EIPICO, Pharco…) ; l'Égypte a le plus grand marché pharmaceutique d'Afrique (27% du continent).",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'industrie pharmaceutique égyptienne est la première d'Afrique. La demande continentale de médicaments, massivement importée hors Afrique, en fait un débouché ZLECAf majeur."
+      }
+    ],
+    "future_capacity": []
+  },
+  "ZAF": {
+    "country_name_fr": "Afrique du Sud",
+    "champions": [
+      {
+        "name": "Industrie automobile (BMW, VW, Toyota, Mercedes)",
+        "sector": "Automobile",
+        "hs_products": [
+          "870323",
+          "870332",
+          "870899"
+        ],
+        "output_product": "Véhicules & composants",
+        "capacity": {
+          "value": 600000,
+          "unit": "véhicules/an",
+          "product": "Véhicules assemblés"
+        },
+        "input_source": "Composants importés + intégration locale",
+        "input_sourcing": "Mixte (assemblage local)",
+        "process": "Assemblage de véhicules par plusieurs constructeurs mondiaux (BMW, VW, Toyota, Mercedes) exportés en volume ; l'automobile est un pilier des exports manufacturiers sud-africains.",
+        "status": "operational",
+        "price_competitiveness": "Moderate",
+        "rationale": "L'Afrique du Sud est un hub automobile mondial. Sous la ZLECAf, ses véhicules et composants ciblent une demande africaine en forte croissance."
+      },
+      {
+        "name": "Sasol",
+        "sector": "Chimie & carburants synthétiques",
+        "hs_products": [
+          "271012",
+          "290110",
+          "390110"
+        ],
+        "output_product": "Carburants synthétiques & produits chimiques",
+        "capacity": {
+          "value": 7000000,
+          "unit": "tonnes/an",
+          "product": "Carburants & chimie"
+        },
+        "input_source": "Charbon & gaz domestiques (procédé CTL/GTL)",
+        "input_sourcing": "Domestique",
+        "process": "Conversion charbon/gaz en carburants synthétiques et produits chimiques (procédé Fischer-Tropsch, Sasol), pour le marché national et l'export régional.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "Sasol est un leader mondial des carburants synthétiques et de la chimie. Ses produits chimiques et carburants ciblent les marchés africains sous la ZLECAf."
+      },
+      {
+        "name": "Filière agrumes",
+        "sector": "Agriculture (agrumes)",
+        "hs_products": [
+          "080510",
+          "080520",
+          "080540"
+        ],
+        "output_product": "Agrumes (oranges, mandarines, pamplemousses)",
+        "capacity": {
+          "value": 2500000,
+          "unit": "tonnes/an",
+          "product": "Agrumes"
+        },
+        "input_source": "Production domestique",
+        "input_sourcing": "Domestique",
+        "process": "Production et conditionnement d'agrumes ; l'Afrique du Sud est le 2e exportateur mondial d'agrumes.",
+        "status": "operational",
+        "price_competitiveness": "High",
+        "rationale": "L'Afrique du Sud est un des premiers exportateurs mondiaux d'agrumes. Le marché africain offre un débouché ZLECAf de proximité."
+      },
+      {
+        "name": "Sidérurgie (ArcelorMittal SA)",
+        "sector": "Sidérurgie",
+        "hs_products": [
+          "720110",
+          "721420",
+          "720839"
+        ],
+        "output_product": "Acier & produits plats",
+        "capacity": {
+          "value": 5000000,
+          "unit": "tonnes/an",
+          "product": "Acier"
+        },
+        "input_source": "Minerai de fer domestique",
+        "input_sourcing": "Domestique",
+        "process": "Production sidérurgique intégrée à partir de minerai domestique (ArcelorMittal SA), fournissant produits longs et plats.",
+        "status": "operational",
+        "price_competitiveness": "Moderate",
+        "rationale": "L'Afrique du Sud dispose d'une sidérurgie intégrée. Ses aciers ciblent les marchés africains de la construction et de l'industrie sous la ZLECAf."
+      }
+    ],
+    "future_capacity": []
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "country": "TUN",
+  "generated_at": "2026-08-29T21:36:18.284974+00:00",
+  "description": "Documents officiels tunisiens archivés avec empreintes SHA-256 (méthode DZA : archiver sans remplacer les fichiers de données).",
+  "documents": [
+    {
+      "file": "code_douanes/CD_1.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 1/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_1.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "a2a59cfc1b5ae42db9522f398272081d35f1a94a897efc7cc736b797cf486207",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_2.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 2/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_2.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "ffecd66fd86000cfd585ccc01bc408e4a917815e7699113de0d55ecb6c8e2c4c",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_3.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 3/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_3.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "c03803ddacab1d2f4917d6e7b44e6f41e118aae4b0416080d5ecf6c0a6ec7aab",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_4.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 4/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_4.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "dd507f6b4bea3870fe3f4cdd178ba03a7379abfc6fcce73f502060e8b86149bc",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_5.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 5/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_5.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "281c0f5ded879d000a956a788aa600e0fb48ac6ef7c0d3656d9b9b2db48e7052",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_6.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 6/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_6.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "1841286ccd2e5f559d8ea909481c7cfb42da356919fe778b2b829b503d71c27c",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_7.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 7/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_7.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "9ae910a95aa81330a7774a411dea8cbcb779e8f98538c271af08927859361e4d",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_8.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 8/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_8.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "3ec6d506e603187e73b193d13841f2231e3c624ac831200ff94fe9a3e682b64b",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_9.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 9/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_9.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "81c62e2e970b244a6d9eb3d02e671e742371f4a31a2d7f049ca53b1c7da12609",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_10.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 10/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_10.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "f749f0eedc43f372865634af4a926504f1aa72a1cb8389cfe179a46a335ebf74",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_11.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 11/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_11.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "dd2271437bb31d27d8a5ad78988bf16e6e032be6cbeb8e90128c54e12e5fde0b",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_12.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 12/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_12.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "6761c9b1038511d2dc15ee2b6364436f61f5f571cb2e178bf10255c4d8fb5867",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_13.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 13/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_13.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "f7ca8a466618e46ffa4ac4bba3f52ab17a6dab6d4332d4a309d367ab5b39887f",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_14.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 14/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_14.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "7d72523a5944cbf6f7d7aae5d385cda1ea808b2bc397ceed761a9fea8a07a6cb",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_15.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 15/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_15.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "5fe3d72ffabb10a0cb37a81654232d691d780e918710dcdbc49189f48bce4fc7",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "code_douanes/CD_16.pdf",
+      "title": "Code des douanes tunisien (loi n°2008-34 du 2 juin 2008) — section 16/16",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/CD/FR/CD_16.pdf",
+      "referencing_page": "https://www.douane.gov.tn/code-des-douanes/",
+      "sha256": "b7af1863db179f3ab2088e23f8f915c05bd03290ef87f3c575d150113fc74f97",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "textes_application/2009-02-25_Arrete_preuves_d_origine.pdf",
+      "title": "Arrêté du 25 février 2009 — preuves d'origine (texte d'application du Code des douanes)",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/TA_2008/FR/2009-02-25_Arrete_preuves_d_origine.pdf",
+      "referencing_page": "https://www.douane.gov.tn/textes-dapplication-2/",
+      "sha256": "ebf335bd6f24e2390fc60c67ca8b84922f38023981a357a5c76573c740432179",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "textes_application/2009-02-19_Arrete_justif_d_origine.pdf",
+      "title": "Arrêté du 19 février 2009 — justification d'origine (texte d'application du Code des douanes)",
+      "source_url": "https://www.douane.gov.tn/fileadmin/lois_et_reglements/TA_2008/FR/2009-02-19_Arrete_justif_d_origine.pdf",
+      "referencing_page": "https://www.douane.gov.tn/textes-dapplication-2/",
+      "sha256": "d7aeb4541ebe7c67653df6003fc184bac63c15de6b034bdd5dbdd711b0baa73b",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "tarifweb2026/detail_01012100015.html",
+      "title": "Capture du portail officiel Tarif Web 2026 — detail_01012100015.html",
+      "source_url": "https://www.douane.gov.tn/tarifweb2026/ (+ tarifwebnew/getresultat.php)",
+      "referencing_page": "https://www.douane.gov.tn/tarifweb2026/",
+      "sha256": "d147b2028d7cbfa38741ac85004fc0e88254129a35086fe2993f3922d46369fa",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "tarifweb2026/detail_16010010006.html",
+      "title": "Capture du portail officiel Tarif Web 2026 — detail_16010010006.html",
+      "source_url": "https://www.douane.gov.tn/tarifweb2026/ (+ tarifwebnew/getresultat.php)",
+      "referencing_page": "https://www.douane.gov.tn/tarifweb2026/",
+      "sha256": "1dff0ac6f51574f8782f66750bf0508834c7433ed9e5eff1d69596d8419d51eb",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "tarifweb2026/detail_84852000008.html",
+      "title": "Capture du portail officiel Tarif Web 2026 — detail_84852000008.html",
+      "source_url": "https://www.douane.gov.tn/tarifweb2026/ (+ tarifwebnew/getresultat.php)",
+      "referencing_page": "https://www.douane.gov.tn/tarifweb2026/",
+      "sha256": "5d71b8cbb258017b9da284097a07373871a06d07f1e65d009110a13c7557f4c4",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "tarifweb2026/detail_87034010116.html",
+      "title": "Capture du portail officiel Tarif Web 2026 — detail_87034010116.html",
+      "source_url": "https://www.douane.gov.tn/tarifweb2026/ (+ tarifwebnew/getresultat.php)",
+      "referencing_page": "https://www.douane.gov.tn/tarifweb2026/",
+      "sha256": "bd59aebd2eabfaf382f605d69e0e2b1429c2badc5ef5be8d1625aafcb91c792a",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "tarifweb2026/page_portail_tarifweb2026.html",
+      "title": "Capture du portail officiel Tarif Web 2026 — page_portail_tarifweb2026.html",
+      "source_url": "https://www.douane.gov.tn/tarifweb2026/ (+ tarifwebnew/getresultat.php)",
+      "referencing_page": "https://www.douane.gov.tn/tarifweb2026/",
+      "sha256": "c0bd39ed5b76a80dc131712d63dab37debc82ae0f0d42d06db0cfebf60cd8446",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    },
+    {
+      "file": "tarifweb2026/tax_codes_and_assiettes.json",
+      "title": "Registre verbatim des codes de taxes et assiettes (extrait du fichier national)",
+      "source_url": "douane.gov.tn/tarifweb2025 (données de juin 2026)",
+      "referencing_page": "https://www.douane.gov.tn/tarifweb2026/",
+      "sha256": "e19c6323cdbf6ff1e813d6b037595cf10ff3b85412647d1c06632f3bb3312f73",
+      "archived_at": "2026-08-29T21:36:18.284974+00:00"
+    }
+  ]
+}

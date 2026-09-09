@@ -1,0 +1,39 @@
+{
+ "jurisdiction": "TUN",
+ "as_of": "2026-09-06",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "Corpus : Direction Générale des Douanes — Tunisie (douane.gov.tn) + corpus fiscal par position nationale."
+ },
+ "regional_cet_applicable": false,
+ "regional_note": "UMA — pas de TEC régional en vigueur",
+ "base_tariff_documentation": {
+  "source_id": "TUN-CANONICAL-TARIFF",
+  "source_name": "Direction Générale des Douanes — Tunisie (douane.gov.tn)",
+  "source_url": "https://www.douane.gov.tn/tarifweb2025",
+  "sha256": "27e151763133a946096c179eb3de9a90aa577640158834659c777bb6a919d2f1",
+  "verification_status": "VERIFIED",
+  "data_status": "VERIFIED",
+  "hs_version": "HS2022 — sous-positions nationales",
+  "effective_from": "2017-07-01",
+  "national_positions": 17512
+ },
+ "preference_and_origin_status": "DOCUMENTED",
+ "preference_evidence": {
+  "instrument": "ZLECAf — partenaire actif de l'Algérie (circulaire DGD 482/2024, liste d'application)",
+  "sha256": "27e151763133a946096c179eb3de9a90aa577640158834659c777bb6a919d2f1"
+ },
+ "documents": [
+  {
+   "file": "TUN_tariffs.json (canonique)",
+   "title": "Direction Générale des Douanes — Tunisie (douane.gov.tn) — 5611 lignes",
+   "source_url": "https://www.douane.gov.tn/tarifweb2025",
+   "sha256": "27e151763133a946096c179eb3de9a90aa577640158834659c777bb6a919d2f1"
+  }
+ ],
+ "sources_officielles": [
+  "https://www.douane.gov.tn/tarifweb2025"
+ ]
+}

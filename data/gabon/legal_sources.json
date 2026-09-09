@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "country": "GAB",
+  "as_of": "2026-07-25",
+  "sources": [
+    {
+      "source_id": "GAB-JO-LOI-FINANCES-2025",
+      "title": "Journal Officiel de la République Gabonaise n°51 Bis Spécial — Loi n°033/2024 du 30 décembre 2024 déterminant les ressources et les charges de l'État pour l'année 2025",
+      "institution": "Journal Officiel de la République Gabonaise (Direction des Publications Officielles)",
+      "legal_date": "2025-01-20",
+      "accessed_at": "2026-07-25",
+      "url": "https://directinfosgabon.com/wp-content/uploads/2025/03/Loi-de-Finances-2025-OFFICIEL.pdf",
+      "local_file": "official/gab-jo-loi-finances-2025.pdf",
+      "sha256": "685ad5a64f3e3d644fa9364fac5386037c9cc818952b615cb8afcf5a482844d6",
+      "coverage": "TVA — Article 210 nouveau (exonération pêche artisanale/pétrole); Article 221 nouveau (taux réduit 5% sur liste de produits). NE COUVRE PAS le taux normal de la TVA, non modifié par cette loi de finances donc non restaté dans son texte.",
+      "status": "official_downloaded",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Fichier hébergé sur un site d'actualités tiers (directinfosgabon.com), le portail gouvernemental officiel (economie.gouv.ga, finances.gouv.ga, dgi.ga) étant injoignable depuis cet environnement lors de la collecte (2026-07-25). Le contenu du PDF est cependant l'entête et la pagination authentiques du Journal Officiel de la République Gabonaise (n°51 Bis Spécial, 20 janvier 2025), ce qui en fait un texte primaire republié plutôt qu'un résumé tiers. Vérification indépendante recommandée dès que le portail officiel redevient accessible."
+    },
+    {
+      "source_id": "GAB-DGI-CGI-LIVRE2-REFERENCE",
+      "title": "LIVRE 2 — TAXES SUR LE CHIFFRE D'AFFAIRES (Code Général des Impôts, section TVA)",
+      "institution": "Direction Générale des Impôts (DGI) — République Gabonaise",
+      "legal_date": null,
+      "accessed_at": "2026-07-25",
+      "url": "http://www.dgi.ga/787-procedures-et-avantages-fiscaux/1071-code-general-des-impots/1075-livre-2-taxes-sur-le-chiffre-daffaires/",
+      "local_file": null,
+      "sha256": null,
+      "coverage": "attendu : taux normal de la TVA (Article 221, selon recoupements tertiaires — PwC/Deloitte/UFE — non vérifiés directement)",
+      "status": "source_pending_collection",
+      "verification_status": "PENDING_COLLECTION",
+      "notes": "URL localisée par recherche web mais retourne HTTP 403/injoignable depuis cet environnement (2026-07-25). C'est la source qui permettrait de vérifier directement le taux normal — à re-tenter en priorité."
+    }
+  ]
+}

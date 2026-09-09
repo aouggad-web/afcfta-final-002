@@ -1,0 +1,3 @@
+id,institution,title,legal_date,accessed_at,url,local_file,sha256,coverage,status,notes
+NGA-JOURNAL-CGI,Federal Inland Revenue Service,Nigeria Tax Act 2025,,2026-07-29,https://www.firs.gov.ng/,,,tax legislation applicable from 2026-01-01,source_pending_collection,Official authority identified; primary Act file not archived or hashed in this wave.
+NGA-FINANCE-LAW-2026,Presidency of Nigeria,New tax laws commencement notice,2026-01-01,2026-07-29,https://statehouse.gov.ng/new-tax-laws-will-commence-on-january-1-2026-as-planned/,,,official confirmation of commencement date,source_pending_collection,Commencement notice only; not used as a substitute for the primary tax Act.

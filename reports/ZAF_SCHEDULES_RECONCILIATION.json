@@ -1,0 +1,23 @@
+{
+ "date": "2026-08-30T10:54:30.744736+00:00",
+ "country": "ZAF",
+ "action": "complétion exhaustive annexes SARS + ITAC",
+ "stats": {
+  "schedule_2_trade_remedies": "431 lignes (date PDF: 2026-07-24)",
+  "schedule_3_rebates": "1091 lignes (date PDF: 2026-06-19)",
+  "schedule_8_licences": "34 lignes (date PDF: None)",
+  "schedule_1_part_2a_specific_excise": "140 lignes (date PDF: 2026-04-30)",
+  "schedule_1_part_2b_specific_excise": "148 lignes (date PDF: 2025-04-01)",
+  "itac_definitive_measures": "3 lignes (date PDF: None)"
+ },
+ "pdfs_sha256": {
+  "schedule_2_trade_remedies": "c34cbb0565c3914061aa8c8fc194f3861bb4355ca9218c3217821b4e7b2736c7",
+  "schedule_3_rebates": "aa04c5e2b1c0fd9eba79d2986cd9efc4b91882e8d320b8eaa6df6548112d4293",
+  "schedule_8_licences": "debfa1531f8f0060736d1273234d8ac8b758b7bfa65345fe1065ed665ef49142",
+  "schedule_1_part_2a_specific_excise": "59d7f909ece3289fedc7147d6a513edf3815a7281ca27693660a09c8acf08d2e",
+  "schedule_1_part_2b_specific_excise": "e9c75ab3700fb2ea6f67f5cef530f89cfd8155c8adc3abb4d5b8c9bf36777915",
+  "itac_definitive_measures": "62a17ad67e1df31e6239b221936c8152ca9fc806c43fb47e3f13288f16745673"
+ },
+ "nrcs": "NRCS inaccessible depuis ce réseau (connexion échouée) — écart documenté ; alternative : Government Gazette",
+ "schedule_1_part_1": "8 589 positions (crawl 2026-08-29, inchangé)"
+}
