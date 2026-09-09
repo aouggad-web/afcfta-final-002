@@ -242,7 +242,57 @@ def test_get_sub_positions_merges_postgres_with_missing_crawled_rows(monkeypatch
     assert set(by_code) == {"0101210010", "0101210090"}
     assert by_code["0101210010"]["source"] == "postgres"
     assert by_code["0101210010"]["dd_rate"] == 5
+    assert by_code["0101210010"]["duty_status"] == "PAYABLE"
     assert by_code["0101210090"]["dd_rate"] == 20
+
+
+def test_get_sub_positions_postgres_missing_dd_is_unavailable_not_zero(monkeypatch, tmp_path):
+    """A PostgreSQL row with no DD must surface as UNAVAILABLE, never a
+    fabricated 0 % (regression guard for the previous `sp.get("dd", 0)`
+    silent fallback)."""
+
+    class NoDutyProvider:
+        def get_sub_positions(self, *_args):
+            return [
+                {
+                    "code": "0101210010",
+                    "description_fr": "Position sans droit connu",
+                }
+            ]
+
+    monkeypatch.setattr(service, "CRAWLED_DIR", str(tmp_path))
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: NoDutyProvider())
+    monkeypatch.setattr(
+        service,
+        "get_tariff_line",
+        lambda *_args: {"hs6": "010121", "dd_rate": 20, "sub_positions": []},
+    )
+    monkeypatch.setattr(service, "load_nomenclature_map", lambda *_args: None)
+
+    result = service.get_sub_positions("GHA", "010121")[0]
+
+    assert result["dd_rate"] is None
+    assert result["duty_status"] == "UNAVAILABLE"
+
+
+def test_get_sub_positions_nomenclature_only_without_parent_duty_is_unavailable(
+    monkeypatch, tmp_path
+):
+    """A position that only exists in the nomenclature map, with no parent
+    tariff line carrying a DD, must not inherit a fabricated 0 %."""
+    monkeypatch.setattr(service, "CRAWLED_DIR", str(tmp_path))
+    monkeypatch.setattr(service, "_get_postgres_provider", lambda: None)
+    monkeypatch.setattr(service, "get_tariff_line", lambda *_args: None)
+    monkeypatch.setattr(
+        service,
+        "load_nomenclature_map",
+        lambda *_args: {"0101210099": "Position nomenclature seule"},
+    )
+
+    result = service.get_sub_positions("SEN", "010121")[0]
+
+    assert result["dd_rate"] is None
+    assert result["duty_status"] == "UNAVAILABLE"
 
 
 def test_search_handles_raw_tax_lists_and_returns_position_provenance(monkeypatch, tmp_path):

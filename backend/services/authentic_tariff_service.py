@@ -768,6 +768,9 @@ def get_tariff_line(country_iso3, hs_code):
             if regulatory and regulatory.get("success"):
                 measures = regulatory.get("measures", []) or []
                 requirements = regulatory.get("requirements", []) or []
+                regulatory_taxes = regulatory.get("taxes") or {}
+                raw_parent_dd = regulatory_taxes.get("dd_rate")
+                parent_dd_rate = float(raw_parent_dd) if raw_parent_dd is not None else None
                 taxes_detail = [
                     {
                         "tax": _normalize_tax_code(str(m.get("code") or m.get("type") or "")),
@@ -782,18 +785,30 @@ def get_tariff_line(country_iso3, hs_code):
                     sum(t["rate"] for t in taxes_detail if t["tax"] not in ("DD", "TVA")), 4
                 )
                 sub_positions = provider.get_sub_positions(country_iso3, hs6, "fr") or []
-                normalized_sub_positions = [
-                    {
-                        "code": sp.get("code"),
-                        "digits": sp.get("digits", len(sp.get("code", ""))),
-                        "description_fr": sp.get("description_fr", sp.get("description_en", "")),
-                        "description_en": sp.get("description_en", sp.get("description_fr", "")),
-                        "dd": float(sp.get("dd", 0) or 0),
-                        "source": "postgres",
-                    }
-                    for sp in sub_positions
-                    if sp.get("code")
-                ]
+                normalized_sub_positions = []
+                for sp in sub_positions:
+                    if not sp.get("code"):
+                        continue
+                    raw_sp_dd = sp.get("dd", sp.get("dd_rate"))
+                    sp_dd_rate = float(raw_sp_dd) if raw_sp_dd is not None else None
+                    normalized_sub_positions.append(
+                        {
+                            "code": sp.get("code"),
+                            "digits": sp.get("digits", len(sp.get("code", ""))),
+                            "description_fr": sp.get(
+                                "description_fr", sp.get("description_en", "")
+                            ),
+                            "description_en": sp.get(
+                                "description_en", sp.get("description_fr", "")
+                            ),
+                            "dd": sp_dd_rate,
+                            "dd_rate": sp_dd_rate,
+                            "duty_status": (
+                                "PAYABLE" if sp_dd_rate is not None else "UNAVAILABLE"
+                            ),
+                            "source": "postgres",
+                        }
+                    )
                 fiscal_advantages = [
                     {
                         "tax_code": m.get("code"),
@@ -809,10 +824,13 @@ def get_tariff_line(country_iso3, hs_code):
                     "code": hs_code_clean,
                     "description_fr": regulatory.get("description", ""),
                     "description_en": regulatory.get("description", ""),
-                    "dd_rate": float(regulatory.get("taxes", {}).get("dd_rate", 0) or 0),
+                    "dd_rate": parent_dd_rate,
+                    "duty_status": (
+                        "PAYABLE" if parent_dd_rate is not None else "UNAVAILABLE"
+                    ),
                     "zlecaf_rate": (
-                        float(regulatory.get("taxes", {}).get("zlecaf_rate"))
-                        if regulatory.get("taxes", {}).get("zlecaf_rate") is not None
+                        float(regulatory_taxes.get("zlecaf_rate"))
+                        if regulatory_taxes.get("zlecaf_rate") is not None
                         else None
                     ),
                     "vat_rate": float(country_info.get("vat_rate", 0) or 0),
@@ -868,13 +886,19 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     code = sp.get("code")
                     if not code:
                         continue
+                    # Un DD absent côté PostgreSQL ne doit pas se fabriquer en
+                    # 0 % : on préserve l'inconnu (dd_rate None + UNAVAILABLE),
+                    # un 0 réellement présent restant un droit exigible à 0.
+                    raw_dd = sp.get("dd", sp.get("dd_rate"))
+                    dd_rate = float(raw_dd) if raw_dd is not None else None
                     merged[code] = {
                         "code": sp.get("code"),
                         "national_code": sp.get("code"),
                         "digits": sp.get("digits", len(sp.get("code", ""))),
                         "description_fr": sp.get("description_fr", sp.get("description_en", "")),
                         "description_en": sp.get("description_en", sp.get("description_fr", "")),
-                        "dd_rate": float(sp.get("dd", 0) or 0),
+                        "dd_rate": dd_rate,
+                        "duty_status": "PAYABLE" if dd_rate is not None else "UNAVAILABLE",
                         "source": "postgres",
                     }
             else:
@@ -888,6 +912,9 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
 
     line = get_tariff_line(country_iso3, hs6_normalized)
     parent_dd_rate_pct = line.get("dd_rate", 0) if line else 0
+    # Le taux parent n'est « réel » que si une ligne tarifaire le porte
+    # explicitement : sinon (aucune ligne) l'hériter revient à fabriquer un 0 %.
+    parent_dd_known = bool(line) and line.get("dd_rate") is not None
 
     # Build index from tariff_lines sub_positions (have explicit DD rates)
     if line:
@@ -943,7 +970,8 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     "digits": len(code),
                     "description_fr": description,
                     "description_en": description,
-                    "dd_rate": parent_dd_rate_pct,
+                    "dd_rate": parent_dd_rate_pct if parent_dd_known else None,
+                    "duty_status": "PAYABLE" if parent_dd_known else "UNAVAILABLE",
                     "source": f"Nomenclature DGD {country_iso3}",
                 }
             else:
@@ -953,6 +981,16 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     merged[code]["description_fr"] = description
                 if not merged[code].get("description_en"):
                     merged[code]["description_en"] = description
+
+    # Garantit un `duty_status` cohérent sur CHAQUE source (postgres, ETL,
+    # crawl, nomenclature) : un droit de douane connu → PAYABLE (0 % inclus),
+    # un droit absent → UNAVAILABLE. Le frontend s'appuie dessus pour afficher
+    # « à vérifier » au lieu d'un 0 % trompeur.
+    for entry in merged.values():
+        entry.setdefault(
+            "duty_status",
+            "PAYABLE" if entry.get("dd_rate") is not None else "UNAVAILABLE",
+        )
 
     result = sorted(merged.values(), key=lambda x: x["code"])
     logger.debug(f"get_sub_positions({country_iso3}, {hs6_normalized}): {len(result)} positions")
@@ -998,13 +1036,15 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
             if pg_results:
                 for r in pg_results:
                     national_code = r.get("code", r.get("hs6", ""))
+                    dd_rate = r.get("dd_rate")
                     results.append(
                         {
                             "hs6": r.get("hs6", ""),
                             "national_code": national_code,
                             "description_fr": r.get("description", ""),
                             "description_en": r.get("description", ""),
-                            "dd_rate": r.get("dd_rate", 0),
+                            "dd_rate": dd_rate,
+                            "duty_status": "PAYABLE" if dd_rate is not None else "UNAVAILABLE",
                             "zlecaf_rate": r.get("zlecaf_rate"),
                             "source": "postgres",
                         }
@@ -1116,7 +1156,13 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                 hs6 = line.get("hs6", "")
                 desc = line.get(desc_key, line.get("description_fr", line.get("designation", "")))
                 if hs6 not in seen_codes and (hs6.startswith(q) or q in desc.lower()):
-                    results.append(line)
+                    etl_result = dict(line)
+                    etl_dd = line.get("dd_rate", line.get("dd"))
+                    etl_result["dd_rate"] = etl_dd
+                    etl_result["duty_status"] = (
+                        "PAYABLE" if etl_dd is not None else "UNAVAILABLE"
+                    )
+                    results.append(etl_result)
                     seen_codes.add(hs6)
                     if len(results) >= limit:
                         return results
@@ -1133,6 +1179,8 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                             "national_code": code,
                             "description_fr": description,
                             "description_en": description,
+                            "dd_rate": None,
+                            "duty_status": "UNAVAILABLE",
                             "source": f"Nomenclature DGD {country_iso3}",
                         }
                     )
@@ -1417,6 +1465,22 @@ def _resolve_zlecaf_context(
     #    + colonne AfCFTA officielle de SARS Schedule 1 Part 1. Les droits
     #    spécifiques/composés sont documentés mais restent non calculables sans
     #    quantité : ils ne sont jamais aplatis en leur seule composante ad valorem.
+    #
+    #    GAP CONNU (à vérifier avant extension) : Botswana, Lesotho, Namibie et
+    #    Eswatini (SACU hors Afrique du Sud) publient dans le crawl national un
+    #    barème identique à celui-ci — mêmes 8589 lignes, mêmes colonnes AfCFTA/
+    #    SADC, mêmes 2959 positions à taux préférentiel réel (backend/data/
+    #    crawled/{BWA,LSO,NAM,SWZ}_tariffs.json). Ce n'est PAS traité ici : la
+    #    source citée par `zlecaf_schedule_zaf.ACTIVE_PARTNERS_ZAF` (newsletter
+    #    dtic/SARS mars 2026) documente nommément l'activation ZLECAf pour
+    #    l'Afrique du Sud, pas pour les quatre autres membres de la SACU. Une
+    #    même union douanière et un barème partagé ne prouvent pas, à eux
+    #    seuls, une activation bilatérale identique pour BWA/LSO/NAM/SWZ — ce
+    #    serait une inférence, pas une source. Décision produit (2026-08-22) :
+    #    ne rien extrapoler tant qu'aucune source nommée ne couvre ces 4 pays
+    #    individuellement ; ils restent au régime NPF via le chemin générique
+    #    ci-dessous (`resolve_official_preferential_rate` ne référence que
+    #    ZAF/EAC/ECOWAS/CEMAC/EGY/TUN/ETH/ZMB dans `DATASETS`).
     if dest == "ZAF":
         from services.official_preferential_rates import resolve_official_preferential_rate
         from services.zlecaf_schedule_zaf import zaf_partner_active
@@ -1471,6 +1535,21 @@ def _resolve_zlecaf_context(
     #    ne déclenchent jamais un calcul. Il faut une transposition en vigueur,
     #    une origine explicitement acceptée sur base réciproque et une ligne
     #    tarifaire officielle exacte.
+    #
+    #    GAP VÉRIFIÉ ET ÉCARTÉ — Égypte : le crawl national (backend/data/
+    #    crawled/EGY_tariffs.json, source customs.gov.eg) porte un champ
+    #    `zlecaf_rate` par position (6417/8746 lignes, 5357 avec réduction
+    #    réelle). Vérification (2026-08-22) : ce champ n'est PAS conditionné
+    #    par pays d'origine (aucune clé d'origine dans le schéma) et sa valeur
+    #    recoupe le barème par CATÉGORIE A/B/C de l'AfCFTA e-Tariff Book
+    #    (cf. `official_instructions` bruts de la même ligne : « Groupe [A]
+    #    -100% / Groupe [B] -60% ») — la même offre continentale que le
+    #    dataset officiel EGY, déjà marqué `legal_effect_status: OFFER_ONLY`,
+    #    `execution_authorized: False` dans `official_preferential_rates.py`.
+    #    L'utiliser reproduirait exactement le taux générique par catégorie
+    #    que `test_no_generic_category_based_zlecaf_string_anywhere` interdit.
+    #    Ne pas l'exploiter tant qu'aucune source nommée ne prouve une
+    #    réciprocité bilatérale par partenaire (à la manière de DZA/ZAF).
     from services.official_preferential_rates import resolve_official_preferential_rate
     from services.zlecaf_implementation_registry import (
         OFFER_ONLY,
@@ -1593,9 +1672,9 @@ def calculate_import_taxes(
         return {"error": f"Tariff line not found for {country_iso3}/{hs6}"}
     is_postgres_line = line.get("data_source") == "postgres" or line.get("source") == "postgres"
 
-    # Resolve DD rate: prefer sub-position specific rate when available
-    # (`or 0` : une valeur explicitement nulle dans la donnée → 0, jamais None).
-    dd_rate_pct = line.get("dd_rate", 0) or 0
+    # Preserve an unknown DD as None. A verified 0.0 remains a real payable
+    # rate, but an absent rate must never be silently converted into 0 %.
+    dd_rate_pct = line.get("dd_rate")
     sub_position_info = None
 
     # --- Priority 1: crawled authentic JSON (per-position taxes) ---
@@ -1647,6 +1726,26 @@ def calculate_import_taxes(
             "description": sp_desc,
             "description_fr": sp_desc,
             "description_en": sp_desc,
+        }
+
+    # Fail closed before any tax cascade: an unknown customs duty cannot be
+    # treated as a verified 0 % merely to keep the calculator numeric.
+    if dd_rate_pct is None:
+        desc_key = "description_fr" if language == "fr" else "description_en"
+        description = line.get(desc_key, line.get("description_fr", ""))
+        return {
+            "error": f"Customs duty unavailable for {country_iso3}/{hs_code_clean}",
+            "calculation_status": "CALCULATION_UNAVAILABLE",
+            "duty_status": "UNAVAILABLE",
+            "hs_code": hs_code_clean,
+            "hs6": hs6,
+            "country_iso3": country_iso3,
+            "description": description,
+            "description_fr": line.get("description_fr", ""),
+            "description_en": line.get("description_en", ""),
+            "sub_position": sub_position_info,
+            "rates": {"dd_rate_pct": None},
+            "source": line.get("source"),
         }
 
     # `or 0` : une valeur explicitement nulle dans la donnée source ne doit

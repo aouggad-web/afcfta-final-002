@@ -104,22 +104,26 @@ class TariffProviderService:
         if postgres:
             sub_positions = postgres.get_sub_positions(country, hs6_code)
             if sub_positions:
-                return [
-                    {
-                        "dd": sp.get("dd", sp.get("dd_rate", 0)),
-                        "code": sp.get("code"),
-                        "national_code": sp.get("code"),
-                        "digits": sp.get("digits"),
-                        "description_fr": sp.get("description_fr"),
-                        "description_en": sp.get("description_en"),
-                        "dd_rate": sp.get("dd", sp.get("dd_rate", 0)),
-                        "zlecaf_rate": sp.get("zlecaf_rate"),
-                        "savings": sp.get("savings", 0),
-                        "unit": sp.get("unit"),
-                        "source": "postgres",
-                    }
-                    for sp in sub_positions
-                ]
+                out = []
+                for sp in sub_positions:
+                    raw_dd = sp.get("dd", sp.get("dd_rate"))
+                    out.append(
+                        {
+                            "dd": raw_dd,
+                            "code": sp.get("code"),
+                            "national_code": sp.get("code"),
+                            "digits": sp.get("digits"),
+                            "description_fr": sp.get("description_fr"),
+                            "description_en": sp.get("description_en"),
+                            "dd_rate": raw_dd,
+                            "duty_status": "PAYABLE" if raw_dd is not None else "UNAVAILABLE",
+                            "zlecaf_rate": sp.get("zlecaf_rate"),
+                            "savings": sp.get("savings", 0),
+                            "unit": sp.get("unit"),
+                            "source": "postgres",
+                        }
+                    )
+                return out
         return authentic_service.get_sub_positions(country, hs6_code)
 
     def search_tariff_lines(
@@ -139,6 +143,9 @@ class TariffProviderService:
                         "description_fr": row.get("description_fr") or row.get("description"),
                         "description_en": row.get("description_en") or row.get("description"),
                         "dd_rate": row.get("dd_rate"),
+                        "duty_status": (
+                            "PAYABLE" if row.get("dd_rate") is not None else "UNAVAILABLE"
+                        ),
                         "zlecaf_rate": row.get("zlecaf_rate"),
                         "savings": row.get("savings"),
                         "source": "postgres",
