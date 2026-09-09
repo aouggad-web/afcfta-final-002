@@ -64,6 +64,28 @@ def _calc(client, origin, dest, hs_code="010121", value=10000.0):
 # ==================== Champs de statut ====================
 
 
+@pytest.mark.parametrize(
+    "origin,destination,hs_code,expected_candidate",
+    [("EGY", "DZA", "010121", "0101211100"), ("BWA", "ZAF", "870323", "87032325")],
+)
+def test_ambiguous_hs6_requires_explicit_national_selection(
+    client, origin, destination, hs_code, expected_candidate
+):
+    response = client.post(
+        "/api/calculate-tariff",
+        json={
+            "origin_country": origin,
+            "destination_country": destination,
+            "hs_code": hs_code,
+            "value": 10000.0,
+        },
+    )
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    assert detail["code"] == "NATIONAL_POSITION_SELECTION_REQUIRED"
+    assert expected_candidate in detail["candidates"]
+
+
 def test_response_exposes_honesty_status_fields(client):
     """Les champs de statut additifs sont toujours présents (contrat élargi)."""
     data = _calc(client, "EGY", "KEN")
@@ -180,7 +202,7 @@ def test_no_generic_category_based_zlecaf_string_anywhere(client):
         ("EGY", "DZA"),
     ]
     for origin, dest in pairs:
-        data = _calc(client, origin, dest)
+        data = _calc(client, origin, dest, hs_code="0101211100" if dest == "DZA" else "010121")
         note = str(data.get("zlecaf_note", "")) + str(data.get("trade_regime", ""))
         assert "ZLECAf (" not in note, f"formule générique détectée pour {origin}->{dest}"
 
@@ -248,7 +270,7 @@ def test_customs_union_reduction_with_nonzero_npf_line(client):
     """Réduction économique effective : même union douanière (SACU), mais sur
     une ligne à droit NPF non nul (corbillards, 20 % — donnée statique
     sars.gov.za, stable quel que soit l'ordre d'exécution des tests)."""
-    data = _calc(client, "BWA", "ZAF", hs_code="870323")
+    data = _calc(client, "BWA", "ZAF", hs_code="87032325")
     assert data["trade_regime"] == "CUSTOMS_UNION"
     assert data["trade_regime_code"] == "SACU"
     assert data["normal_tariff_rate"] == pytest.approx(0.20)
@@ -262,7 +284,7 @@ def test_dza_national_offer_still_applies_via_guard(client):
     """L'offre nationale algérienne (circulaire DGD 482/2024) reste appliquée,
     mais désormais via le garde-fou central — un partenaire actif (EGY) doit
     résoudre un régime cohérent."""
-    data = _calc(client, "EGY", "DZA")
+    data = _calc(client, "EGY", "DZA", hs_code="0101211100")
     assert data["trade_regime"] in ("ZLECAF", "CUSTOMS_UNION", "NPF", "FTA_CONDITIONAL")
     assert "zlecaf_note" in data
 
@@ -282,7 +304,7 @@ def test_non_active_dza_partner_stays_npf_not_zlecaf(client):
         "précondition du test invalidée : SEN a été ajouté aux partenaires "
         "actifs DZA — choisir un autre pays ratifié hors de cette liste"
     )
-    data = _calc(client, "SEN", "DZA")
+    data = _calc(client, "SEN", "DZA", hs_code="0101211100")
     assert data["zlecaf_preference_applied"] is False
     assert data["zlecaf_tariff_rate"] is None
     assert data["zlecaf_status"] == "NOT_AVAILABLE"

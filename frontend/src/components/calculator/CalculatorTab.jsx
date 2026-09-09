@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
+import { shouldUseLegacyCalculator } from './calculatorFallback';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -431,7 +432,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         useAuthenticData = true;
         console.log('✅ Using AUTHENTIC tariff data for', destISO3);
       } catch (authError) {
-        console.log('ℹ️ Authentic tariff data not available for', destISO3, '- falling back to calculated data');
+        // Only an explicitly missing route may use the legacy implementation.
+        // Never bypass auth, quota, provenance failures, or provider outages.
+        if (!shouldUseLegacyCalculator(authError)) {
+          throw authError;
+        }
+        console.log('Authentic tariff route unavailable; using legacy route');
       }
       
       if (useAuthenticData && authenticResult) {
@@ -746,7 +752,8 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       console.error('Calculation error:', error);
       toast({
         title: t.calculationError,
-        description: error.response?.data?.detail || t.calculationError,
+        description: error.response?.data?.detail?.message
+          || (typeof error.response?.data?.detail === 'string' ? error.response.data.detail : t.calculationError),
         variant: "destructive"
       });
     } finally {

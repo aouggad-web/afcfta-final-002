@@ -415,7 +415,15 @@ class PostgresTariffService:
         }
 
     def get_regulatory_details(self, country_iso3: str, hs6: str) -> Dict:
-        """Get regulatory details for a HS6 code"""
+        """Read measures and requirements for exactly one commodity."""
+        from services.national_position_selection import (
+            NationalPositionRequired,
+            normalize_calculation_code,
+            select_calculation_position,
+        )
+
+        code = normalize_calculation_code(hs6)
+        national_code = code if len(code) > 6 else None
         # Get main commodity info
         commodities = self._execute_query(
             """
@@ -423,15 +431,20 @@ class PostgresTariffService:
                    total_npf_pct, total_zlecaf_pct
             FROM commodities
             WHERE country_iso3 = :iso3 AND hs6 = :hs6
-            LIMIT 1
+              AND (:national_code IS NULL OR national_code = :national_code)
         """,
-            {"iso3": country_iso3.upper(), "hs6": hs6},
+            {"iso3": country_iso3.upper(), "hs6": code[:6], "national_code": national_code},
         )
 
         if not commodities:
             return {"success": False, "error": "No data found"}
 
-        commodity = commodities[0]
+        try:
+            commodity = select_calculation_position(code, commodities)
+        except NationalPositionRequired as exc:
+            return {"success": False, "error": str(exc), "error_detail": exc.detail}
+        if commodity is None:
+            return {"success": False, "error": "No exact position found"}
         commodity_id = commodity["id"]
 
         # Get all measures
@@ -439,10 +452,9 @@ class PostgresTariffService:
             """
             SELECT DISTINCT measure_type, code, name_fr, rate_pct, is_zlecaf_applicable, zlecaf_rate_pct
             FROM measures m
-            JOIN commodities c ON m.commodity_id = c.id
-            WHERE c.country_iso3 = :iso3 AND c.hs6 = :hs6
+            WHERE m.commodity_id = :commodity_id
         """,
-            {"iso3": country_iso3.upper(), "hs6": hs6},
+            {"commodity_id": commodity_id},
         )
 
         # Get all requirements
@@ -450,20 +462,27 @@ class PostgresTariffService:
             """
             SELECT DISTINCT requirement_type, code, document_fr, is_mandatory, issuing_authority
             FROM requirements r
-            JOIN commodities c ON r.commodity_id = c.id
-            WHERE c.country_iso3 = :iso3 AND c.hs6 = :hs6
+            WHERE r.commodity_id = :commodity_id
         """,
-            {"iso3": country_iso3.upper(), "hs6": hs6},
+            {"commodity_id": commodity_id},
         )
 
+        duties = [m for m in measures if m["measure_type"] == "CUSTOMS_DUTY"]
+        vats = [m for m in measures if m["measure_type"] == "VAT"]
+        duty = duties[0] if len(duties) == 1 else None
+        vat = vats[0] if len(vats) == 1 else None
         return {
             "success": True,
             "country_iso3": country_iso3,
-            "hs6": hs6,
+            "hs6": code[:6],
+            "national_code": commodity["national_code"],
             "description": commodity["description_fr"],
             "taxes": {
-                "dd_rate": commodity["total_npf_pct"],
-                "zlecaf_rate": commodity["total_zlecaf_pct"],
+                "dd_rate": duty["rate_pct"] if duty else None,
+                "vat_rate": vat["rate_pct"] if vat else None,
+                "zlecaf_rate": (
+                    duty["zlecaf_rate_pct"] if duty and duty["is_zlecaf_applicable"] else None
+                ),
             },
             "measures": [
                 {

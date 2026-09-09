@@ -6,6 +6,7 @@ detailed taxes, fiscal advantages, and administrative formalities
 
 import logging
 from datetime import date
+from math import isfinite
 from typing import Optional
 
 from entitlement_guard import require_calculations_quota
@@ -473,6 +474,9 @@ async def calculate_taxes_endpoint(
     Returns:
         Calcul détaillé NPF vs ZLECAf avec économies
     """
+    if not isfinite(cif_value) or cif_value <= 0:
+        raise HTTPException(status_code=422, detail="CIF value must be positive and finite")
+
     # Doctrine tarifaire : si le pays n'a ni fichier national servable ni
     # données officielles crawlées (WITS/UNCTAD-TRAINS), refus explicite —
     # jamais de calcul sur des données estimées/synthétiques.
@@ -492,6 +496,8 @@ async def calculate_taxes_endpoint(
     )
 
     if "error" in result:
+        if "error_detail" in result:
+            raise HTTPException(status_code=422, detail=result["error_detail"])
         raise HTTPException(status_code=404, detail=result["error"])
 
     country = country_iso3.upper()
