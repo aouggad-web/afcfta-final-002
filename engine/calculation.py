@@ -17,10 +17,7 @@ Exemple Algérie (séquence réelle, Circ. 419 DGD) :
 """
 
 from dataclasses import dataclass, field
-<<<<<<< HEAD
-=======
 from math import isfinite
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 from typing import Dict, List, Optional
 
 from schemas.canonical_model import (
@@ -65,8 +62,6 @@ class CalculationResult:
     warnings: List[str] = field(default_factory=list)
 
 
-<<<<<<< HEAD
-=======
 class CalculationUnavailable(ValueError):
     """Incomplete inputs must never be turned into a complete tax total."""
 
@@ -162,7 +157,6 @@ def _validate_inputs(line, cif_value, quantity, currency, regime):
         raise CalculationUnavailable(issues)
 
 
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 def compute_duties(
     line: CanonicalTariffLine,
     cif_value: float,
@@ -174,23 +168,14 @@ def compute_duties(
     Calcule l'ensemble des droits et taxes d'une ligne tarifaire.
 
     Args:
-<<<<<<< HEAD
-        line:      ligne tarifaire canonique (schéma v4 ; v3 accepté, assiette CAF
-                   et séquence par défaut seront alors appliquées avec avertissement)
-=======
         line:      ligne tarifaire canonique sourcée, mesures complètes et
                    dépendances d'assiette résolues ; sinon CalculationUnavailable
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         cif_value: valeur CAF dans la monnaie du pays
         quantity:  quantité physique (requise si une mesure est SPECIFIC/MIXED)
         regime:    "NPF" ou "ZLECAF"
     """
-<<<<<<< HEAD
-    regime = regime.upper()
-=======
     regime = regime.upper() if isinstance(regime, str) else ""
     _validate_inputs(line, cif_value, quantity, currency, regime)
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     result = CalculationResult(
         country_iso3=line.commodity.country_iso3,
         national_code=line.commodity.national_code,
@@ -263,11 +248,8 @@ def compute_duties(
                 else:
                     amount += spec * quantity
 
-<<<<<<< HEAD
-=======
         if not isfinite(amount) or not isfinite(basis_amount):
             raise CalculationUnavailable([f"{m.code}: non-finite calculation result"])
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         amount = round(amount, 2)
         computed[m.code] = amount
 
@@ -287,11 +269,8 @@ def compute_duties(
 
     result.total_duties_taxes = round(sum(l.amount for l in result.lines), 2)
     result.landed_cost = round(cif_value + result.total_duties_taxes, 2)
-<<<<<<< HEAD
-=======
     if not isfinite(result.total_duties_taxes) or not isfinite(result.landed_cost):
         raise CalculationUnavailable(["total: non-finite calculation result"])
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     result.effective_rate_pct = (
         round(result.total_duties_taxes / cif_value * 100.0, 2) if cif_value else 0.0
     )

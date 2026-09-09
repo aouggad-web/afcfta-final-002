@@ -123,58 +123,6 @@ class EgyptOfficialScraper:
     async def detail(self, code: str, trf_type: int = 1) -> dict | None:
         return await self._post(DETAIL_URL, params={"trfNumber": code, "trfType": trf_type})
 
-<<<<<<< HEAD
-    # Mapping étendu des taxes arabes → codes canoniques.
-    # Couvre TOUTES les taxes publiées par customs.gov.eg, pas seulement
-    # Import Duty et VAT. Inclut taxes sur tabacs, chambres de commerce
-    # (textile, cuir, tabac), assurance santé, taxe sur tableau, etc.
-    TAX_MAPPING_AR = {
-        "ضريبة الوارد": "ID",
-        "ضريبة قيمه مضافه": "VAT",
-        "ضريبة الدمغة": "STAMP",
-        "رسم دعم": "SUPPORT",
-        "تامين صحى وزارة الصحة": "HEALTH_INS",
-        "تامين صحى": "HEALTH_INS",
-        "رسم محصلة لحساب غرفة دخان": "TOBACCO_CHAMBER",
-        "غرفة دخان": "TOBACCO_CHAMBER",
-        "رسم محصلة لحساب غرفة نسيج": "TEXTILE_CHAMBER",
-        "غرفة نسيج": "TEXTILE_CHAMBER",
-        "رسم محصلة لحساب غرفةجلود": "LEATHER_CHAMBER",
-        "غرفةجلود": "LEATHER_CHAMBER",
-        "غرفة جلود": "LEATHER_CHAMBER",
-        "ضريبة الجدول": "TABLE_TAX",
-        "رسم تنمية": "DEV_LEVY",
-        "ضريبة تنمية": "DEV_TAX",
-        "رسم خدمة": "SERVICE_FEE",
-        "ضريبة مبيعات": "SALES_TAX",
-        "رسم وقائي": "PROTECTIVE_FEE",
-    }
-
-    def _parse_taxes(self, taxes: list[str]) -> dict:
-        """Taxes verbatim + extraction exhaustive de TOUTES les taxes arabes."""
-        out = {}
-        for raw in taxes or []:
-            label = raw.split(":")[0].strip()
-            value = raw.split(":", 1)[1].strip() if ":" in raw else ""
-
-            # Chercher le code canonique dans le mapping étendu
-            code = None
-            for ar, cd in self.TAX_MAPPING_AR.items():
-                if ar in label:
-                    code = cd
-                    break
-
-            # Si non trouvé dans le mapping, générer un code à partir du label
-            if not code:
-                # C'est une taxe valide si elle a un taux ou un montant
-                has_rate = re.search(r"\d+(?:\.\d+)?\s*%", value) or "صفر" in value
-                has_amount = re.search(r"\d+(?:\.\d+)?\s*(?:جنية|جنيه|لتر|كيلو)", value, re.IGNORECASE)
-                if has_rate or has_amount:
-                    # Générer un code à partir des premiers mots du label arabe
-                    code = "OTHER_TAX_" + str(len(out))
-
-            # Extraire le taux numérique
-=======
     def _parse_taxes(self, taxes: list[str]) -> dict:
         """Taxes verbatim + tentative de lecture purement littérale du taux publié."""
         out = {}
@@ -192,26 +140,12 @@ class EgyptOfficialScraper:
                 if ar in label:
                     code = cd
                     break
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             num = None
             m = re.search(r"(\d+(?:\.\d+)?)\s*%", value)
             if m:
                 num = float(m.group(1))
             elif "صفر" in value:
                 num = 0.0
-<<<<<<< HEAD
-
-            # Valeur spécifique (minimum par kg, par litre, etc.)
-            specific = None
-            spec_match = re.search(
-                r"(بحد ادنى\s+)?(\d+(?:\.\d+)?)\s*(جنية|جنيه|لتر|كيلو\s*جرام)?",
-                value, re.IGNORECASE
-            )
-            if spec_match and num is None:
-                specific = spec_match.group(0)
-
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             key = code or label
             out[key] = {
                 "code": code,
@@ -219,10 +153,6 @@ class EgyptOfficialScraper:
                 "raw": value,
                 "rate": num,
                 "rate_parsed": num is not None,
-<<<<<<< HEAD
-                "specific_value": specific,
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             }
         return out
 
