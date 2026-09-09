@@ -766,7 +766,7 @@ def get_tariff_line(country_iso3, hs_code):
     provider = _get_postgres_provider()
     if provider:
         try:
-            regulatory = provider.get_regulatory_details(country_iso3, hs6)
+            regulatory = provider.get_regulatory_details(country_iso3, hs_code_clean)
             country_info = provider.get_country_info(country_iso3) or {}
             if regulatory and regulatory.get("success"):
                 measures = regulatory.get("measures", []) or []
@@ -774,7 +774,7 @@ def get_tariff_line(country_iso3, hs_code):
                 taxes_detail = [
                     {
                         "tax": _normalize_tax_code(str(m.get("code") or m.get("type") or "")),
-                        "rate": float(m.get("rate", 0) or 0),
+                        "rate": float(m["rate"]) if m.get("rate") is not None else None,
                         "observation": m.get("name", m.get("type", "")),
                         "source": "postgres",
                     }
@@ -782,7 +782,12 @@ def get_tariff_line(country_iso3, hs_code):
                     if (m.get("code") or m.get("type"))
                 ]
                 other_taxes_rate = round(
-                    sum(t["rate"] for t in taxes_detail if t["tax"] not in ("DD", "TVA")), 4
+                    sum(
+                        t["rate"]
+                        for t in taxes_detail
+                        if t["tax"] not in ("DD", "TVA") and t["rate"] is not None
+                    ),
+                    4,
                 )
                 sub_positions = provider.get_sub_positions(country_iso3, hs6, "fr") or []
                 normalized_sub_positions = [
@@ -807,18 +812,20 @@ def get_tariff_line(country_iso3, hs_code):
                     for m in measures
                     if m.get("zlecaf_applicable") and m.get("zlecaf_rate") is not None
                 ]
+                dd_rate = regulatory.get("taxes", {}).get("dd_rate")
+                vat_rate = regulatory.get("taxes", {}).get("vat_rate", country_info.get("vat_rate"))
                 return {
                     "hs6": hs6,
                     "code": hs_code_clean,
                     "description_fr": regulatory.get("description", ""),
                     "description_en": regulatory.get("description", ""),
-                    "dd_rate": float(regulatory.get("taxes", {}).get("dd_rate", 0) or 0),
+                    "dd_rate": float(dd_rate) if dd_rate is not None else None,
                     "zlecaf_rate": (
                         float(regulatory.get("taxes", {}).get("zlecaf_rate"))
                         if regulatory.get("taxes", {}).get("zlecaf_rate") is not None
                         else None
                     ),
-                    "vat_rate": float(country_info.get("vat_rate", 0) or 0),
+                    "vat_rate": float(vat_rate) if vat_rate is not None else None,
                     "other_taxes_rate": other_taxes_rate,
                     "taxes_detail": taxes_detail,
                     "fiscal_advantages": fiscal_advantages,
@@ -1607,10 +1614,25 @@ def calculate_import_taxes(
     hs6 = hs_code_clean[:6]
 
     country_data = load_country_tariffs(country_iso3)
-    line = get_tariff_line(country_iso3, hs6)
+    line = get_tariff_line(country_iso3, hs_code_clean)
     if not line:
         return {"error": f"Tariff line not found for {country_iso3}/{hs6}"}
     is_postgres_line = line.get("data_source") == "postgres" or line.get("source") == "postgres"
+
+    if is_postgres_line:
+        from math import isfinite
+
+        rates = [line.get("dd_rate"), line.get("vat_rate")]
+        rates.extend(t.get("rate") for t in line.get("taxes_detail", []))
+        if any(
+            not isinstance(rate, (int, float)) or not isfinite(rate) or rate < 0 for rate in rates
+        ):
+            detail = {
+                "code": "CALCULATION_UNAVAILABLE",
+                "message": "Mesures PostgreSQL incomplètes pour cette position nationale.",
+                "hs_code": hs_code_clean,
+            }
+            return {"error": detail["message"], "error_detail": detail}
 
     # Resolve DD rate: prefer sub-position specific rate when available
     # (`or 0` : une valeur explicitement nulle dans la donnée → 0, jamais None).
@@ -1641,10 +1663,10 @@ def calculate_import_taxes(
                 parsed_dd = _parse_crawled_tax_rate(crawled_dd)
                 if parsed_dd is not None:
                     dd_rate_pct = parsed_dd
-            elif etl_sub_position_entry:
+            elif etl_sub_position_entry and not is_postgres_line:
                 dd_rate_pct = etl_sub_position_entry.get("dd", dd_rate_pct)
         else:
-            if etl_sub_position_entry:
+            if etl_sub_position_entry and not is_postgres_line:
                 dd_rate_pct = etl_sub_position_entry.get("dd", dd_rate_pct)
 
         # Resolve description: crawled name > nomenclature_map > sub_positions

@@ -81,3 +81,11 @@ L'URL historique POST /postgres-tariffs/calculate conserve ses paramètres count
 La validation commune rejette les valeurs CAF nulles, négatives, NaN ou infinies avant le calcul, y compris sur les routes authentiques. Les erreurs métier restent des erreurs HTTP et ne sont plus renvoyées avec un statut 200 par la route historique.
 
 Les tests comparent les deux routes sur les données du dépôt, vérifient les refus de position et de disponibilité, les entrées invalides et le quota épuisé. La conversion monétaire facultative est désactivée pour le test d'équivalence afin d'exclure la variabilité réseau ; aucun taux fictif n'est injecté. Cette harmonisation des routes ne corrige pas encore les divergences internes de sélection des mesures du fournisseur PostgreSQL ni les autres replis ETL.
+
+## Lot 7 — mesures PostgreSQL par position exacte
+
+La façade transmet le code national complet au fournisseur. Celui-ci sélectionne une position unique, refuse un SH6 ambigu et charge les mesures et formalités par commodity_id. Les lignes voisines et les positions d'un autre pays ne sont plus regroupées dans le même détail.
+
+Les taux DD/TVA proviennent des mesures CUSTOMS_DUTY/VAT de cette position, et non des colonnes de total fiscal. Le taux de liste des sous-positions ne remplace plus le DD ainsi obtenu. Une mesure nécessaire absente, ambiguë ou non finie rend le calcul indisponible ; un zéro documenté reste distinct d'une valeur manquante. Les valeurs numériques Decimal retournées par PostgreSQL sont prises en charge.
+
+SQLAlchemy, importé par le fournisseur mais absent des deux manifestes de dépendances, est déclaré dans les exigences racine et backend à la version 2.0.52 utilisée pour la validation locale. Les tests exécutent les requêtes relationnelles sur SQLite avec des sentinelles isolées et vérifient également le passage par la façade. Cela ne remplace pas une validation sur une instance PostgreSQL réelle ; aucun accès à une base de production n'a été utilisé et aucune donnée tarifaire n'a été modifiée.
