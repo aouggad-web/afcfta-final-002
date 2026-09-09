@@ -5,9 +5,10 @@ Remplace les anciennes routes basées sur les fichiers JSONL
 
 import logging
 
-from fastapi import APIRouter, HTTPException, Query
+from entitlement_guard import require_calculations_quota
+from fastapi import APIRouter, Depends, HTTPException, Query
+from routes.authentic_tariffs import calculate_taxes_endpoint
 from services.authentic_tariff_service import (
-    calculate_import_taxes,
     get_administrative_formalities,
     get_available_countries,
     get_country_summary,
@@ -18,6 +19,8 @@ from services.authentic_tariff_service import (
     get_taxes_detail,
     search_tariff_lines,
 )
+
+from engine.schemas.legal_override import RemissionEligibility
 
 logger = logging.getLogger(__name__)
 
@@ -110,16 +113,36 @@ async def search_commodities(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-@router.post("/calculate")
+@router.post("/calculate", dependencies=[Depends(require_calculations_quota())])
 async def calculate_tariffs(
-    country_iso3: str = Query(..., description="Country ISO3 code"),
-    hs6: str = Query(..., description="HS6 code"),
-    value: float = Query(1000, ge=0, description="Goods value"),
+    country_iso3: str = Query(..., pattern="^[A-Za-z]{3}$", description="Country ISO3 code"),
+    hs6: str = Query(..., description="HS code or exact national position (6-12 digits)"),
+    value: float = Query(1000, gt=0, allow_inf_nan=False, description="Goods value"),
 ):
-    """Calculer les tarifs pour un code HS6"""
+    """Compatibility URL using the same calculation boundary as authentic tariffs."""
     try:
-        result = calculate_import_taxes(country_iso3, hs6, value)
-        return result
+        # Keep the legacy query names while sharing doctrine, selection errors,
+        # legal layers and provenance. Dependency injection is enforced above;
+        # a direct Python call does not execute the target route's dependencies.
+        return await calculate_taxes_endpoint(
+            country_iso3=country_iso3.upper(),
+            hs_code=hs6,
+            cif_value=value,
+            language="fr",
+            origin=None,
+            calculation_date=None,
+            remission_eligibility=RemissionEligibility.ELIGIBILITY_UNKNOWN,
+            authorization_reference=None,
+            authorization_valid_from=None,
+            authorization_valid_to=None,
+            authorization_hs_codes=None,
+            authorization_goods=None,
+            beneficiary=None,
+            import_purpose=None,
+            quantity=None,
+        )
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Error calculating tariffs: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")

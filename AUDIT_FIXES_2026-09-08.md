@@ -71,3 +71,13 @@ Le dépôt complet a été récupéré : le blocage d'accès aux gros fichiers e
 Pour ETH/02011000000, le fichier crawled identifie D2R comme « COMESA Preferential Duty ». Le normaliseur exclut les colonnes préférentielles du cumul des taxes ordinaires, tout en conservant les données brutes. Le calcul n'invente plus de PRCT à partir de l'agrégat other_taxes_rate du parent SH6 lorsque la position nationale dispose de son propre détail de taxes.
 
 Le test national ETH contrôle DD=350, TVA=202,50 et WHR=30 pour une valeur de 1 000, soit 582,50 d'après cette ligne du dépôt. Un test distinct conserve le contrôle de la cascade avec SR du miroir SH6 (737,75), sans confondre les deux sources. Ces montants sont des assertions de cohérence des données existantes ; ils ne certifient pas leur exhaustivité ni leur actualité juridique. Aucun fichier tarifaire ni taux source n'est modifié.
+
+Validation CI du lot 5 (4deb38e) : lint, build frontend et contrôle des conflits réussis ; 48 tests santé/Afrique du Nord et 2 194 tests backend réussis, 339 ignorés.
+
+## Lot 6 — frontière commune des API de calcul
+
+L'URL historique POST /postgres-tariffs/calculate conserve ses paramètres country_iso3, hs6 et value, mais délègue désormais au traitement authentique : doctrine de disponibilité, sélection nationale, erreurs 404/422, couches réglementaires et statuts de qualité. La dépendance de quota calculateur est appliquée à cette URL ; un quota épuisé renvoie 429 avant le calcul. La politique existante des utilisateurs anonymes reste un chantier distinct.
+
+La validation commune rejette les valeurs CAF nulles, négatives, NaN ou infinies avant le calcul, y compris sur les routes authentiques. Les erreurs métier restent des erreurs HTTP et ne sont plus renvoyées avec un statut 200 par la route historique.
+
+Les tests comparent les deux routes sur les données du dépôt, vérifient les refus de position et de disponibilité, les entrées invalides et le quota épuisé. La conversion monétaire facultative est désactivée pour le test d'équivalence afin d'exclure la variabilité réseau ; aucun taux fictif n'est injecté. Cette harmonisation des routes ne corrige pas encore les divergences internes de sélection des mesures du fournisseur PostgreSQL ni les autres replis ETL.
