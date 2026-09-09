@@ -474,6 +474,11 @@ app.include_router(api_router)
 from starlette.responses import FileResponse
 from starlette.staticfiles import StaticFiles
 
+<<<<<<< HEAD
+=======
+from static_paths import resolve_frontend_file
+
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 build_dir = Path(__file__).parent.parent / "frontend" / "build"
 if build_dir.exists() and (build_dir / "index.html").exists():
     # Supporte les deux layouts de build : CRA (build/static) et Vite
@@ -487,9 +492,17 @@ if build_dir.exists() and (build_dir / "index.html").exists():
 
     @app.get("/{full_path:path}")
     async def serve_react(full_path: str):
+<<<<<<< HEAD
         file_path = (build_dir / full_path).resolve()
         if not str(file_path).startswith(str(build_dir.resolve())):
             return FileResponse(str(build_dir / "index.html"))
         if file_path.exists() and file_path.is_file():
             return FileResponse(str(file_path))
         return FileResponse(str(build_dir / "index.html"))
+=======
+        file_path = resolve_frontend_file(build_dir, full_path)
+        if file_path is not None:
+            return FileResponse(str(file_path))
+        return FileResponse(str(build_dir / "index.html"))
+
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141

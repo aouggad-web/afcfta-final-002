@@ -53,6 +53,7 @@ COUNTRY_CONFIGS = {
                 "type": "ad_valorem",
                 "base": "CIF",
             },
+<<<<<<< HEAD
             "TS": {
                 "code": "TS",
                 "name": "Taxe de Solidarité",
@@ -60,11 +61,17 @@ COUNTRY_CONFIGS = {
                 "type": "ad_valorem",
                 "base": "CIF",
             },
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         },
         "notes": [
             "Nomenclature: TEC CEMAC (Tarif Extérieur Commun) - identique pour les 6 États membres",
             "Droits de douane: TEC CEMAC (4 bandes: 5%, 10%, 20%, 30%)",
+<<<<<<< HEAD
             "Taxes CEMAC: TCI (1%), CIA (0.2%), TS (1%) - source douanes.ga",
+=======
+            "Taxes CEMAC: TCI (1%), CIA (0.2%) - source douanes.ga",
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             "TVA: 18% taux normal (taux réduits 10% et 5% pour certains secteurs) - source dgi.ga",
             "Source officielle: douanes.ga + dgi.ga",
         ],
@@ -174,6 +181,7 @@ COUNTRY_CONFIGS = {
                 "type": "ad_valorem",
                 "base": "CIF",
             },
+<<<<<<< HEAD
             "TS": {
                 "code": "TS",
                 "name": "Taxe de Solidarité",
@@ -181,15 +189,22 @@ COUNTRY_CONFIGS = {
                 "type": "ad_valorem",
                 "base": "CIF",
             },
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         },
         "notes": [
             "Nomenclature: TEC CEMAC (Tarif Extérieur Commun) - identique pour les 6 États membres",
             "Droits de douane: TEC CEMAC (4 bandes: 5%, 10%, 20%, 30%)",
+<<<<<<< HEAD
             "Taxes CEMAC: TCI (1%), RS (1%), TS (1%) - source finances.gouv.cf",
+=======
+            "Taxes CEMAC: TCI (1%), RS (1%) - source finances.gouv.cf",
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             "TVA: 19% taux standard harmonisé CEMAC - source edouanes.cf",
             "Source officielle: finances.gouv.cf + edouanes.cf",
         ],
     },
+<<<<<<< HEAD
     "GNQ": {
         "country": "GNQ",
         "country_name": "Guinée Équatoriale",
@@ -246,6 +261,12 @@ DA_CHAPTERS_KNOWN = {"22", "24", "27", "17", "18", "20", "21", "33", "71", "87",
 
 
 def build_country_position(cmr_position: dict, config: dict) -> dict:
+=======
+}
+
+
+def load_cmr_base_positions() -> List[dict]:
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     cmr_file = os.path.join(OUTPUT_DIR, "CMR_tariffs.json")
     if not os.path.exists(cmr_file):
         logger.info("CMR base data not found, running Cameroon scraper first...")
@@ -274,7 +295,10 @@ def build_country_position(cmr_position: dict, config: dict) -> dict:
     has_tva_field = "TVA" in cmr_position.get("taxes", {})
 
     cmr_has_accise = "DA" in cmr_position.get("taxes", {})
+<<<<<<< HEAD
     chapter = cmr_position.get("chapter", code_clean[:2] if code_clean else "")
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
     taxes = {"DD": dd_rate}
     taxes_detail = [
@@ -324,11 +348,15 @@ def build_country_position(cmr_position: dict, config: dict) -> dict:
             }
         )
 
+<<<<<<< HEAD
     # ── Droit d'Accise (DA) : fail-closed — jamais de taux inventé ──
     # Le DA s'applique aux produits sensibles (alcool, tabac, pétrole, luxe).
     # Les taux sont publiés dans le Code CEMAC + CGI nationaux et doivent
     # être collectés depuis ces sources. Ici on signale seulement l'écart.
     if cmr_has_accise or chapter in DA_CHAPTERS_KNOWN:
+=======
+    if cmr_has_accise:
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         taxes["DA"] = -1
         taxes_detail.append(
             {
@@ -337,8 +365,12 @@ def build_country_position(cmr_position: dict, config: dict) -> dict:
                 "rate": -1,
                 "rate_type": "variable",
                 "base": "CIF + DD",
+<<<<<<< HEAD
                 "note": "Taux variable selon produit — collecter depuis CGI national (Loi de Finances). Tant que non crawlé, le calcul sera fail-closed.",
                 "source_gap": True,
+=======
+                "note": "Taux variable selon produit - vérifier auprès des douanes nationales",
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             }
         )
 

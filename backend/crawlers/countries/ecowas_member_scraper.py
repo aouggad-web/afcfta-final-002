@@ -286,6 +286,7 @@ COUNTRY_CONFIGS = {
                 "type": "ad_valorem",
                 "base": "CIF",
             },
+<<<<<<< HEAD
             "PUA": {
                 "code": "PUA",
                 "name": "Prélèvement Union Africaine",
@@ -293,6 +294,8 @@ COUNTRY_CONFIGS = {
                 "type": "ad_valorem",
                 "base": "CIF",
             },
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         },
         "notes": [
             "Nomenclature: TEC CEDEAO (Règlement C/REG.16/12/21) - identique pour les 15 États membres",
@@ -346,6 +349,7 @@ def parse_hs_code(raw_code: str) -> Tuple[str, str, bool]:
     return clean, dotted, has_wildcard
 
 
+<<<<<<< HEAD
 # ── Taxe Intérieure de Consommation (TIC) ──
 # Le TIC est une accise nationale appliquée aux produits sensibles
 # (tabac, alcool, pétrole, sucre, etc.).
@@ -363,6 +367,9 @@ TIC_COUNTRY_EXEMPT = {"GIN", "GMB", "LBR", "SLE", "CPV"}
 
 
 def build_country_taxes(dd_rate: float, tva_rate: float, config: dict, chapter: str = "") -> Tuple[dict, list]:
+=======
+def build_country_taxes(dd_rate: float, tva_rate: float, config: dict) -> Tuple[dict, list]:
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     taxes = {"DD": dd_rate}
     is_aes = config.get("is_aes", False)
     if is_aes:
@@ -380,7 +387,10 @@ def build_country_taxes(dd_rate: float, tva_rate: float, config: dict, chapter: 
         }
     ]
 
+<<<<<<< HEAD
     # Taxes nationales communautaires (RS, PCS, PCC, PUA...)
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     for key, tax_info in config["national_taxes"].items():
         taxes[tax_info["code"]] = tax_info["rate"]
         taxes_detail.append(
@@ -393,6 +403,7 @@ def build_country_taxes(dd_rate: float, tva_rate: float, config: dict, chapter: 
             }
         )
 
+<<<<<<< HEAD
     # ── TIC : signaler les chapitres où un TIC existe mais n'est pas crawlé ──
     # fail-closed : on n'invente JAMAIS le taux. On signale l'écart.
     country_code = config["country"]
@@ -410,6 +421,8 @@ def build_country_taxes(dd_rate: float, tva_rate: float, config: dict, chapter: 
         )
 
     # TVA
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     if tva_rate > 0:
         taxes["TVA"] = tva_rate
         taxes_detail.append(
@@ -478,8 +491,12 @@ def generate_country_tariffs(country_code: str, xls_path: str) -> List[dict]:
         desc = desc.lstrip("- ")
 
         tva_rate = config["tva_rate"]
+<<<<<<< HEAD
         chapter = code_clean[:2]
         taxes, taxes_detail = build_country_taxes(dd_rate, tva_rate, config, chapter=chapter)
+=======
+        taxes, taxes_detail = build_country_taxes(dd_rate, tva_rate, config)
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
         chapter = code_clean[:2]
         stats["chapters"].add(chapter)

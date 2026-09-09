@@ -123,6 +123,7 @@ class EgyptOfficialScraper:
     async def detail(self, code: str, trf_type: int = 1) -> dict | None:
         return await self._post(DETAIL_URL, params={"trfNumber": code, "trfType": trf_type})
 
+<<<<<<< HEAD
     # Mapping étendu des taxes arabes → codes canoniques.
     # Couvre TOUTES les taxes publiées par customs.gov.eg, pas seulement
     # Import Duty et VAT. Inclut taxes sur tabacs, chambres de commerce
@@ -173,12 +174,32 @@ class EgyptOfficialScraper:
                     code = "OTHER_TAX_" + str(len(out))
 
             # Extraire le taux numérique
+=======
+    def _parse_taxes(self, taxes: list[str]) -> dict:
+        """Taxes verbatim + tentative de lecture purement littérale du taux publié."""
+        out = {}
+        mapping = {
+            "ضريبة الوارد": "ID",
+            "ضريبة قيمه مضافه": "VAT",
+            "ضريبة الدمغة": "STAMP",
+            "رسم دعم": "SUPPORT",
+        }
+        for raw in taxes or []:
+            label = raw.split(":")[0].strip()
+            value = raw.split(":", 1)[1].strip() if ":" in raw else ""
+            code = None
+            for ar, cd in mapping.items():
+                if ar in label:
+                    code = cd
+                    break
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             num = None
             m = re.search(r"(\d+(?:\.\d+)?)\s*%", value)
             if m:
                 num = float(m.group(1))
             elif "صفر" in value:
                 num = 0.0
+<<<<<<< HEAD
 
             # Valeur spécifique (minimum par kg, par litre, etc.)
             specific = None
@@ -189,6 +210,8 @@ class EgyptOfficialScraper:
             if spec_match and num is None:
                 specific = spec_match.group(0)
 
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             key = code or label
             out[key] = {
                 "code": code,
@@ -196,7 +219,10 @@ class EgyptOfficialScraper:
                 "raw": value,
                 "rate": num,
                 "rate_parsed": num is not None,
+<<<<<<< HEAD
                 "specific_value": specific,
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             }
         return out
 

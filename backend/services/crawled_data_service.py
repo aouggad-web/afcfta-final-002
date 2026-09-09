@@ -6,7 +6,11 @@ from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
+<<<<<<< HEAD
 CRAWLED_DIR = Path(__file__).parent.parent / "data" / "crawled_normalized"
+=======
+CRAWLED_DIR = Path(__file__).parent.parent / "data" / "crawled"
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
 
 class CrawledDataService:
@@ -71,6 +75,7 @@ class CrawledDataService:
             with open(f, "r", encoding="utf-8") as fh:
                 data = json.load(fh)
 
+<<<<<<< HEAD
             data_format = data.get("data_format", data.get("schema_version", ""))
 
             # Schéma unifié normalisé : positions déjà au format cible,
@@ -78,6 +83,12 @@ class CrawledDataService:
             if data.get("schema_version") == "unified_v1":
                 positions = data.get("positions", [])
             elif "sub_positions" in data and not data.get("tariff_lines"):
+=======
+            data_format = data.get("data_format", "")
+
+            if "sub_positions" in data and not data.get("tariff_lines"):
+                # DZA enhanced format with top-level sub_positions
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
                 positions = data.get("sub_positions", [])
             elif "tariff_lines" in data:
                 positions = self._convert_tariff_lines_to_positions(data, country_code)
@@ -104,19 +115,27 @@ class CrawledDataService:
             file_source_quality = data.get("source_quality", "")
 
             for pos in positions:
+<<<<<<< HEAD
                 # Schéma unifié : pas de normalisation supplémentaire
                 if data.get("schema_version") == "unified_v1":
                     normalized = pos
                 else:
                     normalized = self._normalize_position(country_code, pos)
+=======
+                normalized = self._normalize_position(country_code, pos)
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
                 if not normalized:
                     continue
 
                 normalized["source_quality"] = file_source_quality
 
+<<<<<<< HEAD
                 code_clean = normalized.get("code_clean") or normalized.get("national_code") or ""
                 if not code_clean:
                     continue
+=======
+                code_clean = normalized["code_clean"]
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
                 code_idx[code_clean] = normalized
 
                 hs6 = code_clean[:6]
