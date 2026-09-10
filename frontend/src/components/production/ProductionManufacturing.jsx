@@ -11,16 +11,93 @@ const API = `${BACKEND_URL}/api`;
 
 const CHART_COLORS = ['#3b82f6', '#2563eb', '#1d4ed8', '#1e40af', '#1e3a8a', '#60a5fa', '#93c5fd', '#bfdbfe'];
 
+// Libellés officiels ISIC Rev.4, divisions manufacturières (Section C, 10-33).
+const ISIC_DIVISION_LABELS = {
+  fr: {
+    '10': 'Produits alimentaires', '11': 'Boissons', '12': 'Produits du tabac',
+    '13': 'Textiles', '14': "Articles d'habillement", '15': 'Cuir et articles de cuir',
+    '16': 'Bois et articles en bois', '17': 'Papier et articles en papier',
+    '18': 'Imprimerie et reproduction', '19': 'Cokéfaction et raffinage',
+    '20': 'Produits chimiques', '21': 'Produits pharmaceutiques',
+    '22': 'Caoutchouc et plastiques', '23': 'Minéraux non métalliques',
+    '24': 'Métallurgie de base', '25': 'Ouvrages en métaux',
+    '26': 'Produits informatiques et électroniques', '27': 'Équipements électriques',
+    '28': 'Machines et équipements', '29': 'Véhicules automobiles',
+    '30': 'Autres matériels de transport', '31': 'Meubles',
+    '32': 'Autres industries manufacturières', '33': 'Réparation et installation',
+  },
+  en: {
+    '10': 'Food products', '11': 'Beverages', '12': 'Tobacco products',
+    '13': 'Textiles', '14': 'Wearing apparel', '15': 'Leather and related products',
+    '16': 'Wood and products of wood', '17': 'Paper and paper products',
+    '18': 'Printing and reproduction', '19': 'Coke and refined petroleum',
+    '20': 'Chemicals', '21': 'Pharmaceuticals',
+    '22': 'Rubber and plastics', '23': 'Non-metallic mineral products',
+    '24': 'Basic metals', '25': 'Fabricated metal products',
+    '26': 'Computer, electronic and optical products', '27': 'Electrical equipment',
+    '28': 'Machinery and equipment', '29': 'Motor vehicles',
+    '30': 'Other transport equipment', '31': 'Furniture',
+    '32': 'Other manufacturing', '33': 'Repair and installation of machinery',
+  },
+};
+
+// Libellés des indicateurs UNIDO IDSB (estimations dérivées) + INDSTAT (statistiques officielles).
+const ISIC4_INDICATOR_LABELS = {
+  fr: {
+    output_usd: 'Production (IDSB)',
+    imports_world_usd: 'Importations mondiales',
+    exports_world_usd: 'Exportations mondiales',
+    apparent_consumption_usd: 'Consommation apparente',
+    establishments: 'Établissements',
+    employees: 'Emplois',
+    female_employees: 'Emplois (femmes)',
+    wages_salaries_usd: 'Salaires et traitements',
+    output_usd_official: 'Production (INDSTAT, officiel)',
+    value_added_usd: 'Valeur ajoutée',
+    gross_fixed_capital_formation_usd: 'FBCF',
+  },
+  en: {
+    output_usd: 'Output (IDSB)',
+    imports_world_usd: 'Imports World',
+    exports_world_usd: 'Exports World',
+    apparent_consumption_usd: 'Apparent Consumption',
+    establishments: 'Establishments',
+    employees: 'Employees',
+    female_employees: 'Female employees',
+    wages_salaries_usd: 'Wages and salaries',
+    output_usd_official: 'Output (INDSTAT, official)',
+    value_added_usd: 'Value added',
+    gross_fixed_capital_formation_usd: 'Gross fixed capital formation',
+  },
+};
+
+// Ordre d'affichage stable des indicateurs (IDSB puis INDSTAT).
+const ISIC4_INDICATOR_ORDER = [
+  'output_usd', 'imports_world_usd', 'exports_world_usd', 'apparent_consumption_usd',
+  'output_usd_official', 'value_added_usd', 'establishments', 'employees',
+  'female_employees', 'wages_salaries_usd', 'gross_fixed_capital_formation_usd',
+];
+
+const USD_INDICATORS = new Set([
+  'output_usd', 'imports_world_usd', 'exports_world_usd', 'apparent_consumption_usd',
+  'output_usd_official', 'value_added_usd', 'wages_salaries_usd', 'gross_fixed_capital_formation_usd',
+]);
+
 function ProductionManufacturing({ language = 'fr' }) {
   const [selectedCountry, setSelectedCountry] = useState('MAR');
   const [unidoData, setUnidoData] = useState(null);
   const [unidoStats, setUnidoStats] = useState(null);
   const [mvaRanking, setMvaRanking] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isic4Data, setIsic4Data] = useState(null);
-  const [isic4Status, setIsic4Status] = useState('idle'); // idle | loading | error | ready
-  const [expandedSector, setExpandedSector] = useState(null);
+  // Table ISIC4 complète (tous les secteurs manufacturiers du pays, pas seulement les principaux)
+  const [isic4Sectors, setIsic4Sectors] = useState([]);
+  const [isic4DataQuality, setIsic4DataQuality] = useState(null);
+  const [isic4Status, setIsic4Status] = useState('idle'); // idle | loading | error | no_data | ready
   const isic4RequestCountry = useRef(null);
+
+  // Historique détaillé (2018-2024, tous indicateurs) par code ISIC4, affiché au clic sur une ligne
+  const [expandedIsic4, setExpandedIsic4] = useState(null);
+  const [isic4Timeseries, setIsic4Timeseries] = useState({}); // { [isic4code]: { status, series, isic_description } }
 
   // Translations
   const texts = {
@@ -124,10 +201,8 @@ function ProductionManufacturing({ language = 'fr' }) {
 
   const fetchUnidoData = async (countryIso3) => {
     setLoading(true);
-    setExpandedSector(null);
-    setIsic4Data(null);
-    setIsic4Status('idle');
-    isic4RequestCountry.current = null;
+    setExpandedIsic4(null);
+    setIsic4Timeseries({});
     try {
       const response = await axios.get(`${API}/production/unido/${countryIso3}`);
       setUnidoData(response.data);
@@ -139,36 +214,96 @@ function ProductionManufacturing({ language = 'fr' }) {
     }
   };
 
-  const fetchIsic4Data = async () => {
-    const requestedCountry = selectedCountry;
+  // Table ISIC4 complète (tous les secteurs manufacturiers réels du pays,
+  // via UNIDO IDSB/INDSTAT — /api/production/isic4/{country}), pas juste
+  // les "top_sectors" agrégés qu'utilise l'aperçu ci-dessus.
+  const fetchIsic4Sectors = async (countryIso3) => {
+    const requestedCountry = countryIso3;
     isic4RequestCountry.current = requestedCountry;
     setIsic4Status('loading');
+    setIsic4Sectors([]);
+    setIsic4DataQuality(null);
     try {
-      const response = await axios.get(`${API}/production/unido/isic4/${requestedCountry}`);
-      if (isic4RequestCountry.current !== requestedCountry) return; // stale response, country changed since
-      setIsic4Data(response.data);
+      const response = await axios.get(`${API}/production/isic4/${requestedCountry}`);
+      if (isic4RequestCountry.current !== requestedCountry) return; // stale, country changed since
+      setIsic4Sectors(response.data.sectors || []);
+      setIsic4DataQuality(response.data.data_quality || null);
       setIsic4Status('ready');
     } catch (error) {
-      console.error('Error fetching ISIC 4-digit breakdown:', error);
       if (isic4RequestCountry.current !== requestedCountry) return;
-      setIsic4Data(null);
+      if (error?.response?.status === 404) {
+        setIsic4Status('no_data');
+        return;
+      }
+      console.error('Error fetching ISIC4 sectors:', error);
       setIsic4Status('error');
     }
   };
 
-  const toggleSectorIsic4 = (sectorIsic2) => {
-    if (expandedSector === sectorIsic2) {
-      setExpandedSector(null);
-      return;
+  useEffect(() => {
+    if (selectedCountry) {
+      fetchIsic4Sectors(selectedCountry);
     }
-    setExpandedSector(sectorIsic2);
-    if (isic4Status === 'ready' || isic4Status === 'loading') return;
-    fetchIsic4Data();
+  }, [selectedCountry]);
+
+  // Historique complet (2018-2024, tous indicateurs IDSB+INDSTAT) pour une
+  // classe ISIC4 donnée, chargé et mis en cache au premier clic sur la ligne.
+  const fetchIsic4Timeseries = async (isic4Code) => {
+    const requestedCountry = selectedCountry;
+    setIsic4Timeseries((prev) => ({
+      ...prev,
+      [isic4Code]: { ...(prev[isic4Code] || {}), status: 'loading' },
+    }));
+    try {
+      const response = await axios.get(`${API}/production/isic4/${requestedCountry}/${isic4Code}`);
+      if (requestedCountry !== selectedCountry) return; // country changed while loading
+      setIsic4Timeseries((prev) => ({
+        ...prev,
+        [isic4Code]: {
+          status: 'ready',
+          series: response.data.series || {},
+          isicDescription: response.data.isic_description,
+        },
+      }));
+    } catch (error) {
+      if (requestedCountry !== selectedCountry) return;
+      console.error('Error fetching ISIC4 timeseries:', error);
+      setIsic4Timeseries((prev) => ({
+        ...prev,
+        [isic4Code]: { ...(prev[isic4Code] || {}), status: 'error' },
+      }));
+    }
   };
 
-  const getIsic4ForSector = (sectorIsic2) => {
-    if (!isic4Data?.isic4_breakdown) return [];
-    return isic4Data.isic4_breakdown.filter((c) => c.isic2 === sectorIsic2);
+  const toggleIsic4Row = (isic4Code) => {
+    if (expandedIsic4 === isic4Code) {
+      setExpandedIsic4(null);
+      return;
+    }
+    setExpandedIsic4(isic4Code);
+    const existing = isic4Timeseries[isic4Code];
+    if (existing && (existing.status === 'ready' || existing.status === 'loading')) return;
+    fetchIsic4Timeseries(isic4Code);
+  };
+
+  // Regroupe les secteurs ISIC4 par division 2 chiffres (ex. "10", "21", ...)
+  // pour reconstituer les "encadrés ISIC2" — chacun affichant TOUTES ses
+  // lignes ISIC4, pas seulement un sous-ensemble.
+  const groupIsic4ByDivision = () => {
+    const groups = {};
+    for (const sector of isic4Sectors) {
+      const division = sector.isic4?.slice(0, 2);
+      if (!division) continue;
+      if (!groups[division]) groups[division] = [];
+      groups[division].push(sector);
+    }
+    return Object.keys(groups)
+      .sort()
+      .map((division) => ({
+        division,
+        label: ISIC_DIVISION_LABELS[language]?.[division] || ISIC_DIVISION_LABELS.fr[division] || division,
+        sectors: groups[division].sort((a, b) => a.isic4.localeCompare(b.isic4)),
+      }));
   };
 
   const formatNumber = (num) => {
@@ -176,6 +311,11 @@ function ProductionManufacturing({ language = 'fr' }) {
     if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
     if (num >= 1000) return `${(num / 1000).toFixed(0)}K`;
     return num?.toLocaleString() || '0';
+  };
+
+  const formatIndicatorValue = (field, value) => {
+    if (value === null || value === undefined) return '—';
+    return USD_INDICATORS.has(field) ? `$${formatNumber(value)}` : value.toLocaleString();
   };
 
   const prepareSectorPieData = () => {
@@ -449,97 +589,107 @@ function ProductionManufacturing({ language = 'fr' }) {
             </div>
           )}
 
-          {/* Top Sectors Detail */}
-          {unidoData.top_sectors && (
-            <Card className="shadow-lg">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
+          {/* ISIC4 Detail Table — vraies données UNIDO IDSB/INDSTAT, toutes les
+              classes ISIC4 groupées par division ISIC2, historique complet au clic */}
+          <Card className="shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
+              <div className="flex items-center justify-between flex-wrap gap-2">
                 <CardTitle className="text-xl text-blue-700 flex items-center gap-2">
                   <Award className="w-5 h-5" /> {t.mainIndustrialSectors}
                 </CardTitle>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {unidoData.top_sectors.map((sector, index) => (
-                    <div
-                      key={sector.isic}
-                      role="button"
-                      tabIndex={0}
-                      aria-expanded={expandedSector === sector.isic}
-                      className="bg-gradient-to-br from-white to-blue-50 p-4 rounded-xl border border-blue-100 hover:shadow-md transition-shadow cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
-                      onClick={() => toggleSectorIsic4(sector.isic)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          toggleSectorIsic4(sector.isic);
-                        }
-                      }}
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <Badge
-                          className="text-xs"
-                          style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length], color: 'white' }}
-                        >
-                          ISIC {sector.isic}
-                        </Badge>
+                {isic4Status === 'ready' && (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <Badge variant="outline" className="text-xs">
+                      {isic4Sectors.length} {language === 'fr' ? 'classes ISIC 4 chiffres' : 'ISIC 4-digit classes'}
+                    </Badge>
+                    {isic4DataQuality?.is_fully_estimated && (
+                      <Badge variant="outline" className="text-xs border-amber-500 text-amber-700">
+                        {language === 'fr' ? 'Entièrement estimé (UNIDO)' : 'Fully estimated (UNIDO)'}
+                      </Badge>
+                    )}
+                  </div>
+                )}
+              </div>
+              <CardDescription className="text-blue-700 text-xs mt-1">
+                {language === 'fr'
+                  ? 'Source : UNIDO Statistics Data Portal — IDSB (imports/exports/conso. apparente/production, estimations dérivées) + INDSTAT (production/valeur ajoutée/emplois, statistiques officielles), 2018-2024.'
+                  : 'Source: UNIDO Statistics Data Portal — IDSB (imports/exports/apparent consumption/output, derived estimates) + INDSTAT (output/value added/employment, official statistics), 2018-2024.'}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pt-6">
+              {isic4Status === 'loading' && (
+                <p className="text-sm text-gray-500 py-6 text-center">
+                  <Loader2 className="w-4 h-4 inline animate-spin mr-2" />
+                  {language === 'fr' ? 'Chargement...' : 'Loading...'}
+                </p>
+              )}
+              {isic4Status === 'error' && (
+                <div className="text-sm text-red-600 flex items-center justify-between gap-2 py-4">
+                  <span>{language === 'fr' ? 'Erreur lors du chargement des données ISIC4.' : 'Failed to load ISIC4 data.'}</span>
+                  <button type="button" className="underline hover:no-underline" onClick={() => fetchIsic4Sectors(selectedCountry)}>
+                    {language === 'fr' ? 'Réessayer' : 'Retry'}
+                  </button>
+                </div>
+              )}
+              {isic4Status === 'no_data' && (
+                <p className="text-sm text-gray-500 py-4 flex items-center gap-2">
+                  <Info className="w-4 h-4 shrink-0" />
+                  {language === 'fr'
+                    ? 'Aucune donnée ISIC4 UNIDO IDSB/INDSTAT disponible pour ce pays.'
+                    : 'No UNIDO IDSB/INDSTAT ISIC4 data available for this country.'}
+                </p>
+              )}
+              {isic4Status === 'ready' && isic4Sectors.length === 0 && (
+                <p className="text-sm text-gray-500 py-4">
+                  {language === 'fr' ? 'Aucun secteur ISIC4 pour ce pays.' : 'No ISIC4 sector for this country.'}
+                </p>
+              )}
+              {isic4Status === 'ready' && isic4Sectors.length > 0 && (
+                <div className="space-y-5">
+                  {groupIsic4ByDivision().map(({ division, label, sectors }) => (
+                    <div key={division} className="border border-blue-100 rounded-xl overflow-hidden">
+                      <div className="bg-blue-50/70 px-4 py-2 flex items-center justify-between flex-wrap gap-2">
+                        <h4 className="font-bold text-gray-800">
+                          <span className="font-mono text-blue-700">ISIC {division}</span>
+                          <span className="text-gray-400 mx-2">·</span>
+                          {label}
+                        </h4>
                         <Badge variant="outline" className="text-xs">
-                          {sector.share_mva}% MVA
+                          {sectors.length} {language === 'fr' ? 'lignes ISIC4' : 'ISIC4 rows'}
                         </Badge>
                       </div>
-                      <h4 className="font-bold text-gray-800 mb-2">{sector.name}</h4>
-                      {sector.value_mln_usd && (
-                        <p className="text-2xl font-bold text-blue-600">
-                          ${formatNumber(sector.value_mln_usd * 1000000)}
-                        </p>
-                      )}
-                      <p className="text-xs text-blue-500 mt-2 underline">
-                        {expandedSector === sector.isic ? (language === 'fr' ? 'Masquer le détail ISIC 4 chiffres' : 'Hide ISIC 4-digit detail') : (language === 'fr' ? 'Voir le détail ISIC 4 chiffres' : 'View ISIC 4-digit detail')}
-                      </p>
-                      {expandedSector === sector.isic && (
-                        <div className="mt-3 pt-3 border-t border-blue-100 space-y-1.5" onClick={(e) => e.stopPropagation()}>
-                          {isic4Status === 'loading' && (
-                            <p className="text-xs text-gray-500">{language === 'fr' ? 'Chargement...' : 'Loading...'}</p>
-                          )}
-                          {isic4Status === 'error' && (
-                            <div className="text-xs text-red-600 flex items-center justify-between gap-2">
-                              <span>{language === 'fr' ? 'Erreur lors du chargement du détail.' : 'Failed to load detail.'}</span>
-                              <button
-                                type="button"
-                                className="underline hover:no-underline"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  fetchIsic4Data();
-                                }}
-                              >
-                                {language === 'fr' ? 'Réessayer' : 'Retry'}
-                              </button>
-                            </div>
-                          )}
-                          {isic4Status === 'ready' && getIsic4ForSector(sector.isic).map((cls) => (
-                            <div key={cls.isic4} className="flex items-center justify-between text-xs">
-                              <span className="text-gray-700">
-                                <span className="font-mono font-semibold text-blue-700">{cls.isic4}</span>{' '}
-                                {cls.class_name}
-                              </span>
-                              <span className="text-gray-500 whitespace-nowrap ml-2">
-                                {cls.share_mva_estimated}%
-                              </span>
-                            </div>
-                          ))}
-                          {isic4Status === 'ready' && (
-                            <p className="text-[10px] text-gray-400 italic pt-1">
-                              {language === 'fr'
-                                ? 'Estimation de structure ISIC 4 chiffres (UNSD ISIC Rev.4), secteurs principaux uniquement, répartition indicative de la division UNIDO INDSTAT4.'
-                                : 'ISIC 4-digit structure estimate (UNSD ISIC Rev.4), main sectors only, indicative split of the UNIDO INDSTAT4 division.'}
-                            </p>
-                          )}
-                        </div>
-                      )}
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-xs border-collapse">
+                          <thead>
+                            <tr className="border-b border-gray-200 text-left text-gray-500">
+                              <th className="py-2 pl-4 pr-3 font-medium">ISIC 4</th>
+                              <th className="py-2 pr-3 font-medium">{language === 'fr' ? 'Libellé' : 'Label'}</th>
+                              <th className="py-2 pr-3 font-medium text-right">{language === 'fr' ? 'Indicateurs' : 'Indicators'}</th>
+                              <th className="py-2 pr-4 font-medium text-right">{language === 'fr' ? 'Détail' : 'Detail'}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {sectors.map((sector) => (
+                              <IsicRow
+                                key={sector.isic4}
+                                sector={sector}
+                                isExpanded={expandedIsic4 === sector.isic4}
+                                onToggle={() => toggleIsic4Row(sector.isic4)}
+                                timeseries={isic4Timeseries[sector.isic4]}
+                                onRetry={() => fetchIsic4Timeseries(sector.isic4)}
+                                language={language}
+                                formatIndicatorValue={formatIndicatorValue}
+                              />
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
-          )}
+              )}
+            </CardContent>
+          </Card>
 
           {/* Key Products */}
           {unidoData.key_products && unidoData.key_products.length > 0 && (
@@ -627,6 +777,129 @@ function ProductionManufacturing({ language = 'fr' }) {
         </>
       )}
     </div>
+  );
+}
+
+function IsicRow({ sector, isExpanded, onToggle, timeseries, onRetry, language, formatIndicatorValue }) {
+  const indicators = sector.indicators || {};
+  const indicatorFields = Object.keys(indicators);
+  const officialCount = indicatorFields.filter((f) => indicators[f].data_nature === 'OFFICIAL_STATISTICS').length;
+  const estimatedCount = indicatorFields.filter((f) => indicators[f].data_nature === 'UNIDO_DERIVED_ESTIMATE').length;
+
+  const status = timeseries?.status;
+  const series = timeseries?.series || {};
+  const presentFields = ISIC4_INDICATOR_ORDER.filter((f) => series[f]?.length);
+  const allYears = Array.from(
+    new Set(presentFields.flatMap((f) => series[f].map((p) => p.year)))
+  ).sort((a, b) => a - b);
+
+  return (
+    <>
+      <tr
+        role="button"
+        tabIndex={0}
+        aria-expanded={isExpanded}
+        className="border-b border-gray-100 hover:bg-blue-50/50 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+        onClick={onToggle}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onToggle();
+          }
+        }}
+      >
+        <td className="py-1.5 pl-4 pr-3 font-mono text-blue-700 whitespace-nowrap">{sector.isic4}</td>
+        <td className="py-1.5 pr-3 text-gray-700">{sector.isic_description}</td>
+        <td className="py-1.5 pr-3 text-right text-gray-500 whitespace-nowrap">
+          {officialCount > 0 && (
+            <span className="text-emerald-600">{officialCount} {language === 'fr' ? 'off.' : 'off.'}</span>
+          )}
+          {officialCount > 0 && estimatedCount > 0 && ' · '}
+          {estimatedCount > 0 && (
+            <span className="text-amber-600">{estimatedCount} {language === 'fr' ? 'est.' : 'est.'}</span>
+          )}
+          {indicatorFields.length === 0 && '—'}
+        </td>
+        <td className="py-1.5 pr-4 text-right text-blue-500 underline whitespace-nowrap">
+          {isExpanded ? (language === 'fr' ? 'Masquer' : 'Hide') : (language === 'fr' ? 'Historique' : 'History')}
+        </td>
+      </tr>
+      {isExpanded && (
+        <tr>
+          <td colSpan={4} className="p-0">
+            <div className="bg-gray-50 px-4 py-3 border-b border-gray-200" onClick={(e) => e.stopPropagation()}>
+              {status === 'loading' && (
+                <p className="text-xs text-gray-500 py-3">
+                  <Loader2 className="w-3.5 h-3.5 inline animate-spin mr-2" />
+                  {language === 'fr' ? 'Chargement...' : 'Loading...'}
+                </p>
+              )}
+              {status === 'error' && (
+                <div className="text-xs text-red-600 flex items-center justify-between gap-2 py-2">
+                  <span>{language === 'fr' ? 'Erreur lors du chargement de l\'historique.' : 'Failed to load history.'}</span>
+                  <button type="button" className="underline hover:no-underline" onClick={onRetry}>
+                    {language === 'fr' ? 'Réessayer' : 'Retry'}
+                  </button>
+                </div>
+              )}
+              {status === 'ready' && presentFields.length === 0 && (
+                <p className="text-xs text-gray-500 py-2">
+                  {language === 'fr' ? "Aucune série temporelle disponible." : 'No time series available.'}
+                </p>
+              )}
+              {status === 'ready' && presentFields.length > 0 && (
+                <div className="overflow-x-auto">
+                  <table className="text-[11px] border-collapse">
+                    <thead>
+                      <tr className="text-left text-gray-500">
+                        <th className="py-1 pr-4 font-medium sticky left-0 bg-gray-50">
+                          {language === 'fr' ? 'Indicateur' : 'Indicator'}
+                        </th>
+                        {allYears.map((year) => (
+                          <th key={year} className="py-1 px-3 font-medium text-right">{year}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {presentFields.map((field) => {
+                        const byYear = Object.fromEntries(series[field].map((p) => [p.year, p]));
+                        const nature = series[field][0]?.data_nature;
+                        return (
+                          <tr key={field} className="border-t border-gray-200">
+                            <td className="py-1 pr-4 text-gray-700 whitespace-nowrap sticky left-0 bg-gray-50">
+                              {(ISIC4_INDICATOR_LABELS[language] || ISIC4_INDICATOR_LABELS.fr)[field] || field}
+                              {nature && (
+                                <span
+                                  className={`ml-1.5 text-[9px] uppercase ${nature === 'OFFICIAL_STATISTICS' ? 'text-emerald-600' : 'text-amber-600'}`}
+                                >
+                                  {nature === 'OFFICIAL_STATISTICS'
+                                    ? (language === 'fr' ? 'officiel' : 'official')
+                                    : (language === 'fr' ? 'estimé' : 'estimate')}
+                                </span>
+                              )}
+                            </td>
+                            {allYears.map((year) => (
+                              <td key={year} className="py-1 px-3 text-right text-gray-600 whitespace-nowrap">
+                                {byYear[year] ? formatIndicatorValue(field, byYear[year].value) : '—'}
+                              </td>
+                            ))}
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              <p className="text-[10px] text-gray-400 italic pt-2">
+                {language === 'fr'
+                  ? 'Données réelles UNIDO IDSB (imports/exports/conso. apparente/production — estimations dérivées) et INDSTAT (production/valeur ajoutée/emplois — statistiques officielles), 2018-2024.'
+                  : 'Real UNIDO IDSB (imports/exports/apparent consumption/output — derived estimates) and INDSTAT (output/value added/employment — official statistics) data, 2018-2024.'}
+              </p>
+            </div>
+          </td>
+        </tr>
+      )}
+    </>
   );
 }
 
