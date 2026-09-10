@@ -26,9 +26,11 @@ pour traçabilité.
 
 Couverture obtenue : 5595 codes SH6 (édition HS 2022) dont 5014 mappés à
 au moins une classe ISIC Rev.4 4 chiffres du secteur manufacturier
-(divisions 10-33). 231 codes SH6 correspondent à plusieurs classes ISIC4
-(le CPC sous-jacent chevauche plusieurs activités) — la fonction
-`isic4_for_hs6` retourne alors la liste complète, sans choix arbitraire.
+(divisions 10-33). 436 codes SH6 correspondent à plusieurs classes ISIC4
+(le CPC sous-jacent chevauche plusieurs activités, y compris quand un même
+code CPC est lui-même rattaché à plusieurs classes ISIC4 dans la table
+source) — la fonction `isic4_for_hs6` retourne alors la liste complète,
+sans choix arbitraire. Voir `coverage_stats()` pour les chiffres à jour.
 
 Ce module ne fait AUCUNE estimation de production, de part de marché ou
 de besoin national : il fournit uniquement la correspondance de
@@ -52,16 +54,21 @@ _WCO_HS22_HS17_FILE = os.path.join(_DATA_DIR, "wco_hs2022_hs2017_table1.csv.gz")
 
 
 @lru_cache(maxsize=1)
-def _cpc_to_isic4() -> Dict[str, str]:
-    """Table officielle UNSD CPC Ver.2.1 -> ISIC Rev.4 (relation 1:1 par code CPC)."""
-    mapping = {}
+def _cpc_to_isic4() -> Dict[str, List[str]]:
+    """
+    Table officielle UNSD CPC Ver.2.1 -> liste de codes ISIC Rev.4. La
+    source n'est PAS 1:1 : un même code CPC peut apparaître sur plusieurs
+    lignes avec des codes ISIC4 différents (ex. "01270" -> "0113" et
+    "0230"), donc on accumule toutes les valeurs au lieu d'écraser.
+    """
+    mapping: Dict[str, set] = defaultdict(set)
     with gzip.open(_CPC_ISIC4_FILE, mode="rt", encoding="utf-8-sig", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
             cpc = row["CPC21code"].strip().strip('"')
             isic = row["ISIC4code"].strip().strip('"')
-            mapping[cpc] = isic
-    return mapping
+            mapping[cpc].add(isic)
+    return {cpc: sorted(isics) for cpc, isics in mapping.items()}
 
 
 @lru_cache(maxsize=1)
@@ -77,8 +84,7 @@ def _hs2017_to_isic4() -> Dict[str, List[str]]:
         for row in reader:
             hs6 = row["HS 2017"].replace(".", "").strip()
             cpc = row["CPC Ver. 2.1"].strip()
-            isic = cpc_to_isic.get(cpc)
-            if isic:
+            for isic in cpc_to_isic.get(cpc, ()):
                 result[hs6].add(isic)
     return {hs6: sorted(isics) for hs6, isics in result.items()}
 
@@ -139,7 +145,7 @@ def isic4_for_hs6(hs6_code: str) -> List[str]:
     de correspondant.
     """
     hs6 = hs6_code.replace(".", "").strip()
-    return _hs2022_to_isic4().get(hs6, [])
+    return list(_hs2022_to_isic4().get(hs6, []))
 
 
 def hs6_for_isic4(isic4_code: str) -> List[str]:
@@ -147,14 +153,18 @@ def hs6_for_isic4(isic4_code: str) -> List[str]:
     Retourne la liste des codes SH6 (édition HS 2022) correspondant à une
     classe ISIC Rev.4 4 chiffres donnée.
     """
-    return _isic4_to_hs2022().get(isic4_code.strip(), [])
+    return list(_isic4_to_hs2022().get(isic4_code.strip(), []))
 
 
 def is_manufacturing_isic4(isic4_code: str) -> bool:
-    """Vrai si le code ISIC4 appartient à la Section C (Manufacturing, divisions 10-33)."""
-    if len(isic4_code) < 2 or not isic4_code[:2].isdigit():
+    """
+    Vrai si `isic4_code` est un code ISIC Rev.4 à 4 chiffres valide
+    appartenant à la Section C (Manufacturing, divisions 10-33).
+    """
+    code = isic4_code.strip()
+    if len(code) != 4 or not code.isdigit():
         return False
-    return 10 <= int(isic4_code[:2]) <= 33
+    return 10 <= int(code[:2]) <= 33
 
 
 def coverage_stats() -> Dict:
