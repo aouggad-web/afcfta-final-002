@@ -344,10 +344,11 @@ class SouthAfricaSARSScraper:
                             )
 
                         chapter = self._get_chapter_from_code(code)
+                        code_clean = code.replace(".", "")
 
                         position = {
                             "code_raw": code,
-                            "code_clean": code.replace(".", ""),
+                            "code_clean": code_clean,
                             "check_digit": check_digit,
                             "designation": desc.strip(" -–"),
                             "chapter": chapter,
@@ -358,15 +359,84 @@ class SouthAfricaSARSScraper:
                             "administrative_formalities": [],
                             "source": "sars.gov.za",
                             "country": "SACU",
+                            "_extraction_method": "table",
                         }
-                        self.positions.append(position)
+                        table_positions[code_clean] = position
 
                 self.stats["pages_processed"] = page_idx + 1
 
                 if (page_idx + 1) % 100 == 0:
                     logger.info(
-                        f"Page {page_idx+1}/{doc.page_count}: {len(self.positions)} positions"
+                        f"[table] Page {page_idx+1}/{doc.page_count}: "
+                        f"{len(table_positions)} positions"
                     )
+
+            logger.info(
+                f"Pass 1 (tables): {len(table_positions)} positions extracted"
+            )
+
+            # ── PASS 2: Extraction texte (catch-all) ──
+            current_heading = ""
+            current_heading_desc = ""
+            text_positions = {}
+
+            for page_idx in range(doc.page_count):
+                page = doc[page_idx]
+                found, current_heading, current_heading_desc = (
+                    self._extract_page_text(
+                        page, current_heading, current_heading_desc
+                    )
+                )
+                for pos in found:
+                    text_positions[pos["code_clean"]] = pos
+
+                if (page_idx + 1) % 100 == 0:
+                    logger.info(
+                        f"[text] Page {page_idx+1}/{doc.page_count}: "
+                        f"{len(text_positions)} positions"
+                    )
+
+            logger.info(
+                f"Pass 2 (text): {len(text_positions)} positions extracted"
+            )
+
+            # ── MERGE: table positions prioritaires, text comble les trous ──
+            merged = dict(text_positions)
+            merged.update(table_positions)
+
+            for pos in merged.values():
+                pos.pop("_extraction_method", None)
+
+            # ── NORMALISATION 8-digit: SARS utilise 8 chiffres pour toute
+            # marchandise. Les codes 6-digit qui ont des taux mais PAS
+            # d'enfants 8-digit sont des lignes tarifaires à part entière
+            # (subdivision nationale = "00"). On les normalise en 8-digit. ──
+            code_to_pos = {p["code_clean"]: p for p in merged.values()}
+            eight_prefixes = {
+                c[:6] for c in code_to_pos if len(c) == 8
+            }
+            normalized = {}
+            for code, pos in code_to_pos.items():
+                if len(code) == 6:
+                    taxes = pos.get("taxes", [])
+                    general = next(
+                        (t for t in taxes if t.get("code") == "GENERAL"), None
+                    )
+                    has_rate = general and general.get("rate_pct") is not None
+                    has_children = code in eight_prefixes
+                    if has_rate and not has_children:
+                        pos["code_raw"] = pos["code_raw"] + ".00"
+                        pos["code_clean"] = code + "00"
+                        normalized[code + "00"] = pos
+                    elif not has_rate:
+                        continue
+                    elif has_children:
+                        continue
+                else:
+                    normalized[code] = pos
+
+            self.positions = list(normalized.values())
+            self.positions.sort(key=lambda p: p["code_clean"])
 
             doc.close()
 

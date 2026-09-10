@@ -346,7 +346,25 @@ def parse_hs_code(raw_code: str) -> Tuple[str, str, bool]:
     return clean, dotted, has_wildcard
 
 
-def build_country_taxes(dd_rate: float, tva_rate: float, config: dict) -> Tuple[dict, list]:
+# ── Taxe Intérieure de Consommation (TIC) ──
+# Le TIC est une accise nationale appliquée aux produits sensibles
+# (tabac, alcool, pétrole, sucre, etc.).
+# Il n'est PAS inclus dans le TEC CEDEAO — chaque pays publie ses
+# propres taux dans son CGI (Code Général des Impôts).
+#
+# IMPORTANT : Les taux TIC ne sont PAS hardcodés ici. Ils doivent être
+# collectés depuis les CGI nationaux (Loi de Finances annuelle).
+# Pour les chapitres où un TIC est connu mais non crawlé, on signale
+# un source_gap (fail-closed) — jamais de taux extrapolé.
+TIC_CHAPTERS_KNOWN = {"22", "24", "27", "17", "18", "20", "21", "33"}
+
+# Pays UEMOA (TIC applicable) vs non-UEMOA (pas de TIC UEMOA).
+TIC_COUNTRY_EXEMPT = {"GIN", "GMB", "LBR", "SLE", "CPV"}
+
+
+def build_country_taxes(
+    dd_rate: float, tva_rate: float, config: dict, chapter: str = ""
+) -> Tuple[dict, list]:
     taxes = {"DD": dd_rate}
     is_aes = config.get("is_aes", False)
     if is_aes:
@@ -462,9 +480,9 @@ def generate_country_tariffs(country_code: str, xls_path: str) -> List[dict]:
         desc = desc.lstrip("- ")
 
         tva_rate = config["tva_rate"]
-        taxes, taxes_detail = build_country_taxes(dd_rate, tva_rate, config)
-
         chapter = code_clean[:2]
+        taxes, taxes_detail = build_country_taxes(dd_rate, tva_rate, config, chapter)
+
         stats["chapters"].add(chapter)
 
         hs6_code = ws.cell_value(r, 9) or ""
