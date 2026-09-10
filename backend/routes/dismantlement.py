@@ -55,6 +55,56 @@ async def preference_profile(country_iso3: str):
     return result
 
 
+@router.get("/summary/{country_iso3}")
+async def country_dismantlement_summary(country_iso3: str):
+    """
+    Résumé du statut ZLECAf d'un pays:
+    - PMA ou non-PMA
+    - Durées de libéralisation par catégorie
+    - Année actuelle d'implémentation
+    """
+    from etl.afcfta_schedule import (
+        AFCFTA_EIF_YEAR,
+        CURRENT_IMPLEMENTATION_YEAR,
+        CURRENT_YEAR,
+        REDUCTION_YEARS,
+    )
+
+    country = country_iso3.strip().upper()
+    is_ldc = country in LDC_COUNTRIES
+    group = "ldc" if is_ldc else "non_ldc"
+    years = REDUCTION_YEARS[group]
+
+    return {
+        "country_iso3": country,
+        "is_ldc": is_ldc,
+        "status_label": "PMA (Pays Moins Avancé)" if is_ldc else "Non-PMA",
+        "eif_year": AFCFTA_EIF_YEAR,
+        "current_calendar_year": CURRENT_YEAR,
+        "current_implementation_year": CURRENT_IMPLEMENTATION_YEAR,
+        "liberalization_schedule": {
+            "category_a": {
+                "description_fr": "Libéralisation normale (90% des lignes)",
+                "duration_years": years[CAT_A],
+                "target_year": AFCFTA_EIF_YEAR + years[CAT_A] - 1,
+                "status": "complété" if CURRENT_IMPLEMENTATION_YEAR >= years[CAT_A] else "en cours",
+            },
+            "category_b": {
+                "description_fr": "Produits sensibles (7% des lignes)",
+                "duration_years": years[CAT_B],
+                "target_year": AFCFTA_EIF_YEAR + years[CAT_B] - 1,
+                "status": "complété" if CURRENT_IMPLEMENTATION_YEAR >= years[CAT_B] else "en cours",
+            },
+            "category_c": {
+                "description_fr": "Produits exclus (3% des lignes)",
+                "duration_years": None,
+                "target_year": None,
+                "status": "exclus",
+            },
+        },
+    }
+
+
 @router.get("/{country_iso3}/{hs6}")
 async def dismantlement_schedule(
     country_iso3: str,
@@ -194,54 +244,4 @@ async def dismantlement_impact(
         "full_liberalization_year": full_year,
         "total_saving_over_schedule": total_saving,
         "projection": projection,
-    }
-
-
-@router.get("/summary/{country_iso3}")
-async def country_dismantlement_summary(country_iso3: str):
-    """
-    Résumé du statut ZLECAf d'un pays:
-    - PMA ou non-PMA
-    - Durées de libéralisation par catégorie
-    - Année actuelle d'implémentation
-    """
-    from etl.afcfta_schedule import (
-        AFCFTA_EIF_YEAR,
-        CURRENT_IMPLEMENTATION_YEAR,
-        CURRENT_YEAR,
-        REDUCTION_YEARS,
-    )
-
-    country = country_iso3.strip().upper()
-    is_ldc = country in LDC_COUNTRIES
-    group = "ldc" if is_ldc else "non_ldc"
-    years = REDUCTION_YEARS[group]
-
-    return {
-        "country_iso3": country,
-        "is_ldc": is_ldc,
-        "status_label": "PMA (Pays Moins Avancé)" if is_ldc else "Non-PMA",
-        "eif_year": AFCFTA_EIF_YEAR,
-        "current_calendar_year": CURRENT_YEAR,
-        "current_implementation_year": CURRENT_IMPLEMENTATION_YEAR,
-        "liberalization_schedule": {
-            "category_a": {
-                "description_fr": "Libéralisation normale (90% des lignes)",
-                "duration_years": years[CAT_A],
-                "target_year": AFCFTA_EIF_YEAR + years[CAT_A] - 1,
-                "status": "complété" if CURRENT_IMPLEMENTATION_YEAR >= years[CAT_A] else "en cours",
-            },
-            "category_b": {
-                "description_fr": "Produits sensibles (7% des lignes)",
-                "duration_years": years[CAT_B],
-                "target_year": AFCFTA_EIF_YEAR + years[CAT_B] - 1,
-                "status": "complété" if CURRENT_IMPLEMENTATION_YEAR >= years[CAT_B] else "en cours",
-            },
-            "category_c": {
-                "description_fr": "Produits exclus (3% des lignes)",
-                "duration_years": None,
-                "target_year": None,
-                "status": "exclus",
-            },
-        },
     }

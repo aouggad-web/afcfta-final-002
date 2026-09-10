@@ -1087,7 +1087,7 @@ def parse_date(date_str: str) -> datetime:
     for fmt in formats:
         try:
             return datetime.strptime(date_str, fmt)
-        except:
+        except ValueError:
             continue
     return datetime.now()
 

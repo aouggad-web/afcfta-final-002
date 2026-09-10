@@ -332,29 +332,6 @@ async def search_country_hs6_endpoint(
     return {"country_code": iso3, "query": q, "count": len(results), "results": results}
 
 
-@router.get("/country-hs6-tariffs/{country_code}/{hs6_code}")
-async def get_country_hs6_tariff_endpoint(
-    country_code: str, hs6_code: str, language: str = Query("fr")
-):
-    """Obtenir le tarif SH6 spécifique à un pays"""
-    if len(country_code) == 2:
-        iso3 = ISO2_TO_ISO3.get(country_code.upper(), country_code.upper())
-    else:
-        iso3 = country_code.upper()
-
-    tariff = get_country_hs6_tariff(iso3, hs6_code)
-    if not tariff:
-        raise HTTPException(status_code=404, detail=f"Tarif SH6 {hs6_code} non trouvé pour {iso3}")
-
-    return {
-        "country_code": iso3,
-        "hs6_code": hs6_code,
-        "tariff": tariff,
-        "chapter": hs6_code[:2],
-        "language": language,
-    }
-
-
 @router.get("/country-hs6-tariffs/available")
 async def get_available_country_tariffs_endpoint():
     """Liste des pays avec tarifs SH6 spécifiques disponibles"""
@@ -379,6 +356,29 @@ async def get_all_country_hs6_tariffs(country_code: str, language: str = Query("
 
     tariffs = COUNTRY_HS6_TARIFFS[iso3]
     return {"country_code": iso3, "available": True, "count": len(tariffs), "tariffs": tariffs}
+
+
+@router.get("/country-hs6-tariffs/{country_code}/{hs6_code}")
+async def get_country_hs6_tariff_endpoint(
+    country_code: str, hs6_code: str, language: str = Query("fr")
+):
+    """Obtenir le tarif SH6 spécifique à un pays"""
+    if len(country_code) == 2:
+        iso3 = ISO2_TO_ISO3.get(country_code.upper(), country_code.upper())
+    else:
+        iso3 = country_code.upper()
+
+    tariff = get_country_hs6_tariff(iso3, hs6_code)
+    if not tariff:
+        raise HTTPException(status_code=404, detail=f"Tarif SH6 {hs6_code} non trouvé pour {iso3}")
+
+    return {
+        "country_code": iso3,
+        "hs6_code": hs6_code,
+        "tariff": tariff,
+        "chapter": hs6_code[:2],
+        "language": language,
+    }
 
 
 # =============================================================================

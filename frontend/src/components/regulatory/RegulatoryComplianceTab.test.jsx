@@ -4,6 +4,10 @@ import userEvent from '@testing-library/user-event';
 import RegulatoryComplianceTab from './RegulatoryComplianceTab';
 import { regulatoryApi } from '../../services/api-v2';
 
+// Mock du composant Select : les flux `userEvent` sur le vrai Radix Select
+// dépassaient les délais sur les runners CI 2-cœurs (échec par timeout, pas de
+// régression produit). Ce mock rend l'interaction déterministe sans altérer le
+// contrat testé (choix d'un pays, filtre de transport).
 vi.mock('../ui/select', async () => {
   const React = await import('react');
   const SelectContext = React.createContext({ value: '', onValueChange: () => {} });

@@ -1,0 +1,11 @@
+{
+ "schema_version": "1.0",
+ "jurisdiction": "CMR",
+ "as_of": "2026-09-06",
+ "measures": [],
+ "provenance": {
+  "fap_distinctes": 0,
+  "note_invariant": "Aucune F.A.P à contenu purement numérique (invariant ^\\d+([.,]\\d+)?$)",
+  "canonical_sha256": "15a0740048457f7ce78dc39aa276e04848e47f685a4a3ff4ed57c9f87a508e75"
+ }
+}

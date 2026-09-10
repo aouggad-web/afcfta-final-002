@@ -1,0 +1,48 @@
+{
+ "jurisdiction": "EGY",
+ "as_of": "2026-09-05",
+ "coverage_complete": true,
+ "coverage_window": {
+  "from": "2017-07-01",
+  "to": null,
+  "note": "VAT Law 67/2016 (en vigueur 01/07/2017) + tarif douanier crawl vérifié 2026-06-13 (customs.gov.eg)."
+ },
+ "regional_cet_applicable": false,
+ "regional_note": "EGY est membre du COMESA (zone de libre-échange, pas d'union douanière) — le droit de douane applicable est le tarif national égyptien.",
+ "base_tariff_documentation": {
+  "source_id": "EGY-CUSTOMS-TARIFF-CRAWL-20260613",
+  "source_name": "Egyptian Customs Authority — مصلحة الجمارك المصرية",
+  "source_url": "https://customs.gov.eg/Services/Tarif",
+  "sha256": "6bb21f341b29824546370f35963c975159ce8d4c04d805a5163ca673bad02f09",
+  "verification_status": "VERIFIED",
+  "data_status": "VERIFIED",
+  "hs_version": "HS2022 — tarif national égyptien, sous-positions 10 chiffres",
+  "effective_from": "2017-07-01",
+  "national_positions": 8746
+ },
+ "preference_and_origin_status": "DOCUMENTED",
+ "preference_evidence": {
+  "instrument": "Egypt AfCFTA Schedule A/B — lignes préférentielles portées par le canonique (fiscal_advantages par ligne)",
+  "source": "Egyptian Customs Tariff (customs.gov.eg) — crawl vérifié 2026-06-13",
+  "sha256": "6bb21f341b29824546370f35963c975159ce8d4c04d805a5163ca673bad02f09"
+ },
+ "documents": [
+  {
+   "file": "EGY_tariffs.json (canonique)",
+   "title": "Egyptian Customs Tariff — 5 541 lignes, 8 746 sous-positions 10 chiffres",
+   "source_url": "https://customs.gov.eg/Services/Tarif",
+   "sha256": "6bb21f341b29824546370f35963c975159ce8d4c04d805a5163ca673bad02f09"
+  },
+  {
+   "file": "VAT Law 67/2016",
+   "title": "Value Added Tax Law No. 67 of 2016 — Egyptian Tax Authority",
+   "source_url": "https://www.eta.gov.eg/sites/default/files/2024-02/Law-english-no.67-2016.pdf.pdf",
+   "sha256": null
+  }
+ ],
+ "sources_officielles": [
+  "https://www.customs.gov.eg (Egyptian Customs Authority — tarif et codes réglementaires ق/غ)",
+  "https://www.eta.gov.eg (Egyptian Tax Authority — TVA)",
+  "https://www.comex.gov.eg (Ministère du Commerce Extérieur)"
+ ]
+}

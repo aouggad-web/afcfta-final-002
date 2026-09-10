@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
-CRAWLED_DIR = Path(__file__).parent.parent / "data" / "crawled"
+CRAWLED_DIR = Path(__file__).parent.parent / "data" / "crawled_normalized"
 
 
 class CrawledDataService:
@@ -71,10 +71,13 @@ class CrawledDataService:
             with open(f, "r", encoding="utf-8") as fh:
                 data = json.load(fh)
 
-            data_format = data.get("data_format", "")
+            data_format = data.get("data_format", data.get("schema_version", ""))
 
-            if "sub_positions" in data and not data.get("tariff_lines"):
-                # DZA enhanced format with top-level sub_positions
+            # Schéma unifié normalisé : positions déjà au format cible,
+            # pas besoin d'adaptateurs _normalize_*.
+            if data.get("schema_version") == "unified_v1":
+                positions = data.get("positions", [])
+            elif "sub_positions" in data and not data.get("tariff_lines"):
                 positions = data.get("sub_positions", [])
             elif "tariff_lines" in data:
                 positions = self._convert_tariff_lines_to_positions(data, country_code)
@@ -101,13 +104,19 @@ class CrawledDataService:
             file_source_quality = data.get("source_quality", "")
 
             for pos in positions:
-                normalized = self._normalize_position(country_code, pos)
+                # Schéma unifié : pas de normalisation supplémentaire
+                if data.get("schema_version") == "unified_v1":
+                    normalized = pos
+                else:
+                    normalized = self._normalize_position(country_code, pos)
                 if not normalized:
                     continue
 
                 normalized["source_quality"] = file_source_quality
 
-                code_clean = normalized["code_clean"]
+                code_clean = normalized.get("code_clean") or normalized.get("national_code") or ""
+                if not code_clean:
+                    continue
                 code_idx[code_clean] = normalized
 
                 hs6 = code_clean[:6]

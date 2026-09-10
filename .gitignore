@@ -118,3 +118,17 @@ backend/data/geoip/
 # que pour la session pod en cours, et son contenu se périme à chaque
 # redéploiement (nouvelle URL, nouveau compte de test).
 memory/test_credentials.md
+<<<<<<< HEAD
+
+# Large data files — too big for git, use git-lfs or exclude
+backend/data/crawled/
+backend/data/crawled_normalized/
+backend/data/archive/
+data/crawled/
+/tmp/
+*.sha256
+__pycache__/
+*.pyc
+.DS_Store
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141

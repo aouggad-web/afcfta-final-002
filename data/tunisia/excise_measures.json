@@ -1,0 +1,10 @@
+{
+ "schema_version": "1.0",
+ "country": "TUN",
+ "as_of": "2026-09-06",
+ "excise_rates": [],
+ "provenance": {
+  "source": "backend/data/TUN_tariffs.json (VERIFIED)",
+  "canonical_sha256": "27e151763133a946096c179eb3de9a90aa577640158834659c777bb6a919d2f1"
+ }
+}

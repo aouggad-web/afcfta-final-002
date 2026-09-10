@@ -6,6 +6,10 @@ detailed taxes, fiscal advantages, and administrative formalities
 
 import logging
 from datetime import date
+<<<<<<< HEAD
+=======
+from math import isfinite
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 from typing import Optional
 
 from entitlement_guard import require_calculations_quota
@@ -473,6 +477,12 @@ async def calculate_taxes_endpoint(
     Returns:
         Calcul détaillé NPF vs ZLECAf avec économies
     """
+<<<<<<< HEAD
+=======
+    if not isfinite(cif_value) or cif_value <= 0:
+        raise HTTPException(status_code=422, detail="CIF value must be positive and finite")
+
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     # Doctrine tarifaire : si le pays n'a ni fichier national servable ni
     # données officielles crawlées (WITS/UNCTAD-TRAINS), refus explicite —
     # jamais de calcul sur des données estimées/synthétiques.
@@ -492,6 +502,11 @@ async def calculate_taxes_endpoint(
     )
 
     if "error" in result:
+<<<<<<< HEAD
+=======
+        if "error_detail" in result:
+            raise HTTPException(status_code=422, detail=result["error_detail"])
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         raise HTTPException(status_code=404, detail=result["error"])
 
     country = country_iso3.upper()
@@ -568,7 +583,9 @@ async def calculate_taxes_endpoint(
             beneficiary=beneficiary,
             import_purpose=import_purpose,
             quantity=quantity,
-            currency_code="USD",
+            # None → la devise par défaut de la juridiction s'applique
+            # (KEN → USD, DZA → DZD via JurisdictionConfig).
+            currency_code=None,
         )
     else:
         # Destinations hors registre EAC : façade régionale/nationale générique.

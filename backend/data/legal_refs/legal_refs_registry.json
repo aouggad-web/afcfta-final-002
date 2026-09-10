@@ -1,0 +1,332 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-09-09",
+  "description": "Registre des textes juridiques instituant les droits, taxes, formalités et restrictions par pays. Chaque entrée lie une taxe ou formalité au texte qui l'institue. Sources : Journaux Officiels, Codes des Douanes, CGI nationaux, directives régionales (UEMOA, CEMAC, CEDEAO, EAC, SACU), Accord ZLECAf.",
+
+  "DZA": {
+    "code_douanes": {
+      "ref": "Loi n° 79-07 du 21 juillet 1979 portant code des douanes, modifiée et complétée",
+      "page_url": "https://www.mfdgi.gov.dz",
+      "doc_url": "data/sources/DZA/legislation/code_douanes_79-07.pdf",
+      "gazette_url": "https://www.joradp.dz",
+      "source_type": "journal_officiel"
+    },
+    "tarif_usage": {
+      "ref": "Tarif Douanier d'usage — DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2026)",
+      "page_url": "https://conformepro.dz/resources/tarif-douanier",
+      "doc_url": "data/sources/DZA/legislation/tarif_d_usage_2026.pdf",
+      "source_type": "governmental"
+    },
+    "loi_finances": {
+      "ref": "Loi n° 25-XX de finances pour 2026, JO n° 88 du 31/12/2025",
+      "page_url": "https://www.joradp.dz",
+      "gazette_url": "https://www.joradp.dz",
+      "source_type": "journal_officiel"
+    },
+    "taxes": {
+      "DD": {"ref": "Code des Douanes 79-07, Art. 2-4 + Tarif d'Usage DGD", "page_url": "https://conformepro.dz/resources/tarif-douanier", "source": "conformepro.dz"},
+      "TVA": {"ref": "Code TCA Art. 1-30 (Loi 09-04) + LF 2026 Art. 121", "page_url": "https://www.mfdgi.gov.dz", "source": "conformepro.dz"},
+      "TCS": {"ref": "Loi de Finances, Art. 13 (taxe de contribution de solidarité)", "page_url": "https://www.mfdgi.gov.dz", "source": "conformepro.dz"},
+      "PRCT": {"ref": "Code TCA, Art. 354 (précompte sur impôt)", "page_url": "https://www.mfdgi.gov.dz", "source": "conformepro.dz"},
+      "DAPS": {"ref": "Décret exécutif 05-386 + LF 2018, Art. 2 (droit additionnel provisoire de sauvegarde)", "page_url": "https://www.mfdgi.gov.dz", "source": "conformepro.dz"},
+      "TIC": {"ref": "Code des Taxes sur le Chiffre d'Affaires (TIC) — Loi 04-21", "page_url": "https://www.mfdgi.gov.dz", "source": "mfdgi.gov.dz"},
+      "TAPT": {"ref": "LF 2024, Art. 122 (taxe sur autres produits du tabac)", "page_url": "https://www.mfdgi.gov.dz", "source": "mfdgi.gov.dz"},
+      "DPE": {"ref": "LF 2024, Art. 123 (droit sur produits énergétiques)", "page_url": "https://www.mfdgi.gov.dz", "source": "mfdgi.gov.dz"},
+      "TPP": {"ref": "LF 2024, Art. 124 (taxe sur produits pétroliers)", "page_url": "https://www.mfdgi.gov.dz", "source": "mfdgi.gov.dz"},
+      "TSV": {"ref": "Décret exécutif (taxe sur services vétérinaires)", "page_url": "https://www.mfdgi.gov.dz", "source": "mfdgi.gov.dz"},
+      "TSP": {"ref": "Arrêté ministériel (taxe sanitaire phytosanitaire)", "page_url": "https://www.mfdgi.gov.dz", "source": "mfdgi.gov.dz"},
+      "T.PNEUS": {"ref": "LF 2024 (taxe sur pneus)", "page_url": "https://www.mfdgi.gov.dz", "source": "mfdgi.gov.dz"},
+      "T.HUILES": {"ref": "LF 2024 (taxe sur huiles)", "page_url": "https://www.mfdgi.gov.dz", "source": "mfdgi.gov.dz"},
+      "TPI": {"ref": "Code TCA (taxe parafiscale à l'importation)", "page_url": "https://www.mfdgi.gov.dz", "source": "mfdgi.gov.dz"}
+    },
+    "formalities_source": "conformepro.dz (données douane.gov.dz)",
+    "formalities_page_url": "https://conformepro.dz/resources/tarif-douanier",
+    "zlecaf": {
+      "ref": "Circulaire DGD 482/2024 — calendrier de démantèlement ZLECAf",
+      "page_url": "https://www.douane.gov.dz",
+      "gazette_url": "https://www.joradp.dz",
+      "source_type": "governmental"
+    }
+  },
+
+  "TUN": {
+    "code_douanes": {
+      "ref": "Code des Douanes Tunisien — Loi n° 2008-34 du 2 juin 2008",
+      "page_url": "https://www.douane.gov.tn",
+      "gazette_url": "https://www.iort.gov.tn",
+      "source_type": "governmental"
+    },
+    "loi_finances": {
+      "ref": "Loi n° 2025-XX de finances pour 2026 — JORT",
+      "page_url": "https://www.finances.gov.tn",
+      "gazette_url": "https://www.iort.gov.tn",
+      "source_type": "journal_officiel"
+    },
+    "taxes": {
+      "DD": {"ref": "Code des Douanes, Art. 58-62 (droit de douane à l'importation)", "page_url": "https://www.douane.gov.tn", "source": "douane.gov.tn"},
+      "TVA": {"ref": "Code de TVA — Loi 88-61 + LF 2026", "page_url": "https://www.jibaya.tn", "source": "douane.gov.tn"},
+      "DC": {"ref": "Code des Droits de Consommation — Loi 98-46", "page_url": "https://www.jibaya.tn", "source": "jibaya.tn"},
+      "FODEC": {"ref": "Loi 98-46 Art. 14 (fonds de développement de la compétitivité)", "page_url": "https://www.jibaya.tn", "source": "jibaya.tn"},
+      "RPD": {"ref": "Code des Douanes Art. 247 (redevance de prestation douanière)", "page_url": "https://www.douane.gov.tn", "source": "douane.gov.tn"},
+      "TPE": {"ref": "LF 2026 (taxe pour la protection de l'environnement)", "page_url": "https://www.jibaya.tn", "source": "jibaya.tn"},
+      "TLF": {"ref": "LF (taxe sur légumes et fruits)", "page_url": "https://www.jibaya.tn", "source": "jibaya.tn"},
+      "TCA": {"ref": "LF (taxe sur conserves alimentaires)", "page_url": "https://www.jibaya.tn", "source": "jibaya.tn"},
+      "TMTS": {"ref": "LF (taxe mais, tournesol, soja)", "page_url": "https://www.jibaya.tn", "source": "jibaya.tn"}
+    },
+    "formalities_source": "douane.gov.tn (réglementation import/export par position)",
+    "formalities_page_url": "https://www.douane.gov.tn/tarifweb2026/",
+    "quotas_source": "douane.gov.tn (QCS/QCI par position)",
+    "zlecaf": {
+      "ref": "Décret n° 2023-XXX — ratification Accord ZLECAf",
+      "page_url": "https://www.finances.gov.tn",
+      "gazette_url": "https://www.iort.gov.tn",
+      "source_type": "journal_officiel"
+    }
+  },
+
+  "MAR": {
+    "code_douanes": {
+      "ref": "Code des Douanes Marocain — Dahir n° 1-77-344 du 21/12/1977",
+      "page_url": "https://www.douane.gov.ma",
+      "gazette_url": "http://www.sgg.gov.ma",
+      "source_type": "governmental"
+    },
+    "loi_finances": {
+      "ref": "Loi de Finances 2026 — Bulletin Officiel",
+      "page_url": "https://www.finances.gov.ma",
+      "gazette_url": "http://www.sgg.gov.ma",
+      "source_type": "journal_officiel"
+    },
+    "taxes": {
+      "DI": {"ref": "Code des Douanes Art. 42 (droit d'importation)", "page_url": "https://www.douane.gov.ma/adil", "source": "douane.gov.ma/adil"},
+      "TPI": {"ref": "Loi de Finances (taxe parafiscale à l'importation 0.25%)", "page_url": "https://www.douane.gov.ma/adil", "source": "douane.gov.ma/adil"},
+      "TVA": {"ref": "Code Général des Impôts, Art. 89-99 (TVA)", "page_url": "http://tax.gov.ma", "source": "tax.gov.ma"},
+      "TIC": {"ref": "CGI Art. 100-105 (taxe intérieure de consommation)", "page_url": "http://tax.gov.ma", "source": "tax.gov.ma"},
+      "DCT": {"ref": "CGI (droit de consommation sur tabacs)", "page_url": "http://tax.gov.ma", "source": "tax.gov.ma"}
+    },
+    "formalities_source": "douane.gov.ma/adil (formalités par position)",
+    "formalities_page_url": "https://www.douane.gov.ma/adil",
+    "zlecaf": {
+      "ref": "Décret n° 2-23-XXX — ratification Accord ZLECAf",
+      "page_url": "http://www.sgg.gov.ma",
+      "gazette_url": "http://www.sgg.gov.ma",
+      "source_type": "journal_officiel"
+    }
+  },
+
+  "EGY": {
+    "code_douanes": {
+      "ref": "Customs Law No. 207 of 2020 + Executive Regulations",
+      "page_url": "https://www.eta.gov.eg",
+      "source_type": "governmental"
+    },
+    "tax_law": {
+      "ref": "VAT Law No. 67 of 2016 + Law No. 157 of 2025",
+      "page_url": "https://www.mof.gov.eg",
+      "gazette_url": "http://www.egypt.gov.eg",
+      "source_type": "governmental"
+    },
+    "taxes": {
+      "ID": {"ref": "Customs Law 207/2020 (Import Duty)", "page_url": "https://www.customs.gov.eg/Services/Tarif", "source": "customs.gov.eg"},
+      "VAT": {"ref": "VAT Law 67/2016 + Law 157/2025", "page_url": "https://www.eta.gov.eg", "source": "customs.gov.eg"},
+      "TABLE_TAX": {"ref": "Law 157/2025 Schedule (table tax)", "page_url": "https://www.mof.gov.eg", "source": "mof.gov.eg"},
+      "HEALTH_INS": {"ref": "Law 67/2016 Art. 2 (health insurance 0.25%)", "page_url": "https://www.mof.gov.eg", "source": "mof.gov.eg"},
+      "TOBACCO_CHAMBER": {"ref": "Chamber of Commerce decree (tobacco chamber levy)", "page_url": "https://www.customs.gov.eg/Services/Tarif", "source": "customs.gov.eg"},
+      "TEXTILE_CHAMBER": {"ref": "Chamber of Commerce decree (textile chamber levy)", "page_url": "https://www.customs.gov.eg/Services/Tarif", "source": "customs.gov.eg"},
+      "LEATHER_CHAMBER": {"ref": "Chamber of Commerce decree (leather chamber levy)", "page_url": "https://www.customs.gov.eg/Services/Tarif", "source": "customs.gov.eg"}
+    },
+    "formalities_source": "customs.gov.eg (instructions ر/غ/ق par position)",
+    "formalities_page_url": "https://www.customs.gov.eg/Services/Tarif",
+    "zlecaf": {
+      "ref": "Presidential Decree ratifying AfCFTA — Al-Waqa'i'a al-Misriyya",
+      "page_url": "https://www.mof.gov.eg",
+      "gazette_url": "http://www.egypt.gov.eg",
+      "source_type": "journal_officiel"
+    }
+  },
+
+  "SACU": {
+    "_applies_to": ["ZAF", "LSO", "NAM", "SWZ", "BWA"],
+    "code_douanes": {
+      "ref": "Customs and Excise Act 1964 (South Africa) — SACU common tariff",
+      "page_url": "https://www.sars.gov.za/customs-and-excise/tariff/",
+      "doc_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Sch2-Schedule-No-2.pdf",
+      "source_type": "governmental"
+    },
+    "taxes": {
+      "DD": {"ref": "Customs and Excise Act 1964, Schedule 1 Part 1 (General Customs Duty)", "page_url": "https://www.sars.gov.za/customs-and-excise/tariff/", "source": "sars.gov.za"},
+      "AfCFTA": {"ref": "Schedule 1 Part 1, AfCFTA preferential column", "page_url": "https://www.sars.gov.za/customs-and-excise/tariff/", "source": "sars.gov.za"},
+      "VAT": {"ref": "Value-Added Tax Act 89 of 1991 (15% standard)", "page_url": "https://www.sars.gov.za", "source": "sars.gov.za"}
+    },
+    "trade_remedies": {
+      "ref": "Schedule 2 (anti-dumping, countervailing, safeguards)",
+      "page_url": "https://www.sars.gov.za",
+      "doc_url": "https://www.sars.gov.za/wp-content/uploads/Legal/SCEA1964/Sch2-Schedule-No-2.pdf",
+      "source_type": "governmental"
+    },
+    "zlecaf": {
+      "ref": "SACU AfCFTA tariff offer — gazette notice",
+      "page_url": "https://www.sars.gov.za",
+      "source_type": "governmental"
+    }
+  },
+
+  "EAC": {
+    "_applies_to": ["KEN", "TZA", "UGA", "RWA", "BDI", "SSD", "COD"],
+    "code_douanes": {
+      "ref": "EAC Common External Tariff (CET) 2022 — EAC Gazette",
+      "page_url": "https://www.eac.int/trade-customs",
+      "doc_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+      "source_type": "regional_org"
+    },
+    "taxes": {
+      "DD": {"ref": "EAC CET 2022 (Import Duty: 0%, 10%, 25%, 30%)", "page_url": "https://www.eac.int/trade-customs", "source": "kra.go.ke"},
+      "VAT": {"ref": "National VAT Acts (varies by country: 16-18%)", "page_url": "national", "source": "national"},
+      "IDF": {"ref": "Import Declaration Fee (2%) — national", "page_url": "national", "source": "national"},
+      "RDL": {"ref": "Railway Development Levy (1.5%) — Kenya", "page_url": "https://www.kra.go.ke", "source": "kra.go.ke"},
+      "EXC": {"ref": "Excise Duty Act — national", "page_url": "national", "source": "national"},
+      "INFRA_LEVY": {"ref": "Infrastructure Levy — Uganda/Tanzania", "page_url": "national", "source": "national"}
+    },
+    "zlecaf": {
+      "ref": "EAC AfCFTA tariff offer — EAC gazette",
+      "page_url": "https://www.eac.int/trade-customs",
+      "source_type": "regional_org"
+    }
+  },
+
+  "UEMOA": {
+    "_applies_to": ["BEN", "BFA", "CIV", "GIN", "GMB", "GNB", "LBR", "MLI", "NER", "SEN", "SLE", "TGO", "CPV"],
+    "code_douanes": {
+      "ref": "TEC CEDEAO — Règlement C/REG.16/12/21 + Directives UEMOA",
+      "page_url": "https://www.uemoa.int",
+      "source_type": "regional_org"
+    },
+    "taxes": {
+      "DD": {"ref": "TEC CEDEAO (5 bandes: 0%, 5%, 10%, 20%, 35%) — Règlement C/REG.16/12/21", "page_url": "https://www.ecowas.int", "source": "ecowas.int"},
+      "RS": {"ref": "Directive UEMOA (redevance statistique 1%)", "page_url": "https://www.uemoa.int", "source": "uemoa.int"},
+      "PCS": {"ref": "Directive UEMOA (prélèvement communautaire de solidarité 1%)", "page_url": "https://www.uemoa.int", "source": "uemoa.int"},
+      "PCC": {"ref": "Règlement CEDEAO (prélèvement communautaire CEDEAO 0.5%)", "page_url": "https://www.ecowas.int", "source": "ecowas.int"},
+      "PUA": {"ref": "Décision UA (prélèvement Union Africaine 0.2%)", "page_url": "https://au.int", "source": "au.int"},
+      "TVA": {"ref": "Directive UEMOA n° 02/98/CM/UEMOA + CGI nationaux", "page_url": "national", "source": "national"},
+      "TIC": {"ref": "Directive UEMOA sur les droits d'accise + CGI nationaux", "page_url": "national", "source": "national"}
+    },
+    "zlecaf": {
+      "ref": "Règlement CEDEAO sur la ZLECAf + ratifications nationales",
+      "page_url": "https://www.ecowas.int",
+      "source_type": "regional_org"
+    }
+  },
+
+  "CEMAC": {
+    "_applies_to": ["CMR", "COG", "GAB", "TCD", "CAF", "GNQ"],
+    "code_douanes": {
+      "ref": "TEC CEMAC + Code CEMAC des Douanes",
+      "page_url": "https://www.cemac.int",
+      "source_type": "regional_org"
+    },
+    "taxes": {
+      "DD": {"ref": "TEC CEMAC (4 bandes: 5%, 10%, 20%, 30%)", "page_url": "https://www.cemac.int", "source": "cemac.int"},
+      "TCI": {"ref": "Directive CEMAC (taxe communautaire d'intégration 1%)", "page_url": "https://www.cemac.int", "source": "cemac.int"},
+      "RI": {"ref": "Directive CEMAC (redevance informatique 0.45%)", "page_url": "https://www.cemac.int", "source": "cemac.int"},
+      "TS": {"ref": "Directive CEMAC (taxe de solidarité 0.2-2%)", "page_url": "https://www.cemac.int", "source": "cemac.int"},
+      "TVA": {"ref": "Directive CEMAC n° 01/99-CD (TVA harmonisée) + CGI nationaux", "page_url": "national", "source": "national"},
+      "DA": {"ref": "Directive CEMAC n° 10/99-CD (droit d'accise) + CGI nationaux", "page_url": "national", "source": "national"}
+    },
+    "zlecaf": {
+      "ref": "Décision CEMAC sur la ZLECAf + ratifications nationales",
+      "page_url": "https://www.cemac.int",
+      "source_type": "regional_org"
+    }
+  },
+
+  "MDG": {
+    "code_douanes": {
+      "ref": "Code des Douanes Malgasy — Loi n° 2006-023 du 21/12/2006",
+      "page_url": "https://www.douanes.gov.mg/codes-des-douanes/",
+      "source_type": "governmental"
+    },
+    "loi_finances": {
+      "ref": "Loi de Finances 2026 + LFR 2026",
+      "page_url": "https://www.douanes.gov.mg/tarifs-des-douanes/",
+      "doc_url": "https://www.douanes.gov.mg/srcs/uploads/2026/07/TARIF-DES-DOUANES-2026-MAJ-LFR.pdf",
+      "source_type": "journal_officiel"
+    },
+    "taxes": {
+      "DD": {"ref": "Tarif des Douanes 2026 (après LFR 2026) — douanes.gov.mg", "page_url": "https://www.douanes.gov.mg/tarifs-des-douanes/", "source": "douanes.gov.mg"},
+      "TVA": {"ref": "Code Général des Impôts Madagascar (TVA 20%)", "page_url": "https://www.impots.mg", "source": "impots.mg"},
+      "APEi": {"ref": "Accord de Partenariat Économique intérimaire UE-Madagascar", "page_url": "https://www.douanes.gov.mg/accords-internationaux/ape/", "source": "douanes.gov.mg"}
+    },
+    "zlecaf": {
+      "ref": "Guide rapide — Règles d'origine de la ZLECAf (douanes.gov.mg)",
+      "page_url": "https://www.douanes.gov.mg/guide-rapide-regles-dorigine-de-la-zlecaf/",
+      "source_type": "governmental"
+    }
+  },
+
+  "ZMB": {
+    "code_douanes": {
+      "ref": "Customs and Excise Act (Cap 322) — Zambia",
+      "page_url": "https://www.zra.org.zm/tax-information/",
+      "doc_url": "https://www.zra.org.zm/wp-content/uploads/2026/08/Customs-Tariff-Book.pdf",
+      "source_type": "governmental"
+    },
+    "taxes": {
+      "DD": {"ref": "Customs Tariff Book 2026 — ZRA", "page_url": "https://www.zra.org.zm/tax-information/", "source": "zra.org.zm"},
+      "VAT": {"ref": "Value Added Tax Act 1996 (16%)", "page_url": "https://www.zra.org.zm", "source": "zra.org.zm"},
+      "EXC": {"ref": "Excise Duty Act — varies by product", "page_url": "https://www.zra.org.zm", "source": "zra.org.zm"}
+    },
+    "zlecaf": {
+      "ref": "Zambia AfCFTA tariff offer — gazette notice",
+      "page_url": "https://www.zra.org.zm",
+      "source_type": "governmental"
+    }
+  },
+
+  "NGA": {
+    "code_douanes": {
+      "ref": "Customs and Excise Management Act (CEMA) — Nigeria",
+      "page_url": "https://customs.gov.ng",
+      "source_type": "governmental"
+    },
+    "taxes": {
+      "ID": {"ref": "ECOWAS CET (Import Duty: 0%, 5%, 10%, 20%)", "page_url": "https://customs.gov.ng", "source": "customs.gov.ng"},
+      "VAT": {"ref": "Value Added Tax Act 2007 (7.5%)", "page_url": "https://customs.gov.ng", "source": "customs.gov.ng"},
+      "EXC": {"ref": "Excise Duty Act (varies by product)", "page_url": "https://customs.gov.ng", "source": "customs.gov.ng"},
+      "LEVY": {"ref": "Import Levy (varies)", "page_url": "https://customs.gov.ng", "source": "customs.gov.ng"}
+    },
+    "zlecaf": {
+      "ref": "Nigeria AfCFTA tariff offer — gazette notice",
+      "page_url": "https://customs.gov.ng",
+      "source_type": "governmental"
+    }
+  },
+
+  "ETH": {
+    "code_douanes": {
+      "ref": "Customs Proclamation No. 859/2014 — Ethiopia",
+      "page_url": "https://customs.erca.gov.et",
+      "source_type": "governmental"
+    },
+    "taxes": {
+      "DR": {"ref": "Customs Proclamation (Customs Duty)", "page_url": "https://customs.erca.gov.et", "source": "customs.erca.gov.et"},
+      "VAT": {"ref": "VAT Proclamation No. 577/2008 (15%)", "page_url": "https://customs.erca.gov.et", "source": "customs.erca.gov.et"},
+      "EXC": {"ref": "Excise Tax Proclamation No. 1180/2020", "page_url": "https://customs.erca.gov.et", "source": "customs.erca.gov.et"},
+      "WHR": {"ref": "Withholding Tax (2%)", "page_url": "https://customs.erca.gov.et", "source": "customs.erca.gov.et"}
+    },
+    "zlecaf": {
+      "ref": "Ethiopia AfCFTA tariff offer",
+      "page_url": "https://customs.erca.gov.et",
+      "source_type": "governmental"
+    }
+  },
+
+  "ZLECAF_TRANSVERSAL": {
+    "ref": "Agreement Establishing the African Continental Free Trade Area (AfCFTA)",
+    "page_url": "https://au.int/en/treaties/agreement-establishing-african-continental-free-trade-area",
+    "secretariat_page_url": "https://www.afcfta.int",
+    "tralac_page_url": "https://www.tralac.org/publications",
+    "rules_of_origin": "AfCFTA Protocol on Trade in Goods — Annex II, Appendix IV",
+    "rules_of_origin_page_url": "https://au.int/sites/default/files/treaties/36437-ax-AfCFTA_RULES_OF_ORIGIN_MANUAL.pdf",
+    "source_type": "regional_org"
+  }
+}

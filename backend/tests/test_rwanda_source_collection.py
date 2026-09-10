@@ -8,8 +8,9 @@ légale incorrecte ("Value Added Tax Law 2018, Law No. 28/2018 of 13/02/2018"
 — la loi réellement en vigueur est la Loi n°049/2023 du 05/09/2023) et des
 statuts non conformes au schéma. Voir data/sources/rwanda/README.md.
 
-RWA n'est pas enregistrée dans SUPPORTED_JURISDICTIONS ni dans
-NATIONAL_OFFER_REGISTRY.
+RWA est désormais enregistrée dans SUPPORTED_JURISDICTIONS (couche légale
+nationale générée) mais reste absente de NATIONAL_OFFER_REGISTRY (aucune offre
+nationale ZLECAf fabriquée).
 """
 
 import csv
@@ -132,11 +133,13 @@ def test_rwa_excise_measures_schema():
     assert "excise_rates" in data
 
 
-def test_rwa_not_registered_as_supported_jurisdiction():
-    """Garde-fou : RWA n'est pas enregistrée comme juridiction supportée."""
+def test_rwa_registered_as_supported_jurisdiction():
+    """RWA est désormais enregistrée comme juridiction supportée (couche légale
+    nationale générée par backend/scripts/build_jurisdiction_files.py)."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
 
-    assert "RWA" not in SUPPORTED_JURISDICTIONS
+    assert "RWA" in SUPPORTED_JURISDICTIONS
+    assert SUPPORTED_JURISDICTIONS["RWA"].default_currency == "RWF"
 
 
 def test_rwa_has_no_fabricated_afcfta_offer():

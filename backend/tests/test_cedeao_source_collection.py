@@ -83,10 +83,15 @@ def test_nga_vat_standard_rate():
 
 
 def test_cedeao_new_countries_not_registered():
-    """Garde-fou : aucun nouveau pays CEDEAO n'est enregistré comme juridiction supportée."""
+    """Garde-fou : les pays CEDEAO dont la couche fiscale nationale n'est pas
+    encore construite ne sont pas enregistrés comme juridictions supportées.
+
+    GHA a depuis été promu juridiction supportée (couche légale nationale
+    générée par backend/scripts/build_jurisdiction_files.py) et est couvert par
+    test_jurisdictions_priority9 ; il est donc retiré de cette liste négative."""
     from services.national_legal_calculation_service import SUPPORTED_JURISDICTIONS
 
-    for iso3 in ["CPV", "GMB", "GHA", "GIN", "LBR", "NGA", "SLE", "MRT"]:
+    for iso3 in ["CPV", "GMB", "GIN", "LBR", "NGA", "SLE", "MRT"]:
         assert (
             iso3 not in SUPPORTED_JURISDICTIONS
         ), f"{iso3} should not be in SUPPORTED_JURISDICTIONS"

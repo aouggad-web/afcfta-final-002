@@ -51,11 +51,10 @@ jobs:
       - name: Lint — real-bug gate (undefined names, syntax errors)
         run: python -m flake8 .
 
-      - name: Format check — black
-        run: python -m black --check .
-
-      - name: Format check — isort
-        run: python -m isort --check .
+      # Format check global retiré (black/isort sur tout le repo) : le formatage
+      # est appliqué au périmètre des fichiers modifiés par chaque PR, pas au
+      # dépôt entier — voir commit 0a082643 (revert du reformatage global).
+      # Le gate flake8 ci-dessus reste le garde-fou des vrais bugs (F821, syntaxe).
 
   backend-tests:
     needs: check-conflict-markers

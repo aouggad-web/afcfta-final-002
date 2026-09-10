@@ -99,38 +99,44 @@ FALLBACK_VAT = {
     "DEFAULT": 0.18,
 }
 
-# Cache JSON chargé en mémoire par pays
-_tariff_cache: Dict[str, Dict] = {}
+# Source unique de vérité : crawled_data_service (backend/data/crawled/).
+# Les fichiers synthétiques backend/data/*_tariffs.json ne sont plus lus.
+_crawled = None
 
 
-def _load_country_json(country_iso3: str) -> Optional[Dict]:
-    """Charge le fichier JSON du pays (avec cache mémoire)."""
-    if country_iso3 in _tariff_cache:
-        return _tariff_cache[country_iso3]
-    path = os.path.join(DATA_DIR, f"{country_iso3}_tariffs.json")
-    if not os.path.exists(path):
-        return None
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        _tariff_cache[country_iso3] = data
-        return data
-    except Exception as e:
-        logger.error(f"Impossible de charger {path}: {e}")
-        return None
+def _get_crawled():
+    """Accès lazy au singleton crawled_data_service."""
+    global _crawled
+    if _crawled is None:
+        from services.crawled_data_service import crawled_service
+
+        crawled_service.load()
+        _crawled = crawled_service
+    return _crawled
 
 
-def _find_tariff_line(country_iso3: str, hs6: str) -> Optional[Dict]:
-    """Cherche la ligne tarifaire pour un code SH6 dans le JSON du pays."""
-    data = _load_country_json(country_iso3)
-    if not data:
-        return None
-    lines = data.get("tariff_lines", [])
-    hs6_clean = hs6[:6]
-    for line in lines:
-        if line.get("hs6", "") == hs6_clean:
-            return line
+def _find_tariff_line(country_iso3: str, hs_code: str) -> Optional[Dict]:
+    """
+    Cherche la ligne tarifaire par code NATIONAL exact (8-12 digits).
+    Si non trouvé, descend progressivement jusqu'au SH6.
+    Utilise crawled_service (backend/data/crawled/) — jamais de synthétique.
+    """
+    svc = _get_crawled()
+    if not svc.is_loaded():
+        svc.load()
+    result = svc.lookup(country_iso3, hs_code)
+    if result:
+        return result
+    # Fail-closed : aucune donnée crawlée pour ce code/pays.
     return None
+
+
+def _find_tariff_line_by_hs6(country_iso3: str, hs6: str) -> List[Dict]:
+    """Retourne TOUTES les sous-positions nationales pour un SH6 donné."""
+    svc = _get_crawled()
+    if not svc.is_loaded():
+        svc.load()
+    return svc.lookup_by_hs6(country_iso3, hs6[:6].zfill(6))
 
 
 def _canonical_code(raw: str) -> str:
@@ -138,50 +144,123 @@ def _canonical_code(raw: str) -> str:
     return TAX_CODE_MAP.get(raw.strip(), raw.strip().replace(".", "").replace(" ", ""))
 
 
-def _build_tax_list_from_json(tariff_line: Dict, zlecaf: bool = False) -> List[Dict]:
+def _build_tax_list_from_crawled(tariff_line: Dict, country_iso3: str = "", zlecaf: bool = False) -> List[Dict]:
     """
-    Construit la liste ordonnée des taxes à partir du champ taxes_detail du JSON.
+    Construit la liste ordonnée des taxes à partir d'une position crawlée
+    normalisée (format crawled_data_service).
     Pour ZLECAf, applique les fiscal_advantages (réduction/exonération DD).
 
     Retourne une liste de dicts :
       {code, name_fr, name_en, rate (décimal), raw_name, observation, is_tva, exclu_base_tva}
     """
-    taxes_detail = tariff_line.get("taxes_detail", [])
+    taxes_raw = tariff_line.get("taxes", [])
     fiscal_adv = {}
     if zlecaf:
         for adv in tariff_line.get("fiscal_advantages", []):
-            raw = adv.get("tax", "")
-            code = _canonical_code(raw)
-            fiscal_adv[code] = adv.get("rate", 0.0)
+            if isinstance(adv, dict):
+                rate_val = adv.get("rate_pct", adv.get("rate", 0.0))
+                if isinstance(rate_val, str):
+                    try:
+                        rate_val = float(rate_val.replace("%", "").strip())
+                    except ValueError:
+                        rate_val = 0.0
+                fiscal_adv[adv.get("code", adv.get("name", ""))] = rate_val
+
+    # Taxes préférentielles ZLECAf/AfCFTA déjà présentes dans la ligne
+    preferential_rates = {}
+    for t in taxes_raw:
+        if isinstance(t, dict):
+            code = t.get("code", "").upper()
+            # Schéma unifié : preferential_rates est une liste séparée
+            # Schéma crawled original : is_preferential flag sur les taxes
+            if t.get("is_preferential") or code in ("AFCFTA", "ZLECAF", "ZLECAF_RATE"):
+                rate = t.get("rate_pct", t.get("rate"))
+                if rate is not None:
+                    preferential_rates["DD"] = rate
+
+    # Schéma unifié : preferential_rates est une liste dans la position
+    if not preferential_rates and isinstance(tariff_line.get("preferential_rates"), list):
+        for pr in tariff_line.get("preferential_rates", []):
+            if isinstance(pr, dict):
+                regime = pr.get("regime", "").upper()
+                if "AFCFTA" in regime or "ZLECAF" in regime:
+                    rate = pr.get("rate_pct")
+                    if rate is not None:
+                        preferential_rates["DD"] = rate
 
     result = []
-    for entry in taxes_detail:
-        raw_name = entry.get("tax", "")
-        code = _canonical_code(raw_name)
-        rate_pct = entry.get("rate", 0.0)
+    for entry in taxes_raw:
+        if not isinstance(entry, dict):
+            continue
+        code = entry.get("code", "")
+        raw_name = entry.get("name", code)
+        rate_pct = entry.get("rate_pct", entry.get("rate", 0.0))
+        if rate_pct is None:
+            rate_pct = 0.0
+        rate_pct = float(rate_pct)
 
-        if zlecaf and code in fiscal_adv:
-            rate_pct = fiscal_adv[code]
+        # Ignorer les colonnes préférentielles (EU_UK, EFTA, SADC, MERCOSUR, AfCFTA)
+        # AfCFTA est traité séparément via preferential_rates
+        if code.upper() in ("EU_UK", "EFTA", "SADC", "MERCOSUR", "AFCFTA"):
+            continue
+
+        # Mapper les codes vers les codes canoniques internes
+        canonical = _canonical_code(code) if code else code
+        # SARS "GENERAL" = Droit de Douane (DD)
+        if code.upper() == "GENERAL":
+            canonical = "DD"
+        # EGY "ID" = Import Duty = DD
+        if code.upper() == "ID":
+            canonical = "DD"
+        # VAT/TVA mapping
+        if code.upper() in ("VAT", "TVA"):
+            canonical = "TVA"
+
+        # Appliquer la préférence ZLECAf sur le DD
+        if zlecaf and canonical == "DD":
+            if "DD" in preferential_rates:
+                rate_pct = preferential_rates["DD"]
+            elif "DD" in fiscal_adv:
+                rate_pct = fiscal_adv["DD"]
 
         meta = TAX_META.get(
-            code,
+            canonical,
             {
-                "name_fr": entry.get("observation", raw_name),
-                "name_en": entry.get("observation", raw_name),
+                "name_fr": raw_name,
+                "name_en": raw_name,
             },
         )
 
         result.append(
             {
-                "code": code,
+                "code": canonical,
                 "raw_name": raw_name,
                 "name_fr": meta["name_fr"],
                 "name_en": meta["name_en"],
                 "rate": rate_pct / 100.0,
                 "rate_pct": rate_pct,
-                "observation": entry.get("observation", ""),
-                "is_tva": code == "TVA",
-                "exclu_base_tva": code in TVA_EXCLUDED_CODES,
+                "observation": entry.get("observation", entry.get("source", "")),
+                "is_tva": canonical == "TVA",
+                "exclu_base_tva": canonical in TVA_EXCLUDED_CODES,
+            }
+        )
+
+    # Si aucune TVA n'est présente dans les données crawlées (ex: SARS Schedule 1
+    # ne publie pas la TVA), l'ajouter depuis le fallback national.
+    has_tva = any(t["is_tva"] for t in result)
+    if not has_tva and country_iso3:
+        vat_rate = FALLBACK_VAT.get(country_iso3, FALLBACK_VAT["DEFAULT"])
+        result.append(
+            {
+                "code": "TVA",
+                "raw_name": "T.V.A",
+                "name_fr": "TVA (Taxe sur la Valeur Ajoutée)",
+                "name_en": "VAT (Value Added Tax)",
+                "rate": vat_rate,
+                "rate_pct": vat_rate * 100,
+                "observation": "TVA non publiée dans le tarif douanier — taux national par défaut",
+                "is_tva": True,
+                "exclu_base_tva": False,
             }
         )
     return result
@@ -303,7 +382,7 @@ def _compute_regime(
     is_zlecaf = regime == "ZLECAf"
 
     if tariff_line:
-        taxes = _build_tax_list_from_json(tariff_line, zlecaf=is_zlecaf)
+        taxes = _build_tax_list_from_crawled(tariff_line, country_iso3=country_iso3, zlecaf=is_zlecaf)
     else:
         taxes = _build_fallback_tax_list(country_iso3, fallback_dd_pct, zlecaf=is_zlecaf)
 
@@ -409,7 +488,6 @@ class EnhancedTariffCalculator:
             self.get_sub_positions = lambda *a, **kw: []
 
     def _get_country_names(self, country_iso3: str) -> tuple:
-        data = _load_country_json(country_iso3)
         name_map = {
             "DZA": ("Algérie", "Algeria"),
             "MAR": ("Maroc", "Morocco"),
@@ -448,23 +526,59 @@ class EnhancedTariffCalculator:
     ) -> ComparisonResult:
         """
         Calcule la comparaison NPF vs ZLECAf avec ventilation complète des taxes.
+        Recherche par code NATIONAL exact (8-12 digits) via crawled_service.
+        Fail-closed : si aucune donnée crawlée → refus (pas de synthétique).
         """
-        hs6 = hs_code[:6]
+        hs_code_clean = hs_code.replace(".", "").replace(" ", "")
+        hs6 = hs_code_clean[:6].zfill(6)
         cif_value = fob_value + freight + insurance
 
+        # Description : priorité à la désignation de la sous-position crawlée,
+        # puis au HS6 database.
         hs_info = self.get_hs6_info(hs6, language) or {}
         desc_fr = hs_info.get("description_fr", f"Code SH {hs6}")
         desc_en = hs_info.get("description_en", f"HS Code {hs6}")
 
-        tariff_line = _find_tariff_line(country_iso3, hs6)
+        # ── Recherche par code NATIONAL exact (8-12 digits) ──
+        tariff_line = _find_tariff_line(country_iso3, hs_code_clean)
+
         if tariff_line:
-            fallback_dd = tariff_line.get("dd_rate", 20.0)
-            data_source = "official_tariff_json"
+            # Désignation : le schéma unifié utilise un dict designation
+            crawled_desc_obj = tariff_line.get("designation", {})
+            if isinstance(crawled_desc_obj, dict):
+                crawled_desc_fr = crawled_desc_obj.get("fr", "")
+                crawled_desc_en = crawled_desc_obj.get("en", "")
+                crawled_desc = crawled_desc_fr or crawled_desc_en or ""
+            else:
+                crawled_desc = str(crawled_desc_obj)
+                crawled_desc_fr = tariff_line.get("description_fr", "")
+                crawled_desc_en = tariff_line.get("description_en", "")
+            if crawled_desc_fr:
+                desc_fr = crawled_desc_fr
+            elif crawled_desc:
+                desc_fr = crawled_desc
+            if crawled_desc_en:
+                desc_en = crawled_desc_en
+            elif crawled_desc and language != "fr":
+                desc_en = crawled_desc
+
+            # Taux DD depuis la ligne crawlée
+            dd_rate = 0.0
+            for t in tariff_line.get("taxes", []):
+                if isinstance(t, dict) and t.get("code", "").upper() in ("DD", "ID", "GENERAL", "DI"):
+                    dd_rate = float(t.get("rate_pct", t.get("rate", 0)) or 0)
+                    break
+            if dd_rate == 0:
+                dd_rate = tariff_line.get("dd_rate", 20.0)
+            fallback_dd = dd_rate
+            data_source = "crawled_authentic"
             confidence = 0.95
         else:
-            fallback_dd = 20.0
-            data_source = "estimated_fallback"
-            confidence = 0.60
+            # Fail-closed : aucune donnée crawlée pour ce code/pays.
+            # Pas de fallback synthétique — signaler l'absence.
+            fallback_dd = 0.0
+            data_source = "unavailable_fail_closed"
+            confidence = 0.0
 
         npf_calc = _compute_regime(
             regime="NPF",
@@ -493,9 +607,22 @@ class EnhancedTariffCalculator:
             (savings / npf_calc.total_to_pay * 100) if npf_calc.total_to_pay > 0 else 0
         )
 
+        # Sous-positions nationales pour ce SH6 (information)
         sub_positions = []
         try:
-            sub_positions = self.get_sub_positions(country_iso3, hs6) or []
+            all_subs = _find_tariff_line_by_hs6(country_iso3, hs6)
+            if all_subs:
+                sub_positions = [
+                    {
+                        "national_code": s.get("code_clean", ""),
+                        "designation": s.get("designation", ""),
+                        "description_fr": s.get("description_fr", s.get("designation", "")),
+                        "description_en": s.get("description_en", ""),
+                        "chapter": s.get("chapter", ""),
+                        "source": s.get("source", ""),
+                    }
+                    for s in all_subs
+                ]
         except Exception:
             pass
 

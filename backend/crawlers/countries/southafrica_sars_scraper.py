@@ -129,6 +129,145 @@ class SouthAfricaSARSScraper:
             return digits[:2]
         return ""
 
+<<<<<<< HEAD
+    # Patterns pour extraction texte (fallback quand find_tables manque des lignes)
+    TEXT_CODE_PATTERN = re.compile(
+        r"(\d{4}\.\d{2}(?:\.\d{2}){1,2})"
+    )
+    TEXT_HEADING_PATTERN = re.compile(r"^(\d{4}\.\d{2})\s*$")
+    TEXT_RATE_PATTERN = re.compile(
+        r"(free|\d+(?:[.,]\d+)?\s*%|\d+(?:[.,]\d+)?\s*c/\d*\s*(?:kg|li|u|unit))",
+        re.IGNORECASE,
+    )
+
+    def _extract_page_text(self, page, current_heading, current_heading_desc):
+        """
+        Extraction texte — capture TOUTES les positions 8/10-digit que
+        find_tables manque. Le PDF SARS met chaque élément sur une ligne
+        séparée: code, check_digit, désignation, unité, taux×6.
+        """
+        text = page.get_text("text")
+        lines = [l.strip() for l in text.split("\n") if l.strip()]
+        found = []
+
+        i = 0
+        while i < len(lines):
+            line = lines[i]
+
+            # Heading 6-digit seul → heading courant
+            m6 = re.match(r"^(\d{4}\.\d{2})$", line)
+            if m6:
+                current_heading = m6.group(1)
+                i += 1
+                continue
+
+            # Code 8-digit ou 10-digit au début d'un bloc
+            m_code = re.match(r"^(\d{4}\.\d{2}\.\d{2}(?:\.\d{2})?)$", line)
+            if not m_code:
+                i += 1
+                continue
+
+            code = m_code.group(1)
+            i += 1
+
+            # Check digit: ligne suivante si c'est un seul chiffre
+            check_digit = ""
+            if i < len(lines) and re.match(r"^\d$", lines[i]):
+                check_digit = lines[i]
+                i += 1
+
+            # Collecter les lignes de description + unité + taux
+            block_lines = []
+            while i < len(lines):
+                next_line = lines[i]
+                # Si on atteint le prochain code tariff, stop
+                if re.match(r"^\d{4}\.\d{2}(\.\d{2}){0,2}$", next_line):
+                    break
+                block_lines.append(next_line)
+                i += 1
+                # Limite de sécurité: 25 lignes max par bloc
+                if len(block_lines) >= 25:
+                    break
+
+            if not block_lines:
+                continue
+
+            # Identifier l'unité statistique (kg, u, l, m², etc.)
+            stat_unit = ""
+            unit_idx = -1
+            for idx, bl in enumerate(block_lines):
+                if re.match(r"^(kg|u|l|m2|m²|m|kg/l|li|la|10kg|100kg|t|g|ml)$", bl, re.IGNORECASE):
+                    stat_unit = bl
+                    unit_idx = idx
+                    break
+
+            # Extraire les taux: free, X%, Xc/kg
+            rate_values = []
+            for bl in block_lines:
+                if bl.lower() in ("free", "f"):
+                    rate_values.append("free")
+                elif re.match(r"^\d+(?:[.,]\d+)?\s*%$", bl):
+                    rate_values.append(bl)
+                elif re.match(r"^\d+(?:[.,]\d+)?\s*c/", bl, re.IGNORECASE):
+                    rate_values.append(bl)
+                elif re.match(r"^\d+(?:[.,]\d+)?\s*%?\s*or\s*", bl, re.IGNORECASE):
+                    rate_values.append(bl)
+
+            # La désignation = lignes avant l'unité et avant les taux
+            desc_end = unit_idx if unit_idx >= 0 else len(block_lines)
+            # Trouver le premier taux pour couper la désignation
+            for idx, bl in enumerate(block_lines):
+                if bl.lower() in ("free", "f") or re.match(r"^\d+(?:[.,]\d+)?\s*%", bl):
+                    desc_end = min(desc_end, idx)
+                    break
+
+            desc_parts = block_lines[:desc_end]
+            desc = " ".join(desc_parts).strip().strip("-– ").strip()
+            desc = re.sub(r"\s+", " ", desc)
+
+            # Construire les taxes (6 colonnes SARS)
+            # Grouper les taux composés (ex: "40% or 240c/kg" = 2 valeurs → 1 taxe)
+            taxes = []
+            rate_idx = 0
+            for tax_col in TAX_COLUMNS:
+                if rate_idx < len(rate_values):
+                    raw_val = rate_values[rate_idx]
+                    # Gérer les taux composés: "40% or 240c/kg" → 1 taxe
+                    rate_info = self._parse_rate(raw_val)
+                    rate_idx += 1
+                else:
+                    rate_info = {"rate_pct": None, "raw_value": ""}
+                taxes.append(
+                    {
+                        "code": tax_col["code"],
+                        "name": tax_col["name"],
+                        **rate_info,
+                    }
+                )
+
+            chapter = self._get_chapter_from_code(code)
+
+            position = {
+                "code_raw": code,
+                "code_clean": code.replace(".", ""),
+                "check_digit": check_digit,
+                "designation": desc,
+                "chapter": chapter,
+                "heading": current_heading or code[:5],
+                "statistical_unit": stat_unit,
+                "taxes": taxes,
+                "fiscal_advantages": [],
+                "administrative_formalities": [],
+                "source": "sars.gov.za",
+                "country": "SACU",
+                "_extraction_method": "text",
+            }
+            found.append(position)
+
+        return found, current_heading, current_heading_desc
+
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     def scrape_all(self) -> Dict:
         self.stats["started_at"] = datetime.utcnow().isoformat()
 
@@ -143,7 +282,13 @@ class SouthAfricaSARSScraper:
 
             current_heading = ""
             current_heading_desc = ""
+<<<<<<< HEAD
+            table_positions = {}
 
+            # ── PASS 1: Extraction par tables (find_tables) ──
+=======
+
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             for page_idx in range(doc.page_count):
                 page = doc[page_idx]
                 tables = page.find_tables()
@@ -208,10 +353,18 @@ class SouthAfricaSARSScraper:
                             )
 
                         chapter = self._get_chapter_from_code(code)
+<<<<<<< HEAD
+                        code_clean = code.replace(".", "")
+
+                        position = {
+                            "code_raw": code,
+                            "code_clean": code_clean,
+=======
 
                         position = {
                             "code_raw": code,
                             "code_clean": code.replace(".", ""),
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
                             "check_digit": check_digit,
                             "designation": desc.strip(" -–"),
                             "chapter": chapter,
@@ -222,16 +375,96 @@ class SouthAfricaSARSScraper:
                             "administrative_formalities": [],
                             "source": "sars.gov.za",
                             "country": "SACU",
+<<<<<<< HEAD
+                            "_extraction_method": "table",
+                        }
+                        table_positions[code_clean] = position
+=======
                         }
                         self.positions.append(position)
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
                 self.stats["pages_processed"] = page_idx + 1
 
                 if (page_idx + 1) % 100 == 0:
                     logger.info(
+<<<<<<< HEAD
+                        f"[table] Page {page_idx+1}/{doc.page_count}: "
+                        f"{len(table_positions)} positions"
+                    )
+
+            logger.info(
+                f"Pass 1 (tables): {len(table_positions)} positions extracted"
+            )
+
+            # ── PASS 2: Extraction texte (catch-all) ──
+            current_heading = ""
+            current_heading_desc = ""
+            text_positions = {}
+
+            for page_idx in range(doc.page_count):
+                page = doc[page_idx]
+                found, current_heading, current_heading_desc = (
+                    self._extract_page_text(
+                        page, current_heading, current_heading_desc
+                    )
+                )
+                for pos in found:
+                    text_positions[pos["code_clean"]] = pos
+
+                if (page_idx + 1) % 100 == 0:
+                    logger.info(
+                        f"[text] Page {page_idx+1}/{doc.page_count}: "
+                        f"{len(text_positions)} positions"
+                    )
+
+            logger.info(
+                f"Pass 2 (text): {len(text_positions)} positions extracted"
+            )
+
+            # ── MERGE: table positions prioritaires, text comble les trous ──
+            merged = dict(text_positions)
+            merged.update(table_positions)
+
+            for pos in merged.values():
+                pos.pop("_extraction_method", None)
+
+            # ── NORMALISATION 8-digit: SARS utilise 8 chiffres pour toute
+            # marchandise. Les codes 6-digit qui ont des taux mais PAS
+            # d'enfants 8-digit sont des lignes tarifaires à part entière
+            # (subdivision nationale = "00"). On les normalise en 8-digit. ──
+            code_to_pos = {p["code_clean"]: p for p in merged.values()}
+            eight_prefixes = {
+                c[:6] for c in code_to_pos if len(c) == 8
+            }
+            normalized = {}
+            for code, pos in code_to_pos.items():
+                if len(code) == 6:
+                    taxes = pos.get("taxes", [])
+                    general = next(
+                        (t for t in taxes if t.get("code") == "GENERAL"), None
+                    )
+                    has_rate = general and general.get("rate_pct") is not None
+                    has_children = code in eight_prefixes
+                    if has_rate and not has_children:
+                        pos["code_raw"] = pos["code_raw"] + ".00"
+                        pos["code_clean"] = code + "00"
+                        normalized[code + "00"] = pos
+                    elif not has_rate:
+                        continue
+                    elif has_children:
+                        continue
+                else:
+                    normalized[code] = pos
+
+            self.positions = list(normalized.values())
+            self.positions.sort(key=lambda p: p["code_clean"])
+
+=======
                         f"Page {page_idx+1}/{doc.page_count}: {len(self.positions)} positions"
                     )
 
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             doc.close()
 
         except Exception as e:
@@ -239,6 +472,15 @@ class SouthAfricaSARSScraper:
             self.errors.append({"error": str(e)})
 
         self.stats["positions_extracted"] = len(self.positions)
+<<<<<<< HEAD
+        self.stats["extraction_method"] = {
+            "table_pass": len(table_positions),
+            "text_pass": len(text_positions),
+            "merged_total": len(merged),
+            "normalized_8digit": len(self.positions),
+        }
+=======
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         self.stats["finished_at"] = datetime.utcnow().isoformat()
 
         self._save_all_countries()

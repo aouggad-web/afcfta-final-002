@@ -1,104 +1,104 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import "./services/csrf";
-import App from "./App";
-import AdminProjectsPage from "./components/admin/AdminProjectsPage";
+import React, { useState, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import AfcftaSidebar from './components/AfcftaSidebar';
+import { Production } from './components/production';
+import { AuthProvider } from './context/AuthContext';
+import AuthModal from './components/auth/AuthModal';
+import FinanceTab from './components/finance/FinanceTab';
+import ContactTab from './components/contact/ContactTab';
+import OpportunityReportTab from './components/reports/OpportunityReportTab';
+import BusinessAtlasModule from './components/tools/BusinessAtlasModule';
+import RegulatoryComplianceTab from './components/regulatory/RegulatoryComplianceTab';
+import './styles/index.css';
 
-// Light/dark theme bootstrap (also applied in App for non-admin routes)
-const _persistedTheme = localStorage.getItem('zlecaf_theme') || 'dark';
-if (_persistedTheme === 'light') {
-  document.documentElement.classList.add('theme-light');
-  document.body.classList.add('theme-light');
-}
-import 'leaflet/dist/leaflet.css';
+// Placeholder for modules not yet implemented
+const ModulePlaceholder = ({ name }) => (
+  <div style={{ padding: '40px', textAlign: 'center' }}>
+    <h2>{name}</h2>
+    <p>Module en développement — Intégration en cours</p>
+  </div>
+);
 
-// Import i18n configuration
-import './i18n';
+function App() {
+  const [activeTab, setActiveTab] = useState('production');
+  const [language, setLanguage] = useState(() => localStorage.getItem('language') || 'fr');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
-// Import mobile responsive styles
-import './styles/mobile.css';
+  useEffect(() => {
+    document.documentElement.className = `theme-${theme}`;
+  }, [theme]);
 
-// ZLECAF Design System v1.1
-import './styles/design-system.css';
-
-// Fix complet pour ResizeObserver errors
-// Supprime complètement les erreurs ResizeObserver
-window.addEventListener('error', e => {
-  if (e.message === 'ResizeObserver loop limit exceeded' || 
-      e.message === 'ResizeObserver loop completed with undelivered notifications.') {
-    const resizeObserverErrDiv = document.getElementById('webpack-dev-server-client-overlay-div');
-    const resizeObserverErr = document.getElementById('webpack-dev-server-client-overlay');
-    if (resizeObserverErr) {
-      resizeObserverErr.setAttribute('style', 'display: none');
+  const handleTabChange = (type, value) => {
+    if (type === 'tab') {
+      setActiveTab(value);
+    } else if (type === 'language') {
+      setLanguage(value);
+      localStorage.setItem('language', value);
     }
-    if (resizeObserverErrDiv) {
-      resizeObserverErrDiv.setAttribute('style', 'display: none');
-    }
-    e.stopImmediatePropagation();
-    e.preventDefault();
-  }
-});
-
-// Patch global pour ResizeObserver
-const debounce = (callback, delay) => {
-  let tid;
-  return function (...args) {
-    const ctx = this;
-    tid && clearTimeout(tid);
-    tid = setTimeout(() => {
-      callback.apply(ctx, args);
-    }, delay);
   };
-};
 
-const _ = window.ResizeObserver;
-window.ResizeObserver = class ResizeObserver extends _ {
-  constructor(callback) {
-    callback = debounce(callback, 20);
-    super(callback);
-  }
-};
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
 
-// Register PWA Service Worker (PROD only) — and unregister any legacy SW in DEV
-if ('serviceWorker' in navigator) {
-  if (import.meta.env.PROD) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('/service-worker.js', { scope: '/' })
-        .then((registration) => {
-          console.log('[PWA] Service worker registered:', registration.scope);
-        })
-        .catch((err) => {
-          console.warn('[PWA] Service worker registration failed:', err);
-        });
-    });
-  } else {
-    // DEV mode: clean up any SW registered by a previous PROD build
-    // to prevent stale caches from interfering with hot reload.
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-      registrations.forEach((registration) => {
-        registration.unregister().then((ok) => {
-          if (ok) console.log('[PWA] Legacy service worker unregistered (DEV mode)');
-        });
-      });
-    });
-    if ('caches' in window) {
-      caches.keys().then((keys) => {
-        keys.filter((k) => k.startsWith('afcfta-')).forEach((k) => {
-          caches.delete(k).then((ok) => {
-            if (ok) console.log(`[PWA] Legacy cache deleted: ${k}`);
-          });
-        });
-      });
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return <ModulePlaceholder name="Tableau de bord" />;
+      case 'calculator':
+        return <ModulePlaceholder name="Calculateur ZLECAf" />;
+      case 'stats':
+        return <ModulePlaceholder name="Statistiques Commerciales" />;
+      case 'production':
+        return <Production />;
+      case 'logistics':
+        return <ModulePlaceholder name="Logistique et Transport" />;
+      case 'banking':
+        return <FinanceTab />;
+      case 'tools':
+        return <BusinessAtlasModule />;
+      case 'roo':
+        return <RegulatoryComplianceTab />;
+      case 'profiles':
+        return <ModulePlaceholder name="Profils Pays" />;
+      case 'reports':
+        return <OpportunityReportTab />;
+      case 'contact':
+        return <ContactTab />;
+      default:
+        return <ModulePlaceholder name={activeTab} />;
     }
-  }
+  };
+
+  return (
+    <div className={`app theme-${theme}`}>
+      <AfcftaSidebar
+        active={activeTab}
+        onTabChange={handleTabChange}
+        language={language}
+        theme={theme}
+        onThemeToggle={toggleTheme}
+        onOpenAuth={() => setAuthModalOpen(true)}
+      />
+      <main className="app-content">
+        {renderContent()}
+      </main>
+      <AuthModal
+        open={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        language={language}
+      />
+    </div>
+  );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-const isAdminProjectsRoute = window.location.pathname.startsWith('/admin/projects');
+const root = createRoot(document.getElementById('root'));
 root.render(
-  isAdminProjectsRoute
-    ? <AdminProjectsPage />
-    : <React.StrictMode><App /></React.StrictMode>
+  <AuthProvider>
+    <App />
+  </AuthProvider>
 );

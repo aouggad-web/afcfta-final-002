@@ -2,6 +2,10 @@ import os
 import sys
 
 import pytest
+<<<<<<< HEAD
+=======
+import currencies.service as currency_service
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
@@ -60,8 +64,15 @@ class _PostgresProviderMiss:
 
 
 @pytest.fixture(autouse=True)
+<<<<<<< HEAD
 def reset_postgres_provider_cache():
     svc._postgres_provider_cache = None
+=======
+def reset_postgres_provider_cache(monkeypatch):
+    svc._postgres_provider_cache = None
+    # Currency enrichment is optional and outside these provider contracts.
+    monkeypatch.setattr(currency_service, "get_by_country", lambda *_: None)
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
 
 def test_get_tariff_line_prefers_postgres(monkeypatch):
@@ -119,3 +130,50 @@ def test_calculate_import_taxes_uses_postgres_when_etl_unavailable(monkeypatch):
     assert "error" not in result
     assert result["rates"]["dd_rate_pct"] == 5.0
     assert result["sub_position"]["code"] == "1801000010"
+<<<<<<< HEAD
+=======
+
+
+def test_calculation_keeps_exact_measures_not_listing_aggregate(monkeypatch):
+    from decimal import Decimal
+
+    calls = []
+
+    class Provider(_PostgresProviderSuccess):
+        def get_regulatory_details(self, country_iso3, hs6):
+            calls.append(hs6)
+            result = super().get_regulatory_details(country_iso3, hs6)
+            result["taxes"]["dd_rate"] = Decimal("5.0" if len(hs6) > 6 else "99.0")
+            result["taxes"]["vat_rate"] = Decimal("20.0")
+            return result
+
+        def get_sub_positions(self, country_iso3, hs6, language="fr"):
+            rows = super().get_sub_positions(country_iso3, hs6, language)
+            rows[0]["dd"] = 99  # Test sentinel: aggregate must not override the measure.
+            return rows
+
+    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: Provider())
+    monkeypatch.setattr(svc, "load_country_tariffs", lambda *_: None)
+    monkeypatch.setattr(svc, "load_crawled_position_index", lambda *_: {})
+    monkeypatch.setattr(svc, "load_nomenclature_map", lambda *_: None)
+    result = svc.calculate_import_taxes("MAR", "1801000010", 1000)
+    assert "1801000010" in calls
+    assert result["rates"]["dd_rate_pct"] == 5
+
+
+@pytest.mark.parametrize("missing", ["dd_rate", "vat_rate"])
+def test_incomplete_postgres_measures_do_not_produce_zero_total(monkeypatch, missing):
+    class Provider(_PostgresProviderSuccess):
+        def get_regulatory_details(self, country_iso3, hs6):
+            result = super().get_regulatory_details(country_iso3, hs6)
+            result["taxes"][missing] = None
+            return result
+
+    monkeypatch.setattr(svc, "_get_postgres_provider", lambda: Provider())
+    monkeypatch.setattr(svc, "load_country_tariffs", lambda *_: None)
+    monkeypatch.setattr(svc, "load_crawled_position_index", lambda *_: {})
+    monkeypatch.setattr(svc, "load_nomenclature_map", lambda *_: None)
+    result = svc.calculate_import_taxes("MAR", "1801000010", 1000)
+    assert result["error_detail"]["code"] == "CALCULATION_UNAVAILABLE"
+    assert "taxes_summary" not in result
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141

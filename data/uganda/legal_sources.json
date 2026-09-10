@@ -58,6 +58,20 @@
       "status": "source_pending_collection",
       "verification_status": "PENDING_COLLECTION",
       "notes": "Not downloaded, not archived, not used for any rate in this collection."
+    },
+    {
+      "source_id": "UGA-URA-DT-LAWS-COMPENDIUM-2021",
+      "title": "Compendium for various Domestic Tax Laws (incl. VAT Act Cap 349 consolidé, juillet 2021)",
+      "institution": "Uganda Revenue Authority (URA)",
+      "legal_date": "2021-07-01",
+      "accessed_at": "2026-09-05",
+      "url": "https://ura.go.ug/storage/2023/08/10580_DT_LAWS_JULY_2021.pdf",
+      "local_file": "backend/data/national_taxes/raw/UGA/20260905T134910Z_c3a1038ad5.bin",
+      "sha256": "e669e5cbe6feb47edbed6851f3d72cf044102b2934471535444d780aa2a29926",
+      "coverage": "Lois fiscales nationales consolidées (TVA, revenus, accises) — PDF 4,3 Mo",
+      "status": "VERIFIED_PRIMARY_TEXT",
+      "notes": "Archivé le 2026-09-05 par national_tax_scraper ; texte du VAT (Rate of Tax) Order 2005 (art. 78(2) Cap 349) extrait via PyMuPDF et cité dans vat_measures.",
+      "verification_status": "VERIFIED_PRIMARY_TEXT"
     }
   ]
 }

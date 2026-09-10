@@ -64,6 +64,31 @@ def _calc(client, origin, dest, hs_code="010121", value=10000.0):
 # ==================== Champs de statut ====================
 
 
+<<<<<<< HEAD
+=======
+@pytest.mark.parametrize(
+    "origin,destination,hs_code,expected_candidate",
+    [("EGY", "DZA", "010121", "0101211100"), ("BWA", "ZAF", "870323", "87032325")],
+)
+def test_ambiguous_hs6_requires_explicit_national_selection(
+    client, origin, destination, hs_code, expected_candidate
+):
+    response = client.post(
+        "/api/calculate-tariff",
+        json={
+            "origin_country": origin,
+            "destination_country": destination,
+            "hs_code": hs_code,
+            "value": 10000.0,
+        },
+    )
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    assert detail["code"] == "NATIONAL_POSITION_SELECTION_REQUIRED"
+    assert expected_candidate in detail["candidates"]
+
+
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 def test_response_exposes_honesty_status_fields(client):
     """Les champs de statut additifs sont toujours présents (contrat élargi)."""
     data = _calc(client, "EGY", "KEN")
@@ -180,7 +205,11 @@ def test_no_generic_category_based_zlecaf_string_anywhere(client):
         ("EGY", "DZA"),
     ]
     for origin, dest in pairs:
+<<<<<<< HEAD
         data = _calc(client, origin, dest)
+=======
+        data = _calc(client, origin, dest, hs_code="0101211100" if dest == "DZA" else "010121")
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         note = str(data.get("zlecaf_note", "")) + str(data.get("trade_regime", ""))
         assert "ZLECAf (" not in note, f"formule générique détectée pour {origin}->{dest}"
 
@@ -248,7 +277,11 @@ def test_customs_union_reduction_with_nonzero_npf_line(client):
     """Réduction économique effective : même union douanière (SACU), mais sur
     une ligne à droit NPF non nul (corbillards, 20 % — donnée statique
     sars.gov.za, stable quel que soit l'ordre d'exécution des tests)."""
+<<<<<<< HEAD
     data = _calc(client, "BWA", "ZAF", hs_code="870323")
+=======
+    data = _calc(client, "BWA", "ZAF", hs_code="87032325")
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     assert data["trade_regime"] == "CUSTOMS_UNION"
     assert data["trade_regime_code"] == "SACU"
     assert data["normal_tariff_rate"] == pytest.approx(0.20)
@@ -262,7 +295,11 @@ def test_dza_national_offer_still_applies_via_guard(client):
     """L'offre nationale algérienne (circulaire DGD 482/2024) reste appliquée,
     mais désormais via le garde-fou central — un partenaire actif (EGY) doit
     résoudre un régime cohérent."""
+<<<<<<< HEAD
     data = _calc(client, "EGY", "DZA")
+=======
+    data = _calc(client, "EGY", "DZA", hs_code="0101211100")
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     assert data["trade_regime"] in ("ZLECAF", "CUSTOMS_UNION", "NPF", "FTA_CONDITIONAL")
     assert "zlecaf_note" in data
 
@@ -282,7 +319,11 @@ def test_non_active_dza_partner_stays_npf_not_zlecaf(client):
         "précondition du test invalidée : SEN a été ajouté aux partenaires "
         "actifs DZA — choisir un autre pays ratifié hors de cette liste"
     )
+<<<<<<< HEAD
     data = _calc(client, "SEN", "DZA")
+=======
+    data = _calc(client, "SEN", "DZA", hs_code="0101211100")
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     assert data["zlecaf_preference_applied"] is False
     assert data["zlecaf_tariff_rate"] is None
     assert data["zlecaf_status"] == "NOT_AVAILABLE"
@@ -365,42 +406,42 @@ _FABRICATED_ZLECAF_MARKERS = {
 }
 
 
-def test_tariffs_54_files_physically_clean_of_synthetic_zlecaf_markers(client):
+def test_tariffs_39_files_physically_clean_of_synthetic_zlecaf_markers(client):
     """Vérification EXHAUSTIVE post-assainissement (100 % des fichiers, 100 %
-    des lignes, pas un sondage) : les fichiers `backend/data/tariffs/*.json`
-    — chemin PRIORITY 2, servi par `tariff_data_service.py`, distinct des
-    fichiers actifs `backend/data/crawled/*.json` (PRIORITY 1, dont GHA fait
-    partie ; les deux jeux de fichiers ne se recouvrent pas) — ne portent plus
-    AUCUN des 3 marqueurs fabriqués historiquement présents sur 100 % de leurs
-    lignes (`"ZLECAf"`, `"ZLECAf (produit normal)"`,
-    `"ZLECAf (produit sensible)"` — cf. branche
+    des lignes, pas un sondage) : les 39 fichiers `backend/data/tariffs/*.json`
+    restants après l'archivage P0 du 2026-09-01 (14 synthétiques `enhanced_v2`
+    + 1 copie DZA périmée retirés du service — cf. audit
+    `AUDIT_CALCULATEUR_DONNEES_TARIFAIRES_2026-09-01.md`) — chemin PRIORITY 2,
+    servi par `tariff_data_service.py`, distinct des fichiers actifs
+    `backend/data/crawled/*.json` (PRIORITY 1, dont GHA fait partie ; les deux
+    jeux de fichiers ne se recouvrent pas) — ne portent plus AUCUN des 3
+    marqueurs fabriqués historiquement présents (`"ZLECAf"`,
+    `"ZLECAf (produit normal)"`, `"ZLECAf (produit sensible)"` — cf. branche
     `claude/tariffs-zlecaf-synthetic-cleanup`) : ni `zlecaf_rate`, ni
     `zlecaf_source`, ni `zlecaf_total_taxes` ne doivent plus exister sur
-    aucune ligne. Aucun champ non-ZLECAf n'a été touché par ce nettoyage
-    (dd_rate, vat_rate, taxes_detail, sous-positions, etc. strictement
-    préservés — vérifié séparément par hash structurel avant/après lors du
-    nettoyage, hors périmètre de ce test qui porte sur l'état final).
-
-    Depuis l'audit P0 du 2026-09-01, 14 fichiers synthétiques `enhanced_v2`
-    + la copie DZA périmée ont été retirés du service (39 fichiers restants,
-    voir la précondition ci-dessous) : le total de lignes couvertes est donc
-    plus bas qu'avant ce retrait (~293 000 sur 54 fichiers), mais toujours
-    substantiel — le seuil ci-dessous est calé sur le total réel constaté
-    (206 311 lignes) avec une marge de sécurité."""
+    aucune des ~206 300 lignes couvertes. Aucun champ non-ZLECAf n'a été
+    touché par ce nettoyage (dd_rate, vat_rate, taxes_detail, sous-positions,
+    etc. strictement préservés — vérifié séparément par hash structurel
+    avant/après lors du nettoyage, hors périmètre de ce test qui porte sur
+    l'état final)."""
     import json
 
     # Réutilise DATA_DIR de tariff_data_service (source unique de vérité pour
     # ce chemin) plutôt qu'un chemin absolu codé en dur — robuste à tout
     # emplacement de checkout (CI, autre poste).
+    #
+    # P0-1 (audit 2026-09-01) : 54 → 39 fichiers — les 14 pays synthétiques
+    # enhanced_v2 (AGO COM DJI ERI LBY MDG MOZ MRT MWI SDN STP SYC ZMB ZWE)
+    # et la copie DZA périmée de juin 2026 (P0-2) ont été archivés hors
+    # service dans backend/data/archive/ — doctrine : aucune donnée
+    # estimée/synthétique servie.
     from services.tariff_data_service import DATA_DIR, tariff_service
 
     files = sorted(DATA_DIR.glob("*_tariffs.json"))
-    # Précondition alignée sur l'audit P0 du 2026-09-01 : 14 fichiers synthétiques
-    # `enhanced_v2` + la copie DZA périmée ont été retirés du service (voir
-    # backend/data/archive/synthetic_enhanced_v2/README.md et
-    # backend/data/archive/superseded/README.md). Le doctrine ZLECAf reste
-    # vérifié sur les 39 fichiers restants.
-    assert len(files) == 39, f"précondition invalidée : {len(files)} fichiers trouvés, 39 attendus"
+    assert len(files) == 39, (
+        f"précondition invalidée : {len(files)} fichiers trouvés, 39 attendus "
+        "(54 - 14 synthétiques archivés P0-1 - 1 copie DZA périmée P0-2)"
+    )
 
     tariff_service.load()
 
@@ -429,7 +470,7 @@ def test_tariffs_54_files_physically_clean_of_synthetic_zlecaf_markers(client):
 
     assert (
         total_lines_checked > 200_000
-    ), f"précondition invalidée : seulement {total_lines_checked} lignes lues sur 39 fichiers"
+    ), f"précondition invalidée : seulement {total_lines_checked} lignes lues sur 39 fichiers (~206 300 attendues après archivage P0)"
     assert lines_with_any_zlecaf_key == 0, (
         f"{lines_with_any_zlecaf_key} ligne(s) sur {total_lines_checked} portent encore "
         f"une clé zlecaf_rate/zlecaf_source/zlecaf_total_taxes — nettoyage incomplet"

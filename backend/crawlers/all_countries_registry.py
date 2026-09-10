@@ -1349,3 +1349,426 @@ def create_scraper_instance(country_code: str, config: Optional[Dict[str, Any]] 
     merged_config = {**scraper_config, **(config or {})}
 
     return scraper_class(country_code, merged_config)
+
+
+# =============================================================================
+# NATIONAL TAX SOURCES — Complétion tarifaire au-delà du TEC régional
+# =============================================================================
+# Contexte : les TEC régionaux (CEDEAO, CEMAC, EAC, SACU) ne publient que les
+# droits de douane (DD). Les droits et taxes d'effet équivalent (DTE) et les
+# taxes intérieures à l'importation (TVA, accises, redevances nationales) sont
+# énoncés par les administrations nationales (douanes, directions des impôts,
+# lois de finances), PAS par le TEC.
+#
+# IMPORTANT — source de vérité : la TVA de 31 pays et les accises de 7 pays
+# sont DÉJÀ documentés dans les datasets existants data/{pays}/vat_measures.json
+# et excise_measures.json (statuts VERIFIED_PRIMARY_TEXT / VERIFIED_CONSOLIDATED_HTML,
+# PDF officiels archivés sous data/sources/{pays}/official/). Ce registre déclare
+# les sources officielles pour les FAMILLES ENCORE MANQUANTES (DTE, accises
+# nationales, redevances) et pour les pays sans aucun dataset national
+# (BDI, BWA, COM, DJI, ERI, GNQ, LBY, LSO, MDG, MOZ, MWI, NAM, SDN, SOM, SSD,
+# STP, SWZ, SYC, ZMB, ZWE). L'état autoritaire par pays/famille est calculé à
+# l'exécution par etl.national_tax_completion (découverte des datasets).
+#
+# Doctrine (MISSION_TARIFS_AFRICAINS.md) : aucune donnée mock, hallucinée ou
+# extrapolée. Ce registre déclare UNIQUEMENT des sources officielles à collecter.
+# Il ne contient AUCUN taux. Un pays reste PENDING_OFFICIAL_COLLECTION tant
+# qu'aucun document officiel n'a été archivé (raw + SHA-256) et validé par les
+# validators du framework crawlers.
+#
+# url_status:
+#   VERIFIED_200               — portail vérifié joignable (vérification HTTP du 2026-09-05)
+#   REGISTRY_EXISTING_UNVERIFIED — URL déjà déclarée dans AFRICAN_COUNTRIES_REGISTRY,
+#                                non joignable depuis l'environnement de vérification
+#   UNVERIFIED                 — institution identifiée, URL à confirmer
+#   NONE_IDENTIFIED            — portail officiel non identifié à ce jour
+# =============================================================================
+
+NATIONAL_TAX_SOURCES: Dict[str, Dict[str, Any]] = {
+    # ── CEDEAO / UEMOA (15) ──────────────────────────────────────────────
+    "BEN": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Bénin)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Bénin) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["CEDEAO/PCC", "RS", "PCS", "PUA"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "BFA": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Burkina Faso)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Burkina Faso) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["CEDEAO/PCC", "RS", "PCS", "PC_AES"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "CPV": {
+        "tax_authority": {"name": "Direcção Geral das Contribuições e Impostos (Cabo Verde)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Código do IVA (Cabo Verde)", "Código do Imposto Especial de Consumo"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "CIV": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Côte d'Ivoire)", "url": "https://www.impots.gouv.ci", "url_status": "UNVERIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Côte d'Ivoire) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["CEDEAO/PCC", "RS", "PCS", "PUA"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "GMB": {
+        "tax_authority": {"name": "Gambia Revenue Authority (GRA)", "url": "https://www.gra.gm", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["Gambia Revenue Authority Act", "Income and VAT Act en vigueur", "Finance Act en vigueur"],
+        "documented_levies": ["CEDEAO/PCC"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "GHA": {
+        "tax_authority": {"name": "Ghana Revenue Authority (GRA)", "url": "https://www.gra.gov.gh", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["Value Added Tax Act, 2025 (Act 1151)", "Customs Act 2015 (Act 891)", "Finance Act en vigueur (GETFUND, NHIL, CPL)"],
+        "documents_to_collect": [
+            {
+                "instrument": "GRA — page officielle TVA (réforme Act 1151 en vigueur au 01/01/2026)",
+                "url": "https://gra.gov.gh/domestic-tax/tax-types/vat/",
+                "source_type": "OFFICIAL_CURRENT_PAGE",
+            }
+        ],
+        "documented_levies": ["GETFUND", "NHIL", "CPL", "CEDEAO/PCC"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "GIN": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Guinée)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Guinée) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["CEDEAO/PCC"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "GNB": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Guinée-Bissau)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Guinée-Bissau) en vigueur"],
+        "documented_levies": ["CEDEAO/PCC"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "LBR": {
+        "tax_authority": {"name": "Liberia Revenue Authority (LRA)", "url": "https://www.lra.gov.lr", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["LRA Act", "Consolidated Tax Law en vigueur", "Finance Act en vigueur"],
+        "documented_levies": ["CEDEAO/PCC"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "MLI": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Mali)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Mali) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["CEDEAO/PCC", "RS", "PCS", "PC_AES"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "NER": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Niger)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Niger) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["CEDEAO/PCC", "RS", "PCS", "PC_AES"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "NGA": {
+        "tax_authority": {"name": "Federal Inland Revenue Service (FIRS)", "url": "https://www.firs.gov.ng", "url_status": "REGISTRY_EXISTING_UNVERIFIED"},
+        "instruments_to_collect": ["VAT Act (Nigeria)", "Customs & Excise Tariff etc. (Consolidation) Act", "Finance Act en vigueur"],
+        "documented_levies": ["CISS", "NAC", "FORMM"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "SEN": {
+        "tax_authority": {"name": "Direction Générale des Impôts et des Domaines (DGID, Sénégal)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Sénégal) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["CEDEAO/PCC", "RS", "PCS", "PUA"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "SLE": {
+        "tax_authority": {"name": "National Revenue Authority (NRA, Sierra Leone)", "url": "https://www.nra.gov.sl", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["Goods and Services Tax Act", "Finance Act en vigueur", "Customs Act en vigueur"],
+        "documented_levies": ["CEDEAO/PCC"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "TGO": {
+        "tax_authority": {"name": "Office Togolais des Recettes (OTRF)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Togo) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["CEDEAO/PCC", "RS", "PCS", "PUA"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    # ── CEMAC (6) ────────────────────────────────────────────────────────
+    "CMR": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Cameroun)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Cameroun) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["TCI", "RI", "CAC", "ECTN"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "CAF": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Centrafrique)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Centrafrique) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["TCI", "RI", "ECTN"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "COG": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Congo)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Congo) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["TCI", "RI", "ECTN"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "GAB": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Gabon)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Gabon) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["TCI", "RI", "ECTN"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "GNQ": {
+        "tax_authority": {"name": "Dirección General de Impuestos (Guinée équatoriale)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Ley General de Impuestos (Guinée équatoriale) en vigueur"],
+        "documented_levies": ["TCI", "RI", "ECTN"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "TCD": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Tchad)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Tchad) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": ["TCI", "RI", "ECTN"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    # ── EAC (7) ──────────────────────────────────────────────────────────
+    "BDI": {
+        "tax_authority": {"name": "Office Burundais des Recettes (OBR)", "url": "https://www.obr.bi", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["Code des Impôts (Burundi) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "KEN": {
+        "tax_authority": {"name": "Kenya Revenue Authority (KRA)", "url": "https://www.kra.go.ke", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["VAT Act 2013 et aménagements", "Excise Duty Act 2013 et tarifs en vigueur", "EACCMA et amendements (EACCMA 2025 — SOURCE_PENDING au 24/07)"],
+        "documented_levies": ["IDF", "RDL", "PVoC"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "RWA": {
+        "tax_authority": {"name": "Rwanda Revenue Authority (RRA)", "url": "https://www.rra.gov.rw", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["VAT Law (Rwanda) en vigueur", "Excise Duty Law en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "SSD": {
+        "tax_authority": {"name": "Ministry of Finance and Planning (South Sudan) — Direction des impôts", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Taxation Act (South Sudan) en vigueur", "Financial Act en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "TZA": {
+        "tax_authority": {"name": "Tanzania Revenue Authority (TRA)", "url": "https://www.tra.go.tz", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["VAT Act 2014 et aménagements", "Excise Management and Tariff Act en vigueur", "Finance Act en vigueur"],
+        "documented_levies": ["PDL", "PVoC TBS"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "UGA": {
+        "tax_authority": {"name": "Uganda Revenue Authority (URA)", "url": "https://www.ura.go.ug", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["VAT Act Cap 349 (compendium URA) et amendements", "Excise Duty Act 2014", "Finance Act en vigueur (INFRALVY)"],
+        "documents_to_collect": [
+            {
+                "instrument": "URA — Compendium for various Domestic Tax Laws (loi TVA consolidée, juillet 2021)",
+                "url": "https://ura.go.ug/storage/2023/08/10580_DT_LAWS_JULY_2021.pdf",
+                "source_type": "OFFICIAL_PDF",
+            }
+        ],
+        "documented_levies": ["INFRALVY", "PVoC UNBS"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "COD": {
+        "tax_authority": {"name": "Direction Générale des Impôts (DGI, RDC)", "url": "https://www.impots.gouv.cd", "url_status": "REGISTRY_EXISTING_UNVERIFIED"},
+        "instruments_to_collect": ["Ordonnance-loi TVA (RDC)", "Loi de finances en vigueur"],
+        "documented_levies": ["OCC", "OCCDECL"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    # ── SACU (5) ─────────────────────────────────────────────────────────
+    "BWA": {
+        "tax_authority": {"name": "Botswana Unified Revenue Service (BURS)", "url": "https://www.burs.org.bw", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["VAT Act (Botswana) en vigueur", "Excise Duty Act en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "LSO": {
+        "tax_authority": {"name": "Lesotho Revenue Authority (LRA)", "url": "https://www.lra.org.ls", "url_status": "REGISTRY_EXISTING_UNVERIFIED"},
+        "instruments_to_collect": ["VAT Act (Lesotho) en vigueur", "Excise Act en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "NAM": {
+        "tax_authority": {"name": "Namibia Revenue Agency (NamRA)", "url": "https://www.namra.gov.na", "url_status": "REGISTRY_EXISTING_UNVERIFIED"},
+        "instruments_to_collect": ["VAT Act (Namibie) en vigueur", "Excise Tax Act en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "SWZ": {
+        "tax_authority": {"name": "Eswatini Revenue Authority (ERA)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["VAT Act (Eswatini) en vigueur", "Excise Tax Act en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "ZAF": {
+        "tax_authority": {"name": "South African Revenue Service (SARS)", "url": "https://www.sars.gov.za", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["Customs & Excise Act 91/1964 — Schedules (accises déjà archivées: 288 lignes)", "VAT Act 89/1991 + liste zéro-rated (SOURCE_PENDING)", "Rates Notices SARS en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    # ── Pays hors TEC (complétion identique requise) ─────────────────────
+    "MUS": {
+        "tax_authority": {"name": "Mauritius Revenue Authority (MRA)", "url": "https://www.mra.mu", "url_status": "REGISTRY_EXISTING_UNVERIFIED"},
+        "instruments_to_collect": ["VAT Act 1998 et aménagements", "Excise Act (Maurice) en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "SYC": {
+        "tax_authority": {"name": "Seychelles Revenue Commission (SRC)", "url": "https://www.src.gov.sc", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["VAT Act (Seychelles) en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "MWI": {
+        "tax_authority": {"name": "Malawi Revenue Authority (MRA)", "url": "https://www.mra.mw", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["VAT Act (Malawi) en vigueur", "Excise Tariff Act en vigueur"],
+        "documented_levies": ["COMLEV"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "ZMB": {
+        "tax_authority": {"name": "Zambia Revenue Authority (ZRA)", "url": "https://www.zra.org.zm", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["VAT Act (Zambie) en vigueur", "Excise Duty Act en vigueur"],
+        "documented_levies": ["COMLEV"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "ZWE": {
+        "tax_authority": {"name": "Zimbabwe Revenue Authority (ZIMRA)", "url": "https://www.zimra.co.zw", "url_status": "VERIFIED_200", "verified_at": "2026-09-05"},
+        "instruments_to_collect": ["VAT Act (Zimbabwe) en vigueur", "Excise Tariff Act en vigueur", "Finance Act en vigueur"],
+        "documented_levies": ["COMLEV", "CBCA"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "MOZ": {
+        "tax_authority": {"name": "Autoridade Tributária de Moçambique (AT)", "url": "https://www.at.gov.mz", "url_status": "REGISTRY_EXISTING_UNVERIFIED"},
+        "instruments_to_collect": ["Código do IVA (Moçambique)", "Código do Imposto sobre o Valor Acrescentado em vigueur", "Lei de Finanças en vigueur"],
+        "documented_levies": ["TRA"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "AGO": {
+        "tax_authority": {"name": "Administração Geral Tributária (AGT, Angola)", "url": "https://www.agt.minfin.gov.ao", "url_status": "REGISTRY_EXISTING_UNVERIFIED"},
+        "instruments_to_collect": ["Código do IVA (Angola)", "Código do Imposto Especial de Consumo en vigueur"],
+        "documented_levies": ["IE"],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE", "PARAFISCAL_NATIONAL"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "MDG": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Madagascar)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Madagascar) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "MRT": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Mauritanie)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Mauritanie) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "COM": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Comores)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Comores) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "STP": {
+        "tax_authority": {"name": "Direcção Geral das Contribuições e Impostos (São Tomé e Príncipe)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Código do IVA (São Tomé e Príncipe) en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "SDN": {
+        "tax_authority": {"name": "Taxation Chamber (Sudan) — Ministry of Finance", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Taxation Act (Sudan) en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "LBY": {
+        "tax_authority": {"name": "Ministère des Finances (Libye) — Direction des impôts", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Loi TVA (Libye) en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "DJI": {
+        "tax_authority": {"name": "Direction Générale des Impôts (Djibouti)", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Code Général des Impôts (Djibouti) en vigueur", "Loi de finances en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+    "ERI": {
+        "tax_authority": {"name": "Ministry of Finance (Eritrea) — Inland Revenue", "url": None, "url_status": "NONE_IDENTIFIED"},
+        "instruments_to_collect": ["Tax Proclamation (Eritrea) en vigueur"],
+        "documented_levies": [],
+        "tax_families_targeted": ["VAT", "EXCISE", "DTE"],
+        "collection_status": "PENDING_OFFICIAL_COLLECTION",
+    },
+}
+
+# Pays déjà complétés au niveau national 8–11 chiffres ( taxes nationales déjà
+# embarquées dans les fichiers canoniques — pas de collecte TEC requise) :
+# DZA, TUN, EGY, MAR, MUS (tarif national complet), ETH (partiel).
+NATIONAL_TAX_COMPLETED = {"DZA", "TUN", "EGY", "MAR"}
+
+
+def get_national_tax_source(country_code: str) -> Optional[Dict[str, Any]]:
+    """
+    Configuration de complétion fiscale nationale d'un pays (sources officielles
+    à collecter pour DTE/TVA/accises/redevances au-delà du TEC régional).
+
+    Args:
+        country_code: ISO3 (ex. 'KEN', 'SEN')
+
+    Returns:
+        Dict de configuration ou None si pays inconnu / déjà complété.
+    """
+    iso3 = (country_code or "").upper().strip()
+    if iso3 in NATIONAL_TAX_COMPLETED:
+        return None
+    return NATIONAL_TAX_SOURCES.get(iso3)
+
+
+def get_pending_national_tax_countries() -> List[str]:
+    """ISO3 des pays dont les taxes nationales restent à collecter (statut trié)."""
+    return sorted(
+        code
+        for code, cfg in NATIONAL_TAX_SOURCES.items()
+        if cfg.get("collection_status") == "PENDING_OFFICIAL_COLLECTION"
+    )

@@ -5,9 +5,16 @@ Remplace les anciennes routes basées sur les fichiers JSONL
 
 import logging
 
+<<<<<<< HEAD
 from fastapi import APIRouter, HTTPException, Query
 from services.authentic_tariff_service import (
     calculate_import_taxes,
+=======
+from entitlement_guard import require_calculations_quota
+from fastapi import APIRouter, Depends, HTTPException, Query
+from routes.authentic_tariffs import calculate_taxes_endpoint
+from services.authentic_tariff_service import (
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     get_administrative_formalities,
     get_available_countries,
     get_country_summary,
@@ -19,6 +26,11 @@ from services.authentic_tariff_service import (
     search_tariff_lines,
 )
 
+<<<<<<< HEAD
+=======
+from engine.schemas.legal_override import RemissionEligibility
+
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/postgres-tariffs", tags=["PostgreSQL Tariffs"])
@@ -110,6 +122,7 @@ async def search_commodities(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
+<<<<<<< HEAD
 @router.post("/calculate")
 async def calculate_tariffs(
     country_iso3: str = Query(..., description="Country ISO3 code"),
@@ -120,6 +133,38 @@ async def calculate_tariffs(
     try:
         result = calculate_import_taxes(country_iso3, hs6, value)
         return result
+=======
+@router.post("/calculate", dependencies=[Depends(require_calculations_quota())])
+async def calculate_tariffs(
+    country_iso3: str = Query(..., pattern="^[A-Za-z]{3}$", description="Country ISO3 code"),
+    hs6: str = Query(..., description="HS code or exact national position (6-12 digits)"),
+    value: float = Query(1000, gt=0, allow_inf_nan=False, description="Goods value"),
+):
+    """Compatibility URL using the same calculation boundary as authentic tariffs."""
+    try:
+        # Keep the legacy query names while sharing doctrine, selection errors,
+        # legal layers and provenance. Dependency injection is enforced above;
+        # a direct Python call does not execute the target route's dependencies.
+        return await calculate_taxes_endpoint(
+            country_iso3=country_iso3.upper(),
+            hs_code=hs6,
+            cif_value=value,
+            language="fr",
+            origin=None,
+            calculation_date=None,
+            remission_eligibility=RemissionEligibility.ELIGIBILITY_UNKNOWN,
+            authorization_reference=None,
+            authorization_valid_from=None,
+            authorization_valid_to=None,
+            authorization_hs_codes=None,
+            authorization_goods=None,
+            beneficiary=None,
+            import_purpose=None,
+            quantity=None,
+        )
+    except HTTPException:
+        raise
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     except Exception as e:
         logger.error(f"Error calculating tariffs: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")

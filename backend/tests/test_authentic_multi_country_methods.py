@@ -43,6 +43,7 @@ def test_ghana_tariff_codes_use_ghana_vat_and_levy_bases(monkeypatch):
     assert result["taxes_summary"]["npf"]["total_taxes_et_droits"] == 260.0
 
 
+<<<<<<< HEAD
 def test_ethiopia_tariff_codes_use_surtax_then_vat_cascade(monkeypatch):
     result = _calc(monkeypatch, "ETH", "020110")
     by_code = {row["code"]: row for row in result["taxes_breakdown"]}
@@ -61,6 +62,28 @@ def test_ethiopia_tariff_codes_use_surtax_then_vat_cascade(monkeypatch):
 
 def test_cemac_tariff_codes_use_cemac_tva_base_and_keep_ri(monkeypatch):
     result = _calc(monkeypatch, "CMR", "010110")
+=======
+def test_ethiopia_national_position_excludes_comesa_duty_from_npf(monkeypatch):
+    # The national source identifies D2R as COMESA Preferential Duty, not SR.
+    # The HS6 mirror carries a different SR entry; do not mix those sources.
+    source = svc.load_crawled_position_index("ETH")["02011000000"]
+    assert source["taxes"]["D2R"]["name"] == "COMESA Preferential Duty"
+    result = _calc(monkeypatch, "ETH", "02011000000")
+    by_code = {row["code"]: row for row in result["taxes_breakdown"]}
+
+    assert set(by_code) == {"DD", "TVA", "WHR"}
+    assert by_code["DD"]["amount_npf"] == 350.0
+    assert by_code["TVA"]["base_expr"] == "CIF + DD + SUR"
+    assert by_code["TVA"]["base_value_npf"] == 1_350.0
+    assert by_code["TVA"]["amount_npf"] == 202.5
+    assert by_code["WHR"]["amount_npf"] == 30.0
+    assert result["taxes_summary"]["npf"]["total_taxes_et_droits"] == 582.5
+    assert "D2R" in source["taxes"]  # Raw provenance is preserved.
+
+
+def test_cemac_tariff_codes_use_cemac_tva_base_and_keep_ri(monkeypatch):
+    result = _calc(monkeypatch, "CMR", "01011010")
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     by_code = {row["code"]: row for row in result["taxes_breakdown"]}
 
     assert {"DD", "TCI", "TVA", "RI"} <= set(by_code)
@@ -74,8 +97,26 @@ def test_cemac_tariff_codes_use_cemac_tva_base_and_keep_ri(monkeypatch):
     assert result["taxes_summary"]["npf"]["total_taxes_et_droits"] == 268.55
 
 
+<<<<<<< HEAD
 def test_tunisia_tariff_codes_normalize_duty_and_import_levy(monkeypatch):
     result = _calc(monkeypatch, "TUN", "010121")
+=======
+def test_ethiopia_hs6_mirror_surtax_method_remains_supported():
+    # Exercise the separate HS6 source's declared cascade without passing it
+    # off as the selected national row. No source rates are synthesized.
+    line = svc.get_tariff_line("ETH", "020110")
+    rates = {
+        svc._canonical_tax_code(row["tax"], row["observation"]): row["rate"]
+        for row in line["taxes_detail"]
+    }
+    cascade = svc.compute_tax_cascade(1_000.0, rates, "ETH")
+    assert rates["SUR"] == 10
+    assert cascade["total_taxes"] == 737.75
+
+
+def test_tunisia_tariff_codes_normalize_duty_and_import_levy(monkeypatch):
+    result = _calc(monkeypatch, "TUN", "01012100015")
+>>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     by_code = {row["code"]: row for row in result["taxes_breakdown"]}
 
     assert set(by_code) == {"DD", "TCL"}
