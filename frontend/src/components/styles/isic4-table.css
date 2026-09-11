@@ -138,6 +138,54 @@
   font-weight: 500;
 }
 
+/* Ligne d'en-tête de division ISIC 2 chiffres — regroupe ses lignes ISIC4 */
+.isic4-table tbody tr.division-header-row {
+  cursor: default;
+}
+
+.isic4-table tbody tr.division-header-row:hover {
+  background-color: inherit;
+}
+
+.division-header-cell {
+  background: #eef0fb;
+  color: #333;
+  font-weight: 700;
+  padding: 10px 12px !important;
+  border-top: 2px solid #667eea;
+  border-bottom: 1px solid #d7dafc;
+  position: sticky;
+  left: 0;
+}
+
+.division-header-code {
+  font-family: monospace;
+  color: #5568d3;
+  margin-right: 8px;
+}
+
+.division-header-count {
+  font-weight: 400;
+  color: #666;
+  font-size: 0.85em;
+  margin-left: 8px;
+}
+
+.theme-dark .division-header-cell {
+  background: #2a2d55;
+  color: #eee;
+  border-top-color: #8890f0;
+  border-bottom-color: #3a3d70;
+}
+
+.theme-dark .division-header-code {
+  color: #a4acf5;
+}
+
+.theme-dark .division-header-count {
+  color: #aaa;
+}
+
 /* ─────────────────────────────────────────────────────────────────────────────
    Colonnes figées (sticky columns)
 */
