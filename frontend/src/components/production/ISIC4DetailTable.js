@@ -17,6 +17,39 @@ const getBackendUrl = () => {
   return '';
 };
 
+// Libellés officiels ISIC Rev.4, divisions manufacturières (Section C, 10-33).
+const ISIC_DIVISION_LABELS = {
+  '10': 'Produits alimentaires', '11': 'Boissons', '12': 'Produits du tabac',
+  '13': 'Textiles', '14': "Articles d'habillement", '15': 'Cuir et articles de cuir',
+  '16': 'Bois et articles en bois', '17': 'Papier et articles en papier',
+  '18': 'Imprimerie et reproduction', '19': 'Cokéfaction et raffinage',
+  '20': 'Produits chimiques', '21': 'Produits pharmaceutiques',
+  '22': 'Caoutchouc et plastiques', '23': 'Minéraux non métalliques',
+  '24': 'Métallurgie de base', '25': 'Ouvrages en métaux',
+  '26': 'Produits informatiques et électroniques', '27': 'Équipements électriques',
+  '28': 'Machines et équipements', '29': 'Véhicules automobiles',
+  '30': 'Autres matériels de transport', '31': 'Meubles',
+  '32': 'Autres industries manufacturières', '33': 'Réparation et installation',
+};
+
+/** Groupe les secteurs ISIC4 par division 2 chiffres, conservant l'ordre des divisions. */
+function groupSectorsByDivision(sectors) {
+  const groups = new Map();
+  for (const sector of sectors) {
+    const division = sector.isic4?.slice(0, 2);
+    if (!division) continue;
+    if (!groups.has(division)) groups.set(division, []);
+    groups.get(division).push(sector);
+  }
+  return Array.from(groups.keys())
+    .sort()
+    .map((division) => ({
+      division,
+      label: ISIC_DIVISION_LABELS[division] || division,
+      sectors: groups.get(division),
+    }));
+}
+
 export default function ISIC4DetailTable({ countryISO3 }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -232,7 +265,18 @@ export default function ISIC4DetailTable({ countryISO3 }) {
             </tr>
           </thead>
           <tbody>
-            {data.sectors.map((sector, idx) => (
+            {groupSectorsByDivision(data.sectors).map(({ division, label, sectors }) => (
+              <React.Fragment key={division}>
+                <tr className="division-header-row">
+                  <td colSpan={2 + indicatorsList.length + 1} className="division-header-cell">
+                    <span className="division-header-code">ISIC {division}</span>
+                    {label}
+                    <span className="division-header-count">
+                      ({sectors.length} {sectors.length > 1 ? 'lignes ISIC4' : 'ligne ISIC4'})
+                    </span>
+                  </td>
+                </tr>
+                {sectors.map((sector, idx) => (
               <React.Fragment key={sector.isic4 || idx}>
                 {/* Ligne principale */}
                 <tr
@@ -294,6 +338,8 @@ export default function ISIC4DetailTable({ countryISO3 }) {
                     </td>
                   </tr>
                 )}
+              </React.Fragment>
+                ))}
               </React.Fragment>
             ))}
           </tbody>
