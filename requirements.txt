@@ -77,3 +77,4 @@ google-genai>=2.3.0
 # Database / cache
 psycopg2-binary==2.9.11
 redis==7.1.0
+SQLAlchemy==2.0.52

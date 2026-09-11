@@ -129,11 +129,8 @@ class SouthAfricaSARSScraper:
             return digits[:2]
         return ""
 
-<<<<<<< HEAD
     # Patterns pour extraction texte (fallback quand find_tables manque des lignes)
-    TEXT_CODE_PATTERN = re.compile(
-        r"(\d{4}\.\d{2}(?:\.\d{2}){1,2})"
-    )
+    TEXT_CODE_PATTERN = re.compile(r"(\d{4}\.\d{2}(?:\.\d{2}){1,2})")
     TEXT_HEADING_PATTERN = re.compile(r"^(\d{4}\.\d{2})\s*$")
     TEXT_RATE_PATTERN = re.compile(
         r"(free|\d+(?:[.,]\d+)?\s*%|\d+(?:[.,]\d+)?\s*c/\d*\s*(?:kg|li|u|unit))",
@@ -266,8 +263,6 @@ class SouthAfricaSARSScraper:
 
         return found, current_heading, current_heading_desc
 
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     def scrape_all(self) -> Dict:
         self.stats["started_at"] = datetime.utcnow().isoformat()
 
@@ -276,19 +271,18 @@ class SouthAfricaSARSScraper:
             self.stats["errors"] = 1
             return self.stats
 
+        table_positions = {}
+        text_positions = {}
+        merged = {}
+
         try:
             doc = fitz.open(filepath)
             logger.info(f"Parsing SARS PDF: {doc.page_count} pages")
 
             current_heading = ""
             current_heading_desc = ""
-<<<<<<< HEAD
-            table_positions = {}
 
             # ── PASS 1: Extraction par tables (find_tables) ──
-=======
-
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             for page_idx in range(doc.page_count):
                 page = doc[page_idx]
                 tables = page.find_tables()
@@ -353,18 +347,11 @@ class SouthAfricaSARSScraper:
                             )
 
                         chapter = self._get_chapter_from_code(code)
-<<<<<<< HEAD
                         code_clean = code.replace(".", "")
 
                         position = {
                             "code_raw": code,
                             "code_clean": code_clean,
-=======
-
-                        position = {
-                            "code_raw": code,
-                            "code_clean": code.replace(".", ""),
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
                             "check_digit": check_digit,
                             "designation": desc.strip(" -–"),
                             "chapter": chapter,
@@ -375,27 +362,19 @@ class SouthAfricaSARSScraper:
                             "administrative_formalities": [],
                             "source": "sars.gov.za",
                             "country": "SACU",
-<<<<<<< HEAD
                             "_extraction_method": "table",
                         }
                         table_positions[code_clean] = position
-=======
-                        }
-                        self.positions.append(position)
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
                 self.stats["pages_processed"] = page_idx + 1
 
                 if (page_idx + 1) % 100 == 0:
                     logger.info(
-<<<<<<< HEAD
                         f"[table] Page {page_idx+1}/{doc.page_count}: "
                         f"{len(table_positions)} positions"
                     )
 
-            logger.info(
-                f"Pass 1 (tables): {len(table_positions)} positions extracted"
-            )
+            logger.info(f"Pass 1 (tables): {len(table_positions)} positions extracted")
 
             # ── PASS 2: Extraction texte (catch-all) ──
             current_heading = ""
@@ -404,10 +383,8 @@ class SouthAfricaSARSScraper:
 
             for page_idx in range(doc.page_count):
                 page = doc[page_idx]
-                found, current_heading, current_heading_desc = (
-                    self._extract_page_text(
-                        page, current_heading, current_heading_desc
-                    )
+                found, current_heading, current_heading_desc = self._extract_page_text(
+                    page, current_heading, current_heading_desc
                 )
                 for pos in found:
                     text_positions[pos["code_clean"]] = pos
@@ -418,9 +395,7 @@ class SouthAfricaSARSScraper:
                         f"{len(text_positions)} positions"
                     )
 
-            logger.info(
-                f"Pass 2 (text): {len(text_positions)} positions extracted"
-            )
+            logger.info(f"Pass 2 (text): {len(text_positions)} positions extracted")
 
             # ── MERGE: table positions prioritaires, text comble les trous ──
             merged = dict(text_positions)
@@ -434,16 +409,12 @@ class SouthAfricaSARSScraper:
             # d'enfants 8-digit sont des lignes tarifaires à part entière
             # (subdivision nationale = "00"). On les normalise en 8-digit. ──
             code_to_pos = {p["code_clean"]: p for p in merged.values()}
-            eight_prefixes = {
-                c[:6] for c in code_to_pos if len(c) == 8
-            }
+            eight_prefixes = {c[:6] for c in code_to_pos if len(c) == 8}
             normalized = {}
             for code, pos in code_to_pos.items():
                 if len(code) == 6:
                     taxes = pos.get("taxes", [])
-                    general = next(
-                        (t for t in taxes if t.get("code") == "GENERAL"), None
-                    )
+                    general = next((t for t in taxes if t.get("code") == "GENERAL"), None)
                     has_rate = general and general.get("rate_pct") is not None
                     has_children = code in eight_prefixes
                     if has_rate and not has_children:
@@ -460,11 +431,6 @@ class SouthAfricaSARSScraper:
             self.positions = list(normalized.values())
             self.positions.sort(key=lambda p: p["code_clean"])
 
-=======
-                        f"Page {page_idx+1}/{doc.page_count}: {len(self.positions)} positions"
-                    )
-
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             doc.close()
 
         except Exception as e:
@@ -472,15 +438,12 @@ class SouthAfricaSARSScraper:
             self.errors.append({"error": str(e)})
 
         self.stats["positions_extracted"] = len(self.positions)
-<<<<<<< HEAD
         self.stats["extraction_method"] = {
             "table_pass": len(table_positions),
             "text_pass": len(text_positions),
             "merged_total": len(merged),
             "normalized_8digit": len(self.positions),
         }
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         self.stats["finished_at"] = datetime.utcnow().isoformat()
 
         self._save_all_countries()

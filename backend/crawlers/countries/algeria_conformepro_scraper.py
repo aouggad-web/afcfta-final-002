@@ -12,11 +12,7 @@ import os
 import re
 import time
 from datetime import datetime
-<<<<<<< HEAD
-from typing import Any, Dict, List, Optional, Set
-=======
 from typing import Any, Dict, List, Optional
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
 import httpx
 from bs4 import BeautifulSoup
@@ -297,7 +293,6 @@ class AlgeriaConformeproScraper:
                 return div_fs.get_text(strip=True)
         return ""
 
-<<<<<<< HEAD
     # Mapping des libellés publiés par conformepro.dz vers codes canoniques DGD.
     # Étendu pour couvrir TOUTES les taxes et redevances de la circulaire DGD.
     TAX_LABEL_MAP = {
@@ -331,13 +326,18 @@ class AlgeriaConformeproScraper:
 
     # Libellés connus qui ne sont PAS des taxes (ignorer dans l'extraction dynamique)
     NON_TAX_LABELS = {
-        "Désignation complète", "Avantages", "Formalités",
-        "Désignation", "Code", "Chapitre", "Section",
-        "Unité", "Unité statistique", "Statistiques",
+        "Désignation complète",
+        "Avantages",
+        "Formalités",
+        "Désignation",
+        "Code",
+        "Chapitre",
+        "Section",
+        "Unité",
+        "Unité statistique",
+        "Statistiques",
     }
 
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     async def scrape_sub_position_detail(self, sub: Dict) -> Dict:
         html = await self._fetch_page(sub["url"])
         if not html:
@@ -359,14 +359,11 @@ class AlgeriaConformeproScraper:
             "formalities": [],
             "source": "conformepro.dz",
             "source_url": sub["url"],
-<<<<<<< HEAD
             "source_root_url": BASE_URL,
             "source_quality": "crawled_authentic",
             "data_status": "crawled_authentic",
             "crawled_at": datetime.utcnow().isoformat(),
             "date_consulted": datetime.utcnow().strftime("%Y-%m-%d"),
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         }
 
         # "Désignation complète" is the authoritative full description
@@ -374,83 +371,6 @@ class AlgeriaConformeproScraper:
         if designation_full:
             result["designation_full"] = designation_full
 
-<<<<<<< HEAD
-        # ── EXTRACTION DYNAMIQUE DES TAXES ──
-        # Parcourir TOUS les div.vstack de la page et extraire ceux qui
-        # contiennent un taux (%, DA, dinars) — pas seulement les 6
-        # libellés hardcodés. Capture TAPT, DPE, TSV, TSP, T.PNEUS,
-        # T.HUILES, TPP, TPI et toute autre taxe publiée.
-        taxes = {}
-        source_gaps = []
-        for div in soup.find_all("div", class_="vstack"):
-            h2 = div.find("h2")
-            if not h2:
-                continue
-            label = h2.get_text(strip=True)
-
-            # Ignorer les blocs non-fiscaux
-            if label in self.NON_TAX_LABELS:
-                continue
-
-            # Extraire la valeur (p.fw-bold ou div.fs-3)
-            p = div.find("p", class_=lambda c: c and "fw-bold" in c)
-            raw_value = ""
-            if p:
-                raw_value = p.get_text(strip=True)
-            else:
-                div_fs = div.find("div", class_="fs-3")
-                if div_fs:
-                    raw_value = div_fs.get_text(strip=True)
-
-            if not raw_value:
-                continue
-
-            # Déterminer le code canonique
-            code = self.TAX_LABEL_MAP.get(label, "")
-            if not code:
-                # Extraction dynamique : si le libellé contient un taux,
-                # c'est une taxe — utiliser le libellé comme code.
-                if re.search(r"\d+(?:[.,]\d+)?\s*%", raw_value) or \
-                   re.search(r"\d+(?:[.,]\d+)?\s*(?:da|DA|dinars?)", raw_value, re.IGNORECASE):
-                    code = label.upper().replace(" ", "_").replace(".", "")[:20]
-                else:
-                    continue
-
-            # Parser le taux
-            rate = None
-            rate_match = re.search(r"(\d+(?:[.,]\d+)?)\s*%?", raw_value)
-            if rate_match:
-                rate = float(rate_match.group(1).replace(",", "."))
-
-            # Valeur spécifique (DA/kg, DA/hg, etc.)
-            specific_match = re.search(
-                r"(\d+(?:[.,]\d+)?)\s*(?:da|DA|dinars?)\s*(?:/|par)?\s*(kg|hg|hectogramme|litre|l|unité|u)?",
-                raw_value, re.IGNORECASE
-            )
-            specific_value = specific_match.group(0) if specific_match else None
-
-            taxes[code] = {
-                "code": code,
-                "label_published": label,
-                "rate": rate if rate is not None else 0.0,
-                "raw": raw_value,
-                "specific_value": specific_value,
-                "source": "conformepro.dz (données douane.gov.dz)",
-                "source_root_url": BASE_URL,
-                "official_dgd_code": code,
-                "official_dgd_label": label,
-                "label_verification": "DYNAMIC_EXTRACT",
-            }
-
-            # Si le taux n'a pas pu être extrait → source_gap
-            if rate is None and not specific_value:
-                source_gaps.append(code)
-
-        result["taxes"] = taxes
-        result["source_gaps"] = source_gaps
-
-        # ── AVANTAGES FISCAUX ──
-=======
         # Tax rates — each lives in its own div.vstack block
         tax_labels = {
             "Droit de douane": "DD",
@@ -472,128 +392,13 @@ class AlgeriaConformeproScraper:
                     }
 
         # Advantages and formalities are in div.vstack with <ul> lists
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         advantages_raw = self._parse_vstack(soup, "Avantages")
         if advantages_raw:
             result["advantages"] = [s.strip() for s in advantages_raw.split(";") if s.strip()]
 
-<<<<<<< HEAD
-        # ── FORMALITÉS (avec extraction des taxes implicites) ──
-        formalities_raw = self._parse_vstack(soup, "Formalités")
-        if formalities_raw:
-            formalities = []
-            for f in formalities_raw.split(";"):
-                f = f.strip()
-                if not f:
-                    continue
-
-                # Détecter les taxes/redevances implicites dans les formalités
-                # (ex: "Quit. paiement taxe poisson imp. 30da/kg",
-                #       "Droit de garantie 16000da/hg or",
-                #       "Redevance copie privée ONDA")
-                fap_code = ""
-                official_label = f
-                match_status = "UNMATCHED_VERBATIM"
-
-                # Mapper les formalités connues vers des codes FAP
-                fap_mappings = {
-                    "derogation sanitaire": ("D.S.V", "Dérogation sanitaire vétérinaire", "MATCHED_DGD_FAP_LIST"),
-                    "visa de controle sanitaire": ("V.C.S.V", "Visa de Contrôle Sanitaire Vétérinaire", "MATCHED_DGD_FAP_LIST"),
-                    "certificat phytosanitaire": ("C.P", "Certificat Phytosanitaire", "MATCHED_DGD_FAP_LIST"),
-                    "autorisation": ("AUT", "Autorisation", "MATCHED_DGD_FAP_LIST"),
-                    "licence": ("LIC", "Licence", "MATCHED_DGD_FAP_LIST"),
-                    "agrement": ("AGR", "Agrément", "MATCHED_DGD_FAP_LIST"),
-                    "homologation": ("HOM", "Homologation", "MATCHED_DGD_FAP_LIST"),
-                    "visa technique": ("VT", "Visa Technique", "MATCHED_DGD_FAP_LIST"),
-                    "inspection": ("INS", "Inspection", "MATCHED_DGD_FAP_LIST"),
-                    "attestation": ("ATT", "Attestation", "MATCHED_DGD_FAP_LIST"),
-                    "declaration": ("DEC", "Déclaration", "MATCHED_DGD_FAP_LIST"),
-                    "acquit": ("ACQ", "Acquit", "MATCHED_DGD_FAP_LIST"),
-                    "quit": ("QUIT", "Quittance", "MATCHED_DGD_FAP_LIST"),
-                    "cahier des charges": ("CDC", "Cahier des Charges", "MATCHED_DGD_FAP_LIST"),
-                    "monopole": ("MON", "Monopole", "MATCHED_DGD_FAP_LIST"),
-                    "fiche": ("FIC", "Fiche", "MATCHED_DGD_FAP_LIST"),
-                }
-
-                f_lower = f.lower()
-                for pattern, (code, label, status) in fap_mappings.items():
-                    if pattern in f_lower:
-                        fap_code = code
-                        official_label = label
-                        match_status = status
-                        break
-
-                formalities.append({
-                    "text_verbatim": f,
-                    "source": "conformepro.dz (données douane.gov.dz)",
-                    "fap_code": fap_code,
-                    "fap_official_label": official_label if fap_code else f,
-                    "match_status": match_status,
-                })
-
-                # Si la formalité contient un montant (DA/kg, DA/hg),
-                # l'enregistrer aussi comme taxe implicite
-                da_match = re.search(
-                    r"(\d+(?:[.,]\d+)?)\s*(?:da|DA|dinars?)\s*(?:/|par)?\s*(kg|hg|hectogramme|litre|l)?",
-                    f, re.IGNORECASE
-                )
-                if da_match:
-                    implicit_code = "IMPLICIT_" + f[:20].upper().replace(" ", "_").replace(".", "")
-                    # Essayer de nommer la taxe
-                    if "poisson" in f_lower:
-                        implicit_code = "TAXE_POISSON"
-                    elif "garantie" in f_lower or "or" in f_lower:
-                        implicit_code = "DROIT_GARANTIE"
-                    elif "onda" in f_lower or "copie privee" in f_lower:
-                        implicit_code = "ONDA"
-                    elif "alcool" in f_lower or "regie" in f_lower:
-                        implicit_code = "ACQUIT_ALCOOLS"
-
-                    if implicit_code not in taxes:
-                        taxes[implicit_code] = {
-                            "code": implicit_code,
-                            "label_published": f,
-                            "rate": None,
-                            "raw": f,
-                            "specific_value": da_match.group(0),
-                            "source": "conformepro.dz — extrait des formalités",
-                            "source_root_url": BASE_URL,
-                            "official_dgd_code": implicit_code,
-                            "official_dgd_label": f,
-                            "label_verification": "IMPLICIT_FROM_FORMALITY",
-                        }
-
-            result["formalities"] = formalities
-
-        # ── RÉFÉRENCES JURIDIQUES ──
-        # conformepro.dz ne publie pas toujours les références juridiques
-        # par sous-position, mais on les extrait quand elles sont présentes.
-        legal_refs = []
-        legal_raw = self._parse_vstack(soup, "Références juridiques")
-        if legal_raw:
-            for ref in legal_raw.split(";"):
-                ref = ref.strip()
-                if ref:
-                    legal_refs.append({"ref": ref, "doc": None})
-        if legal_refs:
-            result["legal_refs"] = legal_refs
-        else:
-            # Références juridiques par défaut (Code des Douanes + Tarif D'Usage)
-            result["legal_refs"] = [
-                {
-                    "ref": "Loi n° 79-07 du 21 juillet 1979 portant code des douanes, modifiée et complétée",
-                    "doc": "data/sources/DZA/legislation/code_douanes_79-07.pdf",
-                },
-                {
-                    "ref": "Tarif Douanier d'usage — DGD, Direction de la Fiscalité et des Bases de Taxation (édition LF 2020)",
-                    "doc": "data/sources/DZA/legislation/tarif_d_usage_2020.pdf",
-                },
-            ]
-=======
         formalities_raw = self._parse_vstack(soup, "Formalités")
         if formalities_raw:
             result["formalities"] = [s.strip() for s in formalities_raw.split(";") if s.strip()]
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
         return result
 
@@ -763,11 +568,7 @@ class AlgeriaConformeproScraper:
     async def run(
         self,
         max_headings: int = None,
-<<<<<<< HEAD
-        chapters: Optional[Set[str]] = None,
-=======
         chapters: set[str] | None = None,
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         concurrency: int = 1,
     ):
         """
@@ -802,11 +603,7 @@ class AlgeriaConformeproScraper:
 
 
 async def run_algeria_scraper(
-<<<<<<< HEAD
-    max_headings: int = None, chapters: Optional[Set[str]] = None, concurrency: int = 1
-=======
     max_headings: int = None, chapters: set[str] | None = None, concurrency: int = 1
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 ):
     scraper = AlgeriaConformeproScraper()
     return await scraper.run(max_headings=max_headings, chapters=chapters, concurrency=concurrency)

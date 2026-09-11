@@ -24,10 +24,7 @@ _ENGINE_DIR = Path(__file__).resolve().parents[3] / "engine"
 if str(_ENGINE_DIR) not in sys.path:
     sys.path.insert(0, str(_ENGINE_DIR))
 
-<<<<<<< HEAD
 compute_duties = import_module("calculation").compute_duties
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 CanonicalTariffLine = import_module("schemas.canonical_model").CanonicalTariffLine
 
 # ---------------------------------------------------------------------------
@@ -133,7 +130,6 @@ class UserProfile(BaseModel):
 # Helpers
 # ---------------------------------------------------------------------------
 
-<<<<<<< HEAD
 _TARIFF_RATES: dict[str, dict[str, float]] = {
     "default": {"within_ecowas": 0.0, "within_sadc": 0.0, "within_eac": 0.0, "mfn": 10.0},
     "01": {"within_ecowas": 0.0, "within_sadc": 0.0, "within_eac": 0.0, "mfn": 5.0},
@@ -161,8 +157,6 @@ def _estimate_tariff(hs_code: str, origin: str, destination: str) -> dict[str, A
     }
 
 
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 # ---------------------------------------------------------------------------
 # Endpoints
 # ---------------------------------------------------------------------------
@@ -176,13 +170,7 @@ async def comprehensive_search(request: ComprehensiveSearchRequest) -> dict[str,
     # HS code / product search
     products = _hs_search.search(request.query, limit=10)
     if request.filters.hs_chapters:
-<<<<<<< HEAD
         products = [p for p in products if p.get("chapter") in request.filters.hs_chapters]
-=======
-        products = [
-            p for p in products if p.get("chapter") in request.filters.hs_chapters
-        ]
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
     # Country filter applied to investment search
     inv_criteria: dict[str, Any] = {}
@@ -233,39 +221,6 @@ async def comprehensive_search(request: ComprehensiveSearchRequest) -> dict[str,
 
 @router.post("/calculations", summary="Canonical v4 tariff calculation")
 async def calculate_tariff_v2(request: CalculationRequest) -> dict[str, Any]:
-<<<<<<< HEAD
-    """Calculate duties and taxes using the canonical v4 fiscal engine."""
-    start = time.perf_counter()
-    result = compute_duties(
-        request.line,
-        cif_value=request.cif_value,
-        quantity=request.quantity,
-        currency=request.currency,
-        regime=request.regime,
-    )
-    elapsed_ms = round((time.perf_counter() - start) * 1000, 2)
-
-    return {
-        "success": True,
-        "schema_version": request.line.schema_version,
-        "calculation_engine": "engine.calculation.compute_duties",
-        "processing_time_ms": elapsed_ms,
-        "data_status": result.data_status,
-        "disclaimer": result.disclaimer,
-        "warnings": result.warnings,
-        "result": {
-            "country_iso3": result.country_iso3,
-            "national_code": result.national_code,
-            "cif_value": result.cif_value,
-            "currency": result.currency,
-            "regime": result.regime,
-            "total_duties_taxes": result.total_duties_taxes,
-            "landed_cost": result.landed_cost,
-            "effective_rate_pct": result.effective_rate_pct,
-            "lines": [line.__dict__ for line in result.lines],
-        },
-    }
-=======
     raise HTTPException(
         status_code=503,
         detail={
@@ -274,38 +229,10 @@ async def calculate_tariff_v2(request: CalculationRequest) -> dict[str, Any]:
             "message": "Calculation unavailable until server-verified national tariff data is connected.",
         },
     )
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
 
 @router.post("/bulk/tariff-calculations", summary="Bulk tariff calculation")
 async def bulk_tariff_calculations(request: BulkTariffRequest) -> dict[str, Any]:
-<<<<<<< HEAD
-    """Calculate tariffs for multiple product-route combinations in one call."""
-    if not request.products:
-        raise HTTPException(status_code=400, detail="At least one product required")
-    if not request.routes:
-        raise HTTPException(status_code=400, detail="At least one route required")
-
-    batch_id = str(uuid.uuid4())
-    results = []
-    for product in request.products:
-        for route in request.routes:
-            result = _estimate_tariff(product.hs_code, route.origin, route.destination)
-            result["product_description"] = product.description
-            results.append(result)
-
-    return {
-        "batch_id": batch_id,
-        "status": "completed",
-        "results": results,
-        "processed": len(results),
-        "total": len(request.products) * len(request.routes),
-        "generated_at": datetime.now(timezone.utc).isoformat(),
-    }
-
-
-@router.post("/bulk/investment-analysis", summary="Batch investment opportunity analysis")
-=======
     raise HTTPException(
         status_code=503,
         detail={
@@ -316,10 +243,7 @@ async def bulk_tariff_calculations(request: BulkTariffRequest) -> dict[str, Any]
     )
 
 
-@router.post(
-    "/bulk/investment-analysis", summary="Batch investment opportunity analysis"
-)
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
+@router.post("/bulk/investment-analysis", summary="Batch investment opportunity analysis")
 async def bulk_investment_analysis(request: BulkInvestmentRequest) -> dict[str, Any]:
     """Score and rank a batch of investment opportunities against investor criteria."""
     _risk_map = {"low": 1, "medium": 2, "high": 3}
@@ -346,12 +270,7 @@ async def bulk_investment_analysis(request: BulkInvestmentRequest) -> dict[str, 
                 {
                     **match,
                     "composite_score": score,
-<<<<<<< HEAD
                     "meets_criteria": risk_val <= max_risk and roi >= request.criteria.min_roi,
-=======
-                    "meets_criteria": risk_val <= max_risk
-                    and roi >= request.criteria.min_roi,
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
                 }
             )
 
@@ -367,24 +286,12 @@ async def bulk_investment_analysis(request: BulkInvestmentRequest) -> dict[str, 
 
 @router.get("/analytics/dashboard", summary="Executive analytics dashboard")
 async def analytics_dashboard(
-<<<<<<< HEAD
     region: Optional[str] = Query(default=None, description="Filter by region (e.g. ECOWAS, EAC)"),
-=======
-    region: Optional[str] = Query(
-        default=None, description="Filter by region (e.g. ECOWAS, EAC)"
-    ),
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     timeframe: str = Query(default="2024"),
 ) -> dict[str, Any]:
     """Return aggregated dashboard metrics for AfCFTA regional performance."""
     regions_filter = [region] if region else None
-<<<<<<< HEAD
     regional = _regional_engine.get_regional_dashboard(regions=regions_filter, timeframe=timeframe)
-=======
-    regional = _regional_engine.get_regional_dashboard(
-        regions=regions_filter, timeframe=timeframe
-    )
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     kpis = _dashboard_gen.generate_kpi_metrics()
     flows = _dashboard_gen.generate_investment_flow_data(timeframe=timeframe)
     summary = _dashboard_gen.generate_executive_summary()
@@ -454,33 +361,18 @@ async def mobile_quick_lookup(
 ) -> dict[str, Any]:
     """Lightweight endpoint optimised for mobile clients – returns minimal tariff info."""
     if not hs_code and not country:
-<<<<<<< HEAD
         raise HTTPException(status_code=400, detail="Provide at least hs_code or country")
-=======
-        raise HTTPException(
-            status_code=400, detail="Provide at least hs_code or country"
-        )
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
     result: dict[str, Any] = {"query": {"hs_code": hs_code, "country": country}}
 
     if hs_code:
         matches = _hs_search.search(hs_code, limit=3)
         result["hs_info"] = matches[0] if matches else None
-<<<<<<< HEAD
-        chapter = hs_code[:2] if len(hs_code) >= 2 else "00"
-        rates = _TARIFF_RATES.get(chapter, _TARIFF_RATES["default"])
-        result["tariff_summary"] = {
-            "mfn_rate_pct": rates["mfn"],
-            "afcfta_rate_pct": 0.0,
-            "note": "Indicative – verify with official schedule",
-=======
         result["tariff_summary"] = {
             "mfn_rate_pct": None,
             "afcfta_rate_pct": None,
             "data_status": "NOT_AVAILABLE",
             "note": "Verified national tariff data is not connected to this endpoint.",
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         }
 
     if country:
