@@ -5,16 +5,10 @@ Remplace les anciennes routes basées sur les fichiers JSONL
 
 import logging
 
-<<<<<<< HEAD
-from fastapi import APIRouter, HTTPException, Query
-from services.authentic_tariff_service import (
-    calculate_import_taxes,
-=======
 from entitlement_guard import require_calculations_quota
 from fastapi import APIRouter, Depends, HTTPException, Query
 from routes.authentic_tariffs import calculate_taxes_endpoint
 from services.authentic_tariff_service import (
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     get_administrative_formalities,
     get_available_countries,
     get_country_summary,
@@ -26,11 +20,8 @@ from services.authentic_tariff_service import (
     search_tariff_lines,
 )
 
-<<<<<<< HEAD
-=======
 from engine.schemas.legal_override import RemissionEligibility
 
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/postgres-tariffs", tags=["PostgreSQL Tariffs"])
@@ -122,18 +113,6 @@ async def search_commodities(
         raise HTTPException(status_code=500, detail="Internal server error")
 
 
-<<<<<<< HEAD
-@router.post("/calculate")
-async def calculate_tariffs(
-    country_iso3: str = Query(..., description="Country ISO3 code"),
-    hs6: str = Query(..., description="HS6 code"),
-    value: float = Query(1000, ge=0, description="Goods value"),
-):
-    """Calculer les tarifs pour un code HS6"""
-    try:
-        result = calculate_import_taxes(country_iso3, hs6, value)
-        return result
-=======
 @router.post("/calculate", dependencies=[Depends(require_calculations_quota())])
 async def calculate_tariffs(
     country_iso3: str = Query(..., pattern="^[A-Za-z]{3}$", description="Country ISO3 code"),
@@ -164,7 +143,6 @@ async def calculate_tariffs(
         )
     except HTTPException:
         raise
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     except Exception as e:
         logger.error(f"Error calculating tariffs: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
