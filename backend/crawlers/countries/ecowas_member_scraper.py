@@ -510,6 +510,7 @@ def generate_country_tariffs(country_code: str, xls_path: str) -> List[dict]:
             "unit": unit,
             "taxes": taxes,
             "taxes_detail": taxes_detail,
+            "source_gaps": [t["tax_code"] for t in taxes_detail if t.get("source_gap")],
             "source": config["source"],
             "data_type": "regional_cet_with_national_taxes",
             "trade_bloc": trade_bloc,
