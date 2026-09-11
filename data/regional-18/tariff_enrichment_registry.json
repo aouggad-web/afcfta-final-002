@@ -91,6 +91,22 @@
         "data/kenya/administrative_formalities.json"
       ],
       "vat_measure_path": "data/kenya/vat_measures.json",
+      "other_tax_measure_paths": [
+        {
+          "path": "data/kenya/excise_measures.json",
+          "collections": ["excise_rates", "excise_exemptions"]
+        },
+        {
+          "path": "data/kenya/import_levies.json",
+          "collections": [
+            "import_declaration_fee",
+            "railway_development_levy",
+            "export_and_investment_promotion_levy",
+            "sugar_development_levy",
+            "other_import_levies"
+          ]
+        }
+      ],
       "required_document_records": ["FORM-TPA-44A", "FORM-KRA-CLEARANCE-DOCS"],
       "anomalies": ["Le CET est documenté ; les concessions ZLECAf par ligne restent NOT_AVAILABLE."]
     },
@@ -109,6 +125,12 @@
         "data/rwanda/excise_measures.json"
       ],
       "vat_measure_path": "data/rwanda/vat_measures.json",
+      "other_tax_measure_paths": [
+        {
+          "path": "data/rwanda/excise_measures.json",
+          "collections": ["excise_rates"]
+        }
+      ],
       "required_document_records": [],
       "anomalies": []
     },
@@ -144,6 +166,12 @@
         "data/tanzania/excise_measures.json"
       ],
       "vat_measure_path": "data/tanzania/vat_measures.json",
+      "other_tax_measure_paths": [
+        {
+          "path": "data/tanzania/excise_measures.json",
+          "collections": ["excise_rates"]
+        }
+      ],
       "required_document_records": [],
       "anomalies": []
     },
@@ -256,6 +284,22 @@
         "data/cameroon/import_levies.json"
       ],
       "vat_measure_path": "data/cameroon/vat_measures.json",
+      "other_tax_measure_paths": [
+        {
+          "path": "data/cameroon/excise_measures.json",
+          "collections": [
+            "excise_rates",
+            "excise_specific_duties_pending_quantity_data"
+          ]
+        },
+        {
+          "path": "data/cameroon/import_levies.json",
+          "collections": [
+            "centimes_additionnels_communaux",
+            "other_import_levies"
+          ]
+        }
+      ],
       "required_document_records": [],
       "anomalies": []
     },
