@@ -96,12 +96,32 @@ def tariff_lineage(countries: dict, iso: str) -> str:
         current = parent
 
 
-def download(url: str, dest: Path) -> None:
+def download(url: str, dest: Path) -> Path:
+    """Télécharge à côté de la destination et retourne le fichier temporaire.
+
+    Le remplacement n'a délibérément pas lieu ici. Une version antérieure
+    téléchargeait puis appelait ``tmp.replace(dest)`` avant toute vérification :
+    un artefact divergent était bien rejeté, mais il avait déjà détruit le
+    fichier valide. Le refus arrivait trop tard pour protéger quoi que ce soit.
+
+    L'appelant vérifie l'empreinte du fichier temporaire, puis publie avec
+    ``promote`` — ou jette, laissant la donnée en place intacte.
+    """
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(dest.suffix + ".part")
     with urllib.request.urlopen(url, timeout=300) as response, open(tmp, "wb") as out:
         shutil.copyfileobj(response, out)
+    return tmp
+
+
+def promote(tmp: Path, dest: Path) -> None:
+    """Publie l'artefact vérifié. ``replace`` est atomique sur un même système."""
     tmp.replace(dest)
+
+
+def discard(tmp: Path) -> None:
+    """Écarte un téléchargement non conforme sans toucher à la donnée en place."""
+    tmp.unlink(missing_ok=True)
 
 
 def process(iso: str, countries: dict, verify_only: bool) -> Optional[str]:
@@ -125,19 +145,30 @@ def process(iso: str, countries: dict, verify_only: bool) -> Optional[str]:
     expected = entry.get("sha256")
     url = entry.get("artifact_url")
 
+    if not expected or expected == "pending":
+        # Sans empreinte de référence, on ne peut rien affirmer : c'est un
+        # trou de traçabilité à combler, pas une validation. Contrôlé avant tout
+        # téléchargement : sans référence, rien ne pourrait valider l'arrivant.
+        return f"{iso}: empreinte absente du manifeste, intégrité non vérifiable"
+
     if url and not verify_only:
         try:
-            download(url, dest)
+            tmp = download(url, dest)
         except Exception as exc:  # noqa: BLE001 — le message doit rester lisible
             return f"{iso}: téléchargement impossible depuis {url} ({exc})"
+        actual = sha256_of(tmp)
+        if actual != expected:
+            discard(tmp)
+            return (
+                f"{iso}: téléchargement refusé, empreinte non conforme "
+                f"(fichier en place inchangé)\n"
+                f"        attendue {expected}\n"
+                f"        obtenue  {actual}"
+            )
+        promote(tmp, dest)
 
     if not dest.exists():
         return f"{iso}: artefact absent ({path_value}) et aucun artifact_url pour le récupérer"
-
-    if not expected or expected == "pending":
-        # Sans empreinte de référence, on ne peut rien affirmer : c'est un
-        # trou de traçabilité à combler, pas une validation.
-        return f"{iso}: empreinte absente du manifeste, intégrité non vérifiable"
 
     actual = sha256_of(dest)
     if actual != expected:
