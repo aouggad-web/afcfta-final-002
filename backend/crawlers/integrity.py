@@ -48,6 +48,20 @@ def verify_file_hash(filepath: str, expected_hash: str) -> bool:
     return actual == expected_hash
 
 
+def sidecar_path(filepath: str) -> str:
+    """Chemin du fichier .sha256 adjacent portant le hash du fichier scellé."""
+    return f"{filepath}.sha256"
+
+
+def read_sidecar_hash(filepath: str) -> Optional[str]:
+    """Lit le hash publié dans le .sha256 adjacent, ou None s'il est absent."""
+    path = sidecar_path(filepath)
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as f:
+        return f.read().strip().split()[0] or None
+
+
 class IntegritySeal:
     """
     Sceau d'intégrité attaché à un fichier de données crawlées.
@@ -156,29 +170,29 @@ def seal_crawled_file(filepath: str, source_url: str = "", source_hash: Optional
     # Calculer le content_hash (sans le sceau)
     content_hash = compute_json_hash(data)
 
-    # Sérialiser avec le sceau pour calculer le file_hash
+    # Le file_hash ne peut pas vivre à l'intérieur du fichier qu'il hache :
+    # l'y écrire changerait le contenu et invaliderait la valeur écrite. Il
+    # est donc publié dans un fichier <nom>.sha256 adjacent, écrit après la
+    # sérialisation définitive, et le sceau embarqué ne porte que le
+    # content_hash — seul hachage vérifiable depuis l'intérieur du document.
     seal = IntegritySeal(
-        file_hash="",  # sera calculé après écriture
+        file_hash="",
         content_hash=content_hash,
         source_url=source_url or data.get("source_url", data.get("source_root_url", "")),
         source_hash=source_hash,
     )
-    data = seal.embed_in(data)
+    payload = seal.to_dict()
+    payload.pop("file_hash", None)
+    data["_integrity_seal"] = payload
 
-    # Écrire
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    # Calculer le file_hash final
     file_hash = compute_file_hash(filepath)
     seal.file_hash = file_hash
+    with open(sidecar_path(filepath), "w", encoding="utf-8") as f:
+        f.write(f"{file_hash}  {os.path.basename(filepath)}\n")
 
-    # Réécrire avec le file_hash correct
-    data["_integrity_seal"]["file_hash"] = file_hash
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-    # Vérifier
     seal.verified = verify_file_hash(filepath, file_hash)
 
     return seal
@@ -214,12 +228,19 @@ def verify_crawled_file(filepath: str) -> Dict[str, Any]:
     data.pop("_integrity_seal", None)
     actual_content_hash = compute_json_hash(data)
 
+    # Le hash du fichier est publié dans le .sha256 adjacent, jamais dans le
+    # document lui-même (cf. seal_crawled_file).
+    expected_file_hash = read_sidecar_hash(filepath)
+    file_hash_match = expected_file_hash is not None and actual_file_hash == expected_file_hash
+    content_hash_match = actual_content_hash == seal.get("content_hash")
+
     return {
-        "valid": actual_file_hash == seal.get("file_hash") and actual_content_hash == seal.get("content_hash"),
-        "file_hash_match": actual_file_hash == seal.get("file_hash"),
-        "content_hash_match": actual_content_hash == seal.get("content_hash"),
+        "valid": file_hash_match and content_hash_match,
+        "file_hash_match": file_hash_match,
+        "content_hash_match": content_hash_match,
         "seal": seal,
         "actual_file_hash": actual_file_hash,
+        "expected_file_hash": expected_file_hash,
         "filepath": filepath,
     }
 
@@ -227,7 +248,7 @@ def verify_crawled_file(filepath: str) -> Dict[str, Any]:
 def seal_all_crawled_files(crawled_dir: str = None):
     """Scelle tous les fichiers crawled/*.json."""
     if crawled_dir is None:
-        crawled_dir = str(Path(__file__).resolve().parent.parent.parent / "data" / "crawled")
+        crawled_dir = str(Path(__file__).resolve().parent.parent / "data" / "crawled")
 
     results = []
     for f in sorted(Path(crawled_dir).glob("*_tariffs.json")):
@@ -248,7 +269,7 @@ def seal_all_crawled_files(crawled_dir: str = None):
 def verify_all_crawled_files(crawled_dir: str = None):
     """Vérifie tous les fichiers scellés."""
     if crawled_dir is None:
-        crawled_dir = str(Path(__file__).resolve().parent.parent.parent / "data" / "crawled")
+        crawled_dir = str(Path(__file__).resolve().parent.parent / "data" / "crawled")
 
     results = []
     for f in sorted(Path(crawled_dir).glob("*_tariffs.json")):
