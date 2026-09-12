@@ -1,7 +1,8 @@
-# Instruction pour le pod Emergent — déploiement du module Production (ISIC4 / IDSB)
+# Instruction pour le pod Emergent — Production (ISIC4 / IDSB) et Opportunités
 
 > À coller telle quelle dans le **Shell Emergent** du projet.
-> Rédigée le 2026-09-12, après la fusion de la PR #467 dans `main`.
+> Rédigée le 2026-09-12, après la fusion des PR #467 (Production) et #468
+> (Opportunités) dans `main`.
 
 ## 0. Règle qui prime sur tout le reste
 
@@ -118,11 +119,35 @@ Dans l'ordre, les trois causes déjà rencontrées :
 3. le composant n'est pas monté par `App.js` — aucun cache ni build ne peut
    faire apparaître un écran qui n'est jamais rendu.
 
-## 5. Ce qui n'est PAS à déployer aujourd'hui
+## 5. Module Opportunités — le besoin national devient réaliste
 
-- **PR #468 (module Opportunités)** — encore en brouillon, CI verte, non
-  fusionnée. Ne la déployez que pour la tester, et seulement sur demande
-  explicite : `BRANCH=claude/opportunites-besoin-national bash sync_emergent.sh`.
-  Attention, `main` a avancé depuis : la branche doit d'abord recevoir `main`.
+Fusionné en même temps (PR #468). Le module désignait comme marchés des pays
+auto-suffisants et des pays qui ne consomment pas le produit :
+
+| Cas | Avant | Après |
+|---|---|---|
+| Manioc → Algérie | 7 350 000 | **non établi** |
+| Huile de palme → Algérie | 853 000 | **non établi** |
+| Bananes → Cameroun | 1 650 000 | **0** — auto-suffisant |
+| Bananes → Algérie | 1 010 000 | **1 010 000** — marché réel préservé |
+| Huile de palme → Égypte | 1 950 000 | **1 950 000** — préservé |
+
+Un exportateur ne peut servir que ce que le pays **ne produit pas** : la
+production nationale est soustraite (`importable_need`), et c'est sur cette
+grandeur que les marchés sont classés.
+
+```bash
+curl -s "http://localhost:8001/api/reports/national-need?hs_code=0714&country=DZA"
+curl -s "http://localhost:8001/api/reports/national-need?hs_code=0803&country=DZA"
+```
+
+Le premier doit être **non établi** ; le second doit **rester un marché réel**.
+C'est le garde-fou essentiel : une absence de preuve n'est pas une preuve
+d'absence. Sans flux d'importation connu, le panier de consommation est
+« invérifiable » — le besoin est conservé et signalé peu fiable, jamais
+supprimé en silence.
+
+## 6. Ce qui n'est PAS concerné
+
 - **Chantier tarifaire et module Calculateur** — travaux arrêtés. Aucun
   changement attendu de ce côté ; ne rien y toucher.
