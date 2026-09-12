@@ -16,15 +16,70 @@
 
   "global_summary": {
     "total_countries_target": 54,
-    "countries_with_national_authentic_data": 45,
-    "countries_with_wits_fallback": 5,
-    "countries_with_partial_national": 2,
-    "countries_pending": 2,
-    "total_positions_national": "358000+",
-    "total_positions_wits_fallback": "~27000"
+    "countries_registered": 54,
+    "by_effective_source": {
+      "official": 17,
+      "regional_org": 28,
+      "wits_fallback": 6,
+      "secondary": 1,
+      "pending": 2
+    },
+    "entries_with_own_artifact": 27,
+    "entries_resolving_via_shared": 27,
+    "positions_own_sources": 171962,
+    "positions_wits_fallback": 32328,
+    "note": "Compté sur le contenu réel du registre au 2026-09-12, héritages _shared résolus vers leur source. Le décompte précédent annonçait 45 pays à données nationales authentiques et 5 replis WITS : ni l'un ni l'autre ne correspondait aux entrées."
   },
 
   "countries": {
+    "GHA": {
+      "organism": "Ghana Revenue Authority (GRA) — TEC CEDEAO",
+      "version": "2026.1",
+      "artifact_path": "backend/data/crawled/GHA_tariffs.json",
+      "artifact_url": null,
+      "source_type": "regional_org",
+      "url": "https://gra.gov.gh/customs/tariff/",
+      "retrieved_at": "2026-06-16",
+      "edition": "TEC CEDEAO appliqué au Ghana",
+      "code_digits": 6,
+      "positions_count": 5387,
+      "sha256": "760d0b401a7d482aae9f2ddded5ecd85ed9a92d45be8ce1a36c95b14116bb439",
+      "validation_status": "to_verify",
+      "taxes": ["DD", "TVA"],
+      "note": "Tarif extérieur commun CEDEAO, non une nomenclature nationale ghanéenne détaillée. Les 5387 lignes respectent exactement les cinq bandes officielles du TEC (0/5/10/20/35), sans aucune valeur hors barème. DATA_STATUS: PARTIAL, fiabilité B. Entrée créée le 2026-09-12 : le fichier était servi en production sans aucune fiche de provenance."
+    },
+    "SOM": {
+      "organism": "EAC — Common External Tariff 2022 (Somalie, membre depuis 2024)",
+      "version": "2022.1",
+      "artifact_path": "backend/data/SOM_tariffs.json",
+      "artifact_url": null,
+      "source_type": "regional_org",
+      "url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+      "retrieved_at": "2026-06-16",
+      "edition": "EAC CET 2022 (Gazette, Annexe 1 au Protocole d'Union Douanière)",
+      "code_digits": 6,
+      "positions_count": 5602,
+      "sha256": "5df6fe9a6be9b62c025b968dda4bb061b44f1f064c2a6daeb525542b6427c3d1",
+      "validation_status": "to_verify",
+      "taxes": ["DD"],
+      "note": "Tarif dérivé du TEC de l'EAC, non une nomenclature nationale somalienne. ANOMALIE À INSTRUIRE : 45 lignes portent 50, 60, 75 ou 100 %, hors des quatre bandes officielles de l'EAC CET (0/10/25/35) — origine non établie. TVA à 0 % : la Somalie n'applique pas de TVA, ce n'est pas une donnée manquante. Pas de fichier crawled/ : l'artefact est le fichier de production. DATA_STATUS: PARTIAL, fiabilité B. Entrée créée le 2026-09-12 : le fichier était servi en production sans aucune fiche de provenance."
+    },
+    "ZWE": {
+      "organism": "ZIMRA — Zimbabwe Revenue Authority (tarif national non crawlable)",
+      "version": "2021.1",
+      "artifact_path": "backend/data/crawled/ZWE_tariffs.json",
+      "artifact_url": null,
+      "source_type": "wits_fallback",
+      "url": "https://www.zimra.co.zw",
+      "retrieved_at": "2026-07-05",
+      "edition": "WITS / UNCTAD-TRAINS — MFN appliqué SH6 (SimpleAverage 2021)",
+      "code_digits": 6,
+      "positions_count": 5388,
+      "sha256": "5d211c12549ba81b50b206c1bfcc11765d49b650e1dc80cead18ad480dc82fc6",
+      "validation_status": "not_available",
+      "taxes": ["DD", "VAT"],
+      "note": "Droit de douane = moyenne simple MFN 2021 au niveau SH6 (WITS/TRAINS), pas une position tarifaire nationale : agrégat indicatif, jamais opposable. Désignations vides, formalités et avantages fiscaux non couverts. La TVA (15,5 %) est en revanche sourcée nommément — ZIMRA Public Notice 07 of 2026, relèvement de 15 % au 01/01/2026, vérifié. Aucun hs_version déclaré par la source : non renseigné plutôt que supposé."
+    },
     "DZA": {
       "organism": "Direction Générale des Douanes (DGD) via conformepro.dz",
       "version": "2026.1",
