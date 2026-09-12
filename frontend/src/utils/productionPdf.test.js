@@ -60,6 +60,10 @@ const build = (payload, timeseries) => buildProductionPdf({
   timeseries,
 });
 
+// Inspecte le contenu réel des flux de page : un document mal étiqueté pèse
+// autant qu'un document correct, donc la taille en octets ne prouve rien.
+const pageOps = (doc) => doc.internal.pages.slice(1).flat().join('\n');
+
 describe('buildProductionPdf', () => {
   it('produit un document pour un pays mesuré, avec le détail par classe', () => {
     const sansDetail = build(fixtures.ken, null);
@@ -110,8 +114,15 @@ describe('buildProductionPdf', () => {
   });
 
   it('qualifie la ligne par la nature de l’indicateur affiché', () => {
-    // Une classe peut porter un indicateur officiel ET une valeur principale
-    // dérivée : étiqueter la ligne « officiel » mentirait sur le chiffre montré.
+    // Assertion de contenu, pas de taille : un PDF mal étiqueté pèse autant
+    // qu'un PDF correct. On inspecte les flux de page, comme le fait
+    // opportunityPdf.test.js pour la régression « le PDF sort mais sans
+    // données ».
+    //
+    // La classe porte un indicateur OFFICIEL (employees) et une valeur
+    // principale DÉRIVÉE (output_usd, prioritaire dans HEADLINE). Étiqueter la
+    // ligne « officiel » parce qu'un champ officiel existe ailleurs
+    // mentirait sur le chiffre affiché juste à côté.
     const derive = {
       country_iso3: 'XXX',
       country_name: 'Test',
@@ -119,17 +130,20 @@ describe('buildProductionPdf', () => {
       source: 'test',
       sectors: [{
         isic4: '1010',
-        isic_description: 'Classe témoin',
+        isic_description: 'Classe temoin',
         indicators: {
-          // output_usd est DÉRIVÉ et vient avant dans HEADLINE ? non : value_added
-          // est officiel mais absent ; le principal retenu sera output_usd.
           output_usd: { value: 1e9, year: 2023, data_nature: 'UNIDO_DERIVED_ESTIMATE' },
           employees: { value: 100, year: 2023, data_nature: 'OFFICIAL_STATISTICS' },
         },
       }],
     };
-    const doc = build(derive, null);
-    expect(doc.output('arraybuffer').byteLength).toBeGreaterThan(1000);
+    const ops = pageOps(build(derive, null));
+    // La cellule de nature est dessinée SEULE : on vise « (dérivé) Tj », et non
+    // la sous-chaîne « officiel », que le paragraphe de méthode contient déjà
+    // dans « statistiques officielles » — une assertion large aurait passé ou
+    // échoué pour de mauvaises raisons.
+    expect(ops).toContain('(dérivé) Tj');
+    expect(ops).not.toContain('(officiel) Tj');
   });
 
   it('nomme le fichier selon la nature de la donnée', () => {

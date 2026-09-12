@@ -54,13 +54,47 @@ def list_isic4_countries(
     - include_estimates=true (défaut): tous les pays avec données officielles ET estimées
     - include_estimates=false: pays avec données officielles uniquement
     """
-    countries = list_covered_countries_filtered(official_only=not include_estimates)
+    # Deux sens du mot « estimé » coexistent, et les confondre rendait cette
+    # route incohérente avec /isic4/{pays} : celle-ci sert désormais 54 pays,
+    # tandis que la découverte n'en listait que 20. Un client qui passe par ici
+    # ne voyait pas les 34 pays servis par structure estimée.
+    #
+    #   UNIDO_DERIVED_ESTIMATE      — le pays EST dans le jeu UNIDO au niveau
+    #                                 classe, mais ses relevés sont des
+    #                                 estimations dérivées par UNIDO et non des
+    #                                 statistiques officielles ;
+    #   ESTIMATED_FROM_ISIC2        — le pays est ABSENT de ce jeu, et sa
+    #                                 structure est dérivée de ses divisions
+    #                                 ISIC 2 chiffres.
+    #
+    # include_estimates ne portait que sur le premier. Les deux listes sont
+    # désormais exposées séparément, pour qu'aucun client n'ait à deviner.
+    from etl.unido_data import UNIDO_INDUSTRY_DATA
+
+    measured = list_covered_countries_filtered(official_only=not include_estimates)
+    structural = sorted(
+        iso for iso in UNIDO_INDUSTRY_DATA
+        if not is_country_covered(iso)
+        and (get_isic4_breakdown(iso) or {}).get("isic4_breakdown")
+    )
     return {
-        "countries": countries,
-        "count": len(countries),
+        "countries": sorted(set(measured) | set(structural)),
+        "count": len(set(measured) | set(structural)),
         "include_estimates": include_estimates,
+        "measured_countries": measured,
+        "measured_count": len(measured),
+        "structural_estimate_countries": structural,
+        "structural_estimate_count": len(structural),
         "source": "UNIDO IDSB + INDSTAT (2018-2024, ISIC Rev.4 4-digit class)",
-        "note": "Les données incluent à la fois OFFICIAL_STATISTICS et UNIDO_DERIVED_ESTIMATE. Voir badges dans les réponses détaillées."
+        "note": (
+            "measured_countries : pays présents dans le jeu UNIDO au niveau classe — "
+            "leurs indicateurs mêlent OFFICIAL_STATISTICS et UNIDO_DERIVED_ESTIMATE, "
+            "distingués par data_nature. include_estimates=false restreint cette "
+            "liste aux pays ayant des statistiques officielles. "
+            "structural_estimate_countries : pays ABSENTS de ce jeu, servis par une "
+            "structure dérivée de leurs divisions ISIC 2 chiffres "
+            "(data_basis=ESTIMATED_FROM_ISIC2) — jamais une mesure."
+        ),
     }
 
 

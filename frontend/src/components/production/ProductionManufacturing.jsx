@@ -88,6 +88,11 @@ const ISIC4_INDICATOR_ORDER = [
 const HEADLINE_INDICATORS = [
   'value_added_usd', 'output_usd_official', 'output_usd', 'apparent_consumption_usd',
   'establishments', 'employees',
+  // En dernier recours : la part de MVA estimée. Les classes dont la division
+  // n'a pas de valeur monétaire publiée ne portent QUE cet indicateur ; sans
+  // lui, la ligne affichait « — » alors qu'une valeur existe. Le mettre en fin
+  // de liste garde la préférence aux grandeurs mesurées.
+  'share_mva_pct',
 ];
 
 const PERCENT_INDICATORS = new Set(['share_mva_pct']);
@@ -370,7 +375,14 @@ function ProductionManufacturing({ language = 'fr' }) {
       }
       const doc = buildProductionPdf({
         countryIso3: selectedCountry,
-        countryName: unidoData?.country_name || selectedCountry,
+        // unidoData vient d'une requête distincte, sans garde contre une
+        // réponse périmée : si la table ISIC4 arrive la première après un
+        // changement de pays, le PDF porterait le nom du pays précédent.
+        // On ne s'en sert que si la charge utile désigne bien le pays courant.
+        countryName:
+          (unidoData?.country_iso3 || unidoData?.country_code) === selectedCountry
+            ? unidoData?.country_name || selectedCountry
+            : selectedCountry,
         language,
         dataBasis: isic4Basis,
         divisions: groupIsic4ByDivision(),
