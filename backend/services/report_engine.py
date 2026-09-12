@@ -783,6 +783,37 @@ async def get_opportunity_report_ultra_fine(
     # (ex. instruments médicaux SH90) -> imports réels du pays lui-même (canal
     # OEC partagé, moyennés sur plusieurs années pour les biens durables/longue
     # conservation). Un seul appel réseau, uniquement quand le repli local échoue.
+    # Second cas de repli : le besoin EST disponible, mais le panier de
+    # consommation est « invérifiable » — le pays ne produit pas ce produit, sa
+    # sous-région non plus, et rien n'atteste qu'il le consomme. C'est la
+    # situation du manioc ou de l'huile de palme vers l'Afrique du Nord, où la
+    # cascade applique une disponibilité continentale que le pays ne partage
+    # pas. Seul le flux réel tranche : l'Algérie importe massivement de la
+    # banane dessert et pas une tonne de manioc, deux produits pourtant
+    # indiscernables sur les seuls signaux locaux. L'appel réseau n'a lieu que
+    # dans ce cas, rare, et il change la conclusion.
+    if (
+        national_need.get("available")
+        and (national_need.get("consumption_basket") or {}).get("status") == "unverifiable"
+    ):
+        try:
+            from services.real_trade_data_service import real_trade_service
+
+            history = await real_trade_service.get_country_product_import_history(
+                destination_iso3, hs_code
+            )
+            if history and history.get("available") and history.get("imports"):
+                national_need = demand_estimation_service.estimate_national_need(
+                    hs_code, destination_iso3, own_imports_history=history["imports"]
+                )
+        except Exception as e:  # noqa: BLE001 — l'ambiguïté reste signalée telle quelle
+            _log.warning(
+                "consumption-basket verification failed for %s/%s: %s",
+                destination_iso3,
+                hs_code,
+                e,
+            )
+
     if (
         not national_need.get("available")
         and national_need.get("reason") == "no_continental_production_reference"
@@ -1033,6 +1064,38 @@ def _african_candidate_markets(exclude_iso3: str) -> list:
         return []
 
 
+def _addressable_need(need: dict) -> float | None:
+    """Besoin réellement adressable par un exportateur.
+
+    ``value`` est un besoin de CONSOMMATION ; ce qu'un fournisseur étranger peut
+    servir est ce que le pays ne produit pas lui-même. ``importable_need`` porte
+    cette grandeur, et vaut ``None`` quand la consommation n'est pas attestée.
+    Le repli sur ``value`` ne joue que si l'importable n'a pas pu être calculé —
+    jamais quand il a été délibérément mis à zéro ou écarté.
+    """
+    if not need or not need.get("available"):
+        return None
+    if "importable_need" in need:
+        return need["importable_need"]
+    return need.get("value")
+
+
+def _market_is_addressable(need: dict) -> bool:
+    """Écarte les marchés qu'un exportateur ne peut pas servir.
+
+    Deux cas : le pays est auto-suffisant (besoin importable nul), ou sa
+    consommation du produit n'est pas attestée (panier « not_attested »). Les
+    laisser dans le classement produirait des opportunités inexistantes — c'est
+    tout l'objet de la correction.
+    """
+    if not need or not need.get("available"):
+        return False
+    if (need.get("consumption_basket") or {}).get("status") == "not_attested":
+        return False
+    addressable = _addressable_need(need)
+    return addressable is None or addressable > 0
+
+
 def get_direct_export_scenario(
     hs_code: str,
     producer_iso3: str,
@@ -1075,7 +1138,13 @@ def get_direct_export_scenario(
     for dest in candidates:
         need = demand_estimation_service.estimate_national_need(hs_code, dest)
         sized.append({"destination_iso3": dest, "market_need": need})
-    sized.sort(key=lambda s: (s["market_need"].get("value") or 0), reverse=True)
+    # Classement sur le besoin IMPORTABLE, pas sur le besoin de consommation.
+    # Trier sur « value » remonterait un pays auto-suffisant — le Cameroun et ses
+    # 1,65 Mt de bananes, qu'il produit — au même rang qu'un importateur réel, et
+    # garderait un marché dont la consommation n'est pas attestée. Le repli sur
+    # « value » ne sert que les cas où l'importable n'a pas pu être établi.
+    sized = [s for s in sized if _market_is_addressable(s["market_need"])]
+    sized.sort(key=lambda s: (_addressable_need(s["market_need"]) or 0), reverse=True)
 
     # Stage 2 — deep-dive the top_k largest-need markets with a full report.
     opportunities = []
@@ -1103,7 +1172,7 @@ def get_direct_export_scenario(
 
     # Final ranking: by export score (desc), then by market need (desc).
     opportunities.sort(
-        key=lambda o: ((o["end_to_end_score"] or 0), (o["market_need"].get("value") or 0)),
+        key=lambda o: ((o["end_to_end_score"] or 0), (_addressable_need(o["market_need"]) or 0)),
         reverse=True,
     )
 
