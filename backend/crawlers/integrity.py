@@ -53,6 +53,40 @@ def sidecar_path(filepath: str) -> str:
     return f"{filepath}.sha256"
 
 
+def manifest_hash(filepath: str) -> Optional[str]:
+    """Empreinte déclarée pour ce fichier dans le manifeste des sources.
+
+    Les ``.sha256`` adjacents ne sont pas versionnés : ``backend/data/crawled/``
+    est exclu par ``.gitignore``, et seuls les JSON y sont forcés. Après un
+    clone, ils sont donc absents et la vérification n'avait plus de référence.
+
+    Plutôt que d'ajouter 53 fichiers au dépôt, on se rabat sur
+    ``source_registry_v2.json``, qui porte déjà exactement la même empreinte
+    pour chaque pays et qui fait foi pour le déploiement
+    (``scripts/fetch_tariff_artifacts.py``). Versionner les sceaux aurait fait
+    vivre la même valeur à quatre endroits — sceau embarqué, fichier adjacent,
+    manifeste, registre — avec autant d'occasions de désynchronisation ; c'est
+    déjà le défaut connu de ce mécanisme, inutile de l'aggraver.
+    """
+    path = Path(filepath).resolve()
+    manifest = Path(__file__).resolve().parent.parent / "data" / "source_registry_v2.json"
+    if not manifest.exists():
+        return None
+    try:
+        with open(manifest, encoding="utf-8") as f:
+            countries = json.load(f).get("countries", {})
+    except (OSError, json.JSONDecodeError):
+        return None
+    repo_root = manifest.parent.parent.parent
+    for entry in countries.values():
+        declared = entry.get("artifact_path")
+        if not declared:
+            continue
+        if (repo_root / declared).resolve() == path:
+            return entry.get("sha256") or None
+    return None
+
+
 def detect_indent(filepath: str, default: int = 2) -> int:
     """Indentation du JSON déjà sur disque, relue sur sa deuxième ligne.
 
@@ -247,8 +281,14 @@ def verify_crawled_file(filepath: str) -> Dict[str, Any]:
     actual_content_hash = compute_json_hash(data)
 
     # Le hash du fichier est publié dans le .sha256 adjacent, jamais dans le
-    # document lui-même (cf. seal_crawled_file).
+    # document lui-même (cf. seal_crawled_file) — un hash ne peut pas se
+    # contenir. Ce fichier adjacent n'étant pas versionné, il manque après un
+    # clone : on se rabat alors sur le manifeste, qui porte la même empreinte.
+    reference = "sidecar"
     expected_file_hash = read_sidecar_hash(filepath)
+    if expected_file_hash is None:
+        expected_file_hash = manifest_hash(filepath)
+        reference = "manifest" if expected_file_hash else None
     file_hash_match = expected_file_hash is not None and actual_file_hash == expected_file_hash
     content_hash_match = actual_content_hash == seal.get("content_hash")
 
@@ -259,6 +299,9 @@ def verify_crawled_file(filepath: str) -> Dict[str, Any]:
         "seal": seal,
         "actual_file_hash": actual_file_hash,
         "expected_file_hash": expected_file_hash,
+        # D'où vient l'empreinte de référence : un appelant doit pouvoir
+        # distinguer « vérifié » de « rien à quoi comparer ».
+        "reference": reference,
         "filepath": filepath,
     }
 
