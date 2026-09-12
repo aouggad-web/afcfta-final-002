@@ -380024,5 +380024,13 @@
     "Taxes nationales: RS (1%), PCS UEMOA (1%), PC-AES (0.5% remplace PCC CEDEAO) - source impots.gouv.ne",
     "TVA: 19% taux standard (taxe numérique 19% depuis janv. 2025) - source service-public.ne",
     "Source officielle: impots.gouv.ne + service-public.ne"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "824391f6ca7d272519b8bd81501ae7d41fedea861a30fe8cb825976969122108",
+    "source_url": "https://www.impots.gouv.ne/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:21.263768+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

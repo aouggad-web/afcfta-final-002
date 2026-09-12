@@ -380024,5 +380024,13 @@
     "Taxes nationales: RS (1%), PCS UEMOA (1%), PC-AES (0.5% remplace PCC CEDEAO) - source dgi.bf",
     "TVA: 18% taux standard (taux réduits 10% et 2% pour certains secteurs) - source servicepublic.gov.bf",
     "Source officielle: dgi.bf + servicepublic.gov.bf"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "336d613f131eab0d0af51ab7069c07de5ac1cc1124fb8ae2ff854ecb11c9b95e",
+    "source_url": "https://dgi.bf/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:06.341498+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

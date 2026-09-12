@@ -48,6 +48,93 @@ def verify_file_hash(filepath: str, expected_hash: str) -> bool:
     return actual == expected_hash
 
 
+def sidecar_path(filepath: str) -> str:
+    """Chemin du fichier .sha256 adjacent portant le hash du fichier scellé."""
+    return f"{filepath}.sha256"
+
+
+def manifest_hash(filepath: str) -> Optional[str]:
+    """Empreinte déclarée pour ce fichier dans le manifeste des sources.
+
+    Les ``.sha256`` adjacents ne sont pas versionnés : ``backend/data/crawled/``
+    est exclu par ``.gitignore``, et seuls les JSON y sont forcés. Après un
+    clone, ils sont donc absents et la vérification n'avait plus de référence.
+
+    Plutôt que d'ajouter 53 fichiers au dépôt, on se rabat sur
+    ``source_registry_v2.json``, qui porte déjà exactement la même empreinte
+    pour chaque pays et qui fait foi pour le déploiement
+    (``scripts/fetch_tariff_artifacts.py``). Versionner les sceaux aurait fait
+    vivre la même valeur à quatre endroits — sceau embarqué, fichier adjacent,
+    manifeste, registre — avec autant d'occasions de désynchronisation ; c'est
+    déjà le défaut connu de ce mécanisme, inutile de l'aggraver.
+    """
+    table = _manifest_table()
+    return table.get(Path(filepath).resolve())
+
+
+# Table {chemin résolu → empreinte}, construite une fois puis réutilisée.
+# verify_all_crawled_files appelle manifest_hash une fois par fichier : sans
+# cache, le manifeste était relu et reparcouru 53 fois pour une table qui ne
+# change pas entre deux appels. La date de modification sert d'invalidation —
+# un rescellement suivi d'une mise à jour du manifeste doit être vu, sinon le
+# cache ferait exactement mentir la vérification qu'il sert.
+_MANIFEST_CACHE: Optional[Dict[str, Any]] = None
+
+
+def _manifest_table() -> Dict[Path, str]:
+    global _MANIFEST_CACHE
+    manifest = Path(__file__).resolve().parent.parent / "data" / "source_registry_v2.json"
+    try:
+        mtime = manifest.stat().st_mtime_ns
+    except OSError:
+        return {}
+
+    if _MANIFEST_CACHE is not None and _MANIFEST_CACHE["mtime"] == mtime:
+        return _MANIFEST_CACHE["table"]
+
+    try:
+        with open(manifest, encoding="utf-8") as f:
+            countries = json.load(f).get("countries", {})
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    repo_root = manifest.parent.parent.parent
+    table: Dict[Path, str] = {}
+    for entry in countries.values():
+        declared = entry.get("artifact_path")
+        digest = entry.get("sha256")
+        if declared and digest:
+            table[(repo_root / declared).resolve()] = digest
+
+    _MANIFEST_CACHE = {"mtime": mtime, "table": table}
+    return table
+
+
+def detect_indent(filepath: str, default: int = 2) -> int:
+    """Indentation du JSON déjà sur disque, relue sur sa deuxième ligne.
+
+    Les fichiers crawled n'ont pas tous été écrits par le même script et
+    mélangent les indentations : réécrire avec une valeur fixe reformaterait
+    le document entier et noierait le sceau dans un diff de plusieurs
+    millions de lignes.
+    """
+    with open(filepath, encoding="utf-8") as f:
+        f.readline()
+        second = f.readline()
+    stripped = second.lstrip(" ")
+    width = len(second) - len(stripped)
+    return width if stripped.startswith('"') and width > 0 else default
+
+
+def read_sidecar_hash(filepath: str) -> Optional[str]:
+    """Lit le hash publié dans le .sha256 adjacent, ou None s'il est absent."""
+    path = sidecar_path(filepath)
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as f:
+        return f.read().strip().split()[0] or None
+
+
 class IntegritySeal:
     """
     Sceau d'intégrité attaché à un fichier de données crawlées.
@@ -59,6 +146,13 @@ class IntegritySeal:
     - source_hash : SHA-256 du document source (PDF, HTML, XLS)
     - crawled_at : timestamp UTC du crawl
     - verified : True si le hash a été vérifié à l'écriture
+
+    Attention : ``to_dict()`` rend le sceau complet, mais ce n'est **pas** ce
+    qui est écrit dans le fichier. ``file_hash`` ne peut pas vivre à
+    l'intérieur du document qu'il hache — l'y écrire changerait le contenu et
+    invaliderait la valeur écrite. ``seal_crawled_file`` le retire donc avant
+    d'embarquer le sceau, et le publie dans un ``<nom>.sha256`` adjacent. Voir
+    ``to_embedded_dict()`` pour la forme réellement embarquée.
     """
 
     def __init__(
@@ -120,6 +214,17 @@ class IntegritySeal:
             "algorithm": "SHA-256",
         }
 
+    def to_embedded_dict(self) -> Dict[str, Any]:
+        """Forme réellement écrite dans le document : sans ``file_hash``.
+
+        Le hash du fichier est publié à côté, jamais dedans. Le sceau embarqué
+        ne porte que le ``content_hash``, seul hachage qu'un document puisse
+        contenir sans s'invalider lui-même.
+        """
+        payload = self.to_dict()
+        payload.pop("file_hash", None)
+        return payload
+
     def verify(self, filepath: Optional[str] = None) -> bool:
         """Vérifie l'intégrité du fichier."""
         if not filepath:
@@ -132,8 +237,8 @@ class IntegritySeal:
         return actual_hash == self.file_hash
 
     def embed_in(self, data: dict) -> dict:
-        """Embarque le sceau dans un dict JSON."""
-        data["_integrity_seal"] = self.to_dict()
+        """Embarque le sceau dans un dict JSON, sans le ``file_hash``."""
+        data["_integrity_seal"] = self.to_embedded_dict()
         return data
 
 
@@ -147,6 +252,8 @@ def seal_crawled_file(filepath: str, source_url: str = "", source_hash: Optional
     4. Réécrit le fichier
     5. Retourne le sceau
     """
+    indent = detect_indent(filepath)
+
     with open(filepath, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -156,29 +263,27 @@ def seal_crawled_file(filepath: str, source_url: str = "", source_hash: Optional
     # Calculer le content_hash (sans le sceau)
     content_hash = compute_json_hash(data)
 
-    # Sérialiser avec le sceau pour calculer le file_hash
+    # Le file_hash ne peut pas vivre à l'intérieur du fichier qu'il hache :
+    # l'y écrire changerait le contenu et invaliderait la valeur écrite. Il
+    # est donc publié dans un fichier <nom>.sha256 adjacent, écrit après la
+    # sérialisation définitive, et le sceau embarqué ne porte que le
+    # content_hash — seul hachage vérifiable depuis l'intérieur du document.
     seal = IntegritySeal(
-        file_hash="",  # sera calculé après écriture
+        file_hash="",
         content_hash=content_hash,
         source_url=source_url or data.get("source_url", data.get("source_root_url", "")),
         source_hash=source_hash,
     )
-    data = seal.embed_in(data)
+    data["_integrity_seal"] = seal.to_embedded_dict()
 
-    # Écrire
     with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        json.dump(data, f, ensure_ascii=False, indent=indent)
 
-    # Calculer le file_hash final
     file_hash = compute_file_hash(filepath)
     seal.file_hash = file_hash
+    with open(sidecar_path(filepath), "w", encoding="utf-8") as f:
+        f.write(f"{file_hash}  {os.path.basename(filepath)}\n")
 
-    # Réécrire avec le file_hash correct
-    data["_integrity_seal"]["file_hash"] = file_hash
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-    # Vérifier
     seal.verified = verify_file_hash(filepath, file_hash)
 
     return seal
@@ -214,12 +319,28 @@ def verify_crawled_file(filepath: str) -> Dict[str, Any]:
     data.pop("_integrity_seal", None)
     actual_content_hash = compute_json_hash(data)
 
+    # Le hash du fichier est publié dans le .sha256 adjacent, jamais dans le
+    # document lui-même (cf. seal_crawled_file) — un hash ne peut pas se
+    # contenir. Ce fichier adjacent n'étant pas versionné, il manque après un
+    # clone : on se rabat alors sur le manifeste, qui porte la même empreinte.
+    reference = "sidecar"
+    expected_file_hash = read_sidecar_hash(filepath)
+    if expected_file_hash is None:
+        expected_file_hash = manifest_hash(filepath)
+        reference = "manifest" if expected_file_hash else None
+    file_hash_match = expected_file_hash is not None and actual_file_hash == expected_file_hash
+    content_hash_match = actual_content_hash == seal.get("content_hash")
+
     return {
-        "valid": actual_file_hash == seal.get("file_hash") and actual_content_hash == seal.get("content_hash"),
-        "file_hash_match": actual_file_hash == seal.get("file_hash"),
-        "content_hash_match": actual_content_hash == seal.get("content_hash"),
+        "valid": file_hash_match and content_hash_match,
+        "file_hash_match": file_hash_match,
+        "content_hash_match": content_hash_match,
         "seal": seal,
         "actual_file_hash": actual_file_hash,
+        "expected_file_hash": expected_file_hash,
+        # D'où vient l'empreinte de référence : un appelant doit pouvoir
+        # distinguer « vérifié » de « rien à quoi comparer ».
+        "reference": reference,
         "filepath": filepath,
     }
 
@@ -227,7 +348,7 @@ def verify_crawled_file(filepath: str) -> Dict[str, Any]:
 def seal_all_crawled_files(crawled_dir: str = None):
     """Scelle tous les fichiers crawled/*.json."""
     if crawled_dir is None:
-        crawled_dir = str(Path(__file__).resolve().parent.parent.parent / "data" / "crawled")
+        crawled_dir = str(Path(__file__).resolve().parent.parent / "data" / "crawled")
 
     results = []
     for f in sorted(Path(crawled_dir).glob("*_tariffs.json")):
@@ -248,7 +369,7 @@ def seal_all_crawled_files(crawled_dir: str = None):
 def verify_all_crawled_files(crawled_dir: str = None):
     """Vérifie tous les fichiers scellés."""
     if crawled_dir is None:
-        crawled_dir = str(Path(__file__).resolve().parent.parent.parent / "data" / "crawled")
+        crawled_dir = str(Path(__file__).resolve().parent.parent / "data" / "crawled")
 
     results = []
     for f in sorted(Path(crawled_dir).glob("*_tariffs.json")):

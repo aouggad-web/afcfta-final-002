@@ -9,5 +9,13 @@
   "crawl_attempted": "2026-06-16T20:50:15.433615",
   "notes": "Djibouti zone franche — pas de TVA générale. DD 0-33%. Membre COMESA+IGAD.",
   "positions": [],
-  "pending_action": "Crawler le portail https://www.douanesdj.gouv.dj/tarif/ pour obtenir les taux réels. Méthode prévue : html_scrape. Ne pas utiliser de données générées par IA/template."
+  "pending_action": "Crawler le portail https://www.douanesdj.gouv.dj/tarif/ pour obtenir les taux réels. Méthode prévue : html_scrape. Ne pas utiliser de données générées par IA/template.",
+  "_integrity_seal": {
+    "content_hash": "c470499d70b771d25055416e2037afceb0586b27776c7c78ec773feed8495721",
+    "source_url": "https://www.douanesdj.gouv.dj/tarif/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:09.489849+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

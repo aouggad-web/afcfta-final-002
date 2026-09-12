@@ -77,7 +77,6 @@ class MoroccoDouaneScraper:
         finally:
             await client.aclose()
 
-<<<<<<< HEAD
     # Mapping étendu des libellés fiscaux publiés par l'ADIL marocain.
     # Couvre TOUTES les taxes : DI, TPI, TVA, TIC, DCT (tabacs),
     # et toute autre taxe publiée par le portail.
@@ -96,9 +95,6 @@ class MoroccoDouaneScraper:
 
     async def get_position_taxes(self, client: httpx.AsyncClient, code: str) -> dict:
         """Extrait TOUTES les taxes publiées par l'ADIL pour une position."""
-=======
-    async def get_position_taxes(self, client: httpx.AsyncClient, code: str) -> dict:
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         url = f"{BASE_URL}/adil/info_2.asp?pos={code}"
         try:
             resp = await client.get(url)
@@ -109,7 +105,6 @@ class MoroccoDouaneScraper:
             soup = BeautifulSoup(html, "html.parser")
 
             taxes = {}
-<<<<<<< HEAD
             full_text = soup.get_text(" ", strip=True)
 
             for pattern, key in self.TAX_PATTERNS:
@@ -140,42 +135,6 @@ class MoroccoDouaneScraper:
                     full_key = f"{tax_name} ({tax_code})"
                     if full_key not in taxes:
                         taxes[full_key] = f"{tax_value} {tax_unit}".strip()
-=======
-            for td in soup.find_all("td"):
-                text = td.get_text(strip=True)
-
-                di_match = re.search(
-                    r"Droit\s+d['\u2019]Importation.*?\(\s*DI\s*\)\s*:\s*([\d,\.]+)\s*%", text
-                )
-                if di_match:
-                    taxes["Droit d'Importation (DI)"] = di_match.group(1).replace(",", ".") + " %"
-
-                tpi_match = re.search(
-                    r"Taxe\s+Parafiscale.*?\(\s*TPI\s*\)\s*:\s*([\d,\.]+)\s*%", text
-                )
-                if tpi_match:
-                    taxes["Taxe Parafiscale à l'Importation (TPI)"] = (
-                        tpi_match.group(1).replace(",", ".") + " %"
-                    )
-
-                tva_match = re.search(
-                    r"Taxe\s+sur\s+la\s+Valeur\s+Ajout.*?\(\s*TVA\s*\)\s*:\s*([\d,\.]+)\s*%", text
-                )
-                if tva_match:
-                    taxes["Taxe sur la Valeur Ajoutée (TVA)"] = (
-                        tva_match.group(1).replace(",", ".") + " %"
-                    )
-
-                tic_match = re.search(
-                    r"Taxe\s+Int.*?rieure.*?Consommation.*?\(\s*TIC\s*\)\s*:\s*([\d,\.]+)", text
-                )
-                if tic_match:
-                    val = tic_match.group(1).replace(",", ".")
-                    if "%" in text[text.find("TIC") :]:
-                        taxes["Taxe Intérieure de Consommation (TIC)"] = val + " %"
-                    else:
-                        taxes["Taxe Intérieure de Consommation (TIC)"] = val + " DH"
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
             return taxes
         except Exception as e:

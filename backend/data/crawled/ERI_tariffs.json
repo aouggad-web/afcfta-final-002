@@ -9,5 +9,13 @@
   "crawl_attempted": "2026-06-16T20:50:16.434258",
   "notes": "Accès web très limité. Données à obtenir via OMC/ITC MacMap.",
   "positions": [],
-  "pending_action": "Crawler le portail https://www.mof.gov.er/ pour obtenir les taux réels. Méthode prévue : pending. Ne pas utiliser de données générées par IA/template."
+  "pending_action": "Crawler le portail https://www.mof.gov.er/ pour obtenir les taux réels. Méthode prévue : pending. Ne pas utiliser de données générées par IA/template.",
+  "_integrity_seal": {
+    "content_hash": "958c4144daa84f0fe49da51931861c21a6f74b1581020038386070a727337e9e",
+    "source_url": "https://www.mof.gov.er/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:14.559962+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

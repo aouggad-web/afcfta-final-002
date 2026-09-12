@@ -77,3 +77,7 @@ google-genai>=2.3.0
 # Database / cache
 psycopg2-binary==2.9.11
 redis==7.1.0
+# Fournisseur tarifaire PostgreSQL et tests de régression des requêtes SQL.
+# La CI installe ce fichier-ci, pas backend/requirements.txt : la dépendance
+# doit y figurer sinon la collecte des tests postgres échoue à l'import.
+SQLAlchemy==2.0.52

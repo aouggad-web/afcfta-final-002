@@ -242528,5 +242528,13 @@
     "Droit d'Accise: produits spécifiques marqués ** (alcool, tabac, cosmétiques, véhicules)",
     "Le même tarif CEMAC s'applique aux 6 États membres",
     "Taxes nationales Cameroun: RI (0.45%), TCI (1%)"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "626036196619353421c1af781f4a23abb238b1e5283ab7f1067b8f9588f313bb",
+    "source_url": "https://www.cameroontradeportal.cm",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:07.840506+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

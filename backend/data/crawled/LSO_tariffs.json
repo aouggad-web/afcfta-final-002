@@ -439902,5 +439902,13 @@
       "source": "sars.gov.za",
       "country": "LSO"
     }
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "d02535c8e28a9ded1d5dee555eb4b1e8d5575c3a78813c80089ba815ae848b40",
+    "source_url": "",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:18.541160+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

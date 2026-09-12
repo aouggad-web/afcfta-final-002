@@ -296037,5 +296037,13 @@
     "Taxes CEMAC: TCI (1%), TS (0.2%), OHADA (0.05%) - source finances.gouv.cg",
     "TVA: 18% taux standard (surtaxe 5% sur certains biens = 18.9% effectif possible) - source douanes.gouv.cg",
     "Source officielle: douanes.gouv.cg + finances.gouv.cg"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "2ae7226123b37f817aad3089b05d5d9d7dac7b9fb7afef517fb29ba948d79d48",
+    "source_url": "https://douanes.gouv.cg/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:08.411270+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

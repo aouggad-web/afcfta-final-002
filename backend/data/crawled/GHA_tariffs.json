@@ -264534,5 +264534,13 @@
         }
       ]
     }
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "f9f5b082e89d799308baa20ec635a2e6771885b44362fb45b0cb13220da2269b",
+    "source_url": "",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:15.229937+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

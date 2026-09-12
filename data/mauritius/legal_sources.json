@@ -9,7 +9,7 @@
       "institution": "World Bank WITS / UNCTAD-TRAINS",
       "legal_date": null,
       "url": null,
-      "sha256": "05df3901374610d771a9f1862be814e16cdb7ae566fd60627bd9e15dc5d2a2e2",
+      "sha256": "2e4308ee758d2860eda0acb9307b3895cab8932ccdac91befabc7dbe3b7ea2d6",
       "verification_status": "PARTIAL_RUNTIME_DATASET",
       "registry_path": "backend/data/crawled/MUS_tariffs.json",
       "notes": "Empreinte du fichier runtime SH6 ; ne constitue pas le tarif national intégré MRA."

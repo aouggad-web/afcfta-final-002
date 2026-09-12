@@ -25,6 +25,24 @@ WORKDIR /app
 COPY --chown=appuser:appuser . /app
 
 USER appuser
+
+# Données tarifaires : vérifier puis dériver, à la construction de l'image.
+#
+# crawled_normalized/ n'est pas versionné — 2 Go, et des fichiers au-delà de la
+# limite de 100 Mo par fichier de GitHub. Il était jusqu'ici régénéré dans le
+# seul job de CI, si bien qu'une image construite depuis ce Dockerfile démarrait
+# sans lui : le backend servait alors les pays dont les données ne dépendent pas
+# de ce dossier, et se taisait sur les autres. Le défaut ne se voyait qu'en
+# production.
+#
+# La vérification passe en premier et n'est pas un simple contrôle de forme :
+# elle recalcule l'empreinte SHA-256 de chaque fichier servi et la confronte au
+# manifeste. Une donnée altérée, tronquée à la copie ou périmée arrête la
+# construction au lieu d'être normalisée puis servie. Mieux vaut une image qui
+# ne se construit pas qu'une image qui calcule des droits de douane faux.
+RUN python scripts/fetch_tariff_artifacts.py --verify-only \
+ && python scripts/normalize_crawled.py
+
 EXPOSE 8000
 
 # Healthcheck

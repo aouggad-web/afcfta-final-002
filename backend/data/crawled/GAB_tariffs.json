@@ -254124,5 +254124,13 @@
     "Taxes CEMAC: TCI (1%), CIA (0.2%) - source douanes.ga",
     "TVA: 18% taux normal (taux réduits 10% et 5% pour certains secteurs) - source dgi.ga",
     "Source officielle: douanes.ga + dgi.ga"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "c7571f67ccd701e49ccb4f601798d0268fcdf91a6d087f12d04e3544c9c1ce0b",
+    "source_url": "https://douanes.ga/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:14.886851+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

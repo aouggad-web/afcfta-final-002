@@ -12,11 +12,7 @@ import os
 import re
 import time
 from datetime import datetime
-<<<<<<< HEAD
 from typing import Any, Dict, List, Optional, Set
-=======
-from typing import Any, Dict, List, Optional
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
 import httpx
 from bs4 import BeautifulSoup
@@ -40,6 +36,7 @@ class AlgeriaConformeproScraper:
         self.client = None
         self.sections = []
         self.chapters = []
+        self.chapters_filter: Optional[Set[str]] = None
         self.headings = []
         self.sub_positions = []
         self.errors = []
@@ -297,7 +294,6 @@ class AlgeriaConformeproScraper:
                 return div_fs.get_text(strip=True)
         return ""
 
-<<<<<<< HEAD
     # Mapping des libellés publiés par conformepro.dz vers codes canoniques DGD.
     # Étendu pour couvrir TOUTES les taxes et redevances de la circulaire DGD.
     TAX_LABEL_MAP = {
@@ -336,8 +332,6 @@ class AlgeriaConformeproScraper:
         "Unité", "Unité statistique", "Statistiques",
     }
 
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     async def scrape_sub_position_detail(self, sub: Dict) -> Dict:
         html = await self._fetch_page(sub["url"])
         if not html:
@@ -359,14 +353,11 @@ class AlgeriaConformeproScraper:
             "formalities": [],
             "source": "conformepro.dz",
             "source_url": sub["url"],
-<<<<<<< HEAD
             "source_root_url": BASE_URL,
             "source_quality": "crawled_authentic",
             "data_status": "crawled_authentic",
             "crawled_at": datetime.utcnow().isoformat(),
             "date_consulted": datetime.utcnow().strftime("%Y-%m-%d"),
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         }
 
         # "Désignation complète" is the authoritative full description
@@ -374,7 +365,6 @@ class AlgeriaConformeproScraper:
         if designation_full:
             result["designation_full"] = designation_full
 
-<<<<<<< HEAD
         # ── EXTRACTION DYNAMIQUE DES TAXES ──
         # Parcourir TOUS les div.vstack de la page et extraire ceux qui
         # contiennent un taux (%, DA, dinars) — pas seulement les 6
@@ -450,34 +440,10 @@ class AlgeriaConformeproScraper:
         result["source_gaps"] = source_gaps
 
         # ── AVANTAGES FISCAUX ──
-=======
-        # Tax rates — each lives in its own div.vstack block
-        tax_labels = {
-            "Droit de douane": "DD",
-            "TVA": "TVA",
-            "TCS": "TCS",
-            "PRCT": "PRCT",
-            "DAPS": "DAPS",
-            "TIC": "TIC",
-        }
-        for label, key in tax_labels.items():
-            raw = self._parse_vstack(soup, label)
-            if raw:
-                rate_match = re.search(r"(\d+(?:[.,]\d+)?)\s*%?", raw)
-                if rate_match:
-                    result["taxes"][key] = {
-                        "name": label,
-                        "rate": float(rate_match.group(1).replace(",", ".")),
-                        "raw": raw,
-                    }
-
-        # Advantages and formalities are in div.vstack with <ul> lists
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         advantages_raw = self._parse_vstack(soup, "Avantages")
         if advantages_raw:
             result["advantages"] = [s.strip() for s in advantages_raw.split(";") if s.strip()]
 
-<<<<<<< HEAD
         # ── FORMALITÉS (avec extraction des taxes implicites) ──
         formalities_raw = self._parse_vstack(soup, "Formalités")
         if formalities_raw:
@@ -589,11 +555,6 @@ class AlgeriaConformeproScraper:
                     "doc": "data/sources/DZA/legislation/tarif_d_usage_2020.pdf",
                 },
             ]
-=======
-        formalities_raw = self._parse_vstack(soup, "Formalités")
-        if formalities_raw:
-            result["formalities"] = [s.strip() for s in formalities_raw.split(";") if s.strip()]
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
         return result
 
@@ -727,6 +688,7 @@ class AlgeriaConformeproScraper:
         # sous-ensemble de chapitres) : les positions nouvellement re-crawlées
         # remplacent les anciennes par hs_code, le reste est conservé tel quel.
         existing_path = os.path.join(DATA_DIR, "DZA_tariffs.json")
+        prev: Dict[str, Any] = {}
         merged_by_code: dict[str, dict] = {}
         if os.path.exists(existing_path):
             try:
@@ -742,15 +704,42 @@ class AlgeriaConformeproScraper:
             merged_by_code[p.get("hs_code") or p.get("raw_code")] = p
 
         all_positions = list(merged_by_code.values())
+        now = datetime.utcnow().isoformat()
 
+        # L'en-tête existant est REPRIS, jamais reconstruit : il porte la
+        # provenance du jeu de données (source_root_url, source_quality,
+        # source_provenance, built_by, policy, legal_refs) que ce crawler ne
+        # produit pas et ne saurait donc pas réécrire. La reconstruire à
+        # l'identique de zéro effacerait silencieusement cette traçabilité —
+        # les positions, elles, survivaient à la fusion, ce qui rendait la
+        # perte invisible dans le comportement du produit.
         tariff_data = {
-            "country": "DZA",
-            "country_name": "Algérie",
-            "source": "conformepro.dz (données douane.gov.dz)",
-            "extracted_at": datetime.utcnow().isoformat(),
-            "stats": self.stats,
-            "sub_positions": all_positions,
+            k: v for k, v in prev.items() if k not in ("sub_positions", "_integrity_seal")
         }
+        tariff_data.setdefault("country", "DZA")
+        tariff_data.setdefault("country_name", "Algérie")
+        tariff_data.setdefault("source", "conformepro.dz (données douane.gov.dz)")
+
+        if self.chapters_filter:
+            # Re-crawl partiel : la date d'extraction d'origine reste vraie pour
+            # l'immense majorité des positions, on ne la remplace pas par celle
+            # d'un passage sur quelques chapitres.
+            tariff_data.setdefault("extracted_at", now)
+            tariff_data["last_partial_recrawl"] = {
+                "chapters": sorted(self.chapters_filter),
+                "at": now,
+                "positions_recrawled": len(self.sub_positions),
+            }
+        else:
+            tariff_data["extracted_at"] = now
+            tariff_data.pop("last_partial_recrawl", None)
+
+        tariff_data["stats"] = self.stats
+        tariff_data["sub_positions"] = all_positions
+
+        # Le sceau précédent ne vaut plus pour ce contenu : il est retiré plutôt
+        # que laissé tel quel. `python backend/crawlers/integrity.py seal` le
+        # régénère, et le manifeste doit être réaligné dans la foulée.
         with open(existing_path, "w", encoding="utf-8") as f:
             json.dump(tariff_data, f, ensure_ascii=False, indent=2)
 
@@ -763,11 +752,7 @@ class AlgeriaConformeproScraper:
     async def run(
         self,
         max_headings: int = None,
-<<<<<<< HEAD
         chapters: Optional[Set[str]] = None,
-=======
-        chapters: set[str] | None = None,
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         concurrency: int = 1,
     ):
         """
@@ -777,6 +762,10 @@ class AlgeriaConformeproScraper:
         """
         self.stats["started_at"] = datetime.utcnow().isoformat()
         logger.info("=== Algeria Tariff Scraper (conformepro.dz) ===")
+        # save_final doit savoir si le passage est partiel : sinon il écrase la
+        # date d'extraction du fichier entier avec celle d'un crawl de quelques
+        # chapitres.
+        self.chapters_filter = set(chapters) if chapters else None
 
         try:
             await self.scrape_sections()
@@ -802,11 +791,7 @@ class AlgeriaConformeproScraper:
 
 
 async def run_algeria_scraper(
-<<<<<<< HEAD
     max_headings: int = None, chapters: Optional[Set[str]] = None, concurrency: int = 1
-=======
-    max_headings: int = None, chapters: set[str] | None = None, concurrency: int = 1
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 ):
     scraper = AlgeriaConformeproScraper()
     return await scraper.run(max_headings=max_headings, chapters=chapters, concurrency=concurrency)

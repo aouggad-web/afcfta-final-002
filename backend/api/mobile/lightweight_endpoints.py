@@ -59,13 +59,9 @@ async def mobile_country_summary(
         from performance.caching.cache_layers import get_cache
 
         cache = get_cache()
-<<<<<<< HEAD
-        cache_key = cache.l1.build_key(type="mobile_country", key=f"{code.upper()}_{lang}")
-=======
         cache_key = cache.l1.build_key(
             type="mobile_country_verified_v2", key=f"{code.upper()}_{lang}"
         )
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         cached = cache.l1.get(cache_key)
         if cached:
             tag = _etag(cached)
@@ -99,15 +95,11 @@ async def mobile_country_summary(
         from intelligence.analytics.regional_analytics import REGIONAL_BLOCS
 
         country_bloc = next(
-<<<<<<< HEAD
-            (bloc for bloc, info in REGIONAL_BLOCS.items() if code_upper in info["countries"]),
-=======
             (
                 bloc
                 for bloc, info in REGIONAL_BLOCS.items()
                 if code_upper in info["countries"]
             ),
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             "N/A",
         )
     except Exception:
@@ -118,22 +110,13 @@ async def mobile_country_summary(
         "regional_bloc": country_bloc,
         "investment": investment_summary,
         "key_opportunities": [
-<<<<<<< HEAD
-            "AfCFTA preferential tariff access",
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             "SEZ investment incentives",
             "Regional value chain integration",
         ],
         "basic_tariffs": {
-<<<<<<< HEAD
-            "avg_mfn_rate_pct": 12.5,  # Would be fetched from tariff service
-            "afcfta_preference": "Yes",
-=======
             "avg_mfn_rate_pct": None,
             "afcfta_preference": None,
             "data_status": "NOT_AVAILABLE",
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         },
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }
@@ -182,12 +165,8 @@ async def mobile_quick_search(
             suggestions.append(
                 {
                     "hs_code": code,
-<<<<<<< HEAD
-                    "label": match.get("description") or match.get("description_en", ""),
-=======
                     "label": match.get("description")
                     or match.get("description_en", ""),
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
                     "type": match.get("match_type", ""),
                 }
             )
@@ -222,13 +201,9 @@ async def mobile_dashboard_overview(
     heatmap = analytics.get_investment_heatmap()[:5]  # Top 5 blocs
 
     top_opportunities = (
-<<<<<<< HEAD
-        heatmap[:3] if not region else [h for h in heatmap if h["bloc"] == region.upper()][:3]
-=======
         heatmap[:3]
         if not region
         else [h for h in heatmap if h["bloc"] == region.upper()][:3]
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     )
 
     corridors = analytics.get_trade_corridor_analysis()[:3]
@@ -311,13 +286,9 @@ async def mobile_alerts_feed(
 @router.get("/country/details/{code}")
 async def mobile_country_details(
     code: str,
-<<<<<<< HEAD
-    section: str = Query("all", description="Section to load: investment|trade|logistics|all"),
-=======
     section: str = Query(
         "all", description="Section to load: investment|trade|logistics|all"
     ),
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 ):
     """
     Progressive loading endpoint — returns only the requested section.
@@ -335,13 +306,9 @@ async def mobile_country_details(
         sections["investment"] = {
             "score": score.overall_score,
             "grade": score.grade,
-<<<<<<< HEAD
-            "components": [{"name": c.name, "score": c.raw_score} for c in score.component_scores],
-=======
             "components": [
                 {"name": c.name, "score": c.raw_score} for c in score.component_scores
             ],
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             "risk_factors": score.risk_factors,
         }
 

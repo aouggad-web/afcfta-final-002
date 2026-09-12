@@ -17,6 +17,21 @@ FRONTEND_DIR="$SCRIPT_DIR/frontend"
 
 mkdir -p "$SCRIPT_DIR/backend/data/ai_cache"
 
+# Couche normalisée : la dériver si elle manque.
+#
+# backend/data/crawled_normalized/ n'est pas versionné (2 Go, fichiers au-delà
+# de la limite par fichier de GitHub). Un clone neuf démarrait donc sans lui, et
+# les pays servis depuis ce dossier restaient muets. L'image de production le
+# construit désormais ; en développement, on le dérive ici au premier démarrage.
+# Régénérer à chaque lancement coûterait une minute et demie pour rien : on ne
+# le fait que si le dossier est absent ou vide.
+NORMALIZED_DIR="$SCRIPT_DIR/backend/data/crawled_normalized"
+if [ -z "$(ls -A "$NORMALIZED_DIR" 2>/dev/null)" ]; then
+    echo "Couche normalisée absente — génération (une à deux minutes)..."
+    (cd "$SCRIPT_DIR" && python3 scripts/normalize_crawled.py) \
+        || echo "AVERTISSEMENT : génération échouée, certains pays seront indisponibles."
+fi
+
 # Kill any stale dev servers orphaned by a previous run BEFORE starting new ones.
 # Without this, leftover processes keep holding the ports, the backend fails to
 # bind, Vite falls back to another port, and the preview pane ends up served by

@@ -439902,5 +439902,13 @@
       "source": "sars.gov.za",
       "country": "BWA"
     }
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "029c888f67df691fdddb67d3bf7a6cd19fb61a79ddbfba06076b1026a683db97",
+    "source_url": "",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:06.788778+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

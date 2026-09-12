@@ -439902,5 +439902,13 @@
       "source": "sars.gov.za",
       "country": "NAM"
     }
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "fa611d5bf244b3c4acf3bd3c1e678991b615afbac2f1f467261f79097f1fb46a",
+    "source_url": "",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:20.742200+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

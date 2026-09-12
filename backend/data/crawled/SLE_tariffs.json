@@ -429044,5 +429044,13 @@
       "trade_bloc": "ECOWAS/CEDEAO",
       "source_verified": "https://douanes.gouv.bj/tarif-douane/"
     }
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "a7d303e39eb87f63722441814dd03894255f33d9688a65490a75dc7ef0ac3c1e",
+    "source_url": "https://www.ecowas.int",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:23.026365+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

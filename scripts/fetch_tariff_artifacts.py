@@ -1,0 +1,219 @@
+#!/usr/bin/env python3
+"""Récupère et vérifie les artefacts tarifaires déclarés par le manifeste.
+
+Les données tarifaires changent une à trois fois par an et par pays : ce sont
+des publications, pas des sources. Elles sont donc servies comme artefacts
+immuables versionnés, épinglés dans ``backend/data/source_registry_v2.json``
+par leur empreinte SHA-256, et non versionnées dans git.
+
+Ce script est le point d'entrée du déploiement :
+
+  1. lit le manifeste ;
+  2. télécharge ``artifact_url`` quand il est renseigné, sinon se rabat sur
+     ``artifact_path`` déjà présent dans le dépôt ;
+  3. **vérifie l'empreinte avant de publier le fichier**, et refuse en cas
+     d'écart plutôt que de servir une donnée dont l'origine n'est pas établie.
+
+Chaque pays est vérifié sur son propre fichier, y compris les 27 qui héritent
+d'un tarif extérieur commun. ``_shared`` dit d'où vient le barème douanier, pas
+que le pays serait sans artefact : le droit de douane et les prélèvements
+communautaires sont partagés, la fiscalité nationale ne l'est pas. Une version
+antérieure sautait ces pays et les déclarait conformes sans lire un octet —
+c'est ainsi que deux taux de TVA faux sont restés servis sous un rapport
+« 54/54 conformes ».
+
+L'hébergement des artefacts n'étant pas encore tranché, tous les
+``artifact_url`` valent ``null`` : le script fonctionne alors entièrement sur
+les fichiers du dépôt. Renseigner une URL suffira à basculer un pays sans
+toucher au code.
+
+Usage :
+    python scripts/fetch_tariff_artifacts.py            # tous les pays
+    python scripts/fetch_tariff_artifacts.py --country DZA
+    python scripts/fetch_tariff_artifacts.py --verify-only
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import shutil
+import sys
+import urllib.request
+from pathlib import Path
+from typing import Optional
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+MANIFEST = REPO_ROOT / "backend" / "data" / "source_registry_v2.json"
+DEST_DIR = REPO_ROOT / "backend" / "data" / "crawled"
+
+
+class ArtifactError(RuntimeError):
+    """Un artefact est introuvable, ou son contenu ne correspond pas au manifeste."""
+
+
+def sha256_of(path: Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def load_manifest() -> dict:
+    with open(MANIFEST, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def tariff_lineage(countries: dict, iso: str) -> str:
+    """Pays d'où vient le *barème tarifaire* cité par ``_shared``.
+
+    Attention au contresens que cette chaîne a longtemps provoqué ici :
+    ``_shared`` dit d'où vient le tarif extérieur commun, pas que le pays serait
+    dépourvu de fichier propre. Les membres d'une union douanière partagent le
+    droit de douane et les prélèvements communautaires, jamais la fiscalité
+    nationale — TVA, accises, taxes internes restent les leurs. Les 27 entrées
+    héritées du manifeste ont toutes leur propre fichier, et aucune n'est
+    identique à celle de son parent.
+
+    Cette fonction ne sert donc qu'à nommer la filiation et à détecter une
+    référence pendante ; elle ne dispense jamais un pays de sa vérification.
+    """
+    seen: list[str] = []
+    current = iso
+    while True:
+        entry = countries.get(current)
+        if entry is None:
+            raise ArtifactError(f"{iso}: pays absent du manifeste (via {' → '.join(seen)})")
+        shared = entry.get("_shared")
+        if not shared:
+            return current
+        parent = shared.split()[0].upper()
+        if parent in seen:
+            raise ArtifactError(f"{iso}: chaîne _shared circulaire ({' → '.join(seen + [parent])})")
+        seen.append(current)
+        current = parent
+
+
+def download(url: str, dest: Path) -> Path:
+    """Télécharge à côté de la destination et retourne le fichier temporaire.
+
+    Le remplacement n'a délibérément pas lieu ici. Une version antérieure
+    téléchargeait puis appelait ``tmp.replace(dest)`` avant toute vérification :
+    un artefact divergent était bien rejeté, mais il avait déjà détruit le
+    fichier valide. Le refus arrivait trop tard pour protéger quoi que ce soit.
+
+    L'appelant vérifie l'empreinte du fichier temporaire, puis publie avec
+    ``promote`` — ou jette, laissant la donnée en place intacte.
+    """
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    tmp = dest.with_suffix(dest.suffix + ".part")
+    with urllib.request.urlopen(url, timeout=300) as response, open(tmp, "wb") as out:
+        shutil.copyfileobj(response, out)
+    return tmp
+
+
+def promote(tmp: Path, dest: Path) -> None:
+    """Publie l'artefact vérifié. ``replace`` est atomique sur un même système."""
+    tmp.replace(dest)
+
+
+def discard(tmp: Path) -> None:
+    """Écarte un téléchargement non conforme sans toucher à la donnée en place."""
+    tmp.unlink(missing_ok=True)
+
+
+def process(iso: str, countries: dict, verify_only: bool) -> Optional[str]:
+    """Retourne un message d'anomalie, ou None si le pays est en ordre.
+
+    Chaque pays est vérifié sur *son* fichier. Un pays hérité n'est pas
+    dispensé : son barème vient de son union douanière, sa fiscalité nationale
+    est la sienne.
+    """
+    entry = countries.get(iso)
+    if entry is None:
+        return f"{iso}: pays absent du manifeste"
+
+    # Une filiation pendante est un défaut du manifeste, pas un motif de saut.
+    tariff_lineage(countries, iso)
+
+    path_value = entry.get("artifact_path")
+    if not path_value:
+        return f"{iso}: aucun artifact_path déclaré"
+    dest = REPO_ROOT / path_value
+    expected = entry.get("sha256")
+    url = entry.get("artifact_url")
+
+    if not expected or expected == "pending":
+        # Sans empreinte de référence, on ne peut rien affirmer : c'est un
+        # trou de traçabilité à combler, pas une validation. Contrôlé avant tout
+        # téléchargement : sans référence, rien ne pourrait valider l'arrivant.
+        return f"{iso}: empreinte absente du manifeste, intégrité non vérifiable"
+
+    if url and not verify_only:
+        try:
+            tmp = download(url, dest)
+        except Exception as exc:  # noqa: BLE001 — le message doit rester lisible
+            return f"{iso}: téléchargement impossible depuis {url} ({exc})"
+        actual = sha256_of(tmp)
+        if actual != expected:
+            discard(tmp)
+            return (
+                f"{iso}: téléchargement refusé, empreinte non conforme "
+                f"(fichier en place inchangé)\n"
+                f"        attendue {expected}\n"
+                f"        obtenue  {actual}"
+            )
+        promote(tmp, dest)
+
+    if not dest.exists():
+        return f"{iso}: artefact absent ({path_value}) et aucun artifact_url pour le récupérer"
+
+    actual = sha256_of(dest)
+    if actual != expected:
+        return (
+            f"{iso}: empreinte non conforme\n"
+            f"        attendue {expected}\n"
+            f"        obtenue  {actual}"
+        )
+    return None
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--country", help="ne traiter qu'un pays (ISO3)")
+    parser.add_argument(
+        "--verify-only",
+        action="store_true",
+        help="vérifier les empreintes sans rien télécharger",
+    )
+    args = parser.parse_args()
+
+    countries = load_manifest()["countries"]
+    targets = [args.country.upper()] if args.country else sorted(countries)
+
+    problems = []
+    for iso in targets:
+        try:
+            problem = process(iso, countries, args.verify_only)
+        except ArtifactError as exc:
+            problem = str(exc)
+        if problem:
+            problems.append(problem)
+
+    checked = len(targets) - len(problems)
+    # Le compte-rendu nomme les octets réellement lus : un rapport qui compte
+    # des pays sautés comme conformes est exactement ce qui a masqué la TVA.
+    print(f"{checked}/{len(targets)} pays conformes au manifeste "
+          f"({checked} empreintes recalculées sur le fichier servi)")
+    if problems:
+        print(f"\n{len(problems)} anomalie(s) :", file=sys.stderr)
+        for p in problems:
+            print(f"  - {p}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

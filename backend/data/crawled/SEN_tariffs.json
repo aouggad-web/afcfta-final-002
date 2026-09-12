@@ -416798,5 +416798,13 @@
     "Taxes nationales: RS (1%), PCS UEMOA (1%), PCC CEDEAO (0.5%), PUA (0.2%) - source douanes.sn",
     "TVA: 18% taux unique appliqué par défaut - les exemptions spécifiques nécessitent vérification auprès de douanes.sn",
     "Les codes HS et désignations proviennent de la nomenclature officielle CEDEAO"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "80f742f183d05c07b182a231b69e00c96ca1168030be369494bcc01124fc755d",
+    "source_url": "https://www.douanes.sn/ndn722/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:22.488760+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

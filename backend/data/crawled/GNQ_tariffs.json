@@ -242508,5 +242508,13 @@
       "source": "CEMAC Tarif des Douanes (PDF officiel)",
       "data_type": "regional_cet"
     }
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "67a09447b86c059a62ee89a29af2f3b645941bc09e147541d8d4c414b71a2c9f",
+    "source_url": "https://www.cemac.int",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:17.073217+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

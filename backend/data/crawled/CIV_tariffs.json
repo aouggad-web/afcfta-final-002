@@ -217602,5 +217602,13 @@
     "Les taxes PCS (0.8%), PUA (0.2%) et RS (1%) s'appliquent à toutes les importations",
     "La Côte d'Ivoire applique le TEC CEDEAO (5 bandes tarifaires)",
     "TVA à taux réduit (9%) sur certains produits de première nécessité"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "b4218a476d51df39c9d516a4ea777b9d797e456525750307fff39aac50009a79",
+    "source_url": "https://guce.gouv.ci/customs/tariff",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:07.551351+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }
