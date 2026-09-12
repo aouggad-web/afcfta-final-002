@@ -103,16 +103,22 @@ class CrawledDataService:
 
             file_source_quality = data.get("source_quality", "")
 
+            is_unified = data.get("schema_version") == "unified_v1"
+            if is_unified and not file_source_quality:
+                file_source = data.get("source")
+                if isinstance(file_source, dict):
+                    file_source_quality = file_source.get("quality", "")
+
             for pos in positions:
-                # Schéma unifié : pas de normalisation supplémentaire
-                if data.get("schema_version") == "unified_v1":
-                    normalized = pos
+                if is_unified:
+                    normalized = self._adapt_unified_v1(pos, data, country_code)
                 else:
                     normalized = self._normalize_position(country_code, pos)
                 if not normalized:
                     continue
 
-                normalized["source_quality"] = file_source_quality
+                if file_source_quality or not normalized.get("source_quality"):
+                    normalized["source_quality"] = file_source_quality
 
                 code_clean = normalized.get("code_clean") or normalized.get("national_code") or ""
                 if not code_clean:
@@ -304,6 +310,55 @@ class CrawledDataService:
         "ZMB",
         "ZWE",
     }
+
+    def _adapt_unified_v1(self, pos: dict, data: dict, country_code: str) -> Optional[dict]:
+        """Expose une position du schéma unifié v1 sous le contrat attendu en aval.
+
+        Le schéma unifié produit par `scripts/normalize_crawled.py` est le format
+        cible sur disque : il est strictement plus riche que les schémas crawler
+        d'origine et ne perd aucune donnée. Ses noms diffèrent cependant de ceux
+        que lisent le calculateur et les autres consommateurs, écrits contre la
+        sortie de `_normalize_position`. Six correspondances suffisent à couvrir
+        l'écart ; tout le reste de la position est conservé tel quel, y compris
+        les champs que le contrat historique ignore (restrictions, quotas,
+        legal_refs, zlecaf_schedule, export_taxes, source_gaps).
+
+        Les dictionnaires de taxes sont déjà conformes (`code`, `name`,
+        `rate_pct`, `raw_value`, `source`, `is_preferential`) et passent intacts.
+        """
+        code_clean = (pos.get("national_code") or "").strip()
+        if not code_clean:
+            return None
+
+        designation = pos.get("designation")
+        if isinstance(designation, dict):
+            label = (
+                designation.get("fr")
+                or designation.get("en")
+                or designation.get("full_fr")
+                or designation.get("verbatim")
+                or ""
+            )
+        else:
+            label = designation or ""
+
+        source = pos.get("source") or data.get("source") or ""
+        if isinstance(source, dict):
+            source = source.get("name") or source.get("url") or ""
+
+        adapted = dict(pos)
+        adapted.update(
+            {
+                "code_raw": pos.get("code_raw") or code_clean,
+                "code_clean": code_clean,
+                "designation": label,
+                "source": source,
+                "country": country_code,
+                "administrative_formalities": pos.get("administrative_formalities")
+                or pos.get("formalities", []),
+            }
+        )
+        return adapted
 
     def _normalize_position(self, country_code: str, pos: dict) -> Optional[dict]:
         # Check if it's already in enhanced format (from tariff_lines conversion)
