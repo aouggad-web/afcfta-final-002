@@ -36,6 +36,7 @@ class AlgeriaConformeproScraper:
         self.client = None
         self.sections = []
         self.chapters = []
+        self.chapters_filter: Optional[Set[str]] = None
         self.headings = []
         self.sub_positions = []
         self.errors = []
@@ -687,6 +688,7 @@ class AlgeriaConformeproScraper:
         # sous-ensemble de chapitres) : les positions nouvellement re-crawlées
         # remplacent les anciennes par hs_code, le reste est conservé tel quel.
         existing_path = os.path.join(DATA_DIR, "DZA_tariffs.json")
+        prev: Dict[str, Any] = {}
         merged_by_code: dict[str, dict] = {}
         if os.path.exists(existing_path):
             try:
@@ -702,15 +704,42 @@ class AlgeriaConformeproScraper:
             merged_by_code[p.get("hs_code") or p.get("raw_code")] = p
 
         all_positions = list(merged_by_code.values())
+        now = datetime.utcnow().isoformat()
 
+        # L'en-tête existant est REPRIS, jamais reconstruit : il porte la
+        # provenance du jeu de données (source_root_url, source_quality,
+        # source_provenance, built_by, policy, legal_refs) que ce crawler ne
+        # produit pas et ne saurait donc pas réécrire. La reconstruire à
+        # l'identique de zéro effacerait silencieusement cette traçabilité —
+        # les positions, elles, survivaient à la fusion, ce qui rendait la
+        # perte invisible dans le comportement du produit.
         tariff_data = {
-            "country": "DZA",
-            "country_name": "Algérie",
-            "source": "conformepro.dz (données douane.gov.dz)",
-            "extracted_at": datetime.utcnow().isoformat(),
-            "stats": self.stats,
-            "sub_positions": all_positions,
+            k: v for k, v in prev.items() if k not in ("sub_positions", "_integrity_seal")
         }
+        tariff_data.setdefault("country", "DZA")
+        tariff_data.setdefault("country_name", "Algérie")
+        tariff_data.setdefault("source", "conformepro.dz (données douane.gov.dz)")
+
+        if self.chapters_filter:
+            # Re-crawl partiel : la date d'extraction d'origine reste vraie pour
+            # l'immense majorité des positions, on ne la remplace pas par celle
+            # d'un passage sur quelques chapitres.
+            tariff_data.setdefault("extracted_at", now)
+            tariff_data["last_partial_recrawl"] = {
+                "chapters": sorted(self.chapters_filter),
+                "at": now,
+                "positions_recrawled": len(self.sub_positions),
+            }
+        else:
+            tariff_data["extracted_at"] = now
+            tariff_data.pop("last_partial_recrawl", None)
+
+        tariff_data["stats"] = self.stats
+        tariff_data["sub_positions"] = all_positions
+
+        # Le sceau précédent ne vaut plus pour ce contenu : il est retiré plutôt
+        # que laissé tel quel. `python backend/crawlers/integrity.py seal` le
+        # régénère, et le manifeste doit être réaligné dans la foulée.
         with open(existing_path, "w", encoding="utf-8") as f:
             json.dump(tariff_data, f, ensure_ascii=False, indent=2)
 
@@ -733,6 +762,10 @@ class AlgeriaConformeproScraper:
         """
         self.stats["started_at"] = datetime.utcnow().isoformat()
         logger.info("=== Algeria Tariff Scraper (conformepro.dz) ===")
+        # save_final doit savoir si le passage est partiel : sinon il écrase la
+        # date d'extraction du fichier entier avec celle d'un crawl de quelques
+        # chapitres.
+        self.chapters_filter = set(chapters) if chapters else None
 
         try:
             await self.scrape_sections()
