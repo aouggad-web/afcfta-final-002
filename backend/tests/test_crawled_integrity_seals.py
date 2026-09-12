@@ -42,13 +42,14 @@ def test_le_fichier_se_verifie_tel_quel(integrity, fichier_scelle):
     assert resultat["reference"] in ("sidecar", "manifest")
 
 
-def test_verification_possible_sans_sceau_adjacent(integrity, fichier_scelle, tmp_path):
-    """Situation d'un clone neuf : le .sha256 n'existe pas."""
-    copie = tmp_path / pathlib.Path(fichier_scelle).name
-    copie.write_bytes(pathlib.Path(fichier_scelle).read_bytes())
+def test_verification_possible_sans_sceau_adjacent(integrity, fichier_scelle):
+    """Situation d'un clone neuf : le .sha256 n'existe pas.
 
-    # Le repli passe par artifact_path du manifeste, qui désigne l'emplacement
-    # réel : on retire donc le sceau en place plutôt que de déplacer le fichier.
+    Le repli passe par l'``artifact_path`` du manifeste, qui désigne
+    l'emplacement réel du fichier : on retire donc le sceau en place le temps
+    du test plutôt que de travailler sur une copie, qu'aucune entrée du
+    manifeste ne désignerait.
+    """
     sidecar = pathlib.Path(integrity.sidecar_path(fichier_scelle))
     sauvegarde = sidecar.read_text(encoding="utf-8") if sidecar.exists() else None
     if sauvegarde is not None:
@@ -91,3 +92,28 @@ def test_un_fichier_hors_manifeste_ne_pretend_pas_etre_verifie(integrity, tmp_pa
     resultat = integrity.verify_crawled_file(str(etranger))
     assert resultat["reference"] is None
     assert not resultat["valid"]
+
+
+def test_le_cache_du_manifeste_suit_ses_modifications(integrity, tmp_path):
+    """Un cache qui ne verrait pas une mise à jour ferait mentir la vérification.
+
+    La table {chemin → empreinte} est construite une fois puis réutilisée :
+    sans invalidation, un rescellement suivi d'une mise à jour du manifeste
+    continuerait d'être confronté à l'ancienne valeur, et la vérification
+    validerait des octets qui ne sont plus les bons.
+    """
+    manifeste = REPO_ROOT / "backend" / "data" / "source_registry_v2.json"
+    octets = manifeste.read_bytes()
+
+    premiere = integrity._manifest_table()
+    assert premiere, "table du manifeste vide"
+    assert integrity._manifest_table() is premiere, "la table devrait être réutilisée"
+
+    try:
+        # Réécriture à l'identique : seule la date de modification change.
+        manifeste.write_bytes(octets)
+        seconde = integrity._manifest_table()
+        assert seconde is not premiere, "une modification du manifeste doit invalider le cache"
+        assert seconde == premiere, "le contenu identique doit produire la même table"
+    finally:
+        manifeste.write_bytes(octets)

@@ -1088,7 +1088,13 @@ def normalize_ecowas(data: dict, iso3: str) -> List[dict]:
             "source_gaps": [],
             "lf_provisions": None,
             "data_status": "crawled_authentic",
-            "source_quality": pos.get("source_verified", "crawled_authentic"),
+            # source_verified porte l'URL du portail de la source, pas une
+            # qualité : la verser dans source_quality servait « https://
+            # finances.gouv.td/ » là où un consommateur attend
+            # « crawled_authentic ». Quinze pays étaient dans ce cas. L'URL est
+            # conservée dans le champ qui la nomme.
+            "source_quality": "crawled_authentic",
+            "source_verified_url": pos.get("source_verified") or None,
             "raw_data": copy.deepcopy(pos),
         })
     return positions

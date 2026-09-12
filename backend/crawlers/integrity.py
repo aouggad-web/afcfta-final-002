@@ -68,23 +68,46 @@ def manifest_hash(filepath: str) -> Optional[str]:
     manifeste, registre — avec autant d'occasions de désynchronisation ; c'est
     déjà le défaut connu de ce mécanisme, inutile de l'aggraver.
     """
-    path = Path(filepath).resolve()
+    table = _manifest_table()
+    return table.get(Path(filepath).resolve())
+
+
+# Table {chemin résolu → empreinte}, construite une fois puis réutilisée.
+# verify_all_crawled_files appelle manifest_hash une fois par fichier : sans
+# cache, le manifeste était relu et reparcouru 53 fois pour une table qui ne
+# change pas entre deux appels. La date de modification sert d'invalidation —
+# un rescellement suivi d'une mise à jour du manifeste doit être vu, sinon le
+# cache ferait exactement mentir la vérification qu'il sert.
+_MANIFEST_CACHE: Optional[Dict[str, Any]] = None
+
+
+def _manifest_table() -> Dict[Path, str]:
+    global _MANIFEST_CACHE
     manifest = Path(__file__).resolve().parent.parent / "data" / "source_registry_v2.json"
-    if not manifest.exists():
-        return None
+    try:
+        mtime = manifest.stat().st_mtime_ns
+    except OSError:
+        return {}
+
+    if _MANIFEST_CACHE is not None and _MANIFEST_CACHE["mtime"] == mtime:
+        return _MANIFEST_CACHE["table"]
+
     try:
         with open(manifest, encoding="utf-8") as f:
             countries = json.load(f).get("countries", {})
     except (OSError, json.JSONDecodeError):
-        return None
+        return {}
+
     repo_root = manifest.parent.parent.parent
+    table: Dict[Path, str] = {}
     for entry in countries.values():
         declared = entry.get("artifact_path")
-        if not declared:
-            continue
-        if (repo_root / declared).resolve() == path:
-            return entry.get("sha256") or None
-    return None
+        digest = entry.get("sha256")
+        if declared and digest:
+            table[(repo_root / declared).resolve()] = digest
+
+    _MANIFEST_CACHE = {"mtime": mtime, "table": table}
+    return table
 
 
 def detect_indent(filepath: str, default: int = 2) -> int:
@@ -123,6 +146,13 @@ class IntegritySeal:
     - source_hash : SHA-256 du document source (PDF, HTML, XLS)
     - crawled_at : timestamp UTC du crawl
     - verified : True si le hash a été vérifié à l'écriture
+
+    Attention : ``to_dict()`` rend le sceau complet, mais ce n'est **pas** ce
+    qui est écrit dans le fichier. ``file_hash`` ne peut pas vivre à
+    l'intérieur du document qu'il hache — l'y écrire changerait le contenu et
+    invaliderait la valeur écrite. ``seal_crawled_file`` le retire donc avant
+    d'embarquer le sceau, et le publie dans un ``<nom>.sha256`` adjacent. Voir
+    ``to_embedded_dict()`` pour la forme réellement embarquée.
     """
 
     def __init__(
@@ -184,6 +214,17 @@ class IntegritySeal:
             "algorithm": "SHA-256",
         }
 
+    def to_embedded_dict(self) -> Dict[str, Any]:
+        """Forme réellement écrite dans le document : sans ``file_hash``.
+
+        Le hash du fichier est publié à côté, jamais dedans. Le sceau embarqué
+        ne porte que le ``content_hash``, seul hachage qu'un document puisse
+        contenir sans s'invalider lui-même.
+        """
+        payload = self.to_dict()
+        payload.pop("file_hash", None)
+        return payload
+
     def verify(self, filepath: Optional[str] = None) -> bool:
         """Vérifie l'intégrité du fichier."""
         if not filepath:
@@ -196,8 +237,8 @@ class IntegritySeal:
         return actual_hash == self.file_hash
 
     def embed_in(self, data: dict) -> dict:
-        """Embarque le sceau dans un dict JSON."""
-        data["_integrity_seal"] = self.to_dict()
+        """Embarque le sceau dans un dict JSON, sans le ``file_hash``."""
+        data["_integrity_seal"] = self.to_embedded_dict()
         return data
 
 
@@ -233,9 +274,7 @@ def seal_crawled_file(filepath: str, source_url: str = "", source_hash: Optional
         source_url=source_url or data.get("source_url", data.get("source_root_url", "")),
         source_hash=source_hash,
     )
-    payload = seal.to_dict()
-    payload.pop("file_hash", None)
-    data["_integrity_seal"] = payload
+    data["_integrity_seal"] = seal.to_embedded_dict()
 
     with open(filepath, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=indent)

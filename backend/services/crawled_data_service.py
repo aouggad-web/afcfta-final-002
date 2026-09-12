@@ -117,7 +117,14 @@ class CrawledDataService:
                 if not normalized:
                     continue
 
-                if file_source_quality or not normalized.get("source_quality"):
+                # La qualité portée par la position prime : elle est plus
+                # précise que celle du fichier. DZA_tariffs.json est
+                # multi-source depuis les chapitres 22 et 24 — ses 111
+                # positions venues du portail de la DGD sont
+                # crawled_authentic_primary, là où l'en-tête du fichier
+                # annonce crawled_authentic pour l'ensemble. Recopier l'en-tête
+                # par-dessus les déclassait silencieusement.
+                if file_source_quality and not normalized.get("source_quality"):
                     normalized["source_quality"] = file_source_quality
 
                 code_clean = normalized.get("code_clean") or normalized.get("national_code") or ""
