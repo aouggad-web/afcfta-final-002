@@ -1075,8 +1075,14 @@ def _addressable_need(need: dict) -> float | None:
     """
     if not need or not need.get("available"):
         return None
-    if "importable_need" in need:
-        return need["importable_need"]
+    # Tester la VALEUR, pas la présence de la clé : le payload contient
+    # toujours « importable_need », éventuellement à None quand la production
+    # n'a pas pu être établie. Le test de présence rendait donc le repli
+    # documenté inatteignable, et ces marchés étaient classés avec une demande
+    # adressable nulle au lieu de leur consommation.
+    importable = need.get("importable_need")
+    if importable is not None:
+        return importable
     return need.get("value")
 
 
@@ -1250,6 +1256,10 @@ def get_import_opportunities_scenario(
             continue
 
         need = demand_estimation_service.estimate_national_need(hs, dest)
+        # Ce scénario était resté sur « value » alors que S2 passait au besoin
+        # adressable : un marché auto-suffisant ou non attesté y réapparaissait.
+        if not _market_is_addressable(need):
+            continue
         need_value = need.get("value") if need.get("available") else None
         if not need_value or need_value <= 0:
             continue
@@ -1258,17 +1268,31 @@ def get_import_opportunities_scenario(
         local_recorded = bool(local.get("available")) and local.get("latest_value") is not None
         local_value = float(local.get("latest_value") or 0.0) if local_recorded else None
 
-        if local_recorded:
+        # Le déficit reprend le besoin importable quand le service a su
+        # l'établir — il porte déjà la soustraction de la production nationale
+        # et la qualification du panier de consommation.
+        importable = need.get("importable_need")
+        if importable is not None:
+            deficit = importable
+            deficit_share = round(deficit / need_value, 4) if need_value else None
+            deficit_note = need.get("importable_need_note")
+        elif local_recorded:
             deficit = max(need_value - local_value, 0.0)
             deficit_share = round(deficit / need_value, 4) if need_value else None
             deficit_note = None
         else:
-            # Production locale non enregistrée dans le référentiel : le besoin
-            # entier est traité comme non couvert, mais c'est étiqueté (jamais
-            # présenté comme un zéro mesuré).
+            # Production locale INCONNUE — pas nulle. La traiter comme un
+            # déficit complet transformait une ignorance en opportunité
+            # maximale, exactement la symétrie que ce travail corrige. La borne
+            # haute est conservée pour ne pas effacer un marché réel, mais son
+            # incertitude est désormais dite au lieu d'être minimisée.
             deficit = need_value
             deficit_share = 1.0
-            deficit_note = "Production locale non enregistrée dans le référentiel (borne haute)."
+            deficit_note = (
+                "Production locale NON ÉTABLIE dans le référentiel : le besoin entier "
+                "est retenu comme borne HAUTE, pas comme un déficit mesuré. Le pays "
+                "produit peut-être tout ou partie de sa consommation."
+            )
 
         continental_total = producers.get("continental_total") or 0
         import_pressure = round(need_value / continental_total, 4) if continental_total else None

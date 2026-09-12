@@ -568,7 +568,7 @@ def _observed_imports_floor(
     }
 
 
-def domestic_supply(hs_code: str, country_iso3: str) -> Dict:
+def domestic_supply(hs_code: str, country_iso3: str, dimension: Optional[str] = None) -> Dict:
     """Production NATIONALE du pays pour ce produit (FAOSTAT/USGS/UNIDO).
 
     Le besoin estimé par la cascade est un besoin de CONSOMMATION. Un
@@ -579,7 +579,14 @@ def domestic_supply(hs_code: str, country_iso3: str) -> Dict:
 
     ``available: False`` distingue deux situations que rien ne doit confondre :
     le pays ne produit pas (signal réel, exploité par la consommation révélée)
-    et la production n'est pas documentée. Le champ ``reason`` les sépare.
+    et la production n'est pas documentée. ``reason`` porte la raison rendue par
+    la source, et ``absence_established`` dit si cette raison prouve réellement
+    une production nulle — ce qui n'est le cas que pour une source couvrant le
+    pays, c'est-à-dire FAOSTAT pour l'agriculture.
+
+    ``dimension`` (agri / mining / industry) vient de la référence continentale
+    de l'appelant : elle détermine quelle source aurait dû répondre, donc ce que
+    vaut son silence.
     """
     try:
         from services.production_capacity_service import get_capacity
@@ -590,11 +597,43 @@ def domestic_supply(hs_code: str, country_iso3: str) -> Dict:
         return {"available": False, "reason": "lookup_failed"}
 
     if not cap.get("available"):
+        # get_capacity a deux formes d'indisponibilité. Avec « reason », il n'a
+        # rien pu rattacher : no_mapping (le code SH n'est lié à aucune
+        # commodité suivie) ou no_data (la commodité est suivie mais le jeu est
+        # vide). Sans « reason », il a bien identifié la commodité — le payload
+        # porte commodity et dimension — et c'est le PAYS qui n'a aucun
+        # enregistrement.
+        reason = cap.get("reason") or ("country_absent_from_dataset" if cap.get("commodity") else "unknown")
+        dimension = cap.get("dimension") or dimension
+        # Distinction décisive, et je l'avais écrasée : get_capacity dit POURQUOI
+        # il ne renvoie rien, et toutes les raisons ne se valent pas.
+        #
+        #   no_mapping — le code SH n'est rattaché à aucune commodité suivie.
+        #                On ne sait rien de la production du pays.
+        #   no_data    — la commodité EST suivie, mais ce pays n'a pas
+        #                d'enregistrement. Pour l'agriculture, la source est
+        #                FAOSTAT (QCL bulk Africa), qui couvre tous les pays
+        #                africains : une absence y est bien une production nulle
+        #                ou négligeable. Pour les mines (USGS) et l'industrie
+        #                (UNIDO), la couverture est partielle — une absence n'y
+        #                prouve rien.
+        #
+        # Écraser tout cela en « no_recorded_production » attribuait 100 % du
+        # besoin à l'importation dès qu'une source était muette, ce qui est le
+        # travers même que ce service corrige, retourné en surestimation.
+        # L'absence n'est ÉTABLIE que si la source qui se tait couvre réellement
+        # le pays. FAOSTAT (QCL bulk Africa) couvre tous les pays africains :
+        # une commodité agricole suivie dont l'Algérie est absente signifie
+        # qu'elle n'en produit pas. USGS (mines) et UNIDO (industrie) n'ont
+        # qu'une couverture partielle : leur silence ne prouve rien.
+        absence_established = (
+            reason == "country_absent_from_dataset" and dimension == "agri"
+        )
         return {
             "available": False,
-            # FAOSTAT couvre tous les pays africains pour l'agriculture : une
-            # absence y est une production nulle ou négligeable, pas un trou.
-            "reason": "no_recorded_production",
+            "reason": reason,
+            "absence_established": absence_established,
+            "dimension": dimension,
             "source": cap.get("source"),
         }
     return {
@@ -606,6 +645,52 @@ def domestic_supply(hs_code: str, country_iso3: str) -> Dict:
         "match_level": cap.get("match_level"),
         "source": cap.get("source"),
     }
+
+
+def _l1_importable(apparent: Optional[Dict], consumption: float) -> Dict:
+    """Besoin importable du chemin mesuré L1 : importations nettes.
+
+    La consommation apparente vaut production + importations − exportations.
+    Ce qu'un fournisseur étranger peut servir est donc consommation moins
+    production, soit importations − exportations. Tout est mesuré : ni proxy,
+    ni seuil, ni hypothèse.
+
+    Un solde négatif — le pays exporte plus qu'il n'importe — vaut zéro besoin
+    importable, pas une valeur négative.
+    """
+    src = apparent or {}
+    production = src.get("production")
+    imports = src.get("imports")
+    exports = src.get("exports")
+    if imports is None:
+        return {}
+
+    net = max(0.0, float(imports) - float(exports or 0))
+    bloc = {
+        "importable_need": round(net, 2),
+        "importable_need_note": (
+            "Importations nettes mesurées (importations − exportations) : part du "
+            "besoin qu'un fournisseur étranger peut servir, la production nationale "
+            "couvrant le reste."
+        ),
+        "consumption_basket": {
+            "status": "attested",
+            "country_produces": bool(production),
+            "imports_known": True,
+            "imports_measured_unit": src.get("unit"),
+            "caveat": None,
+        },
+    }
+    if production is not None and consumption:
+        ratio = float(production) / consumption
+        bloc["self_sufficiency"] = {
+            "domestic_production": float(production),
+            "ratio": round(ratio, 3),
+            "covers_need": ratio >= 1,
+            "source": src.get("source"),
+            "measured": True,
+        }
+    return bloc
 
 
 def estimate_national_need(
@@ -677,6 +762,17 @@ def estimate_national_need(
             },
             "sources": [(apparent or {}).get("source", "production + trade")],
             "observed_imports": observed_imports if observed_imports else None,
+            # Le chemin L1 sortait AVANT l'enrichissement construit plus bas :
+            # un marché mesuré et auto-suffisant n'avait donc pas d'importable_need,
+            # et le classement retombait sur la consommation — précisément ce que
+            # cette correction devait empêcher, sur le chemin le plus fiable.
+            #
+            # Ici tout est mesuré, et l'arithmétique est exacte plutôt
+            # qu'estimée : le besoin qu'un fournisseur étranger peut servir vaut
+            # consommation − production, soit (P + I − E) − P = I − E, les
+            # importations nettes. Aucune approximation, aucune source
+            # supplémentaire à interroger.
+            **_l1_importable(apparent, app),
         }
 
     # Need production (for the per-capita reference) and population.
@@ -751,7 +847,11 @@ def estimate_national_need(
             reg = get_regional_producers(hs_code, region_iso3_set)
         except Exception as exc:
             _log.warning("regional producers unavailable: %s", exc)
-            reg = {"available": False}
+            # Marqué explicitement : sans cela, un échec de recherche est
+            # indiscernable d'une recherche réussie ayant trouvé zéro
+            # producteur — or get_regional_producers renvoie available: False
+            # dans les deux cas.
+            reg = {"available": False, "lookup_failed": True}
         region_pop = sum(
             int((idx.get(iso) or {}).get("population") or 0) for iso in region_iso3_set
         )
@@ -760,6 +860,14 @@ def estimate_national_need(
             "region": region,
             "countries_in_region": len(region_iso3_set),
             "producers_with_data": producer_count,
+            # get_regional_producers renvoie available = bool(region_recs) :
+            # False SANS reason signifie « recherche réussie, aucun producteur
+            # dans cette région » — une absence établie, exploitable. En
+            # revanche un reason (no_mapping / no_data) ou une exception
+            # signifient qu'on n'a pas pu savoir. Conclure « aucun producteur »
+            # sur ces deux derniers cas ferait écarter un marché faute d'avoir
+            # pu interroger la source, pas faute de consommation.
+            "lookup_ok": not reg.get("lookup_failed") and not reg.get("reason"),
         }
         if reg.get("available") and reg.get("region_total") and region_pop and producer_count >= 2:
             region_availability = reg["region_total"]
@@ -988,7 +1096,7 @@ def estimate_national_need(
     # Deux corrections d'un même travers : la cascade estime une CONSOMMATION
     # continentale moyenne et l'applique au pays, sans regarder ni ce qu'il
     # produit, ni ce qu'il consomme réellement.
-    domestic = domestic_supply(hs_code, country_iso3)
+    domestic = domestic_supply(hs_code, country_iso3, prod.get("dimension"))
     self_sufficiency = None
     importable_need = None
     importable_note = None
@@ -1031,12 +1139,11 @@ def estimate_national_need(
     # Consommation révélée : le produit fait-il partie du panier du pays ?
     # Jamais une table culturelle écrite à la main — uniquement des signaux de
     # données, et une règle qui refuse de conclure sans preuve.
-    produces_nothing = (
-        prod.get("dimension") == "agri"
-        and domestic.get("reason") == "no_recorded_production"
-    )
+    produces_nothing = bool(domestic.get("absence_established"))
     region_without_producers = bool(
-        region_coverage and (region_coverage.get("producers_with_data") or 0) < 2
+        region_coverage
+        and region_coverage.get("lookup_ok")
+        and (region_coverage.get("producers_with_data") or 0) < 2
     )
 
     # Les importations sont-elles CONNUES ? Distinction décisive : ne pas les
@@ -1090,6 +1197,20 @@ def estimate_national_need(
         ),
     }
 
+    if self_sufficiency is None and domestic.get("absence_established"):
+        # Une production nulle ÉTABLIE est une information, pas une absence
+        # d'information : le payload doit la porter comme il porte une
+        # production positive, avec sa source.
+        self_sufficiency = {
+            "domestic_production": 0.0,
+            "production_year": None,
+            "commodity": prod.get("commodity"),
+            "ratio": 0.0,
+            "covers_need": False,
+            "absence_established": True,
+            "source": domestic.get("source"),
+        }
+
     # Un pays qui ne produit rien doit importer la totalité de son besoin.
     # Mais « ne produit rien » doit être ÉTABLI, pas déduit d'un échec : une
     # exception de recherche ou une couverture partielle de la source
@@ -1097,7 +1218,7 @@ def estimate_national_need(
     # qui produit peut-être tout ce qu'il consomme. C'est le même travers que
     # celui corrigé plus haut — une absence de preuve valant preuve d'absence —
     # et il s'inverse ici en surestimation.
-    production_established_zero = domestic.get("reason") == "no_recorded_production"
+    production_established_zero = bool(domestic.get("absence_established"))
     if importable_need is None and not produces_locally and need:
         if production_established_zero:
             importable_need = _round_sig(need, 3)

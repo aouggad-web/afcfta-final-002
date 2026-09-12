@@ -126,13 +126,15 @@ def test_le_seuil_de_negligeabilite_suit_la_taille_du_pays(des):
     """Un plancher absolu qualifierait mal les petits et les grands marchés."""
     petit = des.estimate_national_need("0714", "SYC", observed_imports=_flux(0))
     grand = des.estimate_national_need("0714", "DZA", observed_imports=_flux(0))
-    seuils = [
-        c["consumption_basket"]["negligible_threshold_usd"]
-        for c in (petit, grand)
-        if c.get("available")
-    ]
-    if len(seuils) == 2:
-        assert seuils[0] < seuils[1], "le seuil doit croître avec la population"
+    # Assertion inconditionnelle : un « if » laissait le test passer en silence
+    # si l'un des deux jeux devenait indisponible — il n'aurait alors plus rien
+    # vérifié, sans le dire.
+    assert petit.get("available") and grand.get("available"), (
+        "les deux pays témoins doivent être disponibles pour comparer les seuils"
+    )
+    seuils = [c["consumption_basket"]["negligible_threshold_usd"] for c in (petit, grand)]
+    assert all(seuils), "les deux seuils doivent être calculés"
+    assert seuils[0] < seuils[1], "le seuil doit croître avec la population"
 
 
 def test_la_methode_du_seuil_est_exposee(des):
@@ -142,3 +144,66 @@ def test_la_methode_du_seuil_est_exposee(des):
     assert basket["threshold_basis"]
     assert basket["imports_usd"] == 0
     assert basket["negligible_threshold_usd"] > 0
+
+
+# ── Le classement des marchés ────────────────────────────────────────────────
+
+def _besoin(value, importable, statut="attested"):
+    return {
+        "available": True,
+        "value": value,
+        "importable_need": importable,
+        "consumption_basket": {"status": statut},
+    }
+
+
+@pytest.fixture(scope="module")
+def moteur():
+    import importlib.util
+
+    for path in (str(BACKEND), str(REPO_ROOT)):
+        if path not in sys.path:
+            sys.path.insert(0, path)
+    spec = importlib.util.spec_from_file_location(
+        "report_engine_under_test", BACKEND / "services" / "report_engine.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_un_marche_autosuffisant_est_ecarte_du_classement(moteur):
+    """Besoin importable nul : le pays produit ce qu'il consomme."""
+    assert moteur._market_is_addressable(_besoin(1_650_000, 0.0)) is False
+
+
+def test_un_marche_non_atteste_est_ecarte_du_classement(moteur):
+    assert moteur._market_is_addressable(_besoin(7_350_000, None, "not_attested")) is False
+
+
+def test_un_marche_reel_reste_dans_le_classement(moteur):
+    assert moteur._market_is_addressable(_besoin(1_010_000, 1_010_000)) is True
+
+
+def test_le_classement_suit_le_besoin_importable_et_non_la_consommation(moteur):
+    """Régression : trier sur « value » remettait l'auto-suffisant en tête."""
+    marches = [
+        {"destination_iso3": "CMR", "market_need": _besoin(1_650_000, 0.0)},
+        {"destination_iso3": "DZA", "market_need": _besoin(1_010_000, 1_010_000)},
+        {"destination_iso3": "TUN", "market_need": _besoin(900_000, 400_000)},
+    ]
+    retenus = [m for m in marches if moteur._market_is_addressable(m["market_need"])]
+    retenus.sort(key=lambda m: (moteur._addressable_need(m["market_need"]) or 0), reverse=True)
+    assert [m["destination_iso3"] for m in retenus] == ["DZA", "TUN"], (
+        "le Cameroun auto-suffisant doit sortir, et l'ordre suivre l'importable"
+    )
+
+
+def test_un_importable_inconnu_se_rabat_sur_la_consommation(moteur):
+    """Le repli documenté doit être atteignable.
+
+    Le payload porte toujours la clé « importable_need », éventuellement à None :
+    un test de présence de clé rendait ce repli impossible, et ces marchés
+    étaient classés avec une demande nulle.
+    """
+    assert moteur._addressable_need(_besoin(500_000, None, "unverifiable")) == 500_000
