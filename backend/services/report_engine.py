@@ -783,6 +783,37 @@ async def get_opportunity_report_ultra_fine(
     # (ex. instruments médicaux SH90) -> imports réels du pays lui-même (canal
     # OEC partagé, moyennés sur plusieurs années pour les biens durables/longue
     # conservation). Un seul appel réseau, uniquement quand le repli local échoue.
+    # Second cas de repli : le besoin EST disponible, mais le panier de
+    # consommation est « invérifiable » — le pays ne produit pas ce produit, sa
+    # sous-région non plus, et rien n'atteste qu'il le consomme. C'est la
+    # situation du manioc ou de l'huile de palme vers l'Afrique du Nord, où la
+    # cascade applique une disponibilité continentale que le pays ne partage
+    # pas. Seul le flux réel tranche : l'Algérie importe massivement de la
+    # banane dessert et pas une tonne de manioc, deux produits pourtant
+    # indiscernables sur les seuls signaux locaux. L'appel réseau n'a lieu que
+    # dans ce cas, rare, et il change la conclusion.
+    if (
+        national_need.get("available")
+        and (national_need.get("consumption_basket") or {}).get("status") == "unverifiable"
+    ):
+        try:
+            from services.real_trade_data_service import real_trade_service
+
+            history = await real_trade_service.get_country_product_import_history(
+                destination_iso3, hs_code
+            )
+            if history and history.get("available") and history.get("imports"):
+                national_need = demand_estimation_service.estimate_national_need(
+                    hs_code, destination_iso3, own_imports_history=history["imports"]
+                )
+        except Exception as e:  # noqa: BLE001 — l'ambiguïté reste signalée telle quelle
+            _log.warning(
+                "consumption-basket verification failed for %s/%s: %s",
+                destination_iso3,
+                hs_code,
+                e,
+            )
+
     if (
         not national_need.get("available")
         and national_need.get("reason") == "no_continental_production_reference"

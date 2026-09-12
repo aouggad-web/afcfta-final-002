@@ -47,6 +47,15 @@ _GDP_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "json" / "w
 # ~0.4 is a common order of magnitude for food staples; discretionary goods higher.
 DEFAULT_INCOME_ELASTICITY = 0.4
 
+# Seuil au-dessous duquel des importations connues valent « consommation
+# négligeable ». Exprimé PAR HABITANT pour rester comparable entre les Seychelles
+# et le Nigeria : un plancher absolu qualifierait de négligeable un marché réel
+# dans un petit pays, et de significatif un flux anecdotique dans un grand.
+# 0,10 USD/hab/an sépare nettement les deux régimes observés — les importations
+# algériennes de bananes dessert dépassent plusieurs dollars par habitant, celles
+# de manioc sont nulles. Hypothèse de modélisation, exposée dans le payload.
+NEGLIGIBLE_IMPORT_USD_PER_CAPITA = 0.10
+
 # Élasticité-revenu par classe de produit (chapitre SH) — ordres de grandeur de
 # la littérature empirique (loi d'Engel, estimations transnationales type USDA
 # ERS / Banque Mondiale ICP) : la demande d'aliments de base croît moins vite
@@ -559,6 +568,46 @@ def _observed_imports_floor(
     }
 
 
+def domestic_supply(hs_code: str, country_iso3: str) -> Dict:
+    """Production NATIONALE du pays pour ce produit (FAOSTAT/USGS/UNIDO).
+
+    Le besoin estimé par la cascade est un besoin de CONSOMMATION. Un
+    exportateur, lui, ne peut servir que ce que le pays ne produit pas lui-même :
+    le Cameroun consomme des bananes, mais en produit 4,7 Mt — son besoin
+    d'IMPORTATION est nul. Sans cette soustraction, le module désignait comme
+    marché des pays auto-suffisants.
+
+    ``available: False`` distingue deux situations que rien ne doit confondre :
+    le pays ne produit pas (signal réel, exploité par la consommation révélée)
+    et la production n'est pas documentée. Le champ ``reason`` les sépare.
+    """
+    try:
+        from services.production_capacity_service import get_capacity
+
+        cap = get_capacity(country_iso3, hs_code) or {}
+    except Exception as exc:  # noqa: BLE001 — l'absence ne doit pas casser l'estimation
+        _log.warning("domestic production unavailable for %s/%s: %s", country_iso3, hs_code, exc)
+        return {"available": False, "reason": "lookup_failed"}
+
+    if not cap.get("available"):
+        return {
+            "available": False,
+            # FAOSTAT couvre tous les pays africains pour l'agriculture : une
+            # absence y est une production nulle ou négligeable, pas un trou.
+            "reason": "no_recorded_production",
+            "source": cap.get("source"),
+        }
+    return {
+        "available": True,
+        "value": cap.get("latest_value"),
+        "year": cap.get("latest_year"),
+        "unit": cap.get("unit"),
+        "commodity": cap.get("commodity"),
+        "match_level": cap.get("match_level"),
+        "source": cap.get("source"),
+    }
+
+
 def estimate_national_need(
     hs_code: str,
     country_iso3: str,
@@ -935,6 +984,156 @@ def estimate_national_need(
                 suggested_supplier = {"iso3": iso, "country_name": p.get("country_name")}
                 break
 
+    # ── Auto-approvisionnement et consommation révélée ───────────────────────
+    # Deux corrections d'un même travers : la cascade estime une CONSOMMATION
+    # continentale moyenne et l'applique au pays, sans regarder ni ce qu'il
+    # produit, ni ce qu'il consomme réellement.
+    domestic = domestic_supply(hs_code, country_iso3)
+    self_sufficiency = None
+    importable_need = None
+    importable_note = None
+
+    if domestic.get("available") and domestic.get("value") and need:
+        ratio = domestic["value"] / need if need else None
+        remaining = max(0.0, need - domestic["value"])
+        self_sufficiency = {
+            "domestic_production": domestic["value"],
+            "production_year": domestic.get("year"),
+            "commodity": domestic.get("commodity"),
+            "ratio": round(ratio, 3) if ratio is not None else None,
+            "covers_need": bool(ratio and ratio >= 1),
+            "source": domestic.get("source"),
+        }
+        importable_need = _round_sig(remaining, 3) if remaining else 0.0
+        if commodity_caveat:
+            # Le code SH agrège des sous-produits (0803 : dessert et à cuire).
+            # La production nationale couvre l'agrégat, pas nécessairement le
+            # sous-produit demandé : l'écrire plutôt que conclure à tort.
+            self_sufficiency["aggregate_caveat"] = (
+                f"La production nationale relevée porte sur « {domestic.get('commodity')} » "
+                f"au niveau {domestic.get('match_level') or 'SH4'} : le code SH agrège des "
+                "sous-produits que la statistique de production ne sépare pas. "
+                "L'auto-approvisionnement est établi pour l'agrégat, pas pour le seul "
+                "sous-produit demandé."
+            )
+            importable_note = (
+                "Besoin importable calculé sur un agrégat SH : à confirmer au niveau "
+                "du sous-produit avant d'en conclure une absence de marché."
+            )
+        elif importable_need == 0.0:
+            importable_note = (
+                f"Besoin d'importation nul : la production nationale "
+                f"({domestic['value']:,.0f} {domestic.get('unit') or ''}, "
+                f"{domestic.get('year')}) couvre le besoin estimé. Un pays "
+                "auto-suffisant n'est pas un marché pour ce produit."
+            )
+
+    # Consommation révélée : le produit fait-il partie du panier du pays ?
+    # Jamais une table culturelle écrite à la main — uniquement des signaux de
+    # données, et une règle qui refuse de conclure sans preuve.
+    produces_nothing = (
+        prod.get("dimension") == "agri"
+        and domestic.get("reason") == "no_recorded_production"
+    )
+    region_without_producers = bool(
+        region_coverage and (region_coverage.get("producers_with_data") or 0) < 2
+    )
+
+    # Les importations sont-elles CONNUES ? Distinction décisive : ne pas les
+    # avoir reçues n'est pas la même chose que les avoir vues nulles. Sans elle,
+    # la banane dessert vers l'Algérie — marché réel de plusieurs centaines de
+    # millions — serait écartée exactement comme le manioc, les deux produits
+    # étant structurellement indiscernables en Afrique du Nord : aucune
+    # production nationale, aucune production régionale. Seul le flux les sépare.
+    imports_value = (observed_imports or {}).get("import_value_usd")
+    if imports_value is None and own_imports_history:
+        connus = [
+            h.get("import_value_usd")
+            for h in own_imports_history
+            if not h.get("no_data") and h.get("import_value_usd") is not None
+        ]
+        imports_value = max(connus) if connus else None
+    imports_known = imports_value is not None
+    negligible_threshold = (
+        NEGLIGIBLE_IMPORT_USD_PER_CAPITA * pop["value"] if pop.get("value") else None
+    )
+    imports_attested = bool(
+        imports_known and negligible_threshold and imports_value > negligible_threshold
+    )
+    imports_negligible = bool(
+        imports_known and negligible_threshold and imports_value <= negligible_threshold
+    )
+
+    produces_locally = bool(domestic.get("available") and domestic.get("value"))
+    diet_mismatch = produces_nothing and region_without_producers
+
+    if imports_attested or produces_locally:
+        basket_status = "attested"
+    elif diet_mismatch and imports_negligible:
+        basket_status = "not_attested"
+    elif diet_mismatch:
+        basket_status = "unverifiable"
+    else:
+        basket_status = "unknown"
+
+    consumption_basket = {
+        "status": basket_status,
+        "country_produces": produces_locally,
+        "regional_producers": (region_coverage or {}).get("producers_with_data"),
+        "imports_known": imports_known,
+        "imports_usd": imports_value,
+        "negligible_threshold_usd": (
+            round(negligible_threshold) if negligible_threshold else None
+        ),
+        "threshold_basis": (
+            f"{NEGLIGIBLE_IMPORT_USD_PER_CAPITA} USD/habitant/an × population"
+        ),
+    }
+
+    # Un pays qui ne produit rien doit importer la totalité de son besoin :
+    # importable_need ne peut pas rester nul du seul fait qu'aucune production
+    # nationale n'a été trouvée. Seul le panier « non attesté » l'annule.
+    if importable_need is None and not produces_locally and need:
+        importable_need = _round_sig(need, 3)
+
+    if basket_status == "not_attested":
+        # Preuve POSITIVE d'absence : le pays ne produit pas, sa sous-région non
+        # plus, et ses importations sont connues et négligeables. C'est le cas du
+        # manioc vers l'Algérie, où la cascade produisait 7,35 Mt de besoin en
+        # appliquant une disponibilité continentale tirée par le Nigeria.
+        importable_need = None
+        consumption_basket["caveat"] = (
+            f"Consommation écartée sur preuve : le pays ne produit pas « "
+            f"{prod.get('commodity')} », sa sous-région ({region}) compte moins de "
+            f"deux producteurs, et ses importations connues "
+            f"({imports_value:,.0f} USD) sont sous le seuil de négligeabilité "
+            f"({negligible_threshold:,.0f} USD). Le besoin ci-dessus provient d'une "
+            "disponibilité continentale par habitant que ce pays ne partage pas — "
+            "habitudes de consommation. Besoin d'importation NON ÉTABLI."
+        )
+        importable_note = consumption_basket["caveat"]
+    elif basket_status == "unverifiable":
+        # Régime alimentaire douteux, mais AUCUNE importation connue : on ne peut
+        # ni confirmer ni écarter. Le besoin est conservé — le supprimer
+        # tuerait des marchés réels — mais signalé comme peu fiable.
+        consumption_basket["confidence"] = "low"
+        consumption_basket["caveat"] = (
+            f"Consommation ni attestée ni écartée : le pays ne produit pas « "
+            f"{prod.get('commodity')} » et sa sous-région ({region}) compte moins de "
+            "deux producteurs, mais aucune importation observée n'a été fournie. Le "
+            "besoin repose donc sur une disponibilité continentale que ce pays ne "
+            "partage peut-être pas. À confirmer par les flux réels avant toute "
+            "décision — ne pas traiter ce chiffre comme un marché établi."
+        )
+        importable_note = consumption_basket["caveat"]
+    elif basket_status == "unknown":
+        consumption_basket["confidence"] = "medium"
+        consumption_basket["caveat"] = (
+            "Consommation non vérifiée par les flux : aucune importation observée "
+            "n'a été fournie pour ce couple produit/pays. Le besoin reste une "
+            "extrapolation à confirmer."
+        )
+
     note = (
         "Estimation transparente : valeur modélisée, non mesurée. "
         + basis_note
@@ -978,6 +1177,14 @@ def estimate_national_need(
         "reference_coverage_caveat": coverage_caveat,
         "commodity_caveat": commodity_caveat,
         "calibration": calibration,
+        # Ce que le pays produit lui-même, et ce qu'il reste donc à importer.
+        # C'est importable_need, et non value, que le module Opportunités doit
+        # lire : un pays auto-suffisant n'est pas un marché.
+        "self_sufficiency": self_sufficiency,
+        "importable_need": importable_need,
+        "importable_need_note": importable_note,
+        # Le produit appartient-il au panier de consommation du pays ?
+        "consumption_basket": consumption_basket,
         "suggested_supplier": suggested_supplier,
         "suggested_supplier_suppressed_reason": suggested_supplier_suppressed_reason,
         "method": method,
