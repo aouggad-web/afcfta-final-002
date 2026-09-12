@@ -178,12 +178,6 @@ def _industrial_base(origin_iso3: str, division: str, fr: bool) -> Dict:
     """
     iso3 = (origin_iso3 or "").strip().upper()
     if not idsb.is_country_covered(iso3):
-        # Volontairement PAS d'estimation ici, malgré l'existence d'une structure
-        # ISIC2 dérivable. Le verdict offre-demande de ce module se construit sur
-        # la disponibilité de cette base : lui substituer une répartition à parts
-        # égales ferait basculer « demande sans offre » en opportunité sur la foi
-        # d'un chiffre qui ne mesure aucune capacité réelle. Le contrat du module
-        # — jamais une estimation — protège exactement cela.
         return {"available": False, "reason": "country_not_in_unido_idsb_coverage"}
 
     subsectors = _division_subsectors(iso3, division)
@@ -246,23 +240,7 @@ def _market_demand(destination_iso3: str, division: str) -> Dict:
     """
     iso3 = (destination_iso3 or "").strip().upper()
     if not idsb.is_country_covered(iso3):
-        # PAS de repli estimé ici, délibérément. L'estimation disponible pour les
-        # pays hors couverture dérive de la PRODUCTION (part de valeur ajoutée
-        # manufacturière des divisions ISIC2). La demande — consommation
-        # apparente, importations — ne s'en déduit pas : un pays peut produire
-        # beaucoup et importer peu, ou l'inverse. Servir un chiffre de production
-        # dans un champ de demande présenterait de l'offre comme un marché, ce
-        # qui est exactement l'erreur que ce module doit empêcher.
-        return {
-            "available": False,
-            "reason": "country_not_in_unido_idsb_coverage",
-            "note": (
-                "Demande industrielle non disponible pour ce pays : UNIDO ne publie "
-                "pas de consommation apparente ni d'importations au niveau de la "
-                "classe ISIC. Aucune estimation n'est substituée — celle dont nous "
-                "disposons dérive de la production et ne mesure pas un marché."
-            ),
-        }
+        return {"available": False, "reason": "country_not_in_unido_idsb_coverage"}
 
     demand = _aggregate(_division_subsectors(iso3, division), _DEMAND_FIELDS)
     if not demand:
