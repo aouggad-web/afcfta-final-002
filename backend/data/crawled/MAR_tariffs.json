@@ -180209,5 +180209,13 @@
   }
  ],
  "source_url": "https://www.douane.gov.ma",
- "source_quality": "national_crawl"
+ "source_quality": "national_crawl",
+ "_integrity_seal": {
+  "content_hash": "f5ced35ccc8f0fb641843e5a423ad56c3109717d32bc1ae3b43f95a08048a40c",
+  "source_url": "https://www.douane.gov.ma",
+  "source_hash": null,
+  "crawled_at": "2026-09-12T12:35:18.961476+00:00",
+  "verified": true,
+  "algorithm": "SHA-256"
+ }
 }

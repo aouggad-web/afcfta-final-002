@@ -53,6 +53,22 @@ def sidecar_path(filepath: str) -> str:
     return f"{filepath}.sha256"
 
 
+def detect_indent(filepath: str, default: int = 2) -> int:
+    """Indentation du JSON déjà sur disque, relue sur sa deuxième ligne.
+
+    Les fichiers crawled n'ont pas tous été écrits par le même script et
+    mélangent les indentations : réécrire avec une valeur fixe reformaterait
+    le document entier et noierait le sceau dans un diff de plusieurs
+    millions de lignes.
+    """
+    with open(filepath, encoding="utf-8") as f:
+        f.readline()
+        second = f.readline()
+    stripped = second.lstrip(" ")
+    width = len(second) - len(stripped)
+    return width if stripped.startswith('"') and width > 0 else default
+
+
 def read_sidecar_hash(filepath: str) -> Optional[str]:
     """Lit le hash publié dans le .sha256 adjacent, ou None s'il est absent."""
     path = sidecar_path(filepath)
@@ -161,6 +177,8 @@ def seal_crawled_file(filepath: str, source_url: str = "", source_hash: Optional
     4. Réécrit le fichier
     5. Retourne le sceau
     """
+    indent = detect_indent(filepath)
+
     with open(filepath, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -186,7 +204,7 @@ def seal_crawled_file(filepath: str, source_url: str = "", source_hash: Optional
     data["_integrity_seal"] = payload
 
     with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        json.dump(data, f, ensure_ascii=False, indent=indent)
 
     file_hash = compute_file_hash(filepath)
     seal.file_hash = file_hash

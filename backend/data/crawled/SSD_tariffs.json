@@ -209240,5 +209240,13 @@
       "source": "EAC CET 2022 (kra.go.ke)",
       "data_format": "crawled_authentic"
     }
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "66ffda3800010c4a5d42f0820848aec42585f8cb3d121a2ebcedebd6724b5160",
+    "source_url": "https://www.kra.go.ke/images/publications/EAC-CET-2022-VERSION-30TH-JUNE-Fn.pdf",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:23.459756+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

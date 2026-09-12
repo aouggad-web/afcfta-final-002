@@ -429056,5 +429056,13 @@
     "Taxes nationales: RS (1%), PCS UEMOA (1%), PCC CEDEAO (0.5%), PUA (0.2%) - source douanes.gouv.bj",
     "TVA: 18% taux standard - exemptions spécifiques selon Code Général des Impôts (Loi n°2021-15)",
     "Source officielle: douanes.gouv.bj + impots.finances.gouv.bj"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "dfb65f1b5e7c7465944c4badd374e4c6f9003bbc49851c7e40bba149998c16eb",
+    "source_url": "https://douanes.gouv.bj/tarif-douane/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:05.759507+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

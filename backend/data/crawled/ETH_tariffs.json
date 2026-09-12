@@ -188395,5 +188395,13 @@
    "formalities": [],
    "source": "customs.erca.gov.et (portail douanier officiel)"
   }
- ]
+ ],
+ "_integrity_seal": {
+  "content_hash": "5f7ee1337fd72c860096398825cfdd019d8a2491ca178cb1a139342fb3c76508",
+  "source_url": "",
+  "source_hash": null,
+  "crawled_at": "2026-09-12T12:35:14.628779+00:00",
+  "verified": true,
+  "algorithm": "SHA-256"
+ }
 }

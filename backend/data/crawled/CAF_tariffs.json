@@ -254124,5 +254124,13 @@
     "Taxes CEMAC: TCI (1%), RS (1%) - source finances.gouv.cf",
     "TVA: 19% taux standard harmonisé CEMAC - source edouanes.cf",
     "Source officielle: finances.gouv.cf + edouanes.cf"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "b0b0a3aafb1ccb32eef4746e10bffacfd14f8e745836f7d2fdf306a2681f6c5b",
+    "source_url": "https://www.finances.gouv.cf/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:07.254020+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

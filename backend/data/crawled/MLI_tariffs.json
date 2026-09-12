@@ -380024,5 +380024,13 @@
     "Taxes nationales: RS (1%), PCS UEMOA (1%), PC-AES (0.5% remplace PCC CEDEAO) - source douanes.gouv.ml",
     "TVA: 18% taux standard - source Direction Générale des Impôts du Mali",
     "Source officielle: douanes.gouv.ml + DGI Mali"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "ddc3c9b07bbb7c05b17208c72b36a0fe28191d0988a5553b6a85073ecc11dfa5",
+    "source_url": "https://douanes.gouv.ml/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:19.477803+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

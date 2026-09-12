@@ -429056,5 +429056,13 @@
     "Taxes nationales: RS (1%), PCS UEMOA (1%), PCC CEDEAO (0.5%), PUA (0.2%) - source otr.tg",
     "TVA: 18% taux unique - source Office Togolais des Recettes (OTR)",
     "Source officielle: otr.tg"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "17cceac30124c447a47ee7c04c0bf560976f76e90e0d5bf31d3e7f77c3534834",
+    "source_url": "https://www.otr.tg/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:25.089024+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

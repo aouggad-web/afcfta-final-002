@@ -281958,5 +281958,13 @@
     "Taxes nationales: PCC CEDEAO (0.5%) - source dgd.gov.gn",
     "TVA: 18% taux standard - source dgi.gov.gn",
     "Source officielle: dgd.gov.gn + dgi.gov.gn"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "d4201829b3da0ab0c314bcc174a4ddf73500c5ec69da91388c1e9748c56f84ec",
+    "source_url": "https://dgd.gov.gn/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:15.581794+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

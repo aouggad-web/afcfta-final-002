@@ -439902,5 +439902,13 @@
       "source": "sars.gov.za",
       "country": "SWZ"
     }
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "054c54f0b7e4eb0f8d60c8c293250ce84029af39102f27e42f73f1c6821e6552",
+    "source_url": "",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:23.981946+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

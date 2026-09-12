@@ -455501,5 +455501,13 @@
    "TVA": "15 % standard ; liste zéro-rated du VAT Act à archiver (écart documenté)"
   },
   "note": "Aucune fusion automatique des remèdes/rebates avec le taux général : les sections restent séparées, le calcul final suit le texte légal publié."
+ },
+ "_integrity_seal": {
+  "content_hash": "8ab4480865b44038dda98c063df8ae3297bd95dc7320684b9cac1673b95c5487",
+  "source_url": "",
+  "source_hash": null,
+  "crawled_at": "2026-09-12T12:35:30.624976+00:00",
+  "verified": true,
+  "algorithm": "SHA-256"
  }
 }

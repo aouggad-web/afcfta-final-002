@@ -140130,5 +140130,13 @@
       "source": "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
       "source_url": "https://wits.worldbank.org/API/V1/SDMX/V21/datasource/TRN/reporter/716/partner/000/product/970600/year/2021/datatype/reported"
     }
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "32e9d253964244f5ccffc75bd780c140b7b998807be7b40e9645058afd2c1772",
+    "source_url": "",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:31.179988+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }

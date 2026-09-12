@@ -296038,5 +296038,13 @@
     "TVA: 19.25% (17.5% base + 10% centimes additionnels) - Loi de Finances 2024",
     "Taux réduit TVA: 9.90% pour produits locaux (sucre, huile, savon, textile)",
     "Source officielle: finances.gouv.td + DGI Tchad"
-  ]
+  ],
+  "_integrity_seal": {
+    "content_hash": "348ce2fec14b226ee8afa73b71315941feb1f364315ee5c4be398382a6b31294",
+    "source_url": "https://finances.gouv.td/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:24.657669+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
 }
