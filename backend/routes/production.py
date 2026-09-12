@@ -223,6 +223,18 @@ def get_all_isic4_timeseries_data(
     """
     iso3 = country_iso3.upper()
     if not is_country_covered(iso3):
+        # Un ISO inconnu n'est pas un pays « estimé » : sans structure ISIC2
+        # dérivable, cette route renvoyait 200 avec un résultat vide là où
+        # /isic4/{pays} renvoie 404. Deux comportements pour la même absence.
+        if not (get_isic4_breakdown(iso3) or {}).get("isic4_breakdown"):
+            raise HTTPException(
+                status_code=404,
+                detail=(
+                    f"Pays {country_iso3} inconnu du référentiel : ni données UNIDO au "
+                    f"niveau classe, ni structure ISIC2 permettant d'en dériver une "
+                    f"estimation."
+                ),
+            )
         return {
             "country_iso3": iso3,
             "data_basis": "ESTIMATED_FROM_ISIC2",

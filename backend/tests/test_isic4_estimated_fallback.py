@@ -42,7 +42,17 @@ def countries():
 
 
 def test_tous_les_pays_sont_servis(production_routes, countries):
-    """Aucun pays du référentiel ne doit retomber sur un 404."""
+    """Aucun pays du référentiel ne doit retomber sur un 404.
+
+    L'assertion de cardinalité vient d'abord : sans elle, ce test dériverait sa
+    population du référentiel lui-même et resterait vert si celui-ci perdait des
+    pays — il vérifierait alors « tous les pays présents sont servis », ce qui
+    n'est pas la couverture annoncée.
+    """
+    assert len(countries) == 54, (
+        f"le référentiel ne contient plus 54 pays mais {len(countries)} : "
+        "la couverture annoncée n'est plus vérifiable"
+    )
     echecs = []
     for iso in countries:
         try:
@@ -119,3 +129,21 @@ def test_le_detail_groupe_couvre_toutes_les_classes_d_un_pays_mesure(production_
     assert groupe["total_classes"] == payload["total_sectors"]
     une = groupe["classes"][payload["sectors"][0]["isic4"]]
     assert une["series"], "aucune série pour la première classe"
+
+
+def test_un_iso_inconnu_ne_passe_pas_pour_un_pays_estime(production_routes):
+    """Deux routes, une même absence, deux comportements — corrigé.
+
+    /isic4/{pays} renvoyait 404 sur un ISO inconnu, tandis que la route groupée
+    le qualifiait ESTIMATED_FROM_ISIC2 et renvoyait 200 avec un résultat vide.
+    Un code invalide n'est pas un pays dont les données seraient estimées.
+    """
+    from fastapi import HTTPException
+
+    for route in (
+        production_routes.get_all_isic4_timeseries_data,
+        production_routes.get_isic4_country_data,
+    ):
+        with pytest.raises(HTTPException) as exc:
+            route("ZZZ")
+        assert exc.value.status_code == 404

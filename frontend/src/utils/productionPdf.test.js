@@ -87,6 +87,51 @@ describe('buildProductionPdf', () => {
     expect(doc.output('arraybuffer').byteLength).toBeGreaterThan(1000);
   });
 
+  it('dit dans le document que le détail n’a pas pu être chargé', () => {
+    // Un export amputé qui se tait est indiscernable d'un export complet :
+    // le lecteur croirait que ces classes n'ont pas de détail publié.
+    const muet = build(fixtures.ken, null);
+    const avoue = buildProductionPdf({
+      countryIso3: fixtures.ken.country_iso3,
+      countryName: fixtures.ken.country_name,
+      language: 'fr',
+      dataBasis: fixtures.ken.data_basis,
+      divisions: groupByDivision(fixtures.ken),
+      source: fixtures.ken.source,
+      formatIndicatorValue: fmt,
+      indicatorLabels: LABELS,
+      headlineOrder: HEADLINE,
+      indicatorOrder: ORDER,
+      timeseries: null,
+      detailUnavailable: true,
+    });
+    expect(avoue.output('arraybuffer').byteLength)
+      .toBeGreaterThan(muet.output('arraybuffer').byteLength);
+  });
+
+  it('qualifie la ligne par la nature de l’indicateur affiché', () => {
+    // Une classe peut porter un indicateur officiel ET une valeur principale
+    // dérivée : étiqueter la ligne « officiel » mentirait sur le chiffre montré.
+    const derive = {
+      country_iso3: 'XXX',
+      country_name: 'Test',
+      data_basis: 'UNIDO_MEASURED',
+      source: 'test',
+      sectors: [{
+        isic4: '1010',
+        isic_description: 'Classe témoin',
+        indicators: {
+          // output_usd est DÉRIVÉ et vient avant dans HEADLINE ? non : value_added
+          // est officiel mais absent ; le principal retenu sera output_usd.
+          output_usd: { value: 1e9, year: 2023, data_nature: 'UNIDO_DERIVED_ESTIMATE' },
+          employees: { value: 100, year: 2023, data_nature: 'OFFICIAL_STATISTICS' },
+        },
+      }],
+    };
+    const doc = build(derive, null);
+    expect(doc.output('arraybuffer').byteLength).toBeGreaterThan(1000);
+  });
+
   it('nomme le fichier selon la nature de la donnée', () => {
     expect(productionPdfFilename('KEN', 'UNIDO_MEASURED')).toContain('mesure');
     expect(productionPdfFilename('DZA', 'ESTIMATED_FROM_ISIC2')).toContain('estime');

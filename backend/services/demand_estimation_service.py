@@ -1090,11 +1090,25 @@ def estimate_national_need(
         ),
     }
 
-    # Un pays qui ne produit rien doit importer la totalité de son besoin :
-    # importable_need ne peut pas rester nul du seul fait qu'aucune production
-    # nationale n'a été trouvée. Seul le panier « non attesté » l'annule.
+    # Un pays qui ne produit rien doit importer la totalité de son besoin.
+    # Mais « ne produit rien » doit être ÉTABLI, pas déduit d'un échec : une
+    # exception de recherche ou une couverture partielle de la source
+    # industrielle produiraient sinon un besoin importable maximal pour un pays
+    # qui produit peut-être tout ce qu'il consomme. C'est le même travers que
+    # celui corrigé plus haut — une absence de preuve valant preuve d'absence —
+    # et il s'inverse ici en surestimation.
+    production_established_zero = domestic.get("reason") == "no_recorded_production"
     if importable_need is None and not produces_locally and need:
-        importable_need = _round_sig(need, 3)
+        if production_established_zero:
+            importable_need = _round_sig(need, 3)
+        else:
+            importable_note = (
+                "Besoin importable non calculé : la production nationale n'a pas pu "
+                f"être établie ({domestic.get('reason') or 'raison inconnue'}). Sans "
+                "elle, on ne peut ni affirmer que le pays produit, ni qu'il ne produit "
+                "pas — et attribuer la totalité du besoin à l'importation "
+                "surestimerait le marché."
+            )
 
     if basket_status == "not_attested":
         # Preuve POSITIVE d'absence : le pays ne produit pas, sa sous-région non

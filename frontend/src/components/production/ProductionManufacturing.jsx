@@ -355,12 +355,17 @@ function ProductionManufacturing({ language = 'fr' }) {
       // 130 appels. Un échec ici ne doit pas priver du rapport — on produit
       // alors la vue d'ensemble seule, et le document le dit.
       let timeseries = null;
+      let detailUnavailable = false;
       if (isic4Basis === 'UNIDO_MEASURED') {
         try {
           const res = await axios.get(`${API}/production/isic4/${selectedCountry}/timeseries`);
           timeseries = res.data?.classes || null;
+          detailUnavailable = !timeseries;
         } catch (error) {
           console.error('Détail ISIC4 indisponible pour le PDF:', error);
+          // Le document le dira : un export amputé qui se tait est indiscernable
+          // d'un export complet.
+          detailUnavailable = true;
         }
       }
       const doc = buildProductionPdf({
@@ -375,6 +380,7 @@ function ProductionManufacturing({ language = 'fr' }) {
         headlineOrder: HEADLINE_INDICATORS,
         indicatorOrder: ISIC4_INDICATOR_ORDER,
         timeseries,
+        detailUnavailable,
       });
       doc.save(`${productionPdfFilename(selectedCountry, isic4Basis)}.pdf`);
     } finally {
@@ -672,18 +678,22 @@ function ProductionManufacturing({ language = 'fr' }) {
                     <Badge variant="outline" className="text-xs">
                       {isic4Sectors.length} {language === 'fr' ? 'classes ISIC 4 chiffres' : 'ISIC 4-digit classes'}
                     </Badge>
+                    {/* Trois natures distinctes, jamais deux pastilles à la fois :
+                        structure estimée hors couverture, estimations dérivées
+                        UNIDO, ou statistiques mesurées. Afficher « Mesuré » à côté
+                        de « estimations dérivées » présentait de l'estimé comme du
+                        mesuré. */}
                     {isic4Basis === 'ESTIMATED_FROM_ISIC2' ? (
                       <Badge className="text-xs bg-amber-500 hover:bg-amber-500 text-white">
                         {language === 'fr' ? 'Structure estimée' : 'Estimated structure'}
                       </Badge>
+                    ) : isic4DataQuality?.is_fully_estimated ? (
+                      <Badge className="text-xs bg-sky-600 hover:bg-sky-600 text-white">
+                        {language === 'fr' ? 'Estimations dérivées UNIDO' : 'UNIDO derived estimates'}
+                      </Badge>
                     ) : (
                       <Badge className="text-xs bg-emerald-600 hover:bg-emerald-600 text-white">
                         {language === 'fr' ? 'Mesuré (UNIDO)' : 'Measured (UNIDO)'}
-                      </Badge>
-                    )}
-                    {isic4Basis !== 'ESTIMATED_FROM_ISIC2' && isic4DataQuality?.is_fully_estimated && (
-                      <Badge variant="outline" className="text-xs border-amber-500 text-amber-700">
-                        {language === 'fr' ? 'Estimations dérivées UNIDO' : 'UNIDO derived estimates'}
                       </Badge>
                     )}
                     <button
@@ -922,17 +932,24 @@ function IsicRow({ sector, isExpanded, onToggle, timeseries, onRetry, language, 
   const headline = headlineField ? indicators[headlineField] : null;
   const labels = ISIC4_INDICATOR_LABELS[language] || ISIC4_INDICATOR_LABELS.fr;
 
-  const officialCount = indicatorFields.filter((f) => indicators[f].data_nature === 'OFFICIAL_STATISTICS').length;
+  // La pastille qualifie le chiffre AFFICHÉ à côté d'elle, pas la classe.
+  // La calculer sur « un indicateur officiel existe quelque part » étiquetait
+  // « officiel » une valeur dérivée choisie comme indicateur principal.
+  const headlineOfficial = headline?.data_nature === 'OFFICIAL_STATISTICS';
   const natureLabel = isEstimatedCountry
     ? (language === 'fr' ? 'estimé' : 'estimated')
-    : officialCount > 0
-      ? (language === 'fr' ? 'officiel' : 'official')
-      : (language === 'fr' ? 'dérivé' : 'derived');
+    : !headline
+      ? '—'
+      : headlineOfficial
+        ? (language === 'fr' ? 'officiel' : 'official')
+        : (language === 'fr' ? 'dérivé' : 'derived');
   const natureClass = isEstimatedCountry
     ? 'bg-amber-100 text-amber-800'
-    : officialCount > 0
-      ? 'bg-emerald-100 text-emerald-800'
-      : 'bg-sky-100 text-sky-800';
+    : !headline
+      ? 'bg-gray-100 text-gray-500'
+      : headlineOfficial
+        ? 'bg-emerald-100 text-emerald-800'
+        : 'bg-sky-100 text-sky-800';
 
   const status = timeseries?.status;
   const series = timeseries?.series || {};

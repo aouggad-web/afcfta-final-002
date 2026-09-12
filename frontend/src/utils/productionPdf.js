@@ -34,6 +34,8 @@ const I18N = {
     division: 'Division',
     noValue: 'donnée non publiée',
     detail: 'Détail par classe — indicateurs IDSB et INDSTAT par année',
+    detailMissing: 'Détail par classe indisponible',
+    detailMissingBody: "Le détail IDSB/INDSTAT par classe n'a pas pu être chargé au moment de l'export. Ce rapport ne contient donc que la vue d'ensemble par division. Relancer l'export pour obtenir le détail complet — l'absence est ici un incident technique, pas une absence de donnée.",
     colIndicator: 'Indicateur',
     noSeries: 'Aucune série temporelle publiée pour cette classe.',
     summary: 'Vue d’ensemble',
@@ -67,6 +69,8 @@ const I18N = {
     division: 'Division',
     noValue: 'not published',
     detail: 'Class detail — IDSB and INDSTAT indicators by year',
+    detailMissing: 'Class detail unavailable',
+    detailMissingBody: 'The per-class IDSB/INDSTAT detail could not be loaded at export time. This report therefore contains the division overview only. Re-run the export to obtain the full detail — this absence is a technical incident, not missing data.',
     colIndicator: 'Indicator',
     noSeries: 'No time series published for this class.',
     summary: 'Overview',
@@ -111,23 +115,30 @@ export function buildProductionPdf({
   headlineOrder = [],
   timeseries = null,
   indicatorOrder = [],
+  detailUnavailable = false,
 }) {
   const t = I18N[language] || I18N.fr;
   const isEstimated = dataBasis === 'ESTIMATED_FROM_ISIC2';
   const classCount = divisions.reduce((n, d) => n + d.sectors.length, 0);
 
+  const headlineFieldOf = (indicators) => headlineOrder.find(
+    (f) => indicators?.[f]?.value !== undefined && indicators?.[f]?.value !== null,
+  );
+
+  // La nature qualifie le chiffre de la ligne, donc l'indicateur RETENU comme
+  // principal — pas « un indicateur officiel existe quelque part dans la
+  // classe », qui étiquetait « officiel » une valeur dérivée.
   const natureOf = (indicators) => {
     if (isEstimated) return t.natEstimated;
-    const fields = Object.keys(indicators || {});
-    return fields.some((f) => indicators[f].data_nature === 'OFFICIAL_STATISTICS')
+    const field = headlineFieldOf(indicators);
+    if (!field) return '—';
+    return indicators[field].data_nature === 'OFFICIAL_STATISTICS'
       ? t.natOfficial
       : t.natDerived;
   };
 
   const headlineOf = (indicators) => {
-    const field = headlineOrder.find(
-      (f) => indicators?.[f]?.value !== undefined && indicators?.[f]?.value !== null,
-    );
+    const field = headlineFieldOf(indicators);
     if (!field) return t.noValue;
     const label = indicatorLabels[field] || field;
     const year = indicators[field].year ? ` (${indicators[field].year})` : '';
@@ -199,6 +210,11 @@ export function buildProductionPdf({
     // Le détail n'existe que pour les pays mesurés : pour les pays estimés, la
     // section « Méthode » dit déjà qu'aucune série n'est publiée à ce niveau, et
     // répéter une absence classe par classe n'apprendrait rien.
+    // Un export amputé doit le dire : sans cette section, un rapport sans détail
+    // est indiscernable d'un rapport complet.
+    ...(detailUnavailable
+      ? [{ title: t.detailMissing, paragraphs: [t.detailMissingBody] }]
+      : []),
     ...(timeseries
       ? [{ title: t.detail, paragraphs: [] }].concat(
         divisions.flatMap((d) => d.sectors.map(detailSection)),
