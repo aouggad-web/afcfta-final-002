@@ -9,7 +9,7 @@
       "institution": "Administration des Douanes et Impôts Indirects (ADII)",
       "legal_date": null,
       "url": "https://www.douane.gov.ma",
-      "sha256": "8a8671685c7736965c1d9e38d19f9b77725f583f152df2f5d372f62b0ccc1368",
+      "sha256": "0debb92e473cf0288db5ab04fcea846a192669905dcf2712923be666c8fb62d5",
       "verification_status": "VERIFIED_RUNTIME_DATASET",
       "registry_path": "backend/data/crawled/MAR_tariffs.json",
       "notes": "Empreinte du fichier runtime collecté le 11 février 2026 via le portail officiel ADIL de l'ADII ; 13 114 positions nationales à 10 chiffres, chacune avec ses taux Droit d'Importation / Taxe Parafiscale à l'Importation / TVA tels qu'affichés par le simulateur douanier officiel."

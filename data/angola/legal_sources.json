@@ -9,7 +9,7 @@
       "institution": "World Bank WITS / UNCTAD-TRAINS",
       "legal_date": null,
       "url": null,
-      "sha256": "2a178e2c978c14a248f9a740a9c408374cf196a44bd84087e60384c207e84fb3",
+      "sha256": "7c1bb39f2547d72f05b36332e64f805e634a64557dfa4489b08e9ae49846c9f3",
       "verification_status": "PARTIAL_RUNTIME_DATASET",
       "registry_path": "backend/data/crawled/AGO_tariffs.json",
       "notes": "Empreinte du fichier runtime SH6 (5 388 positions, extrait le 2026-07-05) ; agrégat de niveau 3 (moyenne MFN au niveau SH6), ne constitue pas le tarif national intégré angolais (AGT)."

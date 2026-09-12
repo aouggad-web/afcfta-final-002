@@ -342,7 +342,27 @@ class CrawledDataService:
         else:
             label = designation or ""
 
-        source = pos.get("source") or data.get("source") or ""
+        # `source` au niveau position est un identifiant court de l'autorité
+        # (« douane.gov.tn »), pas le libellé complet de l'en-tête de fichier :
+        # c'est ce que produisaient les normaliseurs historiques et ce que
+        # comparent les consommateurs. Le schéma unifié ne le porte pas sur la
+        # position mais le conserve verbatim sur chaque taxe : on le reprend là,
+        # et l'en-tête ne sert que de dernier recours.
+        source = pos.get("source") or ""
+        if not source:
+            for bucket in ("taxes", "export_taxes"):
+                source = next(
+                    (
+                        t.get("source")
+                        for t in (pos.get(bucket) or [])
+                        if isinstance(t, dict) and t.get("source")
+                    ),
+                    "",
+                )
+                if source:
+                    break
+        if not source:
+            source = data.get("source") or ""
         if isinstance(source, dict):
             source = source.get("name") or source.get("url") or ""
 

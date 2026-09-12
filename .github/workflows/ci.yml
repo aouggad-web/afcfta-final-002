@@ -77,6 +77,16 @@ jobs:
           pip install -r requirements.txt
           pip install pytest feedparser aiohttp pandas numpy
 
+      # backend/data/crawled_normalized/ est la source primaire lue par
+      # crawled_data_service, mais c'est une sortie dérivée : 2 Go, dont
+      # plusieurs fichiers au-dessus de la limite de 100 Mo par fichier de
+      # GitHub. Elle est donc exclue par .gitignore et régénérée ici depuis
+      # backend/data/crawled/, qui est versionné. Sans cette étape, l'index
+      # des positions reste vide et les tests qui interrogent une position
+      # nationale échouent sur un dossier absent plutôt que sur un vrai écart.
+      - name: Generate normalized tariff data
+        run: python scripts/normalize_crawled.py
+
       - name: Run backend tests
         run: |
           python -m pytest tests/test_health_endpoint.py tests/test_north_africa_uma.py -v --tb=short
