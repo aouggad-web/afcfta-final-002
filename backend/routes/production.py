@@ -10,7 +10,9 @@ Endpoints pour exposer :
 from fastapi import APIRouter, HTTPException, Path, Query
 from typing import Optional, Dict, List
 
+from etl.unido_data import get_isic4_breakdown
 from etl.isic4_idsb_data import (
+    get_all_isic4_timeseries,
     get_country_isic4_summary,
     get_isic4_timeseries,
     list_covered_countries,
@@ -52,13 +54,47 @@ def list_isic4_countries(
     - include_estimates=true (défaut): tous les pays avec données officielles ET estimées
     - include_estimates=false: pays avec données officielles uniquement
     """
-    countries = list_covered_countries_filtered(official_only=not include_estimates)
+    # Deux sens du mot « estimé » coexistent, et les confondre rendait cette
+    # route incohérente avec /isic4/{pays} : celle-ci sert désormais 54 pays,
+    # tandis que la découverte n'en listait que 20. Un client qui passe par ici
+    # ne voyait pas les 34 pays servis par structure estimée.
+    #
+    #   UNIDO_DERIVED_ESTIMATE      — le pays EST dans le jeu UNIDO au niveau
+    #                                 classe, mais ses relevés sont des
+    #                                 estimations dérivées par UNIDO et non des
+    #                                 statistiques officielles ;
+    #   ESTIMATED_FROM_ISIC2        — le pays est ABSENT de ce jeu, et sa
+    #                                 structure est dérivée de ses divisions
+    #                                 ISIC 2 chiffres.
+    #
+    # include_estimates ne portait que sur le premier. Les deux listes sont
+    # désormais exposées séparément, pour qu'aucun client n'ait à deviner.
+    from etl.unido_data import UNIDO_INDUSTRY_DATA
+
+    measured = list_covered_countries_filtered(official_only=not include_estimates)
+    structural = sorted(
+        iso for iso in UNIDO_INDUSTRY_DATA
+        if not is_country_covered(iso)
+        and (get_isic4_breakdown(iso) or {}).get("isic4_breakdown")
+    )
     return {
-        "countries": countries,
-        "count": len(countries),
+        "countries": sorted(set(measured) | set(structural)),
+        "count": len(set(measured) | set(structural)),
         "include_estimates": include_estimates,
+        "measured_countries": measured,
+        "measured_count": len(measured),
+        "structural_estimate_countries": structural,
+        "structural_estimate_count": len(structural),
         "source": "UNIDO IDSB + INDSTAT (2018-2024, ISIC Rev.4 4-digit class)",
-        "note": "Les données incluent à la fois OFFICIAL_STATISTICS et UNIDO_DERIVED_ESTIMATE. Voir badges dans les réponses détaillées."
+        "note": (
+            "measured_countries : pays présents dans le jeu UNIDO au niveau classe — "
+            "leurs indicateurs mêlent OFFICIAL_STATISTICS et UNIDO_DERIVED_ESTIMATE, "
+            "distingués par data_nature. include_estimates=false restreint cette "
+            "liste aux pays ayant des statistiques officielles. "
+            "structural_estimate_countries : pays ABSENTS de ce jeu, servis par une "
+            "structure dérivée de leurs divisions ISIC 2 chiffres "
+            "(data_basis=ESTIMATED_FROM_ISIC2) — jamais une mesure."
+        ),
     }
 
 
@@ -79,14 +115,17 @@ def get_isic4_country_data(country_iso3: str = Path(..., description="Code ISO3 
     - Tri par code ISIC (ordre croissant)
     - Métadonnées source + années couvertes
     """
-    if not is_country_covered(country_iso3.upper()):
-        raise HTTPException(
-            status_code=404,
-            detail=f"Pays {country_iso3} non couvert par les données UNIDO IDSB/INDSTAT. "
-            f"Pays couverts : {', '.join(list_covered_countries())}",
-        )
+    iso3 = country_iso3.upper()
 
-    summary = get_country_isic4_summary(country_iso3.upper())
+    if not is_country_covered(iso3):
+        # Repli estimé. Le jeu UNIDO IDSB/INDSTAT au niveau classe ne couvre que
+        # 20 des 54 pays africains ; pour les 34 autres, la route renvoyait un
+        # 404 et l'écran restait vide alors qu'une structure ISIC2 réelle existe.
+        # On sert donc une ESTIMATION DE STRUCTURE, jamais une mesure : voir
+        # data_basis, et la nature portée par chaque indicateur.
+        return _estimated_isic4_payload(iso3)
+
+    summary = get_country_isic4_summary(iso3)
     if not summary:
         raise HTTPException(status_code=404, detail=f"Données non trouvées pour {country_iso3}")
 
@@ -98,17 +137,155 @@ def get_isic4_country_data(country_iso3: str = Path(..., description="Code ISO3 
         "source": summary["source"],
         "years_covered": summary["years_covered"],
         "total_sectors": len(summary["sectors"]),
+        "data_basis": "UNIDO_MEASURED",
         "data_includes": "OFFICIAL_STATISTICS et UNIDO_DERIVED_ESTIMATE (voir champ 'data_nature' par indicateur)",
         "data_quality": summary.get("data_quality", {}),
         "sectors": [
             {
                 "isic4": s["isic4"],
+                # Le composant lit isic_description ; description est conservé
+                # pour tout consommateur existant de cette route.
+                "isic_description": s["isic_description"],
                 "description": s["isic_description"],
                 "indicators": s["indicators"],
                 "indicator_count": len(s["indicators"]),
             }
             for s in summary["sectors"]
         ],
+    }
+
+
+def _estimated_isic4_payload(iso3: str) -> dict:
+    """Structure ISIC4 estimée pour un pays absent du jeu UNIDO au niveau classe.
+
+    Méthode : la part de valeur ajoutée manufacturière de chaque division ISIC 2
+    chiffres (données UNIDO INDSTAT4 au niveau division, réelles) est répartie à
+    parts égales entre les classes ISIC Rev.4 de cette division, telles que
+    définies par la nomenclature UNSD.
+
+    Ce que cela vaut, et ce que cela ne vaut pas :
+
+    * la répartition égale n'est **pas** une mesure. Aucune clé de ventilation
+      n'est disponible ; toutes les classes d'une division reçoivent donc la
+      même valeur. C'est un ordre de grandeur de structure, utile pour situer un
+      secteur, inutilisable pour comparer deux classes d'une même division ;
+    * la couverture se limite aux ``top_sectors`` du pays — 2 à 5 divisions,
+      pas les 24 divisions manufacturières 10-33. Les divisions absentes ne
+      sont pas nulles : elles ne sont pas renseignées ;
+    * aucune série temporelle n'existe pour ces pays : le détail au clic
+      renverra une absence, pas des années inventées.
+    """
+    breakdown = get_isic4_breakdown(iso3)
+    if not breakdown or not breakdown.get("isic4_breakdown"):
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                f"Pays {iso3} non couvert par les données UNIDO IDSB/INDSTAT au niveau "
+                f"classe, et aucune structure ISIC2 disponible pour en dériver une "
+                f"estimation. Pays mesurés : {', '.join(list_covered_countries())}"
+            ),
+        )
+
+    sectors = []
+    for row in breakdown["isic4_breakdown"]:
+        indicators = {}
+        if row.get("share_mva_estimated") is not None:
+            indicators["share_mva_pct"] = {
+                "value": row["share_mva_estimated"],
+                "unit": "%",
+                "year": None,
+                "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2",
+            }
+        # Absent pour les divisions dont la valeur monétaire n'est pas publiée :
+        # on n'émet pas d'indicateur plutôt qu'un zéro.
+        if row.get("value_mln_usd_estimated") is not None:
+            indicators["value_added_usd"] = {
+                "value": row["value_mln_usd_estimated"] * 1_000_000,
+                "unit": "USD",
+                "year": None,
+                "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2",
+            }
+        sectors.append(
+            {
+                "isic4": row["isic4"],
+                "isic_description": row["class_name"],
+                "description": row["class_name"],
+                "division_name": row.get("division_name"),
+                "indicators": indicators,
+                "indicator_count": len(indicators),
+            }
+        )
+
+    return {
+        "country_iso3": breakdown["country_iso3"],
+        "country_name": breakdown["country_name"],
+        "classification": breakdown["classification"],
+        "source": breakdown["source"],
+        "years_covered": [],
+        "total_sectors": len(sectors),
+        "data_basis": "ESTIMATED_FROM_ISIC2",
+        "data_includes": (
+            "STRUCTURAL_ESTIMATE_FROM_ISIC2 uniquement — aucune statistique "
+            "mesurée au niveau classe pour ce pays."
+        ),
+        "coverage": breakdown["coverage"],
+        "methodology": breakdown["methodology"],
+        "data_quality": {
+            "official_indicators": 0,
+            "estimated_indicators": sum(s["indicator_count"] for s in sectors),
+            "is_fully_estimated": True,
+        },
+        "sectors": sectors,
+    }
+
+
+@router.get(
+    "/isic4/{country_iso3}/timeseries",
+    summary="Séries temporelles de toutes les classes ISIC4 d'un pays",
+    description="Détail IDSB + INDSTAT par classe et par année, en une seule réponse — "
+    "destiné à l'export PDF, qui a besoin du détail complet et ne peut pas "
+    "enchaîner une requête par classe.",
+)
+def get_all_isic4_timeseries_data(
+    country_iso3: str = Path(..., description="Code ISO3 du pays"),
+):
+    """GET /api/production/isic4/{country_iso3}/timeseries
+
+    Les pays servis par estimation de structure n'ont aucune série à ce niveau :
+    la réponse est alors vide, avec data_basis à ESTIMATED_FROM_ISIC2. Une
+    absence de série n'est pas une erreur, c'est une absence de donnée.
+    """
+    iso3 = country_iso3.upper()
+    if not is_country_covered(iso3):
+        # Un ISO inconnu n'est pas un pays « estimé » : sans structure ISIC2
+        # dérivable, cette route renvoyait 200 avec un résultat vide là où
+        # /isic4/{pays} renvoie 404. Deux comportements pour la même absence.
+        if not (get_isic4_breakdown(iso3) or {}).get("isic4_breakdown"):
+            raise HTTPException(
+                status_code=404,
+                detail=(
+                    f"Pays {country_iso3} inconnu du référentiel : ni données UNIDO au "
+                    f"niveau classe, ni structure ISIC2 permettant d'en dériver une "
+                    f"estimation."
+                ),
+            )
+        return {
+            "country_iso3": iso3,
+            "data_basis": "ESTIMATED_FROM_ISIC2",
+            "classes": {},
+            "note": (
+                "Aucune série temporelle au niveau de la classe pour ce pays : "
+                "les valeurs servies sont des estimations de structure dérivées "
+                "des divisions ISIC 2 chiffres."
+            ),
+        }
+    classes = get_all_isic4_timeseries(iso3)
+    return {
+        "country_iso3": iso3,
+        "data_basis": "UNIDO_MEASURED",
+        "total_classes": len(classes),
+        "classes": classes,
+        "source": "UNIDO IDSB + INDSTAT (ISIC Rev.4, 2018-2024)",
     }
 
 

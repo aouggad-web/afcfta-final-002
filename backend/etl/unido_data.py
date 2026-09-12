@@ -1893,8 +1893,12 @@ def get_isic4_breakdown(country_iso3: str) -> Optional[Dict]:
         if not classes:
             continue
         n = len(classes)
-        share_mva = sector.get("share_mva", 0)
-        value_mln_usd = sector.get("value_mln_usd", 0)
+        share_mva = sector.get("share_mva")
+        # value_mln_usd n'est renseigné que pour une partie des divisions. Le
+        # remplacer par 0 quand il manque produirait une valeur monétaire fausse
+        # là où il n'y a pas de donnée : l'absence reste None, conformément au
+        # principe no_missing_as_zero du registre des sources.
+        value_mln_usd = sector.get("value_mln_usd")
         for code, label in classes.items():
             breakdown.append(
                 {
@@ -1902,8 +1906,14 @@ def get_isic4_breakdown(country_iso3: str) -> Optional[Dict]:
                     "isic2": isic2,
                     "division_name": sector.get("name"),
                     "class_name": label,
-                    "share_mva_estimated": round(share_mva / n, 3) if n else 0,
-                    "value_mln_usd_estimated": round(value_mln_usd / n, 2) if n else 0,
+                    "share_mva_estimated": (
+                        round(share_mva / n, 3) if share_mva is not None and n else None
+                    ),
+                    "value_mln_usd_estimated": (
+                        round(value_mln_usd / n, 2)
+                        if value_mln_usd is not None and n
+                        else None
+                    ),
                 }
             )
 

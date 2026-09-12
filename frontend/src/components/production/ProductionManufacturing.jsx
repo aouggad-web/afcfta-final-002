@@ -4,7 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Badge } from '../ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 import EnhancedCountrySelector from './EnhancedCountrySelector';
-import { Factory, TrendingUp, Award, Building2, Package, Loader2, AlertTriangle, Info, DollarSign, Users } from 'lucide-react';
+import { Factory, TrendingUp, Award, Building2, Package, Loader2, AlertTriangle, Info, DollarSign, Users, Download } from 'lucide-react';
+import { buildProductionPdf, productionPdfFilename } from '../../utils/productionPdf';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -55,6 +56,7 @@ const ISIC4_INDICATOR_LABELS = {
     output_usd_official: 'Production (INDSTAT, officiel)',
     value_added_usd: 'Valeur ajoutée',
     gross_fixed_capital_formation_usd: 'FBCF',
+    share_mva_pct: 'Part de la MVA (estimée)',
   },
   en: {
     output_usd: 'Output (IDSB)',
@@ -68,6 +70,7 @@ const ISIC4_INDICATOR_LABELS = {
     output_usd_official: 'Output (INDSTAT, official)',
     value_added_usd: 'Value added',
     gross_fixed_capital_formation_usd: 'Gross fixed capital formation',
+    share_mva_pct: 'Share of MVA (estimated)',
   },
 };
 
@@ -76,7 +79,23 @@ const ISIC4_INDICATOR_ORDER = [
   'output_usd', 'imports_world_usd', 'exports_world_usd', 'apparent_consumption_usd',
   'output_usd_official', 'value_added_usd', 'establishments', 'employees',
   'female_employees', 'wages_salaries_usd', 'gross_fixed_capital_formation_usd',
+  'share_mva_pct',
 ];
+
+// Indicateur mis en avant sur la ligne repliée, par ordre de préférence : c'est
+// le chiffre qui permet de situer la classe d'un coup d'œil. La ligne affichait
+// jusqu'ici un décompte d'indicateurs, qui ne renseignait sur rien.
+const HEADLINE_INDICATORS = [
+  'value_added_usd', 'output_usd_official', 'output_usd', 'apparent_consumption_usd',
+  'establishments', 'employees',
+  // En dernier recours : la part de MVA estimée. Les classes dont la division
+  // n'a pas de valeur monétaire publiée ne portent QUE cet indicateur ; sans
+  // lui, la ligne affichait « — » alors qu'une valeur existe. Le mettre en fin
+  // de liste garde la préférence aux grandeurs mesurées.
+  'share_mva_pct',
+];
+
+const PERCENT_INDICATORS = new Set(['share_mva_pct']);
 
 const USD_INDICATORS = new Set([
   'output_usd', 'imports_world_usd', 'exports_world_usd', 'apparent_consumption_usd',
@@ -92,6 +111,11 @@ function ProductionManufacturing({ language = 'fr' }) {
   // Table ISIC4 complète (tous les secteurs manufacturiers du pays, pas seulement les principaux)
   const [isic4Sectors, setIsic4Sectors] = useState([]);
   const [isic4DataQuality, setIsic4DataQuality] = useState(null);
+  // Nature de ce que sert l'API : mesuré par UNIDO, ou structure estimée à
+  // partir des divisions ISIC2 pour les 34 pays absents du jeu au niveau classe.
+  const [isic4Basis, setIsic4Basis] = useState(null);
+  const [isic4Method, setIsic4Method] = useState(null);
+  const [pdfBusy, setPdfBusy] = useState(false);
   const [isic4Status, setIsic4Status] = useState('idle'); // idle | loading | error | no_data | ready
   const isic4RequestCountry = useRef(null);
 
@@ -223,11 +247,19 @@ function ProductionManufacturing({ language = 'fr' }) {
     setIsic4Status('loading');
     setIsic4Sectors([]);
     setIsic4DataQuality(null);
+    setIsic4Basis(null);
+    setIsic4Method(null);
     try {
       const response = await axios.get(`${API}/production/isic4/${requestedCountry}`);
       if (isic4RequestCountry.current !== requestedCountry) return; // stale, country changed since
       setIsic4Sectors(response.data.sectors || []);
       setIsic4DataQuality(response.data.data_quality || null);
+      setIsic4Basis(response.data.data_basis || null);
+      setIsic4Method({
+        methodology: response.data.methodology || null,
+        coverage: response.data.coverage || null,
+        source: response.data.source || null,
+      });
       setIsic4Status('ready');
     } catch (error) {
       if (isic4RequestCountry.current !== requestedCountry) return;
@@ -281,6 +313,10 @@ function ProductionManufacturing({ language = 'fr' }) {
       return;
     }
     setExpandedIsic4(isic4Code);
+    // Les pays servis par estimation n'ont aucune série temporelle : appeler la
+    // route ferait un 404 et afficherait une erreur là où il n'y a qu'une
+    // absence de donnée, ce qui n'est pas la même chose.
+    if (isic4Basis === 'ESTIMATED_FROM_ISIC2') return;
     const existing = isic4Timeseries[isic4Code];
     if (existing && (existing.status === 'ready' || existing.status === 'loading')) return;
     fetchIsic4Timeseries(isic4Code);
@@ -313,8 +349,60 @@ function ProductionManufacturing({ language = 'fr' }) {
     return num?.toLocaleString() || '0';
   };
 
+  // Export PDF : le rapport reprend les encadrés ISIC2 tels qu'affichés, et
+  // porte la nature de la donnée — un tableau détaché de l'écran doit dire
+  // lui-même s'il est mesuré ou estimé.
+  const exportIsic4Pdf = async () => {
+    setPdfBusy(true);
+    try {
+      // Le détail par classe n'est chargé à l'écran qu'au clic, une classe à la
+      // fois. Le PDF le veut en entier : une seule requête groupée plutôt que
+      // 130 appels. Un échec ici ne doit pas priver du rapport — on produit
+      // alors la vue d'ensemble seule, et le document le dit.
+      let timeseries = null;
+      let detailUnavailable = false;
+      if (isic4Basis === 'UNIDO_MEASURED') {
+        try {
+          const res = await axios.get(`${API}/production/isic4/${selectedCountry}/timeseries`);
+          timeseries = res.data?.classes || null;
+          detailUnavailable = !timeseries;
+        } catch (error) {
+          console.error('Détail ISIC4 indisponible pour le PDF:', error);
+          // Le document le dira : un export amputé qui se tait est indiscernable
+          // d'un export complet.
+          detailUnavailable = true;
+        }
+      }
+      const doc = buildProductionPdf({
+        countryIso3: selectedCountry,
+        // unidoData vient d'une requête distincte, sans garde contre une
+        // réponse périmée : si la table ISIC4 arrive la première après un
+        // changement de pays, le PDF porterait le nom du pays précédent.
+        // On ne s'en sert que si la charge utile désigne bien le pays courant.
+        countryName:
+          (unidoData?.country_iso3 || unidoData?.country_code) === selectedCountry
+            ? unidoData?.country_name || selectedCountry
+            : selectedCountry,
+        language,
+        dataBasis: isic4Basis,
+        divisions: groupIsic4ByDivision(),
+        source: isic4Method?.source,
+        formatIndicatorValue,
+        indicatorLabels: ISIC4_INDICATOR_LABELS[language] || ISIC4_INDICATOR_LABELS.fr,
+        headlineOrder: HEADLINE_INDICATORS,
+        indicatorOrder: ISIC4_INDICATOR_ORDER,
+        timeseries,
+        detailUnavailable,
+      });
+      doc.save(`${productionPdfFilename(selectedCountry, isic4Basis)}.pdf`);
+    } finally {
+      setPdfBusy(false);
+    }
+  };
+
   const formatIndicatorValue = (field, value) => {
     if (value === null || value === undefined) return '—';
+    if (PERCENT_INDICATORS.has(field)) return `${value.toLocaleString()} %`;
     return USD_INDICATORS.has(field) ? `$${formatNumber(value)}` : value.toLocaleString();
   };
 
@@ -602,11 +690,35 @@ function ProductionManufacturing({ language = 'fr' }) {
                     <Badge variant="outline" className="text-xs">
                       {isic4Sectors.length} {language === 'fr' ? 'classes ISIC 4 chiffres' : 'ISIC 4-digit classes'}
                     </Badge>
-                    {isic4DataQuality?.is_fully_estimated && (
-                      <Badge variant="outline" className="text-xs border-amber-500 text-amber-700">
-                        {language === 'fr' ? 'Entièrement estimé (UNIDO)' : 'Fully estimated (UNIDO)'}
+                    {/* Trois natures distinctes, jamais deux pastilles à la fois :
+                        structure estimée hors couverture, estimations dérivées
+                        UNIDO, ou statistiques mesurées. Afficher « Mesuré » à côté
+                        de « estimations dérivées » présentait de l'estimé comme du
+                        mesuré. */}
+                    {isic4Basis === 'ESTIMATED_FROM_ISIC2' ? (
+                      <Badge className="text-xs bg-amber-500 hover:bg-amber-500 text-white">
+                        {language === 'fr' ? 'Structure estimée' : 'Estimated structure'}
+                      </Badge>
+                    ) : isic4DataQuality?.is_fully_estimated ? (
+                      <Badge className="text-xs bg-sky-600 hover:bg-sky-600 text-white">
+                        {language === 'fr' ? 'Estimations dérivées UNIDO' : 'UNIDO derived estimates'}
+                      </Badge>
+                    ) : (
+                      <Badge className="text-xs bg-emerald-600 hover:bg-emerald-600 text-white">
+                        {language === 'fr' ? 'Mesuré (UNIDO)' : 'Measured (UNIDO)'}
                       </Badge>
                     )}
+                    <button
+                      type="button"
+                      onClick={exportIsic4Pdf}
+                      disabled={pdfBusy}
+                      className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md border border-blue-300 text-blue-700 hover:bg-blue-100 transition disabled:opacity-60 disabled:cursor-wait"
+                    >
+                      {pdfBusy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                      {pdfBusy
+                        ? (language === 'fr' ? 'Génération...' : 'Generating...')
+                        : (language === 'fr' ? 'Exporter en PDF' : 'Export to PDF')}
+                    </button>
                   </div>
                 )}
               </div>
@@ -644,6 +756,43 @@ function ProductionManufacturing({ language = 'fr' }) {
                   {language === 'fr' ? 'Aucun secteur ISIC4 pour ce pays.' : 'No ISIC4 sector for this country.'}
                 </p>
               )}
+              {isic4Status === 'ready' && isic4Basis === 'ESTIMATED_FROM_ISIC2' && (
+                <div className="mb-5 rounded-lg border-l-4 border-amber-500 bg-amber-50 px-4 py-3">
+                  <p className="text-sm font-semibold text-amber-900 flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 shrink-0" />
+                    {language === 'fr'
+                      ? 'Ces chiffres sont des estimations de structure, pas des mesures.'
+                      : 'These figures are structural estimates, not measurements.'}
+                  </p>
+                  <ul className="text-xs text-amber-900/90 mt-2 space-y-1 list-disc list-inside">
+                    <li>
+                      {language === 'fr'
+                        ? "UNIDO ne publie pas de statistiques au niveau de la classe ISIC 4 chiffres pour ce pays. La part de valeur ajoutée manufacturière de chaque division ISIC 2 chiffres — celle-là réelle — est répartie à parts égales entre les classes de la division."
+                        : 'UNIDO publishes no ISIC 4-digit class statistics for this country. Each ISIC 2-digit division\u2019s manufacturing value-added share \u2014 that figure being real \u2014 is split equally across the classes of the division.'}
+                    </li>
+                    <li>
+                      {language === 'fr'
+                        ? "Toutes les classes d'une même division portent donc la même valeur : ces chiffres situent un secteur, ils ne permettent pas de comparer deux classes entre elles."
+                        : 'Every class within a division therefore carries the same value: these figures place a sector, they cannot rank two classes against each other.'}
+                    </li>
+                    <li>
+                      {language === 'fr'
+                        ? "Seuls les secteurs principaux du pays sont couverts, pas les 24 divisions manufacturières 10-33. Une division absente n'est pas nulle : elle n'est pas renseignée."
+                        : 'Only the country\u2019s main sectors are covered, not all 24 manufacturing divisions 10-33. A missing division is not zero: it is not documented.'}
+                    </li>
+                    <li>
+                      {language === 'fr'
+                        ? "Aucune série temporelle n'existe à ce niveau pour ce pays."
+                        : 'No time series exists at this level for this country.'}
+                    </li>
+                  </ul>
+                  {isic4Method?.source && (
+                    <p className="text-[11px] text-amber-800/80 mt-2">
+                      {language === 'fr' ? 'Source : ' : 'Source: '}{isic4Method.source}
+                    </p>
+                  )}
+                </div>
+              )}
               {isic4Status === 'ready' && isic4Sectors.length > 0 && (
                 <div className="space-y-5">
                   {groupIsic4ByDivision().map(({ division, label, sectors }) => (
@@ -659,13 +808,16 @@ function ProductionManufacturing({ language = 'fr' }) {
                         </Badge>
                       </div>
                       <div className="overflow-x-auto">
-                        <table className="w-full text-xs border-collapse">
+                        <table className="w-full text-sm border-collapse">
                           <thead>
-                            <tr className="border-b border-gray-200 text-left text-gray-500">
-                              <th className="py-2 pl-4 pr-3 font-medium">ISIC 4</th>
-                              <th className="py-2 pr-3 font-medium">{language === 'fr' ? 'Libellé' : 'Label'}</th>
-                              <th className="py-2 pr-3 font-medium text-right">{language === 'fr' ? 'Indicateurs' : 'Indicators'}</th>
-                              <th className="py-2 pr-4 font-medium text-right">{language === 'fr' ? 'Détail' : 'Detail'}</th>
+                            <tr className="border-b-2 border-gray-300 text-left text-gray-600">
+                              <th className="py-2.5 pl-4 pr-3 font-semibold w-20">ISIC 4</th>
+                              <th className="py-2.5 pr-3 font-semibold">{language === 'fr' ? 'Libellé' : 'Label'}</th>
+                              <th className="py-2.5 pr-3 font-semibold text-right whitespace-nowrap">
+                                {language === 'fr' ? 'Indicateur principal' : 'Headline indicator'}
+                              </th>
+                              <th className="py-2.5 pr-3 font-semibold text-center w-24">{language === 'fr' ? 'Nature' : 'Nature'}</th>
+                              <th className="py-2.5 pr-4 font-semibold text-right w-28">{language === 'fr' ? 'Détail' : 'Detail'}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -679,6 +831,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                                 onRetry={() => fetchIsic4Timeseries(sector.isic4)}
                                 language={language}
                                 formatIndicatorValue={formatIndicatorValue}
+                                dataBasis={isic4Basis}
                               />
                             ))}
                           </tbody>
@@ -780,11 +933,35 @@ function ProductionManufacturing({ language = 'fr' }) {
   );
 }
 
-function IsicRow({ sector, isExpanded, onToggle, timeseries, onRetry, language, formatIndicatorValue }) {
+function IsicRow({ sector, isExpanded, onToggle, timeseries, onRetry, language, formatIndicatorValue, dataBasis }) {
   const indicators = sector.indicators || {};
   const indicatorFields = Object.keys(indicators);
-  const officialCount = indicatorFields.filter((f) => indicators[f].data_nature === 'OFFICIAL_STATISTICS').length;
-  const estimatedCount = indicatorFields.filter((f) => indicators[f].data_nature === 'UNIDO_DERIVED_ESTIMATE').length;
+  const isEstimatedCountry = dataBasis === 'ESTIMATED_FROM_ISIC2';
+
+  // Chiffre mis en avant : le premier disponible dans l'ordre de préférence.
+  // Une ligne qui affiche « 3 off. · 4 est. » ne dit rien du secteur.
+  const headlineField = HEADLINE_INDICATORS.find((f) => indicators[f]?.value !== undefined && indicators[f]?.value !== null);
+  const headline = headlineField ? indicators[headlineField] : null;
+  const labels = ISIC4_INDICATOR_LABELS[language] || ISIC4_INDICATOR_LABELS.fr;
+
+  // La pastille qualifie le chiffre AFFICHÉ à côté d'elle, pas la classe.
+  // La calculer sur « un indicateur officiel existe quelque part » étiquetait
+  // « officiel » une valeur dérivée choisie comme indicateur principal.
+  const headlineOfficial = headline?.data_nature === 'OFFICIAL_STATISTICS';
+  const natureLabel = isEstimatedCountry
+    ? (language === 'fr' ? 'estimé' : 'estimated')
+    : !headline
+      ? '—'
+      : headlineOfficial
+        ? (language === 'fr' ? 'officiel' : 'official')
+        : (language === 'fr' ? 'dérivé' : 'derived');
+  const natureClass = isEstimatedCountry
+    ? 'bg-amber-100 text-amber-800'
+    : !headline
+      ? 'bg-gray-100 text-gray-500'
+      : headlineOfficial
+        ? 'bg-emerald-100 text-emerald-800'
+        : 'bg-sky-100 text-sky-800';
 
   const status = timeseries?.status;
   const series = timeseries?.series || {};
@@ -799,7 +976,7 @@ function IsicRow({ sector, isExpanded, onToggle, timeseries, onRetry, language, 
         role="button"
         tabIndex={0}
         aria-expanded={isExpanded}
-        className="border-b border-gray-100 hover:bg-blue-50/50 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
+        className={`border-b border-gray-100 cursor-pointer transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 ${isExpanded ? 'bg-blue-50' : 'hover:bg-blue-50/60'}`}
         onClick={onToggle}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -808,93 +985,128 @@ function IsicRow({ sector, isExpanded, onToggle, timeseries, onRetry, language, 
           }
         }}
       >
-        <td className="py-1.5 pl-4 pr-3 font-mono text-blue-700 whitespace-nowrap">{sector.isic4}</td>
-        <td className="py-1.5 pr-3 text-gray-700">{sector.isic_description}</td>
-        <td className="py-1.5 pr-3 text-right text-gray-500 whitespace-nowrap">
-          {officialCount > 0 && (
-            <span className="text-emerald-600">{officialCount} {language === 'fr' ? 'off.' : 'off.'}</span>
+        <td className="py-2.5 pl-4 pr-3 font-mono font-semibold text-blue-700 whitespace-nowrap align-top">{sector.isic4}</td>
+        <td className="py-2.5 pr-3 text-gray-800 leading-snug">
+          {sector.isic_description || sector.description || (
+            <span className="text-gray-400 italic">
+              {language === 'fr' ? 'libellé non publié' : 'label not published'}
+            </span>
           )}
-          {officialCount > 0 && estimatedCount > 0 && ' · '}
-          {estimatedCount > 0 && (
-            <span className="text-amber-600">{estimatedCount} {language === 'fr' ? 'est.' : 'est.'}</span>
+          {sector.division_name && (
+            <span className="block text-xs text-gray-500 mt-0.5">{sector.division_name}</span>
           )}
-          {indicatorFields.length === 0 && '—'}
         </td>
-        <td className="py-1.5 pr-4 text-right text-blue-500 underline whitespace-nowrap">
-          {isExpanded ? (language === 'fr' ? 'Masquer' : 'Hide') : (language === 'fr' ? 'Historique' : 'History')}
+        <td className="py-2.5 pr-3 text-right align-top whitespace-nowrap tabular-nums">
+          {headline ? (
+            <>
+              <span className="font-semibold text-gray-900">
+                {formatIndicatorValue(headlineField, headline.value)}
+              </span>
+              <span className="block text-xs text-gray-500">
+                {labels[headlineField] || headlineField}
+                {headline.year ? ` · ${headline.year}` : ''}
+              </span>
+            </>
+          ) : (
+            <span className="text-gray-400">—</span>
+          )}
+        </td>
+        <td className="py-2.5 pr-3 text-center align-top">
+          <span className={`inline-block rounded px-2 py-0.5 text-xs font-medium ${natureClass}`}>
+            {natureLabel}
+          </span>
+        </td>
+        <td className="py-2.5 pr-4 text-right align-top text-blue-600 font-medium whitespace-nowrap">
+          {isExpanded
+            ? (language === 'fr' ? 'Masquer' : 'Hide')
+            : isEstimatedCountry
+              ? (language === 'fr' ? 'Voir' : 'View')
+              : (language === 'fr' ? 'Historique' : 'History')}
         </td>
       </tr>
       {isExpanded && (
         <tr>
-          <td colSpan={4} className="p-0">
-            <div className="bg-gray-50 px-4 py-3 border-b border-gray-200" onClick={(e) => e.stopPropagation()}>
-              {status === 'loading' && (
-                <p className="text-xs text-gray-500 py-3">
-                  <Loader2 className="w-3.5 h-3.5 inline animate-spin mr-2" />
-                  {language === 'fr' ? 'Chargement...' : 'Loading...'}
-                </p>
-              )}
-              {status === 'error' && (
-                <div className="text-xs text-red-600 flex items-center justify-between gap-2 py-2">
-                  <span>{language === 'fr' ? 'Erreur lors du chargement de l\'historique.' : 'Failed to load history.'}</span>
-                  <button type="button" className="underline hover:no-underline" onClick={onRetry}>
-                    {language === 'fr' ? 'Réessayer' : 'Retry'}
-                  </button>
-                </div>
-              )}
-              {status === 'ready' && presentFields.length === 0 && (
-                <p className="text-xs text-gray-500 py-2">
-                  {language === 'fr' ? "Aucune série temporelle disponible." : 'No time series available.'}
-                </p>
-              )}
-              {status === 'ready' && presentFields.length > 0 && (
-                <div className="overflow-x-auto">
-                  <table className="text-[11px] border-collapse">
-                    <thead>
-                      <tr className="text-left text-gray-500">
-                        <th className="py-1 pr-4 font-medium sticky left-0 bg-gray-50">
-                          {language === 'fr' ? 'Indicateur' : 'Indicator'}
-                        </th>
-                        {allYears.map((year) => (
-                          <th key={year} className="py-1 px-3 font-medium text-right">{year}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {presentFields.map((field) => {
-                        const byYear = Object.fromEntries(series[field].map((p) => [p.year, p]));
-                        const nature = series[field][0]?.data_nature;
-                        return (
-                          <tr key={field} className="border-t border-gray-200">
-                            <td className="py-1 pr-4 text-gray-700 whitespace-nowrap sticky left-0 bg-gray-50">
-                              {(ISIC4_INDICATOR_LABELS[language] || ISIC4_INDICATOR_LABELS.fr)[field] || field}
-                              {nature && (
-                                <span
-                                  className={`ml-1.5 text-[9px] uppercase ${nature === 'OFFICIAL_STATISTICS' ? 'text-emerald-600' : 'text-amber-600'}`}
-                                >
-                                  {nature === 'OFFICIAL_STATISTICS'
-                                    ? (language === 'fr' ? 'officiel' : 'official')
-                                    : (language === 'fr' ? 'estimé' : 'estimate')}
-                                </span>
-                              )}
-                            </td>
+          <td colSpan={5} className="p-0">
+            <div className="bg-slate-50 px-4 py-4 border-b-2 border-blue-200" onClick={(e) => e.stopPropagation()}>
+              {isEstimatedCountry ? (
+                <EstimatedDetail
+                  indicators={indicators}
+                  labels={labels}
+                  language={language}
+                  formatIndicatorValue={formatIndicatorValue}
+                />
+              ) : (
+                <>
+                  {status === 'loading' && (
+                    <p className="text-sm text-gray-500 py-3">
+                      <Loader2 className="w-4 h-4 inline animate-spin mr-2" />
+                      {language === 'fr' ? 'Chargement...' : 'Loading...'}
+                    </p>
+                  )}
+                  {status === 'error' && (
+                    <div className="text-sm text-red-600 flex items-center justify-between gap-2 py-2">
+                      <span>{language === 'fr' ? "Erreur lors du chargement de l'historique." : 'Failed to load history.'}</span>
+                      <button type="button" className="underline hover:no-underline" onClick={onRetry}>
+                        {language === 'fr' ? 'Réessayer' : 'Retry'}
+                      </button>
+                    </div>
+                  )}
+                  {status === 'ready' && presentFields.length === 0 && (
+                    <p className="text-sm text-gray-500 py-2">
+                      {language === 'fr' ? 'Aucune série temporelle disponible.' : 'No time series available.'}
+                    </p>
+                  )}
+                  {status === 'ready' && presentFields.length > 0 && (
+                    <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+                      <table className="text-sm border-collapse w-full">
+                        <thead>
+                          <tr className="bg-gray-100 text-gray-700">
+                            <th className="py-2 px-3 font-semibold text-left sticky left-0 bg-gray-100 z-10 min-w-[200px]">
+                              {language === 'fr' ? 'Indicateur' : 'Indicator'}
+                            </th>
                             {allYears.map((year) => (
-                              <td key={year} className="py-1 px-3 text-right text-gray-600 whitespace-nowrap">
-                                {byYear[year] ? formatIndicatorValue(field, byYear[year].value) : '—'}
-                              </td>
+                              <th key={year} className="py-2 px-3 font-semibold text-right whitespace-nowrap">{year}</th>
                             ))}
                           </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
+                        </thead>
+                        <tbody>
+                          {presentFields.map((field, i) => {
+                            const byYear = Object.fromEntries(series[field].map((p) => [p.year, p]));
+                            const nature = series[field][0]?.data_nature;
+                            const official = nature === 'OFFICIAL_STATISTICS';
+                            return (
+                              <tr key={field} className={i % 2 ? 'bg-slate-50/60' : 'bg-white'}>
+                                <td className={`py-2 px-3 text-gray-800 whitespace-nowrap sticky left-0 z-10 border-r border-gray-200 ${i % 2 ? 'bg-slate-50/60' : 'bg-white'}`}>
+                                  {labels[field] || field}
+                                  {nature && (
+                                    <span
+                                      className={`ml-2 rounded px-1.5 py-0.5 text-[10px] font-medium ${official ? 'bg-emerald-100 text-emerald-800' : 'bg-sky-100 text-sky-800'}`}
+                                    >
+                                      {official
+                                        ? (language === 'fr' ? 'officiel' : 'official')
+                                        : (language === 'fr' ? 'dérivé' : 'derived')}
+                                    </span>
+                                  )}
+                                </td>
+                                {allYears.map((year) => (
+                                  <td key={year} className="py-2 px-3 text-right text-gray-900 whitespace-nowrap tabular-nums">
+                                    {byYear[year] ? formatIndicatorValue(field, byYear[year].value) : <span className="text-gray-300">—</span>}
+                                  </td>
+                                ))}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                  <p className="text-xs text-gray-500 italic pt-3">
+                    {language === 'fr'
+                      ? 'UNIDO IDSB (imports, exports, consommation apparente, production — estimations dérivées) et INDSTAT (production, valeur ajoutée, emplois — statistiques officielles), 2018-2024.'
+                      : 'UNIDO IDSB (imports, exports, apparent consumption, output — derived estimates) and INDSTAT (output, value added, employment — official statistics), 2018-2024.'}
+                  </p>
+                </>
               )}
-              <p className="text-[10px] text-gray-400 italic pt-2">
-                {language === 'fr'
-                  ? 'Données réelles UNIDO IDSB (imports/exports/conso. apparente/production — estimations dérivées) et INDSTAT (production/valeur ajoutée/emplois — statistiques officielles), 2018-2024.'
-                  : 'Real UNIDO IDSB (imports/exports/apparent consumption/output — derived estimates) and INDSTAT (output/value added/employment — official statistics) data, 2018-2024.'}
-              </p>
             </div>
           </td>
         </tr>
@@ -902,5 +1114,57 @@ function IsicRow({ sector, isExpanded, onToggle, timeseries, onRetry, language, 
     </>
   );
 }
+
+// Détail d'une classe pour un pays servi par estimation : pas de série
+// temporelle, seulement les valeurs dérivées de la division, et le rappel
+// explicite de ce qu'elles valent.
+function EstimatedDetail({ indicators, labels, language, formatIndicatorValue }) {
+  const fields = ISIC4_INDICATOR_ORDER.filter((f) => indicators[f]?.value !== undefined && indicators[f]?.value !== null);
+  if (fields.length === 0) {
+    return (
+      <p className="text-sm text-gray-500 py-2">
+        {language === 'fr'
+          ? "Aucune valeur estimée pour cette classe : la division dont elle relève n'a pas de valeur monétaire publiée."
+          : 'No estimated value for this class: its division has no published monetary value.'}
+      </p>
+    );
+  }
+  return (
+    <>
+      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
+        <table className="text-sm border-collapse w-full">
+          <thead>
+            <tr className="bg-gray-100 text-gray-700">
+              <th className="py-2 px-3 font-semibold text-left">{language === 'fr' ? 'Indicateur' : 'Indicator'}</th>
+              <th className="py-2 px-3 font-semibold text-right">{language === 'fr' ? 'Valeur estimée' : 'Estimated value'}</th>
+              <th className="py-2 px-3 font-semibold text-left">{language === 'fr' ? 'Nature' : 'Nature'}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {fields.map((field, i) => (
+              <tr key={field} className={i % 2 ? 'bg-slate-50/60' : 'bg-white'}>
+                <td className="py-2 px-3 text-gray-800">{labels[field] || field}</td>
+                <td className="py-2 px-3 text-right text-gray-900 font-semibold tabular-nums whitespace-nowrap">
+                  {formatIndicatorValue(field, indicators[field].value)}
+                </td>
+                <td className="py-2 px-3">
+                  <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+                    {language === 'fr' ? 'estimation de structure' : 'structural estimate'}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p className="text-xs text-amber-800 italic pt-3">
+        {language === 'fr'
+          ? "Valeur obtenue en divisant la part de MVA réelle de la division ISIC 2 chiffres par son nombre de classes. Toutes les classes de cette division portent donc le même chiffre : il situe le secteur, il ne le mesure pas."
+          : 'Value obtained by dividing the real ISIC 2-digit division MVA share by its number of classes. Every class of this division therefore carries the same figure: it places the sector, it does not measure it.'}
+      </p>
+    </>
+  );
+}
+
 
 export default ProductionManufacturing;
