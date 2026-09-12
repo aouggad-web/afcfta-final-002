@@ -68,10 +68,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: true
-          # Ce workflow écrit dans backend/data/crawled/, suivi via Git LFS
-          # (cf. .gitattributes) : sans cette option il comparerait ses
-          # résultats à des pointeurs et committerait des diffs faussés.
-          lfs: true
 
       - name: Setup Python
         uses: actions/setup-python@v5

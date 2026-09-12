@@ -63,12 +63,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          # backend/data/crawled/ est suivi via Git LFS (cf. .gitattributes).
-          # Sans cette option le checkout ne livre que des pointeurs et l'étape
-          # de génération plus bas lit des fichiers de 130 octets au lieu des
-          # tarifs.
-          lfs: true
 
       - name: Setup Python
         uses: actions/setup-python@v5

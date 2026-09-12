@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5a7590273347691aebd9d26a0443f4b6b34660765f6372a9313cc8ffac9982b8
-size 1023
+{
+  "country_code": "DJI",
+  "country_name": "Djibouti",
+  "source": "Direction Générale des Douanes — Djibouti",
+  "source_url": "https://www.douanesdj.gouv.dj/tarif/",
+  "data_status": "PENDING",
+  "data_quality": "PARTIAL/B — non encore crawlé",
+  "error": "Portail https://www.douanesdj.gouv.dj/tarif/ non accessible ou méthode non implémentée",
+  "crawl_attempted": "2026-06-16T20:50:15.433615",
+  "notes": "Djibouti zone franche — pas de TVA générale. DD 0-33%. Membre COMESA+IGAD.",
+  "positions": [],
+  "pending_action": "Crawler le portail https://www.douanesdj.gouv.dj/tarif/ pour obtenir les taux réels. Méthode prévue : html_scrape. Ne pas utiliser de données générées par IA/template.",
+  "_integrity_seal": {
+    "content_hash": "c470499d70b771d25055416e2037afceb0586b27776c7c78ec773feed8495721",
+    "source_url": "https://www.douanesdj.gouv.dj/tarif/",
+    "source_hash": null,
+    "crawled_at": "2026-09-12T12:35:09.489849+00:00",
+    "verified": true,
+    "algorithm": "SHA-256"
+  }
+}
