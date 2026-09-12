@@ -29,7 +29,7 @@ function paintPage(doc, theme) {
   doc.rect(0, 0, MM.pageW, MM.pageH, 'F');
 }
 
-function drawMasthead(doc, theme, { badge, title, subtitle, language }) {
+function drawMasthead(doc, theme, { badge, title, subtitle, language, moduleLabel }) {
   const t = I18N[language] || I18N.fr;
   const bandH = 30;
   doc.setFillColor(...theme.headerBandFrom);
@@ -46,7 +46,9 @@ function drawMasthead(doc, theme, { badge, title, subtitle, language }) {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(6.2);
   doc.setTextColor(...theme.gold);
-  doc.text(t.module, MM.margin + wordmarkWidth + 3, 8);
+  // moduleLabel permet à un autre module de réutiliser ce bâtisseur sans
+  // que son rapport s'annonce « MODULE OPPORTUNITÉS ».
+  doc.text(moduleLabel || t.module, MM.margin + wordmarkWidth + 3, 8);
 
   if (badge) {
     doc.setFont('helvetica', 'bold');
@@ -280,6 +282,7 @@ function drawFooters(doc, theme, { language, source }) {
  * @param {Array}  [spec.kpis]       [{label, value, sub, accent}]
  * @param {Array}  [spec.sections]   [{title, table}|{title, keyValues}|{title, paragraphs}, ...]
  * @param {string} [spec.source]
+ * @param {string} [spec.moduleLabel] Libellé du module dans le bandeau (défaut : Opportunités)
  */
 export function buildOpportunityPdf(spec) {
   const theme = spec.theme === 'dark' ? THEME_DARK : THEME_LIGHT;

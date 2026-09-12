@@ -1,0 +1,1888 @@
+{
+ "ken": {
+  "country_iso3": "KEN",
+  "country_name": "Kenya",
+  "data_basis": "UNIDO_MEASURED",
+  "source": "UNIDO Statistics Data Portal — IDSB + INDSTAT, ISIC Rev.4",
+  "sectors": [
+   {
+    "isic4": "1010",
+    "isic_description": "Processing/preserving of meat",
+    "description": "Processing/preserving of meat",
+    "indicators": {
+     "output_usd": {
+      "value": 2294721247.49,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "imports_world_usd": {
+      "value": 12758160.469,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "exports_world_usd": {
+      "value": 143802600.98799998,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "apparent_consumption_usd": {
+      "value": 2163676806.9709997,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "employees": {
+      "value": 4867.0,
+      "unit": "count",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "wages_salaries_usd": {
+      "value": 15351072.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "output_usd_official": {
+      "value": 2294721248.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "value_added_usd": {
+      "value": 636944205.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "establishments": {
+      "value": 33.0,
+      "unit": "count",
+      "year": 2019,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    },
+    "indicator_count": 9
+   },
+   {
+    "isic4": "1020",
+    "isic_description": "Processing/preserving of fish, etc.",
+    "description": "Processing/preserving of fish, etc.",
+    "indicators": {
+     "output_usd": {
+      "value": 44596495.91,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "imports_world_usd": {
+      "value": 10428167.54,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "exports_world_usd": {
+      "value": 44098554.474,
+      "unit": "current_USD",
+      "year": 2022,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "apparent_consumption_usd": {
+      "value": 23547699.172,
+      "unit": "current_USD",
+      "year": 2022,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "employees": {
+      "value": 292.0,
+      "unit": "count",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "wages_salaries_usd": {
+      "value": 2724692.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "output_usd_official": {
+      "value": 44596496.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "value_added_usd": {
+      "value": 16894021.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "establishments": {
+      "value": 7.0,
+      "unit": "count",
+      "year": 2019,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    },
+    "indicator_count": 9
+   },
+   {
+    "isic4": "1030",
+    "isic_description": "Processing/preserving of fruit,vegetables",
+    "description": "Processing/preserving of fruit,vegetables",
+    "indicators": {
+     "output_usd": {
+      "value": 411709703.42,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "imports_world_usd": {
+      "value": 41557860.218,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "exports_world_usd": {
+      "value": 182248789.04299998,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "apparent_consumption_usd": {
+      "value": 271018774.595,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "employees": {
+      "value": 12871.0,
+      "unit": "count",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "wages_salaries_usd": {
+      "value": 94919520.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "output_usd_official": {
+      "value": 411709704.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "value_added_usd": {
+      "value": 185380797.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "establishments": {
+      "value": 35.0,
+      "unit": "count",
+      "year": 2019,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    },
+    "indicator_count": 9
+   },
+   {
+    "isic4": "1040",
+    "isic_description": "Vegetable and animal oils and fats",
+    "description": "Vegetable and animal oils and fats",
+    "indicators": {
+     "output_usd": {
+      "value": 544740186.58,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "imports_world_usd": {
+      "value": 960811155.88,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "exports_world_usd": {
+      "value": 203261460.54999998,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "apparent_consumption_usd": {
+      "value": 1302289881.91,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "employees": {
+      "value": 5017.0,
+      "unit": "count",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "wages_salaries_usd": {
+      "value": 42408544.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "output_usd_official": {
+      "value": 544740187.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "value_added_usd": {
+      "value": 116668355.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "establishments": {
+      "value": 17.0,
+      "unit": "count",
+      "year": 2019,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    },
+    "indicator_count": 9
+   },
+   {
+    "isic4": "1050",
+    "isic_description": "Dairy products",
+    "description": "Dairy products",
+    "indicators": {
+     "output_usd": {
+      "value": 524322358.86,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "imports_world_usd": {
+      "value": 40972022.379,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "exports_world_usd": {
+      "value": 9182688.740999999,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "apparent_consumption_usd": {
+      "value": 556111692.4979999,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "employees": {
+      "value": 11061.0,
+      "unit": "count",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "wages_salaries_usd": {
+      "value": 42474666.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "output_usd_official": {
+      "value": 524322359.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "value_added_usd": {
+      "value": 256833599.0,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     "establishments": {
+      "value": 42.0,
+      "unit": "count",
+      "year": 2019,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    },
+    "indicator_count": 9
+   },
+   {
+    "isic4": "1061",
+    "isic_description": "Grain mill products",
+    "description": "Grain mill products",
+    "indicators": {
+     "imports_world_usd": {
+      "value": 406621120.131,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "exports_world_usd": {
+      "value": 54576876.485,
+      "unit": "current_USD",
+      "year": 2023,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     "establishments": {
+      "value": 96.0,
+      "unit": "count",
+      "year": 2019,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    },
+    "indicator_count": 3
+   }
+  ]
+ },
+ "ken_ts": {
+  "1010": {
+   "isic_description": "Processing/preserving of meat",
+   "series": {
+    "output_usd": [
+     {
+      "year": 2018,
+      "value": 2624533760.96,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 2666110167.38,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 2650143997.53,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 2697423024.32,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 2612476686.66,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 2294721247.49,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "imports_world_usd": [
+     {
+      "year": 2018,
+      "value": 10679803.984,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 7075105.69,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 9590809.271,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 8629593.437,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 11905933.312,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 12758160.469,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "exports_world_usd": [
+     {
+      "year": 2018,
+      "value": 58521624.061,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 73893523.48,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 69927183.159,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 81585617.506,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 104577032.106,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 143802600.98799998,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "apparent_consumption_usd": [
+     {
+      "year": 2018,
+      "value": 2576691940.8830004,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 2599291749.59,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 2589807623.642,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 2624467000.251,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 2519805587.8659997,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 2163676806.9709997,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "employees": [
+     {
+      "year": 2018,
+      "value": 4383.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 4317.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 4084.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 4307.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 4580.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 4867.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "wages_salaries_usd": [
+     {
+      "year": 2018,
+      "value": 13702650.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 14408093.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 14012110.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 14566688.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 15782108.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 15351072.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "output_usd_official": [
+     {
+      "year": 2018,
+      "value": 2624533761.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 2666110168.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 2650143998.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 2697423025.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 2612476687.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 2294721248.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "value_added_usd": [
+     {
+      "year": 2018,
+      "value": 728490101.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 740030444.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 735598666.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 748721898.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 725143367.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 636944205.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "establishments": [
+     {
+      "year": 2019,
+      "value": 33.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ]
+   }
+  },
+  "1020": {
+   "isic_description": "Processing/preserving of fish, etc.",
+   "series": {
+    "output_usd": [
+     {
+      "year": 2018,
+      "value": 55870821.26,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 52291092.84,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 46358864.77,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 47857267.94,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 51482837.25,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 44596495.91,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "imports_world_usd": [
+     {
+      "year": 2018,
+      "value": 13332634.882,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 10593606.24,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 20943361.887,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 23386738.691,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 16163416.396,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 10428167.54,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "exports_world_usd": [
+     {
+      "year": 2018,
+      "value": 15569843.801,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 21915648.56,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 26124914.885,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 29027905.439999998,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 44098554.474,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "apparent_consumption_usd": [
+     {
+      "year": 2018,
+      "value": 53633612.34099999,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 40969050.52000001,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 41177311.772,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 42216101.191,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 23547699.172,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "employees": [
+     {
+      "year": 2018,
+      "value": 338.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 335.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 303.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 305.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 299.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 292.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "wages_salaries_usd": [
+     {
+      "year": 2018,
+      "value": 3317817.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 3703258.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 3305754.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 3251749.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 3100475.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 2724692.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "output_usd_official": [
+     {
+      "year": 2018,
+      "value": 55870822.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 52291093.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 46358865.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 47857268.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 51482838.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 44596496.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "value_added_usd": [
+     {
+      "year": 2018,
+      "value": 21164955.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 19808883.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 17561639.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 18129263.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 19502700.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 16894021.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "establishments": [
+     {
+      "year": 2019,
+      "value": 7.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ]
+   }
+  },
+  "1030": {
+   "isic_description": "Processing/preserving of fruit,vegetables",
+   "series": {
+    "output_usd": [
+     {
+      "year": 2018,
+      "value": 502013606.69,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 498641011.18,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 516979114.32,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 496628127.44,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 420245231.5,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 411709703.42,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "imports_world_usd": [
+     {
+      "year": 2018,
+      "value": 30107038.064,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 36117138.2,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 42202323.658,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 39145297.26,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 50256020.879,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 41557860.218,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "exports_world_usd": [
+     {
+      "year": 2018,
+      "value": 159269328.459,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 176917520.09,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 202738292.13,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 149479488.99199998,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 145972142.849,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 182248789.04299998,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "apparent_consumption_usd": [
+     {
+      "year": 2018,
+      "value": 372851316.295,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 357840629.28999996,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 356443145.84800005,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 386293935.708,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 324529109.53,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 271018774.595,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "employees": [
+     {
+      "year": 2018,
+      "value": 12272.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 12493.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 11306.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 12213.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 12411.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 12871.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "wages_salaries_usd": [
+     {
+      "year": 2018,
+      "value": 103947051.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 118588551.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 105498519.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 111343733.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 108746094.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 94919520.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "output_usd_official": [
+     {
+      "year": 2018,
+      "value": 502013607.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 498641012.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 516979115.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 496628128.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 420245232.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 411709704.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "value_added_usd": [
+     {
+      "year": 2018,
+      "value": 226214283.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 224594974.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 232792842.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 223575724.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 189238498.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 185380797.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "establishments": [
+     {
+      "year": 2019,
+      "value": 35.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ]
+   }
+  },
+  "1040": {
+   "isic_description": "Vegetable and animal oils and fats",
+   "series": {
+    "output_usd": [
+     {
+      "year": 2018,
+      "value": 749499152.04,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 818701296.33,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 791709469.7,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 746646525.53,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 605821084.72,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 544740186.58,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "imports_world_usd": [
+     {
+      "year": 2018,
+      "value": 592243823.831,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 611664491.01,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 894456172.328,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 1103284760.822,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 1206870652.98,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 960811155.88,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "exports_world_usd": [
+     {
+      "year": 2018,
+      "value": 75233712.102,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 137777481.17,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 187286859.23,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 171554974.844,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 264379554.81599998,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 203261460.54999998,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "apparent_consumption_usd": [
+     {
+      "year": 2018,
+      "value": 1266509263.7689998,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 1292588306.17,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 1498878782.7979999,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 1678376311.508,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 1548312182.884,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 1302289881.91,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "employees": [
+     {
+      "year": 2018,
+      "value": 4342.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 4442.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 4553.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 4629.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 4444.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 5017.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "wages_salaries_usd": [
+     {
+      "year": 2018,
+      "value": 39767398.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 43633136.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 46027844.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 45604041.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 42260475.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 42408544.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "output_usd_official": [
+     {
+      "year": 2018,
+      "value": 749499153.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 818701297.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 791709470.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 746646526.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 605821085.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 544740187.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "value_added_usd": [
+     {
+      "year": 2018,
+      "value": 160522099.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 175343280.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 169562386.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 159911143.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 129750215.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 116668355.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "establishments": [
+     {
+      "year": 2019,
+      "value": 17.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ]
+   }
+  },
+  "1050": {
+   "isic_description": "Dairy products",
+   "series": {
+    "output_usd": [
+     {
+      "year": 2018,
+      "value": 659579755.7,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 684834174.48,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 645225696.51,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 647851995.66,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 567293485.09,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 524322358.86,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "imports_world_usd": [
+     {
+      "year": 2018,
+      "value": 34539407.078,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 46835245.05,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 41434116.13,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 45133106.613,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 67196390.217,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 40972022.379,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "exports_world_usd": [
+     {
+      "year": 2018,
+      "value": 3865942.619,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 3591118.82,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 3768142.708,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 4961183.603,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 7220618.842,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 9182688.740999999,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "apparent_consumption_usd": [
+     {
+      "year": 2018,
+      "value": 690253220.159,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 728078300.7099999,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 682891669.932,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 688023918.67,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 627269256.465,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 556111692.4979999,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "employees": [
+     {
+      "year": 2018,
+      "value": 10528.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 10560.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 11041.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 10955.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 11106.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 11061.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "wages_salaries_usd": [
+     {
+      "year": 2018,
+      "value": 47094036.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 49916025.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 55363613.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 52391527.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 50538836.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 42474666.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "output_usd_official": [
+     {
+      "year": 2018,
+      "value": 659579756.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 684834175.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 645225697.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 647851996.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 567293486.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 524322359.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "value_added_usd": [
+     {
+      "year": 2018,
+      "value": 323087949.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2019,
+      "value": 335458582.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2020,
+      "value": 316056782.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2021,
+      "value": 317343240.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2022,
+      "value": 277882533.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     },
+     {
+      "year": 2023,
+      "value": 256833599.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ],
+    "establishments": [
+     {
+      "year": 2019,
+      "value": 42.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ]
+   }
+  },
+  "1061": {
+   "isic_description": "Grain mill products",
+   "series": {
+    "imports_world_usd": [
+     {
+      "year": 2018,
+      "value": 313450632.372,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 261205910.28,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 257891247.622,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 291015932.278,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 311939775.393,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 406621120.131,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "exports_world_usd": [
+     {
+      "year": 2018,
+      "value": 22908847.302999996,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2019,
+      "value": 24194336.94,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2020,
+      "value": 23173643.695,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2021,
+      "value": 25251678.231,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2022,
+      "value": 32267462.222999997,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     },
+     {
+      "year": 2023,
+      "value": 54576876.485,
+      "data_nature": "UNIDO_DERIVED_ESTIMATE"
+     }
+    ],
+    "establishments": [
+     {
+      "year": 2019,
+      "value": 96.0,
+      "data_nature": "OFFICIAL_STATISTICS"
+     }
+    ]
+   }
+  }
+ },
+ "dza": {
+  "country_iso3": "DZA",
+  "country_name": "Algérie",
+  "data_basis": "ESTIMATED_FROM_ISIC2",
+  "source": "UNIDO INDSTAT4 2024 (niveau division) + UNSD ISIC Rev.4 (nomenclature classe)",
+  "sectors": [
+   {
+    "isic4": "1910",
+    "isic_description": "Fabrication de produits de cokéfaction",
+    "description": "Fabrication de produits de cokéfaction",
+    "division_name": "Raffinage pétrolier",
+    "indicators": {
+     "share_mva_pct": {
+      "value": 14.25,
+      "unit": "%",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     },
+     "value_added_usd": {
+      "value": 2636500000.0,
+      "unit": "USD",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     }
+    },
+    "indicator_count": 2
+   },
+   {
+    "isic4": "1920",
+    "isic_description": "Raffinage de produits pétroliers",
+    "description": "Raffinage de produits pétroliers",
+    "division_name": "Raffinage pétrolier",
+    "indicators": {
+     "share_mva_pct": {
+      "value": 14.25,
+      "unit": "%",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     },
+     "value_added_usd": {
+      "value": 2636500000.0,
+      "unit": "USD",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     }
+    },
+    "indicator_count": 2
+   },
+   {
+    "isic4": "1010",
+    "isic_description": "Transformation et conservation de viande",
+    "description": "Transformation et conservation de viande",
+    "division_name": "Produits alimentaires",
+    "indicators": {
+     "share_mva_pct": {
+      "value": 1.3,
+      "unit": "%",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     },
+     "value_added_usd": {
+      "value": 240500000.0,
+      "unit": "USD",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     }
+    },
+    "indicator_count": 2
+   },
+   {
+    "isic4": "1020",
+    "isic_description": "Transformation et conservation de poisson, crustacés et mollusques",
+    "description": "Transformation et conservation de poisson, crustacés et mollusques",
+    "division_name": "Produits alimentaires",
+    "indicators": {
+     "share_mva_pct": {
+      "value": 1.3,
+      "unit": "%",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     },
+     "value_added_usd": {
+      "value": 240500000.0,
+      "unit": "USD",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     }
+    },
+    "indicator_count": 2
+   },
+   {
+    "isic4": "1030",
+    "isic_description": "Transformation et conservation de fruits et légumes",
+    "description": "Transformation et conservation de fruits et légumes",
+    "division_name": "Produits alimentaires",
+    "indicators": {
+     "share_mva_pct": {
+      "value": 1.3,
+      "unit": "%",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     },
+     "value_added_usd": {
+      "value": 240500000.0,
+      "unit": "USD",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     }
+    },
+    "indicator_count": 2
+   },
+   {
+    "isic4": "1040",
+    "isic_description": "Fabrication d'huiles et graisses végétales et animales",
+    "description": "Fabrication d'huiles et graisses végétales et animales",
+    "division_name": "Produits alimentaires",
+    "indicators": {
+     "share_mva_pct": {
+      "value": 1.3,
+      "unit": "%",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     },
+     "value_added_usd": {
+      "value": 240500000.0,
+      "unit": "USD",
+      "year": null,
+      "data_nature": "STRUCTURAL_ESTIMATE_FROM_ISIC2"
+     }
+    },
+    "indicator_count": 2
+   }
+  ]
+ }
+}

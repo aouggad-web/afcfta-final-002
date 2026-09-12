@@ -176,6 +176,41 @@ def get_country_isic4_summary(country_iso3: str) -> Optional[Dict]:
     }
 
 
+def get_all_isic4_timeseries(country_iso3: str) -> Dict[str, Dict]:
+    """Séries temporelles de TOUTES les classes ISIC4 d'un pays, en une passe.
+
+    L'export PDF a besoin du détail de chaque classe. Appeler
+    ``get_isic4_timeseries`` par classe relirait l'ensemble des enregistrements
+    autant de fois qu'il y a de classes — 130 balayages pour le Kenya. Ici le
+    jeu est parcouru une seule fois et indexé par code.
+
+    Retourne ``{isic4: {isic_description, series}}``.
+    """
+    iso3 = country_iso3.upper()
+    by_code: Dict[str, Dict] = {}
+    for r in _load_records():
+        if r["country_iso3"] != iso3:
+            continue
+        field_name = _IDSB_INDICATORS.get(r["indicator_code"]) or _INDSTAT_INDICATORS.get(
+            r["indicator_code"]
+        )
+        if not field_name:
+            continue
+        entry = by_code.setdefault(
+            r["isic_code"],
+            {"isic_description": r["isic_description"], "series": defaultdict(list)},
+        )
+        entry["series"][field_name].append(
+            {"year": r["year"], "value": r["value"], "data_nature": r["data_nature"]}
+        )
+
+    for entry in by_code.values():
+        for series in entry["series"].values():
+            series.sort(key=lambda x: x["year"])
+        entry["series"] = dict(entry["series"])
+    return by_code
+
+
 def get_isic4_timeseries(country_iso3: str, isic4_code: str) -> Optional[Dict]:
     """Série temporelle complète (2018+) pour un pays et un code ISIC 4 chiffres donnés."""
     iso3 = country_iso3.upper()
