@@ -243,3 +243,49 @@ def _looks_french(text: str) -> bool:
         return True
     lowered = f" {text.lower()} "
     return any(w in lowered for w in (" de ", " en ", " et ", " lait", " sucre", " huile"))
+
+
+# ── Contrat : jamais d'estimation dans le verdict offre-demande ──────────────
+
+def _service_module():
+    import importlib.util
+    import pathlib as _p
+    import sys
+
+    root = _p.Path(__file__).resolve().parent.parent.parent
+    for path in (str(root / "backend"), str(root)):
+        if path not in sys.path:
+            sys.path.insert(0, path)
+    spec = importlib.util.spec_from_file_location(
+        "iio_under_test", root / "backend" / "services" / "isic_idsb_opportunity_service.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_la_demande_n_est_jamais_derivee_de_la_production():
+    """Garde-fou central : servir de l'offre dans un champ de demande serait faux.
+
+    Une structure ISIC2 estimée est dérivable pour les 34 pays hors couverture,
+    et elle est bien servie dans le module Production. Elle dérive de la
+    PRODUCTION : un pays peut produire beaucoup et importer peu. La verser dans
+    un champ de demande présenterait de l'offre comme un marché.
+    """
+    m = _service_module()
+    demande = m._market_demand("DZA", "19")
+    assert demande["available"] is False
+    assert "estimation" in demande["note"].lower()
+
+
+def test_la_base_industrielle_n_est_pas_estimee_hors_couverture():
+    """Le verdict offre-demande se construit sur cette disponibilité.
+
+    L'estimer ferait basculer « demande sans offre » en opportunité sur la foi
+    d'une répartition à parts égales qui ne mesure aucune capacité réelle.
+    """
+    m = _service_module()
+    base = m._industrial_base("DZA", "19", True)
+    assert base["available"] is False
+    assert base["reason"] == "country_not_in_unido_idsb_coverage"
+    assert "data_basis" not in base
