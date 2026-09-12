@@ -129,7 +129,6 @@ class SouthAfricaSARSScraper:
             return digits[:2]
         return ""
 
-<<<<<<< HEAD
     # Patterns pour extraction texte (fallback quand find_tables manque des lignes)
     TEXT_CODE_PATTERN = re.compile(
         r"(\d{4}\.\d{2}(?:\.\d{2}){1,2})"
@@ -266,8 +265,6 @@ class SouthAfricaSARSScraper:
 
         return found, current_heading, current_heading_desc
 
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     def scrape_all(self) -> Dict:
         self.stats["started_at"] = datetime.utcnow().isoformat()
 
@@ -282,13 +279,9 @@ class SouthAfricaSARSScraper:
 
             current_heading = ""
             current_heading_desc = ""
-<<<<<<< HEAD
             table_positions = {}
 
             # ── PASS 1: Extraction par tables (find_tables) ──
-=======
-
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             for page_idx in range(doc.page_count):
                 page = doc[page_idx]
                 tables = page.find_tables()
@@ -353,18 +346,11 @@ class SouthAfricaSARSScraper:
                             )
 
                         chapter = self._get_chapter_from_code(code)
-<<<<<<< HEAD
                         code_clean = code.replace(".", "")
 
                         position = {
                             "code_raw": code,
                             "code_clean": code_clean,
-=======
-
-                        position = {
-                            "code_raw": code,
-                            "code_clean": code.replace(".", ""),
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
                             "check_digit": check_digit,
                             "designation": desc.strip(" -–"),
                             "chapter": chapter,
@@ -375,20 +361,14 @@ class SouthAfricaSARSScraper:
                             "administrative_formalities": [],
                             "source": "sars.gov.za",
                             "country": "SACU",
-<<<<<<< HEAD
                             "_extraction_method": "table",
                         }
                         table_positions[code_clean] = position
-=======
-                        }
-                        self.positions.append(position)
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
                 self.stats["pages_processed"] = page_idx + 1
 
                 if (page_idx + 1) % 100 == 0:
                     logger.info(
-<<<<<<< HEAD
                         f"[table] Page {page_idx+1}/{doc.page_count}: "
                         f"{len(table_positions)} positions"
                     )
@@ -460,11 +440,6 @@ class SouthAfricaSARSScraper:
             self.positions = list(normalized.values())
             self.positions.sort(key=lambda p: p["code_clean"])
 
-=======
-                        f"Page {page_idx+1}/{doc.page_count}: {len(self.positions)} positions"
-                    )
-
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             doc.close()
 
         except Exception as e:
@@ -472,15 +447,12 @@ class SouthAfricaSARSScraper:
             self.errors.append({"error": str(e)})
 
         self.stats["positions_extracted"] = len(self.positions)
-<<<<<<< HEAD
         self.stats["extraction_method"] = {
             "table_pass": len(table_positions),
             "text_pass": len(text_positions),
             "merged_total": len(merged),
             "normalized_8digit": len(self.positions),
         }
-=======
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         self.stats["finished_at"] = datetime.utcnow().isoformat()
 
         self._save_all_countries()
