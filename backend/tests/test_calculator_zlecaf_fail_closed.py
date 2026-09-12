@@ -351,10 +351,14 @@ def test_gha_crawled_file_physically_clean_of_any_zlecaf_key():
     NPF/fiscalité (dd_rate, dd_source, vat_rate, taxes_detail) restent
     présents et non vides."""
     import json
+    from pathlib import Path
 
-    from services.crawled_data_service import CRAWLED_DIR
-
-    path = CRAWLED_DIR / "GHA_tariffs.json"
+    # Le fichier source, pas sa dérivée : CRAWLED_DIR désigne
+    # crawled_normalized/, régénérable et au schéma unifié (« positions »).
+    # Ce test porte sur la propreté physique de la source elle-même, comme
+    # l'annonce son intitulé, et c'est la vérification la plus forte : une
+    # clé fabriquée réintroduite ici contaminerait toutes ses dérivées.
+    path = Path(__file__).resolve().parent.parent / "data" / "crawled" / "GHA_tariffs.json"
     data = json.loads(path.read_text(encoding="utf-8"))
     lines = data["tariff_lines"]
     assert len(lines) == 5387, f"précondition invalidée : {len(lines)} lignes trouvées"

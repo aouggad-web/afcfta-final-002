@@ -9,7 +9,7 @@
       "institution": "Egyptian Customs Authority",
       "legal_date": null,
       "url": "https://customs.gov.eg/Services/Tarif",
-      "sha256": "25852dffb6af464ffcb4c38b82cd41fc5585e150d03bfcc2b397dfe71091118c",
+      "sha256": "089df0af67f2d4b7e7f7b1f71c00c88f904397bf56d4bf6e4a947b8cd17c40a0",
       "verification_status": "VERIFIED_RUNTIME_DATASET",
       "registry_path": "backend/data/crawled/EGY_tariffs.json",
       "notes": "Empreinte du fichier runtime collecté le 13 juin 2026 ; 8 746 positions nationales à 10 chiffres."
