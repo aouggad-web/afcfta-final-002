@@ -82,6 +82,17 @@
     },
     "DZA": {
       "organism": "Direction Générale des Douanes (DGD) via conformepro.dz",
+      "coverage_gaps": {
+        "missing_chapters": ["22", "24"],
+        "missing_sh10_codes": 207,
+        "nomenclature_present": 17115,
+        "nomenclature_official": 17322,
+        "detail": "conformepro.dz n'expose que 95 chapitres dans sa navigation : les chapitres 22 (boissons, liquides alcooliques, vinaigres) et 24 (tabacs et succédanés) en sont absents, de même que le 9614 (pipes). Le chapitre 77 est réservé par le SH et normalement vide : ce n'est pas un manque. Constat établi par la découverte d'arborescence du crawler, conservée dans backend/data/crawled/DZA_structure.json.",
+        "zlecaf_impact": "29 des 207 codes figurent dans la liste (B) des concessions ZLECAf algériennes, avec leurs taux de base 2019 connus : 2202 (8 codes, 30 et 60 %), 2401 (5 codes, 15 %), 2403 (13 codes, 30 %), 2404 (2 codes, 30 %), 9614 (1 code, 30 %). Les 178 autres relèvent de la liste (A), qui n'est énumérée nulle part — elle se définit par complément — et ne peuvent donc pas être identifiés individuellement.",
+        "operational_consequence": "Une importation d'alcool, de tabac ou de boisson sucrée vers l'Algérie ne trouve aucune ligne tarifaire. Le calculateur doit répondre donnée indisponible, jamais un taux par défaut.",
+        "resolution": "Non récupérable depuis conformepro.dz. Exige le tarif officiel de la DGD (douane.gov.dz, injoignable depuis l'environnement d'audit) ou une autre source primaire.",
+        "assessed_at": "2026-09-12"
+      },
       "version": "2026.1",
       "artifact_path": "backend/data/crawled/DZA_tariffs.json",
       "artifact_url": null,
