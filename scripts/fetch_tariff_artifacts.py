@@ -9,11 +9,18 @@ par leur empreinte SHA-256, et non versionnées dans git.
 Ce script est le point d'entrée du déploiement :
 
   1. lit le manifeste ;
-  2. résout les pays hérités (``_shared``) vers leur source réelle ;
-  3. télécharge ``artifact_url`` quand il est renseigné, sinon se rabat sur
+  2. télécharge ``artifact_url`` quand il est renseigné, sinon se rabat sur
      ``artifact_path`` déjà présent dans le dépôt ;
-  4. **vérifie l'empreinte avant de publier le fichier**, et refuse en cas
+  3. **vérifie l'empreinte avant de publier le fichier**, et refuse en cas
      d'écart plutôt que de servir une donnée dont l'origine n'est pas établie.
+
+Chaque pays est vérifié sur son propre fichier, y compris les 27 qui héritent
+d'un tarif extérieur commun. ``_shared`` dit d'où vient le barème douanier, pas
+que le pays serait sans artefact : le droit de douane et les prélèvements
+communautaires sont partagés, la fiscalité nationale ne l'est pas. Une version
+antérieure sautait ces pays et les déclarait conformes sans lire un octet —
+c'est ainsi que deux taux de TVA faux sont restés servis sous un rapport
+« 54/54 conformes ».
 
 L'hébergement des artefacts n'étant pas encore tranché, tous les
 ``artifact_url`` valent ``null`` : le script fonctionne alors entièrement sur
@@ -59,11 +66,19 @@ def load_manifest() -> dict:
         return json.load(f)
 
 
-def resolve(countries: dict, iso: str) -> tuple[str, dict]:
-    """Suit la chaîne ``_shared`` jusqu'à l'entrée qui publie réellement.
+def tariff_lineage(countries: dict, iso: str) -> str:
+    """Pays d'où vient le *barème tarifaire* cité par ``_shared``.
 
-    Une entrée héritée ne porte pas d'artefact propre : les membres d'une union
-    douanière partagent le tarif extérieur commun de la source citée.
+    Attention au contresens que cette chaîne a longtemps provoqué ici :
+    ``_shared`` dit d'où vient le tarif extérieur commun, pas que le pays serait
+    dépourvu de fichier propre. Les membres d'une union douanière partagent le
+    droit de douane et les prélèvements communautaires, jamais la fiscalité
+    nationale — TVA, accises, taxes internes restent les leurs. Les 27 entrées
+    héritées du manifeste ont toutes leur propre fichier, et aucune n'est
+    identique à celle de son parent.
+
+    Cette fonction ne sert donc qu'à nommer la filiation et à détecter une
+    référence pendante ; elle ne dispense jamais un pays de sa vérification.
     """
     seen: list[str] = []
     current = iso
@@ -73,7 +88,7 @@ def resolve(countries: dict, iso: str) -> tuple[str, dict]:
             raise ArtifactError(f"{iso}: pays absent du manifeste (via {' → '.join(seen)})")
         shared = entry.get("_shared")
         if not shared:
-            return current, entry
+            return current
         parent = shared.split()[0].upper()
         if parent in seen:
             raise ArtifactError(f"{iso}: chaîne _shared circulaire ({' → '.join(seen + [parent])})")
@@ -90,10 +105,18 @@ def download(url: str, dest: Path) -> None:
 
 
 def process(iso: str, countries: dict, verify_only: bool) -> Optional[str]:
-    """Retourne un message d'anomalie, ou None si le pays est en ordre."""
-    source_iso, entry = resolve(countries, iso)
-    if source_iso != iso:
-        return None  # publié par son parent, rien à récupérer
+    """Retourne un message d'anomalie, ou None si le pays est en ordre.
+
+    Chaque pays est vérifié sur *son* fichier. Un pays hérité n'est pas
+    dispensé : son barème vient de son union douanière, sa fiscalité nationale
+    est la sienne.
+    """
+    entry = countries.get(iso)
+    if entry is None:
+        return f"{iso}: pays absent du manifeste"
+
+    # Une filiation pendante est un défaut du manifeste, pas un motif de saut.
+    tariff_lineage(countries, iso)
 
     path_value = entry.get("artifact_path")
     if not path_value:
@@ -149,7 +172,10 @@ def main() -> int:
             problems.append(problem)
 
     checked = len(targets) - len(problems)
-    print(f"{checked}/{len(targets)} pays conformes au manifeste")
+    # Le compte-rendu nomme les octets réellement lus : un rapport qui compte
+    # des pays sautés comme conformes est exactement ce qui a masqué la TVA.
+    print(f"{checked}/{len(targets)} pays conformes au manifeste "
+          f"({checked} empreintes recalculées sur le fichier servi)")
     if problems:
         print(f"\n{len(problems)} anomalie(s) :", file=sys.stderr)
         for p in problems:
