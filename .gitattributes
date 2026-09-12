@@ -1,0 +1,11 @@
+# Git LFS — données tarifaires crawlées
+#
+# backend/data/crawled/ contient les fichiers sources par pays (~639 Mo suivis,
+# DZA 68 Mo, TUN 63 Mo, EGY 45 Mo). Plusieurs dépassent le seuil d'avertissement
+# GitHub de 50 Mo et le dépôt s'alourdit à chaque nouvelle version. Ces fichiers
+# sont la source primaire dont backend/data/crawled_normalized/ est dérivé au
+# build : ils doivent rester récupérables, mais pas peser sur chaque clone.
+#
+# Le job CI qui régénère les données normalisées a besoin du contenu réel, pas
+# des pointeurs : actions/checkout doit y être configuré avec lfs: true.
+backend/data/crawled/*.json filter=lfs diff=lfs merge=lfs -text
