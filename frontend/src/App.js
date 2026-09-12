@@ -29,6 +29,24 @@ import { AuthProvider } from './context/AuthContext';
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
+axios.defaults.withCredentials = true;
+
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+axios.interceptors.request.use((config) => {
+  const method = (config.method || 'get').toLowerCase();
+  if (['post', 'put', 'patch', 'delete'].includes(method)) {
+    const csrfToken = getCookie('csrf_token');
+    if (csrfToken) {
+      config.headers = { ...config.headers, 'X-CSRF-Token': csrfToken };
+    }
+  }
+  return config;
+});
+
 axios.interceptors.response.use(
   (response) => {
     const ct = response.headers['content-type'] || '';

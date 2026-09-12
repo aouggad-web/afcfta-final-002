@@ -103,6 +103,12 @@ def is_country_covered(country_iso3: str) -> bool:
     return country_iso3.upper() in list_covered_countries()
 
 
+@lru_cache(maxsize=1)
+def get_covered_years() -> List[int]:
+    """Années réellement présentes dans le jeu de données UNIDO chargé."""
+    return sorted({r["year"] for r in _load_records()})
+
+
 def get_country_isic4_summary(country_iso3: str) -> Optional[Dict]:
     """
     Pour un pays donné, retourne par code ISIC 4 chiffres la dernière année

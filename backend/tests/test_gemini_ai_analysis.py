@@ -11,7 +11,7 @@ import requests
 # Get BASE_URL from environment
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/")
 if not BASE_URL:
-    BASE_URL = "https://zlecaf-trade-ops.preview.emergentagent.com"
+    BASE_URL = "https://git-sync-41.preview.emergentagent.com"
 
 
 class TestAIHealthEndpoint:

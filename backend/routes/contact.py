@@ -49,7 +49,7 @@ async def submit_contact(payload: ContactPayload, background_tasks: BackgroundTa
         "message": payload.message,
         "created_at": datetime.now(timezone.utc),
     }
-    await _db.contact_messages.insert_one(doc)
+    _db.contact_messages.insert_one(doc)
 
     background_tasks.add_task(send_contact_admin_email, doc["name"], doc["email"], doc["message"])
 
