@@ -8,13 +8,8 @@ moteur calcule CHAQUE taxe sur SA base déclarée plutôt que d'appliquer une
 cascade uniforme, et produit la ventilation complète sous les deux régimes :
 
 - NPF (régime normal) : taux et bases tels que déclarés.
-<<<<<<< HEAD
-- ZLECAf : seul le DROIT DE DOUANE est réduit/éliminé (taux préférentiel) ; les
-  taxes internes (TVA) et les prélèvements gardent leur taux. Les montants des
-=======
 - ZLECAf : le DROIT DE DOUANE est réduit/éliminé (taux préférentiel) ; les
   autres taxes gardent leur taux sauf exonération explicitement documentée. Les montants des
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
   taxes dont la base inclut le droit de douane (ex. TVA = CIF + DD + …) baissent
   mécaniquement sous ZLECAf, ce que le moteur reflète automatiquement.
 
@@ -183,10 +178,7 @@ def compute_dual_breakdown(
     npf_dd_rate_pct: float,
     zlecaf_dd_rate_pct: float,
     caps: Optional[Dict[str, float]] = None,
-<<<<<<< HEAD
-=======
     zlecaf_exempt_codes: Optional[Set[str]] = None,
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 ) -> Dict[str, Any]:
     """Ventilation complète NPF vs ZLECAf, taxe par taxe, base par base.
 
@@ -196,13 +188,10 @@ def compute_dual_breakdown(
 
     `caps` (optionnel) : {code: plafond_montant} dans la devise de `value`
     (ex. RI CEMAC plafonné à 15 000 XAF converti en USD). Écrête le montant.
-<<<<<<< HEAD
-=======
 
     `zlecaf_exempt_codes` : exonérations documentées de taxes autres que le DD,
     uniquement pour le scénario préférentiel. La taxe reste dans la ventilation
     NPF et les assiettes dépendantes sont recalculées avec son montant ZLECAf nul.
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
     """
     # Dé-duplication des codes (certaines sources répètent un code).
     seen: Dict[str, int] = {}
@@ -216,10 +205,6 @@ def compute_dual_breakdown(
 
     dd_code = next((l["code"] for l in norm_lines if classify(l) == "dd"), None)
 
-<<<<<<< HEAD
-    npf_amounts = _resolve_amounts(value, norm_lines, dd_code, npf_dd_rate_pct, caps)
-    zlc_amounts = _resolve_amounts(value, norm_lines, dd_code, zlecaf_dd_rate_pct, caps)
-=======
     exempt = {str(code).upper().strip() for code in (zlecaf_exempt_codes or set())}
     if dd_code and dd_code.split("#")[0] in exempt:
         raise ValueError("Use zlecaf_dd_rate_pct to set the preferential customs duty")
@@ -230,7 +215,6 @@ def compute_dual_breakdown(
     ]
     npf_amounts = _resolve_amounts(value, norm_lines, dd_code, npf_dd_rate_pct, caps)
     zlc_amounts = _resolve_amounts(value, zlc_lines, dd_code, zlecaf_dd_rate_pct, caps)
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
 
     breakdown: List[Dict[str, Any]] = []
     tot = {
@@ -242,10 +226,7 @@ def compute_dual_breakdown(
         code = l["code"]
         cat = classify(l)
         is_dd = code == dd_code
-<<<<<<< HEAD
-=======
         is_exempt = code.split("#")[0] in exempt
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
         rate = float(l.get("rate_pct") or 0.0)
         entry = {
             "code": code.split("#")[0],
@@ -254,14 +235,6 @@ def compute_dual_breakdown(
             "base_expr": l.get("base")
             or ("CIF + droit + taxes (méthode nationale)" if cat == "tva" else "CIF"),
             "rate_npf_pct": round(npf_dd_rate_pct if is_dd else rate, 4),
-<<<<<<< HEAD
-            "rate_zlecaf_pct": round(zlecaf_dd_rate_pct if is_dd else rate, 4),
-            "base_value_npf": _base_value_of(value, code, norm_lines, npf_amounts, dd_code),
-            "base_value_zlecaf": _base_value_of(value, code, norm_lines, zlc_amounts, dd_code),
-            "amount_npf": npf_amounts[code],
-            "amount_zlecaf": zlc_amounts[code],
-            "affected_by_zlecaf": is_dd,
-=======
             "rate_zlecaf_pct": round(zlecaf_dd_rate_pct if is_dd else 0.0 if is_exempt else rate, 4),
             "base_value_npf": _base_value_of(value, code, norm_lines, npf_amounts, dd_code),
             "base_value_zlecaf": _base_value_of(value, code, zlc_lines, zlc_amounts, dd_code),
@@ -269,7 +242,6 @@ def compute_dual_breakdown(
             "amount_zlecaf": zlc_amounts[code],
             "affected_by_zlecaf": is_dd or is_exempt,
             "exempt_zlecaf": is_exempt,
->>>>>>> a49cba69615e1c2a11a4b7899722f9534723f141
             "source": l.get("source", ""),
         }
         _cap = parse_cap(l.get("base"))
