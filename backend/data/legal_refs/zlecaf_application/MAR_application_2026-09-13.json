@@ -1,0 +1,82 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "MAR",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "INSTRUMENT_ET_ORIGINES_VERIFIES",
+ "verified_at": "2026-09-13",
+ "verified_from": "sources primaires téléchargées et lues intégralement, pas une synthèse secondaire",
+ "instrument": {
+  "id": "6530/223",
+  "title": "Circulaire n° 6530/223 — Mise en œuvre sur le plan douanier de l'Accord portant création de la ZLECAf",
+  "authority": "Administration des Douanes et Impôts Indirects (ADII), Royaume du Maroc",
+  "date": "2024-01-22",
+  "url": "https://ecoactu.ma/wp-content/uploads/2024/01/circulaire_93343.pdf",
+  "sha256": "97167db27cf9c680faf54d7d3655005f6f16576ede16437b2514ec7c86158f13",
+  "pages": 158,
+  "reference_letter": "Lettre n° DGC/DRCI/DRCHE/51/2023 du 28 décembre 2023 du Ministère de l'Industrie et du Commerce, notifiant la liste des pays ayant parachevé les procédures de mise en application effective de l'Accord",
+  "ratification_deposited": "2022-04-18",
+  "base_tariff_date": "2019-05-30",
+  "dismantling_start": "2021-01-01",
+  "dismantling_tranche_rule": "une tranche appliquée le 1er janvier de chaque année",
+  "scope": "Liste A uniquement — les listes B (produits sensibles) et C (exclus) ne sont pas encore mises en œuvre",
+  "taxes_covered": ["DI (droit d'importation)", "TPI (taxe parafiscale à l'importation)"],
+  "agreement_code_in_system": "ZLECAF",
+  "origin_rules": "Annexe 2 au Protocole sur le commerce des marchandises, reprise intégralement en annexe à la circulaire"
+ },
+ "amendments": [
+  {
+   "id": "6627/223",
+   "date": "2025-01-09",
+   "url": "https://www.douane.gov.ma/dms/loadDocument?documentId=95322&application=circulaire",
+   "sha256": "7d87f09ac777a0b17bb7f1e0106cd2cbeccbb7a2857574242298aa92b2b5a19b",
+   "effect": "Met à jour les codes tarifaires de la Liste A pour la nomenclature de la loi de finances 2025 (SH 2022). Ne modifie PAS les listes de pays P1 et P2, qui restent celles de la circulaire de base.",
+   "verified": "lu intégralement : 5 pages, les listes de pays ne sont ni republiées ni modifiées"
+  },
+  {
+   "id": "6705/222",
+   "date": "2025-12-31",
+   "url": "https://www.douane.gov.ma/dms/loadDocument?documentId=97293&application=circulaire",
+   "sha256": "cf7f3c5b0edce7b7a24e06e35e8e6d747134debb850837fbfb603efe5b92f781",
+   "effect": "SANS OBJET pour la ZLECAf — concerne l'Accord de libre-échange Maroc/USA, l'Accord d'association Maroc/Royaume-Uni et des contingents tarifaires agricoles. Zéro occurrence de « ZLECAf » dans le document.",
+   "verified": "lu intégralement : 8 pages, aucune mention de l'accord continental"
+  }
+ ],
+ "accepted_origins": {
+  "note": "Liste notifiée à l'ADII par le Département du Commerce extérieur, au titre du principe de réciprocité. La circulaire précise que ces listes « sont appelées à évoluer, en fonction de la finalisation ultérieure des procédures de mise en application effective de l'Accord par les autres États membres » : une notification ministérielle ultérieure peut les modifier sans nouvelle circulaire publique.",
+  "count": 40,
+  "P1": {
+   "dismantling_years": 5,
+   "annual_step_pct": 20,
+   "count": 27,
+   "iso3": ["BDI", "BFA", "CAF", "COD", "COM", "DZA", "EGY", "ETH", "GIN", "GMB", "GNB", "LSO", "MLI", "MRT", "MUS", "MWI", "NER", "RWA", "SEN", "SLE", "SYC", "TCD", "TGO", "TUN", "TZA", "UGA", "ZMB"]
+  },
+  "P2": {
+   "dismantling_years": 10,
+   "annual_step_pct": 10,
+   "count": 13,
+   "iso3": ["BWA", "CIV", "CMR", "COG", "CPV", "GAB", "GHA", "GNQ", "KEN", "NAM", "NGA", "SWZ", "ZAF"]
+  }
+ },
+ "contradiction_with_au_etariff_book": {
+  "severity": "BLOQUANTE pour toute application automatique",
+  "au_snapshot": "backend/data/official_preferential/MAR_afcfta_etariff_2026-09-13.json.gz",
+  "au_origins_mapped": 48,
+  "origins_au_grants_morocco_does_not": ["AGO", "BEN", "LBR", "MDG", "MOZ", "SSD", "ZWE"],
+  "schedule_disagreements": 33,
+  "explanation": "La carte des origines de l'e-Tariff Book répartit les barèmes selon le statut PMA en union douanière, tandis que les listes P1/P2 de la circulaire les répartissent selon la réciprocité effectivement accordée au Maroc. Les deux logiques divergent pour 33 des 40 origines admises, dans les deux sens : le Burundi est en 10 ans chez l'UA et en 5 ans dans la circulaire ; le Botswana, le Ghana, la Côte d'Ivoire et le Cameroun sont en 5 ans chez l'UA et en 10 ans dans la circulaire.",
+  "authority": "Pour une importation AU Maroc, la circulaire marocaine fait foi. L'e-Tariff Book est le registre continental de l'offre, pas l'acte d'application nationale.",
+  "code_consequence": "services/official_preferential_rates.py sélectionne le barème via `origin_schedule_map` du snapshot, donc via la logique de l'UA. Passer le Maroc en APPLIED sans surcharger cette sélection par les listes P1/P2 appliquerait le mauvais calendrier de démantèlement à 33 pays et accorderait une préférence indue à 7."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "SATISFAIT — circulaire 6530/223, démantèlement depuis le 1er janvier 2021",
+  "2_liste_officielle_origines_reciproques": "SATISFAIT — 40 origines nommées, réparties en P1 et P2",
+  "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — 14 510 lignes par barème, collectées le 2026-09-13",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION — vérifiée en douane, pas par l'application"
+ },
+ "remaining_work_before_applied": [
+  "Surcharger la sélection de barème par les listes P1/P2 du droit marocain, au lieu de la carte de l'UA (contradiction ci-dessus).",
+  "Restreindre les origines admises aux 40 de la circulaire, et non aux 48 de l'UA.",
+  "Décider du traitement de la TPI : la circulaire soumet le DI ET la taxe parafiscale au démantèlement, alors que le calculateur ne réduit aujourd'hui que le droit de douane.",
+  "Confirmer auprès de l'ADII qu'aucune notification postérieure au 22 janvier 2024 n'a modifié les listes P1/P2."
+ ]
+}

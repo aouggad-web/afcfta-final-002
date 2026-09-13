@@ -1,0 +1,348 @@
+{
+ "schema_version": 1,
+ "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
+ "etabli_le": "2026-09-13",
+ "methode": "Un pays n'est porté APPLIQUE que sur source primaire lue intégralement : acte national publié, liste nominative des origines admises, date d'entrée en vigueur. Une synthèse de presse ou une page de portail ne suffit jamais. NON_RECHERCHE signifie que la recherche n'a pas été faite — jamais que le pays n'applique pas.",
+ "niveaux": {
+  "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
+  "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
+  "NOTIFICATION_PARTENAIRES_REQUISE": "domestication constatée, liste officielle des origines introuvable",
+  "OFFRE_SEULE": "barème officiel archivé, aucun acte national d'application vérifié",
+  "NON_APPLIQUE_PRESUME": "indices concordants de non-application, sources secondaires seulement",
+  "NON_RECHERCHE": "aucune recherche menée à ce jour"
+ },
+ "pays": {
+  "AGO": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "BDI": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "BEN": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "BFA": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "BWA": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "CAF": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "CIV": {
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "Ordonnance du 23 avril 2025 : L'ordonnance conditionne la préférence à la réciprocité; la liste des partenaires acceptés n'est pas publiée d",
+   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "bareme_collecte": false
+  },
+  "CMR": {
+   "niveau": "OFFRE_SEULE",
+   "preuve": "barème archivé : CEMAC",
+   "niveau_de_source": "instantané e-Tariff Book",
+   "bareme_collecte": true
+  },
+  "COD": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "COG": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "COM": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "CPV": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "DJI": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "DZA": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "EGY": {
+   "niveau": "OFFRE_SEULE",
+   "preuve": "barème archivé : EGY",
+   "niveau_de_source": "instantané e-Tariff Book",
+   "bareme_collecte": true
+  },
+  "ERI": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "ETH": {
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "Regulation 574/2025 : Le règlement est en vigueur, mais son article 3(2) exige la liste des États notifiée séparément par le ministè",
+   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "bareme_collecte": true
+  },
+  "GAB": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "GHA": {
+   "niveau": "OFFRE_SEULE",
+   "preuve": "barème archivé : ECOWAS",
+   "niveau_de_source": "instantané e-Tariff Book",
+   "bareme_collecte": true
+  },
+  "GIN": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "GMB": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "GNB": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "GNQ": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "KEN": {
+   "niveau": "APPLIQUE",
+   "preuve": "EAC/321/2022 + liste KRA de 21 origines",
+   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "bareme_collecte": false
+  },
+  "LBR": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "LBY": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "LSO": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MAR": {
+   "niveau": "PREUVES_ASSEMBLEES",
+   "preuve": "Circulaire ADII 6530/223 du 22/01/2024, 40 origines (P1 27 / P2 13), démantèlement depuis le 01/01/2021",
+   "niveau_de_source": "primaire — 3 circulaires lues intégralement, SHA-256 consignés",
+   "bareme_collecte": true
+  },
+  "MDG": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MLI": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MOZ": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MRT": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MUS": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MWI": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "NAM": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "NER": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "NGA": {
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "PSTC gazettée en avril 2025 : La domestication est confirmée, mais aucune liste officielle des corridors réciproques acceptés n'a été retrou",
+   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "bareme_collecte": false
+  },
+  "RWA": {
+   "niveau": "OFFRE_SEULE",
+   "preuve": "barème archivé : EAC",
+   "niveau_de_source": "instantané e-Tariff Book",
+   "bareme_collecte": true
+  },
+  "SDN": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SEN": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SLE": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SOM": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SSD": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "STP": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SWZ": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SYC": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "TCD": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "TGO": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "TUN": {
+   "niveau": "OFFRE_SEULE",
+   "preuve": "barème archivé : TUN",
+   "niveau_de_source": "instantané e-Tariff Book",
+   "bareme_collecte": true
+  },
+  "TZA": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "UGA": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "ZAF": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": true
+  },
+  "ZMB": {
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "SI 92/2024 : Le Parlement confirme la domestication et l'usage sous GTI, mais aucune liste officielle exhaustive des origin",
+   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "bareme_collecte": true
+  },
+  "ZWE": {
+   "niveau": "NON_APPLIQUE_PRESUME",
+   "preuve": "offre tarifaire non encore publiée au Journal officiel selon la presse zimbabwéenne ; SI 140-142/2026 sans rapport avec la ZLECAf",
+   "niveau_de_source": "secondaire — à confirmer auprès de ZIMRA",
+   "bareme_collecte": true
+  }
+ },
+ "repartition": {
+  "APPLIQUE": 1,
+  "NON_APPLIQUE_PRESUME": 1,
+  "NON_RECHERCHE": 42,
+  "NOTIFICATION_PARTENAIRES_REQUISE": 4,
+  "OFFRE_SEULE": 5,
+  "PREUVES_ASSEMBLEES": 1
+ }
+}
