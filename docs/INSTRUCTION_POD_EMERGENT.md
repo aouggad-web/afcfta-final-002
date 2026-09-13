@@ -1,6 +1,7 @@
 # Instruction pour le pod Emergent — Production (ISIC4 / IDSB) et Opportunités
 
-> À coller telle quelle dans le **Shell Emergent** du projet.
+> Note à lire. La seule chose à exécuter dans le **Shell Emergent** est la
+> commande de la section 1 — le reste est du Markdown, pas du shell.
 > Rédigée le 2026-09-12, après la fusion des PR #467 (Production) et #468
 > (Opportunités) dans `main`.
 
@@ -12,8 +13,14 @@ quelle. Toute modification faite dans le shell Emergent et non poussée sur
 GitHub **sera écrasée**. C'est voulu — c'est ce qui a éliminé les déploiements
 à copie partielle.
 
-Seules exceptions préservées par le script : `/app/backend/.env`,
-`node_modules`, le venv, et `backend/data/news_cache.json` (cache régénéré).
+Exceptions réellement préservées par le script : `/app/backend/.env`,
+`node_modules`, le venv, et les bases GeoIP (`data/geoip`,
+`backend/data/geoip`, non versionnées).
+
+`backend/data/news_cache.json` n'est **pas** exclu, contrairement à ce que
+laisse entendre l'ancien runbook : `git reset --hard` le réinitialise s'il est
+suivi, `git clean -fd` le supprime sinon. Sans conséquence — `etl/news_aggregator.py`
+le reconstruit à la première requête — mais ne comptez pas dessus.
 
 ## 1. La commande — une seule
 
@@ -92,17 +99,30 @@ curl -s "http://localhost:8001/api/production/isic4/KEN/timeseries" | head -c 40
 
 ### Lecture des données — non négociable
 
-Trois libellés distincts, à ne jamais confondre :
+Deux niveaux distincts, et les confondre fait lire une estimation comme une
+mesure.
 
-- `UNIDO_MEASURED` / `OFFICIAL_STATISTICS` — statistiques officielles INDSTAT ;
+`data_basis` qualifie le **pays** :
+
+- `UNIDO_MEASURED` — le pays est présent dans le jeu au niveau classe ;
+- `ESTIMATED_FROM_ISIC2` — il en est absent, sa structure est reconstruite.
+
+`data_nature` qualifie **chaque indicateur**, et c'est lui qui tranche :
+
+- `OFFICIAL_STATISTICS` — statistiques officielles INDSTAT ;
 - `UNIDO_DERIVED_ESTIMATE` — estimations dérivées IDSB ;
-- `ESTIMATED_FROM_ISIC2` / `STRUCTURAL_ESTIMATE_FROM_ISIC2` — **estimation
+- `STRUCTURAL_ESTIMATE_FROM_ISIC2` — **estimation
   structurelle**, répartition **à parts égales** entre les classes d'une
   division. Elle **situe** un secteur, elle ne permet pas d'en **comparer**
   deux. Une division absente n'est pas nulle : elle n'est pas renseignée.
 
+Un pays `UNIDO_MEASURED` **mélange** les deux premières natures : la route le
+dit elle-même (`data_includes`). Lire ses lignes en bloc comme « officielles »
+est précisément l'erreur à ne pas commettre.
+
 Aucune valeur manquante n'est remplacée par 0 (principe `no_missing_as_zero`
-du registre des sources). Si un chiffre manque, il doit s'afficher « n.d. ».
+du registre des sources). Si un chiffre manque, la cellule affiche un tiret
+cadratin « — », à l'écran comme dans le PDF. Un tiret n'est pas un zéro.
 
 **Règle absolue : aucune donnée estimée dans le calcul tarifaire.** Le module
 Production peut estimer ; le Calculateur, jamais.
@@ -114,8 +134,10 @@ Dans l'ordre, les trois causes déjà rencontrées :
 1. le frontend n'a pas été reconstruit → relancer `sync_emergent.sh` (seul
    point d'entrée fiable) ;
 2. un cache de service sert d'anciens payloads (TTL 24 h) → le
-   `_CACHE_SCHEMA_VERSION` doit avoir été incrémenté côté dépôt ; le script le
-   vérifie et refuse de continuer si la copie est périmée ;
+   `_CACHE_SCHEMA_VERSION` doit avoir été incrémenté côté dépôt. Le script
+   contrôle un **plancher** (`>= 3`), pas la péremption : une copie en v3 ou
+   plus passe même si un changement de forme exigeait un nouvel incrément.
+   Le garde-fou est donc partiel ;
 3. le composant n'est pas monté par `App.js` — aucun cache ni build ne peut
    faire apparaître un écran qui n'est jamais rendu.
 
@@ -163,32 +185,30 @@ Vérifié le 2026-09-13 sur `origin/main`, sur ses cinq affirmations :
 | `routes/contact.py` cassé (`await` manquant) | **faux** — le fichier est correct et complet sur `main` |
 | `frontend/src/index.js` cassé | **vrai** — voir ci-dessous |
 
-Deux des quatre fichiers cités n'existent même pas là où le pod les place
-(`services/`) : ils sont dans `routes/`. Une copie locale périmée décrit
-l'état d'avant, pas l'état du dépôt.
+Trois des quatre fichiers cités sont dans `backend/routes/` — `calculator.py`,
+`authentic_tariffs.py`, `postgres_tariffs.py` — et seul `tax_computation.py`
+est dans `backend/services/`. Une copie locale périmée décrit l'état d'avant,
+pas l'état du dépôt.
 
-### Le point d'entrée du frontend — régression réelle
+### Le point d'entrée du frontend — régression, corrigée depuis
 
-`frontend/index.html` charge `/src/index.js`, et cet `index.js` rend une
-coquille réduite : **cinq modules sur onze** y sont des `ModulePlaceholder`
-(tableau de bord, calculateur, statistiques, logistique, profils pays).
+Contexte historique — **réglé par la PR qui apporte cette note**. Conservé
+parce que c'est le meilleur exemple de la troisième cause listée en section 4.
 
-`App.js` — qui porte les onze modules, le thème, le topbar, l'i18n — **n'est
-importé par personne**. C'est du code mort, alors que c'est la vraie
-application.
+`frontend/index.html` charge `/src/index.js`, et cet `index.js` rendait une
+coquille réduite : cinq modules sur onze y étaient des `ModulePlaceholder`.
+`App.js` — les onze modules, le thème, le topbar, l'i18n — n'était importé par
+personne. La chaîne réellement montée était
+`index.js → Production.js → ISIC4DetailTable.js`, alors que le travail de la
+PR #467 vit dans `ProductionTab.jsx → ProductionManufacturing.jsx`,
+atteignable seulement depuis `App.js`. L'API servait les 54 pays sans que rien
+n'en paraisse à l'écran, et aucune synchronisation n'y aurait rien changé.
 
-Conséquence à connaître avant de déployer : la chaîne réellement montée est
-`index.js → Production.js → ISIC4DetailTable.js`, tandis que le travail de la
-PR #467 (54 pays, tableau ISIC4/IDSB lisible, PDF) vit dans
-`ProductionTab.jsx → ProductionManufacturing.jsx`, atteignable seulement depuis
-`App.js`. **Tant que le point d'entrée n'est pas corrigé, ce travail ne
-s'affiche pas**, quel que soit le nombre de synchronisations. C'est très
-exactement la troisième cause listée en section 4 : un composant qui n'est
-jamais monté.
+`index.js` est désormais un point d'entrée mince qui monte `App`, et cinq tests
+gardent ce câblage. **Rien à corriger dans le pod** : synchronisez sur `main`
+une fois cette PR fusionnée.
 
-Ce correctif doit être fait **sur GitHub**, pas dans le pod.
-
-## 6. Ce qui n'est PAS concerné
+## 7. Ce qui n'est PAS concerné
 
 - **Chantier tarifaire et module Calculateur** — travaux arrêtés. Aucun
   changement attendu de ce côté ; ne rien y toucher.
