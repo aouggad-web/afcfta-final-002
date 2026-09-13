@@ -841,7 +841,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                   {/* Encadrés carrés : une division ISIC2 par carte, classées
                       par part de MVA décroissante — l'ordre d'importance du
                       secteur se lit sans rien calculer. */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
                     {groupIsic4ByDivision().map(({ division, label, shareMva, valueMlnUsd, sectors }, rank) => (
                       <IsicDivisionCard
                         key={division}
@@ -994,7 +994,7 @@ export function femaleSharePct(series, year) {
 // chiffrée, puis la liste de ses classes ISIC 4 en liens cliquables.
 function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sectors, selectedIsic4, onSelect, language }) {
   return (
-    <div className="bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col h-full">
+    <div className="bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col">
       <div className="px-4 pt-4 pb-3 border-b border-gray-100">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
@@ -1029,7 +1029,17 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
         )}
       </div>
 
-      <ul className="px-2 py-2 flex-1 space-y-0.5">
+      <ul
+        className={`px-2 py-2 flex-1 ${
+          // Au-delà de six classes, la liste passe sur deux colonnes. Les
+          // divisions vont de 1 à 16 classes : sur une seule colonne, la
+          // division 28 ferait seize fois la hauteur de la division 12. Deux
+          // colonnes rapprochent les encadrés d'une forme carrée SANS rien
+          // masquer — l'inverse d'une hauteur imposée, qui mettrait les
+          // longues listes derrière un ascenseur interne.
+          sectors.length > 6 ? 'sm:columns-2 sm:gap-x-2 [&>li]:break-inside-avoid' : 'space-y-0.5'
+        }`}
+      >
         {sectors.map((sector) => {
           const isSelected = selectedIsic4 === sector.isic4;
           return (
