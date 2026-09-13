@@ -1,15 +1,22 @@
 """Audit regressions using the repository's collected tariff positions."""
 
 import copy
+import importlib.util
 import json
+import sys
 from pathlib import Path
 
 import currencies.service as currency_service
 import pytest
-from scripts.normalize_crawled import normalize_gha_canonical
 from services import authentic_tariff_service as svc
 
 ROOT = Path(__file__).resolve().parents[2]
+_MODULE_PATH = ROOT / "scripts" / "normalize_crawled.py"
+_spec = importlib.util.spec_from_file_location("normalize_crawled", _MODULE_PATH)
+_mod = importlib.util.module_from_spec(_spec)
+sys.modules[_spec.name] = _mod
+_spec.loader.exec_module(_mod)
+normalize_gha_canonical = _mod.normalize_gha_canonical
 
 
 @pytest.fixture(autouse=True)
