@@ -431,6 +431,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         useAuthenticData = true;
         console.log('✅ Using AUTHENTIC tariff data for', destISO3);
       } catch (authError) {
+        // A rejected calculation (missing measures, ambiguous position, auth,
+        // server failure) must not be retried against a different data source.
+        if (authError.response?.status !== 404) throw authError;
         console.log('ℹ️ Authentic tariff data not available for', destISO3, '- falling back to calculated data');
       }
       
@@ -744,9 +747,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       }
     } catch (error) {
       console.error('Calculation error:', error);
+      setResult(null);
+      setDetailedResult(null);
+      setShowDetailedBreakdown(false);
+      const detail = error.response?.data?.detail;
       toast({
         title: t.calculationError,
-        description: error.response?.data?.detail || t.calculationError,
+        description: typeof detail === 'string' ? detail : (detail?.message || t.calculationError),
         variant: "destructive"
       });
     } finally {
