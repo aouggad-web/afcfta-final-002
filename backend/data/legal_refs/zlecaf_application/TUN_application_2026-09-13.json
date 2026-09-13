@@ -1,0 +1,55 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "TUN",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "ORIGINES_VERIFIEES_SOURCE_PRIMAIRE_SEMANTIQUE_INDETERMINEE",
+ "verified_at": "2026-09-13",
+ "evidence_level": "primaire — portail tarifaire officiel de la Douane tunisienne, déjà collecté et scellé dans le dépôt",
+ "source": {
+  "title": "Tarif Web 2026 — portail officiel de la Douane tunisienne",
+  "url": "https://www.douane.gov.tn/tarifweb2026/",
+  "artifact": "backend/data/crawled/TUN_tariffs.json",
+  "collected_at": "2026-08-30",
+  "source_quality": "national_crawl",
+  "note": "Le portail tarifaire est l'outil d'application de l'administration elle-même : il publie, position par position, le régime préférentiel par pays partenaire. C'est une preuve d'application opérationnelle, distincte d'un acte publié."
+ },
+ "accepted_origins": {
+  "count": 8,
+  "note": "Seuls ces huit partenaires portent une préférence de zone ZLECAf dans le tarif publié. Le Maroc en est absent : la Tunisie le sert sous accord bilatéral TUN-MAR et sous l'accord d'Agadir, pas sous la ZLECAf.",
+  "detail": [
+   {"iso3": "CMR", "name_source": "CAMEROUN", "positions": 14075},
+   {"iso3": "GHA", "name_source": "GHANA", "positions": 14075},
+   {"iso3": "KEN", "name_source": "KENYA", "positions": 14075},
+   {"iso3": "TZA", "name_source": "TANZANIE", "positions": 14075},
+   {"iso3": "ZAF", "name_source": "AFRIQUE DU SUD", "positions": 12955},
+   {"iso3": "NGA", "name_source": "NIGERIA", "positions": 12955},
+   {"iso3": "MUS", "name_source": "MAURICE", "positions": 1251},
+   {"iso3": "RWA", "name_source": "RUANDA", "positions": 1251}
+  ]
+ },
+ "other_regimes_published": {
+  "ZALE_GAFTA": 80846,
+  "ACCORD_BILATERAL": 27065,
+  "ACCORD_UE": 13832,
+  "ACCORD_AELE": 13390,
+  "note": "Accord d'Agadir cité sur 35 034 positions, Tunisie-UE 1995 sur 13 832, Tunisie-Royaume-Uni post-Brexit sur 13 831, bilatéral TUN-MAR sur 13 735, Tunisie-AELE 2004 sur 13 390, Tunisie-Turquie 2005 sur 13 234. Ces régimes non africains sont collectés et inexploités."
+ },
+ "blocking_uncertainty": {
+  "severity": "BLOQUANTE pour tout calcul",
+  "problem": "Le sens du pourcentage publié n'est pas déterminé : réduction consentie, ou reliquat de droit à acquitter ?",
+  "evidence": "Sur la position 01012100015, le droit NPF est de 36 % et la préférence ZLECAf affichée est de 40 % pour le Cameroun, le Nigeria, le Ghana, l'Afrique du Sud et le Kenya — donc supérieure au NPF. Un taux appliqué de 40 % serait absurde. Les valeurs rencontrées sont 40 %, 0 %, 87,5 % et 80 %.",
+  "repo_behaviour": "crawled_data_service.py transmet la valeur telle quelle dans un libellé descriptif (« Préférence tarifaire CAMEROUN : 40 % ») sans la convertir en calcul. Ce comportement est prudent et doit être conservé jusqu'à confirmation.",
+  "resolution_required": "Confirmer le sens auprès de la Direction générale des Douanes tunisienne, ou par la note d'application publiée au JORT, avant toute liquidation."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "NON VÉRIFIÉ EN PRIMAIRE — une source secondaire cite un texte au JORT n° 16-2023 du 6 avril 2023 ; non confirmé sur le Journal officiel",
+  "2_liste_officielle_origines_reciproques": "SATISFAIT — 8 origines publiées au tarif officiel",
+  "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — instantané TUN de 9 373 lignes par barème",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "remaining_work": [
+  "Obtenir le texte tunisien d'application au JORT (référence n° 16-2023 du 6 avril 2023 à confirmer) et sa date d'entrée en vigueur.",
+  "Trancher le sens du pourcentage publié — réduction ou reliquat.",
+  "Vérifier si les 8 partenaires du tarif publié correspondent à une liste notifiée, et à quelle date elle évolue."
+ ]
+}

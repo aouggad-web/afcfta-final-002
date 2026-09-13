@@ -9,7 +9,9 @@
   "NOTIFICATION_PARTENAIRES_REQUISE": "domestication constatée, liste officielle des origines introuvable",
   "OFFRE_SEULE": "barème officiel archivé, aucun acte national d'application vérifié",
   "NON_APPLIQUE_PRESUME": "indices concordants de non-application, sources secondaires seulement",
-  "NON_RECHERCHE": "aucune recherche menée à ce jour"
+  "NON_RECHERCHE": "aucune recherche menée à ce jour",
+  "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": "origines admises publiées au tarif officiel, sens du taux préférentiel non tranché",
+  "INSTRUMENT_RAPPORTE_NON_PRIMAIRE": "instrument nommé et liste rapportée, mais sur sources secondaires seulement"
  },
  "pays": {
   "AGO": {
@@ -109,9 +111,9 @@
    "bareme_collecte": false
   },
   "ETH": {
-   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "Regulation 574/2025 : Le règlement est en vigueur, mais son article 3(2) exige la liste des États notifiée séparément par le ministè",
-   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "niveau": "INSTRUMENT_RAPPORTE_NON_PRIMAIRE",
+   "preuve": "Règlement 574/2025 du Conseil des ministres, Negarit Gazette 14/07/2025, catégorie A sur 10 ans depuis 2021 ; liste de 24 origines reçue par la commission des douanes, échanges ouverts le 09/10/2025.",
+   "niveau_de_source": "secondaire — Negarit Gazette et avis ministériel à obtenir",
    "bareme_collecte": true
   },
   "GAB": {
@@ -301,9 +303,9 @@
    "bareme_collecte": false
   },
   "TUN": {
-   "niveau": "OFFRE_SEULE",
-   "preuve": "barème archivé : TUN",
-   "niveau_de_source": "instantané e-Tariff Book",
+   "niveau": "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE",
+   "preuve": "Tarif Web 2026 douane.gov.tn : 8 origines ZLECAf publiées (CMR GHA KEN TZA ZAF NGA MUS RWA). Sens du % non tranché : 40 % affiché contre 36 % de NPF.",
+   "niveau_de_source": "primaire — portail tarifaire officiel scellé dans le dépôt",
    "bareme_collecte": true
   },
   "TZA": {
@@ -339,10 +341,17 @@
  },
  "repartition": {
   "APPLIQUE": 1,
+  "INSTRUMENT_RAPPORTE_NON_PRIMAIRE": 1,
   "NON_APPLIQUE_PRESUME": 1,
   "NON_RECHERCHE": 42,
-  "NOTIFICATION_PARTENAIRES_REQUISE": 4,
-  "OFFRE_SEULE": 5,
+  "NOTIFICATION_PARTENAIRES_REQUISE": 3,
+  "OFFRE_SEULE": 4,
+  "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 1,
   "PREUVES_ASSEMBLEES": 1
- }
+ },
+ "fiches_detaillees": [
+  "MAR_application_2026-09-13.json",
+  "TUN_application_2026-09-13.json",
+  "ETH_application_2026-09-13.json"
+ ]
 }

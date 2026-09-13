@@ -1,0 +1,47 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "ETH",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "INSTRUMENT_NOMME_SOURCES_SECONDAIRES",
+ "verified_at": "2026-09-13",
+ "evidence_level": "secondaire — aucune source primaire obtenue. Ne pas traiter comme vérifié.",
+ "instrument_reported": {
+  "id": "Council of Ministers Regulation No. 574/2025",
+  "title": "Règlement du Conseil des ministres mettant en œuvre les concessions tarifaires ZLECAf",
+  "authority": "Conseil des ministres, République fédérale démocratique d'Éthiopie",
+  "published": "2025-07-14",
+  "publication_venue": "Federal Negarit Gazette",
+  "effective_from": "un mois après publication, soit mi-août 2025",
+  "schedule_retroactive_to": "2021-01-01",
+  "categories": {
+   "A": "environ 90 % des lignes, réduction par tranches annuelles égales sur 10 ans à compter du 1er janvier 2021, zéro atteint en 2030",
+   "B": "jusqu'à 7 % des lignes, réduction sur 8 ans à compter du 1er janvier 2026, zéro en 2033",
+   "C": "3 % au maximum, exclus de la réduction — NPF maintenu"
+  },
+  "conditions": "règles d'origine des annexes 2 et 4, certificat d'origine obligatoire ; le ministère peut suspendre les concessions d'un pays en cas de violation ; aucun remboursement rétroactif des droits acquittés avant l'entrée en vigueur",
+  "origins_delegated": "Le règlement ne nomme aucun pays : il délègue la liste des origines admises à un avis du Ministry of Trade and Regional Integration.",
+  "source": "https://www.afriwise.com/blog/ethiopia-implements-afcfta-tariff-concessions-council-of-ministers-regulation-no-574-2025",
+  "source_nature": "fournisseur d'intelligence juridique — secondaire"
+ },
+ "partner_list_reported": {
+  "count": 24,
+  "recipient": "Ethiopian Customs Commission",
+  "iso3": ["DZA", "BDI", "BWA", "CMR", "EGY", "SWZ", "GMB", "GHA", "KEN", "LSO", "MWI", "MUS", "MAR", "MOZ", "NAM", "NGA", "RWA", "SYC", "ZAF", "SSD", "TZA", "TUN", "UGA", "ZMB"],
+  "trading_began": "2025-10-09",
+  "source": "https://birrmetrics.com/customs-commission-receives-official-list-of-24-afcfta-nations-including-egypt-eligible-for-preferential-tariffs/",
+  "source_nature": "presse économique — secondaire",
+  "missing": "date de réception de la liste, numéro de l'avis ministériel, date d'application effective des réductions. Sans ces éléments la liste n'est pas opposable."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "RAPPORTÉ, NON VÉRIFIÉ EN PRIMAIRE — Federal Negarit Gazette à obtenir",
+  "2_liste_officielle_origines_reciproques": "RAPPORTÉE, NON VÉRIFIÉE — avis du Ministry of Trade and Regional Integration à obtenir",
+  "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — instantané ETH de 5 868 lignes",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "note_coherence": "Le statut PARTNER_NOTICE_REQUIRED déjà porté par le dépôt est exactement juste : le règlement délègue effectivement la liste à un avis ministériel. La nouveauté est qu'un tel avis existerait, reçu par la commission des douanes.",
+ "remaining_work": [
+  "Obtenir le Federal Negarit Gazette du 14 juillet 2025 portant le règlement 574/2025.",
+  "Obtenir l'avis du Ministry of Trade and Regional Integration listant les origines admises, avec sa date.",
+  "Vérifier la catégorie (A, B ou C) de chaque ligne du barème collecté, le règlement distinguant trois calendriers."
+ ]
+}
