@@ -1,0 +1,1115 @@
+{
+ "schema_version": 1,
+ "source_title": "AfCFTA e-Tariff Book — Region/GetRegions",
+ "source_url": "https://etariff.au-afcfta.org/",
+ "source_api_url": "https://prod-afcfta-api.azurewebsites.net/Region/GetRegions",
+ "avertissement": "Le statut déclaré est la position de l'Union africaine, citée mot pour mot. Il ne vaut pas application nationale : l'effet en droit interne, la date d'entrée en vigueur, la réciprocité bilatérale et la preuve d'origine restent des conditions distinctes, contrôlées par zlecaf_implementation_registry.py. Une origine absente d'une carte n'est pas réputée exclue — l'absence reste une absence.",
+ "repartition_statuts": {
+  "ADOPTE_ET_DIRECTIVE": 45,
+  "ADOPTE_PROVISOIREMENT": 1,
+  "AUTRE_DECLARATION": 4,
+  "LISTE_PROVISOIRE_DIRECTIVE": 1,
+  "SOUMIS": 1
+ },
+ "pays": [
+  {
+   "code_iso2": "AO",
+   "nom": "Angola",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2024-08-02T12:53:50.763Z",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_PROVISOIREMENT",
+   "declaration_source": {
+    "en": "Angola submitted their tariff offer and it was provisionally adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "L'Angola a présenté son offre tarifaire, qui a été provisoirement adoptée et incluse dans la directive ministérielle relative à la liste provisoire de concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "BF",
+   "nom": "Burkina Faso",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Burkina Faso is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Burkina Faso fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "BI",
+   "nom": "Republic of Burundi",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "EAC",
+   "revision_source": "2022-07-21T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Republic of Burundi is part of the EAC Customs Union. EAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "La République du Burundi fait partie de l’Union douanière de la CAE. La CAE a soumis son offre tarifaire qui a été adoptée et intégrée dans la directive ministérielle relative à la liste provisoire de concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "BJ",
+   "nom": "Benin",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Benin is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Bénin fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "BW",
+   "nom": "Botswana",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "SACU",
+   "revision_source": "2023-06-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Republic of Botswana is part of the Southern African Customs Union (SACU). SACU submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "La République du Botswana fait partie de l’Union douanière d’Afrique australe (SACU). La SACU a soumis son offre tarifaire, qui a été adoptée et incluse dans la directive ministérielle relative à la liste provisoire de concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "CD",
+   "nom": "Democratic Republic of the Congo",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": null,
+   "revision_source": "2021-10-26T00:00:00",
+   "version_sh": "2017",
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The Democratic Republic of the Congo submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "La République démocratique du Congo a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "CEMAC",
+   "nom": "Economic Community of Central African States (CEMAC)",
+   "est_region": true,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2021-10-26T00:00:00",
+   "version_sh": "2017",
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The CEMAC countries comprises Gabon, Cameroon, The Central African Republic, Chad, Republic of the Congo and Equatorial Guinea. CEMAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Les pays de la zone CEMAC sont le Cameroun, le Gabon, la Guinée équatoriale, la République centrafricaine, la République du Congo et le Tchad. La CEMAC a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "CF",
+   "nom": "Central African Republic",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "CEMAC",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The Central African Republic is part of the CEMAC Customs Union.  CEMAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "La République centrafricaine fait partie de l’union douanière de la CEMAC.  La CEMAC a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "CG",
+   "nom": "Congo",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "CEMAC",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Congo is part of the CEMAC Customs Union.  CEMAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "La République du Congo fait partie de l’union douanière de la CEMAC.  La CEMAC a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "CI",
+   "nom": "Côte d'Ivoire",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Côte d'Ivoire is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "La Côte d'Ivoire fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "CM",
+   "nom": "Cameroon",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "CEMAC",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Cameroon  is part of the CEMAC Customs Union. CEMAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Cameroun fait partie de l’union douanière de la CEMAC. La CEMAC a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "CV",
+   "nom": "Cape Verde",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Cabo Verde is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Cabo Verde fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "DZ",
+   "nom": "Algeria",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2022-05-20T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Algeria submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 20 May 2022.",
+    "fr": "Algérie a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 20 mai 2022."
+   }
+  },
+  {
+   "code_iso2": "EAC",
+   "nom": "East African Community",
+   "est_region": true,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2022-07-21T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "AUTRE_DECLARATION",
+   "declaration_source": {
+    "en": "Republics of Burundi, Kenya, Rwanda, South Sudan, Uganda, and the United Republic of Tanzania",
+    "fr": "Burundi, Kenya, Ouganda, République-Unie de Tanzanie, Soudan du Sud, Rwanda"
+   }
+  },
+  {
+   "code_iso2": "ECOWAS",
+   "nom": "Economic Community of West African States (ECOWAS)",
+   "est_region": true,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2021-10-26T00:00:00",
+   "version_sh": "2017",
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The ECOWAS Regional Economic Community comprises Benin, Burkina Faso, Cabo Verde, Cote d'Ivoire, The Gambia, Ghana, Guinea, Guinea-Bissau, Liberia, Mali, Niger, Nigeria, Senegal, Sierra Leone, and Togo. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021. The ECOWAS tariff concessions also include Mauritania.",
+    "fr": "La communauté économique régionale de la CEDEAO a pour membres le Bénin, le Burkina Faso, Cabo Verde, la Côte d’Ivoire, la Gambie, le Ghana, la Guinée, la Guinée-Bissau, le Libéria, le Mali, le Niger, le Nigéria, le Sénégal, la Sierra Leone et le Togo. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021. Les concessions tarifaires de la CEDEAO incluent également la Mauritanie."
+   }
+  },
+  {
+   "code_iso2": "EG",
+   "nom": "Egypt",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2021-10-26T00:00:00",
+   "version_sh": "2017",
+   "baremes_exposes": 2,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Egypt submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "L’Égypte a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "ET",
+   "nom": "Ethiopia",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2024-01-17T16:59:32.585Z",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Ethiopia submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "L'Éthiopie a soumis son offre tarifaire et celle-ci a été adoptée et incluse dans la Directive ministérielle sur la liste provisoire des concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "GA",
+   "nom": "Gabon",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "CEMAC",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Gabon is part of the CEMAC Customs Union. CEMAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Gabon fait partie de l’union douanière de la CEMAC. La CEMAC a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "GH",
+   "nom": "Ghana",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Ghana is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Ghana fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "GM",
+   "nom": "Gambia",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The Gambia is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "La Gambie fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "GN",
+   "nom": "Guinea",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Guinea is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "La Guinée fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "GQ",
+   "nom": "Equatorial Guinea",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "CEMAC",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Equatorial Guinea is part of the CEMAC Customs Union. CEMAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "La Guinée équatoriale fait partie de l’union douanière de la CEMAC. La CEMAC a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "GW",
+   "nom": "Guinea-Bissau",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Guinea-Bissau is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "La Guinée-Bissau fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "KE",
+   "nom": "Republic of Kenya",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "EAC",
+   "revision_source": "2022-07-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The Republic of Kenya is part of the East African Community. EAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "La République du Kenya fait partie de l'union douanière de la CAE. La CAE a présenté son offre tarifaire qui a été adoptée et incorporée dans la directive ministérielle sur la liste provisoire des concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "KM",
+   "nom": "Comoros",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2024-01-17T16:52:20.271Z",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Comoros submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "Les Comores ont soumis leur offre tarifaire et celle-ci a été adoptée et incluse dans la Directive ministérielle sur la liste provisoire des concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "LR",
+   "nom": "Liberia",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Liberia is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Libéria fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "LS",
+   "nom": "Lesotho",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "SACU",
+   "revision_source": "2023-07-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The Kingdom of Lesotho is part of the Southern African Customs Union (SACU). SACU submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "Le Royaume du Lesotho fait partie de l’Union douanière d’Afrique australe (SACU). La SACU a soumis son offre tarifaire, qui a été adoptée et incluse dans la directive ministérielle relative à la liste provisoire de concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "MA",
+   "nom": "Morocco",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2023-06-30T11:41:43.012Z",
+   "version_sh": null,
+   "baremes_exposes": 2,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Morocco submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "Le Maroc a soumis son offre tarifaire, qui a été adoptée et incluse dans la directive ministérielle relative à la liste provisoire de concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "MG",
+   "nom": "Madagascar",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": null,
+   "revision_source": "2021-10-26T00:00:00",
+   "version_sh": "2017",
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Madagascar submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Madagascar a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "ML",
+   "nom": "Mali",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Mali is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Mali fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "MR",
+   "nom": "Mauritania",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "2021-10-26T00:00:00",
+   "version_sh": "2017",
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Mauritania submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October. It was submitted as part of the ECOWAS Customs Union even though they are not themselves part of ECOWAS.",
+    "fr": "La Mauritanie a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre. Celle-ci a été soumise dans le cadre de l’union douanière de la CEDEAO, même si la Mauritanie n’en fait pas elle-même partie."
+   }
+  },
+  {
+   "code_iso2": "MU",
+   "nom": "Mauritius",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2021-10-26T00:00:00",
+   "version_sh": "2017",
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Mauritius submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Maurice a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "MW",
+   "nom": "Malawi",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": null,
+   "revision_source": "2024-01-19T14:00:19.352Z",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Malawi submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "Le Malawi a soumis son offre tarifaire et celle-ci a été adoptée et incluse dans la Directive ministérielle sur la liste provisoire des concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "MZ",
+   "nom": "Mozambique",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": null,
+   "revision_source": "2025-04-08T12:00:20.833Z",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "AUTRE_DECLARATION",
+   "declaration_source": {
+    "en": "The “AfCFTA Category” column includes the following three categories: (A) Non-sensitive products; (B) Sensitive products; and (C) Products excluded from tariff liberalization.",
+    "fr": "La colonne « Catégorie ZLECA » comprend les trois catégories suivantes : (A) Produits non sensibles ; (B) Produits sensibles ; et (C) Produits exclus de la libéralisation tarifaire."
+   }
+  },
+  {
+   "code_iso2": "NA",
+   "nom": "Namibia",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "SACU",
+   "revision_source": "2023-06-30T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The Republic of Namibia is part of the Southern African Customs Union (SACU). SACU submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "La République de Namibie fait partie de l’Union douanière d’Afrique australe (SACU). La SACU a soumis son offre tarifaire, qui a été adoptée et incluse dans la directive ministérielle relative à la liste provisoire de concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "NE",
+   "nom": "Niger",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Niger is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Niger fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "NG",
+   "nom": "Nigeria",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Nigeria is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Nigéria fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "RW",
+   "nom": "Republic of Rwanda",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "EAC",
+   "revision_source": "2022-07-21T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The Republic of Rwanda is part of the East African Community (EAC). EAC submitted their tariff offer and it was  adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "La République du Rwanda fait partie de l'Union douanière de la CAE. La CAE a soumis son offre tarifaire qui a été adoptée et incorporée dans la directive ministérielle sur la liste provisoire des concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "SACU",
+   "nom": "Southern African Customs Union",
+   "est_region": true,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2023-06-28T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "AUTRE_DECLARATION",
+   "declaration_source": {
+    "en": "SACU includes Botswana, Eswatini, Lesotho, Namibia and South Africa",
+    "fr": "SACU comprend le Botswana, l'Eswatini, le Lesotho, la Namibie et l'Afrique du Sud"
+   }
+  },
+  {
+   "code_iso2": "SC",
+   "nom": "Seychelles",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2021-10-26T00:00:00",
+   "version_sh": "2017",
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Seychelles submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Les Seychelles ont soumis leur offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "SL",
+   "nom": "Sierra Leone",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Sierra Leone is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "La Sierra Leone fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "SN",
+   "nom": "Senegal",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Senegal is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Sénégal fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "SS",
+   "nom": "Republic of South Sudan",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "EAC",
+   "revision_source": "2022-07-21T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The Republic of South Sudan is part of the East African Community(EAC).  EAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "La République du Sud-Soudan fait partie de l'union douanière de la CAE. La CAE a soumis son offre tarifaire qui a été adoptée et incorporée dans la directive ministérielle sur la liste provisoire des concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "SZ",
+   "nom": "Eswatini",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "SACU",
+   "revision_source": "2023-06-30T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The Kingdom of Eswatini is part of the Southern African Customs Union (SACU). SACU submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "Le Royaume d’Eswatini fait partie de l’Union douanière d’Afrique australe (SACU). La SACU a soumis son offre tarifaire, qui a été adoptée et incluse dans la directive ministérielle relative à la liste provisoire de concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "TD",
+   "nom": "Chad",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "CEMAC",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Chad is part of the CEMAC Customs Union. CEMAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Tchad fait partie de l’union douanière de la CEMAC. La CEMAC a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "TG",
+   "nom": "Togo",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "ECOWAS",
+   "revision_source": "0001-01-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Togo is part of the ECOWAS Customs Union. ECOWAS submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "Le Togo fait partie de l’union douanière de la CEDEAO. La CEDEAO a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "TN",
+   "nom": "Tunisia",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2022-09-20T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 2,
+   "statut_declare": "SOUMIS",
+   "declaration_source": {
+    "en": "قدمت تونس امتيازاتها الجمركية في 20 سبتمبر 2022. وقدمت جدولين. ينطبق الجدول 1 باستثناء البلدان غير الأقل نمواً في الاتحادات الجمركية التي تطبق فترة انتقالية مدتها 10 سنوات للفئة أ (ينطبق الجدول 2 في مثل هذه الحالات).",
+    "fr": "La Tunisie a présenté ses concessions tarifaires le 20 septembre 2022. Elle a présenté deux listes. L'annexe 1 s'applique sauf pour les non-PMA dans les unions douanières qui appliquent une période de transition de 10 ans pour la catégorie A (l'annexe 2 s'applique dans de tels cas)."
+   }
+  },
+  {
+   "code_iso2": "TZ",
+   "nom": "United Republic of Tanzania",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "EAC",
+   "revision_source": "2022-07-21T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The United Republic of Tanzania is part of the East African Community (EAC).  EAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "La République de Tanzanie fait partie de l'union douanière de la CAE. La CAE a soumis son offre tarifaire qui a été adoptée et incorporée dans la directive ministérielle sur la liste provisoire des concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "UG",
+   "nom": "Rebublic of Uganda",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": "EAC",
+   "revision_source": "2022-07-21T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "The Republic of Uganda is part of the East African Community (EAC). EAC submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "La République de l'Ouganda fait partie de l'union douanière de la CAE. La CAE a soumis son offre tarifaire qui a été adoptée et incorporée dans la directive ministérielle sur la liste provisoire des concessions tarifaires."
+   }
+  },
+  {
+   "code_iso2": "ZA",
+   "nom": "South Africa",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": "SACU",
+   "revision_source": "2023-06-01T00:00:00",
+   "version_sh": null,
+   "baremes_exposes": 0,
+   "statut_declare": "AUTRE_DECLARATION",
+   "declaration_source": {
+    "en": "The Republic of South Africa is part of the Southern African Customs Union with Botswana, Lesotho, Namibia and Eswatini"
+   }
+  },
+  {
+   "code_iso2": "ZM",
+   "nom": "Zambia",
+   "est_region": false,
+   "est_pma": true,
+   "union_douaniere": null,
+   "revision_source": "2021-10-26T00:00:00",
+   "version_sh": "2017",
+   "baremes_exposes": 0,
+   "statut_declare": "ADOPTE_ET_DIRECTIVE",
+   "declaration_source": {
+    "en": "Zambia submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions on 26 October 2021.",
+    "fr": "La Zambie a soumis son offre tarifaire, laquelle a été adoptée et incluse dans la Directive ministérielle relative au calendrier provisoire des concessions tarifaires du 26 octobre 2021."
+   }
+  },
+  {
+   "code_iso2": "ZW",
+   "nom": "Zimbabwe",
+   "est_region": false,
+   "est_pma": false,
+   "union_douaniere": null,
+   "revision_source": "2025-04-08T09:48:55.483Z",
+   "version_sh": null,
+   "baremes_exposes": 1,
+   "statut_declare": "LISTE_PROVISOIRE_DIRECTIVE",
+   "declaration_source": {
+    "en": "State Parties with Provisional Schedule of Tariff Concessions in Annex 1 to the Ministerial Directive on the Application of Provisional Schedules of Tariff Concessions",
+    "fr": "États parties ayant une liste provisoire de concessions tarifaires à l'annexe 1 de la directive ministérielle relative à l'application des listes provisoires de concessions tarifaires"
+   }
+  }
+ ],
+ "instantanes_locaux": {
+  "CEMAC": {
+   "fichier": "CEMAC_afcfta_etariff_2026-08-17.json.gz",
+   "collecte_le": "2026-08-17",
+   "destination_interrogee": "CM",
+   "revision_source": "2021-10-26T00:00:00",
+   "barèmes": {
+    "1": 5284
+   },
+   "noms_baremes": {},
+   "declaration_source": {},
+   "verdict_depot": "OFFER_ONLY",
+   "origines_acceptees": {
+    "*": "1"
+   },
+   "nb_origines_acceptees": 0
+  },
+  "EAC": {
+   "fichier": "EAC_afcfta_etariff_2026-08-17.json.gz",
+   "collecte_le": "2026-08-17",
+   "destination_interrogee": "KE",
+   "revision_source": "2022-07-21T00:00:00",
+   "barèmes": {
+    "1": 4970
+   },
+   "noms_baremes": {},
+   "declaration_source": {},
+   "verdict_depot": "OFFER_ONLY",
+   "origines_acceptees": {
+    "*": "1"
+   },
+   "nb_origines_acceptees": 0
+  },
+  "ECOWAS": {
+   "fichier": "ECOWAS_afcfta_etariff_2026-08-17.json.gz",
+   "collecte_le": "2026-08-17",
+   "destination_interrogee": "GH",
+   "revision_source": "2021-10-26T00:00:00",
+   "barèmes": {
+    "1": 5578
+   },
+   "noms_baremes": {},
+   "declaration_source": {},
+   "verdict_depot": "OFFER_ONLY",
+   "origines_acceptees": {
+    "*": "1"
+   },
+   "nb_origines_acceptees": 0
+  },
+  "EGY": {
+   "fichier": "EGY_afcfta_etariff_2026-08-17.json.gz",
+   "collecte_le": "2026-08-17",
+   "destination_interrogee": "EG",
+   "revision_source": "2021-10-26T00:00:00",
+   "barèmes": {
+    "1": 5275,
+    "2": 5236
+   },
+   "noms_baremes": {},
+   "declaration_source": {},
+   "verdict_depot": "OFFER_ONLY",
+   "origines_acceptees": {
+    "AO": "1",
+    "BF": "2",
+    "BI": "2",
+    "BJ": "2",
+    "BW": "1",
+    "CD": "2",
+    "CF": "2",
+    "CG": "1",
+    "CI": "1",
+    "CM": "1",
+    "CV": "1",
+    "DZ": "1",
+    "EG": "1",
+    "ET": "1",
+    "GA": "1",
+    "GH": "1",
+    "GM": "2",
+    "GN": "2",
+    "GQ": "1",
+    "GW": "2",
+    "KE": "1",
+    "KM": "1",
+    "LR": "2",
+    "LS": "2",
+    "MA": "1",
+    "MG": "2",
+    "ML": "2",
+    "MR": "2",
+    "MU": "1",
+    "MW": "2",
+    "MZ": "2",
+    "NA": "1",
+    "NE": "2",
+    "NG": "1",
+    "RW": "2",
+    "SC": "1",
+    "SL": "2",
+    "SN": "2",
+    "SS": "2",
+    "SZ": "1",
+    "TD": "2",
+    "TG": "2",
+    "TN": "1",
+    "TZ": "2",
+    "UG": "2",
+    "ZA": "1",
+    "ZM": "2",
+    "ZW": "1"
+   },
+   "nb_origines_acceptees": 48
+  },
+  "ETH": {
+   "fichier": "ETH_afcfta_etariff_2026-08-17.json.gz",
+   "collecte_le": "2026-08-17",
+   "destination_interrogee": "ET",
+   "revision_source": "2024-01-17T16:59:32.585Z",
+   "barèmes": {
+    "1": 5868
+   },
+   "noms_baremes": {},
+   "declaration_source": {},
+   "verdict_depot": "OFFER_ONLY",
+   "origines_acceptees": {
+    "*": "1"
+   },
+   "nb_origines_acceptees": 0
+  },
+  "MAR": {
+   "fichier": "MAR_afcfta_etariff_2026-09-13.json.gz",
+   "collecte_le": "2026-09-13",
+   "destination_interrogee": "MA",
+   "revision_source": "2023-06-30T11:41:43.012Z",
+   "barèmes": {
+    "1": 14510,
+    "2": 14510
+   },
+   "noms_baremes": {
+    "1": {
+     "en": "Schedule 1 - 5 year Schedule",
+     "fr": "Annexe 1 - Annexe 5 ans"
+    },
+    "2": {
+     "en": "Schedule 2 - 10 year Schedule",
+     "fr": "Annexe 1 - Annexe 10 ans"
+    }
+   },
+   "declaration_source": {
+    "en": "Morocco submitted their tariff offer and it was adopted and included in the Ministerial Directive on Provisional Schedule of Tariff Concessions.",
+    "fr": "Le Maroc a soumis son offre tarifaire, qui a été adoptée et incluse dans la directive ministérielle relative à la liste provisoire de concessions tarifaires."
+   },
+   "verdict_depot": "OFFER_ONLY",
+   "origines_acceptees": {
+    "AGO": "1",
+    "BDI": "2",
+    "BEN": "2",
+    "BFA": "2",
+    "BWA": "1",
+    "CAF": "2",
+    "CIV": "1",
+    "CMR": "1",
+    "COD": "2",
+    "COG": "1",
+    "COM": "1",
+    "CPV": "1",
+    "DZA": "1",
+    "EGY": "1",
+    "ETH": "1",
+    "GAB": "1",
+    "GHA": "1",
+    "GIN": "2",
+    "GMB": "2",
+    "GNB": "2",
+    "GNQ": "1",
+    "KEN": "1",
+    "LBR": "2",
+    "LSO": "2",
+    "MAR": "1",
+    "MDG": "2",
+    "MLI": "2",
+    "MOZ": "2",
+    "MRT": "2",
+    "MUS": "1",
+    "MWI": "2",
+    "NAM": "1",
+    "NER": "2",
+    "NGA": "1",
+    "RWA": "2",
+    "SEN": "2",
+    "SLE": "2",
+    "SSD": "2",
+    "SWZ": "1",
+    "SYC": "1",
+    "TCD": "2",
+    "TGO": "2",
+    "TUN": "1",
+    "TZA": "2",
+    "UGA": "2",
+    "ZAF": "1",
+    "ZMB": "2",
+    "ZWE": "1"
+   },
+   "nb_origines_acceptees": 48
+  },
+  "TUN": {
+   "fichier": "TUN_afcfta_etariff_2026-08-17.json.gz",
+   "collecte_le": "2026-08-17",
+   "destination_interrogee": "TN",
+   "revision_source": "2022-09-20T00:00:00",
+   "barèmes": {
+    "1": 9373,
+    "2": 9373
+   },
+   "noms_baremes": {},
+   "declaration_source": {},
+   "verdict_depot": "OFFER_ONLY",
+   "origines_acceptees": {
+    "AO": "1",
+    "BF": "2",
+    "BI": "2",
+    "BJ": "2",
+    "BW": "1",
+    "CD": "2",
+    "CF": "2",
+    "CG": "1",
+    "CI": "1",
+    "CM": "1",
+    "CV": "1",
+    "DZ": "1",
+    "EG": "1",
+    "ET": "1",
+    "GA": "1",
+    "GH": "1",
+    "GM": "2",
+    "GN": "2",
+    "GQ": "1",
+    "GW": "2",
+    "KE": "1",
+    "KM": "1",
+    "LR": "2",
+    "LS": "2",
+    "MA": "1",
+    "MG": "2",
+    "ML": "2",
+    "MR": "2",
+    "MU": "1",
+    "MW": "2",
+    "MZ": "2",
+    "NA": "1",
+    "NE": "2",
+    "NG": "1",
+    "RW": "2",
+    "SC": "1",
+    "SL": "2",
+    "SN": "2",
+    "SS": "2",
+    "SZ": "1",
+    "TD": "2",
+    "TG": "2",
+    "TN": "1",
+    "TZ": "2",
+    "UG": "2",
+    "ZA": "1",
+    "ZM": "2",
+    "ZW": "1"
+   },
+   "nb_origines_acceptees": 48
+  },
+  "ZAF": {
+   "fichier": "ZAF_afcfta_2026-08-06.json.gz",
+   "collecte_le": "2026-08-06",
+   "destination_interrogee": null,
+   "revision_source": null,
+   "barèmes": {},
+   "noms_baremes": {},
+   "declaration_source": {},
+   "verdict_depot": null,
+   "origines_acceptees": {},
+   "nb_origines_acceptees": 0
+  },
+  "ZMB": {
+   "fichier": "ZMB_afcfta_etariff_2026-08-17.json.gz",
+   "collecte_le": "2026-08-17",
+   "destination_interrogee": "ZM",
+   "revision_source": "2021-10-26T00:00:00",
+   "barèmes": {
+    "1": 5445
+   },
+   "noms_baremes": {},
+   "declaration_source": {},
+   "verdict_depot": "OFFER_ONLY",
+   "origines_acceptees": {
+    "*": "1"
+   },
+   "nb_origines_acceptees": 0
+  },
+  "ZWE": {
+   "fichier": "ZWE_afcfta_etariff_2026-09-13.json.gz",
+   "collecte_le": "2026-09-13",
+   "destination_interrogee": "ZW",
+   "revision_source": "2025-04-08T09:48:55.483Z",
+   "barèmes": {
+    "1": 6017
+   },
+   "noms_baremes": {
+    "": {}
+   },
+   "declaration_source": {
+    "en": "State Parties with Provisional Schedule of Tariff Concessions in Annex 1 to the Ministerial Directive on the Application of Provisional Schedules of Tariff Concessions",
+    "fr": "États parties ayant une liste provisoire de concessions tarifaires à l'annexe 1 de la directive ministérielle relative à l'application des listes provisoires de concessions tarifaires"
+   },
+   "verdict_depot": "OFFER_ONLY",
+   "origines_acceptees": {
+    "*": "1"
+   },
+   "nb_origines_acceptees": 0
+  }
+ },
+ "collected_at": "2026-09-13"
+}
