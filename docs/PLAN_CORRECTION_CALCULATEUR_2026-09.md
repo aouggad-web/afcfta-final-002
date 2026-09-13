@@ -49,6 +49,14 @@ Un taux servi doit être **traçable jusqu'à un fichier, une version et une emp
 
 > Sans 0.1 et 0.2, les phases suivantes ne sont pas vérifiables. C'est le préalable, pas une formalité.
 
+**État : phase 0 livrée.** `scripts/diff_engines.py`,
+`backend/tests/fixtures/calculator_golden.json` avec
+`backend/tests/test_calculator_golden_corpus.py` (23 tests verts, 6 `xfail`
+stricts sur les défauts ouverts), et la note `docs/DECISION_INDISPONIBILITE_CALCULATEUR.md`
+en attente d'arbitrage. La mesure de référence est consignée dans
+`docs/MESURE_REFERENCE_CALCULATEUR_2026-09-13.md` : **318 divergences sur 320
+positions** testées sur huit pays. Les dix cas de l'audit sont reproduits un à un.
+
 ### Phase 1 — Résolution de données unique (cause racine)
 
 | # | Travail | Fichiers | Acceptation |
