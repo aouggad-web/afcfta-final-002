@@ -147,6 +147,47 @@ d'absence. Sans flux d'importation connu, le panier de consommation est
 « invérifiable » — le besoin est conservé et signalé peu fiable, jamais
 supprimé en silence.
 
+## 6. Si le pod dit avoir des correctifs locaux que GitHub n'a pas
+
+`sync_emergent.sh` fait un `git reset --hard` : un correctif local non poussé
+est détruit. La réponse n'est donc **jamais** « garde-le en local » ni
+« pousse-le depuis le pod sans le montrer ». La réponse est : **montre le
+`git diff`**, on juge sur pièces, et ce qui doit vivre part sur GitHub.
+
+Le pod n'a pas les moyens de trancher seul : il voit sa copie, pas l'historique.
+Vérifié le 2026-09-13 sur `origin/main`, sur ses cinq affirmations :
+
+| Affirmation du pod | Vérification sur `main` |
+|---|---|
+| marqueurs de conflit dans `calculator.py`, `tax_computation.py`, `authentic_tariffs.py`, `postgres_tariffs.py` | **faux** — zéro marqueur, et zéro sur tout le dépôt (résolus par la PR #466, commit `0cbcc7a4`) |
+| `routes/contact.py` cassé (`await` manquant) | **faux** — le fichier est correct et complet sur `main` |
+| `frontend/src/index.js` cassé | **vrai** — voir ci-dessous |
+
+Deux des quatre fichiers cités n'existent même pas là où le pod les place
+(`services/`) : ils sont dans `routes/`. Une copie locale périmée décrit
+l'état d'avant, pas l'état du dépôt.
+
+### Le point d'entrée du frontend — régression réelle
+
+`frontend/index.html` charge `/src/index.js`, et cet `index.js` rend une
+coquille réduite : **cinq modules sur onze** y sont des `ModulePlaceholder`
+(tableau de bord, calculateur, statistiques, logistique, profils pays).
+
+`App.js` — qui porte les onze modules, le thème, le topbar, l'i18n — **n'est
+importé par personne**. C'est du code mort, alors que c'est la vraie
+application.
+
+Conséquence à connaître avant de déployer : la chaîne réellement montée est
+`index.js → Production.js → ISIC4DetailTable.js`, tandis que le travail de la
+PR #467 (54 pays, tableau ISIC4/IDSB lisible, PDF) vit dans
+`ProductionTab.jsx → ProductionManufacturing.jsx`, atteignable seulement depuis
+`App.js`. **Tant que le point d'entrée n'est pas corrigé, ce travail ne
+s'affiche pas**, quel que soit le nombre de synchronisations. C'est très
+exactement la troisième cause listée en section 4 : un composant qui n'est
+jamais monté.
+
+Ce correctif doit être fait **sur GitHub**, pas dans le pod.
+
 ## 6. Ce qui n'est PAS concerné
 
 - **Chantier tarifaire et module Calculateur** — travaux arrêtés. Aucun
