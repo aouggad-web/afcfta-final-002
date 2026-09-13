@@ -118,6 +118,7 @@ function ProductionManufacturing({ language = 'fr' }) {
   const [pdfBusy, setPdfBusy] = useState(false);
   const [isic4Status, setIsic4Status] = useState('idle'); // idle | loading | error | no_data | ready
   const isic4RequestCountry = useRef(null);
+  const unidoRequestCountry = useRef(null);
 
   // Historique détaillé (2018-2024, tous indicateurs) par code ISIC4, affiché au clic sur une ligne
   const [expandedIsic4, setExpandedIsic4] = useState(null);
@@ -225,17 +226,25 @@ function ProductionManufacturing({ language = 'fr' }) {
   };
 
   const fetchUnidoData = async (countryIso3) => {
+    const requestedCountry = countryIso3;
+    unidoRequestCountry.current = requestedCountry;
     setLoading(true);
     setExpandedIsic4(null);
     setIsic4Timeseries({});
     try {
       const response = await axios.get(`${API}/production/unido/${countryIso3}`);
+      // Une réponse tardive d'un pays qu'on a quitté doit être jetée, pas
+      // affichée. Sans ce garde, un changement de pays rapide appariait les
+      // classes ISIC4 du pays courant aux parts de MVA d'un autre pays : les
+      // encadrés auraient porté un classement faux sans rien signaler.
+      if (unidoRequestCountry.current !== requestedCountry) return;
       setUnidoData(response.data);
     } catch (error) {
+      if (unidoRequestCountry.current !== requestedCountry) return;
       console.error('Error fetching UNIDO data:', error);
       setUnidoData(null);
     } finally {
-      setLoading(false);
+      if (unidoRequestCountry.current === requestedCountry) setLoading(false);
     }
   };
 
@@ -1059,7 +1068,7 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
 // Tableau années × indicateurs d'une famille. Dimensionné pour tout montrer :
 // aucune troncature de libellé, et c'est le conteneur qui défile si la série
 // est longue, jamais le contenu qui est coupé.
-function YearMatrix({ title, subtitle, fields, series, years, labels, formatIndicatorValue, accent, extraRows = [] }) {
+function YearMatrix({ title, subtitle, fields, series, years, labels, formatIndicatorValue, accent, language, extraRows = [] }) {
   const present = fields.filter((f) => series[f]?.length);
   if (!present.length && !extraRows.length) return null;
 
@@ -1079,7 +1088,7 @@ function YearMatrix({ title, subtitle, fields, series, years, labels, formatIndi
           <thead>
             <tr className={accent.head}>
               <th className="text-left font-semibold px-4 py-2.5 whitespace-nowrap sticky left-0 z-10 bg-inherit">
-                Indicateur
+                {language === 'fr' ? 'Indicateur' : 'Indicator'}
               </th>
               {years.map((year) => (
                 <th key={year} className="text-right font-semibold px-4 py-2.5 whitespace-nowrap tabular-nums">
@@ -1204,6 +1213,7 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, language, formatIndic
                 series={series}
                 years={years}
                 labels={labels}
+                language={language}
                 formatIndicatorValue={formatIndicatorValue}
                 accent={{ text: 'text-emerald-800', head: 'bg-emerald-50 text-emerald-900 border-b-2 border-emerald-200' }}
                 extraRows={femaleShareRow}
@@ -1215,6 +1225,7 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, language, formatIndic
                 series={series}
                 years={years}
                 labels={labels}
+                language={language}
                 formatIndicatorValue={formatIndicatorValue}
                 accent={{ text: 'text-sky-800', head: 'bg-sky-50 text-sky-900 border-b-2 border-sky-200' }}
               />
