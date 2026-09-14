@@ -2,7 +2,9 @@
  "schema_version": 1,
  "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
  "etabli_le": "2026-09-13",
- "methode": "Un pays n'est porté APPLIQUE que sur source primaire lue intégralement : acte national publié, liste nominative des origines admises, date d'entrée en vigueur. Une synthèse de presse ou une page de portail ne suffit jamais. NON_RECHERCHE signifie que la recherche n'a pas été faite — jamais que le pays n'applique pas.",
+ "mis_a_jour_le": "2026-09-14",
+ "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne vérifiées ce jour-là, et réaligné sur le registre d'application : trois preuves tronquées restaurées (CIV, NGA, ZMB) et trois barèmes archivés à tort déclarés absents (CIV, KEN, NGA). Le nom de fichier conserve la date d'établissement.",
+ "methode": "Un pays n'est porté APPLIQUE que sur source primaire lue intégralement : acte national publié, liste nominative des origines admises, date d'entrée en vigueur. Une synthèse de presse ou une page de portail ne suffit jamais. NON_RECHERCHE signifie que la recherche n'a pas été faite — jamais que le pays n'applique pas. Le drapeau bareme_collecte dit qu'un barème tarifaire est archivé pour cette destination — instantané régional inclus — et non que la préférence est appliquée : le niveau juridique reste porté par le champ niveau.",
  "niveaux": {
   "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
   "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
@@ -52,9 +54,10 @@
   },
   "CIV": {
    "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "Ordonnance du 23 avril 2025 : L'ordonnance conditionne la préférence à la réciprocité; la liste des partenaires acceptés n'est pas publiée d",
+   "preuve": "Ordonnance du 23 avril 2025 : L'ordonnance conditionne la préférence à la réciprocité; la liste des partenaires acceptés n'est pas publiée dans la source revue.",
    "niveau_de_source": "primaire (dépôt, revue antérieure)",
-   "bareme_collecte": false
+   "bareme_collecte": true,
+   "bareme_source": "ECOWAS"
   },
   "CMR": {
    "niveau": "OFFRE_SEULE",
@@ -156,7 +159,8 @@
    "niveau": "APPLIQUE",
    "preuve": "EAC/321/2022 + liste KRA de 21 origines",
    "niveau_de_source": "primaire (dépôt, revue antérieure)",
-   "bareme_collecte": false
+   "bareme_collecte": true,
+   "bareme_source": "EAC"
   },
   "LBR": {
    "niveau": "NON_RECHERCHE",
@@ -232,9 +236,10 @@
   },
   "NGA": {
    "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "PSTC gazettée en avril 2025 : La domestication est confirmée, mais aucune liste officielle des corridors réciproques acceptés n'a été retrou",
+   "preuve": "PSTC gazettée en avril 2025 : La domestication est confirmée, mais aucune liste officielle des corridors réciproques acceptés n'a été retrouvée.",
    "niveau_de_source": "primaire (dépôt, revue antérieure)",
-   "bareme_collecte": false
+   "bareme_collecte": true,
+   "bareme_source": "ECOWAS"
   },
   "RWA": {
    "niveau": "OFFRE_SEULE",
@@ -328,7 +333,7 @@
   },
   "ZMB": {
    "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
-   "preuve": "SI 92/2024 : Le Parlement confirme la domestication et l'usage sous GTI, mais aucune liste officielle exhaustive des origin",
+   "preuve": "SI 92/2024 : Le Parlement confirme la domestication et l'usage sous GTI, mais aucune liste officielle exhaustive des origines réciproques n'a été retrouvée.",
    "niveau_de_source": "primaire (dépôt, revue antérieure)",
    "bareme_collecte": true
   },

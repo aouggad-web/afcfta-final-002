@@ -10,6 +10,7 @@ from services.official_preferential_rates import (
 )
 from services.zlecaf_implementation_registry import (
     APPLIED,
+    NOT_AVAILABLE,
     OFFER_ONLY,
     PARTNER_NOTICE_REQUIRED,
     implementation_decision,
@@ -238,3 +239,25 @@ def test_accepted_corridor_ignores_unverified_etl_rate_when_exact_line_is_missin
     assert context["dd_rate_pct"] is None
     assert context["preference_applied"] is False
     assert context["zlecaf_rate_calculation_status"] == "NOT_AVAILABLE"
+
+
+def test_mar_et_zwe_livrent_une_offre_archivee_sans_appliquer_la_preference():
+    """Les deux ajouts à OFFER_DATASETS changent une décision publique.
+
+    Leur statut passe de NOT_AVAILABLE à OFFER_ONLY. Ce n'est pas une
+    application de préférence : le taux NPF reste servi, et une suite qui
+    n'exerçait que le Ghana et l'Éthiopie ne le vérifiait pour aucun des deux.
+    """
+    for destination, dataset in (("MAR", "MAR"), ("ZWE", "ZWE")):
+        decision = implementation_decision(destination, "KEN")
+        assert decision["applied"] is False, destination
+        assert decision["status"] == OFFER_ONLY, destination
+        assert decision["tariff_dataset"] == dataset, destination
+
+
+def test_une_destination_sans_bareme_archive_reste_indisponible():
+    """Le contraste qui donne son sens à OFFER_ONLY : sans jeu, rien n'est servi."""
+    decision = implementation_decision("SOM", "KEN")
+    assert decision["applied"] is False
+    assert decision["status"] == NOT_AVAILABLE
+    assert not decision.get("tariff_dataset")

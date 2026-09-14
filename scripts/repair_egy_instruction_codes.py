@@ -160,6 +160,18 @@ def main() -> int:
         print("\nMesure seule. Utiliser --out pour écrire une copie réparée.")
         return 0
 
+    # La promesse du script est de ne jamais réécrire le fichier collecté sur
+    # place : cela le ferait diverger de ce qui a été collecté, et son sceau
+    # d'intégrité certifierait alors un dérivé. Une promesse qu'un chemin de
+    # sortie peut contourner n'en est pas une.
+    if args.out.resolve() == TARIFFS.resolve():
+        raise SystemExit(
+            "--out ne peut pas désigner le fichier collecté lui-même "
+            f"({TARIFFS}). Ce script en écrit une copie ; pour intégrer la "
+            "correction, reconstruire depuis les fichiers de progression avec "
+            "backend/scripts/build_egy_tariffs_official.py, puis resceller."
+        )
+
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(
         json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8"

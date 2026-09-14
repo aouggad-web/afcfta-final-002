@@ -100,7 +100,13 @@ def tax_entries(position: Dict[str, Any]) -> List[Tuple[str, str, Any]]:
     (EAC), et champ direct `dd` sans collection (Ghana).
     """
     out: List[Tuple[str, str, Any]] = []
-    for key in ("taxes", "taxes_import", "taxes_detail"):
+    # La collection détaillée passe AVANT la collection compacte. Chez les pays
+    # CEDEAO et CEMAC les deux coexistent et portent les mêmes taxes, mais seule
+    # `taxes_detail` documente l'assiette : `taxes` y est un dictionnaire de
+    # taux nus, `{"DD": 20.0}`. Dédupliquer dans l'autre sens retiendrait le
+    # taux sans assiette et classerait en SANS_ASSIETTE des assiettes que la
+    # source publie.
+    for key in ("taxes_detail", "taxes_import", "taxes"):
         block = position.get(key)
         if isinstance(block, dict):
             for code, value in block.items():
@@ -116,7 +122,12 @@ def tax_entries(position: Dict[str, Any]) -> List[Tuple[str, str, Any]]:
             for item in block:
                 if not isinstance(item, dict):
                     continue
-                code = str(item.get("code") or "")
+                # Le code d'une entrée-liste n'a pas partout la même clé :
+                # `tax_code` chez les 19 pays CEDEAO et CEMAC, `tax` dans le
+                # schéma canonique v4, `code` chez SACU, le Nigeria et la
+                # Tunisie. N'en lire qu'une rend les autres invisibles — et un
+                # code vide n'est pas une taxe non classée, c'est une clé non lue.
+                code = str(item.get("code") or item.get("tax_code") or item.get("tax") or "")
                 name = str(item.get("name") or item.get("tax_name") or "")
                 out.append((code, f"{name} {code}".strip(), item))
     for key in ("dd", "dd_rate"):

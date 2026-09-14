@@ -187,14 +187,21 @@ def _index(doc: dict) -> dict[str, dict]:
     return {(p.get("hs_code") or "").replace("/", ""): p for p in doc.get("sub_positions") or []}
 
 
+#: Champ portant le texte verbatim dans chaque entrée de bloc famille.
+#: C'est le seul que le constructeur écrit, et une réconciliation qui en
+#: chercherait un autre serait aveugle aux trois blocs : elle pourrait alors
+#: annoncer zéro texte perdu sans avoir rien mesuré.
+FAMILY_TEXT_FIELD = "text_verbatim"
+
+
 def _texts(line: dict) -> set[str]:
     """Tous les textes d'instruction portés par une position, toutes familles."""
     out = {str(t) for t in (line.get("official_instructions") or [])}
     for key in ("formalities", "restrictions", "fta_preferences"):
         for entry in line.get(key) or []:
-            for field in ("text", "text_ar", "instruction_ar", "verbatim"):
-                if entry.get(field):
-                    out.add(str(entry[field]))
+            text = entry.get(FAMILY_TEXT_FIELD)
+            if text:
+                out.add(str(text))
     return out
 
 
@@ -283,8 +290,11 @@ def reconcile(base: dict, built: dict) -> dict:
             f: {"before": base.get(f), "after": built.get(f)}
             for f in ("extracted_at", "rebuilt_at")
         },
-        "calculation_method_preserved": bool(base.get("calculation_method"))
-        == bool(built.get("calculation_method")),
+        # Comparer les valeurs, non leur seule présence : deux méthodes de
+        # calcul différentes sont toutes deux « non vides », et ce champ
+        # certifie une conservation, pas une existence.
+        "calculation_method_preserved": base.get("calculation_method")
+        == built.get("calculation_method"),
     }
 
 

@@ -15,6 +15,7 @@ import re
 import time
 import urllib.request
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
 
 PUBLIC_URL = "https://etariff.au-afcfta.org/"
@@ -275,14 +276,22 @@ def main() -> None:
     parser.add_argument("offers", nargs="*", choices=sorted(OFFERS), default=sorted(OFFERS))
     parser.add_argument(
         "--collected-at",
-        default=COLLECTED_AT,
+        default=None,
         help=(
             "Date de collecte (AAAA-MM-JJ) portée par le fichier et ses "
-            "métadonnées. Par défaut la date des instantanés existants, pour les "
-            "reproduire ; passer la date du jour pour toute nouvelle collecte."
+            "métadonnées. Par défaut la date du jour en UTC, qui est la seule "
+            "vraie pour une collecte réelle. Ne passer une date passée que pour "
+            f"reproduire un instantané existant (par exemple {COLLECTED_AT})."
         ),
     )
     args = parser.parse_args()
+
+    # Défaut : aujourd'hui. Garder la date historique comme défaut daterait
+    # silencieusement du 17 août toute collecte future — précisément la
+    # provenance fausse que ce paramètre existe pour empêcher. L'API ne peut
+    # pas reproduire une réponse passée à partir d'une date de nom de fichier.
+    if args.collected_at is None:
+        args.collected_at = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.collected_at):
         raise SystemExit(f"--collected-at attend AAAA-MM-JJ, reçu {args.collected_at!r}")

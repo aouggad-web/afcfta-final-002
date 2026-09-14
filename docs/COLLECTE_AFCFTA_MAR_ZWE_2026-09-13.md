@@ -66,6 +66,18 @@ reproductible par `backend/scripts/build_afcfta_status_matrix.py`.
 3. un barème au niveau de la ligne tarifaire ;
 4. la preuve d'origine ZLECAf, vérifiée en douane et non par l'application.
 
+> **État au moment de la collecte, 13 septembre 2026.** Cette section décrit ce
+> qui était établi ce jour-là. Elle a été dépassée le jour même par la
+> vérification marocaine : `MAR_application_2026-09-13.json` établit
+> l'instrument national (circulaire ADII 6530/223 du 22 janvier 2024, 158 pages
+> lues) **et** les 40 origines admises, ce qui satisfait les conditions 1 et 2
+> pour le Maroc. Les blocages marocains restants ne sont donc pas ceux listés
+> ci-dessous, mais : la surcharge technique du sélecteur de barème par les
+> listes P1/P2 — la carte de l'UA en désigne un autre pour 33 des 40 origines —,
+> la restriction aux 40 origines nommées, et le traitement de la taxe
+> parafiscale à l'importation. Le Zimbabwe, lui, reste bien à la seule
+> condition 3.
+
 Pour le Maroc et le Zimbabwe, **seule la condition 3 est désormais remplie**.
 Les deux destinations ont été inscrites dans `OFFER_DATASETS` : la décision
 qu'elles produisent passe de `NOT_AVAILABLE` à `OFFER_ONLY` avec leur jeu de
@@ -79,7 +91,8 @@ situations qui n'appellent pas le même travail.
 |---|---|---|
 | KEN | **`APPLIED`** | rien — 21 origines admises, Legal Notice EAC/321/2022 |
 | ETH, ZMB, CIV, NGA | `PARTNER_NOTICE_REQUIRED` | la liste officielle des origines admises |
-| CMR, EGY, GHA, RWA, TUN, **MAR**, **ZWE** | `OFFER_ONLY` | l'instrument national d'application **et** la liste des origines |
+| CMR, EGY, GHA, RWA, TUN, **ZWE** | `OFFER_ONLY` | l'instrument national d'application **et** la liste des origines |
+| **MAR** | `OFFER_ONLY` | instrument et origines désormais établis (voir l'encadré ci-dessus) ; reste la surcharge du sélecteur de barème P1/P2 |
 | les 43 autres | `NOT_AVAILABLE` | le barème lui-même |
 
 Pour faire passer le Maroc à `APPLIED`, il faut deux documents officiels que

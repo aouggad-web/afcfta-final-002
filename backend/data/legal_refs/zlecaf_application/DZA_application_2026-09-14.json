@@ -218,5 +218,28 @@
   ],
   "portee": "Deux circulaires nationales indépendantes, lues sur deux sources primaires distinctes — un PDF marocain de 158 pages et un PDF algérien de 8,5 Mo — produisent la même énumération. La règle sous-jacente est donc objective : les non-PMA membres d'une CER qui appliquent eux-mêmes le calendrier PMA. Cette concordance valide les deux déterminations l'une par l'autre.",
   "consequence": "Elle éclaire aussi l'écart relevé avec l'e-Tariff Book de l'UA, dont le barème 2 est intitulé « LDC Countries in a Customs Union » : des PMA en union douanière, ce qui n'est pas la même catégorie que des non-PMA appliquant le calendrier PMA. La divergence sur 33 origines relevée pour le Maroc s'explique par cette confusion de catégories."
+ },
+ "accepted_origins": {
+  "count": 13,
+  "note": "Seul le régime de réciprocité désigne des origines nommément : les 13 pays de l'article 5 (i), repris ici depuis regimes_verifies.regime_de_reciprocite. Le régime par défaut ne comporte pas de liste fermée — il vise tous les pays africains membres de la ZLECAf — et n'est donc pas énumérable ici.",
+  "reciprocite_article_5i": {
+   "iso3": [
+    "ZAF",
+    "BWA",
+    "CMR",
+    "CPV",
+    "COG",
+    "CIV",
+    "SWZ",
+    "GAB",
+    "GHA",
+    "GNQ",
+    "KEN",
+    "NGA",
+    "NAM"
+   ],
+   "duree_ans": 10,
+   "source": "circulaire 482/DGD, sections II-2, II-3 et II-4"
+  }
  }
 }

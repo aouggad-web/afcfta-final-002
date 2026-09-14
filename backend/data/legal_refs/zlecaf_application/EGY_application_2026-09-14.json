@@ -12,7 +12,12 @@
   "authority": "وزارة المالية — مصلحة الجمارك المصرية، قطاع النظم والإجراءات الجمركية، الإدارة المركزية للتعاون الدولي، إدارة الاتفاقيات العربية والافريقية",
   "authority_fr": "Ministère des Finances — Autorité égyptienne des douanes, secteur des régimes et procédures douanières, direction centrale de la coopération internationale, administration des accords arabes et africains",
   "published_on_portal": "2025-12-31",
-  "supplements": ["منشور اتفاقيات رقم 3", "رقم 6", "رقم 10", "رقم 15"],
+  "supplements": [
+   "منشور اتفاقيات رقم 3",
+   "رقم 6",
+   "رقم 10",
+   "رقم 15"
+  ],
   "subject_ar": "إجراءات تفعيل اتفاق منطقة التجارة الحرة القارية الافريقية AfCFTA",
   "url": "https://customs.gov.eg/Upload/ECAAdminace/ECAAdminace987843099.pdf",
   "sha256": "df63823c1b15d3b2171f997aa37c905b7fcd29621471140a92c1ba53173629fc",
@@ -35,7 +40,14 @@
    "basis": "principe de réciprocité (مبدأ المعاملة بالمثل), par annuités égales",
    "reduction_rate_at_2025_01_01_pct": 50,
    "count": 6,
-   "iso3": ["ZAF", "BWA", "GHA", "KEN", "CMR", "SWZ"],
+   "iso3": [
+    "ZAF",
+    "BWA",
+    "GHA",
+    "KEN",
+    "CMR",
+    "SWZ"
+   ],
    "verbatim_ar": "جنوب افريقيا - بتسوانا - غانا - كينيا - الكاميرون - اسواتيني"
   },
   "groupe_5_ans": {
@@ -43,7 +55,19 @@
    "basis": "pays les moins avancés et partenaires à démantèlement accéléré",
    "reduction_rate_at_2025_01_01_pct": 100,
    "count": 11,
-   "iso3": ["MAR", "RWA", "TZA", "MUS", "TUN", "DZA", "BDI", "LSO", "MWI", "GMB", "UGA"],
+   "iso3": [
+    "MAR",
+    "RWA",
+    "TZA",
+    "MUS",
+    "TUN",
+    "DZA",
+    "BDI",
+    "LSO",
+    "MWI",
+    "GMB",
+    "UGA"
+   ],
    "verbatim_ar": "المملكة المغربية - رواندا - تنزانيا - موريشيوس - تونس - الجزائر - بروندى - ليسوتو - مالاوى - جامبيا - اوغندا"
   }
  },
@@ -52,17 +76,31 @@
   "queried_at": "2026-09-14",
   "note": "L'API officielle renvoie les instructions douanières verbatim. Deux instructions ZLECAf y figurent, cohérentes avec les calendriers de la circulaire.",
   "instructions": [
-   {"code": "ر6790", "text_ar": "اتفاقية التجارة الحرة الافريقية القارية مجموعة [أ]تخفض 100%", "lecture": "groupe [أ] — réduction de 100 %, soit le groupe à 5 ans, intégralement démantelé"},
-   {"code": "ر6791", "text_ar": "اتفاقية التجارة الحرة الافريقية القارية مجموعة [ب] تخفض 60%", "lecture": "groupe [ب] — réduction de 60 %, soit la tranche 2026 du groupe à 10 ans (10 %/an depuis 2021 : 50 % au 1/1/2025, 60 % au 1/1/2026)"}
+   {
+    "code": "ر6790",
+    "text_ar": "اتفاقية التجارة الحرة الافريقية القارية مجموعة [أ]تخفض 100%",
+    "lecture": "groupe [أ] — réduction de 100 %, soit le groupe à 5 ans, intégralement démantelé"
+   },
+   {
+    "code": "ر6791",
+    "text_ar": "اتفاقية التجارة الحرة الافريقية القارية مجموعة [ب] تخفض 60%",
+    "lecture": "groupe [ب] — réduction de 60 %, soit la tranche 2026 du groupe à 10 ans (10 %/an depuis 2021 : 50 % au 1/1/2025, 60 % au 1/1/2026)"
+   }
   ],
   "semantics": "Le verbe تخفض signifie « réduit ». Les pourcentages égyptiens sont donc des taux de RÉDUCTION du droit, non des reliquats. La cohérence arithmétique entre les 50 % de la circulaire au 1/1/2025 et les 60 % du portail en 2026 confirme cette lecture."
  },
  "data_defect_found": {
-  "severity": "à corriger dans le crawl",
+  "severity": "corrigé dans cette même branche",
   "where": "backend/data/crawled/EGY_tariffs.json — champs fta_preferences, zlecaf_instruction, official_instructions",
   "problem": "Le crawler apparie par zip les tableaux Instructions et InstructionCodes renvoyés par l'API. Or ils n'ont ni la même longueur ni le même ordre : sur la position 0101210000 l'API renvoie 11 instructions et 12 codes, et l'appariement naïf produit 10 paires fausses sur 11.",
-  "measured": "72,6 % des entrées fta_preferences du fichier portent un code_verbatim qui ne correspond pas au code inscrit dans leur propre texte.",
-  "fix": "Ne pas utiliser InstructionCodes comme clé d'appariement : le code figure en préfixe de chaque texte (ر6790-..., غ4046-..., ق3034-...) et doit en être extrait."
+  "fix": "Ne pas utiliser InstructionCodes comme clé d'appariement : le code figure en préfixe de chaque texte (ر6790-..., غ4046-..., ق3034-...) et doit en être extrait.",
+  "resolved": {
+   "how": "Le code est désormais lu dans le préfixe du texte de l'instruction, et le tableau InstructionCodes n'est plus une clé d'appariement (backend/scripts/build_egy_tariffs_official.py).",
+   "dataset_rebuilt": "backend/data/crawled/EGY_tariffs.json reconstruit depuis les fichiers de progression du même crawl, puis rescellé. Taxes identiques sur les 8 818 positions, aucun texte perdu.",
+   "effect": "préférences 53 459 → 69 702, formalités 3 164 → 4 097, restrictions 0 → 26 502 (famille ق auparavant ignorée).",
+   "report": "reports/EGY_REBUILD_RECONCILIATION.json"
+  },
+  "measured_before_fix": "72,6 % des entrées fta_preferences du fichier portent un code_verbatim qui ne correspond pas au code inscrit dans leur propre texte."
  },
  "gates_status": {
   "1_instrument_national_en_vigueur": "SATISFAIT — circulaire n° 38 complétant les n° 3, 6, 10 et 15, décret présidentiel 212/2023 référencé",
@@ -73,7 +111,6 @@
  "remaining_work": [
   "Obtenir les circulaires n° 3, 6, 10 et 15 pour reconstituer l'historique complet des notifications d'origines.",
   "Vérifier si une circulaire postérieure au 31/12/2025 met à jour les listes ou fait entrer en vigueur les listes B et C.",
-  "Corriger l'appariement code/texte du crawl égyptien avant d'exploiter les instructions par code.",
   "Rapprocher les deux groupes de la circulaire des deux barèmes de l'instantané e-Tariff Book, comme il a fallu le faire pour le Maroc : l'UA nomme ses barèmes « LDC Countries in a Customs Union » et « All other parties », ce qui ne recouvre pas exactement la répartition de la circulaire."
  ]
 }

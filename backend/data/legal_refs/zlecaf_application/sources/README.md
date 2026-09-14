@@ -33,8 +33,18 @@ recherche plein texte et une re-vérification mécanique des libellés.
 
 ## Ce qui manque
 
-L'Algérie n'a aucun document archivé : `douane.gov.dz` et `commerce.gov.dz` sont
-injoignables depuis l'environnement de vérification (échec de connexion réseau,
-pas un code HTTP). Les deux circulaires algériennes sont nommées et datées dans
-`DZA_application_2026-09-14.json`, mais leur niveau de preuve reste secondaire
-tant que les PDF ne sont pas archivés ici.
+La circulaire algérienne n° 482/DGD/SP/D.042/24 du 22 octobre 2024 **est**
+archivée ici, sous la forme de son texte intégral extrait
+(`DZA_circulaire_482-DGD_2024-10-22.texte-extrait.txt`) ; le PDF de 8,5 Mo ne
+l'est pas. `DZA_application_2026-09-14.json` classe donc la preuve algérienne au
+niveau primaire, et non secondaire.
+
+Restent à archiver : le PDF de cette circulaire, et la circulaire
+interministérielle n° 02 du 26 septembre 2024, qui n'est ni l'une ni l'autre
+présente.
+
+Sur l'accès : le diagnostic d'un « échec réseau » était faux et est corrigé. Le
+DNS résout, le tunnel s'établit et la chaîne TLS est valide — `openssl` rend
+« Verify return code: 0 (ok) » avec le bundle fourni. Le serveur répond un 503 :
+`douane.gov.dz` refuse le client, ce qui n'est ni un blocage réseau ni un défaut
+de certificat.

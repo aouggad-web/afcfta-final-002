@@ -130,8 +130,28 @@ def test_les_groupes_d_origines_ne_se_chevauchent_pas(fiche):
         for key, value in origins.items()
         if isinstance(value, dict) and isinstance(value.get("iso3"), list)
     }
+    # Toutes les fiches ne rangent pas leurs origines en groupes nommés : la
+    # Tunisie publie les siennes ligne à ligne dans `detail`, une origine par
+    # entrée. Les ignorer faisait sauter la fiche entière — y compris le
+    # contrôle du décompte déclaré, qui n'a pourtant rien à voir avec le
+    # nombre de groupes.
+    detail = origins.get("detail")
+    if isinstance(detail, list):
+        plates = {
+            str(entry["iso3"])
+            for entry in detail
+            if isinstance(entry, dict) and entry.get("iso3")
+        }
+        if plates:
+            groupes.setdefault("detail", set()).update(plates)
+
+    if not groupes:
+        pytest.skip(f"{fiche.stem} : aucune origine énumérée")
+
+    _verifier_le_decompte_declare(fiche, origins, groupes)
+
     if len(groupes) < 2:
-        pytest.skip(f"{fiche.stem} : moins de deux groupes d'origines")
+        return
 
     noms = sorted(groupes)
     for i, gauche in enumerate(noms):
@@ -143,6 +163,9 @@ def test_les_groupes_d_origines_ne_se_chevauchent_pas(fiche):
                 f"calendriers de démantèlement"
             )
 
+
+def _verifier_le_decompte_declare(fiche, origins: dict, groupes: dict) -> None:
+    """Le décompte annoncé par la fiche doit correspondre aux origines listées."""
     declared = origins.get("count")
     if isinstance(declared, int):
         total = len(set().union(*groupes.values()))
