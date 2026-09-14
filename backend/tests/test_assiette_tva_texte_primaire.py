@@ -24,7 +24,8 @@ import pytest
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "backend"))
 
-from services.authentic_tariff_service import (  # noqa: E402
+from services.authentic_tariff_service import (
+    ASSIETTE_TVA_NON_APPLICABLE,  # noqa: E402
     ASSIETTE_TVA_ETABLIE,
     BASE_TVA_TOUTES_TAXES,
     COUNTRY_TAX_PROFILES,
@@ -120,3 +121,103 @@ def test_chaque_pays_du_registre_cite_une_fiche_archivee(iso3):
     regle = ASSIETTE_TVA_ETABLIE[iso3]
     assert regle["texte"], iso3
     assert (REFS / regle["fiche"]).exists(), regle["fiche"]
+
+
+def test_la_tunisie_est_exclue_de_la_regle_et_le_dit():
+    """Son texte est lu, archivé — et pourtant inapplicable en l'état.
+
+    L'article 6 § II-1 du Code tunisien de la TVA énonce la même assiette que
+    les autres : valeur en douane, tous droits et taxes inclus. Deux obstacles
+    interdisent néanmoins de l'appliquer, et chacun ferait servir une TVA
+    SOUS-ÉVALUÉE sous couvert d'un texte primaire — ce qui est pire qu'une
+    assiette codée qui ne se réclame de rien :
+
+      1. le même article majore l'assiette de 25 % pour l'importateur non
+         assujetti, statut que le calculateur ne recueille pas ;
+      2. les données tunisiennes portent 2 435 taxes à assiette quantitative
+         que le moteur ne liquide pas, et qui manqueraient donc à une assiette
+         « tous droits et taxes inclus ».
+
+    L'exclusion doit rester explicite et motivée : une simple absence de la
+    table se lirait comme un oubli, et le prochain passage la « corrigerait ».
+    """
+    assert "TUN" not in ASSIETTE_TVA_ETABLIE
+    motif = ASSIETTE_TVA_NON_APPLICABLE["TUN"]
+    assert motif["texte_lu"], "le texte lu doit rester consigné"
+    assert (REFS / motif["fiche"]).exists(), motif["fiche"]
+    assert motif["obstacles"], "l'exclusion doit dire pourquoi"
+
+    # Et le moteur ne doit pas citer l'article 6 pour la Tunisie.
+    resultat = compute_tax_cascade(10_000.0, {"DD": 36.0, "TCL": 3.0, "TVA": 19.0}, "TUN")
+    assert resultat["profile_status"] != "assiette_tva_texte_primaire"
+    assert "article 6" not in (resultat.get("legal_source") or "")
+    assert _etape(resultat, "TVA")["base_formula"] != BASE_TVA_TOUTES_TAXES
+
+
+def test_aucun_pays_de_la_regle_ne_porte_de_taxe_quantitative():
+    """Ce qui rend l'exception tunisienne mesurée, et non prudentielle.
+
+    La règle « tous droits et taxes » n'est tenable que si toutes les taxes de
+    la position sont liquidables en ad valorem. La Tunisie est le seul pays
+    concerné à porter des taxes assises sur une quantité ; si un autre venait
+    à en porter, la même omission silencieuse s'y reproduirait.
+
+    On vérifie donc la propriété sur les données, et non sur une liste tenue à
+    la main.
+    """
+    import glob
+    import json
+    import re
+
+    NOMBRE = re.compile(r"-?\d+(?:[.,]\d+)?")
+    EXONERATIONS = {"free", "exempt", "exonere", "exonéré"}
+    BLOCS = ("taxes", "taxes_detail", "taxes_import", "import_taxes")
+
+    def quantitatives(payload) -> int:
+        trouvees = 0
+        if isinstance(payload, dict):
+            for cle, valeur in payload.items():
+                if cle in BLOCS and isinstance(valeur, (dict, list)):
+                    entrees = valeur.values() if isinstance(valeur, dict) else valeur
+                    for entree in entrees:
+                        brut = (
+                            entree.get("rate", entree.get("rate_pct", entree.get("value_raw")))
+                            if isinstance(entree, dict)
+                            else entree
+                        )
+                        if isinstance(brut, str):
+                            texte = brut.strip().lower()
+                            if texte not in EXONERATIONS and "%" not in texte and NOMBRE.search(texte):
+                                trouvees += 1
+                else:
+                    trouvees += quantitatives(valeur)
+        elif isinstance(payload, list):
+            for item in payload[:4000]:
+                trouvees += quantitatives(item)
+        return trouvees
+
+    racine = Path(__file__).resolve().parents[1] / "data"
+    fichiers = sorted(glob.glob(str(racine / "crawled" / "*.json"))) + sorted(
+        glob.glob(str(racine / "crawled_normalized" / "*.json"))
+    )
+    assert fichiers, "aucun fichier collecté à examiner"
+
+    fautifs = {}
+    for chemin in fichiers:
+        nom = Path(chemin).name.upper()
+        iso = next((i for i in ASSIETTE_TVA_ETABLIE if nom.startswith(i)), None)
+        if iso is None:
+            continue
+        try:
+            payload = json.loads(Path(chemin).read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            continue
+        compte = quantitatives(payload)
+        if compte:
+            fautifs[iso] = fautifs.get(iso, 0) + compte
+
+    assert not fautifs, (
+        "ces pays relèvent de la règle « tous droits et taxes » alors que leurs "
+        f"données portent des taxes assises sur une quantité : {fautifs}. Leur "
+        "TVA serait sous-évaluée en silence, comme en Tunisie."
+    )

@@ -105,6 +105,53 @@ def _profil_codes() -> Dict[str, dict]:
     return dict(COUNTRY_TAX_PROFILES)
 
 
+def _bases_declarees_par_le_jeu(payload: dict, canonical) -> Dict[str, str]:
+    """Assiettes que le fichier déclare globalement, hors position.
+
+    Plusieurs jeux portent leurs assiettes une seule fois, sous
+    ``calculation_rules.bases``, plutôt que sur chaque ligne. Ne lire que la
+    position faisait conclure à une assiette absente là où le fichier la
+    déclare — pour Maurice, sur la totalité de ses lignes.
+    """
+    regles = payload.get("calculation_rules")
+    if not isinstance(regles, dict):
+        return {}
+    bases = regles.get("bases")
+    if not isinstance(bases, dict):
+        return {}
+    declarees: Dict[str, str] = {}
+    for code, valeur in bases.items():
+        taxe = canonical(code, "")
+        if not taxe:
+            continue
+        expression = valeur.get("basis") if isinstance(valeur, dict) else valeur
+        if isinstance(expression, str) and expression.strip():
+            declarees[taxe] = expression.strip()
+    return declarees
+
+
+def _pays_sous_regle_tva() -> dict:
+    """Pays dont le moteur remplace l'assiette codée de la TVA par le texte.
+
+    Sans cette lecture, l'inventaire décrirait la table codée en prétendant
+    décrire le moteur : il annoncerait « CIF + DD » pour le Kenya là où le
+    runtime liquide sur CIF + DD + IDF + RDL. Un rapport qui se réclame du
+    comportement réel doit lire la surcharge, pas seulement la table.
+    """
+    from services.authentic_tariff_service import ASSIETTE_TVA_ETABLIE
+
+    return dict(ASSIETTE_TVA_ETABLIE)
+
+
+#: Marqueur d'une assiette « valeur en douane + toutes les autres taxes »,
+#: que le moteur applique sans énumérer : les dépendances sont, par
+#: construction, toutes les autres taxes de la position.
+TOUTES_LES_AUTRES_TAXES = "TOUTES_LES_AUTRES_TAXES"
+
+#: Les écritures sous lesquelles la TVA apparaît dans les inventaires.
+_ALIAS_TVA_INVENTAIRE = ("TVA", "T.V.A", "VAT", "IVA")
+
+
 def _base_codee(profil: Optional[dict], taxe: str) -> Optional[list[str]]:
     """Dépendances d'assiette que la table codée attribue à cette taxe."""
     if not profil:
@@ -128,6 +175,7 @@ DEFAUT_SANS_PROFIL = {"TVA": ["DD"]}
 def inventory(countries: Optional[Iterable[str]] = None) -> dict:
     canonical, _preferential = _repo_helpers()
     profils = _profil_codes()
+    regles_tva = _pays_sous_regle_tva()
     filtre = {c.upper() for c in countries} if countries else None
 
     par_pays: Dict[str, dict] = {}
@@ -150,14 +198,34 @@ def inventory(countries: Optional[Iterable[str]] = None) -> dict:
         # Une même taxe peut porter plusieurs assiettes dans un même pays : le
         # cas est réel et doit ressortir, pas être écrasé par un « la première
         # rencontrée fait foi ».
+        # Assiettes déclarées une fois pour tout le jeu, hors position : un
+        # fichier peut porter calculation_rules.bases.DD.basis = « CIF » sans
+        # le répéter sur chacune de ses lignes. Les ignorer comptait Maurice
+        # comme dépourvue d'assiette sur ses 5 619 lignes.
+        bases_du_jeu = _bases_declarees_par_le_jeu(payload, canonical)
+
         vues: Dict[str, Counter] = defaultdict(Counter)
         for row in lignes:
+            # Dédoublonnage PAR POSITION : une même ligne décrit souvent ses
+            # taxes deux fois, dans un bloc compact sans assiette et dans un
+            # bloc détaillé qui en porte une. Les compter tous deux faisait
+            # apparaître autant de positions « sans assiette publiée » que de
+            # lignes, alors même que le statut disait « lue dans la source » —
+            # deux affirmations qui ne peuvent pas être vraies ensemble.
+            par_taxe: Dict[str, str] = {}
             for code, label, valeur in tax_entries(row):
                 taxe = canonical(code, label)
                 if not taxe:
                     continue
-                expression = declared_base(valeur)
-                vues[taxe][expression or ""] += 1
+                expression = declared_base(valeur) or bases_du_jeu.get(taxe) or ""
+                # L'entrée qui porte une assiette l'emporte sur celle qui n'en
+                # porte pas ; entre deux assiettes, la première rencontrée
+                # reste retenue, car l'écart réel doit ressortir ailleurs.
+                if expression or taxe not in par_taxe:
+                    if not par_taxe.get(taxe):
+                        par_taxe[taxe] = expression
+            for taxe, expression in par_taxe.items():
+                vues[taxe][expression] += 1
 
         profil = profils.get(iso3)
         taxes: Dict[str, dict] = {}
@@ -166,6 +234,13 @@ def inventory(countries: Optional[Iterable[str]] = None) -> dict:
             codee = _base_codee(profil, taxe)
             if codee is None and not profil:
                 codee = DEFAUT_SANS_PROFIL.get(taxe)
+
+            # Ce que le MOTEUR applique réellement, qui n'est pas toujours la
+            # table codée : pour les pays dont un texte primaire établit
+            # l'assiette de la TVA, compute_tax_cascade remplace l'assiette
+            # codée par « valeur en douane + toutes les autres taxes ».
+            regle_tva = regles_tva.get(iso3) if taxe in _ALIAS_TVA_INVENTAIRE else None
+            appliquee = TOUTES_LES_AUTRES_TAXES if regle_tva else codee
 
             if publiees:
                 principale = max(publiees, key=publiees.get)
@@ -199,9 +274,23 @@ def inventory(countries: Optional[Iterable[str]] = None) -> dict:
                 "table_codee_origine": (
                     profil.get("source") if profil else "profil par défaut du moteur"
                 ),
+                "assiette_appliquee_par_le_moteur": appliquee,
+                "fondement_de_l_assiette_appliquee": (
+                    regle_tva["texte"] if regle_tva else None
+                ),
             }
 
-            if depend is not None and codee is not None and set(depend) != set(codee):
+            # Le désaccord se mesure contre ce que le moteur applique. Comparer
+            # à la table codée signalerait encore comme litigieux ce que la
+            # règle d'assiette a déjà tranché.
+            if regle_tva:
+                entree["accord"] = True
+                entree["accord_note"] = (
+                    "assiette remplacée par le texte primaire : « valeur en douane "
+                    "+ tous droits et taxes perçus à l'entrée, hors TVA ». Elle "
+                    "englobe l'assiette publiée comme l'assiette codée."
+                )
+            elif depend is not None and codee is not None and set(depend) != set(codee):
                 entree["accord"] = False
                 desaccords.append(
                     {

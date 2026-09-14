@@ -11,37 +11,45 @@
   },
   "global": {
     "lignes": 342176,
-    "lignes_total_indisponible": 174131,
-    "pct_total_indisponible": 50.89,
+    "lignes_total_indisponible": 173693,
+    "pct_total_indisponible": 50.76,
     "lecture_restreinte": {
       "definition": "Une assiette non déclarée n'est pas comptée comme une indisponibilité : le taux est publié, seule la convention d'assiette manque. Seules ABSENTE et SPECIFIQUE_SANS_QUANTITE rendent alors le total indisponible.",
       "lignes_total_indisponible": 59677,
       "pct_total_indisponible": 17.44,
       "residu_apres_taux_national": {
         "definition": "Lignes qui restent non liquidables en lecture restreinte même en servant le taux de TVA national documenté, provenance déclarée : le droit de douane y manque, ou le pays n'a pas de taux national documenté. C'est le coût irréductible de la règle 2.",
-        "lignes": 4265,
-        "pct": 1.25
-      }
+        "lignes": 4277,
+        "pct": 1.25,
+        "correction_2026-09-14": "Le calcul précédent tenait une TVA SPÉCIFIQUE sans quantité pour couverte dès qu'un taux national existait pour le pays, alors qu'un taux ad valorem ne peut pas suppléer un montant unitaire dont la quantité est inconnue. Le résidu était donc minoré — dans le sens qui rend la décision facile.",
+        "hypothese": "Ce chiffre suppose acquis que servir le taux de TVA national rende la ligne liquidable. Cette substitution n'a PAS d'assiette documentée : c'est l'objection qui a fait suspendre la sous-décision. Le chiffre ci-dessous en est la lecture stricte."
+      },
+      "residu_sans_substitution": {
+        "definition": "Même résidu, sans admettre la substitution par un taux national : aucune ligne n'est alors réputée guérie, puisque le taux national ne porte aucune assiette. Ce chiffre est le plancher de ce qui reste non liquidable si la substitution est refusée.",
+        "lignes": 59677,
+        "pct": 17.44
+      },
+      "ce_que_l_ecart_signifie": "L'écart entre les deux résidus mesure exactement ce que la substitution par le taux national ferait gagner, et donc l'enjeu de la sous-décision suspendue. Présenter le seul chiffre optimiste donnerait une hypothèse pour un constat."
     },
     "tva_recuperable_par_taux_national": 57344,
     "par_taxe": {
       "DD": {
         "etats": {
-          "ASSIETTE_NON_DOCUMENTEE": 168854,
-          "DOCUMENTE": 169057,
+          "DOCUMENTE": 264040,
           "ABSENTE": 3337,
+          "ASSIETTE_NON_DOCUMENTEE": 73871,
           "SPECIFIQUE_SANS_QUANTITE": 928
         },
-        "pct_non_liquidable": 50.59
+        "pct_non_liquidable": 22.84
       },
       "TVA": {
         "etats": {
-          "ASSIETTE_NON_DOCUMENTEE": 116111,
-          "DOCUMENTE": 168709,
+          "ASSIETTE_NON_DOCUMENTEE": 113284,
+          "DOCUMENTE": 171536,
           "ABSENTE": 57344,
           "SPECIFIQUE_SANS_QUANTITE": 12
         },
-        "pct_non_liquidable": 50.7
+        "pct_non_liquidable": 49.87
       }
     }
   },
@@ -55,7 +63,7 @@
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "DOCUMENTE": 5388
         },
         "TVA": {
           "ASSIETTE_NON_DOCUMENTEE": 5388
@@ -120,7 +128,8 @@
       "tva_recuperable_par_taux_national": 8589,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 8407,
+          "DOCUMENTE": 4595,
+          "ASSIETTE_NON_DOCUMENTEE": 3812,
           "SPECIFIQUE_SANS_QUANTITE": 181,
           "ABSENTE": 1
         },
@@ -221,7 +230,7 @@
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "DOCUMENTE": 5388
         },
         "TVA": {
           "ASSIETTE_NON_DOCUMENTEE": 5388
@@ -264,19 +273,21 @@
     },
     "EGY": {
       "lignes": 8818,
-      "lignes_total_indisponible": 8818,
-      "pct_total_indisponible": 100.0,
+      "lignes_total_indisponible": 8541,
+      "pct_total_indisponible": 96.86,
       "lignes_total_indisponible_lecture_restreinte": 74,
-      "lignes_residu_irreductible": 62,
+      "lignes_residu_irreductible": 74,
       "tva_recuperable_par_taux_national": 10,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 8756,
+          "ASSIETTE_NON_DOCUMENTEE": 7696,
+          "DOCUMENTE": 1060,
           "ABSENTE": 39,
           "SPECIFIQUE_SANS_QUANTITE": 23
         },
         "TVA": {
-          "ASSIETTE_NON_DOCUMENTEE": 8796,
+          "DOCUMENTE": 1004,
+          "ASSIETTE_NON_DOCUMENTEE": 7792,
           "ABSENTE": 10,
           "SPECIFIQUE_SANS_QUANTITE": 12
         }
@@ -324,7 +335,8 @@
       "tva_recuperable_par_taux_national": 6129,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 6129
+          "ASSIETTE_NON_DOCUMENTEE": 6031,
+          "DOCUMENTE": 98
         },
         "TVA": {
           "ABSENTE": 6129
@@ -438,7 +450,7 @@
       "tva_recuperable_par_taux_national": 5388,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "DOCUMENTE": 5388
         },
         "TVA": {
           "ABSENTE": 5388
@@ -454,7 +466,8 @@
       "tva_recuperable_par_taux_national": 8589,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 8407,
+          "DOCUMENTE": 4595,
+          "ASSIETTE_NON_DOCUMENTEE": 3812,
           "SPECIFIQUE_SANS_QUANTITE": 181,
           "ABSENTE": 1
         },
@@ -472,11 +485,13 @@
       "tva_recuperable_par_taux_national": 528,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 12972,
-          "ABSENTE": 142
+          "ASSIETTE_NON_DOCUMENTEE": 12968,
+          "ABSENTE": 142,
+          "DOCUMENTE": 4
         },
         "TVA": {
-          "ASSIETTE_NON_DOCUMENTEE": 12586,
+          "DOCUMENTE": 164,
+          "ASSIETTE_NON_DOCUMENTEE": 12422,
           "ABSENTE": 528
         }
       }
@@ -490,7 +505,7 @@
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5624
+          "DOCUMENTE": 5624
         },
         "TVA": {
           "ASSIETTE_NON_DOCUMENTEE": 5624
@@ -515,17 +530,18 @@
     },
     "MOZ": {
       "lignes": 5388,
-      "lignes_total_indisponible": 5388,
-      "pct_total_indisponible": 100.0,
+      "lignes_total_indisponible": 5362,
+      "pct_total_indisponible": 99.52,
       "lignes_total_indisponible_lecture_restreinte": 0,
       "lignes_residu_irreductible": 0,
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "DOCUMENTE": 5388
         },
         "TVA": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "ASSIETTE_NON_DOCUMENTEE": 5362,
+          "DOCUMENTE": 26
         }
       }
     },
@@ -538,7 +554,7 @@
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "DOCUMENTE": 5388
         },
         "TVA": {
           "ASSIETTE_NON_DOCUMENTEE": 5388
@@ -547,33 +563,35 @@
     },
     "MUS": {
       "lignes": 5619,
-      "lignes_total_indisponible": 5619,
-      "pct_total_indisponible": 100.0,
+      "lignes_total_indisponible": 5606,
+      "pct_total_indisponible": 99.77,
       "lignes_total_indisponible_lecture_restreinte": 0,
       "lignes_residu_irreductible": 0,
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5619
+          "DOCUMENTE": 5619
         },
         "TVA": {
-          "ASSIETTE_NON_DOCUMENTEE": 5619
+          "ASSIETTE_NON_DOCUMENTEE": 5606,
+          "DOCUMENTE": 13
         }
       }
     },
     "MWI": {
       "lignes": 5388,
-      "lignes_total_indisponible": 5388,
-      "pct_total_indisponible": 100.0,
+      "lignes_total_indisponible": 5379,
+      "pct_total_indisponible": 99.83,
       "lignes_total_indisponible_lecture_restreinte": 0,
       "lignes_residu_irreductible": 0,
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "DOCUMENTE": 5388
         },
         "TVA": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "ASSIETTE_NON_DOCUMENTEE": 5379,
+          "DOCUMENTE": 9
         }
       }
     },
@@ -586,7 +604,8 @@
       "tva_recuperable_par_taux_national": 8589,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 8407,
+          "DOCUMENTE": 4595,
+          "ASSIETTE_NON_DOCUMENTEE": 3812,
           "SPECIFIQUE_SANS_QUANTITE": 181,
           "ABSENTE": 1
         },
@@ -613,17 +632,19 @@
     },
     "NGA": {
       "lignes": 6363,
-      "lignes_total_indisponible": 6363,
-      "pct_total_indisponible": 100.0,
+      "lignes_total_indisponible": 6272,
+      "pct_total_indisponible": 98.57,
       "lignes_total_indisponible_lecture_restreinte": 52,
       "lignes_residu_irreductible": 0,
       "tva_recuperable_par_taux_national": 52,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 6363
+          "ASSIETTE_NON_DOCUMENTEE": 6261,
+          "DOCUMENTE": 102
         },
         "TVA": {
-          "ASSIETTE_NON_DOCUMENTEE": 6311,
+          "ASSIETTE_NON_DOCUMENTEE": 4722,
+          "DOCUMENTE": 1589,
           "ABSENTE": 52
         }
       }
@@ -654,7 +675,7 @@
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "DOCUMENTE": 5388
         },
         "TVA": {
           "ASSIETTE_NON_DOCUMENTEE": 5388
@@ -719,7 +740,7 @@
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "DOCUMENTE": 5388
         },
         "TVA": {
           "ASSIETTE_NON_DOCUMENTEE": 5388
@@ -735,7 +756,8 @@
       "tva_recuperable_par_taux_national": 8589,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 8407,
+          "DOCUMENTE": 4595,
+          "ASSIETTE_NON_DOCUMENTEE": 3812,
           "SPECIFIQUE_SANS_QUANTITE": 181,
           "ABSENTE": 1
         },
@@ -746,17 +768,18 @@
     },
     "SYC": {
       "lignes": 5396,
-      "lignes_total_indisponible": 5396,
-      "pct_total_indisponible": 100.0,
+      "lignes_total_indisponible": 5391,
+      "pct_total_indisponible": 99.91,
       "lignes_total_indisponible_lecture_restreinte": 0,
       "lignes_residu_irreductible": 0,
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5396
+          "DOCUMENTE": 5396
         },
         "TVA": {
-          "ASSIETTE_NON_DOCUMENTEE": 5396
+          "ASSIETTE_NON_DOCUMENTEE": 5391,
+          "DOCUMENTE": 5
         }
       }
     },
@@ -853,7 +876,8 @@
       "tva_recuperable_par_taux_national": 8589,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 8407,
+          "DOCUMENTE": 4595,
+          "ASSIETTE_NON_DOCUMENTEE": 3812,
           "SPECIFIQUE_SANS_QUANTITE": 181,
           "ABSENTE": 1
         },
@@ -871,7 +895,7 @@
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5613
+          "DOCUMENTE": 5613
         },
         "TVA": {
           "ASSIETTE_NON_DOCUMENTEE": 5613
@@ -880,17 +904,18 @@
     },
     "ZWE": {
       "lignes": 5388,
-      "lignes_total_indisponible": 5388,
-      "pct_total_indisponible": 100.0,
+      "lignes_total_indisponible": 5371,
+      "pct_total_indisponible": 99.68,
       "lignes_total_indisponible_lecture_restreinte": 0,
       "lignes_residu_irreductible": 0,
       "tva_recuperable_par_taux_national": 0,
       "causes": {
         "DD": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "DOCUMENTE": 5388
         },
         "TVA": {
-          "ASSIETTE_NON_DOCUMENTEE": 5388
+          "ASSIETTE_NON_DOCUMENTEE": 5371,
+          "DOCUMENTE": 17
         }
       }
     }

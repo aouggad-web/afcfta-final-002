@@ -72,3 +72,49 @@ def test_la_mesure_est_rejouable():
 
     refait = measure({"DZA"})
     assert refait["par_pays"]["DZA"]["lignes_residu_irreductible"] == 299
+
+
+def test_les_deux_lectures_du_residu_sont_publiees(rapport):
+    """Un seul résidu se lirait comme un constat ; il n'en est pas un.
+
+    Servir le taux de TVA national là où le tarif est muet fait passer le
+    résidu de 17,44 % à 1,25 %. Cette substitution n'a pas d'assiette
+    documentée : c'est la sous-décision suspendue. Publier le seul chiffre
+    optimiste donnerait pour acquis ce qui reste à trancher — et dans le sens
+    qui rend la décision facile.
+    """
+    restreinte = rapport["global"]["lecture_restreinte"]
+    admise = restreinte["residu_apres_taux_national"]
+    refusee = restreinte["residu_sans_substitution"]
+
+    assert admise["lignes"] < refusee["lignes"], (
+        "la substitution ne peut qu'améliorer le résidu ; l'inverse signale une "
+        "erreur de comptage"
+    )
+    assert refusee["lignes"] == restreinte["lignes_total_indisponible"], (
+        "sans substitution, aucune ligne n'est guérie : le résidu doit égaler le "
+        "compte restreint"
+    )
+    assert admise["hypothese"], "le chiffre optimiste doit dire sur quoi il repose"
+    assert restreinte["ce_que_l_ecart_signifie"], "l'écart doit être expliqué"
+
+
+def test_une_tva_specifique_n_est_pas_guerie_par_un_taux_national(rapport):
+    """Le défaut qui minorait le résidu, dans le sens le plus commode.
+
+    Le calcul tenait une TVA spécifique sans quantité pour couverte dès qu'un
+    taux national existait pour le pays. Un taux ad valorem ne peut pas
+    suppléer un montant unitaire dont la quantité est inconnue : ces lignes
+    appartiennent au résidu.
+    """
+    etats = rapport["global"]["par_taxe"]["TVA"]["etats"]
+    specifiques = etats.get("SPECIFIQUE_SANS_QUANTITE", 0)
+    assert specifiques > 0, (
+        "sans TVA spécifique dans les données, ce test ne garderait rien"
+    )
+
+    admise = rapport["global"]["lecture_restreinte"]["residu_apres_taux_national"]
+    assert admise["correction_2026-09-14"], (
+        "la correction doit rester consignée : elle explique pourquoi le chiffre "
+        "publié auparavant était plus flatteur"
+    )

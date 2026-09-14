@@ -77,20 +77,86 @@ def test_le_decompte_des_desaccords_est_coherent(rapport):
     assert rapport["synthese"]["desaccords"] == len(rapport["desaccords"])
 
 
-def test_les_desaccords_connus_restent_signales(rapport):
-    """Ces cas sont ouverts, non résolus.
+def test_les_desaccords_non_tranches_restent_signales(rapport):
+    """Ces cas sont ouverts ; les faire disparaître serait la régression à éviter.
 
-    Les faire disparaître en préférant silencieusement la table codée serait la
-    régression que ce rapport existe pour empêcher. Leur résolution devra passer
-    par une correction assumée, pays par pays.
+    Quatre pays dérivés du Bénin — CPV, GMB, LBR, SLE — publient une assiette
+    TVA incluant RS et PCS que la table codée omet, et leur propre loi de TVA
+    n'a pas été établie. La Tunisie est dans le même état, pour d'autres
+    raisons, consignées dans sa fiche.
+
+    Préférer silencieusement la table codée, ou l'assiette publiée, les
+    effacerait du rapport. Leur résolution passe par une détermination
+    juridique assumée, pays par pays.
     """
     couples = {(e["pays"], e["taxe"]) for e in rapport["desaccords"]}
-    for pays in ("BEN", "SEN", "MLI", "NER", "TGO"):
+    for pays in ("CPV", "GMB", "LBR", "SLE", "TUN"):
         assert (pays, "TVA") in couples, (
-            f"{pays} : la source publie une assiette TVA incluant RS et PCS que "
-            "la table codée omet. Ce désaccord doit rester visible tant qu'il "
-            "n'est pas tranché."
+            f"{pays} : le désaccord d'assiette TVA doit rester visible tant "
+            "qu'aucun texte primaire ne l'a tranché."
         )
+
+
+def test_les_desaccords_tranches_le_sont_par_un_texte_et_non_par_silence(rapport):
+    """La bonne façon de faire disparaître un désaccord, et la seule.
+
+    BEN, SEN, MLI, NER et TGO figuraient parmi les désaccords jusqu'à ce que
+    la directive UEMOA établisse l'assiette de leur TVA. Ils n'y figurent plus
+    — mais cela ne vaut que si le rapport dit ce que le moteur applique et au
+    nom de quel texte. Un désaccord qui s'évanouit sans fondement cité serait
+    indiscernable d'une régression.
+
+    On vérifie aussi que l'assiette codée, plus étroite, reste consignée : la
+    remplacer ne doit pas effacer la trace de ce qu'elle disait.
+    """
+    couples = {(e["pays"], e["taxe"]) for e in rapport["desaccords"]}
+    for pays in ("BEN", "SEN", "MLI", "NER", "TGO", "KEN"):
+        entree = rapport["par_pays"][pays]["taxes"]["TVA"]
+        assert (pays, "TVA") not in couples, pays
+        assert entree["assiette_appliquee_par_le_moteur"] == "TOUTES_LES_AUTRES_TAXES", pays
+        assert entree["fondement_de_l_assiette_appliquee"], (
+            f"{pays} : le rapport annonce une assiette élargie sans citer le "
+            "texte qui l'établit"
+        )
+        assert entree["dependances_table_codee"] is not None, (
+            f"{pays} : l'assiette codée, plus étroite, doit rester consignée"
+        )
+
+
+def test_une_taxe_lue_dans_la_source_ne_peut_pas_manquer_partout_d_assiette(rapport):
+    """Deux affirmations qui ne peuvent pas être vraies ensemble.
+
+    Le rapport annonçait « lue dans la source » pour les six taxes béninoises
+    tout en comptant 6 129 positions sans assiette publiée sur 6 129 lignes.
+    La cause : chaque ligne décrit ses taxes deux fois, dans un bloc compact
+    sans assiette et dans un bloc détaillé qui en porte une, et les deux
+    étaient comptés. Un rapport qui se contredit ne peut servir à décider.
+    """
+    incoherents = [
+        (iso, taxe)
+        for iso, bloc in rapport["par_pays"].items()
+        for taxe, detail in bloc["taxes"].items()
+        if detail["statut"] == "lue_dans_la_source"
+        and detail["positions_sans_assiette_publiee"] >= bloc["lignes"]
+    ]
+    assert not incoherents, (
+        "ces couples déclarent une assiette lue dans la source et, en même "
+        f"temps, aucune position qui la porte : {incoherents}"
+    )
+
+
+def test_les_assiettes_declarees_au_niveau_du_jeu_sont_lues(rapport):
+    """Une assiette déclarée une fois vaut pour toutes les lignes du fichier.
+
+    MUS_tariffs.json porte calculation_rules.bases.DD.basis = « CIF » sans le
+    répéter ligne par ligne. Ne lire que la position faisait compter Maurice
+    comme dépourvue d'assiette sur ses 5 619 lignes — un coût d'indisponibilité
+    entièrement imaginaire.
+    """
+    mus = rapport["par_pays"]["MUS"]["taxes"]["DD"]
+    assert mus["statut"] == "lue_dans_la_source"
+    assert mus["positions_sans_assiette_publiee"] == 0
+    assert mus["assiette_publiee"]
 
 
 def test_les_assiettes_non_valorielles_sont_identifiees(rapport):

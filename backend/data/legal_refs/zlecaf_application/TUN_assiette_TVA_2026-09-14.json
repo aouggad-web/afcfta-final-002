@@ -42,5 +42,33 @@
   "Corriger la référence de base légale du bloc calculation_method, CD_12 ne portant pas l'assiette.",
   "Décider du traitement de la majoration de 25 % pour importateur non assujetti.",
   "Trancher l'incertitude ouverte sur la position 01012100015, préférence ZLECAf à 40 % supérieure au NPF de 36 %."
- ]
+ ],
+ "regle_non_appliquee_par_le_moteur": {
+  "decide_le": "2026-09-14",
+  "etat": "La Tunisie est délibérément ABSENTE de ASSIETTE_TVA_ETABLIE, alors que son texte est lu et archivé. Le moteur lui applique son profil codé (assiette CIF + DD), plus étroit, et ne cite pas l'article 6.",
+  "pourquoi": "Appliquer la règle citerait l'article 6 tout en servant une TVA sous-évaluée. Une assiette codée qui ne se réclame d'aucun texte vaut mieux qu'une assiette qui invoque un texte en trahissant sa portée.",
+  "obstacle_1_statut_de_l_importateur": {
+   "enonce": "L'article 6 § II-1 majore l'assiette de 25 % pour l'importateur non assujetti à la TVA.",
+   "consequence": "Le calculateur ne recueille pas le statut de l'importateur : il ne peut pas choisir la branche. Appliquer la seule branche « assujetti » sous-évaluerait la TVA de tout non-assujetti.",
+   "leve_par": "un champ de statut d'importateur dans l'API, et les deux branches implémentées."
+  },
+  "obstacle_2_taxes_a_assiette_quantitative": {
+   "enonce": "Les données tunisiennes portent 2 435 taxes assises sur une quantité et non sur une valeur.",
+   "exemples": [
+    "D.S.V. (droit sanitaire vétérinaire) : « 0.1 dinars », assiette QCS",
+    "P/VIANDE (prélèvement CGC bovins/viande) : « 1.2 dinars », assiette PN",
+    "TM/ABATT (taxe municipale d'abattage) : « 0.012 dinars »",
+    "FDCSA/V : « 0.05 dinars »"
+   ],
+   "consequence": "Le moteur ne liquide que l'ad valorem : ces montants n'entrent pas dans computed_amounts. Une assiette « tous droits et taxes inclus » les omettrait donc en silence, et la TVA serait sous-évaluée sans que rien ne le signale.",
+   "mesure": "Comptage sur backend/data/crawled et crawled_normalized. Aucun des dix autres pays soumis à la règle (BEN BFA CIV GNB MLI NER SEN TGO KEN UGA) ne porte une seule taxe de ce type : l'exception tunisienne est mesurée, pas prudentielle.",
+   "leve_par": "la liquidation des taxes spécifiques, qui suppose la quantité importée ; à défaut, la TVA et le total doivent être déclarés non liquidables plutôt que servis incomplets."
+  },
+  "defaut_connexe_a_traiter_separement": {
+   "enonce": "_parse_crawled_tax_rate lit « 0.1 dinars » comme 0,1 % et « 1000 FCFA/litre » comme 1000 % : un montant spécifique devient un taux ad valorem.",
+   "portee": "2 435 entrées concernées, toutes tunisiennes ; 556 autres valeurs sont illisibles. Le chemin d'exécution tunisien passe aujourd'hui par l'ETL, qui ramène ces taxes à un taux nul — elles sont donc perdues plutôt que converties. Les deux traitements sont fautifs.",
+   "pourquoi_hors_de_ce_changement": "Le corriger modifie des taux sur 2 435 positions et demande sa propre vérification. Le mêler à un changement d'assiette rendrait les deux inauditables.",
+   "a_ne_pas_oublier": "Ce défaut est antérieur à la règle d'assiette ; il ne disparaît pas avec l'exclusion de la Tunisie."
+  }
+ }
 }

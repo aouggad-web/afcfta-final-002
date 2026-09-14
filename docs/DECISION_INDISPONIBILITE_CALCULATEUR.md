@@ -55,10 +55,27 @@ nomenclatures concernées. La lecture stricte éteindrait la moitié de la
 plateforme pour une convention que la source ne prend pas la peine d'écrire
 parce qu'elle va de soi.
 
-Le troisième chiffre est celui qui compte pour décider : **1,25 %**. Les
-57 344 lignes dont la TVA manque sont toutes couvrables par un taux national
-documenté — les 54 pays en ont un dans le dépôt. Servir ce taux en déclarant sa
-provenance ramène le coût de l'option (A) de 17,44 % à 1,25 %.
+Le troisième chiffre **n'est pas un constat mais une hypothèse**, et la note le
+présentait à tort comme celui qui devait emporter la décision. Il y a en réalité
+deux résidus, selon que l'on admet ou non de servir le taux de TVA national là
+où le tarif est muet :
+
+| Lecture du résidu | Lignes | Part |
+|---|---:|---:|
+| substitution par le taux national **admise** | 4 277 | **1,25 %** |
+| substitution **refusée** | 59 677 | **17,44 %** |
+
+L'écart — un facteur 14 — n'est pas un détail de méthode : **il est exactement
+l'enjeu de la sous-décision suspendue ci-dessus.** Ne publier que 1,25 %
+donnerait pour acquis ce qui reste précisément à trancher, et dans le sens qui
+rend la décision facile. Les deux chiffres sont donc portés par
+`reports/COUT_INDISPONIBILITE.json`, sous `residu_apres_taux_national` et
+`residu_sans_substitution`.
+
+Le chiffre optimiste a lui-même été corrigé le 14 septembre : il tenait une TVA
+*spécifique* sans quantité pour couverte dès qu'un taux national existait pour
+le pays, alors qu'un taux ad valorem ne peut pas suppléer un montant unitaire
+dont la quantité est inconnue.
 
 Ce résidu se concentre : **34 des 51 pays n'en portent aucune ligne**.
 L'Éthiopie en concentre 1 368 (21,7 % de ses lignes), la Tunisie 847, l'Algérie

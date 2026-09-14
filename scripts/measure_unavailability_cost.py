@@ -66,10 +66,43 @@ def _national_vat() -> Dict[str, dict]:
     return dict(COUNTRY_VAT_RATES)
 
 
-def _state(value: Any) -> str:
-    """État d'une entrée de taxe présente dans la source."""
-    if numeric_rate(value) is not None:
-        return DOCUMENTE if declared_base(value) else ASSIETTE_NON_DOCUMENTEE
+def _bases_du_jeu(payload: dict, canonical) -> Dict[str, str]:
+    """Assiettes qu'un fichier déclare une fois pour toutes ses lignes.
+
+    MUS_tariffs.json porte calculation_rules.bases.DD.basis = « CIF » sans le
+    répéter position par position. Ne lire que la position comptait Maurice
+    comme dépourvue d'assiette sur ses 5 619 lignes, et gonflait d'autant un
+    coût d'indisponibilité entièrement imaginaire.
+    """
+    regles = payload.get("calculation_rules")
+    bases = regles.get("bases") if isinstance(regles, dict) else None
+    if not isinstance(bases, dict):
+        return {}
+    declarees: Dict[str, str] = {}
+    for code, valeur in bases.items():
+        taxe = canonical(code, "")
+        if not taxe:
+            continue
+        expression = valeur.get("basis") if isinstance(valeur, dict) else valeur
+        if isinstance(expression, str) and expression.strip():
+            declarees[taxe] = expression.strip()
+    return declarees
+
+
+def _state(value: Any, base_du_jeu: Optional[str] = None) -> str:
+    """État d'une entrée de taxe présente dans la source.
+
+    Un taux publié à zéro est liquidable SANS assiette : zéro pour cent de
+    n'importe quelle assiette vaut zéro. Le classer comme dépourvu d'assiette
+    gonflait le coût d'indisponibilité d'entrées qui ne coûtent rien — et
+    contredisait la règle posée par la note de décision, selon laquelle un zéro
+    explicite est documenté.
+    """
+    taux = numeric_rate(value)
+    if taux is not None:
+        if taux == 0:
+            return DOCUMENTE
+        return DOCUMENTE if (declared_base(value) or base_du_jeu) else ASSIETTE_NON_DOCUMENTEE
     if specific_expression(value):
         return SPECIFIQUE_SANS_QUANTITE
     return ABSENTE
@@ -85,6 +118,7 @@ def measure(iso3_filter: Optional[set] = None) -> dict:
     total_indisponible = 0
     total_indisponible_restreint = 0
     total_residu = 0
+    total_residu_sans_substitution = 0
     tva_recuperable = 0
 
     for path in sorted(CRAWLED_DIR.glob("*_tariffs.json")):
@@ -99,10 +133,12 @@ def measure(iso3_filter: Optional[set] = None) -> dict:
         if not rows:
             continue
 
+        bases_du_jeu = _bases_du_jeu(payload, canonical)
         causes = {tax: Counter() for tax in TAXES_DECISIVES}
         pays_indisponible = 0
         pays_indisponible_restreint = 0
         pays_residu = 0
+        pays_residu_sans_substitution = 0
         pays_recuperable = 0
 
         for row in rows:
@@ -111,7 +147,7 @@ def measure(iso3_filter: Optional[set] = None) -> dict:
                 code = canonical(raw_code, label)
                 if code not in TAXES_DECISIVES:
                     continue
-                etat = _state(value)
+                etat = _state(value, bases_du_jeu.get(code))
                 # Une même taxe peut figurer deux fois : on retient l'état le
                 # plus favorable, la source la mieux documentée faisant foi.
                 if etats.get(code) != DOCUMENTE:
@@ -135,15 +171,36 @@ def measure(iso3_filter: Optional[set] = None) -> dict:
             if ligne_indisponible_stricte:
                 pays_indisponible_restreint += 1
                 # Résidu : la ligne reste non liquidable même en lecture
-                # restreinte ET même en servant le taux de TVA national
-                # documenté. C'est le coût irréductible de la règle 2.
+                # restreinte ET même en servant le taux de TVA national.
+                #
+                # La version précédente posait « tva_couvrable = iso3 in
+                # national_vat » sans regarder l'état de la ligne. Elle tenait
+                # donc pour guérie une TVA SPÉCIFIQUE dont la quantité est
+                # inconnue, au motif qu'un taux ad valorem national existe
+                # ailleurs — ce qu'un taux ad valorem ne peut pas suppléer.
+                # Le résidu s'en trouvait minoré, dans le sens qui rend la
+                # décision facile.
                 dd_manquant = etats.get("DD", ABSENTE) in (
                     ABSENTE,
                     SPECIFIQUE_SANS_QUANTITE,
                 )
-                tva_couvrable = iso3 in national_vat
-                if dd_manquant or not tva_couvrable:
+                # Un taux national ne peut suppléer QUE l'absence pure de TVA
+                # publiée. Il ne remplace ni une TVA spécifique sans quantité,
+                # ni un droit de douane manquant.
+                tva_suppleable = (
+                    etats.get("TVA", ABSENTE) == ABSENTE and iso3 in national_vat
+                )
+                if dd_manquant or not tva_suppleable:
                     pays_residu += 1
+                # Lecture stricte du même résidu : elle exige en outre que la
+                # substitution ait une assiette documentée. Le taux national
+                # n'en porte aucune — c'est l'objection qui a fait suspendre
+                # cette sous-décision. Sous cette lecture, aucune substitution
+                # ne rend une ligne liquidable, et le résidu égale le compte
+                # restreint. Les deux chiffres sont publiés : choisir l'un
+                # sans nommer l'autre serait présenter une hypothèse comme un
+                # constat.
+                pays_residu_sans_substitution += 1
             if ligne_indisponible:
                 pays_indisponible += 1
                 # Récupérable : la TVA manque, mais le dépôt documente un taux
@@ -158,6 +215,7 @@ def measure(iso3_filter: Optional[set] = None) -> dict:
         total_indisponible += pays_indisponible
         total_indisponible_restreint += pays_indisponible_restreint
         total_residu += pays_residu
+        total_residu_sans_substitution += pays_residu_sans_substitution
         tva_recuperable += pays_recuperable
         for tax in TAXES_DECISIVES:
             global_causes[tax].update(causes[tax])
@@ -215,7 +273,39 @@ def measure(iso3_filter: Optional[set] = None) -> dict:
                     ),
                     "lignes": total_residu,
                     "pct": _pct(total_residu),
+                    "correction_2026-09-14": (
+                        "Le calcul précédent tenait une TVA SPÉCIFIQUE sans "
+                        "quantité pour couverte dès qu'un taux national existait "
+                        "pour le pays, alors qu'un taux ad valorem ne peut pas "
+                        "suppléer un montant unitaire dont la quantité est "
+                        "inconnue. Le résidu était donc minoré — dans le sens "
+                        "qui rend la décision facile."
+                    ),
+                    "hypothese": (
+                        "Ce chiffre suppose acquis que servir le taux de TVA "
+                        "national rende la ligne liquidable. Cette substitution "
+                        "n'a PAS d'assiette documentée : c'est l'objection qui a "
+                        "fait suspendre la sous-décision. Le chiffre ci-dessous "
+                        "en est la lecture stricte."
+                    ),
                 },
+                "residu_sans_substitution": {
+                    "definition": (
+                        "Même résidu, sans admettre la substitution par un taux "
+                        "national : aucune ligne n'est alors réputée guérie, "
+                        "puisque le taux national ne porte aucune assiette. Ce "
+                        "chiffre est le plancher de ce qui reste non liquidable "
+                        "si la substitution est refusée."
+                    ),
+                    "lignes": total_residu_sans_substitution,
+                    "pct": _pct(total_residu_sans_substitution),
+                },
+                "ce_que_l_ecart_signifie": (
+                    "L'écart entre les deux résidus mesure exactement ce que la "
+                    "substitution par le taux national ferait gagner, et donc "
+                    "l'enjeu de la sous-décision suspendue. Présenter le seul "
+                    "chiffre optimiste donnerait une hypothèse pour un constat."
+                ),
             },
             "tva_recuperable_par_taux_national": tva_recuperable,
             "par_taxe": {
@@ -252,7 +342,9 @@ def main(argv: Optional[list] = None) -> int:
     )
     res = r["residu_apres_taux_national"]
     print(f"TVA récupérable par taux national : {g['tva_recuperable_par_taux_national']}")
-    print(f"résidu irréductible               : {res['lignes']} ({res['pct']} %)")
+    print(f"résidu, substitution admise       : {res['lignes']} ({res['pct']} %)")
+    sans = r["residu_sans_substitution"]
+    print(f"résidu, substitution refusée      : {sans['lignes']} ({sans['pct']} %)")
     print(f"\nrapport écrit : {sortie.relative_to(REPO_ROOT)}")
     return 0
 

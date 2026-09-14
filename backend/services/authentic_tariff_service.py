@@ -292,13 +292,41 @@ ASSIETTE_TVA_ETABLIE["UGA"] = {
     ),
     "fiche": "EAC_assiette_TVA_2026-09-14.json",
 }
-ASSIETTE_TVA_ETABLIE["TUN"] = {
-    "texte": (
-        "Tunisie, Code de la taxe sur la valeur ajoutée, article 6 § II-1 : « par "
-        "la valeur en douane, tous droits et taxes inclus à l'exclusion de la "
-        "taxe sur la valeur ajoutée »"
-    ),
-    "fiche": "TUN_assiette_TVA_2026-09-14.json",
+#: La Tunisie est délibérément ABSENTE de la table, bien que son texte soit lu
+#: et archivé (Code de la TVA, article 6 § II-1 : « par la valeur en douane, tous
+#: droits et taxes inclus à l'exclusion de la taxe sur la valeur ajoutée »,
+#: fiche TUN_assiette_TVA_2026-09-14.json). Deux obstacles s'y opposent, et
+#: chacun ferait servir une TVA sous-évaluée sous couvert d'un texte primaire :
+#:
+#:  1. Le même article soumet l'importateur NON ASSUJETTI à cette assiette
+#:     majorée de 25 %. Le calculateur ne recueille pas le statut de
+#:     l'importateur : il ne peut donc pas choisir la branche applicable.
+#:  2. Les données tunisiennes portent 2 435 taxes à assiette QUANTITATIVE
+#:     (droit sanitaire vétérinaire, prélèvements viande, taxe d'abattage —
+#:     « 0.1 dinars » sur base QCS ou PN). Le moteur ne liquide que l'ad
+#:     valorem : ces montants n'entrent pas dans computed_amounts, donc une
+#:     assiette « tous droits et taxes inclus » les omettrait en silence.
+#:     Aucun des dix autres pays de la table ne porte une seule de ces taxes,
+#:     ce qui rend l'exception tunisienne mesurée et non prudentielle.
+#:
+#: Tant que l'un des deux tient, la règle ne peut pas être appliquée
+#: honnêtement à la Tunisie : mieux vaut l'assiette codée, plus étroite mais
+#: qui ne se réclame d'aucun texte, qu'une assiette qui cite l'article 6 en
+#: en trahissant la portée.
+ASSIETTE_TVA_NON_APPLICABLE = {
+    "TUN": {
+        "texte_lu": (
+            "Tunisie, Code de la taxe sur la valeur ajoutée, article 6 § II-1 : "
+            "« par la valeur en douane, tous droits et taxes inclus à l'exclusion "
+            "de la taxe sur la valeur ajoutée »"
+        ),
+        "fiche": "TUN_assiette_TVA_2026-09-14.json",
+        "obstacles": (
+            "statut de l'importateur non recueilli (majoration de 25 % pour le "
+            "non-assujetti) ; 2 435 taxes à assiette quantitative que le moteur "
+            "ne liquide pas"
+        ),
+    }
 }
 
 #: Les trois orthographes sous lesquelles la TVA apparaît dans les profils.
