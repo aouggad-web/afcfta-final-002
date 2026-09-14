@@ -35,6 +35,28 @@ REPORTS_DIR = REPO_ROOT / "reports"
 
 RATE_RE = re.compile(r"(\d+(?:[.,]\d+)?)\s*%")
 
+# Code officiel inscrit en préfixe de chaque instruction : « ر6790-... »,
+# « غ4046-... », « ق3034-... ».
+#
+# Il faut le lire là, et non dans le tableau InstructionCodes que renvoie
+# l'API. Les deux tableaux de la réponse officielle n'ont ni la même longueur
+# ni le même ordre — sur la position 0101210000, l'API rend onze instructions
+# pour douze codes, et le tableau des codes contient même un doublon. Les
+# apparier par position attribuait donc à chaque texte le code d'une autre
+# instruction : 72,6 % des entrées du fichier produit portaient un code faux.
+# Le garde-fou d'égalité des longueurs ne protégeait de rien, puisque des
+# tailles identiques n'impliquent pas un ordre identique — il se contentait de
+# vider les deux listes quand les tailles différaient, perdant au passage des
+# préférences réelles.
+INSTRUCTION_CODE_RE = re.compile(r"^\s*([رغق]\d+)")
+
+
+def _instruction_code(text: str) -> str | None:
+    """Code officiel d'une instruction, lu dans son propre texte."""
+    match = INSTRUCTION_CODE_RE.match(str(text or ""))
+    return match.group(1) if match else None
+
+
 TAX_CODE_MAPPING = {
     "ضريبة الوارد": "ID",
     "ضريبة قيمه مضافه": "VAT",
@@ -205,34 +227,39 @@ def main() -> int:
 
         instructions = row.get("instructions") or []
         codes_instr = row.get("instruction_codes") or []
-        formalities = (
-            [
-                {
-                    "code_verbatim": c,
-                    "text_verbatim": t,
-                    "kind": "administrative_instruction(غ)" if c.startswith("غ") else None,
-                    "source": row.get("source"),
-                }
-                for c, t in zip(codes_instr, instructions)
-                if c.startswith("غ")
-            ]
-            if len(codes_instr) == len(instructions)
-            else []
-        )
-        fta_preferences = (
-            [
-                {
-                    "code_verbatim": c,
-                    "text_verbatim": t,
-                    "kind": "customs_instruction(ر)",
-                    "zlecaf": ("افريقية القارية" in t),
-                }
-                for c, t in zip(codes_instr, instructions)
-                if c.startswith("ر")
-            ]
-            if len(codes_instr) == len(instructions)
-            else []
-        )
+        # Chaque instruction porte son propre code : on le lit dans le texte
+        # plutôt que de l'apparier par position avec InstructionCodes.
+        instructions_codees = [(_instruction_code(t), t) for t in instructions]
+        formalities = [
+            {
+                "code_verbatim": c,
+                "text_verbatim": t,
+                "kind": "administrative_instruction(غ)",
+                "source": row.get("source"),
+            }
+            for c, t in instructions_codees
+            if c and c.startswith("غ")
+        ]
+        fta_preferences = [
+            {
+                "code_verbatim": c,
+                "text_verbatim": t,
+                "kind": "customs_instruction(ر)",
+                "zlecaf": ("افريقية القارية" in t),
+            }
+            for c, t in instructions_codees
+            if c and c.startswith("ر")
+        ]
+        restrictions = [
+            {
+                "code_verbatim": c,
+                "text_verbatim": t,
+                "kind": "restriction(ق)",
+                "source": row.get("source"),
+            }
+            for c, t in instructions_codees
+            if c and c.startswith("ق")
+        ]
 
         line = {
             "hs_code": code,
@@ -248,6 +275,7 @@ def main() -> int:
             "official_instructions": instructions,
             "official_instruction_codes": codes_instr,
             "formalities": formalities,
+            "restrictions": restrictions,
             "fta_preferences": fta_preferences,
             "zlecaf_instruction": next((t for t in fta_preferences if t["zlecaf"]), None),
             "data_status": row.get("data_status", "OK"),
