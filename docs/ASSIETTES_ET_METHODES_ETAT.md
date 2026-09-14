@@ -86,6 +86,49 @@ cascade produirait des montants faux :
 pas : beaucoup d'administrations ne répètent pas dans leur nomenclature une
 convention qu'elles publient ailleurs.
 
+## Premier désaccord tranché : l'UEMOA, sur source primaire
+
+**Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a), deuxième
+tiret** — texte OCRisé et archivé, fiche
+`backend/data/legal_refs/zlecaf_application/UEMOA_assiette_TVA_2026-09-14.json` :
+
+> « en ce qui concerne les importations par la **valeur en douane majorée des
+> droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur
+> Ajoutée elle-même**. »
+
+L'assiette est donc la valeur en douane **augmentée de tous les droits et taxes
+d'entrée, sans énumération limitative**, la TVA seule étant exclue de sa propre
+assiette. Huit États sont liés : Bénin, Burkina Faso, Côte d'Ivoire,
+Guinée-Bissau, Mali, Niger, Sénégal, Togo.
+
+**Les deux descriptions du dépôt sont fausses, à des degrés différents.** La
+table codée applique `CIF + DD` et ampute l'assiette de toutes les autres taxes.
+Le champ `base` des fichiers déclare `CIF + DD + RS + PCS` : incomplet lui aussi,
+il omet PCC et PUA (Bénin, Guinée-Bissau, Sénégal, Togo) ou PCAES (Burkina Faso,
+Mali, Niger).
+
+Bénin, CIF 10 000, DD 20 %, RS 1 %, PCS 1 %, PCC 0,5 %, PUA 0,2 %, TVA 18 % :
+
+| Lecture | Assiette | TVA | Écart |
+|---|---:|---:|---:|
+| Table codée du moteur | 12 000,00 | 2 160,00 | −48,60 |
+| Champ `base` du fichier | 12 200,00 | 2 196,00 | −12,60 |
+| **Directive art. 27 a)** | **12 270,00** | **2 208,60** | — |
+
+**Le cas ivoirien est élucidé, et l'hypothèse était la bonne.** Le fichier
+déclare `CIF` seul et ne porte ni RS, ni PCS, ni PUA dans ses données — ces trois
+taxes ne figurent que dans une note en prose du fichier lui-même : « Les taxes
+PCS (0,8 %), PUA (0,2 %) et RS (1 %) s'appliquent à toutes les importations ».
+L'assiette déclarée est donc cohérente avec une **collecte incomplète**, pas avec
+une règle nationale distincte. La Côte d'Ivoire suit la même règle que ses sept
+partenaires ; c'est le crawl qu'il faut compléter.
+
+**Portée à ne pas dépasser.** Cap-Vert, Gambie, Liberia et Sierra Leone figurent
+dans les quinze désaccords mais sont membres de la CEDEAO **sans** être membres
+de l'UEMOA : cette directive ne les lie pas, et leur assiette relève d'un
+fondement qui reste à établir. Leur appliquer l'article 27 serait étendre une
+règle au-delà de sa portée.
+
 ## Ce qui reste à trancher
 
 Aucun des quinze désaccords n'est résolu ici, et le rapport n'en tranche aucun.
@@ -96,10 +139,12 @@ Deux lectures restent ouvertes, à départager **pays par pays** :
 2. certaines entrées de la table encodent une règle réelle que le champ `base`
    du crawl résume mal — auquel cas c'est le crawl qu'il faut creuser.
 
-Le cas ivoirien est le plus suspect : `CIF` seul pour la TVA serait une anomalie
-en UEMOA, où ses onze voisins publient tous `CIF + DD + RS + PCS`. Cela ressemble
-davantage à une donnée incomplète côté collecte qu'à une règle nationale
-distincte, et doit être vérifié sur source primaire avant toute correction.
+Le cas ivoirien **a été tranché** sur source primaire, voir la section
+précédente : collecte incomplète, non règle nationale.
+
+Restent ouverts : les quatre pays CEDEAO non-UEMOA (CPV, GMB, LBR, SLE), le
+Kenya et l'Ouganda (`Fees`, `Levies` — droit EAC), et la Tunisie
+(`VAL.DOU(D)+R(DT) GR.0`, encodage à décoder).
 
 ## Conséquence sur la politique d'indisponibilité
 

@@ -1,0 +1,45 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette de la TVA à l'importation dans l'espace UEMOA",
+ "verified_at": "2026-09-14",
+ "evidence_level": "primaire — Directive n° 02/98/CM/UEMOA du 22 décembre 1998 portant harmonisation des législations des États membres en matière de TVA. PDF servi par la Direction générale des entreprises de Côte d'Ivoire (dge.gouv.ci), scanné : texte obtenu par OCR et archivé dans sources/.",
+ "source": {
+  "url": "https://www.dge.gouv.ci/sites/default/files/tableau/TEXTES%20COMMUNAUTAIRES%20CLASSSIFIES/UEMOA/DIRECTIVE/Directive%20n%C2%B0%2002-98%20portant%20harmonisation%20des%20legislatuion%20des%20Etas%20membres%20en%20matiere%20de%20TVA.pdf",
+  "institution": "UEMOA — texte hébergé par dge.gouv.ci (Côte d'Ivoire)",
+  "pdf_non_archive": "PDF de 4,7 Mo non archivé dans le dépôt, conformément au parti pris retenu pour la circulaire algérienne : le texte suffit à fonder la détermination. Empreinte du PDF au moment de la lecture, à titre d'identification et non d'archivage : 3df7d9cd8290c558bf0f93236c55c056fbeb883b3dd15ca7841b86e831d18341",
+  "pdf_taille_octets": 4712211,
+  "pdf_pages": 11,
+  "texte_archive": "sources/UEMOA_directive_02-98-CM_TVA.ocr-fra.txt",
+  "sha256": "bb2ac66bf02d63510b39edadcfb12fdfbbbeb2d0fd80c17a1f920814ff0e75b2",
+  "ocr_note": "Le PDF ne porte aucun texte extractible. OCR tesseract en anglais, le paquet français n'étant pas disponible dans l'environnement : le verbatim comporte donc des altérations de diacritiques (« pergus » pour « perçus », « I'article » pour « l'article »). Le sens et les termes de droit sont intacts et vérifiables sur le PDF dont l'empreinte est consignée."
+ },
+ "regle": {
+  "article": "Article 27 a), deuxième tiret",
+  "verbatim": "en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même.",
+  "portee": "L'assiette de la TVA à l'importation est la valeur en douane augmentée de TOUS les droits et taxes perçus à l'entrée, sans énumération limitative, la TVA seule étant exclue de sa propre assiette.",
+  "etats_lies": [
+   "BEN",
+   "BFA",
+   "CIV",
+   "GNB",
+   "MLI",
+   "NER",
+   "SEN",
+   "TGO"
+  ],
+  "non_lies_par_cette_directive": "CPV, GMB, LBR, SLE sont membres de la CEDEAO mais non de l'UEMOA : leur assiette relève d'un autre fondement, qui reste à établir. Ne pas leur étendre cette règle."
+ },
+ "consequences": {
+  "table_codee_du_moteur": "COUNTRY_TAX_PROFILES applique « CIF + DD » à ces huit pays. L'assiette est donc amputée de toutes les autres taxes d'entrée.",
+  "champ_base_des_fichiers": "Le champ base des fichiers collectés déclare « CIF + DD + RS + PCS » : incomplet lui aussi, il omet PCC et PUA (Bénin, Guinée-Bissau, Sénégal, Togo) ou PCAES (Burkina Faso, Mali, Niger).",
+  "cote_d_ivoire": "Cas le plus grave. Le fichier déclare « CIF » seul et ne porte ni RS, ni PCS, ni PUA dans ses données — ces trois taxes ne figurent que dans une note en prose du fichier : « Les taxes PCS (0,8 %), PUA (0,2 %) et RS (1 %) s'appliquent à toutes les importations ». L'assiette déclarée est donc cohérente avec une collecte incomplète, pas avec une règle nationale distincte. Hypothèse confirmée.",
+  "chiffrage_benin": "CIF 10 000, DD 20 %, RS 1 %, PCS 1 %, PCC 0,5 %, PUA 0,2 %, TVA 18 % : assiette 12 000 selon la table codée, 12 200 selon le champ base, 12 270 selon la directive. TVA respectivement 2 160,00 / 2 196,00 / 2 208,60. La table sous-évalue de 48,60 par opération, le champ base de 12,60."
+ },
+ "ce_que_cela_ne_tranche_pas": "Les taux et l'existence des taxes ne sont pas en cause : seule l'assiette l'est. La directive ne dit pas non plus si une taxe donnée est « perçue à l'entrée » — cela se lit dans le droit national de chaque État. Les exonérations et régimes suspensifs de l'article 21 ne sont pas traités ici.",
+ "remaining_work": [
+  "Compléter la collecte ivoirienne : RS, PCS (0,8 %) et PUA (0,2 %) sont annoncés en note et absents des données.",
+  "Établir le fondement de l'assiette pour CPV, GMB, LBR et SLE, non liés par cette directive.",
+  "Vérifier si la Directive 02/2009/CM/UEMOA, qui modifie la 02/98, touche l'article 27.",
+  "Décider si le calculateur suit la directive plutôt que le champ base, et sous quelle provenance affichée."
+ ]
+}

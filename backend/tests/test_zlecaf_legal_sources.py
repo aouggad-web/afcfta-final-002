@@ -24,7 +24,12 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 REFS_DIR = REPO_ROOT / "backend" / "data" / "legal_refs" / "zlecaf_application"
 SOURCES_DIR = REFS_DIR / "sources"
 
-FICHES = sorted(p for p in REFS_DIR.glob("*_application_*.json"))
+# Toute fiche juridique du répertoire, pas seulement celles d'application.
+# Le glob précédent ne retenait que « *_application_* » : une fiche portant sur
+# l'assiette de la TVA, par exemple, citait des empreintes que rien ne
+# vérifiait. Une fiche qui échappe au contrôle de provenance est précisément
+# celle où une empreinte fausse passerait.
+FICHES = sorted(p for p in REFS_DIR.glob("*.json"))
 
 
 def _archived_hashes() -> dict:
@@ -44,11 +49,19 @@ def _archived_hashes() -> dict:
 
 
 def _cited_hashes(payload) -> list:
-    """Tout SHA-256 cité par une fiche, quel que soit son emplacement."""
+    """Tout SHA-256 cité par une fiche, quel que soit son emplacement ET son nom.
+
+    La clé n'est pas toujours « sha256 » : une fiche citant deux documents les
+    nomme « pdf_sha256 » et « texte_sha256 », faute de quoi les deux valeurs
+    entreraient en collision dans le même objet. N'accepter que l'orthographe
+    exacte laissait ces empreintes hors contrôle — c'est la faute déjà relevée
+    sur la fiche algérienne, et une fiche qui échappe au contrôle est
+    précisément celle où une empreinte fausse passerait.
+    """
     found = []
     if isinstance(payload, dict):
         for key, value in payload.items():
-            if key == "sha256" and isinstance(value, str) and value:
+            if key.endswith("sha256") and isinstance(value, str) and value:
                 found.append(value)
             else:
                 found.extend(_cited_hashes(value))
