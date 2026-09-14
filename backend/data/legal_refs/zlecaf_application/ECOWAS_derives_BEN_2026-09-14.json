@@ -1,0 +1,27 @@
+{
+ "schema_version": 1,
+ "objet": "Quatre jeux tarifaires CEDEAO dérivés du Bénin — portée de la dérivation",
+ "verified_at": "2026-09-14",
+ "evidence_level": "secondaire — constat établi sur les fichiers du dépôt eux-mêmes et sur la portée publiée des prélèvements communautaires",
+ "constat": {
+  "pays": [
+   "CPV",
+   "GMB",
+   "LBR",
+   "SLE"
+  ],
+  "nature": "Ces quatre fichiers ne sont pas des collectes nationales. Ils se déclarent eux-mêmes dérivés du Bénin — champ derived_from: \"BEN\" et source « réf. État membre BEN » — et cette déclaration est honnête : rien n'est dissimulé.",
+  "mesure": "6 129 positions chacun, exactement les mêmes codes que le Bénin, et un droit de douane identique sur 6 129 positions sur 6 129. Seul le taux de TVA national est substitué : 15 % (CPV, GMB, SLE), 10 % (LBR).",
+  "ce_qui_est_defendable": "Le droit de douane est réellement commun : le Tarif Extérieur Commun de la CEDEAO s'applique aux quinze États membres. Le PCC, prélèvement communautaire CEDEAO à 0,5 %, l'est aussi.",
+  "ce_qui_ne_l_est_pas": "La note de ces fichiers affirme que les « prélèvements communautaires » sont identiques entre États membres. C'est faux pour deux d'entre eux. Le PCS, Prélèvement Communautaire de Solidarité, et le PUA, Prélèvement UEMOA, sont des prélèvements de l'UEMOA. Le Cap-Vert, la Gambie, le Liberia et la Sierra Leone sont membres de la CEDEAO mais NON de l'UEMOA : ils ne les acquittent pas. Les fichiers leur en attribuent pourtant 1,0 % et 0,2 %.",
+  "chiffrage": "Sur 10 000 de valeur CIF, ces quatre pays se voient facturer 120,00 de prélèvements qu'ils ne doivent pas — 1,20 % du CIF — auxquels s'ajoute la TVA assise dessus, 18,00 à 15 %.",
+  "assiette_tva": "Leur champ base déclare « CIF + DD + RS + PCS », qui est l'expression béninoise. La Directive 02/98/CM/UEMOA ne les lie pas : le fondement de leur assiette reste à établir dans leurs lois nationales de TVA."
+ },
+ "indice_a_verifier_separement": "Le fichier béninois porte PCS à 1,0 %. La note du fichier ivoirien écrit 0,8 %, qui est le taux maintenu par le 20e sommet de l'UEMOA depuis 2017. Les deux ne peuvent être vrais ensemble. À trancher sur l'acte additionnel en vigueur ; ce constat ne le tranche pas.",
+ "remaining_work": [
+  "Retirer PCS et PUA des quatre jeux dérivés, ou les collecter nationalement.",
+  "Établir l'assiette de la TVA de CPV, GMB, LBR et SLE dans leurs lois nationales.",
+  "Trancher le taux du PCS, 1,0 % ou 0,8 %, sur l'acte additionnel UEMOA en vigueur.",
+  "Vérifier si la Redevance Statistique à 1 % a le même champ que le PCS."
+ ]
+}

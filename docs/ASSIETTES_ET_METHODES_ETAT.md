@@ -129,6 +129,69 @@ de l'UEMOA : cette directive ne les lie pas, et leur assiette relève d'un
 fondement qui reste à établir. Leur appliquer l'article 27 serait étendre une
 règle au-delà de sa portée.
 
+## Deuxième et troisième désaccords : le Kenya et l'Ouganda
+
+Fiche `EAC_assiette_TVA_2026-09-14.json`, extraits archivés.
+
+**Kenya — VAT Act No. 35 of 2013, section 14 (1)** : l'assiette est la valeur en
+douane, plus le fret et l'assurance non déjà inclus, plus « *the amount of duty
+of customs* ».
+
+**Un piège de lecture s'y cache, et j'ai failli y tomber.** Lu seul, l'alinéa (c)
+se comprend comme le seul droit de douane, et conduirait à conclure `CIF + DD` —
+donnant raison à la table codée. C'est la **définition** de l'expression,
+ailleurs dans la loi, qui renverse le sens :
+
+> « *duty of customs* » means import duty, excise duty, export duty,
+> countervailing duty, **levy, cess, tax or surtax** charged under any law for the
+> time being in force relating to customs or excise.
+
+**Ouganda — VAT Act, Chapter 349, section 23** : « *the amount of customs duty,
+excise tax and **any other fiscal charge other than tax** payable on those
+goods* », « tax » désignant la TVA elle-même.
+
+Les deux lois élargissent donc l'assiette bien au-delà du droit de douane. La
+table codée, qui applique `CIF + DD`, est fausse pour les deux pays. Le champ
+`base` — `CIF+Duty+Fees` et `CIF+Duty+Levies` — va dans le bon sens mais reste
+plus étroit que les textes, qui ne limitent pas : l'accise n'y figure pas.
+
+Burundi, Rwanda et Tanzanie déclarent `CIF+Duty` et s'accordaient avec la table :
+ils n'étaient pas en désaccord, leurs lois n'ont pas été lues, et cette
+détermination ne leur est pas étendue.
+
+## Les quatre CEDEAO non-UEMOA : un constat d'une autre nature
+
+Fiche `ECOWAS_derives_BEN_2026-09-14.json`.
+
+En cherchant le fondement de leur assiette, j'ai trouvé autre chose. **Les
+fichiers du Cap-Vert, de la Gambie, du Liberia et de la Sierra Leone ne sont pas
+des collectes nationales** : ils portent `derived_from: "BEN"` et se déclarent
+« réf. État membre BEN ». Mesuré : 6 129 positions chacun, les mêmes codes que le
+Bénin, **droit de douane identique sur 6 129 positions sur 6 129**. Seul le taux
+de TVA national est substitué.
+
+**Cette déclaration est honnête** — rien n'est dissimulé, et le raisonnement est
+défendable pour le droit de douane : le Tarif Extérieur Commun est réellement
+commun aux quinze États de la CEDEAO, le PCC à 0,5 % également.
+
+**Mais la dérivation va trop loin sur deux prélèvements.** La note de ces fichiers
+affirme que les « prélèvements communautaires » sont identiques entre États
+membres. Le **PCS** (Prélèvement Communautaire de Solidarité) et le **PUA**
+(Prélèvement UEMOA) sont des prélèvements de l'**UEMOA**. Ces quatre pays sont
+membres de la CEDEAO mais **non de l'UEMOA** : ils ne les acquittent pas. Les
+fichiers leur en attribuent pourtant 1,0 % et 0,2 %.
+
+Sur 10 000 de CIF, ces quatre pays se voient facturer **120,00 de prélèvements
+qu'ils ne doivent pas** — 1,20 % du CIF — plus la TVA assise dessus.
+
+Leur assiette de TVA reste donc sans fondement établi : le champ `base` y est
+l'expression béninoise, et la directive UEMOA ne les lie pas.
+
+**Un indice supplémentaire, non tranché.** Le fichier béninois porte le PCS à
+1,0 %, quand la note du fichier ivoirien écrit 0,8 % — le taux maintenu par le
+20ᵉ sommet de l'UEMOA depuis 2017. Les deux ne peuvent être vrais ensemble. À
+vérifier sur l'acte additionnel en vigueur.
+
 ## Ce qui reste à trancher
 
 Aucun des quinze désaccords n'est résolu ici, et le rapport n'en tranche aucun.
@@ -142,9 +205,14 @@ Deux lectures restent ouvertes, à départager **pays par pays** :
 Le cas ivoirien **a été tranché** sur source primaire, voir la section
 précédente : collecte incomplète, non règle nationale.
 
-Restent ouverts : les quatre pays CEDEAO non-UEMOA (CPV, GMB, LBR, SLE), le
-Kenya et l'Ouganda (`Fees`, `Levies` — droit EAC), et la Tunisie
-(`VAL.DOU(D)+R(DT) GR.0`, encodage à décoder).
+Sur les quinze désaccords, **treize sont désormais qualifiés** : huit par la
+directive UEMOA, deux par les lois kényane et ougandaise, et les quatre CEDEAO
+non-UEMOA par le constat de dérivation ci-dessus — dont trois figuraient déjà
+dans les huit, le Cap-Vert étant le quatrième.
+
+**Reste la Tunisie** (`VAL.DOU(D)+R(DT) GR.0`, encodage à décoder), et
+l'établissement des lois nationales de TVA du Cap-Vert, de la Gambie, du Liberia
+et de la Sierra Leone.
 
 ## Conséquence sur la politique d'indisponibilité
 

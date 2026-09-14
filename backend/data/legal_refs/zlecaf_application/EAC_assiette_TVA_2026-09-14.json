@@ -1,0 +1,40 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette de la TVA à l'importation — Kenya et Ouganda (EAC)",
+ "verified_at": "2026-09-14",
+ "evidence_level": "primaire — lois nationales de TVA lues intégralement dans leur version consolidée officielle",
+ "determinations": [
+  {
+   "iso3": "KEN",
+   "instrument": "Value Added Tax Act No. 35 of 2013, Revised Edition 2021",
+   "source_url": "https://www.kra.go.ke/images/publications/VAT-Act--2013-Revised-2021.pdf",
+   "institution": "Kenya Revenue Authority",
+   "article": "Section 14 (1)",
+   "verbatim": "The taxable value of imported goods shall be the sum of— (a) the value of the goods ascertained for the purpose of customs duty, in accordance with the East African Community Custom Management Act, 2004, whether or not any duty of customs is payable on the goods; (b) to the extent not included under paragraph (a)— (i) the cost of insurance and freight incurred in bringing the goods to Kenya; and (ii) the cost of services treated as part of the imported goods under this section; and (c) the amount of duty of customs, if any, paid on those goods.",
+   "definition_determinante": "« duty of customs » means import duty, excise duty, export duty, countervailing duty, levy, cess, tax or surtax charged under any law for the time being in force relating to customs or excise.",
+   "piege_de_lecture": "Lu seul, l'alinéa (c) — « the amount of duty of customs » — se comprendrait comme le seul droit de douane, et conduirait à conclure que l'assiette est CIF + DD. C'est la définition de l'expression, ailleurs dans la loi, qui l'élargit aux levies, cess, taxes et surtaxes. Une lecture sans la définition inverse le sens.",
+   "portee": "valeur en douane + tous droits, prélèvements et taxes de douane ou d'accise, hors TVA",
+   "texte_archive": "sources/KEN_VAT_Act_2013_s14.texte-extrait.txt",
+   "sha256": "d2b9abef2b28d82488dbe0fdd87404e2a16975a151aec42c5b138451732908e9",
+   "pdf_non_archive": "PDF officiel non archivé dans le dépôt ; seul l'extrait de la section déterminante l'est, suivant le parti pris retenu pour la circulaire algérienne et la directive UEMOA."
+  },
+  {
+   "iso3": "UGA",
+   "instrument": "Value Added Tax Act, Chapter 349",
+   "source_url": "https://businesslicences.go.ug/kcfinder/upload/files/V_A_T_act_chapter_349.pdf",
+   "institution": "République d'Ouganda",
+   "article": "Section 23",
+   "verbatim": "The taxable value of an import of goods is the sum of— (a) the value of the goods ascertained for the purposes of customs duty under the laws relating to customs; (b) the amount of customs duty, excise tax and any other fiscal charge other than tax payable on those goods; and (c) the value of any services to which section 12(3) applies which is not otherwise included in the customs value under paragraph (a).",
+   "portee": "valeur en douane + droit de douane + accise + tout autre prélèvement fiscal, « tax » désignant la TVA elle-même, seule exclue.",
+   "texte_archive": "sources/UGA_VAT_Act_Cap349_s23.texte-extrait.txt",
+   "sha256": "9299ad3fc69160675af9ff26e807d94c154fb89202618a6457f7874a238363d9",
+   "pdf_non_archive": "PDF officiel non archivé dans le dépôt ; seul l'extrait de la section déterminante l'est, suivant le parti pris retenu pour la circulaire algérienne et la directive UEMOA."
+  }
+ ],
+ "consequence_sur_le_depot": {
+  "table_codee": "COUNTRY_TAX_PROFILES applique « CIF + DD » au Kenya et à l'Ouganda. Les deux lois élargissent l'assiette aux prélèvements et accises : la table est fausse pour les deux pays, par omission.",
+  "champ_base_des_fichiers": "Le champ base déclare « CIF+Duty+Fees » (KEN) et « CIF+Duty+Levies » (UGA). Directionnellement juste, mais l'énumération reste plus étroite que les textes, qui ne limitent pas : l'accise notamment n'y figure pas.",
+  "verdict": "les deux descriptions du dépôt sont incomplètes ; le texte national prime."
+ },
+ "ce_que_cela_ne_tranche_pas": "Le Burundi, le Rwanda et la Tanzanie déclarent « CIF+Duty » et s'accordent avec la table : ils n'étaient pas en désaccord et leurs lois nationales n'ont pas été lues ici. Ne pas leur étendre cette détermination sans vérification."
+}
