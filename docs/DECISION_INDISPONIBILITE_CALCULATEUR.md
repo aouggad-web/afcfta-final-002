@@ -21,6 +21,17 @@ algériennes, 1 368 lignes éthiopiennes, 181 lignes SACU à droit spécifique e
 muettes des milliers de positions ; une politique trop permissive continuerait
 à publier des chiffres faux. La distinction doit donc être fine.
 
+> ⚠️ **Une sous-décision de cette note est suspendue.** Elle proposait de servir
+> le taux de TVA national quand le tarif est muet, ce qui ramenait le coût de
+> l'option (A) à 1,25 %. `docs/ASSIETTES_ET_METHODES_ETAT.md` établit que
+> l'assiette de la TVA diffère par pays — `CIF + DD + RS + PCS` en CEDEAO,
+> `CIF + DD + TCI` en CEMAC, `CIF` seul en Côte d'Ivoire — et que le moteur
+> applique une table codée qui **contredit la source sur quinze couples
+> pays/taxe**, dans les deux sens. Un taux sans son assiette ne produit pas un
+> montant : servir un taux national sur une assiette supposée fabriquerait un
+> chiffre. Cette sous-décision ne peut être prise qu'après résolution de ce
+> constat.
+
 ## Le coût mesuré, sur les 342 176 lignes collectées
 
 `scripts/measure_unavailability_cost.py` chiffre la règle 2 sur les fichiers
