@@ -61,15 +61,30 @@ def _cited_hashes(payload) -> list:
     """
     found = []
     if isinstance(payload, dict):
+        # Une fiche peut citer l'empreinte d'un document amont qu'elle n'archive
+        # pas — un PDF officiel trop volumineux, dont seul le dispositif est
+        # versé. C'est une provenance utile : elle permet de retélécharger et de
+        # vérifier qu'on a bien le même fichier. Elle n'est tolérée que si la
+        # fiche le DÉCLARE dans le même bloc ; une empreinte inconnue et non
+        # déclarée reste une faute.
+        declare = _declare_un_document_non_archive(payload)
         for key, value in payload.items():
             if key.endswith("sha256") and isinstance(value, str) and value:
-                found.append(value)
+                found.append((value, declare))
             else:
                 found.extend(_cited_hashes(value))
     elif isinstance(payload, list):
         for item in payload:
             found.extend(_cited_hashes(item))
     return found
+
+
+def _declare_un_document_non_archive(bloc: dict) -> bool:
+    """Le bloc annonce-t-il explicitement un document laissé hors du dépôt ?"""
+    return any(
+        "non_archive" in cle and isinstance(valeur, str) and valeur
+        for cle, valeur in bloc.items()
+    )
 
 
 def test_des_fiches_existent():
@@ -84,10 +99,13 @@ def test_chaque_sha256_cite_correspond_a_un_document_archive(fiche):
         pytest.skip(f"{fiche.stem} ne cite aucun document — niveau de preuve secondaire")
 
     archived = set(_archived_hashes().values())
-    for digest in cited:
-        assert digest in archived, (
+    for digest, declare_non_archive in cited:
+        if digest in archived:
+            continue
+        assert declare_non_archive, (
             f"{fiche.stem} cite le SHA-256 {digest[:16]}… qu'aucun document de "
-            f"sources/ ne porte : la fiche s'appuierait sur un document absent "
+            f"sources/ ne porte, sans déclarer dans le même bloc que ce document "
+            f"n'est pas archivé : la fiche s'appuierait sur un document absent "
             f"du dépôt ou différent de celui qui a été lu"
         )
 
@@ -118,16 +136,16 @@ def _paires_document_empreinte(payload, trouvees=None) -> list:
             ),
             None,
         )
-        digest = next(
-            (
-                str(v)
-                for k, v in payload.items()
-                if k.endswith("sha256") and isinstance(v, str) and len(v) == 64
-            ),
-            None,
-        )
-        if chemin and digest:
-            trouvees.append((chemin, digest))
+        # Toutes les empreintes du bloc, et non la première : une fiche qui cite
+        # à la fois le PDF amont et l'extrait archivé en porte deux, et ne
+        # retenir que la première ferait échouer le couple sur la mauvaise.
+        digests = [
+            str(v)
+            for k, v in payload.items()
+            if k.endswith("sha256") and isinstance(v, str) and len(v) == 64
+        ]
+        if chemin and digests:
+            trouvees.append((chemin, digests, _declare_un_document_non_archive(payload)))
         for valeur in payload.values():
             _paires_document_empreinte(valeur, trouvees)
     elif isinstance(payload, list):
@@ -153,14 +171,20 @@ def test_chaque_empreinte_est_celle_du_document_qu_elle_designe(fiche):
     if not paires:
         pytest.skip(f"{fiche.stem} ne déclare aucun couple document/empreinte")
 
-    for chemin, digest in paires:
+    for chemin, digests, declare_non_archive in paires:
         document = REFS_DIR / chemin
         assert document.exists(), f"{fiche.stem} : {chemin} absent de sources/"
         reel = hashlib.sha256(document.read_bytes()).hexdigest()
-        assert reel == digest, (
-            f"{fiche.stem} : {chemin} porte l'empreinte {reel[:16]}… alors que la "
-            f"fiche déclare {digest[:16]}… — l'empreinte citée n'est pas celle de "
-            f"ce document"
+        assert reel in digests, (
+            f"{fiche.stem} : {chemin} porte l'empreinte {reel[:16]}… qu'aucune "
+            f"empreinte du même bloc ne reprend ({', '.join(d[:16] + '…' for d in digests)}) "
+            f"— l'archive n'est pas le document que la fiche décrit"
+        )
+        autres = [d for d in digests if d != reel]
+        assert not autres or declare_non_archive, (
+            f"{fiche.stem} : le bloc citant {chemin} porte aussi "
+            f"{', '.join(d[:16] + '…' for d in autres)} sans déclarer quel document "
+            f"non archivé ces empreintes désignent"
         )
 
 

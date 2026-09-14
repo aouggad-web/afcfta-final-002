@@ -97,6 +97,28 @@ plus ancienne que l'autre. Elle signale où regarder ensuite.
 Aucune : aucun acte national vérifié ne nomme une origine que le registre
 continental donne pour non ratifiante.
 
+## Ce qu'il reste à collecter
+
+Publier un barème et publier la liste de ses partenaires sont deux actes distincts, et le second est rare.
+
+Là où aucune liste n'est publiée, aucune source documentaire ne peut trancher : seule une preuve de terrain le peut — une déclaration en douane effectivement liquidée sous régime ZLECAf, avec son certificat d'origine. C'est ce que ce chantier prépare.
+
+| Pays | Statut | Ce qui manque | Document à obtenir |
+|---|---|---|---|
+| **ETH** | `INSTRUMENT_VERIFIE_PRIMAIRE_ORIGINES_NON_VERIFIEES` | La liste des origines, que l'article 3(2) délègue à un avis du Ministry of Trade and Regional Integration. Sans cet avis, le barème ne s'applique à personne. | Avis (notification) du Ministry of Trade and Regional Integration listant les États membres admis, avec son numéro et sa date. |
+| **CIV** | `NOTIFICATION_PARTENAIRES_REQUISE` | La liste nominative des partenaires acceptés. L'ordonnance pose la réciprocité en condition sans nommer aucun pays. | Arrêté ou circulaire de la Direction générale des douanes ivoiriennes désignant les origines admises ; à défaut, le texte intégral de l'ordonnance publié au Journal officiel de la République de Côte d'Ivoire. |
+| **NGA** | `NOTIFICATION_PARTENAIRES_REQUISE` | Le texte de la gazette lui-même, et la confirmation que la règle de réciprocité y est bien formulée ainsi — la formulation connue provient de communiqués, non du texte. | Federal Republic of Nigeria Official Gazette portant la PSTC, avril 2025. |
+| **ZMB** | `NOTIFICATION_PARTENAIRES_REQUISE` | La liste des origines admises. Le SI gazette le barème ; rien n'indique qu'il nomme des pays. | Texte intégral du Statutory Instrument n° 92 of 2024, pour vérifier s'il comporte une liste d'États parties admis. |
+| **GHA** | `OFFRE_SEULE` | L'acte national ghanéen lui-même, et toute liste d'origines. Le dépôt ne tient à ce jour que l'instantané CEDEAO du e-Tariff Book. | Legislative Instrument ou Customs (AfCFTA) Regulations du Ghana, et la circulaire d'application de la Ghana Revenue Authority. |
+| **CMR** | `OFFRE_SEULE` | L'acte national camerounais d'application à l'IMPORTATION et sa liste d'origines. Ce qui est établi concerne l'exportation. | Circulaire ou note de service de la Direction générale des douanes du Cameroun portant application du tarif ZLECAf à l'importation. |
+| **RWA** | `OFFRE_SEULE` | L'acte national et la liste des origines admises. Aucune liste officielle n'a été retrouvée. | Ministerial Order ou Customs Regulations rwandais portant application du barème ZLECAf, et la liste d'États parties admis. |
+
+**Preuve recherchée** — Une déclaration en douane effectivement liquidée sous régime ZLECAf : code accord ou régime préférentiel utilisé, certificat d'origine ZLECAf accepté, taux appliqué, et le détail des autres prélèvements maintenus.
+
+**Pourquoi elle tranche** — Elle établit d'un coup les trois conditions que les textes laissent ouvertes : que la destination admet cette origine, à quel rythme de démantèlement, et ce qui reste dû à côté du droit de douane.
+
+**Précaution** — Une déclaration isolée prouve qu'un bureau a liquidé ainsi, pas que la règle est générale. Elle vaut indice fort, à recouper, et doit être consignée comme telle — jamais promue en source de droit.
+
 ## Méthode
 
 Trois conditions, dans cet ordre : acte national d'application lu en source primaire ; liste nominative des origines qu'il admet ; confrontation à la carte continentale du e-Tariff Book. Les listes sont lues à leur source d'autorité dans le dépôt, jamais recopiées.

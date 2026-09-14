@@ -38,6 +38,7 @@ sys.path.insert(0, str(RACINE / "backend"))
 FICHES = RACINE / "backend" / "data" / "legal_refs" / "zlecaf_application"
 SORTIE = RACINE / "reports" / "ETAT_APPLICATION_BILATERAL.json"
 SORTIE_MD = RACINE / "docs" / "ETAT_APPLICATION_BILATERAL.md"
+CHANTIER = FICHES / "chantier_collecte_2026-09-14.json"
 
 NOMS = {
     "DZA": "Algérie", "EGY": "Égypte", "KEN": "Kenya",
@@ -317,6 +318,9 @@ def construire() -> dict:
             "confirmees": reciproques,
             "asymetries": asymetries,
         },
+        "chantier_de_collecte": (
+            json.loads(CHANTIER.read_text(encoding="utf-8")) if CHANTIER.exists() else None
+        ),
         "couples": couples,
     }
 
@@ -423,6 +427,20 @@ def rendre_markdown(r: dict) -> str:
         A("Aucune : aucun acte national vérifié ne nomme une origine que le registre")
         A("continental donne pour non ratifiante.")
     A("")
+
+    chantier = r.get("chantier_de_collecte")
+    if chantier:
+        A("## Ce qu'il reste à collecter\n")
+        A(chantier["constat_de_methode"]["enonce"] + "\n")
+        A(chantier["constat_de_methode"]["consequence"] + "\n")
+        A("| Pays | Statut | Ce qui manque | Document à obtenir |\n|---|---|---|---|")
+        for iso, d in chantier["pays"].items():
+            A(f"| **{iso}** | `{d['statut']}` | {d['manque']} | {d['document_cible']} |")
+        A("")
+        prepare = chantier["ce_que_ce_chantier_prepare"]
+        A(f"**Preuve recherchée** — {prepare['preuve_recherchee']}\n")
+        A(f"**Pourquoi elle tranche** — {prepare['pourquoi_elle_tranche']}\n")
+        A(f"**Précaution** — {prepare['precaution']}\n")
 
     A("## Méthode\n")
     A(r["methode"] + "\n")
