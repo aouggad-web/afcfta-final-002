@@ -21,6 +21,43 @@ algériennes, 1 368 lignes éthiopiennes, 181 lignes SACU à droit spécifique e
 muettes des milliers de positions ; une politique trop permissive continuerait
 à publier des chiffres faux. La distinction doit donc être fine.
 
+## Le coût mesuré, sur les 342 176 lignes collectées
+
+`scripts/measure_unavailability_cost.py` chiffre la règle 2 sur les fichiers
+tels que collectés et écrit `reports/COUT_INDISPONIBILITE.json`. Une mesure
+antérieure circulait sans être portée par aucun fichier du dépôt : elle n'était
+ni rejouable ni opposable, et elle est devenue fausse sans que rien ne le
+signale le jour où l'inventaire fiscal a été corrigé. Celle-ci est versionnée
+et testée.
+
+| Lecture de la règle 2 | Lignes au total indisponible | Part |
+|---|---:|---:|
+| **Stricte** — une assiette non déclarée est une indisponibilité | 174 131 | **50,89 %** |
+| **Restreinte** — seules une taxe absente ou un droit spécifique sans quantité le sont | 59 677 | **17,44 %** |
+| **Résidu** — après service du taux de TVA national documenté, provenance déclarée | 4 265 | **1,25 %** |
+
+L'écart entre les deux premières lignes est le vrai point d'arbitrage, et la
+note ne le tranchait pas. Il tient à une seule question : **une assiette non
+déclarée est-elle une donnée manquante ?** Le taux, lui, est publié ; seule la
+convention d'assiette manque, et elle est la même — CIF — dans toutes les
+nomenclatures concernées. La lecture stricte éteindrait la moitié de la
+plateforme pour une convention que la source ne prend pas la peine d'écrire
+parce qu'elle va de soi.
+
+Le troisième chiffre est celui qui compte pour décider : **1,25 %**. Les
+57 344 lignes dont la TVA manque sont toutes couvrables par un taux national
+documenté — les 54 pays en ont un dans le dépôt. Servir ce taux en déclarant sa
+provenance ramène le coût de l'option (A) de 17,44 % à 1,25 %.
+
+Ce résidu se concentre : **34 des 51 pays n'en portent aucune ligne**.
+L'Éthiopie en concentre 1 368 (21,7 % de ses lignes), la Tunisie 847, l'Algérie
+299, et chacun des cinq pays SACU 182 — les droits spécifiques sans quantité,
+que la règle 3 rend calculables dès que la quantité est fournie.
+
+Ces volumes recoupent, par une mesure indépendante, ceux que cette note citait
+avant qu'elle n'existe : 299 lignes algériennes et 1 368 éthiopiennes, aux
+mêmes chiffres.
+
 ## Trois états, et leur affichage
 
 | État | Signification | Ce que l'utilisateur voit | Le total est-il calculé ? |
@@ -72,6 +109,23 @@ options :
 Recommandation : **(A) pour le chiffre mis en avant, (C) à terme** si un
 plancher explicite s'avère nécessaire aux démonstrations. Commencer par (B)
 reviendrait à conserver le défaut que l'audit reproche, avec une étiquette.
+
+La mesure rend cette recommandation nettement moins coûteuse qu'elle ne le
+paraissait, à une condition : **retenir la lecture restreinte de la règle 2 et
+servir le taux de TVA national documenté**. L'option (A) ne rend alors muettes
+que 1,25 % des lignes, contre la moitié de la plateforme sous la lecture
+stricte. Sans cette condition, (A) n'est pas tenable et l'arbitrage se
+déplacerait vers (C).
+
+Deux sous-décisions en découlent, à trancher avec la principale :
+
+1. **Une assiette non déclarée vaut-elle assiette CIF ?** Si oui, la lecture
+   restreinte s'applique. Si non, (A) éteint 50,89 % des lignes.
+2. **Le taux de TVA national peut-il être servi à défaut du taux porté par le
+   tarif ?** Il ne s'agit pas d'inventer un taux : les 54 taux sont documentés
+   et leur source nommée dans le dépôt. Mais le servir revient à compléter la
+   source tarifaire par une source fiscale, ce que la provenance doit alors
+   déclarer explicitement à l'utilisateur.
 
 Cette note n'engage rien tant qu'elle n'est pas validée ; la phase 2 du plan en
 dépend.
