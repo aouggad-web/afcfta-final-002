@@ -1,0 +1,118 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "DZA",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "INSTRUMENTS_NOMMES_SOURCES_SECONDAIRES",
+ "verified_at": "2026-09-14",
+ "evidence_level": "secondaire — les documents primaires n'ont pas pu être archivés depuis cet environnement. Voir access_diagnostic.",
+ "instruments_reported": [
+  {
+   "id": "Circulaire interministérielle n° 02 du 26 septembre 2024",
+   "subject": "lancement des échanges commerciaux dans le cadre de la ZLECAf ; porte la liste des concessions",
+   "pdf_archived": false
+  },
+  {
+   "id": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024",
+   "authority": "Direction générale des douanes — ministère des Finances",
+   "subject": "mise en œuvre douanière de l'accord, règles et modalités",
+   "pdf_archived": false
+  }
+ ],
+ "ratification": "2021-04-05",
+ "entry_into_application": "2024-11-01",
+ "guided_trade_initiative": "adhésion en décembre 2023",
+ "dismantling_calendar": {
+  "liste_A": "90 % des lignes — élimination totale à compter du 1er janvier 2025",
+  "liste_B": "7 % des lignes — réduction de 20 % par an à partir de 2026, élimination au 1er janvier 2030",
+  "liste_C": "3 % des lignes — exclues, droits de droit commun maintenus"
+ },
+ "two_distinct_lists": {
+  "avertissement": "Deux listes algériennes circulent et ne doivent pas être confondues. Les confondre accorderait une préférence à quatorze pays qui n'y ont pas droit à l'importation en Algérie.",
+  "liste_operative_importation": {
+   "count": 9,
+   "iso3": [
+    "ZAF",
+    "CMR",
+    "EGY",
+    "GHA",
+    "KEN",
+    "MUS",
+    "RWA",
+    "TZA",
+    "TUN"
+   ],
+   "libelle_source": "Afrique du Sud, Cameroun, Égypte, Ghana, Kenya, Île Maurice, Rwanda, Tanzanie, Tunisie",
+   "portee": "pays dont les produits sont effectivement admis au bénéfice de la ZLECAf à l'importation en Algérie"
+  },
+  "liste_etats_parties_ayant_mis_en_oeuvre": {
+   "count": 23,
+   "iso3": [
+    "DZA",
+    "ZAF",
+    "BDI",
+    "BWA",
+    "EGY",
+    "CMR",
+    "ETH",
+    "SWZ",
+    "GMB",
+    "GHA",
+    "LSO",
+    "KEN",
+    "MWI",
+    "NAM",
+    "MUS",
+    "MAR",
+    "UGA",
+    "RWA",
+    "SYC",
+    "SSD",
+    "TZA",
+    "TUN",
+    "ZMB"
+   ],
+   "portee": "énumération des États parties ayant parachevé leur mise en œuvre, mise à jour périodiquement sur notification du ministère chargé du Commerce extérieur. N'emporte pas admission à l'importation en Algérie."
+  }
+ },
+ "monitoring": "Comité d'évaluation et de suivi institué auprès de la Chambre algérienne de commerce et d'industrie (CACI), associant les secteurs concernés et les associations professionnelles.",
+ "reciprocity_with_egypt": {
+  "question_posee": "L'Algérie réciproque-t-elle le traitement que l'Égypte lui accorde ?",
+  "EGY_vers_DZA": "VÉRIFIÉ EN PRIMAIRE — la circulaire Accords n° 38 de la douane égyptienne classe l'Algérie dans le groupe à 5 ans, avec 100 % de réduction au 1er janvier 2025.",
+  "DZA_vers_EGY": "RAPPORTÉ — l'Égypte figure parmi les neuf pays admis à l'importation en Algérie, liste A éliminée à 100 % depuis le 1er janvier 2025.",
+  "conclusion": "La réciprocité Égypte–Algérie paraît acquise et symétrique dans son calendrier : élimination complète des deux côtés au 1er janvier 2025. Elle reste à confirmer sur le texte algérien primaire."
+ },
+ "repo_data_gap": {
+  "severity": "BLOQUANTE pour servir la préférence algérienne",
+  "constat": "Le fichier backend/data/crawled/DZA_tariffs.json, collecté le 29 août 2026, ne porte AUCUNE mention de la ZLECAf sur ses 17 226 positions.",
+  "ce_qu_il_porte": "Trois régimes préférentiels seulement : ZALE/GZALE sur 5 215 positions, convention algéro-jordanienne sur 4 657, accord algéro-tunisien sur 3 008.",
+  "lecture": "L'administration algérienne applique la ZLECAf depuis le 1er novembre 2024, mais le régime est absent de la source tarifaire collectée. Le calculateur ne peut donc pas le servir, quand bien même le portail juridique serait franchi. Une recollecte depuis le portail douanier officiel est nécessaire — la source actuelle passe par l'intermédiaire conformepro.dz, que l'audit signalait déjà comme provenance mixte."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "RAPPORTÉ — deux circulaires nommées et datées, PDF non archivés faute d'accès réseau",
+  "2_liste_officielle_origines_reciproques": "RAPPORTÉE — neuf origines admises à l'importation, à distinguer de la liste des 23 États parties",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucune donnée ZLECAf dans le tarif algérien collecté",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+ },
+ "remaining_work": [
+  "Archiver les deux circulaires algériennes en PDF depuis un réseau ayant accès à douane.gov.dz.",
+  "Recollecter le tarif algérien depuis le portail douanier officiel, avec ses régimes préférentiels, la source actuelle ne les portant pas.",
+  "Confirmer la liste des neuf pays sur le texte primaire et sa date de dernière mise à jour, la circulaire prévoyant une actualisation périodique."
+ ],
+ "access_diagnostic": {
+  "constat": "Le portail douanier algérien répond mais refuse la collecte depuis l'environnement de vérification. Le diagnostic écarte les causes qu'on aurait pu supposer.",
+  "dns": "www.douane.gov.dz résout en 41.111.156.219",
+  "tunnel": "le proxy établit le CONNECT, HTTP/1.1 négocié",
+  "tls": "chaîne valide — openssl s_client -CAfile /root/.ccr/ca-bundle.crt rend « Verify return code: 0 (ok) »",
+  "curl": "échoue malgré le même bundle, y compris en forçant --http1.1 et via CURL_CA_BUNDLE",
+  "webfetch": "atteint le site et reçoit HTTP 503 — le serveur répond donc, mais refuse",
+  "proxy": "ws_closed_mid_exchange journalisé sur www.commerce.gov.dz:443",
+  "conclusion": "Ce n'est ni un blocage réseau ni un défaut de certificat, contrairement à ce que la fiche indiquait d'abord : le site refuse le client. Les PDF doivent être récupérés depuis un autre réseau puis déposés dans le dépôt.",
+  "urls_a_archiver": [
+   "https://www.douane.gov.dz/IMG/pdf/circulaire_no_482_dgd_du_22-10-2024_mise_en_oeuvre_zlecaf.pdf",
+   "https://www.douane.gov.dz/spip.php?article805&debut_documents_joints=0#pagination_documents_joints",
+   "https://www.douane.gov.dz/spip.php?article805&debut_documents_joints=6#pagination_documents_joints",
+   "https://www.douane.gov.dz/spip.php?article805&debut_documents_joints=12#pagination_documents_joints"
+  ],
+  "note_urls": "Les trois pages paginées de l'article 805 portent l'ensemble des documents joints du dispositif ZLECAf algérien."
+ }
+}
