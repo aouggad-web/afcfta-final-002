@@ -1,5 +1,5 @@
 {
-  "genere_le": "2026-09-14T21:49:50.885349+00:00",
+  "genere_le": "2026-09-14T21:59:08.731623+00:00",
   "methode": {
     "source_assiettes": "backend/data/crawled/*_tariffs.json, champ base/assiette",
     "source_table_codee": "services.authentic_tariff_service.COUNTRY_TAX_PROFILES, seule consultée par compute_tax_cascade()",
@@ -9,15 +9,15 @@
   },
   "synthese": {
     "pays": 51,
-    "couples_pays_taxe": 247,
+    "couples_pays_taxe": 239,
     "par_statut": {
       "non_documentee": 55,
       "table_codee_seule": 34,
-      "lue_dans_la_source": 158
+      "lue_dans_la_source": 150
     },
     "par_nature": {
       "indeterminee": 95,
-      "valorielle": 139,
+      "valorielle": 131,
       "valorielle_plafonnee": 2,
       "quantitative": 11
     },
@@ -929,28 +929,6 @@
           "table_codee_origine": "profil par défaut du moteur",
           "accord": null
         },
-        "PCS": {
-          "statut": "lue_dans_la_source",
-          "nature": "valorielle",
-          "assiette_publiee": "CIF",
-          "assiette_publiee_verbatim_variantes": null,
-          "positions_sans_assiette_publiee": 6129,
-          "dependances_source": [],
-          "dependances_table_codee": null,
-          "table_codee_origine": "profil par défaut du moteur",
-          "accord": null
-        },
-        "PUA": {
-          "statut": "lue_dans_la_source",
-          "nature": "valorielle",
-          "assiette_publiee": "CIF",
-          "assiette_publiee_verbatim_variantes": null,
-          "positions_sans_assiette_publiee": 6129,
-          "dependances_source": [],
-          "dependances_table_codee": null,
-          "table_codee_origine": "profil par défaut du moteur",
-          "accord": null
-        },
         "RS": {
           "statut": "lue_dans_la_source",
           "nature": "valorielle",
@@ -1430,28 +1408,6 @@
           "table_codee_origine": "TEC CEDEAO",
           "accord": null
         },
-        "PCS": {
-          "statut": "lue_dans_la_source",
-          "nature": "valorielle",
-          "assiette_publiee": "CIF",
-          "assiette_publiee_verbatim_variantes": null,
-          "positions_sans_assiette_publiee": 6129,
-          "dependances_source": [],
-          "dependances_table_codee": [],
-          "table_codee_origine": "TEC CEDEAO",
-          "accord": true
-        },
-        "PUA": {
-          "statut": "lue_dans_la_source",
-          "nature": "valorielle",
-          "assiette_publiee": "CIF",
-          "assiette_publiee_verbatim_variantes": null,
-          "positions_sans_assiette_publiee": 6129,
-          "dependances_source": [],
-          "dependances_table_codee": null,
-          "table_codee_origine": "TEC CEDEAO",
-          "accord": null
-        },
         "RS": {
           "statut": "lue_dans_la_source",
           "nature": "valorielle",
@@ -1698,28 +1654,6 @@
           "accord": true
         },
         "PCC": {
-          "statut": "lue_dans_la_source",
-          "nature": "valorielle",
-          "assiette_publiee": "CIF",
-          "assiette_publiee_verbatim_variantes": null,
-          "positions_sans_assiette_publiee": 6129,
-          "dependances_source": [],
-          "dependances_table_codee": null,
-          "table_codee_origine": "TEC CEDEAO",
-          "accord": null
-        },
-        "PCS": {
-          "statut": "lue_dans_la_source",
-          "nature": "valorielle",
-          "assiette_publiee": "CIF",
-          "assiette_publiee_verbatim_variantes": null,
-          "positions_sans_assiette_publiee": 6129,
-          "dependances_source": [],
-          "dependances_table_codee": [],
-          "table_codee_origine": "TEC CEDEAO",
-          "accord": true
-        },
-        "PUA": {
           "statut": "lue_dans_la_source",
           "nature": "valorielle",
           "assiette_publiee": "CIF",
@@ -2477,28 +2411,6 @@
           "accord": true
         },
         "PCC": {
-          "statut": "lue_dans_la_source",
-          "nature": "valorielle",
-          "assiette_publiee": "CIF",
-          "assiette_publiee_verbatim_variantes": null,
-          "positions_sans_assiette_publiee": 6129,
-          "dependances_source": [],
-          "dependances_table_codee": null,
-          "table_codee_origine": "TEC CEDEAO",
-          "accord": null
-        },
-        "PCS": {
-          "statut": "lue_dans_la_source",
-          "nature": "valorielle",
-          "assiette_publiee": "CIF",
-          "assiette_publiee_verbatim_variantes": null,
-          "positions_sans_assiette_publiee": 6129,
-          "dependances_source": [],
-          "dependances_table_codee": [],
-          "table_codee_origine": "TEC CEDEAO",
-          "accord": true
-        },
-        "PUA": {
           "statut": "lue_dans_la_source",
           "nature": "valorielle",
           "assiette_publiee": "CIF",

@@ -19,9 +19,18 @@
  },
  "indice_a_verifier_separement": "Le fichier béninois porte PCS à 1,0 %. La note du fichier ivoirien écrit 0,8 %, qui est le taux maintenu par le 20e sommet de l'UEMOA depuis 2017. Les deux ne peuvent être vrais ensemble. À trancher sur l'acte additionnel en vigueur ; ce constat ne le tranche pas.",
  "remaining_work": [
-  "Retirer PCS et PUA des quatre jeux dérivés, ou les collecter nationalement.",
+  "Collecter nationalement PCS et PUA pour CPV, GMB, LBR, SLE, ou établir qu'ils ne s'appliquent pas — leur absence actuelle signifie « non collecté », pas « non dû ».",
   "Établir l'assiette de la TVA de CPV, GMB, LBR et SLE dans leurs lois nationales.",
   "Trancher le taux du PCS, 1,0 % ou 0,8 %, sur l'acte additionnel UEMOA en vigueur.",
-  "Vérifier si la Redevance Statistique à 1 % a le même champ que le PCS."
- ]
+  "Vérifier si la Redevance Statistique à 1 % a le même champ que le PCS.",
+  "Corriger le libellé « BEN (UEMOA TEC) » du manifeste pour la Guinée et la Côte d'Ivoire, qui ont des sources nationales et ne sont pas des transpositions."
+ ],
+ "correction_appliquee": {
+  "date": "2026-09-14",
+  "action": "PCS et PUA retirés des quatre jeux — 12 258 entrées par pays dans taxes et autant dans taxes_detail, soit 49 032 entrées de prélèvement au total. Sceaux refaits, empreintes propagées au manifeste, verify_crawled_file valide sur les quatre.",
+  "ce_qui_est_conserve": "Le droit de douane, la Redevance Statistique (1 %) et le PCC (0,5 %) sont maintenus : la recherche établit qu'ils relèvent du TEC CEDEAO et s'appliquent donc bien aux quinze États membres. Seuls les deux prélèvements sans fondement pour ces pays sont retirés.",
+  "pourquoi_pas_zero": "Les clés sont retirées, non mises à zéro. Dans le schéma du dépôt une taxe absente est ABSENTE, jamais nulle : l'inventaire la classe comme non liquidable et la doctrine interdit de réputer non due une taxe qu'on ignore. Servir zéro aurait été la même faute que servir la valeur béninoise, dans l'autre sens.",
+  "effet_sur_le_calcul": "Cap-Vert, CIF 10 000 : total des taxes 4 070,00 avant, 3 950,00 après. Les 120,00 de prélèvements UEMOA disparaissent, ainsi que la TVA qui s'y asseyait.",
+  "verification_annexe": "La Guinée portait le même libellé « BEN (UEMOA TEC) » au manifeste alors qu'elle n'est pas membre de l'UEMOA. Son fichier a été contrôlé : il porte DD, PCC et TVA seulement, depuis sa propre source dgd.gov.gn, sans PCS ni PUA. La donnée est juste ; seul le libellé du manifeste est trompeur et n'a pas été modifié ici."
+ }
 }

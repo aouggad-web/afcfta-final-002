@@ -181,8 +181,22 @@ membres. Le **PCS** (Prélèvement Communautaire de Solidarité) et le **PUA**
 membres de la CEDEAO mais **non de l'UEMOA** : ils ne les acquittent pas. Les
 fichiers leur en attribuent pourtant 1,0 % et 0,2 %.
 
-Sur 10 000 de CIF, ces quatre pays se voient facturer **120,00 de prélèvements
-qu'ils ne doivent pas** — 1,20 % du CIF — plus la TVA assise dessus.
+Sur 10 000 de CIF, ces quatre pays se voyaient facturer **120,00 de prélèvements
+sans fondement** — 1,20 % du CIF — plus la TVA assise dessus.
+
+**Corrigé.** Le PCS et le PUA sont retirés des quatre jeux : 12 258 entrées par
+pays dans `taxes` et autant dans `taxes_detail`, soit **49 032 entrées** au
+total. Sceaux refaits, empreintes propagées au manifeste, `verify_crawled_file`
+valide sur les quatre. Cap-Vert, CIF 10 000 : le total des taxes passe de
+4 070,00 à 3 950,00.
+
+Les clés sont **retirées, non mises à zéro** — la distinction est la même que
+celle de la note d'indisponibilité. Dans le schéma du dépôt une taxe absente est
+`ABSENTE`, jamais nulle, et la doctrine interdit de réputer non due une taxe
+qu'on ignore. Servir zéro aurait été la même faute que servir la valeur
+béninoise, dans l'autre sens. Le droit de douane, la Redevance Statistique et le
+PCC sont conservés : ils relèvent du TEC CEDEAO et s'appliquent bien aux quinze
+États.
 
 Leur assiette de TVA reste donc sans fondement établi : le champ `base` y est
 l'expression béninoise, et la directive UEMOA ne les lie pas.
