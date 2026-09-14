@@ -93,9 +93,9 @@
    "bareme_collecte": false
   },
   "DZA": {
-   "niveau": "NON_RECHERCHE",
-   "preuve": "",
-   "niveau_de_source": "",
+   "niveau": "PREUVES_ASSEMBLEES",
+   "preuve": "Circulaire 482/DGD/SP/D.042/24 du 22/10/2024, application au 01/11/2024. Régime par défaut liste A éliminée au 1.1.2025 ; régime de réciprocité sur 10 ans pour 13 pays nommés, identiques à la liste P2 marocaine. DAPS exonéré. 1 458 lignes gelées faute de règles d'origine.",
+   "niveau_de_source": "primaire — texte intégral de la circulaire archivé",
    "bareme_collecte": false
   },
   "EGY": {
@@ -343,13 +343,14 @@
   "APPLIQUE": 1,
   "INSTRUMENT_RAPPORTE_NON_PRIMAIRE": 1,
   "NON_APPLIQUE_PRESUME": 1,
-  "NON_RECHERCHE": 42,
+  "NON_RECHERCHE": 41,
   "NOTIFICATION_PARTENAIRES_REQUISE": 3,
   "OFFRE_SEULE": 3,
   "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 1,
-  "PREUVES_ASSEMBLEES": 2
+  "PREUVES_ASSEMBLEES": 3
  },
  "fiches_detaillees": [
+  "DZA_application_2026-09-14.json",
   "EGY_application_2026-09-14.json",
   "ETH_application_2026-09-13.json",
   "MAR_application_2026-09-13.json",
@@ -432,6 +433,10 @@
    {
     "paire": "MAR <-> EGY",
     "constat": "Le Maroc classe l'Égypte en P1 (5 ans) et l'Égypte classe le Maroc dans son groupe à 5 ans. Réciprocité pleine et cohérente."
+   },
+   {
+    "paire": "MAR <-> DZA",
+    "constat": "La liste algérienne de réciprocité et la liste P2 marocaine sont rigoureusement identiques : les mêmes treize pays, aucune différence. Deux circulaires nationales indépendantes, lues sur deux sources primaires distinctes, produisent la même énumération — la règle sous-jacente est objective, et les deux déterminations se valident l'une l'autre."
    }
   ],
   "asymetries_constatees": [
@@ -442,6 +447,10 @@
    {
     "paire": "TUN vs EGY/MAR",
     "constat": "Tunisie : 8 origines publiées. Égypte : 17. Maroc : 40. Les périmètres diffèrent d'un facteur cinq."
+   },
+   {
+    "paire": "DZA -> EGY",
+    "constat": "L'Égypte classe l'Algérie à cinq ans avec 100 % de réduction au 1er janvier 2025 ; l'Algérie élimine sa liste A à la même date. Réciprocité symétrique."
    }
   ],
   "intersection_des_trois": [

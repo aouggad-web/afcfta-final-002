@@ -28,9 +28,18 @@ FICHES = sorted(p for p in REFS_DIR.glob("*_application_*.json"))
 
 
 def _archived_hashes() -> dict:
+    """
+    Empreintes de toutes les preuves archivées, quel que soit leur format.
+
+    Une preuve n'est pas toujours un PDF : la circulaire algérienne pèse
+    8,5 Mo et son texte extrait suffit à fonder la détermination, tandis que
+    le README du répertoire n'est pas une preuve. On indexe donc tout sauf
+    la documentation.
+    """
     return {
         path.name: hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in sorted(SOURCES_DIR.glob("*.pdf"))
+        for path in sorted(SOURCES_DIR.iterdir())
+        if path.is_file() and path.suffix.lower() != ".md"
     }
 
 

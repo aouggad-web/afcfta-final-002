@@ -2,9 +2,9 @@
  "schema_version": 1,
  "destination_iso3": "DZA",
  "agreement": "ZLECAf / AfCFTA",
- "verification_status": "INSTRUMENTS_NOMMES_SOURCES_SECONDAIRES",
+ "verification_status": "INSTRUMENT_ET_REGIMES_VERIFIES",
  "verified_at": "2026-09-14",
- "evidence_level": "secondaire — les documents primaires n'ont pas pu être archivés depuis cet environnement. Voir access_diagnostic.",
+ "evidence_level": "primaire — circulaire n° 482/DGD/SP/D.042/24 lue intégralement. Le PDF officiel, que le portail douanier refusait de servir à l'environnement de vérification, a été fourni par le propriétaire du dépôt via Google Drive. Son texte est archivé dans sources/.",
  "instruments_reported": [
   {
    "id": "Circulaire interministérielle n° 02 du 26 septembre 2024",
@@ -15,7 +15,10 @@
    "id": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024",
    "authority": "Direction générale des douanes — ministère des Finances",
    "subject": "mise en œuvre douanière de l'accord, règles et modalités",
-   "pdf_archived": false
+   "pdf_archived": "texte extrait archivé : sources/DZA_circulaire_482-DGD_2024-10-22.texte-extrait.txt",
+   "drive_file_id": "1Ghyto4fZeYLIlkrkCvdoCTdUJC0UTGa0",
+   "pdf_size_bytes": 8515627,
+   "sha256": "0133b007210e9f4618e7380ed2d753b76becdd48c0ed90d27fc92062ee1d1668"
   }
  ],
  "ratification": "2021-04-05",
@@ -88,15 +91,17 @@
   "lecture": "L'administration algérienne applique la ZLECAf depuis le 1er novembre 2024, mais le régime est absent de la source tarifaire collectée. Le calculateur ne peut donc pas le servir, quand bien même le portail juridique serait franchi. Une recollecte depuis le portail douanier officiel est nécessaire — la source actuelle passe par l'intermédiaire conformepro.dz, que l'audit signalait déjà comme provenance mixte."
  },
  "gates_status": {
-  "1_instrument_national_en_vigueur": "RAPPORTÉ — deux circulaires nommées et datées, PDF non archivés faute d'accès réseau",
-  "2_liste_officielle_origines_reciproques": "RAPPORTÉE — neuf origines admises à l'importation, à distinguer de la liste des 23 États parties",
+  "1_instrument_national_en_vigueur": "SATISFAIT — circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024, texte archivé, application au 1er novembre 2024",
+  "2_liste_officielle_origines_reciproques": "SATISFAIT POUR LE RÉGIME DE RÉCIPROCITÉ — treize pays nommés. Le régime par défaut vise « les pays africains membres de la ZLECAf » sans énumération : la liste opérationnelle des pays ayant lancé l'application effective est tenue à part et mise à jour par le ministère du Commerce extérieur",
   "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucune donnée ZLECAf dans le tarif algérien collecté",
-  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION"
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION — certificat d'origine ZLECAf à quinze cases, modèle en annexe de la circulaire"
  },
  "remaining_work": [
-  "Archiver les deux circulaires algériennes en PDF depuis un réseau ayant accès à douane.gov.dz.",
-  "Recollecter le tarif algérien depuis le portail douanier officiel, avec ses régimes préférentiels, la source actuelle ne les portant pas.",
-  "Confirmer la liste des neuf pays sur le texte primaire et sa date de dernière mise à jour, la circulaire prévoyant une actualisation périodique."
+  "Recollecter le tarif algérien depuis le portail douanier officiel : la source actuelle ne porte aucun régime ZLECAf.",
+  "Identifier les 1 458 lignes gelées faute de règles d'origine, aucune préférence ne pouvant leur être appliquée.",
+  "Mettre le DAPS à zéro sous régime ZLECAf, conformément à la circulaire.",
+  "Obtenir la liste à jour des pays ayant lancé l'application effective, tenue par le ministère du Commerce extérieur.",
+  "Archiver la circulaire interministérielle n° 02 du 26 septembre 2024, non encore obtenue."
  ],
  "access_diagnostic": {
   "constat": "Le portail douanier algérien répond mais refuse la collecte depuis l'environnement de vérification. Le diagnostic écarte les causes qu'on aurait pu supposer.",
@@ -114,5 +119,104 @@
    "https://www.douane.gov.dz/spip.php?article805&debut_documents_joints=12#pagination_documents_joints"
   ],
   "note_urls": "Les trois pages paginées de l'article 805 portent l'ensemble des documents joints du dispositif ZLECAf algérien."
+ },
+ "regimes_verifies": {
+  "source": "circulaire 482/DGD, sections II-2, II-3 et II-4",
+  "regime_par_defaut": {
+   "portee": "tous les produits des listes (A) et (B) originaires des pays africains membres de la ZLECAf",
+   "verbatim": "Les droits de douane applicables à l'importation en Algérie aux produits originaires des pays africains membres de la ZLECAF, objet de la liste (A), sont éliminés progressivement, pendant cinq (05) ans, à compter du 1er Janvier 2021",
+   "liste_A": {
+    "duree_ans": 5,
+    "calendrier_pct_du_droit_de_base": {
+     "2021-01-01": 80,
+     "2022-01-01": 60,
+     "2023-01-01": 40,
+     "2024-01-01": 20,
+     "2025-01-01": 0
+    }
+   },
+   "liste_B": {
+    "duree_ans": 10,
+    "note": "période transitoire de 5 ans, réduction de 20 %/an à partir de la 6e année, fin au 1.1.2030"
+   },
+   "liste_C": "exclue — droits et taxes de droit commun"
+  },
+  "regime_de_reciprocite": {
+   "fondement": "article 5 (i) de l'Accord ZLECAf",
+   "portee": "pays en voie de développement (non-PMA) membres de Communautés économiques régionales qui appliquent eux-mêmes le calendrier réservé aux PMA",
+   "verbatim": "Les pays en voie de développement membres des Communautés Régionales Economiques (CER), concernés par ce traitement sont les suivants: Afrique du Sud, Botswana, Cameroun, Cap-Vert, République du Congo, Côte d'Ivoire, Eswatini, Gabon, Ghana, Guinée équatoriale, Kenya, Nigeria, Namibie.",
+   "count": 13,
+   "iso3": [
+    "ZAF",
+    "BWA",
+    "CMR",
+    "CPV",
+    "COG",
+    "CIV",
+    "SWZ",
+    "GAB",
+    "GHA",
+    "GNQ",
+    "KEN",
+    "NGA",
+    "NAM"
+   ],
+   "liste_A": {
+    "duree_ans": 10,
+    "taux_2021_pct_du_droit_de_base": 90
+   },
+   "liste_B": {
+    "duree_ans": 13,
+    "note": "transitoire de 5 ans puis 12,5 %/an, fin au 1.1.2033"
+   }
+  },
+  "exportations_algeriennes": "admises dans les pays ayant lancé l'application effective, selon leurs propres concessions ; la circulaire renvoie au portail e-tarif du secrétariat de la ZLECAf (https://au-afcfta.org/etariff/)"
+ },
+ "volumetrie_officielle": {
+  "source": "annexe « Schéma général du traitement tarifaire », page 24 de la circulaire",
+  "liste_A": {
+   "lignes": 15703,
+   "gelees_faute_de_regles_d_origine": 1136
+  },
+  "liste_B": {
+   "lignes": 1163,
+   "gelees_faute_de_regles_d_origine": 322
+  },
+  "liste_C": {
+   "lignes": 456
+  },
+  "total": 17322,
+  "taux_de_droit_de_base": [
+   5,
+   15,
+   30,
+   60
+  ],
+  "portee": "1 458 lignes au total sont gelées faute de règles d'origine — elles relèvent des listes A et B mais ne bénéficient d'aucun démantèlement tant que ces règles manquent. Un calculateur qui appliquerait la préférence à ces lignes se tromperait."
+ },
+ "exoneration_daps": {
+  "regle": "Les produits des listes (A) et (B) importés dans le cadre de la ZLECAf sont exonérés du Droit Additionnel Provisoire de Sauvegarde (DAPS).",
+  "fondement": "article 2 de la loi de finances complémentaire pour 2018",
+  "consequence_calculateur": "Le dépôt porte un DAPS algérien (937 positions recensées à l'inventaire, champ daps_rate_pct dans le calculateur). Sous régime ZLECAf il doit être mis à zéro, ce que le calculateur ne fait pas aujourd'hui."
+ },
+ "validation_croisee_maroc": {
+  "constat": "La liste algérienne de réciprocité et la liste P2 marocaine sont RIGOUREUSEMENT IDENTIQUES : les mêmes treize pays, aucune différence.",
+  "iso3": [
+   "ZAF",
+   "BWA",
+   "CMR",
+   "CPV",
+   "COG",
+   "CIV",
+   "SWZ",
+   "GAB",
+   "GHA",
+   "GNQ",
+   "KEN",
+   "NAM",
+   "NGA"
+  ],
+  "portee": "Deux circulaires nationales indépendantes, lues sur deux sources primaires distinctes — un PDF marocain de 158 pages et un PDF algérien de 8,5 Mo — produisent la même énumération. La règle sous-jacente est donc objective : les non-PMA membres d'une CER qui appliquent eux-mêmes le calendrier PMA. Cette concordance valide les deux déterminations l'une par l'autre.",
+  "consequence": "Elle éclaire aussi l'écart relevé avec l'e-Tariff Book de l'UA, dont le barème 2 est intitulé « LDC Countries in a Customs Union » : des PMA en union douanière, ce qui n'est pas la même catégorie que des non-PMA appliquant le calendrier PMA. La divergence sur 33 origines relevée pour le Maroc s'explique par cette confusion de catégories."
  }
 }
