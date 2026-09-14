@@ -1,339 +1,1016 @@
 {
- "date": "2026-08-29T21:59:13.912993+00:00",
- "country": "EGY",
- "action": "rebuild_fichier_national_officiel (crawl customs.gov.eg 2026-08-29)",
- "fichier": "backend/data/crawled/EGY_tariffs.json",
- "previous_file_sha256": "c97045a4fc5909382b6a8ebce412af75e9cdded924c805f523c2030c36e1d065",
- "comparison_basis": "fichier national du 2026-08-29 vs crawl juin 2026 (backup EGY_tariffs_20260829T215128Z.json)",
- "build_stats": {
-  "positions_officielles": 8818,
-  "with_regime_rates": 1397,
-  "with_formalities": 2342,
-  "with_fta_preferences": 6764,
-  "with_zlecaf_instruction": 5137,
-  "legacy_not_in_official_crawl": 15,
-  "missing_taxes": 10
- },
- "diff_classification": {
-  "dd_juin_raw_vide_0_impute": 34,
-  "bug_juin_taux_regime_ecrasait_generique": 1342,
-  "dd_juin_specifique->aujourdhui_raw_sans_%": 40,
-  "tva_changement_reel": 9,
-  "tva_juin_minimum_pris_comme_taux->ad_valorem_retabli": 16,
-  "tva_none_vs_valeur_representation": 56,
-  "dd_changement_reel": 29
- },
- "rate_changes_detail": [
-  {
-   "code": "1701991000",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  "date": "2026-09-14T10:15:40.859378+00:00",
+  "stats": {
+    "rate_diff_vs_previous": 8793,
+    "with_instructions": 8791,
+    "with_fta_preferences": 8778,
+    "with_formalities": 2878,
+    "with_zlecaf_instruction": 6315,
+    "total": 8803,
+    "with_regime_rates": 1397,
+    "missing_taxes": 10,
+    "legacy_not_in_official_crawl": 15
   },
-  {
-   "code": "2309901015",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2309901025",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2309901090",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2309909015",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2309909025",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2309909035",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2520100010",
-   "tax": "TVA",
-   "juin": 5.0,
-   "aout": 14.0,
-   "raw_juin": "5% (من القيمة + ر.ض.جمركية)",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2709000010",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 10.0,
-   "raw_juin": "صفر",
-   "raw_aout": "10% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2804800000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2908990015",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2909500010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2917320000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 5.0,
-   "raw_juin": "",
-   "raw_aout": "5%"
-  },
-  {
-   "code": "2918300090",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2921300090",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2931900010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2931900090",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932110000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932120000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932130000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932140010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932140090",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932190000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932200000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932910000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932920000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932930000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932940000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932950000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932960000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932990010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932990090",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2933110000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2933190000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2933210000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "3204150010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "4009210010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 10.0,
-   "raw_juin": "",
-   "raw_aout": "10%"
-  },
-  {
-   "code": "8483109010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 10.0,
-   "raw_juin": "",
-   "raw_aout": "10%"
-  }
- ],
- "notes": [
-  "1 342 lignes : le crawl de juin avait écrasé le taux générique DD par un taux de régime (accord UE/UK/etc. 19,5% etc.) ; le taux générique publié par la source est rétabli, les taux de régime sont conservés séparément dans taxes_regimes.",
-  "Les TVA 'minimum' (بحد أدنى) étaient prises comme taux unique en juin ; aujourd'hui la ligne ad valorem générique est rétablie et le minimum conservé (VAT_2 + verbatim).",
-  "Les changements réels restants (ex. TVA 0->14 sur 230990*, tabac 75/100/200) sont pris du verbatim publié aujourd'hui, sans arbitrage.",
-  "ch.77 vide (réservé SH) ; ch.95 vide : HTTP 500 côté source (persistant depuis juin) — écart de source documenté."
- ],
- "backup": "data/archive/crawled_backup/EGY_tariffs_20260829T215739Z.json"
+  "rate_diffs_sample": [
+    {
+      "code": "0101210000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0101290000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0101300000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0101900000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0102210000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0102290000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0102310000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0102390000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0102900000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0103100000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0103910000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0103920000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0104100010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0104100090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0104200000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0105110000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0105120000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0105130000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0105140000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0105150000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0105940010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0105940090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0105990010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0105990090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106110000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106120010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106120090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106130010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106130090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106140010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106140090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106190010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106190090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106200000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106310010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106310090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106320000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106330010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106330090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106390010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106390090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106410000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106490000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106900010",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106900030",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106900050",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0106900090",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 5.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  5%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0201100000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0201200000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0201300000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0202100000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0202200000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0202300000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0203110000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 20.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  20%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0203120000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 30.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  30%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0203190000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 30.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  30%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0203210000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 20.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  20%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0203220000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 30.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  30%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0203290000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 30.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  30%",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    },
+    {
+      "code": "0204100000",
+      "old": {
+        "dd": null,
+        "tva": null
+      },
+      "new": {
+        "dd": 0.0,
+        "tva": 0.0
+      },
+      "taxes_verbatim": [
+        "ضريبة الوارد :  صفر",
+        "ضريبة قيمه مضافه :  صفر"
+      ]
+    }
+  ],
+  "backup": "data/archive/crawled_backup/EGY_tariffs_20260914T101546Z.json",
+  "chapters_covered": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97
+  ]
 }
