@@ -220,26 +220,50 @@
   "consequence": "Elle éclaire aussi l'écart relevé avec l'e-Tariff Book de l'UA, dont le barème 2 est intitulé « LDC Countries in a Customs Union » : des PMA en union douanière, ce qui n'est pas la même catégorie que des non-PMA appliquant le calendrier PMA. La divergence sur 33 origines relevée pour le Maroc s'explique par cette confusion de catégories."
  },
  "accepted_origins": {
-  "count": 13,
-  "note": "Seul le régime de réciprocité désigne des origines nommément : les 13 pays de l'article 5 (i), repris ici depuis regimes_verifies.regime_de_reciprocite. Le régime par défaut ne comporte pas de liste fermée — il vise tous les pays africains membres de la ZLECAf — et n'est donc pas énumérable ici.",
-  "reciprocite_article_5i": {
+  "count": 9,
+  "note": "Origines effectivement ADMISES au bénéfice de la ZLECAf à l'importation en Algérie : les neuf pays de two_distinct_lists.liste_operative_importation. Ce champ portait d'abord les treize pays du régime de réciprocité, ce qui était une faute : ces treize-là ne sont pas une liste d'admission mais un CALENDRIER de démantèlement, et la fiche avertit elle-même que confondre les deux accorderait une préférence à quatorze pays qui n'y ont pas droit. Le calendrier applicable est porté séparément par calendrier_de_reciprocite_article_5i.",
+  "admises_a_l_importation": {
    "iso3": [
     "ZAF",
-    "BWA",
     "CMR",
-    "CPV",
-    "COG",
-    "CIV",
-    "SWZ",
-    "GAB",
+    "EGY",
     "GHA",
-    "GNQ",
     "KEN",
-    "NGA",
-    "NAM"
+    "MUS",
+    "RWA",
+    "TZA",
+    "TUN"
    ],
-   "duree_ans": 10,
+   "libelle_source": "Afrique du Sud, Cameroun, Égypte, Ghana, Kenya, Île Maurice, Rwanda, Tanzanie, Tunisie",
    "source": "circulaire 482/DGD, sections II-2, II-3 et II-4"
   }
+ },
+ "calendrier_de_reciprocite_article_5i": {
+  "count": 13,
+  "iso3": [
+   "ZAF",
+   "BWA",
+   "CMR",
+   "CPV",
+   "COG",
+   "CIV",
+   "SWZ",
+   "GAB",
+   "GHA",
+   "GNQ",
+   "KEN",
+   "NGA",
+   "NAM"
+  ],
+  "portee": "pays en voie de développement (non-PMA) membres de Communautés économiques régionales qui appliquent eux-mêmes le calendrier réservé aux PMA",
+  "duree_ans": 10,
+  "note": "N'EMPORTE PAS ADMISSION. Ces treize pays, lorsqu'ils sont admis, relèvent du calendrier long de l'article 5 (i) au lieu du régime par défaut. Quatre d'entre eux seulement figurent aussi dans la liste opérative d'admission.",
+  "source": "circulaire 482/DGD, sections II-2, II-3 et II-4",
+  "aussi_admis_a_l_importation": [
+   "CMR",
+   "GHA",
+   "KEN",
+   "ZAF"
+  ]
  }
 }

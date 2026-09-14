@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-14T19:54:55.514686+00:00",
+  "date": "2026-09-14T20:57:46.180339+00:00",
   "comparison_base": {
     "origin": "version du fichier antérieure à la reconstruction, relue depuis l'historique git",
     "ref": "git:0d93269~1:backend/data/crawled/EGY_tariffs.json",

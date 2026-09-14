@@ -25,8 +25,13 @@ RAPPORT = REPO_ROOT / "reports" / "COUT_INDISPONIBILITE.json"
 
 @pytest.fixture(scope="module")
 def rapport() -> dict:
-    if not RAPPORT.exists():
-        pytest.skip("rapport de coût absent")
+    # Ce rapport est l'entrée chiffrée d'une décision produit. Sauter quand il
+    # manque rendrait son absence indolore, alors que c'est précisément ce que
+    # ce fichier existe pour empêcher.
+    assert RAPPORT.exists(), (
+        f"{RAPPORT.relative_to(REPO_ROOT)} est un livrable versionné et doit "
+        "exister. Le régénérer avec scripts/measure_unavailability_cost.py."
+    )
     return json.loads(RAPPORT.read_text(encoding="utf-8"))
 
 

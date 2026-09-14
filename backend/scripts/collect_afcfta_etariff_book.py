@@ -209,7 +209,14 @@ def _localized(node: list | None) -> dict:
     return out
 
 
-def collect_offer(offer_code: str, regions: list[dict], collected_at: str = COLLECTED_AT) -> dict:
+def collect_offer(offer_code: str, regions: list[dict], collected_at: str | None = None) -> dict:
+    """Collecte une offre. ``collected_at`` omis vaut aujourd'hui, jamais la
+    date historique : un appelant programmatique qui l'omettrait produirait
+    sinon des données fraîchement collectées sous une date de collecte fausse —
+    le défaut même que ce paramètre existe pour supprimer. La correction
+    précédente n'avait touché que la ligne de commande."""
+    if collected_at is None:
+        collected_at = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     config = OFFERS[offer_code]
     schedules = {
         schedule: _collect_schedule(config["destination"], config["region"], origin, schedule)

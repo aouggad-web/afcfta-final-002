@@ -427,9 +427,18 @@ def main() -> int:
         return 2
     positions = {}
     chapters_covered = set()
+    # La date de collecte est portée par le DOCUMENT de progression, pas par
+    # ses lignes : le collecteur écrit d["extracted_at"] une fois par chapitre.
+    # La chercher sur les lignes ne la trouvait jamais, et le constructeur
+    # retombait silencieusement sur la date de l'ancien fichier — ce qui a
+    # marché tant que l'ancien portait la bonne, et aurait estampé un crawl
+    # neuf de la date du précédent. Elle est donc relevée ici, à la lecture.
+    dates_de_collecte = set()
     for f in files:
         d = json.loads(Path(f).read_text(encoding="utf-8"))
         chapters_covered.add(d.get("chapter"))
+        if d.get("extracted_at"):
+            dates_de_collecte.add(str(d["extracted_at"]))
         for row in d.get("data", []):
             code = norm_code(row.get("code", ""))
             if code:
@@ -442,12 +451,25 @@ def main() -> int:
     # Date de collecte, à ne jamais confondre avec la date de construction.
     # Une reconstruction ne reconsulte pas la source : dater le document du
     # jour de la reconstruction en ferait une provenance fausse, exactement
-    # le défaut que ce dépôt combat ailleurs. On reprend donc la date portée
-    # par les fichiers de progression, et à défaut celle du document existant.
-    collecte = next(
-        (row["extracted_at"] for row in positions.values() if row.get("extracted_at")),
-        old.get("extracted_at") or now,
-    )
+    # le défaut que ce dépôt combat ailleurs. La date vient donc des fichiers
+    # de progression eux-mêmes ; celle du document existant n'est qu'un ultime
+    # recours, et le cas est signalé plutôt que subi.
+    # Une collecte de 97 chapitres n'est pas un instant mais un intervalle :
+    # chaque fichier de progression porte l'heure de SON chapitre. Réduire cela
+    # à une date unique perd l'information, alors on publie l'intervalle et on
+    # retient sa fin pour extracted_at — la donnée vaut à la date de sa
+    # dernière lecture, pas de sa première.
+    span = None
+    if dates_de_collecte:
+        span = {"debut": min(dates_de_collecte), "fin": max(dates_de_collecte)}
+        collecte = span["fin"]
+    else:
+        collecte = old.get("extracted_at") or now
+        print(
+            "ATTENTION : aucun fichier de progression ne porte extracted_at. "
+            "La date du document existant est reprise faute de mieux — "
+            "vérifier qu'elle correspond bien à ce crawl."
+        )
     old_by_code = {
         (p.get("hs_code") or "").replace("/", ""): p for p in old.get("sub_positions", [])
     }
@@ -564,6 +586,7 @@ def main() -> int:
         "detail_endpoint": "POST https://www.customs.gov.eg/Services/TrfDetails?trfNumber={code}&trfType=1",
         "source_quality": "crawled_authentic",
         "extracted_at": collecte,
+        "collected_span": span,
         "rebuilt_at": now,
         "built_by": "backend/scripts/build_egy_tariffs_official.py",
         "policy": (

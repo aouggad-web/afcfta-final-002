@@ -30,8 +30,14 @@ REPORT = REPO_ROOT / "reports" / "EGY_REBUILD_RECONCILIATION.json"
 
 @pytest.fixture(scope="module")
 def rapport() -> dict:
-    if not REPORT.exists():
-        pytest.skip("rapport de réconciliation absent")
+    # Le rapport est un livrable versionné, pas une commodité. Sauter quand il
+    # manque ferait d'une suppression accidentelle une CI plus verte : la
+    # régression deviendrait un succès.
+    assert REPORT.exists(), (
+        f"{REPORT.relative_to(REPO_ROOT)} est un livrable versionné et doit "
+        "exister. Le régénérer avec build_egy_tariffs_official.py "
+        "--reconcile-only --base <version antérieure>."
+    )
     return json.loads(REPORT.read_text(encoding="utf-8"))
 
 
@@ -82,11 +88,51 @@ def test_le_rapport_porte_un_bilan_avant_apres(rapport):
     assert bilan["positions"]["before"] == base_count(rapport)
 
 
+def test_les_invariants_annonces_par_la_reconstruction_sont_vrais(rapport):
+    """Vérifier que les blocs existent ne vérifie rien.
+
+    Ce sont leurs VALEURS qui portent la promesse de cette reconstruction :
+    aucune position ajoutée ou supprimée, aucun taux modifié, aucun texte
+    perdu, aucune référence touchée, la méthode de calcul conservée. Un jeu
+    régénéré fautif passait tant que la suite se contentait de la présence
+    des sections.
+    """
+    bilan = rapport["before_after"]
+
+    positions = bilan["positions"]
+    assert positions["added"] == [], positions["added"][:10]
+    assert positions["removed"] == [], positions["removed"][:10]
+    assert positions["before"] == positions["after"]
+
+    rates = bilan["rates"]
+    assert rates["positions_changed"] == 0, rates["sample"][:5]
+    assert (
+        rates["positions_without_any_rate_before"] == rates["positions_without_any_rate_after"]
+    ), "le nombre de positions sans aucun taux a changé"
+
+    textes = bilan["instruction_texts"]
+    assert textes["raw_instructions"]["lost"] == 0, textes["raw_instructions"]["lost_sample"][:5]
+    for famille, mesure in textes["par_famille"].items():
+        perdus = mesure["sortis_de_ce_bloc"] - mesure["retrouves_dans_une_autre_famille"]
+        assert perdus == 0, (
+            f"{famille} : {perdus} textes sortis du bloc et retrouvés dans "
+            f"aucun autre — {mesure['sortis_sample'][:3]}"
+        )
+
+    assert bilan["references"]["positions_changed"] == 0, bilan["references"]["sample"]
+    assert bilan["calculation_method_preserved"] is True
+
+    provenance = bilan["provenance"]
+    assert (
+        provenance["extracted_at"]["before"] == provenance["extracted_at"]["after"]
+    ), "la date de collecte a changé : une reconstruction ne recollecte pas"
+
+
 def base_count(rapport: dict) -> int:
     return rapport["comparison_base"]["positions"]
 
 
 def test_le_compteur_trompeur_n_est_plus_publie(rapport):
-    assert "rate_diff_vs_previous" not in json.dumps(rapport), (
-        "ce compteur comparait sur des clés que le document ne porte plus"
-    )
+    assert "rate_diff_vs_previous" not in json.dumps(
+        rapport
+    ), "ce compteur comparait sur des clés que le document ne porte plus"

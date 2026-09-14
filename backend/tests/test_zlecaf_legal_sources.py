@@ -165,10 +165,28 @@ def test_les_groupes_d_origines_ne_se_chevauchent_pas(fiche):
 
 
 def _verifier_le_decompte_declare(fiche, origins: dict, groupes: dict) -> None:
-    """Le décompte annoncé par la fiche doit correspondre aux origines listées."""
+    """Le décompte annoncé par la fiche doit correspondre aux origines listées.
+
+    Le décompte global ne suffit pas : chaque groupe — P1/P2 marocains,
+    5 ans / 10 ans égyptiens — déclare le sien, et déplacer une origine d'un
+    groupe à l'autre laisse la somme inchangée tout en rendant les deux
+    décomptes de groupe faux. Or c'est précisément ce déplacement qui change
+    le calendrier de démantèlement servi à un pays.
+    """
     declared = origins.get("count")
     if isinstance(declared, int):
         total = len(set().union(*groupes.values()))
         assert total == declared, (
             f"{fiche.stem} : {total} origines distinctes dans les groupes, " f"{declared} déclarées"
         )
+
+    for nom, valeur in origins.items():
+        if not isinstance(valeur, dict) or not isinstance(valeur.get("iso3"), list):
+            continue
+        attendu = valeur.get("count")
+        if isinstance(attendu, int):
+            reel = len(set(valeur["iso3"]))
+            assert reel == attendu, (
+                f"{fiche.stem} : le groupe {nom} déclare {attendu} origines "
+                f"et en énumère {reel}"
+            )
