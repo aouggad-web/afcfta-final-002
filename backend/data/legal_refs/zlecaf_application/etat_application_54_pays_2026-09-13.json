@@ -99,9 +99,9 @@
    "bareme_collecte": false
   },
   "EGY": {
-   "niveau": "OFFRE_SEULE",
-   "preuve": "barème archivé : EGY",
-   "niveau_de_source": "instantané e-Tariff Book",
+   "niveau": "PREUVES_ASSEMBLEES",
+   "preuve": "Circulaire Accords n° 38 (compl. n° 3, 6, 10, 15), douane égyptienne : 17 origines en deux groupes — 10 ans à 50 % de réduction au 1/1/2025 (ZAF BWA GHA KEN CMR SWZ), 5 ans à 100 % (MAR RWA TZA MUS TUN DZA BDI LSO MWI GMB UGA). Listes B et C non entrées en vigueur.",
+   "niveau_de_source": "primaire — PDF officiels customs.gov.eg lus à l'image et par OCR arabe, API tarifaire interrogée en direct",
    "bareme_collecte": true
   },
   "ERI": {
@@ -345,13 +345,124 @@
   "NON_APPLIQUE_PRESUME": 1,
   "NON_RECHERCHE": 42,
   "NOTIFICATION_PARTENAIRES_REQUISE": 3,
-  "OFFRE_SEULE": 4,
+  "OFFRE_SEULE": 3,
   "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 1,
-  "PREUVES_ASSEMBLEES": 1
+  "PREUVES_ASSEMBLEES": 2
  },
  "fiches_detaillees": [
+  "EGY_application_2026-09-14.json",
+  "ETH_application_2026-09-13.json",
   "MAR_application_2026-09-13.json",
-  "TUN_application_2026-09-13.json",
-  "ETH_application_2026-09-13.json"
- ]
+  "TUN_application_2026-09-13.json"
+ ],
+ "recoupements_reciprocite": {
+  "note": "La réciprocité est un principe fondateur de l'accord. Croiser les listes vérifiées la met à l'épreuve : une asymétrie n'est pas une erreur de collecte, c'est un fait juridique à constater.",
+  "MAR_accorde_a": [
+   "BDI",
+   "BFA",
+   "BWA",
+   "CAF",
+   "CIV",
+   "CMR",
+   "COD",
+   "COG",
+   "COM",
+   "CPV",
+   "DZA",
+   "EGY",
+   "ETH",
+   "GAB",
+   "GHA",
+   "GIN",
+   "GMB",
+   "GNB",
+   "GNQ",
+   "KEN",
+   "LSO",
+   "MLI",
+   "MRT",
+   "MUS",
+   "MWI",
+   "NAM",
+   "NER",
+   "NGA",
+   "RWA",
+   "SEN",
+   "SLE",
+   "SWZ",
+   "SYC",
+   "TCD",
+   "TGO",
+   "TUN",
+   "TZA",
+   "UGA",
+   "ZAF",
+   "ZMB"
+  ],
+  "EGY_accorde_a": [
+   "BDI",
+   "BWA",
+   "CMR",
+   "DZA",
+   "GHA",
+   "GMB",
+   "KEN",
+   "LSO",
+   "MAR",
+   "MUS",
+   "MWI",
+   "RWA",
+   "SWZ",
+   "TUN",
+   "TZA",
+   "UGA",
+   "ZAF"
+  ],
+  "TUN_accorde_a": [
+   "CMR",
+   "GHA",
+   "KEN",
+   "MUS",
+   "NGA",
+   "RWA",
+   "TZA",
+   "ZAF"
+  ],
+  "reciproques_confirmees": [
+   {
+    "paire": "MAR <-> EGY",
+    "constat": "Le Maroc classe l'Égypte en P1 (5 ans) et l'Égypte classe le Maroc dans son groupe à 5 ans. Réciprocité pleine et cohérente."
+   }
+  ],
+  "asymetries_constatees": [
+   {
+    "paire": "TUN -> MAR",
+    "constat": "L'Égypte et le Maroc accordent la ZLECAf à la Tunisie ; la Tunisie ne publie de préférence ZLECAf ni pour le Maroc ni pour l'Égypte. Elle sert le Maroc sous accord bilatéral et Agadir."
+   },
+   {
+    "paire": "TUN vs EGY/MAR",
+    "constat": "Tunisie : 8 origines publiées. Égypte : 17. Maroc : 40. Les périmètres diffèrent d'un facteur cinq."
+   }
+  ],
+  "intersection_des_trois": [
+   "CMR",
+   "GHA",
+   "KEN",
+   "MUS",
+   "RWA",
+   "TZA",
+   "ZAF"
+  ],
+  "accordee_par_MAR_et_EGY_mais_pas_TUN": [
+   "BDI",
+   "BWA",
+   "DZA",
+   "GMB",
+   "LSO",
+   "MWI",
+   "SWZ",
+   "TUN",
+   "UGA"
+  ]
+ }
 }
