@@ -15,8 +15,9 @@
    "piege_de_lecture": "Lu seul, l'alinéa (c) — « the amount of duty of customs » — se comprendrait comme le seul droit de douane, et conduirait à conclure que l'assiette est CIF + DD. C'est la définition de l'expression, ailleurs dans la loi, qui l'élargit aux levies, cess, taxes et surtaxes. Une lecture sans la définition inverse le sens.",
    "portee": "valeur en douane + tous droits, prélèvements et taxes de douane ou d'accise, hors TVA",
    "texte_archive": "sources/KEN_VAT_Act_2013_s14.texte-extrait.txt",
-   "sha256": "d2b9abef2b28d82488dbe0fdd87404e2a16975a151aec42c5b138451732908e9",
-   "pdf_non_archive": "PDF officiel non archivé dans le dépôt ; seul l'extrait de la section déterminante l'est, suivant le parti pris retenu pour la circulaire algérienne et la directive UEMOA."
+   "sha256": "8cec0e22ab062347a3c2e795af0c0efeb031046f81335f540765aa35796f5cfc",
+   "pdf_non_archive": "PDF officiel non archivé dans le dépôt ; seul l'extrait de la section déterminante l'est, suivant le parti pris retenu pour la circulaire algérienne et la directive UEMOA.",
+   "correction_de_l_extrait": "L'extrait archivé capturait d'abord l'entrée de sommaire et non le dispositif de la section 14 : la fiche citait un texte que l'archive ne contenait pas. Ré-extrait sur l'occurrence suivie du dispositif ; empreinte précédente d2b9abef2b28d824…"
   },
   {
    "iso3": "UGA",

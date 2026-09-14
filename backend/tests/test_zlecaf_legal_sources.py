@@ -16,6 +16,7 @@ entre ce qu'une fiche affirme et ce que le dépôt porte réellement :
 
 import hashlib
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -91,6 +92,78 @@ def test_chaque_sha256_cite_correspond_a_un_document_archive(fiche):
         )
 
 
+#: Un chemin d'archive tel que les fiches le nomment, sous une clé dédiée ou
+#: au fil d'une phrase.
+_CHEMIN_SOURCE_RE = re.compile(r"(sources/[\w.\-]+)")
+
+
+def _paires_document_empreinte(payload, trouvees=None) -> list:
+    """Couples (chemin déclaré, empreinte déclarée) portés par un même objet.
+
+    Une fiche qui cite un document nomme les deux dans le même bloc : le chemin
+    sous une clé d'archive, l'empreinte sous une clé se terminant par sha256.
+    """
+    trouvees = [] if trouvees is None else trouvees
+    if isinstance(payload, dict):
+        # Le chemin n'est pas toujours sous une clé dédiée : plusieurs fiches le
+        # nomment en prose, « texte extrait archivé : sources/… ». On le
+        # reconnaît donc à sa forme plutôt qu'au nom de sa clé, faute de quoi
+        # ces fiches échapperaient au contrôle — ce qui est exactement le trou
+        # que ce test comble.
+        chemin = next(
+            (
+                _CHEMIN_SOURCE_RE.search(v).group(1)
+                for v in payload.values()
+                if isinstance(v, str) and _CHEMIN_SOURCE_RE.search(v)
+            ),
+            None,
+        )
+        digest = next(
+            (
+                str(v)
+                for k, v in payload.items()
+                if k.endswith("sha256") and isinstance(v, str) and len(v) == 64
+            ),
+            None,
+        )
+        if chemin and digest:
+            trouvees.append((chemin, digest))
+        for valeur in payload.values():
+            _paires_document_empreinte(valeur, trouvees)
+    elif isinstance(payload, list):
+        for item in payload:
+            _paires_document_empreinte(item, trouvees)
+    return trouvees
+
+
+@pytest.mark.parametrize("fiche", FICHES, ids=[p.stem for p in FICHES])
+def test_chaque_empreinte_est_celle_du_document_qu_elle_designe(fiche):
+    """L'empreinte doit être celle du document que la fiche nomme à côté.
+
+    Le contrôle précédent se contentait de retrouver chaque empreinte quelque
+    part dans sources/. Il acceptait donc qu'une fiche cite le bon condensat
+    attaché au mauvais document — et surtout il ne voyait rien quand un extrait
+    archivé ne contenait pas le texte que la fiche lui prête. C'est arrivé : un
+    extrait kényan avait capturé l'entrée de sommaire au lieu du dispositif, et
+    la fiche citait pourtant un verbatim absent de l'archive. Vérifier le couple
+    chemin/empreinte lie chaque affirmation juridique à son propre document.
+    """
+    payload = json.loads(fiche.read_text(encoding="utf-8"))
+    paires = _paires_document_empreinte(payload)
+    if not paires:
+        pytest.skip(f"{fiche.stem} ne déclare aucun couple document/empreinte")
+
+    for chemin, digest in paires:
+        document = REFS_DIR / chemin
+        assert document.exists(), f"{fiche.stem} : {chemin} absent de sources/"
+        reel = hashlib.sha256(document.read_bytes()).hexdigest()
+        assert reel == digest, (
+            f"{fiche.stem} : {chemin} porte l'empreinte {reel[:16]}… alors que la "
+            f"fiche déclare {digest[:16]}… — l'empreinte citée n'est pas celle de "
+            f"ce document"
+        )
+
+
 def _cited_artifacts(payload) -> list:
     """Artefacts du dépôt qu'une fiche invoque comme preuve."""
     found = []
@@ -151,9 +224,7 @@ def test_les_groupes_d_origines_ne_se_chevauchent_pas(fiche):
     detail = origins.get("detail")
     if isinstance(detail, list):
         plates = {
-            str(entry["iso3"])
-            for entry in detail
-            if isinstance(entry, dict) and entry.get("iso3")
+            str(entry["iso3"]) for entry in detail if isinstance(entry, dict) and entry.get("iso3")
         }
         if plates:
             groupes.setdefault("detail", set()).update(plates)
