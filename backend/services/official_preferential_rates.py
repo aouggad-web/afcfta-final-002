@@ -20,6 +20,8 @@ DATASETS = {
     "TUN": DATA_DIR / "TUN_afcfta_etariff_2026-08-17.json.gz",
     "ETH": DATA_DIR / "ETH_afcfta_etariff_2026-08-17.json.gz",
     "ZMB": DATA_DIR / "ZMB_afcfta_etariff_2026-08-17.json.gz",
+    "MAR": DATA_DIR / "MAR_afcfta_etariff_2026-09-13.json.gz",
+    "ZWE": DATA_DIR / "ZWE_afcfta_etariff_2026-09-13.json.gz",
 }
 
 ISO3_TO_ISO2 = {
@@ -124,8 +126,60 @@ def _offer_schedule_year(as_of_year: int) -> int:
     return max(1, as_of_year - 2020)
 
 
+# Destinations dont le droit national répartit lui-même les origines entre les
+# barèmes publiés, en contradiction avec la carte du e-Tariff Book de l'UA.
+# L'e-Tariff Book est le registre continental de l'OFFRE ; l'acte national est
+# ce que la douane applique. Pour une importation vers cette destination, le
+# second fait foi — y compris pour un affichage seulement informatif, sinon on
+# montre à l'opérateur un calendrier que sa douane n'appliquera pas.
+_FICHES_APPLICATION = Path(__file__).resolve().parents[1] / "data" / "legal_refs" / "zlecaf_application"
+CARTES_ORIGINES_NATIONALES = {"MAR": "MAR_application_2026-09-13.json"}
+
+
+@lru_cache(maxsize=None)
+def _carte_origines_nationale(destination: str) -> Optional[dict]:
+    """Charge la répartition des origines établie par le droit de la destination.
+
+    Retourne {"origines": {iso3: barème}, "instrument": …} ou None. La fiche de
+    détermination est la source unique : recopier les listes ici les laisserait
+    diverger du texte archivé qui les établit.
+    """
+    nom = CARTES_ORIGINES_NATIONALES.get(destination)
+    if not nom:
+        return None
+    chemin = _FICHES_APPLICATION / nom
+    if not chemin.exists():
+        return None
+    fiche = json.loads(chemin.read_text(encoding="utf-8"))
+    origines: dict[str, str] = {}
+    for cle, bareme in (("P1", "1"), ("P2", "2")):
+        for iso in (fiche.get("accepted_origins", {}).get(cle, {}).get("iso3") or []):
+            origines[iso] = bareme
+    if not origines:
+        return None
+    instrument = fiche.get("instrument", {})
+    return {
+        "origines": origines,
+        "instrument_id": instrument.get("id"),
+        "instrument_title": instrument.get("title"),
+        "instrument_date": instrument.get("date"),
+        "fiche": nom,
+    }
+
+
 def _offer_schedule_index(dataset: dict, origin: str) -> tuple[Optional[str], Optional[dict]]:
     """Return the (schedule id, line index) an origin is served by."""
+    indexes = dataset.get("_schedule_indexes", {})
+    nationale = _carte_origines_nationale((dataset.get("offer_code") or "").upper())
+    if nationale is not None:
+        # Origine absente de l'acte national : la destination ne lui accorde
+        # aucune préférence, même si l'UA publie une ligne pour elle. Ne rien
+        # servir est ici la seule réponse vraie.
+        bareme = nationale["origines"].get(origin)
+        if bareme is None:
+            return None, None
+        return bareme, indexes.get(bareme)
+
     schedule_map = dataset.get("origin_schedule_map", {})
     # New snapshots store ISO3 keys. Keep ISO2 lookup for the already archived
     # EGY/TUN snapshots collected from the e-Tariff Book regions endpoint.
@@ -134,7 +188,7 @@ def _offer_schedule_index(dataset: dict, origin: str) -> tuple[Optional[str], Op
         or schedule_map.get(ISO3_TO_ISO2.get(origin, ""))
         or schedule_map.get("*")
     )
-    return schedule, dataset.get("_schedule_indexes", {}).get(schedule or "")
+    return schedule, indexes.get(schedule or "")
 
 
 def _resolve_offer_line(
@@ -156,6 +210,23 @@ def _resolve_offer_line(
     schedule, schedule_index = _offer_schedule_index(dataset, origin)
     if schedule_index is None:
         return None
+    nationale = _carte_origines_nationale((dataset.get("offer_code") or "").upper())
+    schedule_origin_basis = (
+        {
+            "autorite": "droit national de la destination",
+            "instrument": nationale["instrument_id"],
+            "intitule": nationale["instrument_title"],
+            "date": nationale["instrument_date"],
+            "fiche": nationale["fiche"],
+            "precision": (
+                "Le barème est choisi d'après l'acte d'application de la "
+                "destination, et non d'après la carte des origines du "
+                "e-Tariff Book de l'UA, qui en diverge."
+            ),
+        }
+        if nationale is not None
+        else {"autorite": "carte des origines du e-Tariff Book de l'UA"}
+    )
     line = next(
         (
             schedule_index[candidate]
@@ -191,6 +262,7 @@ def _resolve_offer_line(
         "source_column": f"year{year_index}",
         "schedule": schedule,
         "schedule_year": year_index,
+        "schedule_selected_by": schedule_origin_basis,
         "rate_expression": display_expression,
         "ad_valorem_rate_pct": rate,
         "rate_kind": "AD_VALOREM" if rate is not None else "NOT_AVAILABLE",

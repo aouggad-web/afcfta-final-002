@@ -73,9 +73,12 @@
   "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — 14 510 lignes par barème, collectées le 2026-09-13",
   "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION — vérifiée en douane, pas par l'application"
  },
+ "travaux_faits_le_2026-09-14": [
+  "Surcharge de la sélection de barème par les listes P1/P2 : services/official_preferential_rates.py lit désormais la carte d'origines de CETTE fiche (CARTES_ORIGINES_NATIONALES) avant celle de l'UA. Le Kenya passe de l'annexe 5 ans à l'annexe 10 ans, comme 32 autres origines.",
+  "Restriction aux 40 origines de la circulaire : une origine que la circulaire ne nomme pas ne reçoit plus aucune offre affichée (AGO, BEN, LBR, MDG, MOZ, SSD, ZWE).",
+  "Le barème marocain, jusque-là collecté mais injoignable, est servi : MAR manquait à official_preferential_rates.DATASETS, donc _load_dataset rendait None malgré le fichier archivé."
+ ],
  "remaining_work_before_applied": [
-  "Surcharger la sélection de barème par les listes P1/P2 du droit marocain, au lieu de la carte de l'UA (contradiction ci-dessus).",
-  "Restreindre les origines admises aux 40 de la circulaire, et non aux 48 de l'UA.",
   "Décider du traitement de la TPI : la circulaire soumet le DI ET la taxe parafiscale au démantèlement, alors que le calculateur ne réduit aujourd'hui que le droit de douane.",
   "Confirmer auprès de l'ADII qu'aucune notification postérieure au 22 janvier 2024 n'a modifié les listes P1/P2."
  ]
