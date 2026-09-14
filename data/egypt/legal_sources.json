@@ -9,7 +9,7 @@
       "institution": "Egyptian Customs Authority",
       "legal_date": null,
       "url": "https://customs.gov.eg/Services/Tarif",
-      "sha256": "0e9b99394da19325ef8b0a77c87c4987efa0027e71b7dec25ea1c048894cb97f",
+      "sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94",
       "verification_status": "VERIFIED_RUNTIME_DATASET",
       "registry_path": "backend/data/crawled/EGY_tariffs.json",
       "notes": "Empreinte du fichier runtime. Collecte du 29 août 2026, 8 818 positions. Reconstruit le 14 septembre 2026 depuis les fichiers de progression du même crawl, après correction de l'appariement code/texte des instructions douanières : taxes et textes inchangés, date de collecte préservée."

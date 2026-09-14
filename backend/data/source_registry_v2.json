@@ -171,15 +171,15 @@
       "hs_version": "HS 2022",
       "code_digits": 10,
       "positions_count": 8818,
-      "sha256": "0e9b99394da19325ef8b0a77c87c4987efa0027e71b7dec25ea1c048894cb97f",
+      "sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94",
       "rebuilt_at": "2026-09-14",
       "rebuild_note": "Reconstruit depuis les fichiers de progression du même crawl avec le constructeur corrigé : le code d'une instruction douanière est lu dans le préfixe de son texte, et non apparié par position avec le tableau InstructionCodes de l'API dont l'ordre et la longueur diffèrent. Taxes inchangées, vérifié position par position. Date de collecte préservée.",
       "reuse_conditions": "Données publiques de l'Autorité des Douanes. Textes arabes verbatim.",
       "legal_authority": "Customs Law 207/2020 + VAT Law 67/2016 + Law 157/2025",
       "validation_status": "verified",
       "taxes": ["ID/DD", "VAT/TVA", "TABLE_TAX", "HEALTH_INS", "TOBACCO_CHAMBER", "TEXTILE_CHAMBER", "LEATHER_CHAMBER"],
-      "formalities": "2342 positions avec instructions administratives (ر/غ/ق)",
-      "restrictions": "8806 positions avec instructions officielles",
+      "formalities": "2878 positions avec formalités administratives (code غ)",
+      "restrictions": "7522 positions avec restrictions à l'importation ou à l'exportation (code ق)",
       "zlecaf": "OFFER_ONLY — dataset EGY (10511 lignes, 2 schedules par origine)"
     },
     "ZAF": {
