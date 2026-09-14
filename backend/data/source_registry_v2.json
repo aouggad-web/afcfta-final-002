@@ -171,7 +171,7 @@
       "hs_version": "HS 2022",
       "code_digits": 10,
       "positions_count": 8818,
-      "sha256": "247159f8ccec60df7dedf84cb3c857dc013a92158ad7a9692174f35e29dca1eb",
+      "sha256": "0e9b99394da19325ef8b0a77c87c4987efa0027e71b7dec25ea1c048894cb97f",
       "rebuilt_at": "2026-09-14",
       "rebuild_note": "Reconstruit depuis les fichiers de progression du même crawl avec le constructeur corrigé : le code d'une instruction douanière est lu dans le préfixe de son texte, et non apparié par position avec le tableau InstructionCodes de l'API dont l'ordre et la longueur diffèrent. Taxes inchangées, vérifié position par position. Date de collecte préservée.",
       "reuse_conditions": "Données publiques de l'Autorité des Douanes. Textes arabes verbatim.",

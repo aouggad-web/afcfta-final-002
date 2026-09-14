@@ -184,6 +184,16 @@ def main() -> int:
 
     old_path = CRAWLED_DIR / "EGY_tariffs.json"
     old = json.loads(old_path.read_text(encoding="utf-8"))
+
+    # Date de collecte, à ne jamais confondre avec la date de construction.
+    # Une reconstruction ne reconsulte pas la source : dater le document du
+    # jour de la reconstruction en ferait une provenance fausse, exactement
+    # le défaut que ce dépôt combat ailleurs. On reprend donc la date portée
+    # par les fichiers de progression, et à défaut celle du document existant.
+    collecte = next(
+        (row["extracted_at"] for row in positions.values() if row.get("extracted_at")),
+        old.get("extracted_at") or now,
+    )
     old_by_code = {
         (p.get("hs_code") or "").replace("/", ""): p for p in old.get("sub_positions", [])
     }
@@ -283,7 +293,7 @@ def main() -> int:
             "source_url": row.get("source_url"),
             "detail_endpoint": row.get("detail_endpoint"),
             "source_quality": "crawled_authentic" if row.get("data_status") == "OK" else "PARTIAL",
-            "date_consulted": (row.get("extracted_at") or now)[:10],
+            "date_consulted": (row.get("extracted_at") or collecte)[:10],
         }
         if instructions:
             stats["with_instructions"] += 1
@@ -315,7 +325,8 @@ def main() -> int:
         "source_url": "https://www.customs.gov.eg/Services/Tarif",
         "detail_endpoint": "POST https://www.customs.gov.eg/Services/TrfDetails?trfNumber={code}&trfType=1",
         "source_quality": "crawled_authentic",
-        "extracted_at": now,
+        "extracted_at": collecte,
+        "rebuilt_at": now,
         "built_by": "backend/scripts/build_egy_tariffs_official.py",
         "policy": (
             "Crawl officiel : taxes et instructions verbatim (arabe), taux lus littéralement "
@@ -328,6 +339,12 @@ def main() -> int:
         "chapters_covered": sorted(chapters_covered),
         "sub_positions": sub_positions + legacy,
     }
+
+    # La méthode de calcul telle que publiée par la source est un élément de
+    # provenance que ce script ne reconstruit pas : la perdre à chaque
+    # reconstruction viderait le document d'une information qu'il détenait.
+    if old.get("calculation_method"):
+        doc["calculation_method"] = old["calculation_method"]
 
     backup_dir = REPO_ROOT / "data" / "archive" / "crawled_backup"
     backup_dir.mkdir(parents=True, exist_ok=True)

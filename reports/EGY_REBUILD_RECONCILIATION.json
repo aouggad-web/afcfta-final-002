@@ -1,5 +1,5 @@
 {
-  "date": "2026-09-14T10:15:40.859378+00:00",
+  "date": "2026-09-14T10:27:46.072180+00:00",
   "stats": {
     "rate_diff_vs_previous": 8793,
     "with_instructions": 8791,
@@ -913,7 +913,7 @@
       ]
     }
   ],
-  "backup": "data/archive/crawled_backup/EGY_tariffs_20260914T101546Z.json",
+  "backup": "data/archive/crawled_backup/EGY_tariffs_20260914T102746Z.json",
   "chapters_covered": [
     1,
     2,
