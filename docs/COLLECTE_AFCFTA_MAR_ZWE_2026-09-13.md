@@ -78,7 +78,9 @@ reproductible par `backend/scripts/build_afcfta_status_matrix.py`.
 > parafiscale à l'importation. Le Zimbabwe, lui, reste bien à la seule
 > condition 3.
 
-Pour le Maroc et le Zimbabwe, **seule la condition 3 est désormais remplie**.
+Pour le Zimbabwe, **seule la condition 3 est remplie** ; pour le Maroc, la
+vérification du jour même y ajoute les conditions 1 et 2 (voir l'encadré
+ci-dessus).
 Les deux destinations ont été inscrites dans `OFFER_DATASETS` : la décision
 qu'elles produisent passe de `NOT_AVAILABLE` à `OFFER_ONLY` avec leur jeu de
 données nommé. Ce n'est pas une application — c'est la différence entre
@@ -95,27 +97,39 @@ situations qui n'appellent pas le même travail.
 | **MAR** | `OFFER_ONLY` | instrument et origines désormais établis (voir l'encadré ci-dessus) ; reste la surcharge du sélecteur de barème P1/P2 |
 | les 43 autres | `NOT_AVAILABLE` | le barème lui-même |
 
-Pour faire passer le Maroc à `APPLIED`, il faut deux documents officiels que
-cette collecte ne fournit pas :
+**Les deux documents que cette section réclamait ont été obtenus le jour même.**
+Elle demandait l'instrument marocain d'application et la liste des origines
+admises ; `MAR_application_2026-09-13.json` porte les deux, établis sur la
+circulaire ADII 6530/223 du 22 janvier 2024 lue intégralement — 158 pages, 40
+origines nommées en deux groupes. Relancer cette recherche juridique serait un
+doublon.
 
-- **l'instrument marocain d'application** — disposition de loi de finances,
-  décret ou circulaire de l'Administration des Douanes mettant en œuvre les
-  concessions ZLECAf, avec sa date d'entrée en vigueur ;
-- **la liste des origines admises** par le Maroc sur base réciproque.
+Les blocages marocains réels, qui ne sont pas documentaires :
 
-Ces deux pièces relèvent d'une recherche juridique auprès du Bulletin Officiel
-et de `douane.gov.ma`, pas d'un appel d'API. Tant qu'elles ne sont pas
-vérifiées, le taux servi reste le NPF, et c'est le comportement correct : une
-préférence non prouvée n'est jamais appliquée, et une absence de preuve n'est
-jamais convertie en zéro.
+- **la surcharge du sélecteur de barème.** `official_preferential_rates.py`
+  choisit le barème via la carte des origines de l'Union africaine, qui répartit
+  selon le statut PMA ; les listes P1/P2 marocaines répartissent selon la
+  réciprocité. Les deux divergent sur 33 des 40 origines ;
+- **la restriction aux 40 origines nommées.** L'UA en mappe 48, dont 7 que le
+  Maroc n'admet pas — les servir accorderait une préférence indue ;
+- **le traitement de la taxe parafiscale à l'importation**, que la circulaire
+  démantèle au même titre que le droit et que le calculateur ne traite pas.
+
+Tant que ces trois points ne sont pas traités, le taux servi reste le NPF, et
+c'est le comportement correct : une préférence mal calendée est aussi fausse
+qu'une préférence non prouvée, et une absence de preuve n'est jamais convertie
+en zéro.
 
 ## Corrections apportées au collecteur
 
 - **Date de collecte codée en dur.** Le nom du fichier portait littéralement
   `2026-08-17` : un instantané pris aujourd'hui aurait affiché une date de
-  collecte fausse. Un paramètre `--collected-at` la porte désormais, avec la
-  date d'août comme valeur par défaut pour reproduire les fichiers existants à
-  l'identique.
+  collecte fausse. Un paramètre `--collected-at` la porte désormais, et son
+  défaut est **la date du jour en UTC**. Garder la date d'août en défaut, comme
+  c'était d'abord le cas, aurait daté du 17 août toute collecte future — le
+  défaut même que ce paramètre existe pour empêcher, l'API ne pouvant reproduire
+  une réponse passée à partir d'une date de nom de fichier. Reproduire un
+  instantané existant demande donc de nommer sa date explicitement.
 - **Déclaration de la source absente.** Les instantanés ne portaient que le
   verdict du dépôt. Ils portent maintenant aussi la notice de l'Union africaine
   et les intitulés officiels des barèmes.

@@ -172,6 +172,23 @@ def main() -> int:
             "backend/scripts/build_egy_tariffs_official.py, puis resceller."
         )
 
+    # Le sceau d'intégrité du fichier source certifie le fichier source, pas
+    # ce dérivé. L'emporter dans la copie produirait un document dont le sceau
+    # ne vérifie pas — verify_crawled_file le rejetterait — et pire, un sceau
+    # d'apparence valide attaché à un contenu qu'il n'a jamais couvert. La copie
+    # part donc sans sceau, et déclare ce qu'elle est.
+    payload.pop("_integrity_seal", None)
+    payload["_derived_from"] = {
+        "file": str(TARIFFS.relative_to(REPO_ROOT)),
+        "by": "scripts/repair_egy_instruction_codes.py",
+        "note": (
+            "Copie corrigée, non scellée : le sceau du fichier collecté ne "
+            "couvre pas ce dérivé. Pour produire un fichier scellé, "
+            "reconstruire depuis les fichiers de progression avec "
+            "backend/scripts/build_egy_tariffs_official.py."
+        ),
+    }
+
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(
         json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8"

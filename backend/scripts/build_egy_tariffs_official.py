@@ -182,7 +182,6 @@ def build_regime_rates(taxes_parsed: list[dict]) -> list[dict]:
     ]
 
 
-
 def _index(doc: dict) -> dict[str, dict]:
     return {(p.get("hs_code") or "").replace("/", ""): p for p in doc.get("sub_positions") or []}
 
@@ -194,15 +193,18 @@ def _index(doc: dict) -> dict[str, dict]:
 FAMILY_TEXT_FIELD = "text_verbatim"
 
 
-def _texts(line: dict) -> set[str]:
-    """Tous les textes d'instruction portés par une position, toutes familles."""
-    out = {str(t) for t in (line.get("official_instructions") or [])}
-    for key in ("formalities", "restrictions", "fta_preferences"):
-        for entry in line.get(key) or []:
-            text = entry.get(FAMILY_TEXT_FIELD)
-            if text:
-                out.add(str(text))
-    return out
+def _family_texts(line: dict, key: str) -> set[str]:
+    """Textes portés par UN bloc famille d'une position."""
+    return {
+        str(entry[FAMILY_TEXT_FIELD])
+        for entry in line.get(key) or []
+        if isinstance(entry, dict) and entry.get(FAMILY_TEXT_FIELD)
+    }
+
+
+def _raw_texts(line: dict) -> set[str]:
+    """Instructions brutes, avant répartition en familles."""
+    return {str(t) for t in (line.get("official_instructions") or [])}
 
 
 #: Champs de provenance et de référence qu'une reconstruction ne doit pas toucher.
@@ -236,7 +238,9 @@ def reconcile(base: dict, built: dict) -> dict:
         b, a = rates_by_canonical_code(before[code]), rates_by_canonical_code(after[code])
         for tax in sorted(set(b) | set(a)):
             if b.get(tax) != a.get(tax):
-                rates_changed.append({"code": code, "tax": tax, "before": b.get(tax), "after": a.get(tax)})
+                rates_changed.append(
+                    {"code": code, "tax": tax, "before": b.get(tax), "after": a.get(tax)}
+                )
                 break
 
     def _null_rates(index: dict) -> int:
@@ -249,9 +253,33 @@ def reconcile(base: dict, built: dict) -> dict:
     def _family_totals(index: dict) -> dict[str, int]:
         return {f: sum(len(line.get(f) or []) for line in index.values()) for f in FAMILY_FIELDS}
 
-    lost_texts = sorted(
-        {t for code in common for t in _texts(before[code]) - _texts(after[code])}
+    lost_raw = sorted(
+        {t for code in common for t in _raw_texts(before[code]) - _raw_texts(after[code])}
     )
+    # Chaque bloc famille est comparé à lui-même, pas à la réunion des trois :
+    # un texte déplacé d'une famille à une autre est un changement voulu de ce
+    # correctif, une disparition en est un défaut, et seule la mesure par bloc
+    # les distingue.
+    familles_textes = {}
+    for famille in ("formalities", "restrictions", "fta_preferences"):
+        avant = {t for c in common for t in _family_texts(before[c], famille)}
+        apres = {t for c in common for t in _family_texts(after[c], famille)}
+        sortis = sorted(avant - apres)
+        familles_textes[famille] = {
+            "distinct_before": len(avant),
+            "distinct_after": len(apres),
+            "sortis_de_ce_bloc": len(sortis),
+            "retrouves_dans_une_autre_famille": sum(
+                1
+                for t in sortis
+                if any(
+                    t in {x for c in common for x in _family_texts(after[c], autre)}
+                    for autre in ("formalities", "restrictions", "fta_preferences")
+                    if autre != famille
+                )
+            ),
+            "sortis_sample": sortis[:10],
+        }
     references_changed = [
         code
         for code in common
@@ -276,10 +304,19 @@ def reconcile(base: dict, built: dict) -> dict:
             "after": _family_totals(after),
         },
         "instruction_texts": {
-            "distinct_before": len({t for c in common for t in _texts(before[c])}),
-            "distinct_after": len({t for c in common for t in _texts(after[c])}),
-            "lost": len(lost_texts),
-            "lost_sample": lost_texts[:20],
+            # Les familles sont mesurées séparément des instructions brutes, et
+            # séparément entre elles. Les réunir en un seul ensemble rendait le
+            # contrôle inopérant : official_instructions contient déjà chaque
+            # texte brut des deux côtés, si bien que l'ensemble réuni restait
+            # identique même en vidant un bloc famille entier. Vérifié : la
+            # suppression de tout un bloc passait inaperçue.
+            "raw_instructions": {
+                "distinct_before": len({t for c in common for t in _raw_texts(before[c])}),
+                "distinct_after": len({t for c in common for t in _raw_texts(after[c])}),
+                "lost": len(lost_raw),
+                "lost_sample": lost_raw[:20],
+            },
+            "par_famille": familles_textes,
         },
         "references": {
             "fields_checked": list(REFERENCE_FIELDS),
@@ -364,9 +401,7 @@ def main() -> int:
     # scellé, et son sceau d'intégrité certifierait alors un dérivé.
     if "--reconcile-only" in sys.argv:
         base_path = Path(sys.argv[sys.argv.index("--base") + 1])
-        base_ref = (
-            sys.argv[sys.argv.index("--base-ref") + 1] if "--base-ref" in sys.argv else None
-        )
+        base_ref = sys.argv[sys.argv.index("--base-ref") + 1] if "--base-ref" in sys.argv else None
         built_path = CRAWLED_DIR / "EGY_tariffs.json"
         built = json.loads(built_path.read_text(encoding="utf-8"))
         report = write_report(

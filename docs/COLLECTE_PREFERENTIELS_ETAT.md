@@ -73,10 +73,22 @@ Deux manques structurels subsistent :
 
 ## Limites de cet inventaire
 
-Un code de taxe restant, non canonicalisé, agrège 117 197 entrées : les taxes des
-pays CEDEAO portées dans `taxes_detail` sans champ `code`, dont l'intitulé n'est
-pas reconnu par la canonisation du dépôt. À trier avant de conclure quoi que ce
-soit sur ces pays.
+Un code de taxe restant, non canonicalisé, agrège **6 086 entrées**.
+
+Ce chiffre en remplace un autre, et la correction vaut d'être dite. Cette
+section annonçait d'abord 117 197 entrées, attribuées aux pays CEDEAO qui
+porteraient leurs taxes « sans champ `code` ». C'était faux : ces pays portent
+bien un code, sous la clé `tax_code`, et l'inventaire ne lisait que `code`. Le
+défaut était dans l'outil de mesure, pas dans la donnée, et 95 % du chiffre
+publié n'existait pas. Voir `scripts/tax_coverage_inventory.py`.
+
+La même correction a rétabli 442 961 assiettes que l'inventaire déclarait
+absentes : la déduplication gardait la collection compacte `taxes`, un
+dictionnaire de taux nus, au lieu de `taxes_detail` qui porte `base: "CIF"`.
+
+Les 6 086 entrées restantes sont à trier avant de conclure quoi que ce soit sur
+les pays concernés — mais elles ne justifient plus de traiter la CEDEAO comme un
+chantier de collecte prioritaire.
 
 L'inventaire décrit ce que les fichiers portent. **Une taxe absente n'est pas
 réputée non due** : on ne peut pas déduire d'un fichier ce qu'une administration

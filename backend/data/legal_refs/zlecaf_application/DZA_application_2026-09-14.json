@@ -81,8 +81,8 @@
  "reciprocity_with_egypt": {
   "question_posee": "L'Algérie réciproque-t-elle le traitement que l'Égypte lui accorde ?",
   "EGY_vers_DZA": "VÉRIFIÉ EN PRIMAIRE — la circulaire Accords n° 38 de la douane égyptienne classe l'Algérie dans le groupe à 5 ans, avec 100 % de réduction au 1er janvier 2025.",
-  "DZA_vers_EGY": "RAPPORTÉ — l'Égypte figure parmi les neuf pays admis à l'importation en Algérie, liste A éliminée à 100 % depuis le 1er janvier 2025.",
-  "conclusion": "La réciprocité Égypte–Algérie paraît acquise et symétrique dans son calendrier : élimination complète des deux côtés au 1er janvier 2025. Elle reste à confirmer sur le texte algérien primaire."
+  "DZA_vers_EGY": "VÉRIFIÉ EN PRIMAIRE — la circulaire n° 482/DGD/SP/D.042/24, lue intégralement et dont le texte est archivé, nomme l'Égypte parmi les neuf pays dont les produits sont effectivement admis au bénéfice de la ZLECAf à l'importation en Algérie ; sa liste A est éliminée à 100 % depuis le 1er janvier 2025.",
+  "conclusion": "Réciprocité Égypte–Algérie acquise et symétrique dans son calendrier : élimination complète des deux côtés au 1er janvier 2025, chaque sens établi sur la source primaire de l'autre pays — circulaire Accords n° 38 côté égyptien, circulaire 482/DGD côté algérien."
  },
  "repo_data_gap": {
   "severity": "BLOQUANTE pour servir la préférence algérienne",

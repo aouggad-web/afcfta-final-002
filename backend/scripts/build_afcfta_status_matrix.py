@@ -39,6 +39,7 @@ import gzip
 import json
 import re
 import urllib.request
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -103,12 +104,18 @@ def _local_snapshots(directory: Path) -> Dict[str, Dict[str, Any]]:
             "declaration_source": payload.get("source_status_statement") or {},
             "verdict_depot": payload.get("legal_effect_status"),
             "origines_acceptees": origin_map,
-            "nb_origines_acceptees": 0 if "*" in origin_map else len(origin_map),
+            # Le joker « * » signifie qu'un barème unique s'applique à toutes
+            # les origines — ZWE, EAC, CEMAC. Le compter 0 faisait dire à la
+            # matrice l'inverse de ce que porte origines_acceptees juste
+            # au-dessus : aucune origine admise, là où elles le sont toutes.
+            "nb_origines_acceptees": ("toutes" if "*" in origin_map else len(origin_map)),
+            "couverture_origines": "joker" if "*" in origin_map else "enumeree",
         }
     return out
 
 
 def build(directory: Path) -> Dict[str, Any]:
+    fetched_at = datetime.now(timezone.utc).isoformat()
     regions = _fetch_regions()
     snapshots = _local_snapshots(directory)
 
@@ -147,6 +154,7 @@ def build(directory: Path) -> Dict[str, Any]:
             "zlecaf_implementation_registry.py. Une origine absente d'une carte "
             "n'est pas réputée exclue — l'absence reste une absence."
         ),
+        "regions_fetched_at": fetched_at,
         "repartition_statuts": dict(sorted(counts.items())),
         "pays": sorted(entries, key=lambda row: str(row["code_iso2"])),
         "instantanes_locaux": snapshots,
@@ -164,7 +172,23 @@ def main() -> int:
         raise SystemExit(f"--collected-at attend AAAA-MM-JJ, reçu {args.collected_at!r}")
 
     matrix = build(args.directory)
+    # La date déclarée ne peut pas réécrire l'instant réel de l'appel : build()
+    # interroge Region/GetRegions en direct, et rejouer la commande documentée
+    # d'une date passée estamperait une réponse d'aujourd'hui de cette date-là.
+    # Les deux sont donc portées séparément, et l'écart est signalé.
     matrix["collected_at"] = args.collected_at
+    matrix["regions_fetched_at"] = matrix.get("regions_fetched_at")
+    if matrix["regions_fetched_at"] and not matrix["regions_fetched_at"].startswith(
+        args.collected_at
+    ):
+        matrix["provenance_warning"] = (
+            f"Les régions ont été interrogées le "
+            f"{matrix['regions_fetched_at'][:10]}, alors que --collected-at "
+            f"déclare {args.collected_at}. Cette matrice n'est donc pas une "
+            f"reproduction de l'instantané du {args.collected_at} : elle mêle "
+            f"une réponse d'aujourd'hui à une date passée. Pour reproduire un "
+            f"instantané, il faut la réponse archivée de l'époque."
+        )
 
     output = args.out or args.directory / f"afcfta_status_matrix_{args.collected_at}.json"
     output.write_text(json.dumps(matrix, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

@@ -807,7 +807,8 @@
    "origines_acceptees": {
     "*": "1"
    },
-   "nb_origines_acceptees": 0
+   "nb_origines_acceptees": "toutes",
+   "couverture_origines": "joker"
   },
   "EAC": {
    "fichier": "EAC_afcfta_etariff_2026-08-17.json.gz",
@@ -823,7 +824,8 @@
    "origines_acceptees": {
     "*": "1"
    },
-   "nb_origines_acceptees": 0
+   "nb_origines_acceptees": "toutes",
+   "couverture_origines": "joker"
   },
   "ECOWAS": {
    "fichier": "ECOWAS_afcfta_etariff_2026-08-17.json.gz",
@@ -839,7 +841,8 @@
    "origines_acceptees": {
     "*": "1"
    },
-   "nb_origines_acceptees": 0
+   "nb_origines_acceptees": "toutes",
+   "couverture_origines": "joker"
   },
   "EGY": {
    "fichier": "EGY_afcfta_etariff_2026-08-17.json.gz",
@@ -903,7 +906,8 @@
     "ZM": "2",
     "ZW": "1"
    },
-   "nb_origines_acceptees": 48
+   "nb_origines_acceptees": 48,
+   "couverture_origines": "enumeree"
   },
   "ETH": {
    "fichier": "ETH_afcfta_etariff_2026-08-17.json.gz",
@@ -919,7 +923,8 @@
    "origines_acceptees": {
     "*": "1"
    },
-   "nb_origines_acceptees": 0
+   "nb_origines_acceptees": "toutes",
+   "couverture_origines": "joker"
   },
   "MAR": {
    "fichier": "MAR_afcfta_etariff_2026-09-13.json.gz",
@@ -995,7 +1000,8 @@
     "ZMB": "2",
     "ZWE": "1"
    },
-   "nb_origines_acceptees": 48
+   "nb_origines_acceptees": 48,
+   "couverture_origines": "enumeree"
   },
   "TUN": {
    "fichier": "TUN_afcfta_etariff_2026-08-17.json.gz",
@@ -1059,7 +1065,8 @@
     "ZM": "2",
     "ZW": "1"
    },
-   "nb_origines_acceptees": 48
+   "nb_origines_acceptees": 48,
+   "couverture_origines": "enumeree"
   },
   "ZAF": {
    "fichier": "ZAF_afcfta_2026-08-06.json.gz",
@@ -1071,7 +1078,8 @@
    "declaration_source": {},
    "verdict_depot": null,
    "origines_acceptees": {},
-   "nb_origines_acceptees": 0
+   "nb_origines_acceptees": 0,
+   "couverture_origines": "enumeree"
   },
   "ZMB": {
    "fichier": "ZMB_afcfta_etariff_2026-08-17.json.gz",
@@ -1087,7 +1095,8 @@
    "origines_acceptees": {
     "*": "1"
    },
-   "nb_origines_acceptees": 0
+   "nb_origines_acceptees": "toutes",
+   "couverture_origines": "joker"
   },
   "ZWE": {
    "fichier": "ZWE_afcfta_etariff_2026-09-13.json.gz",
@@ -1108,8 +1117,10 @@
    "origines_acceptees": {
     "*": "1"
    },
-   "nb_origines_acceptees": 0
+   "nb_origines_acceptees": "toutes",
+   "couverture_origines": "joker"
   }
  },
- "collected_at": "2026-09-13"
+ "collected_at": "2026-09-13",
+ "note_de_correction": "Le champ nb_origines_acceptees publiait 0 pour les instantanés à joker « * », où un barème unique s'applique à TOUTES les origines : la matrice disait donc l'inverse de son propre champ origines_acceptees. Il est re-dérivé des instantanés locaux, sans réinterroger l'API — réinterroger aurait mêlé une réponse d'aujourd'hui à la date du 13 septembre 2026 que porte ce fichier."
 }
