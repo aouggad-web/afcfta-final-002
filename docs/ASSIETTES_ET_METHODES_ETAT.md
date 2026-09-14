@@ -206,6 +206,72 @@ l'expression béninoise, et la directive UEMOA ne les lie pas.
 20ᵉ sommet de l'UEMOA depuis 2017. Les deux ne peuvent être vrais ensemble. À
 vérifier sur l'acte additionnel en vigueur.
 
+## Le quinzième et dernier : la Tunisie
+
+Fiche `TUN_assiette_TVA_2026-09-14.json`, extrait archivé.
+
+**Code de la taxe sur la valeur ajoutée, article 6 § II-1** :
+
+> « À l'importation, la valeur imposable est constituée : 1- s'il s'agit d'une
+> importation réalisée par un assujetti [...] par la **valeur en douane, tous
+> droits et taxes inclus à l'exclusion de la taxe sur la valeur ajoutée**. »
+
+Même règle de fond qu'en UEMOA, au Kenya et en Ouganda, formulée autrement. La
+table codée applique `CIF + DD` **en citant cet article même** : sa propre
+référence la contredit.
+
+### Décodage de l'encodage du Tarif Web
+
+| Libellé publié | Lecture |
+|---|---|
+| `VALEUR DOUANE DINARS` | valeur en douane — droit de douane, droits de consommation ad valorem |
+| `VAL.DOU(D)+R(DT) GR.0` | valeur en douane + droits et taxes du groupe 0 — assiette de la TVA |
+| `SOMME D.T (G=0.1.2.3.4.` | somme des droits et taxes des groupes 0 à 4 — redevance de prestation douanière |
+| `VAL DOUANE+ SOMME DT` | valeur en douane + somme des droits et taxes — taxe AIR |
+| `QCS`, `QCI`, `PN (KG)` | quantités : assiettes spécifiques, aucune cascade ne s'y applique |
+
+### Une règle que le calculateur ne peut pas servir
+
+L'alinéa 2 du même article **majore de 25 % la valeur imposable** lorsque
+l'importateur n'est pas assujetti. Le calculateur ne connaît pas la qualité de
+l'importateur : à signaler, non à deviner.
+
+### Deux défauts trouvés au passage
+
+**`data/sources/TUN/tarifweb2026/tax_codes_and_assiettes.json` ne documente
+rien.** Il se présente comme le « registre verbatim des codes de taxes et de
+leurs assiettes », et le bloc `calculation_method` du tarif tunisien le cite
+comme registre complet des 46 codes. Or **ses 46 entrées portent une charge
+rigoureusement identique** : mêmes assiettes, même libellé `.PREST.DOUA/EXP`,
+même cotation « export », mêmes 17 500 lignes. L'agrégation par code a échoué et
+répété un agrégat global.
+
+La donnée tarifaire, elle, est saine : le dépouillement direct rend **36 codes à
+l'importation avec des assiettes variées**. Seul le registre récapitulatif est
+faux.
+
+**La base légale citée ne porte pas l'assiette.** Le bloc `calculation_method`
+cite `CD_12.pdf` comme fondement des assiettes. Ce PDF fait une page et ne
+contient que l'article 297, qui charge la douane de recouvrer les taxes
+intérieures exigibles à l'importation. C'est une base pertinente pour le
+*périmètre* des taxes perçues au dédouanement — et elle conforte le critère
+retenu pour cet inventaire — mais elle ne dit rien de l'assiette.
+
+## Les quinze désaccords, tranchés
+
+| Fondement | Pays | Verdict |
+|---|---|---|
+| Directive UEMOA art. 27 a) | BEN BFA CIV GNB MLI NER SEN TGO | table **et** champ `base` trop étroits |
+| Kenya VAT Act s. 14 + définition | KEN | table fausse ; `base` trop étroit |
+| Ouganda VAT Act s. 23 | UGA | idem |
+| Code TVA tunisien art. 6 § II-1 | TUN | table fausse, en citant l'article qui la contredit |
+| Constat de dérivation | CPV GMB LBR SLE | jeux transposés du Bénin ; PCS et PUA retirés |
+
+**Les quatre textes disent la même chose** : la valeur en douane augmentée de
+tous les droits et taxes perçus à l'entrée, la TVA seule exclue de sa propre
+assiette. Aucun ne se limite au droit de douane, et la table codée s'y limite
+partout.
+
 ## Ce qui reste à trancher
 
 Aucun des quinze désaccords n'est résolu ici, et le rapport n'en tranche aucun.
@@ -219,14 +285,19 @@ Deux lectures restent ouvertes, à départager **pays par pays** :
 Le cas ivoirien **a été tranché** sur source primaire, voir la section
 précédente : collecte incomplète, non règle nationale.
 
-Sur les quinze désaccords, **treize sont désormais qualifiés** : huit par la
-directive UEMOA, deux par les lois kényane et ougandaise, et les quatre CEDEAO
-non-UEMOA par le constat de dérivation ci-dessus — dont trois figuraient déjà
-dans les huit, le Cap-Vert étant le quatrième.
+**Les quinze désaccords sont qualifiés.** Ce qui reste n'est plus du diagnostic
+mais de la mise en œuvre et des questions neuves :
 
-**Reste la Tunisie** (`VAL.DOU(D)+R(DT) GR.0`, encodage à décoder), et
-l'établissement des lois nationales de TVA du Cap-Vert, de la Gambie, du Liberia
-et de la Sierra Leone.
+1. **Faire lire au moteur l'assiette réelle.** `compute_tax_cascade()` applique
+   toujours `COUNTRY_TAX_PROFILES`, qui est faux partout où un texte a été lu.
+   Aucune correction n'a encore été appliquée au calcul.
+2. Établir les lois de TVA du Cap-Vert, de la Gambie, du Liberia et de la Sierra
+   Leone, seuls pays sans fondement établi.
+3. Trancher le taux du PCS, 1,0 % dans le fichier béninois contre 0,8 % dans la
+   note ivoirienne.
+4. Régénérer ou retirer le registre tunisien `tax_codes_and_assiettes.json`.
+5. Compléter la collecte ivoirienne : RS, PCS et PUA annoncés en note, absents
+   des données.
 
 ## Conséquence sur la politique d'indisponibilité
 

@@ -1,5 +1,5 @@
 {
-  "genere_le": "2026-09-14T21:59:08.731623+00:00",
+  "genere_le": "2026-09-14T22:06:10.256101+00:00",
   "methode": {
     "source_assiettes": "backend/data/crawled/*_tariffs.json, champ base/assiette",
     "source_table_codee": "services.authentic_tariff_service.COUNTRY_TAX_PROFILES, seule consultée par compute_tax_cascade()",
