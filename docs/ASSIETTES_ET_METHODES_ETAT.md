@@ -285,13 +285,55 @@ Deux lectures restent ouvertes, à départager **pays par pays** :
 Le cas ivoirien **a été tranché** sur source primaire, voir la section
 précédente : collecte incomplète, non règle nationale.
 
-**Les quinze désaccords sont qualifiés.** Ce qui reste n'est plus du diagnostic
-mais de la mise en œuvre et des questions neuves :
+**Les quinze désaccords sont qualifiés, et la correction est appliquée au
+calcul.**
 
-1. **Faire lire au moteur l'assiette réelle.** `compute_tax_cascade()` applique
-   toujours `COUNTRY_TAX_PROFILES`, qui est faux partout où un texte a été lu.
-   Aucune correction n'a encore été appliquée au calcul.
-2. Établir les lois de TVA du Cap-Vert, de la Gambie, du Liberia et de la Sierra
+## Le moteur lit désormais l'assiette établie
+
+`compute_tax_cascade()` consulte `ASSIETTE_TVA_ETABLIE` avant le profil codé,
+pour les onze pays dont un texte primaire est archivé. L'assiette de la TVA y
+devient la valeur en douane augmentée de **tous** les montants déjà liquidés, la
+TVA seule exclue.
+
+Le point de conception qui compte : **c'est une règle, pas une énumération.**
+Inscrire la liste des taxes concernées aurait reproduit exactement le défaut de
+la table qu'elle remplace — une liste se périme dès qu'un prélèvement nouveau est
+collecté. Ce qui entre dans l'assiette est ce que la source publie pour cette
+position.
+
+Le texte appliqué est cité dans le résultat du calcul : une assiette servie sans
+sa source ne serait pas opposable.
+
+### Effet mesuré, CIF 10 000, première position de chaque pays
+
+| Pays | TVA avant | TVA après | Écart | En part du CIF |
+|---|---:|---:|---:|---:|
+| KEN | 1 600,00 | 1 688,00 | +88,00 | +0,88 % |
+| GNB | 2 280,00 | 2 331,30 | +51,30 | +0,51 % |
+| BEN · SEN · TGO | 2 160,00 | 2 208,60 | +48,60 | +0,49 % |
+| NER | 2 280,00 | 2 327,50 | +47,50 | +0,47 % |
+| BFA · MLI | 2 160,00 | 2 205,00 | +45,00 | +0,45 % |
+| CIV · UGA | — | — | 0,00 | — |
+
+La Côte d'Ivoire ne bouge pas, et c'est cohérent : son fichier ne porte que le
+droit de douane et la TVA. La règle n'ajoute rien quand rien d'autre n'est
+collecté — elle ne fabrique pas les taxes manquantes, elle les inclurait si
+elles étaient là.
+
+### Deux garde-fous
+
+**Les profils documentés hors registre sont intacts.** L'Algérie conserve sa TVA
+sur `CIF + DAPS + DD` au titre de l'article 21 du CTCA, et son précompte liquidé
+après la TVA. Appliquer la règle générale y aurait détruit une méthode établie.
+
+**La circularité est refusée, pas calculée.** Si une taxe s'asseyait sur la TVA
+pendant que la TVA s'assied sur toutes les autres, la cascade n'aurait pas de
+solution : le profil codé continue alors de s'appliquer. Aucun des onze pays
+n'est dans ce cas aujourd'hui ; le test le vérifie sur un cas construit.
+
+## Ce qui reste
+
+1. Établir les lois de TVA du Cap-Vert, de la Gambie, du Liberia et de la Sierra
    Leone, seuls pays sans fondement établi.
 3. Trancher le taux du PCS, 1,0 % dans le fichier béninois contre 0,8 % dans la
    note ivoirienne.

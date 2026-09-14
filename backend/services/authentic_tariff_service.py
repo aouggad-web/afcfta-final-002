@@ -236,6 +236,75 @@ _IMPORT_VAT_CIF_DD = {
     },
 }
 
+#: Formule d'assiette exprimant une RÈGLE et non une énumération : la valeur en
+#: douane augmentée de tous les droits et taxes perçus à l'entrée, la TVA seule
+#: exclue de sa propre assiette. Énumérer les taxes concernées reviendrait à
+#: réintroduire une liste qui se périme dès qu'un prélèvement apparaît — c'est
+#: précisément ce qui rendait COUNTRY_TAX_PROFILES faux.
+BASE_TVA_TOUTES_TAXES = "CIF_PLUS_TOUTES_TAXES_SAUF_TVA"
+
+#: Assiette de la TVA à l'importation établie sur texte primaire archivé.
+#:
+#: Quatre textes ont été lus intégralement et disposent de la même règle, dans
+#: des termes différents. Les profils ci-dessous appliquaient tous « CIF + DD »
+#: à ces pays, ce qui ampute l'assiette de tous les autres prélèvements — dans
+#: le cas tunisien en citant en référence l'article même qui les inclut.
+#:
+#: Les déterminations et leurs extraits sont archivés dans
+#: backend/data/legal_refs/zlecaf_application/.
+_TVA_TOUTES_TAXES = {
+    "texte": (
+        "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : "
+        "« en ce qui concerne les importations par la valeur en douane majorée "
+        "des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la "
+        "Valeur Ajoutée elle-même »"
+    ),
+    "fiche": "UEMOA_assiette_TVA_2026-09-14.json",
+}
+ASSIETTE_TVA_ETABLIE = {
+    iso: _TVA_TOUTES_TAXES
+    for iso in (
+        "BEN",
+        "BFA",
+        "CIV",
+        "GNB",
+        "MLI",
+        "NER",
+        "SEN",
+        "TGO",
+    )
+}
+ASSIETTE_TVA_ETABLIE["KEN"] = {
+    "texte": (
+        "Kenya, Value Added Tax Act No. 35 of 2013, section 14 (1) (c) : « the "
+        "amount of duty of customs », expression que la loi définit comme "
+        "« import duty, excise duty, export duty, countervailing duty, levy, "
+        "cess, tax or surtax charged under any law [...] relating to customs or "
+        "excise » — la définition élargit l'alinéa bien au-delà du droit de douane"
+    ),
+    "fiche": "EAC_assiette_TVA_2026-09-14.json",
+}
+ASSIETTE_TVA_ETABLIE["UGA"] = {
+    "texte": (
+        "Ouganda, Value Added Tax Act Chapter 349, section 23 (b) : « the amount "
+        "of customs duty, excise tax and any other fiscal charge other than tax "
+        "payable on those goods », « tax » désignant la TVA elle-même"
+    ),
+    "fiche": "EAC_assiette_TVA_2026-09-14.json",
+}
+ASSIETTE_TVA_ETABLIE["TUN"] = {
+    "texte": (
+        "Tunisie, Code de la taxe sur la valeur ajoutée, article 6 § II-1 : « par "
+        "la valeur en douane, tous droits et taxes inclus à l'exclusion de la "
+        "taxe sur la valeur ajoutée »"
+    ),
+    "fiche": "TUN_assiette_TVA_2026-09-14.json",
+}
+
+#: Les trois orthographes sous lesquelles la TVA apparaît dans les profils.
+_ALIAS_TVA = ("TVA", "T.V.A", "VAT")
+
+
 COUNTRY_TAX_PROFILES = {
     # ── Algérie — DGD (douane.gov.dz / conformepro.dz) ───────────────────────
     # DAPS, DD : droits de douane (base CIF) — réduits sous ZLECAf
@@ -586,6 +655,36 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
             taxes_order.append(code)
             tax_bases[code] = ("CIF", [])
 
+    # ── Assiette de la TVA établie sur texte primaire ────────────────────────
+    # Là où un texte a été lu et archivé, il prime sur le profil codé : les
+    # quatre textes disposent que l'assiette est la valeur en douane augmentée
+    # de TOUS les droits et taxes d'entrée, la TVA seule exclue. Le profil, lui,
+    # applique « CIF + DD » et ampute donc l'assiette de tout le reste.
+    regle_tva = ASSIETTE_TVA_ETABLIE.get(country_iso3)
+    if regle_tva:
+        alias_presents = [c for c in taxes_order if _normalize_tax_code(c) in _ALIAS_TVA]
+        # Garde-fou : une taxe assise sur la TVA rendrait la cascade circulaire
+        # dès lors que la TVA s'assied sur toutes les autres. Aucun des onze
+        # pays concernés n'est dans ce cas aujourd'hui ; si cela changeait, le
+        # profil codé doit continuer de s'appliquer plutôt qu'un calcul faux.
+        circulaire = any(
+            any(
+                _normalize_tax_code(dep) in _ALIAS_TVA
+                for dep in (tax_bases.get(c) or ("CIF", []))[1]
+            )
+            for c in taxes_order
+        )
+        if alias_presents and not circulaire:
+            for code in alias_presents:
+                tax_bases[code] = (BASE_TVA_TOUTES_TAXES, [])
+            # La TVA doit être liquidée en dernier : son assiette contient les
+            # montants de toutes les autres taxes, qui doivent donc être connus.
+            for code in alias_presents:
+                taxes_order.remove(code)
+                taxes_order.append(code)
+            legal_source = regle_tva["texte"]
+            profile_status = "assiette_tva_texte_primaire"
+
     # Compute amounts in order, tracking each computed amount for cascade reuse
     computed_amounts: dict = {}  # norm_code → amount
     steps = []
@@ -603,6 +702,13 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         if base_formula == "DD_AMOUNT":
             # e.g. CAC = % of DD_amount
             base_value = computed_amounts.get("DD", 0.0)
+        elif base_formula == BASE_TVA_TOUTES_TAXES:
+            # Valeur en douane + tous les montants déjà liquidés, la taxe
+            # elle-même exclue. Rien n'est énuméré : ce qui entre dans
+            # l'assiette est ce que la source publie pour cette position.
+            base_value = cif_value + sum(
+                montant for code, montant in computed_amounts.items() if code != norm_code
+            )
         else:
             # 'CIF' + optional already-computed amounts
             base_value = cif_value
@@ -616,6 +722,9 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         label = _TAX_LABELS.get(norm_code, _TAX_LABELS.get(raw_code, raw_code))
         if base_formula == "DD_AMOUNT":
             base_desc = "DD_montant"
+        elif base_formula == BASE_TVA_TOUTES_TAXES:
+            autres = [c for c in computed_amounts if c != norm_code]
+            base_desc = "CIF + " + " + ".join(autres) if autres else "CIF"
         elif add_codes:
             base_desc = "CIF + " + " + ".join(add_codes)
         else:
