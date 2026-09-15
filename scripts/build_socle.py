@@ -741,7 +741,9 @@ def main(argv):
     if os.path.exists(os.path.join(SOCLE_DIR, "MANIFESTE.json")):
         try:
             with open(os.path.join(SOCLE_DIR, "MANIFESTE.json"), encoding="utf-8") as f:
-                ancien = json.load(f).get("pays", {})
+                charge = json.load(f)
+                if isinstance(charge, dict):
+                    ancien = charge.get("pays", {})
         except json.JSONDecodeError:
             ancien = {}
     manifeste = {
