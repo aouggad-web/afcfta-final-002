@@ -1066,6 +1066,7 @@ async def calculate_comprehensive_tariff(request: TariffCalculationRequest):
         trade_regime_code=trade_regime_code,
         zlecaf_preference_applied=zlecaf_preference_applied,
         zlecaf_note=zlecaf_note,
+        plancher_npf=_zctx.get("plancher_npf"),
         zlecaf_status=zlecaf_status,
         zlecaf_offer_rate_pct=_zctx.get("zlecaf_offer_rate_pct"),
         zlecaf_offer_rate_expression=_zctx.get("zlecaf_offer_rate_expression"),

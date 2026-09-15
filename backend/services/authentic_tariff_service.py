@@ -1392,10 +1392,62 @@ def _resolve_zlecaf_context(
         offer_rate_expression=None,
         offer_rate_source=None,
     ):
+        # ── Plancher NPF ──────────────────────────────────────────────────
+        # Une préférence est une FACULTÉ, jamais une obligation : aucun
+        # importateur n'invoque un régime plus cher que le droit commun, et
+        # aucune douane ne le lui impose. Le règlement éthiopien 574/2025
+        # l'écrit à son article 3(5) — « If the tariff under the Standard
+        # Tariff Rules is lower than the tariff specified in the Free Trade
+        # Area Tariff Schedule, goods originating from Member States may be
+        # treated under the terms of the Standard Tariff Rules » — mais le
+        # principe ne lui est pas propre.
+        #
+        # Les trois chemins préférentiels calculaient correctement
+        # `preference_applied = taux < NPF`, puis servaient le taux
+        # préférentiel QUAND MÊME. Le drapeau disait « pas d'avantage »
+        # pendant que le montant facturait davantage. Mesuré avant
+        # correction : 8 positions algériennes, 2 sud-africaines, 3
+        # kényanes.
+        #
+        # Le garde-fou est posé ici, dans le constructeur que tous les
+        # chemins traversent, plutôt que dans chacun d'eux : un chemin
+        # ajouté demain en hérite sans qu'on ait à y penser.
+        plancher_npf = None
+        if dd is not None and dd_rate_pct is not None and dd > dd_rate_pct:
+            plancher_npf = {
+                "taux_preferentiel_ecarte_pct": dd,
+                "taux_retenu_pct": dd_rate_pct,
+                "motif": (
+                    "Le taux préférentiel dépasse le droit NPF de la même "
+                    "position : c'est le NPF qui est servi. Une préférence est "
+                    "une faculté, pas une obligation."
+                ),
+            }
+            dd = dd_rate_pct
+            # Le drapeau n'est PAS touché : le plancher ne rabote que le droit
+            # de douane, et une préférence ne se résume pas à lui. Sur les huit
+            # positions algériennes concernées, `daps_exempt()` est vrai et la
+            # cascade retire réellement un DAPS de 70 % — 70 000 DA d'économie
+            # sur 100 000 de CIF. Éteindre le drapeau ici dirait « aucune
+            # préférence » à un opérateur qui en tire une, et le dissuaderait
+            # de présenter son certificat d'origine.
+            #
+            # Aucun chemin n'a besoin qu'on le corrige : les trois calculent le
+            # drapeau avec un terme `taux préférentiel < NPF` qui est déjà faux
+            # quand le plancher mord. Ce qui reste vrai — l'exonération du DAPS
+            # — doit le rester.
+            complement = (
+                f" Taux préférentiel ({plancher_npf['taux_preferentiel_ecarte_pct']} %) "
+                f"supérieur au NPF ({dd_rate_pct} %) : NPF servi."
+            )
+            note = (note or "") + complement
+            zlecaf_note = (zlecaf_note or "") + complement
+
         return {
             "preferential": preferential,
             "preference_applied": preference_applied,
             "dd_rate_pct": dd,
+            "plancher_npf": plancher_npf,
             "daps_exempt": daps,
             "trade_regime": regime,
             "trade_regime_code": code,
@@ -1544,8 +1596,12 @@ def _resolve_zlecaf_context(
                 f"ZLECAf non encore activé pour {origin} à l'import en Algérie "
                 f"(circulaire DGD 482/2024) — taux NPF appliqué"
             )
-        _r, _src = compute_dza_zlecaf_rate(hs_code_clean, origin, (dd_rate_pct or 0) / 100.0)
-        eff_dd = round(_r * 100.0, 6) if _r is not None else dd_rate_pct
+        # Pourcentages de bout en bout : le taux publié se transporte tel quel,
+        # sans aller-retour vers une fraction. La conversion qui figurait ici
+        # n'altérait aucun résultat, mais elle obligeait à convertir deux fois
+        # et faisait d'un oubli une erreur d'un facteur 100.
+        _r, _src = compute_dza_zlecaf_rate(hs_code_clean, origin, dd_rate_pct or 0)
+        eff_dd = round(_r, 6) if _r is not None else dd_rate_pct
         _daps = daps_exempt(hs_code_clean, origin)
         applied = (eff_dd is not None and eff_dd < (dd_rate_pct or 0)) or _daps
         return _result(
@@ -2262,6 +2318,13 @@ def calculate_import_taxes(
         "zlecaf_eligible": zlecaf_eligible,
         "zlecaf_preference_applied": zlecaf_preference_applied,
         "zlecaf_note": zlecaf_note,
+        # Renseigné UNIQUEMENT quand le taux préférentiel dépassait le NPF et a
+        # donc été écarté : porte le taux écarté, le taux retenu et le motif.
+        # Un montant corrigé sans être dit ne serait pas opposable, et la note
+        # libre ne suffit pas — un client d'API ne peut pas la lire par
+        # programme. `None` quand le plancher n'a pas mordu, soit le cas
+        # général.
+        "plancher_npf": _zctx.get("plancher_npf"),
         # DOCUMENTED | NOT_AVAILABLE | OFFER_ONLY | PARTNER_NOTICE_REQUIRED
         "zlecaf_status": zlecaf_status,
         "zlecaf_rate_expression": zlecaf_rate_expression,

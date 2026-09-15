@@ -46,8 +46,12 @@ with open(DATA_DIR / "list_c_codes.json", encoding="utf-8") as f:
 # taux de base ZLECAf 30%, taux DD courant 5% suite à une réduction
 # postérieure à 2019) : il prévaut donc sur tout taux normal transmis par
 # l'appelant pour les positions qu'il couvre.
+#: Taux EN POURCENTAGE, tels que la source les publie. Aucune conversion :
+#: un taux publié à 0,5 vaut 0,5 % et se transporte tel quel jusqu'au calcul.
+#: La division par 100 qui figurait ici obligeait tout appelant à convertir
+#: deux fois, et une conversion oubliée est une erreur d'un facteur 100.
 with open(DATA_DIR / "list_b_base_rates.json", encoding="utf-8") as f:
-    LIST_B_BASE_RATES_2019 = {k: v / 100.0 for k, v in json.load(f).items()}
+    LIST_B_BASE_RATES_2019 = {k: float(v) for k, v in json.load(f).items()}
 with open(DATA_DIR / "circular_482_schedule.json", encoding="utf-8") as f:
     CIRCULAR_482_SCHEDULE = json.load(f)
 
@@ -168,15 +172,25 @@ def _factor_reciprocity(lst: str, year: int) -> float:
 def compute_dza_zlecaf_rate(
     hs_code: str,
     origin_iso3: str,
-    normal_rate: float,
+    normal_rate_pct: float,
     as_of: Optional[datetime.date] = None,
 ) -> Tuple[Optional[float], Optional[str]]:
     """Taux DD ZLECAf à l'importation en Algérie pour un HS code / partenaire.
 
+    UNITÉ : pourcentages de bout en bout. ``normal_rate_pct`` est le taux NPF
+    tel qu'il est publié (5.0 pour 5 %, 0.5 pour 0,5 %), et le taux rendu l'est
+    dans la même unité. Rien n'est converti : un taux publié se transporte tel
+    quel jusqu'au calcul.
+
+    Le nom du paramètre porte l'unité parce que la version précédente attendait
+    une FRACTION là où tout le reste du moteur manie des pourcentages. La
+    convention n'était écrite nulle part, et un appelant qui l'ignorait se
+    trompait d'un facteur 100 sans que rien ne le signale.
+
     Retourne (taux, libellé source), ou (None, None) si les paramètres sont
     insuffisants (laisser l'appelant garder son propre calcul générique).
     """
-    if not origin_iso3 or normal_rate is None:
+    if not origin_iso3 or normal_rate_pct is None:
         return None, None
     origin = origin_iso3.upper()
     hs_clean = (hs_code or "").replace(".", "").replace(" ", "")
@@ -184,7 +198,7 @@ def compute_dza_zlecaf_rate(
         return None, None
 
     if origin not in ACTIVE_PARTNERS:
-        return normal_rate, (
+        return normal_rate_pct, (
             f"ZLECAf non encore activé pour {origin} à l'import en Algérie "
             f"(circulaire DGD 482/2024) — taux NPF appliqué"
         )
@@ -193,10 +207,15 @@ def compute_dza_zlecaf_rate(
     lst = tariff_list(hs_clean)
 
     if is_frozen(hs_clean):
-        return normal_rate, f"Liste ({lst}) gelée — règles d'origine non finalisées (droit commun)"
+        return (
+            normal_rate_pct,
+            f"Liste ({lst}) gelée — règles d'origine non finalisées (droit commun)",
+        )
 
     code10 = hs_clean.ljust(10, "0")[:10]
-    base_rate = LIST_B_BASE_RATES_2019.get(code10, normal_rate) if lst == "B" else normal_rate
+    base_rate = (
+        LIST_B_BASE_RATES_2019.get(code10, normal_rate_pct) if lst == "B" else normal_rate_pct
+    )
     base_label = " (taux de base 2019)" if lst == "B" and code10 in LIST_B_BASE_RATES_2019 else ""
 
     reciprocity = origin in RECIPROCITY_PARTNERS
