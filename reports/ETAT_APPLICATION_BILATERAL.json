@@ -230,12 +230,22 @@
     "verbatim_decisif": "« ces préférences douanières sont accordées sur la base de la réciprocité et n'excluent pas les autres prélèvements exigibles au corridor douanier à l'importation »",
     "portee_du_verbatim": "La préférence ZLECAf ivoirienne ne touche QUE le droit de douane. Tous les autres prélèvements du corridor douanier — redevance statistique, prélèvement communautaire CEDEAO, prélèvements UEMOA, taxes intérieures — restent dus. Un calculateur qui ramènerait le total à zéro sur une ligne préférentielle serait faux.",
     "manque": "La liste nominative des partenaires acceptés. L'ordonnance pose la réciprocité en condition sans nommer aucun pays.",
-    "document_cible": "Arrêté ou circulaire de la Direction générale des douanes ivoiriennes désignant les origines admises ; à défaut, le texte intégral de l'ordonnance publié au Journal officiel de la République de Côte d'Ivoire.",
+    "document_cible": "Texte intégral de l'ordonnance n° 2025-260 du 23 avril 2025 au Journal officiel de la République de Côte d'Ivoire, et sa loi de ratification. À défaut, l'arrêté ou la circulaire de la Direction générale des douanes désignant les origines admises.",
     "ou_chercher": [
      "Journal officiel de la République de Côte d'Ivoire, avril-mai 2025.",
      "Direction générale des douanes (douanes.ci) — circulaires et notes de service.",
      "Le site de la Présidence publie le communiqué mais sa chaîne de certificats TLS est incomplète : le texte a été lu via l'Agence ivoirienne de presse, agence d'État."
-    ]
+    ],
+    "progres_2026-09-15": {
+     "instrument_identifie": "Ordonnance n° 2025-260 du 23 avril 2025",
+     "intitule": "Ordonnance relative à la mise en œuvre du démantèlement tarifaire appliqué aux produits non sensibles dans le cadre de la ZLECAf",
+     "source": "https://cnzlecaf.gouv.ci/accueil/home/fr — Comité National de la ZLECAf, Côte d'Ivoire",
+     "nature_de_la_source": "Organe gouvernemental ivoirien dédié à la ZLECAf, institué par décret de 2018, interface entre la Côte d'Ivoire et le Secrétariat de la ZLECAf. Meilleur niveau que le communiqué de presse sur lequel le numéro manquait.",
+     "verbatim": "Adoption en conseil des ministres de l'Ordonnance n°2025-260 du 23 avril 2025 relative à la mise en œuvre du démantèlement tarifaire appliqué aux produits non sensibles dans le cadre de la ZLECAf.",
+     "ratification": "L'ordonnance a été ratifiée par le Parlement ivoirien — Assemblée nationale puis Sénat — ce qui implique l'existence d'une loi de ratification, non encore identifiée.",
+     "ce_qui_manque_toujours": "Aucune liste d'origines. Le comité national lui-même, alors qu'il est l'interface avec le Secrétariat, ne nomme aucun pays partenaire. Le statut NOTIFICATION_PARTENAIRES_REQUISE est donc confirmé par la source la mieux placée pour le démentir.",
+     "absence_de_l_archive": "La Côte d'Ivoire ne figure pas parmi les vingt-quatre pays couverts par gazettes.africa : cette voie n'est pas disponible pour elle."
+    }
    },
    "NGA": {
     "statut": "NOTIFICATION_PARTENAIRES_REQUISE",
@@ -361,7 +371,18 @@
       "constat": "La ZLECAf n'y apparaît que six fois, et uniquement comme PROCÉDURE « AfCFTA certificate of origin » dans la liste des démarches. Aucun régime préférentiel d'importation, aucune liste d'origines admises, aucun sélecteur d'accord à l'import — alors que l'EAC et le COMESA y figurent quinze fois chacun.",
       "portee": "Confirme, sur source officielle, que ce qui est établi au Rwanda concerne la délivrance du certificat — donc l'exportation — et non l'admission à l'importation. La distinction est la même qu'au Cameroun."
      },
-     "balayage_du_journal_officiel": "Les 52 numéros rwandais de 2025 présents dans l'archive gazettes.africa ont été téléchargés et lus : aucun ne mentionne l'AfCFTA, la ZLECAf ni la zone de libre-échange continentale. La couverture rwandaise étant hebdomadaire et complète pour cette année, cette absence est un résultat, non une lacune d'archive. Le balayage de 2024 et 2023 est en cours."
+     "balayage_du_journal_officiel": {
+      "methode": "Téléchargement et lecture intégrale des PDF de l'archive gazettes.africa, recherche de « AfCFTA », « ZLECAf », « Continental Free Trade » et « libre-échange continentale ».",
+      "couverture": {
+       "2025": "52 numéros, du 6 janvier au 29 décembre — hebdomadaire, complète",
+       "2024": "33 numéros, du 11 mars au 30 décembre — les dix premières semaines manquent",
+       "2023": "36 numéros, du 27 février au 25 décembre — les huit premières semaines manquent",
+       "total": 121
+      },
+      "resultat": "Aucun des 121 numéros ne mentionne la ZLECAf sous l'une de ces quatre formes.",
+      "ce_que_cela_vaut": "Pour 2025, la couverture est complète : l'absence est un résultat. Pour 2024 et 2023, elle est partielle — environ dix et huit semaines manquent en début d'année — donc l'absence y est un indice fort, pas une preuve. Un acte publié en janvier ou février 2024 échapperait à ce balayage.",
+      "correction": "Un message de commit antérieur (dd7c685) a décrit la couverture de 2024 comme « complète », ce qui est faux : elle commence au 11 mars. La conclusion tient pour 2025 seul."
+     }
     }
    }
   },
