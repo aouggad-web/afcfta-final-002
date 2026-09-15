@@ -500,6 +500,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           zlecaf_eligible: authenticResult.zlecaf_eligible === true,
           zlecaf_preference_applied: authenticResult.zlecaf_preference_applied === true,
           zlecaf_note: authenticResult.zlecaf_note || null,
+          // Renseigné uniquement quand le taux préférentiel dépassait le NPF
+          // et a donc été écarté. Sans ce report, l'opérateur verrait un taux
+          // qui ne correspond pas au barème sans savoir pourquoi.
+          plancher_npf: authenticResult.plancher_npf || null,
           zlecaf_status: zlecafAvailability.status,
           zlecaf_rate_expression: authenticResult.zlecaf_rate_expression || null,
           zlecaf_rate_source: authenticResult.zlecaf_rate_source || null,
@@ -1236,7 +1240,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   - CUSTOMS_UNION  → libre circulation intra-union (positif, vert)
                   - FTA_CONDITIONAL → régime du bloc possible sous conditions (ambre)
                   - NPF             → aucune préférence (avertissement, ambre)
-                  - ZLECAF          → pas de bandeau (la colonne préférentielle suffit) */}
+                  - ZLECAF          → pas de bandeau EN GÉNÉRAL (la colonne
+                                      préférentielle suffit), SAUF si le
+                                      plancher NPF a écarté le taux du barème :
+                                      l'opérateur verrait sinon un taux qui ne
+                                      correspond à aucune source lisible. */}
               {result.trade_regime === 'CUSTOMS_UNION' && (
                 <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-start gap-3">
                   <Shield className="w-5 h-5 text-emerald-400 mt-0.5 flex-shrink-0" />
@@ -1273,6 +1281,24 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                       {language === 'fr' ? 'Préférence ZLECAf non appliquée' : 'AfCFTA preference not applied'}
                     </p>
                     <p className="text-amber-200/80 text-sm mt-1">{result.zlecaf_note}</p>
+                  </div>
+                </div>
+              )}
+
+              {result.plancher_npf && (
+                <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
+                  <Info className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-amber-300 font-semibold text-sm">
+                      {language === 'fr'
+                        ? `Taux NPF servi (${result.plancher_npf.taux_retenu_pct} %) : le barème préférentiel est plus cher`
+                        : `MFN rate applied (${result.plancher_npf.taux_retenu_pct}%): the preferential schedule costs more`}
+                    </p>
+                    <p className="text-amber-200/80 text-sm mt-1">
+                      {language === 'fr'
+                        ? `Le barème préférentiel de cette position affiche ${result.plancher_npf.taux_preferentiel_ecarte_pct} %, soit davantage que le droit commun. Une préférence est une faculté, pas une obligation : c'est le NPF qui est servi.`
+                        : `The preferential schedule for this line shows ${result.plancher_npf.taux_preferentiel_ecarte_pct}%, more than the ordinary duty. A preference is an option, not an obligation: the MFN rate is applied.`}
+                    </p>
                   </div>
                 </div>
               )}

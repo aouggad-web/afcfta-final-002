@@ -18,7 +18,7 @@ C'est le seul critère retenu ici.
 | 4 | Quatre pays dérivés du Bénin | une assiette de TVA **non fondée** | 4 pays |
 | 5 | Taux du PCS | un écart de 0,2 point **non tranché** | UEMOA |
 | 6 | Maroc en application | une préférence **affichée mais non appliquée** | 40 origines |
-| 7 | Règles fiscales éthiopiennes | rien encore — `OFFER_ONLY` (hors moins-disant, cf. n° 3) | en attente |
+| 7 | Règles fiscales éthiopiennes | `OFFER_ONLY` — l'art. 3(5) est fait (cf. n° 3) | 3 règles sur 4 |
 
 ---
 
@@ -277,25 +277,26 @@ décision sur la TPI.
 
 ## 7. Les règles fiscales éthiopiennes
 
-Quatre règles ont été établies sur le Negarit Gazette et **ne sont pas
-implémentées** :
+Quatre règles ont été établies sur le Negarit Gazette. **Une est désormais
+implémentée**, les trois autres ne le sont pas :
 
-| Article | Règle |
-|---|---|
-| 3(5) | le NPF s'applique s'il est **inférieur** au taux ZLECAf |
-| 5(2) | la surtaxe du règlement 133/2007 **subsiste** mais décroît avec le barème |
-| 5(3) | la Social Development Levy **s'éteint** pour les catégories A et B |
-| 3(3) | seule la catégorie A est réduite à ce jour |
+| Article | Règle | État |
+|---|---|---|
+| 3(5) | le NPF s'applique s'il est **inférieur** au taux ZLECAf | **fait** — plancher NPF général, PR #474 |
+| 5(2) | la surtaxe du règlement 133/2007 **subsiste** mais décroît avec le barème | à faire |
+| 5(3) | la Social Development Levy **s'éteint** pour les catégories A et B | à faire |
+| 3(3) | seule la catégorie A est réduite à ce jour | à faire |
 
-Elles ne mordent sur rien tant que l'Éthiopie reste `OFFER_ONLY`, faute de
-l'avis ministériel des origines. Les câbler d'avance serait du code non
+L'article 3(5) est sorti de cette liste parce qu'il n'était pas éthiopien dans
+son principe : le même défaut courait sur trois chemins du moteur, et le
+plancher est posé comme règle générale. C'est précisément ce que ce paragraphe
+annonçait — « un calculateur qui servirait une préférence plus chère que le NPF
+serait faux partout ».
+
+Les trois autres ne mordent sur rien tant que l'Éthiopie reste `OFFER_ONLY`,
+faute de l'avis ministériel des origines. Les câbler d'avance serait du code non
 exerçable ; les oublier serait perdre un travail déjà fait. D'où leur place en
 fin de liste — et leur consignation dans la fiche.
-
-**La règle du moins-disant mérite une attention particulière** : elle n'est pas
-propre à l'Éthiopie dans son principe, et il faudra vérifier si d'autres actes
-nationaux la portent. Un calculateur qui servirait une préférence plus chère que
-le NPF serait faux partout.
 
 ---
 
