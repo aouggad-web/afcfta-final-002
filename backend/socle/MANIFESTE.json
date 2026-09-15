@@ -1,13 +1,13 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-15T12:33:56.623136+00:00",
+  "construit_le": "2026-09-15T12:45:24.016764+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/AGO_tariffs.json",
       "source_sha256": "7c1bb39f2547d72f05b36332e64f805e634a64557dfa4489b08e9ae49846c9f3",
-      "socle_sha256": "a342b82ad011150fc328051f45cdbc3dbf73ce837225d601dff8387e3deaaff3",
+      "socle_sha256": "c4828175c1d27c10bdd689c475634121ac37e1ae0c0bd1803a779986b1e045c4",
       "collecte": "2026-07-05T09:59:53.562489+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -33,7 +33,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BDI_tariffs.json",
       "source_sha256": "e0a13e7e1414e152e6038dce80bce940fdc0959ffd890d2664c9b0cef30be275",
-      "socle_sha256": "bc034ea5cd78f9a0f0e6a2aee091d5df6ceb9f62cd088dd2911ffcfa24750d87",
+      "socle_sha256": "d3f11024f1bec9c7dfe915f9eee75ac7af075a4e215bd90b01e6346c71435893",
       "collecte": "2026-02-18T10:54:36.463488",
       "etat": "COMPLET",
       "familles": [
@@ -59,7 +59,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BEN_tariffs.json",
       "source_sha256": "a62e860ec9b2e5352e26be50a7347f504f64bc697667abc8482ccbf6363f1e98",
-      "socle_sha256": "41569e996444c0e4e494b3e12a413ec6474b9275495b1e6f2ebf6b315380afe7",
+      "socle_sha256": "ffd0b26ea51565025333b982549eac2f44b08058499181a576899dfa27a38294",
       "collecte": "2026-02-19T22:39:44.817942",
       "etat": "COMPLET",
       "familles": [
@@ -86,7 +86,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BFA_tariffs.json",
       "source_sha256": "83c4222c2d9cedc3453e9d8aac6ff5b3c50e98f54a6c589a6e9aed34fcd0b667",
-      "socle_sha256": "9509e5588e99ee7eba3ed6509229e5c27d6e44085165c41b647e434c4662021f",
+      "socle_sha256": "b14c7ca277018eb62ba434508c14fbd1ca6b3e844893208d33d93605d2ec07ca",
       "collecte": "2026-02-19T22:39:46.076060",
       "etat": "COMPLET",
       "familles": [
@@ -113,7 +113,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BWA_tariffs.json",
       "source_sha256": "cf84b1a644cc2b5abc84e02b376d89810f05d1cdcb53dfb190f7653d475476da",
-      "socle_sha256": "4b74b01b4aec6a6e643eb3dd524490e7663073d40c35c1635cc3f29a5ec00b1d",
+      "socle_sha256": "979ef7c5e8ca20fcc203e3da95401e72ab2392ef0b56dfa59ba7edd084aa8184",
       "collecte": "2026-08-29T13:26:22.991310",
       "etat": "PARTIEL",
       "familles": [
@@ -138,7 +138,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CAF_tariffs.json",
       "source_sha256": "021166306006d65273dd676bf0552e10bc5af83869b2d2795f03df3718ae25db",
-      "socle_sha256": "94734ffe1d97cc8d4bd0495d46950111f7bfdac57a675c69c49ed45291339bb9",
+      "socle_sha256": "71937d38c88a37b4715ca1e2f3ecf840f25bf70f66897b6d25c5009d51dc7f5b",
       "collecte": "2026-02-19T22:39:54.085446",
       "etat": "COMPLET",
       "familles": [
@@ -166,7 +166,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CIV_tariffs.json",
       "source_sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221",
-      "socle_sha256": "01af85c34dd049e0e767728536304f9d4ab538fc568ef4089687ae6e4bb1484d",
+      "socle_sha256": "d83ed367c74475cf60e037cee597157a4716aae594ff6656885b3f59376196f9",
       "collecte": "2026-02-19T22:01:52.572505",
       "etat": "COMPLET",
       "familles": [
@@ -195,7 +195,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CMR_tariffs.json",
       "source_sha256": "8cae7c268dc99f9191608979ca716b3e6afb114af0e14650e3560eb0a2595584",
-      "socle_sha256": "6cbb446d82226044031b46ef11f8ba1be205966df567bffb2119692a6f8408db",
+      "socle_sha256": "ee7cb91c4b8f0d6103226782a9308ac44318373f0d8ee7f154429ea83f3514af",
       "collecte": "2026-02-19T22:21:31.397885",
       "etat": "COMPLET",
       "familles": [
@@ -223,7 +223,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COD_tariffs.json",
       "source_sha256": "5a2d1cfceefd2799cdd04d8776f5a5f0799d36b8419656cec2751b49479f667e",
-      "socle_sha256": "dc0491b1921ca378ee43ae0b9aa3424382349818f868e7fa49ffc11f385098a9",
+      "socle_sha256": "b12f3a8be5acc28912eed23af0ee525054263c3ebb53e0c92fc42f0372a02579",
       "collecte": "2026-02-18T10:54:37.532224",
       "etat": "COMPLET",
       "familles": [
@@ -249,7 +249,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COG_tariffs.json",
       "source_sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe",
-      "socle_sha256": "47d93bf648fb5f5c80922623b8dccc4858be4905aa6d8e3bd563eee439080207",
+      "socle_sha256": "0293d533dd777950831e1672034e0d6d8efa17b19c898fc0dfcf1d2efd46321e",
       "collecte": "2026-02-19T22:39:52.620876",
       "etat": "COMPLET",
       "familles": [
@@ -277,7 +277,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COM_tariffs.json",
       "source_sha256": "ce74f81f79963f0cedadc2ac2dc73d6e3335d46da5dbd37b9ada59b4a79732c5",
-      "socle_sha256": "d132ab52b203b42cc0f468a48ad60c4038cdb37d7005f5749e82997de9789278",
+      "socle_sha256": "15b05e6b788115a5fba3e731e44f97bba1b7bfcb98a2824a80f7a563f0e5c886",
       "collecte": "2026-07-05T11:02:35.673779+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -303,7 +303,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CPV_tariffs.json",
       "source_sha256": "67bd2c2b4d57190be7f92609e83db0a1c514e6faa29628b94cf01f36ed132fab",
-      "socle_sha256": "df013aec38ada04663d9bbd6914fa15fbef0fcafef39c24cc8bf6b0ae1455f1e",
+      "socle_sha256": "1ac302156d1d16a7593c511063fe0527040c39c1f4724a13af3c2607e1b79254",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -330,7 +330,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/DJI_tariffs.json",
       "source_sha256": "5a7590273347691aebd9d26a0443f4b6b34660765f6372a9313cc8ffac9982b8",
-      "socle_sha256": "9cb0fc221fdf87815095bfb5829fa46ba05eadcaa574cc0d1e3f1a252b289358",
+      "socle_sha256": "1e65b6d0cea618d0e2fcde6c969279af8a296ecd4350da2c6c1640166575b20c",
       "collecte": null,
       "etat": "VIDE",
       "familles": [],
@@ -353,7 +353,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/DZA_tariffs.json",
       "source_sha256": "fead59b16f2b833f971319b2ebd91a08d8f7152e8e8b146c7d6beaa5892d7341",
-      "socle_sha256": "1968d1965c75c3e99405294547af8b01f331f3e4017726bc8e8fec43612802fa",
+      "socle_sha256": "f6bcef37f1e5ba6179e81387d0e2fbe05809ab6167f11ff3600232cffb293ecf",
       "collecte": "2026-08-29T11:11:39.900916+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -382,7 +382,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/EGY_tariffs.json",
       "source_sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94",
-      "socle_sha256": "788551e207251e71b9617659396b02f8cf6d852e4d0744f72ac2d020403dcffd",
+      "socle_sha256": "337a1c358eadc8fd389b78781f3df021144347f4a55b98e70b0645ac227b5b27",
       "collecte": "2026-08-29T21:57:37.493425+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -409,7 +409,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ERI_tariffs.json",
       "source_sha256": "b30974b2b9217bebf4559e47b65a5b9882e2010246c78a05d091c0aa9bd9394d",
-      "socle_sha256": "11eea9b39e083be933fe7505dda8f5b24bbc4d7ababea18e66cb744aeea533ce",
+      "socle_sha256": "e939e067d7741449e4823467a7aac2c77ea3993da3e8bcf7d4a2b1b0b78baf3a",
       "collecte": null,
       "etat": "VIDE",
       "familles": [],
@@ -432,7 +432,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ETH_tariffs.json",
       "source_sha256": "37659e6d1f3740d9d7e4f6c69406d2a4c544d9d3afe37b03d0beecc9fd886592",
-      "socle_sha256": "40705f3c59dc6bd6c9e1b040146d04397235867e914a8cde5174b3c2bfb7c5c0",
+      "socle_sha256": "bae11de58100d1985c48fb213bcc4f793184ee8cb32995dd3e78d67ce8eacb2b",
       "collecte": "2026-07-05T11:56:27.716023+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -461,7 +461,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GAB_tariffs.json",
       "source_sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3",
-      "socle_sha256": "ab10b6d5285b9167570b3409faa3000b17744f97cef42c44e0d21a652b6a87a7",
+      "socle_sha256": "37d1a6e25b8d685680989db05ad1ac88e9d6f305250bebbceedc2da7cc1e0d5d",
       "collecte": "2026-02-19T22:39:52.018966",
       "etat": "COMPLET",
       "familles": [
@@ -489,7 +489,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GHA_tariffs.json",
       "source_sha256": "760d0b401a7d482aae9f2ddded5ecd85ed9a92d45be8ce1a36c95b14116bb439",
-      "socle_sha256": "ac0747c0be06d3e56d03c90be2e32c1fd5ba4a7c6fc70477a8317130763d4ea7",
+      "socle_sha256": "ebf6595290959b56a9886b2408d5b141c8bc1242616c82c54bddedd4d4bede18",
       "collecte": "2026-06-16T22:25:05.362356",
       "etat": "COMPLET",
       "familles": [
@@ -516,7 +516,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GIN_tariffs.json",
       "source_sha256": "0cba205ad60369ccbb1683a5ae2288db76431dd84e7911e4f708febee9d93f56",
-      "socle_sha256": "642e57fad1cb878e81af8c069217a0d23fbbf572ee5c39fe13c584a4f3d44d53",
+      "socle_sha256": "cc5b8afa37e140becb6907015dad850680029d9c9a53615b02059e59860cff31",
       "collecte": "2026-02-19T22:39:50.897093",
       "etat": "COMPLET",
       "familles": [
@@ -543,7 +543,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GMB_tariffs.json",
       "source_sha256": "df507892b7d475647b66b8ec80b1552b8451b719c3953208bbac82a178aea772",
-      "socle_sha256": "b9e003c36c8c45cb75e09fa7ba98910559b08c0c5e1f859a4bc0238f3cc6726f",
+      "socle_sha256": "0f9e3ee5cb49d2de04a9555a8a094f95e87438eae207f44fe8e98f3cbef684fd",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -570,7 +570,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GNB_tariffs.json",
       "source_sha256": "292c4b3bcda33103f40caba44f70623c6655a2f16ac46a67005559804a1556ef",
-      "socle_sha256": "d6db6e142098509863f1338b7785cb5c209a0029503bbc6b3b7c4de491718b52",
+      "socle_sha256": "ec8933cb14ff5bf2a1eda4368d03fdc479507875c04167442a11056d02598aab",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -597,7 +597,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GNQ_tariffs.json",
       "source_sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0",
-      "socle_sha256": "820c61c36c0c0f500d55d55168c919d3c9635419ba270462560c438e4047c0a9",
+      "socle_sha256": "f5048e2a3b598a43a941a2db1b385f799b34e1bc829f389d7c2df4765038a41b",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -625,7 +625,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/KEN_tariffs.json",
       "source_sha256": "e20a4280f51615d7f9efa5388f7529e3b5516dacbc3c2313ac8c3def32367b8b",
-      "socle_sha256": "90a1af594ccc91af81f15ac0b328719567cac72ac61052e52c0114fadf5fe997",
+      "socle_sha256": "45d29664d91abecec0741b22fda286e62de4402562eb5eddfc019772186694a4",
       "collecte": "2026-02-18T10:54:33.961294",
       "etat": "COMPLET",
       "familles": [
@@ -653,7 +653,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBR_tariffs.json",
       "source_sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40",
-      "socle_sha256": "a365a3edfebc432539774a136e1ee61e3d77f96bdd49f2f1fee2ccee816e66cf",
+      "socle_sha256": "1927cb9a4fcc04d410c42704a53b04edce48b1f1821c24ccfab3f8bfb59f6e13",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -680,7 +680,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBY_tariffs.json",
       "source_sha256": "49644077114938ec95f38401fc5f74d146670d6e34ab6ebe930dc592cd4dcfbb",
-      "socle_sha256": "8b52c7f4b75735412a17d722a4ae18df2122bc7cd646f6ecc48417e68af3518f",
+      "socle_sha256": "c109505c22ec6310e546ea484a072c39214643dcdb403595f55b5a22b5a3dfca",
       "collecte": "2026-07-05T10:11:07.880829+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -706,7 +706,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LSO_tariffs.json",
       "source_sha256": "31c5c4f6a56ae594fabb6e4f7093f4960b0f1397e0e25c4900804e23e4ec25dc",
-      "socle_sha256": "796b982bf2b56bfd284e34a4946a4202e2ff00f9435c59b2c04faeb37c228130",
+      "socle_sha256": "d3db9c02df75faf28d1487a0bbfb4cfef054a0a34cef9cfb510b62b2a42efec8",
       "collecte": "2026-08-29T13:26:24.395497",
       "etat": "PARTIEL",
       "familles": [
@@ -731,7 +731,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MAR_tariffs.json",
       "source_sha256": "0debb92e473cf0288db5ab04fcea846a192669905dcf2712923be666c8fb62d5",
-      "socle_sha256": "af2fdaea4317bbeab5f8cdeb856bf98b9303007ef37458fb90f97edd3ac73176",
+      "socle_sha256": "cbad85a1c896891b4947ce039d42bdd82ca2b84b6c0003096492b6095bd36f04",
       "collecte": "2026-02-11T22:41:08.772056",
       "etat": "COMPLET",
       "familles": [
@@ -758,7 +758,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MDG_tariffs.json",
       "source_sha256": "5fa9f5746ea5a02f4ff6daa787797bdd1dd3209cfce31762d9257f39c76fe02f",
-      "socle_sha256": "8fad4addd21af0046d87176ee3cb8a3d8a27e5191d736091883e6634935ddc50",
+      "socle_sha256": "667d2ae6b76b90f26459fc9a81bab9c6ae87dd487141cae3a9f507d7ee1110b3",
       "collecte": "2026-07-05T10:03:55.556241+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -784,7 +784,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MLI_tariffs.json",
       "source_sha256": "ac016ec03cde8facc64ae6a2a366469d64fac10d78f44ab3b2becbfb04f20ad6",
-      "socle_sha256": "08adf5024f00cf5852fcca502b1b589285c3b05b326ee14d25ff2bbc926f38dc",
+      "socle_sha256": "a08181cbe31cf513d1495e7661589f7bc95be3bfa77ea8c8cd555fe67c2c2943",
       "collecte": "2026-02-19T22:39:47.238684",
       "etat": "COMPLET",
       "familles": [
@@ -811,7 +811,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MOZ_tariffs.json",
       "source_sha256": "a34999e367fe2faaf0fff0bf9619fbf4310245aa45006e3e43076a3692f44c7f",
-      "socle_sha256": "b19f1e7e9ae9ede55525be9ab4c5a006d1410854f24e53c308db60d4471c3e95",
+      "socle_sha256": "48c7d7b8d331aca37783884a9f14673dcd17b1c790083fb2951e897cd8f0a73b",
       "collecte": "2026-07-05T10:04:03.624574+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -837,7 +837,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MRT_tariffs.json",
       "source_sha256": "68f17520e713843a46a5010c2e83916e7972ac34666cbcc9576350fad0637a87",
-      "socle_sha256": "a1fda1b0ccf41711cece6ce94d37c32549e44e6fa256c9f9240663a9f0a80134",
+      "socle_sha256": "eb5e68c8e24b628b7f08cdcddd8fa603c9ef04f57c9393844a7eab33896297f5",
       "collecte": "2026-07-05T10:11:13.873065+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -863,7 +863,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MUS_tariffs.json",
       "source_sha256": "2e4308ee758d2860eda0acb9307b3895cab8932ccdac91befabc7dbe3b7ea2d6",
-      "socle_sha256": "856eca869c19c2856b5e2d66a939cfc37439a31bf41187c7216f9b7b9708d6f4",
+      "socle_sha256": "243030ef78406a1bee55402b0a4c3db53d2b6a1f2386640c3d029b71df200aed",
       "collecte": "2026-07-05T10:11:19.857867+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -889,7 +889,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MWI_tariffs.json",
       "source_sha256": "b58fff712f7ab84102294c587ccd7f0cf8a3ad219f6dcfbbebfdab75ec4208d2",
-      "socle_sha256": "24cf684020d8cfaf70141c0b16b3b8aa99d6c20393c3d63430c2ee405962ef7b",
+      "socle_sha256": "53c1bf9e64d8a4a3353b56ac78b5baa098153837dc16a703c80d755c1b4121ec",
       "collecte": "2026-07-05T10:11:13.162602+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -915,7 +915,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/NAM_tariffs.json",
       "source_sha256": "a315efcf13b9f17f0ed677fab8d3cbfe64a5f562aca7868f14bcffda3f2f7ebf",
-      "socle_sha256": "d8f4bd8c675c84f2f2be3969c6c7f063abadc7f43ace6ded18a7afc1fbaa32ca",
+      "socle_sha256": "eda967da85537fe1074f07df6d9dd268a88ae6ad48161dff4f156b6835112982",
       "collecte": "2026-08-29T13:26:27.028702",
       "etat": "PARTIEL",
       "familles": [
@@ -940,7 +940,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/NER_tariffs.json",
       "source_sha256": "af07aa9e4e0e22c8cb38f59055668a04fcb37d83ffed3f711de2eb06391ad629",
-      "socle_sha256": "7b00e9226d6a8b653fd3cf73eb7027f1073f0e38cf0192a58bbf645ef24c24f4",
+      "socle_sha256": "995096a24a8d10091105140e3a6d6cd01f4c8b00012779524cf44c99345d2a8e",
       "collecte": "2026-02-19T22:39:48.421467",
       "etat": "COMPLET",
       "familles": [
@@ -967,7 +967,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/NGA_tariffs.json",
       "source_sha256": "37876592a3dc4b26cf73ce03eb95bb75baae5a6d535f43510765e77a28d2b3e0",
-      "socle_sha256": "3b4a56c37c7b7b3e4e63702464c91542dfb2c4a84f1d3812a3a9d2ecb418f0f1",
+      "socle_sha256": "0207de3aab632a508f132b5a3da8d94b3951a70584309baf385cccf581264b99",
       "collecte": "2026-02-17T22:07:58.761128",
       "etat": "COMPLET",
       "familles": [
@@ -994,7 +994,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/RWA_tariffs.json",
       "source_sha256": "1179c1cb7f82adec7315a584da3e5e4fd560666da4572fffd95d2d9b2484020c",
-      "socle_sha256": "77e1768629e664e4d3df66cde9e6ab240b456b46577247d9fac7bafb22cabf51",
+      "socle_sha256": "1dc2590ce6d9e17f1a30a66a56580e2c6ba6b07a0b0b1a10142f5637dae6c49b",
       "collecte": "2026-02-18T10:54:35.914199",
       "etat": "COMPLET",
       "familles": [
@@ -1021,7 +1021,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SDN_tariffs.json",
       "source_sha256": "6633ac8de0e67e225c47c0847a26f4ee19f082023e95ffc9d779ba2c16d786f6",
-      "socle_sha256": "3d5c2b569d1008b8ad70e8040a75d1e32bbbec252302fec0c61c43703e167415",
+      "socle_sha256": "82ddc2f91161f6a02d2d32e5dd31abbfa6f8f90f250b3f0ce20fd89386b64b07",
       "collecte": "2026-07-05T10:11:09.736333+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1047,7 +1047,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SEN_tariffs.json",
       "source_sha256": "733fe61c81cc2b95341cae7c9189cc6520e73c86b648372f27068bdb095f37b0",
-      "socle_sha256": "ffd76dba7ace2e31a82c9a14a6c7a74864ea0a8709819f1b3be76b19cf60b13c",
+      "socle_sha256": "8ae07077216064490c63e43288cbcd3df6a580429bcf939a03fbe3a31b8ddd59",
       "collecte": "2026-02-19T22:21:26.945091",
       "etat": "COMPLET",
       "familles": [
@@ -1074,7 +1074,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SLE_tariffs.json",
       "source_sha256": "9c5a5d7b2ec90723c8a8bd9e06136b2d1f239086e01650ea131a11fb0ed1df39",
-      "socle_sha256": "c7e585918b50bcdde47fa30e9357b1b53a5f2977f3b48106f9c6b8fc340ab987",
+      "socle_sha256": "100689cf4f2a69961fe0eac1c5a1580c59e8c7b5ad8cfa41f465dc271b1f76f3",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -1101,7 +1101,7 @@
       "origine": "etl",
       "source_fichier": "backend/data/SOM_tariffs.json",
       "source_sha256": "5df6fe9a6be9b62c025b968dda4bb061b44f1f064c2a6daeb525542b6427c3d1",
-      "socle_sha256": "622703660c7c9f389a809cbed674cb827b434121a25a13214e0b1980ecb9bf15",
+      "socle_sha256": "3ac158bd60d769fe6eb957b65174e69cabac485cc8d8bf18b4ad0d7b428be35b",
       "collecte": "2026-06-16T22:25:20.343212",
       "etat": "PARTIEL",
       "familles": [
@@ -1126,7 +1126,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SSD_tariffs.json",
       "source_sha256": "f275f381be8883cecd2a982c5d236ab9fa84602a370517cd29691a64174d7b1b",
-      "socle_sha256": "5febb47492ee20aa0a3a8e7e8f9c7df32cce9a4cd0299cf6c8543b0d8a50623b",
+      "socle_sha256": "2ec585fe134cb02590dab007b38fbcb6d791fa194d060a1e91563531d3a79ce8",
       "collecte": "2026-02-18T10:54:36.997956",
       "etat": "COMPLET",
       "familles": [
@@ -1152,7 +1152,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/STP_tariffs.json",
       "source_sha256": "af850c20316b436601bb55edd5d09f99de36e1aa28c2388e2239ee6c0202dd8d",
-      "socle_sha256": "16c7c8172590e0e8eed2f954ee8103df105d6e1a8afe35e22ce638a18a352963",
+      "socle_sha256": "0bb9cb724136cb3a22c90131c7870873587389b0513757e6f8913c7ba7ec34b9",
       "collecte": "2026-07-05T11:02:55.441773+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1178,7 +1178,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SWZ_tariffs.json",
       "source_sha256": "48c38a592819d2c09a86e2ca0c068b8f42bae77bfed21718c4aa27a3cf1049c0",
-      "socle_sha256": "5d4a233374d5ee8c9cdd710f514489ef7b2004439cbd67b65e2c33e2b3fac41b",
+      "socle_sha256": "bd7d8c736778f6bec9e3fe10d324f23c93f260cd298f813db6386bb9cc8da5cd",
       "collecte": "2026-08-29T13:26:25.757181",
       "etat": "PARTIEL",
       "familles": [
@@ -1203,7 +1203,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SYC_tariffs.json",
       "source_sha256": "9c39470145e0ecc574cb8740e2f09d2e81748c4a8e4d07e97768a3bc1ad82c45",
-      "socle_sha256": "8ab4dfef5c8e6162aa476701bca9392d781b5d73ac3293270ab75d9fee13daa4",
+      "socle_sha256": "4e6ffca2be4ad88005757de0b09eaf8684380d49fded7ae2243309dc0e2c30af",
       "collecte": "2026-07-05T10:11:23.264941+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1229,7 +1229,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TCD_tariffs.json",
       "source_sha256": "a0ca51a4030c9aada3d45e5e06548a5c5cda59643c42030eb3c4ee621fdd279e",
-      "socle_sha256": "00bc2cb50bce7669748d7bb75f30b45e8ac1cb574469d5cc6525c70420880dff",
+      "socle_sha256": "3d05506753bbc1c2524bc129341c5de3deb8b6049dbcc54e91aafdf933b7f61a",
       "collecte": "2026-02-19T22:39:53.393846",
       "etat": "COMPLET",
       "familles": [
@@ -1257,7 +1257,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TGO_tariffs.json",
       "source_sha256": "5a2f5e06f1ca8e20a8a04fbe05c8d5eaa01e2f534cbb08f6c64a082e8e7d9bce",
-      "socle_sha256": "8300046335e1943b4f9348c6131711c0d096903c7008d01b1b95c529ab8ce119",
+      "socle_sha256": "f0b03bf6e5e59e9dec92f2b14658fdac4ef2f4737cd4924a4d96335291c714ee",
       "collecte": "2026-02-19T22:39:49.671861",
       "etat": "COMPLET",
       "familles": [
@@ -1284,7 +1284,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TUN_tariffs.json",
       "source_sha256": "ad61846833caf0560bdb3f8e4aa85f40160a4e7b6fb621e6479ff239231e2de4",
-      "socle_sha256": "45f6ff421eb57c3b3558307cdb3e36d18e41c210efd5b70d4caaea0136ea083e",
+      "socle_sha256": "092061b65ca57da659c5c85d6fb8581641cbc076c2113148455a95a5a3207095",
       "collecte": "2026-08-30",
       "etat": "COMPLET",
       "familles": [
@@ -1313,7 +1313,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TZA_tariffs.json",
       "source_sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6",
-      "socle_sha256": "c87d12cb5c3c5caa8ffa16d29857c9e3f991cedc2d4c765938fb44cf4efdb340",
+      "socle_sha256": "0e249d2b5d82a35cbd090d419823d05f7219ca891f0d0106309cfe351e0a8400",
       "collecte": "2026-02-18T10:54:34.697265",
       "etat": "COMPLET",
       "familles": [
@@ -1340,7 +1340,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/UGA_tariffs.json",
       "source_sha256": "c2fd9f0d4c8adb545458d5ba6c7bfbec4a93fa3695f5461beddf7f440430f2d4",
-      "socle_sha256": "9e148e455667fa874220e4a688635fce03b69d3c4c3660cf81de711c8868f4a7",
+      "socle_sha256": "ef406cc4cd79c58181a8b5f38cd6ce662b992965a603e7b0802bb8790b076cc3",
       "collecte": "2026-02-18T10:54:35.212682",
       "etat": "COMPLET",
       "familles": [
@@ -1368,7 +1368,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
       "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "aca989a1411ea276ef3ca0a70521bcd35dd866d970f043942e42e22aacafac88",
+      "socle_sha256": "f15bb86b17594053bfb77b29c1659952367a007354b397aa16f8e150affeb1ea",
       "collecte": "2026-08-29T13:26:21.816037",
       "etat": "PARTIEL",
       "familles": [
@@ -1393,7 +1393,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZMB_tariffs.json",
       "source_sha256": "836adcabd867967cca767ec470ac7df2ef6b0da454df62fdb5a8dc8eff9baefa",
-      "socle_sha256": "97b6ea517ce862889fd3038cc2b64a0a1c9ee49b3fdc1b963dfc64f6b66ec3b9",
+      "socle_sha256": "92637ade4bff7115fcabe2ba36fdc492fee46a0652a48c99cb9cb492b7a00a39",
       "collecte": "2026-07-05T10:03:54.070404+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1419,7 +1419,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZWE_tariffs.json",
       "source_sha256": "5d211c12549ba81b50b206c1bfcc11765d49b650e1dc80cead18ad480dc82fc6",
-      "socle_sha256": "271412d949f0eae405ead1e89c1ca77219f728deed2cef7ecb2e488f6f18b299",
+      "socle_sha256": "27fe2c55a2ca1ccdd0d96022278249de4165f94698f14a5dc6441abdad61cea1",
       "collecte": "2026-07-05T10:04:02.504229+00:00",
       "etat": "COMPLET",
       "familles": [

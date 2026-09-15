@@ -286,6 +286,39 @@ def lire_taux(valeur):
     return None
 
 
+#: Sous-unités monétaires rencontrées dans les tarifs. Un droit publié en
+#: centimes vaut un centième de l'unité : lire « 8c/kg » comme « 8 par kg »
+#: surestime le droit d'un facteur cent.
+SOUS_UNITES = {"c": 100, "cent": 100, "cents": 100, "ct": 100}
+
+_SPECIFIQUE = re.compile(
+    r"^\s*(?P<montant>-?\d+(?:[.,]\d+)?)\s*(?P<monnaie>[A-Za-zÀ-ÿ]*)\s*(?:/\s*(?P<quantite>[A-Za-zÀ-ÿ0-9]+))?",
+)
+
+
+def lire_specifique(expression):
+    """Décomposer « 8c/kg », « 0.8 dinars », « 136c/li » en montant et unités.
+
+    Retourne ``None`` si l'expression n'est pas lisible : un droit spécifique
+    qu'on ne sait pas lire reste indisponible, il n'est jamais approché.
+    """
+    if not expression:
+        return None
+    m = _SPECIFIQUE.match(str(expression))
+    if not m:
+        return None
+    montant = float(m.group("montant").replace(",", "."))
+    monnaie = (m.group("monnaie") or "").lower()
+    diviseur = SOUS_UNITES.get(monnaie)
+    return {
+        "montant": montant / diviseur if diviseur else montant,
+        "unite_monetaire": "unite_principale" if diviseur else (monnaie or None),
+        "sous_unite_source": monnaie if diviseur else None,
+        "unite_quantite": (m.group("quantite") or "").lower() or None,
+        "brut": str(expression),
+    }
+
+
 def nettoyer_code(*candidats) -> str:
     for c in candidats:
         if c is None:
@@ -538,8 +571,19 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 compteurs["assiettes_table"] += 1
             else:
                 compteurs["assiettes_indisponibles"] += 1
-            if d["specifique"]:
-                d["assiette"] = d["assiette"] or "xQTE"
+            if d["specifique"] and d["taux"] is None:
+                # Un droit spécifique se liquide à la quantité, jamais sur la
+                # valeur. Si l'assiette héritée dit « CIF », elle décrit le
+                # droit ad valorem de la ligne, pas celui-ci : la laisser
+                # ferait lire « 8c/kg » comme « 8 % ».
+                d["assiette"] = "xQTE"
+                d["assiette_origine"] = "droit_specifique"
+                d["plafond"] = None
+                d["specifique"] = lire_specifique(d["specifique"]) or {
+                    "brut": str(d["specifique"]),
+                    "montant": None,
+                    "motif": "expression non lisible",
+                }
                 compteurs["droits_specifiques"] += 1
             if d["taux"] is None and not d["specifique"]:
                 compteurs["taux_indisponibles"] += 1

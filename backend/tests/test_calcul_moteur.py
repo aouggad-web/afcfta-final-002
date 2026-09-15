@@ -1,0 +1,269 @@
+"""
+Moteur de liquidation — chantier L2.
+
+Ces tests protègent trois promesses : les cinq primitives d'assiette liquident
+ce que la douane liquide, un élément manquant ne devient jamais zéro, et la
+préférence ZLECAf ne réduit que le droit de douane.
+"""
+
+import pytest
+
+from services.calcul import (
+    CALCULE,
+    COMPLET,
+    INDISPONIBLE,
+    MANQUE_ASSIETTE,
+    MANQUE_CHANGE,
+    MANQUE_QUANTITE,
+    MANQUE_TAUX,
+    PARTIEL,
+    calculer,
+)
+
+
+def position(*droits, **extra):
+    base = {"designation": "essai", "droits": list(droits)}
+    base.update(extra)
+    return base
+
+
+def droit(code, taux=None, assiette="CIF", famille="autre", **extra):
+    d = {"code": code, "libelle": code, "famille": famille, "assiette": assiette}
+    if taux is not None:
+        d["taux"] = taux
+    d.update(extra)
+    return d
+
+
+def lignes(resultat, regime="npf"):
+    return {ligne["code"]: ligne for ligne in resultat[regime]["lignes"]}
+
+
+# ── Les cinq primitives ───────────────────────────────────────────────────────
+def test_cif():
+    r = calculer(position(droit("DD", 20, "CIF", "droit")), 1000)
+    assert lignes(r)["DD"]["montant"] == 200.0
+    assert r["npf"]["total_droits"] == 200.0
+    assert r["npf"]["taux_effectif_pct"] == 20.0
+
+
+def test_cif_plus_codes_nommes():
+    """Algérie : TVA sur CIF + DAPS + DD (art. 21 CTCA)."""
+    r = calculer(
+        position(
+            droit("DAPS", 70, "CIF", "droit"),
+            droit("DD", 30, "CIF", "droit"),
+            droit("TVA", 19, "CIF+DAPS+DD", "tva"),
+        ),
+        1000,
+    )
+    assert lignes(r)["TVA"]["base"] == 2000.0  # 1000 + 700 + 300
+    assert lignes(r)["TVA"]["montant"] == 380.0
+
+
+def test_cif_plus_tous_sauf_tva():
+    """Règle d'assiette établie : la valeur augmentée de tous les prélèvements
+    d'entrée, la TVA seule exclue. Une énumération se périmerait ; pas elle."""
+    r = calculer(
+        position(
+            droit("DD", 0, "CIF", "droit"),
+            droit("IDF", 3.5, "CIF", "redevance"),
+            droit("RDL", 2, "CIF", "redevance"),
+            droit("TVA", 16, "CIF+TOUS_SAUF_TVA", "tva"),
+        ),
+        1000,
+    )
+    assert lignes(r)["TVA"]["base"] == 1055.0
+    assert lignes(r)["TVA"]["montant"] == 168.8
+
+
+def test_un_prelevement_non_classe_entre_dans_l_assiette_de_la_tva():
+    """« autre » est liquidé avant la TVA : l'exclure serait une omission
+    silencieuse, donc un montant faux qui a l'air juste."""
+    r = calculer(
+        position(
+            droit("DD", 10, "CIF", "droit"),
+            droit("XYZ", 5, "CIF", "autre"),
+            droit("TVA", 20, "CIF+TOUS_SAUF_TVA", "tva"),
+        ),
+        1000,
+    )
+    assert lignes(r)["TVA"]["base"] == 1150.0
+
+
+def test_somme_sans_la_valeur():
+    """Tunisie : la redevance de prestation douanière s'assied sur la somme des
+    droits et taxes, pas sur la valeur."""
+    r = calculer(
+        position(
+            droit("DD", 10, "CIF", "droit"),
+            droit("RPD", 3, "SOMME(TOUS_SAUF_SOI)", "redevance"),
+        ),
+        1000,
+    )
+    assert lignes(r)["RPD"]["base"] == 100.0
+    assert lignes(r)["RPD"]["montant"] == 3.0
+
+
+def test_pourcentage_du_montant_du_droit():
+    """CEMAC : les centimes additionnels communaux portent sur le montant du
+    droit de douane, pas sur la valeur."""
+    r = calculer(
+        position(droit("DD", 20, "CIF", "droit"), droit("CAC", 25, "%DD", "communautaire")),
+        1000,
+    )
+    assert lignes(r)["CAC"]["base"] == 200.0
+    assert lignes(r)["CAC"]["montant"] == 50.0
+
+
+def test_droit_specifique_a_la_quantite():
+    d = droit(
+        "DD",
+        None,
+        "xQTE",
+        "droit",
+        specifique={"montant": 0.08, "unite_quantite": "kg", "brut": "8c/kg"},
+    )
+    r = calculer(position(d), 1000, quantite=500)
+    ligne = lignes(r)["DD"]
+    assert ligne["montant"] == 40.0
+    assert ligne["unite_quantite"] == "kg"
+
+
+def test_un_droit_en_centimes_n_est_pas_lu_comme_une_unite():
+    """« 8c/kg » vaut 0,08 par kg. Le lire « 8 » multiplierait par cent le
+    droit de toute la SACU."""
+    d = droit("DD", None, "CIF", "droit", specifique="8c/kg")  # forme héritée
+    r = calculer(position(d), 1000, quantite=500)
+    assert (
+        lignes(r)["DD"]["statut"] == MANQUE_TAUX
+    ), "un spécifique non décomposé par le socle est refusé, jamais deviné"
+
+
+def test_un_droit_specifique_ne_se_liquide_jamais_sur_la_valeur():
+    """Même si l'assiette héritée dit « CIF » : 8c/kg n'est pas 8 %."""
+    d = droit("DD", None, "CIF", "droit", specifique={"montant": 0.08, "brut": "8c/kg"})
+    r = calculer(position(d), 1000, quantite=500)
+    assert lignes(r)["DD"]["assiette"] == "xQTE"
+    assert lignes(r)["DD"]["montant"] == 40.0
+
+
+# ── Le modificateur plafond ───────────────────────────────────────────────────
+def test_plafond_borne_l_assiette():
+    d = droit("TCI", 10, "CIF", "communautaire", plafond={"montant": 500.0, "devise": None})
+    r = calculer(position(d), 1000)
+    assert lignes(r)["TCI"]["base"] == 500.0
+    assert lignes(r)["TCI"]["montant"] == 50.0
+
+
+def test_un_plafond_en_devise_etrangere_exige_une_conversion():
+    d = droit("TCI", 10, "CIF", "communautaire", plafond={"montant": 15000.0, "devise": "XAF"})
+    r = calculer(position(d), 1000)
+    assert lignes(r)["TCI"]["statut"] == MANQUE_CHANGE
+    assert r["npf"]["etat"] == INDISPONIBLE
+
+    r2 = calculer(position(d), 1000, taux_de_change=0.05)
+    assert lignes(r2)["TCI"]["base"] == 750.0  # 15 000 XAF × 0,05
+
+
+# ── Rien n'est fabriqué ───────────────────────────────────────────────────────
+def test_un_taux_absent_ne_vaut_pas_zero():
+    r = calculer(position(droit("DD", None, "CIF", "droit")), 1000)
+    ligne = lignes(r)["DD"]
+    assert ligne["statut"] == MANQUE_TAUX
+    assert ligne["montant"] is None
+
+
+def test_une_assiette_absente_ne_vaut_pas_cif():
+    r = calculer(position(droit("DD", 20, None, "droit")), 1000)
+    assert lignes(r)["DD"]["statut"] == MANQUE_ASSIETTE
+    assert lignes(r)["DD"]["montant"] is None
+
+
+def test_une_quantite_manquante_est_nommee():
+    d = droit("DSV", None, "xQTE", "redevance", specifique={"montant": 0.1, "brut": "0.1 dinars"})
+    r = calculer(position(d), 1000)
+    assert lignes(r)["DSV"]["statut"] == MANQUE_QUANTITE
+    assert r["npf"]["manques"] == [{"code": "DSV", "motif": MANQUE_QUANTITE}]
+
+
+def test_un_total_incomplet_se_declare_partiel():
+    r = calculer(
+        position(
+            droit("DD", 20, "CIF", "droit"),
+            droit("EXC", None, "CIF", "accise"),
+        ),
+        1000,
+    )
+    assert r["npf"]["etat"] == PARTIEL
+    assert r["npf"]["total_droits"] == 200.0
+    assert [m["code"] for m in r["npf"]["manques"]] == ["EXC"]
+
+
+def test_rien_de_calculable_donne_indisponible():
+    r = calculer(position(droit("DD", None, None, "droit")), 1000)
+    assert r["npf"]["etat"] == INDISPONIBLE
+    assert r["npf"]["total_droits"] == 0
+
+
+def test_tout_calcule_donne_complet():
+    r = calculer(position(droit("DD", 20, "CIF", "droit")), 1000)
+    assert r["npf"]["etat"] == COMPLET
+    assert all(ligne["statut"] == CALCULE for ligne in r["npf"]["lignes"])
+
+
+def test_une_valeur_negative_est_refusee():
+    with pytest.raises(ValueError):
+        calculer(position(droit("DD", 20)), -1)
+
+
+# ── La préférence ne réduit que le droit de douane ────────────────────────────
+def test_la_preference_ne_reduit_que_le_droit_de_douane():
+    p = position(
+        droit("DD", 20, "CIF", "droit"),
+        droit("RS", 1, "CIF", "communautaire"),
+        droit("TVA", 18, "CIF+TOUS_SAUF_TVA", "tva"),
+    )
+    r = calculer(p, 1000, preference_dd_pct=0)
+
+    npf, pref = lignes(r, "npf"), lignes(r, "preference")
+    assert npf["DD"]["montant"] == 200.0 and pref["DD"]["montant"] == 0.0
+    # Les autres prélèvements restent dus — c'est ce que liquide la douane.
+    assert pref["RS"]["montant"] == 10.0
+    # …et la TVA suit mécaniquement l'assiette réduite, sans être « remisée ».
+    assert npf["TVA"]["base"] == 1210.0
+    assert pref["TVA"]["base"] == 1010.0
+    assert pref["TVA"]["taux_pct"] == 18
+
+
+def test_la_preference_conserve_le_taux_npf_pour_comparaison():
+    r = calculer(position(droit("DD", 20, "CIF", "droit")), 1000, preference_dd_pct=5)
+    ligne = lignes(r, "preference")["DD"]
+    assert ligne["taux_npf_pct"] == 20
+    assert ligne["taux_pct"] == 5
+    assert ligne["regime_applique"] == "preference"
+    assert r["economie"] == 150.0
+
+
+def test_sans_preference_autorisee_aucun_regime_preferentiel_n_est_rendu():
+    """Le moteur applique un taux ; il ne décide pas du droit à la préférence."""
+    r = calculer(position(droit("DD", 20, "CIF", "droit")), 1000)
+    assert "preference" not in r
+    assert "economie" not in r
+
+
+# ── La provenance suit le calcul ──────────────────────────────────────────────
+def test_les_marqueurs_de_provenance_atteignent_le_resultat():
+    d = droit(
+        "TVA",
+        14,
+        "CIF",
+        "tva",
+        source="PwC Worldwide Tax Summaries",
+        note="Taux national standard, non vérifié position par position",
+        classification_source="estimation_ia",
+    )
+    ligne = lignes(calculer(position(d), 1000))["TVA"]
+    assert ligne["source"] == "PwC Worldwide Tax Summaries"
+    assert ligne["note"].startswith("Taux national standard")
+    assert ligne["classification_source"] == "estimation_ia"
