@@ -139,3 +139,43 @@ def test_le_plancher_vaut_pour_tout_chemin_present_et_a_venir():
     for destination, origine, position, npf, _ in CAS_MESURES:
         contexte = resolve_zlecaf_context(destination, origine, position, npf, None)
         assert contexte["plancher_npf"] is not None, destination
+
+
+def test_le_plancher_survit_jusqu_aux_contrats_de_reponse_publics():
+    """Une correction que l'API n'expose pas n'est pas opposable.
+
+    Le champ a d'abord existé dans le seul résolveur privé : la note libre
+    passait, la donnée structurée non. Un client d'API pouvait donc voir un
+    taux corrigé sans aucun moyen de lire par programme lequel avait été
+    écarté ni pourquoi. On tient les deux chemins publics.
+    """
+    from models import TariffCalculationResponse
+    from services.authentic_tariff_service import calculate_import_taxes
+
+    resultat = calculate_import_taxes(
+        "DZA", "0207121000", 100000.0, apply_zlecaf=True, origin_country="EGY"
+    )
+    plancher = resultat["plancher_npf"]
+    assert plancher is not None, "le service public perd le plancher"
+    assert plancher["taux_preferentiel_ecarte_pct"] == 24.0
+    assert plancher["taux_retenu_pct"] == 5.0
+
+    # Et le modèle de réponse de l'API le porte, optionnel et non requis :
+    # une position ordinaire ne doit pas être obligée de le renseigner.
+    champ = TariffCalculationResponse.model_fields.get("plancher_npf")
+    assert champ is not None, "le contrat d'API ne porte pas le champ"
+    assert not champ.is_required(), "le plancher est l'exception, pas la règle"
+
+
+def test_une_position_ordinaire_ne_porte_aucun_plancher():
+    """Le champ doit rester vide dans le cas général, pas « présent à vide ».
+
+    Sans cette borne, un client d'API ne pourrait pas distinguer « aucun taux
+    n'a été écarté » d'un plancher mal renseigné.
+    """
+    from services.authentic_tariff_service import calculate_import_taxes
+
+    resultat = calculate_import_taxes(
+        "DZA", "2901101000", 100000.0, apply_zlecaf=True, origin_country="EGY"
+    )
+    assert resultat["plancher_npf"] is None
