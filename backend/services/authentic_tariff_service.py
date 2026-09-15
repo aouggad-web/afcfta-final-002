@@ -1544,8 +1544,12 @@ def _resolve_zlecaf_context(
                 f"ZLECAf non encore activé pour {origin} à l'import en Algérie "
                 f"(circulaire DGD 482/2024) — taux NPF appliqué"
             )
-        _r, _src = compute_dza_zlecaf_rate(hs_code_clean, origin, (dd_rate_pct or 0) / 100.0)
-        eff_dd = round(_r * 100.0, 6) if _r is not None else dd_rate_pct
+        # Pourcentages de bout en bout : le taux publié se transporte tel quel,
+        # sans aller-retour vers une fraction. La conversion qui figurait ici
+        # n'altérait aucun résultat, mais elle obligeait à convertir deux fois
+        # et faisait d'un oubli une erreur d'un facteur 100.
+        _r, _src = compute_dza_zlecaf_rate(hs_code_clean, origin, dd_rate_pct or 0)
+        eff_dd = round(_r, 6) if _r is not None else dd_rate_pct
         _daps = daps_exempt(hs_code_clean, origin)
         applied = (eff_dd is not None and eff_dd < (dd_rate_pct or 0)) or _daps
         return _result(
