@@ -22,15 +22,28 @@ titre de la réciprocité. Le sens du flux change donc le droit.
 | État | Couples | Sens |
 |---|---:|---|
 | `ACCORDEE` | 109 | L'acte national de la destination nomme cette origine parmi celles qui bénéficient du tarif ZLECAf. |
-| `DESTINATION_NON_ETABLIE` | 2309 | Aucune liste d'origines admises n'a été vérifiée pour cette destination. Absence de recherche, PAS un refus de préférence. |
+| `ADMISSION_PAR_REGLE` | 96 | La destination admet les origines par un CRITÈRE et non par une liste nominative. La règle est citée ; elle n'est pas résolue ici, car ses termes sont ambigus et la résoudre par supposition accorderait une préférence que personne n'a constatée. |
+| `DESTINATION_NON_ETABLIE` | 2213 | Aucune liste d'origines admises n'a été vérifiée pour cette destination. Absence de recherche, PAS un refus de préférence. |
 | `MEME_PAYS` | 54 | Origine et destination confondues. |
 | `NON_ACCORDEE` | 179 | La destination publie une liste nominative vérifiée et cette origine n'y figure pas : la préférence ne lui est pas accordée à ce jour. |
 | `ORIGINE_NON_RATIFIANTE` | 265 | L'origine n'a pas déposé ses instruments de ratification : aucune préférence ZLECAf ne peut lui être accordée, quelle que soit la destination. |
 
-Les 2309 couples `DESTINATION_NON_ETABLIE` sont le déficit d'information que
+Les 2213 couples `DESTINATION_NON_ETABLIE` sont le déficit d'information que
 ce travail vise à combler. Ils ne signifient **pas** qu'il n'y a pas de préférence :
 ils signifient que personne ne l'a vérifié. Les afficher comme tels, plutôt que de les
 remplir par défaut, est le seul traitement honnête.
+
+## Les destinations qui admettent par règle, non par liste
+
+Une troisième forme, qu'il serait faux de confondre avec les deux autres : la
+destination énonce un **critère** sans nommer personne. L'information est utile à
+un opérateur, mais elle n'est pas résolue ici — la résoudre par supposition
+accorderait une préférence que personne n'a constatée.
+
+| Destination | Règle énoncée | Fondement | Pourquoi elle reste non résolue |
+|---|---|---|---|
+| **Ghana** (GHA) | « Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers. » | AfCFTA National Coordination Office du Ghana (afcftagh.org) | « State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays. |
+| **Nigeria** (NGA) | « Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires. » | communiqués de l'Union africaine et de l'administration nigériane | La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation. |
 
 ## Les 6 destinations établies
 
@@ -60,7 +73,7 @@ Lecture : la **ligne** est le pays d'importation, la **colonne** le pays d'origi
 | **Tunisie** | ❌ | ❌ | ✅ | ❌ | — | ✅ |
 | **Afrique du Sud** | ✅ | ✅ | ✅ | ✅ | ✅ | — |
 
-✅ préférence accordée · ❌ origine absente de la liste vérifiée · — même pays
+✅ préférence accordée · ❌ origine absente de la liste vérifiée · ◐ admission par règle, non résolue · · non établi · — même pays
 
 ## Ce que le croisement révèle
 

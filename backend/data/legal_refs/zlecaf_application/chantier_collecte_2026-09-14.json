@@ -60,7 +60,17 @@
     "Federal Government Printer / Official Gazette du Nigeria.",
     "Nigeria Customs Service — circulaire d'application aux commandements.",
     "Nigerian Office for Trade Negotiations (NOTN)."
-   ]
+   ],
+   "progres_2026-09-15": {
+    "recherche_menee": "Les cinq gazettes nigériennes de 2025 présentes dans l'archive gazettes.africa ont été téléchargées et lues intégralement (27, 196, 9, 89 et 115 pages) : aucune ne mentionne l'AfCFTA, la ZLECAf ni une liste de concessions tarifaires. La gazette d'avril 2025 n'y figure pas.",
+    "portee_de_ce_resultat": "Cette absence ne vaut PAS constat : cinq numéros pour une année entière est une couverture manifestement lacunaire pour le Nigeria. Le document reste à obtenir ailleurs."
+   },
+   "regle_d_admission": {
+    "enonce": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "source": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "ambiguite": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
+   }
   },
   "ZMB": {
    "statut": "NOTIFICATION_PARTENAIRES_REQUISE",
@@ -105,7 +115,23 @@
     "Ghana Gazette / Parliament of Ghana — instruments législatifs 2023-2025.",
     "Ghana Revenue Authority, Customs Division — practice notes.",
     "AfCFTA National Coordination Office (afcftagh.org)."
-   ]
+   ],
+   "progres_2026-09-15": {
+    "recherche_menee": "Archive gazettes.africa : le Ghana n'y porte aucune gazette pour 2022, 2023, 2025 ni 2026, et seulement 14 pour 2024. La couverture est trop lacunaire pour qu'une absence y vaille constat. Bureau national ZLECAf (afcftagh.org) interrogé : il ne nomme AUCUN instrument.",
+    "admission_par_regle": {
+     "verbatim": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+     "source": "https://afcftagh.org/faq/ — AfCFTA National Coordination Office du Ghana",
+     "nature": "Le Ghana énonce une RÈGLE d'admission — les États parties — et non une liste nominative. C'est une troisième forme, distincte de la liste marocaine et de l'absence pure.",
+     "ce_qui_reste_indetermine": "« State Parties » n'est pas univoque : s'agit-il des 50 pays ayant ratifié, ou des seuls ayant gazetté leur barème et accordant la réciprocité au Ghana ? L'écart entre les deux lectures est de plus de vingt pays. La règle ne peut donc pas être résolue en liste sans l'acte national lui-même."
+    },
+    "manque_inchange": "L'acte national ghanéen, seul capable de lever l'ambiguïté de « State Parties »."
+   },
+   "regle_d_admission": {
+    "enonce": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "source": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "ambiguite": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
+   }
   },
   "CMR": {
    "statut": "OFFRE_SEULE",
@@ -152,5 +178,38 @@
   "mode_d_acces": "Les pages de document sont protégées par un défi Cloudflare et refusent le client (HTTP 403). Les PDF de l'archive, eux, répondent directement : https://archive.gazettes.africa/archive/<iso2>/<annee>/<iso2>-government-gazette-dated-<AAAA-MM-JJ>-no-<numero>.pdf . Le numéro se lit sur la page annuelle https://gazettes.africa/gazettes/<iso2>/<annee>, dont les liens suivent le motif /akn/<iso2>/officialGazette/government-gazette/<date>/<numero>/eng@<date>.",
   "limite_constatee": "L'archive ne porte pas systématiquement les suppléments, où figurent les textes des Statutory Instruments : pour la Zambie, l'avis est présent et le supplément absent.",
   "avertissement": "Le site signale qu'un incendie a détruit des centaines de milliers de journaux officiels africains. Ce qui est atteignable aujourd'hui peut ne plus l'être : archiver au moment où l'on trouve, plutôt que de se contenter d'une URL."
+ },
+ "categories_d_admission": {
+  "note": "La collecte fait apparaître trois formes d'admission, qu'il serait faux de confondre. Les distinguer change ce qu'un opérateur peut faire de l'information.",
+  "liste_nominative": {
+   "definition": "L'acte national énumère les pays admis, par leur nom.",
+   "pays": [
+    "MAR",
+    "EGY",
+    "DZA",
+    "KEN",
+    "TUN",
+    "ZAF"
+   ],
+   "utilisable": "oui — la réponse est déterminée pour chaque origine."
+  },
+  "regle_sans_liste": {
+   "definition": "L'acte ou la source officielle énonce un critère — « les États parties », « ceux qui ont gazetté et accordent la réciprocité » — sans nommer personne.",
+   "pays": [
+    "GHA",
+    "NGA"
+   ],
+   "utilisable": "partiellement — la règle est connue mais ses termes sont ambigus, et la résoudre demande un fait sur l'origine (a-t-elle gazetté ? accorde-t-elle la réciprocité ?) que la source ne fournit pas. À ne jamais résoudre par supposition."
+  },
+  "rien_de_publie": {
+   "definition": "Aucune liste, aucune règle d'admission identifiée.",
+   "pays": [
+    "CMR",
+    "RWA",
+    "ZMB",
+    "ETH"
+   ],
+   "precision": "L'Éthiopie est le cas le plus net : son règlement délègue explicitement la liste à un avis ministériel, donc la règle est « ce que le ministère notifiera » — ce qui ne s'applique à personne tant que l'avis n'est pas produit."
+  }
  }
 }

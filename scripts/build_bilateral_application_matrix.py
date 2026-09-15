@@ -41,8 +41,19 @@ SORTIE_MD = RACINE / "docs" / "ETAT_APPLICATION_BILATERAL.md"
 CHANTIER = FICHES / "chantier_collecte_2026-09-14.json"
 
 NOMS = {
-    "DZA": "Algérie", "EGY": "Égypte", "KEN": "Kenya",
-    "MAR": "Maroc", "TUN": "Tunisie", "ZAF": "Afrique du Sud",
+    "CIV": "Côte d'Ivoire",
+    "CMR": "Cameroun",
+    "DZA": "Algérie",
+    "EGY": "Égypte",
+    "ETH": "Éthiopie",
+    "GHA": "Ghana",
+    "KEN": "Kenya",
+    "MAR": "Maroc",
+    "NGA": "Nigeria",
+    "RWA": "Rwanda",
+    "TUN": "Tunisie",
+    "ZAF": "Afrique du Sud",
+    "ZMB": "Zambie",
 }
 SYMBOLES = {
     "ACCORDEE": "✅",
@@ -50,6 +61,7 @@ SYMBOLES = {
     "MEME_PAYS": "—",
     "ORIGINE_NON_RATIFIANTE": "🚫",
     "DESTINATION_NON_ETABLIE": "·",
+    "ADMISSION_PAR_REGLE": "◐",
 }
 
 # --- États d'une case ---------------------------------------------------
@@ -58,6 +70,7 @@ NON_ACCORDEE = "NON_ACCORDEE"
 ORIGINE_NON_RATIFIANTE = "ORIGINE_NON_RATIFIANTE"
 DESTINATION_NON_ETABLIE = "DESTINATION_NON_ETABLIE"
 MEME_PAYS = "MEME_PAYS"
+ADMISSION_PAR_REGLE = "ADMISSION_PAR_REGLE"
 
 LEGENDE = {
     ACCORDEE: (
@@ -78,6 +91,12 @@ LEGENDE = {
         "destination. Absence de recherche, PAS un refus de préférence."
     ),
     MEME_PAYS: "Origine et destination confondues.",
+    ADMISSION_PAR_REGLE: (
+        "La destination admet les origines par un CRITÈRE et non par une liste "
+        "nominative. La règle est citée ; elle n'est pas résolue ici, car ses "
+        "termes sont ambigus et la résoudre par supposition accorderait une "
+        "préférence que personne n'a constatée."
+    ),
 }
 
 
@@ -189,6 +208,15 @@ def construire() -> dict:
     tous = sorted(etat["pays"])
     listes = listes_verifiees()
 
+    # Destinations qui admettent par règle plutôt que par liste. Lues dans le
+    # chantier, jamais recopiées : c'est lui qui porte l'énoncé et sa source.
+    chantier = json.loads(CHANTIER.read_text(encoding="utf-8")) if CHANTIER.exists() else {}
+    regles_d_admission = {
+        iso: bloc["regle_d_admission"]
+        for iso, bloc in (chantier.get("pays") or {}).items()
+        if bloc.get("regle_d_admission") and iso not in listes
+    }
+
     # Une destination peut nommer, dans son acte, une origine que le registre
     # continental dit non ratifiante. Les deux sont primaires : le silence
     # serait le pire traitement. La ratification prime pour la case — aucune
@@ -225,7 +253,20 @@ def construire() -> dict:
                 ligne[origine] = case
                 continue
             if liste is None:
-                ligne[origine] = {"etat": DESTINATION_NON_ETABLIE}
+                # Troisième forme d'admission : un critère, sans liste. Dire
+                # « non établi » perdrait une information que l'opérateur peut
+                # utiliser ; dire « accordée » inventerait une préférence.
+                regle = regles_d_admission.get(destination)
+                if regle:
+                    ligne[origine] = {
+                        "etat": ADMISSION_PAR_REGLE,
+                        "regle": regle["enonce"],
+                        "fondement_de_la_regle": regle["source"],
+                        "niveau_de_preuve": regle["niveau_de_preuve"],
+                        "non_resolue_parce_que": regle["ambiguite"],
+                    }
+                else:
+                    ligne[origine] = {"etat": DESTINATION_NON_ETABLIE}
                 continue
             if origine in liste["origines"]:
                 case = {"etat": ACCORDEE, "fondement": liste["instrument"]}
@@ -295,7 +336,18 @@ def construire() -> dict:
             }
             for iso, liste in sorted(listes.items())
         },
-        "destinations_non_etablies": sorted(set(tous) - set(listes)),
+        "destinations_par_regle": {
+            iso: {
+                "regle": regle["enonce"],
+                "fondement": regle["source"],
+                "niveau_de_preuve": regle["niveau_de_preuve"],
+                "non_resolue_parce_que": regle["ambiguite"],
+            }
+            for iso, regle in sorted(regles_d_admission.items())
+        },
+        "destinations_non_etablies": sorted(
+            set(tous) - set(listes) - set(regles_d_admission)
+        ),
         "repartition_des_couples": dict(sorted(compte.items())),
         "couverture_pct": round(
             100 * sum(v for k, v in compte.items() if k in (ACCORDEE, NON_ACCORDEE)) / total, 2
@@ -358,6 +410,20 @@ def rendre_markdown(r: dict) -> str:
     A("ils signifient que personne ne l'a vérifié. Les afficher comme tels, plutôt que de les")
     A("remplir par défaut, est le seul traitement honnête.\n")
 
+    par_regle = r.get("destinations_par_regle") or {}
+    if par_regle:
+        A("## Les destinations qui admettent par règle, non par liste\n")
+        A("Une troisième forme, qu'il serait faux de confondre avec les deux autres : la")
+        A("destination énonce un **critère** sans nommer personne. L'information est utile à")
+        A("un opérateur, mais elle n'est pas résolue ici — la résoudre par supposition")
+        A("accorderait une préférence que personne n'a constatée.\n")
+        A("| Destination | Règle énoncée | Fondement | Pourquoi elle reste non résolue |")
+        A("|---|---|---|---|")
+        for iso, bloc in par_regle.items():
+            A(f"| **{NOMS.get(iso, iso)}** ({iso}) | « {bloc['regle']} » | "
+              f"{bloc['fondement']} | {bloc['non_resolue_parce_que']} |")
+        A("")
+
     A(f"## Les {len(etablies)} destinations établies\n")
     A("| Destination | Origines admises | Instrument | Niveau de preuve |\n|---|---:|---|---|")
     for iso in etablies:
@@ -384,7 +450,8 @@ def rendre_markdown(r: dict) -> str:
             cases.append(texte)
         A(f"| **{NOMS.get(dest, dest)}** | " + " | ".join(cases) + " |")
     A("")
-    A("✅ préférence accordée · ❌ origine absente de la liste vérifiée · — même pays\n")
+    A("✅ préférence accordée · ❌ origine absente de la liste vérifiée · "
+      "◐ admission par règle, non résolue · · non établi · — même pays\n")
 
     A("## Ce que le croisement révèle\n")
     confirmees = r["reciprocite"]["confirmees"]

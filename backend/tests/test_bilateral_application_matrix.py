@@ -108,6 +108,48 @@ def test_une_destination_non_etablie_n_est_jamais_un_refus(rapport):
         )
 
 
+def test_une_regle_d_admission_n_accorde_jamais_de_preference(rapport):
+    """La troisième forme d'admission, et le piège qu'elle tend.
+
+    Le Ghana écrit « only imports from State Parties will qualify », le Nigeria
+    énonce une réciprocité avec les États ayant gazetté. Ce sont des CRITÈRES,
+    pas des listes. Les résoudre par supposition — en lisant « State Parties »
+    comme les cinquante ratifiants, par exemple — accorderait une préférence à
+    plus de vingt pays que personne n'a constatés admis.
+
+    L'état ADMISSION_PAR_REGLE existe pour porter cette information sans
+    l'exploiter. Il ne doit donc jamais se confondre avec ACCORDEE, et doit
+    toujours citer la règle et dire pourquoi elle n'est pas résolue.
+    """
+    par_regle = rapport["destinations_par_regle"]
+    assert par_regle, "aucune destination par règle : ce test ne garderait rien"
+
+    for dest, bloc in par_regle.items():
+        assert bloc["regle"], dest
+        assert bloc["fondement"], dest
+        assert bloc["non_resolue_parce_que"], (
+            f"{dest} : une règle non résolue doit dire ce qui l'empêche de l'être"
+        )
+        etats = {c["etat"] for c in rapport["couples"][dest].values()}
+        assert "ACCORDEE" not in etats, (
+            f"{dest} admet par règle : aucune case ne peut valoir préférence accordée"
+        )
+        assert "NON_ACCORDEE" not in etats, (
+            f"{dest} admet par règle : aucune case ne peut valoir refus, faute de liste"
+        )
+        assert etats <= {"ADMISSION_PAR_REGLE", "ORIGINE_NON_RATIFIANTE", "MEME_PAYS"}, (
+            f"{dest} porte un état que sa règle ne soutient pas : {etats}"
+        )
+
+    # Les trois familles sont disjointes : une destination relève d'une seule.
+    etablies_iso = set(rapport["destinations_etablies"])
+    regle_iso = set(par_regle)
+    non_etablies = set(rapport["destinations_non_etablies"])
+    assert not (etablies_iso & regle_iso)
+    assert not (etablies_iso & non_etablies)
+    assert not (regle_iso & non_etablies)
+
+
 def test_les_listes_ne_sont_pas_recopiees_dans_le_generateur(rapport):
     """Chaque liste doit provenir de sa source d'autorité.
 

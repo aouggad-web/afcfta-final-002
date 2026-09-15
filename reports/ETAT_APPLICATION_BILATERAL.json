@@ -10,7 +10,8 @@
   "NON_ACCORDEE": "La destination publie une liste nominative vérifiée et cette origine n'y figure pas : la préférence ne lui est pas accordée à ce jour.",
   "ORIGINE_NON_RATIFIANTE": "L'origine n'a pas déposé ses instruments de ratification : aucune préférence ZLECAf ne peut lui être accordée, quelle que soit la destination.",
   "DESTINATION_NON_ETABLIE": "Aucune liste d'origines admises n'a été vérifiée pour cette destination. Absence de recherche, PAS un refus de préférence.",
-  "MEME_PAYS": "Origine et destination confondues."
+  "MEME_PAYS": "Origine et destination confondues.",
+  "ADMISSION_PAR_REGLE": "La destination admet les origines par un CRITÈRE et non par une liste nominative. La règle est citée ; elle n'est pas résolue ici, car ses termes sont ambigus et la résoudre par supposition accorderait une préférence que personne n'a constatée."
  },
  "pays_couverts": 54,
  "couples_possibles": 2916,
@@ -54,6 +55,20 @@
    "reserve": "Les membres de la SACU et de la SADC sont volontairement absents : l'Afrique du Sud échange avec eux sous ces régimes, pas sous la ZLECAf. Leur absence n'est donc pas un refus de préférence."
   }
  },
+ "destinations_par_regle": {
+  "GHA": {
+   "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+   "fondement": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+   "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+   "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
+  },
+  "NGA": {
+   "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+   "fondement": "communiqués de l'Union africaine et de l'administration nigériane",
+   "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+   "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
+  }
+ },
  "destinations_non_etablies": [
   "AGO",
   "BDI",
@@ -71,7 +86,6 @@
   "ERI",
   "ETH",
   "GAB",
-  "GHA",
   "GIN",
   "GMB",
   "GNB",
@@ -87,7 +101,6 @@
   "MWI",
   "NAM",
   "NER",
-  "NGA",
   "RWA",
   "SDN",
   "SEN",
@@ -106,7 +119,8 @@
  ],
  "repartition_des_couples": {
   "ACCORDEE": 109,
-  "DESTINATION_NON_ETABLIE": 2309,
+  "ADMISSION_PAR_REGLE": 96,
+  "DESTINATION_NON_ETABLIE": 2213,
   "MEME_PAYS": 54,
   "NON_ACCORDEE": 179,
   "ORIGINE_NON_RATIFIANTE": 265
@@ -236,7 +250,17 @@
      "Federal Government Printer / Official Gazette du Nigeria.",
      "Nigeria Customs Service — circulaire d'application aux commandements.",
      "Nigerian Office for Trade Negotiations (NOTN)."
-    ]
+    ],
+    "progres_2026-09-15": {
+     "recherche_menee": "Les cinq gazettes nigériennes de 2025 présentes dans l'archive gazettes.africa ont été téléchargées et lues intégralement (27, 196, 9, 89 et 115 pages) : aucune ne mentionne l'AfCFTA, la ZLECAf ni une liste de concessions tarifaires. La gazette d'avril 2025 n'y figure pas.",
+     "portee_de_ce_resultat": "Cette absence ne vaut PAS constat : cinq numéros pour une année entière est une couverture manifestement lacunaire pour le Nigeria. Le document reste à obtenir ailleurs."
+    },
+    "regle_d_admission": {
+     "enonce": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+     "source": "communiqués de l'Union africaine et de l'administration nigériane",
+     "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+     "ambiguite": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
+    }
    },
    "ZMB": {
     "statut": "NOTIFICATION_PARTENAIRES_REQUISE",
@@ -281,7 +305,23 @@
      "Ghana Gazette / Parliament of Ghana — instruments législatifs 2023-2025.",
      "Ghana Revenue Authority, Customs Division — practice notes.",
      "AfCFTA National Coordination Office (afcftagh.org)."
-    ]
+    ],
+    "progres_2026-09-15": {
+     "recherche_menee": "Archive gazettes.africa : le Ghana n'y porte aucune gazette pour 2022, 2023, 2025 ni 2026, et seulement 14 pour 2024. La couverture est trop lacunaire pour qu'une absence y vaille constat. Bureau national ZLECAf (afcftagh.org) interrogé : il ne nomme AUCUN instrument.",
+     "admission_par_regle": {
+      "verbatim": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+      "source": "https://afcftagh.org/faq/ — AfCFTA National Coordination Office du Ghana",
+      "nature": "Le Ghana énonce une RÈGLE d'admission — les États parties — et non une liste nominative. C'est une troisième forme, distincte de la liste marocaine et de l'absence pure.",
+      "ce_qui_reste_indetermine": "« State Parties » n'est pas univoque : s'agit-il des 50 pays ayant ratifié, ou des seuls ayant gazetté leur barème et accordant la réciprocité au Ghana ? L'écart entre les deux lectures est de plus de vingt pays. La règle ne peut donc pas être résolue en liste sans l'acte national lui-même."
+     },
+     "manque_inchange": "L'acte national ghanéen, seul capable de lever l'ambiguïté de « State Parties »."
+    },
+    "regle_d_admission": {
+     "enonce": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+     "source": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+     "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+     "ambiguite": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
+    }
    },
    "CMR": {
     "statut": "OFFRE_SEULE",
@@ -328,6 +368,39 @@
    "mode_d_acces": "Les pages de document sont protégées par un défi Cloudflare et refusent le client (HTTP 403). Les PDF de l'archive, eux, répondent directement : https://archive.gazettes.africa/archive/<iso2>/<annee>/<iso2>-government-gazette-dated-<AAAA-MM-JJ>-no-<numero>.pdf . Le numéro se lit sur la page annuelle https://gazettes.africa/gazettes/<iso2>/<annee>, dont les liens suivent le motif /akn/<iso2>/officialGazette/government-gazette/<date>/<numero>/eng@<date>.",
    "limite_constatee": "L'archive ne porte pas systématiquement les suppléments, où figurent les textes des Statutory Instruments : pour la Zambie, l'avis est présent et le supplément absent.",
    "avertissement": "Le site signale qu'un incendie a détruit des centaines de milliers de journaux officiels africains. Ce qui est atteignable aujourd'hui peut ne plus l'être : archiver au moment où l'on trouve, plutôt que de se contenter d'une URL."
+  },
+  "categories_d_admission": {
+   "note": "La collecte fait apparaître trois formes d'admission, qu'il serait faux de confondre. Les distinguer change ce qu'un opérateur peut faire de l'information.",
+   "liste_nominative": {
+    "definition": "L'acte national énumère les pays admis, par leur nom.",
+    "pays": [
+     "MAR",
+     "EGY",
+     "DZA",
+     "KEN",
+     "TUN",
+     "ZAF"
+    ],
+    "utilisable": "oui — la réponse est déterminée pour chaque origine."
+   },
+   "regle_sans_liste": {
+    "definition": "L'acte ou la source officielle énonce un critère — « les États parties », « ceux qui ont gazetté et accordent la réciprocité » — sans nommer personne.",
+    "pays": [
+     "GHA",
+     "NGA"
+    ],
+    "utilisable": "partiellement — la règle est connue mais ses termes sont ambigus, et la résoudre demande un fait sur l'origine (a-t-elle gazetté ? accorde-t-elle la réciprocité ?) que la source ne fournit pas. À ne jamais résoudre par supposition."
+   },
+   "rien_de_publie": {
+    "definition": "Aucune liste, aucune règle d'admission identifiée.",
+    "pays": [
+     "CMR",
+     "RWA",
+     "ZMB",
+     "ETH"
+    ],
+    "precision": "L'Éthiopie est le cas le plus net : son règlement délègue explicitement la liste à un avis ministériel, donc la règle est « ce que le ministère notifiera » — ce qui ne s'applique à personne tant que l'avis n'est pas produit."
+   }
   }
  },
  "couples": {
@@ -3486,171 +3559,363 @@
   },
   "GHA": {
    "AGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "BDI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "BEN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "BFA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "BWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "CAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "CIV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "CMR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "COD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "COG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "COM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "CPV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "DJI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "DZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "EGY": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "ERI": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "non signataire"
    },
    "ETH": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "GAB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "GHA": {
     "etat": "MEME_PAYS"
    },
    "GIN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "GMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "GNB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "GNQ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "KEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "LBR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "LBY": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "LSO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "MAR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "MDG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "MLI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "MOZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "MRT": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "MUS": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "MWI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "NAM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "NER": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "NGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "RWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "SDN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "SEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "SLE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "SOM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "SSD": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "STP": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "SWZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "SYC": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "TCD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "TGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "TUN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "TZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "UGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "ZAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "ZMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    },
    "ZWE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "fondement_de_la_regle": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "non_resolue_parce_que": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
    }
   },
   "GIN": {
@@ -6663,171 +6928,363 @@
   },
   "NGA": {
    "AGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "BDI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "BEN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "BFA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "BWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "CAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "CIV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "CMR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "COD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "COG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "COM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "CPV": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "DJI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "DZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "EGY": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "ERI": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "non signataire"
    },
    "ETH": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "GAB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "GHA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "GIN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "GMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "GNB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "GNQ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "KEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "LBR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "LBY": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "LSO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "MAR": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "MDG": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "MLI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "MOZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "MRT": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "MUS": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "MWI": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "NAM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "NER": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "NGA": {
     "etat": "MEME_PAYS"
    },
    "RWA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "SDN": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "SEN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "SLE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "SOM": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "SSD": {
     "etat": "ORIGINE_NON_RATIFIANTE",
     "motif": "signataire, ratification non déposée"
    },
    "STP": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "SWZ": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "SYC": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "TCD": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "TGO": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "TUN": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "TZA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "UGA": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "ZAF": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "ZMB": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    },
    "ZWE": {
-    "etat": "DESTINATION_NON_ETABLIE"
+    "etat": "ADMISSION_PAR_REGLE",
+    "regle": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "fondement_de_la_regle": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "non_resolue_parce_que": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
    }
   },
   "RWA": {
