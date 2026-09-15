@@ -163,7 +163,16 @@
     "Official Gazette of the Republic of Rwanda.",
     "Rwanda Revenue Authority — customs public notices.",
     "Rwanda Trade Portal (rwandatrade.rw), section Tariffs."
-   ]
+   ],
+   "progres_2026-09-15": {
+    "portail_officiel_interroge": {
+     "url": "https://rwandatrade.rw/Tariffs?l=en",
+     "nature": "Rwanda Trade Information Portal, géré par la Rwanda Revenue Authority sous l'égide du National Trade Facilitation Committee — site gouvernemental officiel.",
+     "constat": "La ZLECAf n'y apparaît que six fois, et uniquement comme PROCÉDURE « AfCFTA certificate of origin » dans la liste des démarches. Aucun régime préférentiel d'importation, aucune liste d'origines admises, aucun sélecteur d'accord à l'import — alors que l'EAC et le COMESA y figurent quinze fois chacun.",
+     "portee": "Confirme, sur source officielle, que ce qui est établi au Rwanda concerne la délivrance du certificat — donc l'exportation — et non l'admission à l'importation. La distinction est la même qu'au Cameroun."
+    },
+    "balayage_du_journal_officiel": "Les 52 numéros rwandais de 2025 présents dans l'archive gazettes.africa ont été téléchargés et lus : aucun ne mentionne l'AfCFTA, la ZLECAf ni la zone de libre-échange continentale. La couverture rwandaise étant hebdomadaire et complète pour cette année, cette absence est un résultat, non une lacune d'archive. Le balayage de 2024 et 2023 est en cours."
+   }
   }
  },
  "ce_que_ce_chantier_prepare": {
