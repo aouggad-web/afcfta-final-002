@@ -10,6 +10,7 @@ montant faux qui a l'air juste — le défaut le plus coûteux du calculateur.
 import importlib.util
 import json
 import os
+import shutil
 
 import pytest
 
@@ -241,6 +242,58 @@ def test_un_pays_sans_position_est_declare_vide_jamais_estime():
     assert c["positions"] == 0
     assert socle["couverture"]["etat"] == "VIDE"
     assert socle["positions"] == {}
+
+
+def test_une_couverture_complete_exige_des_droits_liquidables():
+    """Annoncer COMPLET sur la seule présence des familles reproduirait les
+    « 100 % de couverture » déduits de listes non vides que l'audit
+    reprochait au module : l'Angola porte un droit et une TVA, mais aucune
+    assiette pour la seconde."""
+    chemin = os.path.join(CRAWL, "AGO_tariffs.json")
+    if not os.path.exists(chemin):
+        pytest.skip("crawl AGO absent de ce clone")
+    socle, c = bs.construire_pays("AGO", chemin, "crawl", bs.charger_assiettes_pays())
+    couverture = socle["couverture"]
+    assert couverture["droit_de_douane"] and couverture["tva"]
+    assert couverture["etat"] == "PARTIEL"
+    assert "non liquidables" in couverture["motif"]
+    assert c["droits_liquidables"] < c["droits"]
+
+
+def test_un_droit_preferentiel_specifique_est_conserve():
+    """181 lignes sud-africaines opposent « 8c/kg » en NPF à « 3,2c/kg » sous
+    ZLECAf. Ne garder que le taux les priverait de leur droit préférentiel."""
+    chemin = os.path.join(CRAWL, "ZAF_tariffs.json")
+    if not os.path.exists(chemin):
+        pytest.skip("crawl ZAF absent de ce clone")
+    socle, c = bs.construire_pays("ZAF", chemin, "crawl", bs.charger_assiettes_pays())
+    afcfta = socle["positions"]["020830"]["preferentiels"]["AFCFTA"]
+    assert afcfta["taux"] is None
+    assert afcfta["specifique"]["montant"] == 0.032  # 3,2 centimes, pas 3,2 %
+    assert afcfta["specifique"]["unite_quantite"] == "kg"
+    assert c["preferentiels_specifiques"] > 0
+
+
+def test_une_construction_partielle_n_ampute_pas_le_manifeste(tmp_path, monkeypatch):
+    """`build_socle.py CIV` laisse les autres pays sur disque : les retirer de
+    l'index les rendrait introuvables alors qu'ils sont servables."""
+    manifeste = os.path.join(REPO, "backend", "socle", "MANIFESTE.json")
+    if not os.path.exists(manifeste):
+        pytest.skip("socle absent : python3 scripts/build_socle.py")
+    with open(manifeste, encoding="utf-8") as f:
+        avant = json.load(f)
+    if "CIV" not in avant["pays"] or len(avant["pays"]) < 2:
+        pytest.skip("manifeste trop réduit pour ce test")
+    sauvegarde = tmp_path / "MANIFESTE.json"
+    shutil.copy(manifeste, sauvegarde)
+    try:
+        bs.main(["build_socle.py", "CIV"])
+        with open(manifeste, encoding="utf-8") as f:
+            apres = json.load(f)
+        assert set(apres["pays"]) == set(avant["pays"])
+        assert apres["totaux"]["positions"] == avant["totaux"]["positions"]
+    finally:
+        shutil.copy(sauvegarde, manifeste)
 
 
 def test_la_table_d_assiettes_conserve_ses_references_legales():

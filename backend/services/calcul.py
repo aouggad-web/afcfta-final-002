@@ -113,6 +113,7 @@ def _assiette_de(
     droit: Dict[str, Any],
     cif: float,
     calcules: List[Dict[str, Any]],
+    echecs: List[Dict[str, Any]],
     quantite: Optional[float],
     taux_de_change: Optional[float],
     codes_de_la_position: set,
@@ -140,14 +141,27 @@ def _assiette_de(
             return None, MANQUE_COMPOSANT, {"composants_absents": [reference]}
         return base, None, detail
 
+    # Une assiette globale — « tous les droits sauf X » — additionne ce qui a
+    # été liquidé. Si un prélèvement qui la compose a échoué, elle est amputée :
+    # le compter pour zéro rendrait un montant trop faible, et crédible. Même
+    # invariant que pour les assiettes à codes nommés, appliqué ici aussi.
     if assiette == "SOMME(TOUS_SAUF_SOI)":
+        rates = [e["code"] for e in echecs]
+        if rates:
+            return None, MANQUE_COMPOSANT, {"composants_absents": rates}
         base = sum(montants.values())
     elif assiette == "CIF":
         base = cif
     elif assiette.startswith("CIF+"):
         if "TOUS_SAUF_TVA" in assiette:
+            rates = [e["code"] for e in echecs if e["famille"] != FAMILLE_TVA]
+            if rates:
+                return None, MANQUE_COMPOSANT, {"composants_absents": rates}
             base = cif + sum(d["montant"] for d in calcules if d["famille"] != FAMILLE_TVA)
         elif "TOUS_SAUF_SOI" in assiette:
+            rates = [e["code"] for e in echecs]
+            if rates:
+                return None, MANQUE_COMPOSANT, {"composants_absents": rates}
             base = cif + sum(montants.values())
         else:
             part, manquants, sans_objet = _composants(
@@ -184,6 +198,7 @@ def _liquider(
     lignes: List[Dict[str, Any]] = []
     calcules: List[Dict[str, Any]] = []
     manques: List[Dict[str, Any]] = []
+    echecs: List[Dict[str, Any]] = []
     codes_de_la_position = {d.get("code") for d in droits}
 
     for droit in droits:
@@ -199,6 +214,26 @@ def _liquider(
         for champ in ("note", "classification_source", "assiette_non_traduite"):
             if droit.get(champ):
                 ligne[champ] = droit[champ]
+
+        # La substitution préférentielle précède tout le reste : un droit
+        # préférentiel peut être spécifique là où le NPF est ad valorem, ou
+        # l'inverse — 181 lignes sud-africaines opposent « 8c/kg » à
+        # « 3,2c/kg ». L'appliquer après la résolution de l'assiette liquiderait
+        # le taux préférentiel sur l'assiette du NPF.
+        if taux_preferentiels and code in taux_preferentiels:
+            remise = taux_preferentiels[code]
+            if not isinstance(remise, dict):
+                remise = {"taux": remise}
+            ligne["taux_npf_pct"] = droit.get("taux")
+            if droit.get("specifique") and droit.get("taux") is None:
+                ligne["specifique_npf"] = (
+                    droit["specifique"].get("brut")
+                    if isinstance(droit["specifique"], dict)
+                    else droit["specifique"]
+                )
+            droit = dict(droit, taux=remise.get("taux"), specifique=remise.get("specifique"))
+            ligne["taux_pct"] = droit["taux"]
+            ligne["regime_applique"] = "preference"
 
         taux = droit.get("taux")
         specifique = droit.get("specifique")
@@ -225,7 +260,7 @@ def _liquider(
                     )
 
         assiette, manque, detail = _assiette_de(
-            droit, cif, calcules, quantite, taux_de_change, codes_de_la_position
+            droit, cif, calcules, echecs, quantite, taux_de_change, codes_de_la_position
         )
         ligne.update(detail)
         if manque is None and taux is None:
@@ -238,14 +273,9 @@ def _liquider(
             if detail.get("composants_absents"):
                 manque_detail["composants"] = detail["composants_absents"]
             manques.append(manque_detail)
+            echecs.append({"code": code, "famille": ligne["famille"]})
             lignes.append(ligne)
             continue
-
-        if taux_preferentiels and code in taux_preferentiels:
-            ligne["taux_npf_pct"] = taux
-            taux = taux_preferentiels[code]
-            ligne["taux_pct"] = taux
-            ligne["regime_applique"] = "preference"
 
         # « xQTE » multiplie une quantité par un montant unitaire ; partout
         # ailleurs — « %DD » compris, où l'assiette est le montant du droit de

@@ -3,7 +3,9 @@ Moteur de liquidation — chantier L2.
 
 Ces tests protègent trois promesses : les cinq primitives d'assiette liquident
 ce que la douane liquide, un élément manquant ne devient jamais zéro, et la
-préférence ZLECAf ne réduit que le droit de douane.
+préférence ne réduit que les prélèvements qu'un texte lui désigne — le droit de
+douane le plus souvent, mais aussi le DAPS algérien, et le périmètre ne se
+déduit jamais.
 """
 
 import pytest
@@ -195,6 +197,99 @@ def test_un_composant_absent_de_la_position_est_sans_objet_et_signale():
     assert tva["statut"] == CALCULE
     assert tva["base"] == 1100.0
     assert tva["composants_sans_objet"] == ["CEDEAO"]
+
+
+def test_une_assiette_globale_rejette_un_prelevement_non_liquide():
+    """« CIF + tous les droits sauf la TVA » additionne ce qui a été liquidé.
+    Si un droit applicable a échoué, l'assiette est amputée : la compter quand
+    même rendrait une TVA sur le seul CIF, plus faible et crédible."""
+    r = calculer(
+        position(
+            droit("DD", None, "CIF", "droit"),  # taux indisponible
+            droit("TVA", 20, "CIF+TOUS_SAUF_TVA", "tva"),
+        ),
+        1000,
+    )
+    tva = lignes(r)["TVA"]
+    assert tva["statut"] == MANQUE_COMPOSANT
+    assert tva["composants_absents"] == ["DD"]
+    assert tva["montant"] is None
+
+
+def test_une_somme_globale_rejette_aussi_un_prelevement_non_liquide():
+    """Tunisie : la redevance s'assied sur la somme des droits et taxes."""
+    r = calculer(
+        position(
+            droit("DD", None, "CIF", "droit"),
+            droit("RPD", 3, "SOMME(TOUS_SAUF_SOI)", "redevance"),
+        ),
+        1000,
+    )
+    assert lignes(r)["RPD"]["statut"] == MANQUE_COMPOSANT
+
+
+def test_l_echec_d_une_tva_n_empeche_pas_une_assiette_qui_l_exclut():
+    """L'invariant vise les composants de l'assiette, pas tous les échecs."""
+    r = calculer(
+        position(
+            droit("DD", 10, "CIF", "droit"),
+            droit("TVA", None, "CIF", "tva"),  # échoue
+            droit("PRCT", 2, "CIF+TOUS_SAUF_TVA", "post_tva"),
+        ),
+        1000,
+    )
+    assert lignes(r)["PRCT"]["statut"] == CALCULE
+    assert lignes(r)["PRCT"]["base"] == 1100.0
+
+
+# ── Une préférence peut être spécifique ───────────────────────────────────────
+def test_un_droit_preferentiel_specifique_est_liquide_a_la_quantite():
+    """Afrique du Sud : 181 lignes opposent « 8c/kg » en NPF à « 3,2c/kg » sous
+    ZLECAf. N'en garder que le taux perdrait le droit préférentiel."""
+    npf = droit(
+        "DD",
+        None,
+        "xQTE",
+        "droit",
+        specifique={"montant": 0.08, "unite_quantite": "kg", "brut": "8c/kg"},
+    )
+    r = calculer(
+        position(npf),
+        1000,
+        quantite=500,
+        taux_preferentiels={
+            "DD": {
+                "taux": None,
+                "specifique": {"montant": 0.032, "unite_quantite": "kg", "brut": "3,2c/kg"},
+            }
+        },
+    )
+    assert lignes(r, "npf")["DD"]["montant"] == 40.0
+    ligne = lignes(r, "preference")["DD"]
+    assert ligne["montant"] == 16.0
+    assert ligne["specifique"] == "3,2c/kg"
+    assert ligne["specifique_npf"] == "8c/kg"
+    assert r["economie"] == 24.0
+
+
+def test_une_preference_ad_valorem_sur_un_npf_specifique_change_d_assiette():
+    """La substitution précède la résolution de l'assiette : sinon le taux
+    préférentiel serait liquidé sur l'assiette du NPF."""
+    npf = droit(
+        "DD",
+        None,
+        "xQTE",
+        "droit",
+        specifique={"montant": 0.08, "unite_quantite": "kg", "brut": "8c/kg"},
+    )
+    r = calculer(position(npf), 1000, quantite=500, taux_preferentiels={"DD": {"taux": 0.0}})
+    assert lignes(r, "preference")["DD"]["montant"] == 0.0
+
+
+def test_la_forme_simple_reste_acceptee():
+    """`{"DD": 0}` doit continuer de valoir `{"DD": {"taux": 0}}`."""
+    r = calculer(position(droit("DD", 20, "CIF", "droit")), 1000, taux_preferentiels={"DD": 0})
+    assert lignes(r, "preference")["DD"]["montant"] == 0.0
 
 
 # ── Le modificateur plafond ───────────────────────────────────────────────────

@@ -36,9 +36,20 @@ logger = logging.getLogger(__name__)
 COLONNE_ZLECAF = "AFCFTA"
 
 
-def _colonne_de_la_position(position: Dict[str, Any]) -> Optional[float]:
-    taux = (position.get("preferentiels") or {}).get(COLONNE_ZLECAF)
-    return float(taux) if isinstance(taux, (int, float)) else None
+def _colonne_de_la_position(position: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Rendre la colonne ZLECAf telle que le socle la porte : un taux ad
+    valorem, ou un montant spécifique. Les deux formes existent — l'Afrique du
+    Sud oppose « 8c/kg » en NPF à « 3,2c/kg » sous ZLECAf."""
+    valeur = (position.get("preferentiels") or {}).get(COLONNE_ZLECAF)
+    if isinstance(valeur, (int, float)):
+        return {"taux": float(valeur)}
+    if isinstance(valeur, dict):
+        if valeur.get("taux") is not None:
+            return {"taux": float(valeur["taux"])}
+        specifique = valeur.get("specifique")
+        if isinstance(specifique, dict) and specifique.get("montant") is not None:
+            return {"taux": None, "specifique": specifique}
+    return None
 
 
 def _taux_npf(position: Dict[str, Any], code: str) -> Optional[float]:
@@ -113,7 +124,8 @@ def taux_preferentiels(
 
             npf = _taux_npf(position, "DD")
             if npf is not None:
-                taux_dd, origine_taux = compute_dza_zlecaf_rate(hs_code, npf, origine_iso3)
+                taux, origine_taux = compute_dza_zlecaf_rate(hs_code, npf, origine_iso3)
+                taux_dd = {"taux": taux}
         except Exception as exc:  # pragma: no cover - dépendance optionnelle
             logger.info("Calendrier ZLECAf DZA indisponible : %s", exc)
 
@@ -133,7 +145,7 @@ def taux_preferentiels(
     if etendue:
         for code, reference in etendue(hs_code, origine_iso3).items():
             if _taux_npf(position, code) is not None:
-                table[code] = 0.0
+                table[code] = {"taux": 0.0}
                 perimetre[code] = reference
 
     resultat.update({"applique": True, "taux": table, "perimetre": perimetre})

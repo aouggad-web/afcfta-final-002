@@ -534,7 +534,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     compteurs = {
         "positions": 0,
         "droits": 0,
+        "droits_liquidables": 0,
+        "positions_liquidables": 0,
         "preferentiels": 0,
+        "preferentiels_specifiques": 0,
         "taux_indisponibles": 0,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
@@ -548,12 +551,30 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
 
     for code, designation, unite, droits, source_ligne in lignes_du_fichier(donnees):
         retenus, prefs = [], {}
+        position_complete = True
         for d in droits:
             if d.pop("_preferentiel", None) is not None:
                 # Une colonne préférentielle est conservée telle quelle, sous son
                 # propre régime. Elle n'entre jamais dans la cascade NPF.
                 regime = PREFERENTIELS[_norm(d["code_source"])]
-                prefs[regime] = d["taux"]
+                # La colonne se conserve sous la même forme qu'un droit NPF —
+                # taux ad valorem OU montant spécifique — parce qu'elle en prend
+                # la forme : 181 lignes sud-africaines opposent un « 8c/kg » NPF
+                # à un « 3,2c/kg » AfCFTA. N'en garder que le taux perdrait le
+                # droit préférentiel de toutes ces positions.
+                if d["taux"] is None and d.get("specifique"):
+                    prefs[regime] = {
+                        "taux": None,
+                        "specifique": lire_specifique(d["specifique"])
+                        or {
+                            "brut": str(d["specifique"]),
+                            "montant": None,
+                            "motif": "expression non lisible",
+                        },
+                    }
+                    compteurs["preferentiels_specifiques"] += 1
+                else:
+                    prefs[regime] = {"taux": d["taux"]}
                 compteurs["preferentiels"] += 1
                 continue
             if d["assiette"] is not None:
@@ -590,6 +611,17 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             if d.get("classification_source") == "estimation_ia":
                 compteurs["classification_estimee"] += 1
             familles_vues.add(d["famille"])
+            # Un droit est liquidable s'il porte de quoi produire un montant :
+            # une assiette, et soit un taux, soit un montant spécifique lisible.
+            # La quantité, elle, dépend de la demande — elle n'est pas un défaut
+            # de la donnée et n'entre pas dans ce compte.
+            specifique_lisible = (
+                isinstance(d.get("specifique"), dict) and d["specifique"].get("montant") is not None
+            )
+            if d["assiette"] and (d["taux"] is not None or specifique_lisible):
+                compteurs["droits_liquidables"] += 1
+            else:
+                position_complete = False
             retenus.append({k: v for k, v in d.items() if v is not None})
 
         retenus.sort(key=lambda d: ORDRE_FAMILLES.index(d.get("famille", "autre")))
@@ -609,6 +641,8 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             positions[code]["source"] = source_ligne
         compteurs["positions"] += 1
         compteurs["droits"] += len(retenus)
+        if retenus and position_complete:
+            compteurs["positions_liquidables"] += 1
 
     socle = {
         "iso3": iso,
@@ -636,16 +670,59 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             "familles": sorted(familles_vues),
             "droit_de_douane": "droit" in familles_vues,
             "tva": "tva" in familles_vues,
-            # Un pays dont aucune position ne porte de TVA rend un total
-            # nécessairement incomplet : il est marqué, pas complété.
+            "positions_liquidables": compteurs["positions_liquidables"],
+            "droits_liquidables": compteurs["droits_liquidables"],
+            # L'état ne se déduit PAS de la seule présence des familles : un
+            # pays peut porter un droit et une TVA sans qu'aucun des deux soit
+            # liquidable, faute d'assiette ou de taux. C'est le cas de l'Angola,
+            # dont les 5 388 TVA n'ont pas d'assiette tracée. Annoncer COMPLET
+            # là-dessus reproduirait les « 100 % de couverture » déduits de
+            # listes non vides que l'audit reprochait au module.
             "etat": (
                 "VIDE"
                 if compteurs["positions"] == 0
-                else "COMPLET" if {"droit", "tva"} <= familles_vues else "PARTIEL"
+                else (
+                    "COMPLET"
+                    if (
+                        {"droit", "tva"} <= familles_vues
+                        and compteurs["droits_liquidables"] == compteurs["droits"]
+                    )
+                    else "PARTIEL"
+                )
+            ),
+            "motif": (
+                None
+                if compteurs["positions"] == 0
+                or (
+                    {"droit", "tva"} <= familles_vues
+                    and compteurs["droits_liquidables"] == compteurs["droits"]
+                )
+                else "; ".join(
+                    filter(
+                        None,
+                        [
+                            (
+                                None
+                                if "droit" in familles_vues
+                                else "aucun droit de douane à la source"
+                            ),
+                            None if "tva" in familles_vues else "aucune TVA à la source",
+                            (
+                                f"{compteurs['droits'] - compteurs['droits_liquidables']} droits "
+                                f"sur {compteurs['droits']} non liquidables"
+                                if compteurs["droits_liquidables"] != compteurs["droits"]
+                                else None
+                            ),
+                        ],
+                    )
+                )
             ),
         },
         "compteurs": compteurs,
-        "construit_le": datetime.now(timezone.utc).isoformat(),
+        # Pas d'horodatage ici, à dessein : un socle reconstruit depuis les
+        # mêmes sources doit être identique à l'octet près, sinon son empreinte
+        # change sans que la donnée ait bougé et le manifeste devient faux. La
+        # date de construction vit au manifeste, qui n'est pas empreint.
         "positions": positions,
     }
     return socle, compteurs
@@ -657,13 +734,23 @@ def main(argv):
     sources = sources_disponibles()
     demandes = [a.upper() for a in argv[1:]] or sorted(sources)
 
+    # Une construction partielle ne doit pas amputer le manifeste : les pays
+    # non reconstruits restent sur disque, et les retirer de l'index les rendrait
+    # introuvables alors qu'ils sont servables. On repart donc de l'existant.
+    ancien = {}
+    if os.path.exists(os.path.join(SOCLE_DIR, "MANIFESTE.json")):
+        with open(os.path.join(SOCLE_DIR, "MANIFESTE.json"), encoding="utf-8") as f:
+            ancien = json.load(f).get("pays", {})
     manifeste = {
         "socle_version": SOCLE_VERSION,
         "construit_le": datetime.now(timezone.utc).isoformat(),
-        "pays": {},
+        "pays": {
+            iso: entree
+            for iso, entree in ancien.items()
+            if os.path.exists(os.path.join(SOCLE_DIR, entree.get("fichier", "")))
+        },
         "totaux": {},
     }
-    total_positions = total_droits = 0
     vides = []
 
     for iso in demandes:
@@ -676,10 +763,6 @@ def main(argv):
         sortie = os.path.join(SOCLE_DIR, f"{iso}.json")
         with open(sortie, "w", encoding="utf-8") as f:
             json.dump(socle, f, ensure_ascii=False, separators=(",", ":"))
-        if c["positions"] == 0:
-            vides.append(iso)
-        total_positions += c["positions"]
-        total_droits += c["droits"]
         manifeste["pays"][iso] = {
             "fichier": f"{iso}.json",
             "origine": origine,
@@ -696,17 +779,26 @@ def main(argv):
             f"  taux? {c['taux_indisponibles']:5d}  assiette? {c['assiettes_indisponibles']:6d}"
         )
 
+    # Les totaux sont recalculés sur l'index entier, pas sur la seule sélection.
+    vides = sorted(i for i, v in manifeste["pays"].items() if v["etat"] == "VIDE")
     manifeste["totaux"] = {
         "pays": len(manifeste["pays"]),
         "pays_vides": vides,
         "pays_partiels": sorted(i for i, v in manifeste["pays"].items() if v["etat"] == "PARTIEL"),
-        "positions": total_positions,
-        "droits": total_droits,
+        "positions": sum(v["compteurs"]["positions"] for v in manifeste["pays"].values()),
+        "droits": sum(v["compteurs"]["droits"] for v in manifeste["pays"].values()),
+        "droits_liquidables": sum(
+            v["compteurs"].get("droits_liquidables", 0) for v in manifeste["pays"].values()
+        ),
     }
     with open(os.path.join(SOCLE_DIR, "MANIFESTE.json"), "w", encoding="utf-8") as f:
         json.dump(manifeste, f, ensure_ascii=False, indent=2)
 
-    print(f"\n{len(manifeste['pays'])} pays — {total_positions} positions, {total_droits} droits")
+    totaux = manifeste["totaux"]
+    print(
+        f"\n{totaux['pays']} pays — {totaux['positions']} positions, "
+        f"{totaux['droits']} droits dont {totaux['droits_liquidables']} liquidables"
+    )
     if vides:
         print(f"Pays sans aucune position (déclarés vides, jamais estimés) : {', '.join(vides)}")
     return 0

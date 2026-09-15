@@ -328,7 +328,7 @@ Chacun est livrable seul, mesuré par le harnais de la phase 0.
 |---|---|
 | **Livrable** | `scripts/build_socle.py` + `backend/socle/ISO.json` (**54 pays** : 53 du crawl + SOM) + `socle/assiettes_pays.json` |
 | **Contenu** | les cinq adaptateurs de schéma, dont TUN `taxes_import[]` et GHA `taxes_detail[].tax` — le même adaptateur `tariff_lines[]` couvre SOM |
-| **Acceptation** | **347 778 positions** lues (342 176 du crawl + 5 602 SOM), 0 perdue ; chaque position porte source, date, empreinte, et son origine (`crawl` ou `etl`) ; DJI/ERI déclarés vides ; aucun taux absent converti en 0 ; **aucun chargeur d'exécution ne lit plus `backend/data/*_tariffs.json`** ; le socle se régénère en moins de 5 minutes |
+| **Acceptation** | **359 108 positions** lues et vérifiables au manifeste, 0 perdue. Le compte inclut, pour les sources en `tariff_lines[]`, la ligne SH6 **et** ses enfants nationaux : les deux sont adressables, donc les deux sont des positions servies (Ghana 5 387 + 6 129, Somalie 5 602 + 5 943) ; chaque position porte source, date, empreinte, et son origine (`crawl` ou `etl`) ; DJI/ERI déclarés vides ; aucun taux absent converti en 0 ; **aucun chargeur d'exécution ne lit plus `backend/data/*_tariffs.json`** ; le socle se régénère en moins de 5 minutes |
 
 ### L1b — PostgreSQL régénéré depuis le socle
 
@@ -538,7 +538,7 @@ reconstruite par `scripts/load_socle_to_postgres.py` (chantier L1b). La charge
 de la preuve s'inverse du même coup : Un taux qu'aucun fichier tracé ne porte ne peut pas être servi,
 quelle que soit la base qui le contient — c'est la règle 1, appliquée sans
 exception. PostgreSQL garde son emploi utile — servir vite une recherche sur
-347 778 positions — mais **alimenté par le socle** : il ne peut alors plus
+359 108 positions — mais **alimenté par le socle** : il ne peut alors plus
 contredire le fichier, seulement le restituer. C'est bien le dernier crawl,
 donc la donnée vraie, qui devient la source de la base, et non l'inverse.
 
