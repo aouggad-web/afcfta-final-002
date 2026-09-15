@@ -1392,10 +1392,51 @@ def _resolve_zlecaf_context(
         offer_rate_expression=None,
         offer_rate_source=None,
     ):
+        # ── Plancher NPF ──────────────────────────────────────────────────
+        # Une préférence est une FACULTÉ, jamais une obligation : aucun
+        # importateur n'invoque un régime plus cher que le droit commun, et
+        # aucune douane ne le lui impose. Le règlement éthiopien 574/2025
+        # l'écrit à son article 3(5) — « If the tariff under the Standard
+        # Tariff Rules is lower than the tariff specified in the Free Trade
+        # Area Tariff Schedule, goods originating from Member States may be
+        # treated under the terms of the Standard Tariff Rules » — mais le
+        # principe ne lui est pas propre.
+        #
+        # Les trois chemins préférentiels calculaient correctement
+        # `preference_applied = taux < NPF`, puis servaient le taux
+        # préférentiel QUAND MÊME. Le drapeau disait « pas d'avantage »
+        # pendant que le montant facturait davantage. Mesuré avant
+        # correction : 8 positions algériennes, 2 sud-africaines, 3
+        # kényanes.
+        #
+        # Le garde-fou est posé ici, dans le constructeur que tous les
+        # chemins traversent, plutôt que dans chacun d'eux : un chemin
+        # ajouté demain en hérite sans qu'on ait à y penser.
+        plancher_npf = None
+        if dd is not None and dd_rate_pct is not None and dd > dd_rate_pct:
+            plancher_npf = {
+                "taux_preferentiel_ecarte_pct": dd,
+                "taux_retenu_pct": dd_rate_pct,
+                "motif": (
+                    "Le taux préférentiel dépasse le droit NPF de la même "
+                    "position : c'est le NPF qui est servi. Une préférence est "
+                    "une faculté, pas une obligation."
+                ),
+            }
+            dd = dd_rate_pct
+            preference_applied = False
+            complement = (
+                f" Taux préférentiel ({plancher_npf['taux_preferentiel_ecarte_pct']} %) "
+                f"supérieur au NPF ({dd_rate_pct} %) : NPF servi."
+            )
+            note = (note or "") + complement
+            zlecaf_note = (zlecaf_note or "") + complement
+
         return {
             "preferential": preferential,
             "preference_applied": preference_applied,
             "dd_rate_pct": dd,
+            "plancher_npf": plancher_npf,
             "daps_exempt": daps,
             "trade_regime": regime,
             "trade_regime_code": code,
