@@ -302,6 +302,22 @@ Chacun est livrable seul, mesuré par le harnais de la phase 0.
 | **Contenu** | les cinq adaptateurs de schéma, dont TUN `taxes_import[]` et GHA `taxes_detail[].tax` — le même adaptateur `tariff_lines[]` couvre SOM |
 | **Acceptation** | **347 778 positions** lues (342 176 du crawl + 5 602 SOM), 0 perdue ; chaque position porte source, date, empreinte, et son origine (`crawl` ou `etl`) ; DJI/ERI déclarés vides ; aucun taux absent converti en 0 ; **aucun chargeur d'exécution ne lit plus `backend/data/*_tariffs.json`** ; le socle se régénère en moins de 5 minutes |
 
+### L1b — PostgreSQL régénéré depuis le socle
+
+Le sens du flux s'inverse : la base cesse d'être une source et devient une
+**projection** du socle. Elle n'a alors plus rien à dire que le fichier ne dise
+déjà.
+
+| | |
+|---|---|
+| **Livrable** | `scripts/load_socle_to_postgres.py` — vidage et rechargement intégral depuis le socle, en une transaction, plus une table `socle_manifest` portant la version du socle et son SHA-256 |
+| **Schéma** | aligné sur le socle : un pays, une position, et **une ligne par droit** (code, libellé, famille, taux, assiette, source). Fin de `total_npf_pct` servi comme `dd_rate` (`postgres_tariff_service.py:111`) : un total n'est pas un droit de douane |
+| **Acceptation** | rejouer le chargement sur le même socle redonne la base à l'identique ; le service **refuse de servir** si l'empreinte de `socle_manifest` ne correspond pas au socle présent sur disque — une base périmée devient inerte au lieu de contredire silencieusement les fichiers ; les trois scripts de migration (`migrate_all.py`, `fast_migration.py`, `run_migration.py`), `engine/pipeline.py` et `backend/data/tariffs/` sont supprimés |
+
+Une fois L1b livré, la préséance n'est plus un arbitrage : base et fichiers
+disent la même chose par construction, et le seul cas où ils divergent est un
+socle non rechargé — que l'empreinte détecte.
+
 ### L2 — Le moteur
 
 | | |
@@ -337,7 +353,7 @@ Chacun est livrable seul, mesuré par le harnais de la phase 0.
 | **Livrable** | intégration continue : corpus figé + liquidations réelles + vérification d'empreinte du socle |
 | **Acceptation** | un écart nouveau fait échouer la construction ; un socle périmé refuse de servir |
 
-**Dépendances :** L1 → L2 → L3 → L4. L5 démarre dès L2 (elle mesure le moteur,
+**Dépendances :** L1 → L1b → L2 → L3 → L4. L5 démarre dès L2 (elle mesure le moteur,
 pas l'interface). L6 clôt. Les chantiers de collecte C1 et C2 (§6) sont
 parallèles : ils n'en bloquent aucun.
 
@@ -479,12 +495,24 @@ données, par ailleurs copie à l'octet près de `backend/data/*_tariffs.json`
    aucun fichier dans le jeu source actuel — pèsent exactement 16 570
    enregistrements comme les autres achève la démonstration.
 
-**Décision : PostgreSQL sort du chemin de calcul, et la charge de la preuve
-s'inverse.** Un taux qu'aucun fichier tracé ne porte ne peut pas être servi,
+**Un quatrième fait, relevé en cherchant le schéma.** Le service interroge
+trois tables — `measures`, `requirements`, `fiscal_advantages` — qu'**aucun
+script du dépôt ne crée** : les trois migrations présentes rangent ces données
+en colonnes `JSONB` sur `commodities`. Le schéma réellement en production n'a
+donc pas été créé par le code versionné. À la question « d'où viennent les
+données PostgreSQL », la réponse honnête est : *ce dépôt ne permet pas de le
+dire* — ni les fichiers chargés, ni le schéma qui les porte, ni le script qui
+l'a créé n'y figurent.
+
+**Décision : le flux est inversé — le socle alimente la base.** PostgreSQL
+cesse d'être une source concurrente pour devenir une projection du socle,
+reconstruite par `scripts/load_socle_to_postgres.py` (chantier L1b). La charge
+de la preuve s'inverse du même coup : Un taux qu'aucun fichier tracé ne porte ne peut pas être servi,
 quelle que soit la base qui le contient — c'est la règle 1, appliquée sans
-exception. PostgreSQL garde son emploi utile (servir vite une recherche sur
-347 778 positions), mais **alimenté par le socle** : il ne peut alors plus
-contredire le fichier, seulement le restituer.
+exception. PostgreSQL garde son emploi utile — servir vite une recherche sur
+347 778 positions — mais **alimenté par le socle** : il ne peut alors plus
+contredire le fichier, seulement le restituer. C'est bien le dernier crawl,
+donc la donnée vraie, qui devient la source de la base, et non l'inverse.
 
 **Ce que cela coûte.** On perd la possibilité de corriger un taux en production
 par une écriture en base, sans recollecte. C'est exactement ce que la règle 2
@@ -493,7 +521,9 @@ interdit par ailleurs.
 **Ce qui reste à faire avant la bascule, et c'est borné :** exporter le contenu
 de la base de production, le comparer au socle, et publier la liste des taux
 qui n'y figurent pas. Chacun est alors soit rattaché à une source et versé au
-socle, soit écarté. Aucun n'est conservé au seul motif qu'il est en base.
+socle, soit écarté. Aucun n'est conservé au seul motif qu'il est en base. Cet
+export est à faire **avant** le premier rechargement, puisque celui-ci vide la
+table : c'est la seule fenêtre où le contenu actuel est encore observable.
 
 ## 7. Les règles de ce plan
 
