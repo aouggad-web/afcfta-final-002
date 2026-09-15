@@ -1,7 +1,7 @@
 {
  "schema_version": 1,
  "titre": "État d'application de la ZLECAf entre pays, couple par couple",
- "genere_le": "2026-09-14",
+ "genere_le": "2026-09-15",
  "genere_par": "scripts/build_bilateral_application_matrix.py",
  "avertissement": "La ratification est continentale, l'application est bilatérale. Une case ACCORDEE atteste que l'acte national de la destination nomme cette origine ; elle ne dispense ni de la preuve d'origine ZLECAf ni de la vérification en douane.",
  "methode": "Trois conditions, dans cet ordre : acte national d'application lu en source primaire ; liste nominative des origines qu'il admet ; confrontation à la carte continentale du e-Tariff Book. Les listes sont lues à leur source d'autorité dans le dépôt, jamais recopiées.",
@@ -241,16 +241,32 @@
    "ZMB": {
     "statut": "NOTIFICATION_PARTENAIRES_REQUISE",
     "etabli": [
-     "Statutory Instrument n° 92 du 30 décembre 2024 portant gazettage de la Provisional Schedule of Tariff Concessions.",
-     "Domestication confirmée et usage sous Guided Trade Initiative."
+     "Le Statutory Instrument n° 92 de 2024 existe, daté du 30 décembre 2024, publié en supplément au Government Gazette n° 7696 — établi sur le journal officiel lui-même.",
+     "Son intitulé officiel est « Customs and Excise (General) (Amendment) Regulations, 2024 ».",
+     "Usage de la ZLECAf sous Guided Trade Initiative rapporté par le Parlement zambien."
     ],
-    "manque": "La liste des origines admises. Le SI gazette le barème ; rien n'indique qu'il nomme des pays.",
+    "manque": "Le texte du Statutory Instrument n° 92 de 2024. Son intitulé officiel est désormais établi en source primaire — « Customs and Excise (General) (Amendment) Regulations, 2024 » — et il ne nomme pas la ZLECAf : l'attribution reste à vérifier dans le texte, ainsi que toute liste d'origines.",
     "document_cible": "Texte intégral du Statutory Instrument n° 92 of 2024, pour vérifier s'il comporte une liste d'États parties admis.",
     "ou_chercher": [
      "Government Gazette de la République de Zambie, 30 décembre 2024.",
      "Zambia Revenue Authority — customs circulars.",
      "Ministry of Commerce, Trade and Industry."
-    ]
+    ],
+    "progres_2026-09-15": {
+     "obtenu": "Republic of Zambia Government Gazette n° 7696 du 30 décembre 2024, avis n° 1378, listant les Statutory Instruments publiés en supplément.",
+     "source": "https://archive.gazettes.africa/archive/zm/2024/zm-government-gazette-dated-2024-12-30-no-7696.pdf",
+     "texte_archive": "sources/ZMB_gazette_7696_2024-12-30.texte-extrait.txt",
+     "sha256": "19c6d2283c4428ced17319d6069575e7753c665a56f1eb48786a574bfb7b7959",
+     "pdf_sha256": "65b8c005106b9ce1365e0d14cb1e84899d2ee95f4dfb5a560d6858957f90d976",
+     "pdf_non_archive": "PDF amont de 2 pages non versé au dépôt ; son extrait intégral l'est, suivant le parti pris retenu pour les autres actes.",
+     "ce_qui_est_etabli": [
+      "Le Statutory Instrument n° 92 de 2024 existe et porte bien la date du 30 décembre 2024.",
+      "Son intitulé officiel est « Customs and Excise (General) (Amendment) Regulations, 2024 »."
+     ],
+     "ce_que_cela_dement": "L'avis du journal officiel ne mentionne NI la ZLECAf, NI l'AfCFTA, NI aucune liste de concessions tarifaires — vérifié sur le seul corps du document, en-tête d'archivage exclu. Le dépôt portait « SI 92/2024 : gazettage de la Provisional Schedule of Tariff Concessions » sur la foi de sources secondaires. Le titre officiel est un amendement général au règlement douanier. Il est possible que le barème y soit inséré — un amendement général peut le faire — mais le titre seul ne l'établit pas.",
+     "reste_a_obtenir": "Le texte du SI 92 lui-même, publié en supplément. L'archive ne porte que l'avis de deux pages ; le supplément n'y figure sous aucun des motifs de nom essayés."
+    },
+    "correction_2026-09-15": "Cette fiche portait « SI 92/2024 portant gazettage de la Provisional Schedule of Tariff Concessions », formule reprise de sources secondaires. Le journal officiel obtenu ne la soutient pas : il intitule le SI 92 « Customs and Excise (General) (Amendment) Regulations, 2024 » et ne mentionne la ZLECAf nulle part. L'affirmation est retirée jusqu'à lecture du texte."
    },
    "GHA": {
     "statut": "OFFRE_SEULE",
@@ -305,6 +321,13 @@
    "preuve_recherchee": "Une déclaration en douane effectivement liquidée sous régime ZLECAf : code accord ou régime préférentiel utilisé, certificat d'origine ZLECAf accepté, taux appliqué, et le détail des autres prélèvements maintenus.",
    "pourquoi_elle_tranche": "Elle établit d'un coup les trois conditions que les textes laissent ouvertes : que la destination admet cette origine, à quel rythme de démantèlement, et ce qui reste dû à côté du droit de douane.",
    "precaution": "Une déclaration isolée prouve qu'un bureau a liquidé ainsi, pas que la règle est générale. Elle vaut indice fort, à recouper, et doit être consignée comme telle — jamais promue en source de droit."
+  },
+  "ressource_de_collecte": {
+   "nom": "gazettes.africa",
+   "pourquoi": "Archive de journaux officiels africains couvrant précisément les pays de ce chantier : Zambie, Nigeria, Ghana, Rwanda, Kenya, Maroc, et une quinzaine d'autres. C'est par elle que le journal officiel zambien du 30 décembre 2024 a été obtenu.",
+   "mode_d_acces": "Les pages de document sont protégées par un défi Cloudflare et refusent le client (HTTP 403). Les PDF de l'archive, eux, répondent directement : https://archive.gazettes.africa/archive/<iso2>/<annee>/<iso2>-government-gazette-dated-<AAAA-MM-JJ>-no-<numero>.pdf . Le numéro se lit sur la page annuelle https://gazettes.africa/gazettes/<iso2>/<annee>, dont les liens suivent le motif /akn/<iso2>/officialGazette/government-gazette/<date>/<numero>/eng@<date>.",
+   "limite_constatee": "L'archive ne porte pas systématiquement les suppléments, où figurent les textes des Statutory Instruments : pour la Zambie, l'avis est présent et le supplément absent.",
+   "avertissement": "Le site signale qu'un incendie a détruit des centaines de milliers de journaux officiels africains. Ce qui est atteignable aujourd'hui peut ne plus l'être : archiver au moment où l'on trouve, plutôt que de se contenter d'une URL."
   }
  },
  "couples": {

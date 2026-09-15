@@ -1,7 +1,7 @@
 # État d'application de la ZLECAf entre pays
 
 > Généré par `scripts/build_bilateral_application_matrix.py` — ne pas éditer à la main.
-> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-09-14.
+> Données : `reports/ETAT_APPLICATION_BILATERAL.json`, générées le 2026-09-15.
 
 ## Ce que ce tableau répond
 
@@ -108,7 +108,7 @@ Là où aucune liste n'est publiée, aucune source documentaire ne peut trancher
 | **ETH** | `INSTRUMENT_VERIFIE_PRIMAIRE_ORIGINES_NON_VERIFIEES` | La liste des origines, que l'article 3(2) délègue à un avis du Ministry of Trade and Regional Integration. Sans cet avis, le barème ne s'applique à personne. | Avis (notification) du Ministry of Trade and Regional Integration listant les États membres admis, avec son numéro et sa date. |
 | **CIV** | `NOTIFICATION_PARTENAIRES_REQUISE` | La liste nominative des partenaires acceptés. L'ordonnance pose la réciprocité en condition sans nommer aucun pays. | Arrêté ou circulaire de la Direction générale des douanes ivoiriennes désignant les origines admises ; à défaut, le texte intégral de l'ordonnance publié au Journal officiel de la République de Côte d'Ivoire. |
 | **NGA** | `NOTIFICATION_PARTENAIRES_REQUISE` | Le texte de la gazette lui-même, et la confirmation que la règle de réciprocité y est bien formulée ainsi — la formulation connue provient de communiqués, non du texte. | Federal Republic of Nigeria Official Gazette portant la PSTC, avril 2025. |
-| **ZMB** | `NOTIFICATION_PARTENAIRES_REQUISE` | La liste des origines admises. Le SI gazette le barème ; rien n'indique qu'il nomme des pays. | Texte intégral du Statutory Instrument n° 92 of 2024, pour vérifier s'il comporte une liste d'États parties admis. |
+| **ZMB** | `NOTIFICATION_PARTENAIRES_REQUISE` | Le texte du Statutory Instrument n° 92 de 2024. Son intitulé officiel est désormais établi en source primaire — « Customs and Excise (General) (Amendment) Regulations, 2024 » — et il ne nomme pas la ZLECAf : l'attribution reste à vérifier dans le texte, ainsi que toute liste d'origines. | Texte intégral du Statutory Instrument n° 92 of 2024, pour vérifier s'il comporte une liste d'États parties admis. |
 | **GHA** | `OFFRE_SEULE` | L'acte national ghanéen lui-même, et toute liste d'origines. Le dépôt ne tient à ce jour que l'instantané CEDEAO du e-Tariff Book. | Legislative Instrument ou Customs (AfCFTA) Regulations du Ghana, et la circulaire d'application de la Ghana Revenue Authority. |
 | **CMR** | `OFFRE_SEULE` | L'acte national camerounais d'application à l'IMPORTATION et sa liste d'origines. Ce qui est établi concerne l'exportation. | Circulaire ou note de service de la Direction générale des douanes du Cameroun portant application du tarif ZLECAf à l'importation. |
 | **RWA** | `OFFRE_SEULE` | L'acte national et la liste des origines admises. Aucune liste officielle n'a été retrouvée. | Ministerial Order ou Customs Regulations rwandais portant application du barème ZLECAf, et la liste d'États parties admis. |
