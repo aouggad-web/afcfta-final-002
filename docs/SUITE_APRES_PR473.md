@@ -14,11 +14,11 @@ C'est le seul critère retenu ici.
 |---|---|---|---|
 | 1 | Unité des taxes spécifiques | un **montant faux**, dans les deux sens | 2 435 positions |
 | 2 | Crawler ghanéen | une ligne **plus grossière** que celle qu'il déclare | 5 387 servies |
-| 3 | Algérie | **aucune préférence** là où le droit en accorde une | 17 226 positions |
+| 3 | Algérie — règle du moins-disant | un droit **plus cher** sous préférence que sous NPF | 8 positions |
 | 4 | Quatre pays dérivés du Bénin | une assiette de TVA **non fondée** | 4 pays |
 | 5 | Taux du PCS | un écart de 0,2 point **non tranché** | UEMOA |
 | 6 | Maroc en application | une préférence **affichée mais non appliquée** | 40 origines |
-| 7 | Règles fiscales éthiopiennes | rien encore — l'Éthiopie reste `OFFER_ONLY` | en attente |
+| 7 | Règles fiscales éthiopiennes | rien encore — `OFFER_ONLY` (hors moins-disant, cf. n° 3) | en attente |
 
 ---
 
@@ -109,33 +109,68 @@ ghanéen publie réellement**, avant de qualifier l'écart.
 
 ---
 
-## 3. L'Algérie : la donnée et le droit ne se rejoignent pas
+## 3. L'Algérie — le dossier est fait, une seule chose reste
 
-**Le constat.** La circulaire 482/DGD du 22 octobre 2024 est archivée, lue
-intégralement, et le régime s'applique depuis le 1ᵉʳ novembre 2024. Le tarif
-algérien collecté, lui, ne porte **aucune mention ZLECAf** sur ses 17 226
-positions.
+**Correction d'une erreur de ce document.** Une version antérieure annonçait que
+« le calculateur n'a aucune donnée tarifaire préférentielle » pour l'Algérie.
+C'est faux, et le propriétaire du dépôt l'a relevé : le dossier algérien a été
+constitué à partir des PDF de la ZLECAf et il est **opérationnel**.
 
-Neuf origines sont admises à l'importation en Algérie, et le calculateur n'a
-aucune donnée tarifaire préférentielle pour les servir.
+Ce que le dépôt porte, vérifié le 15 septembre :
 
-**Deux règles déjà établies et non câblées**, consignées dans
-`DZA_application_2026-09-14.json` :
+| Élément | État |
+|---|---|
+| Circulaire 482/DGD du 22/10/2024 | texte intégral archivé, 73 Ko |
+| Liste B (démantèlement 13 ans) | **1 163 codes** + leurs taux de base 2019 |
+| Liste C (exclue) | **456 codes** |
+| Calendrier de la circulaire | `circular_482_schedule.json`, standard et réciprocité |
+| Partenaires actifs | 9 |
+| Partenaires en réciprocité | 13 |
+| Positions gelées (règles d'origine) | 13 plages de positions |
+| Exonération du DAPS | implémentée, `daps_exempt()` |
 
-- le DAPS est **exonéré** sous régime ZLECAf (loi de finances complémentaire
-  2018, article 2) — or le dépôt porte un DAPS que le calculateur ne met pas à
-  zéro ;
-- **1 458 lignes** (1 136 en liste A, 322 en liste B) sont **gelées** faute de
-  règles d'origine : leur appliquer la préférence serait une faute.
+Le calcul fonctionne : une importation égyptienne relevant de la liste B reçoit
+son taux de base 2019 démantelé selon le calendrier standard, une kényane selon
+le calendrier réciprocité, et une origine non activée reste au NPF avec la
+citation de la circulaire. Le tarif collecté ne porte pas de colonne ZLECAf, et
+c'est sans importance : la préférence algérienne se calcule **à partir des
+listes de la circulaire**, pas d'une colonne du tarif.
+
+### Ce qui reste : la règle du moins-disant
+
+Une vérification faite en corrigeant ce document a trouvé un défaut réel, et
+c'est le seul.
+
+`compute_dza_zlecaf_rate` applique le taux de base 2019 aux positions de la
+liste B — à juste titre, l'article 23 de l'Accord figeant la base à l'entrée en
+vigueur. Mais il ne le compare jamais au NPF courant. Quand l'Algérie a
+**réduit** son droit depuis 2019, le taux « préférentiel » peut donc dépasser le
+droit ordinaire.
+
+Mesuré sur les 1 163 positions de la liste B, hors positions gelées :
+
+| Origine | Positions où le taux ZLECAf dépasse le NPF | Écart maximal |
+|---|---:|---|
+| Égypte (calendrier standard) | **8** | +19,0 points |
+| Kenya (calendrier réciprocité) | **8** | +21,2 points |
+
+Les huit sont des viandes bovines du chapitre 0201 : NPF 5 %, taux de base 2019
+à 30 %, donc 24 % en 2026 sous calendrier standard. Un importateur n'invoquerait
+évidemment jamais une préférence plus chère que le droit commun — mais le
+calculateur, lui, la lui sert.
+
+**C'est la règle du moins-disant**, celle que le règlement éthiopien énonce à son
+article 3(5) et que ce document rangeait au chantier n° 7 en la croyant « sans
+effet tant que l'Éthiopie reste `OFFER_ONLY` ». Elle mord ici, aujourd'hui, en
+production, sur huit positions algériennes.
 
 **Critères d'acceptation.**
 
-- Soit la colonne préférentielle algérienne est collectée, soit l'absence est
-  déclarée explicitement pour les neuf origines admises.
-- Le DAPS est mis à zéro sous ZLECAf, avec citation de l'article.
-- Les 1 458 lignes gelées sont exclues de toute préférence, et le disent.
-
----
+- Le taux préférentiel servi n'excède jamais le NPF de la même position.
+- Le plancher est appliqué comme une **règle générale**, pas comme un correctif
+  algérien : tout régime préférentiel du moteur en relève.
+- Le résultat dit laquelle des deux voies a été retenue, et pourquoi.
+- Un test qui mord sur `0201101100` — NPF 5 %, base 2019 à 30 %.
 
 ## 4. Les quatre pays dérivés du Bénin
 
