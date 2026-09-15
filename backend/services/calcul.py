@@ -13,7 +13,8 @@ Les cinq primitives, et rien d'autre :
                              prélèvements d'entrée (``CIF+TOUS_SAUF_TVA``,
                              ``CIF+TOUS_SAUF_SOI``)
 ``SOMME(TOUS_SAUF_SOI)``     la somme des autres droits, **sans** la valeur
-``%DD``                      un pourcentage du *montant* du droit de douane
+``%<CODE>``                  un pourcentage du *montant* d'un autre droit,
+                             désigné par son code (``%DD``)
 ``xQTE``                     droit spécifique : montant unitaire × quantité
 ===========================  ================================================
 
@@ -26,16 +27,24 @@ Trois règles gouvernent tout le reste :
    le total est marqué ``PARTIEL``.
 2. **Un total partiel se dit.** Un total qui omet une accise n'est pas prudent,
    il est faux — il doit annoncer ce qu'il omet.
-3. **La préférence ne réduit que le droit de douane.** TVA, accises, redevances
-   et prélèvements communautaires restent dus : c'est ce que liquide la douane.
+3. **La préférence ne réduit que les prélèvements qu'on lui désigne.** Lesquels
+   relève du droit national, pas du moteur : l'Algérie exonère aussi le DAPS
+   pour les produits des listes (A) et (B) admis sous ZLECAf (circulaire
+   482/2024, partie II-2, citant l'art. 2 de la loi de finances complémentaire
+   2018), quand ailleurs seul le droit de douane est démantelé. Le moteur reçoit
+   donc la liste des taux préférentiels ; il ne la déduit jamais. Tout ce qui
+   n'y figure pas reste dû au taux NPF.
 """
 
 from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
 
-#: Familles dont un prélèvement relève, dans l'ordre de liquidation. Le socle
-#: livre déjà ses droits dans cet ordre ; le moteur ne le recalcule pas.
+#: Le seul code que le moteur connaisse, et il lui vient de la grammaire des
+#: assiettes : « CIF + tous les droits **sauf la TVA** » doit savoir laquelle
+#: exclure. Tout le reste — quels prélèvements existent, dans quel ordre ils se
+#: liquident, sur quelle assiette, et lesquels une préférence remise — vient du
+#: socle ou de l'appelant. Aucune méthode nationale n'est figée ici.
 FAMILLE_TVA = "tva"
 
 COMPLET = "COMPLET"
@@ -47,6 +56,7 @@ MANQUE_TAUX = "TAUX_INDISPONIBLE"
 MANQUE_ASSIETTE = "ASSIETTE_INDISPONIBLE"
 MANQUE_QUANTITE = "QUANTITE_REQUISE"
 MANQUE_CHANGE = "TAUX_DE_CHANGE_REQUIS"
+MANQUE_COMPOSANT = "ASSIETTE_INCOMPLETE"
 
 
 def _montant_unitaire(specifique: Any) -> Optional[float]:
@@ -69,27 +79,66 @@ def _codes_de_l_assiette(assiette: str) -> List[str]:
     return [c for c in reste.split("+") if c and not c.startswith("TOUS_")]
 
 
+def _composants(
+    codes: List[str],
+    montants: Dict[str, float],
+    codes_de_la_position: set,
+):
+    """Additionner les droits nommés par une assiette.
+
+    Un code que l'assiette nomme peut manquer pour deux raisons opposées, et
+    les confondre fausse le montant sans le dire :
+
+    - il **n'existe pas sur cette position** : le prélèvement ne s'y applique
+      pas, il ne contribue à rien, et c'est normal ;
+    - il **existe mais n'a pas été liquidé** : l'assiette est alors amputée de
+      sa part. Le compter pour zéro rendrait un montant trop faible, crédible
+      et faux. On refuse de le faire.
+
+    Retourne ``(somme, manquants, sans_objet)``.
+    """
+    somme = 0.0
+    manquants, sans_objet = [], []
+    for code in codes:
+        if code in montants:
+            somme += montants[code]
+        elif code in codes_de_la_position:
+            manquants.append(code)
+        else:
+            sans_objet.append(code)
+    return somme, manquants, sans_objet
+
+
 def _assiette_de(
     droit: Dict[str, Any],
     cif: float,
     calcules: List[Dict[str, Any]],
     quantite: Optional[float],
     taux_de_change: Optional[float],
+    codes_de_la_position: set,
 ):
-    """Rendre (assiette, manque). Une assiette introuvable ne vaut jamais CIF."""
+    """Rendre (assiette, manque, détail). Une assiette introuvable ne vaut
+    jamais CIF, et une assiette amputée ne se complète jamais par un zéro."""
     assiette = droit.get("assiette")
+    detail: Dict[str, Any] = {}
     if not assiette:
-        return None, MANQUE_ASSIETTE
+        return None, MANQUE_ASSIETTE, detail
 
     montants = {d["code"]: d["montant"] for d in calcules}
 
     if assiette == "xQTE":
         if quantite is None:
-            return None, MANQUE_QUANTITE
-        return quantite, None
+            return None, MANQUE_QUANTITE, detail
+        return quantite, None, detail
 
-    if assiette == "%DD":
-        return montants.get("DD", 0.0), None
+    if assiette.startswith("%"):
+        # Pourcentage du montant d'un autre droit, quel qu'il soit : le code est
+        # dans l'assiette, il n'est pas connu du moteur.
+        reference = assiette[1:]
+        base, manquants, sans_objet = _composants([reference], montants, codes_de_la_position)
+        if manquants or sans_objet:
+            return None, MANQUE_COMPOSANT, {"composants_absents": [reference]}
+        return base, None, detail
 
     if assiette == "SOMME(TOUS_SAUF_SOI)":
         base = sum(montants.values())
@@ -101,9 +150,16 @@ def _assiette_de(
         elif "TOUS_SAUF_SOI" in assiette:
             base = cif + sum(montants.values())
         else:
-            base = cif + sum(montants.get(c, 0.0) for c in _codes_de_l_assiette(assiette))
+            part, manquants, sans_objet = _composants(
+                _codes_de_l_assiette(assiette), montants, codes_de_la_position
+            )
+            if manquants:
+                return None, MANQUE_COMPOSANT, {"composants_absents": manquants}
+            if sans_objet:
+                detail["composants_sans_objet"] = sans_objet
+            base = cif + part
     else:
-        return None, MANQUE_ASSIETTE
+        return None, MANQUE_ASSIETTE, detail
 
     plafond = droit.get("plafond")
     if plafond:
@@ -112,10 +168,10 @@ def _assiette_de(
             # Un plafond exprimé dans une autre devise que la valeur déclarée
             # exige une conversion. Sans elle, la borne est inconnue : on ne
             # l'ignore pas, on le dit.
-            return None, MANQUE_CHANGE
+            return None, MANQUE_CHANGE, detail
         borne = montant_max * (taux_de_change or 1.0)
         base = min(base, borne)
-    return base, None
+    return base, None, detail
 
 
 def _liquider(
@@ -123,11 +179,12 @@ def _liquider(
     cif: float,
     quantite: Optional[float],
     taux_de_change: Optional[float],
-    remise_dd_pct: Optional[float],
+    taux_preferentiels: Optional[Dict[str, float]],
 ) -> Dict[str, Any]:
     lignes: List[Dict[str, Any]] = []
     calcules: List[Dict[str, Any]] = []
-    manques: List[Dict[str, str]] = []
+    manques: List[Dict[str, Any]] = []
+    codes_de_la_position = {d.get("code") for d in droits}
 
     for droit in droits:
         code = droit.get("code", "?")
@@ -167,20 +224,26 @@ def _liquider(
                         "ramené à l'unité monétaire principale"
                     )
 
-        assiette, manque = _assiette_de(droit, cif, calcules, quantite, taux_de_change)
+        assiette, manque, detail = _assiette_de(
+            droit, cif, calcules, quantite, taux_de_change, codes_de_la_position
+        )
+        ligne.update(detail)
         if manque is None and taux is None:
             manque = MANQUE_TAUX
 
         if manque:
             ligne["statut"] = manque
             ligne["montant"] = None
-            manques.append({"code": code, "motif": manque})
+            manque_detail = {"code": code, "motif": manque}
+            if detail.get("composants_absents"):
+                manque_detail["composants"] = detail["composants_absents"]
+            manques.append(manque_detail)
             lignes.append(ligne)
             continue
 
-        if code == "DD" and remise_dd_pct is not None:
+        if taux_preferentiels and code in taux_preferentiels:
             ligne["taux_npf_pct"] = taux
-            taux = remise_dd_pct
+            taux = taux_preferentiels[code]
             ligne["taux_pct"] = taux
             ligne["regime_applique"] = "preference"
 
@@ -213,13 +276,16 @@ def calculer(
     *,
     quantite: Optional[float] = None,
     taux_de_change: Optional[float] = None,
-    preference_dd_pct: Optional[float] = None,
+    taux_preferentiels: Optional[Dict[str, float]] = None,
 ) -> Dict[str, Any]:
     """Liquider une position du socle, en NPF et — s'il y a lieu — en préférence.
 
-    ``preference_dd_pct`` n'est passé que lorsque le régime préférentiel a été
-    autorisé en amont : le moteur applique un taux, il ne décide pas du droit à
-    la préférence. Il ne l'applique qu'au droit de douane.
+    ``taux_preferentiels`` est une table ``{code: taux}`` établie en amont :
+    le moteur applique des taux, il ne décide ni du droit à la préférence ni de
+    son périmètre. Elle vaut souvent ``{"DD": 0}``, mais pas toujours — sous
+    ZLECAf l'Algérie exonère aussi le DAPS, et l'y oublier surestimerait de
+    70 points le droit liquidé sur les positions concernées. Tout prélèvement
+    absent de la table reste dû à son taux NPF.
     """
     if valeur_cif is None or valeur_cif < 0:
         raise ValueError("valeur_cif doit être un nombre positif")
@@ -234,10 +300,11 @@ def calculer(
         "valeur_cif": valeur_cif,
         "npf": _liquider(droits, valeur_cif, quantite, taux_de_change, None),
     }
-    if preference_dd_pct is not None:
+    if taux_preferentiels:
         resultat["preference"] = _liquider(
-            droits, valeur_cif, quantite, taux_de_change, preference_dd_pct
+            droits, valeur_cif, quantite, taux_de_change, taux_preferentiels
         )
+        resultat["preference"]["prelevements_remises"] = sorted(taux_preferentiels)
         economie = resultat["npf"]["total_droits"] - resultat["preference"]["total_droits"]
         resultat["economie"] = round(economie, 2)
     return resultat

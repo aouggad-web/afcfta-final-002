@@ -14,6 +14,7 @@ from services.calcul import (
     INDISPONIBLE,
     MANQUE_ASSIETTE,
     MANQUE_CHANGE,
+    MANQUE_COMPOSANT,
     MANQUE_QUANTITE,
     MANQUE_TAUX,
     PARTIEL,
@@ -148,6 +149,54 @@ def test_un_droit_specifique_ne_se_liquide_jamais_sur_la_valeur():
     assert lignes(r)["DD"]["montant"] == 40.0
 
 
+def test_le_pourcentage_porte_sur_le_code_que_l_assiette_nomme():
+    """« %DD » n'est pas une méthode figée : le code est dans l'assiette."""
+    r = calculer(
+        position(
+            droit("DD", 20, "CIF", "droit"),
+            droit("TCI", 10, "CIF", "communautaire"),
+            droit("CAC", 50, "%TCI", "communautaire"),
+        ),
+        1000,
+    )
+    assert lignes(r)["CAC"]["base"] == 100.0  # le montant du TCI, pas celui du DD
+    assert lignes(r)["CAC"]["montant"] == 50.0
+
+
+def test_un_composant_non_liquide_ampute_l_assiette_au_lieu_de_valoir_zero():
+    """Si la TVA s'assied sur CIF+DD+TCI et que le TCI n'a pas pu être liquidé,
+    compter le TCI pour zéro rendrait un montant trop faible — et crédible."""
+    r = calculer(
+        position(
+            droit("DD", 10, "CIF", "droit"),
+            droit("TCI", None, "CIF", "communautaire"),  # taux indisponible
+            droit("TVA", 20, "CIF+DD+TCI", "tva"),
+        ),
+        1000,
+    )
+    tva = lignes(r)["TVA"]
+    assert tva["statut"] == MANQUE_COMPOSANT
+    assert tva["montant"] is None
+    assert tva["composants_absents"] == ["TCI"]
+    assert r["npf"]["etat"] == PARTIEL
+
+
+def test_un_composant_absent_de_la_position_est_sans_objet_et_signale():
+    """Ghana : l'assiette nomme le prélèvement CEDEAO, que cette position ne
+    porte pas. Il ne s'applique pas — mais le résultat le dit."""
+    r = calculer(
+        position(
+            droit("DD", 10, "CIF", "droit"),
+            droit("TVA", 15, "CIF+DD+CEDEAO", "tva"),
+        ),
+        1000,
+    )
+    tva = lignes(r)["TVA"]
+    assert tva["statut"] == CALCULE
+    assert tva["base"] == 1100.0
+    assert tva["composants_sans_objet"] == ["CEDEAO"]
+
+
 # ── Le modificateur plafond ───────────────────────────────────────────────────
 def test_plafond_borne_l_assiette():
     d = droit("TCI", 10, "CIF", "communautaire", plafond={"montant": 500.0, "devise": None})
@@ -217,14 +266,14 @@ def test_une_valeur_negative_est_refusee():
         calculer(position(droit("DD", 20)), -1)
 
 
-# ── La préférence ne réduit que le droit de douane ────────────────────────────
-def test_la_preference_ne_reduit_que_le_droit_de_douane():
+# ── La préférence ne réduit que ce qu'on lui désigne ──────────────────────────
+def test_la_preference_ne_touche_que_les_prelevements_designes():
     p = position(
         droit("DD", 20, "CIF", "droit"),
         droit("RS", 1, "CIF", "communautaire"),
         droit("TVA", 18, "CIF+TOUS_SAUF_TVA", "tva"),
     )
-    r = calculer(p, 1000, preference_dd_pct=0)
+    r = calculer(p, 1000, taux_preferentiels={"DD": 0})
 
     npf, pref = lignes(r, "npf"), lignes(r, "preference")
     assert npf["DD"]["montant"] == 200.0 and pref["DD"]["montant"] == 0.0
@@ -236,8 +285,31 @@ def test_la_preference_ne_reduit_que_le_droit_de_douane():
     assert pref["TVA"]["taux_pct"] == 18
 
 
+def test_le_perimetre_de_la_preference_n_est_jamais_deduit_par_le_moteur():
+    """Algérie : sous ZLECAf, le DAPS est exonéré au même titre que le droit de
+    douane pour les produits des listes (A) et (B) — circulaire 482/2024,
+    partie II-2, citant l'art. 2 de la loi de finances complémentaire 2018.
+    Réduire le seul DD surestimerait ici le droit liquidé de 700 sur 1 000."""
+    dza = position(
+        droit("DAPS", 70, "CIF", "droit"),
+        droit("DD", 30, "CIF", "droit"),
+        droit("TCS", 3, "CIF", "accise"),
+        droit("TVA", 19, "CIF+DAPS+DD", "tva"),
+    )
+    partiel = calculer(dza, 1000, taux_preferentiels={"DD": 0})
+    complet = calculer(dza, 1000, taux_preferentiels={"DD": 0, "DAPS": 0})
+
+    assert lignes(partiel, "preference")["DAPS"]["montant"] == 700.0
+    assert lignes(complet, "preference")["DAPS"]["montant"] == 0.0
+    # L'exonération du DAPS allège aussi l'assiette de la TVA (CIF+DAPS+DD).
+    assert lignes(complet, "preference")["TVA"]["base"] == 1000.0
+    assert complet["preference"]["prelevements_remises"] == ["DAPS", "DD"]
+    # La taxe de consommation spécifique, elle, reste due dans les deux cas.
+    assert lignes(complet, "preference")["TCS"]["montant"] == 30.0
+
+
 def test_la_preference_conserve_le_taux_npf_pour_comparaison():
-    r = calculer(position(droit("DD", 20, "CIF", "droit")), 1000, preference_dd_pct=5)
+    r = calculer(position(droit("DD", 20, "CIF", "droit")), 1000, taux_preferentiels={"DD": 5})
     ligne = lignes(r, "preference")["DD"]
     assert ligne["taux_npf_pct"] == 20
     assert ligne["taux_pct"] == 5

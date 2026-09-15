@@ -176,7 +176,7 @@ connaissance par pays :
 | `CIF` | valeur en douane | `DD`, `RS`, `IDF` |
 | `CIF+<codes>` | CIF augmenté du montant des droits nommés | `TVA` sur `CIF+DD+TCI` |
 | `SOMME(<codes>)` | somme de montants de droits, **sans** le CIF | `RPD/IMPOR` TUN, assiette `SOMME D.T` |
-| `%DD` | pourcentage du **montant** d'un autre droit | `CAC` CEMAC, centimes additionnels |
+| `%<CODE>` | pourcentage du **montant** d'un autre droit, que l'assiette nomme | `CAC` CEMAC, centimes additionnels sur le droit |
 | `×QTE` | droit spécifique : montant unitaire × quantité | `DSV` TUN, `0,1 dinar`/QCS |
 
 Et un **modificateur**, applicable à n'importe laquelle : `plafond(montant,
@@ -190,6 +190,21 @@ Cinq primitives et un modificateur : c'est le compte exact des formes relevées
 dans les sources (neuf expressions `base` + quatre `assiette` tunisiennes). Une
 assiette qui n'entrerait dans aucune est un `INDISPONIBLE` motivé, pas une
 sixième primitive ajoutée à la hâte.
+
+**Aucune méthode nationale n'est figée dans le moteur.** Les codes de
+prélèvements sont portés par les assiettes, jamais écrits dans le code : `%DD`
+n'est qu'un cas de `%<CODE>`. Le seul terme que le moteur connaisse est la TVA,
+et parce que la grammaire le lui impose — « CIF + tous les droits sauf la TVA »
+doit savoir laquelle exclure. Quels prélèvements existent, dans quel ordre ils
+se liquident, sur quelle assiette, et lesquels une préférence remise : tout
+cela vient du socle ou de l'appelant.
+
+Corollaire, qui vaut règle : **un composant d'assiette qui manque n'est jamais
+compté pour zéro.** Si la TVA s'assied sur `CIF+DD+TCI` et que le TCI n'a pas
+pu être liquidé, l'assiette est amputée : le moteur le dit et rend la ligne
+indisponible, au lieu d'un montant plus faible et crédible. Un code que la
+position ne porte pas, en revanche, est simplement sans objet — signalé, et le
+calcul se poursuit.
 
 Deux règles générales, qui remplacent trente-sept profils :
 - `CIF+TOUS_SAUF_TVA` est une **formule**, pas une énumération : la TVA
@@ -258,9 +273,22 @@ Deux précisions qui évitent une régression :
   auprès des douanes locales », jamais un montant.
 
 Deux règles de fond :
-- la préférence ne réduit que le **droit de douane**. TVA, accises, redevances
-  et prélèvements communautaires restent dus — c'est ce que liquide la douane,
-  et c'est ce qui rend le montant ZLECAf réaliste au lieu d'optimiste.
+
+- **la préférence ne réduit que les prélèvements qu'un texte lui désigne — et
+  ce périmètre est national, jamais déduit.** « Seul le droit de douane est
+  démantelé » est la figure la plus courante, pas une règle générale : l'Algérie
+  exonère aussi le **DAPS** pour les produits des listes (A) et (B) admis sous
+  ZLECAf (circulaire 482/2024, partie II-2, citant l'art. 2 de la loi de
+  finances complémentaire 2018 ; déjà encodé dans
+  `services/zlecaf_schedule_dza.py`). L'oublier n'est pas une approximation :
+  sur la position `2201101100`, à 100 000 DA de valeur, le total liquidé passe
+  de 108 006 DA — DD seul remis — à 24 440 DA, soit un écart de 83 566 DA.
+  Le moteur reçoit donc une table `{code: taux}` établie en amont ; il ne
+  décide ni du droit à la préférence, ni de son périmètre.
+- **tout prélèvement absent de cette table reste dû à son taux NPF.** TVA,
+  accises et redevances ne sont pas « remisées » ; elles suivent mécaniquement
+  l'assiette réduite quand elle les concerne. C'est ce qui rend le montant
+  ZLECAf réaliste au lieu d'optimiste.
 - origine hors ZLECAf → régime NPF, même décision sur toute la chaîne.
 
 ---
