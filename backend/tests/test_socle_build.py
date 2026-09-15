@@ -284,6 +284,7 @@ def test_une_construction_partielle_n_ampute_pas_le_manifeste(tmp_path, monkeypa
         avant = json.load(f)
     if "CIV" not in avant["pays"] or len(avant["pays"]) < 2:
         pytest.skip("manifeste trop réduit pour ce test")
+    autres_avant = {iso: meta for iso, meta in avant["pays"].items() if iso != "CIV"}
     sauvegarde = tmp_path / "MANIFESTE.json"
     shutil.copy(manifeste, sauvegarde)
     try:
@@ -291,7 +292,7 @@ def test_une_construction_partielle_n_ampute_pas_le_manifeste(tmp_path, monkeypa
         with open(manifeste, encoding="utf-8") as f:
             apres = json.load(f)
         assert set(apres["pays"]) == set(avant["pays"])
-        assert apres["totaux"]["positions"] == avant["totaux"]["positions"]
+        assert {iso: meta for iso, meta in apres["pays"].items() if iso != "CIV"} == autres_avant
     finally:
         shutil.copy(sauvegarde, manifeste)
 
