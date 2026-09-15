@@ -108,7 +108,7 @@ c'est ce que la douane liquide.
 |---|---|---|
 | DJI, ERI : fichiers vides | 2 pays | `INDISPONIBLE` déclaré, jamais estimé |
 | TUN : schéma `taxes_import[]` non lu | 17 542 positions | adaptateur au chantier L1 |
-| SACU (ZAF, NAM, BWA, LSO, SWZ) : le crawl SARS ne porte **aucune TVA** | 5 pays | table nationale sourcée, ou `INDISPONIBLE` — jamais fabriquée |
+| SACU (ZAF, NAM, BWA, LSO, SWZ) : le crawl SARS ne porte **aucune TVA** | 5 pays | collecte des cinq TVA nationales — chantier C1 (§6.1). Total `PARTIEL` marqué en attendant, jamais un taux fabriqué |
 | GHA : `taxes_detail[].tax` sans clé `code` | 5 387 lignes | adaptateur au chantier L1 |
 | SOM : pas de crawl, seulement le fichier ETL | 1 pays | entré dans le socle comme 54ᵉ source — son fichier a le schéma `tariff_lines[]` du Ghana, donc aucun adaptateur supplémentaire ; l'origine ETL est étiquetée sur chaque position, mais le chemin d'exécution reste unique |
 | 339 fichiers `*_progress_*.json` (~3,8 Go) | dépôt | supprimés, ce sont des reliquats de crawl |
@@ -337,30 +337,132 @@ Chacun est livrable seul, mesuré par le harnais de la phase 0.
 | **Acceptation** | un écart nouveau fait échouer la construction ; un socle périmé refuse de servir |
 
 **Dépendances :** L1 → L2 → L3 → L4. L5 démarre dès L2 (elle mesure le moteur,
-pas l'interface). L6 clôt.
+pas l'interface). L6 clôt. Les chantiers de collecte C1 et C2 (§6) sont
+parallèles : ils n'en bloquent aucun.
 
 ---
 
-## 6. Les décisions à prendre avant L1
+## 6. Décisions arbitrées et chantiers de collecte
 
-Trois, et elles conditionnent le socle. Elles se tranchent sur pièce, pas en
-cours de route :
+Les deux premières décisions sont tranchées : **on collecte**. Elles cessent
+d'être des arbitrages et deviennent des chantiers, avec leurs sources nommées
+et leur critère d'acceptation. La troisième reste ouverte.
 
-1. **TVA SACU.** Le crawl SARS ne porte pas la TVA. Soit on ajoute une table
-   nationale sourcée — un taux d'importation par pays, avec sa référence
-   légale, sa date d'entrée en vigueur et son URL officielle, à relever pays
-   par pays avant L1 — soit ces cinq pays servent un total hors TVA
-   explicitement marqué `PARTIEL`. **Recommandation : la table sourcée** — une
-   TVA d'importation est un taux national unique, vérifiable, pas une
-   estimation par position.
-2. **Sort des 14 pays sans nomenclature nationale** (moyennes NPF issues de
-   WITS). Recommandation : servis, mais étiquetés `moyenne NPF SH6` dans la
-   réponse et dans l'interface, jamais présentés comme tarif national.
-3. **Sort de PostgreSQL.** Recommandation : hors du chemin de calcul. Il
-   redevient un cache de lecture optionnel, alimenté par le socle, jamais une
-   source concurrente.
+### 6.1 SACU — ce que la douane liquide réellement
 
----
+La SACU n'est pas cinq régimes juxtaposés, c'est **une union douanière à
+territoire douanier unique**, et cela change la lecture des fichiers :
+
+- **le droit de douane est commun.** Le tarif extérieur commun est celui de
+  l'annexe 1 du SARS Schedule 1. Si les cinq fichiers crawlés portent des
+  colonnes de droits identiques, ce n'est pas un défaut de collecte : c'est le
+  droit applicable. Le socle peut donc légitimement servir la même colonne aux
+  cinq, à condition de le **dire** dans la provenance de la position ;
+- **les droits sont perçus une fois, à la première entrée** dans le territoire
+  douanier commun — un conteneur dédouané à Durban pour un importateur du
+  Lesotho acquitte le droit à Durban, puis circule sans nouveau droit à
+  l'intérieur de l'union ;
+- **les recettes sont mises en commun.** Droits de douane, accises et droits
+  additionnels perçus dans la zone alimentent le *Common Revenue Pool*, tenu
+  et administré par l'Afrique du Sud, puis redistribué aux membres selon la
+  formule de partage (composantes douanière, accises, développement). C'est
+  exactement le mécanisme que vous signalez ;
+- **la TVA à l'importation, elle, n'entre pas dans le pool.** C'est un impôt
+  intérieur, dû à l'importation dans chaque État membre, qu'elle vienne d'un
+  autre membre ou du reste du monde.
+
+**Conséquence pour le calculateur, et elle est nette :** la mise en commun est
+un transfert budgétaire *entre États*. Elle ne change rien à ce que
+l'importateur acquitte. Le calculateur répond « combien dois-je payer », pas
+« à qui l'argent revient in fine » — le pool ne doit donc **jamais** entrer
+dans le montant liquidé. Il a sa place dans la note de provenance, pas dans
+l'arithmétique.
+
+Et surtout : puisque la TVA est hors pool et reste nationale, **la collecte des
+cinq TVA reste indispensable**. C'est ce qui manque aujourd'hui, et le pool ne
+le remplace pas.
+
+#### Chantier C1 — collecte des TVA à l'importation SACU
+
+Le dispositif existe déjà et il est strict : `NationalTaxScraper`
+(`backend/crawlers/countries/national_tax_scraper.py`) archive le document
+officiel avec son SHA-256 et interdit toute extraction de taux sans adaptateur
+dédié (`rate_extraction: FORBIDDEN_WITHOUT_DEDICATED_ADAPTER`). Deux pays
+seulement sont passés par lui à ce jour (UGA, GHA). Les cinq sources SACU sont
+**déjà enregistrées** dans `all_countries_registry.py`, toutes en
+`PENDING_OFFICIAL_COLLECTION` :
+
+| Pays | Administration | État de l'URL au 15/09/2026 |
+|---|---|---|
+| ZAF | South African Revenue Service (SARS) | joignable (200) |
+| BWA | Botswana Unified Revenue Service (BURS) | joignable (200) |
+| NAM | Namibia Revenue Agency (NamRA) | enregistrée, non vérifiée — injoignable depuis l'environnement de collecte |
+| LSO | Lesotho Revenue Authority (LRA) | enregistrée, non vérifiée — injoignable depuis l'environnement de collecte |
+| SWZ | Eswatini Revenue Service | **aucune URL identifiée** — à trouver avant toute collecte |
+
+Instrument visé par pays : la loi TVA en vigueur (pour l'Afrique du Sud, le
+*VAT Act* 89/1991 et sa liste de produits détaxés), plus les avis de taux en
+vigueur.
+
+| | |
+|---|---|
+| **Livrable** | cinq documents archivés avec SHA-256 sous `backend/data/national_taxes/raw/<ISO>/`, un adaptateur d'extraction par instrument, et le taux versé au socle |
+| **Acceptation** | chaque TVA servie porte sa référence légale, sa date d'entrée en vigueur et l'empreinte du document ; **aucun taux saisi à la main, aucun taux repris d'un pays voisin** ; les positions détaxées ou exonérées sont traitées comme telles et non au taux plein |
+| **Tant que ce n'est pas fait** | le total SACU reste `PARTIEL`, hors TVA, explicitement marqué. Un montant incomplet et signalé vaut mieux qu'un montant complet et inventé |
+
+#### Chantier C2 — dépasser WITS sur les treize pays sans nomenclature nationale
+
+Treize pays sont aujourd'hui servis en moyenne NPF SH6 issue de WITS/TRAINS
+(`crawled_data_service.py:305`) : **AGO, COM, LBY, MDG, MOZ, MRT, MUS, MWI,
+SDN, STP, SYC, ZMB, ZWE**. Une moyenne SH6 n'est pas un tarif : elle ne
+distingue pas les sous-positions nationales et elle vieillit sans le dire.
+
+Les treize ont, eux aussi, une source fiscale nationale déjà enregistrée au
+registre. La recherche porte donc sur le tarif lui-même : portail douanier
+national, tarif intégré publié, loi de finances annuelle, ou tarif du bloc
+régional quand il est effectivement transposé.
+
+| | |
+|---|---|
+| **Livrable** | par pays : une énumération nationale datée, ou le constat argumenté qu'aucune source publique n'existe |
+| **Acceptation** | un pays quitte l'état « moyenne WITS » **uniquement** contre une nomenclature nationale sourcée ; le déficit de couverture est chiffré pays par pays, plus jamais indéterminé |
+| **Tant que ce n'est pas fait** | servis, mais étiquetés `moyenne NPF SH6` dans la réponse **et** dans l'interface, jamais présentés comme tarif national |
+
+C1 et C2 sont des chantiers de **données**, parallèles à L1-L6 : ils ne
+bloquent aucune livraison logicielle, et le socle les absorbe sans changer de
+schéma dès qu'un taux sourcé arrive.
+
+### 6.2 La décision qui reste ouverte — PostgreSQL
+
+**Recommandation : hors du chemin de calcul.** Il redevient un cache de lecture
+optionnel, alimenté par le socle, jamais une source concurrente.
+
+Ce que cela change concrètement, car l'enjeu n'est pas la base elle-même :
+
+- **Aujourd'hui**, `_get_postgres_provider()` est consulté en premier à quatre
+  endroits du service (`authentic_tariff_service.py:903, 1007, 1138, 1295`), et
+  `tariff_provider_service` affiche une politique « PostgreSQL d'abord ». Si la
+  base répond, son taux gagne ; si elle est absente, en panne ou simplement
+  vide pour cette ligne, le code retombe silencieusement sur les fichiers
+  (`_log_etl_fallback`). **Le même code, la même position et la même valeur CIF
+  peuvent donc rendre deux montants différents selon l'état d'une base que le
+  dépôt ne contient pas.** C'est invérifiable : un montant faux en production
+  ne se reproduit pas en local, et aucun test ne peut le fixer.
+- **Après**, le socle est la seule source. Le montant devient reproductible :
+  même position, même empreinte de fichier, même résultat, partout. PostgreSQL
+  garde son intérêt là où il est réellement utile — servir vite une recherche
+  sur 347 778 positions — mais il est alors *alimenté par le socle*, donc il ne
+  peut plus contredire le fichier, seulement le restituer.
+- **Ce qu'on perd** : la possibilité de corriger un taux en production par une
+  écriture en base, sans passer par une recollecte. C'est précisément ce que la
+  règle 2 (« aucune valeur fabriquée ») interdit par ailleurs — mais si cette
+  pratique a cours aujourd'hui, il faut le savoir avant de fermer la porte.
+
+**La question qui vous revient** est donc celle-ci, et elle est simple : la
+base PostgreSQL de production contient-elle aujourd'hui des taux qui ne sont
+dans aucun fichier du dépôt ? Si oui, ils doivent être exportés vers le socle
+avant la bascule, et leur provenance établie. Si non, la sortie est sans risque
+et peut être faite dès L1.
 
 ## 7. Les règles de ce plan
 
@@ -381,8 +483,9 @@ cours de route :
 
 ## 8. Hors périmètre
 
-- La recollecte des pays vides (DJI, ERI) et le remplacement des moyennes WITS :
-  programme de collecte, calendrier propre, ne bloque aucun chantier ci-dessus.
+- La recollecte des pays vides (DJI, ERI). Les deux autres fronts de collecte
+  — TVA SACU et dépassement de WITS — sont désormais dans le périmètre, comme
+  chantiers C1 et C2 du §6, avec leur calendrier propre.
 - La validation juridique pays par pays des 54 nomenclatures. Ce plan garantit
   que le taux **collecté** est celui qui est **servi**, liquidé sur la bonne
   assiette et identifiable jusqu'à son fichier. Il ne certifie pas
