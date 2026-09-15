@@ -347,7 +347,15 @@
      "Journal officiel de la République du Cameroun.",
      "Commission de la CEMAC, pour l'articulation entre le TEC CEMAC et le barème ZLECAf."
     ],
-    "avertissement": "Un accord CEMAC ne vaut pas reconnaissance d'origine au niveau continental : les deux régimes ne se confondent pas."
+    "avertissement": "Un accord CEMAC ne vaut pas reconnaissance d'origine au niveau continental : les deux régimes ne se confondent pas.",
+    "progres_2026-09-15": {
+     "source_officielle_lue": "http://www.douanes.cm/douanes-cameroun/6582/delivrance-du-tout-premier-certificat-dorigine-zlecaf/ — Douanes camerounaises, publication de l'administration",
+     "verbatim": "« en date du 06 octobre 2022, le Chef du Bureau Principal des Douanes Hors Classe de Douala Aéroport, Achille OLEME, a procédé à la signature et à la délivrance du tout premier certificat d'origine ZLECAF À L'EXPORTATION des marchandises produites localement par le GIC AFATEX »",
+     "ce_que_cela_etablit": "L'administration douanière camerounaise documente elle-même son entrée dans la ZLECAf par un acte d'EXPORTATION. Rien dans sa publication ne concerne l'admission d'origines à l'importation. La distinction que porte cette fiche est donc confirmée par la source la mieux placée.",
+     "ce_que_cela_n_etablit_pas": "Ni acte d'application à l'importation, ni liste d'origines admises. Le Cameroun reste sans aucune des deux.",
+     "precaution_de_methode": "Deux relevés intermédiaires ont été écartés comme FAUX NÉGATIFS plutôt que consignés. Le portail cameroontradeportal.cm sert un index de répertoire Apache de 685 octets, non une application : y compter zéro mention n'aurait rien mesuré. La page d'accueil de douanes.cm rend 146 Ko sans une seule occurrence du mot « origine », ce qui trahit une coquille et non une absence. Seule la page d'article, qui rend 184 Ko et 19 occurrences de ZLECAF, prouve que le site sert bien du contenu — et permet donc de conclure.",
+     "absence_de_l_archive": "Le Cameroun ne figure pas parmi les vingt-quatre pays de gazettes.africa."
+    }
    },
    "RWA": {
     "statut": "OFFRE_SEULE",
