@@ -1,0 +1,144 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "ETH",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "INSTRUMENT_VERIFIE_PRIMAIRE_ORIGINES_NON_VERIFIEES",
+ "verified_at": "2026-09-14",
+ "evidence_level": "mixte — le règlement est désormais lu dans le Federal Negarit Gazette lui-même ; la liste des origines reste sur presse secondaire et n'est PAS opposable.",
+ "partner_list_reported": {
+  "count": 24,
+  "recipient": "Ethiopian Customs Commission",
+  "iso3": [
+   "DZA",
+   "BDI",
+   "BWA",
+   "CMR",
+   "EGY",
+   "SWZ",
+   "GMB",
+   "GHA",
+   "KEN",
+   "LSO",
+   "MWI",
+   "MUS",
+   "MAR",
+   "MOZ",
+   "NAM",
+   "NGA",
+   "RWA",
+   "SYC",
+   "ZAF",
+   "SSD",
+   "TZA",
+   "TUN",
+   "UGA",
+   "ZMB"
+  ],
+  "trading_began": "2025-10-09",
+  "source": "https://birrmetrics.com/customs-commission-receives-official-list-of-24-afcfta-nations-including-egypt-eligible-for-preferential-tariffs/",
+  "source_nature": "presse économique — secondaire",
+  "missing": "date de réception de la liste, numéro de l'avis ministériel, date d'application effective des réductions. Sans ces éléments la liste n'est pas opposable.",
+  "contradiction_avec_le_reglement": "La liste de 24 rapportée par la presse inclut le Soudan du Sud, qui n'a pas déposé ses instruments de ratification. Or l'article 2(4) du règlement réserve le bénéfice aux pays ayant « signed, ratified, and acceded ». La liste rapportée échoue donc au test posé par le règlement lui-même : raison supplémentaire de ne pas l'adopter sans l'avis ministériel."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "SATISFAIT — Federal Negarit Gazette n° 55 du 14 juillet 2025, dispositif archivé",
+  "2_liste_officielle_origines_reciproques": "NON SATISFAIT — l'article 3(2) délègue la liste à un avis du Ministry of Trade and Regional Integration, qui n'a pas été obtenu",
+  "3_bareme_au_niveau_de_la_ligne": "SATISFAIT — instantané ETH de 5 868 lignes",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION — annexes 2 et 4, certificat d'origine obligatoire"
+ },
+ "note_coherence": "Le statut PARTNER_NOTICE_REQUIRED déjà porté par le dépôt est exactement juste : le règlement délègue effectivement la liste à un avis ministériel. La nouveauté est qu'un tel avis existerait, reçu par la commission des douanes.",
+ "remaining_work": [
+  "Obtenir l'avis du Ministry of Trade and Regional Integration listant les origines admises, avec sa date et son numéro. C'est le seul verrou restant : tout le reste est établi.",
+  "Vérifier la catégorie (A, B ou C) de chaque ligne du barème collecté — seule la catégorie A est réduite à ce jour (article 3(3)).",
+  "Implémenter la règle du moins-disant de l'article 3(5) : comparer NPF et taux ZLECAf, retenir le plus bas.",
+  "Traiter la surtaxe du règlement 133/2007 (décroissante) et l'extinction de la Social Development Levy du règlement 519/2022 pour les catégories A et B."
+ ],
+ "instrument": {
+  "id": "Council of Ministers Regulation No. 574/2025",
+  "title": "Regulation for the Implementation of the Concession of Duty Tariff Rates on Goods for the African Continental Free Trade Area",
+  "authority": "Conseil des ministres, République fédérale démocratique d'Éthiopie",
+  "signataire": "Abiy Ahmed (Dr.), Premier ministre",
+  "publication_venue": "Federal Negarit Gazette, 31st Year No. 55",
+  "published": "2025-07-14",
+  "source_url": "https://www.metaappz.com/pdf/ethiopian_laws/federal/2025/re_574_2025.pdf",
+  "pdf_sha256": "3bd4acae2a84b29bb2577ce29b2f4cd5d11e91b40a5a228d9beae1245fcf20bb",
+  "pdf_pages": 419,
+  "texte_archive": "sources/ETH_reg_574-2025_negarit_55.texte-extrait.txt",
+  "sha256": "68f8c7dacd103db0885b5844df4b072cd19c996d084e71fb7252a318b4ccbbf7",
+  "pdf_non_archive": "PDF intégral de 13 Mo non versé au dépôt ; seul le dispositif (pages 2 à 11) est archivé, suivant le parti pris retenu pour la circulaire algérienne et la directive UEMOA.",
+  "habilitation": "Proclamation n° 1124/2019 ratifiant l'Accord ; Proclamation n° 67/1985 (SH)",
+  "entree_en_vigueur": "un mois après publication, article 8(1)",
+  "effet_du_bareme": "1er janvier 2021, article 8(2) — rétroactif de plus de quatre ans sur la publication"
+ },
+ "dispositif_verbatim": {
+  "origines_deleguees": {
+   "article": "3(2)",
+   "verbatim": "The Free Trade Area Tariff Schedule referred to in Sub Article (1) of this Article shall be applicable only to the list of Member States officially notified by the Ministry of Trade and Regional Integration.",
+   "portee": "Le règlement ne nomme aucun pays. Sans l'avis ministériel, aucune origine n'est admise : le barème existe mais ne s'applique à personne."
+  },
+  "definition_des_etats_membres": {
+   "article": "2(4)",
+   "verbatim": "“Member States” refers to countries that have signed, ratified, and acceded to the African Continental Free Trade Area Agreement.",
+   "portee": "La ratification est une condition posée par le règlement lui-même, et non seulement par le registre continental."
+  },
+  "categorie_A_seule": {
+   "article": "3(3)",
+   "verbatim": "Tariff reductions outlined in Sub Article (1) of this Article shall apply exclusively to goods classified under Category “A”.",
+   "portee": "Les catégories B et C restent au NPF tant que le ministère des Finances ne les a pas différenciées et notifiées."
+  },
+  "regle_du_moins_disant": {
+   "article": "3(5) et 3(6)",
+   "verbatim": "If the tariff under the Standard Tariff Rules is lower than the tariff specified in the Free Trade Area Tariff Schedule, goods originating from Member States may be treated under the terms of the Standard Tariff Rules.",
+   "portee": "La préférence ne peut jamais renchérir un droit : le NPF s'applique s'il est plus bas. Une comparaison que le calculateur doit faire, et non présumer."
+  },
+  "surtaxe_maintenue_mais_decroissante": {
+   "article": "5(1) et 5(2)",
+   "verbatim": "The Surcharge imposed on imported goods under Council of Ministers Regulation No. 133/2007 shall continue to apply to goods imported from Member States. Notwithstanding Sub Article (1), the Surcharge applied to goods classified under Categories “A” and “B” shall be gradually reduced in line with the Free Trade Area Tariff Schedule.",
+   "portee": "La surtaxe survit à la préférence mais décroît avec elle. La réduire au même rythme que le droit, ou l'oublier, sont deux fautes opposées."
+  },
+  "prelevement_social_supprime": {
+   "article": "5(3)",
+   "verbatim": "Any duty, including the Social Development Levy imposed under Council of Ministers Regulation No. 519/2022 on the Social Development Levy, shall not apply to goods classified under Categories “A” and “B” after the date of entry into force of the Agreement.",
+   "portee": "Une taxe connexe perçue au dédouanement s'éteint avec la préférence. À ne pas confondre avec la surtaxe, qui elle subsiste."
+  },
+  "non_remboursement": {
+   "article": "6",
+   "verbatim": "Taxes paid on goods imported from Member States prior to the date of entry into force of this Regulation shall not be subject to refund.",
+   "portee": "Le barème rétroagit au 1er janvier 2021 sans ouvrir droit à restitution."
+  }
+ },
+ "table_de_demantelement": {
+  "intitule": "THE MANNER OF IMPLEMENTATION OF TARIFF REDUCTION FOR AFCFTA",
+  "base": "tarif applicable en 2019",
+  "regle": "un dixième du taux de base retranché chaque année, de 2021 à 2030, pour la catégorie A",
+  "lignes_lues": {
+   "0": 0.0,
+   "5": 0.5,
+   "10": 1.0,
+   "20": 2.0,
+   "30": 3.0,
+   "35": 3.5
+  }
+ },
+ "ancienne_lecture_secondaire": {
+  "note": "Conservée pour mémoire : ce que le dépôt tenait de sources secondaires avant lecture du Gazette. Tout s'est vérifié, sauf que la liste d'origines reste non obtenue.",
+  "contenu": {
+   "id": "Council of Ministers Regulation No. 574/2025",
+   "title": "Règlement du Conseil des ministres mettant en œuvre les concessions tarifaires ZLECAf",
+   "authority": "Conseil des ministres, République fédérale démocratique d'Éthiopie",
+   "published": "2025-07-14",
+   "publication_venue": "Federal Negarit Gazette",
+   "effective_from": "un mois après publication, soit mi-août 2025",
+   "schedule_retroactive_to": "2021-01-01",
+   "categories": {
+    "A": "environ 90 % des lignes, réduction par tranches annuelles égales sur 10 ans à compter du 1er janvier 2021, zéro atteint en 2030",
+    "B": "jusqu'à 7 % des lignes, réduction sur 8 ans à compter du 1er janvier 2026, zéro en 2033",
+    "C": "3 % au maximum, exclus de la réduction — NPF maintenu"
+   },
+   "conditions": "règles d'origine des annexes 2 et 4, certificat d'origine obligatoire ; le ministère peut suspendre les concessions d'un pays en cas de violation ; aucun remboursement rétroactif des droits acquittés avant l'entrée en vigueur",
+   "origins_delegated": "Le règlement ne nomme aucun pays : il délègue la liste des origines admises à un avis du Ministry of Trade and Regional Integration.",
+   "source": "https://www.afriwise.com/blog/ethiopia-implements-afcfta-tariff-concessions-council-of-ministers-regulation-no-574-2025",
+   "source_nature": "fournisseur d'intelligence juridique — secondaire"
+  }
+ }
+}

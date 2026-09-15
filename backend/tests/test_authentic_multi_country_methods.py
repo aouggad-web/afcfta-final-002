@@ -16,6 +16,23 @@ def _calc(monkeypatch, country, hs_code):
 
 
 def test_kenya_eac_tariff_codes_use_eac_cascade(monkeypatch):
+    """L'IDF et le RDL entrent dans l'assiette de la TVA kényane.
+
+    Ce test attendait auparavant « CIF + DD », assiette 1 250,00 et TVA 200,00.
+    Cette attente encodait le profil codé, que le VAT Act No. 35 of 2013
+    contredit : sa section 14 (1) (c) assied la TVA sur « the amount of duty of
+    customs », expression que la loi définit comme « import duty, excise duty,
+    export duty, countervailing duty, levy, cess, tax or surtax charged under
+    any law [...] relating to customs or excise ».
+
+    L'Import Declaration Fee et le Railway Development Levy sont des levies
+    perçus au titre de la législation douanière : ils entrent donc dans
+    l'assiette. Le texte est archivé et sa détermination consignée dans
+    backend/data/legal_refs/zlecaf_application/EAC_assiette_TVA_2026-09-14.json.
+
+    L'attente est donc corrigée parce que la loi le commande, non pour faire
+    passer le test.
+    """
     result = _calc(monkeypatch, "KEN", "010129")
     by_code = {row["code"]: row for row in result["taxes_breakdown"]}
 
@@ -23,10 +40,10 @@ def test_kenya_eac_tariff_codes_use_eac_cascade(monkeypatch):
     assert by_code["DD"]["amount_npf"] == 250.0
     assert by_code["IDF"]["amount_npf"] == 35.0
     assert by_code["RDL"]["amount_npf"] == 20.0
-    assert by_code["TVA"]["base_expr"] == "CIF + DD"
-    assert by_code["TVA"]["base_value_npf"] == 1_250.0
-    assert by_code["TVA"]["amount_npf"] == 200.0
-    assert result["taxes_summary"]["npf"]["total_taxes_et_droits"] == 505.0
+    assert by_code["TVA"]["base_expr"] == "CIF + DD + IDF + RDL"
+    assert by_code["TVA"]["base_value_npf"] == 1_305.0
+    assert by_code["TVA"]["amount_npf"] == 208.80
+    assert result["taxes_summary"]["npf"]["total_taxes_et_droits"] == 513.80
 
 
 def test_ghana_tariff_codes_use_ghana_vat_and_levy_bases(monkeypatch):

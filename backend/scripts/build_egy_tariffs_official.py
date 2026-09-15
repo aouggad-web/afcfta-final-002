@@ -35,12 +35,52 @@ REPORTS_DIR = REPO_ROOT / "reports"
 
 RATE_RE = re.compile(r"(\d+(?:[.,]\d+)?)\s*%")
 
+# Code officiel inscrit en préfixe de chaque instruction : « ر6790-... »,
+# « غ4046-... », « ق3034-... ».
+#
+# Il faut le lire là, et non dans le tableau InstructionCodes que renvoie
+# l'API. Les deux tableaux de la réponse officielle n'ont ni la même longueur
+# ni le même ordre — sur la position 0101210000, l'API rend onze instructions
+# pour douze codes, et le tableau des codes contient même un doublon. Les
+# apparier par position attribuait donc à chaque texte le code d'une autre
+# instruction : 72,6 % des entrées du fichier produit portaient un code faux.
+# Le garde-fou d'égalité des longueurs ne protégeait de rien, puisque des
+# tailles identiques n'impliquent pas un ordre identique — il se contentait de
+# vider les deux listes quand les tailles différaient, perdant au passage des
+# préférences réelles.
+INSTRUCTION_CODE_RE = re.compile(r"^\s*([رغق]\d+)")
+
+
+def _instruction_code(text: str) -> str | None:
+    """Code officiel d'une instruction, lu dans son propre texte."""
+    match = INSTRUCTION_CODE_RE.match(str(text or ""))
+    return match.group(1) if match else None
+
+
 TAX_CODE_MAPPING = {
     "ضريبة الوارد": "ID",
     "ضريبة قيمه مضافه": "VAT",
     "ضريبة الدمغة": "STAMP",
     "رسم دعم": "SUPPORT",
 }
+
+# Le schéma a porté deux générations de clés pour les mêmes taxes : « DD » et
+# « TVA » d'abord, « ID » et « VAT » depuis. Comparer un document courant à une
+# base sans traduire ces clés ne mesure rien — c'est exactement le défaut qui
+# faisait annoncer 8 793 différences de taux là où il n'y en avait aucune : la
+# base était interrogée sur des clés qu'elle ne portait plus, tout taux non nul
+# ressortait donc comme « modifié ». La comparaison se fait sur le code
+# canonique, quelle que soit la génération du document comparé.
+LEGACY_TAX_CODE_ALIASES = {"DD": "ID", "TVA": "VAT"}
+
+
+def rates_by_canonical_code(line: dict) -> dict[str, float | None]:
+    """Taux par code canonique de taxe, quelle que soit la génération du schéma."""
+    out: dict[str, float | None] = {}
+    for key, value in (line.get("taxes") or {}).items():
+        code = LEGACY_TAX_CODE_ALIASES.get(key, key)
+        out[code] = value.get("rate") if isinstance(value, dict) else value
+    return out
 
 
 def norm_code(code: str) -> str:
@@ -142,8 +182,244 @@ def build_regime_rates(taxes_parsed: list[dict]) -> list[dict]:
     ]
 
 
+def _index(doc: dict) -> dict[str, dict]:
+    return {(p.get("hs_code") or "").replace("/", ""): p for p in doc.get("sub_positions") or []}
+
+
+#: Champ portant le texte verbatim dans chaque entrée de bloc famille.
+#: C'est le seul que le constructeur écrit, et une réconciliation qui en
+#: chercherait un autre serait aveugle aux trois blocs : elle pourrait alors
+#: annoncer zéro texte perdu sans avoir rien mesuré.
+FAMILY_TEXT_FIELD = "text_verbatim"
+
+
+def _family_texts(line: dict, key: str) -> set[str]:
+    """Textes portés par UN bloc famille d'une position."""
+    return {
+        str(entry[FAMILY_TEXT_FIELD])
+        for entry in line.get(key) or []
+        if isinstance(entry, dict) and entry.get(FAMILY_TEXT_FIELD)
+    }
+
+
+def _raw_texts(line: dict) -> set[str]:
+    """Instructions brutes, avant répartition en familles."""
+    return {str(t) for t in (line.get("official_instructions") or [])}
+
+
+#: Champs de provenance et de référence qu'une reconstruction ne doit pas toucher.
+REFERENCE_FIELDS = (
+    "source",
+    "source_url",
+    "detail_endpoint",
+    "source_quality",
+    "code_official",
+    "name_fr_from_previous_crawl",
+    "date_consulted",
+)
+
+#: Blocs dont la reconstruction change volontairement le contenu.
+FAMILY_FIELDS = ("formalities", "restrictions", "fta_preferences", "official_instructions")
+
+
+def reconcile(base: dict, built: dict) -> dict:
+    """Bilan avant/après entre la base de comparaison et le document construit.
+
+    La base est le document que la reconstruction remplace. Toute mesure ici
+    porte sur les codes canoniques de taxe : interroger une base sur des clés
+    qu'elle ne porte plus ne mesure pas une différence de taux, seulement une
+    différence de vocabulaire.
+    """
+    before, after = _index(base), _index(built)
+    common = sorted(set(before) & set(after))
+
+    rates_changed = []
+    for code in common:
+        b, a = rates_by_canonical_code(before[code]), rates_by_canonical_code(after[code])
+        for tax in sorted(set(b) | set(a)):
+            if b.get(tax) != a.get(tax):
+                rates_changed.append(
+                    {"code": code, "tax": tax, "before": b.get(tax), "after": a.get(tax)}
+                )
+                break
+
+    def _null_rates(index: dict) -> int:
+        return sum(
+            1
+            for line in index.values()
+            if not any(r is not None for r in rates_by_canonical_code(line).values())
+        )
+
+    def _family_totals(index: dict) -> dict[str, int]:
+        return {f: sum(len(line.get(f) or []) for line in index.values()) for f in FAMILY_FIELDS}
+
+    lost_raw = sorted(
+        {t for code in common for t in _raw_texts(before[code]) - _raw_texts(after[code])}
+    )
+    # Chaque bloc famille est comparé à lui-même, pas à la réunion des trois :
+    # un texte déplacé d'une famille à une autre est un changement voulu de ce
+    # correctif, une disparition en est un défaut, et seule la mesure par bloc
+    # les distingue.
+    familles_textes = {}
+    for famille in ("formalities", "restrictions", "fta_preferences"):
+        avant = {t for c in common for t in _family_texts(before[c], famille)}
+        apres = {t for c in common for t in _family_texts(after[c], famille)}
+        sortis = sorted(avant - apres)
+        familles_textes[famille] = {
+            "distinct_before": len(avant),
+            "distinct_after": len(apres),
+            "sortis_de_ce_bloc": len(sortis),
+            "retrouves_dans_une_autre_famille": sum(
+                1
+                for t in sortis
+                if any(
+                    t in {x for c in common for x in _family_texts(after[c], autre)}
+                    for autre in ("formalities", "restrictions", "fta_preferences")
+                    if autre != famille
+                )
+            ),
+            "sortis_sample": sortis[:10],
+        }
+    references_changed = [
+        code
+        for code in common
+        if any(before[code].get(f) != after[code].get(f) for f in REFERENCE_FIELDS)
+    ]
+
+    return {
+        "positions": {
+            "before": len(before),
+            "after": len(after),
+            "added": sorted(set(after) - set(before)),
+            "removed": sorted(set(before) - set(after)),
+        },
+        "rates": {
+            "positions_changed": len(rates_changed),
+            "sample": rates_changed[:60],
+            "positions_without_any_rate_before": _null_rates(before),
+            "positions_without_any_rate_after": _null_rates(after),
+        },
+        "families": {
+            "before": _family_totals(before),
+            "after": _family_totals(after),
+        },
+        "instruction_texts": {
+            # Les familles sont mesurées séparément des instructions brutes, et
+            # séparément entre elles. Les réunir en un seul ensemble rendait le
+            # contrôle inopérant : official_instructions contient déjà chaque
+            # texte brut des deux côtés, si bien que l'ensemble réuni restait
+            # identique même en vidant un bloc famille entier. Vérifié : la
+            # suppression de tout un bloc passait inaperçue.
+            "raw_instructions": {
+                "distinct_before": len({t for c in common for t in _raw_texts(before[c])}),
+                "distinct_after": len({t for c in common for t in _raw_texts(after[c])}),
+                "lost": len(lost_raw),
+                "lost_sample": lost_raw[:20],
+            },
+            "par_famille": familles_textes,
+        },
+        "references": {
+            "fields_checked": list(REFERENCE_FIELDS),
+            "positions_changed": len(references_changed),
+            "sample": references_changed[:20],
+        },
+        "provenance": {
+            f: {"before": base.get(f), "after": built.get(f)}
+            for f in ("extracted_at", "rebuilt_at")
+        },
+        # Comparer les valeurs, non leur seule présence : deux méthodes de
+        # calcul différentes sont toutes deux « non vides », et ce champ
+        # certifie une conservation, pas une existence.
+        "calculation_method_preserved": base.get("calculation_method")
+        == built.get("calculation_method"),
+    }
+
+
+def comparison_base(path: Path, doc: dict, origin: str, ref: str | None = None) -> dict:
+    """Identité vérifiable de la base de comparaison, inscrite dans le rapport.
+
+    ``ref`` doit désigner la base d'une façon qu'un relecteur puisse rejouer —
+    une révision git plutôt qu'un chemin temporaire, qui ne prouverait rien
+    puisque personne d'autre ne peut l'ouvrir.
+    """
+    return {
+        "origin": origin,
+        "ref": ref or str(path),
+        "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "extracted_at": doc.get("extracted_at"),
+        "rebuilt_at": doc.get("rebuilt_at"),
+        "positions": len(doc.get("sub_positions") or []),
+        "note": (
+            "Le bilan avant/après compare le document construit à CETTE base, "
+            "et non au crawl de juin 2026 ni aux fichiers de progression."
+        ),
+    }
+
+
+def write_report(
+    *,
+    base_path: Path,
+    base_doc: dict,
+    base_origin: str,
+    base_ref: str | None,
+    built: dict,
+    stats: dict,
+    chapters_covered: list,
+    backup: str | None,
+    now: str,
+) -> dict:
+    """Écrit le rapport de réconciliation, base de comparaison explicitée.
+
+    Le rapport a longtemps publié un compteur `rate_diff_vs_previous` sans dire
+    à quoi il comparait. Il annonçait 8 793 différences de taux — un artefact
+    entier : la base était interrogée sur les clés `DD`/`TVA` d'une génération
+    antérieure du schéma, si bien que toute position portant un taux ressortait
+    comme modifiée. Un rapport qui ne nomme pas sa base ne peut pas être
+    contredit, donc ne prouve rien ; celui-ci la nomme et l'empreinte.
+    """
+    report = {
+        "date": now,
+        "comparison_base": comparison_base(base_path, base_doc, base_origin, base_ref),
+        "before_after": reconcile(base_doc, built),
+        "stats": stats,
+        "chapters_covered": chapters_covered,
+    }
+    if backup:
+        report["backup"] = backup
+    REPORTS_DIR.mkdir(exist_ok=True)
+    (REPORTS_DIR / "EGY_REBUILD_RECONCILIATION.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return report
+
+
 def main() -> int:
     now = datetime.now(timezone.utc).isoformat()
+
+    # Le rapport doit pouvoir être refait sans reconstruire le fichier tarifaire.
+    # Le réécrire pour corriger un rapport le ferait diverger de ce qui a été
+    # scellé, et son sceau d'intégrité certifierait alors un dérivé.
+    if "--reconcile-only" in sys.argv:
+        base_path = Path(sys.argv[sys.argv.index("--base") + 1])
+        base_ref = sys.argv[sys.argv.index("--base-ref") + 1] if "--base-ref" in sys.argv else None
+        built_path = CRAWLED_DIR / "EGY_tariffs.json"
+        built = json.loads(built_path.read_text(encoding="utf-8"))
+        report = write_report(
+            base_path=base_path,
+            base_doc=json.loads(base_path.read_text(encoding="utf-8")),
+            base_origin=(
+                "version du fichier antérieure à la reconstruction, relue depuis "
+                "l'historique git"
+            ),
+            base_ref=base_ref,
+            built=built,
+            stats=dict(built.get("stats") or {}),
+            chapters_covered=sorted(built.get("chapters_covered") or []),
+            backup=None,
+            now=now,
+        )
+        print(json.dumps(report["before_after"], ensure_ascii=False, indent=1))
+        return 0
 
     files = sorted(glob.glob(str(CRAWLED_DIR / "EGY_official_progress_*.json")))
     if not files:
@@ -151,9 +427,18 @@ def main() -> int:
         return 2
     positions = {}
     chapters_covered = set()
+    # La date de collecte est portée par le DOCUMENT de progression, pas par
+    # ses lignes : le collecteur écrit d["extracted_at"] une fois par chapitre.
+    # La chercher sur les lignes ne la trouvait jamais, et le constructeur
+    # retombait silencieusement sur la date de l'ancien fichier — ce qui a
+    # marché tant que l'ancien portait la bonne, et aurait estampé un crawl
+    # neuf de la date du précédent. Elle est donc relevée ici, à la lecture.
+    dates_de_collecte = set()
     for f in files:
         d = json.loads(Path(f).read_text(encoding="utf-8"))
         chapters_covered.add(d.get("chapter"))
+        if d.get("extracted_at"):
+            dates_de_collecte.add(str(d["extracted_at"]))
         for row in d.get("data", []):
             code = norm_code(row.get("code", ""))
             if code:
@@ -162,13 +447,35 @@ def main() -> int:
 
     old_path = CRAWLED_DIR / "EGY_tariffs.json"
     old = json.loads(old_path.read_text(encoding="utf-8"))
+
+    # Date de collecte, à ne jamais confondre avec la date de construction.
+    # Une reconstruction ne reconsulte pas la source : dater le document du
+    # jour de la reconstruction en ferait une provenance fausse, exactement
+    # le défaut que ce dépôt combat ailleurs. La date vient donc des fichiers
+    # de progression eux-mêmes ; celle du document existant n'est qu'un ultime
+    # recours, et le cas est signalé plutôt que subi.
+    # Une collecte de 97 chapitres n'est pas un instant mais un intervalle :
+    # chaque fichier de progression porte l'heure de SON chapitre. Réduire cela
+    # à une date unique perd l'information, alors on publie l'intervalle et on
+    # retient sa fin pour extracted_at — la donnée vaut à la date de sa
+    # dernière lecture, pas de sa première.
+    span = None
+    if dates_de_collecte:
+        span = {"debut": min(dates_de_collecte), "fin": max(dates_de_collecte)}
+        collecte = span["fin"]
+    else:
+        collecte = old.get("extracted_at") or now
+        print(
+            "ATTENTION : aucun fichier de progression ne porte extracted_at. "
+            "La date du document existant est reprise faute de mieux — "
+            "vérifier qu'elle correspond bien à ce crawl."
+        )
     old_by_code = {
         (p.get("hs_code") or "").replace("/", ""): p for p in old.get("sub_positions", [])
     }
 
     sub_positions = []
     stats = Counter()
-    rate_diffs = []
     for code in sorted(positions):
         row = positions[code]
         taxes_verbatim = row.get("taxes_verbatim") or []
@@ -187,52 +494,42 @@ def main() -> int:
 
         dd = taxes.get("ID") or {}
         vat = taxes.get("VAT") or {}
-        new_dd = dd.get("rate")
-        new_vat = vat.get("rate")
-        old_dd = (old_line.get("taxes") or {}).get("DD", {}).get("rate") if old_line else None
-        old_vat = (old_line.get("taxes") or {}).get("TVA", {}).get("rate") if old_line else None
-        if old_line and (new_dd != old_dd or new_vat != old_vat):
-            stats["rate_diff_vs_previous"] += 1
-            if len(rate_diffs) < 60:
-                rate_diffs.append(
-                    {
-                        "code": code,
-                        "old": {"dd": old_dd, "tva": old_vat},
-                        "new": {"dd": new_dd, "tva": new_vat},
-                        "taxes_verbatim": row.get("taxes_verbatim"),
-                    }
-                )
 
         instructions = row.get("instructions") or []
         codes_instr = row.get("instruction_codes") or []
-        formalities = (
-            [
-                {
-                    "code_verbatim": c,
-                    "text_verbatim": t,
-                    "kind": "administrative_instruction(غ)" if c.startswith("غ") else None,
-                    "source": row.get("source"),
-                }
-                for c, t in zip(codes_instr, instructions)
-                if c.startswith("غ")
-            ]
-            if len(codes_instr) == len(instructions)
-            else []
-        )
-        fta_preferences = (
-            [
-                {
-                    "code_verbatim": c,
-                    "text_verbatim": t,
-                    "kind": "customs_instruction(ر)",
-                    "zlecaf": ("افريقية القارية" in t),
-                }
-                for c, t in zip(codes_instr, instructions)
-                if c.startswith("ر")
-            ]
-            if len(codes_instr) == len(instructions)
-            else []
-        )
+        # Chaque instruction porte son propre code : on le lit dans le texte
+        # plutôt que de l'apparier par position avec InstructionCodes.
+        instructions_codees = [(_instruction_code(t), t) for t in instructions]
+        formalities = [
+            {
+                "code_verbatim": c,
+                "text_verbatim": t,
+                "kind": "administrative_instruction(غ)",
+                "source": row.get("source"),
+            }
+            for c, t in instructions_codees
+            if c and c.startswith("غ")
+        ]
+        fta_preferences = [
+            {
+                "code_verbatim": c,
+                "text_verbatim": t,
+                "kind": "customs_instruction(ر)",
+                "zlecaf": ("افريقية القارية" in t),
+            }
+            for c, t in instructions_codees
+            if c and c.startswith("ر")
+        ]
+        restrictions = [
+            {
+                "code_verbatim": c,
+                "text_verbatim": t,
+                "kind": "restriction(ق)",
+                "source": row.get("source"),
+            }
+            for c, t in instructions_codees
+            if c and c.startswith("ق")
+        ]
 
         line = {
             "hs_code": code,
@@ -248,6 +545,7 @@ def main() -> int:
             "official_instructions": instructions,
             "official_instruction_codes": codes_instr,
             "formalities": formalities,
+            "restrictions": restrictions,
             "fta_preferences": fta_preferences,
             "zlecaf_instruction": next((t for t in fta_preferences if t["zlecaf"]), None),
             "data_status": row.get("data_status", "OK"),
@@ -255,7 +553,7 @@ def main() -> int:
             "source_url": row.get("source_url"),
             "detail_endpoint": row.get("detail_endpoint"),
             "source_quality": "crawled_authentic" if row.get("data_status") == "OK" else "PARTIAL",
-            "date_consulted": (row.get("extracted_at") or now)[:10],
+            "date_consulted": (row.get("extracted_at") or collecte)[:10],
         }
         if instructions:
             stats["with_instructions"] += 1
@@ -287,7 +585,9 @@ def main() -> int:
         "source_url": "https://www.customs.gov.eg/Services/Tarif",
         "detail_endpoint": "POST https://www.customs.gov.eg/Services/TrfDetails?trfNumber={code}&trfType=1",
         "source_quality": "crawled_authentic",
-        "extracted_at": now,
+        "extracted_at": collecte,
+        "collected_span": span,
+        "rebuilt_at": now,
         "built_by": "backend/scripts/build_egy_tariffs_official.py",
         "policy": (
             "Crawl officiel : taxes et instructions verbatim (arabe), taux lus littéralement "
@@ -301,6 +601,12 @@ def main() -> int:
         "sub_positions": sub_positions + legacy,
     }
 
+    # La méthode de calcul telle que publiée par la source est un élément de
+    # provenance que ce script ne reconstruit pas : la perdre à chaque
+    # reconstruction viderait le document d'une information qu'il détenait.
+    if old.get("calculation_method"):
+        doc["calculation_method"] = old["calculation_method"]
+
     backup_dir = REPO_ROOT / "data" / "archive" / "crawled_backup"
     backup_dir.mkdir(parents=True, exist_ok=True)
     ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -311,16 +617,16 @@ def main() -> int:
     tmp.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
     os.replace(tmp, old_path)
 
-    report = {
-        "date": now,
-        "stats": dict(stats),
-        "rate_diffs_sample": rate_diffs,
-        "backup": str(backup_path.relative_to(REPO_ROOT)),
-        "chapters_covered": sorted(chapters_covered),
-    }
-    REPORTS_DIR.mkdir(exist_ok=True)
-    (REPORTS_DIR / "EGY_REBUILD_RECONCILIATION.json").write_text(
-        json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
+    write_report(
+        base_path=backup_path,
+        base_doc=old,
+        base_origin="fichier remplacé par cette exécution, sauvegardé avant écrasement",
+        base_ref=str(backup_path.relative_to(REPO_ROOT)),
+        built=doc,
+        stats=dict(stats),
+        chapters_covered=sorted(chapters_covered),
+        backup=str(backup_path.relative_to(REPO_ROOT)),
+        now=now,
     )
     print(json.dumps(dict(stats), ensure_ascii=False, indent=1))
     print(f"backup: {backup_path.name}")

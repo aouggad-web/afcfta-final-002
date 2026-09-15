@@ -1,0 +1,269 @@
+{
+ "schema_version": 1,
+ "destination_iso3": "DZA",
+ "agreement": "ZLECAf / AfCFTA",
+ "verification_status": "INSTRUMENT_ET_REGIMES_VERIFIES",
+ "verified_at": "2026-09-14",
+ "evidence_level": "primaire — circulaire n° 482/DGD/SP/D.042/24 lue intégralement. Le PDF officiel, que le portail douanier refusait de servir à l'environnement de vérification, a été fourni par le propriétaire du dépôt via Google Drive. Son texte est archivé dans sources/.",
+ "instruments_reported": [
+  {
+   "id": "Circulaire interministérielle n° 02 du 26 septembre 2024",
+   "subject": "lancement des échanges commerciaux dans le cadre de la ZLECAf ; porte la liste des concessions",
+   "pdf_archived": false
+  },
+  {
+   "id": "Circulaire n° 482/DGD/SP/D.042/24 du 22 octobre 2024",
+   "authority": "Direction générale des douanes — ministère des Finances",
+   "subject": "mise en œuvre douanière de l'accord, règles et modalités",
+   "pdf_archived": "texte extrait archivé : sources/DZA_circulaire_482-DGD_2024-10-22.texte-extrait.txt",
+   "drive_file_id": "1Ghyto4fZeYLIlkrkCvdoCTdUJC0UTGa0",
+   "pdf_size_bytes": 8515627,
+   "sha256": "0133b007210e9f4618e7380ed2d753b76becdd48c0ed90d27fc92062ee1d1668"
+  }
+ ],
+ "ratification": "2021-04-05",
+ "entry_into_application": "2024-11-01",
+ "guided_trade_initiative": "adhésion en décembre 2023",
+ "dismantling_calendar": {
+  "liste_A": "90 % des lignes — élimination totale à compter du 1er janvier 2025",
+  "liste_B": "7 % des lignes — réduction de 20 % par an à partir de 2026, élimination au 1er janvier 2030",
+  "liste_C": "3 % des lignes — exclues, droits de droit commun maintenus"
+ },
+ "two_distinct_lists": {
+  "avertissement": "Deux listes algériennes circulent et ne doivent pas être confondues. Les confondre accorderait une préférence à quatorze pays qui n'y ont pas droit à l'importation en Algérie.",
+  "liste_operative_importation": {
+   "count": 9,
+   "iso3": [
+    "ZAF",
+    "CMR",
+    "EGY",
+    "GHA",
+    "KEN",
+    "MUS",
+    "RWA",
+    "TZA",
+    "TUN"
+   ],
+   "libelle_source": "Afrique du Sud, Cameroun, Égypte, Ghana, Kenya, Île Maurice, Rwanda, Tanzanie, Tunisie",
+   "portee": "pays dont les produits sont effectivement admis au bénéfice de la ZLECAf à l'importation en Algérie"
+  },
+  "liste_etats_parties_ayant_mis_en_oeuvre": {
+   "count": 23,
+   "iso3": [
+    "DZA",
+    "ZAF",
+    "BDI",
+    "BWA",
+    "EGY",
+    "CMR",
+    "ETH",
+    "SWZ",
+    "GMB",
+    "GHA",
+    "LSO",
+    "KEN",
+    "MWI",
+    "NAM",
+    "MUS",
+    "MAR",
+    "UGA",
+    "RWA",
+    "SYC",
+    "SSD",
+    "TZA",
+    "TUN",
+    "ZMB"
+   ],
+   "portee": "énumération des États parties ayant parachevé leur mise en œuvre, mise à jour périodiquement sur notification du ministère chargé du Commerce extérieur. N'emporte pas admission à l'importation en Algérie."
+  }
+ },
+ "monitoring": "Comité d'évaluation et de suivi institué auprès de la Chambre algérienne de commerce et d'industrie (CACI), associant les secteurs concernés et les associations professionnelles.",
+ "reciprocity_with_egypt": {
+  "question_posee": "L'Algérie réciproque-t-elle le traitement que l'Égypte lui accorde ?",
+  "EGY_vers_DZA": "VÉRIFIÉ EN PRIMAIRE — la circulaire Accords n° 38 de la douane égyptienne classe l'Algérie dans le groupe à 5 ans, avec 100 % de réduction au 1er janvier 2025.",
+  "DZA_vers_EGY": "VÉRIFIÉ EN PRIMAIRE — la circulaire n° 482/DGD/SP/D.042/24, lue intégralement et dont le texte est archivé, nomme l'Égypte parmi les neuf pays dont les produits sont effectivement admis au bénéfice de la ZLECAf à l'importation en Algérie ; sa liste A est éliminée à 100 % depuis le 1er janvier 2025.",
+  "conclusion": "Réciprocité Égypte–Algérie acquise et symétrique dans son calendrier : élimination complète des deux côtés au 1er janvier 2025, chaque sens établi sur la source primaire de l'autre pays — circulaire Accords n° 38 côté égyptien, circulaire 482/DGD côté algérien."
+ },
+ "repo_data_gap": {
+  "severity": "BLOQUANTE pour servir la préférence algérienne",
+  "constat": "Le fichier backend/data/crawled/DZA_tariffs.json, collecté le 29 août 2026, ne porte AUCUNE mention de la ZLECAf sur ses 17 226 positions.",
+  "ce_qu_il_porte": "Trois régimes préférentiels seulement : ZALE/GZALE sur 5 215 positions, convention algéro-jordanienne sur 4 657, accord algéro-tunisien sur 3 008.",
+  "lecture": "L'administration algérienne applique la ZLECAf depuis le 1er novembre 2024, mais le régime est absent de la source tarifaire collectée. Le calculateur ne peut donc pas le servir, quand bien même le portail juridique serait franchi. Une recollecte depuis le portail douanier officiel est nécessaire — la source actuelle passe par l'intermédiaire conformepro.dz, que l'audit signalait déjà comme provenance mixte."
+ },
+ "gates_status": {
+  "1_instrument_national_en_vigueur": "SATISFAIT — circulaire 482/DGD/SP/D.042/24 du 22 octobre 2024, texte archivé, application au 1er novembre 2024",
+  "2_liste_officielle_origines_reciproques": "SATISFAIT POUR LE RÉGIME DE RÉCIPROCITÉ — treize pays nommés. Le régime par défaut vise « les pays africains membres de la ZLECAf » sans énumération : la liste opérationnelle des pays ayant lancé l'application effective est tenue à part et mise à jour par le ministère du Commerce extérieur",
+  "3_bareme_au_niveau_de_la_ligne": "NON SATISFAIT — aucune donnée ZLECAf dans le tarif algérien collecté",
+  "4_preuve_origine_zlecaf": "CONDITION D'EXÉCUTION — certificat d'origine ZLECAf à quinze cases, modèle en annexe de la circulaire"
+ },
+ "remaining_work": [
+  "Recollecter le tarif algérien depuis le portail douanier officiel : la source actuelle ne porte aucun régime ZLECAf.",
+  "Identifier les 1 458 lignes gelées faute de règles d'origine, aucune préférence ne pouvant leur être appliquée.",
+  "Mettre le DAPS à zéro sous régime ZLECAf, conformément à la circulaire.",
+  "Obtenir la liste à jour des pays ayant lancé l'application effective, tenue par le ministère du Commerce extérieur.",
+  "Archiver la circulaire interministérielle n° 02 du 26 septembre 2024, non encore obtenue."
+ ],
+ "access_diagnostic": {
+  "constat": "Le portail douanier algérien répond mais refuse la collecte depuis l'environnement de vérification. Le diagnostic écarte les causes qu'on aurait pu supposer.",
+  "dns": "www.douane.gov.dz résout en 41.111.156.219",
+  "tunnel": "le proxy établit le CONNECT, HTTP/1.1 négocié",
+  "tls": "chaîne valide — openssl s_client -CAfile /root/.ccr/ca-bundle.crt rend « Verify return code: 0 (ok) »",
+  "curl": "échoue malgré le même bundle, y compris en forçant --http1.1 et via CURL_CA_BUNDLE",
+  "webfetch": "atteint le site et reçoit HTTP 503 — le serveur répond donc, mais refuse",
+  "proxy": "ws_closed_mid_exchange journalisé sur www.commerce.gov.dz:443",
+  "conclusion": "Ce n'est ni un blocage réseau ni un défaut de certificat, contrairement à ce que la fiche indiquait d'abord : le site refuse le client. Les PDF doivent être récupérés depuis un autre réseau puis déposés dans le dépôt.",
+  "urls_a_archiver": [
+   "https://www.douane.gov.dz/IMG/pdf/circulaire_no_482_dgd_du_22-10-2024_mise_en_oeuvre_zlecaf.pdf",
+   "https://www.douane.gov.dz/spip.php?article805&debut_documents_joints=0#pagination_documents_joints",
+   "https://www.douane.gov.dz/spip.php?article805&debut_documents_joints=6#pagination_documents_joints",
+   "https://www.douane.gov.dz/spip.php?article805&debut_documents_joints=12#pagination_documents_joints"
+  ],
+  "note_urls": "Les trois pages paginées de l'article 805 portent l'ensemble des documents joints du dispositif ZLECAf algérien."
+ },
+ "regimes_verifies": {
+  "source": "circulaire 482/DGD, sections II-2, II-3 et II-4",
+  "regime_par_defaut": {
+   "portee": "tous les produits des listes (A) et (B) originaires des pays africains membres de la ZLECAf",
+   "verbatim": "Les droits de douane applicables à l'importation en Algérie aux produits originaires des pays africains membres de la ZLECAF, objet de la liste (A), sont éliminés progressivement, pendant cinq (05) ans, à compter du 1er Janvier 2021",
+   "liste_A": {
+    "duree_ans": 5,
+    "calendrier_pct_du_droit_de_base": {
+     "2021-01-01": 80,
+     "2022-01-01": 60,
+     "2023-01-01": 40,
+     "2024-01-01": 20,
+     "2025-01-01": 0
+    }
+   },
+   "liste_B": {
+    "duree_ans": 10,
+    "note": "période transitoire de 5 ans, réduction de 20 %/an à partir de la 6e année, fin au 1.1.2030"
+   },
+   "liste_C": "exclue — droits et taxes de droit commun"
+  },
+  "regime_de_reciprocite": {
+   "fondement": "article 5 (i) de l'Accord ZLECAf",
+   "portee": "pays en voie de développement (non-PMA) membres de Communautés économiques régionales qui appliquent eux-mêmes le calendrier réservé aux PMA",
+   "verbatim": "Les pays en voie de développement membres des Communautés Régionales Economiques (CER), concernés par ce traitement sont les suivants: Afrique du Sud, Botswana, Cameroun, Cap-Vert, République du Congo, Côte d'Ivoire, Eswatini, Gabon, Ghana, Guinée équatoriale, Kenya, Nigeria, Namibie.",
+   "count": 13,
+   "iso3": [
+    "ZAF",
+    "BWA",
+    "CMR",
+    "CPV",
+    "COG",
+    "CIV",
+    "SWZ",
+    "GAB",
+    "GHA",
+    "GNQ",
+    "KEN",
+    "NGA",
+    "NAM"
+   ],
+   "liste_A": {
+    "duree_ans": 10,
+    "taux_2021_pct_du_droit_de_base": 90
+   },
+   "liste_B": {
+    "duree_ans": 13,
+    "note": "transitoire de 5 ans puis 12,5 %/an, fin au 1.1.2033"
+   }
+  },
+  "exportations_algeriennes": "admises dans les pays ayant lancé l'application effective, selon leurs propres concessions ; la circulaire renvoie au portail e-tarif du secrétariat de la ZLECAf (https://au-afcfta.org/etariff/)"
+ },
+ "volumetrie_officielle": {
+  "source": "annexe « Schéma général du traitement tarifaire », page 24 de la circulaire",
+  "liste_A": {
+   "lignes": 15703,
+   "gelees_faute_de_regles_d_origine": 1136
+  },
+  "liste_B": {
+   "lignes": 1163,
+   "gelees_faute_de_regles_d_origine": 322
+  },
+  "liste_C": {
+   "lignes": 456
+  },
+  "total": 17322,
+  "taux_de_droit_de_base": [
+   5,
+   15,
+   30,
+   60
+  ],
+  "portee": "1 458 lignes au total sont gelées faute de règles d'origine — elles relèvent des listes A et B mais ne bénéficient d'aucun démantèlement tant que ces règles manquent. Un calculateur qui appliquerait la préférence à ces lignes se tromperait."
+ },
+ "exoneration_daps": {
+  "regle": "Les produits des listes (A) et (B) importés dans le cadre de la ZLECAf sont exonérés du Droit Additionnel Provisoire de Sauvegarde (DAPS).",
+  "fondement": "article 2 de la loi de finances complémentaire pour 2018",
+  "consequence_calculateur": "Le dépôt porte un DAPS algérien (937 positions recensées à l'inventaire, champ daps_rate_pct dans le calculateur). Sous régime ZLECAf il doit être mis à zéro, ce que le calculateur ne fait pas aujourd'hui."
+ },
+ "validation_croisee_maroc": {
+  "constat": "La liste algérienne de réciprocité et la liste P2 marocaine sont RIGOUREUSEMENT IDENTIQUES : les mêmes treize pays, aucune différence.",
+  "iso3": [
+   "ZAF",
+   "BWA",
+   "CMR",
+   "CPV",
+   "COG",
+   "CIV",
+   "SWZ",
+   "GAB",
+   "GHA",
+   "GNQ",
+   "KEN",
+   "NAM",
+   "NGA"
+  ],
+  "portee": "Deux circulaires nationales indépendantes, lues sur deux sources primaires distinctes — un PDF marocain de 158 pages et un PDF algérien de 8,5 Mo — produisent la même énumération. La règle sous-jacente est donc objective : les non-PMA membres d'une CER qui appliquent eux-mêmes le calendrier PMA. Cette concordance valide les deux déterminations l'une par l'autre.",
+  "consequence": "Elle éclaire aussi l'écart relevé avec l'e-Tariff Book de l'UA, dont le barème 2 est intitulé « LDC Countries in a Customs Union » : des PMA en union douanière, ce qui n'est pas la même catégorie que des non-PMA appliquant le calendrier PMA. La divergence sur 33 origines relevée pour le Maroc s'explique par cette confusion de catégories."
+ },
+ "accepted_origins": {
+  "count": 9,
+  "note": "Origines effectivement ADMISES au bénéfice de la ZLECAf à l'importation en Algérie : les neuf pays de two_distinct_lists.liste_operative_importation. Ce champ portait d'abord les treize pays du régime de réciprocité, ce qui était une faute : ces treize-là ne sont pas une liste d'admission mais un CALENDRIER de démantèlement, et la fiche avertit elle-même que confondre les deux accorderait une préférence à quatorze pays qui n'y ont pas droit. Le calendrier applicable est porté séparément par calendrier_de_reciprocite_article_5i.",
+  "admises_a_l_importation": {
+   "iso3": [
+    "ZAF",
+    "CMR",
+    "EGY",
+    "GHA",
+    "KEN",
+    "MUS",
+    "RWA",
+    "TZA",
+    "TUN"
+   ],
+   "libelle_source": "Afrique du Sud, Cameroun, Égypte, Ghana, Kenya, Île Maurice, Rwanda, Tanzanie, Tunisie",
+   "source": "circulaire 482/DGD, sections II-2, II-3 et II-4"
+  }
+ },
+ "calendrier_de_reciprocite_article_5i": {
+  "count": 13,
+  "iso3": [
+   "ZAF",
+   "BWA",
+   "CMR",
+   "CPV",
+   "COG",
+   "CIV",
+   "SWZ",
+   "GAB",
+   "GHA",
+   "GNQ",
+   "KEN",
+   "NGA",
+   "NAM"
+  ],
+  "portee": "pays en voie de développement (non-PMA) membres de Communautés économiques régionales qui appliquent eux-mêmes le calendrier réservé aux PMA",
+  "duree_ans": 10,
+  "note": "N'EMPORTE PAS ADMISSION. Ces treize pays, lorsqu'ils sont admis, relèvent du calendrier long de l'article 5 (i) au lieu du régime par défaut. Quatre d'entre eux seulement figurent aussi dans la liste opérative d'admission.",
+  "source": "circulaire 482/DGD, sections II-2, II-3 et II-4",
+  "aussi_admis_a_l_importation": [
+   "CMR",
+   "GHA",
+   "KEN",
+   "ZAF"
+  ]
+ }
+}
