@@ -1,35 +1,7 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-15T13:13:23.093471+00:00",
+  "construit_le": "2026-09-15T23:07:12.959742+00:00",
   "pays": {
-    "ZAF": {
-      "fichier": "ZAF.json",
-      "origine": "crawl",
-      "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
-      "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "afb847d50b253087c7d16e958a7f3dfcc51a8bd0c54c32ec9d23a1483d12f6be",
-      "collecte": "2026-08-29T13:26:21.816037",
-      "etat": "PARTIEL",
-      "familles": [
-        "droit"
-      ],
-      "compteurs": {
-        "positions": 8589,
-        "droits": 8589,
-        "droits_liquidables": 8588,
-        "positions_liquidables": 8588,
-        "preferentiels": 42945,
-        "preferentiels_specifiques": 448,
-        "taux_indisponibles": 1,
-        "assiettes_source": 0,
-        "assiettes_fichier": 0,
-        "assiettes_table": 8589,
-        "assiettes_indisponibles": 0,
-        "sans_designation": 0,
-        "droits_specifiques": 181,
-        "classification_estimee": 0
-      }
-    },
     "AGO": {
       "fichier": "AGO.json",
       "origine": "crawl",
@@ -57,69 +29,6 @@
         "sans_designation": 5388,
         "droits_specifiques": 0,
         "classification_estimee": 39
-      }
-    },
-    "CIV": {
-      "fichier": "CIV.json",
-      "origine": "crawl",
-      "source_fichier": "backend/data/crawled/CIV_tariffs.json",
-      "source_sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221",
-      "socle_sha256": "5577637dfcb8d8e717100379b6804c8e5f029089ee351d7c6ecf899928ca146b",
-      "collecte": "2026-02-19T22:01:52.572505",
-      "etat": "PARTIEL",
-      "familles": [
-        "accise",
-        "autre",
-        "droit",
-        "redevance",
-        "tva"
-      ],
-      "compteurs": {
-        "positions": 6129,
-        "droits": 11874,
-        "droits_liquidables": 11722,
-        "positions_liquidables": 5977,
-        "preferentiels": 0,
-        "preferentiels_specifiques": 0,
-        "taux_indisponibles": 0,
-        "assiettes_source": 11722,
-        "assiettes_fichier": 0,
-        "assiettes_table": 0,
-        "assiettes_indisponibles": 152,
-        "sans_designation": 0,
-        "droits_specifiques": 0,
-        "classification_estimee": 0
-      }
-    },
-    "KEN": {
-      "fichier": "KEN.json",
-      "origine": "crawl",
-      "source_fichier": "backend/data/crawled/KEN_tariffs.json",
-      "source_sha256": "e20a4280f51615d7f9efa5388f7529e3b5516dacbc3c2313ac8c3def32367b8b",
-      "socle_sha256": "61ee4fa69a97eb128c265f1d9e574ad77a8070a8c7d76b68398ccd0e736ef3a1",
-      "collecte": "2026-02-18T10:54:33.961294",
-      "etat": "PARTIEL",
-      "familles": [
-        "accise",
-        "droit",
-        "redevance",
-        "tva"
-      ],
-      "compteurs": {
-        "positions": 5984,
-        "droits": 23958,
-        "droits_liquidables": 23910,
-        "positions_liquidables": 5936,
-        "preferentiels": 0,
-        "preferentiels_specifiques": 0,
-        "taux_indisponibles": 48,
-        "assiettes_source": 23958,
-        "assiettes_fichier": 0,
-        "assiettes_table": 0,
-        "assiettes_indisponibles": 0,
-        "sans_designation": 0,
-        "droits_specifiques": 0,
-        "classification_estimee": 0
       }
     },
     "BDI": {
@@ -266,6 +175,38 @@
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 5,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "CIV": {
+      "fichier": "CIV.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/CIV_tariffs.json",
+      "source_sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221",
+      "socle_sha256": "5577637dfcb8d8e717100379b6804c8e5f029089ee351d7c6ecf899928ca146b",
+      "collecte": "2026-02-19T22:01:52.572505",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "autre",
+        "droit",
+        "redevance",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 11874,
+        "droits_liquidables": 11722,
+        "positions_liquidables": 5977,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 11722,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 152,
+        "sans_designation": 0,
         "droits_specifiques": 0,
         "classification_estimee": 0
       }
@@ -744,6 +685,37 @@
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 5,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "KEN": {
+      "fichier": "KEN.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/KEN_tariffs.json",
+      "source_sha256": "e20a4280f51615d7f9efa5388f7529e3b5516dacbc3c2313ac8c3def32367b8b",
+      "socle_sha256": "61ee4fa69a97eb128c265f1d9e574ad77a8070a8c7d76b68398ccd0e736ef3a1",
+      "collecte": "2026-02-18T10:54:33.961294",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "droit",
+        "redevance",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5984,
+        "droits": 23958,
+        "droits_liquidables": 23910,
+        "positions_liquidables": 5936,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 48,
+        "assiettes_source": 23958,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
         "droits_specifiques": 0,
         "classification_estimee": 0
       }
@@ -1541,6 +1513,34 @@
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "ZAF": {
+      "fichier": "ZAF.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
+      "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
+      "socle_sha256": "afb847d50b253087c7d16e958a7f3dfcc51a8bd0c54c32ec9d23a1483d12f6be",
+      "collecte": "2026-08-29T13:26:21.816037",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit"
+      ],
+      "compteurs": {
+        "positions": 8589,
+        "droits": 8589,
+        "droits_liquidables": 8588,
+        "positions_liquidables": 8588,
+        "preferentiels": 42945,
+        "preferentiels_specifiques": 448,
+        "taux_indisponibles": 1,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 8589,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 181,
         "classification_estimee": 0
       }
     },
