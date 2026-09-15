@@ -739,8 +739,11 @@ def main(argv):
     # introuvables alors qu'ils sont servables. On repart donc de l'existant.
     ancien = {}
     if os.path.exists(os.path.join(SOCLE_DIR, "MANIFESTE.json")):
-        with open(os.path.join(SOCLE_DIR, "MANIFESTE.json"), encoding="utf-8") as f:
-            ancien = json.load(f).get("pays", {})
+        try:
+            with open(os.path.join(SOCLE_DIR, "MANIFESTE.json"), encoding="utf-8") as f:
+                ancien = json.load(f).get("pays", {})
+        except json.JSONDecodeError:
+            ancien = {}
     manifeste = {
         "socle_version": SOCLE_VERSION,
         "construit_le": datetime.now(timezone.utc).isoformat(),

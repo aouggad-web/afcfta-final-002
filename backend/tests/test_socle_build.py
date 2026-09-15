@@ -10,7 +10,6 @@ montant faux qui a l'air juste — le défaut le plus coûteux du calculateur.
 import importlib.util
 import json
 import os
-import shutil
 
 import pytest
 
@@ -285,16 +284,23 @@ def test_une_construction_partielle_n_ampute_pas_le_manifeste(tmp_path, monkeypa
     if "CIV" not in avant["pays"] or len(avant["pays"]) < 2:
         pytest.skip("manifeste trop réduit pour ce test")
     autres_avant = {iso: meta for iso, meta in avant["pays"].items() if iso != "CIV"}
-    sauvegarde = tmp_path / "MANIFESTE.json"
-    shutil.copy(manifeste, sauvegarde)
-    try:
-        bs.main(["build_socle.py", "CIV"])
-        with open(manifeste, encoding="utf-8") as f:
-            apres = json.load(f)
-        assert set(apres["pays"]) == set(avant["pays"])
-        assert {iso: meta for iso, meta in apres["pays"].items() if iso != "CIV"} == autres_avant
-    finally:
-        shutil.copy(sauvegarde, manifeste)
+    socle_temp = tmp_path / "socle"
+    socle_temp.mkdir()
+    (socle_temp / "MANIFESTE.json").write_text(
+        json.dumps(avant, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    assiettes = os.path.join(REPO, "backend", "socle", "assiettes_pays.json")
+    if not os.path.exists(assiettes):
+        pytest.skip("table d'assiettes absente de ce clone")
+    with open(assiettes, encoding="utf-8") as f:
+        (socle_temp / "assiettes_pays.json").write_text(f.read(), encoding="utf-8")
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(socle_temp / "assiettes_pays.json"))
+    bs.main(["build_socle.py", "CIV"])
+    with open(socle_temp / "MANIFESTE.json", encoding="utf-8") as f:
+        apres = json.load(f)
+    assert set(apres["pays"]) == set(avant["pays"])
+    assert {iso: meta for iso, meta in apres["pays"].items() if iso != "CIV"} == autres_avant
 
 
 def test_la_table_d_assiettes_conserve_ses_references_legales():
