@@ -1424,7 +1424,18 @@ def _resolve_zlecaf_context(
                 ),
             }
             dd = dd_rate_pct
-            preference_applied = False
+            # Le drapeau n'est PAS touché : le plancher ne rabote que le droit
+            # de douane, et une préférence ne se résume pas à lui. Sur les huit
+            # positions algériennes concernées, `daps_exempt()` est vrai et la
+            # cascade retire réellement un DAPS de 70 % — 70 000 DA d'économie
+            # sur 100 000 de CIF. Éteindre le drapeau ici dirait « aucune
+            # préférence » à un opérateur qui en tire une, et le dissuaderait
+            # de présenter son certificat d'origine.
+            #
+            # Aucun chemin n'a besoin qu'on le corrige : les trois calculent le
+            # drapeau avec un terme `taux préférentiel < NPF` qui est déjà faux
+            # quand le plancher mord. Ce qui reste vrai — l'exonération du DAPS
+            # — doit le rester.
             complement = (
                 f" Taux préférentiel ({plancher_npf['taux_preferentiel_ecarte_pct']} %) "
                 f"supérieur au NPF ({dd_rate_pct} %) : NPF servi."
@@ -2307,6 +2318,13 @@ def calculate_import_taxes(
         "zlecaf_eligible": zlecaf_eligible,
         "zlecaf_preference_applied": zlecaf_preference_applied,
         "zlecaf_note": zlecaf_note,
+        # Renseigné UNIQUEMENT quand le taux préférentiel dépassait le NPF et a
+        # donc été écarté : porte le taux écarté, le taux retenu et le motif.
+        # Un montant corrigé sans être dit ne serait pas opposable, et la note
+        # libre ne suffit pas — un client d'API ne peut pas la lire par
+        # programme. `None` quand le plancher n'a pas mordu, soit le cas
+        # général.
+        "plancher_npf": _zctx.get("plancher_npf"),
         # DOCUMENTED | NOT_AVAILABLE | OFFER_ONLY | PARTNER_NOTICE_REQUIRED
         "zlecaf_status": zlecaf_status,
         "zlecaf_rate_expression": zlecaf_rate_expression,

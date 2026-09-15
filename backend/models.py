@@ -140,6 +140,13 @@ class TariffCalculationResponse(BaseModel):
     trade_regime_code: Optional[str] = None  # SACU, UEMOA, ECOWAS, ZLECAF…
     zlecaf_preference_applied: bool = False  # une préférence réduit-elle le droit ?
     zlecaf_note: Optional[str] = None
+    # Renseigné UNIQUEMENT quand le taux préférentiel dépassait le NPF de la
+    # même position et a donc été écarté au profit du NPF : porte le taux
+    # écarté, le taux retenu et le motif. Une préférence est une faculté, pas
+    # une obligation — mais un montant corrigé doit être opposable, et la note
+    # libre ne suffit pas : un client d'API ne peut pas la lire par programme.
+    # `None` dans le cas général, où le plancher n'a pas mordu.
+    plancher_npf: Optional[dict] = None
     # Statut de la préférence ZLECAf elle-même (distinct de duty_status, qui
     # porte sur le droit NPF) :
     #   DOCUMENTED             → taux préférentiel résolu à partir d'une source

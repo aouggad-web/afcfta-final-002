@@ -12,9 +12,9 @@ C'est le seul critère retenu ici.
 
 | # | Chantier | Ce que l'opérateur subit aujourd'hui | Ampleur mesurée |
 |---|---|---|---|
-| 1 | Unité des taxes spécifiques | un **montant faux**, dans les deux sens | 2 435 positions |
+| 1 | Valeurs non ad valorem servies `0 %` | un **droit annoncé nul** sans fondement | 1 184 positions, 14 pays |
 | 2 | Crawler ghanéen | une ligne **plus grossière** que celle qu'il déclare | 5 387 servies |
-| 3 | Algérie — règle du moins-disant | un droit **plus cher** sous préférence que sous NPF | 8 positions |
+| ~~3~~ | ~~Algérie — règle du moins-disant~~ | **fait** — plancher NPF général, PR #474 | ~~13 positions~~ |
 | 4 | Quatre pays dérivés du Bénin | une assiette de TVA **non fondée** | 4 pays |
 | 5 | Taux du PCS | un écart de 0,2 point **non tranché** | UEMOA |
 | 6 | Maroc en application | une préférence **affichée mais non appliquée** | 40 origines |
@@ -22,59 +22,93 @@ C'est le seul critère retenu ici.
 
 ---
 
-## 1. L'unité des taxes spécifiques — le dernier montant faux connu
+## 1. Les valeurs non ad valorem servies comme `0 %`
 
-**Le défaut.** `_parse_crawled_tax_rate` extrait le premier nombre d'une chaîne
-sans regarder son unité. Un montant unitaire devient donc un pourcentage.
+**Le défaut.** Une seule ligne, `authentic_tariff_service.py:1822` :
 
-**Ce que portent réellement les données.** Une seule unité apparaît dans
-l'ensemble des fichiers collectés, et elle est tunisienne :
+```python
+dd_rate_pct = line.get("dd_rate", 0) or 0
+# (`or 0` : une valeur explicitement nulle dans la donnée → 0, jamais None).
+```
 
-| Valeur source observée | Assiette déclarée | Lue par le moteur comme |
-|---|---|---|
-| `0.1 dinars` — droit sanitaire vétérinaire | `QCS` (quantité) | 0,1 % |
-| `1.2 dinars` — prélèvement CGC bovins/viande | `PN` (poids net) | 1,2 % |
-| `0.012 dinars` — taxe municipale d'abattage | quantité | 0,012 % |
+Le commentaire dit l'intention — éviter un plantage sur `> 0`. Le prix payé est
+qu'une donnée **absente** devient une donnée **affirmée** : « droit de douane
+0 % ». Ce n'est pas un trou dans l'affichage, c'est une déclaration fausse.
 
-**2 435 occurrences, toutes en dinars, toutes tunisiennes.** Recomptées le
-15 septembre sur `backend/data/crawled` et `crawled_normalized` : aucune autre
-unité, dans aucun autre pays. La Tunisie compte en dinars — elle n'appartient
-à aucune zone franc CFA — et c'est le seul pays dont les données portent des
-taxes assises sur une quantité.
+C'est la même forme que le plancher NPF du chantier n° 3 : la donnée juste
+existe en amont, et le service la remplace par un chiffre qui ne plante pas.
 
-*Précision sur la méthode.* La caractérisation du lecteur a été obtenue en lui
-soumettant des chaînes construites (`1000 FCFA/litre`, `15 DT/kg`) pour montrer
-qu'il ignore l'unité quelle qu'elle soit. **Ces chaînes ne figurent pas dans les
-données** : ce sont des sondes, pas des observations. Une version antérieure de
-ce document les présentait dans la même colonne que les valeurs tunisiennes
-réelles, ce qui laissait croire à des montants en francs CFA dans un tarif
-libellé en dinars. L'erreur est corrigée ici.
+**Ampleur mesurée** le 15 septembre, sur les 53 fichiers de `backend/data` :
+**1 184 positions, dans 14 pays**, servent `dd_rate_pct: 0` sans qu'aucune
+source ne l'établisse. Quatre causes distinctes, une seule conséquence :
 
-**Ce qui se passe vraiment aujourd'hui.** Sur le chemin tunisien en production,
-les données passent par l'ETL, qui ramène ces taxes à un taux nul : elles
-**disparaissent** au lieu d'être converties. Le total est donc sous-évalué. La
-conversion en pourcentage guette sur les autres chemins de lecture.
+| Cause | Positions | Pays |
+|---|---:|---|
+| Droit spécifique (`8c/kg`, `c/li`, `c/u`) | 365 | ZAF, BWA, LSO, NAM, SWZ |
+| CET « Sensitive Item » sans taux ad valorem | 308 | BDI, COD, KEN, RWA, SSD, TZA, UGA |
+| Variantes non tranchées (`[5.0, 30.0]`…) | 296 | DZA |
+| Aucune donnée de taxe / pas de ligne DD | 215 | EAC, MAR |
 
-Les deux traitements sont fautifs, et pour la même raison : une taxe assise sur
-une quantité n'est ni un pourcentage ni un zéro. C'est une taxe **non liquidable
-en l'état**, qui doit être déclarée telle quelle.
+**Vérifié en production.** `ZAF 020830` (« Of primates ») : la source SARS
+publie `8c/kg`, l'ETL écrit honnêtement `dd_rate: null`, et le calculateur rend
+`dd_rate_pct: 0` avec un `npf_calculation` qui ne contient **aucun** droit de
+douane. La falsification est dans le service, pas dans la donnée.
 
-**Pourquoi ce chantier a été séparé.** Il modifie des taux sur 2 435 positions.
-Le mêler au changement d'assiette de la PR #473 aurait rendu les deux
-inauditables — on n'aurait plus su lequel expliquait quel écart.
+**Les droits spécifiques, cas particulier du même défaut.** Les fichiers
+collectés distinguent déjà proprement `rate_pct` (nul) de `specific_value` et de
+l'assiette. Recompté le 15 septembre :
+
+| Pays | Lignes à droit spécifique | Unité | Servies |
+|---|---:|---|---:|
+| Tunisie | 2 435 | `dinars` | **0** |
+| ZAF, BWA, LSO, NAM, SWZ | 629 chacun | `c/kg`, `c/li`, `c/u` | **0** |
+| **Total** | **5 580** | 6 pays | **0** |
+
+*Correction d'une erreur de ce document.* Une version antérieure affirmait
+« **2 435 occurrences, toutes en dinars, toutes tunisiennes** […] aucune autre
+unité, dans aucun autre pays ». C'est faux : les cinq pays de la SACU portent
+629 lignes chacun en cents par kilogramme, litre ou unité. Le recomptage avait
+porté sur les fichiers tunisiens et conclu sur l'ensemble — l'absence constatée
+là où l'on avait cherché a été prise pour une absence partout. C'est exactement
+la faute que le bas de ce document met en garde de commettre.
+
+*Précision sur la méthode, conservée.* La caractérisation du lecteur avait été
+obtenue en lui soumettant des chaînes construites (`1000 FCFA/litre`,
+`15 DT/kg`). **Ces chaînes ne figurent pas dans les données** : ce sont des
+sondes, pas des observations. Aucun montant en francs CFA n'existe dans le
+tarif tunisien, qui est libellé en dinars.
+
+**Un piège latent, à désamorcer en même temps.** `_parse_crawled_tax_rate`
+extrait le premier nombre d'une chaîne sans regarder son unité : soumis aux
+`raw_value` réels, il rend **5 580 taux sur 5 580** — `0.1 dinars` devient
+0,1 %, `8c/kg` devient 8 %. Aucun appelant ne l'atteint aujourd'hui, mais par
+accident seulement : `row.get("rate", row.get("rate_pct", row.get("raw_value")))`
+ne retombe jamais sur `raw_value`, parce que la clé `rate_pct` **existe** avec
+la valeur `None`. Qu'un collecteur omette la clé au lieu de la mettre à nul, et
+les 5 580 deviennent des pourcentages du jour au lendemain.
+
+**Le dépôt porte déjà le bon geste**, sur le versant préférentiel
+(`authentic_tariff_service.py:1646`) :
+
+> « SARS Schedule 1 Part 1, colonne AfCFTA — taux officiel : 3,2c/kg.
+> **Quantité requise pour calculer ce droit spécifique/composé.** »
+
+Il y a donc un précédent à étendre au versant NPF, pas un motif à inventer.
 
 **Critères d'acceptation.**
 
-- Aucune valeur non ad valorem n'est jamais rendue comme un taux.
-- Une taxe spécifique présente dans la source ressort `SPECIFIQUE_SANS_QUANTITE`,
-  avec son montant unitaire et son assiette déclarée, jamais un zéro muet.
-- Le total d'une position qui en porte une est déclaré **non liquidable**
-  plutôt que servi incomplet — la règle du dépôt sur l'absence s'applique ici
-  comme ailleurs.
-- Mesure avant/après publiée : combien de positions changent, dans quel sens,
-  et de combien.
-- Un test qui mord sur chacune des trois valeurs réellement observées, et sur
-  une unité arbitraire, pour que la garde ne dépende pas du libellé rencontré.
+- Aucune valeur non ad valorem n'est jamais rendue comme un taux, ni comme `0`.
+- Une position dont le droit n'est pas ad valorem le **dit** : montant unitaire,
+  assiette déclarée, et mention que la quantité est requise.
+- Les quatre causes sont distinguées dans le résultat : un droit spécifique, un
+  taux non tranché entre variantes et une donnée absente ne se disent pas de la
+  même façon à l'opérateur.
+- Le total d'une telle position est déclaré **incomplet**, jamais servi comme
+  s'il était entier.
+- `_parse_crawled_tax_rate` refuse une chaîne porteuse d'une unité au lieu d'en
+  extraire le premier nombre — le piège latent est fermé même si aucun appelant
+  ne l'atteint.
+- Mesure avant/après publiée : combien de positions changent, dans quel sens.
 
 **Ce qu'il faut décider.** Quand la quantité est fournie par l'appelant, faut-il
 liquider la taxe spécifique ? Le dépôt porte déjà une règle 3 en ce sens
@@ -136,7 +170,7 @@ citation de la circulaire. Le tarif collecté ne porte pas de colonne ZLECAf, et
 c'est sans importance : la préférence algérienne se calcule **à partir des
 listes de la circulaire**, pas d'une colonne du tarif.
 
-### Ce qui reste : la règle du moins-disant
+### Ce qui restait : la règle du moins-disant — **fait**
 
 Une vérification faite en corrigeant ce document a trouvé un défaut réel, et
 c'est le seul.
@@ -154,23 +188,40 @@ Mesuré sur les 1 163 positions de la liste B, hors positions gelées :
 | Égypte (calendrier standard) | **8** | +19,0 points |
 | Kenya (calendrier réciprocité) | **8** | +21,2 points |
 
-Les huit sont des viandes bovines du chapitre 0201 : NPF 5 %, taux de base 2019
+Les huit sont des viandes : **cinq bovines** (`0201101100`, `0201101900`,
+`0201201000`, `0201202000`, `0201309100`) et **trois de volaille**
+(`0207121000`, `0207122000`, `0207129000`). Toutes : NPF 5 %, taux de base 2019
 à 30 %, donc 24 % en 2026 sous calendrier standard. Un importateur n'invoquerait
 évidemment jamais une préférence plus chère que le droit commun — mais le
 calculateur, lui, la lui sert.
 
+*Correction.* Une version antérieure de ce paragraphe disait « les huit sont des
+viandes bovines du chapitre 0201 ». Les trois positions du 0207 y échappaient :
+le décompte de huit était juste, sa description ne l'était pas. Relevé en revue,
+recompté sur `DZA_tariffs.json` et `list_b_base_rates.json`.
+
 **C'est la règle du moins-disant**, celle que le règlement éthiopien énonce à son
 article 3(5) et que ce document rangeait au chantier n° 7 en la croyant « sans
-effet tant que l'Éthiopie reste `OFFER_ONLY` ». Elle mord ici, aujourd'hui, en
-production, sur huit positions algériennes.
+effet tant que l'Éthiopie reste `OFFER_ONLY` ».
 
-**Critères d'acceptation.**
+**Implémentée dans la PR #474**, comme règle générale et non comme correctif
+algérien : le plancher est posé dans le constructeur commun que les quatre
+chemins préférentiels du moteur traversent. L'audit a montré que le même défaut
+courait sur trois d'entre eux — 8 positions algériennes, 2 sud-africaines, 3
+kényanes, **13 en tout**.
 
-- Le taux préférentiel servi n'excède jamais le NPF de la même position.
-- Le plancher est appliqué comme une **règle générale**, pas comme un correctif
-  algérien : tout régime préférentiel du moteur en relève.
-- Le résultat dit laquelle des deux voies a été retenue, et pourquoi.
-- Un test qui mord sur `0201101100` — NPF 5 %, base 2019 à 30 %.
+**Ce que la revue a rattrapé.** La première version du plancher éteignait aussi
+`preference_applied`. Or les huit positions algériennes sont **toutes**
+exonérées de DAPS par la circulaire 482/2024 — un droit de 70 % que la cascade
+retire réellement. Le moteur annonçait donc « aucune préférence » tout en
+calculant 70 000 DA d'économie sur 100 000 de CIF. Pour l'opérateur, c'est la
+pire des deux erreurs : croyant n'avoir rien à gagner, il ne présente pas son
+certificat d'origine et paie le plein tarif. Le plancher ne rabote désormais que
+le droit de douane, et `plancher_npf` remonte jusqu'à la réponse d'API.
+
+*La leçon, du même ordre que celle du bas de page : un garde-fou qui corrige un
+montant doit être vérifié sur ce qu'il laisse intact, pas seulement sur ce qu'il
+change.*
 
 ## 4. Les quatre pays dérivés du Bénin
 
