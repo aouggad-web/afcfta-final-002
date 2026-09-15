@@ -78,14 +78,16 @@ Deux constats de même portée :
 
 2. **Le crawl porte déjà les colonnes préférentielles.** Les cinq pays SACU
    exposent une colonne `AfCFTA` par position, à côté de `GENERAL`, `SADC`,
-   `EU_UK`, `EFTA`, `MERCOSUR`. L'Éthiopie expose `D2R` (COMESA). Ces colonnes
-   sont aujourd'hui **écartées** par `_PREFERENTIAL_RATE_CODES` au lieu d'être
-   servies comme régime préférentiel.
+   `EU_UK`, `EFTA`, `MERCOSUR`. L'Éthiopie expose `D2R`, qui est la colonne
+   **COMESA** et non ZLECAf. Ces colonnes sont aujourd'hui **écartées** par
+   `_PREFERENTIAL_RATE_CODES` au lieu d'être servies chacune sous son propre
+   régime — la colonne `AfCFTA` pour la ZLECAf, les autres pour leurs accords
+   respectifs, jamais l'une pour l'autre (§3).
 
 ### 1.3 Les taxes présentes, par famille
 
 Relevé sur les 1 500 premières positions de chaque pays. Les codes distincts se
-rangent en six familles, et aucune autre :
+rangent en **sept** familles, et aucune autre :
 
 | Famille | Codes rencontrés |
 |---|---|
@@ -108,7 +110,7 @@ c'est ce que la douane liquide.
 | TUN : schéma `taxes_import[]` non lu | 17 542 positions | adaptateur au chantier L1 |
 | SACU (ZAF, NAM, BWA, LSO, SWZ) : le crawl SARS ne porte **aucune TVA** | 5 pays | table nationale sourcée, ou `INDISPONIBLE` — jamais fabriquée |
 | GHA : `taxes_detail[].tax` sans clé `code` | 5 387 lignes | adaptateur au chantier L1 |
-| SOM : pas de crawl, seulement le fichier ETL | 1 pays | servi comme source de repli étiquetée |
+| SOM : pas de crawl, seulement le fichier ETL | 1 pays | entré dans le socle comme 54ᵉ source — son fichier a le schéma `tariff_lines[]` du Ghana, donc aucun adaptateur supplémentaire ; l'origine ETL est étiquetée sur chaque position, mais le chemin d'exécution reste unique |
 | 339 fichiers `*_progress_*.json` (~3,8 Go) | dépôt | supprimés, ce sont des reliquats de crawl |
 
 ---
@@ -166,14 +168,28 @@ par empreinte au démarrage, et refusé s'il ne correspond pas au crawl présent
 
 ### 2.2 Le moteur (cible : 200 lignes)
 
-Une fonction, quatre primitives d'assiette, aucune connaissance par pays :
+Une fonction, cinq primitives d'assiette et un modificateur, aucune
+connaissance par pays :
 
 | Primitive | Sens | Exemple |
 |---|---|---|
 | `CIF` | valeur en douane | `DD`, `RS`, `IDF` |
 | `CIF+<codes>` | CIF augmenté du montant des droits nommés | `TVA` sur `CIF+DD+TCI` |
+| `SOMME(<codes>)` | somme de montants de droits, **sans** le CIF | `RPD/IMPOR` TUN, assiette `SOMME D.T` |
 | `%DD` | pourcentage du **montant** d'un autre droit | `CAC` CEMAC, centimes additionnels |
 | `×QTE` | droit spécifique : montant unitaire × quantité | `DSV` TUN, `0,1 dinar`/QCS |
+
+Et un **modificateur**, applicable à n'importe laquelle : `plafond(montant,
+devise)` — le cas `CIF (plafond 15 000 XAF)` relevé sur 3 000 positions
+CEMAC. Un plafond exprimé dans une devise autre que celle de la valeur déclarée
+exige une conversion : tant que le taux de change du jour de liquidation n'est
+pas fourni, le droit plafonné est rendu `PARTIEL` avec le paramètre manquant
+nommé, jamais approché.
+
+Cinq primitives et un modificateur : c'est le compte exact des formes relevées
+dans les sources (neuf expressions `base` + quatre `assiette` tunisiennes). Une
+assiette qui n'entrerait dans aucune est un `INDISPONIBLE` motivé, pas une
+sixième primitive ajoutée à la hâte.
 
 Deux règles générales, qui remplacent trente-sept profils :
 - `CIF+TOUS_SAUF_TVA` est une **formule**, pas une énumération : la TVA
@@ -208,14 +224,38 @@ serveur s'affiche.
 
 ## 3. Le régime ZLECAf
 
-Trois sources de taux préférentiel, dans cet ordre, et rien d'autre :
+**Le verrou juridique existant est conservé intégralement.** Aucun taux
+préférentiel n'est liquidé sans que `zlecaf_implementation_registry` autorise
+le couloir : un instrument d'application en vigueur, un ensemble de pays
+d'origine acceptés de façon réciproque, et un barème au niveau de la ligne. Ce
+registre est *fail-closed* par construction ; `OFFER_ONLY` et
+`PARTNER_NOTICE_REQUIRED` ne valent pas autorisation. Le plan ne touche pas à
+cette porte — il ne change que ce qui la franchit.
 
-1. la **colonne préférentielle de la position** quand le crawl la porte
-   (SACU `AfCFTA`, ETH `D2R`) ;
-2. l'**offre nationale publiée** (`etl/afcfta_national_offers.py`) quand elle
-   couvre la position ;
-3. sinon : `PREFERENCE_NON_TRACEE`. Pas de coefficient de démantèlement
-   générique appliqué au NPF.
+Une fois le couloir autorisé, le taux vient de **deux** sources, dans cet
+ordre :
+
+1. la **colonne AfCFTA de la position** quand le crawl la porte — aujourd'hui
+   les cinq pays SACU. La colonne doit nommer la ZLECAf ; une colonne d'un
+   autre régime n'est jamais lue comme préférence ZLECAf ;
+2. l'**offre nationale publiée** (`etl/afcfta_national_offers.py`), et
+   seulement quand le registre a autorisé le couloir.
+
+Sinon : `PREFERENCE_NON_TRACEE`. Pas de coefficient de démantèlement générique
+appliqué au NPF.
+
+Deux précisions qui évitent une régression :
+
+- **`D2R` n'est pas une colonne ZLECAf.** C'est la colonne préférentielle
+  COMESA de la source éthiopienne (`authentic_tariff_service.py:558`). Elle
+  reste servie comme donnée, sous un régime COMESA distinct et validé à part.
+  L'utiliser comme taux ZLECAf ferait payer un taux COMESA à une origine qui
+  n'y a pas droit. Il en va de même de `SADC`, `EU_UK`, `EFTA` et `MERCOSUR`.
+- **Une offre publiée seule ne fait pas un droit dû.**
+  `resolve_published_offer_rate` est explicitement *informational* : elle
+  répond « ce que le livre tarifaire publie », pas « ce qui est légalement
+  exigible ». Hors couloir autorisé, elle reste un affichage « à vérifier
+  auprès des douanes locales », jamais un montant.
 
 Deux règles de fond :
 - la préférence ne réduit que le **droit de douane**. TVA, accises, redevances
@@ -236,7 +276,7 @@ Deux règles de fond :
 | `COUNTRY_TAX_PROFILES` (37 profils) + `ASSIETTE_TVA_ETABLIE` | ~420 | `assiettes_pays.json`, 27 lignes |
 | `national_legal_calculation_service` + Kenya | 212 | le moteur |
 | `tariff_provider_service` | 159 | le socle |
-| fichiers `backend/data/*_tariffs.json` dans le calcul | 40 fichiers | socle (SOM excepté, étiqueté) |
+| fichiers `backend/data/*_tariffs.json` dans le calcul | 40 fichiers | socle — SOM compris, entré comme 54ᵉ source et étiqueté `etl` |
 | `backend/data/crawled/*_progress_*.json` | 339 fichiers, ~3,8 Go | — |
 
 Cible : **11 191 → environ 1 500 lignes** sur la chaîne de calcul, interface
@@ -257,16 +297,16 @@ Chacun est livrable seul, mesuré par le harnais de la phase 0.
 
 | | |
 |---|---|
-| **Livrable** | `scripts/build_socle.py` + `backend/socle/ISO.json` (53 pays) + `socle/assiettes_pays.json` |
-| **Contenu** | les cinq adaptateurs de schéma, dont TUN `taxes_import[]` et GHA `taxes_detail[].tax` |
-| **Acceptation** | 342 176 positions lues, 0 perdue ; chaque position porte source, date, empreinte ; DJI/ERI déclarés vides ; aucun taux absent converti en 0 ; le socle se régénère en moins de 5 minutes |
+| **Livrable** | `scripts/build_socle.py` + `backend/socle/ISO.json` (**54 pays** : 53 du crawl + SOM) + `socle/assiettes_pays.json` |
+| **Contenu** | les cinq adaptateurs de schéma, dont TUN `taxes_import[]` et GHA `taxes_detail[].tax` — le même adaptateur `tariff_lines[]` couvre SOM |
+| **Acceptation** | **347 778 positions** lues (342 176 du crawl + 5 602 SOM), 0 perdue ; chaque position porte source, date, empreinte, et son origine (`crawl` ou `etl`) ; DJI/ERI déclarés vides ; aucun taux absent converti en 0 ; **aucun chargeur d'exécution ne lit plus `backend/data/*_tariffs.json`** ; le socle se régénère en moins de 5 minutes |
 
 ### L2 — Le moteur
 
 | | |
 |---|---|
 | **Livrable** | `backend/services/calcul.py`, 200 lignes, sans import de service |
-| **Acceptation** | les quatre primitives couvrent les neuf expressions d'assiette relevées + les quatre tunisiennes ; les six familles de taxes sont liquidées ; un test par primitive ; aucune table par pays dans le code |
+| **Acceptation** | les cinq primitives et le modificateur `plafond` couvrent les neuf expressions d'assiette relevées + les quatre tunisiennes ; les **sept** familles de taxes sont liquidées, `NHIL`/`GETFUND` compris ; un test par primitive et un test de plafond ; aucune table par pays dans le code |
 
 ### L3 — La route unique
 
