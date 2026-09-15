@@ -25,13 +25,30 @@ C'est le seul critère retenu ici.
 ## 1. L'unité des taxes spécifiques — le dernier montant faux connu
 
 **Le défaut.** `_parse_crawled_tax_rate` extrait le premier nombre d'une chaîne
-sans regarder son unité :
+sans regarder son unité. Un montant unitaire devient donc un pourcentage.
 
-| Valeur source | Lue comme | Devrait être |
+**Ce que portent réellement les données.** Une seule unité apparaît dans
+l'ensemble des fichiers collectés, et elle est tunisienne :
+
+| Valeur source observée | Assiette déclarée | Lue par le moteur comme |
 |---|---|---|
-| `0.1 dinars` (assiette QCS) | 0,1 % | montant unitaire, non liquidable sans quantité |
-| `1000 FCFA/litre` | 1000 % | idem |
-| `15 DT/kg` | 15 % | idem |
+| `0.1 dinars` — droit sanitaire vétérinaire | `QCS` (quantité) | 0,1 % |
+| `1.2 dinars` — prélèvement CGC bovins/viande | `PN` (poids net) | 1,2 % |
+| `0.012 dinars` — taxe municipale d'abattage | quantité | 0,012 % |
+
+**2 435 occurrences, toutes en dinars, toutes tunisiennes.** Recomptées le
+15 septembre sur `backend/data/crawled` et `crawled_normalized` : aucune autre
+unité, dans aucun autre pays. La Tunisie compte en dinars — elle n'appartient
+à aucune zone franc CFA — et c'est le seul pays dont les données portent des
+taxes assises sur une quantité.
+
+*Précision sur la méthode.* La caractérisation du lecteur a été obtenue en lui
+soumettant des chaînes construites (`1000 FCFA/litre`, `15 DT/kg`) pour montrer
+qu'il ignore l'unité quelle qu'elle soit. **Ces chaînes ne figurent pas dans les
+données** : ce sont des sondes, pas des observations. Une version antérieure de
+ce document les présentait dans la même colonne que les valeurs tunisiennes
+réelles, ce qui laissait croire à des montants en francs CFA dans un tarif
+libellé en dinars. L'erreur est corrigée ici.
 
 **Ce qui se passe vraiment aujourd'hui.** Sur le chemin tunisien en production,
 les données passent par l'ETL, qui ramène ces taxes à un taux nul : elles
@@ -56,7 +73,8 @@ inauditables — on n'aurait plus su lequel expliquait quel écart.
   comme ailleurs.
 - Mesure avant/après publiée : combien de positions changent, dans quel sens,
   et de combien.
-- Un test qui mord sur chacune des trois écritures du tableau ci-dessus.
+- Un test qui mord sur chacune des trois valeurs réellement observées, et sur
+  une unité arbitraire, pour que la garde ne dépende pas du libellé rencontré.
 
 **Ce qu'il faut décider.** Quand la quantité est fournie par l'appelant, faut-il
 liquider la taxe spécifique ? Le dépôt porte déjà une règle 3 en ce sens
