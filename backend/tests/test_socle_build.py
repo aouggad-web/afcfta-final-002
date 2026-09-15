@@ -303,6 +303,37 @@ def test_une_construction_partielle_n_ampute_pas_le_manifeste(tmp_path, monkeypa
     assert {iso: meta for iso, meta in apres["pays"].items() if iso != "CIV"} == autres_avant
 
 
+@pytest.mark.parametrize(
+    "contenu",
+    [
+        "{invalide",
+        json.dumps(["pas_un_objet"]),
+        json.dumps({"pays": ["pas_un_dict"]}),
+    ],
+)
+def test_main_tolere_un_manifeste_malforme_ou_non_conforme(tmp_path, monkeypatch, contenu):
+    chemin = os.path.join(CRAWL, "CIV_tariffs.json")
+    if not os.path.exists(chemin):
+        pytest.skip("crawl CIV absent de ce clone")
+    assiettes = os.path.join(REPO, "backend", "socle", "assiettes_pays.json")
+    if not os.path.exists(assiettes):
+        pytest.skip("table d'assiettes absente de ce clone")
+
+    socle_temp = tmp_path / "socle"
+    socle_temp.mkdir()
+    (socle_temp / "MANIFESTE.json").write_text(contenu, encoding="utf-8")
+    with open(assiettes, encoding="utf-8") as f:
+        (socle_temp / "assiettes_pays.json").write_text(f.read(), encoding="utf-8")
+
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(socle_temp / "assiettes_pays.json"))
+    assert bs.main(["build_socle.py", "CIV"]) == 0
+
+    with open(socle_temp / "MANIFESTE.json", encoding="utf-8") as f:
+        reconstruit = json.load(f)
+    assert "CIV" in reconstruit["pays"]
+
+
 def test_la_table_d_assiettes_conserve_ses_references_legales():
     with open(os.path.join(REPO, "backend", "socle", "assiettes_pays.json"), encoding="utf-8") as f:
         table = json.load(f)

@@ -743,7 +743,9 @@ def main(argv):
             with open(os.path.join(SOCLE_DIR, "MANIFESTE.json"), encoding="utf-8") as f:
                 charge = json.load(f)
                 if isinstance(charge, dict):
-                    ancien = charge.get("pays", {})
+                    pays = charge.get("pays", {})
+                    if isinstance(pays, dict):
+                        ancien = pays
         except json.JSONDecodeError:
             ancien = {}
     manifeste = {
@@ -781,15 +783,29 @@ def main(argv):
         )
 
     # Les totaux sont recalculés sur l'index entier, pas sur la seule sélection.
-    vides = sorted(i for i, v in manifeste["pays"].items() if v["etat"] == "VIDE")
+    vides = sorted(
+        i for i, v in manifeste["pays"].items() if isinstance(v, dict) and v.get("etat") == "VIDE"
+    )
     manifeste["totaux"] = {
         "pays": len(manifeste["pays"]),
         "pays_vides": vides,
-        "pays_partiels": sorted(i for i, v in manifeste["pays"].items() if v["etat"] == "PARTIEL"),
-        "positions": sum(v["compteurs"]["positions"] for v in manifeste["pays"].values()),
-        "droits": sum(v["compteurs"]["droits"] for v in manifeste["pays"].values()),
+        "pays_partiels": sorted(
+            i for i, v in manifeste["pays"].items() if isinstance(v, dict) and v.get("etat") == "PARTIEL"
+        ),
+        "positions": sum(
+            (v.get("compteurs") or {}).get("positions", 0)
+            for v in manifeste["pays"].values()
+            if isinstance(v, dict)
+        ),
+        "droits": sum(
+            (v.get("compteurs") or {}).get("droits", 0)
+            for v in manifeste["pays"].values()
+            if isinstance(v, dict)
+        ),
         "droits_liquidables": sum(
-            v["compteurs"].get("droits_liquidables", 0) for v in manifeste["pays"].values()
+            (v.get("compteurs") or {}).get("droits_liquidables", 0)
+            for v in manifeste["pays"].values()
+            if isinstance(v, dict)
         ),
     }
     with open(os.path.join(SOCLE_DIR, "MANIFESTE.json"), "w", encoding="utf-8") as f:
