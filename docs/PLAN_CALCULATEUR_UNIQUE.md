@@ -277,6 +277,7 @@ Deux règles de fond :
 | `national_legal_calculation_service` + Kenya | 212 | le moteur |
 | `tariff_provider_service` | 159 | le socle |
 | fichiers `backend/data/*_tariffs.json` dans le calcul | 40 fichiers | socle — SOM compris, entré comme 54ᵉ source et étiqueté `etl` |
+| `backend/data/tariffs/` — copie à l'octet près du précédent | 40 fichiers, 336 Mo | supprimée : deux chemins vers la même donnée |
 | `backend/data/crawled/*_progress_*.json` | 339 fichiers, ~3,8 Go | — |
 
 Cible : **11 191 → environ 1 500 lignes** sur la chaîne de calcul, interface
@@ -432,37 +433,67 @@ C1 et C2 sont des chantiers de **données**, parallèles à L1-L6 : ils ne
 bloquent aucune livraison logicielle, et le socle les absorbe sans changer de
 schéma dès qu'un taux sourcé arrive.
 
-### 6.2 La décision qui reste ouverte — PostgreSQL
+### 6.2 PostgreSQL — comment son contenu est produit, et ce qui en découle
 
-**Recommandation : hors du chemin de calcul.** Il redevient un cache de lecture
-optionnel, alimenté par le socle, jamais une source concurrente.
+La question n'est pas « faut-il une base », mais « d'où vient ce qu'elle
+sert ». Chaîne remontée le 15 septembre 2026, pièces à l'appui.
 
-Ce que cela change concrètement, car l'enjeu n'est pas la base elle-même :
+**Ce que le code fait.** `_get_postgres_provider()` est consulté **en premier**
+à quatre endroits (`authentic_tariff_service.py:903, 1007, 1138, 1295`), et
+`tariff_provider_service` affiche une politique « PostgreSQL d'abord ». Si la
+base répond, son taux gagne. Si elle est absente, en panne, ou simplement vide
+pour cette ligne, le code retombe **silencieusement** sur les fichiers
+(`_log_etl_fallback`). Même position, même valeur CIF, deux montants possibles
+selon l'état d'une base que le dépôt ne contient pas.
 
-- **Aujourd'hui**, `_get_postgres_provider()` est consulté en premier à quatre
-  endroits du service (`authentic_tariff_service.py:903, 1007, 1138, 1295`), et
-  `tariff_provider_service` affiche une politique « PostgreSQL d'abord ». Si la
-  base répond, son taux gagne ; si elle est absente, en panne ou simplement
-  vide pour cette ligne, le code retombe silencieusement sur les fichiers
-  (`_log_etl_fallback`). **Le même code, la même position et la même valeur CIF
-  peuvent donc rendre deux montants différents selon l'état d'une base que le
-  dépôt ne contient pas.** C'est invérifiable : un montant faux en production
-  ne se reproduit pas en local, et aucun test ne peut le fixer.
-- **Après**, le socle est la seule source. Le montant devient reproductible :
-  même position, même empreinte de fichier, même résultat, partout. PostgreSQL
-  garde son intérêt là où il est réellement utile — servir vite une recherche
-  sur 347 778 positions — mais il est alors *alimenté par le socle*, donc il ne
-  peut plus contredire le fichier, seulement le restituer.
-- **Ce qu'on perd** : la possibilité de corriger un taux en production par une
-  écriture en base, sans passer par une recollecte. C'est précisément ce que la
-  règle 2 (« aucune valeur fabriquée ») interdit par ailleurs — mais si cette
-  pratique a cours aujourd'hui, il faut le savoir avant de fermer la porte.
+**Comment la base est remplie.** `engine/migrate_all.py` lit des fichiers
+`<ISO>_canonical.jsonl` dans `/app/engine/output/` et les insère en base. Ces
+fichiers sont produits par `engine/pipeline.py`, qui lit
+`/app/backend/data/tariffs/<ISO>_tariffs.json` — un **troisième** jeu de
+données, par ailleurs copie à l'octet près de `backend/data/*_tariffs.json`
+(336 Mo dupliqués, vérifié sur CIV, KEN, ZAF).
 
-**La question qui vous revient** est donc celle-ci, et elle est simple : la
-base PostgreSQL de production contient-elle aujourd'hui des taux qui ne sont
-dans aucun fichier du dépôt ? Si oui, ils doivent être exportés vers le socle
-avant la bascule, et leur provenance établie. Si non, la sortie est sans risque
-et peut être faite dès L1.
+**Ce que le seul rapport de génération conservé établit.**
+`engine/output/pipeline_report.json` :
+
+| Fait | Valeur |
+|---|---|
+| Date de génération | **1ᵉʳ mars 2026**, 17:37:10 → 17:37:47 |
+| Durée totale | **37 secondes** pour 46 pays |
+| Enregistrements produits | **762 213** |
+| Par pays | **16 567 à 16 573** — un écart de **6 enregistrements sur 46 pays** |
+| Djibouti et Érythrée | **16 570 enregistrements chacun** |
+
+**Trois conclusions, et elles sont factuelles :**
+
+1. **Les `*_canonical.jsonl` chargés en base ne sont pas versionnés.** Le dépôt
+   ne conserve que les 54 `_summary.json`. Ce qui est en production ne peut
+   donc être ni reconstruit, ni audité, ni comparé depuis ce dépôt.
+2. **Ils n'ont pas été produits depuis les fichiers actuels.** Ceux-ci donnent
+   aujourd'hui 2 063 à 8 746 sous-positions selon le pays — des comptes variés,
+   cohérents avec les nomenclatures nationales. La génération de mars en a
+   produit 16 570 pour **tout le monde**. La source de mars n'existe plus.
+3. **Un écart de 6 enregistrements sur 46 pays n'est pas la signature de 46
+   tarifs nationaux distincts.** C'est celle d'une expansion par gabarit. Que
+   Djibouti et l'Érythrée — dont le crawl est vide aujourd'hui et qui n'ont
+   aucun fichier dans le jeu source actuel — pèsent exactement 16 570
+   enregistrements comme les autres achève la démonstration.
+
+**Décision : PostgreSQL sort du chemin de calcul, et la charge de la preuve
+s'inverse.** Un taux qu'aucun fichier tracé ne porte ne peut pas être servi,
+quelle que soit la base qui le contient — c'est la règle 1, appliquée sans
+exception. PostgreSQL garde son emploi utile (servir vite une recherche sur
+347 778 positions), mais **alimenté par le socle** : il ne peut alors plus
+contredire le fichier, seulement le restituer.
+
+**Ce que cela coûte.** On perd la possibilité de corriger un taux en production
+par une écriture en base, sans recollecte. C'est exactement ce que la règle 2
+interdit par ailleurs.
+
+**Ce qui reste à faire avant la bascule, et c'est borné :** exporter le contenu
+de la base de production, le comparer au socle, et publier la liste des taux
+qui n'y figurent pas. Chacun est alors soit rattaché à une source et versé au
+socle, soit écarté. Aucun n'est conservé au seul motif qu'il est en base.
 
 ## 7. Les règles de ce plan
 
