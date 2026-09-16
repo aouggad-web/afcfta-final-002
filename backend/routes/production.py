@@ -32,7 +32,7 @@ try:
 except (ImportError, ModuleNotFoundError):
     HAS_CAPACITY_SERVICE = False
 
-router = APIRouter(prefix="/api/production", tags=["production"])
+router = APIRouter(prefix="/production", tags=["production"])
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

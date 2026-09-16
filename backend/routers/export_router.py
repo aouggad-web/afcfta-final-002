@@ -16,7 +16,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/api/export", tags=["export"])
+router = APIRouter(prefix="/export", tags=["export"])
 
 # MongoDB connection - will be initialized from main app
 _db = None

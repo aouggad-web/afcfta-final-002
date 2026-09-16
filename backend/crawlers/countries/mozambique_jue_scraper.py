@@ -55,7 +55,7 @@ def fetch_json(url: str, params: dict = None, retries: int = 3) -> Optional[dict
             r = httpx.get(url, params=params, timeout=20, headers=HEADERS, verify=False)
             if r.status_code == 200:
                 return r.json()
-        except:
+        except Exception:
             pass
         time.sleep(2)
     return None
