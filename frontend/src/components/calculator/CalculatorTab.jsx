@@ -432,6 +432,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         useAuthenticData = true;
         console.log('✅ Using AUTHENTIC tariff data for', destISO3);
       } catch (authError) {
+        // Un 404 — route absente ou pays/position sans donnée authentique —
+        // est le seul signal qui justifie le repli vers le moteur unifié :
+        // c'est une absence de donnée, pas une panne. Tout le reste (500,
+        // délai dépassé, 401/403, erreur réseau) remonte au `catch` externe
+        // et s'affiche à l'utilisateur, plutôt que de dégrader en silence
+        // vers un calcul qui ignore les avantages fiscaux et les formalités.
+        if (authError.response?.status !== 404) {
+          throw authError;
+        }
         console.log('ℹ️ Authentic tariff data not available for', destISO3, '- falling back to calculated data');
       }
       

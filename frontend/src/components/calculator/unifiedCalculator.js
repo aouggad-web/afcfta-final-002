@@ -29,16 +29,41 @@ function ligneParCode(lignes) {
   return map;
 }
 
-function sommeFamille(lignes, famille, excluCode) {
-  return (lignes || [])
-    .filter((l) => estCalculee(l) && l.famille === famille && l.code !== excluCode)
-    .reduce((total, l) => total + l.montant, 0);
+/**
+ * Sommer les lignes calculées d'une famille — sans jamais faire disparaître
+ * dans un total silencieux ni une ligne qui a échoué, ni une famille que la
+ * source ne trace pas du tout.
+ *
+ * Filtrer puis réduire (comme le faisait cette fonction) traite ces deux cas
+ * exactement comme « rien à additionner » : leur `reduce` de départ à `0`
+ * devient le total affiché, indiscernable d'un pays qui exonère réellement
+ * la famille. Les deux se distinguent donc avant la somme : une ligne
+ * présente mais non liquidée invalide le total (`null`, pas une somme
+ * amputée) ; une famille absente des lignes ET absente à la source
+ * (`manques`, motif `NON_TRACEE_A_LA_SOURCE` — la dégradation que
+ * `services/calcul.py` applique déjà à `etat`) rend `null` plutôt que `0`.
+ */
+function familleNonTracee(manques, famille) {
+  return (manques || []).some(
+    (m) => m.code === famille.toUpperCase() && m.motif === 'NON_TRACEE_A_LA_SOURCE'
+  );
+}
+
+function sommeFamille(lignes, famille, excluCode, manques) {
+  const correspondantes = (lignes || []).filter(
+    (l) => l.famille === famille && l.code !== excluCode
+  );
+  if (correspondantes.some((l) => !estCalculee(l))) return null;
+  if (correspondantes.length === 0) return familleNonTracee(manques, famille) ? null : 0;
+  return correspondantes.reduce((total, l) => total + l.montant, 0);
 }
 
 function sommeAutres(lignes, excluCode) {
-  return (lignes || [])
-    .filter((l) => estCalculee(l) && l.famille !== 'tva' && l.code !== excluCode)
-    .reduce((total, l) => total + l.montant, 0);
+  const correspondantes = (lignes || []).filter(
+    (l) => l.famille !== 'tva' && l.code !== excluCode
+  );
+  if (correspondantes.some((l) => !estCalculee(l))) return null;
+  return correspondantes.reduce((total, l) => total + l.montant, 0);
 }
 
 /**
@@ -78,9 +103,13 @@ function buildJournal(cifValue, lignes) {
       return;
     }
     cumulative += l.montant;
+    // Un droit spécifique (« 8c/kg ») n'a pas de taux pourcentuel : `taux_pct`
+    // y est `null`, et l'afficher tel quel écrirait « null% ». Le moteur porte
+    // alors `specifique` (le libellé brut publié) — l'utiliser à sa place.
+    const taux = l.montant_unitaire != null ? l.specifique : `${l.taux_pct}%`;
     journal.push({
       step: i + 2, component: l.libelle, base: l.base, base_formula: l.assiette,
-      rate: `${l.taux_pct}%`, amount: l.montant, cumulative, legal_ref: l.source || '',
+      rate: taux, amount: l.montant, cumulative, legal_ref: l.source || '',
     });
   });
   return journal;
@@ -108,9 +137,9 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
   const dutyAmount = estCalculee(dd) ? dd.montant : null;
   const zlecafDutyAmount = hasZlecaf && estCalculee(ddPref) ? ddPref.montant : null;
 
-  const vatAmount = sommeFamille(npfLignes, 'tva', null);
+  const vatAmount = sommeFamille(npfLignes, 'tva', null, npf.manques);
   const otherAmount = sommeAutres(npfLignes, 'DD');
-  const zlecafVatAmount = hasZlecaf ? sommeFamille(prefLignes, 'tva', null) : null;
+  const zlecafVatAmount = hasZlecaf ? sommeFamille(prefLignes, 'tva', null, pref.manques) : null;
   const zlecafOtherAmount = hasZlecaf ? sommeAutres(prefLignes, 'DD') : null;
 
   // Le tableau comparatif ligne à ligne (TaxBreakdownDual) n'a pas de

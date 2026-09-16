@@ -10,6 +10,15 @@ fichier dont l'empreinte ne correspond pas au manifeste n'est pas servi.** Un
 socle périmé devient inerte, au lieu de rendre en silence des montants qui ne
 correspondent plus à la donnée collectée.
 
+**Portée exacte de cette garantie, pour ne pas la surestimer :** elle vérifie
+que le socle correspond à *son propre* manifeste — pas que le crawl a été
+relu depuis sa dernière collecte. Revérifier l'empreinte du crawl source à
+chaque requête reviendrait à rehacher des fichiers de plusieurs dizaines de
+mégaoctets à chaque appel, ce que le socle existe précisément pour éviter.
+La fraîcheur face au crawl est une responsabilité de déploiement — régénérer
+le socle après chaque collecte, comme le fait déjà la CI avant les tests —
+pas une vérification que ce module peut faire à coût constant.
+
 La remontée au parent SH6 est possible mais jamais implicite : le niveau réel
 de la position servie accompagne toujours le résultat.
 """
@@ -25,6 +34,9 @@ from typing import Any, Dict, Optional, Tuple
 
 SOCLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "socle")
 MANIFESTE = os.path.join(SOCLE_DIR, "MANIFESTE.json")
+DEVISES = os.path.join(SOCLE_DIR, "devises_pays.json")
+
+_devises_cache: Optional[Dict[str, str]] = None
 
 #: Les fichiers pays pèsent de 3 à 60 Mo. On en garde quelques-uns en mémoire,
 #: pas les cinquante-quatre.
@@ -109,6 +121,20 @@ def pays_servis() -> Dict[str, dict]:
     }
 
 
+def devise_nationale(iso3: str) -> Optional[str]:
+    """Devise (ISO 4217) dans laquelle le tarif du pays publie ses droits
+    spécifiques. ``None`` si le pays n'est pas dans la table plutôt qu'une
+    devise devinée."""
+    global _devises_cache
+    if _devises_cache is None:
+        if not os.path.exists(DEVISES):
+            _devises_cache = {}
+        else:
+            with open(DEVISES, encoding="utf-8") as f:
+                _devises_cache = json.load(f).get("pays", {})
+    return _devises_cache.get(_iso3(iso3))
+
+
 def normaliser_code(code: str) -> str:
     chiffres = re.sub(r"\D", "", str(code or ""))
     if len(chiffres) < 6:
@@ -122,14 +148,21 @@ def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
     La recherche est explicite et son résultat le dit : le code exact d'abord,
     puis le parent SH6 s'il existe. Aucune remontée au chapitre, aucune valeur
     de repli : un code introuvable lève, il ne rend pas une position voisine.
+
+    Le niveau annoncé se lit sur le code **demandé**, pas sur le fait qu'une
+    position ait été trouvée directement : un code à six chiffres reste
+    « hs6 » même quand il correspond à une clé du socle, parce qu'il n'est
+    pas une sous-position nationale — le confondre ferait annoncer
+    `tariff_precision: sub_position` là où seule une moyenne SH6 est servie.
     """
     iso3 = _iso3(iso3)
     code = normaliser_code(code)
     donnees = charger(iso3)
     positions = donnees.get("positions", {})
 
-    trouve, niveau = positions.get(code), "national"
-    if trouve is None:
+    niveau = "national" if len(code) > 6 else "hs6"
+    trouve = positions.get(code)
+    if trouve is None and niveau == "national":
         hs6 = code[:6]
         trouve, niveau = positions.get(hs6), "hs6"
     if trouve is None:
@@ -148,13 +181,15 @@ def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
             "reference_legale": donnees.get("assiettes", {}).get("reference_legale"),
             "origine": donnees.get("assiettes", {}).get("origine"),
         },
+        "devise_nationale": devise_nationale(iso3),
         "socle_version": donnees.get("socle_version"),
     }
     return trouve, provenance
 
 
 def vider_cache() -> None:
-    """Oublier les pays chargés et le manifeste (utile aux tests)."""
-    global _manifeste
+    """Oublier les pays chargés, le manifeste et les devises (utile aux tests)."""
+    global _manifeste, _devises_cache
     _cache.clear()
     _manifeste = None
+    _devises_cache = None

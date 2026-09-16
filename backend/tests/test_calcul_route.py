@@ -87,12 +87,25 @@ def test_le_niveau_reellement_servi_est_toujours_dit():
     # niveaux sont adressables, et chacun se nomme.
     _, national = socle.position("GHA", "0101210000")
     assert national["niveau"] == "national"
+    # Un code à six chiffres reste "hs6" même quand il correspond à une clé
+    # du socle : ce n'est pas une sous-position nationale, le dire autrement
+    # ferait annoncer une précision qui n'existe pas.
     _, parent = socle.position("GHA", "010121")
-    assert parent["niveau"] == "national"
+    assert parent["niveau"] == "hs6"
     # Un code national inconnu dont le parent SH6 existe est servi au parent —
     # mais la réponse le déclare, elle ne le laisse pas croire.
     _, remonte = socle.position("GHA", "0101219999")
     assert remonte["niveau"] == "hs6"
+
+
+@besoin_socle
+def test_la_devise_nationale_accompagne_la_provenance():
+    _, provenance = socle.position("ZAF", "020830")
+    assert provenance["devise_nationale"] == "ZAR"
+
+
+def test_un_pays_hors_table_des_devises_ne_devine_pas_une_devise():
+    assert socle.devise_nationale("XXX") is None
 
 
 @besoin_socle
@@ -145,6 +158,56 @@ def test_un_couloir_autorise_sans_taux_trace_ne_derive_rien_du_npf():
     assert decision["taux"] == {}
 
 
+@besoin_socle
+def test_le_calendrier_algerien_rend_un_taux_trace_pas_un_echec_silencieux(monkeypatch):
+    """Régression : les deux derniers arguments de `compute_dza_zlecaf_rate`
+    étaient inversés (`npf` passé où `origine_iso3` était attendu), ce qui
+    faisait lever `.upper()` sur un flottant — capté par un `except` large,
+    et rendait `PREFERENCE_NON_TRACEE` sur tout calcul algérien passant par
+    le calendrier plutôt que par la colonne préférentielle du socle.
+
+    Aucun couloir algérien n'est aujourd'hui autorisé au registre
+    (fail-closed, faute de preuve d'application bilatérale) : le verrou 1 est
+    donc simulé ici pour exercer le verrou 2 — celui que le bug cassait —
+    indépendamment de l'état, à ce jour transitoire, du registre.
+    """
+    from services import zlecaf_implementation_registry
+    from services.zlecaf_schedule_dza import ACTIVE_PARTNERS, is_frozen, tariff_list
+
+    monkeypatch.setattr(
+        zlecaf_implementation_registry,
+        "implementation_decision",
+        lambda destination, origine: {
+            "applied": True,
+            "status": "APPLIED",
+            "note": "simulé pour le test",
+        },
+    )
+
+    origine = sorted(ACTIVE_PARTNERS)[0]
+    code = next(
+        (
+            c
+            for c in ("2201101100", "0101210000", "7612900000")
+            if not is_frozen(c) and tariff_list(c) in ("A", "B")
+        ),
+        None,
+    )
+    if code is None:
+        pytest.skip("aucune position de liste (A)/(B) sous la main")
+    position, _ = socle.position("DZA", code)
+    from services.preference import _colonne_de_la_position
+
+    if _colonne_de_la_position(position) is not None:
+        pytest.skip(
+            "cette position porte déjà une colonne préférentielle : le calendrier n'est pas sollicité"
+        )
+    decision = taux_preferentiels(position, "DZA", origine, code)
+    assert decision["statut"] != "PREFERENCE_NON_TRACEE"
+    assert decision["applique"] is True
+    assert decision["taux"]["DD"]["taux"] is not None
+
+
 def test_le_perimetre_algerien_couvre_le_daps_avec_sa_reference():
     """Circulaire 482/2024 II-2, art. 2 de la LFC 2018. Le périmètre est
     national : il est déclaré, jamais déduit d'une règle générale."""
@@ -194,7 +257,13 @@ def test_un_droit_specifique_sans_quantite_est_indisponible_pas_approche(client)
         "/calcul", json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000}
     ).json()
     assert sans["npf"]["etat"] == "INDISPONIBLE"
-    assert sans["npf"]["manques"] == [{"code": "DD", "motif": "QUANTITE_REQUISE"}]
+    # La TVA sud-africaine n'est pas non plus tracée à la source (crawl SARS) :
+    # le manque de quantité pour le DD et l'absence structurelle de TVA sont
+    # deux causes distinctes, toutes deux nommées.
+    assert sans["npf"]["manques"] == [
+        {"code": "DD", "motif": "QUANTITE_REQUISE"},
+        {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"},
+    ]
 
     avec = client.post(
         "/calcul",

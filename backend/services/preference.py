@@ -124,10 +124,13 @@ def taux_preferentiels(
 
             npf = _taux_npf(position, "DD")
             if npf is not None:
-                taux, origine_taux = compute_dza_zlecaf_rate(hs_code, npf, origine_iso3)
+                # Signature : (hs_code, origin_iso3, normal_rate_pct). L'ordre
+                # est significatif — origin_iso3 fait `.upper()` sur son
+                # argument, un taux passé à sa place lève immédiatement.
+                taux, origine_taux = compute_dza_zlecaf_rate(hs_code, origine_iso3, npf)
                 taux_dd = {"taux": taux}
         except Exception as exc:  # pragma: no cover - dépendance optionnelle
-            logger.info("Calendrier ZLECAf DZA indisponible : %s", exc)
+            logger.warning("Calendrier ZLECAf DZA indisponible : %s", exc)
 
     if taux_dd is None:
         resultat["statut"] = "PREFERENCE_NON_TRACEE"

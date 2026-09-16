@@ -137,3 +137,4 @@ __pycache__/
 backend/socle/*.json
 !backend/socle/MANIFESTE.json
 !backend/socle/assiettes_pays.json
+!backend/socle/devises_pays.json

@@ -37,12 +37,28 @@ class DemandeCalcul(BaseModel):
         None, ge=0, description="Requise par les droits spécifiques (poids, litres, unités)"
     )
     taux_de_change: Optional[float] = Field(
-        None, gt=0, description="Requis par les assiettes plafonnées en devise étrangère"
+        None,
+        gt=0,
+        description="Requis par les assiettes plafonnées ou spécifiques en devise étrangère",
+    )
+    devise_cif: Optional[str] = Field(
+        None,
+        description=(
+            "Devise (ISO 4217) de `valeur_cif`. Omise, elle est supposée être "
+            "celle du tarif national. Un droit spécifique publié dans une "
+            "autre devise que `devise_cif` exige `taux_de_change`, faute de "
+            "quoi il reste indisponible plutôt que mélangé à la valeur CIF."
+        ),
     )
 
 
 @router.post("/calcul", summary="Liquider les droits et taxes d'une importation")
-async def calcul(demande: DemandeCalcul):
+def calcul(demande: DemandeCalcul):
+    # Route synchrone à dessein : le chargement du socle hache et charge
+    # jusqu'à 60 Mo de JSON par pays manqué en cache. FastAPI exécute une
+    # route `def` classique dans son bassin de fils ; la déclarer `async def`
+    # bloquerait la boucle d'événements — et toutes les requêtes concurrentes
+    # du même worker — le temps de ce calcul.
     try:
         position, provenance = socle.position(demande.destination, demande.code_sh)
     except ValueError as exc:
@@ -66,6 +82,9 @@ async def calcul(demande: DemandeCalcul):
         quantite=demande.quantite,
         taux_de_change=demande.taux_de_change,
         taux_preferentiels=preference.get("taux") or None,
+        devise_position=provenance.get("devise_nationale"),
+        devise_cif=demande.devise_cif,
+        couverture=provenance.get("couverture"),
     )
     resultat["provenance"] = provenance
     resultat["preference_zlecaf"] = {k: v for k, v in preference.items() if k != "taux"}
@@ -73,7 +92,7 @@ async def calcul(demande: DemandeCalcul):
 
 
 @router.get("/calcul/pays", summary="Pays servis par le socle, et leur couverture")
-async def pays():
+def pays():
     try:
         servis = socle.pays_servis()
     except socle.SocleIndisponible as exc:

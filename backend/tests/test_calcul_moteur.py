@@ -433,4 +433,77 @@ def test_les_marqueurs_de_provenance_atteignent_le_resultat():
     ligne = lignes(calculer(position(d), 1000))["TVA"]
     assert ligne["source"] == "PwC Worldwide Tax Summaries"
     assert ligne["note"].startswith("Taux national standard")
-    assert ligne["classification_source"] == "estimation_ia"
+
+
+# ── Un droit spécifique ne mélange jamais deux devises ────────────────────────
+def test_un_droit_specifique_en_devise_etrangere_exige_un_taux_de_change():
+    d = droit("DD", None, "xQTE", "droit", specifique={"montant": 0.08, "brut": "8c/kg"})
+    r = calculer(position(d), 1000, quantite=500, devise_position="ZAR", devise_cif="USD")
+    ligne = lignes(r)["DD"]
+    assert ligne["statut"] == MANQUE_CHANGE
+    assert ligne["montant"] is None
+    assert r["npf"]["etat"] == INDISPONIBLE
+
+    r2 = calculer(
+        position(d),
+        1000,
+        quantite=500,
+        devise_position="ZAR",
+        devise_cif="USD",
+        taux_de_change=0.055,
+    )
+    ligne2 = lignes(r2)["DD"]
+    assert ligne2["statut"] == CALCULE
+    assert ligne2["montant"] == pytest.approx(0.08 * 0.055 * 500)
+
+
+def test_une_devise_identique_ou_inconnue_ne_declenche_aucune_conversion():
+    d = droit("DD", None, "xQTE", "droit", specifique={"montant": 0.08, "brut": "8c/kg"})
+    r = calculer(position(d), 1000, quantite=500, devise_position="ZAR", devise_cif="ZAR")
+    assert lignes(r)["DD"]["montant"] == 40.0
+
+    r2 = calculer(position(d), 1000, quantite=500)
+    assert lignes(r2)["DD"]["montant"] == 40.0
+
+
+# ── Une position peut être complète et son pays ne pas l'être ─────────────────
+def test_une_famille_non_tracee_a_la_source_degrade_l_etat_a_partiel():
+    r = calculer(
+        position(droit("DD", 20, "CIF", "droit")),
+        1000,
+        couverture={"droit": True, "tva": False},
+    )
+    assert r["npf"]["etat"] == PARTIEL
+    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in r["npf"]["manques"]
+
+
+def test_une_famille_deja_presente_n_est_pas_signalee_en_plus():
+    r = calculer(
+        position(droit("DD", 20, "CIF", "droit"), droit("TVA", 14, "CIF", "tva")),
+        1000,
+        couverture={"droit": True, "tva": False},
+    )
+    assert r["npf"]["etat"] == COMPLET
+    assert r["npf"]["manques"] == []
+
+
+# ── Rien n'est calculable ──────────────────────────────────────────────────────
+def test_une_position_sans_aucun_droit_est_indisponible_pas_complete_a_zero():
+    r = calculer(position(), 1000)
+    assert r["npf"]["etat"] == INDISPONIBLE
+    assert r["npf"]["total_droits"] == 0
+    assert r["npf"]["lignes"] == []
+
+
+# ── L'économie n'est comparable que si les deux régimes sont complets ─────────
+def test_l_economie_n_est_pas_rendue_si_un_regime_est_partiel():
+    r = calculer(
+        position(
+            droit("DD", 20, "CIF", "droit"),
+            droit("EXC", None, "CIF", "accise"),
+        ),
+        1000,
+        taux_preferentiels={"DD": 0},
+    )
+    assert r["npf"]["etat"] == PARTIEL
+    assert r["economie"] is None

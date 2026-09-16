@@ -162,3 +162,90 @@ describe("mapCalculToLegacyResult — un droit sans économie ne divise jamais p
     expect(Number.isFinite(r.savings_percentage)).toBe(false);
   });
 });
+
+describe('mapCalculToLegacyResult — une famille non tracée à la source ne vaut pas zéro', () => {
+  it("rend la TVA nulle, pas zéro, quand la source ne la trace pas du tout", () => {
+    const calcul = {
+      position: {},
+      npf: {
+        etat: 'PARTIEL',
+        lignes: [ligne()], // uniquement le DD, aucune ligne TVA
+        manques: [{ code: 'TVA', motif: 'NON_TRACEE_A_LA_SOURCE' }],
+        total_droits: 200,
+        total_a_payer: 1200,
+        taux_effectif_pct: 20,
+      },
+      preference_zlecaf: { applique: false, statut: 'NOT_AVAILABLE', note: '' },
+      provenance: { niveau: 'national', source: {}, assiettes: {} },
+    };
+    const r = mapCalculToLegacyResult(calcul, contexte);
+    expect(r.normal_vat_amount).toBeNull();
+    expect(r.normal_tariff_amount).toBe(200); // le DD, lui, reste liquidé
+  });
+
+  it("rend zéro quand aucune ligne de TVA n'existe mais que la source la trace ailleurs (pas de manque)", () => {
+    const calcul = {
+      position: {},
+      npf: {
+        etat: 'COMPLET',
+        lignes: [ligne()], // le produit n'a simplement aucune TVA applicable
+        manques: [],
+        total_droits: 200,
+        total_a_payer: 1200,
+        taux_effectif_pct: 20,
+      },
+      preference_zlecaf: { applique: false, statut: 'NOT_AVAILABLE', note: '' },
+      provenance: { niveau: 'national', source: {}, assiettes: {} },
+    };
+    const r = mapCalculToLegacyResult(calcul, contexte);
+    expect(r.normal_vat_amount).toBe(0);
+  });
+
+  it('rend la TVA nulle quand une ligne de TVA existe mais a échoué, plutôt que de l’ignorer', () => {
+    const calcul = {
+      position: {},
+      npf: {
+        etat: 'PARTIEL',
+        lignes: [
+          ligne(),
+          ligne({ code: 'TVA', libelle: 'TVA', famille: 'tva', taux_pct: null, montant: null, statut: 'TAUX_INDISPONIBLE' }),
+        ],
+        manques: [{ code: 'TVA', motif: 'TAUX_INDISPONIBLE' }],
+        total_droits: 200,
+        total_a_payer: 1200,
+        taux_effectif_pct: 20,
+      },
+      preference_zlecaf: { applique: false, statut: 'NOT_AVAILABLE', note: '' },
+      provenance: { niveau: 'national', source: {}, assiettes: {} },
+    };
+    const r = mapCalculToLegacyResult(calcul, contexte);
+    expect(r.normal_vat_amount).toBeNull();
+  });
+});
+
+describe('mapCalculToLegacyResult — le journal ne fabrique jamais de « null% »', () => {
+  it('affiche le libellé brut du droit spécifique au lieu de son taux pourcentuel', () => {
+    const calcul = {
+      position: {},
+      npf: {
+        etat: 'COMPLET',
+        lignes: [
+          ligne({
+            code: 'DD', taux_pct: null, montant: 40, montant_unitaire: 0.08,
+            specifique: '8c/kg', assiette: 'xQTE', base: 500,
+          }),
+        ],
+        manques: [],
+        total_droits: 40,
+        total_a_payer: 1040,
+        taux_effectif_pct: 4,
+      },
+      preference_zlecaf: { applique: false, statut: 'NOT_AVAILABLE', note: '' },
+      provenance: { niveau: 'national', source: {}, assiettes: {} },
+    };
+    const r = mapCalculToLegacyResult(calcul, contexte);
+    const ligneJournal = r.normal_calculation_journal.find((j) => j.component === 'Droit de douane');
+    expect(ligneJournal.rate).toBe('8c/kg');
+    expect(ligneJournal.rate).not.toContain('null');
+  });
+});

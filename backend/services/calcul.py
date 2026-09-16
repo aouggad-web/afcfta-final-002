@@ -34,6 +34,13 @@ Trois règles gouvernent tout le reste :
    2018), quand ailleurs seul le droit de douane est démantelé. Le moteur reçoit
    donc la liste des taux préférentiels ; il ne la déduit jamais. Tout ce qui
    n'y figure pas reste dû au taux NPF.
+4. **Une position peut être complète et son pays ne pas l'être.** Cinq pays
+   SACU liquident un droit de douane sans qu'aucune TVA ne soit jamais tracée
+   dans leur source. Sans le savoir, le moteur rendrait « COMPLET » sur une
+   position qui n'a simplement rien à liquider en TVA — indiscernable d'un
+   pays qui exonère réellement le produit. La couverture du pays (transmise en
+   ``couverture``) dégrade alors l'état à ``PARTIEL`` et nomme la famille non
+   tracée, avant même de calculer une économie.
 """
 
 from __future__ import annotations
@@ -57,6 +64,29 @@ MANQUE_ASSIETTE = "ASSIETTE_INDISPONIBLE"
 MANQUE_QUANTITE = "QUANTITE_REQUISE"
 MANQUE_CHANGE = "TAUX_DE_CHANGE_REQUIS"
 MANQUE_COMPOSANT = "ASSIETTE_INCOMPLETE"
+
+
+def _facteur_devise_specifique(
+    devise_position: Optional[str], devise_cif: Optional[str], taux_de_change: Optional[float]
+) -> Optional[float]:
+    """Facteur de conversion des droits spécifiques vers la devise de la valeur
+    CIF déclarée.
+
+    Un droit spécifique (« 8c/kg », « 0.1 dinars ») est publié dans la devise
+    nationale du tarif. L'additionner tel quel à une valeur CIF déclarée dans
+    une autre devise mélangerait deux monnaies dans le même total. Rendu :
+
+    - ``1.0`` quand aucune conversion n'est nécessaire (devise inconnue d'un
+      côté ou de l'autre, ou les deux devises coïncident) — comportement
+      inchangé, aucune régression sur les positions sans ambiguïté ;
+    - ``None`` quand une conversion est nécessaire mais qu'aucun taux n'est
+      fourni : les droits spécifiques concernés deviennent indisponibles
+      plutôt qu'additionnés dans la mauvaise devise ;
+    - le taux de change lui-même sinon, à multiplier au montant unitaire.
+    """
+    if not devise_cif or not devise_position or devise_cif.upper() == devise_position.upper():
+        return 1.0
+    return taux_de_change
 
 
 def _montant_unitaire(specifique: Any) -> Optional[float]:
@@ -188,12 +218,23 @@ def _assiette_de(
     return base, None, detail
 
 
+#: Famille socle → clé de couverture pays (`couverture` du manifeste). Une
+#: position peut liquider tout ce qu'elle porte et rester malgré tout
+#: incomplète si son pays ne trace pas une famille entière — c'est le cas des
+#: cinq pays SACU, dont le crawl SARS ne porte aucune TVA. Confondre « rien à
+#: cette ligne » et « la source ne trace pas cette famille » afficherait un
+#: 0 % de TVA au lieu d'un manque nommé.
+FAMILLES_COUVERTURE = {"droit_de_douane": "droit", "tva": "tva"}
+
+
 def _liquider(
     droits: List[Dict[str, Any]],
     cif: float,
     quantite: Optional[float],
     taux_de_change: Optional[float],
     taux_preferentiels: Optional[Dict[str, float]],
+    facteur_devise_specifique: Optional[float] = 1.0,
+    couverture: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     lignes: List[Dict[str, Any]] = []
     calcules: List[Dict[str, Any]] = []
@@ -237,6 +278,7 @@ def _liquider(
 
         taux = droit.get("taux")
         specifique = droit.get("specifique")
+        manque_devise = False
         if taux is None and specifique is not None:
             # Garde-fou : un droit spécifique se liquide toujours à la quantité.
             # Quelle que soit l'assiette déclarée, la lire comme ad valorem
@@ -245,7 +287,23 @@ def _liquider(
             # pas à lui sur ce point.
             droit = dict(droit, assiette="xQTE", plafond=None)
             ligne["assiette"] = "xQTE"
-            taux = _montant_unitaire(specifique)
+            montant_unitaire = _montant_unitaire(specifique)
+            if montant_unitaire is not None and facteur_devise_specifique is None:
+                # Le montant unitaire est publié dans la devise nationale du
+                # tarif ; la valeur CIF est déclarée dans une autre. Sans taux
+                # de change, l'additionner reviendrait à mélanger deux
+                # devises dans le même total — jamais approché.
+                manque_devise = True
+                taux = None
+            else:
+                facteur = (
+                    facteur_devise_specifique if facteur_devise_specifique is not None else 1.0
+                )
+                taux = montant_unitaire * facteur if montant_unitaire is not None else None
+                if facteur != 1.0:
+                    ligne["conversion_devise"] = (
+                        f"montant unitaire converti au taux fourni (× {facteur})"
+                    )
             ligne["montant_unitaire"] = taux
             ligne["specifique"] = (
                 specifique.get("brut") if isinstance(specifique, dict) else specifique
@@ -263,7 +321,9 @@ def _liquider(
             droit, cif, calcules, echecs, quantite, taux_de_change, codes_de_la_position
         )
         ligne.update(detail)
-        if manque is None and taux is None:
+        if manque_devise:
+            manque = MANQUE_CHANGE
+        elif manque is None and taux is None:
             manque = MANQUE_TAUX
 
         if manque:
@@ -289,14 +349,31 @@ def _liquider(
         lignes.append(ligne)
         calcules.append({"code": code, "montant": montant, "famille": ligne["famille"]})
 
+    if couverture:
+        familles_presentes = {l.get("famille") for l in lignes}
+        for cle, famille in FAMILLES_COUVERTURE.items():
+            if couverture.get(cle) is False and famille not in familles_presentes:
+                manques.append({"code": famille.upper(), "motif": "NON_TRACEE_A_LA_SOURCE"})
+
     total = sum(d["montant"] for d in calcules)
+    if not lignes:
+        # Aucun droit analysé sur cette position : ce n'est pas un total
+        # complet à zéro, c'est une absence de donnée. La confondre avec un
+        # « rien à payer » réel serait la fabrication la plus trompeuse.
+        etat = INDISPONIBLE
+    elif not manques:
+        etat = COMPLET
+    elif not calcules:
+        etat = INDISPONIBLE
+    else:
+        etat = PARTIEL
     return {
         "lignes": lignes,
         "manques": manques,
         "total_droits": round(total, 2),
         "total_a_payer": round(cif + total, 2),
         "taux_effectif_pct": round(total / cif * 100, 4) if cif else None,
-        "etat": COMPLET if not manques else (INDISPONIBLE if not calcules else PARTIEL),
+        "etat": etat,
     }
 
 
@@ -307,6 +384,9 @@ def calculer(
     quantite: Optional[float] = None,
     taux_de_change: Optional[float] = None,
     taux_preferentiels: Optional[Dict[str, float]] = None,
+    devise_position: Optional[str] = None,
+    devise_cif: Optional[str] = None,
+    couverture: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Liquider une position du socle, en NPF et — s'il y a lieu — en préférence.
 
@@ -316,11 +396,17 @@ def calculer(
     ZLECAf l'Algérie exonère aussi le DAPS, et l'y oublier surestimerait de
     70 points le droit liquidé sur les positions concernées. Tout prélèvement
     absent de la table reste dû à son taux NPF.
+
+    ``devise_position``/``devise_cif`` : un droit spécifique est publié dans
+    la devise nationale du tarif (« 8c/kg », en rands). Si la valeur CIF est
+    déclarée dans une autre devise, l'additionner telle quelle mélangerait
+    deux monnaies — voir ``_facteur_devise_specifique``.
     """
     if valeur_cif is None or valeur_cif < 0:
         raise ValueError("valeur_cif doit être un nombre positif")
 
     droits = position.get("droits") or []
+    facteur_devise = _facteur_devise_specifique(devise_position, devise_cif, taux_de_change)
     resultat = {
         "position": {
             "designation": position.get("designation"),
@@ -328,13 +414,29 @@ def calculer(
             "source": position.get("source"),
         },
         "valeur_cif": valeur_cif,
-        "npf": _liquider(droits, valeur_cif, quantite, taux_de_change, None),
+        "npf": _liquider(
+            droits, valeur_cif, quantite, taux_de_change, None, facteur_devise, couverture
+        ),
     }
     if taux_preferentiels:
         resultat["preference"] = _liquider(
-            droits, valeur_cif, quantite, taux_de_change, taux_preferentiels
+            droits,
+            valeur_cif,
+            quantite,
+            taux_de_change,
+            taux_preferentiels,
+            facteur_devise,
+            couverture,
         )
         resultat["preference"]["prelevements_remises"] = sorted(taux_preferentiels)
-        economie = resultat["npf"]["total_droits"] - resultat["preference"]["total_droits"]
-        resultat["economie"] = round(economie, 2)
+        # Une économie n'est comparable que si les deux régimes sont
+        # complets : soustraire un total partiel produirait un chiffre
+        # plausible construit sur une base inconnue.
+        npf_complet = resultat["npf"]["etat"] == COMPLET
+        pref_complet = resultat["preference"]["etat"] == COMPLET
+        resultat["economie"] = (
+            round(resultat["npf"]["total_droits"] - resultat["preference"]["total_droits"], 2)
+            if npf_complet and pref_complet
+            else None
+        )
     return resultat

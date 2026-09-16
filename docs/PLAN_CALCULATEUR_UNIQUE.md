@@ -124,7 +124,7 @@ crawl/ISO_tariffs.json  ──(1) socle : une passe, hors ligne ──►  socle
                                                                       │
                                               (2) moteur : lookup + cascade
                                                                       │
-                                              (3) une route : POST /api/calculate
+                                              (3) une route : POST /calcul
                                                                       │
                                               (4) un appel dans l'interface
 ```
@@ -225,7 +225,7 @@ Sortie : une ligne par droit (`code`, `libellé`, `assiette`, `montant`,
 
 ### 2.3 Une route
 
-`POST /api/calculate` : `{origine, destination, code_sh, valeur_cif, quantité?,
+`POST /calcul` : `{origine, destination, code_sh, valeur_cif, quantité?,
 devise?}` → le résultat ci-dessus, pour les deux régimes (NPF et ZLECAf) dans
 la même réponse. Toutes les autres routes de calcul sont supprimées ou
 délèguent à celle-ci.
@@ -357,7 +357,7 @@ socle non rechargé — que l'empreinte détecte.
 
 | | |
 |---|---|
-| **Livrable** | `POST /api/calculate` ; les routes existantes délèguent ou disparaissent |
+| **Livrable** | `POST /calcul` ; les routes existantes délèguent ou disparaissent |
 | **Acceptation** | `scripts/diff_engines.py` ne trouve plus de second chemin à comparer ; les 320 positions de la mesure de référence donnent un résultat unique ; les 23 cas du corpus figé passent, les 6 `xfail` sont levés ou motivés |
 
 ### L4 — L'interface
