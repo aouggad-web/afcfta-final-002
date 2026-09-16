@@ -1,0 +1,16 @@
+{
+  "_objet": "Devise nationale (ISO 4217) de chaque pays du socle — la devise dans laquelle son tarif publie les droits spécifiques (« 8c/kg », « 0.1 dinars »). Donnée de référence, pas une donnée collectée : contrairement à un taux de droit, elle ne varie pas et n'exige pas de source primaire par pays. Utilisée uniquement pour détecter un écart de devise entre une valeur CIF déclarée et un droit spécifique, et exiger alors un taux de change explicite plutôt que d'additionner deux devises.",
+  "pays": {
+    "AGO": "AOA", "BDI": "BIF", "BEN": "XOF", "BFA": "XOF", "BWA": "BWP",
+    "CAF": "XAF", "CIV": "XOF", "CMR": "XAF", "COD": "CDF", "COG": "XAF",
+    "COM": "KMF", "CPV": "CVE", "DJI": "DJF", "DZA": "DZD", "EGY": "EGP",
+    "ERI": "ERN", "ETH": "ETB", "GAB": "XAF", "GHA": "GHS", "GIN": "GNF",
+    "GMB": "GMD", "GNB": "XOF", "GNQ": "XAF", "KEN": "KES", "LBR": "LRD",
+    "LBY": "LYD", "LSO": "LSL", "MAR": "MAD", "MDG": "MGA", "MLI": "XOF",
+    "MOZ": "MZN", "MRT": "MRU", "MUS": "MUR", "MWI": "MWK", "NAM": "NAD",
+    "NER": "XOF", "NGA": "NGN", "RWA": "RWF", "SDN": "SDG", "SEN": "XOF",
+    "SLE": "SLE", "SOM": "SOS", "SSD": "SSP", "STP": "STN", "SWZ": "SZL",
+    "SYC": "SCR", "TCD": "XAF", "TGO": "XOF", "TUN": "TND", "TZA": "TZS",
+    "UGA": "UGX", "ZAF": "ZAR", "ZMB": "ZMW", "ZWE": "ZWG"
+  }
+}

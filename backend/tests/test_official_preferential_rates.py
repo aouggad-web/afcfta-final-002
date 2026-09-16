@@ -5,13 +5,20 @@ from importlib import import_module
 from services import authentic_tariff_service
 from services.authentic_tariff_service import resolve_zlecaf_context
 from services.official_preferential_rates import (
+    DATASETS,
+    _carte_origines_nationale,
+    _load_dataset,
     _resolve_offer_line,
     resolve_official_preferential_rate,
+    resolve_published_offer_rate,
 )
 from services.zlecaf_implementation_registry import (
     APPLIED,
+    NOT_AVAILABLE,
+    OFFER_DATASETS,
     OFFER_ONLY,
     PARTNER_NOTICE_REQUIRED,
+    RECORDS,
     implementation_decision,
 )
 
@@ -238,3 +245,124 @@ def test_accepted_corridor_ignores_unverified_etl_rate_when_exact_line_is_missin
     assert context["dd_rate_pct"] is None
     assert context["preference_applied"] is False
     assert context["zlecaf_rate_calculation_status"] == "NOT_AVAILABLE"
+
+
+def test_mar_et_zwe_livrent_une_offre_archivee_sans_appliquer_la_preference():
+    """Les deux ajouts à OFFER_DATASETS changent une décision publique.
+
+    Leur statut passe de NOT_AVAILABLE à OFFER_ONLY. Ce n'est pas une
+    application de préférence : le taux NPF reste servi, et une suite qui
+    n'exerçait que le Ghana et l'Éthiopie ne le vérifiait pour aucun des deux.
+
+    La décision seule ne suffit pas : elle ne rend qu'un CODE de jeu. Tant que
+    ce code ne désignait aucun fichier, les 20 527 lignes collectées restaient
+    injoignables et cette assertion passait quand même. On va donc jusqu'à la
+    ligne servie.
+    """
+    for destination, dataset in (("MAR", "MAR"), ("ZWE", "ZWE")):
+        decision = implementation_decision(destination, "KEN")
+        assert decision["applied"] is False, destination
+        assert decision["status"] == OFFER_ONLY, destination
+        assert decision["tariff_dataset"] == dataset, destination
+
+    marocaine = resolve_published_offer_rate("MAR", "0101210000", "KEN")
+    assert marocaine is not None
+    assert marocaine["calculation_status"] == "CALCULABLE"
+    # Comparaison sur la valeur : la source écrit « 2.5 » dans une annexe et
+    # « 2.50 » dans l'autre, et le barème retenu dépend de la circulaire.
+    assert float(marocaine["mfn_rate_expression"]) == 2.5
+
+    zimbabweenne = resolve_published_offer_rate("ZWE", "01012100", "KEN")
+    assert zimbabweenne is not None
+    assert zimbabweenne["calculation_status"] == "CALCULABLE"
+
+
+def test_le_maroc_repartit_les_origines_selon_sa_circulaire_pas_selon_l_ua():
+    """Les deux sources se contredisent ; c'est l'acte national qui tranche.
+
+    L'e-Tariff Book de l'UA répartit les origines marocaines selon le statut
+    PMA — Kenya sur l'annexe 5 ans, Burkina Faso sur celle de 10 ans. Les
+    listes P1/P2 de la circulaire ADII 6530/223, qui répartissent selon la
+    réciprocité effectivement accordée au Maroc, disent l'inverse pour ces
+    deux pays comme pour 31 autres (fiche MAR_application_2026-09-13.json).
+
+    Pour une importation AU Maroc, la circulaire fait foi : elle est ce que la
+    douane applique. Servir la carte de l'UA afficherait au Kenya un taux de
+    0 % là où le Maroc en est à sa sixième tranche sur dix.
+    """
+    kenya = resolve_zlecaf_context("MAR", "KEN", "0101210000", 2.5, 0.0)
+    burkina = resolve_zlecaf_context("MAR", "BFA", "0101210000", 2.5, 0.0)
+
+    assert kenya["zlecaf_offer_rate_source"]["schedule"] == "2"
+    assert burkina["zlecaf_offer_rate_source"]["schedule"] == "1"
+    assert kenya["zlecaf_offer_rate_pct"] != burkina["zlecaf_offer_rate_pct"]
+
+    # L'offre reste informative : le droit exigible ne bouge pas.
+    for contexte in (kenya, burkina):
+        assert contexte["zlecaf_rate_calculation_status"] == OFFER_ONLY
+        assert contexte["preference_applied"] is False
+        assert contexte["dd_rate_pct"] == 2.5
+
+
+def test_le_maroc_ne_sert_rien_aux_origines_absentes_de_sa_circulaire():
+    """L'UA publie 48 origines, le Maroc n'en reconnaît que 40.
+
+    Pour les 7 que l'UA cartographie sans que la circulaire les nomme, servir
+    la ligne publiée montrerait une préférence que la douane marocaine
+    n'accorde pas. Le silence est ici la seule réponse vraie.
+    """
+    for origine in ("AGO", "MDG", "MOZ", "ZWE"):
+        assert resolve_published_offer_rate("MAR", "0101210000", origine) is None, origine
+
+    # Contrôle en miroir : une destination sans acte national archivé continue
+    # de s'appuyer sur la carte de l'UA, sans quoi cette garde effacerait des
+    # offres légitimes ailleurs.
+    zimbabwe = resolve_published_offer_rate("ZWE", "01012100", "KEN")
+    assert zimbabwe is not None
+    assert zimbabwe["schedule_selected_by"]["autorite"] == (
+        "carte des origines du e-Tariff Book de l'UA"
+    )
+
+
+def test_la_carte_nationale_marocaine_est_bien_celle_de_la_fiche():
+    """La carte est lue dans la fiche de détermination, jamais recopiée.
+
+    Si quelqu'un recopiait les listes dans le code, elles divergeraient un
+    jour du texte archivé qui les établit. On vérifie donc les effectifs que
+    la circulaire publie : 27 pays en P1, 13 en P2.
+    """
+    carte = _carte_origines_nationale("MAR")
+
+    assert carte is not None
+    assert carte["instrument_id"] == "6530/223"
+    assert sum(1 for b in carte["origines"].values() if b == "1") == 27
+    assert sum(1 for b in carte["origines"].values() if b == "2") == 13
+
+
+def test_tout_code_de_jeu_reference_designe_un_barme_lisible():
+    """Le défaut que la suite précédente ne pouvait pas voir.
+
+    Les codes de jeu vivent dans le registre d'application, les chemins de
+    fichiers dans ce module : deux tables, deux fichiers, aucune couture. MAR
+    et ZWE ont été collectés, référencés, et n'ont jamais été chargeables —
+    sans qu'aucun test ne rougisse. On lie ici les deux tables, pour que le
+    prochain barème collecté ne puisse plus rester invisible.
+    """
+    references = set(OFFER_DATASETS.values())
+    references.update(
+        record.tariff_dataset for record in RECORDS.values() if record.tariff_dataset
+    )
+
+    manquants = sorted(code for code in references if code not in DATASETS)
+    assert not manquants, f"codes de jeu sans chemin de fichier : {manquants}"
+
+    illisibles = sorted(code for code in references if _load_dataset(code) is None)
+    assert not illisibles, f"codes de jeu dont le barème ne se charge pas : {illisibles}"
+
+
+def test_une_destination_sans_bareme_archive_reste_indisponible():
+    """Le contraste qui donne son sens à OFFER_ONLY : sans jeu, rien n'est servi."""
+    decision = implementation_decision("SOM", "KEN")
+    assert decision["applied"] is False
+    assert decision["status"] == NOT_AVAILABLE
+    assert not decision.get("tariff_dataset")

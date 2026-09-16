@@ -1,0 +1,1643 @@
+{
+  "socle_version": "1",
+  "construit_le": "2026-09-15T23:07:12.959742+00:00",
+  "pays": {
+    "AGO": {
+      "fichier": "AGO.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/AGO_tariffs.json",
+      "source_sha256": "7c1bb39f2547d72f05b36332e64f805e634a64557dfa4489b08e9ae49846c9f3",
+      "socle_sha256": "6c8fb9f7d9a7bbfbbd7f8d49d4e83716dfc8183373eda811016fbac9caecfb01",
+      "collecte": "2026-07-05T09:59:53.562489+00:00",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5388,
+        "droits": 10776,
+        "droits_liquidables": 5388,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5388,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 5388,
+        "sans_designation": 5388,
+        "droits_specifiques": 0,
+        "classification_estimee": 39
+      }
+    },
+    "BDI": {
+      "fichier": "BDI.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/BDI_tariffs.json",
+      "source_sha256": "e0a13e7e1414e152e6038dce80bce940fdc0959ffd890d2664c9b0cef30be275",
+      "socle_sha256": "59bb44d410c456b1f8368011ca232012be9bce54d73502c50dc6705abb081338",
+      "collecte": "2026-02-18T10:54:36.463488",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5984,
+        "droits": 11925,
+        "droits_liquidables": 11877,
+        "positions_liquidables": 5936,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 48,
+        "assiettes_source": 11925,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "BEN": {
+      "fichier": "BEN.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/BEN_tariffs.json",
+      "source_sha256": "a62e860ec9b2e5352e26be50a7347f504f64bc697667abc8482ccbf6363f1e98",
+      "socle_sha256": "aa25502e31721a976974264f8dc40bd50284e4d372ef18c2267e2a363bcbfa51",
+      "collecte": "2026-02-19T22:39:44.817942",
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 36774,
+        "droits_liquidables": 36774,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 36774,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "BFA": {
+      "fichier": "BFA.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/BFA_tariffs.json",
+      "source_sha256": "83c4222c2d9cedc3453e9d8aac6ff5b3c50e98f54a6c589a6e9aed34fcd0b667",
+      "socle_sha256": "aeaf449db244bb21c9fef0ff794826dbf522a679c4d1e4ff80e55d438259eec9",
+      "collecte": "2026-02-19T22:39:46.076060",
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 30645,
+        "droits_liquidables": 30645,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 30645,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "BWA": {
+      "fichier": "BWA.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/BWA_tariffs.json",
+      "source_sha256": "cf84b1a644cc2b5abc84e02b376d89810f05d1cdcb53dfb190f7653d475476da",
+      "socle_sha256": "77343d978c94836a1b281fb929a17b0860ced0209da9e9d40a93a186a7a18f56",
+      "collecte": "2026-08-29T13:26:22.991310",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit"
+      ],
+      "compteurs": {
+        "positions": 8589,
+        "droits": 8589,
+        "droits_liquidables": 181,
+        "positions_liquidables": 181,
+        "preferentiels": 42945,
+        "preferentiels_specifiques": 448,
+        "taux_indisponibles": 1,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 8589,
+        "sans_designation": 0,
+        "droits_specifiques": 181,
+        "classification_estimee": 0
+      }
+    },
+    "CAF": {
+      "fichier": "CAF.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/CAF_tariffs.json",
+      "source_sha256": "021166306006d65273dd676bf0552e10bc5af83869b2d2795f03df3718ae25db",
+      "socle_sha256": "5b4972a4f62473d1226eb3bf4a935516d793b0e9cd813dff1830d10ad3973344",
+      "collecte": "2026-02-19T22:39:54.085446",
+      "etat": "COMPLET",
+      "familles": [
+        "accise",
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5239,
+        "droits": 21248,
+        "droits_liquidables": 21248,
+        "positions_liquidables": 5239,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 21248,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "CIV": {
+      "fichier": "CIV.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/CIV_tariffs.json",
+      "source_sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221",
+      "socle_sha256": "5577637dfcb8d8e717100379b6804c8e5f029089ee351d7c6ecf899928ca146b",
+      "collecte": "2026-02-19T22:01:52.572505",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "autre",
+        "droit",
+        "redevance",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 11874,
+        "droits_liquidables": 11722,
+        "positions_liquidables": 5977,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 11722,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 152,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "CMR": {
+      "fichier": "CMR.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/CMR_tariffs.json",
+      "source_sha256": "8cae7c268dc99f9191608979ca716b3e6afb114af0e14650e3560eb0a2595584",
+      "socle_sha256": "2f0ecb2e6ff5985987ff8dda39ed6b746449112154686a4034369142d9e4f08e",
+      "collecte": "2026-02-19T22:21:31.397885",
+      "etat": "COMPLET",
+      "familles": [
+        "accise",
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5239,
+        "droits": 21107,
+        "droits_liquidables": 21107,
+        "positions_liquidables": 5239,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 21107,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "COD": {
+      "fichier": "COD.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/COD_tariffs.json",
+      "source_sha256": "5a2d1cfceefd2799cdd04d8776f5a5f0799d36b8419656cec2751b49479f667e",
+      "socle_sha256": "b2937c9288fe603268299825299342a3c4d3ff6279b73361492f930ae86b7e2f",
+      "collecte": "2026-02-18T10:54:37.532224",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5984,
+        "droits": 11925,
+        "droits_liquidables": 11877,
+        "positions_liquidables": 5936,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 48,
+        "assiettes_source": 11925,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "COG": {
+      "fichier": "COG.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/COG_tariffs.json",
+      "source_sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe",
+      "socle_sha256": "dd9349bf466672babd4f1d0c65058c2f7cc67bebf928c4acd16709ad336e3864",
+      "collecte": "2026-02-19T22:39:52.620876",
+      "etat": "COMPLET",
+      "familles": [
+        "accise",
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5239,
+        "droits": 26487,
+        "droits_liquidables": 26487,
+        "positions_liquidables": 5239,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 26487,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "COM": {
+      "fichier": "COM.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/COM_tariffs.json",
+      "source_sha256": "ce74f81f79963f0cedadc2ac2dc73d6e3335d46da5dbd37b9ada59b4a79732c5",
+      "socle_sha256": "5f2c758df201191d2b1c4c87d2f1466bde834fe440488bbe39aec7e79fdd48fb",
+      "collecte": "2026-07-05T11:02:35.673779+00:00",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5388,
+        "droits": 10776,
+        "droits_liquidables": 5388,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5388,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 5388,
+        "sans_designation": 5388,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "CPV": {
+      "fichier": "CPV.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/CPV_tariffs.json",
+      "source_sha256": "67bd2c2b4d57190be7f92609e83db0a1c514e6faa29628b94cf01f36ed132fab",
+      "socle_sha256": "8b457f86fba60a191897d8145f25fd34c4b81df166e867d80ca490d3327c03ee",
+      "collecte": null,
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 24516,
+        "droits_liquidables": 24516,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 24516,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "DJI": {
+      "fichier": "DJI.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/DJI_tariffs.json",
+      "source_sha256": "5a7590273347691aebd9d26a0443f4b6b34660765f6372a9313cc8ffac9982b8",
+      "socle_sha256": "b36d58e9d137c88e2e32a54fdee95d4c293cc9dc070499069641c9621037eb65",
+      "collecte": null,
+      "etat": "VIDE",
+      "familles": [],
+      "compteurs": {
+        "positions": 0,
+        "droits": 0,
+        "droits_liquidables": 0,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "DZA": {
+      "fichier": "DZA.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/DZA_tariffs.json",
+      "source_sha256": "fead59b16f2b833f971319b2ebd91a08d8f7152e8e8b146c7d6beaa5892d7341",
+      "socle_sha256": "34f40ccc33d2e42f00960c59788babc89c122e943cee98760ba00df4111cbabb",
+      "collecte": "2026-08-29T11:11:39.900916+00:00",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "autre",
+        "droit",
+        "post_tva",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 17226,
+        "droits": 69332,
+        "droits_liquidables": 69082,
+        "positions_liquidables": 16976,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 69082,
+        "assiettes_indisponibles": 250,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "EGY": {
+      "fichier": "EGY.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/EGY_tariffs.json",
+      "source_sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94",
+      "socle_sha256": "2f2685ea6523d3656149dc13d5d23b6d820006926dc218959a983d35dd3818fc",
+      "collecte": "2026-08-29T21:57:37.493425+00:00",
+      "etat": "PARTIEL",
+      "familles": [
+        "autre",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 8818,
+        "droits": 18043,
+        "droits_liquidables": 17552,
+        "positions_liquidables": 8353,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 58,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 17587,
+        "assiettes_indisponibles": 456,
+        "sans_designation": 8803,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "ERI": {
+      "fichier": "ERI.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/ERI_tariffs.json",
+      "source_sha256": "b30974b2b9217bebf4559e47b65a5b9882e2010246c78a05d091c0aa9bd9394d",
+      "socle_sha256": "6ecdf8ae49caa18b9e7f592ea8e244d55ab47307f4ca91902e699b01c219065e",
+      "collecte": null,
+      "etat": "VIDE",
+      "familles": [],
+      "compteurs": {
+        "positions": 0,
+        "droits": 0,
+        "droits_liquidables": 0,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "ETH": {
+      "fichier": "ETH.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/ETH_tariffs.json",
+      "source_sha256": "37659e6d1f3740d9d7e4f6c69406d2a4c544d9d3afe37b03d0beecc9fd886592",
+      "socle_sha256": "2e4858a17481601fee00aa165a7cfc9fa7ba5d48d7e5358510dcdb9b8d453d4d",
+      "collecte": "2026-07-05T11:56:27.716023+00:00",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "autre",
+        "droit",
+        "post_tva",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6296,
+        "droits": 18396,
+        "droits_liquidables": 11226,
+        "positions_liquidables": 0,
+        "preferentiels": 1939,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 11226,
+        "assiettes_indisponibles": 7170,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "GAB": {
+      "fichier": "GAB.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/GAB_tariffs.json",
+      "source_sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3",
+      "socle_sha256": "c373e42c5aadd74dc55f254acb796f996b815e8c379b3529a8a8eec3a9d55685",
+      "collecte": "2026-02-19T22:39:52.018966",
+      "etat": "COMPLET",
+      "familles": [
+        "accise",
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5239,
+        "droits": 21248,
+        "droits_liquidables": 21248,
+        "positions_liquidables": 5239,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 21248,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "GHA": {
+      "fichier": "GHA.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/GHA_tariffs.json",
+      "source_sha256": "760d0b401a7d482aae9f2ddded5ecd85ed9a92d45be8ce1a36c95b14116bb439",
+      "socle_sha256": "ca67068258883ee155fe02d5377151f50dc2eea88fcd2b41f3a891ce4745b65f",
+      "collecte": "2026-06-16T22:25:05.362356",
+      "etat": "COMPLET",
+      "familles": [
+        "droit",
+        "fonds",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 11516,
+        "droits": 46064,
+        "droits_liquidables": 46064,
+        "positions_liquidables": 11516,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 24516,
+        "assiettes_fichier": 0,
+        "assiettes_table": 21548,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "GIN": {
+      "fichier": "GIN.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/GIN_tariffs.json",
+      "source_sha256": "0cba205ad60369ccbb1683a5ae2288db76431dd84e7911e4f708febee9d93f56",
+      "socle_sha256": "6ba3884c3ef1fc7b7fab11f8ea216f376bb2aa2a5a579444b669b659274735ca",
+      "collecte": "2026-02-19T22:39:50.897093",
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 18387,
+        "droits_liquidables": 18387,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 18387,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "GMB": {
+      "fichier": "GMB.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/GMB_tariffs.json",
+      "source_sha256": "df507892b7d475647b66b8ec80b1552b8451b719c3953208bbac82a178aea772",
+      "socle_sha256": "a72cc202a263329be53a923a4566f471b0e6f6606210b3177496cdf609c3c140",
+      "collecte": null,
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 24516,
+        "droits_liquidables": 24516,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 24516,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "GNB": {
+      "fichier": "GNB.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/GNB_tariffs.json",
+      "source_sha256": "292c4b3bcda33103f40caba44f70623c6655a2f16ac46a67005559804a1556ef",
+      "socle_sha256": "76541bfac3c4fc989d52a05db0659425ecb2e3a0e867e8324dceb56a1e79a927",
+      "collecte": null,
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 36774,
+        "droits_liquidables": 36774,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 36774,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "GNQ": {
+      "fichier": "GNQ.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/GNQ_tariffs.json",
+      "source_sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0",
+      "socle_sha256": "05be35b2aaa03e27e69a7346cdf67b04b6723ec3dad15bda26797a0246279fca",
+      "collecte": null,
+      "etat": "COMPLET",
+      "familles": [
+        "accise",
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5239,
+        "droits": 21107,
+        "droits_liquidables": 21107,
+        "positions_liquidables": 5239,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 21107,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "KEN": {
+      "fichier": "KEN.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/KEN_tariffs.json",
+      "source_sha256": "e20a4280f51615d7f9efa5388f7529e3b5516dacbc3c2313ac8c3def32367b8b",
+      "socle_sha256": "61ee4fa69a97eb128c265f1d9e574ad77a8070a8c7d76b68398ccd0e736ef3a1",
+      "collecte": "2026-02-18T10:54:33.961294",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "droit",
+        "redevance",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5984,
+        "droits": 23958,
+        "droits_liquidables": 23910,
+        "positions_liquidables": 5936,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 48,
+        "assiettes_source": 23958,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "LBR": {
+      "fichier": "LBR.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/LBR_tariffs.json",
+      "source_sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40",
+      "socle_sha256": "570b572e63d369a39e85af8e2238ceb66e2239513f44f25ba490afbcf7b14ac9",
+      "collecte": null,
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 24516,
+        "droits_liquidables": 24516,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 24516,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "LBY": {
+      "fichier": "LBY.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/LBY_tariffs.json",
+      "source_sha256": "49644077114938ec95f38401fc5f74d146670d6e34ab6ebe930dc592cd4dcfbb",
+      "socle_sha256": "b65b97d2ac5096f5855ba58859acdb88b3025804ff08735bb9ad125bb3e0272f",
+      "collecte": "2026-07-05T10:11:07.880829+00:00",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "droit"
+      ],
+      "compteurs": {
+        "positions": 5388,
+        "droits": 16164,
+        "droits_liquidables": 5388,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5388,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 10776,
+        "sans_designation": 5388,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "LSO": {
+      "fichier": "LSO.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/LSO_tariffs.json",
+      "source_sha256": "31c5c4f6a56ae594fabb6e4f7093f4960b0f1397e0e25c4900804e23e4ec25dc",
+      "socle_sha256": "28e1fc888973e9f633cb1b1d1d44c1a04c68232a35bde83592324b87ac9b55e8",
+      "collecte": "2026-08-29T13:26:24.395497",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit"
+      ],
+      "compteurs": {
+        "positions": 8589,
+        "droits": 8589,
+        "droits_liquidables": 181,
+        "positions_liquidables": 181,
+        "preferentiels": 42945,
+        "preferentiels_specifiques": 448,
+        "taux_indisponibles": 1,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 8589,
+        "sans_designation": 0,
+        "droits_specifiques": 181,
+        "classification_estimee": 0
+      }
+    },
+    "MAR": {
+      "fichier": "MAR.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/MAR_tariffs.json",
+      "source_sha256": "0debb92e473cf0288db5ab04fcea846a192669905dcf2712923be666c8fb62d5",
+      "socle_sha256": "9872c412eb7b92a6c62651b6697e7c4c1f321f366dace650a299db43e8285420",
+      "collecte": "2026-02-11T22:41:08.772056",
+      "etat": "COMPLET",
+      "familles": [
+        "droit",
+        "redevance",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 13114,
+        "droits": 38529,
+        "droits_liquidables": 38529,
+        "positions_liquidables": 12972,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 38529,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "MDG": {
+      "fichier": "MDG.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/MDG_tariffs.json",
+      "source_sha256": "5fa9f5746ea5a02f4ff6daa787797bdd1dd3209cfce31762d9257f39c76fe02f",
+      "socle_sha256": "013aee0a9a2e4d5d95e3c35f1f99d5686d50e16c1874d81508855537aaa71526",
+      "collecte": "2026-07-05T10:03:55.556241+00:00",
+      "etat": "COMPLET",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5624,
+        "droits": 11248,
+        "droits_liquidables": 11248,
+        "positions_liquidables": 5624,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5624,
+        "assiettes_table": 5624,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5624,
+        "droits_specifiques": 0,
+        "classification_estimee": 1
+      }
+    },
+    "MLI": {
+      "fichier": "MLI.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/MLI_tariffs.json",
+      "source_sha256": "ac016ec03cde8facc64ae6a2a366469d64fac10d78f44ab3b2becbfb04f20ad6",
+      "socle_sha256": "171badf00c616e0f60717f864419e56c25789b745f9ce61263401545bc22b17c",
+      "collecte": "2026-02-19T22:39:47.238684",
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 30645,
+        "droits_liquidables": 30645,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 30645,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "MOZ": {
+      "fichier": "MOZ.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/MOZ_tariffs.json",
+      "source_sha256": "a34999e367fe2faaf0fff0bf9619fbf4310245aa45006e3e43076a3692f44c7f",
+      "socle_sha256": "61dfb06e5733008181c7c2e0ec4e3cecd7739162cf3b134f3ac3af3c82664c07",
+      "collecte": "2026-07-05T10:04:03.624574+00:00",
+      "etat": "COMPLET",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5388,
+        "droits": 10776,
+        "droits_liquidables": 10776,
+        "positions_liquidables": 5388,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5388,
+        "assiettes_table": 5388,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5388,
+        "droits_specifiques": 0,
+        "classification_estimee": 26
+      }
+    },
+    "MRT": {
+      "fichier": "MRT.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/MRT_tariffs.json",
+      "source_sha256": "68f17520e713843a46a5010c2e83916e7972ac34666cbcc9576350fad0637a87",
+      "socle_sha256": "94edd6095ccccebcffd95d72341088e8823102e922412f26156b82f15b7df073",
+      "collecte": "2026-07-05T10:11:13.873065+00:00",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5388,
+        "droits": 10776,
+        "droits_liquidables": 5388,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5388,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 5388,
+        "sans_designation": 5388,
+        "droits_specifiques": 0,
+        "classification_estimee": 44
+      }
+    },
+    "MUS": {
+      "fichier": "MUS.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/MUS_tariffs.json",
+      "source_sha256": "2e4308ee758d2860eda0acb9307b3895cab8932ccdac91befabc7dbe3b7ea2d6",
+      "socle_sha256": "8659ebfa3f1dcc63104137fd8daaf11d78f8c09fad377e60badc358b24b4aeea",
+      "collecte": "2026-07-05T10:11:19.857867+00:00",
+      "etat": "COMPLET",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5619,
+        "droits": 11238,
+        "droits_liquidables": 11238,
+        "positions_liquidables": 5619,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5619,
+        "assiettes_table": 5619,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5619,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "MWI": {
+      "fichier": "MWI.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/MWI_tariffs.json",
+      "source_sha256": "b58fff712f7ab84102294c587ccd7f0cf8a3ad219f6dcfbbebfdab75ec4208d2",
+      "socle_sha256": "38a586cc7fab3a7d4da3e4053899bcddb6d6ead82165a3c95c062a0d79297d38",
+      "collecte": "2026-07-05T10:11:13.162602+00:00",
+      "etat": "COMPLET",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5388,
+        "droits": 10776,
+        "droits_liquidables": 10776,
+        "positions_liquidables": 5388,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5388,
+        "assiettes_table": 5388,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5388,
+        "droits_specifiques": 0,
+        "classification_estimee": 9
+      }
+    },
+    "NAM": {
+      "fichier": "NAM.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/NAM_tariffs.json",
+      "source_sha256": "a315efcf13b9f17f0ed677fab8d3cbfe64a5f562aca7868f14bcffda3f2f7ebf",
+      "socle_sha256": "6d963e860097eb106c5a209ac27ca7b383e85cd779d55f1faf56a5782f8515a0",
+      "collecte": "2026-08-29T13:26:27.028702",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit"
+      ],
+      "compteurs": {
+        "positions": 8589,
+        "droits": 8589,
+        "droits_liquidables": 181,
+        "positions_liquidables": 181,
+        "preferentiels": 42945,
+        "preferentiels_specifiques": 448,
+        "taux_indisponibles": 1,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 8589,
+        "sans_designation": 0,
+        "droits_specifiques": 181,
+        "classification_estimee": 0
+      }
+    },
+    "NER": {
+      "fichier": "NER.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/NER_tariffs.json",
+      "source_sha256": "af07aa9e4e0e22c8cb38f59055668a04fcb37d83ffed3f711de2eb06391ad629",
+      "socle_sha256": "f1c5bda869a81821774174072c6ba85d6879b90315dc032922712958a4f9c4bd",
+      "collecte": "2026-02-19T22:39:48.421467",
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 30645,
+        "droits_liquidables": 30645,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 30645,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "NGA": {
+      "fichier": "NGA.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/NGA_tariffs.json",
+      "source_sha256": "37876592a3dc4b26cf73ce03eb95bb75baae5a6d535f43510765e77a28d2b3e0",
+      "socle_sha256": "a06ae0b4d457e5711ad00a0749ed28fc2678dc8f7b3c3a2390ac2cd034735976",
+      "collecte": "2026-02-17T22:07:58.761128",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6363,
+        "droits": 25452,
+        "droits_liquidables": 12674,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 501,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 12726,
+        "assiettes_indisponibles": 12726,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "RWA": {
+      "fichier": "RWA.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/RWA_tariffs.json",
+      "source_sha256": "1179c1cb7f82adec7315a584da3e5e4fd560666da4572fffd95d2d9b2484020c",
+      "socle_sha256": "8f33024af0a3b37ac0c1187d50dcc8d2138223cb7b0f9fc41d348b4733ceb249",
+      "collecte": "2026-02-18T10:54:35.914199",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5984,
+        "droits": 11939,
+        "droits_liquidables": 11891,
+        "positions_liquidables": 5936,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 48,
+        "assiettes_source": 11939,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "SDN": {
+      "fichier": "SDN.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/SDN_tariffs.json",
+      "source_sha256": "6633ac8de0e67e225c47c0847a26f4ee19f082023e95ffc9d779ba2c16d786f6",
+      "socle_sha256": "135593d2761c18c6f8388151dd9fc27f80df3d28b896d7977b7a34bf9e96317c",
+      "collecte": "2026-07-05T10:11:09.736333+00:00",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5388,
+        "droits": 10776,
+        "droits_liquidables": 5388,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5388,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 5388,
+        "sans_designation": 5388,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "SEN": {
+      "fichier": "SEN.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/SEN_tariffs.json",
+      "source_sha256": "733fe61c81cc2b95341cae7c9189cc6520e73c86b648372f27068bdb095f37b0",
+      "socle_sha256": "eed8a5e8e199ef24db7bcce6b82d5e46ef4755051c39811ef706c059ccfe59b5",
+      "collecte": "2026-02-19T22:21:26.945091",
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 36774,
+        "droits_liquidables": 36774,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 36774,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "SLE": {
+      "fichier": "SLE.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/SLE_tariffs.json",
+      "source_sha256": "9c5a5d7b2ec90723c8a8bd9e06136b2d1f239086e01650ea131a11fb0ed1df39",
+      "socle_sha256": "820a0f55950ef98d6cc448fb1106ed434ef676bc9cfba85c83567bd341199269",
+      "collecte": null,
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 24516,
+        "droits_liquidables": 24516,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 24516,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "SOM": {
+      "fichier": "SOM.json",
+      "origine": "etl",
+      "source_fichier": "backend/data/SOM_tariffs.json",
+      "source_sha256": "5df6fe9a6be9b62c025b968dda4bb061b44f1f064c2a6daeb525542b6427c3d1",
+      "socle_sha256": "d170b0a0a10b2aaa98131f75cc687d87e5e3a80e93fd22726b502d8255fd252f",
+      "collecte": "2026-06-16T22:25:20.343212",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit"
+      ],
+      "compteurs": {
+        "positions": 11545,
+        "droits": 11545,
+        "droits_liquidables": 0,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 11545,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "SSD": {
+      "fichier": "SSD.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/SSD_tariffs.json",
+      "source_sha256": "f275f381be8883cecd2a982c5d236ab9fa84602a370517cd29691a64174d7b1b",
+      "socle_sha256": "16beefac51e3fdbfcfa453985dacdee8a211eb11e1bc0c1edd2490c911a736d9",
+      "collecte": "2026-02-18T10:54:36.997956",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5984,
+        "droits": 11925,
+        "droits_liquidables": 11877,
+        "positions_liquidables": 5936,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 48,
+        "assiettes_source": 11925,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "STP": {
+      "fichier": "STP.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/STP_tariffs.json",
+      "source_sha256": "af850c20316b436601bb55edd5d09f99de36e1aa28c2388e2239ee6c0202dd8d",
+      "socle_sha256": "a3e7784ed1f07c5cd07094ba8b5fcbfe75b76d1a0f64b3704ffaa372b4d0f4cf",
+      "collecte": "2026-07-05T11:02:55.441773+00:00",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5388,
+        "droits": 10776,
+        "droits_liquidables": 5388,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5388,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 5388,
+        "sans_designation": 5388,
+        "droits_specifiques": 0,
+        "classification_estimee": 33
+      }
+    },
+    "SWZ": {
+      "fichier": "SWZ.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/SWZ_tariffs.json",
+      "source_sha256": "48c38a592819d2c09a86e2ca0c068b8f42bae77bfed21718c4aa27a3cf1049c0",
+      "socle_sha256": "1777b64ec9860c66e8cdf5542846ca854b3f06f49e14c69d0d7b473dcd1b73b3",
+      "collecte": "2026-08-29T13:26:25.757181",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit"
+      ],
+      "compteurs": {
+        "positions": 8589,
+        "droits": 8589,
+        "droits_liquidables": 181,
+        "positions_liquidables": 181,
+        "preferentiels": 42945,
+        "preferentiels_specifiques": 448,
+        "taux_indisponibles": 1,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 8589,
+        "sans_designation": 0,
+        "droits_specifiques": 181,
+        "classification_estimee": 0
+      }
+    },
+    "SYC": {
+      "fichier": "SYC.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/SYC_tariffs.json",
+      "source_sha256": "9c39470145e0ecc574cb8740e2f09d2e81748c4a8e4d07e97768a3bc1ad82c45",
+      "socle_sha256": "9025b69fcfc88bee239d10076cac14b08f5ed0f8f8f8d07dd53bc36e388ae2a0",
+      "collecte": "2026-07-05T10:11:23.264941+00:00",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5396,
+        "droits": 10792,
+        "droits_liquidables": 5396,
+        "positions_liquidables": 0,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5396,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 5396,
+        "sans_designation": 5396,
+        "droits_specifiques": 0,
+        "classification_estimee": 5
+      }
+    },
+    "TCD": {
+      "fichier": "TCD.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/TCD_tariffs.json",
+      "source_sha256": "a0ca51a4030c9aada3d45e5e06548a5c5cda59643c42030eb3c4ee621fdd279e",
+      "socle_sha256": "eba54aa547285dbad06acd5b48e7056ae0949915acb3a4cafc0df07eb829a180",
+      "collecte": "2026-02-19T22:39:53.393846",
+      "etat": "COMPLET",
+      "familles": [
+        "accise",
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5239,
+        "droits": 26487,
+        "droits_liquidables": 26487,
+        "positions_liquidables": 5239,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 26487,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "TGO": {
+      "fichier": "TGO.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/TGO_tariffs.json",
+      "source_sha256": "5a2f5e06f1ca8e20a8a04fbe05c8d5eaa01e2f534cbb08f6c64a082e8e7d9bce",
+      "socle_sha256": "836d0e7e9398999a7478bb6fc8b749b5cd4f8b5cc84592e8a077344789e014fd",
+      "collecte": "2026-02-19T22:39:49.671861",
+      "etat": "COMPLET",
+      "familles": [
+        "communautaire",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 6129,
+        "droits": 36774,
+        "droits_liquidables": 36774,
+        "positions_liquidables": 6129,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 36774,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "TUN": {
+      "fichier": "TUN.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/TUN_tariffs.json",
+      "source_sha256": "ad61846833caf0560bdb3f8e4aa85f40160a4e7b6fb621e6479ff239231e2de4",
+      "socle_sha256": "a8829901b14ff4351a239a755e974ea46c09d3b34d203fe3e8504f6eb1a8b03f",
+      "collecte": "2026-08-30",
+      "etat": "COMPLET",
+      "familles": [
+        "accise",
+        "autre",
+        "droit",
+        "redevance",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 17542,
+        "droits": 61286,
+        "droits_liquidables": 61286,
+        "positions_liquidables": 17542,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 61118,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 168,
+        "sans_designation": 0,
+        "droits_specifiques": 2435,
+        "classification_estimee": 0
+      }
+    },
+    "TZA": {
+      "fichier": "TZA.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/TZA_tariffs.json",
+      "source_sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6",
+      "socle_sha256": "1c25a8a8767aa78e2b9a0aeb6e00e204c84d5dc922320c2b7652e59ac515e3a7",
+      "collecte": "2026-02-18T10:54:34.697265",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5984,
+        "droits": 11948,
+        "droits_liquidables": 11900,
+        "positions_liquidables": 5936,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 48,
+        "assiettes_source": 11948,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "UGA": {
+      "fichier": "UGA.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/UGA_tariffs.json",
+      "source_sha256": "c2fd9f0d4c8adb545458d5ba6c7bfbec4a93fa3695f5461beddf7f440430f2d4",
+      "socle_sha256": "d249e0a7b0237c35934c7a930f7766452fca7cd2141ef18cad9d837daa722e33",
+      "collecte": "2026-02-18T10:54:35.212682",
+      "etat": "PARTIEL",
+      "familles": [
+        "accise",
+        "droit",
+        "redevance",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5984,
+        "droits": 17928,
+        "droits_liquidables": 17880,
+        "positions_liquidables": 5936,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 48,
+        "assiettes_source": 17928,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "ZAF": {
+      "fichier": "ZAF.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
+      "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
+      "socle_sha256": "afb847d50b253087c7d16e958a7f3dfcc51a8bd0c54c32ec9d23a1483d12f6be",
+      "collecte": "2026-08-29T13:26:21.816037",
+      "etat": "PARTIEL",
+      "familles": [
+        "droit"
+      ],
+      "compteurs": {
+        "positions": 8589,
+        "droits": 8589,
+        "droits_liquidables": 8588,
+        "positions_liquidables": 8588,
+        "preferentiels": 42945,
+        "preferentiels_specifiques": 448,
+        "taux_indisponibles": 1,
+        "assiettes_source": 0,
+        "assiettes_fichier": 0,
+        "assiettes_table": 8589,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 181,
+        "classification_estimee": 0
+      }
+    },
+    "ZMB": {
+      "fichier": "ZMB.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/ZMB_tariffs.json",
+      "source_sha256": "836adcabd867967cca767ec470ac7df2ef6b0da454df62fdb5a8dc8eff9baefa",
+      "socle_sha256": "c472b924601dec4b6572b664dfa4e1ad3a348534cbf0f948f3e83c0cec457557",
+      "collecte": "2026-07-05T10:03:54.070404+00:00",
+      "etat": "COMPLET",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5613,
+        "droits": 11226,
+        "droits_liquidables": 11226,
+        "positions_liquidables": 5613,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5613,
+        "assiettes_table": 5613,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5613,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    },
+    "ZWE": {
+      "fichier": "ZWE.json",
+      "origine": "crawl",
+      "source_fichier": "backend/data/crawled/ZWE_tariffs.json",
+      "source_sha256": "5d211c12549ba81b50b206c1bfcc11765d49b650e1dc80cead18ad480dc82fc6",
+      "socle_sha256": "c11447d6a29710c4d90dad368472753171759952f2dca4f4618202b61517a850",
+      "collecte": "2026-07-05T10:04:02.504229+00:00",
+      "etat": "COMPLET",
+      "familles": [
+        "droit",
+        "tva"
+      ],
+      "compteurs": {
+        "positions": 5388,
+        "droits": 10776,
+        "droits_liquidables": 10776,
+        "positions_liquidables": 5388,
+        "preferentiels": 0,
+        "preferentiels_specifiques": 0,
+        "taux_indisponibles": 0,
+        "assiettes_source": 0,
+        "assiettes_fichier": 5388,
+        "assiettes_table": 5388,
+        "assiettes_indisponibles": 0,
+        "sans_designation": 5388,
+        "droits_specifiques": 0,
+        "classification_estimee": 0
+      }
+    }
+  },
+  "totaux": {
+    "pays": 54,
+    "pays_vides": [
+      "DJI",
+      "ERI"
+    ],
+    "pays_partiels": [
+      "AGO",
+      "BDI",
+      "BWA",
+      "CIV",
+      "COD",
+      "COM",
+      "DZA",
+      "EGY",
+      "ETH",
+      "KEN",
+      "LBY",
+      "LSO",
+      "MRT",
+      "NAM",
+      "NGA",
+      "RWA",
+      "SDN",
+      "SOM",
+      "SSD",
+      "STP",
+      "SWZ",
+      "SYC",
+      "TZA",
+      "UGA",
+      "ZAF"
+    ],
+    "positions": 359108,
+    "droits": 1085056,
+    "droits_liquidables": 975589
+  }
+}

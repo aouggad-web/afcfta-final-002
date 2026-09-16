@@ -9,10 +9,10 @@
       "institution": "Egyptian Customs Authority",
       "legal_date": null,
       "url": "https://customs.gov.eg/Services/Tarif",
-      "sha256": "089df0af67f2d4b7e7f7b1f71c00c88f904397bf56d4bf6e4a947b8cd17c40a0",
+      "sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94",
       "verification_status": "VERIFIED_RUNTIME_DATASET",
       "registry_path": "backend/data/crawled/EGY_tariffs.json",
-      "notes": "Empreinte du fichier runtime collecté le 13 juin 2026 ; 8 746 positions nationales à 10 chiffres."
+      "notes": "Empreinte du fichier runtime. Collecte du 29 août 2026, 8 818 positions. Reconstruit le 14 septembre 2026 depuis les fichiers de progression du même crawl, après correction de l'appariement code/texte des instructions douanières : taxes et textes inchangés, date de collecte préservée."
     },
     {
       "source_id": "EGY-ETA-VAT-LAW-67-2016",

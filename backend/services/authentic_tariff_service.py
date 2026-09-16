@@ -6,6 +6,13 @@ from collections import OrderedDict
 from math import isfinite
 from typing import Dict, Optional
 
+from services.tax_profile_data import (
+    ASSIETTE_TVA_ETABLIE,
+    ASSIETTE_TVA_NON_APPLICABLE,
+    BASE_TVA_TOUTES_TAXES,
+    COUNTRY_TAX_PROFILES,
+)
+
 logger = logging.getLogger(__name__)
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
 CRAWLED_DIR = os.path.join(DATA_DIR, "crawled")
@@ -189,202 +196,8 @@ def _log_etl_fallback(operation: str, country_iso3: str, hs_code: str = "", reas
     logger.warning(f"Tariff ETL fallback activated: {context}")
 
 
-# ── Per-country tax cascade profiles ──────────────────────────────────────────
-# Each entry defines:
-#   taxes_order: order in which taxes are applied
-#   tax_bases:   {tax_code: ('BASE_FORMULA', [codes_already_computed_to_add])}
-#     BASE_FORMULA = 'CIF'        → base = CIF value
-#                   'DD_AMOUNT'   → base = the DD amount already computed (e.g. CAC)
-#   source: official legal reference
-#
-# Rules are sourced from official customs legislation per country.
-# ──────────────────────────────────────────────────────────────────────────────
-_ECOWAS_UEMOA = {  # shared base profile for UEMOA/CEDEAO members
-    "taxes_order": ["DD", "RS", "PCS", "TVA"],
-    "tax_bases": {
-        "DD": ("CIF", []),
-        "RS": ("CIF", []),  # Redevance Statistique: base CIF (UEMOA)
-        "PCS": ("CIF", []),  # Prélèvement Communautaire de Solidarité: base CIF
-        "TVA": ("CIF", ["DD"]),  # TVA base = CIF + DD (OHADA/UEMOA practice)
-    },
-    "source": "TEC CEDEAO / Code CGI UEMOA — TVA base = CIF+DD",
-}
-_CEMAC = {  # shared base profile for CEMAC members
-    "taxes_order": ["DD", "TCI", "CAC", "TVA"],
-    "tax_bases": {
-        "DD": ("CIF", []),
-        "TCI": ("CIF", []),  # Taxe Communautaire d'Intégration: base CIF
-        "CAC": ("DD_AMOUNT", []),  # Centimes Additionnels Communaux: % of DD amount
-        "TVA": ("CIF", ["DD", "TCI"]),  # Directive TVA CEMAC: base = CIF+DD+TCI
-    },
-    "source": "Tarif Extérieur Commun CEMAC — Directive TVA CEMAC art. 9",
-}
-_EAC = {  # EAC common profile (Kenya, Tanzania, Uganda, Rwanda, Burundi)
-    "taxes_order": ["DD", "IDF", "RDL", "TVA"],
-    "tax_bases": {
-        "DD": ("CIF", []),
-        "IDF": ("CIF", []),  # Import Declaration Fee: base CIF
-        "RDL": ("CIF", []),  # Railway Development Levy: base CIF
-        "TVA": ("CIF", ["DD"]),  # EAC Customs Management Act: base = CIF+DD
-    },
-    "source": "EAC Customs Management Act — VAT base = CIF+DD",
-}
-_IMPORT_VAT_CIF_DD = {
-    "taxes_order": ["DD", "TVA"],
-    "tax_bases": {
-        "DD": ("CIF", []),
-        "TVA": ("CIF", ["DD"]),
-    },
-}
-
-COUNTRY_TAX_PROFILES = {
-    # ── Algérie — DGD (douane.gov.dz / conformepro.dz) ───────────────────────
-    # DAPS, DD : droits de douane (base CIF) — réduits sous ZLECAf
-    # TCS : base CIF
-    # TVA : base = CIF + DAPS + DD  (art. 21 CTCA)
-    # PRCT (Précompte 2%) : calculé APRÈS la TVA, sur la valeur globale de la
-    #   marchandise TVA incluse mais HORS DAPS = CIF + DD + TCS + TVA
-    "DZA": {
-        "taxes_order": ["DAPS", "DD", "TCS", "TVA", "PRCT"],
-        "tax_bases": {
-            "DAPS": ("CIF", []),
-            "DD": ("CIF", []),
-            "TCS": ("CIF", []),
-            "TVA": ("CIF", ["DAPS", "DD"]),  # art. 21 CTCA
-            "PRCT": (
-                "CIF",
-                ["DD", "TCS", "TVA"],
-            ),  # Précompte : valeur globale TVA incluse, hors DAPS
-        },
-        "source": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS",
-    },
-    # ── Maroc — ADII (douane.gov.ma) ──────────────────────────────────────────
-    # DD, TPI : base = CIF
-    # TVA : base = CIF + DD + TPI  (CGI Maroc art. 96)
-    "MAR": {
-        "taxes_order": ["DD", "TPI", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "TPI": ("CIF", []),
-            "TVA": ("CIF", ["DD", "TPI"]),  # CGI Maroc art. 96
-        },
-        "source": "douane.gov.ma — CGI Maroc art. 96 (TVA base = CIF+DD+TPI)",
-    },
-    # ── Ghana — UNIPASS/ICUMS (external.unipassghana.com) ────────────────────
-    # DD, ECOWAS Levy : base = CIF
-    # GETFUND, NHIL, VAT : base = CIF + DD + ECOWAS  (VAT Act 870)
-    "GHA": {
-        "taxes_order": ["DD", "CEDEAO", "TVA", "NHIL", "GETFUND"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "CEDEAO": ("CIF", []),
-            "TVA": ("CIF", ["DD", "CEDEAO"]),  # VAT Act 870 s.7
-            "NHIL": ("CIF", ["DD", "CEDEAO"]),  # NHIL Act
-            "GETFUND": ("CIF", ["DD", "CEDEAO"]),  # GETFUND Act
-        },
-        "source": "UNIPASS Ghana — VAT Act 870 (VAT/NHIL/GETFUND base = CIF+DD+ECOWAS)",
-    },
-    # ── Nigeria — NCS (customs.gov.ng, ECOWAS CET) ───────────────────────────
-    # DD, ECOWAS, CISS : base = CIF
-    # VAT : base = CIF + DD  (VAITA Nigeria s.2)
-    "NGA": {
-        "taxes_order": ["DD", "CEDEAO", "CISS", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "CEDEAO": ("CIF", []),
-            "CISS": ("CIF", []),
-            "TVA": ("CIF", ["DD"]),  # VAITA s.2
-        },
-        "source": "customs.gov.ng — VAITA Nigeria s.2 (VAT base = CIF+DD)",
-    },
-    # ── Afrique du Sud — SARS (sars.gov.za) ──────────────────────────────────
-    # VAT : base = CIF + DD  (VAT Act s.13(2))
-    "ZAF": {
-        **_IMPORT_VAT_CIF_DD,
-        "source": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
-    },
-    # ── Afrique australe et océan Indien ─────────────────────────────────────
-    # Les fichiers tarifaires de ces pays fournissent DD + TVA/IVA par ligne.
-    # La taxe à la consommation à l'importation est assise sur CIF + DD.
-    "ZMB": {**_IMPORT_VAT_CIF_DD, "source": "Zambia Revenue Authority — VAT on imports"},
-    "ZWE": {**_IMPORT_VAT_CIF_DD, "source": "ZIMRA — VAT on imported goods"},
-    "MOZ": {
-        **_IMPORT_VAT_CIF_DD,
-        "source": "Autoridade Tributária de Moçambique — IVA na importação",
-    },
-    "MUS": {**_IMPORT_VAT_CIF_DD, "source": "Mauritius Revenue Authority — VAT on imports"},
-    "MDG": {
-        **_IMPORT_VAT_CIF_DD,
-        "source": "Direction Générale des Impôts Madagascar — TVA à l'importation",
-    },
-    "MWI": {**_IMPORT_VAT_CIF_DD, "source": "Malawi Revenue Authority — import VAT"},
-    # ── Kenya / EAC — KRA (kra.go.ke) ────────────────────────────────────────
-    # IDF (3.5%): base CIF  (Finance Act 2022)
-    # VAT (16%): base = CIF + DD  (VAT Act Cap 476)
-    "KEN": {**_EAC, "source": "kra.go.ke — VAT Act Cap 476 / Finance Act 2022"},
-    # ── Tanzanie / EAC — TRA ──────────────────────────────────────────────────
-    "TZA": {**_EAC, "source": "TRA Tanzania — VAT Act Cap 148"},
-    # ── Ouganda / EAC — URA ───────────────────────────────────────────────────
-    "UGA": {**_EAC, "source": "URA Uganda — VAT Act Cap 349"},
-    # ── Rwanda / EAC — RRA ────────────────────────────────────────────────────
-    "RWA": {**_EAC, "source": "RRA Rwanda — VAT Act Cap 349"},
-    # ── Burundi / EAC — OBR ───────────────────────────────────────────────────
-    "BDI": {**_EAC, "source": "OBR Burundi — EAC CMA"},
-    # ── Égypte — ECA (customs.gov.eg/Services/Tarif) ───────────────────────────
-    # TVA : base = CIF uniquement  (Loi n°67/2016 art. 29)
-    "EGY": {
-        "taxes_order": ["DD", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "TVA": ("CIF", []),  # Loi 67/2016 art. 29: TVA base = CIF (pas CIF+DD)
-        },
-        "source": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
-    },
-    # ── Éthiopie — ECC (customs.erca.gov.et) ─────────────────────────────────
-    # SUR (Excise): base = CIF + DD
-    # TVA (15%): base = CIF + DD + SUR  (Ethiopian Customs/Tax Authority)
-    "ETH": {
-        "taxes_order": ["DD", "SUR", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "SUR": ("CIF", ["DD"]),  # Excise base = CIF + DD
-            "TVA": ("CIF", ["DD", "SUR"]),  # VAT base = CIF + DD + Excise
-        },
-        "source": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)",
-    },
-    # ── Tunisie — DGD (douane.gov.tn) ────────────────────────────────────────
-    # TCL : base CIF
-    # TVA : base = CIF + DD  (CTVA Tunisie art. 6)
-    "TUN": {
-        "taxes_order": ["DD", "TCL", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "TCL": ("CIF", []),
-            "TVA": ("CIF", ["DD"]),  # CTVA art. 6
-        },
-        "source": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
-    },
-    # ── UEMOA / CEDEAO members ────────────────────────────────────────────────
-    "SEN": {**_ECOWAS_UEMOA, "source": "douanes.sn / TEC CEDEAO — CGI Sénégal"},
-    "CIV": {**_ECOWAS_UEMOA, "source": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire"},
-    "BEN": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Bénin"},
-    "BFA": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Burkina Faso"},
-    "MLI": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Mali"},
-    "NER": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Niger"},
-    "TGO": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Togo"},
-    "GIN": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Guinée"},
-    "GNB": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Guinée-Bissau"},
-    "GMB": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO"},
-    "SLE": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO"},
-    "LBR": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO"},
-    # ── CEMAC members ─────────────────────────────────────────────────────────
-    "CMR": {**_CEMAC, "source": "douanes.cm — Directive TVA CEMAC art. 9"},
-    "GAB": {**_CEMAC, "source": "CEMAC Tarif des Douanes"},
-    "COG": {**_CEMAC, "source": "CEMAC Tarif des Douanes"},
-    "CAF": {**_CEMAC, "source": "CEMAC Tarif des Douanes"},
-    "GNQ": {**_CEMAC, "source": "CEMAC Tarif des Douanes"},
-    "TCD": {**_CEMAC, "source": "CEMAC Tarif des Douanes"},
-}
+#: Les trois orthographes sous lesquelles la TVA apparaît dans les profils.
+_ALIAS_TVA = ("TVA", "T.V.A", "VAT")
 
 # Human-readable labels for each tax code
 _TAX_LABELS = {
@@ -594,6 +407,36 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
             taxes_order.append(code)
             tax_bases[code] = ("CIF", [])
 
+    # ── Assiette de la TVA établie sur texte primaire ────────────────────────
+    # Là où un texte a été lu et archivé, il prime sur le profil codé : les
+    # quatre textes disposent que l'assiette est la valeur en douane augmentée
+    # de TOUS les droits et taxes d'entrée, la TVA seule exclue. Le profil, lui,
+    # applique « CIF + DD » et ampute donc l'assiette de tout le reste.
+    regle_tva = ASSIETTE_TVA_ETABLIE.get(country_iso3)
+    if regle_tva:
+        alias_presents = [c for c in taxes_order if _normalize_tax_code(c) in _ALIAS_TVA]
+        # Garde-fou : une taxe assise sur la TVA rendrait la cascade circulaire
+        # dès lors que la TVA s'assied sur toutes les autres. Aucun des onze
+        # pays concernés n'est dans ce cas aujourd'hui ; si cela changeait, le
+        # profil codé doit continuer de s'appliquer plutôt qu'un calcul faux.
+        circulaire = any(
+            any(
+                _normalize_tax_code(dep) in _ALIAS_TVA
+                for dep in (tax_bases.get(c) or ("CIF", []))[1]
+            )
+            for c in taxes_order
+        )
+        if alias_presents and not circulaire:
+            for code in alias_presents:
+                tax_bases[code] = (BASE_TVA_TOUTES_TAXES, [])
+            # La TVA doit être liquidée en dernier : son assiette contient les
+            # montants de toutes les autres taxes, qui doivent donc être connus.
+            for code in alias_presents:
+                taxes_order.remove(code)
+                taxes_order.append(code)
+            legal_source = regle_tva["texte"]
+            profile_status = "assiette_tva_texte_primaire"
+
     # Compute amounts in order, tracking each computed amount for cascade reuse
     computed_amounts: dict = {}  # norm_code → amount
     steps = []
@@ -611,6 +454,13 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         if base_formula == "DD_AMOUNT":
             # e.g. CAC = % of DD_amount
             base_value = computed_amounts.get("DD", 0.0)
+        elif base_formula == BASE_TVA_TOUTES_TAXES:
+            # Valeur en douane + tous les montants déjà liquidés, la taxe
+            # elle-même exclue. Rien n'est énuméré : ce qui entre dans
+            # l'assiette est ce que la source publie pour cette position.
+            base_value = cif_value + sum(
+                montant for code, montant in computed_amounts.items() if code != norm_code
+            )
         else:
             # 'CIF' + optional already-computed amounts
             base_value = cif_value
@@ -624,6 +474,9 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         label = _TAX_LABELS.get(norm_code, _TAX_LABELS.get(raw_code, raw_code))
         if base_formula == "DD_AMOUNT":
             base_desc = "DD_montant"
+        elif base_formula == BASE_TVA_TOUTES_TAXES:
+            autres = [c for c in computed_amounts if c != norm_code]
+            base_desc = "CIF + " + " + ".join(autres) if autres else "CIF"
         elif add_codes:
             base_desc = "CIF + " + " + ".join(add_codes)
         else:
@@ -1285,10 +1138,62 @@ def _resolve_zlecaf_context(
         offer_rate_expression=None,
         offer_rate_source=None,
     ):
+        # ── Plancher NPF ──────────────────────────────────────────────────
+        # Une préférence est une FACULTÉ, jamais une obligation : aucun
+        # importateur n'invoque un régime plus cher que le droit commun, et
+        # aucune douane ne le lui impose. Le règlement éthiopien 574/2025
+        # l'écrit à son article 3(5) — « If the tariff under the Standard
+        # Tariff Rules is lower than the tariff specified in the Free Trade
+        # Area Tariff Schedule, goods originating from Member States may be
+        # treated under the terms of the Standard Tariff Rules » — mais le
+        # principe ne lui est pas propre.
+        #
+        # Les trois chemins préférentiels calculaient correctement
+        # `preference_applied = taux < NPF`, puis servaient le taux
+        # préférentiel QUAND MÊME. Le drapeau disait « pas d'avantage »
+        # pendant que le montant facturait davantage. Mesuré avant
+        # correction : 8 positions algériennes, 2 sud-africaines, 3
+        # kényanes.
+        #
+        # Le garde-fou est posé ici, dans le constructeur que tous les
+        # chemins traversent, plutôt que dans chacun d'eux : un chemin
+        # ajouté demain en hérite sans qu'on ait à y penser.
+        plancher_npf = None
+        if dd is not None and dd_rate_pct is not None and dd > dd_rate_pct:
+            plancher_npf = {
+                "taux_preferentiel_ecarte_pct": dd,
+                "taux_retenu_pct": dd_rate_pct,
+                "motif": (
+                    "Le taux préférentiel dépasse le droit NPF de la même "
+                    "position : c'est le NPF qui est servi. Une préférence est "
+                    "une faculté, pas une obligation."
+                ),
+            }
+            dd = dd_rate_pct
+            # Le drapeau n'est PAS touché : le plancher ne rabote que le droit
+            # de douane, et une préférence ne se résume pas à lui. Sur les huit
+            # positions algériennes concernées, `daps_exempt()` est vrai et la
+            # cascade retire réellement un DAPS de 70 % — 70 000 DA d'économie
+            # sur 100 000 de CIF. Éteindre le drapeau ici dirait « aucune
+            # préférence » à un opérateur qui en tire une, et le dissuaderait
+            # de présenter son certificat d'origine.
+            #
+            # Aucun chemin n'a besoin qu'on le corrige : les trois calculent le
+            # drapeau avec un terme `taux préférentiel < NPF` qui est déjà faux
+            # quand le plancher mord. Ce qui reste vrai — l'exonération du DAPS
+            # — doit le rester.
+            complement = (
+                f" Taux préférentiel ({plancher_npf['taux_preferentiel_ecarte_pct']} %) "
+                f"supérieur au NPF ({dd_rate_pct} %) : NPF servi."
+            )
+            note = (note or "") + complement
+            zlecaf_note = (zlecaf_note or "") + complement
+
         return {
             "preferential": preferential,
             "preference_applied": preference_applied,
             "dd_rate_pct": dd,
+            "plancher_npf": plancher_npf,
             "daps_exempt": daps,
             "trade_regime": regime,
             "trade_regime_code": code,
@@ -1437,8 +1342,12 @@ def _resolve_zlecaf_context(
                 f"ZLECAf non encore activé pour {origin} à l'import en Algérie "
                 f"(circulaire DGD 482/2024) — taux NPF appliqué"
             )
-        _r, _src = compute_dza_zlecaf_rate(hs_code_clean, origin, (dd_rate_pct or 0) / 100.0)
-        eff_dd = round(_r * 100.0, 6) if _r is not None else dd_rate_pct
+        # Pourcentages de bout en bout : le taux publié se transporte tel quel,
+        # sans aller-retour vers une fraction. La conversion qui figurait ici
+        # n'altérait aucun résultat, mais elle obligeait à convertir deux fois
+        # et faisait d'un oubli une erreur d'un facteur 100.
+        _r, _src = compute_dza_zlecaf_rate(hs_code_clean, origin, dd_rate_pct or 0)
+        eff_dd = round(_r, 6) if _r is not None else dd_rate_pct
         _daps = daps_exempt(hs_code_clean, origin)
         applied = (eff_dd is not None and eff_dd < (dd_rate_pct or 0)) or _daps
         return _result(
@@ -2158,6 +2067,13 @@ def calculate_import_taxes(
         "zlecaf_eligible": zlecaf_eligible,
         "zlecaf_preference_applied": zlecaf_preference_applied,
         "zlecaf_note": zlecaf_note,
+        # Renseigné UNIQUEMENT quand le taux préférentiel dépassait le NPF et a
+        # donc été écarté : porte le taux écarté, le taux retenu et le motif.
+        # Un montant corrigé sans être dit ne serait pas opposable, et la note
+        # libre ne suffit pas — un client d'API ne peut pas la lire par
+        # programme. `None` quand le plancher n'a pas mordu, soit le cas
+        # général.
+        "plancher_npf": _zctx.get("plancher_npf"),
         # DOCUMENTED | NOT_AVAILABLE | OFFER_ONLY | PARTNER_NOTICE_REQUIRED
         "zlecaf_status": zlecaf_status,
         "zlecaf_rate_expression": zlecaf_rate_expression,

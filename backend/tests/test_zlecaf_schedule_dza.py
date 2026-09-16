@@ -111,16 +111,41 @@ def test_list_b_uses_authoritative_2019_base_rate_not_stale_normal_rate():
     # postérieure à 2019, hors ZLECAf). Le calendrier ZLECAf doit s'appliquer
     # sur le taux de base figé (30%), pas sur le taux normal courant (5%).
     code = "0201101100"
-    assert LIST_B_BASE_RATES_2019[code] == 0.30
-    rate, source = compute_dza_zlecaf_rate(code, "TUN", 0.05, as_of=datetime.date(2026, 6, 18))
-    assert abs(rate - 0.30 * 0.8) < 1e-9
+    assert LIST_B_BASE_RATES_2019[code] == 30.0
+    rate, source = compute_dza_zlecaf_rate(code, "TUN", 5.0, as_of=datetime.date(2026, 6, 18))
+    assert abs(rate - 30.0 * 0.8) < 1e-9
     assert "taux de base 2019" in source
+
+
+def test_les_taux_sont_des_pourcentages_de_bout_en_bout():
+    """Un taux publié se transporte tel quel, sans conversion.
+
+    Le module attendait autrefois une FRACTION là où tout le reste du moteur
+    manie des pourcentages, sans que la convention soit écrite nulle part. Un
+    appelant qui l'ignorait se trompait d'un facteur 100 en silence.
+
+    On vérifie les deux bouts : le taux de base est chargé tel que la source
+    le publie, et un taux fin — 0,5 % — ressort à 0,5 % et non à 50 % ni à
+    0,005 %.
+    """
+    assert set(LIST_B_BASE_RATES_2019.values()) <= {
+        5.0,
+        15.0,
+        30.0,
+        60.0,
+    }, "les taux de base doivent rester ceux que la source publie"
+    # Position gelée : le taux passé ressort intact, donc l'unité se lit à nu.
+    rate, source = compute_dza_zlecaf_rate(
+        "5204209100", "TUN", 0.5, as_of=datetime.date(2026, 6, 18)
+    )
+    assert rate == 0.5, "un taux publié à 0,5 % doit ressortir à 0,5 %"
+    assert "gelée" in source
 
 
 def test_list_a_code_keeps_passed_normal_rate_no_base_override():
     # La table de base 2019 ne couvre que la liste (B) : pour la liste (A),
     # le taux normal transmis par l'appelant reste la seule source.
-    rate, _ = compute_dza_zlecaf_rate("2901101000", "TUN", 0.15, as_of=datetime.date(2026, 6, 18))
+    rate, _ = compute_dza_zlecaf_rate("2901101000", "TUN", 15.0, as_of=datetime.date(2026, 6, 18))
     assert rate == 0.0
 
 

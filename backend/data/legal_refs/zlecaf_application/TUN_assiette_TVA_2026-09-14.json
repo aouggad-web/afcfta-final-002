@@ -1,0 +1,74 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette de la TVA à l'importation en Tunisie, et décodage de l'encodage du Tarif Web",
+ "verified_at": "2026-09-14",
+ "evidence_level": "primaire — Code de la TVA publié par le ministère des Finances, article lu intégralement",
+ "source": {
+  "instrument": "Code de la taxe sur la valeur ajoutée, article 6 § II-1",
+  "url": "https://www.finances.gov.tn/sites/default/files/CODE%20TVA%202017%20FR.pdf",
+  "institution": "Ministère des Finances — République tunisienne",
+  "texte_archive": "sources/TUN_code_TVA_art6.texte-extrait.txt",
+  "sha256": "94fabdc69a58f5bc20c08f2c581c1f6c8dfe3d8f881054602976f270a00b0358",
+  "pdf_non_archive": "PDF de 2,6 Mo et 252 pages non archivé ; seul l'extrait de l'article l'est.",
+  "numero_d_article": "Établi par la position du texte, immédiatement avant l'en-tête « ARTICLE 7 » de la même page 22. Corroboré par la citation « CTVA art. 6 » que porte déjà COUNTRY_TAX_PROFILES."
+ },
+ "regle": {
+  "verbatim": "II. À l'importation, la valeur imposable est constituée : 1- s'il s'agit d'une importation réalisée par un assujetti ou par l'Etat, les collectivités publiques locales et les établissements publics à caractère administratif, par la valeur en douane, tous droits et taxes inclus à l'exclusion de la taxe sur la valeur ajoutée.",
+  "portee": "Valeur en douane augmentée de TOUS les droits et taxes, sans énumération limitative, la TVA seule étant exclue. Même règle de fond qu'en UEMOA, au Kenya et en Ouganda, formulée autrement.",
+  "regle_non_implementee": "L'alinéa 2 majore de 25 % la valeur imposable lorsque l'importateur n'est pas assujetti. Le calculateur ne connaît pas la qualité de l'importateur et ne peut donc pas la servir : à signaler, non à deviner."
+ },
+ "decodage_de_l_encodage_source": {
+  "note": "Le Tarif Web publie l'assiette de chaque taxe en abrégé, parfois tronqué côté source. Les libellés sont conservés verbatim dans les fichiers ; voici leur lecture, établie par recoupement avec le Code de la TVA et le Code des douanes.",
+  "VALEUR DOUANE DINARS": "valeur en douane, exprimée en dinars — l'assiette du droit de douane et des droits de consommation ad valorem (Code des douanes, droit de consommation art. 4 a)",
+  "VAL.DOU(D)+R(DT) GR.0": "valeur en douane (dinars) + droits et taxes du groupe 0 — assiette de la TVA",
+  "SOMME D.T (G=0.1.2.3.4.": "somme des droits et taxes des groupes 0 à 4 — assiette de la redevance de prestation douanière (RPD)",
+  "VAL DOUANE+ SOMME DT": "valeur en douane + somme des droits et taxes — assiette de la taxe AIR",
+  "QCS / QCI / PN (KG)": "quantités : assiettes spécifiques, non valorielles. Aucune cascade ne s'y applique."
+ },
+ "consequence_sur_le_depot": {
+  "table_codee": "COUNTRY_TAX_PROFILES applique « TVA : CIF + DD » à la Tunisie, en citant « CTVA art. 6 ». L'article cité dit « tous droits et taxes » : la table est donc fausse par omission, et sa propre référence la contredit.",
+  "champ_base_des_fichiers": "« VAL.DOU(D)+R(DT) GR.0 » est l'abrégé du portail. Il ne limite pas explicitement aux seuls droits du groupe 0 dans le sens de la loi ; en cas de doute, le texte prime, et il ne limite pas.",
+  "verdict": "les deux descriptions du dépôt sont plus étroites que la loi ; le texte prime."
+ },
+ "defaut_trouve_au_passage": {
+  "fichier": "data/sources/TUN/tarifweb2026/tax_codes_and_assiettes.json",
+  "probleme": "Ce fichier se présente comme le « registre verbatim des codes de taxes et de leurs assiettes » et le bloc calculation_method du tarif tunisien le cite comme registre complet des 46 codes. Or ses 46 entrées portent une charge rigoureusement identique : mêmes assiettes, même libellé « .PREST.DOUA/EXP », même cotation « export », mêmes 17 500 lignes. L'agrégation par code a échoué et a produit un agrégat global répété. Le registre ne documente donc aucune assiette par code.",
+  "gravite": "La donnée tarifaire elle-même est saine : chaque taxe de chaque position porte son assiette verbatim, et le dépouillement direct rend 36 codes à l'importation avec des assiettes variées. Seul le registre récapitulatif est faux.",
+  "a_faire": "Régénérer ce registre depuis les fichiers, ou le retirer plutôt que le laisser citer comme référence."
+ },
+ "base_legale_archivee_insuffisante": "Le bloc calculation_method cite data/sources/TUN/code_douanes/CD_12.pdf comme base légale des assiettes. Ce PDF fait une page et ne porte que l'article 297, qui charge la douane de recouvrer les taxes intérieures exigibles à l'importation. C'est une base pertinente pour le périmètre des taxes perçues au dédouanement, mais elle ne dit rien de l'assiette de la TVA : la référence est mal employée.",
+ "remaining_work": [
+  "Régénérer ou retirer tax_codes_and_assiettes.json, dont les 46 entrées sont identiques.",
+  "Corriger la référence de base légale du bloc calculation_method, CD_12 ne portant pas l'assiette.",
+  "Décider du traitement de la majoration de 25 % pour importateur non assujetti.",
+  "Trancher l'incertitude ouverte sur la position 01012100015, préférence ZLECAf à 40 % supérieure au NPF de 36 %."
+ ],
+ "regle_non_appliquee_par_le_moteur": {
+  "decide_le": "2026-09-14",
+  "etat": "La Tunisie est délibérément ABSENTE de ASSIETTE_TVA_ETABLIE, alors que son texte est lu et archivé. Le moteur lui applique son profil codé (assiette CIF + DD), plus étroit, et ne cite pas l'article 6.",
+  "pourquoi": "Appliquer la règle citerait l'article 6 tout en servant une TVA sous-évaluée. Une assiette codée qui ne se réclame d'aucun texte vaut mieux qu'une assiette qui invoque un texte en trahissant sa portée.",
+  "obstacle_1_statut_de_l_importateur": {
+   "enonce": "L'article 6 § II-1 majore l'assiette de 25 % pour l'importateur non assujetti à la TVA.",
+   "consequence": "Le calculateur ne recueille pas le statut de l'importateur : il ne peut pas choisir la branche. Appliquer la seule branche « assujetti » sous-évaluerait la TVA de tout non-assujetti.",
+   "leve_par": "un champ de statut d'importateur dans l'API, et les deux branches implémentées."
+  },
+  "obstacle_2_taxes_a_assiette_quantitative": {
+   "enonce": "Les données tunisiennes portent 2 435 taxes assises sur une quantité et non sur une valeur.",
+   "exemples": [
+    "D.S.V. (droit sanitaire vétérinaire) : « 0.1 dinars », assiette QCS",
+    "P/VIANDE (prélèvement CGC bovins/viande) : « 1.2 dinars », assiette PN",
+    "TM/ABATT (taxe municipale d'abattage) : « 0.012 dinars »",
+    "FDCSA/V : « 0.05 dinars »"
+   ],
+   "consequence": "Le moteur ne liquide que l'ad valorem : ces montants n'entrent pas dans computed_amounts. Une assiette « tous droits et taxes inclus » les omettrait donc en silence, et la TVA serait sous-évaluée sans que rien ne le signale.",
+   "mesure": "Comptage sur backend/data/crawled et crawled_normalized. Aucun des dix autres pays soumis à la règle (BEN BFA CIV GNB MLI NER SEN TGO KEN UGA) ne porte une seule taxe de ce type : l'exception tunisienne est mesurée, pas prudentielle.",
+   "leve_par": "la liquidation des taxes spécifiques, qui suppose la quantité importée ; à défaut, la TVA et le total doivent être déclarés non liquidables plutôt que servis incomplets."
+  },
+  "defaut_connexe_a_traiter_separement": {
+   "enonce": "_parse_crawled_tax_rate lit « 0.1 dinars » comme 0,1 % et « 1000 FCFA/litre » comme 1000 % : un montant spécifique devient un taux ad valorem.",
+   "portee": "2 435 entrées concernées, toutes tunisiennes ; 556 autres valeurs sont illisibles. Le chemin d'exécution tunisien passe aujourd'hui par l'ETL, qui ramène ces taxes à un taux nul — elles sont donc perdues plutôt que converties. Les deux traitements sont fautifs.",
+   "pourquoi_hors_de_ce_changement": "Le corriger modifie des taux sur 2 435 positions et demande sa propre vérification. Le mêler à un changement d'assiette rendrait les deux inauditables.",
+   "a_ne_pas_oublier": "Ce défaut est antérieur à la règle d'assiette ; il ne disparaît pas avec l'exclusion de la Tunisie."
+  }
+ }
+}

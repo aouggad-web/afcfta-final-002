@@ -1,339 +1,226 @@
 {
- "date": "2026-08-29T21:59:13.912993+00:00",
- "country": "EGY",
- "action": "rebuild_fichier_national_officiel (crawl customs.gov.eg 2026-08-29)",
- "fichier": "backend/data/crawled/EGY_tariffs.json",
- "previous_file_sha256": "c97045a4fc5909382b6a8ebce412af75e9cdded924c805f523c2030c36e1d065",
- "comparison_basis": "fichier national du 2026-08-29 vs crawl juin 2026 (backup EGY_tariffs_20260829T215128Z.json)",
- "build_stats": {
-  "positions_officielles": 8818,
-  "with_regime_rates": 1397,
-  "with_formalities": 2342,
-  "with_fta_preferences": 6764,
-  "with_zlecaf_instruction": 5137,
-  "legacy_not_in_official_crawl": 15,
-  "missing_taxes": 10
- },
- "diff_classification": {
-  "dd_juin_raw_vide_0_impute": 34,
-  "bug_juin_taux_regime_ecrasait_generique": 1342,
-  "dd_juin_specifique->aujourdhui_raw_sans_%": 40,
-  "tva_changement_reel": 9,
-  "tva_juin_minimum_pris_comme_taux->ad_valorem_retabli": 16,
-  "tva_none_vs_valeur_representation": 56,
-  "dd_changement_reel": 29
- },
- "rate_changes_detail": [
-  {
-   "code": "1701991000",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  "date": "2026-09-14T20:57:46.180339+00:00",
+  "comparison_base": {
+    "origin": "version du fichier antérieure à la reconstruction, relue depuis l'historique git",
+    "ref": "git:0d93269~1:backend/data/crawled/EGY_tariffs.json",
+    "sha256": "089df0af67f2d4b7e7f7b1f71c00c88f904397bf56d4bf6e4a947b8cd17c40a0",
+    "extracted_at": "2026-08-29T21:57:37.493425+00:00",
+    "rebuilt_at": null,
+    "positions": 8818,
+    "note": "Le bilan avant/après compare le document construit à CETTE base, et non au crawl de juin 2026 ni aux fichiers de progression."
   },
-  {
-   "code": "2309901015",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  "before_after": {
+    "positions": {
+      "before": 8818,
+      "after": 8818,
+      "added": [],
+      "removed": []
+    },
+    "rates": {
+      "positions_changed": 0,
+      "sample": [],
+      "positions_without_any_rate_before": 10,
+      "positions_without_any_rate_after": 10
+    },
+    "families": {
+      "before": {
+        "formalities": 3164,
+        "restrictions": 0,
+        "fta_preferences": 53459,
+        "official_instructions": 100527
+      },
+      "after": {
+        "formalities": 4097,
+        "restrictions": 26502,
+        "fta_preferences": 69702,
+        "official_instructions": 100527
+      }
+    },
+    "instruction_texts": {
+      "raw_instructions": {
+        "distinct_before": 375,
+        "distinct_after": 375,
+        "lost": 0,
+        "lost_sample": []
+      },
+      "par_famille": {
+        "formalities": {
+          "distinct_before": 111,
+          "distinct_after": 62,
+          "sortis_de_ce_bloc": 88,
+          "retrouves_dans_une_autre_famille": 88,
+          "sortis_sample": [
+            "ر6501-تحصل ضريبة الوارد 20% على ما تستورده المنشآت الفندقيةوالسياحية أو ضريبة الوارد أيهما أقل.",
+            "ر6506-بحصل 20% من القيمة للاغراض الجمركية لاصناف اغذية الكلاب والقطط والطيور",
+            "ر6511-استثناء الأصناف الواردة فى ظل كوميسا من سودان من الاعفاء",
+            "ر6512-يخضــع لضريبة وارد بواقع300 % ما يرد من محضرات ومشروبات كحولية لمنشأةسياحية أو فندقية",
+            "ر6516-استثناء أصناف واردةبالمرفق 1 من الاعفاء من الضرائب فى اطار اتفاقية ثنائيةبين ج.م.ع والأردن",
+            "ر6517-ستثنى من الأعفاءسلع زراعيةو سلع زراعيةمصنعة وسلع واردة بقائمة4فى اطار اتفاقيةبين مصر وتونس",
+            "ر6518-لايمنح الإعفاء الجمركى لمنتجات الحديد إلا لما يرد من الشركة الليبية للحديد والصلب بمصراته",
+            "ر6530-افراج مؤقت عن سيارات الركوب و النقل و التريلات . و البرادات و اليخوت ..",
+            "ر6541-خاص برسم تنمية موارد المالية على السيارت",
+            "ر6548-يخضع صنف  اورثوفثالات ثنائى اوكتيل   ذات منشأ او مصدرة من كوريا جنوبية لرسم اغراق"
+          ]
+        },
+        "restrictions": {
+          "distinct_before": 0,
+          "distinct_after": 164,
+          "sortis_de_ce_bloc": 0,
+          "retrouves_dans_une_autre_famille": 0,
+          "sortis_sample": []
+        },
+        "fta_preferences": {
+          "distinct_before": 328,
+          "distinct_after": 149,
+          "sortis_de_ce_bloc": 208,
+          "retrouves_dans_une_autre_famille": 208,
+          "sortis_sample": [
+            "غ1055- عدم الافراج عن اى رسائل لصنف عربات دفع رباعى  الا بعد موافقة إفراج ادارةمفرقعات ق امن عام",
+            "غ1501-اعفاء أوراق النقد الأجنبى[الاحدث] والأوراق المالية من القيود الاستيرادية والتصديرية",
+            "غ3035-يشتـرط لاستيراد افلام سينمائيةموافقة مسبقة لجنة تصدير  واستيراد افلام بمجلس أعلى للثقافة",
+            "غ3053-يـراعى إخطار قطـاع سياسات تجـارة خارجية بوزارة ت . وص على صنف طيورودواجن كاملة مذبوحة",
+            "غ3059-اتفاقية نقل الركاب والبضائع بين المملكة الاردنية الهاشمية وجمهورية مصر العربية",
+            "غ4007-يسمح بدخول السيارات التى تحتوى على أجهزة الملاحه والـ G P S مع اخطار الجهاز قومى للاتصالات",
+            "غ4013-يشترط لاستيراد الصنف تقديم موافقة استيرادية مسبقة  من الحجر الزراعى",
+            "غ4015-اضافة 11 اذا كان منتج  حيوانى ويعرض حجر بيطرى أو اضافة 12 اذا كان منتج نباتى يعرض ح زراعى",
+            "غ4016-لايفرج عن الصنف إلا باستيفاء شروط الفحص والرقابة طبقا لأحكام قوانين الحجرالصحي بوزارةالصحة",
+            "غ4017-لا يصرح باستيراد الصنف الا بعد الحصول على موافقة استيرادية مسبقة من هيئة الدواء المصرية"
+          ]
+        }
+      }
+    },
+    "references": {
+      "fields_checked": [
+        "source",
+        "source_url",
+        "detail_endpoint",
+        "source_quality",
+        "code_official",
+        "name_fr_from_previous_crawl",
+        "date_consulted"
+      ],
+      "positions_changed": 0,
+      "sample": []
+    },
+    "provenance": {
+      "extracted_at": {
+        "before": "2026-08-29T21:57:37.493425+00:00",
+        "after": "2026-08-29T21:57:37.493425+00:00"
+      },
+      "rebuilt_at": {
+        "before": null,
+        "after": "2026-09-14T10:27:46.072180+00:00"
+      }
+    },
+    "calculation_method_preserved": true
   },
-  {
-   "code": "2309901025",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
+  "stats": {
+    "with_instructions": 8791,
+    "with_fta_preferences": 8778,
+    "with_formalities": 2878,
+    "with_zlecaf_instruction": 6315,
+    "total": 8803,
+    "with_regime_rates": 1397,
+    "missing_taxes": 10,
+    "legacy_not_in_official_crawl": 15
   },
-  {
-   "code": "2309901090",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2309909015",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2309909025",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2309909035",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 14.0,
-   "raw_juin": "صفر",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2520100010",
-   "tax": "TVA",
-   "juin": 5.0,
-   "aout": 14.0,
-   "raw_juin": "5% (من القيمة + ر.ض.جمركية)",
-   "raw_aout": "14% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2709000010",
-   "tax": "TVA",
-   "juin": 0.0,
-   "aout": 10.0,
-   "raw_juin": "صفر",
-   "raw_aout": "10% (من القيمة + ر.ض.جمركية)"
-  },
-  {
-   "code": "2804800000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2908990015",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2909500010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2917320000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 5.0,
-   "raw_juin": "",
-   "raw_aout": "5%"
-  },
-  {
-   "code": "2918300090",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2921300090",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2931900010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2931900090",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932110000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932120000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932130000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932140010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932140090",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932190000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932200000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932910000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932920000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932930000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932940000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932950000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932960000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932990010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2932990090",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2933110000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2933190000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "2933210000",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "3204150010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 2.0,
-   "raw_juin": "",
-   "raw_aout": "2%"
-  },
-  {
-   "code": "4009210010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 10.0,
-   "raw_juin": "",
-   "raw_aout": "10%"
-  },
-  {
-   "code": "8483109010",
-   "tax": "DD",
-   "juin": 0.0,
-   "aout": 10.0,
-   "raw_juin": "",
-   "raw_aout": "10%"
-  }
- ],
- "notes": [
-  "1 342 lignes : le crawl de juin avait écrasé le taux générique DD par un taux de régime (accord UE/UK/etc. 19,5% etc.) ; le taux générique publié par la source est rétabli, les taux de régime sont conservés séparément dans taxes_regimes.",
-  "Les TVA 'minimum' (بحد أدنى) étaient prises comme taux unique en juin ; aujourd'hui la ligne ad valorem générique est rétablie et le minimum conservé (VAT_2 + verbatim).",
-  "Les changements réels restants (ex. TVA 0->14 sur 230990*, tabac 75/100/200) sont pris du verbatim publié aujourd'hui, sans arbitrage.",
-  "ch.77 vide (réservé SH) ; ch.95 vide : HTTP 500 côté source (persistant depuis juin) — écart de source documenté."
- ],
- "backup": "data/archive/crawled_backup/EGY_tariffs_20260829T215739Z.json"
+  "chapters_covered": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97
+  ]
 }

@@ -134,6 +134,7 @@ except ImportError:
     _logger.warning("faostat package not installed; FAOSTAT routes will be unavailable")
     faostat_router = None
     FAOSTAT_AVAILABLE = False
+from .calcul import router as calcul_router
 from .calculator import router as calculator_router
 
 try:
@@ -507,9 +508,17 @@ def register_routes(api_router: APIRouter):
         api_router.include_router(
             faostat_router, tags=["FAOSTAT Production 2024"], dependencies=_auth
         )
+    # Route unique du calculateur (socle + moteur). Le routeur historique reste
+    # monté le temps que l'interface bascule (chantier L4) ; il disparaît
+    # ensuite, avec les chemins concurrents qu'il porte.
+    api_router.include_router(
+        calcul_router,
+        tags=["Calculateur"],
+        dependencies=_auth + _calculator_entitlement,
+    )
     api_router.include_router(
         calculator_router,
-        tags=["Calculator"],
+        tags=["Calculator (historique)"],
         dependencies=_auth + _calculator_entitlement,
     )
     if TRADE_DATA_AVAILABLE:

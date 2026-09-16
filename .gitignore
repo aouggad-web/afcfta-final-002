@@ -129,3 +129,12 @@ data/crawled/
 __pycache__/
 *.pyc
 .DS_Store
+
+# Socle de calcul (chantier L1) : artefact de construction, régénéré par
+# `python3 scripts/build_socle.py` depuis backend/data/crawled/ (versionné).
+# Le manifeste et la table d'assiettes, eux, sont suivis : ils portent les
+# empreintes et les références légales.
+backend/socle/*.json
+!backend/socle/MANIFESTE.json
+!backend/socle/assiettes_pays.json
+!backend/socle/devises_pays.json

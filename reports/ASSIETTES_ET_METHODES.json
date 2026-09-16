@@ -1,0 +1,3839 @@
+{
+  "genere_le": "2026-09-14T23:52:20.304627+00:00",
+  "methode": {
+    "source_assiettes": "backend/data/crawled/*_tariffs.json, champ base/assiette",
+    "source_table_codee": "services.authentic_tariff_service.COUNTRY_TAX_PROFILES, seule consultée par compute_tax_cascade()",
+    "canonisation": "services.authentic_tariff_service._canonical_tax_code",
+    "note": "Aucune assiette n'est inventée et aucun désaccord n'est tranché. Le rapport nomme, pays par pays et taxe par taxe, ce que la source déclare, ce que la table code, et leur accord.",
+    "limite": "Une assiette absente du fichier n'est pas réputée inexistante : beaucoup d'administrations ne répètent pas dans leur nomenclature une convention qu'elles publient ailleurs. Le statut « non_documentee » dit que le dépôt l'ignore, pas qu'elle n'existe pas."
+  },
+  "synthese": {
+    "pays": 51,
+    "couples_pays_taxe": 239,
+    "par_statut": {
+      "lue_dans_la_source": 163,
+      "table_codee_seule": 28,
+      "non_documentee": 48
+    },
+    "par_nature": {
+      "valorielle": 144,
+      "indeterminee": 82,
+      "valorielle_plafonnee": 2,
+      "quantitative": 11
+    },
+    "desaccords": 5,
+    "pays_sans_profil_code": [
+      "AGO",
+      "BWA",
+      "COD",
+      "COM",
+      "CPV",
+      "LBY",
+      "LSO",
+      "MRT",
+      "NAM",
+      "SDN",
+      "SSD",
+      "STP",
+      "SWZ",
+      "SYC"
+    ]
+  },
+  "desaccords": [
+    {
+      "pays": "CPV",
+      "taxe": "TVA",
+      "assiette_publiee": "CIF + DD + RS + PCS",
+      "dependances_source": [
+        "DD",
+        "PCS",
+        "RS"
+      ],
+      "dependances_table_codee": [
+        "DD"
+      ],
+      "profil_present": false
+    },
+    {
+      "pays": "GMB",
+      "taxe": "TVA",
+      "assiette_publiee": "CIF + DD + RS + PCS",
+      "dependances_source": [
+        "DD",
+        "PCS",
+        "RS"
+      ],
+      "dependances_table_codee": [
+        "DD"
+      ],
+      "profil_present": true
+    },
+    {
+      "pays": "LBR",
+      "taxe": "TVA",
+      "assiette_publiee": "CIF + DD + RS + PCS",
+      "dependances_source": [
+        "DD",
+        "PCS",
+        "RS"
+      ],
+      "dependances_table_codee": [
+        "DD"
+      ],
+      "profil_present": true
+    },
+    {
+      "pays": "SLE",
+      "taxe": "TVA",
+      "assiette_publiee": "CIF + DD + RS + PCS",
+      "dependances_source": [
+        "DD",
+        "PCS",
+        "RS"
+      ],
+      "dependances_table_codee": [
+        "DD"
+      ],
+      "profil_present": true
+    },
+    {
+      "pays": "TUN",
+      "taxe": "TVA",
+      "assiette_publiee": "VAL.DOU(D)+R(DT) GR.0",
+      "dependances_source": [
+        "DT"
+      ],
+      "dependances_table_codee": [
+        "DD"
+      ],
+      "profil_present": true
+    }
+  ],
+  "par_pays": {
+    "AGO": {
+      "lignes": 5388,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5388,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "BDI": {
+      "lignes": 5984,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "OBR Burundi — EAC CMA",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF+Duty",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "OBR Burundi — EAC CMA",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "BEN": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Bénin",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCC": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO — CGI Bénin",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PCS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Bénin",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PUA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO — CGI Bénin",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Bénin",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TEC CEDEAO — CGI Bénin",
+          "assiette_appliquee_par_le_moteur": "TOUTES_LES_AUTRES_TAXES",
+          "fondement_de_l_assiette_appliquee": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+          "accord": true,
+          "accord_note": "assiette remplacée par le texte primaire : « valeur en douane + tous droits et taxes perçus à l'entrée, hors TVA ». Elle englobe l'assiette publiée comme l'assiette codée."
+        }
+      }
+    },
+    "BFA": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Burkina Faso",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCAES": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO — CGI Burkina Faso",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PCS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Burkina Faso",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Burkina Faso",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TEC CEDEAO — CGI Burkina Faso",
+          "assiette_appliquee_par_le_moteur": "TOUTES_LES_AUTRES_TAXES",
+          "fondement_de_l_assiette_appliquee": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+          "accord": true,
+          "accord_note": "assiette remplacée par le texte primaire : « valeur en douane + tous droits et taxes perçus à l'entrée, hors TVA ». Elle englobe l'assiette publiée comme l'assiette codée."
+        }
+      }
+    },
+    "BWA": {
+      "lignes": 8589,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "AFCFTA": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EFTA": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EU_UK": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "MERCOSUR": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "SADC": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "CAF": {
+      "lignes": 5239,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TCI": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + TCI",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "TCI"
+          ],
+          "dependances_table_codee": [
+            "DD",
+            "TCI"
+          ],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [
+            "DD",
+            "TCI"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "CIV": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "DUS": {
+          "statut": "lue_dans_la_source",
+          "nature": "indeterminee",
+          "assiette_publiee": "variable",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "VARIABLE"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PSV": {
+          "statut": "lue_dans_la_source",
+          "nature": "indeterminee",
+          "assiette_publiee": "variable",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "VARIABLE"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "SPEC": {
+          "statut": "lue_dans_la_source",
+          "nature": "indeterminee",
+          "assiette_publiee": "variable",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "VARIABLE"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TSB_PT": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TUB": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TUF": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire",
+          "assiette_appliquee_par_le_moteur": "TOUTES_LES_AUTRES_TAXES",
+          "fondement_de_l_assiette_appliquee": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+          "accord": true,
+          "accord_note": "assiette remplacée par le texte primaire : « valeur en douane + tous droits et taxes perçus à l'entrée, hors TVA ». Elle englobe l'assiette publiée comme l'assiette codée."
+        }
+      }
+    },
+    "CMR": {
+      "lignes": 5239,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douanes.cm — Directive TVA CEMAC art. 9",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "douanes.cm — Directive TVA CEMAC art. 9",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "RI": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle_plafonnee",
+          "assiette_publiee": "CIF (plafond 15 000 XAF)",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douanes.cm — Directive TVA CEMAC art. 9",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TCI": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "douanes.cm — Directive TVA CEMAC art. 9",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + TCI",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "TCI"
+          ],
+          "dependances_table_codee": [
+            "DD",
+            "TCI"
+          ],
+          "table_codee_origine": "douanes.cm — Directive TVA CEMAC art. 9",
+          "assiette_appliquee_par_le_moteur": [
+            "DD",
+            "TCI"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "COD": {
+      "lignes": 5984,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF+Duty",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "COG": {
+      "lignes": 5239,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "OHADA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TCI": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + TCI",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "TCI"
+          ],
+          "dependances_table_codee": [
+            "DD",
+            "TCI"
+          ],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [
+            "DD",
+            "TCI"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "COM": {
+      "lignes": 5388,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5388,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "CPV": {
+      "lignes": 6129,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PCC": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": false
+        }
+      }
+    },
+    "DZA": {
+      "lignes": 17226,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DAPS": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 937,
+          "dependances_source": null,
+          "dependances_table_codee": [],
+          "table_codee_origine": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 16927,
+          "dependances_source": null,
+          "dependances_table_codee": [],
+          "table_codee_origine": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PRCT": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 17226,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD",
+            "TCS",
+            "TVA"
+          ],
+          "table_codee_origine": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS",
+          "assiette_appliquee_par_le_moteur": [
+            "DD",
+            "TCS",
+            "TVA"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TCS": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 17226,
+          "dependances_source": null,
+          "dependances_table_codee": [],
+          "table_codee_origine": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TIC": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 231,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TICPV": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 19,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 16766,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DAPS",
+            "DD"
+          ],
+          "table_codee_origine": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS",
+          "assiette_appliquee_par_le_moteur": [
+            "DAPS",
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "EGY": {
+      "lignes": 8818,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8779,
+          "dependances_source": null,
+          "dependances_table_codee": [],
+          "table_codee_origine": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "ID_2": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 1,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8808,
+          "dependances_source": null,
+          "dependances_table_codee": [],
+          "table_codee_origine": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "VAT_2": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 17,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "تامينصحىوزارةالصحة": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 18,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "رسممحصلةلحسابغرفةجلود": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "رسممحصلةلحسابغرفةدخان": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 6,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "رسممحصلةلحسابغرفةنسيج": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 217,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "ضريبةالجدول": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 187,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "ضريبةالجدول_2": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 2,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "ETH": {
+      "lignes": 6296,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "D2R": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 1939,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 4928,
+          "dependances_source": null,
+          "dependances_table_codee": [],
+          "table_codee_origine": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DSR": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 3,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "ER": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 872,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "SUR": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 2,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 6296,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD",
+            "SUR"
+          ],
+          "table_codee_origine": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)",
+          "assiette_appliquee_par_le_moteur": [
+            "DD",
+            "SUR"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "WHR": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 6295,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "GAB": {
+      "lignes": 5239,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "CIA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TCI": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + TCI",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "TCI"
+          ],
+          "dependances_table_codee": [
+            "DD",
+            "TCI"
+          ],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [
+            "DD",
+            "TCI"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "GHA": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 6129,
+          "dependances_source": null,
+          "dependances_table_codee": [],
+          "table_codee_origine": "UNIPASS Ghana — VAT Act 870 (VAT/NHIL/GETFUND base = CIF+DD+ECOWAS)",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "GIN": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Guinée",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCC": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO — CGI Guinée",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TEC CEDEAO — CGI Guinée",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "GMB": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCC": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": false
+        }
+      }
+    },
+    "GNB": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Guinée-Bissau",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCC": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO — CGI Guinée-Bissau",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PCS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Guinée-Bissau",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PUA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO — CGI Guinée-Bissau",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Guinée-Bissau",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TEC CEDEAO — CGI Guinée-Bissau",
+          "assiette_appliquee_par_le_moteur": "TOUTES_LES_AUTRES_TAXES",
+          "fondement_de_l_assiette_appliquee": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+          "accord": true,
+          "accord_note": "assiette remplacée par le texte primaire : « valeur en douane + tous droits et taxes perçus à l'entrée, hors TVA ». Elle englobe l'assiette publiée comme l'assiette codée."
+        }
+      }
+    },
+    "GNQ": {
+      "lignes": 5239,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "RI": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle_plafonnee",
+          "assiette_publiee": "CIF (plafond 15 000 XAF)",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TCI": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + TCI",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "TCI"
+          ],
+          "dependances_table_codee": [
+            "DD",
+            "TCI"
+          ],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [
+            "DD",
+            "TCI"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "KEN": {
+      "lignes": 5984,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "kra.go.ke — VAT Act Cap 476 / Finance Act 2022",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "IDF": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "kra.go.ke — VAT Act Cap 476 / Finance Act 2022",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "RDL": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "kra.go.ke — VAT Act Cap 476 / Finance Act 2022",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF+Duty+Fees",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "FEES"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "kra.go.ke — VAT Act Cap 476 / Finance Act 2022",
+          "assiette_appliquee_par_le_moteur": "TOUTES_LES_AUTRES_TAXES",
+          "fondement_de_l_assiette_appliquee": "Kenya, Value Added Tax Act No. 35 of 2013, section 14 (1) (c) : « the amount of duty of customs », expression que la loi définit comme « import duty, excise duty, export duty, countervailing duty, levy, cess, tax or surtax charged under any law [...] relating to customs or excise » — la définition élargit l'alinéa bien au-delà du droit de douane",
+          "accord": true,
+          "accord_note": "assiette remplacée par le texte primaire : « valeur en douane + tous droits et taxes perçus à l'entrée, hors TVA ». Elle englobe l'assiette publiée comme l'assiette codée."
+        }
+      }
+    },
+    "LBR": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCC": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": false
+        }
+      }
+    },
+    "LBY": {
+      "lignes": 5388,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TP": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5388,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TSP": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5388,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "LSO": {
+      "lignes": 8589,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "AFCFTA": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EFTA": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EU_UK": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "MERCOSUR": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "SADC": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "MAR": {
+      "lignes": 13114,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 12972,
+          "dependances_source": null,
+          "dependances_table_codee": [],
+          "table_codee_origine": "douane.gov.ma — CGI Maroc art. 96 (TVA base = CIF+DD+TPI)",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TAXEPARAFISCALEÀL'IMPORTATION(TPI)": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 12971,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.ma — CGI Maroc art. 96 (TVA base = CIF+DD+TPI)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 12586,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD",
+            "TPI"
+          ],
+          "table_codee_origine": "douane.gov.ma — CGI Maroc art. 96 (TVA base = CIF+DD+TPI)",
+          "assiette_appliquee_par_le_moteur": [
+            "DD",
+            "TPI"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "MDG": {
+      "lignes": 5624,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "Direction Générale des Impôts Madagascar — TVA à l'importation",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5624,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "Direction Générale des Impôts Madagascar — TVA à l'importation",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "MLI": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Mali",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCAES": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO — CGI Mali",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PCS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Mali",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Mali",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TEC CEDEAO — CGI Mali",
+          "assiette_appliquee_par_le_moteur": "TOUTES_LES_AUTRES_TAXES",
+          "fondement_de_l_assiette_appliquee": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+          "accord": true,
+          "accord_note": "assiette remplacée par le texte primaire : « valeur en douane + tous droits et taxes perçus à l'entrée, hors TVA ». Elle englobe l'assiette publiée comme l'assiette codée."
+        }
+      }
+    },
+    "MOZ": {
+      "lignes": 5388,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "Autoridade Tributária de Moçambique — IVA na importação",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5388,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "Autoridade Tributária de Moçambique — IVA na importação",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "MRT": {
+      "lignes": 5388,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5388,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "MUS": {
+      "lignes": 5619,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "Mauritius Revenue Authority — VAT on imports",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5619,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "Mauritius Revenue Authority — VAT on imports",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "MWI": {
+      "lignes": 5388,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "Malawi Revenue Authority — import VAT",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5388,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "Malawi Revenue Authority — import VAT",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "NAM": {
+      "lignes": 8589,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "AFCFTA": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EFTA": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EU_UK": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "MERCOSUR": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "SADC": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "NER": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Niger",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCAES": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO — CGI Niger",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PCS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Niger",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Niger",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TEC CEDEAO — CGI Niger",
+          "assiette_appliquee_par_le_moteur": "TOUTES_LES_AUTRES_TAXES",
+          "fondement_de_l_assiette_appliquee": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+          "accord": true,
+          "accord_note": "assiette remplacée par le texte primaire : « valeur en douane + tous droits et taxes perçus à l'entrée, hors TVA ». Elle englobe l'assiette publiée comme l'assiette codée."
+        }
+      }
+    },
+    "NGA": {
+      "lignes": 6363,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 6363,
+          "dependances_source": null,
+          "dependances_table_codee": [],
+          "table_codee_origine": "customs.gov.ng — VAITA Nigeria s.2 (VAT base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EXC": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 6363,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "customs.gov.ng — VAITA Nigeria s.2 (VAT base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "IAT": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 6363,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "customs.gov.ng — VAITA Nigeria s.2 (VAT base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 6363,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "customs.gov.ng — VAITA Nigeria s.2 (VAT base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "RWA": {
+      "lignes": 5984,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "RRA Rwanda — VAT Act Cap 349",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF+Duty",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "RRA Rwanda — VAT Act Cap 349",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "SDN": {
+      "lignes": 5388,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5388,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "SEN": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "douanes.sn / TEC CEDEAO — CGI Sénégal",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCC": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douanes.sn / TEC CEDEAO — CGI Sénégal",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PCS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "douanes.sn / TEC CEDEAO — CGI Sénégal",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PUA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douanes.sn / TEC CEDEAO — CGI Sénégal",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "douanes.sn / TEC CEDEAO — CGI Sénégal",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "douanes.sn / TEC CEDEAO — CGI Sénégal",
+          "assiette_appliquee_par_le_moteur": "TOUTES_LES_AUTRES_TAXES",
+          "fondement_de_l_assiette_appliquee": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+          "accord": true,
+          "accord_note": "assiette remplacée par le texte primaire : « valeur en douane + tous droits et taxes perçus à l'entrée, hors TVA ». Elle englobe l'assiette publiée comme l'assiette codée."
+        }
+      }
+    },
+    "SLE": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCC": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TEC CEDEAO",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": false
+        }
+      }
+    },
+    "SSD": {
+      "lignes": 5984,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF+Duty",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "STP": {
+      "lignes": 5388,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5388,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "SWZ": {
+      "lignes": 8589,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "AFCFTA": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EFTA": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EU_UK": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "MERCOSUR": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "SADC": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "SYC": {
+      "lignes": 5396,
+      "profil_de_cascade_code": false,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5396,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "profil par défaut du moteur",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "TCD": {
+      "lignes": 5239,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PUA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TCI": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + TCI",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "TCI"
+          ],
+          "dependances_table_codee": [
+            "DD",
+            "TCI"
+          ],
+          "table_codee_origine": "CEMAC Tarif des Douanes",
+          "assiette_appliquee_par_le_moteur": [
+            "DD",
+            "TCI"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "TGO": {
+      "lignes": 6129,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Togo",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PCC": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO — CGI Togo",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PCS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Togo",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "PUA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "TEC CEDEAO — CGI Togo",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "RS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TEC CEDEAO — CGI Togo",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF + DD + RS + PCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "PCS",
+            "RS"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TEC CEDEAO — CGI Togo",
+          "assiette_appliquee_par_le_moteur": "TOUTES_LES_AUTRES_TAXES",
+          "fondement_de_l_assiette_appliquee": "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : « en ce qui concerne les importations par la valeur en douane majorée des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la Valeur Ajoutée elle-même »",
+          "accord": true,
+          "accord_note": "assiette remplacée par le texte primaire : « valeur en douane + tous droits et taxes perçus à l'entrée, hors TVA ». Elle englobe l'assiette publiée comme l'assiette codée."
+        }
+      }
+    },
+    "TUN": {
+      "lignes": 17542,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "AIRIMPOR": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VAL DOUANE+ SOMME DT",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DT"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DCALC": {
+          "statut": "lue_dans_la_source",
+          "nature": "indeterminee",
+          "assiette_publiee": "QCI",
+          "assiette_publiee_verbatim_variantes": [
+            "QCS"
+          ],
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "QCI"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DCAP": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DCAPP": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "PN (KG)",
+          "assiette_publiee_verbatim_variantes": [
+            "QCS",
+            "QCI"
+          ],
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DCESS": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "QCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DCGPL": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "QCS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DCMTK": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DCRNTA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DCVBBA": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "QCS",
+          "assiette_publiee_verbatim_variantes": [
+            "VALEUR DOUANE DINARS",
+            "QCI"
+          ],
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DCVOIT": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "DDAUTCA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DDFUEL": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DDMAZOUT": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DDMTK": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DDPETBR": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DDRNTA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DDVEHAU": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DSV": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "PN(KG)/100 EXCES",
+          "assiette_publiee_verbatim_variantes": [
+            "QCS"
+          ],
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "FDCSAV": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "PN (KG)",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PBEURFR": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "PN (KG)",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PFRUITS": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "PN (KG)",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PHACIDE": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "PN (KG) / 1000 EXCES",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "PVIANDE": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "PN (KG)",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "SUR": {
+          "statut": "lue_dans_la_source",
+          "nature": "indeterminee",
+          "assiette_publiee": "QCI",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "QCI"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TCA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TCL": {
+          "statut": "lue_dans_la_source",
+          "nature": "indeterminee",
+          "assiette_publiee": "SOMME D.T (G=0.1.2.3.4.",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TLF": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TMABATT": {
+          "statut": "lue_dans_la_source",
+          "nature": "quantitative",
+          "assiette_publiee": "PN (KG)",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TMTS": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TPE": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VALEUR DOUANE DINARS",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VAL.DOU(D)+R(DT) GR.0",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DT"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": false
+        },
+        "TVAAUTO": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VAL.DOU(D)+R(DT) GR.0",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DT"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVAMTK": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VAL.DOU(D)+R(DT) GR.0",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DT"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVAPP": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VAL.DOU(D)+R(DT) GR.0",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DT"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "TVARNTA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "VAL.DOU(D)+R(DT) GR.0",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DT"
+          ],
+          "dependances_table_codee": null,
+          "table_codee_origine": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "TZA": {
+      "lignes": 5984,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "TRA Tanzania — VAT Act Cap 148",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF+Duty",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "TRA Tanzania — VAT Act Cap 148",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        }
+      }
+    },
+    "UGA": {
+      "lignes": 5984,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "URA Uganda — VAT Act Cap 349",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF+Duty+Levies",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [
+            "DD",
+            "LEVIES"
+          ],
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "URA Uganda — VAT Act Cap 349",
+          "assiette_appliquee_par_le_moteur": "TOUTES_LES_AUTRES_TAXES",
+          "fondement_de_l_assiette_appliquee": "Ouganda, Value Added Tax Act Chapter 349, section 23 (b) : « the amount of customs duty, excise tax and any other fiscal charge other than tax payable on those goods », « tax » désignant la TVA elle-même",
+          "accord": true,
+          "accord_note": "assiette remplacée par le texte primaire : « valeur en douane + tous droits et taxes perçus à l'entrée, hors TVA ». Elle englobe l'assiette publiée comme l'assiette codée."
+        }
+      }
+    },
+    "ZAF": {
+      "lignes": 8589,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "AFCFTA": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "DD": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": [],
+          "table_codee_origine": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EFTA": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "EU_UK": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "MERCOSUR": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        },
+        "SADC": {
+          "statut": "non_documentee",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 8589,
+          "dependances_source": null,
+          "dependances_table_codee": null,
+          "table_codee_origine": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
+          "assiette_appliquee_par_le_moteur": null,
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "ZMB": {
+      "lignes": 5613,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "Zambia Revenue Authority — VAT on imports",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5613,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "Zambia Revenue Authority — VAT on imports",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    },
+    "ZWE": {
+      "lignes": 5388,
+      "profil_de_cascade_code": true,
+      "taxes": {
+        "DD": {
+          "statut": "lue_dans_la_source",
+          "nature": "valorielle",
+          "assiette_publiee": "CIF",
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 0,
+          "dependances_source": [],
+          "dependances_table_codee": [],
+          "table_codee_origine": "ZIMRA — VAT on imported goods",
+          "assiette_appliquee_par_le_moteur": [],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": true
+        },
+        "TVA": {
+          "statut": "table_codee_seule",
+          "nature": "indeterminee",
+          "assiette_publiee": null,
+          "assiette_publiee_verbatim_variantes": null,
+          "positions_sans_assiette_publiee": 5388,
+          "dependances_source": null,
+          "dependances_table_codee": [
+            "DD"
+          ],
+          "table_codee_origine": "ZIMRA — VAT on imported goods",
+          "assiette_appliquee_par_le_moteur": [
+            "DD"
+          ],
+          "fondement_de_l_assiette_appliquee": null,
+          "accord": null
+        }
+      }
+    }
+  }
+}

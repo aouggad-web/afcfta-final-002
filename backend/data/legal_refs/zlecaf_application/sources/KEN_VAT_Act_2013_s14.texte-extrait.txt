@@ -1,0 +1,16 @@
+Kenya — Value Added Tax Act No. 35 of 2013, Revised Edition 2021 — section 14
+Source : https://www.kra.go.ke/images/publications/VAT-Act--2013-Revised-2021.pdf
+Extrait automatique du PDF officiel, non retouché.
+
+Une première version de cet extrait avait capturé l'entrée de SOMMAIRE au lieu
+du dispositif : le titre de la section y figure deux fois, et la recherche
+retenait la première occurrence. La fiche citait donc un texte que l'archive ne
+contenait pas. L'occurrence retenue ici est celle suivie du dispositif lui-même.
+
+--- Section 14, dispositif ---
+
+Taxable value of imported goods (1) The taxable value of imported goods shall be the sum of— (a) the value of the goods ascertained for the purpose of customs duty, in accordance with the East African Community Custom Management Act, 2004, whether or not any duty of customs is payable on the goods; [Rev. 2021] VALUE ADDED TAX ACT No. 35 of 2013 11 (b) to the extent not included under paragraph (a)— (i) the cost of insurance and freight incurred in bringing the goods to Kenya; and (ii) the cost of services treated as part of the imported goods under this section; and (c) the amount of duty of customs, if any, paid on those goods. (2) Unless the context otherwise requires, a supply of services that is ancillary or incidental to the importation of goods
+
+--- Définition déterminante, partie I (interprétation) ---
+
+“duty of customs” means import duty, excise duty, export duty, countervailing duty, levy, cess, tax or surtax charged under any law for the time being in force relating to customs or excise; “exempt supplies” means supplies specified in the

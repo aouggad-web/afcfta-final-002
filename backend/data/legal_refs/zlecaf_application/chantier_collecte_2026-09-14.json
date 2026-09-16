@@ -1,0 +1,253 @@
+{
+ "schema_version": 1,
+ "titre": "Chantier de collecte — ce qui manque, pays par pays, pour établir l'application réelle",
+ "etabli_le": "2026-09-14",
+ "objet": "La méthode éprouvée sur le Maroc en trois temps — acte national, liste nominative des origines admises, confrontation à la carte continentale — a été étendue aux sept destinations dont le barème est collecté sans que l'application soit vérifiée. Ce fichier consigne, pour chacune, ce qui est désormais établi, ce qui manque exactement, et le document précis à obtenir.",
+ "constat_de_methode": {
+  "enonce": "Publier un barème et publier la liste de ses partenaires sont deux actes distincts, et le second est rare.",
+  "detail": "Sur les treize destinations examinées à ce jour, six seulement publient une liste nominative d'origines admises (MAR, EGY, DZA, KEN, TUN, ZAF). Les autres publient un barème, parfois un acte d'application complet, sans jamais nommer les pays. Le modèle marocain est l'exception.",
+  "consequence": "Là où aucune liste n'est publiée, aucune source documentaire ne peut trancher : seule une preuve de terrain le peut — une déclaration en douane effectivement liquidée sous régime ZLECAf, avec son certificat d'origine. C'est ce que ce chantier prépare.",
+  "ce_qu_il_ne_faut_pas_faire": "Déduire la liste des origines d'une carte continentale, d'une liste de participants au Guided Trade Initiative, ou d'une annonce de presse. La comparaison marocaine l'a montré : la carte de l'UA et l'acte national divergeaient pour 33 origines sur 40."
+ },
+ "pays": {
+  "ETH": {
+   "statut": "INSTRUMENT_VERIFIE_PRIMAIRE_ORIGINES_NON_VERIFIEES",
+   "progres_2026-09-14": "Le règlement 574/2025 est passé de source secondaire à source primaire : Federal Negarit Gazette n° 55 du 14 juillet 2025, 419 pages, dispositif archivé et scellé.",
+   "etabli": [
+    "Acte national en vigueur, signé du Premier ministre, barème effectif au 1er janvier 2021 (article 8(2)).",
+    "Catégories A (10 ans dès 2021), B (8 ans dès 2026) et C (exclue) définies aux articles 2(5) à 2(7).",
+    "Seule la catégorie A est réduite à ce jour (article 3(3)).",
+    "Règle du moins-disant : le NPF s'applique s'il est inférieur au taux ZLECAf (article 3(5)).",
+    "Surtaxe du règlement 133/2007 maintenue mais décroissante (article 5(2)) ; Social Development Levy du règlement 519/2022 éteinte pour A et B (article 5(3))."
+   ],
+   "manque": "La liste des origines, que l'article 3(2) délègue à un avis du Ministry of Trade and Regional Integration. Sans cet avis, le barème ne s'applique à personne.",
+   "document_cible": "Avis (notification) du Ministry of Trade and Regional Integration listant les États membres admis, avec son numéro et sa date.",
+   "ou_chercher": [
+    "Ministry of Trade and Regional Integration — service juridique ou bulletin officiel.",
+    "Ethiopian Customs Commission — la circulaire diffusée aux bureaux de douane qui reprend la liste.",
+    "Federal Negarit Gazette postérieur au 14 juillet 2025, si l'avis y est publié."
+   ],
+   "piste_non_opposable": "La presse économique éthiopienne rapporte une liste de 24 pays reçue par la commission des douanes, échanges ouverts le 9 octobre 2025. Cette liste inclut le Soudan du Sud, qui n'a pas ratifié, alors que l'article 2(4) du règlement réserve le bénéfice aux pays ayant « signed, ratified, and acceded ». Elle échoue au test du règlement lui-même : ne pas l'adopter."
+  },
+  "CIV": {
+   "statut": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "etabli": [
+    "Ordonnance adoptée en Conseil des ministres le 23 avril 2025, relative à la mise en œuvre du démantèlement tarifaire appliqué aux produits non sensibles.",
+    "5 516 lignes du Tarif Extérieur Commun de la CEDEAO concernées.",
+    "Abattement annuel d'un dixième du droit de douane initial, sur dix ans.",
+    "Préférences accordées sur la base de la réciprocité."
+   ],
+   "verbatim_decisif": "« ces préférences douanières sont accordées sur la base de la réciprocité et n'excluent pas les autres prélèvements exigibles au corridor douanier à l'importation »",
+   "portee_du_verbatim": "La préférence ZLECAf ivoirienne ne touche QUE le droit de douane. Tous les autres prélèvements du corridor douanier — redevance statistique, prélèvement communautaire CEDEAO, prélèvements UEMOA, taxes intérieures — restent dus. Un calculateur qui ramènerait le total à zéro sur une ligne préférentielle serait faux.",
+   "manque": "La liste nominative des partenaires acceptés. L'ordonnance pose la réciprocité en condition sans nommer aucun pays.",
+   "document_cible": "Texte intégral de l'ordonnance n° 2025-260 du 23 avril 2025 au Journal officiel de la République de Côte d'Ivoire, et sa loi de ratification. À défaut, l'arrêté ou la circulaire de la Direction générale des douanes désignant les origines admises.",
+   "ou_chercher": [
+    "Journal officiel de la République de Côte d'Ivoire, avril-mai 2025.",
+    "Direction générale des douanes (douanes.ci) — circulaires et notes de service.",
+    "Le site de la Présidence publie le communiqué mais sa chaîne de certificats TLS est incomplète : le texte a été lu via l'Agence ivoirienne de presse, agence d'État."
+   ],
+   "progres_2026-09-15": {
+    "instrument_identifie": "Ordonnance n° 2025-260 du 23 avril 2025",
+    "intitule": "Ordonnance relative à la mise en œuvre du démantèlement tarifaire appliqué aux produits non sensibles dans le cadre de la ZLECAf",
+    "source": "https://cnzlecaf.gouv.ci/accueil/home/fr — Comité National de la ZLECAf, Côte d'Ivoire",
+    "nature_de_la_source": "Organe gouvernemental ivoirien dédié à la ZLECAf, institué par décret de 2018, interface entre la Côte d'Ivoire et le Secrétariat de la ZLECAf. Meilleur niveau que le communiqué de presse sur lequel le numéro manquait.",
+    "verbatim": "Adoption en conseil des ministres de l'Ordonnance n°2025-260 du 23 avril 2025 relative à la mise en œuvre du démantèlement tarifaire appliqué aux produits non sensibles dans le cadre de la ZLECAf.",
+    "ratification": "L'ordonnance a été ratifiée par le Parlement ivoirien — Assemblée nationale puis Sénat — ce qui implique l'existence d'une loi de ratification, non encore identifiée.",
+    "ce_qui_manque_toujours": "Aucune liste d'origines. Le comité national lui-même, alors qu'il est l'interface avec le Secrétariat, ne nomme aucun pays partenaire. Le statut NOTIFICATION_PARTENAIRES_REQUISE est donc confirmé par la source la mieux placée pour le démentir.",
+    "absence_de_l_archive": "La Côte d'Ivoire ne figure pas parmi les vingt-quatre pays couverts par gazettes.africa : cette voie n'est pas disponible pour elle."
+   }
+  },
+  "NGA": {
+   "statut": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "etabli": [
+    "Provisional Schedule of Tariff Concessions gazettée en avril 2025 ; le Nigeria est le 23e État partie à gazetter.",
+    "Fondation posée pour le droit nul sur 90 % des lignes tarifaires."
+   ],
+   "particularite": "Le Nigeria énonce une RÈGLE de réciprocité — bénéfice réciproque avec les États parties ayant également gazetté leur barème — et non une liste nominative. C'est une forme d'admission différente de celle du Maroc ou de l'Égypte, et elle demande un traitement propre : la liste se déduit alors de l'état de gazettage des autres, qui évolue.",
+   "manque": "Le texte de la gazette lui-même, et la confirmation que la règle de réciprocité y est bien formulée ainsi — la formulation connue provient de communiqués, non du texte.",
+   "document_cible": "Federal Republic of Nigeria Official Gazette portant la PSTC, avril 2025.",
+   "ou_chercher": [
+    "Federal Government Printer / Official Gazette du Nigeria.",
+    "Nigeria Customs Service — circulaire d'application aux commandements.",
+    "Nigerian Office for Trade Negotiations (NOTN)."
+   ],
+   "progres_2026-09-15": {
+    "recherche_menee": "Les cinq gazettes nigériennes de 2025 présentes dans l'archive gazettes.africa ont été téléchargées et lues intégralement (27, 196, 9, 89 et 115 pages) : aucune ne mentionne l'AfCFTA, la ZLECAf ni une liste de concessions tarifaires. La gazette d'avril 2025 n'y figure pas.",
+    "portee_de_ce_resultat": "Cette absence ne vaut PAS constat : cinq numéros pour une année entière est une couverture manifestement lacunaire pour le Nigeria. Le document reste à obtenir ailleurs."
+   },
+   "regle_d_admission": {
+    "enonce": "Bénéfice réciproque avec les États parties ayant également gazetté leur barème de concessions tarifaires.",
+    "source": "communiqués de l'Union africaine et de l'administration nigériane",
+    "niveau_de_preuve": "secondaire — la formulation ne provient pas du texte de la gazette",
+    "ambiguite": "La liste se déduit alors de l'état de gazettage des autres États parties, qui évolue dans le temps : la réponse dépend de la date de l'importation."
+   }
+  },
+  "ZMB": {
+   "statut": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "etabli": [
+    "Le Statutory Instrument n° 92 de 2024 existe, daté du 30 décembre 2024, publié en supplément au Government Gazette n° 7696 — établi sur le journal officiel lui-même.",
+    "Son intitulé officiel est « Customs and Excise (General) (Amendment) Regulations, 2024 ».",
+    "Usage de la ZLECAf sous Guided Trade Initiative rapporté par le Parlement zambien."
+   ],
+   "manque": "Le texte du Statutory Instrument n° 92 de 2024. Son intitulé officiel est désormais établi en source primaire — « Customs and Excise (General) (Amendment) Regulations, 2024 » — et il ne nomme pas la ZLECAf : l'attribution reste à vérifier dans le texte, ainsi que toute liste d'origines.",
+   "document_cible": "Texte intégral du Statutory Instrument n° 92 of 2024, pour vérifier s'il comporte une liste d'États parties admis.",
+   "ou_chercher": [
+    "Government Gazette de la République de Zambie, 30 décembre 2024.",
+    "Zambia Revenue Authority — customs circulars.",
+    "Ministry of Commerce, Trade and Industry."
+   ],
+   "progres_2026-09-15": {
+    "obtenu": "Republic of Zambia Government Gazette n° 7696 du 30 décembre 2024, avis n° 1378, listant les Statutory Instruments publiés en supplément.",
+    "source": "https://archive.gazettes.africa/archive/zm/2024/zm-government-gazette-dated-2024-12-30-no-7696.pdf",
+    "texte_archive": "sources/ZMB_gazette_7696_2024-12-30.texte-extrait.txt",
+    "sha256": "19c6d2283c4428ced17319d6069575e7753c665a56f1eb48786a574bfb7b7959",
+    "pdf_sha256": "65b8c005106b9ce1365e0d14cb1e84899d2ee95f4dfb5a560d6858957f90d976",
+    "pdf_non_archive": "PDF amont de 2 pages non versé au dépôt ; son extrait intégral l'est, suivant le parti pris retenu pour les autres actes.",
+    "ce_qui_est_etabli": [
+     "Le Statutory Instrument n° 92 de 2024 existe et porte bien la date du 30 décembre 2024.",
+     "Son intitulé officiel est « Customs and Excise (General) (Amendment) Regulations, 2024 »."
+    ],
+    "ce_que_cela_dement": "L'avis du journal officiel ne mentionne NI la ZLECAf, NI l'AfCFTA, NI aucune liste de concessions tarifaires — vérifié sur le seul corps du document, en-tête d'archivage exclu. Le dépôt portait « SI 92/2024 : gazettage de la Provisional Schedule of Tariff Concessions » sur la foi de sources secondaires. Le titre officiel est un amendement général au règlement douanier. Il est possible que le barème y soit inséré — un amendement général peut le faire — mais le titre seul ne l'établit pas.",
+    "reste_a_obtenir": "Le texte du SI 92 lui-même, publié en supplément. L'archive ne porte que l'avis de deux pages ; le supplément n'y figure sous aucun des motifs de nom essayés."
+   },
+   "correction_2026-09-15": "Cette fiche portait « SI 92/2024 portant gazettage de la Provisional Schedule of Tariff Concessions », formule reprise de sources secondaires. Le journal officiel obtenu ne la soutient pas : il intitule le SI 92 « Customs and Excise (General) (Amendment) Regulations, 2024 » et ne mentionne la ZLECAf nulle part. L'affirmation est retirée jusqu'à lecture du texte."
+  },
+  "GHA": {
+   "statut": "OFFRE_SEULE",
+   "etabli": [
+    "Le Ghana figure parmi les 19 pays ayant gazetté leur barème au 20 octobre 2024, selon la publication gouvernementale sud-africaine.",
+    "Membre fondateur du Guided Trade Initiative, lancé à Accra le 7 octobre 2022.",
+    "Le portail national AfCFTA ghanéen énonce que seules les importations en provenance d'États parties bénéficient du tarif préférentiel, sans nommer lesquels."
+   ],
+   "manque": "L'acte national ghanéen lui-même, et toute liste d'origines. Le dépôt ne tient à ce jour que l'instantané CEDEAO du e-Tariff Book.",
+   "document_cible": "Legislative Instrument ou Customs (AfCFTA) Regulations du Ghana, et la circulaire d'application de la Ghana Revenue Authority.",
+   "ou_chercher": [
+    "Ghana Gazette / Parliament of Ghana — instruments législatifs 2023-2025.",
+    "Ghana Revenue Authority, Customs Division — practice notes.",
+    "AfCFTA National Coordination Office (afcftagh.org)."
+   ],
+   "progres_2026-09-15": {
+    "recherche_menee": "Archive gazettes.africa : le Ghana n'y porte aucune gazette pour 2022, 2023, 2025 ni 2026, et seulement 14 pour 2024. La couverture est trop lacunaire pour qu'une absence y vaille constat. Bureau national ZLECAf (afcftagh.org) interrogé : il ne nomme AUCUN instrument.",
+    "admission_par_regle": {
+     "verbatim": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+     "source": "https://afcftagh.org/faq/ — AfCFTA National Coordination Office du Ghana",
+     "nature": "Le Ghana énonce une RÈGLE d'admission — les États parties — et non une liste nominative. C'est une troisième forme, distincte de la liste marocaine et de l'absence pure.",
+     "ce_qui_reste_indetermine": "« State Parties » n'est pas univoque : s'agit-il des 50 pays ayant ratifié, ou des seuls ayant gazetté leur barème et accordant la réciprocité au Ghana ? L'écart entre les deux lectures est de plus de vingt pays. La règle ne peut donc pas être résolue en liste sans l'acte national lui-même."
+    },
+    "manque_inchange": "L'acte national ghanéen, seul capable de lever l'ambiguïté de « State Parties »."
+   },
+   "regle_d_admission": {
+    "enonce": "Only imports from State Parties will qualify for preferential import tariff as per Ghana's tariff offers.",
+    "source": "AfCFTA National Coordination Office du Ghana (afcftagh.org)",
+    "niveau_de_preuve": "officielle — bureau national de coordination, non un acte réglementaire",
+    "ambiguite": "« State Parties » ne distingue pas les 50 pays ayant ratifié de ceux ayant gazetté leur barème et accordant la réciprocité. L'écart entre les deux lectures dépasse vingt pays."
+   }
+  },
+  "CMR": {
+   "statut": "OFFRE_SEULE",
+   "etabli": [
+    "Les douanes camerounaises ont délivré le premier certificat d'origine ZLECAf et lancé l'exportation au tarif préférentiel vers le Ghana — l'application est donc effective au moins à l'exportation.",
+    "Membre fondateur du Guided Trade Initiative.",
+    "Le Cameroun est placé par la circulaire marocaine en liste P2, et par l'Égypte dans le groupe à 10 ans : deux sources tierces concordent sur son statut de partenaire actif."
+   ],
+   "manque": "L'acte national camerounais d'application à l'IMPORTATION et sa liste d'origines. Ce qui est établi concerne l'exportation.",
+   "document_cible": "Circulaire ou note de service de la Direction générale des douanes du Cameroun portant application du tarif ZLECAf à l'importation.",
+   "ou_chercher": [
+    "douanes.cm — circulaires et notes de service.",
+    "Journal officiel de la République du Cameroun.",
+    "Commission de la CEMAC, pour l'articulation entre le TEC CEMAC et le barème ZLECAf."
+   ],
+   "avertissement": "Un accord CEMAC ne vaut pas reconnaissance d'origine au niveau continental : les deux régimes ne se confondent pas.",
+   "progres_2026-09-15": {
+    "source_officielle_lue": "http://www.douanes.cm/douanes-cameroun/6582/delivrance-du-tout-premier-certificat-dorigine-zlecaf/ — Douanes camerounaises, publication de l'administration",
+    "verbatim": "« en date du 06 octobre 2022, le Chef du Bureau Principal des Douanes Hors Classe de Douala Aéroport, Achille OLEME, a procédé à la signature et à la délivrance du tout premier certificat d'origine ZLECAF À L'EXPORTATION des marchandises produites localement par le GIC AFATEX »",
+    "ce_que_cela_etablit": "L'administration douanière camerounaise documente elle-même son entrée dans la ZLECAf par un acte d'EXPORTATION. Rien dans sa publication ne concerne l'admission d'origines à l'importation. La distinction que porte cette fiche est donc confirmée par la source la mieux placée.",
+    "ce_que_cela_n_etablit_pas": "Ni acte d'application à l'importation, ni liste d'origines admises. Le Cameroun reste sans aucune des deux.",
+    "precaution_de_methode": "Deux relevés intermédiaires ont été écartés comme FAUX NÉGATIFS plutôt que consignés. Le portail cameroontradeportal.cm sert un index de répertoire Apache de 685 octets, non une application : y compter zéro mention n'aurait rien mesuré. La page d'accueil de douanes.cm rend 146 Ko sans une seule occurrence du mot « origine », ce qui trahit une coquille et non une absence. Seule la page d'article, qui rend 184 Ko et 19 occurrences de ZLECAF, prouve que le site sert bien du contenu — et permet donc de conclure.",
+    "absence_de_l_archive": "Le Cameroun ne figure pas parmi les vingt-quatre pays de gazettes.africa."
+   }
+  },
+  "RWA": {
+   "statut": "OFFRE_SEULE",
+   "etabli": [
+    "La Rwanda Revenue Authority gère l'enregistrement des exportateurs ZLECAf et la délivrance des certificats d'origine via le Rwanda Trade Portal.",
+    "Membre fondateur du Guided Trade Initiative ; premier envoi de café vers le Ghana en octobre 2022.",
+    "Principe énoncé par les sources rwandaises : les concessions ZLECAf s'appliquent aux échanges qui ne relèvent PAS déjà des préférences EAC ou COMESA."
+   ],
+   "manque": "L'acte national et la liste des origines admises. Aucune liste officielle n'a été retrouvée.",
+   "particularite": "L'articulation avec l'EAC et le COMESA est explicite au Rwanda : la ZLECAf ne s'applique qu'en dehors de ces régimes. Toute liste d'origines rwandaise devra donc se lire en soustraction des partenaires EAC et COMESA, et non isolément.",
+   "document_cible": "Ministerial Order ou Customs Regulations rwandais portant application du barème ZLECAf, et la liste d'États parties admis.",
+   "ou_chercher": [
+    "Official Gazette of the Republic of Rwanda.",
+    "Rwanda Revenue Authority — customs public notices.",
+    "Rwanda Trade Portal (rwandatrade.rw), section Tariffs."
+   ],
+   "progres_2026-09-15": {
+    "portail_officiel_interroge": {
+     "url": "https://rwandatrade.rw/Tariffs?l=en",
+     "nature": "Rwanda Trade Information Portal, géré par la Rwanda Revenue Authority sous l'égide du National Trade Facilitation Committee — site gouvernemental officiel.",
+     "constat": "La ZLECAf n'y apparaît que six fois, et uniquement comme PROCÉDURE « AfCFTA certificate of origin » dans la liste des démarches. Aucun régime préférentiel d'importation, aucune liste d'origines admises, aucun sélecteur d'accord à l'import — alors que l'EAC et le COMESA y figurent quinze fois chacun.",
+     "portee": "Confirme, sur source officielle, que ce qui est établi au Rwanda concerne la délivrance du certificat — donc l'exportation — et non l'admission à l'importation. La distinction est la même qu'au Cameroun."
+    },
+    "balayage_du_journal_officiel": {
+     "methode": "Téléchargement et lecture intégrale des PDF de l'archive gazettes.africa, recherche de « AfCFTA », « ZLECAf », « Continental Free Trade » et « libre-échange continentale ».",
+     "couverture": {
+      "2025": "52 numéros, du 6 janvier au 29 décembre — hebdomadaire, complète",
+      "2024": "33 numéros, du 11 mars au 30 décembre — les dix premières semaines manquent",
+      "2023": "36 numéros, du 27 février au 25 décembre — les huit premières semaines manquent",
+      "total": 121
+     },
+     "resultat": "Aucun des 121 numéros ne mentionne la ZLECAf sous l'une de ces quatre formes.",
+     "ce_que_cela_vaut": "Pour 2025, la couverture est complète : l'absence est un résultat. Pour 2024 et 2023, elle est partielle — environ dix et huit semaines manquent en début d'année — donc l'absence y est un indice fort, pas une preuve. Un acte publié en janvier ou février 2024 échapperait à ce balayage.",
+     "correction": "Un message de commit antérieur (dd7c685) a décrit la couverture de 2024 comme « complète », ce qui est faux : elle commence au 11 mars. La conclusion tient pour 2025 seul."
+    }
+   }
+  }
+ },
+ "ce_que_ce_chantier_prepare": {
+  "objectif": "Collecter la preuve de l'application réelle sur le terrain, là où aucun document ne la donne.",
+  "preuve_recherchee": "Une déclaration en douane effectivement liquidée sous régime ZLECAf : code accord ou régime préférentiel utilisé, certificat d'origine ZLECAf accepté, taux appliqué, et le détail des autres prélèvements maintenus.",
+  "pourquoi_elle_tranche": "Elle établit d'un coup les trois conditions que les textes laissent ouvertes : que la destination admet cette origine, à quel rythme de démantèlement, et ce qui reste dû à côté du droit de douane.",
+  "precaution": "Une déclaration isolée prouve qu'un bureau a liquidé ainsi, pas que la règle est générale. Elle vaut indice fort, à recouper, et doit être consignée comme telle — jamais promue en source de droit."
+ },
+ "ressource_de_collecte": {
+  "nom": "gazettes.africa",
+  "pourquoi": "Archive de journaux officiels africains couvrant précisément les pays de ce chantier : Zambie, Nigeria, Ghana, Rwanda, Kenya, Maroc, et une quinzaine d'autres. C'est par elle que le journal officiel zambien du 30 décembre 2024 a été obtenu.",
+  "mode_d_acces": "Les pages de document sont protégées par un défi Cloudflare et refusent le client (HTTP 403). Les PDF de l'archive, eux, répondent directement : https://archive.gazettes.africa/archive/<iso2>/<annee>/<iso2>-government-gazette-dated-<AAAA-MM-JJ>-no-<numero>.pdf . Le numéro se lit sur la page annuelle https://gazettes.africa/gazettes/<iso2>/<annee>, dont les liens suivent le motif /akn/<iso2>/officialGazette/government-gazette/<date>/<numero>/eng@<date>.",
+  "limite_constatee": "L'archive ne porte pas systématiquement les suppléments, où figurent les textes des Statutory Instruments : pour la Zambie, l'avis est présent et le supplément absent.",
+  "avertissement": "Le site signale qu'un incendie a détruit des centaines de milliers de journaux officiels africains. Ce qui est atteignable aujourd'hui peut ne plus l'être : archiver au moment où l'on trouve, plutôt que de se contenter d'une URL."
+ },
+ "categories_d_admission": {
+  "note": "La collecte fait apparaître trois formes d'admission, qu'il serait faux de confondre. Les distinguer change ce qu'un opérateur peut faire de l'information.",
+  "liste_nominative": {
+   "definition": "L'acte national énumère les pays admis, par leur nom.",
+   "pays": [
+    "MAR",
+    "EGY",
+    "DZA",
+    "KEN",
+    "TUN",
+    "ZAF"
+   ],
+   "utilisable": "oui — la réponse est déterminée pour chaque origine."
+  },
+  "regle_sans_liste": {
+   "definition": "L'acte ou la source officielle énonce un critère — « les États parties », « ceux qui ont gazetté et accordent la réciprocité » — sans nommer personne.",
+   "pays": [
+    "GHA",
+    "NGA"
+   ],
+   "utilisable": "partiellement — la règle est connue mais ses termes sont ambigus, et la résoudre demande un fait sur l'origine (a-t-elle gazetté ? accorde-t-elle la réciprocité ?) que la source ne fournit pas. À ne jamais résoudre par supposition."
+  },
+  "rien_de_publie": {
+   "definition": "Aucune liste, aucune règle d'admission identifiée.",
+   "pays": [
+    "CMR",
+    "RWA",
+    "ZMB",
+    "ETH"
+   ],
+   "precision": "L'Éthiopie est le cas le plus net : son règlement délègue explicitement la liste à un avis ministériel, donc la règle est « ce que le ministère notifiera » — ce qui ne s'applique à personne tant que l'avis n'est pas produit."
+  }
+ }
+}

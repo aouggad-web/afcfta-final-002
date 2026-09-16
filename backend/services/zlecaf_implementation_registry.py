@@ -157,12 +157,19 @@ RECORDS = {
 }
 
 
+# Destinations dont un barème officiel est archivé sans que l'application
+# nationale et la réciprocité aient été vérifiées. Sans cette entrée, la
+# décision retomberait sur NOT_AVAILABLE et ne distinguerait plus « aucune
+# donnée » de « donnée collectée, portail juridique non franchi » — deux
+# situations qui n'appellent pas le même travail.
 OFFER_DATASETS = {
     "CMR": "CEMAC",
     "EGY": "EGY",
     "GHA": "ECOWAS",
+    "MAR": "MAR",
     "RWA": "EAC",
     "TUN": "TUN",
+    "ZWE": "ZWE",
 }
 
 

@@ -1,0 +1,483 @@
+{
+ "schema_version": 1,
+ "titre": "Application nationale effective du tarif ZLECAf — état de vérification par pays",
+ "etabli_le": "2026-09-13",
+ "mis_a_jour_le": "2026-09-14",
+ "note_de_mise_a_jour": "Établi le 13 septembre 2026. Complété le 14 septembre par les fiches algérienne et égyptienne, puis par la vérification primaire du règlement éthiopien 574/2025 et par le chantier de collecte couvrant les sept destinations dont le barème est collecté sans application vérifiée (chantier_collecte_2026-09-14.json).",
+ "methode": "Un pays n'est porté APPLIQUE que sur source primaire lue intégralement : acte national publié, liste nominative des origines admises, date d'entrée en vigueur. Une synthèse de presse ou une page de portail ne suffit jamais. NON_RECHERCHE signifie que la recherche n'a pas été faite — jamais que le pays n'applique pas. Le drapeau bareme_collecte dit qu'un barème tarifaire est archivé pour cette destination — instantané régional inclus — et non que la préférence est appliquée : le niveau juridique reste porté par le champ niveau.",
+ "niveaux": {
+  "APPLIQUE": "acte national vérifié + liste des origines + barème par ligne",
+  "PREUVES_ASSEMBLEES": "les trois conditions machine-vérifiables sont réunies, une étape technique reste",
+  "NOTIFICATION_PARTENAIRES_REQUISE": "domestication constatée, liste officielle des origines introuvable",
+  "OFFRE_SEULE": "barème officiel archivé, aucun acte national d'application vérifié",
+  "NON_APPLIQUE_PRESUME": "indices concordants de non-application, sources secondaires seulement",
+  "NON_RECHERCHE": "aucune recherche menée à ce jour",
+  "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": "origines admises publiées au tarif officiel, sens du taux préférentiel non tranché",
+  "INSTRUMENT_RAPPORTE_NON_PRIMAIRE": "instrument nommé et liste rapportée, mais sur sources secondaires seulement"
+ },
+ "pays": {
+  "AGO": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "BDI": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "BEN": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "BFA": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "BWA": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "CAF": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "CIV": {
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "Ordonnance du 23 avril 2025 : L'ordonnance conditionne la préférence à la réciprocité; la liste des partenaires acceptés n'est pas publiée dans la source revue.",
+   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "bareme_collecte": true,
+   "bareme_source": "ECOWAS"
+  },
+  "CMR": {
+   "niveau": "OFFRE_SEULE",
+   "preuve": "barème archivé : CEMAC",
+   "niveau_de_source": "instantané e-Tariff Book",
+   "bareme_collecte": true
+  },
+  "COD": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "COG": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "COM": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "CPV": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "DJI": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "DZA": {
+   "niveau": "PREUVES_ASSEMBLEES",
+   "preuve": "Circulaire 482/DGD/SP/D.042/24 du 22/10/2024, application au 01/11/2024. Régime par défaut liste A éliminée au 1.1.2025 ; régime de réciprocité sur 10 ans pour 13 pays nommés, identiques à la liste P2 marocaine. DAPS exonéré. 1 458 lignes gelées faute de règles d'origine.",
+   "niveau_de_source": "primaire — texte intégral de la circulaire archivé",
+   "bareme_collecte": false
+  },
+  "EGY": {
+   "niveau": "PREUVES_ASSEMBLEES",
+   "preuve": "Circulaire Accords n° 38 (compl. n° 3, 6, 10, 15), douane égyptienne : 17 origines en deux groupes — 10 ans à 50 % de réduction au 1/1/2025 (ZAF BWA GHA KEN CMR SWZ), 5 ans à 100 % (MAR RWA TZA MUS TUN DZA BDI LSO MWI GMB UGA). Listes B et C non entrées en vigueur.",
+   "niveau_de_source": "primaire — PDF officiels customs.gov.eg lus à l'image et par OCR arabe, API tarifaire interrogée en direct",
+   "bareme_collecte": true
+  },
+  "ERI": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "ETH": {
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "Règlement du Conseil des ministres n° 574/2025, Federal Negarit Gazette n° 55 du 14 juillet 2025, lu dans le Gazette lui-même et non plus sur source secondaire. Barème effectif au 1er janvier 2021 ; seule la catégorie A est réduite. L'article 3(2) délègue la liste des origines à un avis du Ministry of Trade and Regional Integration, qui n'a pas été obtenu.",
+   "niveau_de_source": "primaire — dispositif du Gazette archivé et scellé",
+   "bareme_collecte": true,
+   "bareme_source": "ETH"
+  },
+  "GAB": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "GHA": {
+   "niveau": "OFFRE_SEULE",
+   "preuve": "barème archivé : ECOWAS",
+   "niveau_de_source": "instantané e-Tariff Book",
+   "bareme_collecte": true
+  },
+  "GIN": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "GMB": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "GNB": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "GNQ": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "KEN": {
+   "niveau": "APPLIQUE",
+   "preuve": "EAC/321/2022 + liste KRA de 21 origines",
+   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "bareme_collecte": true,
+   "bareme_source": "EAC"
+  },
+  "LBR": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "LBY": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "LSO": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MAR": {
+   "niveau": "PREUVES_ASSEMBLEES",
+   "preuve": "Circulaire ADII 6530/223 du 22/01/2024, 40 origines (P1 27 / P2 13), démantèlement depuis le 01/01/2021",
+   "niveau_de_source": "primaire — 3 circulaires lues intégralement, SHA-256 consignés",
+   "bareme_collecte": true
+  },
+  "MDG": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MLI": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MOZ": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MRT": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MUS": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "MWI": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "NAM": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "NER": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "NGA": {
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "PSTC gazettée en avril 2025 : La domestication est confirmée, mais aucune liste officielle des corridors réciproques acceptés n'a été retrouvée.",
+   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "bareme_collecte": true,
+   "bareme_source": "ECOWAS"
+  },
+  "RWA": {
+   "niveau": "OFFRE_SEULE",
+   "preuve": "barème archivé : EAC",
+   "niveau_de_source": "instantané e-Tariff Book",
+   "bareme_collecte": true
+  },
+  "SDN": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SEN": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SLE": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SOM": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SSD": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "STP": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SWZ": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "SYC": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "TCD": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "TGO": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "TUN": {
+   "niveau": "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE",
+   "preuve": "Tarif Web 2026 douane.gov.tn : 8 origines ZLECAf publiées (CMR GHA KEN TZA ZAF NGA MUS RWA). Sens du % non tranché : 40 % affiché contre 36 % de NPF.",
+   "niveau_de_source": "primaire — portail tarifaire officiel scellé dans le dépôt",
+   "bareme_collecte": true
+  },
+  "TZA": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "UGA": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": false
+  },
+  "ZAF": {
+   "niveau": "NON_RECHERCHE",
+   "preuve": "",
+   "niveau_de_source": "",
+   "bareme_collecte": true
+  },
+  "ZMB": {
+   "niveau": "NOTIFICATION_PARTENAIRES_REQUISE",
+   "preuve": "SI 92/2024 : Le Parlement confirme la domestication et l'usage sous GTI, mais aucune liste officielle exhaustive des origines réciproques n'a été retrouvée.",
+   "niveau_de_source": "primaire (dépôt, revue antérieure)",
+   "bareme_collecte": true
+  },
+  "ZWE": {
+   "niveau": "NON_APPLIQUE_PRESUME",
+   "preuve": "offre tarifaire non encore publiée au Journal officiel selon la presse zimbabwéenne ; SI 140-142/2026 sans rapport avec la ZLECAf",
+   "niveau_de_source": "secondaire — à confirmer auprès de ZIMRA",
+   "bareme_collecte": true
+  }
+ },
+ "repartition": {
+  "APPLIQUE": 1,
+  "NON_APPLIQUE_PRESUME": 1,
+  "NON_RECHERCHE": 41,
+  "NOTIFICATION_PARTENAIRES_REQUISE": 4,
+  "OFFRE_SEULE": 3,
+  "ORIGINES_PUBLIEES_SEMANTIQUE_INDETERMINEE": 1,
+  "PREUVES_ASSEMBLEES": 3
+ },
+ "fiches_detaillees": [
+  "DZA_application_2026-09-14.json",
+  "EGY_application_2026-09-14.json",
+  "ETH_application_2026-09-13.json",
+  "MAR_application_2026-09-13.json",
+  "TUN_application_2026-09-13.json",
+  "chantier_collecte_2026-09-14.json"
+ ],
+ "recoupements_reciprocite": {
+  "note": "La réciprocité est un principe fondateur de l'accord. Croiser les listes vérifiées la met à l'épreuve : une asymétrie n'est pas une erreur de collecte, c'est un fait juridique à constater.",
+  "MAR_accorde_a": [
+   "BDI",
+   "BFA",
+   "BWA",
+   "CAF",
+   "CIV",
+   "CMR",
+   "COD",
+   "COG",
+   "COM",
+   "CPV",
+   "DZA",
+   "EGY",
+   "ETH",
+   "GAB",
+   "GHA",
+   "GIN",
+   "GMB",
+   "GNB",
+   "GNQ",
+   "KEN",
+   "LSO",
+   "MLI",
+   "MRT",
+   "MUS",
+   "MWI",
+   "NAM",
+   "NER",
+   "NGA",
+   "RWA",
+   "SEN",
+   "SLE",
+   "SWZ",
+   "SYC",
+   "TCD",
+   "TGO",
+   "TUN",
+   "TZA",
+   "UGA",
+   "ZAF",
+   "ZMB"
+  ],
+  "EGY_accorde_a": [
+   "BDI",
+   "BWA",
+   "CMR",
+   "DZA",
+   "GHA",
+   "GMB",
+   "KEN",
+   "LSO",
+   "MAR",
+   "MUS",
+   "MWI",
+   "RWA",
+   "SWZ",
+   "TUN",
+   "TZA",
+   "UGA",
+   "ZAF"
+  ],
+  "TUN_accorde_a": [
+   "CMR",
+   "GHA",
+   "KEN",
+   "MUS",
+   "NGA",
+   "RWA",
+   "TZA",
+   "ZAF"
+  ],
+  "reciproques_confirmees": [
+   {
+    "paire": "MAR <-> EGY",
+    "constat": "Le Maroc classe l'Égypte en P1 (5 ans) et l'Égypte classe le Maroc dans son groupe à 5 ans. Réciprocité pleine et cohérente."
+   },
+   {
+    "paire": "MAR <-> DZA",
+    "constat": "La liste algérienne de réciprocité et la liste P2 marocaine sont rigoureusement identiques : les mêmes treize pays, aucune différence. Deux circulaires nationales indépendantes, lues sur deux sources primaires distinctes, produisent la même énumération — la règle sous-jacente est objective, et les deux déterminations se valident l'une l'autre."
+   }
+  ],
+  "asymetries_constatees": [
+   {
+    "paire": "TUN -> MAR",
+    "constat": "L'Égypte et le Maroc accordent la ZLECAf à la Tunisie ; la Tunisie ne publie de préférence ZLECAf ni pour le Maroc ni pour l'Égypte. Elle sert le Maroc sous accord bilatéral et Agadir."
+   },
+   {
+    "paire": "TUN vs EGY/MAR",
+    "constat": "Tunisie : 8 origines publiées. Égypte : 17. Maroc : 40. Les périmètres diffèrent d'un facteur cinq."
+   },
+   {
+    "paire": "DZA -> EGY",
+    "constat": "L'Égypte classe l'Algérie à cinq ans avec 100 % de réduction au 1er janvier 2025 ; l'Algérie élimine sa liste A à la même date. Réciprocité symétrique."
+   }
+  ],
+  "intersection_des_trois": [
+   "CMR",
+   "GHA",
+   "KEN",
+   "MUS",
+   "RWA",
+   "TZA",
+   "ZAF"
+  ],
+  "accordee_par_MAR_et_EGY_mais_pas_TUN": [
+   "BDI",
+   "BWA",
+   "DZA",
+   "GMB",
+   "LSO",
+   "MWI",
+   "SWZ",
+   "TUN",
+   "UGA"
+  ]
+ }
+}

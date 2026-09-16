@@ -1,0 +1,454 @@
+{
+  "schema_version": 1,
+  "title": "Corpus figé du calculateur — dix cas de l'audit du 13 septembre 2026",
+  "purpose": "Ancrer chaque défaut démontré par l'audit sur une valeur source citée, afin que la correction soit vérifiable et non déclarative. Chaque cas porte la valeur de la source versionnée, le chemin exact où la lire, le comportement observé le 13 septembre 2026 sur les deux chemins de calcul, et ce qui est attendu après correction.",
+  "audit_reference": {
+    "document": "Audit du calculateur — afcfta-final-002, 13 septembre 2026",
+    "audited_commit": "3a16a35bfe5c95fc69071c46d1db5e41a1e1fd05",
+    "plan": "docs/PLAN_CORRECTION_CALCULATEUR_2026-09.md"
+  },
+  "observation_conditions": {
+    "observed_at": "2026-09-13",
+    "cif_value": 1000.0,
+    "origin_country": "SEN",
+    "postgres": "neutralisé",
+    "currency_conversion": "neutralisée",
+    "external_stats": "neutralisés (OEC, Banque mondiale)",
+    "normalized_layer": "générée pour DZA, EGY, ETH, GHA, MUS, TUN, ZAF ; la Somalie n'a pas de crawl",
+    "harness": "scripts/diff_engines.py --cases backend/tests/fixtures/calculator_golden.json"
+  },
+  "notes": [
+    "« Source de vérité » désigne la valeur portée par le fichier versionné le plus récent pour cette position, pas une revalidation juridique auprès de l'administration. L'audit est explicite sur ce point et ce corpus ne prétend pas davantage.",
+    "Un montant attendu à `null` signifie « non calculable sans paramètre supplémentaire » (quantité, devise), pas zéro.",
+    "`priority_dd_matches_source` dit si le chemin prioritaire rend, pour le droit de douane, la valeur de la source citée. À faux, le test correspondant est marqué xfail strict : il passera au vert dès la correction, et le xfail devra alors être retiré. Quatre cas sont à vrai — leur défaut porte sur le POST, la qualification ou l'assiette, pas sur le droit lui-même."
+  ],
+  "cases": [
+    {
+      "id": "egy-dd-perime",
+      "country": "EGY",
+      "hs_code": "0207110000",
+      "defect": "Le chemin prioritaire sert le droit du fichier canonique périmé (19,5 %) alors que le crawl national publie 30 %. Sur CIF 1 000, 195 au lieu de 300.",
+      "plan_item": "1.2 — préséance crawl > canonique",
+      "source_of_truth": {
+        "expected_dd_rate_pct": 30.0,
+        "raw": "30%",
+        "file": "backend/data/crawled/EGY_tariffs.json",
+        "locator": {
+          "kind": "crawled_tax",
+          "code": "0207110000",
+          "tax_code": "ID",
+          "field": "rate"
+        }
+      },
+      "conflicting_source": {
+        "value": 19.5,
+        "file": "backend/data/EGY_tariffs.json",
+        "locator": {
+          "kind": "canonical_sub",
+          "hs6": "020711",
+          "code": "0207110000",
+          "field": "dd"
+        }
+      },
+      "observed": {
+        "priority": {
+          "dd_rate_pct": 19.5,
+          "droit_douane": 195.0,
+          "qualification": "authentique"
+        },
+        "post": {
+          "dd_rate_pct": 30.0,
+          "droit_douane": 300.0,
+          "qualification": "authentique"
+        },
+        "verdict": "ECART_TAUX"
+      },
+      "expected_after_fix": {
+        "dd_rate_pct": 30.0,
+        "droit_douane": 300.0,
+        "both_paths_agree": true
+      },
+      "status": "defect_open",
+      "priority_dd_matches_source": false
+    },
+    {
+      "id": "tun-dd-canonique-ancien",
+      "country": "TUN",
+      "hs_code": "90031100003",
+      "defect": "Même mécanisme qu'en Égypte, en sens inverse de volume : le canonique porte 43 %, le crawl 10 %. Le cas porte en outre les assiettes réelles — RPD sur « SOMME D.T », TVA sur « VAL.DOU(D)+R(DT) » — qu'aucun des deux chemins n'applique.",
+      "plan_item": "1.2 — préséance ; 2.3 — assiettes ; 2.6 — TVA neutralisée par un indicateur global",
+      "source_of_truth": {
+        "expected_dd_rate_pct": 10.0,
+        "raw": "10 %",
+        "assiette": "VALEUR DOUANE DINARS",
+        "file": "backend/data/crawled/TUN_tariffs.json",
+        "locator": {
+          "kind": "crawled_tax",
+          "code": "90031100003",
+          "taxes_key": "taxes_import",
+          "tax_code": "DD",
+          "field": "rate_pct"
+        }
+      },
+      "conflicting_source": {
+        "value": 43.0,
+        "file": "backend/data/TUN_tariffs.json",
+        "locator": {
+          "kind": "canonical_sub",
+          "hs6": "900311",
+          "code": "90031100003",
+          "field": "dd"
+        }
+      },
+      "observed": {
+        "priority": {
+          "dd_rate_pct": 43.0,
+          "droit_douane": 430.0,
+          "tva": 271.7,
+          "autres_taxes": 130.0
+        },
+        "post": {
+          "dd_rate_pct": 10.0,
+          "droit_douane": 100.0,
+          "tva": 0.0,
+          "autres_taxes": 130.0
+        },
+        "verdict": "ECART_TAUX"
+      },
+      "expected_after_fix": {
+        "dd_rate_pct": 10.0,
+        "droit_douane": 100.0,
+        "both_paths_agree": true,
+        "note": "La TVA de 19 % publiée par la ligne ne doit pas être neutralisée par un indicateur pays global ; la RPD de 3 % se calcule sur la somme des droits et taxes, pas sur le CIF."
+      },
+      "status": "defect_open",
+      "priority_dd_matches_source": false
+    },
+    {
+      "id": "dza-code-sans-parent",
+      "country": "DZA",
+      "hs_code": "2201101100",
+      "defect": "Code publié par le crawl DGD, sans parent SH6 dans le canonique : le chemin prioritaire répond « ligne introuvable » pour une position qui existe dans la source servable. L'un des 111 codes algériens concernés.",
+      "plan_item": "1.3 — codes nationaux sans parent canonique",
+      "source_of_truth": {
+        "expected_dd_rate_pct": 30.0,
+        "raw": "30.00%",
+        "file": "backend/data/crawled/DZA_tariffs.json",
+        "locator": {
+          "kind": "crawled_tax",
+          "code": "2201101100",
+          "tax_code": "DD",
+          "field": "rate"
+        }
+      },
+      "conflicting_source": {
+        "value": null,
+        "file": "backend/data/DZA_tariffs.json",
+        "locator": {
+          "kind": "canonical_absent_hs6",
+          "hs6": "220110"
+        },
+        "note": "Ni le parent 220110 ni la position 2201101100 ne figurent au canonique."
+      },
+      "observed": {
+        "priority": {
+          "error": "Tariff line not found for DZA/220110"
+        },
+        "post": {
+          "dd_rate_pct": 30.0,
+          "droit_douane": 300.0
+        },
+        "verdict": "ABSENT_PRIORITAIRE"
+      },
+      "expected_after_fix": {
+        "dd_rate_pct": 30.0,
+        "droit_douane": 300.0,
+        "both_paths_agree": true
+      },
+      "status": "defect_open",
+      "priority_dd_matches_source": false
+    },
+    {
+      "id": "dza-dd-absent",
+      "country": "DZA",
+      "hs_code": "1001110000",
+      "defect": "La ligne source ne porte aucun droit de douane (seulement TCS 3 % et PRCT 2 %). Le chemin prioritaire lève `TypeError: '>' not supported between instances of 'NoneType' and 'int'` ; le POST rend 0 tout en signalant `duty_status=UNAVAILABLE`.",
+      "plan_item": "2.1 — `null` ni transformé en 0 ni converti en exception",
+      "source_of_truth": {
+        "expected_dd_rate_pct": null,
+        "file": "backend/data/crawled/DZA_tariffs.json",
+        "locator": {
+          "kind": "crawled_tax_absent",
+          "code": "1001110000",
+          "tax_code": "DD"
+        },
+        "note": "Absence de droit dans la source. Ce n'est ni une exonération prouvée ni un droit de 0 %."
+      },
+      "observed": {
+        "priority": {
+          "exception": "TypeError: '>' not supported between instances of 'NoneType' and 'int'"
+        },
+        "post": {
+          "dd_rate_pct": 0.0,
+          "droit_douane": 0.0,
+          "qualification": "indisponible"
+        },
+        "verdict": "EXCEPTION_PRIORITAIRE"
+      },
+      "expected_after_fix": {
+        "dd_rate_pct": null,
+        "droit_douane": null,
+        "both_paths_agree": true,
+        "note": "Droit déclaré indisponible sur les deux chemins, sans exception et sans zéro fabriqué."
+      },
+      "status": "defect_open",
+      "priority_dd_matches_source": false
+    },
+    {
+      "id": "eth-ligne-hors-canonique",
+      "country": "ETH",
+      "hs_code": "01013000000",
+      "defect": "Position présente au crawl éthiopien mais sans parent SH6 au canonique : introuvable sur le chemin prioritaire. L'une des 4 121 positions dans ce cas.",
+      "plan_item": "1.3 — codes nationaux sans parent canonique",
+      "source_of_truth": {
+        "expected_dd_rate_pct": null,
+        "file": "backend/data/crawled/ETH_tariffs.json",
+        "locator": {
+          "kind": "crawled_tax_absent",
+          "code": "01013000000",
+          "tax_code": "DD"
+        },
+        "note": "La ligne existe et porte VAT 15 % et WHR 3 %, mais aucun droit de douane : la position doit être servie avec un droit indisponible, pas rester introuvable."
+      },
+      "conflicting_source": {
+        "value": null,
+        "file": "backend/data/ETH_tariffs.json",
+        "locator": {
+          "kind": "canonical_absent_hs6",
+          "hs6": "010130"
+        }
+      },
+      "observed": {
+        "priority": {
+          "error": "Tariff line not found for ETH/010130"
+        },
+        "post": {
+          "dd_rate_pct": 0.0,
+          "droit_douane": 0.0,
+          "tva": 150.0,
+          "qualification": "indisponible"
+        },
+        "verdict": "ABSENT_PRIORITAIRE"
+      },
+      "expected_after_fix": {
+        "dd_rate_pct": null,
+        "droit_douane": null,
+        "line_found": true,
+        "both_paths_agree": true
+      },
+      "status": "defect_open",
+      "priority_dd_matches_source": false
+    },
+    {
+      "id": "gha-enfant-national-perdu",
+      "country": "GHA",
+      "hs_code": "7612901000",
+      "defect": "La normalisation agrège les 6 129 codes nationaux ghanéens en 5 387 lignes SH6 : l'enfant national disparaît de la couche que lit le POST, qui répond 422 `NATIONAL_POSITION_NOT_FOUND` là où le chemin prioritaire calcule 10 %.",
+      "plan_item": "1.4 — préservation des enfants nationaux",
+      "source_of_truth": {
+        "expected_dd_rate_pct": 10.0,
+        "file": "backend/data/crawled/GHA_tariffs.json",
+        "locator": {
+          "kind": "crawled_field",
+          "code": "7612901000",
+          "field": "dd"
+        }
+      },
+      "observed": {
+        "priority": {
+          "dd_rate_pct": 10.0,
+          "droit_douane": 100.0,
+          "tva": 165.0,
+          "autres_taxes": 55.0
+        },
+        "post": {
+          "error": "422 NATIONAL_POSITION_NOT_FOUND"
+        },
+        "verdict": "ABSENT_POST"
+      },
+      "expected_after_fix": {
+        "dd_rate_pct": 10.0,
+        "droit_douane": 100.0,
+        "both_paths_agree": true
+      },
+      "status": "defect_open",
+      "priority_dd_matches_source": true
+    },
+    {
+      "id": "gha-tva-doublon",
+      "country": "GHA",
+      "hs_code": "270900",
+      "defect": "La normalisation crée une TVA depuis le champ parent tout en conservant le code VAT du détail : le POST facture deux fois 15 % (300 pour un CIF de 1 000) là où le chemin prioritaire en facture une (150).",
+      "plan_item": "2.4 — déduplication par nature du prélèvement",
+      "source_of_truth": {
+        "expected_dd_rate_pct": 0.0,
+        "expected_vat_rate_pct": 15.0,
+        "file": "backend/data/GHA_tariffs.json",
+        "locator": {
+          "kind": "canonical_hs6",
+          "hs6": "270900",
+          "field": "dd_rate"
+        }
+      },
+      "observed": {
+        "priority": {
+          "dd_rate_pct": 0.0,
+          "tva": 150.0,
+          "total_taxes_et_droits": 200.0
+        },
+        "post": {
+          "dd_rate_pct": 0.0,
+          "tva": 300.0,
+          "total_taxes_et_droits": 350.0
+        },
+        "verdict": "ECART_MONTANT"
+      },
+      "expected_after_fix": {
+        "tva": 150.0,
+        "both_paths_agree": true,
+        "note": "Une seule TVA, quelle que soit la représentation du prélèvement dans la source."
+      },
+      "status": "defect_open",
+      "priority_dd_matches_source": true
+    },
+    {
+      "id": "mus-provenance-divergente",
+      "country": "MUS",
+      "hs_code": "010129",
+      "defect": "Les montants concordent, la qualification non : le crawl est une moyenne NPF WITS 2022, que le chemin prioritaire présente en `authentic_tariff` pendant que le POST la donne pour `duty_status=INDICATIVE_MFN`. Une estimation ne doit pas être promue en source authentifiée.",
+      "plan_item": "4.6 — marqueurs d'inférence conservés jusqu'au résultat",
+      "source_of_truth": {
+        "expected_dd_rate_pct": 0.0,
+        "raw": "0.0 % (MFN, SimpleAverage, 2022)",
+        "expected_qualification": "indicatif",
+        "file": "backend/data/crawled/MUS_tariffs.json",
+        "locator": {
+          "kind": "crawled_tax",
+          "code": "010129",
+          "tax_code": "DD",
+          "field": "rate"
+        }
+      },
+      "observed": {
+        "priority": {
+          "dd_rate_pct": 0.0,
+          "droit_douane": 0.0,
+          "qualification": "authentique"
+        },
+        "post": {
+          "dd_rate_pct": 0.0,
+          "droit_douane": 0.0,
+          "qualification": "indicatif"
+        },
+        "verdict": "ECART_QUALIFICATION"
+      },
+      "expected_after_fix": {
+        "qualification": "indicatif",
+        "both_paths_agree": true,
+        "note": "Le canonique déclare par ailleurs une source MRA : la provenance retenue doit être tranchée et affichée, pas choisie implicitement par le chemin appelé."
+      },
+      "status": "defect_open",
+      "priority_dd_matches_source": true
+    },
+    {
+      "id": "zaf-droit-non-numerique",
+      "country": "ZAF",
+      "hs_code": "020830",
+      "defect": "Le droit général est spécifique — « 8c/kg », `rate_pct` nul. Le chemin prioritaire le rend en DD 0 % puis facture une TVA de 150 sur cette base ; le POST déclare le droit indisponible et ne facture aucune TVA. Les deux se trompent différemment.",
+      "plan_item": "2.2 — droits spécifiques ; 2.1 — indisponibilité ; 2.4 — cohérence de l'assiette TVA",
+      "source_of_truth": {
+        "expected_dd_rate_pct": null,
+        "expected_specific_duty": "8c/kg",
+        "file": "backend/data/crawled/ZAF_tariffs.json",
+        "locator": {
+          "kind": "crawled_tax",
+          "code": "020830",
+          "tax_code": "GENERAL",
+          "field": "specific_value"
+        }
+      },
+      "observed": {
+        "priority": {
+          "dd_rate_pct": 0,
+          "droit_douane": 0.0,
+          "tva": 150.0,
+          "total_taxes_et_droits": 150.0
+        },
+        "post": {
+          "dd_rate_pct": 0.0,
+          "droit_douane": 0.0,
+          "tva": 0.0,
+          "total_taxes_et_droits": 0.0
+        },
+        "verdict": "ECART_MONTANT"
+      },
+      "expected_after_fix": {
+        "dd_rate_pct": null,
+        "specific_duty_expression": "8c/kg",
+        "droit_douane": null,
+        "quantity_required": true,
+        "both_paths_agree": true,
+        "note": "Montant du droit non calculable sans la quantité ; la TVA ne peut pas être liquidée sur une assiette incluant un droit inconnu."
+      },
+      "status": "defect_open",
+      "priority_dd_matches_source": false
+    },
+    {
+      "id": "som-repli-chapitre",
+      "country": "SOM",
+      "hs_code": "01012100",
+      "defect": "La Somalie n'a pas de crawl : sa donnée canonique existe mais le POST ne la lit pas et retombe sur un tarif de chapitre à 15 % (`etl_fallback`) là où le canonique porte 0 %.",
+      "plan_item": "1.5 — branchement Somalie ; 3.1 — repli ETL explicitement étiqueté",
+      "source_of_truth": {
+        "expected_dd_rate_pct": 0.0,
+        "file": "backend/data/SOM_tariffs.json",
+        "locator": {
+          "kind": "canonical_sub",
+          "hs6": "010121",
+          "code": "01012100",
+          "field": "dd"
+        }
+      },
+      "conflicting_source": {
+        "value": null,
+        "file": "backend/data/crawled/SOM_tariffs.json",
+        "locator": {
+          "kind": "crawled_absent_code",
+          "code": "01012100"
+        },
+        "note": "Aucun fichier de crawl pour la Somalie : rien à comparer, et rien qui justifie un tarif de chapitre."
+      },
+      "observed": {
+        "priority": {
+          "dd_rate_pct": 0.0,
+          "droit_douane": 0.0,
+          "qualification": "authentique"
+        },
+        "post": {
+          "dd_rate_pct": 15.0,
+          "droit_douane": 150.0,
+          "qualification": "repli"
+        },
+        "verdict": "ECART_TAUX"
+      },
+      "expected_after_fix": {
+        "dd_rate_pct": 0.0,
+        "droit_douane": 0.0,
+        "both_paths_agree": true,
+        "note": "Le zéro canonique n'est pas une exonération démontrée : il doit être servi tel quel, avec sa provenance régionale déclarée."
+      },
+      "status": "defect_open",
+      "priority_dd_matches_source": true
+    }
+  ]
+}
