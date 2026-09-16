@@ -1604,9 +1604,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
 
           {/* Documents requis — niveau position nationale si sélectionnée, sinon HS6 */}
           {(() => {
-            const formalities = selectedSubPositionFormalities || result.administrative_formalities;
-            const isPositionLevel = !!selectedSubPositionFormalities;
-            const positionCode = isPositionLevel ? hsCode.replace(/[.\s]/g, '') : null;
+            // La position nationale est celle réellement utilisée pour le calcul
+            // (result.hs_code, résolu par le backend), pas seulement celle dont
+            // les formalités ont été transmises par tel ou tel chemin de
+            // sélection — sinon une saisie directe du code à 10 chiffres, ou une
+            // position sans formalité propre, retombe à tort sur le message HS6.
+            const resolvedCode = (result.hs_code || hsCode || '').replace(/[.\s]/g, '');
+            const isPositionLevel = resolvedCode.length >= 10;
+            const formalities = (isPositionLevel && selectedSubPositionFormalities)
+              || result.administrative_formalities;
+            const positionCode = isPositionLevel ? resolvedCode : null;
             if (!formalities || formalities.length === 0) return null;
             return (
               <Card className="bg-slate-800/50 border-slate-700">
