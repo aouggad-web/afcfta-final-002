@@ -10,14 +10,14 @@ fichier dont l'empreinte ne correspond pas au manifeste n'est pas servi.** Un
 socle périmé devient inerte, au lieu de rendre en silence des montants qui ne
 correspondent plus à la donnée collectée.
 
-**Portée exacte de cette garantie, pour ne pas la surestimer :** elle vérifie
-que le socle correspond à *son propre* manifeste — pas que le crawl a été
-relu depuis sa dernière collecte. Revérifier l'empreinte du crawl source à
-chaque requête reviendrait à rehacher des fichiers de plusieurs dizaines de
-mégaoctets à chaque appel, ce que le socle existe précisément pour éviter.
-La fraîcheur face au crawl est une responsabilité de déploiement — régénérer
-le socle après chaque collecte, comme le fait déjà la CI avant les tests —
-pas une vérification que ce module peut faire à coût constant.
+**Portée de cette garantie :** deux empreintes sont vérifiées au chargement,
+pas une seule — celle du socle contre le manifeste, et celle du fichier
+source du crawl (versionné, donc toujours présent) contre l'empreinte que le
+manifeste a enregistrée au moment de la construction. La première seule
+laisserait passer un crawl remplacé sans reconstruction : deux fichiers de
+socle identiques, une source différente entre-temps. Les deux vérifications
+n'ont lieu qu'au chargement d'un pays absent du cache — pas à chaque requête,
+ce que le cache existe précisément pour éviter.
 
 La remontée au parent SH6 est possible mais jamais implicite : le niveau réel
 de la position servie accompagne toujours le résultat.
@@ -32,6 +32,7 @@ import re
 from collections import OrderedDict
 from typing import Any, Dict, Optional, Tuple
 
+RACINE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 SOCLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "socle")
 MANIFESTE = os.path.join(SOCLE_DIR, "MANIFESTE.json")
 DEVISES = os.path.join(SOCLE_DIR, "devises_pays.json")
@@ -97,6 +98,23 @@ def charger(iso3: str) -> dict:
             f"(attendu {entree['socle_sha256'][:12]}, trouvé {empreinte[:12]}). "
             "Il n'est pas servi — le régénérer : python3 scripts/build_socle.py"
         )
+
+    # Le socle peut correspondre à son propre manifeste tout en datant d'un
+    # crawl que la collecte a depuis remplacé sans reconstruction : deux
+    # empreintes identiques, une source différente. Le fichier source est
+    # versionné (backend/data/crawled/), donc toujours présent au chargement,
+    # pas seulement en développement — revérifier son empreinte ici coûte le
+    # même ordre de grandeur que celle du socle déjà payée à chaque défaut de
+    # cache, pas un rehachage à chaque requête.
+    source_chemin = os.path.join(RACINE, entree["source_fichier"])
+    if os.path.exists(source_chemin):
+        empreinte_source = _sha256(source_chemin)
+        if empreinte_source != entree["source_sha256"]:
+            raise SocleIndisponible(
+                f"{iso3} : le crawl source a changé depuis la construction du socle "
+                f"(attendu {entree['source_sha256'][:12]}, trouvé {empreinte_source[:12]}). "
+                "Il n'est pas servi — le régénérer : python3 scripts/build_socle.py"
+            )
 
     with open(chemin, encoding="utf-8") as f:
         donnees = json.load(f)

@@ -76,6 +76,30 @@ def test_un_socle_qui_ne_correspond_plus_a_son_empreinte_n_est_pas_servi(tmp_pat
 
 
 @besoin_socle
+def test_un_crawl_source_modifie_sans_reconstruction_n_est_pas_servi(tmp_path):
+    """Le socle peut correspondre à son propre manifeste tout en datant d'un
+    crawl que la collecte a depuis remplacé sans reconstruction. Deux
+    empreintes identiques (socle), une source différente : la seconde
+    vérification doit, elle aussi, refuser de servir."""
+    entree = socle.manifeste()["pays"]["CIV"]
+    source = os.path.join(socle.RACINE, entree["source_fichier"])
+    sauvegarde = tmp_path / "CIV_tariffs.json"
+    shutil.copy(source, sauvegarde)
+    try:
+        with open(source, "r+", encoding="utf-8") as f:
+            contenu = f.read()
+            f.seek(0)
+            f.write(contenu + " ")
+            f.truncate()
+        socle.vider_cache()
+        with pytest.raises(socle.SocleIndisponible, match="crawl source a changé"):
+            socle.charger("CIV")
+    finally:
+        shutil.copy(sauvegarde, source)
+        socle.vider_cache()
+
+
+@besoin_socle
 def test_une_position_absente_leve_au_lieu_de_servir_une_voisine():
     with pytest.raises(KeyError):
         socle.position("DZA", "999999")
