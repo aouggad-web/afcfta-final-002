@@ -1,5 +1,13 @@
 # Plan de réalisation — corrections du calculateur (54 pays)
 
+> **Remplacé le 15 septembre 2026 par [`PLAN_CALCULATEUR_UNIQUE.md`](PLAN_CALCULATEUR_UNIQUE.md).**
+> Les phases 1 à 4 ci-dessous corrigeaient la structure existante au lieu de la
+> remplacer : elles conservaient les deux moteurs, les deux jeux de données et
+> les trente-sept profils d'assiette codés à la main. Le nouveau plan supprime
+> les trois. **La phase 0 (harnais différentiel, corpus figé, note
+> d'indisponibilité) reste acquise et sert d'instrument de mesure au nouveau
+> plan** ; c'est la seule partie de ce document encore en vigueur.
+
 **Entrée :** audit du 13 septembre 2026 sur `main@3a16a35`.
 **Objet :** transformer les constats de l'audit en travaux ordonnés, mesurables et testables.
 

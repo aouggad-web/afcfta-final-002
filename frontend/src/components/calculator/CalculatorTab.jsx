@@ -37,6 +37,7 @@ import RegulatoryComplianceView, {
 import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
 import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import { normalizeTaxesDetail } from './taxesDetail';
+import { buildCalculRequestBody, mapCalculToLegacyResult } from './unifiedCalculator';
 import {
   effectiveTaxRateFromSteps,
   isCustomsDutyTax,
@@ -431,6 +432,15 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         useAuthenticData = true;
         console.log('✅ Using AUTHENTIC tariff data for', destISO3);
       } catch (authError) {
+        // Un 404 — route absente ou pays/position sans donnée authentique —
+        // est le seul signal qui justifie le repli vers le moteur unifié :
+        // c'est une absence de donnée, pas une panne. Tout le reste (500,
+        // délai dépassé, 401/403, erreur réseau) remonte au `catch` externe
+        // et s'affiche à l'utilisateur, plutôt que de dégrader en silence
+        // vers un calcul qui ignore les avantages fiscaux et les formalités.
+        if (authError.response?.status !== 404) {
+          throw authError;
+        }
         console.log('ℹ️ Authentic tariff data not available for', destISO3, '- falling back to calculated data');
       }
       
@@ -665,85 +675,67 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         });
         
       } else {
-        // FALLBACK: Utiliser l'ancien endpoint si pas de données authentiques
-        const response = await axios.post(`${API}/calculate-tariff`, {
-          origin_country: originCountry,
-          destination_country: destinationCountry,
-          hs_code: cleanHsCode,
-          value: parseFloat(value)
+        // Pays sans chemin `/authentic-tariffs` : le calcul passe par la
+        // route unique du moteur (chantier L3), plus par l'ancien
+        // `/calculate-tariff` (`routes/calculator.py`) qui fabriquait des
+        // montants sur un profil générique. Aucun repli supplémentaire —
+        // une erreur ici remonte au `catch` externe et s'affiche, elle ne
+        // bascule pas silencieusement vers une autre source.
+        const calculResponse = await axios.post(`${API}/calcul`, buildCalculRequestBody({
+          destinationISO3: destISO3,
+          originISO3,
+          hsCode: cleanHsCode,
+          cifValue: parseFloat(value),
+        }));
+        const calcul = calculResponse.data;
+        const legacyResult = mapCalculToLegacyResult(calcul, {
+          originCountry,
+          destinationCountry,
+          hsCode: cleanHsCode,
+          cifValue: parseFloat(value),
         });
-        
-        // Le repli n'expose pas les taux de taxation totaux (`total_taxes_*`),
-        // seulement la ventilation `taxes_summary`. On les en déduit — la
-        // valeur CIF est celle saisie — pour que la synthèse économique ne
-        // reste pas vide sur ce chemin ; jamais de 0 % fabriqué quand la
-        // ventilation préférentielle est absente (`null`).
-        const fallbackSummary = response.data?.taxes_summary || null;
-        const fallbackCif = parseFloat(value);
-        const totalRatePct = (block) => (
-          block && typeof block.total_taxes_et_droits === 'number'
-            && Number.isFinite(fallbackCif) && fallbackCif > 0
-            ? Math.round((block.total_taxes_et_droits / fallbackCif) * 10000) / 100
-            : null
-        );
-        const fallbackNpfTotal = typeof response.data?.total_taxes_npf === 'number'
-          ? response.data.total_taxes_npf
-          : totalRatePct(fallbackSummary?.npf);
-        const fallbackZlecafTotal = typeof response.data?.total_taxes_zlecaf === 'number'
-          ? response.data.total_taxes_zlecaf
-          : totalRatePct(fallbackSummary?.zlecaf);
 
         setResult({
-          ...response.data,
-          total_taxes_npf: fallbackNpfTotal,
-          total_taxes_zlecaf: fallbackZlecafTotal,
-          // Même normalisation que sur le chemin authentique : le repli sert
-          // déjà une liste, mais elle est enrichie du taux préférentiel par
-          // taxe quand la ventilation le fournit.
-          taxes_detail: normalizeTaxesDetail(
-            response.data?.taxes_detail,
-            response.data?.taxes_breakdown,
-          ),
+          ...legacyResult,
+          taxes_detail: normalizeTaxesDetail(legacyResult.taxes_detail, legacyResult.taxes_breakdown),
         });
-        
-        // Récupérer le calcul détaillé NPF vs ZLECAf
-        try {
-          const detailedResponse = await axios.get(
-            `${API}/calculate/detailed/${destinationCountry}/${cleanHsCode}?value=${parseFloat(value)}&language=${language}`
-          );
-          setDetailedResult(detailedResponse.data);
-          setShowDetailedBreakdown(true);
-        } catch (detailError) {
-          console.warn('Detailed calculation not available:', detailError.message);
-          setDetailedResult(null);
-        }
-        
-        // Récupérer les sous-positions si disponibles pour le pays de destination
+        setDetailedResult(null);
+        setShowDetailedBreakdown(true);
+
+        // Sous-positions et informations SH6 : données d'affichage annexes,
+        // pas des montants — un manque y reste silencieux comme sur le
+        // chemin authentique.
         const hs6 = cleanHsCode.substring(0, 6);
         try {
-          // Try PostgreSQL API first
           let subPosResponse;
           try {
-            subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destinationCountry}/sub-positions/${hs6}?language=${language}`);
+            subPosResponse = await axios.get(`${API}/postgres-tariffs/country/${destISO3}/sub-positions/${hs6}?language=${language}`);
           } catch (pgErr) {
-            subPosResponse = await axios.get(`${API}/tariffs/sub-positions/${destinationCountry}/${hs6}?language=${language}`);
+            subPosResponse = await axios.get(`${API}/tariffs/sub-positions/${destISO3}/${hs6}?language=${language}`);
           }
           setSubPositions(subPosResponse.data);
         } catch (subPosError) {
           setSubPositions(null);
         }
-        
-        // Récupérer les informations SH6 spécifiques si disponibles
         try {
           const hs6Response = await axios.get(`${API}/hs6-tariffs/code/${hs6}?language=${language}`);
           setHs6TariffInfo(hs6Response.data);
         } catch (hs6Error) {
           setHs6TariffInfo(null);
         }
-        
+
+        const npfEtat = calcul.npf?.etat;
         toast({
-          title: t.calculationSuccess,
-          description: `${t.potentialSavings}: ${formatCurrency(response.data.savings)}`,
+          title: npfEtat === 'COMPLET' ? t.calculationSuccess
+            : (language === 'fr' ? 'Calcul incomplet' : 'Incomplete calculation'),
+          description: npfEtat === 'COMPLET'
+            ? (legacyResult.savings != null
+              ? `${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}`
+              : `${destISO3} — ${language === 'fr' ? 'régime NPF' : 'MFN regime'}`)
+            : (language === 'fr'
+              ? `${destISO3} : un ou plusieurs droits n'ont pas pu être liquidés (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — total partiel, jamais un montant fabriqué`
+              : `${destISO3}: one or more duties could not be liquidated (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — partial total, never a fabricated amount`),
+          variant: npfEtat === 'COMPLET' ? 'default' : 'destructive',
         });
       }
     } catch (error) {
