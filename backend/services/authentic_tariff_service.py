@@ -1118,6 +1118,35 @@ def get_fiscal_advantages(country_iso3, hs_code):
     return line.get("fiscal_advantages", []) if line else []
 
 
+def _normalize_crawled_formalities(raw_formalities):
+    """Adapt a crawled position's own ``formalities`` (``text_verbatim``/
+    ``source``) to the ``administrative_formalities`` shape the frontend
+    renders (``document_fr``/``document_en``). Position-specific formalities
+    take precedence over the generic HS6-level ones (see calculate_import_taxes):
+    otherwise a generic chapter-level formality meant for another product
+    (e.g. a CKD/SKD vehicle-assembly authorization) can be shown for an
+    unrelated finished product sharing the same HS6.
+    """
+    if not raw_formalities:
+        return []
+    normalized = []
+    for item in raw_formalities:
+        if not isinstance(item, dict):
+            continue
+        text = item.get("text_verbatim") or item.get("document_fr") or item.get("document_en")
+        if not text:
+            continue
+        normalized.append(
+            {
+                "code": item.get("code"),
+                "document_fr": item.get("document_fr", text),
+                "document_en": item.get("document_en", text),
+                "fap_official_label": item.get("fap_official_label"),
+            }
+        )
+    return normalized
+
+
 def get_administrative_formalities(country_iso3, hs_code):
     line = get_tariff_line(country_iso3, hs_code)
     return line.get("administrative_formalities", []) if line else []
@@ -2412,7 +2441,16 @@ def calculate_import_taxes(
         "taxes_detail": taxes_detail,
         "individual_taxes": individual_taxes,
         "fiscal_advantages": line.get("fiscal_advantages", []),
-        "administrative_formalities": line.get("administrative_formalities", []),
+        # Une position nationale sélectionnée (crawled_sp_entry) a ses propres
+        # formalités : les préférer au champ générique du line HS6, sinon une
+        # formalité d'un autre produit du même chapitre (ex. CKD/SKD réservé
+        # aux kits d'assemblage automobile) s'affiche pour un produit fini
+        # sans rapport (ex. lave-vaisselle 8422119000, Algérie).
+        "administrative_formalities": (
+            _normalize_crawled_formalities(crawled_sp_entry.get("formalities"))
+            if crawled_sp_entry and crawled_sp_entry.get("formalities")
+            else line.get("administrative_formalities", [])
+        ),
         "has_sub_positions": len(all_sub_positions) > 0,
         "sub_position_count": len(all_sub_positions),
         "sub_position": sub_position_info,
