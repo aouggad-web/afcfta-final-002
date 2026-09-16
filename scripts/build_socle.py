@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import glob
 import hashlib
+import importlib
 import json
 import os
 import re
@@ -233,6 +234,99 @@ def assiette_depuis_source(brut):
 
 
 def charger_assiettes_pays():
+    if not os.path.exists(ASSIETTES_PATH):
+        _reconstruire_assiettes_pays()
+    try:
+        return _lire_assiettes_pays()
+    except (OSError, json.JSONDecodeError, ValueError):
+        _reconstruire_assiettes_pays()
+        return _lire_assiettes_pays()
+
+
+def _lire_assiettes_pays():
+    with open(ASSIETTES_PATH, encoding="utf-8") as f:
+        charge = json.load(f)
+    pays = charge.get("pays") if isinstance(charge, dict) else None
+    if not isinstance(pays, dict):
+        raise ValueError("table d'assiettes non conforme")
+    return pays
+
+
+def _assiette_depuis_profil(formule, ajouts):
+    if formule == "DD_AMOUNT":
+        return "MONTANT_DD"
+    if formule == "CIF_PLUS_TOUTES_TAXES_SAUF_TVA":
+        return "CIF+TOUS_SAUF_TVA"
+    base = str(formule or "").strip() or "CIF"
+    dependances = [str(code).strip().upper() for code in (ajouts or []) if code]
+    return "+".join([base, *dependances]) if dependances else base
+
+
+def _reconstruire_assiettes_pays():
+    """Reconstruire la table d'assiettes depuis les sources versionnées du dépôt."""
+    if REPO not in sys.path:
+        sys.path.insert(0, REPO)
+
+    try:
+        profils = importlib.import_module("backend.services.tax_profile_data")
+    except Exception as exc:
+        raise RuntimeError("impossible de charger backend.services.tax_profile_data") from exc
+
+    ASSIETTE_TVA_ETABLIE = profils.ASSIETTE_TVA_ETABLIE
+    COUNTRY_TAX_PROFILES = profils.COUNTRY_TAX_PROFILES
+
+    print(
+        f"[build_socle] {os.path.relpath(ASSIETTES_PATH, REPO)} absent : reconstruction "
+        "depuis COUNTRY_TAX_PROFILES",
+        file=sys.stderr,
+    )
+
+    pays = {}
+    for iso, profil in sorted(COUNTRY_TAX_PROFILES.items()):
+        taxes = {}
+        for code, spec in (profil.get("tax_bases") or {}).items():
+            if not isinstance(spec, (list, tuple)) or len(spec) != 2:
+                raise ValueError(f"profil fiscal invalide pour {iso}/{code}")
+            formule, ajouts = spec
+            taxes[code_canonique(code, code) or code] = {
+                "assiette": _assiette_depuis_profil(formule, ajouts),
+                "origine_assiette": "table_codee",
+            }
+
+        regle_tva = ASSIETTE_TVA_ETABLIE.get(iso)
+        if regle_tva:
+            taxes.setdefault("TVA", {}).update(
+                {
+                    "assiette": "CIF+TOUS_SAUF_TVA",
+                    "origine_assiette": "texte_primaire",
+                    "texte": regle_tva["texte"],
+                    "fiche": regle_tva.get("fiche"),
+                }
+            )
+
+        pays[iso] = {
+            "reference_legale": profil.get("source", ""),
+            "taxes": taxes,
+        }
+
+    _ecrire_json_atomique(ASSIETTES_PATH, {"pays": pays}, ensure_ascii=False, indent=2)
+
+
+def _ecrire_json_atomique(chemin, contenu, **kwargs):
+    os.makedirs(os.path.dirname(chemin), exist_ok=True)
+    fd, tmp_path = tempfile.mkstemp(
+        dir=os.path.dirname(chemin), prefix=f"{os.path.basename(chemin)}.", suffix=".tmp", text=True
+    )
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump(contenu, f, **kwargs)
+        os.replace(tmp_path, chemin)
+    except Exception:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass
+        raise
     with open(ASSIETTES_PATH, encoding="utf-8") as f:
         return json.load(f)["pays"]
 

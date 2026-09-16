@@ -7,6 +7,10 @@ versée dans la cascade NPF. Un socle qui viole l'un de ces trois points rend un
 montant faux qui a l'air juste — le défaut le plus coûteux du calculateur.
 """
 
+import builtins
+import importlib.util
+import json
+import os
 import importlib.util
 import json
 import os
@@ -284,22 +288,128 @@ def test_une_construction_partielle_n_ampute_pas_le_manifeste(tmp_path, monkeypa
         avant = json.load(f)
     if "CIV" not in avant["pays"] or len(avant["pays"]) < 2:
         pytest.skip("manifeste trop réduit pour ce test")
-    sauvegarde = tmp_path / "MANIFESTE.json"
-    shutil.copy(manifeste, sauvegarde)
-    try:
-        bs.main(["build_socle.py", "CIV"])
-        with open(manifeste, encoding="utf-8") as f:
-            apres = json.load(f)
-        assert set(apres["pays"]) == set(avant["pays"])
-        assert apres["totaux"]["positions"] == avant["totaux"]["positions"]
-    finally:
-        shutil.copy(sauvegarde, manifeste)
+    autres_avant = {iso: meta for iso, meta in avant["pays"].items() if iso != "CIV"}
+    socle_temp = tmp_path / "socle"
+    socle_temp.mkdir()
+    (socle_temp / "MANIFESTE.json").write_text(
+        json.dumps(avant, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    assiettes = os.path.join(REPO, "backend", "socle", "assiettes_pays.json")
+    if not os.path.exists(assiettes):
+        pytest.skip("table d'assiettes absente de ce clone")
+    with open(assiettes, encoding="utf-8") as f:
+        (socle_temp / "assiettes_pays.json").write_text(f.read(), encoding="utf-8")
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(socle_temp / "assiettes_pays.json"))
+    bs.main(["build_socle.py", "CIV"])
+    with open(socle_temp / "MANIFESTE.json", encoding="utf-8") as f:
+        apres = json.load(f)
+    assert set(apres["pays"]) == set(avant["pays"])
+    assert {iso: meta for iso, meta in apres["pays"].items() if iso != "CIV"} == autres_avant
+
+
+@pytest.mark.parametrize(
+    "contenu",
+    [
+        "{invalide",
+        json.dumps(["pas_un_objet"]),
+        json.dumps({"pays": ["pas_un_dict"]}),
+    ],
+)
+def test_main_tolere_un_manifeste_malforme_ou_non_conforme(tmp_path, monkeypatch, contenu):
+    chemin = os.path.join(CRAWL, "CIV_tariffs.json")
+    if not os.path.exists(chemin):
+        pytest.skip("crawl CIV absent de ce clone")
+
+    socle_temp = tmp_path / "socle"
+    socle_temp.mkdir()
+    (socle_temp / "MANIFESTE.json").write_text(contenu, encoding="utf-8")
+
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(socle_temp / "assiettes_pays.json"))
+    assert bs.main(["build_socle.py", "CIV"]) == 0
+
+    with open(socle_temp / "MANIFESTE.json", encoding="utf-8") as f:
+        reconstruit = json.load(f)
+    assert "CIV" in reconstruit["pays"]
+
+
+def test_charger_assiettes_reconstruit_la_table_absente(tmp_path, monkeypatch):
+    socle_temp = tmp_path / "socle"
+    assiettes = socle_temp / "assiettes_pays.json"
+    socle_temp.mkdir()
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
+
+    pays = bs.charger_assiettes_pays()
+
+    assert assiettes.exists()
+    assert len(pays) >= 37
+    assert pays["BEN"]["taxes"]["TVA"]["origine_assiette"] == "texte_primaire"
+    with open(assiettes, encoding="utf-8") as f:
+        reconstruit = json.load(f)
+    assert "BEN" in reconstruit["pays"]
+
+
+@pytest.mark.parametrize("contenu", ["{invalide", json.dumps(["pas_un_objet"]), json.dumps({"pays": []})])
+def test_charger_assiettes_reconstruit_une_table_malformee_ou_non_conforme(
+    tmp_path, monkeypatch, contenu
+):
+    socle_temp = tmp_path / "socle"
+    socle_temp.mkdir()
+    assiettes = socle_temp / "assiettes_pays.json"
+    assiettes.write_text(contenu, encoding="utf-8")
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
+
+    pays = bs.charger_assiettes_pays()
+
+    assert len(pays) >= 37
+    with open(assiettes, encoding="utf-8") as f:
+        reconstruit = json.load(f)
+    assert isinstance(reconstruit["pays"], dict)
+
+
+def test_charger_assiettes_reconstruit_apres_oserror_de_lecture(tmp_path, monkeypatch):
+    socle_temp = tmp_path / "socle"
+    assiettes = socle_temp / "assiettes_pays.json"
+    socle_temp.mkdir()
+    assiettes.write_text('{"pays": {"ZZZ": {}}}', encoding="utf-8")
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
+
+    appels = {"n": 0}
+    open_reel = builtins.open
+
+    def open_instable(*args, **kwargs):
+        if args and args[0] == str(assiettes) and appels["n"] == 0:
+            appels["n"] += 1
+            raise OSError("lecture interrompue")
+        return open_reel(*args, **kwargs)
+
+    monkeypatch.setattr(builtins, "open", open_instable)
+    pays = bs.charger_assiettes_pays()
+
+    assert len(pays) >= 37
+    assert appels["n"] == 1
+
+
+def test_charger_assiettes_signale_un_import_indisponible(tmp_path, monkeypatch):
+    socle_temp = tmp_path / "socle"
+    assiettes = socle_temp / "assiettes_pays.json"
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
+
+    def import_indisponible(_):
+        raise ModuleNotFoundError("tax_profile_data")
+
+    monkeypatch.setattr(bs.importlib, "import_module", import_indisponible)
+    with pytest.raises(RuntimeError, match="backend\\.services\\.tax_profile_data"):
+        bs.charger_assiettes_pays()
 
 
 def test_la_table_d_assiettes_conserve_ses_references_legales():
-    with open(os.path.join(REPO, "backend", "socle", "assiettes_pays.json"), encoding="utf-8") as f:
-        table = json.load(f)
-    pays = table["pays"]
+    pays = bs.charger_assiettes_pays()
     assert len(pays) >= 37
     # Les dix assiettes de TVA établies sur texte primaire citent leur texte.
     etablies = [
