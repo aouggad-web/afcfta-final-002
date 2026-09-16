@@ -7,6 +7,7 @@ versée dans la cascade NPF. Un socle qui viole l'un de ces trois points rend un
 montant faux qui a l'air juste — le défaut le plus coûteux du calculateur.
 """
 
+import builtins
 import importlib.util
 import json
 import os
@@ -315,15 +316,10 @@ def test_main_tolere_un_manifeste_malforme_ou_non_conforme(tmp_path, monkeypatch
     chemin = os.path.join(CRAWL, "CIV_tariffs.json")
     if not os.path.exists(chemin):
         pytest.skip("crawl CIV absent de ce clone")
-    assiettes = os.path.join(REPO, "backend", "socle", "assiettes_pays.json")
-    if not os.path.exists(assiettes):
-        pytest.skip("table d'assiettes absente de ce clone")
 
     socle_temp = tmp_path / "socle"
     socle_temp.mkdir()
     (socle_temp / "MANIFESTE.json").write_text(contenu, encoding="utf-8")
-    with open(assiettes, encoding="utf-8") as f:
-        (socle_temp / "assiettes_pays.json").write_text(f.read(), encoding="utf-8")
 
     monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
     monkeypatch.setattr(bs, "ASSIETTES_PATH", str(socle_temp / "assiettes_pays.json"))
@@ -334,10 +330,82 @@ def test_main_tolere_un_manifeste_malforme_ou_non_conforme(tmp_path, monkeypatch
     assert "CIV" in reconstruit["pays"]
 
 
+def test_charger_assiettes_reconstruit_la_table_absente(tmp_path, monkeypatch):
+    socle_temp = tmp_path / "socle"
+    assiettes = socle_temp / "assiettes_pays.json"
+    socle_temp.mkdir()
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
+
+    pays = bs.charger_assiettes_pays()
+
+    assert assiettes.exists()
+    assert len(pays) >= 37
+    assert pays["BEN"]["taxes"]["TVA"]["origine_assiette"] == "texte_primaire"
+    with open(assiettes, encoding="utf-8") as f:
+        reconstruit = json.load(f)
+    assert "BEN" in reconstruit["pays"]
+
+
+@pytest.mark.parametrize("contenu", ["{invalide", json.dumps(["pas_un_objet"]), json.dumps({"pays": []})])
+def test_charger_assiettes_reconstruit_une_table_malformee_ou_non_conforme(
+    tmp_path, monkeypatch, contenu
+):
+    socle_temp = tmp_path / "socle"
+    socle_temp.mkdir()
+    assiettes = socle_temp / "assiettes_pays.json"
+    assiettes.write_text(contenu, encoding="utf-8")
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
+
+    pays = bs.charger_assiettes_pays()
+
+    assert len(pays) >= 37
+    with open(assiettes, encoding="utf-8") as f:
+        reconstruit = json.load(f)
+    assert isinstance(reconstruit["pays"], dict)
+
+
+def test_charger_assiettes_reconstruit_apres_oserror_de_lecture(tmp_path, monkeypatch):
+    socle_temp = tmp_path / "socle"
+    assiettes = socle_temp / "assiettes_pays.json"
+    socle_temp.mkdir()
+    assiettes.write_text('{"pays": {"ZZZ": {}}}', encoding="utf-8")
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
+
+    appels = {"n": 0}
+    open_reel = builtins.open
+
+    def open_instable(*args, **kwargs):
+        if args and args[0] == str(assiettes) and appels["n"] == 0:
+            appels["n"] += 1
+            raise OSError("lecture interrompue")
+        return open_reel(*args, **kwargs)
+
+    monkeypatch.setattr(builtins, "open", open_instable)
+    pays = bs.charger_assiettes_pays()
+
+    assert len(pays) >= 37
+    assert appels["n"] == 1
+
+
+def test_charger_assiettes_signale_un_import_indisponible(tmp_path, monkeypatch):
+    socle_temp = tmp_path / "socle"
+    assiettes = socle_temp / "assiettes_pays.json"
+    monkeypatch.setattr(bs, "SOCLE_DIR", str(socle_temp))
+    monkeypatch.setattr(bs, "ASSIETTES_PATH", str(assiettes))
+
+    def import_indisponible(_):
+        raise ModuleNotFoundError("tax_profile_data")
+
+    monkeypatch.setattr(bs.importlib, "import_module", import_indisponible)
+    with pytest.raises(RuntimeError, match="backend\\.services\\.tax_profile_data"):
+        bs.charger_assiettes_pays()
+
+
 def test_la_table_d_assiettes_conserve_ses_references_legales():
-    with open(os.path.join(REPO, "backend", "socle", "assiettes_pays.json"), encoding="utf-8") as f:
-        table = json.load(f)
-    pays = table["pays"]
+    pays = bs.charger_assiettes_pays()
     assert len(pays) >= 37
     # Les dix assiettes de TVA établies sur texte primaire citent leur texte.
     etablies = [

@@ -87,6 +87,12 @@ jobs:
       - name: Generate normalized tariff data
         run: python scripts/normalize_crawled.py
 
+      # Le socle de calcul (backend/socle/*.json et assiettes_pays.json) est lui
+      # aussi une sortie dérivée absente d'un clone frais. Les tests socle lisent
+      # ces artefacts directement ; ils doivent donc être régénérés avant pytest.
+      - name: Generate socle data
+        run: python scripts/build_socle.py
+
       - name: Run backend tests
         run: |
           python -m pytest tests/test_health_endpoint.py tests/test_north_africa_uma.py -v --tb=short
