@@ -3,6 +3,7 @@ import logging
 import os
 import re
 from collections import OrderedDict
+from math import isfinite
 from typing import Dict, Optional
 
 from services.tax_profile_data import (
@@ -239,17 +240,17 @@ def _canonical_tax_code(code: str, label: str = "") -> str:
     norm = _normalize_tax_code(code)
     text = f"{norm} {label or ''}".lower()
 
-    if norm in {"DD", "DI", "ID", "DROIT", "DDDROIT", "GENERAL", "CET"}:
+    if norm in {"DD", "DI", "ID", "DROIT", "DDDROIT", "GENERAL", "CET", "DR"}:
         return "DD"
-    if norm in {"TVA", "TVAI", "TVAAPTAXE", "VAT", "IVA", "VALUEADDE"}:
+    if norm in {"TVA", "TVAI", "TVAAPTAXE", "TVAAP", "VAT", "IVA", "VALUEADDE", "VALUE_ADDE"}:
         return "TVA"
     if "value added" in text or "valeur ajoute" in text or "valeur ajout" in text:
         return "TVA"
     if "customs duty" in text or "import duty" in text or "droit d'importation" in text:
         return "DD"
-    if norm in {"IMPORTDEC", "IMPORTDECL", "IDF"} or "import declaration" in text:
+    if norm in {"IMPORTDEC", "IMPORTDECL", "IMPORT_DEC", "IDF"} or "import declaration" in text:
         return "IDF"
-    if norm in {"RAILWAYDE", "RDL"} or "railway development" in text:
+    if norm in {"RAILWAYDE", "RAILWAY_DE", "RDL"} or "railway development" in text:
         return "RDL"
     if norm in {"GETFL", "GETFUND"} or "ghana education" in text:
         return "GETFUND"
@@ -295,14 +296,21 @@ def _parse_crawled_tax_rate(value) -> Optional[float]:
     if isinstance(value, dict):
         value = value.get("rate", value.get("rate_pct"))
     if isinstance(value, (int, float)) and not isinstance(value, bool):
-        return float(value)
+        return float(value) if isfinite(value) and value >= 0 else None
     if isinstance(value, str):
         if value.strip().lower() in {"free", "exempt", "exonere", "exonéré"}:
             return 0.0
-        match = re.search(r"-?\d+(?:[.,]\d+)?", value)
+        # A specific or compound expression is not an ad-valorem percentage.
+        match = re.fullmatch(r"\s*(\d+(?:[.,]\d+)?)\s*%?\s*", value)
         if match:
-            return float(match.group(0).replace(",", "."))
+            return float(match.group(1).replace(",", "."))
     return None
+
+
+def _position_tax_payload(position):
+    if "taxes_import" in position:
+        return position["taxes_import"]
+    return position.get("taxes")
 
 
 def _normalise_crawled_tax_details(raw_taxes) -> dict:
@@ -320,7 +328,7 @@ def _normalise_crawled_tax_details(raw_taxes) -> dict:
             rows.append(
                 {
                     "code": code,
-                    "name": info.get("name", info.get("label", code)),
+                    "name": info.get("name", info.get("label", info.get("label_published", code))),
                     "rate": value,
                     "source": info.get("source", "crawled"),
                 }
@@ -332,13 +340,13 @@ def _normalise_crawled_tax_details(raw_taxes) -> dict:
 
     for row in rows:
         code = row.get("code", row.get("tax", row.get("tax_code", "")))
-        label = row.get("name", row.get("label", row.get("tax_name", code)))
+        label = row.get("name", row.get("label", row.get("tax_name", row.get("observation", code))))
         value = row.get("rate", row.get("rate_pct", row.get("raw_value")))
         rate = _parse_crawled_tax_rate(value)
-        if not code or rate is None:
+        if not code:
             continue
         canonical = _canonical_tax_code(code, label)
-        if canonical in _PREFERENTIAL_RATE_CODES:
+        if canonical in _PREFERENTIAL_RATE_CODES or row.get("is_preferential"):
             continue
         details[canonical] = {
             "label": label or _TAX_LABELS.get(canonical, canonical),
@@ -697,6 +705,26 @@ def get_tariff_line(country_iso3, hs_code):
     for line in data.get("tariff_lines", []):
         if line.get("hs6") == hs6 or line.get("code") == hs_code_clean:
             return line
+    position = load_crawled_position_index(country_iso3).get(hs_code_clean)
+    if position and len(hs_code_clean) > 6:
+        taxes = _normalise_crawled_tax_details(_position_tax_payload(position))
+        return {
+            "hs6": hs6,
+            "code": hs_code_clean,
+            "description_fr": position.get("description_fr", ""),
+            "description_en": position.get("description_en", ""),
+            "dd_rate": taxes.get("DD", {}).get("rate"),
+            "vat_rate": taxes.get("TVA", {}).get("rate"),
+            "taxes_detail": [
+                {"tax": tax_code, "rate": tax["rate"], "observation": tax["label"]}
+                for tax_code, tax in taxes.items()
+            ],
+            "sub_positions": [],
+            "administrative_formalities": position.get(
+                "formalities", position.get("administrative_formalities", [])
+            ),
+            "source": position.get("source"),
+        }
     return None
 
 
@@ -767,12 +795,14 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     "source": sp.get("source", f"Nomenclature nationale DGD {country_iso3}"),
                 }
 
-    # Add positions that exist only in crawled source files. Existing ETL
-    # positions keep their current rate and metadata unchanged.
+    # Exact collected rates override stale listing aggregates. PostgreSQL
+    # remains authoritative where it provided the position.
     for code, position in load_crawled_position_index(country_iso3).items():
-        if not (code.startswith(hs6_normalized) and len(code) > 6) or code in merged:
+        if not (code.startswith(hs6_normalized) and len(code) > 6):
             continue
-        taxes = position.get("taxes", {})
+        if code in merged and merged[code].get("source") == "postgres":
+            continue
+        taxes = _position_tax_payload(position)
         dd_rate = _parse_crawled_tax_rate(position.get("dd"))
         if dd_rate is None:
             dd_rate = _parse_crawled_tax_rate(position.get("dd_rate"))
@@ -1543,14 +1573,13 @@ def calculate_import_taxes(
             }
             return {"error": detail["message"], "error_detail": detail}
 
-    # Resolve DD rate: prefer sub-position specific rate when available
-    # (`or 0` : une valeur explicitement nulle dans la donnée → 0, jamais None).
-    dd_rate_pct = line.get("dd_rate", 0) or 0
+    # Keep missing values unresolved until all source-specific measures have
+    # been selected. A published zero is distinct from a missing rate.
+    dd_rate_pct = line.get("dd_rate")
     sub_position_info = None
 
     # --- Priority 1: crawled authentic JSON (per-position taxes) ---
-    # Existing dictionary-shaped per-position taxes keep their current
-    # precedence. Newly indexed schemas fall back to the existing ETL rate.
+    # Select the exact collected position; all tax schemas are reconciled below.
     crawled_sp_entry = None
     etl_sub_position_entry = None
     if not is_postgres_line:
@@ -1599,10 +1628,8 @@ def calculate_import_taxes(
             "description_en": sp_desc,
         }
 
-    # `or 0` : une valeur explicitement nulle dans la donnée source ne doit
-    # jamais propager None (sinon crash sur `> 0` et le repli TVA via
-    # taxes_detail ci-dessous, gardé par `vat_rate_pct == 0`, est désactivé).
-    vat_rate_pct = line.get("vat_rate", 0) or 0
+    # Missing VAT remains None; never turn it into a documented exemption.
+    vat_rate_pct = line.get("vat_rate")
     other_taxes_pct = line.get("other_taxes_rate", 0) or 0
     # PAS de `or 0` ici : `zlecaf_rate` absent (aucune préférence tracée sur
     # cette ligne) doit rester `None`, pas devenir un taux préférentiel 0 %
@@ -1614,45 +1641,51 @@ def calculate_import_taxes(
     # Extract DAPS and other individual taxes:
     # If crawled entry has per-position taxes, use them as primary source;
     # otherwise fall back to taxes_detail from the ETL line.
-    _raw_crawled_taxes = crawled_sp_entry.get("taxes") if crawled_sp_entry else None
-    _has_legacy_crawled_tax_details = isinstance(_raw_crawled_taxes, dict) and any(
-        isinstance(value, dict) for value in _raw_crawled_taxes.values()
-    )
-    if (not is_postgres_line) and crawled_sp_entry and _has_legacy_crawled_tax_details:
-        crawled_taxes = crawled_sp_entry["taxes"]
-        taxes_detail = _normalise_crawled_tax_details(crawled_taxes)
-        # Inherit VAT and ZLECAf from ETL line (not always in crawled). Le code
-        # varie selon le pays (TVA/IVA/VAT/TVA-APTAXE) — cf. _find_vat_key.
+    _raw_crawled_taxes = _position_tax_payload(crawled_sp_entry) if crawled_sp_entry else None
+    _has_legacy_crawled_tax_details = isinstance(_raw_crawled_taxes, (dict, list))
+    if not is_postgres_line and _has_legacy_crawled_tax_details:
+        # Every collected schema is authoritative, including an empty payload.
+        # Missing DD cannot be recovered from an obsolete HS6 parent.
+        taxes_detail = _normalise_crawled_tax_details(_raw_crawled_taxes)
+        dd_rate_pct = taxes_detail.get("DD", {}).get("rate")
         if "TVA" in taxes_detail:
-            vat_rate_pct = float(taxes_detail["TVA"].get("rate", vat_rate_pct) or 0)
-    else:
-        # Copie défensive : on ne mute jamais l'objet de ligne (potentiellement
-        # mis en cache) lors de la normalisation des libellés. Le format liste
-        # (ETL) est conservé tel quel puis normalisé en dict plus bas.
-        _raw_taxes_detail = line.get("taxes_detail", {})
-        taxes_detail = (
-            dict(_raw_taxes_detail) if isinstance(_raw_taxes_detail, dict) else _raw_taxes_detail
+            vat_rate_pct = taxes_detail["TVA"]["rate"]
+        other_taxes_pct = sum(
+            t["rate"]
+            for code, t in taxes_detail.items()
+            if code not in ("DD", "TVA") and t["rate"] is not None
         )
+    else:
+        if crawled_sp_entry and "dd" in crawled_sp_entry and not is_postgres_line:
+            dd_rate_pct = _parse_crawled_tax_rate(crawled_sp_entry["dd"])
+        taxes_detail = _normalise_crawled_tax_details(line.get("taxes_detail", {}))
+        # An aggregate field may be absent while the same line explicitly
+        # supplies the measure. Do not use a parent to fill an unknown child.
+        if not crawled_sp_entry and not etl_sub_position_entry:
+            if dd_rate_pct is None:
+                dd_rate_pct = taxes_detail.get("DD", {}).get("rate")
+            if vat_rate_pct is None:
+                vat_rate_pct = taxes_detail.get("TVA", {}).get("rate")
+        # The child's explicit DD wins over the aggregate repeated in details.
+        if "DD" in taxes_detail:
+            taxes_detail["DD"] = {**taxes_detail["DD"], "rate": dd_rate_pct}
 
-    # ── Normalise taxes_detail: accept both dict and list formats ─────────────
-    # Dict format (crawled DZA): {'DD': {'rate': 30, 'name': '...'}, ...}
-    # List format (ETL):         [{'tax': 'D.D', 'rate': 20, 'observation': '...'}, ...]
-    if isinstance(taxes_detail, list):
-        taxes_detail = {
-            _canonical_tax_code(
-                item.get("tax", item.get("code", "")),
-                item.get("observation", item.get("label", item.get("tax", ""))),
-            ): {
-                "rate": float(item.get("rate", 0) or 0),
-                "label": item.get("observation", item.get("label", item.get("tax", ""))),
-                "source": "etl",
-                "source_tax_code": item.get("tax", item.get("code", "")),
-            }
-            for item in taxes_detail
-            if item.get("tax") or item.get("code")
+    missing = [
+        code
+        for code, rate in (("DD", dd_rate_pct), ("TVA", vat_rate_pct))
+        if _parse_crawled_tax_rate(rate) is None
+    ]
+    missing.extend(code for code, tax in taxes_detail.items() if tax["rate"] is None)
+    if missing:
+        detail = {
+            "code": "CALCULATION_UNAVAILABLE",
+            "message": "Taux absents ou droits spécifiques : calcul complet indisponible.",
+            "hs_code": hs_code_clean,
+            "missing_or_non_ad_valorem_taxes": sorted(set(missing)),
         }
-    elif not isinstance(taxes_detail, dict):
-        taxes_detail = {}
+        return {"error": detail["message"], "error_detail": detail}
+    dd_rate_pct = float(dd_rate_pct)
+    vat_rate_pct = float(vat_rate_pct)
 
     daps_rate_pct = 0.0
     prct_rate_pct = 0.0

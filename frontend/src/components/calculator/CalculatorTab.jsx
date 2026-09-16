@@ -740,9 +740,13 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       }
     } catch (error) {
       console.error('Calculation error:', error);
+      setResult(null);
+      setDetailedResult(null);
+      setShowDetailedBreakdown(false);
+      const detail = error.response?.data?.detail;
       toast({
         title: t.calculationError,
-        description: error.response?.data?.detail || t.calculationError,
+        description: typeof detail === 'string' ? detail : (detail?.message || t.calculationError),
         variant: "destructive"
       });
     } finally {

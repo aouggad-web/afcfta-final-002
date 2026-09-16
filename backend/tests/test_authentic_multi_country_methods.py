@@ -106,15 +106,13 @@ def test_ethiopia_hs6_mirror_surtax_method_remains_supported():
     assert cascade["total_taxes"] == 737.75
 
 
-def test_tunisia_tariff_codes_normalize_duty_and_import_levy(monkeypatch):
+def test_tunisia_specific_veterinary_duty_requires_complete_inputs(monkeypatch):
+    # Current source: DSV = 0.1 dinars on QCS, not an ad-valorem zero.
+    # A total without quantity/currency support would silently omit this duty.
     result = _calc(monkeypatch, "TUN", "01012100015")
-    by_code = {row["code"]: row for row in result["taxes_breakdown"]}
-
-    assert set(by_code) == {"DD", "TCL"}
-    assert by_code["DD"]["amount_npf"] == 360.0
-    assert by_code["TCL"]["base_expr"] == "CIF"
-    assert by_code["TCL"]["amount_npf"] == 30.0
-    assert result["taxes_summary"]["npf"]["total_taxes_et_droits"] == 390.0
+    assert result["error_detail"]["code"] == "CALCULATION_UNAVAILABLE"
+    assert "DSV" in result["error_detail"]["missing_or_non_ad_valorem_taxes"]
+    assert "taxes_summary" not in result
 
 
 @pytest.mark.parametrize(
