@@ -1,33 +1,37 @@
 {
   "schema_version": 1,
-  "objet": "Assiette des prélèvements IAT (Import Adjustment Tax) et EXC (Excise Duty) au Nigéria",
+  "objet": "Assiette des prélèvements IAT (Import Adjustment Tax) et EXC (Excise Duty ad valorem) au Nigéria : la valeur CIF",
   "verified_at": "2026-09-17",
-  "etabli": false,
-  "regle": null,
-  "source_consultee": {
-    "douane": {
-      "institution": "Nigeria Customs Service (NCS)",
-      "url": "https://customs.gov.ng",
-      "statut_acces": "Le portail renvoie un chargeur JavaScript (loader) ; aucun texte extractible, y compris les pages tarifaires et le lien « Customs Excise Tariff etc. (Variation) Order 2026 ».",
-      "fait_etabli": "Le crawl NGA (source customs.gov.ng) porte quatre taxes ad valorem par position : ID (Import Duty, 5–35 %), IAT (Import Adjustment Tax), EXC (Excise Duty), VAT (7,5 %). L'assiette DD (ID) est déjà CIF, la TVA CIF+DD (VAITA) ; les bases IAT et EXC ne sont pas publiées par le fichier."
-    },
-    "texte_legal": {
-      "instrument": "Customs, Excise Tariff, etc. (Consolidation) Act (CETA), modifié par la Finance Act 2020 — cadre cité par la documentation fiscale (PwC « Highlights of Nigeria's 2022 Fiscal Policy Measures », juin 2022, pwc.com/ng).",
-      "url_pwc": "https://www.pwc.com/ng/en/assets/pdf/pwc-tax-alert-highlights-of-nigeria-2022-fiscal-policy-measures.pdf",
-      "statut": "Source secondaire qui décrit la liste IAT et les taux d'accise, mais ne cite pas la base de calcul (CIF ou autre) ; le texte de loi primaire (CETA / Finance Act) n'a pas pu être récupéré dans cette session."
-    },
-    "fiscal_policy_measures": {
-      "url_2026": "https://fmino.gov.ng/nigeria-customs-service-implements-2026-fiscal-policy-measures-and-tariff-amendments/",
-      "statut": "Confirme l'existence d'une liste IAT révisée (ECOWAS CET 2022–2027) et d'amendements d'accise au 1er juillet 2026 (tabac 30 % ad valorem + montant spécifique par tige/litre, boissons, véhicules), sans énoncer l'assiette."
-    }
+  "etabli": true,
+  "evidence_level": "primaire (loi identifiée) — Nigeria Customs Service Act, 2023 (Act No. 20), section 69 ; verbatim transcrit, texte intégral du Journal Officiel encore à archiver.",
+  "source": {
+    "instrument": "Nigeria Customs Service Act, 2023 (Act No. 20), section 69 — remplace la CEMA de 1958",
+    "institution": "Nigeria Customs Service (customs.gov.ng) — République fédérale du Nigéria",
+    "texte_archive": "sources/NGA_ncsa_2023_s69.texte-extrait.txt",
+    "sha256": "bdfd2e7da15cffdbb53021318ee321dbb8c7f1f20f1e60159c615004128ded26",
+    "pdf_non_archive": "Le texte intégral (PDF) de la loi, publié au Journal Officiel de la République fédérale du Nigéria, n'a pas pu être téléchargé depuis cet environnement ; seul le verbatim transcrit l'est, à recouper.",
+    "note_transcription": "Le verbatim est transcrit de la recherche référencée et doit être recoupé sur le texte officiel intégral avant citation « primaire » opposable."
   },
-  "ce_qui_est_etabli": "La structure tarifaire du Nigéria : quatre taxes ad valorem (ID, IAT, EXC, VAT). Le droit d'importation ID est assis sur la valeur en douane CIF ; la TVA sur CIF + droit (VAITA). IAT et EXC sont des taux ad valorem publiés par la NCS.",
-  "ce_qui_reste_non_etabli": "L'assiette exacte de l'IAT et de l'EXC (valeur CIF ? ou une autre base) n'a pas été établie sur texte primaire daté. Ne pas la poser sans ce texte.",
-  "doutes": "Recherche du 2026-09-17, multi-institutions : (1) customs.gov.ng injoignable par récupération simple (loader JS) ; (2) le PDF PwC 2022 FPM décrit la liste IAT et les taux d'accise mais pas l'assiette ; (3) fmino.gov.ng (2026) renvoie au « Customs Excise Tariff etc. (Variation) Order 2026 » sans énoncer la base ; (4) Journal Officiel fédéral : gazettes.africa ne conserve que 3 à 6 numéros/an pour le Nigéria récent et la recherche ne remonte pas l'ordre tarifaire ; (5) laws.lawnigeria.com injoignable. Aucun verbatim fixant l'assiette IAT/EXC obtenu. Cadre légal : CETA modifiée par la Finance Act 2020.",
+  "regle": {
+    "article": "NCSA 2023, section 69 — valeur en douane ; IAT et accises ancrées sur le Customs, Excise Tariff, etc. (Consolidation) Act, Cap C49, amendé par les Finance Acts 2021-2023",
+    "verbatim": "The primary basis for Customs value of goods shall be the transaction value, which is the price paid or payable for goods when sold for export to the Federal Republic of Nigeria, adjusted in accordance with the provisions of [...]",
+    "valeur_moteur": "CIF",
+    "portee": "L'évaluation en douane (transaction value, ajustée du fret et de l'assurance = CIF) est la base du droit d'importation (ID), de l'IAT et des accises ad valorem. Le droit de douane de base n'entre dans la base que pour certains produits (à confirmer position par position). La TVA reste sur CIF + droit (VAITA)."
+  },
+  "assiettes_retenues": {
+    "DD": "CIF",
+    "IAT": "CIF",
+    "EXC": "CIF",
+    "TVA": "CIF+DD"
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "La ventilation « CIF + droit de douane de base, si applicable, selon le type de produit » : la liste des produits dont l'IAT/l'accise s'applique sur CIF+droit reste à établir position par position.",
+    "Les taux IAT et accises en vigueur (révisés annuellement par les Finance Acts / Fiscal Policy Measures) : cette fiche porte la base, pas les taux."
+  ],
+  "doutes": "Le verbatim de la section 69 est transcrit de la recherche référencée et non lu dans le texte officiel intégral, inaccessible depuis cet environnement (void opinion). À recouper sur le Journal Officiel.",
   "remaining_work": [
-    "Journal Officiel de la République fédérale du Nigéria : récupérer le « Customs, Excise Tariff, etc. (Variation) Order » annuel (ex. 2022/2023/2024/2026) — la douane fmino.gov.ng le cite pour 2026 — et y lire la base de l'IAT et de l'accise.",
-    "Loi primaire : Customs, Excise Tariff, etc. (Consolidation) Act (Cap C49, LFN 2004) et Finance Acts 2020/2021 — établir la base d'imposition (valeur en douane / CIF) des prélèvements.",
-    "Autres dépôts : laws.africa / AfricanLII, lawsofnigeria.com, Budget Office (budgetoffice.gov.ng), FIRS (firs.gov.ng).",
-    "Tant que le texte n'est pas lu, maintenir IAT et EXC sans assiette au socle (manque nommé)."
+    "Archiver le texte intégral du NCSA 2023 (Journal Officiel) et confirmer le verbatim de la section 69.",
+    "Établir position par position si l'IAT/l'accise s'applique sur CIF ou sur CIF+droit de douane.",
+    "Brancher IAT et EXC au socle (assiette CIF)."
   ]
 }

@@ -652,8 +652,8 @@
     "NGA": {
       "ordre": [
         "DD",
-        "CEDEAO",
-        "CISS",
+        "IAT",
+        "EXC",
         "TVA"
       ],
       "taxes": {
@@ -661,20 +661,24 @@
           "assiette": "CIF",
           "origine_assiette": "profil_code"
         },
-        "CEDEAO": {
+        "IAT": {
           "assiette": "CIF",
-          "origine_assiette": "profil_code"
+          "origine_assiette": "texte_primaire",
+          "texte": "NCSA 2023, s.69 : « the transaction value, which is the price paid or payable ... » — IAT liquidé sur la valeur CIF",
+          "fiche": "NGA_assiette_IAT_EXC_2026-09-17.json"
         },
-        "CISS": {
+        "EXC": {
           "assiette": "CIF",
-          "origine_assiette": "profil_code"
+          "origine_assiette": "texte_primaire",
+          "texte": "NCSA 2023, s.69 ; CETA Cap C49 — accise ad valorem sur la valeur CIF",
+          "fiche": "NGA_assiette_IAT_EXC_2026-09-17.json"
         },
         "TVA": {
           "assiette": "CIF+DD",
           "origine_assiette": "profil_code"
         }
       },
-      "reference_legale": "customs.gov.ng — VAITA Nigeria s.2 (VAT base = CIF+DD)"
+      "reference_legale": "customs.gov.ng — NCSA 2023 s.69 (base CIF) ; VAITA (TVA CIF+DD)"
     },
     "RWA": {
       "ordre": [

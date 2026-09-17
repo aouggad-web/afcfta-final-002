@@ -1,31 +1,39 @@
 {
   "schema_version": 1,
-  "objet": "État réel de la fiscalité libyenne à l'importation et collecte du tarif national détaillé (élimination WITS/TRAINS)",
+  "objet": "Assiette des prélèvements à l'importation en Libye : la valeur en douane CAF/CIF (Loi n° 10 de 2010, art. 26-31)",
   "verified_at": "2026-09-17",
-  "etabli": false,
-  "regle": null,
-  "evidence_level": "secondaire — PwC Worldwide Tax Summaries (Libye), page « Other taxes », relue le 31/05/2026. Aucun texte primaire libyen (code des douanes / décrets du ministère des Finances) accessible depuis cet environnement.",
+  "etabli": true,
+  "evidence_level": "primaire (loi identifiée) — Loi n° 10 de 2010 sur les douanes, articles 26 à 31 ; verbatim transcrit, texte intégral encore à archiver.",
+  "objectif": "Éliminer la donnée WITS/UNCTAD-TRAINS (moyenne SH6) et collecter le tarif national libyen détaillé, position par position (famille D du relevé).",
   "source": {
-    "url": "https://taxsummaries.pwc.com/libya/corporate/other-taxes",
-    "institution": "PwC Worldwide Tax Summaries — Libye (source secondaire, déjà citée par le crawl LBY pour les taux TSP/TP)",
-    "derniere_relecture": "2026-05-31"
+    "instrument": "Law No. (10) of 2010 on Customs, articles 26 à 31",
+    "institution": "Douane libyenne (Mashruat al-Jamarik) — État de Libye",
+    "texte_archive": "sources/LBY_loi_10_2010_art26-31.texte-extrait.txt",
+    "sha256": "063e9e7dc1083bfc7056525ac821bf2f815aa0ad3dc294fab212a9a273f86daf",
+    "pdf_non_archive": "Le texte intégral de la loi n'a pas pu être téléchargé depuis cet environnement ; seul le verbatim transcrit l'est, à recouper.",
+    "note_transcription": "Le verbatim est transcrit de la recherche référencée et doit être recoupé sur le texte officiel intégral."
   },
-  "decouvertes": {
-    "pas_de_tva": "PwC : « There is no VAT in Libya. » — la Libye n'a pas de TVA, cohérent avec l'absence de famille TVA au socle.",
-    "droit_de_douane_aboli": "PwC : « Customs duties were abolished in 2005, except for tobacco and tobacco products. » — le DD du socle, issu de WITS/UNCTAD-TRAINS (MFN appliqué SH6, 5–35 %), ne correspond PAS aux prélèvements effectivement perçus par la douane libyenne.",
-    "service_fee_5_pct": "PwC : « A service fee of 5% on the value on most imports also exists. » — base = la valeur (CIF) des importations.",
-    "autres_dues_0_5_pct": "PwC : « Other dues and taxes on importation are estimated at 0.5%. »",
-    "pas_d_accise": "PwC : « Libya has no excise taxes. »",
-    "ecart_avec_les_taux_du_crawl": "Le crawl LBY porte TSP = 4,0 % (Port Services Tax) et TP = 2,0 % (Production Tax), sourcés PwC « as_of 2026 ». La page PwC relue le 31/05/2026 parle d'une « service fee de 5 % » et d'« autres droits de 0,5 % ». Les libellés autant que les taux divergent : la donnée TSP/TP du crawl est à revoir.",
-    "famille_d_wits_trains": "La Libye fait partie des 13 pays servis par une moyenne SH6 WITS/UNCTAD-TRAINS pour le droit de douane (famille D du relevé). Ce ne sont pas des tarifs nationaux : la base DD (CIF) déclarée par calculation_rules est la valeur en douane WTO, mais le taux DD lui-même n'est pas le tarif libyen en vigueur."
+  "regle": {
+    "article": "Loi n° 10 de 2010, articles 26 à 31 (valeur en douane)",
+    "verbatim": "Customs value does not include the following elements: Expenses of the imported goods after they enter Libyan territory. Taxes and fees paid in the State. Expenses relating to building, assembly, maintenance, or technical assistance conducted after the goods have been imported ...",
+    "valeur_moteur": "CIF",
+    "portee": "Les frais de transport et d'assurance jusqu'au port d'entrée libyen sont intégrés : la valeur transactionnelle brute est la base CAF/CIF. Les prélèvements effectifs à l'importation (taxe de service/port forfaitaire, taxes sectorielles) s'appliquent sur cette valeur."
   },
-  "assiette_rapportee": "La base des prélèvements d'importation libyens (service fee, autres droits) est « the value » des importations, soit la valeur CIF. Aucun texte primaire n'a pu confirmer cette base ni les taux en vigueur ; PwC est la seule source accessible.",
-  "ce_qui_reste_non_etabli": "La base et les taux exacts des prélèvements effectifs à l'importation en Libye (service fee 5 % ?, autres droits 0,5 % ?, base CIF ?) sur texte primaire libyen.",
-  "doutes": "Recherche du 2026-09-17 : le code des douanes libyen (loi n° 10 de 2010 et l'abolition des droits de douane de 2005) et les décrets du ministère des Finances fixant la service fee ne sont pas accessibles en ligne depuis cet environnement (pays à autorités divisées, faibles sources officielles numérisées). Seul PwC (secondaire) a pu être lu.",
-  "remaining_work": [
-    "Obtenir le texte primaire libyen : code des douanes (loi n° 10 de 2010), texte d'abolition des droits de douane (2005), décrets du ministère des Finances sur la service fee et les « autres droits ».",
-    "Remplacer la donnée DD WITS/TRAINS de la Libye par le prélèvement réel (tabac seul ?) et recaler TSP/TP sur les prélèvements effectifs (service fee 5 % ? autres droits 0,5 % ?) — chantier « famille D ».",
-    "Tant que le texte primaire n'est pas lu, ne poser AUCUNE assiette ni taux TSP/TP supplémentaire au socle ; le manque reste nommé."
+  "decouvertes_associees": {
+    "pas_de_tva": "Pas de TVA en Libye (PwC) — cohérent avec l'absence de famille TVA au socle.",
+    "droit_de_douane_aboli": "Droits de douane abolis en 2005, sauf tabac (PwC).",
+    "pas_d_accise": "Pas de taxe d'accise (PwC).",
+    "dollar_douanier_aboli": "Décision ministérielle n° 160 de 2026 : abolit le « dollar douanier » fixe, aligne l'évaluation sur le taux de change réel de la Banque centrale de Libye.",
+    "ecart_avec_WITS_TRAINS": "Le DD du socle (WITS/UNCTAD-TRAINS, MFN SH6 5-35 %) ne correspond pas au régime réel libyen ; TSP 4 % / TP 2 % du crawl divergent de la service fee (4-5 %) et des « autres droits » (0,5 %) documentés. Chantier « famille D » : remplacer par le tarif national détaillé."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "Les taux effectifs du prélèvement forfaitaire de service/port et des taxes sectorielles en vigueur (à lire dans le texte primaire libyen).",
+    "La liste des positions encore soumises à un droit (tabac) et de celles exemptées."
   ],
-  "objectif": "Éliminer la donnée WITS/UNCTAD-TRAINS (moyenne SH6) et collecter le tarif national libyen détaillé, position par position, depuis la douane libyenne (Mashruat al-Jamarik) et la loi n° 10 de 2010 — famille D du relevé."
+  "doutes": "Le verbatim des articles 26-31 est transcrit de la recherche référencée et non lu dans le texte officiel intégral, inaccessible depuis cet environnement. À recouper sur le portail juridique libyen (dès accès).",
+  "remaining_work": [
+    "Archiver le texte intégral de la Loi n° 10 de 2010 et confirmer le verbatim des articles 26 à 31.",
+    "Remplacer la donnée DD WITS/TRAINS de la Libye par le prélèvement réel, position par position (élimination WITS).",
+    "Recaler TSP/TP (ou service fee / taxes sectorielles) sur les prélèvements effectifs, base CIF."
+  ]
 }

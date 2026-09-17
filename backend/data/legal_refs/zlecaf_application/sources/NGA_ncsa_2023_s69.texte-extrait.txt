@@ -1,0 +1,27 @@
+Nigéria — base d'imposition douanière (valeur CIF) : Nigeria Customs Service Act, 2023, section 69
+Référence : Nigeria Customs Service Act, 2023 (Act No. 20), promulgué et publié au
+Journal Officiel de la République fédérale du Nigéria. Remplace la CEMA de 1958.
+Le texte intégral (PDF) de l'acte n'a pas pu être téléchargé depuis cet environnement
+(lawnigeria injoignable, NCS derrière Cloudflare) ; le verbatim ci-dessous est transcrit
+de la recherche référencée et est à recouper sur le texte officiel intégral du Journal
+Officiel avant toute citation en « primaire » opposable.
+
+--- Section 69 (base d'évaluation en douane) ---
+
+"The primary basis for Customs value of goods shall be the transaction value, which is
+the price paid or payable for goods when sold for export to the Federal Republic of
+Nigeria, adjusted in accordance with the provisions of [...]"
+
+En pratique, cet ajustement intègre le coût du transport et de l'assurance jusqu'au
+Nigéria : la base d'évaluation en douane est la valeur CIF (Cost, Insurance, Freight).
+
+--- IAT (Import Adjustment Tax) et accises ad valorem ---
+
+Ancrage : Customs, Excise Tariff, etc. (Consolidation) Act, Cap C49 (amendé par les
+Finance Acts 2021 à 2023). Les taux IAT et accises sont révisés annuellement par les
+Fiscal Policy Measures (circulaires présidentielles), dont la version 2026 (en vigueur le
+1er avril 2026) encadre l'IAT sur 192 lignes tarifaires.
+
+Mécanisme de base : l'IAT et les accises ad valorem sont liquidés sur la même base
+d'évaluation en douane brute (valeur CIF, augmentée du droit de douane de base quand
+celui-ci entre dans la base selon le type de produit).

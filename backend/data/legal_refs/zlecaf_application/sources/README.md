@@ -24,6 +24,8 @@ celui qui a été lu.
 | `SOM_somcas_sop_annexe-C.texte-extrait.txt` | Somalie | Somalia Revenue Directorate / Somali Customs | SOP SOMCAS, Annexe C « Customs Valuation » : valeur = « normal price » alignée sur la « transaction value » du WTO Valuation Agreement ; traitement FOB/CIF (fret + assurance). Extrait des pages 29-31 ; PDF de 35 p. non archivé |
 | `DZA_ctca_TVA_extrait.txt` | Algérie | Direction Générale des Douanes | Code des taxes sur le chiffre d'affaires (CTCA), extraits TVA : taux normal 19 % (art. 21), taux réduit 9 % (art. 23), exonérations (art. 8/9/10/11) ; + art. 214 LF2025 (café vert) reconduit par la LF2026. Extrait du PDF de 83 p. non archivé |
 | `SACU_assiette_DD.source-extrait.txt` | SACU (BWA/LSO/NAM/SWZ/ZAF) | SARS + BURS/LRA/NamRA/ERA | Customs and Excise Act 91/1964 s.65/67 + politique SARS SC-CR-A-03 : le droit de douane s'assied sur la valeur de transaction base FOB (fret/assurance internationaux exclus), pas CIF. PDF non archivés |
+| `NGA_ncsa_2023_s69.texte-extrait.txt` | Nigéria | Nigeria Customs Service | NCSA 2023, s.69 : base d'évaluation = transaction value (CIF) ; IAT et accises ad valorem sur CIF. Texte intégral JO à archiver |
+| `LBY_loi_10_2010_art26-31.texte-extrait.txt` | Libye | Douane libyenne | Loi n° 10 de 2010, art. 26-31 : valeur en douane CAF/CIF ; droits de douane abolis (2005) sauf tabac ; service fee. Texte intégral à archiver |
 
 ## Fichiers `.ocr-ara.txt`
 
