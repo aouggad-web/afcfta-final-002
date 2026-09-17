@@ -328,3 +328,71 @@ def test_la_liste_des_pays_annonce_les_couvertures_partielles(client):
     assert "ZAF" in corps["totaux"]["pays_partiels"]
     assert corps["pays"]["ZAF"]["etat"] == "PARTIEL"
     assert set(corps["totaux"]["pays_vides"]) == {"DJI", "ERI"}
+
+
+# ── Le bloc réglementaire — chantier L4 ───────────────────────────────────────
+@besoin_socle
+def test_la_route_sert_le_bloc_reglementaire_comme_le_chemin_historique(client):
+    """`build_regulatory_blocks` est le point d'entrée unique de toutes les
+    routes de calcul. Ne pas l'appeler ici faisait dire à la même importation
+    deux choses différentes selon la route servie."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "CIV",
+            "origine": "GHA",
+            "code_sh": "7612900000",
+            "valeur_cif": 10000,
+        },
+    ).json()
+    assert corps["regulatory_compliance"]["country_iso3"] == "CIV"
+    assert "regulatory_cost_total" in corps["regulatory_cost"]
+    assert "reliability" in corps["regulatory_reported"]
+
+
+@besoin_socle
+def test_les_frais_reglementaires_n_entrent_jamais_dans_le_cout_douanier(client):
+    """L'invariant du bloc : il est informatif. Un frais de prestataire ajouté
+    au total douanier ferait payer à l'importateur une somme que la douane ne
+    perçoit pas — et la rendrait indiscernable d'un droit."""
+    # Couloir Ghana → Nigeria : l'un des rares dont les frais réglementaires
+    # soient réellement chiffrés. Ailleurs le service rend `None` — « non
+    # chiffré » — et le test ne mordrait sur rien.
+    charge = {
+        "destination": "NGA",
+        "origine": "GHA",
+        "code_sh": "0101210000",
+        "valeur_cif": 10000,
+    }
+    corps = client.post("/calcul", json=charge).json()
+    frais = corps["regulatory_cost"]["regulatory_cost_total"]
+    assert frais, "le couloir de référence doit porter un frais chiffré"
+    # Le total douanier reste exactement la somme des droits liquidés.
+    total_lignes = sum(
+        ligne["montant"] for ligne in corps["npf"]["lignes"] if ligne["statut"] == "CALCULE"
+    )
+    assert corps["npf"]["total_droits"] == pytest.approx(total_lignes, abs=0.01)
+    assert corps["npf"]["total_a_payer"] == pytest.approx(
+        corps["valeur_cif"] + corps["npf"]["total_droits"], abs=0.01
+    )
+
+
+@besoin_socle
+def test_un_bloc_reglementaire_en_panne_n_interrompt_pas_le_calcul(client, monkeypatch):
+    """Fail-safe : l'indisponibilité du registre réglementaire rend trois
+    `None` — « non consulté », jamais « zéro frais » — et laisse le calcul
+    tarifaire intact."""
+    import routes_calcul_test as module
+
+    def _tombe(*_args, **_kwargs):
+        raise RuntimeError("registre réglementaire indisponible")
+
+    monkeypatch.setattr(module, "build_regulatory_blocks", _tombe)
+    corps = client.post(
+        "/calcul",
+        json={"destination": "CIV", "code_sh": "7612900000", "valeur_cif": 1000},
+    ).json()
+    assert corps["npf"]["total_droits"] == 380.0
+    assert corps["npf"]["etat"] in {"COMPLET", "PARTIEL"}
+    for cle in ("regulatory_compliance", "regulatory_cost", "regulatory_reported"):
+        assert corps[cle] is None

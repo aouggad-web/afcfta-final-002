@@ -10,6 +10,20 @@ Ce que cette route ne fait pas, délibérément : aucun repli silencieux vers un
 autre source, aucun taux dérivé du NPF par un coefficient, aucune position
 voisine servie à la place de celle qui manque. Une indisponibilité est une
 réponse, pas une panne à masquer.
+
+**Le bloc réglementaire (chantier L4)** — formalités, prestataires mandatés,
+frais vérifiés — est joint ici, et il est de nature différente du reste : il
+ne dépend ni du socle ni du moteur, seulement du couple origine/destination et
+de la valeur. `build_regulatory_blocks` se déclare point d'entrée unique de
+toutes les routes de calcul, précisément pour que cette ventilation ne change
+pas selon le chemin emprunté ; ne pas l'appeler ici faisait dire à la même
+importation deux choses différentes selon la route servie.
+
+Deux règles le gouvernent, reprises telles quelles du chemin historique :
+il n'entre **jamais** dans le coût douanier — les droits et taxes restent le
+seul contenu de `npf`/`preference` — et son indisponibilité ne fait jamais
+échouer le calcul tarifaire : les trois champs valent alors `None`, qui se lit
+« non disponible », jamais « zéro frais ».
 """
 
 from __future__ import annotations
@@ -23,9 +37,15 @@ from pydantic import BaseModel, Field
 from services import socle
 from services.calcul import calculer
 from services.preference import taux_preferentiels
+from services.regulatory_fee_service import build_regulatory_blocks
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
+
+#: Les trois champs du bloc réglementaire, nommés une fois pour que la réponse
+#: les porte tous les trois ou aucun — un bloc à moitié servi laisserait croire
+#: qu'un volet est vide alors qu'il n'a pas été consulté.
+REGLEMENTAIRE = ("regulatory_compliance", "regulatory_cost", "regulatory_reported")
 
 
 class DemandeCalcul(BaseModel):
@@ -88,7 +108,38 @@ def calcul(demande: DemandeCalcul):
     )
     resultat["provenance"] = provenance
     resultat["preference_zlecaf"] = {k: v for k, v in preference.items() if k != "taux"}
+    resultat.update(_bloc_reglementaire(demande.destination, demande.origine, demande.valeur_cif))
     return resultat
+
+
+def _bloc_reglementaire(destination: str, origine: Optional[str], valeur_cif: float) -> dict:
+    """Formalités, prestataires mandatés et frais vérifiés — informatif, jamais
+    additionné aux droits.
+
+    `fob_value` reçoit la valeur CIF, comme le fait le chemin historique. Ce
+    n'est pas exact au sens douanier — le FOB exclut fret et assurance — mais
+    les deux routes doivent répondre la même chose sur la même importation :
+    corriger ici seulement ferait diverger les deux chemins juste avant de les
+    réunir. La correction, si elle vient, vaudra pour le point d'entrée commun.
+    """
+    origine_iso3 = (origine or "").upper() or None
+    try:
+        blocs = build_regulatory_blocks(
+            destination.upper(), origine_iso3, fob_value=valeur_cif, cif_value=valeur_cif
+        )
+    except Exception as exc:  # garde-fou : le calcul tarifaire n'en dépend pas
+        logger.warning(
+            "Bloc réglementaire indisponible pour %s->%s (calcul tarifaire non affecté) : %s",
+            origine_iso3,
+            destination,
+            exc,
+        )
+        return {
+            "regulatory_compliance": None,
+            "regulatory_cost": None,
+            "regulatory_reported": None,
+        }
+    return {cle: blocs[cle] for cle in REGLEMENTAIRE}
 
 
 @router.get("/calcul/pays", summary="Pays servis par le socle, et leur couverture")
