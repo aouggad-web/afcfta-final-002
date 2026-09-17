@@ -1734,6 +1734,30 @@ def calculate_import_taxes(
         if "DD" in taxes_detail:
             taxes_detail["DD"] = {**taxes_detail["DD"], "rate": dd_rate_pct}
 
+    # Algérie : le tarif officiel de la DGD ne publie la TVA que là où elle est
+    # due. Une position publiée sans TVA est une exonération — articles 8, 9, 10
+    # et 11 du Code des taxes sur le chiffre d'affaires (viandes sous taxe
+    # sanitaire, lait, médicaments, farines et semoules, or, navires ; café vert
+    # exonéré par les lois de finances prorogées au 31/12/2026) — et non une
+    # donnée manquante. La lire « 0 % » avec le signal `tva_exoneree` évite de
+    # bloquer tout le calcul au garde CALCULATION_UNAVAILABLE alors que les
+    # autres droits de la position sont complets. Une position sans droit de
+    # douane ET sans TVA (ex. 1001110000) reste incomplète et garde ce garde.
+    tva_exoneree = False
+    if country_iso3 == "DZA" and vat_rate_pct is None and dd_rate_pct is not None:
+        vat_rate_pct = 0.0
+        tva_exoneree = True
+    for code in list(taxes_detail.keys()):
+        entree = taxes_detail[code]
+        if (
+            country_iso3 == "DZA"
+            and _is_vat_code(code)
+            and isinstance(entree, dict)
+            and entree.get("rate") is None
+        ):
+            taxes_detail[code] = {**entree, "rate": 0.0}
+            tva_exoneree = True
+
     missing = [
         code
         for code, rate in (("DD", dd_rate_pct), ("TVA", vat_rate_pct))
@@ -2138,6 +2162,14 @@ def calculate_import_taxes(
         # programme. `None` quand le plancher n'a pas mordu, soit le cas
         # général.
         "plancher_npf": _zctx.get("plancher_npf"),
+        # Renseigné quand une position algérienne est lue sans TVA : l'absence
+        # de TVA sur le tarif DGD est une exonération (0 %), pas un trou.
+        "tva_exoneree": tva_exoneree,
+        "tva_exoneree_source": (
+            "CTCA art. 8, 9, 10 et 11 — fiche DZA_taux_TVA_2026-09-17.json"
+            if tva_exoneree
+            else None
+        ),
         # DOCUMENTED | NOT_AVAILABLE | OFFER_ONLY | PARTNER_NOTICE_REQUIRED
         "zlecaf_status": zlecaf_status,
         "zlecaf_rate_expression": zlecaf_rate_expression,

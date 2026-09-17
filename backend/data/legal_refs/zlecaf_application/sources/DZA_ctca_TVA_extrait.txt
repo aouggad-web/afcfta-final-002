@@ -1,0 +1,47 @@
+Algérie — Code des taxes sur le chiffre d'affaires (CTCA), extraits TVA
+Source : https://www.douane.gov.dz/IMG/pdf/code_des_taxes_sur_le_chiffre_d_affaire.pdf
+Direction Générale des Douanes — douane.gov.dz. PDF de 83 pages, 1,1 Mo.
+Extrait automatique du PDF officiel, non retouché, limité aux dispositions qui
+fixent le taux de la TVA (art. 21 et 23) et les exonérations (art. 8, 9, 10, 11).
+
+--- Taux ---
+
+Art. 21 - La taxe sur la valeur ajoutée est perçue au taux normal de 19 %.(1)
+
+Art. 23 - Le taux réduit de la taxe sur la valeur ajoutée est fixé à 9 %. (3)
+
+--- Exonérations ---
+
+Art. 8 - Sont exclues du champ d'application de la taxe sur la valeur ajoutée :
+1) Les affaires de vente portant sur :
+a) les produits passibles de la taxe sanitaire sur les viandes à l'exception des viandes rouges congelées;
+b) Les dépouilles provenant des animaux soumis à la taxe sanitaire sur les viandes, mais seulement en se qui concerne la première vente après l'abattage.
+
+Art. 9 - Sont exemptés de la taxe sur la valeur ajoutée :
+1) Les opérations de vente portant sur le pain, les farines panifiables utilisées à la fabrication de ce pain et les céréales utilisées à la fabrication de ces farines, ainsi que celles portant sur les semoules;
+2) Les opérations de vente portant sur les:
+— lait et crème de lait non concentrés, ni additionnés de sucre ou d'autres édulcorants (n° 04-01 du TDA);
+— lait et crème de lait concentrés, ou additionnés de sucre ou d'autres édulcorants (n° 04-02 du TDA), y compris les laits infantiles (n° 19-01 du TDA);
+3) les opérations de vente portant sur les produits pharmaceutiques figurant dans la nomenclature nationale du médicament;
+[...]
+28) le poulet de chair et les œufs de consommation produits localement.
+
+B – Affaires faites à l'importation :
+Art. 10 - Les produits dont la vente à l'intérieur est exonérée de la taxe sur la valeur ajoutée sont, à l'importation, exemptés dans les mêmes conditions et sous les mêmes réserves de ladite taxe.
+
+Art. 11 - Sont, en outre, exonérés de la taxe sur la valeur ajoutée, à l'importation :
+1) les marchandises placées sous l'un des régimes suspensifs des droits de douanes ci-après: entrepôt, admission temporaire, transit, transbordement, dépôt, sous réserve des dispositions spéciales prévues en la matière par le code des douanes notamment son article 178;
+[...]
+6) l'or à usage monétaire de la sous position 71-08-20-00, ainsi que la monnaie d'or de la sous position 71-18-90-10 ;
+[...]
+8) Les navires destinés aux compagnies de navigation maritime figurant aux positions n° 89-01, 89-02, 89-04, 89-05, 89-06 et 89-08 du tarif douanier.
+
+Art. 12 - Ne peuvent bénéficier des exonérations prévues aux articles 9 et 11 que les produits proprement dit spécialement visés à l'exclusion de ceux auxquels ils sont assimilés pour l'application du tarif des douanes.
+
+--- Hors de ce texte (lois de finances récentes) ---
+
+Café vert (robusta et arabica) : exonération totale de la TVA (ainsi que de la
+TIC) et réduction des droits de douane à 5 % sur les importations de café,
+introduite par l'article 214 de la Loi de Finances pour 2025, puis reconduite
+et prolongée jusqu'au 31 décembre 2026 par les dispositions budgétaires de la
+Loi de Finances pour 2026 (numéro d'article LF2026 à reporter).

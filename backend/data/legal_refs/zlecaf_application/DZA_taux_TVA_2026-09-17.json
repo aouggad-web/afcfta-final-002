@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "objet": "TVA algérienne : taux normal de 19 %, taux réduit de 9 %, et exonérations à l'importation — dont la règle de lecture « TVA absente du tarif = exonérée à 0 % ».",
+  "verified_at": "2026-09-17",
+  "evidence_level": "primaire — Code des taxes sur le chiffre d'affaires (CTCA) publié par la Direction Générale des Douanes (douane.gov.dz), articles 8, 9, 10, 11, 21 et 23 lus dans le PDF et archivés en extrait. Le café vert vient des lois de finances prorogées au 31/12/2026.",
+  "source": {
+    "url": "https://www.douane.gov.dz/IMG/pdf/code_des_taxes_sur_le_chiffre_d_affaire.pdf",
+    "institution": "Direction Générale des Douanes — douane.gov.dz (République algérienne)",
+    "texte_archive": "sources/DZA_ctca_TVA_extrait.txt",
+    "sha256": "cf5c96f4dca4d9d524271b93d99fdb73cc816ab65b3fbb60f6d92a4efd7983e8",
+    "pdf_non_archive": "PDF de 1,1 Mo et 83 pages non archivé dans le dépôt ; seul l'extrait des articles TVA l'est. Empreinte du PDF au moment de la lecture, à titre d'identification et non d'archivage.",
+    "pdf_sha256": "6eac8e2c7f1ace85d9b3c29acc2885c8eb5db83edb8fcc602ac7d23f1149bcc1",
+    "pdf_taille_octets": 1119134,
+    "pdf_pages": 83
+  },
+  "regle": {
+    "taux_normal_pct": 19.0,
+    "taux_reduit_pct": 9.0,
+    "verbatim_taux_normal": "Art. 21 - La taxe sur la valeur ajoutée est perçue au taux normal de 19 %.",
+    "verbatim_taux_reduit": "Art. 23 - Le taux réduit de la taxe sur la valeur ajoutée est fixé à 9 %.",
+    "verbatim_exoneration_viandes": "Art. 8 - Sont exclues du champ d'application de la taxe sur la valeur ajoutée : 1) Les affaires de vente portant sur : a) les produits passibles de la taxe sanitaire sur les viandes à l'exception des viandes rouges congelées",
+    "verbatim_exoneration_import": "Art. 10 - Les produits dont la vente à l'intérieur est exonérée de la taxe sur la valeur ajoutée sont, à l'importation, exemptés dans les mêmes conditions et sous les mêmes réserves de ladite taxe.",
+    "exoneres_principaux": [
+      "viandes passibles de la taxe sanitaire (art. 8.1.a), sauf viandes rouges congelées",
+      "pain, farines panifiables, céréales pour ces farines, semoules (art. 9.1)",
+      "lait et crème de lait, y compris laits infantiles (art. 9.2)",
+      "produits pharmaceutiques de la nomenclature nationale du médicament (art. 9.3)",
+      "poulet de chair et œufs de consommation produits localement (art. 9.28)",
+      "or à usage monétaire (art. 11.6) et navires de commerce maritime (art. 11.8)",
+      "café vert robusta et arabica — art. 214 de la Loi de Finances 2025 (exonération totale de TVA et de TIC, droit de douane ramené à 5 %), reconduit jusqu'au 31 décembre 2026 par la Loi de Finances 2026"
+    ],
+    "regle_read_moteur": "Une position du tarif DGD publiée SANS TVA est une exonération (0 %), pas une donnée manquante : la DGD laisse la colonne TVA vide là où aucune TVA n'est due. Dans le crawl algérien, ces positions portent DD/TCS/PRCT/DAPS mais aucune entrée TVA.",
+    "portee": "Taux standard 19 %, réduit 9 % ; exonérations art. 8/9/10/11. L'absence de TVA sur une position du tarif algérien doit être lue « 0 % (exonérée) », et non « taux absent »."
+  },
+  "consequences": {
+    "diagnostic": "Le crawl algérien porte la TVA pour 16 766 positions (19 % × 16 273, 9 % × 493) et n'en porte aucune pour 460 positions — viandes (ch. 02), lait (ch. 04), légumes secs (ch. 07), céréales (ch. 10), farines/semoules (ch. 11), médicaments (ch. 30), or (ch. 71), navires (ch. 89)… toutes des exonérations listées.",
+    "symptome": "Sur le chemin prioritaire, une position exonérée (ex. 0207121000, poulets 83 %) était lue comme ayant une TVA manquante, ce qui déclenchait le garde CALCULATION_UNAVAILABLE et bloquait tout le calcul — y compris le plancher NPF, qui ne dépend pourtant que du droit de douane.",
+    "correctif": "Lire l'absence de TVA algérienne comme 0 % (exonérée) tant que la position porte un droit de douane, et signaler l'exonération (champ tva_exoneree). Une position sans droit de douane ET sans TVA (ex. 1001110000, froment de semence) reste, elle, réellement incomplète et demeure CALCULATION_UNAVAILABLE."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "La liste exhaustive des positions exonérées : cette fiche établit la règle de lecture et les familles principales, pas un inventaire position par position.",
+    "L'assiette de la TVA algérienne, établie séparément (CIF + DAPS + DD, art. 21 CTCA — déjà portée par assiettes_pays.json).",
+    "Le numéro d'article exact de la Loi de Finances 2026 qui reconduit jusqu'au 31/12/2026 la disposition de l'article 214 LF2025 sur le café vert."
+  ],
+  "remaining_work": [
+    "Reporter le numéro d'article exact de la Loi de Finances 2026 reconduisant l'exonération café vert (art. 214 LF2025).",
+    "Confirmer que chaque position algérienne sans TVA relève bien d'une exonération (et non d'un échec ponctuel du crawler) avant d'étendre la règle de lecture hors de ce chemin.",
+    "Étendre la règle « TVA absente = exonérée » à tout pays dont le tarif officiel laisse la colonne TVA vide — sans jamais l'appliquer aux pays dont la collecte TVA est simplement incomplète."
+  ]
+}
