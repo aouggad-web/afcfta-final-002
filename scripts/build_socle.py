@@ -34,6 +34,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 from datetime import datetime, timezone
 
 SOCLE_VERSION = "1"
