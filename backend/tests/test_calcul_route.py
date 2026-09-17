@@ -280,20 +280,27 @@ def test_un_droit_specifique_sans_quantite_est_indisponible_pas_approche(client)
     sans = client.post(
         "/calcul", json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000}
     ).json()
+    # La TVA sud-africaine est désormais complétée depuis sa fiche, mais son
+    # assiette est « CIF+DD » : le droit manquant l'ampute, et elle ne se
+    # liquide donc pas non plus. Rien n'étant calculable, l'état reste
+    # INDISPONIBLE — et les deux manques sont nommés avec leur cause propre,
+    # la seconde citant le composant absent plutôt que de le compter zéro.
     assert sans["npf"]["etat"] == "INDISPONIBLE"
-    # La TVA sud-africaine n'est pas non plus tracée à la source (crawl SARS) :
-    # le manque de quantité pour le DD et l'absence structurelle de TVA sont
-    # deux causes distinctes, toutes deux nommées.
     assert sans["npf"]["manques"] == [
         {"code": "DD", "motif": "QUANTITE_REQUISE"},
-        {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"},
+        {"code": "TVA", "motif": "ASSIETTE_INCOMPLETE", "composants": ["DD"]},
     ]
 
     avec = client.post(
         "/calcul",
         json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000, "quantite": 500},
     ).json()
-    assert avec["npf"]["total_droits"] == 40.0  # 8c/kg × 500 kg, et non 8 %
+    # Le droit lui-même : 8c/kg × 500 kg, et non 8 % de la valeur.
+    lignes = {ligne["code"]: ligne for ligne in avec["npf"]["lignes"]}
+    assert lignes["DD"]["montant"] == 40.0
+    # Le total porte en plus la TVA sud-africaine complétée : 15 % de 1 040.
+    assert lignes["TVA"]["montant"] == 156.0
+    assert avec["npf"]["total_droits"] == 196.0
 
 
 @besoin_socle
@@ -449,9 +456,37 @@ def test_une_tva_non_collectee_est_nommee_au_lieu_d_etre_comptee_zero(client):
     """Le revers de la règle précédente : quand la fiscalité interne du pays
     de destination n'est pas collectée, le total ne doit pas se présenter comme
     complet. Les cinq pays SACU sont `PENDING_OFFICIAL_COLLECTION` pour la TVA
-    (registre des sources nationales) : un import intra-SACU a donc un droit de
-    douane nul *et* une TVA inconnue. Sans ce garde-fou, le calcul afficherait
-    « rien à payer » sur une importation qui supporte réellement la TVA."""
+    (registre des sources nationales), et aucun taux ne leur est prêté. La
+    Namibie sert de témoin : son crawl ne porte aucune TVA et aucune fiche ne
+    l'établit, donc rien n'est complété et le manque reste nommé."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "NAM",
+            "origine": "ZAF",
+            "code_sh": "010121",
+            "valeur_cif": 10000,
+        },
+    ).json()
+    preference = corps["preference"]
+    assert preference["etat"] != "COMPLET"
+    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in preference["manques"]
+    assert corps["complements_nationaux"] == []
+    # Aucune économie n'est annoncée : comparer deux totaux incomplets
+    # produirait un chiffre plausible construit sur une base inconnue.
+    assert corps["economie"] is None
+
+
+@besoin_socle
+def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
+    """L'Afrique du Sud est le point de liquidation réel d'une grande part des
+    importations de la SACU — elle dédouane pour les membres enclavés, dans le
+    cadre du pool de recettes commun. Son crawl SARS ne porte pourtant aucune
+    TVA : une importation intra-SACU affichait « rien à payer ».
+
+    Le taux, établi sur source primaire (fiche ZAF_taux_TVA_2026-09-17), est
+    désormais appliqué — et jamais en silence : la ligne porte sa source et sa
+    réserve, et la réponse l'annonce dans `complements_nationaux`."""
     corps = client.post(
         "/calcul",
         json={
@@ -461,12 +496,33 @@ def test_une_tva_non_collectee_est_nommee_au_lieu_d_etre_comptee_zero(client):
             "valeur_cif": 10000,
         },
     ).json()
-    preference = corps["preference"]
-    assert preference["etat"] != "COMPLET"
-    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in preference["manques"]
-    # Aucune économie n'est annoncée : comparer deux totaux incomplets
-    # produirait un chiffre plausible construit sur une base inconnue.
-    assert corps["economie"] is None
+    lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert lignes["DD"]["montant"] == 0.0  # libre circulation intra-SACU
+    assert lignes["TVA"]["taux_pct"] == 15.0
+    assert lignes["TVA"]["montant"] == 1500.0  # 15 % de (10 000 + 0)
+    assert corps["preference"]["total_droits"] == 1500.0
+
+    complement = corps["complements_nationaux"][0]
+    assert complement["code"] == "TVA"
+    assert complement["motif"] == "FAMILLE_ABSENTE_DE_LA_SOURCE"
+    assert "ZAF_taux_TVA" in complement["fiche"]
+    assert "zero-rated" in complement["note"]
+    # La ligne elle-même reste traçable jusqu'à l'affichage.
+    assert lignes["TVA"]["classification_source"] == "table_nationale_documentee"
+
+
+@besoin_socle
+def test_un_taux_national_ne_remplace_jamais_une_tva_deja_collectee(client):
+    """La table nationale ne comble qu'une famille entièrement absente. Là où
+    la TVA est collectée position par position, elle ne doit rien substituer :
+    une moyenne nationale ferait reculer la précision là où elle existe."""
+    corps = client.post(
+        "/calcul",
+        json={"destination": "CMR", "code_sh": "01011010", "valeur_cif": 10000},
+    ).json()
+    assert corps["complements_nationaux"] == []
+    lignes = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
+    assert lignes["TVA"]["taux_pct"] == 19.25  # le taux camerounais collecté
 
 
 # ── Le bloc réglementaire — chantier L4 ───────────────────────────────────────

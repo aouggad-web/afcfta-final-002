@@ -96,6 +96,8 @@ def calcul(demande: DemandeCalcul):
             position, demande.destination, demande.origine, demande.code_sh
         )
 
+    position, complements = _completer_famille_absente(position, demande.destination, provenance)
+
     resultat = calculer(
         position,
         demande.valeur_cif,
@@ -107,9 +109,61 @@ def calcul(demande: DemandeCalcul):
         couverture=provenance.get("couverture"),
     )
     resultat["provenance"] = provenance
+    resultat["complements_nationaux"] = complements
     resultat.update(_regimes(preference))
     resultat.update(_bloc_reglementaire(demande.destination, demande.origine, demande.valeur_cif))
     return resultat
+
+
+def _completer_famille_absente(position: dict, destination: str, provenance: dict):
+    """Ajouter la TVA nationale documentée quand la source n'en porte aucune.
+
+    Deux conditions, cumulatives et strictes : la couverture du pays doit
+    déclarer la famille entièrement absente, **et** une fiche doit établir le
+    taux sur source primaire. Faute de l'une ou de l'autre, rien n'est ajouté
+    et le manque reste nommé — un trou signalé vaut mieux qu'un taux prêté.
+
+    Le complément n'est pas silencieux : la ligne porte sa source et sa
+    réserve, et la réponse l'annonce dans `complements_nationaux`, pour qu'il
+    ne puisse jamais passer pour une donnée collectée position par position.
+
+    Cas traité aujourd'hui : l'Afrique du Sud, dont le crawl SARS ne porte
+    aucune TVA alors qu'elle est due — et qui est le point de liquidation réel
+    d'une grande part des importations de la SACU, dont elle assure le
+    dédouanement pour les membres enclavés.
+    """
+    couverture = provenance.get("couverture") or {}
+    if couverture.get("tva") is not False:
+        return position, []
+    entree = socle.tva_nationale(destination)
+    if not entree:
+        return position, []
+    if any((droit.get("famille") == "tva") for droit in position.get("droits") or []):
+        return position, []
+
+    ligne = {
+        "code": entree["code"],
+        "libelle": entree["libelle"],
+        "famille": entree["famille"],
+        "taux": entree["taux"],
+        "assiette": entree["assiette"],
+        "source": entree["source"],
+        "note": entree["note"],
+        "classification_source": "table_nationale_documentee",
+    }
+    position = dict(position, droits=list(position.get("droits") or []) + [ligne])
+    complement = {
+        "code": entree["code"],
+        "taux_pct": entree["taux"],
+        "assiette": entree["assiette"],
+        "source": entree["source"],
+        "fiche": entree["fiche"],
+        "note": entree["note"],
+        "motif": "FAMILLE_ABSENTE_DE_LA_SOURCE",
+    }
+    if entree.get("reserve_assiette"):
+        complement["reserve_assiette"] = entree["reserve_assiette"]
+    return position, [complement]
 
 
 def _regimes(preference: dict) -> dict:

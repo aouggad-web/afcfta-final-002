@@ -310,3 +310,36 @@ describe("mapCalculToLegacyResult — union douanière, un régime distinct de l
     expect(mapCalculToLegacyResult(sansUnion, contexte).customs_union).toBeNull();
   });
 });
+
+describe('mapCalculToLegacyResult — un complément national reste annoncé', () => {
+  const calcul = {
+    position: {},
+    npf: {
+      etat: 'COMPLET',
+      lignes: [ligne(), ligne({ code: 'TVA', libelle: 'VAT', famille: 'tva', taux_pct: 15, base: 1200, montant: 180, classification_source: 'table_nationale_documentee' })],
+      manques: [],
+      total_droits: 380,
+      total_a_payer: 1380,
+      taux_effectif_pct: 38,
+    },
+    complements_nationaux: [{
+      code: 'TVA', taux_pct: 15, motif: 'FAMILLE_ABSENTE_DE_LA_SOURCE',
+      fiche: 'backend/data/legal_refs/zlecaf_application/ZAF_taux_TVA_2026-09-17.json',
+      note: 'Taux standard national, non vérifié position par position',
+    }],
+    preference_zlecaf: { applique: false, statut: 'NOT_AVAILABLE', note: '' },
+    provenance: { niveau: 'national', source: {}, assiettes: {} },
+  };
+
+  it("n'annonce pas une confiance très élevée sur un taux national moyen", () => {
+    const r = mapCalculToLegacyResult(calcul, contexte);
+    expect(r.confidence_level).toBe('partial');
+    expect(r.complements_nationaux).toHaveLength(1);
+    expect(r.complements_nationaux[0].fiche).toContain('ZAF_taux_TVA');
+  });
+
+  it('garde « very_high » quand tout vient de la collecte par position', () => {
+    const sansComplement = { ...calcul, complements_nationaux: [] };
+    expect(mapCalculToLegacyResult(sansComplement, contexte).confidence_level).toBe('very_high');
+  });
+});

@@ -134,6 +134,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
   // ZLECAf : ne garder que `hasZlecaf` masquerait la colonne entière, et
   // l'importateur ne verrait jamais que sa marchandise entre à droit nul.
   const regime = calcul.regime_commercial || {};
+  const complements = calcul.complements_nationaux || [];
   const unionDouaniere = regime.regime === 'UNION_DOUANIERE' ? regime : null;
   // `regime_commercial` est récent : une réponse servie par un backend
   // antérieur ne le porte pas. On retombe alors sur l'ancien champ, sinon
@@ -310,7 +311,12 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     zlecaf_calculation_journal: hasPreference ? buildJournal(cifValue, prefLignes) : [],
     computation_order_ref: `Socle unifié — ${provenance.source?.nom || destinationCountry}`,
     last_verified: provenance.source?.collecte ? String(provenance.source.collecte).slice(0, 10) : null,
-    confidence_level: npfComplet ? 'very_high' : 'partial',
+    // Un complément national est un taux standard de pays, pas une donnée de
+    // ligne : il rend le calcul complet sans le rendre certain — un bien
+    // détaxé y recevrait le taux plein. La confiance reste donc « partielle »
+    // même quand rien ne manque.
+    confidence_level: npfComplet && !complements.length ? 'very_high' : 'partial',
+    complements_nationaux: complements,
 
     // État honnête propre au moteur unique, jamais réductible à un booléen :
     // `_npf_etat`/`_manques_npf` permettent d'afficher un motif, pas un 0.
