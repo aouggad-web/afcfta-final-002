@@ -182,7 +182,47 @@ Modèles à imiter, du plus complet au plus simple :
 `UEMOA_assiette_TVA_2026-09-14.json`, `ZAF_taux_TVA_2026-09-17.json`,
 `TUN_assiette_TVA_2026-09-14.json`.
 
-Une fois la fiche déposée, le branchement dans le calcul est mécanique :
-c'est ce qui a été fait pour l'Afrique du Sud (table `backend/socle/tva_nationale.json`,
-lue par `services/socle.py`, appliquée par `routes/calcul.py` — et toujours
-annoncée dans `complements_nationaux`, jamais en silence).
+## 6. Vérifier la fiche avant de l'intégrer
+
+```
+python3 scripts/verifier_fiche.py <chemin de la fiche>
+python3 scripts/verifier_fiche.py --toutes
+```
+
+Le script ne dit pas si la donnée est **vraie** — aucun programme ne le peut.
+Il dit si elle est **vérifiable** : source nommée et atteignable, verbatim
+présent, et surtout **empreinte du texte archivé conforme**. Un seul octet
+modifié dans le texte source fait échouer la fiche, ce qui garantit que la
+citation est bien celle qui a été lue.
+
+Il accepte `"etabli": false` comme réponse valable, à condition que le champ
+`doutes` dise ce qui a été cherché. Il signale aussi, sans bloquer, ce qui
+affaiblit une fiche : absence de référence d'article, absence de texte
+archivé, conflit de sources déclaré.
+
+## 7. Comment la fiche entre dans le calcul
+
+Deux chemins, selon la nature de la donnée. Aucun des deux ne demande
+d'écrire du code : ce sont des tables.
+
+**Un taux** (ex. la TVA d'un pays qui n'en a aucune à la source) →
+`backend/socle/tva_nationale.json`, lu par `services/socle.py`, appliqué par
+`routes/calcul.py`. La règle est stricte : le complément ne joue que si la
+famille est **entièrement absente** de la source et qu'une fiche établit le
+taux ; il ne remplace jamais une donnée collectée position par position. Il
+est toujours annoncé dans `complements_nationaux`, jamais en silence, et
+la confiance affichée retombe à « partielle ».
+
+**Une assiette** (le gros des manques) → `backend/socle/assiettes_pays.json`,
+sous `pays.<ISO3>.taxes.<CODE>`, puis `python3 scripts/build_socle.py <ISO3>`.
+Le constructeur applique une précédence claire, vérifiée : assiette portée
+par la ligne source → règle globale du fichier collecté → **cette table** →
+`assiettes_indisponibles`. L'entrée porte son `origine_assiette`, qui suit la
+donnée jusqu'à l'affichage.
+
+Deux exemples mesurés de ce que cela débloque : le Nigeria figure déjà dans
+la table mais sans `IAT` ni `EXC` — les deux prélèvements dont les 12 700
+droits sont non liquidables. La Somalie en est absente, d'où 11 545 droits
+sans assiette, soit 100 % du pays.
+
+C'est le chemin suivi pour l'Afrique du Sud, et il est reproductible tel quel.
