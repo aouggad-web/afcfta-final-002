@@ -98,15 +98,24 @@ def taux_preferentiels(
     """Rendre la table ``{code: taux}`` applicable, et la justification du refus
     quand il n'y en a pas.
 
-    Le résultat porte toujours ``applique``, ``statut`` et ``note`` : une
-    préférence refusée doit dire pourquoi, sinon elle est indiscernable d'une
-    absence de source.
+    Le résultat porte toujours ``applique``, ``statut``, ``note`` et
+    ``regime`` : une préférence refusée doit dire pourquoi, sinon elle est
+    indiscernable d'une absence de source.
+
+    ``regime`` distingue les deux régimes possibles, parce que les confondre
+    serait faux : ``UNION_DOUANIERE`` pour la libre circulation intra-bloc,
+    ``ZLECAF`` pour la préférence continentale.
     """
+    union = _union_douaniere(destination_iso3, origine_iso3)
+    if union:
+        return union
+
     from services.zlecaf_implementation_registry import implementation_decision
 
     decision = implementation_decision(destination_iso3, origine_iso3)
     resultat = {
         "applique": False,
+        "regime": "ZLECAF",
         "statut": decision["status"],
         "note": decision["note"],
         "taux": {},
@@ -153,3 +162,51 @@ def taux_preferentiels(
 
     resultat.update({"applique": True, "taux": table, "perimetre": perimetre})
     return resultat
+
+
+def _union_douaniere(destination_iso3: str, origine_iso3: str) -> Optional[Dict[str, Any]]:
+    """Libre circulation intra-union douanière — prioritaire sur la ZLECAf.
+
+    Deux pays d'une même union douanière (SACU, EAC, CEMAC, UEMOA) échangent
+    sous le régime de leur union, pas sous la ZLECAf : le droit de douane
+    intra-bloc est nul par définition du marché unique, indépendamment de la
+    nomenclature du produit et de l'état de ratification de la ZLECAf. La
+    newsletter dtic/SARS « Update on the AfCFTA » (mars 2026, FAQ Q1) le dit
+    sans détour pour l'Afrique du Sud : elle « n'échangera pas de façon
+    préférentielle avec les États membres de la SACU et de la SADC sous la
+    ZLECAf ».
+
+    Le périmètre est le seul droit de douane. La franchise intra-union porte
+    sur lui, pas sur la fiscalité interne : TVA et accises restent dues, et
+    les y étendre ferait disparaître des taxes réellement perçues.
+
+    Les zones de libre-échange (CEDEAO, SADC, COMESA) ne sont **pas** traitées
+    ici : leur franchise dépend des règles d'origine et des listes sensibles
+    du bloc, que ce moteur n'a pas. Les rendre à 0 % serait fabriquer une
+    exonération — elles restent au NPF.
+    """
+    from services.regional_blocs import CUSTOMS_UNION_NAMES, same_customs_union
+
+    bloc = same_customs_union(origine_iso3, destination_iso3)
+    if not bloc:
+        return None
+    libelle = CUSTOMS_UNION_NAMES.get(bloc, bloc)
+    return {
+        "applique": True,
+        "regime": "UNION_DOUANIERE",
+        "code_bloc": bloc,
+        "libelle_bloc": libelle,
+        "statut": "LIBRE_CIRCULATION",
+        "note": (
+            f"Échanges intra-{bloc} : libre circulation sous le régime de l'union "
+            f"douanière — {libelle}. Droit de douane 0 %, hors ZLECAf. La fiscalité "
+            "interne (TVA, accises) reste due."
+        ),
+        "taux": {"DD": {"taux": 0.0}},
+        "perimetre": {
+            "DD": (
+                f"Libre circulation intra-{bloc} (tarif extérieur commun et "
+                "franchise intérieure de l'union douanière)"
+            )
+        },
+    }

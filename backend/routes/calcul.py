@@ -107,8 +107,40 @@ def calcul(demande: DemandeCalcul):
         couverture=provenance.get("couverture"),
     )
     resultat["provenance"] = provenance
-    resultat["preference_zlecaf"] = {k: v for k, v in preference.items() if k != "taux"}
+    resultat.update(_regimes(preference))
     resultat.update(_bloc_reglementaire(demande.destination, demande.origine, demande.valeur_cif))
+    return resultat
+
+
+def _regimes(preference: dict) -> dict:
+    """Dire quel régime a joué, sans jamais l'appeler ZLECAf quand il ne l'est pas.
+
+    Deux membres d'une même union douanière échangent en libre circulation, un
+    régime *distinct* de la ZLECAf et prioritaire sur elle. Servir cette
+    franchise sous la clé `preference_zlecaf` ferait afficher « préférence
+    ZLECAf appliquée » là où la ZLECAf est précisément écartée — la même
+    confusion de régimes qu'une colonne COMESA lue comme un taux ZLECAf.
+    """
+    infos = {cle: valeur for cle, valeur in preference.items() if cle != "taux"}
+    resultat = {"regime_commercial": infos}
+    # Le cas nommé, et lui seul, est réécrit : tout le reste — ZLECAf servie,
+    # refusée, ou origine non fournie — passe tel quel. Tester le complément
+    # (« tout sauf ZLECAF ») rangeait une demande sans origine parmi les
+    # unions douanières, et lui faisait nommer un bloc qui n'existait pas.
+    if infos.get("regime") == "UNION_DOUANIERE":
+        resultat["preference_zlecaf"] = {
+            "applique": False,
+            "regime": infos.get("regime"),
+            "statut": "REGIME_UNION_DOUANIERE",
+            "note": (
+                f"La ZLECAf ne s'applique pas ici : {infos.get('libelle_bloc')} "
+                "est une union douanière, et ses membres échangent entre eux en "
+                "libre circulation — un régime distinct, et plus avantageux, que "
+                "le démantèlement progressif de la ZLECAf."
+            ),
+        }
+    else:
+        resultat["preference_zlecaf"] = infos
     return resultat
 
 

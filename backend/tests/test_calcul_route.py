@@ -330,6 +330,92 @@ def test_la_liste_des_pays_annonce_les_couvertures_partielles(client):
     assert set(corps["totaux"]["pays_vides"]) == {"DJI", "ERI"}
 
 
+# ── Union douanière : libre circulation, prioritaire sur la ZLECAf ───────────
+@besoin_socle
+def test_deux_membres_d_une_meme_union_douaniere_echangent_a_droit_nul(client):
+    """Botswana → Afrique du Sud : deux membres de la SACU. Le droit de douane
+    est nul par définition du marché unique, quelle que soit la position et
+    quel que soit l'état de la ZLECAf. Avant ce correctif, la route unifiée
+    liquidait le droit NPF plein (8c/kg) sur un échange en libre circulation."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            "quantite": 100,
+        },
+    ).json()
+    npf = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
+    pref = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert npf["DD"]["montant"] == 8.0  # 8c/kg × 100 kg, régime NPF
+    assert pref["DD"]["montant"] == 0.0  # libre circulation intra-SACU
+    assert corps["regime_commercial"]["regime"] == "UNION_DOUANIERE"
+    assert corps["regime_commercial"]["code_bloc"] == "SACU"
+
+
+@besoin_socle
+def test_une_union_douaniere_n_est_jamais_presentee_comme_une_preference_zlecaf(client):
+    """La confusion de régimes est le défaut que cette PR refuse : afficher
+    « préférence ZLECAf appliquée » là où la ZLECAf est précisément écartée
+    serait la même faute qu'une colonne COMESA lue comme un taux ZLECAf."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            "quantite": 100,
+        },
+    ).json()
+    assert corps["preference_zlecaf"]["applique"] is False
+    assert corps["preference_zlecaf"]["statut"] == "REGIME_UNION_DOUANIERE"
+    assert "union douanière" in corps["preference_zlecaf"]["note"]
+
+
+@besoin_socle
+def test_la_franchise_intra_union_ne_touche_pas_la_fiscalite_interne(client):
+    """Le périmètre est le seul droit de douane. Étendre la franchise à la TVA
+    ou aux accises ferait disparaître des taxes réellement perçues."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "CMR",
+            "origine": "GAB",
+            "code_sh": "01011010",
+            "valeur_cif": 10000,
+        },
+    ).json()
+    assert corps["regime_commercial"]["code_bloc"] == "CEMAC"
+    pref = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert pref["DD"]["taux_pct"] == 0.0
+    # Tout prélèvement hors droit de douane garde son taux NPF.
+    npf = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
+    for code, ligne in npf.items():
+        if code != "DD" and ligne["statut"] == "CALCULE":
+            assert pref[code]["taux_pct"] == ligne["taux_pct"]
+
+
+@besoin_socle
+def test_une_zone_de_libre_echange_ne_donne_aucune_franchise_automatique(client):
+    """CEDEAO : la franchise dépend des règles d'origine et des listes
+    sensibles, que ce moteur n'a pas. La rendre à 0 % serait fabriquer une
+    exonération — le couloir reste au régime que le registre décide."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "CIV",
+            "origine": "GHA",
+            "code_sh": "7612900000",
+            "valeur_cif": 10000,
+        },
+    ).json()
+    assert corps["regime_commercial"]["regime"] == "ZLECAF"
+    assert corps["regime_commercial"].get("code_bloc") is None
+
+
 # ── Le bloc réglementaire — chantier L4 ───────────────────────────────────────
 @besoin_socle
 def test_la_route_sert_le_bloc_reglementaire_comme_le_chemin_historique(client):
