@@ -1,0 +1,52 @@
+SACU — assiette du droit de douane : « value for duty purposes » (valeur de transaction, base FOB)
+Source 1 (loi) : Customs and Excise Act, 1964 (Act 91 of 1964) — République d'Afrique du Sud,
+texte consolidé via LawLibrary / AfricanLII (lawlibrary.org.za). La loi douanière sud-africaine
+sert de modèle au tarif extérieur commun de la SACU (Afrique du Sud, Botswana, Lesotho, Namibie,
+Eswatini — « same tariff schedule for all 5 member states »).
+Source 2 (doctrine SARS) : SARS — « Valuation of Imports — External Policy », SC-CR-A-03,
+révision 5, en vigueur le 11 décembre 2025 (sars.gov.za).
+Extraits automatiques des PDF officiels, non retouchés.
+
+--- Act 91 of 1964, chapitre IX « Value » ---
+
+65. Value for customs duty purposes
+(1) Subject to the provisions of this Act, the value for duty purposes of any imported goods
+shall be the domestic value or the free on board price thereof, whichever is the greater.
+
+67. Free on board price
+Subject to the provisions of this Act, the free on board price of any imported goods shall be the
+price charged in respect of such goods by the exporter plus all the costs and charges incidental to
+the sale in question and to placing such goods on board ship or on any vehicle ready for
+exportation and any agent's commission (calculated on such price, costs and charges) in respect of
+such goods.
+
+--- SARS SC-CR-A-03 (rév. 5, 2025-12-11) ---
+
+« The primary basis for the Customs value under the Agreement is transaction value, which is the
+price actually paid or payable. »
+
+« The transaction value [Section 66(1)] definition clearly states that the transaction value of
+imported goods shall be the price actually paid or payable for the imported goods. This is a real
+price which is actually made and not a normal price for imported goods. »
+
+Méthodes de valorisation (table) :
+1 – Transaction value method : Section 66(1) read with Section 67 — Article 1 read with Article 8 ;
+2 – Identical goods value method : Section 66(4) — Article 2 ;
+3 – Similar goods value method : Section 66(5) — Article 3 ;
+4 – Deductive value method : Section 66(7) — Article 4 ;
+5 – Computed value method : Section 66(8) — Article 5 ;
+6 – Fall-back value method : Section 66(9) — Article 6.
+
+Élément exclu de la valeur (méthode déductive, corroborant la base FOB) :
+« The cost of transport, insurance and related charges from the place of exportation to the place
+of importation in South Africa. »
+
+--- Point d'attention (FOB vs CIF) ---
+
+La base retenue pour le droit de douane SACU est la valeur de transaction sur base FOB : le coût
+du transport et de l'assurance internationaux (du lieu d'exportation au lieu d'importation) est
+exclu. Ce n'est pas la valeur CIF. Le choix du membre (Article 8.2 de l'Accord OMC sur la valeur
+en douane) adopté par l'Afrique du Sud/SACU est la base FOB. La règle précise de la méthode 1
+(fret/assurance exclus) est détaillée dans la politique SC-CR-A-05, non encore archivée ; le
+texte historique de l'article 65(1) (« domestic value or free on board price ») et la déduction
+ci-dessus l'établissent.

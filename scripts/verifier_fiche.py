@@ -42,12 +42,6 @@ FICHES = os.path.join(REPO, "backend", "data", "legal_refs", "zlecaf_application
 #: donnée.
 CLES_VALEUR = ("taux_standard_pct", "valeur", "assiette", "taux", "portee")
 CLES_REFERENCE = ("article", "reference", "reference_legale", "instrument")
-#: Une fiche qui établit plusieurs valeurs décline ses citations plutôt que de
-#: les entasser sous une clé unique : `verbatim_taux_normal`,
-#: `verbatim_exoneration_import`… Exiger le nom exact `verbatim` jugerait la
-#: FORME de la fiche et non son contenu — c'est ainsi qu'une fiche algérienne
-#: portant quatre citations sourcées a été refusée. Le préfixe est donc la règle.
-PREFIXE_VERBATIM = "verbatim"
 #: Les noms sous lesquels un texte archivé et son empreinte se présentent.
 CLES_TEXTE = ("texte_archive", "texte_extrait", "fichier_archive")
 CLES_EMPREINTE = ("sha256", "empreinte")
@@ -71,34 +65,6 @@ def _premier(dico, cles):
         if isinstance(dico, dict) and dico.get(cle) not in (None, "", [], {}):
             return cle, dico[cle]
     return None, None
-
-
-def _porte_une_reference(texte):
-    """La citation nomme-t-elle elle-même son article ?
-
-    Ne cherche pas à extraire la référence, seulement à constater qu'elle est
-    présente : le contrôle vaut « localisable », pas « bien formée »."""
-    debut = texte.lstrip()[:200].lower()
-    return any(
-        marque in debut for marque in ("art.", "article", "règle ", "regle ", "section ", "§")
-    )
-
-
-def _verbatims(regle):
-    """Les citations d'une règle, sous `verbatim` comme sous `verbatim_<quoi>`.
-
-    Rendu trié pour que le rapport soit reproductible d'une exécution à
-    l'autre."""
-    if not isinstance(regle, dict):
-        return []
-    return [
-        valeur
-        for cle, valeur in sorted(regle.items())
-        if isinstance(cle, str)
-        and cle.startswith(PREFIXE_VERBATIM)
-        and isinstance(valeur, str)
-        and valeur.strip()
-    ]
 
 
 def _sha256(chemin):
@@ -191,17 +157,11 @@ def verifier(chemin):
         ou = "regle" if len(regles) == 1 and "regle" in fiche else f"détermination {i + 1}"
         if _premier(regle, CLES_VALEUR)[0] is None:
             anomalies.append(f"{ou} : aucune valeur retenue")
-        citations = _verbatims(regle)
-        if not citations:
+        if not regle.get("verbatim"):
             anomalies.append(
                 f"{ou} : verbatim absent — une fiche cite le texte, elle ne le résume pas"
             )
-        # La référence peut vivre dans une clé dédiée, ou être portée par la
-        # citation elle-même — « Art. 21 - La taxe sur la valeur ajoutée… » est
-        # localisable sans qu'un champ `article` le répète.
-        if _premier(regle, CLES_REFERENCE)[0] is None and not any(
-            _porte_une_reference(texte) for texte in citations
-        ):
+        if _premier(regle, CLES_REFERENCE)[0] is None:
             reserves.append(f"{ou} : aucune référence d'article, la citation n'est pas localisable")
 
     if verifies == 0:
