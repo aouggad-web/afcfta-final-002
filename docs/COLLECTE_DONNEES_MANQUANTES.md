@@ -190,15 +190,26 @@ python3 scripts/verifier_fiche.py --toutes
 ```
 
 Le script ne dit pas si la donnée est **vraie** — aucun programme ne le peut.
-Il dit si elle est **vérifiable** : source nommée et atteignable, verbatim
-présent, et surtout **empreinte du texte archivé conforme**. Un seul octet
-modifié dans le texte source fait échouer la fiche, ce qui garantit que la
-citation est bien celle qui a été lue.
+Il dit si elle est **vérifiable** : source nommée, verbatim présent, valeur
+retenue, et empreinte des textes archivés conforme.
+
+**Portée exacte du contrôle d'empreinte**, pour ne pas le surestimer : il
+porte sur chaque texte réellement archivé dans le dépôt, à quelque
+profondeur qu'il se trouve dans la fiche (`source.`, `determinations[].`,
+`instrument.`…). Là, un seul octet modifié fait échouer la fiche. En
+revanche, une citation **sans** texte archivé, ou archivée sans empreinte
+déclarée, ne peut pas être contrôlée : le script le dit en réserve plutôt
+que de valider en silence. Le nombre d'empreintes effectivement vérifiées
+est affiché.
 
 Il accepte `"etabli": false` comme réponse valable, à condition que le champ
-`doutes` dise ce qui a été cherché. Il signale aussi, sans bloquer, ce qui
-affaiblit une fiche : absence de référence d'article, absence de texte
-archivé, conflit de sources déclaré.
+`doutes` dise ce qui a été cherché — refuser une collecte infructueuse
+pousserait à inventer.
+
+Le rapport distingue trois marques : `✓` une fiche établissant une valeur,
+`–` un autre document (relevé d'application, plan de collecte) dont les
+empreintes sont tout de même contrôlées, `○` une fiche déclarée non établie.
+`✗` signale une anomalie et rend un code de retour non nul.
 
 ## 7. Comment la fiche entre dans le calcul
 

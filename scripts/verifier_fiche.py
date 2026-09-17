@@ -6,14 +6,24 @@ Une fiche établit une donnée fiscale sur source primaire (voir
 ``docs/COLLECTE_DONNEES_MANQUANTES.md``). Avant qu'elle n'entre dans le
 calcul, ce script contrôle qu'elle tient ses promesses — pas que la donnée
 est *vraie*, ce qu'aucun programme ne peut dire, mais qu'elle est
-**vérifiable** : que la source est nommée et atteignable, que le texte cité
-est bien celui qui est archivé, et que rien d'essentiel ne manque.
+**vérifiable** : que la source est nommée, que le texte cité est bien celui
+qui est archivé, et que rien d'essentiel ne manque.
+
+Le contrôle d'empreinte est piloté par la donnée, pas par la forme du
+fichier. Les fiches du dépôt ne se ressemblent pas : la règle vit tantôt dans
+``regle``, tantôt dans ``determinations[]``, et le couple texte/empreinte
+apparaît sous au moins six chemins de clés différents (``source.``,
+``determinations[].``, ``instrument.``, ``pays.<ISO3>.<date>.``…). Une
+première version reconnaissait les fiches à leur forme et laissait donc
+passer, sans le moindre contrôle, huit fichiers sur douze — dont une fiche
+kényane authentique. On parcourt désormais l'objet entier : partout où un
+chemin de texte archivé côtoie une empreinte, le couple est vérifié.
 
 Usage :
-    python3 scripts/verifier_fiche.py backend/data/legal_refs/zlecaf_application/*.json
+    python3 scripts/verifier_fiche.py <fiche.json> [...]
     python3 scripts/verifier_fiche.py --toutes
 
-Sortie : un rapport par fiche, et un code de retour non nul si l'une échoue.
+Sortie : un rapport par fichier, et un code de retour non nul si l'un échoue.
 """
 
 from __future__ import annotations
@@ -27,14 +37,27 @@ import sys
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FICHES = os.path.join(REPO, "backend", "data", "legal_refs", "zlecaf_application")
 
-#: Les fiches du dépôt ne partagent pas toutes le même vocabulaire — elles se
-#: sont ajoutées au fil des collectes. On accepte les synonymes plutôt que
-#: d'imposer une réécriture des fiches déjà validées.
 #: Une fiche de taux porte un nombre ; une fiche d'assiette porte une formule
-#: ou, quand la règle se lit en prose (« la valeur en douane majorée de tous
-#: les droits perçus à l'entrée »), sa portée. Les deux établissent une donnée.
+#: ou, quand la règle se lit en prose, sa portée. Les deux établissent une
+#: donnée.
 CLES_VALEUR = ("taux_standard_pct", "valeur", "assiette", "taux", "portee")
-CLES_REFERENCE = ("article", "reference", "reference_legale")
+CLES_REFERENCE = ("article", "reference", "reference_legale", "instrument")
+#: Les noms sous lesquels un texte archivé et son empreinte se présentent.
+CLES_TEXTE = ("texte_archive", "texte_extrait", "fichier_archive")
+CLES_EMPREINTE = ("sha256", "empreinte")
+
+
+def _blocs(objet):
+    """Tous les dictionnaires contenus dans la fiche, à n'importe quelle
+    profondeur. C'est sur eux, et non sur une forme attendue, que portent les
+    contrôles."""
+    if isinstance(objet, dict):
+        yield objet
+        for valeur in objet.values():
+            yield from _blocs(valeur)
+    elif isinstance(objet, list):
+        for valeur in objet:
+            yield from _blocs(valeur)
 
 
 def _premier(dico, cles):
@@ -44,114 +67,156 @@ def _premier(dico, cles):
     return None, None
 
 
-def verifier(chemin):
-    """Rendre (anomalies, avertissements) pour une fiche."""
-    anomalies, avertissements = [], []
-    nom = os.path.basename(chemin)
+def _sha256(chemin):
+    h = hashlib.sha256()
+    with open(chemin, "rb") as f:
+        for bloc in iter(lambda: f.read(1 << 20), b""):
+            h.update(bloc)
+    return h.hexdigest()
 
+
+def _verifier_empreintes(fiche, dossier):
+    """Contrôler chaque couple (texte archivé, empreinte) de la fiche.
+
+    Rendu : (anomalies, réserves, nombre de textes réellement vérifiés)."""
+    anomalies, reserves, verifies = [], [], 0
+    for bloc in _blocs(fiche):
+        _, chemin_relatif = _premier(bloc, CLES_TEXTE)
+        if not chemin_relatif or not isinstance(chemin_relatif, str):
+            continue
+        chemin = os.path.join(dossier, chemin_relatif)
+        nom = os.path.basename(chemin_relatif)
+        if not os.path.exists(chemin):
+            anomalies.append(f"texte archivé introuvable : {chemin_relatif}")
+            continue
+        _, declaree = _premier(bloc, CLES_EMPREINTE)
+        if not declaree:
+            reserves.append(f"{nom} : archivé sans empreinte, son contenu n'est pas contrôlable")
+            continue
+        reelle = _sha256(chemin)
+        if reelle != declaree:
+            anomalies.append(
+                f"{nom} : empreinte différente "
+                f"(déclarée {str(declaree)[:12]}, réelle {reelle[:12]})"
+            )
+        else:
+            verifies += 1
+    return anomalies, reserves, verifies
+
+
+def _etablit_une_valeur(fiche):
+    """La fiche porte-t-elle une règle ? Rendu : (blocs de règle, verbatim vu).
+
+    Une règle vit dans `regle`, ou dans chaque entrée de `determinations[]` —
+    les deux formes existent au dépôt et établissent également une donnée."""
+    regles = []
+    if isinstance(fiche.get("regle"), dict):
+        regles.append(fiche["regle"])
+    determinations = fiche.get("determinations")
+    if isinstance(determinations, list):
+        regles.extend(d for d in determinations if isinstance(d, dict))
+    return regles
+
+
+def verifier(chemin):
+    """Rendre (anomalies, réserves, statut) pour un fichier.
+
+    `statut` vaut 'fiche' quand le fichier établit une donnée et a été jugé
+    comme tel, 'ignore' quand il n'en établit aucune, 'non_etabli' quand il
+    conclut explicitement à l'absence de source."""
     try:
         with open(chemin, encoding="utf-8") as f:
             fiche = json.load(f)
     except (OSError, json.JSONDecodeError) as exc:
-        return [f"illisible : {exc}"], []
+        return [f"illisible : {exc}"], [], "fiche"
     if not isinstance(fiche, dict):
-        return ["la fiche n'est pas un objet JSON"], []
+        return ["la fiche n'est pas un objet JSON"], [], "fiche"
 
-    # Le dossier contient aussi des documents de travail — plans de collecte,
-    # tableaux d'état — qui n'établissent aucune donnée et n'ont donc pas à
-    # porter de source ni de verbatim. Les juger comme des fiches produirait
-    # un rapport d'anomalies qui n'apprend rien.
-    # Une fiche de source établit une VALEUR : elle porte donc un bloc `regle`
-    # (ou se déclare non établie). Un relevé d'application ZLECAf, un plan de
-    # collecte ou un tableau d'état peuvent citer une source sans rien établir
-    # de tel — ce sont d'autres documents, jugés selon d'autres critères.
-    if "regle" not in fiche and fiche.get("etabli") is None:
-        return [], ["ignoré : n'établit aucune valeur, ce n'est pas une fiche de source"]
+    dossier = os.path.dirname(os.path.abspath(chemin))
+    # L'empreinte se vérifie d'abord, et quelle que soit la nature du fichier :
+    # un document de travail qui cite un texte archivé doit le citer
+    # fidèlement, lui aussi.
+    anomalies, reserves, verifies = _verifier_empreintes(fiche, dossier)
 
-    # Une fiche peut conclure « NON ÉTABLI » : c'est une réponse valable, et
-    # elle n'a alors pas à porter de valeur. Elle doit dire ce qui a été
-    # cherché, sinon elle n'est qu'un silence.
     if fiche.get("etabli") is False:
         if not fiche.get("doutes"):
             anomalies.append("fiche non établie sans explication : 'doutes' attendu")
-        return anomalies, ["non établie — aucune donnée à intégrer"]
+        return anomalies, reserves + ["non établie — aucune donnée à intégrer"], "non_etabli"
 
-    source = fiche.get("source")
-    if not isinstance(source, dict):
-        anomalies.append("bloc 'source' absent")
-        source = {}
-    if not source.get("url"):
-        anomalies.append("source sans URL : la donnée n'est pas retrouvable")
-    if not (source.get("institution") or source.get("document")):
-        anomalies.append("source sans institution ni document nommé")
+    regles = _etablit_une_valeur(fiche)
+    if not regles:
+        # Relevé d'application ZLECAf, plan de collecte, tableau d'état : ces
+        # documents citent parfois une source mais n'établissent pas de valeur.
+        # Leurs empreintes ont tout de même été contrôlées ci-dessus.
+        reserves.append(
+            f"n'établit aucune valeur — {verifies} empreinte(s) vérifiée(s) tout de même"
+        )
+        return anomalies, reserves, "ignore"
 
-    # Le texte archivé est le cœur de la vérifiabilité : sans lui, la fiche
-    # affirme sans montrer. Son empreinte doit correspondre, sinon le texte
-    # a changé depuis la lecture — ou n'est pas celui qui a été lu.
-    archive = source.get("texte_archive")
-    if archive:
-        chemin_archive = os.path.join(os.path.dirname(chemin), archive)
-        if not os.path.exists(chemin_archive):
-            anomalies.append(f"texte archivé introuvable : {archive}")
-        elif source.get("sha256"):
-            reelle = hashlib.sha256(open(chemin_archive, "rb").read()).hexdigest()
-            if reelle != source["sha256"]:
-                anomalies.append(
-                    f"empreinte du texte archivé différente "
-                    f"(déclarée {source['sha256'][:12]}, réelle {reelle[:12]})"
-                )
-        else:
-            avertissements.append("texte archivé sans empreinte sha256")
-    else:
-        avertissements.append("aucun texte archivé : la citation n'est pas contrôlable")
+    for i, regle in enumerate(regles):
+        ou = "regle" if len(regles) == 1 and "regle" in fiche else f"détermination {i + 1}"
+        if _premier(regle, CLES_VALEUR)[0] is None:
+            anomalies.append(f"{ou} : aucune valeur retenue")
+        if not regle.get("verbatim"):
+            anomalies.append(
+                f"{ou} : verbatim absent — une fiche cite le texte, elle ne le résume pas"
+            )
+        if _premier(regle, CLES_REFERENCE)[0] is None:
+            reserves.append(f"{ou} : aucune référence d'article, la citation n'est pas localisable")
 
-    regle = fiche.get("regle")
-    if not isinstance(regle, dict):
-        anomalies.append("bloc 'regle' absent")
-        regle = {}
-    cle_valeur, valeur = _premier(regle, CLES_VALEUR)
-    if cle_valeur is None:
-        anomalies.append(f"aucune valeur retenue (attendu l'une de {', '.join(CLES_VALEUR)})")
-    if not regle.get("verbatim"):
-        anomalies.append("verbatim absent : une fiche cite le texte, elle ne le résume pas")
-    cle_ref, _ = _premier(regle, CLES_REFERENCE)
-    if cle_ref is None and not source.get("reference"):
-        avertissements.append("aucune référence d'article : la citation n'est pas localisable")
-
+    if verifies == 0:
+        reserves.append("aucun texte archivé vérifié : la citation n'est pas contrôlable")
     if not fiche.get("verified_at"):
-        avertissements.append("date de vérification absente")
+        reserves.append("date de vérification absente")
     if not (fiche.get("ne_tranche_pas") or fiche.get("ce_que_cela_ne_tranche_pas")):
-        avertissements.append("la fiche ne dit pas ce qu'elle laisse ouvert")
+        reserves.append("la fiche ne dit pas ce qu'elle laisse ouvert")
     if fiche.get("conflits"):
-        avertissements.append(f"conflit de sources signalé : {fiche['conflits']}")
+        reserves.append(f"conflit de sources signalé : {fiche['conflits']}")
 
-    return anomalies, avertissements
+    return anomalies, reserves, "fiche"
 
 
 def main(argv):
+    options = [a for a in argv[1:] if a.startswith("-")]
     args = [a for a in argv[1:] if not a.startswith("-")]
-    if "--toutes" in argv[1:] or not args:
+    inconnues = [o for o in options if o not in ("--toutes", "-h", "--help")]
+    if inconnues:
+        print(f"option inconnue : {' '.join(inconnues)}", file=sys.stderr)
+        return 2
+    if "-h" in options or "--help" in options:
+        print(__doc__.strip())
+        return 0
+    if "--toutes" in options:
+        if args:
+            print("--toutes ne se combine pas avec des chemins explicites", file=sys.stderr)
+            return 2
         args = sorted(glob.glob(os.path.join(FICHES, "*.json")))
     if not args:
-        print("aucune fiche à vérifier")
-        return 0
+        print("aucun fichier à vérifier (préciser des chemins, ou --toutes)", file=sys.stderr)
+        return 2
 
-    en_echec = 0
+    en_echec = fiches = ignores = 0
     for chemin in args:
-        anomalies, avertissements = verifier(chemin)
-        nom = os.path.basename(chemin)
+        anomalies, reserves, statut = verifier(chemin)
+        marque = {"fiche": "✓", "ignore": "–", "non_etabli": "○"}[statut]
         if anomalies:
             en_echec += 1
-            print(f"✗ {nom}")
-            for a in anomalies:
-                print(f"    ANOMALIE  {a}")
+            marque = "✗"
+        if statut == "fiche":
+            fiches += 1
         else:
-            print(f"✓ {nom}")
-        for a in avertissements:
-            print(f"    réserve   {a}")
+            ignores += 1
+        print(f"{marque} {os.path.basename(chemin)}")
+        for a in anomalies:
+            print(f"    ANOMALIE  {a}")
+        for r in reserves:
+            print(f"    réserve   {r}")
 
     print()
-    print(f"{len(args)} fiche(s) vérifiée(s), {en_echec} en anomalie")
+    print(
+        f"{fiches} fiche(s) établissant une valeur, {ignores} autre(s) document(s), "
+        f"{en_echec} en anomalie"
+    )
     return 1 if en_echec else 0
 
 
