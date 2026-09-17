@@ -416,6 +416,59 @@ def test_une_zone_de_libre_echange_ne_donne_aucune_franchise_automatique(client)
     assert corps["regime_commercial"].get("code_bloc") is None
 
 
+@besoin_socle
+def test_la_fiscalite_interne_diverge_entre_membres_d_une_meme_union(client):
+    """Une union douanière harmonise le tarif *extérieur* et supprime le droit
+    *intérieur* — elle n'harmonise pas la fiscalité interne. Sur la même
+    position 01011010, importée depuis le même partenaire CEMAC, le Cameroun
+    liquide 19,25 % de TVA et le Gabon 18 %. Supposer un taux de bloc unique
+    ferait payer au Gabon la TVA camerounaise."""
+    taux = {}
+    for destination, origine in (("CMR", "GAB"), ("GAB", "CMR")):
+        corps = client.post(
+            "/calcul",
+            json={
+                "destination": destination,
+                "origine": origine,
+                "code_sh": "01011010",
+                "valeur_cif": 10000,
+            },
+        ).json()
+        assert corps["regime_commercial"]["code_bloc"] == "CEMAC"
+        lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+        assert lignes["DD"]["taux_pct"] == 0.0  # franchise intra-union des deux côtés
+        taux[destination] = lignes["TVA"]["taux_pct"]
+
+    assert taux["CMR"] == 19.25
+    assert taux["GAB"] == 18.0
+    assert taux["CMR"] != taux["GAB"], "la TVA doit rester celle du pays de destination"
+
+
+@besoin_socle
+def test_une_tva_non_collectee_est_nommee_au_lieu_d_etre_comptee_zero(client):
+    """Le revers de la règle précédente : quand la fiscalité interne du pays
+    de destination n'est pas collectée, le total ne doit pas se présenter comme
+    complet. Les cinq pays SACU sont `PENDING_OFFICIAL_COLLECTION` pour la TVA
+    (registre des sources nationales) : un import intra-SACU a donc un droit de
+    douane nul *et* une TVA inconnue. Sans ce garde-fou, le calcul afficherait
+    « rien à payer » sur une importation qui supporte réellement la TVA."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "code_sh": "010121",
+            "valeur_cif": 10000,
+        },
+    ).json()
+    preference = corps["preference"]
+    assert preference["etat"] != "COMPLET"
+    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in preference["manques"]
+    # Aucune économie n'est annoncée : comparer deux totaux incomplets
+    # produirait un chiffre plausible construit sur une base inconnue.
+    assert corps["economie"] is None
+
+
 # ── Le bloc réglementaire — chantier L4 ───────────────────────────────────────
 @besoin_socle
 def test_la_route_sert_le_bloc_reglementaire_comme_le_chemin_historique(client):
