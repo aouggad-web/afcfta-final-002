@@ -328,8 +328,6 @@ def _ecrire_json_atomique(chemin, contenu, **kwargs):
         except OSError:
             pass
         raise
-    with open(ASSIETTES_PATH, encoding="utf-8") as f:
-        return json.load(f)["pays"]
 
 
 def assiettes_du_fichier(donnees):
@@ -832,18 +830,32 @@ def main(argv):
     # Une construction partielle ne doit pas amputer le manifeste : les pays
     # non reconstruits restent sur disque, et les retirer de l'index les rendrait
     # introuvables alors qu'ils sont servables. On repart donc de l'existant.
+    # Un manifeste illisible ou non conforme se reconstruit, il n'arrête pas la
+    # construction : les fichiers pays présents sur disque restent servables, et
+    # échouer ici les rendrait introuvables pour rien. On repart alors d'un
+    # index vide, que la boucle ci-dessous regarnit.
     ancien = {}
-    if os.path.exists(os.path.join(SOCLE_DIR, "MANIFESTE.json")):
-        with open(os.path.join(SOCLE_DIR, "MANIFESTE.json"), encoding="utf-8") as f:
-            ancien = json.load(f).get("pays", {})
+    chemin_manifeste = os.path.join(SOCLE_DIR, "MANIFESTE.json")
+    if os.path.exists(chemin_manifeste):
+        try:
+            with open(chemin_manifeste, encoding="utf-8") as f:
+                charge = json.load(f)
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"[build_socle] manifeste illisible ({exc}) : reconstruction depuis zéro")
+            charge = None
+        pays_existants = charge.get("pays") if isinstance(charge, dict) else None
+        ancien = pays_existants if isinstance(pays_existants, dict) else {}
     manifeste = {
         "socle_version": SOCLE_VERSION,
         "construit_le": datetime.now(timezone.utc).isoformat(),
-        "pays": {
-            iso: entree
-            for iso, entree in ancien.items()
-            if os.path.exists(os.path.join(SOCLE_DIR, entree.get("fichier", "")))
-        },
+        # Les entrées non reconstruites sont conservées telles quelles, même si
+        # leur fichier n'est pas sur le disque à cet instant : dans un clone
+        # frais, le manifeste est versionné quand les 54 fichiers pays ne le
+        # sont pas, et les filtrer sur leur présence réduirait l'index au seul
+        # pays demandé. L'absence d'un fichier se dit déjà au chargement
+        # (`SocleIndisponible : fichier de socle absent — le régénérer`), ce qui
+        # est une panne nommée ; un pays disparu de l'index, lui, est muet.
+        "pays": {iso: entree for iso, entree in ancien.items() if isinstance(entree, dict)},
         "totaux": {},
     }
     vides = []

@@ -98,15 +98,33 @@ def mock_db():
     return db
 
 
+def _app_comme_en_production():
+    """Monter le routeur d'export comme le fait le serveur réel.
+
+    `server.py` agrège tous les routeurs sous un parent `APIRouter(prefix="/api")`
+    avant de les monter. Le routeur d'export ne porte donc que `/export`, et
+    l'URL servie est `/api/export/...`.
+
+    Monter le routeur nu, comme ces tests le faisaient, produisait `/export/...`
+    et faisait répondre 404 à chaque appel — non parce que l'export était
+    cassé, mais parce que le test ne reproduisait pas le montage réel. Un test
+    qui interroge une URL que la production ne sert pas ne prouve rien : on
+    reconstitue ici la même composition.
+    """
+    from fastapi import APIRouter, FastAPI
+
+    api_router = APIRouter(prefix="/api")
+    api_router.include_router(router)
+    app = FastAPI()
+    app.include_router(api_router)
+    return app
+
+
 @pytest.fixture
 def client_with_mock_db(mock_db):
     """Create test client with mocked database"""
     init_db(mock_db)
-    from fastapi import FastAPI
-
-    app = FastAPI()
-    app.include_router(router)
-    return TestClient(app)
+    return TestClient(_app_comme_en_production())
 
 
 class TestExportTariffsCSV:
@@ -145,11 +163,7 @@ class TestExportTariffsCSV:
         mock_db["customs_data"].find_one = mock_find_one_none
         init_db(mock_db)
 
-        from fastapi import FastAPI
-
-        app = FastAPI()
-        app.include_router(router)
-        client = TestClient(app)
+        client = TestClient(_app_comme_en_production())
 
         response = client.get("/api/export/tariffs/csv?country=XX")
         assert response.status_code == 404
@@ -318,11 +332,7 @@ class TestExportErrorHandling:
         mock_db["customs_data"].find_one = mock_error
         init_db(mock_db)
 
-        from fastapi import FastAPI
-
-        app = FastAPI()
-        app.include_router(router)
-        client = TestClient(app)
+        client = TestClient(_app_comme_en_production())
 
         response = client.get("/api/export/tariffs/csv?country=KE")
         assert response.status_code == 500
