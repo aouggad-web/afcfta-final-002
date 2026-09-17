@@ -249,3 +249,64 @@ describe('mapCalculToLegacyResult — le journal ne fabrique jamais de « null% 
     expect(ligneJournal.rate).not.toContain('null');
   });
 });
+
+describe("mapCalculToLegacyResult — union douanière, un régime distinct de la ZLECAf", () => {
+  const calcul = {
+    position: {},
+    npf: {
+      etat: 'COMPLET',
+      lignes: [ligne({ code: 'DD', taux_pct: null, montant: 8, montant_unitaire: 0.08, specifique: '8c/kg', assiette: 'xQTE', base: 100 })],
+      manques: [],
+      total_droits: 8,
+      total_a_payer: 10008,
+      taux_effectif_pct: 0.08,
+    },
+    preference: {
+      etat: 'COMPLET',
+      lignes: [ligne({ code: 'DD', taux_pct: 0, montant: 0, assiette: 'CIF', base: 10000, regime_applique: 'preference' })],
+      manques: [],
+      total_droits: 0,
+      total_a_payer: 10000,
+      taux_effectif_pct: 0,
+    },
+    regime_commercial: {
+      applique: true,
+      regime: 'UNION_DOUANIERE',
+      code_bloc: 'SACU',
+      libelle_bloc: "Union douanière d'Afrique australe (SACU)",
+      statut: 'LIBRE_CIRCULATION',
+      note: "Échanges intra-SACU : libre circulation sous le régime de l'union douanière.",
+    },
+    preference_zlecaf: { applique: false, statut: 'REGIME_UNION_DOUANIERE', note: "La ZLECAf ne s'applique pas ici." },
+    provenance: { niveau: 'national', source: {}, assiettes: {} },
+  };
+
+  const r = mapCalculToLegacyResult(calcul, contexte);
+
+  it('affiche bien la franchise au lieu de masquer la colonne préférentielle', () => {
+    expect(r.zlecaf_tariff_amount).toBe(0);
+    expect(r.normal_tariff_amount).toBe(8);
+    expect(r.preferential_regime_applied).toBe(true);
+  });
+
+  it("nomme le régime réel, jamais « ZLECAF »", () => {
+    expect(r.trade_regime).toBe('CUSTOMS_UNION');
+    expect(r.trade_regime_code).toBe('SACU');
+    expect(r.customs_union.code).toBe('SACU');
+    expect(r.customs_union.label).toContain('SACU');
+  });
+
+  it("n'affirme aucune éligibilité ZLECAf sur un échange intra-union", () => {
+    expect(r.zlecaf_eligible).toBe(false);
+    expect(r.zlecaf_preference_applied).toBe(false);
+    expect(r.zlecaf_status).toBe('NOT_AVAILABLE');
+  });
+
+  it("ne porte aucun bloc union douanière quand les pays n'en partagent pas", () => {
+    const sansUnion = {
+      ...calcul,
+      regime_commercial: { applique: false, regime: 'ZLECAF', statut: 'NOT_AVAILABLE', note: '' },
+    };
+    expect(mapCalculToLegacyResult(sansUnion, contexte).customs_union).toBeNull();
+  });
+});
