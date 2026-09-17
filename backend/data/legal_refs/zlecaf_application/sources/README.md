@@ -27,6 +27,10 @@ celui qui a été lu.
 | `NGA_ncsa_2023_s69.texte-extrait.txt` | Nigéria | Nigeria Customs Service | NCSA 2023, s.69 : base d'évaluation = transaction value (CIF) ; IAT et accises ad valorem sur CIF. Texte intégral JO à archiver |
 | `LBY_loi_10_2010_art26-31.texte-extrait.txt` | Libye | Douane libyenne | Loi n° 10 de 2010, art. 26-31 : valeur en douane CAF/CIF ; droits de douane abolis (2005) sauf tabac ; service fee. Texte intégral à archiver |
 | `MRT_assiette_TVA.texte-extrait.txt` | Mauritanie | Direction Générale des Impôts | CGI (TVA), chapitre 3 : base TVA import = valeur en douane + tous prélèvements, TVA exclue. PDF douanes.mr |
+| `SYC_vat_act_s23.texte-extrait.txt` | Seychelles | Seychelles Revenue Commission | VAT Act 2010, s.23(1) (amendé Act 16/2024) : valeur en douane + fret/assurance + duty + excise + fees (hors levies). |
+| `AGO_iva_art18.texte-extrait.txt` | Angola | AGT / Diário da República | Código do IVA (Lei 7/19), art. 18.º : valeur en douane + droits/taxes + frais accessoires, IVA exclu. |
+| `COM_cgi_art140.texte-extrait.txt` | Comores | DGI Comores | CGI 2023, art. 140-4° : valeur CAF + tous droits d'entrée à caractère douanier (taxe sur la consommation 10 %). |
+| `STP_iva_art15.texte-extrait.txt` | São Tomé | Direcção dos Impostos | Código do IVA (Lei 13/2019), art. 15.º : valeur en douane + droits/taxes + frais accessoires, IVA exclu. PDF à ré-archiver. |
 | `MRT_tarif2021.pdf` (tarif national, 6129 sous-positions) | Mauritanie | douanes.mr | Tarif douanier national 2021 : sous-positions 10 chiffres, colonnes DD/RS/PC — à intégrer pour éliminer WITS/TRAINS |
 
 ## Fichiers `.ocr-ara.txt`
