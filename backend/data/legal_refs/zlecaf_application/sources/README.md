@@ -20,6 +20,8 @@ celui qui a été lu.
 | `MAR_circulaire_6705-222_2025-12-31.pdf` | Maroc | ADII | **Preuve négative** : concerne les accords Maroc/USA et Maroc/Royaume-Uni, sans aucune mention de la ZLECAf. Archivée pour établir qu'elle n'affecte pas la détermination |
 | `EGY_manshour_ittifaqiyat_38.pdf` | Égypte | Douane égyptienne | Circulaire Accords n° 38 : 17 origines en deux groupes, 10 ans à 50 % de réduction au 1/1/2025 et 5 ans à 100 %. Listes B et C non entrées en vigueur |
 | `EGY_manshour_ittifaqiyat_36_2024-12-22.pdf` | Égypte | Ministère de l'Investissement et du Commerce extérieur | Notifie l'entrée en échanges du Burundi, de l'Eswatini, du Lesotho, du Malawi, de la Gambie et de l'Ouganda. Référence le décret présidentiel n° 212 de 2023 |
+| `SOM_customs_tariff_2020.preambule-extrait.txt` | Somalie | Ministère des Finances | Somali Customs Tariff 2020, règles générales concernant les droits (B.3) et applicables à la nomenclature et aux droits (C.1) : le droit ad valorem est liquidé sur la valeur en douane, déterminée sur la valeur de transaction. Extrait des pages 9-10 ; PDF de 341 p. non archivé |
+| `SOM_somcas_sop_annexe-C.texte-extrait.txt` | Somalie | Somalia Revenue Directorate / Somali Customs | SOP SOMCAS, Annexe C « Customs Valuation » : valeur = « normal price » alignée sur la « transaction value » du WTO Valuation Agreement ; traitement FOB/CIF (fret + assurance). Extrait des pages 29-31 ; PDF de 35 p. non archivé |
 
 ## Fichiers `.ocr-ara.txt`
 

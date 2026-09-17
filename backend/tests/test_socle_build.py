@@ -435,3 +435,25 @@ def test_la_table_d_assiettes_conserve_ses_references_legales():
     som = {code: t for iso, code, t in etablies if iso == "SOM"}
     assert som["DD"]["assiette"] == "CIF"
     assert som["DD"].get("texte"), "SOM : une assiette établie doit citer son texte"
+
+
+def test_l_assiette_somalienne_rend_les_droits_liquidables():
+    """La Somalie portait 11 545 droits tous non liquidables, faute d'assiette.
+    L'assiette CIF (valeur en douane) du tarif national doit les rendre tous
+    liquidables, sans en laisser un seul « indisponible »."""
+    chemin = os.path.join(REPO, "backend", "data", "SOM_tariffs.json")
+    if not os.path.exists(chemin):
+        pytest.skip("SOM_tariffs.json absent de ce clone")
+    assiettes = bs.charger_assiettes_pays()
+    assert assiettes["SOM"]["taxes"]["DD"]["assiette"] == "CIF"
+
+    socle, c = bs.construire_pays("SOM", chemin, "etl", assiettes)
+
+    assert c["positions"] > 0
+    assert c["droits"] > 0
+    assert c["droits_liquidables"] == c["droits"], (
+        "chaque droit de douane somalien doit devenir liquidable avec "
+        "l'assiette CIF établie sur le tarif national"
+    )
+    assert c["assiettes_indisponibles"] == 0
+    assert c["positions_liquidables"] > 0
