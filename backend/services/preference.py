@@ -197,10 +197,18 @@ def _union_douaniere(destination_iso3: str, origine_iso3: str) -> Optional[Dict[
         "code_bloc": bloc,
         "libelle_bloc": libelle,
         "statut": "LIBRE_CIRCULATION",
+        # Cette note est ce que l'interface affiche : le bandeau « union
+        # douanière » de `CalculatorTab` rend `trade_regime_note` telle quelle.
+        # Elle dit donc les trois choses que l'importateur doit savoir — le
+        # droit est nul, ce régime prime sur la ZLECAf et lui est plus
+        # favorable, et la fiscalité interne reste due.
         "note": (
-            f"Échanges intra-{bloc} : libre circulation sous le régime de l'union "
-            f"douanière — {libelle}. Droit de douane 0 %, hors ZLECAf. La fiscalité "
-            "interne (TVA, accises) reste due."
+            f"Ces deux pays sont membres de la même union douanière ({libelle}) : "
+            "leurs échanges se font en libre circulation, droit de douane 0 %, "
+            "sans passer par la ZLECAf. Ce régime est plus avantageux que le "
+            "démantèlement progressif de la ZLECAf, et s'applique indépendamment "
+            "d'elle. La franchise porte sur le seul droit de douane : TVA, accises "
+            "et autres taxes intérieures restent dues."
         ),
         "taux": {"DD": {"taux": 0.0}},
         "perimetre": {

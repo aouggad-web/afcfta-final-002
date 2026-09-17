@@ -275,7 +275,7 @@ describe("mapCalculToLegacyResult — union douanière, un régime distinct de l
       code_bloc: 'SACU',
       libelle_bloc: "Union douanière d'Afrique australe (SACU)",
       statut: 'LIBRE_CIRCULATION',
-      note: "Échanges intra-SACU : libre circulation sous le régime de l'union douanière.",
+      note: "Ces deux pays sont membres de la même union douanière (SACU) : leurs échanges se font en libre circulation, droit de douane 0 %. Ce régime est plus avantageux que le démantèlement progressif de la ZLECAf.",
     },
     preference_zlecaf: { applique: false, statut: 'REGIME_UNION_DOUANIERE', note: "La ZLECAf ne s'applique pas ici." },
     provenance: { niveau: 'national', source: {}, assiettes: {} },
@@ -283,10 +283,15 @@ describe("mapCalculToLegacyResult — union douanière, un régime distinct de l
 
   const r = mapCalculToLegacyResult(calcul, contexte);
 
-  it('affiche bien la franchise au lieu de masquer la colonne préférentielle', () => {
-    expect(r.zlecaf_tariff_amount).toBe(0);
+  it("ne verse pas la franchise dans les champs nommés ZLECAf", () => {
+    // Une franchise d'union douanière est réelle, mais elle n'est pas la
+    // ZLECAf : la verser dans `zlecaf_*` ferait lire un régime pour un autre.
+    // Elle s'annonce par `trade_regime`/`customs_union`, que l'interface rend
+    // en bandeau — le droit à zéro restant visible dans le détail des taxes.
+    expect(r.zlecaf_tariff_amount).toBeNull();
     expect(r.normal_tariff_amount).toBe(8);
-    expect(r.preferential_regime_applied).toBe(true);
+    expect(r.preferential_regime_applied).toBe(false);
+    expect(r.trade_regime_note).toContain('plus avantageux');
   });
 
   it("nomme le régime réel, jamais « ZLECAF »", () => {

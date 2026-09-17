@@ -127,21 +127,20 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
   const npf = calcul.npf || { lignes: [], etat: 'INDISPONIBLE', manques: [] };
   const pref = calcul.preference || null;
 
-  // Deux régimes préférentiels distincts peuvent jouer, et les confondre
-  // serait faux. `hasZlecaf` commande ce qui est *nommé* ZLECAf ; `hasPreference`
-  // commande ce qui est *affiché* comme régime favorable. Entre deux membres
-  // d'une même union douanière, la franchise est réelle mais n'est pas la
-  // ZLECAf : ne garder que `hasZlecaf` masquerait la colonne entière, et
-  // l'importateur ne verrait jamais que sa marchandise entre à droit nul.
   const regime = calcul.regime_commercial || {};
   const complements = calcul.complements_nationaux || [];
   const unionDouaniere = regime.regime === 'UNION_DOUANIERE' ? regime : null;
-  // `regime_commercial` est récent : une réponse servie par un backend
-  // antérieur ne le porte pas. On retombe alors sur l'ancien champ, sinon
-  // une préférence ZLECAf réellement appliquée disparaîtrait de l'affichage
-  // le temps d'un déploiement.
+
+  // Les champs `zlecaf_*` portent un nom de régime : ils n'acceptent donc que
+  // des montants ZLECAf. Une franchise d'union douanière est bien réelle,
+  // mais elle n'est pas la ZLECAf — l'y verser ferait lire un régime pour un
+  // autre, la faute même qu'une colonne COMESA prise pour un taux ZLECAf. Et
+  // l'affichage ne s'y tromperait pas davantage : `isDisplayableZlecafResult`
+  // exige `trade_regime === 'ZLECAF'`, que ce mappeur ne pose jamais pour une
+  // union. La franchise s'annonce par `trade_regime`/`customs_union`, que
+  // l'interface rend en bandeau avec sa note — à côté du droit liquidé à zéro
+  // dans le détail des taxes.
   const hasZlecaf = !!(pref && calcul.preference_zlecaf?.applique);
-  const hasPreference = !!pref && (regime.regime ? !!regime.applique : hasZlecaf);
 
   const npfLignes = npf.lignes || [];
   const prefLignes = pref?.lignes || [];
@@ -150,19 +149,19 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
   const dd = npfLignes.find((l) => l.code === 'DD');
   const ddPref = prefParCode.get('DD');
   const dutyAmount = estCalculee(dd) ? dd.montant : null;
-  const zlecafDutyAmount = hasPreference && estCalculee(ddPref) ? ddPref.montant : null;
+  const zlecafDutyAmount = hasZlecaf && estCalculee(ddPref) ? ddPref.montant : null;
 
   const vatAmount = sommeFamille(npfLignes, 'tva', null, npf.manques);
   const otherAmount = sommeAutres(npfLignes, 'DD');
-  const zlecafVatAmount = hasPreference ? sommeFamille(prefLignes, 'tva', null, pref.manques) : null;
-  const zlecafOtherAmount = hasPreference ? sommeAutres(prefLignes, 'DD') : null;
+  const zlecafVatAmount = hasZlecaf ? sommeFamille(prefLignes, 'tva', null, pref.manques) : null;
+  const zlecafOtherAmount = hasZlecaf ? sommeAutres(prefLignes, 'DD') : null;
 
   // Le tableau comparatif ligne à ligne (TaxBreakdownDual) n'a pas de
   // représentation pour un manque : il n'affiche que ce qui a été liquidé.
   // Le manque, lui, reste visible dans le détail des taxes ci-dessous et
   // dans le bandeau de statut (`confidence_level`, `duty_status`).
   const breakdown = npfLignes.filter(estCalculee).map((l) => {
-    const p = hasPreference ? prefParCode.get(l.code) : null;
+    const p = hasZlecaf ? prefParCode.get(l.code) : null;
     const pCalculee = estCalculee(p);
     return {
       code: l.code,
@@ -177,7 +176,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     };
   });
 
-  const economie = hasPreference && typeof calcul.economie === 'number' ? calcul.economie : null;
+  const economie = hasZlecaf && typeof calcul.economie === 'number' ? calcul.economie : null;
   const totalDroitsNpf = sommePositive(npf.total_droits);
   const pctEconomie = economie !== null && totalDroitsNpf
     ? Math.round((economie / totalDroitsNpf) * 10000) / 100
@@ -188,7 +187,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
       droit_douane: dutyAmount, tva: vatAmount, autres_taxes: otherAmount,
       cout_total: npf.total_a_payer ?? null,
     },
-    zlecaf: hasPreference ? {
+    zlecaf: hasZlecaf ? {
       droit_douane: zlecafDutyAmount, tva: zlecafVatAmount, autres_taxes: zlecafOtherAmount,
       cout_total: pref.total_a_payer ?? null,
     } : null,
@@ -214,7 +213,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
 
     normal_tariff_rate: pctToFraction(dd?.taux_pct),
     normal_tariff_amount: dutyAmount,
-    zlecaf_tariff_rate: hasPreference ? pctToFraction(ddPref?.taux_pct) : null,
+    zlecaf_tariff_rate: hasZlecaf ? pctToFraction(ddPref?.taux_pct) : null,
     zlecaf_tariff_amount: zlecafDutyAmount,
 
     // Plusieurs taux de TVA peuvent coexister sur une même position (rare,
@@ -233,7 +232,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     zlecaf_community_levy: 0,
     zlecaf_ecowas_levy: 0,
     zlecaf_other_taxes_total: zlecafOtherAmount,
-    zlecaf_total_cost: hasPreference ? (pref.total_a_payer ?? null) : null,
+    zlecaf_total_cost: hasZlecaf ? (pref.total_a_payer ?? null) : null,
 
     savings: economie,
     savings_percentage: pctEconomie,
@@ -241,7 +240,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     total_savings_percentage: pctEconomie,
 
     total_taxes_npf: npf.taux_effectif_pct ?? null,
-    total_taxes_zlecaf: hasPreference ? (pref.taux_effectif_pct ?? null) : null,
+    total_taxes_zlecaf: hasZlecaf ? (pref.taux_effectif_pct ?? null) : null,
 
     taxes_breakdown: breakdown,
     taxes_summary: summary,
@@ -261,10 +260,10 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     // Même vocabulaire que le chemin historique (`authentic_tariff_service`) :
     // `trade_regime` nomme le régime, `trade_regime_code` le bloc. Diverger
     // ici obligerait l'interface à comprendre deux dialectes pour un seul fait.
-    trade_regime: unionDouaniere ? 'CUSTOMS_UNION' : hasPreference ? 'ZLECAF' : 'NPF',
-    trade_regime_code: unionDouaniere ? unionDouaniere.code_bloc : hasPreference ? 'ZLECAF' : 'NPF',
+    trade_regime: unionDouaniere ? 'CUSTOMS_UNION' : hasZlecaf ? 'ZLECAF' : 'NPF',
+    trade_regime_code: unionDouaniere ? unionDouaniere.code_bloc : hasZlecaf ? 'ZLECAF' : 'NPF',
     trade_regime_note: regime.note || null,
-    preferential_regime_applied: hasPreference,
+    preferential_regime_applied: hasZlecaf,
 
     // Union douanière : le bloc, son libellé et la raison. `null` quand les
     // deux pays n'en partagent pas — l'interface n'affiche alors rien.
@@ -294,9 +293,14 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     has_sub_positions: false,
     sub_position_count: 0,
     sub_position: null,
-    regulatory_compliance: null,
-    regulatory_cost: null,
-    regulatory_reported: null,
+    // Frais des prestataires que la douane délègue. La route les sert depuis
+    // le point d'entrée commun à tous les chemins de calcul ; les remettre à
+    // `null` ici les jetait, et faisait répondre au chemin unifié autre chose
+    // qu'au chemin historique sur la même importation. Ils restent hors du
+    // coût douanier, que le backend calcule sans eux.
+    regulatory_compliance: calcul.regulatory_compliance ?? null,
+    regulatory_cost: calcul.regulatory_cost ?? null,
+    regulatory_reported: calcul.regulatory_reported ?? null,
     national_legal_calculation: null,
     generic_legal_calculation: null,
     kenya_legal_calculation: null,
@@ -308,7 +312,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
     },
 
     normal_calculation_journal: buildJournal(cifValue, npfLignes),
-    zlecaf_calculation_journal: hasPreference ? buildJournal(cifValue, prefLignes) : [],
+    zlecaf_calculation_journal: hasZlecaf ? buildJournal(cifValue, prefLignes) : [],
     computation_order_ref: `Socle unifié — ${provenance.source?.nom || destinationCountry}`,
     last_verified: provenance.source?.collecte ? String(provenance.source.collecte).slice(0, 10) : null,
     // Un complément national est un taux standard de pays, pas une donnée de
@@ -326,7 +330,7 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
       : null,
     dd_available: dutyAmount !== null,
     _npf_etat: npf.etat,
-    _zlecaf_etat: hasPreference ? pref.etat : null,
+    _zlecaf_etat: hasZlecaf ? pref.etat : null,
     _manques_npf: npf.manques || [],
   };
 }

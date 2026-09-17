@@ -363,6 +363,25 @@ def test_deux_membres_d_une_meme_union_douaniere_echangent_a_droit_nul(client):
 
 
 @besoin_socle
+def test_une_franchise_intra_union_n_exige_pas_la_quantite_d_un_droit_specifique(client):
+    """Le droit sud-africain de la position 020830 est publié « 8c/kg » : son
+    assiette est la quantité. Sous franchise intra-SACU le taux devient nul, et
+    l'assiette n'influe plus sur rien — réclamer une quantité rendrait
+    inutilisable une importation dont le droit est zéro."""
+    corps = client.post(
+        "/calcul",
+        json={"destination": "ZAF", "origine": "BWA", "code_sh": "020830", "valeur_cif": 10000},
+    ).json()
+    preference = corps["preference"]
+    lignes = {ligne["code"]: ligne for ligne in preference["lignes"]}
+    assert lignes["DD"]["montant"] == 0.0
+    assert lignes["DD"]["statut"] == "CALCULE"
+    assert preference["etat"] == "COMPLET"
+    # Le NPF, lui, garde son exigence : son droit dépend réellement du poids.
+    assert {"code": "DD", "motif": "QUANTITE_REQUISE"} in corps["npf"]["manques"]
+
+
+@besoin_socle
 def test_une_union_douaniere_n_est_jamais_presentee_comme_une_preference_zlecaf(client):
     """La confusion de régimes est le défaut que cette PR refuse : afficher
     « préférence ZLECAf appliquée » là où la ZLECAf est précisément écartée

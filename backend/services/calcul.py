@@ -272,9 +272,32 @@ def _liquider(
                     if isinstance(droit["specifique"], dict)
                     else droit["specifique"]
                 )
+            npf_specifique = bool(ligne.get("specifique_npf"))
             droit = dict(droit, taux=remise.get("taux"), specifique=remise.get("specifique"))
             ligne["taux_pct"] = droit["taux"]
             ligne["regime_applique"] = "preference"
+
+            if npf_specifique and droit.get("specifique") is None and droit.get("taux") is not None:
+                # Une remise ad valorem remplace un droit spécifique : l'assiette
+                # « xQTE » que portait le NPF devient sans objet, et l'exiger
+                # réclamerait une quantité qui ne sert plus à rien. C'est le cas
+                # de toute franchise intra-union douanière sur une ligne publiée
+                # « 8c/kg ».
+                if droit["taux"] == 0:
+                    # Zéro pour cent vaut zéro sur n'importe quelle assiette :
+                    # celle-ci est immatérielle, on le dit plutôt que de faire
+                    # dépendre un montant nul d'une quantité.
+                    droit = dict(droit, assiette="CIF", plafond=None)
+                    ligne["assiette"] = "CIF"
+                    ligne["assiette_sans_objet"] = (
+                        "taux nul : l'assiette n'influe sur aucun montant"
+                    )
+                else:
+                    # Taux non nul sur un NPF spécifique : l'assiette ad valorem
+                    # de ce prélèvement n'est pas connue. La supposer « CIF »
+                    # fabriquerait un montant crédible sur une base devinée.
+                    droit = dict(droit, assiette=None, plafond=None)
+                    ligne["assiette"] = None
 
         taux = droit.get("taux")
         specifique = droit.get("specifique")

@@ -1690,43 +1690,6 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             );
           })()}
 
-          {/* Union douanière : la libre circulation prime sur la ZLECAf.
-              Affiché au niveau du couple de pays, qui est le bon niveau —
-              l'appartenance à un bloc est un fait d'États, pas de produit. */}
-          {(result.customs_union || result.trade_regime === 'CUSTOMS_UNION') && (
-            <Card className="bg-gradient-to-br from-sky-900/20 to-slate-800/50 border-sky-500/30">
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-sky-500/10 rounded-lg border border-sky-500/20">
-                    <Shield className="w-5 h-5 text-sky-400" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg text-white">
-                      {language === 'fr'
-                        ? `Libre circulation ${result.customs_union?.code || result.trade_regime_code}`
-                        : `${result.customs_union?.code || result.trade_regime_code} free circulation`}
-                    </CardTitle>
-                    <CardDescription className="text-sky-400/60">
-                      {result.customs_union?.label || result.trade_regime_note}
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-slate-300 text-sm">
-                  {language === 'fr'
-                    ? `Ces deux pays sont membres d'une même union douanière : leurs échanges se font en libre circulation, droit de douane nul, sans passer par la ZLECAf. Ce régime est plus avantageux que le démantèlement progressif de la ZLECAf, et il s'applique indépendamment d'elle.`
-                    : `Both countries belong to the same customs union: their trade moves in free circulation at zero customs duty, outside the AfCFTA. This regime is more favourable than the AfCFTA's progressive dismantlement, and applies independently of it.`}
-                </p>
-                <p className="text-xs text-slate-500 mt-3 border-t border-slate-700 pt-2">
-                  {language === 'fr'
-                    ? 'La franchise porte sur le seul droit de douane : TVA, accises et autres taxes intérieures restent dues.'
-                    : 'The exemption covers customs duty only: VAT, excise and other internal taxes remain payable.'}
-                </p>
-              </CardContent>
-            </Card>
-          )}
-
           {/* Avantages ZLECAf */}
           {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
             <Card className="bg-gradient-to-br from-emerald-900/20 to-slate-800/50 border-emerald-500/30">
