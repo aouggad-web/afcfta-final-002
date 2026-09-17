@@ -283,14 +283,17 @@ describe("mapCalculToLegacyResult — union douanière, un régime distinct de l
 
   const r = mapCalculToLegacyResult(calcul, contexte);
 
-  it("ne verse pas la franchise dans les champs nommés ZLECAf", () => {
+  it("chiffre la franchise sans la déclarer ZLECAf", () => {
     // Une franchise d'union douanière est réelle, mais elle n'est pas la
     // ZLECAf : la verser dans `zlecaf_*` ferait lire un régime pour un autre.
     // Elle s'annonce par `trade_regime`/`customs_union`, que l'interface rend
     // en bandeau — le droit à zéro restant visible dans le détail des taxes.
-    expect(r.zlecaf_tariff_amount).toBeNull();
+    // Les MONTANTS de la colonne préférentielle sont renseignés — comme le
+    // fait le chemin historique, qui retire le droit de sa cascade — sinon les
+    // deux chemins répondraient différemment sur la même importation.
+    expect(r.zlecaf_tariff_amount).toBe(0);
     expect(r.normal_tariff_amount).toBe(8);
-    expect(r.preferential_regime_applied).toBe(false);
+    expect(r.preferential_regime_applied).toBe(true);
     expect(r.trade_regime_note).toContain('plus avantageux');
   });
 

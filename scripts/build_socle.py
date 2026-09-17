@@ -313,6 +313,21 @@ def _reconstruire_assiettes_pays():
     _ecrire_json_atomique(ASSIETTES_PATH, {"pays": pays}, ensure_ascii=False, indent=2)
 
 
+def _entree_exploitable(entree):
+    """Une entrée de manifeste que les totaux savent lire.
+
+    Il ne s'agit pas de valider le manifeste, mais de ne pas se faire
+    interrompre par une entrée tronquée : `etat` et `compteurs.positions` /
+    `compteurs.droits` sont lus sans garde plus bas.
+    """
+    if not isinstance(entree, dict) or not entree.get("etat"):
+        return False
+    compteurs = entree.get("compteurs")
+    return isinstance(compteurs, dict) and all(
+        isinstance(compteurs.get(cle), int) for cle in ("positions", "droits")
+    )
+
+
 def _ecrire_json_atomique(chemin, contenu, **kwargs):
     os.makedirs(os.path.dirname(chemin), exist_ok=True)
     fd, tmp_path = tempfile.mkstemp(
@@ -848,14 +863,20 @@ def main(argv):
     manifeste = {
         "socle_version": SOCLE_VERSION,
         "construit_le": datetime.now(timezone.utc).isoformat(),
-        # Les entrées non reconstruites sont conservées telles quelles, même si
-        # leur fichier n'est pas sur le disque à cet instant : dans un clone
-        # frais, le manifeste est versionné quand les 54 fichiers pays ne le
-        # sont pas, et les filtrer sur leur présence réduirait l'index au seul
-        # pays demandé. L'absence d'un fichier se dit déjà au chargement
-        # (`SocleIndisponible : fichier de socle absent — le régénérer`), ce qui
-        # est une panne nommée ; un pays disparu de l'index, lui, est muet.
-        "pays": {iso: entree for iso, entree in ancien.items() if isinstance(entree, dict)},
+        # Les entrées non reconstruites sont conservées, même si leur fichier
+        # n'est pas sur le disque à cet instant : dans un clone frais, le
+        # manifeste est versionné quand les 54 fichiers pays ne le sont pas, et
+        # les filtrer sur leur présence réduirait l'index au seul pays demandé.
+        # L'absence d'un fichier se dit déjà au chargement (`SocleIndisponible :
+        # fichier de socle absent — le régénérer`), ce qui est une panne
+        # nommée ; un pays disparu de l'index, lui, est muet.
+        #
+        # Conservées, mais pas au prix d'un plantage : les totaux plus bas
+        # lisent `etat` et `compteurs`, et une entrée tronquée les ferait
+        # échouer sur un KeyError — exactement l'interruption que la tolérance
+        # au manifeste illisible existe pour éviter. Une entrée inexploitable
+        # est donc écartée, comme le serait un manifeste entier illisible.
+        "pays": {iso: e for iso, e in ancien.items() if _entree_exploitable(e)},
         "totaux": {},
     }
     vides = []

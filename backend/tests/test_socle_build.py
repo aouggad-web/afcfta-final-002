@@ -11,9 +11,6 @@ import builtins
 import importlib.util
 import json
 import os
-import importlib.util
-import json
-import os
 import shutil
 
 import pytest
@@ -314,6 +311,12 @@ def test_une_construction_partielle_n_ampute_pas_le_manifeste(tmp_path, monkeypa
         "{invalide",
         json.dumps(["pas_un_objet"]),
         json.dumps({"pays": ["pas_un_dict"]}),
+        # Une entrée qui *est* un dictionnaire mais à laquelle il manque ce que
+        # les totaux lisent — `etat`, `compteurs.positions`, `compteurs.droits`.
+        # Conservée telle quelle, elle interrompait la construction sur un
+        # KeyError : l'abandon même que cette tolérance doit empêcher.
+        json.dumps({"pays": {"XXX": {"fichier": "XXX.json"}}}),
+        json.dumps({"pays": {"XXX": {"etat": "COMPLET", "compteurs": {"positions": 1}}}}),
     ],
 )
 def test_main_tolere_un_manifeste_malforme_ou_non_conforme(tmp_path, monkeypatch, contenu):
@@ -351,7 +354,9 @@ def test_charger_assiettes_reconstruit_la_table_absente(tmp_path, monkeypatch):
     assert "BEN" in reconstruit["pays"]
 
 
-@pytest.mark.parametrize("contenu", ["{invalide", json.dumps(["pas_un_objet"]), json.dumps({"pays": []})])
+@pytest.mark.parametrize(
+    "contenu", ["{invalide", json.dumps(["pas_un_objet"]), json.dumps({"pays": []})]
+)
 def test_charger_assiettes_reconstruit_une_table_malformee_ou_non_conforme(
     tmp_path, monkeypatch, contenu
 ):
