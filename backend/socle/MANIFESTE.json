@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-17T23:23:00.612266+00:00",
+  "construit_le": "2026-09-17T23:40:52.140983+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -930,9 +930,9 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MRT_tariffs.json",
       "source_sha256": "68f17520e713843a46a5010c2e83916e7972ac34666cbcc9576350fad0637a87",
-      "socle_sha256": "94edd6095ccccebcffd95d72341088e8823102e922412f26156b82f15b7df073",
+      "socle_sha256": "88df0433fe2b826e948fc4563e65ecc9d19fa9aee86d184d7c1357fb307e999b",
       "collecte": "2026-07-05T10:11:13.873065+00:00",
-      "etat": "PARTIEL",
+      "etat": "COMPLET",
       "familles": [
         "droit",
         "tva"
@@ -940,15 +940,15 @@
       "compteurs": {
         "positions": 5388,
         "droits": 10776,
-        "droits_liquidables": 5388,
-        "positions_liquidables": 0,
+        "droits_liquidables": 10776,
+        "positions_liquidables": 5388,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "taux_indisponibles": 0,
         "assiettes_source": 0,
         "assiettes_fichier": 5388,
-        "assiettes_table": 0,
-        "assiettes_indisponibles": 5388,
+        "assiettes_table": 5388,
+        "assiettes_indisponibles": 0,
         "sans_designation": 5388,
         "droits_specifiques": 0,
         "classification_estimee": 44
@@ -1622,7 +1622,6 @@
       "KEN",
       "LBY",
       "LSO",
-      "MRT",
       "NAM",
       "NGA",
       "RWA",
@@ -1638,6 +1637,6 @@
     ],
     "positions": 359108,
     "droits": 1085056,
-    "droits_liquidables": 999411
+    "droits_liquidables": 1004799
   }
 }
