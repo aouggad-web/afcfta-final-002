@@ -1286,58 +1286,58 @@ def normalize_nga(data: dict, iso3: str) -> List[dict]:
 
 
 def normalize_gha_canonical(data: dict, iso3: str) -> List[dict]:
-    """Normalise le schéma GHA (canonical_v4 — tariff_lines avec sub_positions)."""
+    """Keep national children and their DD; normalize aliases only once."""
     positions = []
     for line in data.get("tariff_lines", []):
         hs6 = line.get("hs6", "")
         if not hs6:
             continue
-        # Position principale au niveau SH6
-        taxes = []
-        dd_rate = line.get("dd_rate", 0)
-        vat_rate = line.get("vat_rate", 0)
-        if dd_rate:
-            taxes.append({
-                "code": "DD", "name": "Droit de Douane", "name_fr": "Droit de Douane",
-                "name_en": "", "name_ar": "", "rate_pct": float(dd_rate),
-                "rate_decimal": float(dd_rate) / 100, "raw_value": f"{dd_rate}%",
-                "specific_value": None, "base": "CIF", "source": "Ghana Customs",
-                "legal_ref": None, "is_customs_duty": True, "is_vat": False, "is_excise": False,
-            })
-        if vat_rate:
-            taxes.append({
-                "code": "TVA", "name": "VAT", "name_fr": "TVA", "name_en": "VAT",
-                "name_ar": "", "rate_pct": float(vat_rate), "rate_decimal": float(vat_rate) / 100,
-                "raw_value": f"{vat_rate}%", "specific_value": None, "base": "CIF+DD",
-                "source": "Ghana Customs", "legal_ref": None,
-                "is_customs_duty": False, "is_vat": True, "is_excise": False,
-            })
-        # Other taxes
-        for td in line.get("taxes_detail", []):
-            if isinstance(td, dict) and td.get("tax", "") not in ("DD", "TVA"):
-                rate = td.get("rate", 0)
+        for child in line.get("sub_positions") or [line]:
+            code = clean_code(child.get("code", hs6))
+            dd = child.get("dd") if "dd" in child else line.get("dd_rate")
+            vat = child.get("vat_rate") if "vat_rate" in child else line.get("vat_rate")
+            by_code = {}
+            for td in child.get("taxes_detail", line.get("taxes_detail", [])):
+                raw_code = td.get("tax", td.get("code", ""))
+                canonical = re.sub(r"[. /-]", "", raw_code).upper()
+                if canonical in ("VAT", "IVA", "TVA"):
+                    canonical = "TVA"
+                if canonical in ("DD", "ID"):
+                    canonical = "DD"
+                if canonical in ("DD", "TVA"):
+                    continue  # Populated from the exact child/declared parent below.
+                by_code[canonical] = (td.get("rate"), td.get("observation", raw_code))
+            by_code["DD"] = (dd, "Droit de Douane")
+            by_code["TVA"] = (vat, "VAT")
+            taxes = []
+            for tax_code, (rate, name) in by_code.items():
+                rate = float(rate) if rate is not None else None
                 taxes.append({
-                    "code": td.get("tax", ""), "name": td.get("observation", td.get("tax", "")),
-                    "name_fr": td.get("observation", ""), "name_en": "", "name_ar": "",
-                    "rate_pct": float(rate) if rate else None,
-                    "rate_decimal": float(rate) / 100 if rate else None,
-                    "raw_value": f"{rate}%", "source": "Ghana Customs",
+                    "code": tax_code, "name": name, "rate_pct": rate,
+                    "rate_decimal": rate / 100 if rate is not None else None,
+                    "raw_value": f"{rate}%" if rate is not None else "",
+                    "specific_value": None, "base": "", "source": data.get("source", "Ghana Customs"),
+                    "legal_ref": None, **classify_tax(tax_code, name),
                 })
-        positions.append({
-            "national_code": hs6, "hs6": hs6, "chapter": line.get("chapter", hs6[:2]),
-            "heading": "", "section": "", "statistical_unit": line.get("unit", ""),
-            "check_digit": "", "designation": {"fr": line.get("description_fr", ""),
-                "en": line.get("description_en", ""), "ar": "", "full_fr": "", "verbatim": ""},
-            "taxes": taxes, "export_taxes": [], "preferential_rates": [],
-            "fiscal_advantages": line.get("fiscal_advantages", []),
-            "formalities": [{"description": str(f)} for f in line.get("administrative_formalities", [])],
-            "restrictions": [], "legal_refs": [], "reglementation": {"import": [], "export": []},
-            "quotas": {"qcs": None, "qci": None},
-            "zlecaf_schedule": {"applied": False, "rate_pct": None, "instruction": None},
-            "source_gaps": [], "lf_provisions": None,
-            "data_status": "crawled_authentic", "source_quality": "crawled_authentic",
-            "raw_data": copy.deepcopy(line),
-        })
+            positions.append({
+                "national_code": code, "hs6": hs6, "chapter": line.get("chapter", hs6[:2]),
+                "heading": "", "section": "", "statistical_unit": line.get("unit", ""),
+                "check_digit": "", "designation": {
+                    "fr": child.get("description_fr", line.get("description_fr", "")),
+                    "en": child.get("description_en", line.get("description_en", "")),
+                    "ar": "", "full_fr": "", "verbatim": ""},
+                "taxes": taxes, "export_taxes": [], "preferential_rates": [],
+                "fiscal_advantages": child.get("fiscal_advantages", line.get("fiscal_advantages", [])),
+                "formalities": copy.deepcopy(child.get("administrative_formalities", line.get("administrative_formalities", []))),
+                "restrictions": [], "legal_refs": [], "reglementation": {"import": [], "export": []},
+                "quotas": {"qcs": None, "qci": None},
+                "zlecaf_schedule": {"applied": False, "rate_pct": None, "instruction": None},
+                "source_gaps": [], "lf_provisions": None,
+                "data_status": data.get("summary", {}).get("data_status", "PARTIAL"),
+                "source_quality": data.get("source_quality", "crawled_authentic"),
+                "raw_data": copy.deepcopy(child),
+                "parent_raw_data": copy.deepcopy({k: v for k, v in line.items() if k != "sub_positions"}),
+            })
     return positions
 
 
@@ -1558,6 +1558,12 @@ def verify_country(filepath: Path, normalized: dict) -> dict:
     for key in ["sub_positions", "positions", "tariff_lines"]:
         if key in original and isinstance(original[key], list):
             src_positions = original[key]
+            if key == "tariff_lines":
+                src_positions = [
+                    {**{k: v for k, v in parent.items() if k != "sub_positions"}, **child}
+                    for parent in src_positions
+                    for child in (parent.get("sub_positions") or [parent])
+                ]
             break
 
     norm_positions = normalized.get("positions", [])

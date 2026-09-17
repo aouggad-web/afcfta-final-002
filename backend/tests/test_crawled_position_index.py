@@ -128,7 +128,7 @@ def test_tariff_line_without_national_children_does_not_invent_positions(monkeyp
     assert service.load_crawled_position_index("AGO") == {}
 
 
-def test_get_sub_positions_adds_only_missing_crawled_positions(monkeypatch, tmp_path):
+def test_get_sub_positions_refreshes_existing_and_adds_collected_positions(monkeypatch, tmp_path):
     parent_line = {
         "hs6": "010121",
         "dd_rate": 20,
@@ -170,8 +170,8 @@ def test_get_sub_positions_adds_only_missing_crawled_positions(monkeypatch, tmp_
     by_code = {position["code"]: position for position in positions}
 
     assert set(by_code) == {"0101210010", "0101210090"}
-    assert by_code["0101210010"]["dd_rate"] == 5
-    assert by_code["0101210010"]["source"] == "ETL existant"
+    assert by_code["0101210010"]["dd_rate"] == 99
+    assert by_code["0101210010"]["source"] == "GRA"
     assert by_code["0101210090"]["dd_rate"] == 20
     assert by_code["0101210090"]["source"] == "GRA"
 
@@ -581,7 +581,7 @@ def test_calculator_keeps_existing_root_sub_position_tax_precedence(monkeypatch,
         ),
     ],
 )
-def test_calculator_keeps_etl_rates_for_new_scalar_and_list_schemas(
+def test_calculator_uses_collected_rates_for_scalar_and_list_schemas(
     monkeypatch, tmp_path, iso3, raw_taxes
 ):
     parent_line = {
@@ -624,7 +624,7 @@ def test_calculator_keeps_etl_rates_for_new_scalar_and_list_schemas(
 
     result = service.calculate_import_taxes(iso3, "0101210000", 1_000)
 
-    assert result["rates"]["dd_rate_pct"] == 5
-    assert result["rates"]["vat_rate_pct"] == 14
-    assert result["taxes_detail"]["DD"]["rate"] == 20
-    assert result["taxes_detail"]["TVA"]["rate"] == 14
+    assert result["rates"]["dd_rate_pct"] == 99
+    assert result["rates"]["vat_rate_pct"] == 99
+    assert result["taxes_detail"]["DD"]["rate"] == 99
+    assert result["taxes_detail"]["TVA"]["rate"] == 99

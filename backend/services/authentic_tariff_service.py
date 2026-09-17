@@ -3,7 +3,15 @@ import logging
 import os
 import re
 from collections import OrderedDict
+from math import isfinite
 from typing import Dict, Optional
+
+from services.tax_profile_data import (
+    ASSIETTE_TVA_ETABLIE,
+    ASSIETTE_TVA_NON_APPLICABLE,
+    BASE_TVA_TOUTES_TAXES,
+    COUNTRY_TAX_PROFILES,
+)
 
 logger = logging.getLogger(__name__)
 DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data")
@@ -190,299 +198,8 @@ def _log_etl_fallback(operation: str, country_iso3: str, hs_code: str = "", reas
     logger.warning(f"Tariff ETL fallback activated: {context}")
 
 
-# ── Per-country tax cascade profiles ──────────────────────────────────────────
-# Each entry defines:
-#   taxes_order: order in which taxes are applied
-#   tax_bases:   {tax_code: ('BASE_FORMULA', [codes_already_computed_to_add])}
-#     BASE_FORMULA = 'CIF'        → base = CIF value
-#                   'DD_AMOUNT'   → base = the DD amount already computed (e.g. CAC)
-#   source: official legal reference
-#
-# Rules are sourced from official customs legislation per country.
-# ──────────────────────────────────────────────────────────────────────────────
-_ECOWAS_UEMOA = {  # shared base profile for UEMOA/CEDEAO members
-    "taxes_order": ["DD", "RS", "PCS", "TVA"],
-    "tax_bases": {
-        "DD": ("CIF", []),
-        "RS": ("CIF", []),  # Redevance Statistique: base CIF (UEMOA)
-        "PCS": ("CIF", []),  # Prélèvement Communautaire de Solidarité: base CIF
-        "TVA": ("CIF", ["DD"]),  # TVA base = CIF + DD (OHADA/UEMOA practice)
-    },
-    "source": "TEC CEDEAO / Code CGI UEMOA — TVA base = CIF+DD",
-}
-_CEMAC = {  # shared base profile for CEMAC members
-    "taxes_order": ["DD", "TCI", "CAC", "TVA"],
-    "tax_bases": {
-        "DD": ("CIF", []),
-        "TCI": ("CIF", []),  # Taxe Communautaire d'Intégration: base CIF
-        "CAC": ("DD_AMOUNT", []),  # Centimes Additionnels Communaux: % of DD amount
-        "TVA": ("CIF", ["DD", "TCI"]),  # Directive TVA CEMAC: base = CIF+DD+TCI
-    },
-    "source": "Tarif Extérieur Commun CEMAC — Directive TVA CEMAC art. 9",
-}
-_EAC = {  # EAC common profile (Kenya, Tanzania, Uganda, Rwanda, Burundi)
-    "taxes_order": ["DD", "IDF", "RDL", "TVA"],
-    "tax_bases": {
-        "DD": ("CIF", []),
-        "IDF": ("CIF", []),  # Import Declaration Fee: base CIF
-        "RDL": ("CIF", []),  # Railway Development Levy: base CIF
-        "TVA": ("CIF", ["DD"]),  # EAC Customs Management Act: base = CIF+DD
-    },
-    "source": "EAC Customs Management Act — VAT base = CIF+DD",
-}
-_IMPORT_VAT_CIF_DD = {
-    "taxes_order": ["DD", "TVA"],
-    "tax_bases": {
-        "DD": ("CIF", []),
-        "TVA": ("CIF", ["DD"]),
-    },
-}
-
-#: Formule d'assiette exprimant une RÈGLE et non une énumération : la valeur en
-#: douane augmentée de tous les droits et taxes perçus à l'entrée, la TVA seule
-#: exclue de sa propre assiette. Énumérer les taxes concernées reviendrait à
-#: réintroduire une liste qui se périme dès qu'un prélèvement apparaît — c'est
-#: précisément ce qui rendait COUNTRY_TAX_PROFILES faux.
-BASE_TVA_TOUTES_TAXES = "CIF_PLUS_TOUTES_TAXES_SAUF_TVA"
-
-#: Assiette de la TVA à l'importation établie sur texte primaire archivé.
-#:
-#: Quatre textes ont été lus intégralement et disposent de la même règle, dans
-#: des termes différents. Les profils ci-dessous appliquaient tous « CIF + DD »
-#: à ces pays, ce qui ampute l'assiette de tous les autres prélèvements — dans
-#: le cas tunisien en citant en référence l'article même qui les inclut.
-#:
-#: Les déterminations et leurs extraits sont archivés dans
-#: backend/data/legal_refs/zlecaf_application/.
-_TVA_TOUTES_TAXES = {
-    "texte": (
-        "Directive n° 02/98/CM/UEMOA du 22 décembre 1998, article 27 a) : "
-        "« en ce qui concerne les importations par la valeur en douane majorée "
-        "des droits et taxes perçus à l'entrée, à l'exception de la Taxe sur la "
-        "Valeur Ajoutée elle-même »"
-    ),
-    "fiche": "UEMOA_assiette_TVA_2026-09-14.json",
-}
-ASSIETTE_TVA_ETABLIE = {
-    iso: _TVA_TOUTES_TAXES
-    for iso in (
-        "BEN",
-        "BFA",
-        "CIV",
-        "GNB",
-        "MLI",
-        "NER",
-        "SEN",
-        "TGO",
-    )
-}
-ASSIETTE_TVA_ETABLIE["KEN"] = {
-    "texte": (
-        "Kenya, Value Added Tax Act No. 35 of 2013, section 14 (1) (c) : « the "
-        "amount of duty of customs », expression que la loi définit comme "
-        "« import duty, excise duty, export duty, countervailing duty, levy, "
-        "cess, tax or surtax charged under any law [...] relating to customs or "
-        "excise » — la définition élargit l'alinéa bien au-delà du droit de douane"
-    ),
-    "fiche": "EAC_assiette_TVA_2026-09-14.json",
-}
-ASSIETTE_TVA_ETABLIE["UGA"] = {
-    "texte": (
-        "Ouganda, Value Added Tax Act Chapter 349, section 23 (b) : « the amount "
-        "of customs duty, excise tax and any other fiscal charge other than tax "
-        "payable on those goods », « tax » désignant la TVA elle-même"
-    ),
-    "fiche": "EAC_assiette_TVA_2026-09-14.json",
-}
-#: La Tunisie est délibérément ABSENTE de la table, bien que son texte soit lu
-#: et archivé (Code de la TVA, article 6 § II-1 : « par la valeur en douane, tous
-#: droits et taxes inclus à l'exclusion de la taxe sur la valeur ajoutée »,
-#: fiche TUN_assiette_TVA_2026-09-14.json). Deux obstacles s'y opposent, et
-#: chacun ferait servir une TVA sous-évaluée sous couvert d'un texte primaire :
-#:
-#:  1. Le même article soumet l'importateur NON ASSUJETTI à cette assiette
-#:     majorée de 25 %. Le calculateur ne recueille pas le statut de
-#:     l'importateur : il ne peut donc pas choisir la branche applicable.
-#:  2. Les données tunisiennes portent 2 435 taxes à assiette QUANTITATIVE
-#:     (droit sanitaire vétérinaire, prélèvements viande, taxe d'abattage —
-#:     « 0.1 dinars » sur base QCS ou PN). Le moteur ne liquide que l'ad
-#:     valorem : ces montants n'entrent pas dans computed_amounts, donc une
-#:     assiette « tous droits et taxes inclus » les omettrait en silence.
-#:     Aucun des dix autres pays de la table ne porte une seule de ces taxes,
-#:     ce qui rend l'exception tunisienne mesurée et non prudentielle.
-#:
-#: Tant que l'un des deux tient, la règle ne peut pas être appliquée
-#: honnêtement à la Tunisie : mieux vaut l'assiette codée, plus étroite mais
-#: qui ne se réclame d'aucun texte, qu'une assiette qui cite l'article 6 en
-#: en trahissant la portée.
-ASSIETTE_TVA_NON_APPLICABLE = {
-    "TUN": {
-        "texte_lu": (
-            "Tunisie, Code de la taxe sur la valeur ajoutée, article 6 § II-1 : "
-            "« par la valeur en douane, tous droits et taxes inclus à l'exclusion "
-            "de la taxe sur la valeur ajoutée »"
-        ),
-        "fiche": "TUN_assiette_TVA_2026-09-14.json",
-        "obstacles": (
-            "statut de l'importateur non recueilli (majoration de 25 % pour le "
-            "non-assujetti) ; 2 435 taxes à assiette quantitative que le moteur "
-            "ne liquide pas"
-        ),
-    }
-}
-
 #: Les trois orthographes sous lesquelles la TVA apparaît dans les profils.
 _ALIAS_TVA = ("TVA", "T.V.A", "VAT")
-
-
-COUNTRY_TAX_PROFILES = {
-    # ── Algérie — DGD (douane.gov.dz / conformepro.dz) ───────────────────────
-    # DAPS, DD : droits de douane (base CIF) — réduits sous ZLECAf
-    # TCS : base CIF
-    # TVA : base = CIF + DAPS + DD  (art. 21 CTCA)
-    # PRCT (Précompte 2%) : calculé APRÈS la TVA, sur la valeur globale de la
-    #   marchandise TVA incluse mais HORS DAPS = CIF + DD + TCS + TVA
-    "DZA": {
-        "taxes_order": ["DAPS", "DD", "TCS", "TVA", "PRCT"],
-        "tax_bases": {
-            "DAPS": ("CIF", []),
-            "DD": ("CIF", []),
-            "TCS": ("CIF", []),
-            "TVA": ("CIF", ["DAPS", "DD"]),  # art. 21 CTCA
-            "PRCT": (
-                "CIF",
-                ["DD", "TCS", "TVA"],
-            ),  # Précompte : valeur globale TVA incluse, hors DAPS
-        },
-        "source": "douane.gov.dz — TVA base=CIF+DAPS+DD (art. 21 CTCA) ; Précompte 2% base=valeur globale TVA incluse hors DAPS",
-    },
-    # ── Maroc — ADII (douane.gov.ma) ──────────────────────────────────────────
-    # DD, TPI : base = CIF
-    # TVA : base = CIF + DD + TPI  (CGI Maroc art. 96)
-    "MAR": {
-        "taxes_order": ["DD", "TPI", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "TPI": ("CIF", []),
-            "TVA": ("CIF", ["DD", "TPI"]),  # CGI Maroc art. 96
-        },
-        "source": "douane.gov.ma — CGI Maroc art. 96 (TVA base = CIF+DD+TPI)",
-    },
-    # ── Ghana — UNIPASS/ICUMS (external.unipassghana.com) ────────────────────
-    # DD, ECOWAS Levy : base = CIF
-    # GETFUND, NHIL, VAT : base = CIF + DD + ECOWAS  (VAT Act 870)
-    "GHA": {
-        "taxes_order": ["DD", "CEDEAO", "TVA", "NHIL", "GETFUND"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "CEDEAO": ("CIF", []),
-            "TVA": ("CIF", ["DD", "CEDEAO"]),  # VAT Act 870 s.7
-            "NHIL": ("CIF", ["DD", "CEDEAO"]),  # NHIL Act
-            "GETFUND": ("CIF", ["DD", "CEDEAO"]),  # GETFUND Act
-        },
-        "source": "UNIPASS Ghana — VAT Act 870 (VAT/NHIL/GETFUND base = CIF+DD+ECOWAS)",
-    },
-    # ── Nigeria — NCS (customs.gov.ng, ECOWAS CET) ───────────────────────────
-    # DD, ECOWAS, CISS : base = CIF
-    # VAT : base = CIF + DD  (VAITA Nigeria s.2)
-    "NGA": {
-        "taxes_order": ["DD", "CEDEAO", "CISS", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "CEDEAO": ("CIF", []),
-            "CISS": ("CIF", []),
-            "TVA": ("CIF", ["DD"]),  # VAITA s.2
-        },
-        "source": "customs.gov.ng — VAITA Nigeria s.2 (VAT base = CIF+DD)",
-    },
-    # ── Afrique du Sud — SARS (sars.gov.za) ──────────────────────────────────
-    # VAT : base = CIF + DD  (VAT Act s.13(2))
-    "ZAF": {
-        **_IMPORT_VAT_CIF_DD,
-        "source": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
-    },
-    # ── Afrique australe et océan Indien ─────────────────────────────────────
-    # Les fichiers tarifaires de ces pays fournissent DD + TVA/IVA par ligne.
-    # La taxe à la consommation à l'importation est assise sur CIF + DD.
-    "ZMB": {**_IMPORT_VAT_CIF_DD, "source": "Zambia Revenue Authority — VAT on imports"},
-    "ZWE": {**_IMPORT_VAT_CIF_DD, "source": "ZIMRA — VAT on imported goods"},
-    "MOZ": {
-        **_IMPORT_VAT_CIF_DD,
-        "source": "Autoridade Tributária de Moçambique — IVA na importação",
-    },
-    "MUS": {**_IMPORT_VAT_CIF_DD, "source": "Mauritius Revenue Authority — VAT on imports"},
-    "MDG": {
-        **_IMPORT_VAT_CIF_DD,
-        "source": "Direction Générale des Impôts Madagascar — TVA à l'importation",
-    },
-    "MWI": {**_IMPORT_VAT_CIF_DD, "source": "Malawi Revenue Authority — import VAT"},
-    # ── Kenya / EAC — KRA (kra.go.ke) ────────────────────────────────────────
-    # IDF (3.5%): base CIF  (Finance Act 2022)
-    # VAT (16%): base = CIF + DD  (VAT Act Cap 476)
-    "KEN": {**_EAC, "source": "kra.go.ke — VAT Act Cap 476 / Finance Act 2022"},
-    # ── Tanzanie / EAC — TRA ──────────────────────────────────────────────────
-    "TZA": {**_EAC, "source": "TRA Tanzania — VAT Act Cap 148"},
-    # ── Ouganda / EAC — URA ───────────────────────────────────────────────────
-    "UGA": {**_EAC, "source": "URA Uganda — VAT Act Cap 349"},
-    # ── Rwanda / EAC — RRA ────────────────────────────────────────────────────
-    "RWA": {**_EAC, "source": "RRA Rwanda — VAT Act Cap 349"},
-    # ── Burundi / EAC — OBR ───────────────────────────────────────────────────
-    "BDI": {**_EAC, "source": "OBR Burundi — EAC CMA"},
-    # ── Égypte — ECA (customs.gov.eg/Services/Tarif) ───────────────────────────
-    # TVA : base = CIF uniquement  (Loi n°67/2016 art. 29)
-    "EGY": {
-        "taxes_order": ["DD", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "TVA": ("CIF", []),  # Loi 67/2016 art. 29: TVA base = CIF (pas CIF+DD)
-        },
-        "source": "Egyptian Customs Authority (customs.gov.eg/Services/Tarif) — Loi TVA n°67/2016 art. 29 (TVA base = CIF)",
-    },
-    # ── Éthiopie — ECC (customs.erca.gov.et) ─────────────────────────────────
-    # SUR (Excise): base = CIF + DD
-    # TVA (15%): base = CIF + DD + SUR  (Ethiopian Customs/Tax Authority)
-    "ETH": {
-        "taxes_order": ["DD", "SUR", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "SUR": ("CIF", ["DD"]),  # Excise base = CIF + DD
-            "TVA": ("CIF", ["DD", "SUR"]),  # VAT base = CIF + DD + Excise
-        },
-        "source": "customs.erca.gov.et — ERCA (TVA base = CIF+DD+SUR)",
-    },
-    # ── Tunisie — DGD (douane.gov.tn) ────────────────────────────────────────
-    # TCL : base CIF
-    # TVA : base = CIF + DD  (CTVA Tunisie art. 6)
-    "TUN": {
-        "taxes_order": ["DD", "TCL", "TVA"],
-        "tax_bases": {
-            "DD": ("CIF", []),
-            "TCL": ("CIF", []),
-            "TVA": ("CIF", ["DD"]),  # CTVA art. 6
-        },
-        "source": "douane.gov.tn — CTVA art. 6 (TVA base = CIF+DD)",
-    },
-    # ── UEMOA / CEDEAO members ────────────────────────────────────────────────
-    "SEN": {**_ECOWAS_UEMOA, "source": "douanes.sn / TEC CEDEAO — CGI Sénégal"},
-    "CIV": {**_ECOWAS_UEMOA, "source": "guce.gouv.ci / TEC CEDEAO — CGI Côte d'Ivoire"},
-    "BEN": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Bénin"},
-    "BFA": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Burkina Faso"},
-    "MLI": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Mali"},
-    "NER": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Niger"},
-    "TGO": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Togo"},
-    "GIN": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Guinée"},
-    "GNB": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO — CGI Guinée-Bissau"},
-    "GMB": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO"},
-    "SLE": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO"},
-    "LBR": {**_ECOWAS_UEMOA, "source": "TEC CEDEAO"},
-    # ── CEMAC members ─────────────────────────────────────────────────────────
-    "CMR": {**_CEMAC, "source": "douanes.cm — Directive TVA CEMAC art. 9"},
-    "GAB": {**_CEMAC, "source": "CEMAC Tarif des Douanes"},
-    "COG": {**_CEMAC, "source": "CEMAC Tarif des Douanes"},
-    "CAF": {**_CEMAC, "source": "CEMAC Tarif des Douanes"},
-    "GNQ": {**_CEMAC, "source": "CEMAC Tarif des Douanes"},
-    "TCD": {**_CEMAC, "source": "CEMAC Tarif des Douanes"},
-}
 
 # Human-readable labels for each tax code
 _TAX_LABELS = {
@@ -525,17 +242,17 @@ def _canonical_tax_code(code: str, label: str = "") -> str:
     norm = _normalize_tax_code(code)
     text = f"{norm} {label or ''}".lower()
 
-    if norm in {"DD", "DI", "ID", "DROIT", "DDDROIT", "GENERAL", "CET"}:
+    if norm in {"DD", "DI", "ID", "DROIT", "DDDROIT", "GENERAL", "CET", "DR"}:
         return "DD"
-    if norm in {"TVA", "TVAI", "TVAAPTAXE", "VAT", "IVA", "VALUEADDE"}:
+    if norm in {"TVA", "TVAI", "TVAAPTAXE", "TVAAP", "VAT", "IVA", "VALUEADDE", "VALUE_ADDE"}:
         return "TVA"
     if "value added" in text or "valeur ajoute" in text or "valeur ajout" in text:
         return "TVA"
     if "customs duty" in text or "import duty" in text or "droit d'importation" in text:
         return "DD"
-    if norm in {"IMPORTDEC", "IMPORTDECL", "IDF"} or "import declaration" in text:
+    if norm in {"IMPORTDEC", "IMPORTDECL", "IMPORT_DEC", "IDF"} or "import declaration" in text:
         return "IDF"
-    if norm in {"RAILWAYDE", "RDL"} or "railway development" in text:
+    if norm in {"RAILWAYDE", "RAILWAY_DE", "RDL"} or "railway development" in text:
         return "RDL"
     if norm in {"GETFL", "GETFUND"} or "ghana education" in text:
         return "GETFUND"
@@ -581,14 +298,21 @@ def _parse_crawled_tax_rate(value) -> Optional[float]:
     if isinstance(value, dict):
         value = value.get("rate", value.get("rate_pct"))
     if isinstance(value, (int, float)) and not isinstance(value, bool):
-        return float(value)
+        return float(value) if isfinite(value) and value >= 0 else None
     if isinstance(value, str):
         if value.strip().lower() in {"free", "exempt", "exonere", "exonéré"}:
             return 0.0
-        match = re.search(r"-?\d+(?:[.,]\d+)?", value)
+        # A specific or compound expression is not an ad-valorem percentage.
+        match = re.fullmatch(r"\s*(\d+(?:[.,]\d+)?)\s*%?\s*", value)
         if match:
-            return float(match.group(0).replace(",", "."))
+            return float(match.group(1).replace(",", "."))
     return None
+
+
+def _position_tax_payload(position):
+    if "taxes_import" in position:
+        return position["taxes_import"]
+    return position.get("taxes")
 
 
 def _normalise_crawled_tax_details(raw_taxes) -> dict:
@@ -606,7 +330,7 @@ def _normalise_crawled_tax_details(raw_taxes) -> dict:
             rows.append(
                 {
                     "code": code,
-                    "name": info.get("name", info.get("label", code)),
+                    "name": info.get("name", info.get("label", info.get("label_published", code))),
                     "rate": value,
                     "source": info.get("source", "crawled"),
                 }
@@ -618,13 +342,13 @@ def _normalise_crawled_tax_details(raw_taxes) -> dict:
 
     for row in rows:
         code = row.get("code", row.get("tax", row.get("tax_code", "")))
-        label = row.get("name", row.get("label", row.get("tax_name", code)))
+        label = row.get("name", row.get("label", row.get("tax_name", row.get("observation", code))))
         value = row.get("rate", row.get("rate_pct", row.get("raw_value")))
         rate = _parse_crawled_tax_rate(value)
-        if not code or rate is None:
+        if not code:
             continue
         canonical = _canonical_tax_code(code, label)
-        if canonical in _PREFERENTIAL_RATE_CODES:
+        if canonical in _PREFERENTIAL_RATE_CODES or row.get("is_preferential"):
             continue
         details[canonical] = {
             "label": label or _TAX_LABELS.get(canonical, canonical),
@@ -983,6 +707,26 @@ def get_tariff_line(country_iso3, hs_code):
     for line in data.get("tariff_lines", []):
         if line.get("hs6") == hs6 or line.get("code") == hs_code_clean:
             return line
+    position = load_crawled_position_index(country_iso3).get(hs_code_clean)
+    if position and len(hs_code_clean) > 6:
+        taxes = _normalise_crawled_tax_details(_position_tax_payload(position))
+        return {
+            "hs6": hs6,
+            "code": hs_code_clean,
+            "description_fr": position.get("description_fr", ""),
+            "description_en": position.get("description_en", ""),
+            "dd_rate": taxes.get("DD", {}).get("rate"),
+            "vat_rate": taxes.get("TVA", {}).get("rate"),
+            "taxes_detail": [
+                {"tax": tax_code, "rate": tax["rate"], "observation": tax["label"]}
+                for tax_code, tax in taxes.items()
+            ],
+            "sub_positions": [],
+            "administrative_formalities": position.get(
+                "formalities", position.get("administrative_formalities", [])
+            ),
+            "source": position.get("source"),
+        }
     return None
 
 
@@ -1053,12 +797,14 @@ def get_sub_positions(country_iso3, hs6, language="fr"):
                     "source": sp.get("source", f"Nomenclature nationale DGD {country_iso3}"),
                 }
 
-    # Add positions that exist only in crawled source files. Existing ETL
-    # positions keep their current rate and metadata unchanged.
+    # Exact collected rates override stale listing aggregates. PostgreSQL
+    # remains authoritative where it provided the position.
     for code, position in load_crawled_position_index(country_iso3).items():
-        if not (code.startswith(hs6_normalized) and len(code) > 6) or code in merged:
+        if not (code.startswith(hs6_normalized) and len(code) > 6):
             continue
-        taxes = position.get("taxes", {})
+        if code in merged and merged[code].get("source") == "postgres":
+            continue
+        taxes = _position_tax_payload(position)
         dd_rate = _parse_crawled_tax_rate(position.get("dd"))
         if dd_rate is None:
             dd_rate = _parse_crawled_tax_rate(position.get("dd_rate"))
@@ -1891,14 +1637,13 @@ def calculate_import_taxes(
             }
             return {"error": detail["message"], "error_detail": detail}
 
-    # Resolve DD rate: prefer sub-position specific rate when available
-    # (`or 0` : une valeur explicitement nulle dans la donnée → 0, jamais None).
-    dd_rate_pct = line.get("dd_rate", 0) or 0
+    # Keep missing values unresolved until all source-specific measures have
+    # been selected. A published zero is distinct from a missing rate.
+    dd_rate_pct = line.get("dd_rate")
     sub_position_info = None
 
     # --- Priority 1: crawled authentic JSON (per-position taxes) ---
-    # Existing dictionary-shaped per-position taxes keep their current
-    # precedence. Newly indexed schemas fall back to the existing ETL rate.
+    # Select the exact collected position; all tax schemas are reconciled below.
     crawled_sp_entry = None
     etl_sub_position_entry = None
     if not is_postgres_line:
@@ -1947,10 +1692,8 @@ def calculate_import_taxes(
             "description_en": sp_desc,
         }
 
-    # `or 0` : une valeur explicitement nulle dans la donnée source ne doit
-    # jamais propager None (sinon crash sur `> 0` et le repli TVA via
-    # taxes_detail ci-dessous, gardé par `vat_rate_pct == 0`, est désactivé).
-    vat_rate_pct = line.get("vat_rate", 0) or 0
+    # Missing VAT remains None; never turn it into a documented exemption.
+    vat_rate_pct = line.get("vat_rate")
     other_taxes_pct = line.get("other_taxes_rate", 0) or 0
     # PAS de `or 0` ici : `zlecaf_rate` absent (aucune préférence tracée sur
     # cette ligne) doit rester `None`, pas devenir un taux préférentiel 0 %
@@ -1962,45 +1705,51 @@ def calculate_import_taxes(
     # Extract DAPS and other individual taxes:
     # If crawled entry has per-position taxes, use them as primary source;
     # otherwise fall back to taxes_detail from the ETL line.
-    _raw_crawled_taxes = crawled_sp_entry.get("taxes") if crawled_sp_entry else None
-    _has_legacy_crawled_tax_details = isinstance(_raw_crawled_taxes, dict) and any(
-        isinstance(value, dict) for value in _raw_crawled_taxes.values()
-    )
-    if (not is_postgres_line) and crawled_sp_entry and _has_legacy_crawled_tax_details:
-        crawled_taxes = crawled_sp_entry["taxes"]
-        taxes_detail = _normalise_crawled_tax_details(crawled_taxes)
-        # Inherit VAT and ZLECAf from ETL line (not always in crawled). Le code
-        # varie selon le pays (TVA/IVA/VAT/TVA-APTAXE) — cf. _find_vat_key.
+    _raw_crawled_taxes = _position_tax_payload(crawled_sp_entry) if crawled_sp_entry else None
+    _has_legacy_crawled_tax_details = isinstance(_raw_crawled_taxes, (dict, list))
+    if not is_postgres_line and _has_legacy_crawled_tax_details:
+        # Every collected schema is authoritative, including an empty payload.
+        # Missing DD cannot be recovered from an obsolete HS6 parent.
+        taxes_detail = _normalise_crawled_tax_details(_raw_crawled_taxes)
+        dd_rate_pct = taxes_detail.get("DD", {}).get("rate")
         if "TVA" in taxes_detail:
-            vat_rate_pct = float(taxes_detail["TVA"].get("rate", vat_rate_pct) or 0)
-    else:
-        # Copie défensive : on ne mute jamais l'objet de ligne (potentiellement
-        # mis en cache) lors de la normalisation des libellés. Le format liste
-        # (ETL) est conservé tel quel puis normalisé en dict plus bas.
-        _raw_taxes_detail = line.get("taxes_detail", {})
-        taxes_detail = (
-            dict(_raw_taxes_detail) if isinstance(_raw_taxes_detail, dict) else _raw_taxes_detail
+            vat_rate_pct = taxes_detail["TVA"]["rate"]
+        other_taxes_pct = sum(
+            t["rate"]
+            for code, t in taxes_detail.items()
+            if code not in ("DD", "TVA") and t["rate"] is not None
         )
+    else:
+        if crawled_sp_entry and "dd" in crawled_sp_entry and not is_postgres_line:
+            dd_rate_pct = _parse_crawled_tax_rate(crawled_sp_entry["dd"])
+        taxes_detail = _normalise_crawled_tax_details(line.get("taxes_detail", {}))
+        # An aggregate field may be absent while the same line explicitly
+        # supplies the measure. Do not use a parent to fill an unknown child.
+        if not crawled_sp_entry and not etl_sub_position_entry:
+            if dd_rate_pct is None:
+                dd_rate_pct = taxes_detail.get("DD", {}).get("rate")
+            if vat_rate_pct is None:
+                vat_rate_pct = taxes_detail.get("TVA", {}).get("rate")
+        # The child's explicit DD wins over the aggregate repeated in details.
+        if "DD" in taxes_detail:
+            taxes_detail["DD"] = {**taxes_detail["DD"], "rate": dd_rate_pct}
 
-    # ── Normalise taxes_detail: accept both dict and list formats ─────────────
-    # Dict format (crawled DZA): {'DD': {'rate': 30, 'name': '...'}, ...}
-    # List format (ETL):         [{'tax': 'D.D', 'rate': 20, 'observation': '...'}, ...]
-    if isinstance(taxes_detail, list):
-        taxes_detail = {
-            _canonical_tax_code(
-                item.get("tax", item.get("code", "")),
-                item.get("observation", item.get("label", item.get("tax", ""))),
-            ): {
-                "rate": float(item.get("rate", 0) or 0),
-                "label": item.get("observation", item.get("label", item.get("tax", ""))),
-                "source": "etl",
-                "source_tax_code": item.get("tax", item.get("code", "")),
-            }
-            for item in taxes_detail
-            if item.get("tax") or item.get("code")
+    missing = [
+        code
+        for code, rate in (("DD", dd_rate_pct), ("TVA", vat_rate_pct))
+        if _parse_crawled_tax_rate(rate) is None
+    ]
+    missing.extend(code for code, tax in taxes_detail.items() if tax["rate"] is None)
+    if missing:
+        detail = {
+            "code": "CALCULATION_UNAVAILABLE",
+            "message": "Taux absents ou droits spécifiques : calcul complet indisponible.",
+            "hs_code": hs_code_clean,
+            "missing_or_non_ad_valorem_taxes": sorted(set(missing)),
         }
-    elif not isinstance(taxes_detail, dict):
-        taxes_detail = {}
+        return {"error": detail["message"], "error_detail": detail}
+    dd_rate_pct = float(dd_rate_pct)
+    vat_rate_pct = float(vat_rate_pct)
 
     daps_rate_pct = 0.0
     prct_rate_pct = 0.0
