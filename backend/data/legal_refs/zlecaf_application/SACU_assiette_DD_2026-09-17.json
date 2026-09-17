@@ -20,9 +20,16 @@
     "verbatim_methode_1": "1 – Transaction value method : Section 66(1) read with Section 67 — Article 1 read with Article 8",
     "valeur_moteur": "FOB (valeur de transaction, fret et assurance internationaux exclus) — distincte de la base CIF",
     "portee": "Le droit de douane SACU est ad valorem sur la « value for duty purposes », soit la valeur de transaction sur base FOB. Le coût du transport et de l'assurance du lieu d'exportation au lieu d'importation est exclu de la valeur (base FOB, choix de l'article 8.2 de l'Accord OMC sur la valeur en douane).",
-    "note_critique": "La grammaire du socle ne connaît que « CIF » (= valeur en douane). Or la valeur en douane SACU est FOB, pas CIF : la table assiettes_pays porte aujourd'hui « CIF » pour le DD sud-africain, ce qui surestime la base du fret et de l'assurance internationaux. Le correctif exige d'ajouter une base « FOB » au moteur."
+    "note_critique": "La grammaire du socle ne connaît que « CIF » (= valeur en douane). Or la valeur en douane SACU est FOB, pas CIF : la table assiettes_pays porte aujourd'hui « CIF » pour le DD sud-africain, ce qui surestime la base du fret et de l'assurance internationaux. Le correctif exige d'ajouter une base « FOB » au moteur.",
+    "article": "Customs and Excise Act 91 of 1964, s.65(1), s.66 et s.67 — valeur en douane sur base FOB"
   },
-  "pays_lies": ["BWA", "LSO", "NAM", "SWZ", "ZAF"],
+  "pays_lies": [
+    "BWA",
+    "LSO",
+    "NAM",
+    "SWZ",
+    "ZAF"
+  ],
   "autorites_de_recette": {
     "BWA": "Botswana Unified Revenue Service (BURS)",
     "LSO": "Lesotho Revenue Authority (LRA)",
