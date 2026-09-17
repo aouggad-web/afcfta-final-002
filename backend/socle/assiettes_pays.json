@@ -759,6 +759,20 @@
       },
       "reference_legale": "TEC CEDEAO"
     },
+    "SOM": {
+      "ordre": [
+        "DD"
+      ],
+      "taxes": {
+        "DD": {
+          "assiette": "CIF",
+          "origine_assiette": "texte_primaire",
+          "texte": "Somali Customs Tariff 2020, règles générales applicables à la nomenclature et aux droits, règle C.1 : « The assessment of the amount of ad valorem Customs duties will be made on the base of Customs value of imported or exported goods. […] the base for determination of the Customs value will be the transaction value of goods being imported or exported »",
+          "fiche": "SOM_assiette_DD_2026-09-17.json"
+        }
+      },
+      "reference_legale": "Ministère des Finances de Somalie — Somali Customs Tariff 2020 (mof.gov.so)"
+    },
     "TCD": {
       "ordre": [
         "DD",

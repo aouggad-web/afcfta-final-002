@@ -1,0 +1,36 @@
+Somalie — Somali Customs Automated System (SOMCAS), Standard Operating Procedures
+sur le processus des déclarations en douane, Annexe C « Customs Valuation »
+(pages 29 à 31 du PDF) et extrait sur les Incoterms.
+Source : https://revenuedirectorate.gov.so/sites/default/files/pdf/Standard%20Operating%20Procedures%20on%20the%20Process%20of%20Customs%20Declarations%20Through%20SOMCAS.pdf
+Somalia Revenue Directorate / Somali Customs Department. Extrait automatique du
+PDF officiel, non retouché.
+
+--- Annexe C, « Customs Valuation » ---
+
+Valuation according to the Customs Act 2020 and Customs Valuation Regulations 2023
+Under the Customs Act 2020, the dutiable value of imported goods is determined by reference to the
+goods' "normal price". The evidence of a "normal price" is usually an invoice issued under normal
+commercial arms' length arrangements. These arrangements are aligned to some extent with the
+principle of "transaction value" of imported goods set out in the WTO Valuation Agreement.
+The importer is required to declare the transaction value of the goods when making the goods
+declaration to Customs.
+It is the responsibility of the Customs Officer to confirm the transaction value. To do this he/she
+should examine all supporting documents, bearing in mind the known risk of undervaluation through
+the use of false invoices or shipment documents. Physical examination of the goods may be necessary
+to confirm the full description of the goods in order to aid confirmation of the transaction value.
+If the Customs Officer doubts the transaction value declared by the importer, they may request further
+information from the declarant. It is responsibility of the declarant to prove the declared value to the
+satisfaction of Customs.
+If the declarant fails to provide proof of the declared value, the Customs Valuation Regulations 2023
+empowers Customs to apply Customs Reference Values (CRVs) when the "normal price" is not
+available, or the supporting invoice/documents are not acceptable. In other words, either when a
+supporting invoice is missing or when Customs is not satisfied with the content or authenticity of the
+supporting invoice.
+
+--- Incoterms et traitement du fret / de l'assurance (page 31) ---
+
+Terms of Delivery (Incoterms) — FOB (Free on Board) / CIF (Cost, insurance, and freight) :
+When the terms are FOB, the Commercial Invoice should be supported by Freight Invoices and
+Insurance Certificates. Freight and Insurance are commonly undervalued.
+When the terms are CIF, deduct approximate freight and insurance charges to check the unit value of
+the goods (if not shown separately). The remaining FOB value may be suspiciously low.

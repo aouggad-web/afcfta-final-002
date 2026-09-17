@@ -415,15 +415,23 @@ def test_charger_assiettes_signale_un_import_indisponible(tmp_path, monkeypatch)
 
 def test_la_table_d_assiettes_conserve_ses_references_legales():
     pays = bs.charger_assiettes_pays()
-    assert len(pays) >= 37
-    # Les dix assiettes de TVA établies sur texte primaire citent leur texte.
+    assert len(pays) >= 38
+    # Les assiettes établies sur texte primaire citent leur texte.
     etablies = [
-        (iso, t)
+        (iso, code, t)
         for iso, v in pays.items()
         for code, t in v["taxes"].items()
         if t["origine_assiette"] == "texte_primaire"
     ]
-    assert len(etablies) == 10
-    for iso, t in etablies:
+    # Les dix assiettes de TVA établies sur texte primaire sont toutes
+    # « CIF + tous les prélèvements d'entrée, TVA exclue ».
+    tva = [(iso, code, t) for iso, code, t in etablies if code == "TVA"]
+    assert len(tva) == 10
+    for iso, _code, t in tva:
         assert t["assiette"] == "CIF+TOUS_SAUF_TVA"
         assert t.get("texte"), f"{iso} : une assiette établie doit citer son texte"
+    # Somalie : l'assiette du droit de douane est établie sur le tarif national
+    # (valeur en douane), distincte des assiettes de TVA ci-dessus.
+    som = {code: t for iso, code, t in etablies if iso == "SOM"}
+    assert som["DD"]["assiette"] == "CIF"
+    assert som["DD"].get("texte"), "SOM : une assiette établie doit citer son texte"
