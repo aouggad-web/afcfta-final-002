@@ -1,0 +1,13 @@
+Extrait de texte — South African Revenue Service (SARS)
+Page : https://www.sars.gov.za/types-of-tax/value-added-tax/
+Relevé le : 2026-09-17
+Extraction : texte visible de la page, balises retirées, lignes portant le taux et son fondement.
+------------------------------------------------------------------------------
+
+(Rates Bill), which proposes to maintain the Value-Added Tax (VAT) rate at 15% from 1 May 2025, instead of the proposed increase to VAT announced in the Budget in March.
+
+VAT is levied at the standard rate of 15% on the supply of goods and services by registered vendors. The rate was to increase to 15.5% from 1 May 2025 and to 16% from 1 April 2026 but this is reversed by clause 13 of the Bill introduced on 24 April 2025. A vendor that makes taxable supplies of more than R1 million per annum must register for VAT. A vendor that makes taxable supplies of more than R50 000, but not more than R1 million per annum, may apply for voluntary registration. Certain supplies are subject to a zero rate, or are exempt from VAT.
+
+Subject to certain conditions, the vendor must then charge VAT on supplies of goods and services made by it (output tax). VAT is only charged on taxable supplies made. Taxable supplies are supplies for which VAT is charged at either the standard rate (currently 15% or zero rate (0%). There is a limited range of goods and services which are subject to VAT at the zero rate or exempt from VAT.
+
+VAT is therefore, charged at each stage of the production and distribution process and it is proportional to the price charged for the goods and services. VAT is also payable on the importation of goods and on imported services.

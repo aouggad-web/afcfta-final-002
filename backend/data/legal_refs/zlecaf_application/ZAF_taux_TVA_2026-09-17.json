@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "objet": "Taux standard de la TVA sud-africaine, applicable à l'importation",
+  "verified_at": "2026-09-17",
+  "evidence_level": "primaire — énoncé publié par l'administration fiscale elle-même (South African Revenue Service), page « Value-Added Tax ». Texte relevé et archivé dans sources/. Ce n'est pas le texte de loi : c'est la déclaration de l'autorité qui la perçoit, qui cite l'instrument l'ayant maintenu.",
+  "source": {
+    "url": "https://www.sars.gov.za/types-of-tax/value-added-tax/",
+    "institution": "South African Revenue Service (SARS) — administration fiscale sud-africaine",
+    "texte_archive": "sources/ZAF_sars_vat_rate.texte-extrait.txt",
+    "sha256": "cd80297ea35dcfd97a7c0ae751d78773f25ce5ab40cfd55df094dd01209fdd14",
+    "mode_extraction": "Texte visible de la page, balises retirées. Aucune reformulation : les phrases retenues sont celles de SARS."
+  },
+  "regle": {
+    "taux_standard_pct": 15.0,
+    "verbatim": "VAT is levied at the standard rate of 15% on the supply of goods and services by registered vendors. The rate was to increase to 15.5% from 1 May 2025 and to 16% from 1 April 2026 but this is reversed by clause 13 of the Bill introduced on 24 April 2025.",
+    "verbatim_importation": "VAT is also payable on the importation of goods and on imported services.",
+    "portee": "Taux standard de 15 %, applicable aux importations. Les hausses annoncées au budget de mars 2025 (15,5 % au 1er mai 2025, puis 16 % au 1er avril 2026) ont été annulées : le taux est resté à 15 %.",
+    "pourquoi_ce_point_importe": "Une valeur retenue de mémoire aurait pu écrire 15,5 % ou 16 %, deux taux réellement annoncés puis abandonnés. C'est exactement le cas où une donnée non vérifiée aurait paru crédible.",
+    "assiette": "Non tranchée par cette fiche. L'assiette sud-africaine est établie séparément : COUNTRY_TAX_PROFILES cite « sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD) »."
+  },
+  "consequences": {
+    "etat_avant_collecte": "Le crawl SARS ne porte aucune TVA : sur les 8 589 droits sud-africains du socle, aucun n'est de famille TVA. Une importation intra-SACU (droit de douane nul par libre circulation) affichait donc un total de 0 — « rien à payer » — alors que la TVA de 15 % est due.",
+    "portee_sacu": "L'Afrique du Sud perçoit les droits et taxes pour les membres enclavés de la SACU avant redistribution : c'est le point d'entrée réel d'une grande partie du commerce du bloc, et donc le trou le plus coûteux des cinq.",
+    "non_applique_a_ce_stade": "Cette fiche documente le taux ; elle ne l'injecte pas encore dans le socle. Tant que le moteur ne le lit pas, l'état reste PARTIEL avec le manque TVA nommé — jamais un zéro."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "La liste des biens détaxés (zero-rated) et exonérés : une position qui en relève ne supporte pas 15 %. Cette fiche ne porte que le taux standard.",
+    "L'assiette exacte à l'importation, établie ailleurs (VAT Act s.13(2)).",
+    "Les quatre autres États de la SACU : leurs taux ne se déduisent pas de celui-ci. Une union douanière n'harmonise pas la fiscalité interne."
+  ],
+  "remaining_work": [
+    "Botswana : la page officielle de la BURS (burs.org.bw/index.php/tax/value-added-tax) énonce « Standard rated supplies – These are supplies that are charged VAT at the rate of 12% », ce qui contredit le taux de 14 % communément rapporté depuis 2021. Le conflit n'est pas tranché ici : il faut la section de taxation du VAT Act ou un avis de taux daté. Statut maintenu à PENDING_OFFICIAL_COLLECTION.",
+    "Namibie : namra.org.na répond mais son contenu est rendu en JavaScript, sans texte extractible par récupération simple. Source alternative à trouver (Government Gazette, VAT Act 10/2000).",
+    "Lesotho (lra.org.ls) et Eswatini (era.org.sz, sra.org.sz) : aucune connexion établie depuis cet environnement. Le registre les signalait déjà REGISTRY_EXISTING_UNVERIFIED et NONE_IDENTIFIED.",
+    "Injecter le taux sud-africain dans le socle, sous une provenance qui cite cette fiche, pour que le calcul cesse d'afficher un total nul sur les importations intra-SACU."
+  ]
+}
