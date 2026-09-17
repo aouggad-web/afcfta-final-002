@@ -52,19 +52,67 @@ def download_xlsx() -> Optional[str]:
     return None
 
 
+#: « ممنوع استيراده » — importation interdite. Ce n'est PAS un taux absent :
+#: la marchandise ne peut pas entrer. La confondre avec une donnée manquante
+#: ferait lire « droit indisponible » là où la réponse est « interdit », et
+#: la traiter comme 0 % ferait liquider une importation prohibée.
+MENTION_INTERDIT = "ممنوع استيراده"
+
+#: « معفاة » — exonéré. Un zéro réellement publié par le tarif.
+MENTION_EXONERE = "معفاة"
+
+
 def parse_rate(val) -> Optional[float]:
-    """Parse un taux : '0.05' → 5.0, 'معفاة' (exempt) → 0.0."""
+    """Rend un taux en POURCENTS, ou ``None`` si la cellule n'en porte pas.
+
+    Le tarif libyen mélange deux écritures dans la même colonne, relevé sur
+    le XLSX officiel 2022 : une fraction décimale (``0.05``, 4 379 lignes) et
+    un pourcentage littéral (``5%``, 356 lignes) — les deux valant 5 %. Une
+    première version rendait ``float(s)`` pour les deux, soit ``0.05`` pris
+    pour 0,05 % (cent fois trop bas) et une exception sur ``5%`` (taux
+    perdu). Sa docstring annonçait pourtant la bonne conversion.
+
+    La règle de lecture est donnée par les valeurs elles-mêmes : le tarif ne
+    porte aucun droit inférieur à 1 %, et ``0.05``/``0.1``/``0.3`` se lisent
+    5 %, 10 % et 30 % — ce que confirme la coexistence de ``5%``, ``10%`` et
+    ``30%`` pour les mêmes marchandises. Une valeur ``≤ 1`` sans signe pour
+    cent est donc une fraction ; au-delà, un pourcentage déjà écrit comme tel.
+
+    ``None`` est rendu pour une cellule vide, pour une mention d'interdiction
+    (traitée séparément par :func:`lire_cellule_droit`) et pour tout texte non
+    reconnu — jamais un zéro de substitution.
+    """
     if val is None:
         return None
     s = str(val).strip()
     if not s:
         return None
-    if "معفاة" in s or "exempt" in s.lower() or "free" in s.lower():
+    if MENTION_EXONERE in s or "exempt" in s.lower() or "free" in s.lower():
         return 0.0
+    if MENTION_INTERDIT in s:
+        return None
+    pourcent = s.endswith("%")
+    nombre = s.rstrip("%").strip()
     try:
-        return float(s)
+        valeur = float(nombre)
     except ValueError:
         return None
+    if pourcent:
+        return valeur
+    # Fraction décimale (0.05 → 5 %). Une valeur > 1 sans signe pour cent est
+    # déjà un pourcentage : on la rend telle quelle plutôt que de la
+    # multiplier par cent, ce qui produirait des droits de plusieurs milliers.
+    return valeur * 100 if valeur <= 1 else valeur
+
+
+def lire_cellule_droit(val):
+    """Rend ``(taux_pct, interdit)`` pour une cellule de la colonne des droits.
+
+    Sépare les trois réponses possibles du tarif — un taux, une interdiction
+    d'importation, ou rien — pour qu'aucune ne soit lue pour une autre.
+    """
+    interdit = val is not None and MENTION_INTERDIT in str(val)
+    return (None if interdit else parse_rate(val)), interdit
 
 
 def extract_positions(filepath: str) -> List[Dict]:
@@ -92,11 +140,11 @@ def extract_positions(filepath: str) -> List[Dict]:
 
         # Colonne 3 = taux DD (فئة الضريبة)
         dd_raw = row[3]
-        dd_rate = parse_rate(dd_raw)
+        dd_rate, dd_interdit = lire_cellule_droit(dd_raw)
 
-        # Colonne 4 = préférence Ligue Arabe
+        # Colonne 4 = préférence GZALE (Grande Zone arabe de libre-échange)
         arab_pref_raw = row[4] if len(row) > 4 else None
-        arab_pref_rate = parse_rate(arab_pref_raw)
+        arab_pref_rate, arab_interdit = lire_cellule_droit(arab_pref_raw)
 
         # Construire les taxes
         taxes = []
@@ -118,14 +166,35 @@ def extract_positions(filepath: str) -> List[Dict]:
                 "is_excise": False,
             })
 
-        # Préférence Ligue Arabe
+        # Préférence GZALE. Le tarif la PUBLIE position par position : ce
+        # n'est pas une franchise déduite d'une appartenance à un bloc, mais
+        # un taux national, au même titre que le droit NPF de la colonne
+        # précédente. L'appartenance de l'origine à la GZALE reste, elle, une
+        # condition que ce fichier ne tranche pas.
         preferential_rates = []
         if arab_pref_rate is not None:
             preferential_rates.append({
-                "regime": "Arab League",
+                "regime": "GZALE",
+                "regime_name_fr": "Grande Zone arabe de libre-échange (GZALE/GAFTA)",
                 "rate_pct": arab_pref_rate,
                 "raw_value": str(arab_pref_raw),
                 "source": "customs.gov.ly",
+                "colonne_source": "التعريفة التفضيلية لدول جامعة الدول العربية",
+            })
+
+        # Une interdiction d'importation n'est pas un droit : elle est portée
+        # comme restriction de la position, et le prélèvement correspondant
+        # reste absent plutôt que fixé à zéro.
+        restrictions = []
+        if dd_interdit or arab_interdit:
+            restrictions.append({
+                "type": "IMPORTATION_INTERDITE",
+                "portee": "NPF et GZALE" if (dd_interdit and arab_interdit) else (
+                    "NPF" if dd_interdit else "GZALE"
+                ),
+                "verbatim": MENTION_INTERDIT,
+                "libelle_fr": "Importation interdite",
+                "source": "customs.gov.ly (التعريفة الجمركية 2022)",
             })
 
         positions.append({
@@ -148,7 +217,7 @@ def extract_positions(filepath: str) -> List[Dict]:
             "preferential_rates": preferential_rates,
             "fiscal_advantages": [],
             "formalities": [],
-            "restrictions": [],
+            "restrictions": restrictions,
             "legal_refs": [],
             "reglementation": {"import": [], "export": []},
             "quotas": {"qcs": None, "qci": None},
