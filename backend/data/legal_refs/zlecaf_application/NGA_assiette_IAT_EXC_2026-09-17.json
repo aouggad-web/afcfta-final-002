@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette des prélèvements IAT (Import Adjustment Tax) et EXC (Excise Duty) au Nigéria",
+  "verified_at": "2026-09-17",
+  "etabli": false,
+  "regle": null,
+  "source_consultee": {
+    "douane": {
+      "institution": "Nigeria Customs Service (NCS)",
+      "url": "https://customs.gov.ng",
+      "statut_acces": "Le portail renvoie un chargeur JavaScript (loader) ; aucun texte extractible, y compris les pages tarifaires et le lien « Customs Excise Tariff etc. (Variation) Order 2026 ».",
+      "fait_etabli": "Le crawl NGA (source customs.gov.ng) porte quatre taxes ad valorem par position : ID (Import Duty, 5–35 %), IAT (Import Adjustment Tax), EXC (Excise Duty), VAT (7,5 %). L'assiette DD (ID) est déjà CIF, la TVA CIF+DD (VAITA) ; les bases IAT et EXC ne sont pas publiées par le fichier."
+    },
+    "texte_legal": {
+      "instrument": "Customs, Excise Tariff, etc. (Consolidation) Act (CETA), modifié par la Finance Act 2020 — cadre cité par la documentation fiscale (PwC « Highlights of Nigeria's 2022 Fiscal Policy Measures », juin 2022, pwc.com/ng).",
+      "url_pwc": "https://www.pwc.com/ng/en/assets/pdf/pwc-tax-alert-highlights-of-nigeria-2022-fiscal-policy-measures.pdf",
+      "statut": "Source secondaire qui décrit la liste IAT et les taux d'accise, mais ne cite pas la base de calcul (CIF ou autre) ; le texte de loi primaire (CETA / Finance Act) n'a pas pu être récupéré dans cette session."
+    },
+    "fiscal_policy_measures": {
+      "url_2026": "https://fmino.gov.ng/nigeria-customs-service-implements-2026-fiscal-policy-measures-and-tariff-amendments/",
+      "statut": "Confirme l'existence d'une liste IAT révisée (ECOWAS CET 2022–2027) et d'amendements d'accise au 1er juillet 2026 (tabac 30 % ad valorem + montant spécifique par tige/litre, boissons, véhicules), sans énoncer l'assiette."
+    }
+  },
+  "ce_qui_est_etabli": "La structure tarifaire du Nigéria : quatre taxes ad valorem (ID, IAT, EXC, VAT). Le droit d'importation ID est assis sur la valeur en douane CIF ; la TVA sur CIF + droit (VAITA). IAT et EXC sont des taux ad valorem publiés par la NCS.",
+  "ce_qui_reste_non_etabli": "L'assiette exacte de l'IAT et de l'EXC (valeur CIF ? ou une autre base) n'a pas été établie sur texte primaire daté. Ne pas la poser sans ce texte.",
+  "doutes": "Recherche du 2026-09-17 : (1) customs.gov.ng injoignable par récupération simple (loader JS) ; (2) le PDF PwC 2022 FPM décrit la liste IAT et les taux d'accise mais pas l'assiette ; (3) la page fmino.gov.ng 2026 renvoie au « Customs Excise Tariff etc. (Variation) Order 2026 » sans en énoncer la base. Aucun verbatim fixant l'assiette IAT/EXC n'a été obtenu. Cadre légal : CETA modifiée par la Finance Act 2020.",
+  "remaining_work": [
+    "Obtenir le « Customs, Excise Tariff, etc. (Consolidation) Act » (CETA) et les Finance Acts concernés, et y lire la disposition fixant la base de l'IAT et de l'accise à l'importation.",
+    "Récupérer le « Customs Excise Tariff etc. (Variation) Order » (2024/2026) publié par la NCS, qui peut énoncer l'assiette.",
+    "Tant que le texte n'est pas lu, maintenir IAT et EXC sans assiette au socle (manque nommé), sans leur poser CIF de mémoire."
+  ]
+}
