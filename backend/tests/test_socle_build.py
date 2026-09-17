@@ -248,12 +248,18 @@ def test_un_pays_sans_position_est_declare_vide_jamais_estime():
 def test_une_couverture_complete_exige_des_droits_liquidables():
     """Annoncer COMPLET sur la seule présence des familles reproduirait les
     « 100 % de couverture » déduits de listes non vides que l'audit
-    reprochait au module : l'Angola porte un droit et une TVA, mais aucune
-    assiette pour la seconde."""
-    chemin = os.path.join(CRAWL, "AGO_tariffs.json")
+    reprochait au module : le Soudan porte un droit et une TVA, mais aucune
+    assiette pour la seconde.
+
+    Ce test visait l'Angola jusqu'à ce que sa TVA soit collectée : il passait
+    alors non plus parce que le garde-fou tient, mais parce que le pays était
+    devenu complet — un test vert pour la mauvaise raison. Il est repointé sur
+    un pays qui illustre encore le cas, et devra l'être de nouveau le jour où
+    le Soudan sera collecté à son tour."""
+    chemin = os.path.join(CRAWL, "SDN_tariffs.json")
     if not os.path.exists(chemin):
-        pytest.skip("crawl AGO absent de ce clone")
-    socle, c = bs.construire_pays("AGO", chemin, "crawl", bs.charger_assiettes_pays())
+        pytest.skip("crawl SDN absent de ce clone")
+    socle, c = bs.construire_pays("SDN", chemin, "crawl", bs.charger_assiettes_pays())
     couverture = socle["couverture"]
     assert couverture["droit_de_douane"] and couverture["tva"]
     assert couverture["etat"] == "PARTIEL"
