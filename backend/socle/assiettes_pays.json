@@ -10,6 +10,25 @@
   },
   "_migre_le": "2026-09-15",
   "pays": {
+    "AGO": {
+      "ordre": [
+        "DD",
+        "TVA"
+      ],
+      "taxes": {
+        "DD": {
+          "assiette": "CIF",
+          "origine_assiette": "profil_code"
+        },
+        "TVA": {
+          "assiette": "CIF+TOUS_SAUF_TVA",
+          "origine_assiette": "texte_primaire",
+          "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche AGO_assiette_TVA_2026-09-17.json",
+          "fiche": "AGO_assiette_TVA_2026-09-17.json"
+        }
+      },
+      "reference_legale": "voir fiche AGO_assiette_TVA_2026-09-17.json"
+    },
     "BDI": {
       "ordre": [
         "DD",
@@ -204,6 +223,25 @@
         }
       },
       "reference_legale": "CEMAC Tarif des Douanes"
+    },
+    "COM": {
+      "ordre": [
+        "DD",
+        "TVA"
+      ],
+      "taxes": {
+        "DD": {
+          "assiette": "CIF",
+          "origine_assiette": "profil_code"
+        },
+        "TVA": {
+          "assiette": "CIF+TOUS_SAUF_TVA",
+          "origine_assiette": "texte_primaire",
+          "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche COM_assiette_TVA_2026-09-17.json",
+          "fiche": "COM_assiette_TVA_2026-09-17.json"
+        }
+      },
+      "reference_legale": "voir fiche COM_assiette_TVA_2026-09-17.json"
     },
     "DZA": {
       "ordre": [
@@ -795,6 +833,44 @@
         }
       },
       "reference_legale": "Ministère des Finances de Somalie — Somali Customs Tariff 2020 (mof.gov.so)"
+    },
+    "STP": {
+      "ordre": [
+        "DD",
+        "TVA"
+      ],
+      "taxes": {
+        "DD": {
+          "assiette": "CIF",
+          "origine_assiette": "profil_code"
+        },
+        "TVA": {
+          "assiette": "CIF+TOUS_SAUF_TVA",
+          "origine_assiette": "texte_primaire",
+          "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche STP_assiette_TVA_2026-09-17.json",
+          "fiche": "STP_assiette_TVA_2026-09-17.json"
+        }
+      },
+      "reference_legale": "voir fiche STP_assiette_TVA_2026-09-17.json"
+    },
+    "SYC": {
+      "ordre": [
+        "DD",
+        "TVA"
+      ],
+      "taxes": {
+        "DD": {
+          "assiette": "CIF",
+          "origine_assiette": "profil_code"
+        },
+        "TVA": {
+          "assiette": "CIF+TOUS_SAUF_TVA",
+          "origine_assiette": "texte_primaire",
+          "texte": "base TVA import = valeur en douane + prélèvements d'entrée, TVA exclue — voir fiche SYC_assiette_TVA_2026-09-17.json",
+          "fiche": "SYC_assiette_TVA_2026-09-17.json"
+        }
+      },
+      "reference_legale": "voir fiche SYC_assiette_TVA_2026-09-17.json"
     },
     "TCD": {
       "ordre": [

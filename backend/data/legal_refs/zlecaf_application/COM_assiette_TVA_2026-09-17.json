@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette de la TVA à l'importation — COM : valeur en douane + prélèvements d'entrée, TVA exclue",
+  "verified_at": "2026-09-17",
+  "etabli": true,
+  "evidence_level": null,
+  "source": {
+    "instrument": "Code Général des Impôts, édition 2023 Art. 140, 4°",
+    "institution": "Direction Générale des Impôts — Union des Comores",
+    "url": "https://dgi.gouv.km/file/rapport/Comores-CGI-2023(integral).pdf",
+    "texte_archive": "sources/COM_cgi_art140.texte-extrait.txt",
+    "sha256": "34339528827f8e5c7199a1b6a4a09ed630ffdb4afc179210e0a72af60e1092c8",
+    "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est.",
+    "pdf_sha256": "782515b181d62194f81ea4450130c5edfa05f07c0728c3a032ae0a8900924546"
+  },
+  "regle": {
+    "article": "Art. 140, 4°",
+    "verbatim": "4° la valeur CAF des marchandises importées majorée de tous droits d'entrée à caractère douanier",
+    "valeur_moteur": "CIF+TOUS_SAUF_TVA",
+    "portee": "Valeur en douane augmentée des prélèvements d'entrée, la TVA exclue de sa propre assiette."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "les exonérations et taux réduits ; le taux lui-même (porté dans la donnée)."
+  ],
+  "remaining_work": [
+    "Collecter le tarif national détaillé (sous-positions) pour éliminer la donnée DD WITS/TRAINS."
+  ]
+}

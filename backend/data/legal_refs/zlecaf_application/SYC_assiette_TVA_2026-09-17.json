@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette de la TVA à l'importation — SYC : valeur en douane + prélèvements d'entrée, TVA exclue",
+  "verified_at": "2026-09-17",
+  "etabli": true,
+  "evidence_level": null,
+  "source": {
+    "instrument": "Value Added Tax Act, 2010 (Act 35/2010), amendé Act 16/2024 Section 23(1) « Value of Import »",
+    "institution": "Seychelles Revenue Commission / Official Gazette",
+    "url": "https://src.gov.sc/wp-content/uploads/2025/10/Act-16-2024-Value-Added-Tax-Amendment-Act-2024.pdf",
+    "texte_archive": "sources/SYC_vat_act_s23.texte-extrait.txt",
+    "sha256": "3665216df97af7efbf1f33c2f1c2dca703ebc08ba46a115df5c18a10cfd532c6",
+    "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est.",
+    "pdf_sha256": "fcff53c88fd59a23bf68f971ecab50c5c9006fdf2cd5a87cc0fe8113e62c9d73"
+  },
+  "regle": {
+    "article": "Section 23(1) « Value of Import »",
+    "verbatim": "23.(1) … the value of an import of goods is the sum of — (a) the value of the goods for customs duty … (b) insurance and freight … (c) the amount of any customs duty, excise, or any fee or other charge paid (excluding levies) in respect of the import.",
+    "valeur_moteur": "CIF+TOUS_SAUF_TVA",
+    "portee": "Valeur en douane augmentée des prélèvements d'entrée, la TVA exclue de sa propre assiette."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "les exonérations et taux réduits ; le taux lui-même (porté dans la donnée)."
+  ],
+  "remaining_work": [
+    "Collecter le tarif national détaillé (sous-positions) pour éliminer la donnée DD WITS/TRAINS."
+  ]
+}
