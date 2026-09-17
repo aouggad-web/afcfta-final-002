@@ -26,6 +26,8 @@ celui qui a été lu.
 | `SACU_assiette_DD.source-extrait.txt` | SACU (BWA/LSO/NAM/SWZ/ZAF) | SARS + BURS/LRA/NamRA/ERA | Customs and Excise Act 91/1964 s.65/67 + politique SARS SC-CR-A-03 : le droit de douane s'assied sur la valeur de transaction base FOB (fret/assurance internationaux exclus), pas CIF. PDF non archivés |
 | `NGA_ncsa_2023_s69.texte-extrait.txt` | Nigéria | Nigeria Customs Service | NCSA 2023, s.69 : base d'évaluation = transaction value (CIF) ; IAT et accises ad valorem sur CIF. Texte intégral JO à archiver |
 | `LBY_loi_10_2010_art26-31.texte-extrait.txt` | Libye | Douane libyenne | Loi n° 10 de 2010, art. 26-31 : valeur en douane CAF/CIF ; droits de douane abolis (2005) sauf tabac ; service fee. Texte intégral à archiver |
+| `MRT_assiette_TVA.texte-extrait.txt` | Mauritanie | Direction Générale des Impôts | CGI (TVA), chapitre 3 : base TVA import = valeur en douane + tous prélèvements, TVA exclue. PDF douanes.mr |
+| `MRT_tarif2021.pdf` (tarif national, 6129 sous-positions) | Mauritanie | douanes.mr | Tarif douanier national 2021 : sous-positions 10 chiffres, colonnes DD/RS/PC — à intégrer pour éliminer WITS/TRAINS |
 
 ## Fichiers `.ocr-ara.txt`
 

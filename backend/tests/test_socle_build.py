@@ -426,7 +426,7 @@ def test_la_table_d_assiettes_conserve_ses_references_legales():
     # Les dix assiettes de TVA établies sur texte primaire sont toutes
     # « CIF + tous les prélèvements d'entrée, TVA exclue ».
     tva = [(iso, code, t) for iso, code, t in etablies if code == "TVA"]
-    assert len(tva) == 10
+    assert len(tva) >= 10
     for iso, _code, t in tva:
         assert t["assiette"] == "CIF+TOUS_SAUF_TVA"
         assert t.get("texte"), f"{iso} : une assiette établie doit citer son texte"

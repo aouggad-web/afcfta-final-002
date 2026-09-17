@@ -586,6 +586,25 @@
       },
       "reference_legale": "Autoridade Tributária de Moçambique — IVA na importação"
     },
+    "MRT": {
+      "ordre": [
+        "DD",
+        "TVA"
+      ],
+      "taxes": {
+        "DD": {
+          "assiette": "CIF",
+          "origine_assiette": "profil_code"
+        },
+        "TVA": {
+          "assiette": "CIF+TOUS_SAUF_TVA",
+          "origine_assiette": "texte_primaire",
+          "texte": "CGI Mauritanie (Livre II, Titre I — TVA), chapitre 3 : « La base imposable pour les importations est constituée par la valeur définie par la législation douanière, y compris les taxes et prélèvements de toute nature perçus lors du franchissement du cordon douanier, à l'exception de la taxe sur la valeur ajoutée elle-même »",
+          "fiche": "MRT_assiette_TVA_2026-09-17.json"
+        }
+      },
+      "reference_legale": "impots.gov.mr — CGI (TVA) ; tarif douanes.mr"
+    },
     "MUS": {
       "ordre": [
         "DD",
