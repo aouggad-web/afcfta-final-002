@@ -23,10 +23,11 @@
   },
   "ce_qui_est_etabli": "La structure tarifaire du Nigéria : quatre taxes ad valorem (ID, IAT, EXC, VAT). Le droit d'importation ID est assis sur la valeur en douane CIF ; la TVA sur CIF + droit (VAITA). IAT et EXC sont des taux ad valorem publiés par la NCS.",
   "ce_qui_reste_non_etabli": "L'assiette exacte de l'IAT et de l'EXC (valeur CIF ? ou une autre base) n'a pas été établie sur texte primaire daté. Ne pas la poser sans ce texte.",
-  "doutes": "Recherche du 2026-09-17 : (1) customs.gov.ng injoignable par récupération simple (loader JS) ; (2) le PDF PwC 2022 FPM décrit la liste IAT et les taux d'accise mais pas l'assiette ; (3) la page fmino.gov.ng 2026 renvoie au « Customs Excise Tariff etc. (Variation) Order 2026 » sans en énoncer la base. Aucun verbatim fixant l'assiette IAT/EXC n'a été obtenu. Cadre légal : CETA modifiée par la Finance Act 2020.",
+  "doutes": "Recherche du 2026-09-17, multi-institutions : (1) customs.gov.ng injoignable par récupération simple (loader JS) ; (2) le PDF PwC 2022 FPM décrit la liste IAT et les taux d'accise mais pas l'assiette ; (3) fmino.gov.ng (2026) renvoie au « Customs Excise Tariff etc. (Variation) Order 2026 » sans énoncer la base ; (4) Journal Officiel fédéral : gazettes.africa ne conserve que 3 à 6 numéros/an pour le Nigéria récent et la recherche ne remonte pas l'ordre tarifaire ; (5) laws.lawnigeria.com injoignable. Aucun verbatim fixant l'assiette IAT/EXC obtenu. Cadre légal : CETA modifiée par la Finance Act 2020.",
   "remaining_work": [
-    "Obtenir le « Customs, Excise Tariff, etc. (Consolidation) Act » (CETA) et les Finance Acts concernés, et y lire la disposition fixant la base de l'IAT et de l'accise à l'importation.",
-    "Récupérer le « Customs Excise Tariff etc. (Variation) Order » (2024/2026) publié par la NCS, qui peut énoncer l'assiette.",
-    "Tant que le texte n'est pas lu, maintenir IAT et EXC sans assiette au socle (manque nommé), sans leur poser CIF de mémoire."
+    "Journal Officiel de la République fédérale du Nigéria : récupérer le « Customs, Excise Tariff, etc. (Variation) Order » annuel (ex. 2022/2023/2024/2026) — la douane fmino.gov.ng le cite pour 2026 — et y lire la base de l'IAT et de l'accise.",
+    "Loi primaire : Customs, Excise Tariff, etc. (Consolidation) Act (Cap C49, LFN 2004) et Finance Acts 2020/2021 — établir la base d'imposition (valeur en douane / CIF) des prélèvements.",
+    "Autres dépôts : laws.africa / AfricanLII, lawsofnigeria.com, Budget Office (budgetoffice.gov.ng), FIRS (firs.gov.ng).",
+    "Tant que le texte n'est pas lu, maintenir IAT et EXC sans assiette au socle (manque nommé)."
   ]
 }
