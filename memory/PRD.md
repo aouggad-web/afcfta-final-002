@@ -162,3 +162,12 @@ Fixed 31 blocking lint errors reported by pre-completion checks:
 - Fixed bare except clauses in backend/routes/health.py and backend/etl/news_aggregator.py
 - Removed duplicate test method in backend/tests/test_north_africa_tariff_system.py
 - Verified via `ruff check` (no route-shadowing/F811/F601/E722 remain) and curl smoke tests on affected endpoints
+
+## Session 2026-09-16 - Import majeur : refonte calculateur (socle L1-L4)
+- Dépôt repassé privé entre-temps (404 public) → repassé public par l'utilisateur pour permettre le fetch.
+- 60+ commits importés : refonte complète du calculateur autour d'un "socle" (backend/socle/*.json, gitignoré, régénéré par `scripts/build_socle.py`) — liquidation des droits/taxes pour 54 pays à partir du crawl brut, nouvelle route `/api/calcul` (POST) et `/api/calcul/pays` (GET), remplace l'ancien calculateur `routes/calculator.py`/`enhanced_calculator.py` par un moteur unique.
+- **Nouveau artefact dérivé à régénérer après chaque sync** (même famille que `crawled_normalized`) : `backend/socle/*.json` via `python scripts/build_socle.py` — sans lui, toute requête `/api/calcul` échoue en 404 "fichier de socle absent". Ajouté cette étape dans `sync_emergent.sh` (step 3quater, local, pas encore poussé sur GitHub).
+- Réappliqué (3e fois ce fork) le fix double-préfixe `/api/api/...` sur production.py, currencies.py, exchange_rates.py, trade_data.py, export_router.py — toujours pas fusionné côté origin/main.
+- Testé via curl : `/api/calcul` (POST avec CSRF token) renvoie une liquidation complète et correcte (MAR: DD 2.5% + TPI 0.25% + TVA sur CIF+DD+TPI, conforme CGI Maroc art. 96). `/api/calcul/pays` renvoie la couverture réelle (54 pays, 975589 droits liquidables).
+- Tests pytest : 129 passed direct (test_socle_build, test_calcul_route, test_calcul_moteur, test_demand_consumption_realism) + 26 passed (test_calculator_zlecaf_fail_closed, nécessite `PYTHONPATH=/app:/app/backend` pour le module `engine` situé à la racine du repo, pas dans backend/).
+- Frontend rebuild + tous services redémarrés. Vérifié sans capture d'écran (uniquement curl + pytest), à la demande de l'utilisateur.

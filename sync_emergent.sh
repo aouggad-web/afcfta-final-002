@@ -167,6 +167,19 @@ else
   echo "     Pour installer manuellement : python scripts/geoip_update.py --from-file <archive>"
 fi
 
+echo "── 3ter/6 · Régénération des données normalisées (data/crawled_normalized, gitignoré) ──"
+# CRAWLED_DIR (services/crawled_data_service.py) ne lit que ce dossier dérivé,
+# jamais versionné : le `git clean -fd` de l'étape 1 l'efface systématiquement
+# (aucune exclusion ne le protège), et sans cette régénération l'étape 4
+# échoue immédiatement sur l'assertion AGO/WITS — avant même d'atteindre le
+# build frontend. Même étape que le workflow CI (.github/workflows/ci.yml).
+python scripts/normalize_crawled.py
+
+echo "── 3quater/6 · Régénération du socle de calcul (backend/socle/*.json, gitignoré) ──"
+# Même raison : le manifeste versionné décrit 54 pays sans qu'aucun fichier
+# n'existe sur disque tant que ce script n'a pas tourné (voir CI, même étape).
+python scripts/build_socle.py
+
 echo "── 4/6 · Contrôle d'import + données de la copie appliquée ──"
 ( cd backend && PYTHONPATH="$(pwd)/..:$(pwd)" python -c "
 import importlib

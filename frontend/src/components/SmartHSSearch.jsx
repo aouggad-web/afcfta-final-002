@@ -412,7 +412,11 @@ export default function SmartHSSearch({
                       <div
                         key={idx}
                         className="bg-white p-2 rounded border hover:bg-green-50 cursor-pointer"
-                        onClick={() => handleSubPositionSelect(sp.code_clean || sp.code, sp.description_fr || sp.description)}
+                        onClick={() => handleSubPositionSelect(
+                          sp.code_clean || sp.code,
+                          sp.description_fr || sp.description,
+                          sp.administrative_formalities || null
+                        )}
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">

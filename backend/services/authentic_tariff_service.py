@@ -57,6 +57,8 @@ def _adapt_crawled_position(entry: dict, parent: Optional[dict] = None) -> Optio
         or entry.get("designation")
         or entry.get("description_fr")
         or entry.get("description_en")
+        or entry.get("name_fr_from_previous_crawl")
+        or entry.get("desc_ar")
         or parent.get("description_fr")
         or parent.get("description_en")
         or parent.get("designation")
@@ -862,9 +864,98 @@ def get_fiscal_advantages(country_iso3, hs_code):
     return line.get("fiscal_advantages", []) if line else []
 
 
+def _normalize_crawled_formalities(raw_formalities):
+    """Adapt a crawled position's own ``formalities`` (``text_verbatim``/
+    ``source``) to the ``administrative_formalities`` shape the frontend
+    renders (``document_fr``/``document_en``). Position-specific formalities
+    take precedence over the generic HS6-level ones (see calculate_import_taxes):
+    otherwise a generic chapter-level formality meant for another product
+    (e.g. a CKD/SKD vehicle-assembly authorization) can be shown for an
+    unrelated finished product sharing the same HS6.
+    """
+    if not raw_formalities:
+        return []
+    normalized = []
+    for item in raw_formalities:
+        if not isinstance(item, dict):
+            continue
+        text = item.get("text_verbatim") or item.get("document_fr") or item.get("document_en")
+        if not text:
+            continue
+        normalized.append(
+            {
+                "code": item.get("code"),
+                "document_fr": item.get("document_fr", text),
+                "document_en": item.get("document_en", text),
+                "fap_official_label": item.get("fap_official_label"),
+            }
+        )
+    return normalized
+
+
 def get_administrative_formalities(country_iso3, hs_code):
     line = get_tariff_line(country_iso3, hs_code)
     return line.get("administrative_formalities", []) if line else []
+
+
+def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
+    """Format one crawled national position into a search result row.
+
+    Shared by both the direct national-code match (step 1) and the HS6→code
+    resolution when an ETL HS6-level query needs a specific national code
+    (step 2) — same shape either way.
+    """
+    taxes = _normalise_crawled_tax_details(sp.get("taxes"))
+    etl_position = etl_positions.get(code, {})
+    dd = _parse_crawled_tax_rate(sp.get("dd"))
+    if dd is None:
+        dd = _parse_crawled_tax_rate(sp.get("dd_rate"))
+    if dd is None:
+        dd = _parse_crawled_tax_rate(taxes.get("DD"))
+    if dd is None:
+        dd = _parse_crawled_tax_rate(etl_position.get("dd_rate"))
+    tva = _parse_crawled_tax_rate(taxes.get("TVA"))
+    if tva is None:
+        tva = _parse_crawled_tax_rate(etl_position.get("vat_rate"))
+    if tva is None:
+        tva = 0.0
+    tcs = taxes.get("TCS", {}).get("rate", 0)
+    prct = taxes.get("PRCT", {}).get("rate", 0)
+    daps = taxes.get("DAPS", {}).get("rate", 0)
+    # Effective rate = total_taxes / CIF×100 (cascade, not sum of rates).
+    # Include every applicable source tax (PCC, TPI, etc.) while
+    # excluding alternative preferential duty columns.
+    cascade_rates = {
+        tax_code: details["rate"]
+        for tax_code, details in taxes.items()
+        if tax_code not in _PREFERENTIAL_RATE_CODES and details["rate"] > 0
+    }
+    if dd is None:
+        cascade_rates.pop("DD", None)
+    elif dd > 0:
+        cascade_rates["DD"] = dd
+    if tva > 0:
+        cascade_rates["TVA"] = tva
+    ref_cascade = compute_tax_cascade(100.0, cascade_rates, country_iso3)
+    return {
+        "hs6": code[:6],
+        "national_code": code,
+        "description_fr": sp.get("name") or sp.get("description") or "",
+        "description_en": sp.get("name") or sp.get("description") or "",
+        "designation": sp.get("designation") or sp.get("name") or "",
+        "dd_rate": dd,
+        "duty_status": "PAYABLE" if dd is not None else "UNAVAILABLE",
+        "tva_rate": tva,
+        "tcs_rate": tcs,
+        "prct_rate": prct,
+        "daps_rate": daps,
+        "effective_rate": ref_cascade["effective_rate_pct"],
+        "total_rate": ref_cascade["effective_rate_pct"],  # kept for compat
+        "advantages": sp.get("advantages", []),
+        "source": sp.get("source") or "crawled",
+        "source_url": sp.get("source_url"),
+        "source_quality": sp.get("source_quality", "crawled_unclassified"),
+    }
 
 
 def search_tariff_lines(country_iso3, query, language="fr", limit=20):
@@ -940,62 +1031,8 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
                 continue
             name = (sp.get("name") or sp.get("description") or sp.get("designation") or "").lower()
             if code.startswith(q) or q in name:
-                taxes = _normalise_crawled_tax_details(sp.get("taxes"))
-                etl_position = etl_positions.get(code, {})
-                dd = _parse_crawled_tax_rate(sp.get("dd"))
-                if dd is None:
-                    dd = _parse_crawled_tax_rate(sp.get("dd_rate"))
-                if dd is None:
-                    dd = _parse_crawled_tax_rate(taxes.get("DD"))
-                if dd is None:
-                    dd = _parse_crawled_tax_rate(etl_position.get("dd_rate"))
-                tva = _parse_crawled_tax_rate(taxes.get("TVA"))
-                if tva is None:
-                    tva = _parse_crawled_tax_rate(etl_position.get("vat_rate"))
-                if tva is None:
-                    tva = 0.0
-                tcs = taxes.get("TCS", {}).get("rate", 0)
-                prct = taxes.get("PRCT", {}).get("rate", 0)
-                daps = taxes.get("DAPS", {}).get("rate", 0)
-                # Effective rate = total_taxes / CIF×100 (cascade, not sum of rates).
-                # Include every applicable source tax (PCC, TPI, etc.) while
-                # excluding alternative preferential duty columns.
-                cascade_rates = {
-                    tax_code: details["rate"]
-                    for tax_code, details in taxes.items()
-                    if tax_code not in _PREFERENTIAL_RATE_CODES and details["rate"] > 0
-                }
-                if dd is None:
-                    cascade_rates.pop("DD", None)
-                elif dd > 0:
-                    cascade_rates["DD"] = dd
-                if tva > 0:
-                    cascade_rates["TVA"] = tva
-                ref_cascade = compute_tax_cascade(
-                    100.0,
-                    cascade_rates,
-                    country_iso3,
-                )
                 results.append(
-                    {
-                        "hs6": code[:6],
-                        "national_code": code,
-                        "description_fr": sp.get("name") or sp.get("description") or "",
-                        "description_en": sp.get("name") or sp.get("description") or "",
-                        "designation": sp.get("designation") or sp.get("name") or "",
-                        "dd_rate": dd,
-                        "duty_status": "PAYABLE" if dd is not None else "UNAVAILABLE",
-                        "tva_rate": tva,
-                        "tcs_rate": tcs,
-                        "prct_rate": prct,
-                        "daps_rate": daps,
-                        "effective_rate": ref_cascade["effective_rate_pct"],
-                        "total_rate": ref_cascade["effective_rate_pct"],  # kept for compat
-                        "advantages": sp.get("advantages", []),
-                        "source": sp.get("source") or "crawled",
-                        "source_url": sp.get("source_url"),
-                        "source_quality": sp.get("source_quality", "crawled_unclassified"),
-                    }
+                    _build_result_from_crawled_position(code, sp, etl_positions, country_iso3)
                 )
                 seen_codes.add(code)
                 if len(results) >= limit:
@@ -1008,11 +1045,38 @@ def search_tariff_lines(country_iso3, query, language="fr", limit=20):
             for line in data.get("tariff_lines", []):
                 hs6 = line.get("hs6", "")
                 desc = line.get(desc_key, line.get("description_fr", line.get("designation", "")))
-                if hs6 not in seen_codes and (hs6.startswith(q) or q in desc.lower()):
+                if hs6 in seen_codes or not (hs6.startswith(q) or q in desc.lower()):
+                    continue
+                # Un HS6 ETL est générique : le pays a souvent plusieurs codes
+                # nationaux distincts sous ce préfixe, taxés différemment (ex.
+                # riz à semer / riz de consommation en Égypte). Servir le HS6
+                # nu forcerait un choix implicite entre positions différentes —
+                # on résout donc vers le(s) code(s) national/nationaux, et on
+                # n'expose le HS6 brut que si aucun code national n'existe.
+                national_matches = (
+                    [
+                        (code, sp)
+                        for code, sp in crawled_index.items()
+                        if len(code) > 6 and code.startswith(hs6) and code not in seen_codes
+                    ]
+                    if crawled_index
+                    else []
+                )
+                if national_matches:
+                    for code, sp in national_matches:
+                        results.append(
+                            _build_result_from_crawled_position(
+                                code, sp, etl_positions, country_iso3
+                            )
+                        )
+                        seen_codes.add(code)
+                        if len(results) >= limit:
+                            return results
+                else:
                     results.append(line)
-                    seen_codes.add(hs6)
-                    if len(results) >= limit:
-                        return results
+                seen_codes.add(hs6)
+                if len(results) >= limit:
+                    return results
 
     # ── 3. Nomenclature map (extended national codes) ────────────────────────
     if len(results) < limit:
@@ -2126,7 +2190,16 @@ def calculate_import_taxes(
         "taxes_detail": taxes_detail,
         "individual_taxes": individual_taxes,
         "fiscal_advantages": line.get("fiscal_advantages", []),
-        "administrative_formalities": line.get("administrative_formalities", []),
+        # Une position nationale sélectionnée (crawled_sp_entry) a ses propres
+        # formalités : les préférer au champ générique du line HS6, sinon une
+        # formalité d'un autre produit du même chapitre (ex. CKD/SKD réservé
+        # aux kits d'assemblage automobile) s'affiche pour un produit fini
+        # sans rapport (ex. lave-vaisselle 8422119000, Algérie).
+        "administrative_formalities": (
+            _normalize_crawled_formalities(crawled_sp_entry.get("formalities"))
+            if crawled_sp_entry and crawled_sp_entry.get("formalities")
+            else line.get("administrative_formalities", [])
+        ),
         "has_sub_positions": len(all_sub_positions) > 0,
         "sub_position_count": len(all_sub_positions),
         "sub_position": sub_position_info,

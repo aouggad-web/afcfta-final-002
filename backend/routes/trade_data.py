@@ -9,7 +9,7 @@ from fastapi import APIRouter, HTTPException, Query
 from services.data_source_selector import data_source_selector
 from services.wto_service import wto_service
 
-router = APIRouter(prefix="/api", tags=["Trade Data"])
+router = APIRouter(tags=["Trade Data"])
 
 
 @router.get("/trade-data/latest")

@@ -20,7 +20,7 @@ from exchange_rates.models import RateAlert
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 logger = logging.getLogger(__name__)
-router = APIRouter(prefix="/api/exchange-rates")
+router = APIRouter(prefix="/exchange-rates")
 
 
 def _bundle_to_dict(bundle: RateBundle) -> dict:
