@@ -1585,6 +1585,43 @@ def _resolve_zlecaf_context(
 resolve_zlecaf_context = _resolve_zlecaf_context
 
 
+_country_has_vat_cache: Dict[str, bool] = {}
+
+
+def _tva_presente_dans_le_tarif(country_iso3: str, country_data) -> bool:
+    """Vrai si le fichier du pays publie au moins une TVA (famille présente).
+
+    Sépare un tarif qui collecte la TVA position par position (une position
+    sans TVA est alors une exonération, ex. Algérie) d'un tarif qui n'en porte
+    aucune (Somalie, SARS : la TVA/sales tax n'est pas dans ce fichier). Le
+    verdict est constant pour un même chargement : il est mis en cache.
+    """
+    if country_iso3 in _country_has_vat_cache:
+        return _country_has_vat_cache[country_iso3]
+    presente = False
+    if isinstance(country_data, dict):
+        for line in country_data.get("tariff_lines", []) or []:
+            if not isinstance(line, dict):
+                continue
+            if line.get("vat_rate") is not None or line.get("vat_rate_variants"):
+                presente = True
+                break
+            for tax in line.get("taxes_detail", []) or []:
+                if isinstance(tax, dict) and _is_vat_code(tax.get("tax") or ""):
+                    presente = True
+                    break
+            if presente:
+                break
+            for sp in line.get("sub_positions", []) or []:
+                if isinstance(sp, dict) and sp.get("vat_rate") is not None:
+                    presente = True
+                    break
+            if presente:
+                break
+    _country_has_vat_cache[country_iso3] = presente
+    return presente
+
+
 def calculate_import_taxes(
     country_iso3, hs_code, cif_value, apply_zlecaf=False, language="fr", origin_country=None
 ):
@@ -1734,29 +1771,33 @@ def calculate_import_taxes(
         if "DD" in taxes_detail:
             taxes_detail["DD"] = {**taxes_detail["DD"], "rate": dd_rate_pct}
 
-    # Algérie : le tarif officiel de la DGD ne publie la TVA que là où elle est
-    # due. Une position publiée sans TVA est une exonération — articles 8, 9, 10
-    # et 11 du Code des taxes sur le chiffre d'affaires (viandes sous taxe
-    # sanitaire, lait, médicaments, farines et semoules, or, navires ; café vert
-    # exonéré par les lois de finances prorogées au 31/12/2026) — et non une
-    # donnée manquante. La lire « 0 % » avec le signal `tva_exoneree` évite de
-    # bloquer tout le calcul au garde CALCULATION_UNAVAILABLE alors que les
-    # autres droits de la position sont complets. Une position sans droit de
-    # douane ET sans TVA (ex. 1001110000) reste incomplète et garde ce garde.
+    # TVA absente de la position : deux sens légitimes, jamais un zéro fabriqué
+    # ni un blocage injustifié du calcul.
+    #   (a) famille TVA entièrement absente du tarif (Somalie, SARS…) : la TVA
+    #       n'est pas collectée par ce fichier. On sert les droits collectés et
+    #       on signale la TVA absente (`tva_absente`) ; le total reste PARTIEL,
+    #       il ne prétend pas inclure une taxe que la source n'a pas.
+    #   (b) position publiée sans TVA (Algérie) : exonérée à 0 % par le Code des
+    #       taxes sur le chiffre d'affaires (art. 8/9/10/11 — viandes, lait,
+    #       médicaments, farines et semoules, or, navires ; café vert art. 214
+    #       LF2025 reconduit LF2026), signalée `tva_exoneree`.
+    # Une position sans droit de douane ET sans TVA (ex. DZA 1001110000) reste
+    # réellement incomplète et garde le garde CALCULATION_UNAVAILABLE.
     tva_exoneree = False
-    if country_iso3 == "DZA" and vat_rate_pct is None and dd_rate_pct is not None:
-        vat_rate_pct = 0.0
-        tva_exoneree = True
+    tva_absente = False
+    if vat_rate_pct is None and dd_rate_pct is not None:
+        if country_iso3 == "DZA":
+            vat_rate_pct = 0.0
+            tva_exoneree = True
+        elif not _tva_presente_dans_le_tarif(country_iso3, country_data):
+            vat_rate_pct = 0.0
+            tva_absente = True
     for code in list(taxes_detail.keys()):
         entree = taxes_detail[code]
-        if (
-            country_iso3 == "DZA"
-            and _is_vat_code(code)
-            and isinstance(entree, dict)
-            and entree.get("rate") is None
-        ):
+        if _is_vat_code(code) and isinstance(entree, dict) and entree.get("rate") is None:
             taxes_detail[code] = {**entree, "rate": 0.0}
-            tva_exoneree = True
+            if country_iso3 == "DZA":
+                tva_exoneree = True
 
     missing = [
         code
@@ -2168,6 +2209,12 @@ def calculate_import_taxes(
         "tva_exoneree_source": (
             "CTCA art. 8, 9, 10 et 11 — fiche DZA_taux_TVA_2026-09-17.json"
             if tva_exoneree
+            else None
+        ),
+        "tva_absente": tva_absente,
+        "tva_absente_source": (
+            "Famille TVA absente du tarif de ce pays — total sans TVA"
+            if tva_absente
             else None
         ),
         # DOCUMENTED | NOT_AVAILABLE | OFFER_ONLY | PARTNER_NOTICE_REQUIRED
