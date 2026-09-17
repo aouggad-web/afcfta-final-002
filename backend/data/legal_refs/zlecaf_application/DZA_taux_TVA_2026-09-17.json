@@ -30,7 +30,9 @@
       "café vert robusta et arabica — art. 214 de la Loi de Finances 2025 (exonération totale de TVA et de TIC, droit de douane ramené à 5 %), reconduit jusqu'au 31 décembre 2026 par la Loi de Finances 2026"
     ],
     "regle_read_moteur": "Une position du tarif DGD publiée SANS TVA est une exonération (0 %), pas une donnée manquante : la DGD laisse la colonne TVA vide là où aucune TVA n'est due. Dans le crawl algérien, ces positions portent DD/TCS/PRCT/DAPS mais aucune entrée TVA.",
-    "portee": "Taux standard 19 %, réduit 9 % ; exonérations art. 8/9/10/11. L'absence de TVA sur une position du tarif algérien doit être lue « 0 % (exonérée) », et non « taux absent »."
+    "portee": "Taux standard 19 %, réduit 9 % ; exonérations art. 8/9/10/11. L'absence de TVA sur une position du tarif algérien doit être lue « 0 % (exonérée) », et non « taux absent ».",
+    "taux_standard_pct": 19.0,
+    "verbatim": "Art. 21 - La taxe sur la valeur ajoutée est perçue au taux normal de 19 %."
   },
   "consequences": {
     "diagnostic": "Le crawl algérien porte la TVA pour 16 766 positions (19 % × 16 273, 9 % × 493) et n'en porte aucune pour 460 positions — viandes (ch. 02), lait (ch. 04), légumes secs (ch. 07), céréales (ch. 10), farines/semoules (ch. 11), médicaments (ch. 30), or (ch. 71), navires (ch. 89)… toutes des exonérations listées.",
