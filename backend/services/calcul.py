@@ -392,6 +392,22 @@ def _liquider(
         else:
             montant = assiette * taux / 100.0
 
+        # « 450c/kg with a maximum of 96% » : le droit est le spécifique, borné
+        # à un pourcentage de la valeur en douane. Contrairement à « 40% or
+        # 240c/kg », cette forme énonce sa propre règle — il n'y a rien à
+        # deviner, seulement à appliquer. La borne est nommée dans la ligne,
+        # qu'elle morde ou non : l'opérateur doit pouvoir constater pourquoi
+        # son droit s'arrête là.
+        plafond_pct = droit.get("plafond_ad_valorem_pct")
+        if plafond_pct is not None:
+            borne = cif * plafond_pct / 100.0
+            ligne["plafond_ad_valorem_pct"] = plafond_pct
+            ligne["plafond_ad_valorem_montant"] = round(borne, 4)
+            if montant > borne:
+                ligne["montant_avant_plafond"] = round(montant, 4)
+                ligne["plafond_applique"] = True
+                montant = borne
+
         ligne.update({"base": round(assiette, 4), "montant": round(montant, 4), "statut": CALCULE})
         lignes.append(ligne)
         calcules.append({"code": code, "montant": montant, "famille": ligne["famille"]})

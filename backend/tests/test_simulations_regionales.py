@@ -87,18 +87,19 @@ def test_l_ordre_est_neutre_et_non_classe_par_avantage():
     position = {
         "hs6": "020110",
         "droits": [{"code": "DD", "famille": "droit", "taux": 40.0, "assiette": "CIF"}],
-        # COMESA est le plus AVANTAGEUX ici : un tri par avantage le mettrait
-        # en tête. Il y est déjà par ordre alphabétique — on vérifie donc
-        # l'inverse, en rendant SADC le plus avantageux.
+        # SADC est ici le PLUS avantageux : un tri par montant le mettrait en
+        # tête, devant COMESA. L'ordre alphabétique doit tenir malgré ça.
         "preferentiels": {"COMESA": {"taux": 25.0}, "SADC": {"taux": 0.0}},
     }
-    # KEN partage COMESA avec l'Égypte ; l'Égypte partage aussi COMESA.
-    # On prend un couloir partageant les DEUX zones pour exercer l'ordre.
-    couloir = [
-        (o, d) for o in COMESA for d in COMESA if o != d and o in SADC and d in SADC and o < d
-    ]
-    assert couloir, "aucun couloir ne partage COMESA et SADC : le test perd son sens"
-    origine, destination = couloir[0]
+    # Couloir NOMMÉ, et non calculé. Une première version dérivait le couloir
+    # en parcourant deux `frozenset` : l'ordre d'itération variant d'une
+    # exécution à l'autre, elle tombait parfois sur un couloir incluant la RD
+    # Congo — hors des deux zones — et le test échouait une fois sur deux. Un
+    # test intermittent est pire qu'un test absent.
+    origine, destination = "ZMB", "ZWE"
+    assert {origine, destination} <= set(COMESA) & set(
+        SADC
+    ), "le test suppose un couloir membre des DEUX zones"
 
     regimes = [s["regime"] for s in simulations_regionales(position, destination, origine)]
 

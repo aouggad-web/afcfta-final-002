@@ -100,3 +100,79 @@ def test_un_droit_purement_specifique_reste_liquide():
     resultat = calculer(specifique, 100000.0, quantite=1000.0)["npf"]
 
     assert resultat["lignes"][0]["statut"] != MANQUE_REGLE_COMPOSEE
+
+
+# ── L'autre forme composée : « 450c/kg with a maximum of 96% » ───────────────
+#
+# Celle-ci n'est PAS une inconnue : elle énonce sa propre règle. Le droit est
+# le spécifique, borné à un pourcentage de la valeur en douane. 46 positions
+# sud-africaines la portent (lait, crème).
+#
+# Le crawl avait rangé 96,0 dans `rate_pct` — le PLAFOND pris pour le TAUX. Le
+# moteur liquidait donc 96 % ad valorem. Sur 10 000 kg de lait à 50 ZAR/kg :
+# 480 000 servis contre 45 000 réellement dus. Un facteur dix.
+
+PLAFONNE = {
+    "designation": "Milk, not concentrated",
+    "hs6": "040210",
+    "unite": "kg",
+    "droits": [
+        {
+            "code": "DD",
+            "famille": "droit",
+            "taux": None,
+            "specifique": {
+                "montant": 4.5,
+                "unite_quantite": "kg",
+                "brut": "450c/kg",
+            },
+            "assiette": "xQTE",
+            "plafond_ad_valorem_pct": 96.0,
+            "expression_brute": "450c/kg with a maximum of 96%",
+            "source": "sars.gov.za",
+        }
+    ],
+}
+
+
+def test_le_droit_specifique_s_applique_quand_le_plafond_ne_mord_pas():
+    """Marchandise de valeur normale : 450c/kg, pas 96 %."""
+    ligne = calculer(PLAFONNE, 500000.0, quantite=10000.0)["npf"]["lignes"][0]
+
+    assert ligne["montant"] == 45000.0
+    assert ligne.get("plafond_applique") is not True
+    # La borne est annoncée même sans mordre : l'opérateur doit pouvoir la lire.
+    assert ligne["plafond_ad_valorem_montant"] == 480000.0
+
+
+def test_le_plafond_borne_le_droit_sur_une_marchandise_de_faible_valeur():
+    """C'est tout l'objet de la borne : 450c/kg deviendrait confiscatoire."""
+    ligne = calculer(PLAFONNE, 20000.0, quantite=10000.0)["npf"]["lignes"][0]
+
+    assert ligne["montant"] == 19200.0  # 96 % de 20 000
+    assert ligne["plafond_applique"] is True
+    assert ligne["montant_avant_plafond"] == 45000.0
+
+
+def test_le_plafond_n_est_jamais_liquide_comme_un_taux():
+    """Le défaut mesuré, dans les deux sens.
+
+    Servir 96 % sur une valeur de 500 000 donnerait 480 000 — plus de dix fois
+    le droit dû. Le test borne l'erreur par le haut.
+    """
+    ligne = calculer(PLAFONNE, 500000.0, quantite=10000.0)["npf"]["lignes"][0]
+
+    assert ligne["montant"] != 480000.0
+    assert ligne["montant"] < 500000.0 * 96.0 / 100.0
+
+
+def test_cette_forme_n_est_pas_traitee_comme_non_tranchee():
+    """La distinction entre les deux formes composées.
+
+    « with a maximum of » dit sa règle ; « or » ne la dit pas. Les confondre
+    ferait refuser 46 positions parfaitement calculables — ou, pire, liquider
+    les 94 autres sur une composante choisie au hasard.
+    """
+    ligne = calculer(PLAFONNE, 500000.0, quantite=10000.0)["npf"]["lignes"][0]
+
+    assert ligne["statut"] != MANQUE_REGLE_COMPOSEE

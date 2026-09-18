@@ -520,6 +520,27 @@ def droits_depuis_liste(taxes, source_defaut):
         # ne doit pas décider à sa place.
         specifique = row.get("specific_value") or row.get("specific_component")
         compose = bool(row.get("compound")) and taux is not None and specifique
+
+        # Deux formes composées coexistent dans le tarif SARS, et elles n'ont
+        # PAS le même statut.
+        #
+        # « 450c/kg with a maximum of 96% » (46 positions) énonce sa propre
+        # règle : le droit est le spécifique, borné à un pourcentage de la
+        # valeur. Rien n'est laissé à deviner. Le crawl, lui, a rangé 96,0 dans
+        # `rate_pct` — c'est-à-dire le PLAFOND pris pour le TAUX. Le moteur
+        # liquidait donc 96 % ad valorem là où le droit dû est 450c/kg, soit
+        # environ 9 % pour du lait en poudre à 50 ZAR/kg : un facteur dix.
+        #
+        # « 40% or 240c/kg » (94 positions) est l'autre forme, et celle-là ne
+        # dit pas laquelle des deux composantes s'applique. Elle reste non
+        # tranchée ; voir `compose`.
+        plafond_ad_valorem = None
+        brut = str(row.get("raw_value") or "")
+        borne = re.search(r"maximum of\s+([\d]+(?:[.,][\d]+)?)\s*%", brut, re.I)
+        if borne and specifique:
+            plafond_ad_valorem = float(borne.group(1).replace(",", "."))
+            taux = None  # 96 % est la BORNE, pas le taux : ne pas le liquider
+            compose = False
         if specifique and row.get("rate_pct") is None:
             taux = None
         out.append(
@@ -535,6 +556,9 @@ def droits_depuis_liste(taxes, source_defaut):
                 classification=row.get("classification_source"),
             )
         )
+        if plafond_ad_valorem is not None:
+            out[-1]["plafond_ad_valorem_pct"] = plafond_ad_valorem
+            out[-1]["expression_brute"] = brut
         if compose:
             # Le verbatim est ce qui permet à l'opérateur — et au relecteur —
             # de constater que le droit a deux composantes, sans que le socle
