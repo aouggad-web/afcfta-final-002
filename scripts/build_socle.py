@@ -575,6 +575,7 @@ def _droit(
     specifique=None,
     qualite=None,
     classification=None,
+    regle_composee=None,
 ):
     canon = code_canonique(code_src, libelle)
     prefer = PREFERENTIELS.get(_norm(code_src))
@@ -594,6 +595,12 @@ def _droit(
         "qualite": qualite,
         "note": note if note else (RESERVE_WITS if _vient_de_wits(source) else None),
         "classification_source": classification,
+        # La règle qui départage un droit composé ne se devine pas : elle vient
+        # de la source, quand la source l'énonce. Le tarif zimbabwéen le fait
+        # (« the rate of duty yielding the higher amount of duty shall be
+        # applicable ») ; le tarif sud-africain ne le fait pas, et son droit
+        # composé reste donc non liquidable.
+        "regle_composee": regle_composee,
         "_preferentiel": prefer,
     }
 
@@ -692,6 +699,11 @@ def droits_depuis_liste(taxes, source_defaut):
             # ait eu à choisir entre elles.
             out[-1]["expression_brute"] = str(row.get("raw_value") or "")
             out[-1]["compose"] = True
+            # Si — et seulement si — la source énonce la règle de départage,
+            # elle est reportée telle quelle et le moteur peut liquider.
+            regle = REGLES_COMPOSEES.get(str(row.get("compound_rule") or "").lower())
+            if regle:
+                out[-1]["regle_composee"] = regle
     return out
 
 
@@ -948,6 +960,18 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 compteurs["assiettes_table"] += 1
             else:
                 compteurs["assiettes_indisponibles"] += 1
+            if d["specifique"] and not isinstance(d["specifique"], dict):
+                # La décomposition vaut pour TOUTE composante spécifique, y
+                # compris celle d'un droit composé qui porte aussi un taux :
+                # le moteur refuse une chaîne (« 1.50 USD/kg ») pour ne pas en
+                # relire le seul nombre, et rendait donc QUANTITE_REQUISE sur
+                # les 61 droits zimbabwéens « X % or US$ Y/kg » alors même que
+                # la quantité était fournie et la règle de départage énoncée.
+                d["specifique"] = lire_specifique(d["specifique"]) or {
+                    "brut": str(d["specifique"]),
+                    "montant": None,
+                    "motif": "expression non lisible",
+                }
             if d["specifique"] and d["taux"] is None:
                 # Un droit spécifique se liquide à la quantité, jamais sur la
                 # valeur. Si l'assiette héritée dit « CIF », elle décrit le
@@ -956,11 +980,6 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 d["assiette"] = "xQTE"
                 d["assiette_origine"] = "droit_specifique"
                 d["plafond"] = None
-                d["specifique"] = lire_specifique(d["specifique"]) or {
-                    "brut": str(d["specifique"]),
-                    "montant": None,
-                    "motif": "expression non lisible",
-                }
                 compteurs["droits_specifiques"] += 1
             if d["taux"] is None and not d["specifique"]:
                 compteurs["taux_indisponibles"] += 1

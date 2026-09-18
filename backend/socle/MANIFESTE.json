@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-18T20:44:18.118782+00:00",
+  "construit_le": "2026-09-18T21:40:49.580557+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -145,7 +145,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BWA_tariffs.json",
       "source_sha256": "cf84b1a644cc2b5abc84e02b376d89810f05d1cdcb53dfb190f7653d475476da",
-      "socle_sha256": "974b18ab0819f60aacbd9d7e0dc83a6863fb2eb5d667d62eecb1c34a9f5a0618",
+      "socle_sha256": "a9a7ded48af760f2a8947f3cf8ce72207061bbed79903f4ada84c8f2a7dab9de",
       "collecte": "2026-08-29T13:26:22.991310",
       "etat": "PARTIEL",
       "familles": [
@@ -914,7 +914,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LSO_tariffs.json",
       "source_sha256": "31c5c4f6a56ae594fabb6e4f7093f4960b0f1397e0e25c4900804e23e4ec25dc",
-      "socle_sha256": "5a6534c0ff3f3d81ec3749f8aa0169937cc61fb646af72fba50e96d49dd19343",
+      "socle_sha256": "f82bb3cf0ddc99da859ea1503d5dfadcf83b9c6db873624b67e2c3811ca1d6c7",
       "collecte": "2026-08-29T13:26:24.395497",
       "etat": "PARTIEL",
       "familles": [
@@ -1191,7 +1191,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/NAM_tariffs.json",
       "source_sha256": "a315efcf13b9f17f0ed677fab8d3cbfe64a5f562aca7868f14bcffda3f2f7ebf",
-      "socle_sha256": "2eff9fe9f252c61cd30b79358c9dd59af5c1a7337d714214148aed28e3c3c161",
+      "socle_sha256": "1998e00c5d0c3cee87412023c4b30158be0f07b8477cef8a32654142651efc36",
       "collecte": "2026-08-29T13:26:27.028702",
       "etat": "PARTIEL",
       "familles": [
@@ -1534,7 +1534,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SWZ_tariffs.json",
       "source_sha256": "48c38a592819d2c09a86e2ca0c068b8f42bae77bfed21718c4aa27a3cf1049c0",
-      "socle_sha256": "baeb1d96fa3a6f627c03ba1beb91105af123db59e983cd0c896b662e698b78c7",
+      "socle_sha256": "a7035af48c686f6c9e713187d730210d5249036dd76dd1cbe1d9847d2754b30b",
       "collecte": "2026-08-29T13:26:25.757181",
       "etat": "PARTIEL",
       "familles": [
@@ -1780,7 +1780,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
       "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "a7fe4b6ec1d212be82f449412e8012819eb07598a0f735d2abd421189d134fd0",
+      "socle_sha256": "c2f7e2430bc3b3d32946258c3772e4e0ff0ac8e1e15ec3e8085ea1dd15a3e611",
       "collecte": "2026-08-29T13:26:21.816037",
       "etat": "PARTIEL",
       "familles": [
@@ -1846,29 +1846,29 @@
       "fichier": "ZWE.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZWE_tariffs.json",
-      "source_sha256": "5d211c12549ba81b50b206c1bfcc11765d49b650e1dc80cead18ad480dc82fc6",
-      "socle_sha256": "8b52f5b944c7f4c5381da891c4e5b82795786068b81a33c88f684620591961ab",
-      "collecte": "2026-07-05T10:04:02.504229+00:00",
-      "etat": "COMPLET",
+      "source_sha256": "f0c79ba1b0f05b375506308340439669405d70e2af01fe1351fc21307d817aa8",
+      "socle_sha256": "c4c59215396698e97071e2e6d3fda2542e39bb3f8168beb4b919a41511a820ba",
+      "collecte": "2026-09-18",
+      "etat": "PARTIEL",
       "familles": [
-        "droit",
-        "tva"
+        "accise",
+        "droit"
       ],
       "compteurs": {
-        "positions": 5388,
-        "droits": 10776,
-        "droits_liquidables": 10776,
-        "positions_liquidables": 5388,
+        "positions": 6637,
+        "droits": 6753,
+        "droits_liquidables": 6533,
+        "positions_liquidables": 6460,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 0,
-        "assiettes_source": 0,
-        "assiettes_fichier": 5388,
-        "assiettes_table": 5388,
-        "assiettes_indisponibles": 0,
-        "sans_designation": 5388,
-        "droits_specifiques": 0,
-        "droits_composes": 0,
+        "taux_indisponibles": 159,
+        "assiettes_source": 6637,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 116,
+        "sans_designation": 0,
+        "droits_specifiques": 92,
+        "droits_composes": 61,
         "restrictions": 0,
         "interdictions": 0,
         "droits_absents_completes": 0,
@@ -1907,10 +1907,11 @@
       "TUN",
       "TZA",
       "UGA",
-      "ZAF"
+      "ZAF",
+      "ZWE"
     ],
-    "positions": 361781,
-    "droits": 1106103,
-    "droits_liquidables": 1043752
+    "positions": 363030,
+    "droits": 1102080,
+    "droits_liquidables": 1039509
   }
 }

@@ -44,12 +44,16 @@ huit pays d'un coup (`backend/data/legal_refs/zlecaf_application/UEMOA_assiette_
 **C. Les pays vides** — `DJI` et `ERI` : aucune position. Il faut le tarif
 douanier national complet, pas un complément.
 
-**D. Les 13 pays servis par une moyenne SH6 (WITS / UNCTAD-TRAINS)** —
-`AGO COM LBY MDG MOZ MRT MUS MWI SDN STP SYC ZMB ZWE`.
+**D. Les 9 pays encore servis par une moyenne SH6 (WITS / UNCTAD-TRAINS)** —
+`AGO COM MDG MRT MWI SDN STP SYC ZMB`.
 Ce ne sont pas des tarifs nationaux : ce sont des moyennes SH6 de la Banque
 mondiale. Elles donnent un ordre de grandeur, jamais le droit exigible sur une
 position nationale. Les remplacer par le tarif publié par chaque douane est le
 chantier de fond.
+
+Quatre en sont sortis, sur le tarif publié par leur douane et avec la fiche
+qui établit leurs assiettes : `LBY` (5 920 positions), `MUS` (6 941),
+`MOZ` (5 822) et `ZWE` (6 637, SI 203 of 2022).
 
 ---
 

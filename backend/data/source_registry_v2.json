@@ -67,23 +67,28 @@
       "note": "Tarif dérivé du TEC de l'EAC, non une nomenclature nationale somalienne. ANOMALIE À INSTRUIRE : 45 lignes portent 50, 60, 75 ou 100 %, hors des quatre bandes officielles de l'EAC CET (0/10/25/35) — origine non établie. TVA à 0 % : la Somalie n'applique pas de TVA, ce n'est pas une donnée manquante. Pas de fichier crawled/ : l'artefact est le fichier de production. DATA_STATUS: PARTIAL, fiabilité B. Entrée créée le 2026-09-12 : le fichier était servi en production sans aucune fiche de provenance."
     },
     "ZWE": {
-      "organism": "ZIMRA — Zimbabwe Revenue Authority (tarif national non crawlable)",
-      "version": "2021.1",
+      "organism": "ZIMRA — Zimbabwe Revenue Authority (Ministry of Finance and Economic Development)",
+      "version": "2026.1",
       "artifact_path": "backend/data/crawled/ZWE_tariffs.json",
       "artifact_url": null,
-      "source_type": "wits_fallback",
+      "source_type": "official",
       "url": "https://www.zimra.co.zw",
-      "retrieved_at": "2026-07-05",
-      "edition": "WITS / UNCTAD-TRAINS — MFN appliqué SH6 (SimpleAverage 2021)",
-      "code_digits": 6,
-      "positions_count": 5388,
-      "sha256": "5d211c12549ba81b50b206c1bfcc11765d49b650e1dc80cead18ad480dc82fc6",
-      "validation_status": "not_available",
+      "retrieved_at": "2026-09-18",
+      "edition": "Statutory Instrument 203 of 2022 — Customs and Excise (Tariff) Notice, colonne M.F.N., 1 162 pages",
+      "code_digits": 8,
+      "positions_count": 6637,
+      "sha256": "f0c79ba1b0f05b375506308340439669405d70e2af01fe1351fc21307d817aa8",
+      "validation_status": "verified",
       "taxes": [
-        "DD",
-        "VAT"
+        "DD (customs duty, colonne M.F.N.)",
+        "EXC (excise duty, mentionnée sans taux)"
       ],
-      "note": "Droit de douane = moyenne simple MFN 2021 au niveau SH6 (WITS/TRAINS), pas une position tarifaire nationale : agrégat indicatif, jamais opposable. Désignations vides, formalités et avantages fiscaux non couverts. La TVA (15,5 %) est en revanche sourcée nommément — ZIMRA Public Notice 07 of 2026, relèvement de 15 % au 01/01/2026, vérifié. Aucun hs_version déclaré par la source : non renseigné plutôt que supposé."
+      "note": "Remplace la moyenne simple MFN 2021 au niveau SH6 (WITS/UNCTAD-TRAINS, 5 388 positions sans désignation) par le tarif national à huit chiffres. La TVA (15,5 %) reste sourcée à part — ZIMRA Public Notice 07 of 2026 — et n'est pas portée par le SI 203.",
+      "application_period": "depuis le 1er janvier 2023 (SI 203 of 2022)",
+      "hs_version": "HS 2022",
+      "source_sha256": "cd6d0c2143a55ac4354b4125b905e8318dc47814d4e938e651ae345f5f690597",
+      "legal_authority": "Customs and Excise Act [Chapter 23:02], s.225 (habilitation du SI), s.106(1) et s.113(2)(c) (valeur en douane)",
+      "notes": "6 637 positions, 97 chapitres, avec leur désignation anglaise. Assiette DD = CIF, établie par le Customs and Excise Act s.106(1) et s.113(2)(c). CONTRÔLE INTERNE : le tarif publie DEUX colonnes de droits (« General » et « M.F.N. ») ; elles concordent sur 6 637 positions sur 6 637, ce qui valide l'extraction par le document lui-même. DROITS COMPOSÉS : 61 positions « X% or US$Y/unité » ; la règle de départage est ÉNONCÉE par le texte (p. 13 : « the rate of duty yielding the higher amount of duty shall be applicable ») et donc liquidée — à la différence du tarif SARS, qui ne l'énonce pas et reste refusé. 414 positions cumulatives (« + »). SPÉCIFIQUES INCOMPARABLES : 11 positions de spiritueux opposent deux montants dans des unités différentes (« US$5.00/L or US$10.00/LAA ») ; les départager exige le titre alcoométrique, que le tarif ne porte pas — portées sans valeur liquidable, avec leur verbatim. ACCISE SANS TAUX : 116 positions mentionnent « Excise » sans en porter le taux, qui relève du tarif d'accise séparé ; portées sans taux ni assiette, jamais à zéro — les traiter comme un zéro exonérerait alcools et tabacs. COQUILLES DE LA SOURCE : neuf codes y sont écrits sans un de leurs points (« 9608.9900 ») ou avec une espace (« 5113. 00.00 ») ; ils sont reconnus et ramenés à huit chiffres, faute de quoi ils disparaissaient en silence. Aucun taux non lu."
     },
     "DZA": {
       "organism": "Direction Générale des Douanes (DGD) via conformepro.dz",
