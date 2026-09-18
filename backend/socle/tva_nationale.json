@@ -12,10 +12,25 @@
       "fiche": "backend/data/legal_refs/zlecaf_application/ZAF_taux_TVA_2026-09-17.json",
       "note": "Taux standard national, non vérifié position par position : les biens détaxés (zero-rated) et exonérés ne sont pas distingués.",
       "reserve_assiette": "L'assiette retenue est celle que le dépôt documente (CIF+DD, VAT Act s.13(2)). La majoration appliquée par l'Afrique du Sud à la valeur en douane des marchandises venant hors SACU n'est pas établie ici : les pages SARS qui la décriraient répondent 404 au relevé du 2026-09-17. Si elle est confirmée, la TVA calculée sur une origine hors SACU est sous-évaluée."
+    },
+    "DJI": {
+      "code": "TVA",
+      "libelle": "Taxe sur la Valeur Ajoutée (TVA)",
+      "famille": "tva",
+      "taux": 10.0,
+      "assiette": "CIF+DD",
+      "source": "CGI Djibouti, art. 187 (taux normal 10 %) ; art. 179 b) (TVA à l'importation perçue par la douane) — budget.gouv.dj",
+      "fiche": "backend/data/legal_refs/zlecaf_application/DJI_taux_TVA_2026-09-18.json",
+      "note": "Taux normal national, non vérifié position par position : les biens exonérés et le taux zéro (exports) ne sont pas distingués."
     }
   },
   "_sacu_volontairement_hors_table": {
-    "pays": ["BWA", "LSO", "NAM", "SWZ"],
+    "pays": [
+      "BWA",
+      "LSO",
+      "NAM",
+      "SWZ"
+    ],
     "motif": "L'Afrique du Sud assure le dédouanement des importations des autres membres de la SACU, dans le cadre du pool de recettes commun et de sa clé de répartition. Le Botswana, le Lesotho et l'Eswatini étant enclavés, l'essentiel de leurs importations entre par un point d'entrée sud-africain ; le reste passe par voie aérienne. Le point de liquidation réel est donc sud-africain, et c'est lui qui est traité ici.",
     "portee": "Ce choix ne dit pas que ces quatre États n'ont pas de TVA propre — ils en ont une, et elle diverge (une union douanière n'harmonise pas la fiscalité interne). Il dit que leur collecte n'est pas le chemin le plus court vers un calcul juste, et qu'aucun taux ne leur est prêté en attendant : ils restent PENDING_OFFICIAL_COLLECTION, et une importation qui les vise reste PARTIEL avec sa TVA nommée manquante."
   }

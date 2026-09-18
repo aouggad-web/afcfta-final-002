@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "objet": "TVA à l'importation en Somalie — non établie sur source primaire",
+  "verified_at": "2026-09-18",
+  "etabli": false,
+  "evidence_level": null,
+  "source": {
+    "url": "https://mof.gov.so/departments/revenue-department",
+    "institution": "Ministry of Finance — Somalie"
+  },
+  "regle": null,
+  "ce_que_cela_ne_tranche_pas": [
+    "Aucune TVA fédérale instaurée dans les textes publiés (Customs Act 2020, Revenue Act 2019, Income Tax Law, PFM Act 2019, Statistics Law — aucun VAT Act) ; un 'Import Sales Tax' est collecté par la Douane mais aucun texte primaire publiant son taux n'est accessible en ligne (le 5 % souvent rapporté non étayé)"
+  ],
+  "doutes": "Budget Policy Framework FY2026 : recettes 'Sales Taxes — on Other Imported Goods' (aucun taux indiqué).",
+  "remaining_work": [
+    "Obtenir le texte primaire (Revenue Act ou décret fixant le taux de l'Import Sales Tax)"
+  ]
+}

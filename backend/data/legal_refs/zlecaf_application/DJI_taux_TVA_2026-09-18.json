@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "objet": "Taux de la TVA à l'importation à Djibouti : 10 % (CGI art. 187)",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — Code Général des Impôts de Djibouti (édition 2016/2017, budget.gouv.dj), art. 187, 179 b), 280 lus.",
+  "source": {
+    "url": "https://budget.gouv.dj/wp-content/uploads/2022/07/CGI2017-cgi.pdf",
+    "institution": "DGI — Ministère du Budget (Djibouti)",
+    "pdf_non_archive": "PDF du CGI non archivé ; verbatim transcrit du texte extractible."
+  },
+  "regle": {
+    "valeur": "10 % (taux normal)",
+    "verbatim": "Art. 187 : « Les taux de la TVA sont les suivants : 1) Le taux normal de 10 % est applicable à toutes les opérations taxables. » ; Art. 179 b) : « La TVA à l'importation est perçue par la douane, sauf les cas d'exonérations énoncés ci-dessus » ; Art. 280 : « La TVA à l'importation est liquidée par l'administration des Douanes »",
+    "portee": "Taux normal TVA à l'importation. Le formulaire DGI '5 x 7 %' porte sur la TBS (art. 215, 7 %), taxe DISTINCTE de la TVA."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "Aucune édition du CGI postérieure à 2017 trouvée en ligne ; www.douanes.dj en construction"
+  ],
+  "doutes": "La LFI 2023 ne modifie pas le taux normal (10 %). Le 7 % cité ailleurs = TBS, taxe distincte.",
+  "remaining_work": [
+    "Archiver le PDF du CGI intégral ; vérifier si LFI 2023+ a modifié l'art. 187"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "objet": "Taux de la TVA au Lesotho : 15 % (VAT Act 2001 s.19(3), LN 18/2020)",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — VAT Act 2001 (lra.org.ls, texte lu) + LN No. 18 of 2020 (PDF scanné — OCR easyocr, deux passes cohérentes).",
+  "source": {
+    "url": "https://www.lra.org.ls/sites/default/files/2026-09/VAT%20ACT%20-%202001.pdf",
+    "institution": "LRA",
+    "pdf_non_archive": "VAT Act + LN 18/2020 non archivés",
+    "regulations_url": "https://www.lra.org.ls/sites/default/files/2026-09/VAT%20REGULATIONS%20NO.18%20OF%202020.pdf"
+  },
+  "regle": {
+    "valeur": "15 % (taux standard)",
+    "verbatim": "VAT Act 2001, s.19(3) : « The rates of value added tax shall be prescribed by regulation but shall not exceed four rates, including a zero rate. » — LN 18/2020 : « Regulation 6(1) … is amended by deleting … '12%' in paragraph (d) and substituting '15%' » (1er avril 2020)",
+    "portee": "Taux standard national. LN 30/2021 modifie un taux non standard ('9%' → '10%')."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "LN 18/2020 PDF scanné : verbatim par OCR (deux passes cohérentes) — à valider sur l'original"
+  ],
+  "doutes": "LRA non joignable en direct lors des premières tentatives (timeout), succès ensuite. La valeur supprimée lue '12%' en OCR doit être vérifiée sur l'original papier.",
+  "remaining_work": [
+    "Valider sur la Gazette originale"
+  ]
+}
