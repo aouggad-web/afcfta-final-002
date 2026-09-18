@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "objet": "Les trois colonnes de taux du tarif mauritanien 2021 (DD, RS, PC) : ce que chacune est, et ce que sa base d'imposition n'est pas encore.",
+  "verified_at": "2026-09-18",
+  "etabli": false,
+  "doutes": [
+    "L'ASSIETTE DE LA REDEVANCE STATISTIQUE N'EST ÉTABLIE PAR AUCUN TEXTE CONSULTÉ. Le rapport de l'OMC en donne le taux (1 %) et le champ (toutes les importations), jamais la base. Le Code des douanes 2017 ne la mentionne pas. La poser sur CIF serait une supposition, fût-elle vraisemblable.",
+    "LE RATTACHEMENT DE LA COLONNE PC AU PRÉLÈVEMENT COMMUNAUTAIRE CEDEAO N'EST PAS ÉTABLI. Le faisceau est fort — taux de 0,5 % identique, cinq bandes de droit identiques à celles du TEC, accord d'association prévoyant l'application du TEC au 1er janvier 2019 — mais la Mauritanie n'est pas membre de la CEDEAO, le protocole assied le prélèvement sur les importations « dans la Communauté », et l'énumération des impositions mauritaniennes par l'OMC ne cite aucun prélèvement communautaire. Conclure ici serait raisonner par ressemblance.",
+    "LA VERSION EN VIGUEUR DU CODE DES DOUANES N'EST PAS CERTIFIÉE : une loi n° 2026-015 du 24 mai 2026 le remplacerait, et n'a pas été obtenue. L'article 28 cité provient du texte de 2017.",
+    "LE TARIF LUI-MÊME NE DÉFINIT AUCUN DE SES SIGLES. Tout ce qui est écrit ici sur l'identité des colonnes vient de sources extérieures au document collecté."
+  ],
+  "evidence_level": "primaire pour l'identité de la redevance statistique et pour l'assiette du prélèvement communautaire CEDEAO ; AUCUNE source, primaire ou secondaire, n'établit l'assiette de la RS en Mauritanie ni le rattachement de la colonne PC au prélèvement CEDEAO.",
+  "point_de_depart": {
+    "constat": "Le tarif national 2021 publie trois colonnes de taux — DD, RS, PC — et une colonne d'unité, US. Sa table des abréviations (page 6) ne développe AUCUN de ces quatre sigles : elle ne recense que des unités de mesure physiques (ASTM, Bq, °C, cg, cm…). Le document ne dit donc nulle part ce que RS et PC désignent ni sur quoi ils se calculent.",
+    "en_tete_verbatim": "N° de position N.T.S. | Désignation des marchandises | US | DD | RS | PC",
+    "source_tarif": {
+      "url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
+      "institution": "Douane mauritanienne (douanes.mr)",
+      "sha256": "3585fbe23bf6b7be3c4e9eb963fdb31bf0336b059bf0019e4b471f178829c182",
+      "pdf_non_archive": "PDF de 3,6 Mo et 396 pages non archivé dans le dépôt : seuls les extraits des textes qui établissent une règle le sont. L'empreinte ci-dessus est celle du fichier téléchargé le 2026-09-18 depuis douanes.mr, recalculée localement, et elle est identique à celle du rapport de collecte — c'est ce rapprochement qui atteste la source, non un archivage.",
+      "pages": 396,
+      "controle": "Empreinte recalculée le 2026-09-18 sur le PDF téléchargé : identique à celle du rapport de collecte. La source est authentique et non altérée."
+    }
+  },
+  "determinations": [
+    {
+      "sigle": "US",
+      "lecture": "Unité supplémentaire",
+      "etabli": true,
+      "fondement": "Valeurs relevées dans la colonne : u, kg, l — ce sont les unités supplémentaires du Système harmonisé, pas des taux.",
+      "portee": "Unité statistique de la position. Utilisable comme unité de quantité si un droit spécifique venait à y être publié ; le tarif 2021 n'en porte aucun."
+    },
+    {
+      "sigle": "RS",
+      "lecture": "Redevance statistique",
+      "etabli": true,
+      "taux": 1.0,
+      "verbatim_taux": "En outre, toutes les importations sont soumises à une redevance statistique de 1%.",
+      "instrument": "OMC, Examen des politiques commerciales — Mauritanie, WT/TPR/S/371, 24 avril 2018, § 3.47 (section 3.1.4, Autres droits et impositions perçus exclusivement à l'importation)",
+      "texte_archive": "sources/MRT_redevance_statistique.texte-extrait.txt",
+      "sha256": "e8b00f7f3c787fa71052887e1e2a3f95c98b31fdddae961210a80fd040011301",
+      "url": "https://www.wto.org/french/tratop_f/tpr_f/s371_f.pdf",
+      "concordance": "Le taux de 1 % concorde avec la colonne RS du tarif, qui porte 1 sur 5 998 des 6 129 positions et 0 sur 131. Le § 3.24 du même rapport précise « une redevance statistique uniforme de 1% sur plus de 90% des lignes tarifaires » — 97,9 % ici.",
+      "assiette": "NON ÉTABLIE",
+      "ce_qui_manque": "Le rapport de l'OMC donne le taux, jamais la base. Le Code des douanes 2017 ne mentionne pas cette redevance. Tant que sa base n'est pas citée sur un texte, la ligne ne peut pas être liquidée."
+    },
+    {
+      "sigle": "PC",
+      "lecture": "Prélèvement communautaire — RATTACHEMENT NON ÉTABLI",
+      "etabli": false,
+      "taux": 0.5,
+      "faisceau": [
+        "Le taux de 0,5 % est celui du prélèvement communautaire CEDEAO, stable d'une version du TEC à l'autre.",
+        "Les cinq bandes de la colonne DD relevées dans le tarif 2021 — 0, 5, 10, 20, 35 % — sont exactement celles du TEC CEDEAO, alors que le tarif mauritanien de 2017 décrit par l'OMC en portait quatre (0, 5, 13, 20 %) sur 5 457 lignes. Le tarif 2021 en porte 6 129.",
+        "L'OMC (§ 3.24) écrit que l'Accord d'association prévoit que « la Mauritanie mettra en application le TEC CEDEAO au plus tard le 1er janvier 2019 »."
+      ],
+      "pourquoi_cela_ne_suffit_pas": "La Mauritanie n'est PAS membre de la CEDEAO — elle s'en est retirée en 2000 et n'y est liée que par un accord d'association (2017). Or le protocole ci-dessous assied le prélèvement sur les marchandises importées « dans la Communauté », et le § 3.47 de l'OMC, qui énumère les impositions perçues à l'importation en Mauritanie, ne cite PAS de prélèvement communautaire : il nomme une redevance informatique de 3 000 anciens ouguiyas par déclaration, la redevance statistique de 1 %, et une taxe de promotion de la culture et du sport (PCS) de 1 % sur la valeur c.a.f. — un taux et un champ qui ne sont pas ceux de la colonne PC. Conclure de la seule concordance des taux serait un raisonnement par ressemblance, pas une détermination.",
+      "assiette": "NON ÉTABLIE POUR LA MAURITANIE"
+    },
+    {
+      "sigle": "PC (CEDEAO)",
+      "lecture": "Assiette du prélèvement communautaire CEDEAO — établie pour la Communauté, à ne pas transposer sans source",
+      "etabli": true,
+      "verbatim_assiette": "L'assiette du prélèvement communautaire est constituée par la valeur imposable des marchandises importées dans la Communauté en provenance de pays tiers et mises à la consommation",
+      "article": "Article 3",
+      "instrument": "CEDEAO, Protocole A/P1/7/96 relatif aux conditions d'application du Prélèvement Communautaire, Journal Officiel de la CEDEAO vol. 31",
+      "texte_archive": "sources/CEDEAO_prelevement_communautaire.texte-extrait.txt",
+      "sha256": "529490782225d86d5a8db9ab11c33d4c165b25d7b46dc490a51d4ab4a13dda1d",
+      "url": "https://www.dge.gouv.ci/sites/default/files/tableau/TEXTES%20COMMUNAUTAIRES%20CLASSSIFIES/CEDEAO/PROTOCOLE%20ADDITIONNEL/Protocole%20A-P1-7-96%20relatif%20aux%20conditions%20d'application%20Pr%C3%A9l%C3%A8vement%20Communautaire.pdf",
+      "portee": "Valeur imposable des marchandises importées de pays tiers et mises à la consommation. L'article 4 exclut du champ les produits originaires de la CEDEAO."
+    },
+    {
+      "sigle": "DD",
+      "lecture": "Droit de douane ad valorem",
+      "etabli": true,
+      "verbatim_valeur_en_douane": "l'expression «valeur en douane des marchandises importées» s'entend de la valeur des marchandises déterminée en vue de la perception des droits de douane ad-valorem sur les marchandises importées",
+      "article": "Article 28, paragraphe 1, a)",
+      "instrument": "République islamique de Mauritanie, Loi n° 2017-035 portant Code des douanes",
+      "texte_archive": "sources/MRT_valeur_en_douane.texte-extrait.txt",
+      "sha256": "7a5e7f39b156c289286cfb67d5337a5925de9eab7f50d0b8d5d5d9eff360b984",
+      "url": "https://www.finances.gov.mr/Recueil_des_textes_relatifs_a_la_mission_du_Ministere/Textes/BUDGET/Loi%202017-035%20CDouanes.pdf",
+      "assiette": "CIF",
+      "portee": "Le droit de douane est ad valorem sur toute la nomenclature et se liquide sur la valeur en douane.",
+      "reserve_version": "Une loi n° 2026-015 du 24 mai 2026 remplacerait ce code ; elle n'a pas été obtenue. L'article 28 est cité depuis le texte de 2017, dont la version en vigueur n'est donc pas certifiée."
+    }
+  ],
+  "effet_sur_le_calculateur": {
+    "aujourd_hui": "La Mauritanie sert un droit de douane issu de la moyenne SH6 de la Banque mondiale (WITS/UNCTAD-TRAINS) et une TVA de 16 %, et RIEN D'AUTRE. La RS et le PC, que le tarif national publie sur 5 998 positions, sont absents du calcul. Le total servi est donc amputé de 1,5 point de prélèvements — et, la TVA mauritanienne étant assise sur CIF + tous prélèvements sauf elle-même, le manque se répercute sur son assiette.",
+    "ce_que_la_collecte_permet": "Remplacer la moyenne SH6 par le taux national de chacune des 6 129 sous-positions, et faire APPARAÎTRE la RS et le PC.",
+    "ce_qu_elle_ne_permet_pas": "Les liquider : sans assiette établie, les poser sur CIF serait une supposition. Ils entreront donc comme lignes dont la base est déclarée indisponible, et la Mauritanie passera de COMPLET à PARTIEL — un total qui nomme ce qu'il ne sait pas calculer, au lieu d'un total qui paraît complet en taisant deux prélèvements."
+  },
+  "ce_que_cela_ne_tranche_pas": "L'assiette de la redevance statistique ; le rattachement de la colonne PC au prélèvement communautaire CEDEAO et, partant, son assiette en Mauritanie ; la version en vigueur du Code des douanes.",
+  "remaining_work": [
+    "Obtenir la loi n° 2026-015 du 24 mai 2026 (Code des douanes) et y chercher RS et PC.",
+    "Obtenir le texte mauritanien instituant la redevance statistique (loi de finances) et son assiette.",
+    "Établir si la Mauritanie perçoit le prélèvement communautaire CEDEAO au titre de son accord d'association, et sur quelle base.",
+    "Vérifier si la taxe PCS de 1 % sur la valeur c.a.f. (SH21 à SH98, hors minibus, médicaments et outillage agricole) est toujours perçue : elle n'a AUCUNE colonne dans le tarif 2021 et serait donc un troisième prélèvement absent du calcul."
+  ],
+  "conflits_ecartes": [
+    "Un guide logistique commercial annonce une TVA mauritanienne de 18 %. L'OMC (§ 3.49) établit le passage de 14 % à 16 % par la loi de finances 2016. Le taux de 16 % porté par la donnée est conservé.",
+    "Un résumé de recherche présentait la Mauritanie comme membre de la CEDEAO. Elle s'en est retirée en 2000 ; le rapport de l'OMC ne lui reconnaît qu'un accord d'association. C'est précisément ce qui empêche de transposer le protocole du prélèvement communautaire."
+  ]
+}
