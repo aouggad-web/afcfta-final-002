@@ -342,28 +342,32 @@
       "zlecaf": "Ratifié — Guide rapide Règles d'origine ZLECAf publié par douanes.gov.mg"
     },
     "ZMB": {
-      "organism": "Zambia Revenue Authority (ZRA)",
+      "organism": "ZRA — Zambia Revenue Authority, Customs Services Division",
       "version": "2026.1",
       "artifact_path": "backend/data/crawled/ZMB_tariffs.json",
-      "artifact_url": null,
+      "artifact_url": "https://www.zra.org.zm/wp-content/uploads/2026/08/Customs-Tariff-Book.pdf",
       "source_type": "official",
-      "url": "https://www.zra.org.zm/wp-content/uploads/2026/08/Customs-Tariff-Book.pdf",
-      "retrieved_at": "2026-09-09",
-      "edition": "Customs Tariff Book 2026",
-      "application_period": "2026-01-01 to 2026-12-31",
+      "url": "https://www.zra.org.zm",
+      "retrieved_at": "2026-09-18",
+      "edition": "Customs and Excise Tariff — nomenclature SH de l'OMD, « Last updated in January 2026 », 682 pages ; reproduit la Premiere annexe (s.72) de la Customs and Excise Act",
+      "application_period": "janvier 2026",
       "hs_version": "HS 2022",
       "code_digits": 8,
-      "positions_count": 8803,
-      "sha256": "836adcabd867967cca767ec470ac7df2ef6b0da454df62fdb5a8dc8eff9baefa",
+      "positions_count": 6753,
+      "sha256": "f2756c61a728b73ed948ccf936f752a0990403f3b132f4655f08c2dcdd455cd3",
       "reuse_conditions": "Customs and Excise Act (Cap 322). Publication officielle ZRA.",
-      "legal_authority": "Customs and Excise Act Cap 322 + VAT Act 1996",
+      "legal_authority": "Customs and Excise Act, s.72 (Premiere annexe), s.88 (assiette de l'accise a l'importation), Cinquieme annexe (valeur en douane), Additional Zambian Rules regle 2 ; Value Added Tax Act Cap. 331, s.9 et s.10(3)",
       "validation_status": "verified",
       "taxes": [
-        "DD",
-        "VAT (16%)",
-        "EXC"
+        "DD (customs duty)",
+        "EXC (excise duty)",
+        "TVA (VAT, lettre S/E/Z au tarif)"
       ],
-      "zlecaf": "PARTNER_NOTICE_REQUIRED — SI 92/2024, dataset ZMB (5445 lignes)"
+      "zlecaf": "PARTNER_NOTICE_REQUIRED — SI 92/2024, dataset ZMB (5445 lignes)",
+      "source_sha256": "4e625caf4b9ce399cf4b61cfa6d8cc92350648a24ec1801b1e88da2304c71101",
+      "note": "Remplace la moyenne simple MFN au niveau SH6 (WITS/UNCTAD-TRAINS, 5 388 positions sans designation) par le tarif national a huit chiffres. Le fichier publie par ZRA et celui deposé par l'utilisateur ont la MEME taille a l'octet pres : le tarif est donc servi depuis une URL citable.",
+      "notes": "6 753 positions — LES 6 753 codes distincts que le PDF porte, verifie par recoupement — et 98 chapitres. CASCADE ETABLIE SECTION PAR SECTION : DD sur CIF (Cinquieme annexe cl. 2 et 3(1)(a)(vii)-(viii) — prix paye + fret + assurance, les transports etant ajoutes DEUX FOIS, avant et apres la sortie du pays d'exportation) ; EXC sur CIF+DD (s.88 : « the customs value […] and any customs duty payable ») ; TVA sur CIF+DD+EXC (VAT Act s.10(3) : « any duty or other impost payable otherwise than under this Act »). DROIT ALTERNATIF LIQUIDABLE : la regle 2(b) des Additional Zambian Rules l'enonce — « the rate which yields the greater amount of duty shall apply » — donc 121 positions « X% or K Y per unit » sont servies sous LE_PLUS_ELEVE, a la difference du tarif SARS qui ne l'enonce pas. Le droit lui-meme est dans une NOTE DE BAS DE PAGE, appariee par son nombre d'asterisques ; la note vit parfois sur la page suivante ou en haut de celle-ci. LA COLONNE DE TVA PORTE UNE LETTRE, PAS UN TAUX, et le tarif ne publie aucune legende : S (standard, 6 032 positions), E (exempt — premiere annexe du VAT Act, 598), Z (taux zero — seconde annexe, 12). E et Z sont des ZEROS PUBLIES, pas des lacunes. RESERVE SUR LE TAUX DE TVA : le texte consolide de l'Acte porte 17,5 % « unless the Minister, by statutory order, determines a lower rate » ; l'ordre en vigueur n'a PAS ete identifie. Le taux servi est 16 %, celui qu'enonce ZRA dans son VAT Guide — niveau de preuve SECONDAIRE, declare tel dans la fiche. 40 accises specifiques en kwacha (K0.25/l, K40/ton, K750/mille). 100 cellules non interpretees et 87 lignes de pages non calibrees, toutes servies SANS TAUX avec leur motif nomme. CONTROLE INDEPENDANT : une seconde lecture du PDF, sans calibrage de colonnes, concorde sur 6 178 des 6 205 lignes sans ambiguite ; les 26 ecarts sont des indisponibilites declarees, AUCUNE valeur fausse. LACUNES NOMMEES : aucune colonne preferentielle (ni SADC, ni COMESA, ni ZLECAf) ; la surtaxe de la Quatrieme annexe (s.77, emissions de carbone des vehicules 8702/8703/8704) n'est pas collectee, l'assiette de TVA servie est donc minoree la ou elle s'applique. Voir ZMB_cascade_et_lettres_TVA_2026-09-18.json.",
+      "correction_du_registre": "AVANT LE 2026-09-18, CETTE ENTREE DECRIVAIT UN DOCUMENT QUE LE DEPOT NE CONTENAIT PAS. Elle portait organism « Zambia Revenue Authority (ZRA) », edition « Customs Tariff Book 2026 », positions_count 8803, source_type official et validation_status verified — alors que backend/data/crawled/ZMB_tariffs.json etait une moyenne WITS/UNCTAD-TRAINS de 5 613 positions SH6, se declarant elle-meme « WITS / UNCTAD-TRAINS (Banque mondiale) — MFN applique SH6 ». L'EMPREINTE, ELLE, ETAIT JUSTE : elle pointait bien le fichier WITS. C'est la PROSE qui decrivait autre chose. Le chiffre de 8 803 etait en outre un decompte d'OCCURRENCES de codes dans le PDF (8 812 exactement), non de positions : le tarif en porte 6 753 distinctes. Un validation_status « verified » ne vaut rien sans un decompte qui concorde avec l'artefact."
     },
     "LBY": {
       "organism": "Libyan Customs Authority — customs.gov.ly",

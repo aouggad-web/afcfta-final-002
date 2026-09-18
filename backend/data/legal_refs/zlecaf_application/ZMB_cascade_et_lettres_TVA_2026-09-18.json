@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "objet": "Zambie — la cascade des trois prélèvements à l'importation, établie section par section par la Customs and Excise Act et le Value Added Tax Act ; la règle qui départage un droit alternatif, énoncée par l'annexe légale elle-même ; et le sens des trois lettres que le tarif porte à la place d'un taux de TVA.",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire pour les assiettes et pour la règle de départage — Customs and Excise Act et Value Added Tax Act (Cap. 331), textes publiés par le Parlement zambien (parliament.gov.zm), extraits archivés avec leurs empreintes. SECONDAIRE, ET DÉCLARÉ TEL, pour le TAUX standard de TVA : la s.9(3) de l'Acte porte 17,5 % « unless the Minister, by statutory order, determines a lower rate », et l'ordre statutaire en vigueur n'a PAS été identifié ; le taux de 16 % est celui qu'énonce l'autorité qui le perçoit (ZRA, VAT Guide).",
+  "la_question_posee": "Le tarif zambien publie trois colonnes de prélèvements — Cust Duty Rate, Excise Duty Rate, VAT Rate — et n'indique nulle part sur quoi chacune se liquide. Deuxième question : la colonne de TVA ne porte PAS un taux mais une LETTRE (S, E, Z), et le document ne publie aucune légende. Troisième question : 121 positions portent un astérisque à la place de leur droit, et le droit lui-même est dans une note de bas de page.",
+  "regle": {
+    "valeur_en_douane": {
+      "article": "Customs and Excise Act, Cinquième annexe (sections 85 et 88), « Valuation of goods for the purpose of the tariff », clauses 2(1) et 3(1)(a)(vii)-(viii) ; et Première annexe, Additional Zambian Rules, règle 2(a)",
+      "verbatim_valeur_transactionnelle": "The customs value of imported goods shall be their transaction value, that is, the price paid or payable for the goods when sold for export to Zambia, adjusted in accordance with clause 3",
+      "verbatim_fret_et_assurance": "the costs of transportation and insurance of, and the loading, unloading, and handling charges, and other charges and expenses associated with the transportation of, the imported goods from the time the goods have left the country of export",
+      "verbatim_assiette_ad_valorem": "Rates of duty shown as a percentage, denoted by the symbol % are to be calculated as a percentage of the Value For Duty Purpose.",
+      "portee": "La valeur en douane est la valeur transactionnelle AUGMENTÉE des transports et assurances, la clause 3(1)(a) les ajoutant DEUX FOIS : (vii) jusqu'à la sortie du pays d'exportation, et (viii) à partir de cette sortie. Le prix payé, le fret et l'assurance jusqu'à l'arrivée : c'est le CIF, et c'est l'assiette du droit de douane. La clause 3(1)(a)(ix) va jusqu'à réputer l'assurance égale à « one per centum of the free on board value » à défaut d'information suffisante — ce qui confirme qu'elle entre bien dans la valeur. L'assiette n'est donc PAS déduite d'une ressemblance avec les pays voisins : elle est lue dans la loi zambienne.",
+      "assiettes_retenues": {
+        "DD": "CIF"
+      },
+      "texte_archive": "sources/ZMB_customs_excise_act_annexe5_s88_regle2.texte-extrait.txt",
+      "sha256": "41f5f10ea2d77ba58f57304ef25ced15a2c6078d89402fb2e9b4087c134a1a41",
+      "sha256_pdf_origine": "a7fdb0bdbd78549218ca4456a8b4f95366d08b956a2043a663073d3de814163a",
+      "source_url": "https://www.parliament.gov.zm/sites/default/files/documents/acts/Customs%20and%20Excise%20Act.pdf"
+    },
+    "assiette_de_l_accise_a_l_importation": {
+      "article": "Customs and Excise Act, section 88",
+      "verbatim": "The value for the purposes of assessing the amount of excise duty due on goods imported into Zambia shall be the customs value determined in accordance with the Fifth Schedule to this Act and any customs duty payable on those goods.",
+      "portee": "L'accise à l'importation porte sur la valeur en douane AUGMENTÉE du droit de douane dû : l'assiette est CIF+DD, et la loi le dit en une phrase. À ne pas confondre avec la Sixième annexe, qui ne vaut que pour les marchandises MANUFACTURÉES EN ZAMBIE — la lui appliquer à l'importation serait une erreur de régime.",
+      "assiettes_retenues": {
+        "EXC": "CIF+DD"
+      },
+      "texte_archive": "sources/ZMB_customs_excise_act_annexe5_s88_regle2.texte-extrait.txt",
+      "sha256": "41f5f10ea2d77ba58f57304ef25ced15a2c6078d89402fb2e9b4087c134a1a41"
+    },
+    "assiette_de_la_tva_a_l_importation": {
+      "article": "Value Added Tax Act (Cap. 331), section 10(3)",
+      "verbatim": "The taxable value of imported goods shall be determined as for a duty of customs, but shall be taken to include the amount of any duty or other impost payable otherwise than under this Act in respect of the importation.",
+      "portee": "La TVA porte sur la valeur en douane augmentée de TOUT droit ou prélèvement dû à un autre titre que la TVA elle-même : le droit de douane et l'accise y entrent. L'assiette retenue est CIF+DD+EXC. RÉSERVE : la surtaxe de la Quatrième annexe (section 77) entre elle aussi dans cette formule quand elle s'applique ; elle n'est pas collectée, et l'assiette servie est donc minorée sur les positions qu'elle vise — émissions de carbone des véhicules des positions 8702, 8703 et 8704.",
+      "assiettes_retenues": {
+        "TVA": "CIF+DD+EXC"
+      },
+      "texte_archive": "sources/ZMB_vat_act_s9_s10_definitions.texte-extrait.txt",
+      "sha256": "ba3c1b4adceb5f31a78bf19d0096b8279a8786c1fe0cecbf9ec665bbbdb16cd3",
+      "sha256_pdf_origine": "8aaf753253284f999147aa6346206dc46cb8094b7473e3d23ee3c774ca715b18",
+      "source_url": "https://www.parliament.gov.zm/sites/default/files/documents/acts/Value%20Added%20Tax%20Act.pdf"
+    },
+    "droit_alternatif_la_regle_est_enoncee": {
+      "article": "Customs and Excise Act, Première annexe (section 72), Additional Zambian Rules, règle 2(b)",
+      "verbatim": "Where the alternative rates of duty are specified, the rate which yields the greater amount of duty shall apply.",
+      "portee": "La règle qui départage un droit alternatif est ÉNONCÉE, et elle est statutaire : elle figure dans l'annexe légale du tarif, non dans une note de courtoisie. Les 121 positions de la forme « 25% or K1 per Kg » sont donc LIQUIDABLES, sous la règle LE_PLUS_ELEVE. Chaque note de bas de page la répète pour sa ligne — « whichever is the greater ». C'est le même cas qu'au Zimbabwe, et l'exact contraire du tarif sud-africain, dont la même forme reste REFUSÉE parce qu'aucun texte n'y dit laquelle des deux composantes s'applique.",
+      "texte_archive": "sources/ZMB_customs_excise_act_annexe5_s88_regle2.texte-extrait.txt",
+      "sha256": "41f5f10ea2d77ba58f57304ef25ced15a2c6078d89402fb2e9b4087c134a1a41"
+    },
+    "les_trois_lettres_de_la_colonne_de_tva": {
+      "article": "Value Added Tax Act (Cap. 331), définitions, s.9(1)-(2) et s.9(4) ; taux en vigueur : ZRA, VAT Guide",
+      "verbatim_exempt": "\"exempt importation\" means an importation of goods described in the First Schedule",
+      "verbatim_zero_rated": "\"zero-rated supply\" means a supply of goods or services described in the Second Schedule",
+      "verbatim_taux_zero": "the prescribed rate of tax in the case of a zero-rated supply shall be regarded as zero",
+      "verbatim_taux_consolide": "The prescribed rate of tax shall be seventeen and a half per centum, unless the Minister, by statutory order, determines a lower rate.",
+      "verbatim_taux_en_vigueur": "All supplies of goods and services that are not exempt or zero rated are standard rated. Currently the Standard rate is 16%.",
+      "portee": "Le tarif ne publie AUCUNE légende de ces lettres : leur sens vient de la loi. « E » renvoie à la première annexe du Value Added Tax Act (exonération), « Z » à la seconde (taux zéro), « S » au taux standard. Les deux premières sont donc des ZÉROS PUBLIÉS, non des lacunes de collecte : 598 positions en E, 12 en Z. Le TAUX standard, lui, n'est pas dans le tarif, et le texte consolidé de l'Acte est PÉRIMÉ sur ce point : il porte 17,5 %, que la s.9(3) soumet elle-même à un ordre statutaire du ministre. Servir 17,5 % parce que l'Acte le porte surfacturerait chaque importation zambienne d'un dixième. Le taux servi est 16 %, celui qu'énonce l'autorité qui le perçoit, avec la réserve que l'ordre statutaire n'a pas été identifié.",
+      "valeur": "16,0 % (taux standard), 0 % pour E et pour Z",
+      "texte_archive": "sources/ZMB_zra_vat_guide_taux_standard.texte-extrait.txt",
+      "sha256": "bfbf729f6ad456693c5df7dcc13bbefd67e31365448d6440c2a0c1350150ea13",
+      "sha256_pdf_origine": "80d28064aa82a0541b2d5e2a7758c7259616c5a9522035aabcf9272968ee179d",
+      "source_url": "https://www.zra.org.zm/wp-content/uploads/2020/07/VAT-Guide.pdf"
+    }
+  },
+  "provenance_du_tarif": {
+    "document": "ZAMBIA REVENUE AUTHORITY, « CUSTOMS AND EXCISE TARIFF », nomenclature SH de l'OMD, « Last updated in January 2026 », 682 pages",
+    "url": "https://www.zra.org.zm/wp-content/uploads/2026/08/Customs-Tariff-Book.pdf",
+    "sha256": "4e625caf4b9ce399cf4b61cfa6d8cc92350648a24ec1801b1e88da2304c71101",
+    "reserve_declaree_par_l_editeur": "Le document porte son propre avertissement : « In the event that any information in this publication is inconsistent with the contents of any relevant legislation, the provisions of the legal text shall prevail. » C'est une publication de facilitation, non l'instrument légal. Elle reproduit cependant la PREMIÈRE ANNEXE (section 72) de la Customs and Excise Act, et ses Additional Zambian Rules se retrouvent mot pour mot dans l'Acte publié par le Parlement — ce qui a été vérifié, et c'est ce qui autorise à s'en servir.",
+    "recuperation": "Le fichier déposé par l'utilisateur et le fichier publié par ZRA ont la MÊME taille à l'octet près (12 936 746). Le tarif est donc servi depuis une URL citable, et non depuis un dépôt privé.",
+    "certificat_tls": "zra.org.zm et parliament.gov.zm n'envoient pas leur certificat intermédiaire. Les chaînes ont été complétées depuis l'AIA des certificats eux-mêmes (Sectigo, DigiCert) et VÉRIFIÉES jusqu'à une racine du magasin de confiance ; la vérification TLS n'a à aucun moment été désactivée.",
+    "pdf_non_archive": "Le tarif lui-meme (682 pages, 12,9 Mo) n'est PAS archive dans sources/ : il est trop volumineux pour le depot, et c'est un document de nomenclature, non le dispositif legal dont la fiche etablit les assiettes. Son empreinte est citee ici et portee par `source_sha256` dans backend/data/crawled/ZMB_tariffs.json, et son URL ZRA est citable : on peut donc le retelecharger et verifier qu'il s'agit du meme fichier. Les trois textes sur lesquels la fiche s'appuie — Customs and Excise Act, Value Added Tax Act, ZRA VAT Guide — sont eux archives dans sources/ avec leurs empreintes."
+  },
+  "ce_que_cela_ne_tranche_pas": {
+    "l_ordre_statutaire_du_taux_de_tva": "La s.9(3) renvoie à un ordre du ministre, qui n'a pas été identifié. Le taux de 16 % est celui qu'énonce ZRA ; la fiche le déclare comme tel et non comme primaire.",
+    "la_surtaxe_de_la_quatrieme_annexe": "La section 77 et la Quatrième annexe établissent une surtaxe, notamment sur les émissions de carbone des véhicules des positions 8702, 8703 et 8704. Elle n'est pas portée par les colonnes du tarif et n'est pas collectée : là où elle s'applique, l'assiette de la TVA servie est minorée, et c'est dit.",
+    "les_taux_forfaitaires_du_chapitre_98": "Le tarif comporte un chapitre 98, hors nomenclature SH, pour les taux forfaitaires d'évaluation. Il est collecté comme les autres mais son régime particulier n'est pas établi.",
+    "cent_deux_droits_non_lus": "102 positions sur 6 751 portent une cellule que la collecte n'a pas su interpréter, et 87 relèvent de pages dont les colonnes ne se calibrent pas. Toutes sont servies SANS TAUX, avec leur motif nommé sur la ligne — jamais un zéro, jamais une approximation.",
+    "les_colonnes_preferentielles": "Le tarif ne publie aucune colonne préférentielle : ni SADC, ni COMESA, ni ZLECAf. Aucune préférence n'est donc servie pour la Zambie, et c'est une lacune de source, pas l'absence d'un régime — le SI n° 92 de 2024 existe (voir ZMB_gazette_7696_2024-12-30) mais son texte n'a pas été obtenu."
+  },
+  "remaining_work": [
+    "Identifier l'ordre statutaire qui fixe le taux de TVA à 16 %, pour porter cette valeur au niveau primaire.",
+    "Collecter la Quatrième annexe (surtaxe) et établir son articulation avec l'assiette de la TVA.",
+    "Obtenir le texte du Statutory Instrument n° 92 de 2024, pour les concessions ZLECAf zambiennes.",
+    "Reprendre à la main les 102 cellules non interprétées et les 87 lignes des pages non calibrées.",
+    "Établir le régime des taux forfaitaires du chapitre 98."
+  ]
+}

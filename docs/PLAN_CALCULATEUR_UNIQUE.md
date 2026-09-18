@@ -467,6 +467,25 @@ registre. La recherche porte donc sur le tarif lui-même : portail douanier
 national, tarif intégré publié, loi de finances annuelle, ou tarif du bloc
 régional quand il est effectivement transposé.
 
+**Avancement au 2026-09-18 — cinq des treize sont sortis de WITS**, sur le tarif
+publié par leur douane et avec la fiche qui établit leurs assiettes : `MUS`
+(6 941 positions), `LBY` (5 920), `MOZ` (5 822), `ZWE` (6 637) et `ZMB` (6 753).
+Restent huit : `AGO COM MDG MRT MWI SDN STP SYC`.
+
+Deux enseignements de ces cinq, qui valent pour les huit suivants :
+- **une entrée « verified » au registre ne garantit rien par elle-même.** Pour la
+  Zambie, elle décrivait un « Customs Tariff Book 2026 » de 8 803 positions alors
+  que le fichier servi était une moyenne WITS de 5 613 positions SH6 ; l'empreinte
+  pointait bien le fichier WITS, c'était la prose qui décrivait autre chose. Le
+  décompte déclaré doit concorder avec l'artefact, et ce contrôle est le premier
+  à faire.
+- **les défauts d'extraction les plus coûteux produisent un droit FAUX, pas un
+  droit manquant** — un code centré verticalement qui donne à une position le
+  droit de sa voisine (ZWE), une expression laissée en valeur brute que le
+  constructeur relit (ZWE), une colonne prise pour une autre (ZMB). Aucun test
+  qu'on n'a pas déjà pensé à écrire ne les attrape : il faut une seconde lecture
+  du document, indépendante de la première, et compter les écarts.
+
 | | |
 |---|---|
 | **Livrable** | par pays : une énumération nationale datée, ou le constat argumenté qu'aucune source publique n'existe |

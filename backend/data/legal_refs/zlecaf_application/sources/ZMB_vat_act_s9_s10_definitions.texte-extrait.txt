@@ -1,0 +1,90 @@
+Value Added Tax Act (Cap. 331) — Republique de Zambie
+Texte publie par le Parlement : parliament.gov.zm
+Extraits : s.9 (taux), s.10(3) (valeur taxable a l'importation),
+definitions de « exempt importation » et « zero-rated supply ».
+Extraction pymupdf, texte non retouche.
+========================================================================
+
+--- s.9 ---
+t, by the operation of section eleven or twelve or of
+any rule made under those sections, is to be regarded as taking place in Zambia.
+
+The Laws of Zambia
+Copyright Ministry of Legal Affairs, Government of the Republic of Zambia
+(3)  Tax on a supply of goods and services is payable by the supplier of the goods or
+services and, subject to any other provision made by or under this Act in relation to
+accounting, is due and payable at the time of supply.
+(4)  Tax on an importation of goods shall be charged as if it were a duty of customs
+under the Customs and Excise Act, and is payable, accordingly, by the importer of the
+goods.
+Cap. 322
+9.  (1)  Tax on a taxable supply of goods or services shall be charged on their
+taxable value, at the prescribed rate of tax.
+Rate of tax
+(2)  Tax on a taxable importation of goods shall be charged on their taxable value, at
+the prescribed rate of tax.
+(3)  The prescribed rate of tax shall be seventeen and a half per centum, unless the
+Minister, by statutory order, determines a lower rate.
+(4)  For the purposes of any provision of this Act, or of the regulations or rules made
+under this Act, the prescribed rate of tax in the case of a zero-rated supply shall be
+regarded as zero.
+(As amended by S.I. No. 11 of 1997)
+10.  (1)  Subject to this section, where goods or services are supplied for a monetary
+consideration, the amount by which that consideration exceeds the tax payable in respect
+of the supply shall be the taxable value of the goods or services.
+Taxable value of
+supplies and
+importations
+(2)  Where goods or services are supplied-
+(a)    
+
+--- s.10(3) ---
+)        for a consideration that is less than the open market value of the goods or
+services;
+the amount by which their open market value exceeds the tax payable in respect of the
+supply shall be the taxable value of the goods or services.
+(3)  The taxable value of imported goods shall be determined as for a duty of
+customs, but shall be taken to include the amount of any duty or other impost payable
+otherwise than under this Act in respect of the importation.
+
+The Laws of Zambia
+Copyright Ministry of Legal Affairs, Government of the Republic of Zambia
+(4)  In this section, "open market value" means the price at which the goods or
+services concerned would have been supplied, in 
+the ordinary course of business, to a person independent of the supplier.
+11.  (1)  This section shall have effect for determining whether goods shall be
+regarded, for taxation purposes, as being supplied in Zambia.
+Place of supply of
+goods
+(2)  Goods shall be regarded-
+(a)        as supplied in Zambia if they are exported from Zambia or if their supply
+does 
+
+--- definition : exempt importation ---
+Authority" means the Zambia Revenue Authority established by the Zambia
+Revenue Authority Act;
+"Commissioner-General" means the Commissioner-General appointed under the
+Zambia Revenue Authority Act;
+"exempt importation" means an importation of goods described in the First
+Schedule;
+"exempt supply" means a supply of goods or services described in the First
+Schedule;
+"goods" means any article or substance of value, any immovable property and any
+interest in land, but does not include money, securities or any chose in
+action;
+"Government agency" means-
+(a)        any Ministry or Department of the
+
+--- definition : zero-rated supply ---
+to goods or services supplied, or goods imported,
+means their taxable value ascertained in accordance with section ten;
+"Tribunal" means the Value Added Tax Appeals Tribunal established by this Act;
+"zero-rated supply" means a supply of goods or services described in the Second
+Schedule.
+(2)  In this Act, a reference to a supply of goods or services in the course of a
+business includes a reference to a supply of goods or services for the promotion, or
+otherwise in furtherance of a business.
+
+The Laws of Zambia
+Copyright Ministry of Legal Affairs, Government of the Republic of Zambia
+3.  (1)  W

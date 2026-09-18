@@ -44,16 +44,24 @@ huit pays d'un coup (`backend/data/legal_refs/zlecaf_application/UEMOA_assiette_
 **C. Les pays vides** — `DJI` et `ERI` : aucune position. Il faut le tarif
 douanier national complet, pas un complément.
 
-**D. Les 9 pays encore servis par une moyenne SH6 (WITS / UNCTAD-TRAINS)** —
-`AGO COM MDG MRT MWI SDN STP SYC ZMB`.
+**D. Les 8 pays encore servis par une moyenne SH6 (WITS / UNCTAD-TRAINS)** —
+`AGO COM MDG MRT MWI SDN STP SYC`.
 Ce ne sont pas des tarifs nationaux : ce sont des moyennes SH6 de la Banque
 mondiale. Elles donnent un ordre de grandeur, jamais le droit exigible sur une
 position nationale. Les remplacer par le tarif publié par chaque douane est le
 chantier de fond.
 
-Quatre en sont sortis, sur le tarif publié par leur douane et avec la fiche
-qui établit leurs assiettes : `LBY` (5 920 positions), `MUS` (6 941),
-`MOZ` (5 822) et `ZWE` (6 637, SI 203 of 2022).
+Cinq en sont sortis, sur le tarif publié par leur douane et avec la fiche qui
+établit leurs assiettes : `LBY` (5 920 positions), `MUS` (6 941), `MOZ` (5 822),
+`ZWE` (6 637, SI 203 of 2022) et `ZMB` (6 753, Customs and Excise Tariff de ZRA,
+édition janvier 2026).
+
+Avertissement tiré du cas zambien : **le registre des sources décrivait déjà la
+Zambie comme `official` et `verified`, avec l'édition « Customs Tariff Book 2026 »
+et 8 803 positions — alors que le fichier servi était une moyenne WITS de 5 613
+positions SH6.** L'empreinte, elle, était juste : c'est la PROSE qui décrivait un
+document que le dépôt ne contenait pas. Un `validation_status: verified` ne vaut
+donc rien sans un décompte qui concorde avec l'artefact.
 
 ---
 

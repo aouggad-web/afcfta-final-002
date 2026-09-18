@@ -1,0 +1,70 @@
+ZRA — VAT GUIDE (Zambia Revenue Authority)
+Source : zra.org.zm/wp-content/uploads/2020/07/VAT-Guide.pdf
+Extrait : le taux standard en vigueur, et les trois categories
+(standard / zero rated / exempt) que les lettres du tarif reprennent.
+Extraction pymupdf, texte non retouche.
+========================================================================
+
+ed on a chain of supplies on the 
+sale of a tray. However there are many business transactions in addition to a 
+straight sale, which are also viewed as supplies under VAT Law, e.g.
+	
+• Gifts of goods (subject to conditions provided in the 
+	
+   Regulations)
+	
+• Business goods taken for own use
+	
+• Business goods taken for own consumption
+	
+• Lease or Hire services
+	
+• Treatment of any goods
+	
+• Imported goods
+	
+• Imported services.
+1.4 Liability to VAT: Taxable and Exempt Supplies
+Not all supplies or sales are liable to VAT. The VAT law classifies supplies as 
+either taxable or exempt:
+	
+• Taxable Supplies are those which are liable to VAT.
+	
+• Exempt supplies are not subject to VAT
+1.4.1 Taxable Supplier
+A taxable supplier is a person who is registered or is required by the VAT Act 
+to be registered and includes tax agent or recipient of imported services. To 
+be a taxable supplier, a person or business must deal in taxable supplies or a 
+combination of taxable and exempt supplies but not solely exempt supplies.
+1.4.2 Taxable Supplies
+A taxable supply is a supply of goods or services that are liable to VAT.
+Taxable supplies are subject to VAT at one of two rates:
+
+	
+• Taxable supplies are either subject to VAT at the standard rate or 	
+	
+zero rated i.e. charged at the rate of 0%. 
+	
+• All supplies of goods and services that are not exempt or zero 
+	
+rated are standard rated. Currently the Standard rate is 16%.
+	
+• All supplies of goods and services that are listed in the Zero 
+	
+Rating Order are taxed at 0%. 
+Thus taxable supplies consist of the following two categories:
+	
+• Standard rated goods and services; and
+	
+• Zero-rated goods and services taxed at 0%.
+1.4.3 Examples of Taxable Supplies
+The sale of new or second-hand goods.
+Business samples or business gifts for promotional or publicity purposes (of a 
+value above K100 to a person in a particular accounting year).
+1.2 VAT Computation
+The following example shows how VAT works through the chain from Manufac-
+turer to retailer. 
+A manufacturer makes copper trays which are sold through a wholesaler to a 
+retail supermarket and then on to the consumer. The VAT rate is 16%:
+The Manufacturer sells the copper tray to the Wholesaler for K2, 900.00 VAT 
+inclusive, being K2, 500 for the item and K400.00 VAT. He 
