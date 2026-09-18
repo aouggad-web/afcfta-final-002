@@ -10,7 +10,29 @@
       "sha256": "3585fbe23bf6b7be3c4e9eb963fdb31bf0336b059bf0019e4b471f178829c182",
       "taille_octets": 3616552,
       "pages": 396,
-      "structure": "6129 sous-positions (DD/RS/PC)"
+      "structure": "6129 sous-positions (DD/RS/PC)",
+      "code_des_douanes": {
+        "url": "https://www.finances.gov.mr/sites/default/files/2022-11/CODE_DES_DOUANES.pdf",
+        "sha256": "1173b46078c0da1854bb23ada6ae14e9f3a8d45b7e3e94bbba2c777f05f03262",
+        "pages": 68,
+        "note": "Loi 2017-035 portant Code des douanes (scan sans texte)"
+      },
+      "code_des_douanes_texte": {
+        "url": "https://www.finances.gov.mr/Recueil_des_textes_relatifs_a_la_mission_du_Ministere/Textes/BUDGET/Loi%202017-035%20CDouanes.pdf",
+        "sha256": "1173b46078c0da1854bb23ada6ae14e9f3a8d45b7e3e94bbba2c777f05f03262",
+        "note": "version texte extractible utilisée"
+      },
+      "guide_procedures": {
+        "url": "https://www.douanes.mr/uploads/files/P2026 Guide de procédures de dédouanement des marchandises à l'importation et à l'exportation.pdf",
+        "sha256": "5499f84df525a21bd4f9f1ee80ce6cb89a3e86b65296865d6d1e621f84b82583",
+        "pages": 38,
+        "note": "Guide officiel des procédures de dédouanement 2026"
+      },
+      "tarif_detaille_extrait": {
+        "fichier": "backend/data/tarifs_nationaux/MRT_tarif_2021_detaille.json",
+        "positions": 6129,
+        "parseur": "scripts/parse_tarif_mrt_2021.py"
+      }
     },
     "MDG": {
       "url": "https://www.douanes.gov.mg/srcs/uploads/2026/01/TARIF-DES-DOUANES-2026.pdf",
