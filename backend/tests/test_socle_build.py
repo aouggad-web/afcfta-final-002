@@ -463,3 +463,49 @@ def test_l_assiette_somalienne_rend_les_droits_liquidables():
     )
     assert c["assiettes_indisponibles"] == 0
     assert c["positions_liquidables"] > 0
+
+
+# ── Réserve WITS : un agrégat SH6 ne se présente pas comme une position ───────
+def test_un_droit_wits_porte_sa_reserve():
+    """Le droit venu de WITS/TRAINS dit qu'il est un agrégat SH6.
+
+    Treize pays servent leur droit de douane depuis la moyenne SH6 de la
+    Banque mondiale. Leur TVA portait déjà la mention « non vérifié position
+    par position » ; le droit, lui, ne la portait pas — alors que c'est
+    précisément lui qui vient de l'agrégat. Sur la même position, l'opérateur
+    lisait donc une réserve sur une ligne et rien sur l'autre.
+    """
+    droit = bs._droit(
+        "DD",
+        "Droit de douane (MFN appliqué, WITS/TRAINS)",
+        5.0,
+        "CIF",
+        "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+    )
+    assert "non vérifié position par position" in droit["note"]
+    assert "SH6" in droit["note"]
+
+
+def test_la_reserve_wits_ne_recouvre_pas_une_note_de_la_source():
+    """Une note publiée par la source prime : la réserve ne l'écrase jamais."""
+    droit = bs._droit(
+        "TVA",
+        "Taxe sur la Valeur Ajoutée",
+        20.0,
+        "CIF+DD",
+        "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+        note="Taux national standard (non vérifié position par position).",
+    )
+    assert droit["note"] == "Taux national standard (non vérifié position par position)."
+
+
+def test_un_droit_national_ne_recoit_aucune_reserve_wits():
+    """Contrôle négatif : une source nationale n'est pas un agrégat."""
+    droit = bs._droit(
+        "DD",
+        "Customs duty",
+        40.0,
+        "CIF",
+        "SARS Schedule No. 1 Part 1",
+    )
+    assert droit["note"] is None

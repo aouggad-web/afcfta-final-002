@@ -437,6 +437,24 @@ def nettoyer_code(*candidats) -> str:
     return ""
 
 
+# Un droit servi depuis WITS/UNCTAD-TRAINS n'est pas une position nationale : la
+# Banque mondiale agrège les lignes du tarif national au niveau SH6. La
+# sous-position réelle peut donc porter un autre taux. La TVA de ces mêmes pays
+# porte déjà sa réserve ; le droit de douane ne la portait pas, alors que c'est lui
+# qui vient de l'agrégat. Il la porte désormais aussi : l'opérateur lit la même
+# mise en garde sur les deux lignes d'une même position.
+RESERVE_WITS = (
+    "Taux MFN appliqué agrégé au niveau SH6 par WITS/UNCTAD-TRAINS (Banque "
+    "mondiale), non vérifié position par position : la nomenclature nationale "
+    "peut porter un taux différent au niveau de la sous-position."
+)
+
+
+def _vient_de_wits(source) -> bool:
+    texte = str(source or "").upper()
+    return "WITS" in texte or "UNCTAD-TRAINS" in texte or "TRAINS" in texte
+
+
 # ── Adaptateurs : une fonction par forme de ligne fiscale ─────────────────────
 def _droit(
     code_src,
@@ -465,7 +483,7 @@ def _droit(
         "plafond": plafond,
         "source": source,
         "qualite": qualite,
-        "note": note,
+        "note": note if note else (RESERVE_WITS if _vient_de_wits(source) else None),
         "classification_source": classification,
         "_preferentiel": prefer,
     }

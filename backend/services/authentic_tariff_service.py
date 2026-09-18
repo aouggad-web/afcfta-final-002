@@ -1622,6 +1622,27 @@ def _tva_presente_dans_le_tarif(country_iso3: str, country_data) -> bool:
     return presente
 
 
+# Pays dont une source établit que la position sans TVA est EXONÉRÉE, et non
+# incomplète. Algérie : Code des taxes sur le chiffre d'affaires, art. 8/9/10/11
+# (viandes, lait, médicaments, farines et semoules, or, navires) et art. 214
+# LF2025 reconduit LF2026 (café vert). Toute autre entrée exige la même
+# démonstration : sans elle, l'absence reste une absence.
+EXONERATION_TVA_ETABLIE = {"DZA"}
+
+
+def _sens_de_la_tva_absente(country_iso3: str, country_data) -> str:
+    """Qualifie une TVA manquante : EXONEREE, HORS_TARIF ou INCONNUE.
+
+    INCONNUE est le défaut : le taux reste nul et le calcul se déclare
+    indisponible plutôt que de servir un zéro fabriqué.
+    """
+    if country_iso3 in EXONERATION_TVA_ETABLIE:
+        return "EXONEREE"
+    if not _tva_presente_dans_le_tarif(country_iso3, country_data):
+        return "HORS_TARIF"
+    return "INCONNUE"
+
+
 def calculate_import_taxes(
     country_iso3, hs_code, cif_value, apply_zlecaf=False, language="fr", origin_country=None
 ):
@@ -1785,18 +1806,22 @@ def calculate_import_taxes(
     # réellement incomplète et garde le garde CALCULATION_UNAVAILABLE.
     tva_exoneree = False
     tva_absente = False
+    sens = _sens_de_la_tva_absente(country_iso3, country_data)
     if vat_rate_pct is None and dd_rate_pct is not None:
-        if country_iso3 == "DZA":
+        if sens == "EXONEREE":
             vat_rate_pct = 0.0
             tva_exoneree = True
-        elif not _tva_presente_dans_le_tarif(country_iso3, country_data):
+        elif sens == "HORS_TARIF":
             vat_rate_pct = 0.0
             tva_absente = True
-    for code in list(taxes_detail.keys()):
-        entree = taxes_detail[code]
-        if _is_vat_code(code) and isinstance(entree, dict) and entree.get("rate") is None:
-            taxes_detail[code] = {**entree, "rate": 0.0}
-            if country_iso3 == "DZA":
+    # Le même arbitrage vaut pour une entrée TVA du détail laissée sans taux :
+    # elle ne devient 0 % que lorsqu'une source établit l'exonération. Sinon
+    # elle reste nulle et tombe dans `missing` → CALCULATION_UNAVAILABLE (#472).
+    if sens == "EXONEREE":
+        for code in list(taxes_detail.keys()):
+            entree = taxes_detail[code]
+            if _is_vat_code(code) and isinstance(entree, dict) and entree.get("rate") is None:
+                taxes_detail[code] = {**entree, "rate": 0.0}
                 tva_exoneree = True
 
     missing = [
