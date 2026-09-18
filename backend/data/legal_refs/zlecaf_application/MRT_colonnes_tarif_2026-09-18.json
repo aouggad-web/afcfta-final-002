@@ -99,5 +99,29 @@
   "conflits_ecartes": [
     "Un guide logistique commercial annonce une TVA mauritanienne de 18 %. L'OMC (§ 3.49) établit le passage de 14 % à 16 % par la loi de finances 2016. Le taux de 16 % porté par la donnée est conservé.",
     "Un résumé de recherche présentait la Mauritanie comme membre de la CEDEAO. Elle s'en est retirée en 2000 ; le rapport de l'OMC ne lui reconnaît qu'un accord d'association. C'est précisément ce qui empêche de transposer le protocole du prélèvement communautaire."
-  ]
+  ],
+  "recherche_etendue_2026_09_18": {
+    "objet": "Recherche étendue de l'assiette de la redevance statistique et du rattachement de la colonne PC. Consignée pour ne pas être refaite.",
+    "resultat": "ÉCHEC. Aucune source primaire ni institutionnelle consultée n'établit l'assiette de la RS. Aucune, sur seize ans d'examens de l'OMC, ne mentionne un prélèvement communautaire en Mauritanie.",
+    "sources_epuisees": [
+      "Tarif des douanes 2021 (primaire, 396 p., empreinte vérifiée) : donne les taux ; sa table des abréviations (p. 6) ne recense que des unités de mesure et ne développe aucun des sigles US, DD, RS, PC.",
+      "Code des douanes, loi n° 2017-035 (primaire, 68 p.) : définit la valeur en douane (art. 28 § 1 a) pour les droits ad valorem, mais ne mentionne NI la redevance statistique NI aucun prélèvement communautaire — zéro occurrence.",
+      "Guide de procédures de dédouanement 2026 (primaire, douanes.mr, 39 p.) : sa section P04 « Liquidation et acquittement des droits et taxes » est procédurale — « la liquidation prend en compte des facteurs tels que la valeur en douane des biens, leur nature, leur origine » — sans base par prélèvement. Zéro occurrence de « redevance statistique » et de « assiette ».",
+      "OMC, examen 2002 : redevance statistique alors à 3 %, sans assiette.",
+      "OMC, examen 2011 (WT/TPR/S/250) : « le taux de la redevance statistique est passé de 3% à 1% », sans assiette ; AUCUNE mention d'un prélèvement communautaire.",
+      "OMC, examen 2018 (WT/TPR/S/371) § 3.47 : « toutes les importations sont soumises à une redevance statistique de 1% », sans assiette ; l'énumération des impositions cite une redevance informatique forfaitaire et une taxe de promotion de la culture et du sport de 1 % sur la valeur c.a.f., mais aucun prélèvement communautaire.",
+      "Loi de finances 2026 (291 p., finances.gov.mr) : aucune occurrence extractible de « redevance statistique » ni de « prélèvement communautaire ».",
+      "Journal Officiel n° 1463 bis (loi de finances rectificative) : URL publiée par le moteur de recherche, serveur msgg.gov.mr en 404.",
+      "Journal Officiel du 15 octobre 2023, loi n° 2023-025 : liberté des prix et concurrence — sans rapport.",
+      "FAOLEX mau224268 : redevances d'exploitation des ressources halieutiques — sans rapport.",
+      "FMI, diagnostic de politique fiscale 2024 : documente l'impôt minimum forfaitaire à 2,5 % de la valeur en douane c.a.f., qui est un AUTRE prélèvement et n'a pas de colonne dans le tarif."
+    ],
+    "piege_ecarte": "L'examen de l'OMC du BÉNIN énonce que « l'assiette de tous ces droits et prélèvements supplémentaires est la valeur en douane », en visant la redevance statistique UEMOA, le prélèvement communautaire de solidarité UEMOA et le prélèvement communautaire CEDEAO. Le Bénin est membre des deux organisations ; la Mauritanie d'aucune. Transposer cette phrase serait raisonner par ressemblance, pas établir.",
+    "faisceau_indirect_non_concluant": "Deux autres prélèvements mauritaniens SONT documentés comme assis sur la valeur c.a.f. : la taxe de promotion de la culture et du sport (OMC § 3.48) et l'impôt minimum forfaitaire (FMI 2024). Il est donc vraisemblable que la RS le soit aussi — mais la vraisemblance n'est pas une source, et le calculateur ne sert pas des vraisemblances.",
+    "ce_qui_reste_a_tenter": [
+      "Le Journal Officiel mauritanien année par année sur msgg.gov.mr, à la recherche de la loi de finances qui a fait passer la redevance statistique de 3 % à 1 % entre 2002 et 2011 : c'est ce texte qui portera son assiette.",
+      "Le Code des douanes consolidé, loi n° 2026-015 du 24 mai 2026, qui remplace celui de 2017 et n'a pas été obtenu.",
+      "L'accord d'association Mauritanie-CEDEAO de 2017 lui-même, pour savoir s'il fait percevoir le prélèvement communautaire à un non-membre."
+    ]
+  }
 }
