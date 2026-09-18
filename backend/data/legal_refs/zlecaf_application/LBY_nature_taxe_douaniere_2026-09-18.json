@@ -1,16 +1,21 @@
 {
   "schema_version": 1,
-  "objet": "Libye — nature et assiette du prélèvement porté par la colonne « فئة الضريبة » du tarif douanier 2022.",
+  "objet": "Libye — le prélèvement porté par la colonne « فئة الضريبة » du tarif 2022 : plusieurs dénominations légales pour UN prélèvement, assis sur le CIF ; et absence de TVA.",
   "verified_at": "2026-09-18",
   "etabli": true,
   "evidence_level": "primaire — « قانون الجمارك الليبية » (loi sur les douanes), publiée par la Mصلحة الجمارك الليبية sur customs.gov.ly, 45 pages, texte extractible, extraits archivés ; croisée avec le tarif douanier officiel 2022 (XLSX, customs.gov.ly) et avec le PDF du même tarif.",
-  "la_question_posee": "Le tarif 2022 titre sa colonne de taux « فئة الضريبة » — la catégorie/le taux de LA TAXE — et non « رسم جمركي » (droit de douane). Nommer ces 5 % « droit de douane » dans le calculateur aurait été une supposition. La loi tranche : c'est elle qui emploie « الضريبة الجمركية » comme nom propre du prélèvement perçu à l'importation. Le tarif ne fait que reprendre le terme légal.",
+  "la_question_posee": "Le tarif 2022 titre sa colonne « فئة الضريبة » — le taux de LA TAXE — et non « رسم جمركي », droit de douane. La question était de savoir comment le nommer. La réponse n'est pas qu'un seul nom s'impose : LA LOI LIBYENNE EN EMPLOIE PLUSIEURS, et souvent ENSEMBLE. Ce qui est établi, ce n'est donc pas une dénomination unique, c'est qu'il s'agit d'UN SEUL prélèvement, celui du tarif douanier, assis sur la valeur en douane.",
   "regle": {
     "nature_du_prelevement": {
-      "article": "Loi sur les douanes (قانون الجمارك الليبية), dispositions générales sur la perception",
-      "verbatim": "وتحصل الضرائب الجمركية وغيرها من الضرائب والرسوم التي تستحق بمناسبة استيراد البضاعة أو تصديرها وفقاً للقوانين المنظمة لها",
-      "traduction": "« Les TAXES DOUANIÈRES et les autres taxes et redevances dues à l'occasion de l'importation ou de l'exportation des marchandises sont perçues conformément aux lois qui les régissent. »",
-      "portee": "La loi libyenne nomme « الضريبة الجمركية » — taxe douanière — le prélèvement qu'elle assoit sur l'importation, et c'est ce prélèvement que le tarif chiffre dans sa colonne « فئة الضريبة ». Le même terme revient dans la loi pour la marchandise laissée en entrepôt (« دفع الضريبة الجمركية المقررة عليها ») et pour le remboursement (« يجوز رد الضرائب الجمركية »). Il n'y a donc pas à choisir un nom : la source en donne un."
+      "article": "Loi sur les douanes (قانون الجمارك الليبية) — article des définitions, et dispositions sur la perception",
+      "verbatim_definition_du_tarif": "التعريفة الجمركية : الجدول المتضمن تسميات البضائع ومعدلات الرسوم الجمركية الخاضعة لها والقواعد والملاحظات الواردة فيه",
+      "traduction_definition": "« Le TARIF DOUANIER : le tableau contenant les désignations des marchandises et les taux des DROITS DE DOUANE auxquels elles sont soumises, ainsi que les règles et notes qui y figurent. »",
+      "verbatim_perception": "وتحصل الضرائب الجمركية وغيرها من الضرائب والرسوم التي تستحق بمناسبة استيراد البضاعة أو تصديرها وفقاً للقوانين المنظمة لها",
+      "traduction_perception": "« Les TAXES DOUANIÈRES et les autres taxes et redevances dues à l'occasion de l'importation ou de l'exportation sont perçues conformément aux lois qui les régissent. »",
+      "verbatim_les_deux_ensemble": "معفاة من الضرائب والرسوم الجمركية",
+      "traduction_les_deux_ensemble": "« exempté des TAXES ET DROITS de douane »",
+      "assiette": "le prélèvement du tarif douanier, quelle que soit sa dénomination",
+      "portee": "La Libye emploie plusieurs dénominations pour un même prélèvement, et c'est un trait de son droit, pas une ambiguïté de lecture. Décompte sur les 45 pages de la loi : « الضرائب الجمركية » (taxes douanières, pluriel) 28 fois, « الرسوم الجمركية » (droits de douane) 15 fois, « الضريبة الجمركية » (singulier) 4 fois, et la formule cumulative « الضرائب والرسوم الجمركية » (taxes ET droits de douane) 8 fois. L'article des définitions dit que le TARIF porte « les taux des DROITS DE DOUANE » ; l'article sur la perception dit que ce sont « les TAXES DOUANIÈRES » qui sont perçues. Les deux visent la même chose. CONSÉQUENCE POUR LE CALCULATEUR : le prélèvement de la colonne « فئة الضريبة » est celui du tarif douanier, à servir comme tel. Ce qu'il ne faut pas faire, c'est présenter l'une des dénominations comme LA dénomination officielle — la source n'en consacre aucune."
     },
     "assiette": {
       "article": "Loi sur les douanes, articles sur la valeur en douane",
@@ -54,11 +59,16 @@
       "LA SECONDE FEUILLE. Le classeur porte trois feuilles ; « ورقة1 » est le tarif (8 237 lignes, 5 961 positions codées), « ورقة3 » est vide, et « ورقة2 » compte 1 040 896 lignes dont 422 SEULEMENT portent un code. Un collecteur qui lirait cette feuille-là ramasserait 7 % du tarif en croyant tout avoir."
     ]
   },
-  "conflit_tranche": "PwC rapporte une abolition des droits de douane libyens en 2005. Le tarif officiel de 2022, publié par la douane libyenne, lève un prélèvement sur 4 935 des 5 961 positions. Les deux se concilient sans contradiction une fois la loi lue : ce que le tarif lève n'est pas un « رسم جمركي » (droit de douane) mais une « ضريبة جمركية » (taxe douanière), et c'est le nom que la loi lui donne. Le calculateur doit donc servir ce prélèvement sous son nom légal, sans le rebaptiser droit de douane et sans le taire.",
-  "ce_que_cela_ne_tranche_pas": "La date d'entrée en vigueur du tarif 2022 et son éventuelle modification depuis. La composition exacte des « États de la Ligue des États arabes » retenue par la douane libyenne. Et l'existence d'autres prélèvements à l'importation hors tarif — la loi en réserve la possibilité (« وغيرها من الضرائب والرسوم »), le tarif n'en porte aucun.",
+  "conflit_tranche": "PwC rapporte une abolition des droits de douane libyens en 2005. Le tarif officiel de 2022, publié par la douane, lève un prélèvement sur 4 935 des 5 961 positions. Ce qui est établi et suffit au calcul : le tarif douanier de 2022 est en vigueur et porte ces taux ; la loi les rattache au tarif douanier et les assoit sur la valeur en douane. La question de savoir si le prélèvement de 2022 est la reconduction, le remplacement ou la survivance de ce qui a été aboli en 2005 reste ouverte — elle n'a pas d'effet sur le montant.",
+  "ce_que_cela_ne_tranche_pas": "Quelle dénomination consacrer : la loi en emploie plusieurs et n'en privilégie aucune. La date d'entrée en vigueur du tarif 2022 et ses modifications depuis. La composition des « États de la Ligue des États arabes » retenue par la douane libyenne. L'articulation exacte avec l'abolition de 2005. Et l'existence d'autres prélèvements hors tarif : la loi en réserve la possibilité « وغيرها من الضرائب والرسوم », le tarif n'en porte aucun.",
   "remaining_work": [
     "Obtenir le décret 881 fixant la valeur en douane (القرار 881 بتحديد القيمة الجمركية) : l'URL publiée par customs.gov.ly rend une erreur 522.",
     "Obtenir le décret 537 de 2021 exonérant les denrées alimentaires « des taxes et redevances prévues par le tarif douanier » : URL en 404. Il pourrait modifier les 1 026 exonérations relevées.",
     "Reconstruire le socle libyen sur ce tarif : il sert aujourd'hui une moyenne SH6 WITS, en état PARTIEL, avec ZÉRO position liquidable."
-  ]
+  ],
+  "absence_de_tva": {
+    "etabli": true,
+    "constat": "La loi libyenne sur les douanes ne mentionne AUCUNE taxe sur la valeur ajoutée : zéro occurrence de « القيمة المضافة » et de « ضريبة القيمة » sur ses 45 pages. Le tarif 2022 ne porte aucune colonne de TVA — ses colonnes sont : numéro de position, code SH, désignation, فئة الضريبة, et tarif préférentiel Ligue arabe.",
+    "consequence": "Le socle libyen porte « tva: false » : c'est EXACT, et ce n'est pas une lacune de collecte à combler. NE PAS y ajouter un taux de TVA national standard comme il en existe pour d'autres pays de la famille D (Mauritanie 16 %, Madagascar 20 %…). Il n'y a pas de TVA à l'importation en Libye dans les textes consultés ; en inventer une surfacturerait chaque calcul."
+  }
 }
