@@ -141,7 +141,10 @@ def build_senegal_taxes(dd_rate: float, tva_rate: float) -> Tuple[dict, list]:
             }
         )
 
-    if tva_rate > 0:
+    # Un taux publie a 0 % est une EXONERATION (medicaments, produits
+    # alimentaires, biens d'equipement selon les pays) : c'est une donnee,
+    # pas une absence. Seul `None` signale une TVA non collectee.
+    if tva_rate is not None:
         taxes["TVA"] = tva_rate
         taxes_detail.append(
             {
