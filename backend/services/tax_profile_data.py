@@ -86,6 +86,17 @@ ASSIETTE_TVA_ETABLIE = {
         "TGO",
     )
 }
+ASSIETTE_TVA_ETABLIE["MRT"] = {
+    "texte": (
+        "Mauritanie, Code Général des Impôts, Livre II Titre I (TVA), chapitre 3 : "
+        "« La base imposable pour les importations est constituée par la valeur "
+        "définie par la législation douanière, y compris les taxes et prélèvements "
+        "de toute nature perçus lors du franchissement du cordon douanier, à "
+        "l'exception de la taxe sur la valeur ajoutée elle-même » — doctrine DGI "
+        "(impots.gov.mr, Livre2-Titre1-TVA-20191010.pdf), texte lu et archivé"
+    ),
+    "fiche": "MRT_assiette_TVA_2026-09-17.json",
+}
 ASSIETTE_TVA_ETABLIE["KEN"] = {
     "texte": (
         "Kenya, Value Added Tax Act No. 35 of 2013, section 14 (1) (c) : « the "
