@@ -226,6 +226,10 @@ ASSIETTES_SOURCE = {
     # ET ACCISE. Le profil générique posait « CIF+DD », qui omet l'accise
     # et sous-facturait la TVA sur les positions qui en portent une.
     "CIF+DD+EXC": ("CIF+DD+EXC", None),
+    # Mozambique — Lei n.º 11/2016, art. 15 : l'ICE s'assoit sur le valor
+    # aduaneiro augmenté des droits (§6), et l'IVA sur le valor aduaneiro
+    # augmenté des droits, de l'ICE et de la sobretaxa (§7).
+    "CIF+DD+ICE+SOBRETX": ("CIF+DD+ICE+SOBRETX", None),
     "CIF + DD + EXC": ("CIF+DD+EXC", None),
     "CIF+DUTY": ("CIF+DD", None),
     "CIF+DUTY+FEES": ("CIF+TOUS_SAUF_TVA", None),
@@ -793,6 +797,63 @@ def sha256(chemin: str) -> str:
     return h.hexdigest()
 
 
+#: Pays dont le tarif ne publie sa désignation que dans une langue, et pour
+#: lesquels l'utilisateur a demandé que le socle serve aussi un libellé français
+#: et anglais. LISTE NOMMÉE, pays par pays : rien n'est enrichi sans y figurer.
+#: Le libellé NATIONAL n'est jamais remplacé — il reste le verbatim qui fait foi.
+PAYS_LIBELLES_TRADUITS = {
+    "MOZ": "pt",   # Pauta Aduaneira, portugais
+    "EGY": "ar",   # tarif douanier égyptien, arabe — et son libellé est VIDE
+    "AGO": "pt",   # Pauta Aduaneira, portugais
+}
+
+LIBELLES_SH6_PATH = os.path.join(ETL_DIR, "hs6_designations_fr_en.json")
+
+
+def charger_libelles_sh6():
+    """Les libellés SH6 en français et en anglais, EMPRUNTÉS à d'autres tarifs
+    nationaux par scripts/construire_libelles_sh6.py — jamais traduits ici."""
+    try:
+        with open(LIBELLES_SH6_PATH, encoding="utf-8") as f:
+            charge = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {}
+    table = charge.get("libelles")
+    return table if isinstance(table, dict) else {}
+
+
+def traduire_designation(designation, hs6, libelles, langue_origine):
+    """Ajouter `fr` et `en` à une désignation, SANS toucher au libellé national.
+
+    Les libellés empruntés décrivent le PARENT SH6, pas la subdivision
+    nationale : la désignation le déclare, pour que personne ne les prenne
+    pour le libellé de la ligne servie.
+    """
+    entree = libelles.get(hs6) or {}
+    if not entree:
+        return designation
+    if isinstance(designation, str):
+        designation = {langue_origine: designation, "verbatim": designation}
+    elif isinstance(designation, dict):
+        designation = dict(designation)
+    else:
+        return designation
+    ajoutes = []
+    for langue in ("fr", "en"):
+        if not entree.get(langue):
+            continue
+        # Ne JAMAIS écraser un libellé que le tarif national publie lui-même.
+        if str(designation.get(langue) or "").strip():
+            continue
+        designation[langue] = entree[langue]
+        designation[f"{langue}_source"] = entree.get(f"{langue}_source")
+        ajoutes.append(langue)
+    if ajoutes:
+        designation["langues_empruntees"] = ajoutes
+        designation["niveau_libelle_emprunte"] = "SH6"
+    return designation
+
+
 def sources_disponibles():
     """Le crawl d'abord ; le fichier ETL seulement là où aucun crawl n'existe."""
     sources = {}
@@ -808,6 +869,8 @@ def sources_disponibles():
 
 
 def construire_pays(iso, chemin, origine, assiettes_pays):
+    langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
+    libelles_sh6 = charger_libelles_sh6() if langue_origine else None
     with open(chemin, encoding="utf-8") as f:
         donnees = json.load(f)
 
@@ -928,6 +991,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         retenus.sort(key=lambda d: ORDRE_FAMILLES.index(d.get("famille", "autre")))
         if not designation:
             compteurs["sans_designation"] += 1
+        if libelles_sh6 is not None:
+            designation = traduire_designation(
+                designation, code[:6], libelles_sh6, langue_origine
+            )
         positions[code] = {
             "designation": designation,
             "hs6": code[:6],

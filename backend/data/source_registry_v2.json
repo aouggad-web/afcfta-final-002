@@ -426,27 +426,28 @@
     },
     "MOZ": {
       "organism": "Direcção Geral das Alfândegas — JUE (Janela Única Eletrónica)",
-      "version": "2026.1",
+      "version": "2026.2",
       "artifact_path": "backend/data/crawled/MOZ_tariffs.json",
       "artifact_url": null,
       "source_type": "official",
       "url": "https://jue.mcnet.co.mz/mcnet/portal/homepage",
-      "retrieved_at": "2026-09-09",
-      "edition": "API JUE — données en ligne",
+      "retrieved_at": "2026-09-18",
+      "edition": "Pauta Aduaneira — extrait du système douanier national (colonnes DIREITOS_GERAL, ICE_AD_VAL, ICE_VAL_MIN, SOBRETX, TXSOBVAL, IVA)",
       "application_period": "current (dates de validité par taxe dans l'API)",
       "hs_version": "HS 2022",
       "code_digits": 8,
-      "positions_count": 421,
-      "sha256": "a34999e367fe2faaf0fff0bf9619fbf4310245aa45006e3e43076a3692f44c7f",
+      "positions_count": 5822,
+      "sha256": "12d0e01602ad8bdd22a0cdde5b1b4d71194fe33b4095ebee531f9e7303d35a2f",
       "reuse_conditions": "Données publiques de la douane mozambicaine via JUE. Utilisation informative.",
-      "legal_authority": "Customs regulations of Mozambique",
+      "legal_authority": "Lei n.º 11/2016 de 30 de Dezembro (Pauta Aduaneira, Instruções Preliminares) ; Código do IVA, Lei n.º 32/2007",
       "validation_status": "verified",
       "taxes": [
         "DD (DIREITOS)",
         "TVA",
         "DA (excise)"
       ],
-      "note": "Couverture partielle: l'API ne retourne que les positions avec taux publiés. Les positions sans taux restent en WITS."
+      "note": "Couverture partielle: l'API ne retourne que les positions avec taux publiés. Les positions sans taux restent en WITS.",
+      "notes": "5 822 positions à huit chiffres avec leur libellé portugais — remplace l'extrait SH6 WITS/UNCTAD-TRAINS qui servait 5 388 positions sans aucune désignation. Cascade établie par la Lei n.º 11/2016 art. 4 et art. 15 : DD et sobretaxa sur CIF, ICE sur CIF+DD, IVA sur CIF+DD+ICE+SOBRETX. Une colonne d'IVA vide est une EXONÉRATION (Código do IVA art. 9). RÉSERVE DE PROVENANCE : export de base de données, non un document publié — contrôlé contre le barème de la Lei n.º 11/2016, 1 131 concordances sur 1 142 positions communes. L'extrait n'a PAS les colonnes préférentielles SADC et UE que le barème publié porte. Voir MOZ_cascade_et_exonerations_IVA_2026-09-18.json."
     },
     "SYC": {
       "organism": "Seychelles Revenue Commission (SRC) — Customs Division",

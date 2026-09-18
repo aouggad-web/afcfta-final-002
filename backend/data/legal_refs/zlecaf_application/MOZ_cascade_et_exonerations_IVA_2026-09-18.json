@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "objet": "Mozambique — la cascade des quatre prélèvements à l'importation, établie article par article par la loi qui approuve la Pauta Aduaneira ; et le sens d'une colonne d'IVA laissée vide, établi par le Código do IVA.",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — Lei n.º 11/2016 de 30 de Dezembro (Boletim da República, I Série n.º 156, 13.º Suplemento), qui approuve le texte de la Pauta Aduaneira et ses Instruções Preliminares ; et Código do IVA (Lei n.º 32/2007 de 31 de Dezembro), version consolidée 2025. Extraits archivés, empreintes consignées. Le barème de la loi a en outre servi de contrôle indépendant de l'extrait collecté.",
+  "la_question_posee": "L'extrait du tarif mozambicain porte six colonnes de prélèvements — DIREITOS_GERAL, ICE_AD_VAL, ICE_VAL_MIN, SOBRETX, TXSOBVAL, IVA — et aucune indication de ce sur quoi chacune se liquide. Sans cela le socle ne peut rien servir, ou sert un montant vraisemblable et faux. Deuxième question, distincte : 452 positions ont une colonne d'IVA VIDE. Est-ce une exonération, ou une lacune de collecte ?",
+  "regle": {
+    "valeur_en_douane": {
+      "article": "Lei n.º 11/2016, Instruções Preliminares, artigo 4 (Valor aduaneiro e sua determinação)",
+      "verbatim": "O valor aduaneiro adoptado na República de Moçambique é o definido no artigo VII do Acordo Geral sobre Tarifas e Comércio de 1994 (GATT).",
+      "portee": "Le Mozambique adopte la valeur en douane de l'Accord de l'OMC sur l'évaluation — la valeur transactionnelle, fret et assurance inclus jusqu'au lieu d'importation. C'est le CIF, et c'est la base de toute la cascade.",
+      "texte_archive": "sources/MOZ_lei_11_2016_art4_art15_cascade.texte-extrait.txt",
+      "sha256": "3fa38890469e857b850ff9162968ddacb0e878b6cc32412c43281054c885250c",
+      "sha256_pdf_origine": "e949a119982afc328543d448526a53200796ddd7372ff8249c550f352a7e6cf0",
+      "source_url": "https://www.lerenovaveis.org/contents/lerpublication/lei-11-2016-30_12_pauta-aduaneira.pdf"
+    },
+    "cascade_des_quatre_prelevements": {
+      "article": "Lei n.º 11/2016, Instruções Preliminares, artigo 15 (Contagem das imposições na importação)",
+      "verbatim_droits": "As taxas ad valorem incidem sobre o valor aduaneiro expresso em moeda nacional.",
+      "verbatim_sobretaxa": "A sobretaxa resulta da aplicação da taxa relativa à sobretaxa, que incide sobre o valor aduaneiro.",
+      "verbatim_accise": "O Imposto sobre Consumos Específicos é calculado mediante a aplicação da taxa prevista no respectivo Código e incide sobre o valor aduaneiro adicionado do total dos direitos efectivamente pagos.",
+      "verbatim_iva": "incide sobre o valor aduaneiro adicionado do total dos direitos aduaneiros e do Imposto sobre Consumos Específicos efectivamente pagos e da sobretaxa, se for o caso",
+      "portee": "Quatre assiettes, énoncées l'une après l'autre : DD sur CIF (§2), SOBRETX sur CIF (§5), ICE sur CIF+DD (§6), IVA sur CIF+DD+ICE+SOBRETX (§7). Vérifié au moteur sur la position 21069040 pour une valeur de 10 000 : DD 20 % → 2 000, puis ICE 15 % sur 12 000 → 1 800, puis IVA 16 % sur 13 800 → 2 208, total 16 008.",
+      "assiettes_retenues": {
+        "DD": "CIF",
+        "SOBRETX": "CIF",
+        "ICE": "CIF+DD",
+        "IVA": "CIF+DD+ICE+SOBRETX"
+      },
+      "reserve_extraction": "Le PDF de la loi encode une partie de son texte dans une fonte dont l'extraction rend des glyphes illisibles. Les citations ci-dessus sont celles qui sortent EN CLAIR ; aucun passage n'a été reconstruit à partir du mojibake.",
+      "texte_archive": "sources/MOZ_lei_11_2016_art4_art15_cascade.texte-extrait.txt",
+      "sha256": "3fa38890469e857b850ff9162968ddacb0e878b6cc32412c43281054c885250c"
+    },
+    "colonne_iva_vide_vaut_exoneration": {
+      "article": "Código do Imposto sobre o Valor Acrescentado, Lei n.º 32/2007 de 31 de Dezembro, artigo 9 (Transmissões de bens e prestações de serviços isentas)",
+      "verbatim_moustiquaires": "as transmissões de redes mosquiteiras",
+      "verbatim_medicaments": "as transmissões de medicamentos, bem como especialidades farmacêuticas e outros produtos farmacêuticos destinados exclusivamente a fins terapêuticos e profilácticos",
+      "verbatim_renvoi_au_tarif": "constantes da Pauta Aduaneira e discriminadas no Anexo III, que é parte integrante do presente Código",
+      "portee": "Le Code définit ses exonérations PAR RENVOI AU TARIF, et les annexe. Une colonne d'IVA laissée vide au tarif est donc l'expression de l'exonération, non une donnée manquante. Le relevé le confirme position par position : sur 452 cellules vides, le chapitre 30 (produits pharmaceutiques) en compte 46 sur 46 et le chapitre 31 (engrais) 24 sur 24 ; s'y ajoutent toutes les semences « PARA SEMENTEIRA », les « REPRODUTORES DE RAÇA PURA », et nommément vaccins, insuline, antibiotiques, vitamines, préservatifs, moustiquaires, dictionnaires, charrues et prothèses. Le taux servi est 0, avec le motif et sa source portés sur la ligne.",
+      "texte_archive": "sources/MOZ_codigo_iva_art9_isencoes.texte-extrait.txt",
+      "sha256": "57990c4e436b1e3db379d9ff401817e80b100be5fb8d714bb18636acfb120f6e",
+      "sha256_pdf_origine": "6d1f2a3b553757d9e2ac6185cf17be5bd2e286787b9e6ea5627dc220cfe90f86",
+      "source_url": "https://mooremz.co.mz/wp-content/uploads/2025/04/Lei-n.o-32_2007-de-31-de-Dezembro-Codigo-do-Imposto-Sobre-o-Valor-Acrescentado_alteracoes-2025.pdf"
+    }
+  },
+  "controle_de_l_extrait_contre_le_bareme_publie": {
+    "pourquoi": "Le fichier de taux est un EXPORT DE BASE DE DONNÉES du système douanier mozambicain — sa dernière ligne porte la requête SQL — déposé par l'utilisateur. Ce n'est pas un document publié par l'autorité, et sa provenance est donc plus faible que celle d'un tarif officiel. Il fallait le contrôler contre un barème publié.",
+    "resultat": "La Lei n.º 11/2016 porte elle-même un extrait du barème (1 159 positions lisibles). Sur les 1 142 positions communes à la loi et à l'extrait, 1 131 concordent sur le droit de douane.",
+    "les_onze_ecarts": "Ils portent sur les céréales, le malt et le houblon (7,5 % dans la loi de 2016, 2,5 % dans l'extrait), les produits laitiers (0 → 20 %) et un produit pétrolier (0 → 7,5 %). Ce sont des changements de politique tarifaire entre 2016 et l'extrait, non des erreurs de lecture : l'extrait est le plus récent et c'est lui qui est retenu.",
+    "controle_ecarte": "MOZ.pdf, également déposé, N'EST PAS une source indépendante : son en-tête reproduit les noms de colonnes de l'extrait (UNIDADE CAPITULO SUB CAPITULO PPAUTAL DIREITOS_GERAL…). C'est l'impression du même export. Le croisement avec lui (4 125 concordances sur 4 127) ne valide que la transcription, pas la provenance, et il n'est donc pas invoqué comme preuve."
+  },
+  "ce_que_cela_ne_tranche_pas": {
+    "les_colonnes_preferentielles_manquantes": "Le barème PUBLIÉ porte deux colonnes préférentielles — SADC et UE — que l'extrait collecté ne contient pas. Aucune préférence n'est donc servie pour le Mozambique. C'est une lacune de collecte nommée, pas l'absence d'un régime : les deux accords existent.",
+    "la_colonne_TXSOBVAL": "54 positions portent une valeur dans une colonne nommée TXSOBVAL. La loi nomme et assoit la « sobretaxa » (colonne SOBRETX, art. 15 §5) mais aucun texte consulté n'explique celle-ci. Elle est portée SANS assiette — donc non liquidable — plutôt que rattachée à la sobretaxa par ressemblance de nom.",
+    "la_valeur_minimale_d_accise": "80 positions portent un « valor mínimo » par unité (« 0,0099 MZN Per 1 KG », « 475 MZN Per 1 L »). C'est un plancher d'assiette, pas un pourcentage, et le moteur ne sait pas le liquider. Porté avec son libellé, sans taux.",
+    "l_anexo_III_du_code_du_IVA": "Le Code renvoie ses listes d'exonération à son Anexo III. Cet annexe n'a pas été extrait : la lecture « colonne vide = exonération » repose sur l'article 9 lui-même et sur la concordance du relevé, pas sur la liste nominative."
+  },
+  "remaining_work": [
+    "Obtenir l'extrait complet du tarif AVEC ses colonnes préférentielles SADC et UE, que le barème publié porte et que l'export ne contient pas.",
+    "Extraire l'Anexo III du Código do IVA pour disposer de la liste nominative des positions exonérées.",
+    "Identifier la colonne TXSOBVAL : 54 positions non liquidables en dépendent.",
+    "Établir comment le « valor mínimo » d'accise s'articule avec le taux ad valorem — plancher, alternative, ou cumul."
+  ]
+}

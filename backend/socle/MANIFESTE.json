@@ -1,13 +1,13 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-18T18:23:44.815225+00:00",
+  "construit_le": "2026-09-18T19:55:07.778552+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/AGO_tariffs.json",
       "source_sha256": "7c1bb39f2547d72f05b36332e64f805e634a64557dfa4489b08e9ae49846c9f3",
-      "socle_sha256": "9ff398f7df055735da83c1cd06637dee5265f0f0cdfa563f913127ffa46ef122",
+      "socle_sha256": "a7d9a3ab9a2f0db5b0eb296592a05f1ede06153a7dc5160d466263efabc41eb7",
       "collecte": "2026-07-05T09:59:53.562489+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -494,7 +494,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/EGY_tariffs.json",
       "source_sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94",
-      "socle_sha256": "bef3ced656edc217fbd593e7a7bbe85d90b170c5f05fe325c341225f454fc88d",
+      "socle_sha256": "9560b63d8c8bde7956e50e70539430eedcf33945b49fb8d55899f7adc9e10d47",
       "collecte": "2026-08-29T21:57:37.493425+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -1050,34 +1050,35 @@
       "fichier": "MOZ.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MOZ_tariffs.json",
-      "source_sha256": "a34999e367fe2faaf0fff0bf9619fbf4310245aa45006e3e43076a3692f44c7f",
-      "socle_sha256": "f8d96f7b580c029c8f0e9e264544063adb08873abe2a0a232f5e47a9db913576",
-      "collecte": "2026-07-05T10:04:03.624574+00:00",
-      "etat": "COMPLET",
+      "source_sha256": "12d0e01602ad8bdd22a0cdde5b1b4d71194fe33b4095ebee531f9e7303d35a2f",
+      "socle_sha256": "50a43b4e276d043c3fcd31dfd319e36a58420885cb77a3ee5dfd0a91f0daa8e6",
+      "collecte": "2026-09-18",
+      "etat": "PARTIEL",
       "familles": [
+        "autre",
         "droit",
         "tva"
       ],
       "compteurs": {
-        "positions": 5388,
-        "droits": 10776,
-        "droits_liquidables": 10776,
-        "positions_liquidables": 5388,
+        "positions": 5822,
+        "droits": 11977,
+        "droits_liquidables": 11843,
+        "positions_liquidables": 5688,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "taux_indisponibles": 0,
-        "assiettes_source": 0,
-        "assiettes_fichier": 5388,
-        "assiettes_table": 5388,
-        "assiettes_indisponibles": 0,
-        "sans_designation": 5388,
+        "assiettes_source": 11843,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 134,
+        "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
         "droits_absents_completes": 0,
         "droits_lus_en_designation": 0,
-        "classification_estimee": 26
+        "classification_estimee": 0
       }
     },
     "MRT": {
@@ -1894,6 +1895,7 @@
       "LBY",
       "LSO",
       "MAR",
+      "MOZ",
       "MUS",
       "NAM",
       "NGA",
@@ -1907,8 +1909,8 @@
       "UGA",
       "ZAF"
     ],
-    "positions": 361347,
-    "droits": 1104902,
-    "droits_liquidables": 1042685
+    "positions": 361781,
+    "droits": 1106103,
+    "droits_liquidables": 1043752
   }
 }
