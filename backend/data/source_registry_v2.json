@@ -468,29 +468,29 @@
       "note": "Schedule 1 (accises) uniquement. Le tarif douanier complet (General Duty + VAT) reste en WITS."
     },
     "MRT": {
-      "organism": "Direction Générale des Douanes (douanes.mr) — source primaire",
-      "version": "2021.1",
+      "organism": "Douane mauritanienne (douanes.mr) — source primaire",
+      "version": "2021",
       "artifact_path": "backend/data/crawled/MRT_tariffs.json",
-      "artifact_url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
+      "artifact_url": null,
       "source_type": "primary",
       "url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
       "retrieved_at": "2026-09-18",
-      "edition": "Tarif des douanes de la République islamique de Mauritanie, édition 2021",
-      "application_period": "2021 — modifications ultérieures non collectées",
+      "edition": "Tarif des Douanes 2021 (douanes.mr, 396 pages, texte extractible)",
+      "application_period": "2020-01-01 to next amendment (obsolète?)",
       "hs_version": "HS 2017",
       "code_digits": 10,
       "positions_count": 6129,
       "sha256": "eaee2c0a904b08f73c7576373c7064bf39fa0e7148699989c716306c1a1e6bf4",
-      "reuse_conditions": "Source primaire publiée par la douane mauritanienne. Empreinte du PDF d'origine : 3585fbe23bf6b7be3c4e9eb963fdb31bf0336b059bf0019e4b471f178829c182, recalculée le 2026-09-18 et identique à celle du rapport de collecte.",
+      "reuse_conditions": "Source primaire (PDF officiel douanes.mr, texte extractible). Parseur scripts/parse_tarif_mrt_2021.py + suite de vérification intégrée (V1-V6) + croisement WITS 99,2 %.",
       "legal_authority": "Code des Douanes Mauritanie",
-      "validation_status": "verified",
+      "validation_status": "verified_primary",
       "taxes": [
         "DD",
         "RS",
         "PC",
         "TVA"
       ],
-      "note": "Remplace le tarif 2020 d'origine secondaire (transitaire) précédemment référencé ici. Le tarif publie quatre colonnes — US (unité supplémentaire), DD, RS, PC — et ne définit aucun de ces sigles : voir la fiche MRT_colonnes_tarif_2026-09-18.json. RS = redevance statistique 1 % (OMC WT/TPR/S/371 § 3.47). L'ASSIETTE de la RS et du PC n'est établie par aucun texte consulté, et le rattachement du PC au prélèvement communautaire CEDEAO ne l'est pas non plus. PCS, PSC et IMF, cités par l'entrée précédente, n'ont aucune colonne dans ce tarif."
+      "note": "Nomenclature nationale à 10 chiffres validée (6129 sous-positions) — remplace la source secondaire Soa Transit 2020. TVA 16 % (CGI Livre II Titre I, fiche MRT_assiette_TVA_2026-09-17). Formalités : cadre général (Code art. 33-36, 111-117, 157) — fiche MRT_formalites_reglementation_2026-09-18."
     },
     "KEN": {
       "organism": "Kenya Revenue Authority (KRA) — EAC CET 2022",
