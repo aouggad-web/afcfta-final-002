@@ -36,7 +36,7 @@ from pydantic import BaseModel, Field
 
 from services import socle
 from services.calcul import calculer
-from services.preference import taux_preferentiels
+from services.preference import simulations_regionales, taux_preferentiels
 from services.regulatory_fee_service import build_regulatory_blocks
 
 logger = logging.getLogger(__name__)
@@ -110,6 +110,15 @@ def calcul(demande: DemandeCalcul):
     )
     resultat["provenance"] = provenance
     resultat["complements_nationaux"] = complements
+    # Régimes régionaux que le tarif publie pour ce couloir, sans les
+    # appliquer : le total servi reste celui du régime retenu ci-dessus.
+    # Taire une colonne à 0 % que le tarif de destination publie n'est pas
+    # plus neutre que d'en inventer une — voir simulations_regionales.
+    resultat["simulations_regionales"] = (
+        simulations_regionales(position, demande.destination, demande.origine)
+        if demande.origine
+        else []
+    )
     resultat.update(_regimes(preference))
     resultat.update(_bloc_reglementaire(demande.destination, demande.origine, demande.valeur_cif))
     return resultat
