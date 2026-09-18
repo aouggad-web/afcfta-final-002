@@ -114,7 +114,7 @@ def extract_positions(filepath: str) -> List[Dict]:
                         "base": "CIF",
                         "source": "zra.org.zm",
                     })
-                if excise_rate is not None and excise_rate > 0:
+                if excise_rate is not None:
                     taxes.append({
                         "code": "DA",
                         "name": "Excise Duty",

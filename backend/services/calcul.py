@@ -242,6 +242,7 @@ def _liquider(
     taux_preferentiels: Optional[Dict[str, float]],
     facteur_devise_specifique: Optional[float] = 1.0,
     couverture: Optional[Dict[str, Any]] = None,
+    devise_cif: Optional[str] = None,
 ) -> Dict[str, Any]:
     lignes: List[Dict[str, Any]] = []
     calcules: List[Dict[str, Any]] = []
@@ -310,7 +311,23 @@ def _liquider(
         specifique = droit.get("specifique")
         manque_devise = False
         regle_composee_absente = False
-        if droit.get("compose") and taux is not None and specifique is not None:
+        compose_departage = None
+        if (
+            droit.get("compose")
+            and droit.get("regle_composee")
+            and taux is not None
+            and specifique is not None
+        ):
+            # Droit composé dont la règle EST énoncée. Le tarif extérieur commun
+            # de l'EAC écrit « 75% or $345/MT whichever is higher » : il n'y a
+            # rien à deviner, seulement à appliquer. On retient donc la plus
+            # élevée — ou la moins élevée — des deux composantes, et la ligne
+            # dira laquelle a mordu.
+            #
+            # À ne pas confondre avec « 40% or 240c/kg » (SARS), qui ne dit PAS
+            # laquelle s'applique : celui-là reste refusé, juste en dessous.
+            compose_departage = droit["regle_composee"]
+        elif droit.get("compose") and taux is not None and specifique is not None:
             # Droit composé : les deux composantes sont publiées, la règle qui
             # départage ne l'est pas. On refuse de liquider plutôt que de
             # retenir celle qui arrange — c'est la même règle que partout
@@ -391,6 +408,60 @@ def _liquider(
             montant = assiette * taux
         else:
             montant = assiette * taux / 100.0
+
+        # Départage d'un droit composé dont la règle est écrite. Les deux
+        # composantes sont calculées, et la ligne nomme celle qui l'emporte :
+        # l'opérateur doit pouvoir constater POURQUOI il paie ce montant-là.
+        if compose_departage:
+            unitaire = _montant_unitaire(specifique)
+            if quantite is None or unitaire is None:
+                ligne["statut"] = MANQUE_QUANTITE
+                ligne["montant"] = None
+                ligne["expression_brute"] = droit.get("expression_brute")
+                if isinstance(specifique, dict) and specifique.get("unite_quantite"):
+                    ligne["unite_quantite"] = specifique["unite_quantite"]
+                manques.append({"code": code, "motif": MANQUE_QUANTITE})
+                echecs.append({"code": code, "famille": ligne["famille"]})
+                lignes.append(ligne)
+                continue
+            # La composante spécifique est libellée dans SA devise — « $345/MT ».
+            # La convertir exige un taux de change dès que la valeur en douane
+            # n'est pas dans cette devise. Sans lui, les deux composantes ne sont
+            # pas comparables, et comparer des montants de devises différentes
+            # rendrait un droit faux sans le dire.
+            devise_specifique = (
+                specifique.get("unite_monetaire") if isinstance(specifique, dict) else None
+            )
+            facteur = 1.0
+            if devise_specifique and devise_cif and devise_specifique != devise_cif:
+                if taux_de_change is None:
+                    ligne["statut"] = MANQUE_CHANGE
+                    ligne["montant"] = None
+                    ligne["expression_brute"] = droit.get("expression_brute")
+                    ligne["devise_specifique"] = devise_specifique
+                    manques.append({"code": code, "motif": MANQUE_CHANGE})
+                    echecs.append({"code": code, "famille": ligne["famille"]})
+                    lignes.append(ligne)
+                    continue
+                facteur = taux_de_change
+            montant_specifique = quantite * unitaire * facteur
+            retenu = (
+                max(montant, montant_specifique)
+                if compose_departage == "LE_PLUS_ELEVE"
+                else min(montant, montant_specifique)
+            )
+            ligne["expression_brute"] = droit.get("expression_brute")
+            ligne["composantes"] = {
+                "ad_valorem_pct": taux,
+                "ad_valorem_montant": round(montant, 4),
+                "specifique": (
+                    specifique.get("brut") if isinstance(specifique, dict) else specifique
+                ),
+                "specifique_montant": round(montant_specifique, 4),
+            }
+            ligne["regle_composee"] = compose_departage
+            ligne["composante_retenue"] = "ad_valorem" if retenu == montant else "specifique"
+            montant = retenu
 
         # « 450c/kg with a maximum of 96% » : le droit est le spécifique, borné
         # à un pourcentage de la valeur en douane. Contrairement à « 40% or
@@ -478,7 +549,14 @@ def calculer(
         },
         "valeur_cif": valeur_cif,
         "npf": _liquider(
-            droits, valeur_cif, quantite, taux_de_change, None, facteur_devise, couverture
+            droits,
+            valeur_cif,
+            quantite,
+            taux_de_change,
+            None,
+            facteur_devise,
+            couverture,
+            devise_cif,
         ),
     }
     if taux_preferentiels:
@@ -490,6 +568,7 @@ def calculer(
             taux_preferentiels,
             facteur_devise,
             couverture,
+            devise_cif,
         )
         resultat["preference"]["prelevements_remises"] = sorted(taux_preferentiels)
         # Une économie n'est comparable que si les deux régimes sont

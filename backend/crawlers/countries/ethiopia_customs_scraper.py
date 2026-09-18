@@ -165,7 +165,19 @@ class EthiopiaCustomsScraper:
             taxes_detail = []
             taxes_dict = {}
             for i, col_name in enumerate(TAX_COLUMNS):
-                if tax_values[i] is not None and tax_values[i] > 0:
+                # Un taux PUBLIÉ À ZÉRO est une donnée, pas un vide. Écarter les
+                # valeurs « non strictement positives » — ce que faisait
+                # `tax_values[i] > 0` — supprimait chaque 0 % du portail, et la
+                # position se présentait ensuite comme n'ayant AUCUN droit de
+                # douane. Mesuré sur la collecte du dépôt : 1 368 positions sur
+                # 6 296 avaient ainsi perdu leur droit, dont des chapitres
+                # entiers de machines, de chimie et de véhicules.
+                #
+                # Le test distingue désormais les deux cas que l'ancien
+                # confondait : un zéro publié est conservé ; une cellule vide
+                # reste `None` et sera déclarée indisponible en aval, jamais
+                # tue.
+                if tax_values[i] is not None:
                     taxes_detail.append(
                         {
                             "tax_code": col_name,

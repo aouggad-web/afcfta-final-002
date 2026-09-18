@@ -123,28 +123,28 @@ class GhanaUnipassScraper:
             taxes_detail = []
             total_taxes_pct = 0.0
 
-            if import_duty is not None and import_duty > 0:
+            if import_duty is not None:
                 taxes_detail.append(
                     {"tax_name": "Import Duty (ECOWAS CET)", "rate": import_duty, "base": "CIF"}
                 )
                 total_taxes_pct += import_duty
 
-            if import_vat is not None and import_vat > 0:
+            if import_vat is not None:
                 taxes_detail.append(
                     {"tax_name": "Value Added Tax (VAT)", "rate": import_vat, "base": "CIF+Duty"}
                 )
                 total_taxes_pct += import_vat
 
-            if import_excise is not None and import_excise > 0:
+            if import_excise is not None:
                 taxes_detail.append(
                     {"tax_name": "Import Excise Duty", "rate": import_excise, "base": "CIF+Duty"}
                 )
                 total_taxes_pct += import_excise
 
-            if export_duty is not None and export_duty > 0:
+            if export_duty is not None:
                 taxes_detail.append({"tax_name": "Export Duty", "rate": export_duty, "base": "FOB"})
 
-            if nhil_rate is not None and nhil_rate > 0:
+            if nhil_rate is not None:
                 taxes_detail.append(
                     {
                         "tax_name": "National Health Insurance Levy (NHIL)",

@@ -1,13 +1,13 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-18T15:15:12.198115+00:00",
+  "construit_le": "2026-09-18T16:03:12.060953+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/AGO_tariffs.json",
       "source_sha256": "7c1bb39f2547d72f05b36332e64f805e634a64557dfa4489b08e9ae49846c9f3",
-      "socle_sha256": "72f7748aeb95293a39171d0cb73a7e55b78699c6be66f6cc7371c0a36cb50cf3",
+      "socle_sha256": "9ff398f7df055735da83c1cd06637dee5265f0f0cdfa563f913127ffa46ef122",
       "collecte": "2026-07-05T09:59:53.562489+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -30,6 +30,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 39
       }
     },
@@ -38,7 +41,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BDI_tariffs.json",
       "source_sha256": "e0a13e7e1414e152e6038dce80bce940fdc0959ffd890d2664c9b0cef30be275",
-      "socle_sha256": "6d0263f6754a007b2f050c9b9acfa2f35d63639228ba3acd0062a14ec7c48421",
+      "socle_sha256": "1465350406d1b4a06f8e3120a6a332a567b4a1c3e7f928c5e951cb4236ffc53a",
       "collecte": "2026-02-18T10:54:36.463488",
       "etat": "PARTIEL",
       "familles": [
@@ -47,20 +50,23 @@
       ],
       "compteurs": {
         "positions": 5984,
-        "droits": 11925,
+        "droits": 11968,
         "droits_liquidables": 11877,
         "positions_liquidables": 5936,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 48,
+        "taux_indisponibles": 52,
         "assiettes_source": 11925,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
-        "droits_composes": 0,
+        "droits_composes": 39,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 4,
+        "droits_lus_en_designation": 39,
         "classification_estimee": 0
       }
     },
@@ -69,7 +75,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BEN_tariffs.json",
       "source_sha256": "a62e860ec9b2e5352e26be50a7347f504f64bc697667abc8482ccbf6363f1e98",
-      "socle_sha256": "8e9cf496083819f2c654afe1cd986458d66e7f1ba722e9a9b9c01d24f790e430",
+      "socle_sha256": "ed7dbea2df5daddf112859b48372bea00c6a2e5218f6a7d6031cbb2fa0452c1a",
       "collecte": "2026-02-19T22:39:44.817942",
       "etat": "COMPLET",
       "familles": [
@@ -93,6 +99,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -101,7 +110,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BFA_tariffs.json",
       "source_sha256": "83c4222c2d9cedc3453e9d8aac6ff5b3c50e98f54a6c589a6e9aed34fcd0b667",
-      "socle_sha256": "c2d378b095eb1bbd3fa0740849c01de3d3131547f130ae183df1c443db9f50f1",
+      "socle_sha256": "30636d44ab8c8fd88ad9f66c9fd5e771ca78b7218bcf96cb96efa5e772f47843",
       "collecte": "2026-02-19T22:39:46.076060",
       "etat": "COMPLET",
       "familles": [
@@ -125,6 +134,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -133,7 +145,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/BWA_tariffs.json",
       "source_sha256": "cf84b1a644cc2b5abc84e02b376d89810f05d1cdcb53dfb190f7653d475476da",
-      "socle_sha256": "9ecaa2c6eb2a1a14b44cd4913f644f0806fe528b0f0566de75520f87c2f3773e",
+      "socle_sha256": "974b18ab0819f60aacbd9d7e0dc83a6863fb2eb5d667d62eecb1c34a9f5a0618",
       "collecte": "2026-08-29T13:26:22.991310",
       "etat": "PARTIEL",
       "familles": [
@@ -155,6 +167,9 @@
         "droits_specifiques": 227,
         "droits_composes": 94,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -163,7 +178,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CAF_tariffs.json",
       "source_sha256": "021166306006d65273dd676bf0552e10bc5af83869b2d2795f03df3718ae25db",
-      "socle_sha256": "2cfe5b8b55aef481114292ea6a583dbc12886a17db1ff295237db3accb558a7c",
+      "socle_sha256": "a15d59c7d01783e8af1bb437771156db500bc8e7cd629a28aad4dd1cc9d01381",
       "collecte": "2026-02-19T22:39:54.085446",
       "etat": "COMPLET",
       "familles": [
@@ -188,6 +203,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -196,7 +214,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CIV_tariffs.json",
       "source_sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221",
-      "socle_sha256": "7f4e3c689fb4eeba13c67d39967fe444f0099a9054a6b733b917f31d94a0a0a5",
+      "socle_sha256": "ecd953b9e82155ffe699c17389739991dd5c92de91d4f5a8d368296449bb217b",
       "collecte": "2026-02-19T22:01:52.572505",
       "etat": "PARTIEL",
       "familles": [
@@ -222,6 +240,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -230,7 +251,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CMR_tariffs.json",
       "source_sha256": "8cae7c268dc99f9191608979ca716b3e6afb114af0e14650e3560eb0a2595584",
-      "socle_sha256": "55174bc2230270be08558e1b7e82a2204162439bf5e8264c6acabefacbeb3870",
+      "socle_sha256": "46ed8a5697e733437e972cfc00d80de45ea6b0e84f4cc8df1cf45a8fe264ad70",
       "collecte": "2026-02-19T22:21:31.397885",
       "etat": "COMPLET",
       "familles": [
@@ -255,6 +276,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -263,7 +287,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COD_tariffs.json",
       "source_sha256": "5a2d1cfceefd2799cdd04d8776f5a5f0799d36b8419656cec2751b49479f667e",
-      "socle_sha256": "3ee15cf4347feafc731f8dde79a1b5331f7f548486cc882d731d9e1a74c45482",
+      "socle_sha256": "c81818ec15b58aebbbdc37491ae6032d00f4393a707a983fd4d6fd6b161b789c",
       "collecte": "2026-02-18T10:54:37.532224",
       "etat": "PARTIEL",
       "familles": [
@@ -272,20 +296,23 @@
       ],
       "compteurs": {
         "positions": 5984,
-        "droits": 11925,
+        "droits": 11968,
         "droits_liquidables": 11877,
         "positions_liquidables": 5936,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 48,
+        "taux_indisponibles": 52,
         "assiettes_source": 11925,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
-        "droits_composes": 0,
+        "droits_composes": 39,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 4,
+        "droits_lus_en_designation": 39,
         "classification_estimee": 0
       }
     },
@@ -294,7 +321,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COG_tariffs.json",
       "source_sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe",
-      "socle_sha256": "6a34e0625889ef19467b71090941c2855b0793c90b0a3e338fe6a05d88e4b596",
+      "socle_sha256": "a506e3f31afa46e74c616ee9fea6e6bc8b283633d9579fa80eb998aee0e11746",
       "collecte": "2026-02-19T22:39:52.620876",
       "etat": "COMPLET",
       "familles": [
@@ -319,6 +346,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -327,7 +357,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/COM_tariffs.json",
       "source_sha256": "ce74f81f79963f0cedadc2ac2dc73d6e3335d46da5dbd37b9ada59b4a79732c5",
-      "socle_sha256": "48b8ad6b6431d8a5842c7c3e4ca868a20689aae9c02d9a09f89570e9956aaa38",
+      "socle_sha256": "b873017e07a6906784dfd90cc98ef00c7773ece12cd61760ee43316a7e448ab9",
       "collecte": "2026-07-05T11:02:35.673779+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -350,6 +380,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -358,7 +391,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/CPV_tariffs.json",
       "source_sha256": "67bd2c2b4d57190be7f92609e83db0a1c514e6faa29628b94cf01f36ed132fab",
-      "socle_sha256": "a06059995a99693149459a3a39e26fd8b9e84870f897905728980de02f85826f",
+      "socle_sha256": "2a53938b2d8b0f94c1b36e2fb9e72c228c2f524e0f2505f03144d03df2bc918d",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -382,6 +415,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -390,7 +426,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/DJI_tariffs.json",
       "source_sha256": "5a7590273347691aebd9d26a0443f4b6b34660765f6372a9313cc8ffac9982b8",
-      "socle_sha256": "6ad20110a00e922e46b229fb31e5d50c1c6c76994e7b78bc455c3920d074bb05",
+      "socle_sha256": "88f6b8c0418514f609230a525872bc54e64f5fd0f0bd33d666450f7e6f3ba899",
       "collecte": null,
       "etat": "VIDE",
       "familles": [],
@@ -410,6 +446,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -418,7 +457,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/DZA_tariffs.json",
       "source_sha256": "fead59b16f2b833f971319b2ebd91a08d8f7152e8e8b146c7d6beaa5892d7341",
-      "socle_sha256": "792094b7c5ef7c21cf42d6858b41b9a3911d55a12fb80aab7a8e87d4dd70837c",
+      "socle_sha256": "6dcb08a4aed465618514599a60b8209c13ff3103b193add54af6b8961e151eb8",
       "collecte": "2026-08-29T11:11:39.900916+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -430,12 +469,12 @@
       ],
       "compteurs": {
         "positions": 17226,
-        "droits": 69332,
+        "droits": 69631,
         "droits_liquidables": 69082,
         "positions_liquidables": 16976,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 0,
+        "taux_indisponibles": 299,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
         "assiettes_table": 69082,
@@ -444,6 +483,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 299,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -452,7 +494,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/EGY_tariffs.json",
       "source_sha256": "4b6b23b80e2657f30b2abfe942708fa87a6692e673336fd42795365b68bc8b94",
-      "socle_sha256": "d7748693110972d004d1fbde9b35acb38e635f6f447fb8407eb2ff998e4b95bd",
+      "socle_sha256": "36d8960acc3fafb5525922f9b9d9ad187d8048fea9afdb5034afb8fe4d7ae940",
       "collecte": "2026-08-29T21:57:37.493425+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -462,12 +504,12 @@
       ],
       "compteurs": {
         "positions": 8818,
-        "droits": 18043,
+        "droits": 18082,
         "droits_liquidables": 17552,
         "positions_liquidables": 8353,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 58,
+        "taux_indisponibles": 97,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
         "assiettes_table": 17587,
@@ -476,6 +518,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 26502,
+        "interdictions": 0,
+        "droits_absents_completes": 39,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -484,7 +529,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ERI_tariffs.json",
       "source_sha256": "b30974b2b9217bebf4559e47b65a5b9882e2010246c78a05d091c0aa9bd9394d",
-      "socle_sha256": "48bb15736c78210c75040360eaaca7c945dde4ffae776f8a7f565917006f5acc",
+      "socle_sha256": "a1c2626b1721ffa1fa0ff6b77bb65785fd900d35f10b7587583873fba251f2df",
       "collecte": null,
       "etat": "VIDE",
       "familles": [],
@@ -504,6 +549,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -512,7 +560,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ETH_tariffs.json",
       "source_sha256": "37659e6d1f3740d9d7e4f6c69406d2a4c544d9d3afe37b03d0beecc9fd886592",
-      "socle_sha256": "ca52a20d50679c38a65d3fbf17ec64d47c6d59a6521a9092805916440d92c6c8",
+      "socle_sha256": "09cfa3ac08868f2e15f7ceb70747f11ef1cac3da69272ec93aeac84ce1a11866",
       "collecte": "2026-07-05T11:56:27.716023+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -524,12 +572,12 @@
       ],
       "compteurs": {
         "positions": 6296,
-        "droits": 18396,
+        "droits": 19764,
         "droits_liquidables": 11226,
         "positions_liquidables": 0,
         "preferentiels": 1939,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 0,
+        "taux_indisponibles": 1368,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
         "assiettes_table": 11226,
@@ -538,6 +586,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 1368,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -546,7 +597,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GAB_tariffs.json",
       "source_sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3",
-      "socle_sha256": "f67e1d7f3e6e5cea8d6a7e1771eab4dd6415cfc31ae4be925f937aeed4c8a4d1",
+      "socle_sha256": "60cdc87707f5bcbd8435f352918ea2532cd45e53ad7ee7c2cf23644dff91529d",
       "collecte": "2026-02-19T22:39:52.018966",
       "etat": "COMPLET",
       "familles": [
@@ -571,6 +622,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -579,7 +633,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GHA_tariffs.json",
       "source_sha256": "760d0b401a7d482aae9f2ddded5ecd85ed9a92d45be8ce1a36c95b14116bb439",
-      "socle_sha256": "542c19e26d29c87c65082b0e5dd4e180ba60833fcfed3bb4dd69ddd90aa781e9",
+      "socle_sha256": "2bd200171242abc9805db60d6d05b22709e674c13c03e88feabd33f0a0285b4c",
       "collecte": "2026-06-16T22:25:05.362356",
       "etat": "COMPLET",
       "familles": [
@@ -603,6 +657,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -611,7 +668,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GIN_tariffs.json",
       "source_sha256": "0cba205ad60369ccbb1683a5ae2288db76431dd84e7911e4f708febee9d93f56",
-      "socle_sha256": "e1370610a6676f060273a92009e9faac01e7c602edafb0ba069b81a46ac860b1",
+      "socle_sha256": "8af6cfc4677fe5e586583833f7204255a26167da76dc4589217dcf52582e159b",
       "collecte": "2026-02-19T22:39:50.897093",
       "etat": "COMPLET",
       "familles": [
@@ -635,6 +692,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -643,7 +703,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GMB_tariffs.json",
       "source_sha256": "df507892b7d475647b66b8ec80b1552b8451b719c3953208bbac82a178aea772",
-      "socle_sha256": "edcd33ef74e5d09ee8355c188eb1888bb8189a33209b3c479140e1f35c7c4504",
+      "socle_sha256": "d8979eaed40d982587a975d32fd8a2c94b6eb5ff5bb3b36fcc8f7db3f667730d",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -667,6 +727,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -675,7 +738,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GNB_tariffs.json",
       "source_sha256": "292c4b3bcda33103f40caba44f70623c6655a2f16ac46a67005559804a1556ef",
-      "socle_sha256": "97f1986f68778ba4e7ca063617d93b3b3a6eba65bd4c10be356a850124b5caff",
+      "socle_sha256": "b7b8a84d86d618a5d9657397b50c4b6f96dafa68e2495ca829d0f9261734d845",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -699,6 +762,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -707,7 +773,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/GNQ_tariffs.json",
       "source_sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0",
-      "socle_sha256": "8913cc2f59abee9d076f713d9c410cc699ddb7311c98307938d01a3a8225cc59",
+      "socle_sha256": "101b425b57cced913fee89a96bdd227ced835341b73c6a71d4544d561855ae4c",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -732,6 +798,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -740,7 +809,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/KEN_tariffs.json",
       "source_sha256": "e20a4280f51615d7f9efa5388f7529e3b5516dacbc3c2313ac8c3def32367b8b",
-      "socle_sha256": "3e0fd6c762be00cc2cbb6f6837982f8757b538b13ea4f22d99c74125e544a5b2",
+      "socle_sha256": "0409149cd57cd98b8ffeb9ef9f5ff404ddb35254e0347df33bb56562529e1465",
       "collecte": "2026-02-18T10:54:33.961294",
       "etat": "PARTIEL",
       "familles": [
@@ -751,20 +820,23 @@
       ],
       "compteurs": {
         "positions": 5984,
-        "droits": 23958,
+        "droits": 24001,
         "droits_liquidables": 23910,
         "positions_liquidables": 5936,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 48,
+        "taux_indisponibles": 52,
         "assiettes_source": 23958,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
-        "droits_composes": 0,
+        "droits_composes": 39,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 4,
+        "droits_lus_en_designation": 39,
         "classification_estimee": 0
       }
     },
@@ -773,7 +845,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBR_tariffs.json",
       "source_sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40",
-      "socle_sha256": "ce32bb25427fef73edc877164e740b734126b0a606e9273de7ab85d64ff746cd",
+      "socle_sha256": "658196816be856e66fa9ba8734a1c8f31d7ae1bb392e9a01554800a2b96ce218",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -797,6 +869,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -805,7 +880,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LBY_tariffs.json",
       "source_sha256": "7d4c83398125910cfc50393f3c716b5c90930305aa6498e518ad798e3fd82499",
-      "socle_sha256": "05036932b9f242fccb5822e167aa6955be2e5bab1d8b0a5fb42a11a73775f425",
+      "socle_sha256": "4ba8341ef7fd4d74373e923909ac2975c52d516fa179457e3d409bba7af983f3",
       "collecte": "2026-09-18",
       "etat": "PARTIEL",
       "familles": [
@@ -828,6 +903,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 62,
+        "interdictions": 62,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -836,7 +914,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/LSO_tariffs.json",
       "source_sha256": "31c5c4f6a56ae594fabb6e4f7093f4960b0f1397e0e25c4900804e23e4ec25dc",
-      "socle_sha256": "1e31444db4c5565f94540f6ebfadeb3361abc4922ad6d1d4c9f8f98995127ca9",
+      "socle_sha256": "5a6534c0ff3f3d81ec3749f8aa0169937cc61fb646af72fba50e96d49dd19343",
       "collecte": "2026-08-29T13:26:24.395497",
       "etat": "PARTIEL",
       "familles": [
@@ -858,6 +936,9 @@
         "droits_specifiques": 227,
         "droits_composes": 94,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -866,9 +947,9 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MAR_tariffs.json",
       "source_sha256": "0debb92e473cf0288db5ab04fcea846a192669905dcf2712923be666c8fb62d5",
-      "socle_sha256": "b46e59f1adc061650e894c251a82f722dbd47ccf4620885616b9581fee81638f",
+      "socle_sha256": "23ae069d24ca9e930fc4370011ae36839ecd615a227fb32c16035048ac0699bd",
       "collecte": "2026-02-11T22:41:08.772056",
-      "etat": "COMPLET",
+      "etat": "PARTIEL",
       "familles": [
         "droit",
         "redevance",
@@ -876,12 +957,12 @@
       ],
       "compteurs": {
         "positions": 13114,
-        "droits": 38529,
+        "droits": 38671,
         "droits_liquidables": 38529,
         "positions_liquidables": 12972,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 0,
+        "taux_indisponibles": 142,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
         "assiettes_table": 38529,
@@ -890,6 +971,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 142,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -898,7 +982,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MDG_tariffs.json",
       "source_sha256": "5fa9f5746ea5a02f4ff6daa787797bdd1dd3209cfce31762d9257f39c76fe02f",
-      "socle_sha256": "39fd57e45e7f48594388e9819452e54c1c4aef9497917432e54cfa21bc7127c9",
+      "socle_sha256": "bd9b26b7e867f886b451f2e4b25295167d640b482a736a48400f160024370235",
       "collecte": "2026-07-05T10:03:55.556241+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -921,6 +1005,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 1
       }
     },
@@ -929,7 +1016,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MLI_tariffs.json",
       "source_sha256": "ac016ec03cde8facc64ae6a2a366469d64fac10d78f44ab3b2becbfb04f20ad6",
-      "socle_sha256": "81e267055252b2cfac26f8ff5031daadcd668983cb867fb7cc477ac0f61d894f",
+      "socle_sha256": "e89f930b0513511f957668efa2174e00f204ebc03c6690a94268a1da3787d46b",
       "collecte": "2026-02-19T22:39:47.238684",
       "etat": "COMPLET",
       "familles": [
@@ -953,6 +1040,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -961,7 +1051,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MOZ_tariffs.json",
       "source_sha256": "a34999e367fe2faaf0fff0bf9619fbf4310245aa45006e3e43076a3692f44c7f",
-      "socle_sha256": "673ee0d9285ce0bd6800e70291cbd1f3000f2d4ea6a754c67d73fb434a832d75",
+      "socle_sha256": "f8d96f7b580c029c8f0e9e264544063adb08873abe2a0a232f5e47a9db913576",
       "collecte": "2026-07-05T10:04:03.624574+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -984,6 +1074,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 26
       }
     },
@@ -992,7 +1085,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MRT_tariffs.json",
       "source_sha256": "eaee2c0a904b08f73c7576373c7064bf39fa0e7148699989c716306c1a1e6bf4",
-      "socle_sha256": "6ce3444c1d9d2757cfda28ee9439ed33abdac62a35e46abc2d85fd4674048533",
+      "socle_sha256": "3dd0f224bd8ebecbb13f3572faa24a22ccec77aab596e046c4559d01409e9939",
       "collecte": "2026-09-18T00:00:00+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1017,6 +1110,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1025,7 +1121,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MUS_tariffs.json",
       "source_sha256": "2e4308ee758d2860eda0acb9307b3895cab8932ccdac91befabc7dbe3b7ea2d6",
-      "socle_sha256": "ae2b628c98ba788ba2fa54d10bd9cee9522c3d71589a9433954fe6d2b582245d",
+      "socle_sha256": "1b8c84e79404b946e06ef31ccf0c1dcfd0ed449f1bb0e3c248c9396693043ea2",
       "collecte": "2026-07-05T10:11:19.857867+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1048,6 +1144,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1056,7 +1155,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MWI_tariffs.json",
       "source_sha256": "b58fff712f7ab84102294c587ccd7f0cf8a3ad219f6dcfbbebfdab75ec4208d2",
-      "socle_sha256": "22e52da96fafca291004da892d17a7ec41609630da2a6e71a0573878024f71d8",
+      "socle_sha256": "de5beb5a9d47a0026a955282c13d185351e145eb679774b3973e98d1c437393f",
       "collecte": "2026-07-05T10:11:13.162602+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1079,6 +1178,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 9
       }
     },
@@ -1087,7 +1189,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/NAM_tariffs.json",
       "source_sha256": "a315efcf13b9f17f0ed677fab8d3cbfe64a5f562aca7868f14bcffda3f2f7ebf",
-      "socle_sha256": "facca9ac46f6849455798bb2294e25f4c7dd63c45b36c09375f56a9d9cc44259",
+      "socle_sha256": "2eff9fe9f252c61cd30b79358c9dd59af5c1a7337d714214148aed28e3c3c161",
       "collecte": "2026-08-29T13:26:27.028702",
       "etat": "PARTIEL",
       "familles": [
@@ -1109,6 +1211,9 @@
         "droits_specifiques": 227,
         "droits_composes": 94,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1117,7 +1222,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/NER_tariffs.json",
       "source_sha256": "af07aa9e4e0e22c8cb38f59055668a04fcb37d83ffed3f711de2eb06391ad629",
-      "socle_sha256": "fcd5c7fbeb89bb8016f0d58ee6431abd4e1acf0451caa44ab6c530d3ddcf5c06",
+      "socle_sha256": "4b683709c6a8c0a4d235a5cdaabb8eefae582b4f0a85d9fc1b78f6d005b58e21",
       "collecte": "2026-02-19T22:39:48.421467",
       "etat": "COMPLET",
       "familles": [
@@ -1141,6 +1246,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1149,7 +1257,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/NGA_tariffs.json",
       "source_sha256": "37876592a3dc4b26cf73ce03eb95bb75baae5a6d535f43510765e77a28d2b3e0",
-      "socle_sha256": "e0e8b253b8b89769ee554d5c911e9097fd6388b6f5ec574f3d5a8a54d7d05de0",
+      "socle_sha256": "7c12ff5218465c55020ef08d11001bfadaea454277a4a64a82aaf1d9a12898d4",
       "collecte": "2026-02-17T22:07:58.761128",
       "etat": "PARTIEL",
       "familles": [
@@ -1173,6 +1281,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1181,7 +1292,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/RWA_tariffs.json",
       "source_sha256": "1179c1cb7f82adec7315a584da3e5e4fd560666da4572fffd95d2d9b2484020c",
-      "socle_sha256": "d22cdfc05637f5512e1feb68ae495f12c24e872e98b41b88140056dd226530f6",
+      "socle_sha256": "d8eabc65e0baffe31d28e34b3fe9891c74821b931d684713adda2f66ff952d16",
       "collecte": "2026-02-18T10:54:35.914199",
       "etat": "PARTIEL",
       "familles": [
@@ -1191,20 +1302,23 @@
       ],
       "compteurs": {
         "positions": 5984,
-        "droits": 11939,
+        "droits": 11982,
         "droits_liquidables": 11891,
         "positions_liquidables": 5936,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 48,
+        "taux_indisponibles": 52,
         "assiettes_source": 11939,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
-        "droits_composes": 0,
+        "droits_composes": 39,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 4,
+        "droits_lus_en_designation": 39,
         "classification_estimee": 0
       }
     },
@@ -1213,7 +1327,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SDN_tariffs.json",
       "source_sha256": "6633ac8de0e67e225c47c0847a26f4ee19f082023e95ffc9d779ba2c16d786f6",
-      "socle_sha256": "e502d33f0fe54748d645314c47c61d31d4bb72982855b13d53a5bccebb1932b7",
+      "socle_sha256": "19704e179469167ab429472a312d1cf625df60610c6bf7da743d1e2df43cf4d7",
       "collecte": "2026-07-05T10:11:09.736333+00:00",
       "etat": "PARTIEL",
       "familles": [
@@ -1236,6 +1350,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1244,7 +1361,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SEN_tariffs.json",
       "source_sha256": "733fe61c81cc2b95341cae7c9189cc6520e73c86b648372f27068bdb095f37b0",
-      "socle_sha256": "91a70a38dae94e83d36655c509ee0cbbf9b53c51d4f49e690da1de282976f583",
+      "socle_sha256": "5e7cfe8d22088a178338ca48b02ec278ad89dd6d6c5c8b5fc2f67471f7606c28",
       "collecte": "2026-02-19T22:21:26.945091",
       "etat": "COMPLET",
       "familles": [
@@ -1268,6 +1385,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1276,7 +1396,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SLE_tariffs.json",
       "source_sha256": "9c5a5d7b2ec90723c8a8bd9e06136b2d1f239086e01650ea131a11fb0ed1df39",
-      "socle_sha256": "6399c70e2b1663199f89915b43211a628da3f5a5b0380ef85f063038da580efc",
+      "socle_sha256": "1eccb2477f59a63f6b9427b8003290ddbf1cacdd8e112552d2d8d02a6d676a2d",
       "collecte": null,
       "etat": "COMPLET",
       "familles": [
@@ -1300,6 +1420,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1308,7 +1431,7 @@
       "origine": "etl",
       "source_fichier": "backend/data/SOM_tariffs.json",
       "source_sha256": "5df6fe9a6be9b62c025b968dda4bb061b44f1f064c2a6daeb525542b6427c3d1",
-      "socle_sha256": "4305fccafebc6868cec6adc1e439e1a257b16627a5c0de1d47b883e6712eca6b",
+      "socle_sha256": "7d066f10754d89c5bbe073fc6dcb4acdbb1f4d83b0ece65fc114c3f942e1f966",
       "collecte": "2026-06-16T22:25:20.343212",
       "etat": "PARTIEL",
       "familles": [
@@ -1330,6 +1453,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1338,7 +1464,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SSD_tariffs.json",
       "source_sha256": "f275f381be8883cecd2a982c5d236ab9fa84602a370517cd29691a64174d7b1b",
-      "socle_sha256": "4311d0dc4f38213b05ea2567c1635a55d8938209e3182387250134bbbc9d06e1",
+      "socle_sha256": "7c628c087ea20f575ca62614b8f209a18009d9fac80ae80f01a4560bfb02d7c8",
       "collecte": "2026-02-18T10:54:36.997956",
       "etat": "PARTIEL",
       "familles": [
@@ -1347,20 +1473,23 @@
       ],
       "compteurs": {
         "positions": 5984,
-        "droits": 11925,
+        "droits": 11968,
         "droits_liquidables": 11877,
         "positions_liquidables": 5936,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 48,
+        "taux_indisponibles": 52,
         "assiettes_source": 11925,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
-        "droits_composes": 0,
+        "droits_composes": 39,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 4,
+        "droits_lus_en_designation": 39,
         "classification_estimee": 0
       }
     },
@@ -1369,7 +1498,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/STP_tariffs.json",
       "source_sha256": "af850c20316b436601bb55edd5d09f99de36e1aa28c2388e2239ee6c0202dd8d",
-      "socle_sha256": "8158d43e19377396757613a9caeb91066a1dec803e3f83461433af6eab29127a",
+      "socle_sha256": "55727b2d032daccc5a9f3dc167ed16527e5ad6dc80873c487f5bddcfed5faed1",
       "collecte": "2026-07-05T11:02:55.441773+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1392,6 +1521,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 33
       }
     },
@@ -1400,7 +1532,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SWZ_tariffs.json",
       "source_sha256": "48c38a592819d2c09a86e2ca0c068b8f42bae77bfed21718c4aa27a3cf1049c0",
-      "socle_sha256": "56792095806304798349171141ca47bf8b147989d2e4f00c859252be6686d9b3",
+      "socle_sha256": "baeb1d96fa3a6f627c03ba1beb91105af123db59e983cd0c896b662e698b78c7",
       "collecte": "2026-08-29T13:26:25.757181",
       "etat": "PARTIEL",
       "familles": [
@@ -1422,6 +1554,9 @@
         "droits_specifiques": 227,
         "droits_composes": 94,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1430,7 +1565,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SYC_tariffs.json",
       "source_sha256": "9c39470145e0ecc574cb8740e2f09d2e81748c4a8e4d07e97768a3bc1ad82c45",
-      "socle_sha256": "3b79f636623b44a01b64b1045a7b1b9a1324dceacd465f794d0f4d9697db2a90",
+      "socle_sha256": "dfacf14c3f5c5149197ed89036aa7b76f764b8dc6ef4bfc313fb4bd71a0c4585",
       "collecte": "2026-07-05T10:11:23.264941+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1453,6 +1588,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 5
       }
     },
@@ -1461,7 +1599,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TCD_tariffs.json",
       "source_sha256": "a0ca51a4030c9aada3d45e5e06548a5c5cda59643c42030eb3c4ee621fdd279e",
-      "socle_sha256": "94a08ed8c651cb0d82db28586b4efcc61f2825c34f75fedbc82817acdef9a964",
+      "socle_sha256": "be350155c546470ce7f155abd6ce2f435a36550d585f71cf4d1ddd7586d74082",
       "collecte": "2026-02-19T22:39:53.393846",
       "etat": "COMPLET",
       "familles": [
@@ -1486,6 +1624,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1494,7 +1635,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TGO_tariffs.json",
       "source_sha256": "5a2f5e06f1ca8e20a8a04fbe05c8d5eaa01e2f534cbb08f6c64a082e8e7d9bce",
-      "socle_sha256": "a8101791b9b8f0e0f29030848eb565782a0489bdd1b9cdccea1adb7d8eeaa1e7",
+      "socle_sha256": "24c019adb4ae9da4602948dc2593ce50902b56fe42c254d044ab40df81d66b53",
       "collecte": "2026-02-19T22:39:49.671861",
       "etat": "COMPLET",
       "familles": [
@@ -1518,6 +1659,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1526,9 +1670,9 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TUN_tariffs.json",
       "source_sha256": "ad61846833caf0560bdb3f8e4aa85f40160a4e7b6fb621e6479ff239231e2de4",
-      "socle_sha256": "8c510621f37ec6d2ab4d34bfbc71773227a4cadc065afb9ab5ef77d663e38b75",
+      "socle_sha256": "d7c959573eaee33e89188cafc5554cea5604b0ede7426fcdd86224b1a9d01043",
       "collecte": "2026-08-30",
-      "etat": "COMPLET",
+      "etat": "PARTIEL",
       "familles": [
         "accise",
         "autre",
@@ -1538,12 +1682,12 @@
       ],
       "compteurs": {
         "positions": 17542,
-        "droits": 61286,
+        "droits": 61287,
         "droits_liquidables": 61286,
         "positions_liquidables": 17542,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 0,
+        "taux_indisponibles": 1,
         "assiettes_source": 61118,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
@@ -1552,6 +1696,9 @@
         "droits_specifiques": 2435,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 1,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1560,7 +1707,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/TZA_tariffs.json",
       "source_sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6",
-      "socle_sha256": "560814f9e4012b79c09fe0fa845d46bde2e1d50459a0299801eaf73cd1cb0993",
+      "socle_sha256": "4f7d07ce853d7ee26db28386674f79793ee54201339d2bdc8609207a92078086",
       "collecte": "2026-02-18T10:54:34.697265",
       "etat": "PARTIEL",
       "familles": [
@@ -1570,20 +1717,23 @@
       ],
       "compteurs": {
         "positions": 5984,
-        "droits": 11948,
+        "droits": 11991,
         "droits_liquidables": 11900,
         "positions_liquidables": 5936,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 48,
+        "taux_indisponibles": 52,
         "assiettes_source": 11948,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
-        "droits_composes": 0,
+        "droits_composes": 39,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 4,
+        "droits_lus_en_designation": 39,
         "classification_estimee": 0
       }
     },
@@ -1592,7 +1742,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/UGA_tariffs.json",
       "source_sha256": "c2fd9f0d4c8adb545458d5ba6c7bfbec4a93fa3695f5461beddf7f440430f2d4",
-      "socle_sha256": "15a02b915610c9bef0a90c8dc54ba83fd560ab4230b99730b78e3a69ea1c66b1",
+      "socle_sha256": "2e8839e6e552ea98ad3d387c5be866de82b9d8810ee400975ea94b2f4d4bfb6e",
       "collecte": "2026-02-18T10:54:35.212682",
       "etat": "PARTIEL",
       "familles": [
@@ -1603,20 +1753,23 @@
       ],
       "compteurs": {
         "positions": 5984,
-        "droits": 17928,
+        "droits": 17971,
         "droits_liquidables": 17880,
         "positions_liquidables": 5936,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
-        "taux_indisponibles": 48,
+        "taux_indisponibles": 52,
         "assiettes_source": 17928,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
-        "droits_composes": 0,
+        "droits_composes": 39,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 4,
+        "droits_lus_en_designation": 39,
         "classification_estimee": 0
       }
     },
@@ -1625,7 +1778,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
       "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "adc25a74201b0d37d63b037dd19d7323219d9c9ab9b0bbe7d21ca9311754a25a",
+      "socle_sha256": "a7fe4b6ec1d212be82f449412e8012819eb07598a0f735d2abd421189d134fd0",
       "collecte": "2026-08-29T13:26:21.816037",
       "etat": "PARTIEL",
       "familles": [
@@ -1647,6 +1800,9 @@
         "droits_specifiques": 227,
         "droits_composes": 94,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1655,7 +1811,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZMB_tariffs.json",
       "source_sha256": "836adcabd867967cca767ec470ac7df2ef6b0da454df62fdb5a8dc8eff9baefa",
-      "socle_sha256": "66d9fa3b1b8109ee1e2955f89baf4633836110874657b32ccddeb046d726b916",
+      "socle_sha256": "4db714cc205f782a4dd8a41ce9d93ac6bfd0a83422459e7d0ba87eff1348e59e",
       "collecte": "2026-07-05T10:03:54.070404+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1678,6 +1834,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     },
@@ -1686,7 +1845,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZWE_tariffs.json",
       "source_sha256": "5d211c12549ba81b50b206c1bfcc11765d49b650e1dc80cead18ad480dc82fc6",
-      "socle_sha256": "e3339627a8eb68c4521a025a4e14273152f8a2c2381581e0ac6465f5cdce65d7",
+      "socle_sha256": "8b52f5b944c7f4c5381da891c4e5b82795786068b81a33c88f684620591961ab",
       "collecte": "2026-07-05T10:04:02.504229+00:00",
       "etat": "COMPLET",
       "familles": [
@@ -1709,6 +1868,9 @@
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
     }
@@ -1730,6 +1892,7 @@
       "KEN",
       "LBY",
       "LSO",
+      "MAR",
       "NAM",
       "NGA",
       "RWA",
@@ -1737,12 +1900,13 @@
       "SOM",
       "SSD",
       "SWZ",
+      "TUN",
       "TZA",
       "UGA",
       "ZAF"
     ],
     "positions": 360381,
-    "droits": 1100330,
+    "droits": 1102480,
     "droits_liquidables": 1040650
   }
 }

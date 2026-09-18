@@ -27,6 +27,7 @@ Usage :
 
 from __future__ import annotations
 
+import collections
 import glob
 import hashlib
 import importlib
@@ -132,6 +133,18 @@ PREFERENTIELS = {
 }
 
 
+def _est_une_interdiction(restriction) -> bool:
+    """Vrai si la restriction interdit l'importation, pas seulement l'encadre.
+
+    Le champ `restrictions` des sources mêle deux natures : une INTERDICTION
+    (le tarif libyen, « ممنوع استيراده » — la marchandise ne peut pas entrer)
+    et une MENTION RÉGLEMENTAIRE (la source égyptienne, autorisations et
+    normes — la marchandise entre, sous condition). Les confondre ferait
+    passer 26 502 positions égyptiennes pour prohibées.
+    """
+    return isinstance(restriction, dict) and restriction.get("type") == "IMPORTATION_INTERDITE"
+
+
 def _norm(code: str) -> str:
     return re.sub(r"[.\s/_-]", "", str(code or "")).upper()
 
@@ -150,6 +163,17 @@ def code_canonique(code: str, libelle: str = "") -> str:
     n = _norm(sigle.group(1)) if sigle else _norm(code)
 
     if n in {"DD", "DI", "ID", "DROIT", "GENERAL", "CET", "DR"}:
+        return "DD"
+    # Droit de douane SECTORIEL. Le tarif tunisien décline son droit par produit
+    # — « DD/VEH.AU » (véhicules, 667 positions), « DD/AUT.CA » (autres
+    # carburants, 57), « DD/FUEL » (34), « DD/MAZOUT » (20), « DD/PET.BR »
+    # (pétrole brut, 8) — avec des taux bien réels : 0 %, 15 %, 30 %.
+    # Faute d'être reconnus, ces 786 droits étaient rangés en famille « autre ».
+    # Leurs MONTANTS étaient justes, ils étaient liquidés ; c'est leur nature
+    # qui était perdue, et avec elle la possibilité de dire que la position
+    # porte un droit de douane. Aucune de ces positions ne porte par ailleurs un
+    # DD générique : le rattachement ne peut donc pas écraser un autre droit.
+    if re.match(r"^DD\s*[/-]", str(code or "").strip(), re.I):
         return "DD"
     if n in {"TVA", "TVAI", "TVAAP", "TVAAPTAXE", "VAT", "IVA"}:
         return "TVA"
@@ -465,6 +489,72 @@ def _vient_de_wits(source) -> bool:
     return "WITS" in texte or "UNCTAD-TRAINS" in texte or "TRAINS" in texte
 
 
+#: Droit composé dont la DÉSIGNATION porte le taux, et dont la règle de
+#: liquidation est ÉNONCÉE. Le tarif extérieur commun de l'EAC procède ainsi
+#: pour ses produits sensibles : la colonne de taux est vide — la source note
+#: « Rate determined by national schedule » — et le barème est écrit dans le
+#: libellé, « 75% or $345/MT whichever is higher ».
+#:
+#: Sans cette lecture, ces positions n'ont AUCUN droit et se servent comme si
+#: rien n'était dû : 273 positions sur les sept pays de l'EAC, dont tout le riz
+#: et tout le sucre. Relevé le 2026-09-18, en quatre barèmes seulement —
+#: 25 %/200 $ la tonne (154), 100 %/460 $ (63), 75 %/345 $ (35) et
+#: 35 %/0,40 $ le kilo (21) — sans une seule forme non reconnue.
+#:
+#: Ce cas se distingue nettement du « 40% or 240c/kg » sud-africain, que le
+#: socle REFUSE de liquider : celui-là ne dit pas laquelle des deux composantes
+#: s'applique, celui-ci le dit — « whichever is higher ».
+MOTIF_COMPOSE_DESIGNATION = re.compile(
+    r"([\d]+(?:[.,][\d]+)?)\s*%\s*or\s*(?:\$|USD|US\$)\s*([\d]+(?:[.,][\d]+)?)\s*/\s*"
+    r"(MT|kg|t|L)\b\s*whichever\s+is\s+(higher|lower)",
+    re.I,
+)
+
+REGLES_COMPOSEES = {"higher": "LE_PLUS_ELEVE", "lower": "LE_MOINS_ELEVE"}
+
+
+def droit_compose_depuis_designation(designation, source):
+    """Rendre le droit composé écrit dans une désignation, ou ``None``.
+
+    Ne rend un droit que si les DEUX composantes et la RÈGLE sont lues. Une
+    désignation qui ne porte pas la formule complète ne produit rien — elle
+    tombe alors sur la ligne sans taux, qui dit l'indisponibilité.
+    """
+    texte = designation
+    if isinstance(texte, dict):
+        texte = texte.get("en") or texte.get("fr") or texte.get("ar") or ""
+    m = MOTIF_COMPOSE_DESIGNATION.search(str(texte or ""))
+    if not m:
+        return None
+    ad_valorem = float(m.group(1).replace(",", "."))
+    montant = float(m.group(2).replace(",", "."))
+    return {
+        "code": "DD",
+        "code_source": "DD",
+        "libelle": "Droit de douane (produit sensible, barème national)",
+        "famille": "droit",
+        "taux": ad_valorem,
+        "assiette": "CIF",
+        "assiette_origine": "designation",
+        "specifique": {
+            "montant": montant,
+            "unite_monetaire": "USD",
+            "unite_quantite": m.group(3).lower(),
+            "brut": m.group(0),
+        },
+        "compose": True,
+        "regle_composee": REGLES_COMPOSEES[m.group(4).lower()],
+        "expression_brute": m.group(0),
+        "source": source,
+        "note": (
+            "Taux absent de la colonne du tarif — la source note « Rate determined "
+            "by national schedule » — et porté par la désignation de la position. "
+            "Les deux composantes et la règle de liquidation sont citées telles "
+            "qu'écrites."
+        ),
+    }
+
+
 # ── Adaptateurs : une fonction par forme de ligne fiscale ─────────────────────
 def _droit(
     code_src,
@@ -715,6 +805,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     assiettes_codees = profil.get("taxes", {})
     assiettes_fichier = assiettes_du_fichier(donnees)
 
+    source_defaut_pays = donnees.get("source") or donnees.get("source_name") or ""
     positions = {}
     compteurs = {
         "positions": 0,
@@ -732,6 +823,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0,
     }
     familles_vues = set()
@@ -844,10 +938,96 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         if restrictions:
             positions[code]["restrictions"] = restrictions
             compteurs["restrictions"] = compteurs.get("restrictions", 0) + len(restrictions)
+            compteurs["interdictions"] = compteurs.get("interdictions", 0) + sum(
+                1 for r in restrictions if _est_une_interdiction(r)
+            )
         compteurs["positions"] += 1
         compteurs["droits"] += len(retenus)
         if retenus and position_complete:
             compteurs["positions_liquidables"] += 1
+
+    # ── Une position sans droit, dans un pays qui en publie ────────────────
+    # Le socle ne liquide que ce qu'il porte. Une position dépourvue de toute
+    # ligne de droit se sert donc COMPLÈTE, sans droit de douane — un total qui
+    # paraît entier et ne l'est pas. Mesuré sur le socle du 2026-09-18 :
+    # 2 915 positions dans ce cas, sur douze pays, dont 12 444,00 servis
+    # « COMPLET » pour DZA/2710122400 avec accise, TVA et zéro droit.
+    #
+    # Trois causes distinctes ont été trouvées en remontant aux sources : un
+    # zéro publié supprimé à la collecte (Éthiopie), une source qui ne publie
+    # rien (Maroc, dont le champ `taxes` est vide), et un droit bien présent
+    # mais non reconnu (les droits sectoriels tunisiens, traités plus haut).
+    # Aucune ne justifie de servir la position comme si rien n'était dû.
+    #
+    # La ligne est donc posée SANS TAUX : le moteur la déclare indisponible et
+    # refuse le total, au lieu de le rendre amputé. Elle n'est posée que si le
+    # pays publie des droits ailleurs — un pays qui n'en collecte aucun
+    # (couverture sans la famille « droit ») n'en reçoit pas, et une position
+    # dont l'importation est interdite non plus : là, l'absence est la réponse.
+    if "droit" in familles_vues:
+        # L'assiette du droit de douane est une règle de PAYS, pas de position :
+        # on reprend celle que la même source pose sur ses autres positions,
+        # plutôt que d'en supposer une. Sans elle, le moteur signalerait une
+        # assiette manquante là où c'est le TAUX qui manque — un motif juste
+        # mais qui désigne le mauvais trou.
+        assiettes_du_droit = collections.Counter(
+            d.get("assiette")
+            for pos in positions.values()
+            for d in pos["droits"]
+            if d.get("famille") == "droit" and d.get("assiette")
+        )
+        assiette_courante = assiettes_du_droit.most_common(1)[0][0] if assiettes_du_droit else None
+        for code, position in positions.items():
+            # SEULE une interdiction d'importer explique l'absence de droit.
+            # Le champ `restrictions` transporte aussi des mentions
+            # RÉGLEMENTAIRES — la source égyptienne en porte 26 502, du type
+            # « ق3034 : pas de déclaration d'export des espèces CITES sans
+            # accord du jardin zoologique ». Une marchandise soumise à
+            # autorisation entre quand même, et son droit reste dû : la traiter
+            # comme prohibée dispenserait 26 502 positions de déclarer un droit
+            # manquant, sur la foi d'une note qui ne dit rien du droit.
+            if any(_est_une_interdiction(r) for r in position.get("restrictions") or []):
+                continue
+            if any(d.get("famille") == "droit" for d in position["droits"]):
+                continue
+            # Le barème peut être écrit dans la désignation : on le lit avant de
+            # conclure à l'absence. Une absence déclarée vaut mieux qu'un
+            # silence, mais un droit lu vaut mieux qu'une absence déclarée.
+            compose = droit_compose_depuis_designation(
+                position.get("designation"), position.get("source") or source_defaut_pays
+            )
+            if compose:
+                position["droits"].insert(0, compose)
+                compteurs["droits"] += 1
+                compteurs["droits_composes"] = compteurs.get("droits_composes", 0) + 1
+                compteurs["droits_lus_en_designation"] = (
+                    compteurs.get("droits_lus_en_designation", 0) + 1
+                )
+                continue
+            position["droits"].insert(
+                0,
+                {
+                    "code": "DD",
+                    "code_source": "DD",
+                    "libelle": "Droit de douane — taux absent de la source",
+                    "famille": "droit",
+                    "taux": None,
+                    "assiette": assiette_courante,
+                    "assiette_origine": "regle_de_pays" if assiette_courante else None,
+                    "source": position.get("source") or source_defaut_pays,
+                    "note": (
+                        "Aucun droit de douane n'est publié pour cette position, alors "
+                        "que la source en publie pour d'autres. Le total ne peut pas "
+                        "être servi comme complet : le droit est déclaré indisponible "
+                        "plutôt que supposé nul."
+                    ),
+                },
+            )
+            compteurs["droits"] += 1
+            compteurs["taux_indisponibles"] += 1
+            compteurs["droits_absents_completes"] = (
+                compteurs.get("droits_absents_completes", 0) + 1
+            )
 
     socle = {
         "iso3": iso,
