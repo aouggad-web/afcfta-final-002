@@ -142,7 +142,10 @@ def test_la_colonne_preferentielle_ne_tombe_jamais_dans_la_cascade_NPF():
     cascade NPF au lieu d'être rangée à part.
     """
     donnees = socle.charger("LBY")
-    position = donnees["positions"]["010121"]
+    # Le socle sert désormais le CODE NATIONAL. Il rabattait auparavant les
+    # positions libyennes sur six chiffres et en perdait 349 par collision ;
+    # l'adresse change, l'assertion non.
+    position = donnees["positions"]["01012100"]
     assert "LIGUE_ARABE" in (position.get("preferentiels") or {})
     codes = {d["code"] for d in position["droits"]}
     assert "LIGUEARABE" not in codes
@@ -178,7 +181,7 @@ def test_une_position_interdite_porte_sa_restriction_et_aucun_droit(client):
 def test_une_position_ordinaire_ne_porte_aucune_restriction(client):
     """Contrôle négatif : le champ n'apparaît que là où il a un sens."""
     reponse = client.post(
-        "/calcul", json={"destination": "LBY", "code_sh": "010121", "valeur_cif": 10000}
+        "/calcul", json={"destination": "LBY", "code_sh": "01012100", "valeur_cif": 10000}
     )
     assert reponse.status_code == 200
     assert "restrictions" not in reponse.json()
@@ -194,7 +197,7 @@ def test_le_tabac_porte_un_droit_bien_superieur_au_droit_courant(client):
     soit remarquée.
     """
     courant = client.post(
-        "/calcul", json={"destination": "LBY", "code_sh": "010121", "valeur_cif": 10000}
+        "/calcul", json={"destination": "LBY", "code_sh": "01012100", "valeur_cif": 10000}
     ).json()
     tabac = client.post(
         "/calcul", json={"destination": "LBY", "code_sh": "24022000", "valeur_cif": 10000}

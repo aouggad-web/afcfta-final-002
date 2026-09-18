@@ -387,18 +387,18 @@
     },
     "MUS": {
       "organism": "Mauritius Revenue Authority (MRA) — Customs Department",
-      "version": "2026.1",
+      "version": "2026.2",
       "artifact_path": "backend/data/crawled/MUS_tariffs.json",
       "artifact_url": null,
       "source_type": "official",
       "url": "https://www.mra.mu/download/TariffInf130826.pdf",
-      "retrieved_at": "2026-09-09",
+      "retrieved_at": "2026-09-18",
       "edition": "Customs Tariff Schedules (Integrated Tariff) — HS 2022, as at 13 August 2026",
       "application_period": "2026-08-13 to next amendment",
       "hs_version": "HS 2022",
       "code_digits": 8,
-      "positions_count": 5300,
-      "sha256": "2e4308ee758d2860eda0acb9307b3895cab8932ccdac91befabc7dbe3b7ea2d6",
+      "positions_count": 6941,
+      "sha256": "d4c7cd661c7dfe9f9fef0721e8cee0c4e84dac5981ab77521ee249c4ae5e8675",
       "reuse_conditions": "Customs Tariff Act 59 of 1969. MRA précise: 'Only the latest of the legal texts make authority'. Utilisation informative non opposable.",
       "legal_authority": "Customs Tariff Act 59 of 1969 + Customs Regulations 2021",
       "validation_status": "verified",
@@ -421,7 +421,8 @@
         "AfCFTA",
         "UAE"
       ],
-      "zlecaf": "5300 positions avec taux AfCFTA — colonne AfCFTA sur toutes les lignes"
+      "zlecaf": "5300 positions avec taux AfCFTA — colonne AfCFTA sur toutes les lignes",
+      "notes": "Tarif national intégré MRA (Customs Tariff Schedules, HS 2022, as at 13 August 2026), 807 pages, 6 941 positions à huit chiffres — remplace l'extrait SH6 WITS/UNCTAD-TRAINS qui servait 5 619 positions sans aucune désignation. Empreinte du PDF source : 26c0e4c6764096639bfb3cbc4dd683eb389c99d45758d2344f7df17c9e65fe11. Assiettes établies : droit de douane sur CIF (Customs Act 1988, s.18(1) et s.18A) ; TVA sur CIF+DD+EXC (VAT Act 1998, s.13 — l'accise entre dans l'assiette). L'assiette de l'accise n'est établie par aucun de ces textes : elle reste sans assiette, donc non liquidable. Voir la fiche MUS_assiettes_DD_TVA_2026-09-18.json."
     },
     "MOZ": {
       "organism": "Direcção Geral das Alfândegas — JUE (Janela Única Eletrónica)",

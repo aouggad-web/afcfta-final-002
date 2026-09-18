@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "objet": "Maurice — assiette du droit de douane et assiette de la TVA à l'importation, établies sur les deux lois publiées par l'autorité qui publie le tarif (MRA). La TVA n'est PAS assise sur « CIF + droit » : l'accise y entre.",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — Customs Act 1988 et Value Added Tax Act 1998, tous deux publiés en PDF par la Mauritius Revenue Authority sur mra.mu, textes extractibles, extraits archivés et empreintes consignées. Croisés avec le tarif lui-même (Customs Tariff Schedules, HS 2022, as at 13 August 2026, mra.mu).",
+  "la_question_posee": "Le tarif mauricien énonce des taux — « % | percent ad valorem », page 12 — mais jamais la base sur laquelle ils se liquident. Sans elle, le socle ne peut rien servir, ou sert un montant vraisemblable et faux. Deux assiettes distinctes étaient à établir : celle du droit de douane, et celle de la TVA, qui n'est pas la même.",
+  "regle": {
+    "assiette_du_droit_de_douane": {
+      "article": "Customs Act 1988 (Act 47 of 1988), s.18(1) et s.18A",
+      "verbatim_mode_de_determination": "Where duty is leviable on goods by reference to their value, the value of the goods shall be the transaction value of the goods as determined in accordance with section 18A.",
+      "verbatim_valeur_transactionnelle": "The transaction value of the goods shall be the price actually paid or payable for the goods when sold for export to an importer in Mauritius, adjusted where appropriate in circumstances as may be prescribed, and shall in addition include - (a) all costs, charges and expenses incidental to the sale contract and delivery of those goods; and (b) the loading charges, freight, insurance and other charges and expenses in respect of those goods as may be prescribed",
+      "portee": "Prix effectivement payé, augmenté du fret, de l'assurance et des frais de mise à bord jusqu'à la livraison : c'est la définition du CIF, sur le modèle de l'Accord de l'OMC sur l'évaluation en douane. L'assiette retenue au socle est donc CIF, avec la provenance « source ».",
+      "assiette_retenue": "CIF",
+      "texte_archive": "sources/MUS_customs_act_s18_valeur.texte-extrait.txt",
+      "sha256": "8c91c27d6305c7818052aeb19890bd521b440ee39633e1530283916e1cc74729",
+      "sha256_pdf_origine": "84722792fc8ca691f174bfc2c4c720b3906432172294e489c32fc3e4c40e1b21",
+      "source_url": "https://www.mra.mu/download/CustomsAct1988.pdf"
+    },
+    "assiette_de_la_tva_a_l_importation": {
+      "article": "Value Added Tax Act 1998 (Act 2 of 1998), s.13 « Value of imported goods »",
+      "verbatim": "The value shall, in respect of goods imported by any person, be the sum of - (a) the customs value of the goods; (b) the customs duty and excise duty payable on the goods; (c) the MID levy; (d) the CO2 levy; and (e) the levy on energy consumption.",
+      "portee": "L'ACCISE ENTRE DANS L'ASSIETTE DE LA TVA. Le profil générique du socle y posait « CIF+DD », qui l'omet : sur les 717 positions mauriciennes soumises à accise, la TVA aurait été sous-facturée. L'assiette retenue est « CIF+DD+EXC ».",
+      "assiette_retenue": "CIF+DD+EXC",
+      "texte_archive": "sources/MUS_vat_act_s13_valeur_importation.texte-extrait.txt",
+      "sha256": "d7e57ca31eff6fac29c4de3b8b03b4082ef035290fa3596a1806d84e604ec6a6",
+      "sha256_pdf_origine": "9b9c2354500c0bf5d25cff803d7a002c4661ad7cd0506b921a9c42158d4f56d0",
+      "source_url": "https://www.mra.mu/download/VATAct_Proclamation_38_2013.pdf"
+    }
+  },
+  "ce_que_cela_ne_tranche_pas": {
+    "assiette_de_l_accise": "Aucun des deux textes n'énonce l'assiette de l'accise elle-même. Elle reste donc SANS assiette au socle, donc non liquidable, plutôt que posée de mémoire. Conséquence assumée et vérifiée : sur une position soumise à accise, le moteur rend EXC en ASSIETTE_INDISPONIBLE et la TVA en ASSIETTE_INCOMPLETE — en nommant EXC comme le composant manquant — au lieu de servir une TVA minorée. Mesuré sur 04029910 pour une valeur de 10 000.",
+    "les_trois_prelevements_de_s13": "Les MID levy, CO2 levy et levy on energy consumption entrent dans l'assiette de la TVA selon s.13 (c), (d) et (e). Ils ne sont PAS collectés. Là où ils s'appliquent, l'assiette servie est donc minorée. C'est dit ici plutôt que comblé : les chiffrer supposerait des barèmes qui ne sont pas au dossier.",
+    "les_taux_sous_contingent": "109 cellules des colonnes INDIA et UAE portent un contingent (« 300 tons @ 0% duty ») et non un taux. Le volume déjà imputé n'est pas connu du moteur : ces entrées sont portées avec leur libellé, sans taux."
+  },
+  "remaining_work": [
+    "Excise Act mauricien — établir l'assiette de l'accise, ce qui rendrait liquidables 717 positions ET compléterait l'assiette de la TVA sur ces mêmes positions.",
+    "Barèmes des MID, CO2 et energy levies, pour compléter l'assiette de la TVA là où ils s'appliquent.",
+    "Identifier le sigle « PMPTA » de la colonne Agency : il ne figure pas dans la légende du tarif (page 11). 18 positions. Sans effet sur le calcul."
+  ]
+}

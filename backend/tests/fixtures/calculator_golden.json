@@ -324,19 +324,19 @@
     {
       "id": "mus-provenance-divergente",
       "country": "MUS",
-      "hs_code": "010129",
-      "defect": "Les montants concordent, la qualification non : le crawl est une moyenne NPF WITS 2022, que le chemin prioritaire présente en `authentic_tariff` pendant que le POST la donne pour `duty_status=INDICATIVE_MFN`. Une estimation ne doit pas être promue en source authentifiée.",
+      "hs_code": "01012900",
+      "defect": "DÉFAUT RÉSOLU À LA SOURCE, le 2026-09-18. Il tenait à ce que le crawl mauricien était une moyenne NPF WITS 2022 que le chemin prioritaire présentait en `authentic_tariff` — une estimation promue en source authentifiée. Le socle sert désormais le tarif national MRA (Customs Tariff Schedules, HS 2022, 807 pages, 6 941 positions à huit chiffres), et la qualification « authentique » est devenue exacte au lieu d'être usurpée. Le cas est conservé, repointé sur la position nationale, pour que la citation reste contrôlée : si une moyenne reprenait un jour la place du tarif, ce test le dirait.",
       "plan_item": "4.6 — marqueurs d'inférence conservés jusqu'au résultat",
       "source_of_truth": {
         "expected_dd_rate_pct": 0.0,
-        "raw": "0.0 % (MFN, SimpleAverage, 2022)",
-        "expected_qualification": "indicatif",
+        "raw": "0 (colonne « General », tarif national MRA, HS 2022)",
+        "expected_qualification": "authentique",
         "file": "backend/data/crawled/MUS_tariffs.json",
         "locator": {
           "kind": "crawled_tax",
-          "code": "010129",
+          "code": "01012900",
           "tax_code": "DD",
-          "field": "rate"
+          "field": "rate_pct"
         }
       },
       "observed": {
@@ -353,11 +353,11 @@
         "verdict": "ECART_QUALIFICATION"
       },
       "expected_after_fix": {
-        "qualification": "indicatif",
+        "qualification": "authentique",
         "both_paths_agree": true,
-        "note": "Le canonique déclare par ailleurs une source MRA : la provenance retenue doit être tranchée et affichée, pas choisie implicitement par le chemin appelé."
+        "note": "La provenance est désormais tranchée par la donnée elle-même : le fichier déclare source_quality `crawled_authentic` et l'URL du tarif MRA, et non plus une moyenne agrégée par un tiers."
       },
-      "status": "defect_open",
+      "status": "resolved_by_national_tariff_2026-09-18",
       "priority_dd_matches_source": true
     },
     {

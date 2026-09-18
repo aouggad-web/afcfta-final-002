@@ -222,6 +222,11 @@ ASSIETTES_SOURCE = {
     "CIF+DD": ("CIF+DD", None),
     "CIF + DD + RS + PCS": ("CIF+DD+RS+PCS", None),
     "CIF + DD + TCI": ("CIF+DD+TCI", None),
+    # Maurice — VAT Act 1998, s.13 : valeur en douane + droit de douane
+    # ET ACCISE. Le profil générique posait « CIF+DD », qui omet l'accise
+    # et sous-facturait la TVA sur les positions qui en portent une.
+    "CIF+DD+EXC": ("CIF+DD+EXC", None),
+    "CIF + DD + EXC": ("CIF+DD+EXC", None),
     "CIF+DUTY": ("CIF+DD", None),
     "CIF+DUTY+FEES": ("CIF+TOUS_SAUF_TVA", None),
     "CIF+DUTY+LEVIES": ("CIF+TOUS_SAUF_TVA", None),
@@ -699,6 +704,11 @@ def lignes_du_fichier(donnees):
                 ligne.get("hs_code"),
                 ligne.get("code"),
                 ligne.get("code_raw"),
+                # `national_code` doit passer AVANT `hs6`, sans quoi une collecte
+                # nationale est rabattue sur six chiffres et ses sous-positions
+                # entrent en collision. La Libye perdait ainsi 349 de ses 5 920
+                # positions, sans que rien ne le signale.
+                ligne.get("national_code"),
                 ligne.get("hs6"),
             )
             if not code:
@@ -1028,6 +1038,36 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             compteurs["droits_absents_completes"] = (
                 compteurs.get("droits_absents_completes", 0) + 1
             )
+
+    # Les compteurs s'incrémentaient PAR LIGNE LUE. Deux lignes qui portent le
+    # même code sont comptées deux fois et servies une seule : le compteur
+    # annonçait donc plus de positions que le socle n'en porte, et c'est ce qui
+    # a masqué la perte de 349 positions libyennes rabattues sur le SH6.
+    # Ils comptent désormais ce qui est RÉELLEMENT SERVI.
+    compteurs["positions"] = len(positions)
+    compteurs["droits"] = sum(len(p.get("droits") or []) for p in positions.values())
+    compteurs["droits_composes"] = sum(
+        1 for p in positions.values() for d in p.get("droits") or [] if d.get("compose")
+    )
+    compteurs["droits_liquidables"] = sum(
+        1
+        for p in positions.values()
+        for d in p.get("droits") or []
+        if not d.get("compose")
+        and d.get("assiette")
+        and (d.get("taux") is not None or d.get("specifique"))
+    )
+    compteurs["positions_liquidables"] = sum(
+        1
+        for p in positions.values()
+        if (p.get("droits") or [])
+        and all(
+            not d.get("compose")
+            and d.get("assiette")
+            and (d.get("taux") is not None or d.get("specifique"))
+            for d in p["droits"]
+        )
+    )
 
     socle = {
         "iso3": iso,
