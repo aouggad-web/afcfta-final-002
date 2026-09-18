@@ -471,26 +471,26 @@
       "organism": "Douane mauritanienne (douanes.mr) — source primaire",
       "version": "2021",
       "artifact_path": "backend/data/crawled/MRT_tariffs.json",
-      "artifact_url": null,
+      "artifact_url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
       "source_type": "primary",
       "url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
       "retrieved_at": "2026-09-18",
       "edition": "Tarif des Douanes 2021 (douanes.mr, 396 pages, texte extractible)",
-      "application_period": "2020-01-01 to next amendment (obsolète?)",
+      "application_period": "2021 — modifications ultérieures non collectées",
       "hs_version": "HS 2017",
       "code_digits": 10,
       "positions_count": 6129,
       "sha256": "eaee2c0a904b08f73c7576373c7064bf39fa0e7148699989c716306c1a1e6bf4",
-      "reuse_conditions": "Source primaire (PDF officiel douanes.mr, texte extractible). Parseur scripts/parse_tarif_mrt_2021.py + suite de vérification intégrée (V1-V6) + croisement WITS 99,2 %.",
+      "reuse_conditions": "Source primaire (PDF officiel douanes.mr, texte extractible). Empreinte du PDF : 3585fbe23bf6b7be3c4e9eb963fdb31bf0336b059bf0019e4b471f178829c182, recalculée le 2026-09-18 et identique à celle du rapport de collecte. Parseur scripts/parse_tarif_mrt_2021.py + suite de vérification intégrée (V1-V6) + croisement WITS 99,2 %.",
       "legal_authority": "Code des Douanes Mauritanie",
-      "validation_status": "verified_primary",
+      "validation_status": "verified",
       "taxes": [
         "DD",
         "RS",
         "PC",
         "TVA"
       ],
-      "note": "Nomenclature nationale à 10 chiffres validée (6129 sous-positions) — remplace la source secondaire Soa Transit 2020. TVA 16 % (CGI Livre II Titre I, fiche MRT_assiette_TVA_2026-09-17). Formalités : cadre général (Code art. 33-36, 111-117, 157) — fiche MRT_formalites_reglementation_2026-09-18."
+      "note": "Nomenclature nationale à dix chiffres, 6 129 sous-positions — remplace la source secondaire (transitaire, tarif 2020) précédemment référencée ici. TVA 16 %, assiette CIF+TOUS_SAUF_TVA sur texte primaire (fiche MRT_assiette_TVA_2026-09-17). Formalités : cadre général et sectoriel (Code des douanes art. 33-36, 111-117, 157 — fiche MRT_formalites_reglementation_2026-09-18). RÉSERVE : le tarif publie quatre colonnes (US, DD, RS, PC) et n'en définit aucune. RS = redevance statistique 1 % (OMC WT/TPR/S/371 § 3.47), mais son ASSIETTE n'est établie par aucun texte consulté, pas plus que celle du PC ni le rattachement de ce dernier au prélèvement communautaire CEDEAO — voir la fiche MRT_colonnes_tarif_2026-09-18. PCS, PSC et IMF, que l'entrée précédente listait, n'ont aucune colonne dans ce tarif."
     },
     "KEN": {
       "organism": "Kenya Revenue Authority (KRA) — EAC CET 2022",

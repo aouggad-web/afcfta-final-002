@@ -61,13 +61,13 @@
         "MRT"
       ],
       "tariff": {
-        "status": "COMPLETE",
+        "status": "DOCUMENTED",
         "line_count_per_country": 6129,
         "national_line_digits": [
           10
         ],
-        "source_name": "Tarif des Douanes 2021 — douanes.mr (nomenclature nationale)",
-        "scope_note": "Nomenclature nationale détaillée à 10 chiffres, extraite du PDF officiel (SHA-256 consigné), parseur versionné + suite de vérification (V1-V6) + croisement WITS 99,2 %. Remplace la donnée NPF SH6 WITS/TRAINS."
+        "source_name": "Tarif des douanes de Mauritanie, édition 2021 (douanes.mr)",
+        "scope_note": "Nomenclature nationale détaillée à dix chiffres, extraite du PDF officiel (SHA-256 consigné) : parseur versionné, suite de vérification V1-V6, croisement WITS à 99,2 %. Remplace le référentiel NPF SH6 WITS/UNCTAD-TRAINS. Le tarif porte quatre colonnes (US, DD, RS, PC) qu'il ne définit nulle part ; l'assiette de la RS et celle du PC ne sont établies par aucun texte consulté."
       }
     }
   },
@@ -249,13 +249,13 @@
     },
     "MRT": {
       "region": "MRT_MFN",
-      "national_extension_status": "NATIONAL_TARIFF_COLLECTED",
+      "national_extension_status": "DOCUMENTED",
       "vat_status": "DOCUMENTED",
-      "other_taxes_status": "COMPLETE",
-      "calculation_order_status": "COMPLETE",
+      "other_taxes_status": "PARTIAL",
+      "calculation_order_status": "PARTIAL",
       "afcfta_status": "NOT_AVAILABLE",
       "regulatory_status": "DOCUMENTED",
-      "required_documents_status": "DOCUMENTED",
+      "required_documents_status": "NOT_AVAILABLE",
       "source_paths": [
         "data/mauritania/legal_sources.json",
         "data/mauritania/vat_measures.json",
@@ -265,7 +265,10 @@
       ],
       "vat_measure_path": "data/mauritania/vat_measures.json",
       "required_document_records": [],
-      "anomalies": []
+      "anomalies": [
+        "Le tarif ne définit aucun de ses sigles : l'assiette de la redevance statistique (RS, 1 %) et celle de la colonne PC (0,5 %) ne sont établies par aucun texte consulté, et le rattachement du PC au prélèvement communautaire CEDEAO ne l'est pas — la Mauritanie n'est pas membre de la CEDEAO. Voir backend/data/legal_refs/zlecaf_application/MRT_colonnes_tarif_2026-09-18.json.",
+        "Les formalités mauritaniennes sont générales et sectorielles, jamais par sous-position : voir MRT_formalites_reglementation_2026-09-18.json. Aucun document requis n'est documenté par position."
+      ]
     },
     "NER": {
       "region": "ECOWAS_CET_WA15",
