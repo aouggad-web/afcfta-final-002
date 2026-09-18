@@ -64,6 +64,13 @@ MANQUE_ASSIETTE = "ASSIETTE_INDISPONIBLE"
 MANQUE_QUANTITE = "QUANTITE_REQUISE"
 MANQUE_CHANGE = "TAUX_DE_CHANGE_REQUIS"
 MANQUE_COMPOSANT = "ASSIETTE_INCOMPLETE"
+#: Le tarif publie DEUX composantes pour un même droit — « 40% or 240c/kg »,
+#: sur 140 positions sud-africaines — sans que la source dise laquelle
+#: s'applique. Le crawl a délibérément gardé le verbatim sans trancher ; le
+#: socle ne tranche pas davantage. Servir la seule part ad valorem donnerait un
+#: montant crédible et possiblement faux : sur la position 020110, la part
+#: spécifique l'emporte dès que la valeur unitaire passe sous 6,00 ZAR/kg.
+MANQUE_REGLE_COMPOSEE = "REGLE_COMPOSEE_NON_ETABLIE"
 
 
 def _facteur_devise_specifique(
@@ -302,7 +309,22 @@ def _liquider(
         taux = droit.get("taux")
         specifique = droit.get("specifique")
         manque_devise = False
-        if taux is None and specifique is not None:
+        regle_composee_absente = False
+        if droit.get("compose") and taux is not None and specifique is not None:
+            # Droit composé : les deux composantes sont publiées, la règle qui
+            # départage ne l'est pas. On refuse de liquider plutôt que de
+            # retenir celle qui arrange — c'est la même règle que partout
+            # ailleurs ici, appliquée à un cas qui y échappait.
+            regle_composee_absente = True
+            ligne["expression_brute"] = droit.get("expression_brute")
+            ligne["composantes"] = {
+                "ad_valorem_pct": taux,
+                "specifique": (
+                    specifique.get("brut") if isinstance(specifique, dict) else specifique
+                ),
+            }
+            taux = None
+        elif taux is None and specifique is not None:
             # Garde-fou : un droit spécifique se liquide toujours à la quantité.
             # Quelle que soit l'assiette déclarée, la lire comme ad valorem
             # transformerait « 8c/kg » en « 8 % » — un montant faux, et
@@ -344,7 +366,9 @@ def _liquider(
             droit, cif, calcules, echecs, quantite, taux_de_change, codes_de_la_position
         )
         ligne.update(detail)
-        if manque_devise:
+        if regle_composee_absente:
+            manque = MANQUE_REGLE_COMPOSEE
+        elif manque_devise:
             manque = MANQUE_CHANGE
         elif manque is None and taux is None:
             manque = MANQUE_TAUX

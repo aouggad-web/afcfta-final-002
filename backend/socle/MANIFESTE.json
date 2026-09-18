@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-17T23:47:21.823131+00:00",
+  "construit_le": "2026-09-18T08:10:34.798713+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1521,7 +1521,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
       "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "afb847d50b253087c7d16e958a7f3dfcc51a8bd0c54c32ec9d23a1483d12f6be",
+      "socle_sha256": "1eaaa896d7d59d626f959d44846c776f3871637fb01c6f2f0d37888fd2eab69f",
       "collecte": "2026-08-29T13:26:21.816037",
       "etat": "PARTIEL",
       "familles": [
@@ -1530,8 +1530,8 @@
       "compteurs": {
         "positions": 8589,
         "droits": 8589,
-        "droits_liquidables": 8588,
-        "positions_liquidables": 8588,
+        "droits_liquidables": 8448,
+        "positions_liquidables": 8448,
         "preferentiels": 42945,
         "preferentiels_specifiques": 448,
         "taux_indisponibles": 1,
@@ -1541,6 +1541,7 @@
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 181,
+        "droits_composes": 140,
         "classification_estimee": 0
       }
     },
@@ -1633,6 +1634,6 @@
     ],
     "positions": 359108,
     "droits": 1085056,
-    "droits_liquidables": 1026359
+    "droits_liquidables": 1026219
   }
 }

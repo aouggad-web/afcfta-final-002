@@ -145,7 +145,19 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
     est précisément ce que le moteur ne vérifie pas. Un écart se constate, une
     économie se promet.
     """
-    servi = (resultat.get("npf") or {}).get("total_a_payer")
+    # L'écart n'a de sens que contre un total NPF réellement liquidé. Quand le
+    # NPF est PARTIEL ou INDISPONIBLE, son « total » est la somme des seules
+    # lignes calculables — le comparer ferait lire un écart NÉGATIF sur une
+    # simulation pourtant avantageuse, ce qui est pire que pas d'écart du tout.
+    # Cas rencontré : ZAF/020110, dont le droit composé « 40% or 240c/kg »
+    # n'est pas liquidable, faisait afficher −15 000 sur une franchise SADC.
+    bloc_npf = resultat.get("npf") or {}
+    servi = bloc_npf.get("total_a_payer") if bloc_npf.get("etat") == "COMPLET" else None
+    motif_sans_ecart = (
+        None
+        if servi is not None
+        else ("total NPF non liquidé (" + str(bloc_npf.get("etat")) + ") : aucun écart comparable")
+    )
     chiffrees = []
     for simulation in simulations:
         entree = dict(simulation)
@@ -176,6 +188,8 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
         entree["ecart_vs_total_servi"] = (
             round(servi - total, 2) if (servi is not None and total is not None) else None
         )
+        if entree["ecart_vs_total_servi"] is None and motif_sans_ecart:
+            entree["ecart_indisponible_motif"] = motif_sans_ecart
         chiffrees.append(entree)
     return chiffrees
 

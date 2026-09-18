@@ -503,7 +503,23 @@ def droits_depuis_liste(taxes, source_defaut):
         taux = lire_taux(row.get("rate") if row.get("rate") is not None else row.get("rate_pct"))
         if taux is None:
             taux = lire_taux(row.get("raw_value"))
-        specifique = row.get("specific_value")
+        # Un droit peut porter DEUX composantes. Le tarif SARS publie
+        # « 40% or 240c/kg » sur 140 positions : `rate_pct` 40,0 ET
+        # `specific_component` « 240c/kg », avec `compound: true`.
+        #
+        # La première version ne lisait que `specific_value`, et seulement en
+        # l'absence de taux ad valorem. Un droit composé perdait donc
+        # silencieusement sa part spécifique ET son verbatim : le moteur
+        # servait 40 % comme s'il était le droit entier. Sur la position
+        # 020110, la part spécifique l'emporte en dessous de 6,00 ZAR/kg de
+        # valeur unitaire — l'écart n'est pas théorique.
+        #
+        # Les deux composantes sont désormais conservées, avec l'expression
+        # brute. Laquelle s'applique n'est PAS tranchée ici : le crawl a
+        # délibérément gardé `raw_value verbatim` sans décider, et le moteur
+        # ne doit pas décider à sa place.
+        specifique = row.get("specific_value") or row.get("specific_component")
+        compose = bool(row.get("compound")) and taux is not None and specifique
         if specifique and row.get("rate_pct") is None:
             taux = None
         out.append(
@@ -519,6 +535,12 @@ def droits_depuis_liste(taxes, source_defaut):
                 classification=row.get("classification_source"),
             )
         )
+        if compose:
+            # Le verbatim est ce qui permet à l'opérateur — et au relecteur —
+            # de constater que le droit a deux composantes, sans que le socle
+            # ait eu à choisir entre elles.
+            out[-1]["expression_brute"] = str(row.get("raw_value") or "")
+            out[-1]["compose"] = True
     return out
 
 
@@ -653,6 +675,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
+        "droits_composes": 0,
         "classification_estimee": 0,
     }
     familles_vues = set()
@@ -726,7 +749,15 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             specifique_lisible = (
                 isinstance(d.get("specifique"), dict) and d["specifique"].get("montant") is not None
             )
-            if d["assiette"] and (d["taux"] is not None or specifique_lisible):
+            # Un droit COMPOSÉ porte ses deux composantes mais pas la règle qui
+            # les départage : le moteur refuse de le liquider. Le compter ici
+            # comme liquidable ferait dire au manifeste qu'un montant est
+            # calculable là où la réponse servie est une indisponibilité
+            # nommée — deux vérités pour un même droit.
+            if d.get("compose"):
+                compteurs["droits_composes"] = compteurs.get("droits_composes", 0) + 1
+                position_complete = False
+            elif d["assiette"] and (d["taux"] is not None or specifique_lisible):
                 compteurs["droits_liquidables"] += 1
             else:
                 position_complete = False

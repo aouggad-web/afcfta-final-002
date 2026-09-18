@@ -619,16 +619,21 @@ def test_une_simulation_regionale_est_chiffree_par_le_moteur(client):
     """Un taux seul ne répond pas à « combien je paierais sous ce régime ».
 
     Et le chiffrer à la main se tromperait : sur ce couloir, effacer le droit
-    de douane retire 40 000 de droit MAIS AUSSI la TVA qui s'assied dessus.
-    L'écart réel est de 46 000, pas de 40 000 — d'où le passage par le moteur,
-    qui connaît l'assiette, le plafond, la devise et la cascade.
+    de douane retire 82 000 de droit MAIS AUSSI la TVA qui s'assied dessus.
+    L'écart réel est de 94 300 — d'où le passage par le moteur, qui connaît
+    l'assiette, le plafond, la devise et la cascade.
+
+    Ce test visait 020110 jusqu'à ce que le garde-fou des droits composés
+    rende cette position indisponible : son droit « 40% or 240c/kg » ne se
+    liquide pas. Repointé sur une position au droit simple, plutôt que
+    d'affaiblir l'assertion pour la faire passer.
     """
     reponse = client.post(
         "/calcul",
         json={
             "destination": "ZAF",
             "origine": "MOZ",
-            "code_sh": "020110",
+            "code_sh": "02071290",
             "valeur_cif": 100000,
         },
     )
@@ -640,11 +645,14 @@ def test_une_simulation_regionale_est_chiffree_par_le_moteur(client):
 
     sadc = simulations[0]
     servi = corps["npf"]["total_a_payer"]
+    assert corps["npf"]["etat"] == "COMPLET", "l'écart n'a de sens que sur un NPF liquidé"
     assert sadc["total_simule"] is not None
     assert sadc["total_simule"] < servi
     assert sadc["ecart_vs_total_servi"] == round(servi - sadc["total_simule"], 2)
-    # L'écart dépasse le seul droit effacé : la TVA cascade dessus.
-    assert sadc["ecart_vs_total_servi"] > 100000 * sadc["taux_publie_pct"] / 100
+    # Le cœur du test : l'écart dépasse le SEUL droit effacé (82 % de 100 000),
+    # parce que la TVA s'assied sur CIF+DD. Une multiplication `cif × taux`
+    # aurait rendu 82 000 et manqué 12 300.
+    assert sadc["ecart_vs_total_servi"] > 82000
 
 
 def test_une_simulation_ne_change_jamais_le_total_servi(client):
@@ -656,20 +664,20 @@ def test_une_simulation_ne_change_jamais_le_total_servi(client):
     payload = {
         "destination": "ZAF",
         "origine": "MOZ",
-        "code_sh": "020110",
+        "code_sh": "02071290",
         "valeur_cif": 100000,
     }
     corps = client.post("/calcul", json=payload).json()
 
     assert all(s["applique"] is False for s in corps["simulations_regionales"])
-    assert corps["npf"]["total_a_payer"] == 161000.0
+    assert corps["npf"]["total_a_payer"] == 209300.0
 
 
 def test_aucune_simulation_sans_origine(client):
     """Sans origine déclarée, aucune éligibilité ne peut être établie."""
     corps = client.post(
         "/calcul",
-        json={"destination": "ZAF", "code_sh": "020110", "valeur_cif": 100000},
+        json={"destination": "ZAF", "code_sh": "02071290", "valeur_cif": 100000},
     ).json()
 
     assert corps["simulations_regionales"] == []
