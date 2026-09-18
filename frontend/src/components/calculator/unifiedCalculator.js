@@ -280,6 +280,15 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
           note: unionDouaniere.note,
         }
       : null,
+    // Régimes régionaux que le tarif de destination PUBLIE pour ce couloir,
+    // chiffrés par le moteur et jamais appliqués : le total servi plus haut
+    // ne bouge pas. Taire une colonne à 0 % que le tarif publie n'est pas
+    // plus neutre que d'en inventer une — mais l'afficher sans sa réserve
+    // d'origine la ferait lire comme un droit acquis.
+    regional_simulations: Array.isArray(calcul.simulations_regionales)
+      ? calcul.simulations_regionales
+      : [],
+
     zlecaf_eligible: hasZlecaf,
     zlecaf_preference_applied: hasZlecaf,
     zlecaf_note: calcul.preference_zlecaf?.note || null,

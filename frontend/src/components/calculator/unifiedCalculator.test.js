@@ -351,3 +351,55 @@ describe('mapCalculToLegacyResult — un complément national reste annoncé', (
     expect(mapCalculToLegacyResult(sansComplement, contexte).confidence_level).toBe('very_high');
   });
 });
+
+describe('simulations régionales', () => {
+  // Le backend rend les régimes que le tarif de destination PUBLIE pour ce
+  // couloir, chiffrés et jamais appliqués. L'adaptateur les transmet tels
+  // quels : les recalculer ici dupliquerait une logique d'assiette que seul
+  // le moteur connaît, et les trier trahirait la neutralité voulue.
+  const avecSimulations = (simulations) => ({
+    position: { designation: 'Carcasses', hs6: '020110' },
+    valeur_cif: 100000,
+    npf: { lignes: [], total_a_payer: 161000, etat: 'COMPLET' },
+    provenance: { niveau: 'hs6' },
+    simulations_regionales: simulations,
+  });
+
+  const SADC = {
+    regime: 'SADC',
+    libelle: "Communauté de développement d'Afrique australe (SADC)",
+    taux_publie_pct: 0,
+    prelevement: 'DD',
+    applique: false,
+    total_simule: 115000,
+    ecart_vs_total_servi: 46000,
+    reserve: "Simulation. La franchise dépend des règles d'origine…",
+  };
+
+  it('transmet les simulations sans les modifier', () => {
+    const r = mapCalculToLegacyResult(avecSimulations([SADC]), contexte);
+
+    expect(r.regional_simulations).toEqual([SADC]);
+  });
+
+  it('préserve l’ordre rendu par le backend, sans classer par avantage', () => {
+    // COMESA est ici le MOINS avantageux : un tri par montant le renverrait
+    // en queue. L'ordre alphabétique du backend doit survivre au passage.
+    const COMESA = { ...SADC, regime: 'COMESA', taux_publie_pct: 25, total_simule: 143750 };
+    const r = mapCalculToLegacyResult(avecSimulations([COMESA, SADC]), contexte);
+
+    expect(r.regional_simulations.map((s) => s.regime)).toEqual(['COMESA', 'SADC']);
+  });
+
+  it('ne change jamais le total servi', () => {
+    const r = mapCalculToLegacyResult(avecSimulations([SADC]), contexte);
+
+    expect(r.total_taxes ?? r.npf_calculation?.total_to_pay ?? 161000).not.toBe(115000);
+    expect(r.regional_simulations.every((s) => s.applique === false)).toBe(true);
+  });
+
+  it('rend un tableau vide quand le backend n’en fournit aucune', () => {
+    expect(mapCalculToLegacyResult(avecSimulations([]), contexte).regional_simulations).toEqual([]);
+    expect(mapCalculToLegacyResult(avecSimulations(undefined), contexte).regional_simulations).toEqual([]);
+  });
+});

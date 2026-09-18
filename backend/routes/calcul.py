@@ -114,14 +114,70 @@ def calcul(demande: DemandeCalcul):
     # appliquer : le total servi reste celui du régime retenu ci-dessus.
     # Taire une colonne à 0 % que le tarif de destination publie n'est pas
     # plus neutre que d'en inventer une — voir simulations_regionales.
-    resultat["simulations_regionales"] = (
-        simulations_regionales(position, demande.destination, demande.origine)
-        if demande.origine
-        else []
+    resultat["simulations_regionales"] = _chiffrer_simulations(
+        (
+            simulations_regionales(position, demande.destination, demande.origine)
+            if demande.origine
+            else []
+        ),
+        position,
+        demande,
+        provenance,
+        resultat,
     )
     resultat.update(_regimes(preference))
     resultat.update(_bloc_reglementaire(demande.destination, demande.origine, demande.valeur_cif))
     return resultat
+
+
+def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
+    """Chiffrer chaque simulation en relançant le moteur, pas à la main.
+
+    Un taux seul ne répond pas à la question de l'opérateur : « combien je
+    paierais sous ce régime ». Le calculer ici avec une multiplication
+    ignorerait l'assiette réelle du droit, son éventuel plafond, la devise de
+    la position et la cascade des prélèvements qui s'appuient dessus — quatre
+    occasions de rendre un montant faux. Le moteur sait déjà tout cela : on lui
+    repasse la position avec le seul taux préférentiel substitué.
+
+    ``ecart_vs_total_servi`` est nommé ainsi, et non « économie » : le mot
+    supposerait que la simulation est acquise, alors que sa réserve d'origine
+    est précisément ce que le moteur ne vérifie pas. Un écart se constate, une
+    économie se promet.
+    """
+    servi = (resultat.get("npf") or {}).get("total_a_payer")
+    chiffrees = []
+    for simulation in simulations:
+        entree = dict(simulation)
+        try:
+            simule = calculer(
+                position,
+                demande.valeur_cif,
+                quantite=demande.quantite,
+                taux_de_change=demande.taux_de_change,
+                taux_preferentiels={
+                    simulation["prelevement"]: {"taux": simulation["taux_publie_pct"]}
+                },
+                devise_position=provenance.get("devise_nationale"),
+                devise_cif=demande.devise_cif,
+                couverture=provenance.get("couverture"),
+            )
+        except Exception as exc:  # pragma: no cover - le moteur ne doit pas faire tomber la route
+            logger.warning("Simulation %s non chiffrée : %s", simulation.get("regime"), exc)
+            entree["total_simule"] = None
+            entree["etat_simule"] = "CHIFFRAGE_INDISPONIBLE"
+            chiffrees.append(entree)
+            continue
+        bloc = simule.get("preference") or {}
+        total = bloc.get("total_a_payer")
+        entree["total_simule"] = total
+        entree["etat_simule"] = bloc.get("etat")
+        entree["lignes_simulees"] = bloc.get("lignes")
+        entree["ecart_vs_total_servi"] = (
+            round(servi - total, 2) if (servi is not None and total is not None) else None
+        )
+        chiffrees.append(entree)
+    return chiffrees
 
 
 def _completer_famille_absente(position: dict, destination: str, provenance: dict):

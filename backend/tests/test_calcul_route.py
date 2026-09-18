@@ -610,3 +610,66 @@ def test_un_bloc_reglementaire_en_panne_n_interrompt_pas_le_calcul(client, monke
     assert corps["npf"]["etat"] in {"COMPLET", "PARTIEL"}
     for cle in ("regulatory_compliance", "regulatory_cost", "regulatory_reported"):
         assert corps[cle] is None
+
+
+# ── Simulations régionales : chiffrées par le moteur, jamais servies ─────────
+
+
+def test_une_simulation_regionale_est_chiffree_par_le_moteur(client):
+    """Un taux seul ne répond pas à « combien je paierais sous ce régime ».
+
+    Et le chiffrer à la main se tromperait : sur ce couloir, effacer le droit
+    de douane retire 40 000 de droit MAIS AUSSI la TVA qui s'assied dessus.
+    L'écart réel est de 46 000, pas de 40 000 — d'où le passage par le moteur,
+    qui connaît l'assiette, le plafond, la devise et la cascade.
+    """
+    reponse = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "MOZ",
+            "code_sh": "020110",
+            "valeur_cif": 100000,
+        },
+    )
+    assert reponse.status_code == 200
+    corps = reponse.json()
+
+    simulations = corps["simulations_regionales"]
+    assert [s["regime"] for s in simulations] == ["SADC"]
+
+    sadc = simulations[0]
+    servi = corps["npf"]["total_a_payer"]
+    assert sadc["total_simule"] is not None
+    assert sadc["total_simule"] < servi
+    assert sadc["ecart_vs_total_servi"] == round(servi - sadc["total_simule"], 2)
+    # L'écart dépasse le seul droit effacé : la TVA cascade dessus.
+    assert sadc["ecart_vs_total_servi"] > 100000 * sadc["taux_publie_pct"] / 100
+
+
+def test_une_simulation_ne_change_jamais_le_total_servi(client):
+    """La borne qui sépare une simulation d'une franchise fabriquée.
+
+    Le montant opposable reste celui du régime retenu ; la simulation vit à
+    côté, avec sa réserve d'origine.
+    """
+    payload = {
+        "destination": "ZAF",
+        "origine": "MOZ",
+        "code_sh": "020110",
+        "valeur_cif": 100000,
+    }
+    corps = client.post("/calcul", json=payload).json()
+
+    assert all(s["applique"] is False for s in corps["simulations_regionales"])
+    assert corps["npf"]["total_a_payer"] == 161000.0
+
+
+def test_aucune_simulation_sans_origine(client):
+    """Sans origine déclarée, aucune éligibilité ne peut être établie."""
+    corps = client.post(
+        "/calcul",
+        json={"destination": "ZAF", "code_sh": "020110", "valeur_cif": 100000},
+    ).json()
+
+    assert corps["simulations_regionales"] == []

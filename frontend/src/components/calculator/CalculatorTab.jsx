@@ -1281,6 +1281,74 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </div>
               )}
 
+              {/* Simulations régionales — ce que le tarif de DESTINATION publie
+                  pour ce couloir sous un autre régime, chiffré par le moteur
+                  et JAMAIS appliqué. Le total facturé plus haut ne bouge pas.
+
+                  Sur le couloir Mozambique → Afrique du Sud, position 020110,
+                  la colonne SADC publie 0 % quand la ZLECAf reste à 40 % :
+                  l'opérateur voyait 161 000 sans qu'aucun champ ne lui signale
+                  les 115 000 que son tarif de destination publie pourtant.
+
+                  L'ordre est celui que le backend rend — alphabétique, pas
+                  classé par avantage. Trier par montant mettrait en tête le
+                  régime dont les règles d'origine sont précisément ce que le
+                  moteur ne vérifie pas. */}
+              {Array.isArray(result.regional_simulations) && result.regional_simulations.length > 0 && (
+                <div className="mb-6 p-4 bg-sky-500/10 border border-sky-500/30 rounded-xl">
+                  <div className="flex items-start gap-3">
+                    <Info className="w-5 h-5 text-sky-400 mt-0.5 flex-shrink-0" />
+                    <div className="w-full">
+                      <p className="text-sky-300 font-semibold text-sm">
+                        {language === 'fr'
+                          ? 'Autres régimes publiés par le tarif de destination'
+                          : 'Other regimes published by the destination tariff'}
+                      </p>
+                      <p className="text-sky-200/70 text-xs mt-1">
+                        {language === 'fr'
+                          ? "Simulations, non appliquées au total ci-dessus."
+                          : 'Simulations, not applied to the total above.'}
+                      </p>
+
+                      <div className="mt-3 space-y-2">
+                        {result.regional_simulations.map((sim) => (
+                          <div
+                            key={sim.regime}
+                            className="p-3 bg-slate-900/40 border border-slate-700/60 rounded-lg"
+                            data-testid={`regional-simulation-${sim.regime}`}
+                          >
+                            <div className="flex flex-wrap items-baseline justify-between gap-2">
+                              <span className="text-slate-200 text-sm font-medium">{sim.libelle}</span>
+                              <span className="font-mono text-sm text-sky-300">
+                                {sim.taux_publie_pct} % · {sim.prelevement}
+                              </span>
+                            </div>
+                            {sim.total_simule !== null && sim.total_simule !== undefined && (
+                              <div className="flex flex-wrap items-baseline justify-between gap-2 mt-1">
+                                <span className="text-slate-400 text-xs">
+                                  {language === 'fr' ? 'Total simulé' : 'Simulated total'}
+                                </span>
+                                <span className="font-mono text-base text-slate-100">
+                                  {sim.total_simule.toLocaleString('fr-FR')}
+                                  {sim.ecart_vs_total_servi !== null &&
+                                    sim.ecart_vs_total_servi !== undefined && (
+                                      <span className="text-slate-400 text-xs ml-2">
+                                        {language === 'fr' ? 'écart ' : 'gap '}
+                                        {sim.ecart_vs_total_servi.toLocaleString('fr-FR')}
+                                      </span>
+                                    )}
+                                </span>
+                              </div>
+                            )}
+                            <p className="text-slate-400 text-xs mt-2">{sim.reserve}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {result.plancher_npf && (
                 <div className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-start gap-3">
                   <Info className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
