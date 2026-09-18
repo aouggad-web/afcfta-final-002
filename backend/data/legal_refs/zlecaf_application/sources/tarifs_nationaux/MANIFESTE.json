@@ -1,0 +1,73 @@
+{
+  "_objet": "Tarifs douaniers nationaux détaillés — sources primaires de la collecte « famille D » (élimination de WITS/UNCTAD-TRAINS).",
+  "_regle": "Les PDF (3,6 à 17 Mo) ne sont PAS versionnés dans le dépôt ; leur empreinte SHA-256 est consignée ici pour re-téléchargement et vérification (doctrine « PDF non archivé, empreinte consignée »).",
+  "_telecharge_le": "2026-09-18",
+  "tarifs": {
+    "MRT": {
+      "url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
+      "institution": "Douane mauritanienne (douanes.mr)",
+      "annee": "2021",
+      "sha256": "3585fbe23bf6b7be3c4e9eb963fdb31bf0336b059bf0019e4b471f178829c182",
+      "taille_octets": 3616552,
+      "pages": 396,
+      "structure": "6129 sous-positions (DD/RS/PC)"
+    },
+    "MDG": {
+      "url": "https://www.douanes.gov.mg/srcs/uploads/2026/01/TARIF-DES-DOUANES-2026.pdf",
+      "institution": "Direction Générale des Douanes (douanes.gov.mg)",
+      "annee": "2026",
+      "sha256": "167893df8b2a96e39a3b841322122e626962169d56637c2f62a2d76cd1ba60bb",
+      "taille_octets": 4084767,
+      "pages": 292,
+      "structure": "nomenclature + DD/TVA/IME/APEI"
+    },
+    "MOZ": {
+      "url": "https://www.at.gov.mz/api/webdav?path=/SERVI%C3%87OS%20ADUANEIROS/PAUTA%20ADUANEIRA/PAUTA%20ADUANEIRA%202026%20AT.pdf",
+      "institution": "Autoridade Tributária de Moçambique (at.gov.mz)",
+      "annee": "2026",
+      "sha256": "77f0425d55d8c220ae22248585784a1eefc8ce7e3a5155f0c837aa4dee7e335d",
+      "taille_octets": 5609682,
+      "pages": 11,
+      "structure": "5822 positions SH8 (PDF compact) ; version XLSX officielle aussi dispo",
+      "alt_xlsx": "https://www.at.gov.mz/api/webdav?path=%2FSERVI%C3%87OS%20ADUANEIROS/PAUTA%20ADUANEIRA/PAUTA%20ADUANEIRA%202026.xlsx"
+    },
+    "ZMB": {
+      "url": "https://www.zra.org.zm/wp-content/uploads/2026/08/Customs-Tariff-Book.pdf",
+      "institution": "Zambia Revenue Authority (zra.org.zm)",
+      "annee": "2026",
+      "sha256": "4e625caf4b9ce399cf4b61cfa6d8cc92350648a24ec1801b1e88da2304c71101",
+      "taille_octets": 12936746,
+      "pages": 682,
+      "structure": "HS + droits"
+    },
+    "ZWE": {
+      "url": "https://www.zimra.co.zw/customs/classification-of-goods/tariff-handbook?download=393:download-tariff-handbook",
+      "institution": "ZIMRA (zimra.co.zw)",
+      "annee": "2025",
+      "sha256": "cd6d0c2143a55ac4354b4125b905e8318dc47814d4e938e651ae345f5f690597",
+      "taille_octets": 5416458,
+      "pages": 1162,
+      "structure": "HS + accises",
+      "acces": "zimra.co.zw 403 (Cloudflare) ; miroir archive.org vérifié",
+      "alt_gazette": "https://www.veritaszim.net/sites/veritas_d/files/SI%202022-203%20Customs%20and%20Excise%20(Tariff)%20Notice,%202022%20Tariff%20Handbook.pdf"
+    },
+    "MUS": {
+      "url": "https://www.mra.mu/download/TariffInf130826.pdf",
+      "institution": "Mauritius Revenue Authority (mra.mu)",
+      "annee": "2026",
+      "sha256": "26c0e4c6764096639bfb3cbc4dd683eb389c99d45758d2344f7df17c9e65fe11",
+      "taille_octets": 16916985,
+      "pages": 807,
+      "structure": "tarif intégré (nomenclature + taux)"
+    },
+    "MWI": {
+      "url": "https://www.mra.mw/admin/storage/downloads/MALAWI_CUSTOMS_AND_EXCISE_(TARIFFS)_ORDER_HS_2022_VERSION_2023-2024_(P).pdf",
+      "institution": "Malawi Revenue Authority (mra.mw)",
+      "annee": "2023-2024",
+      "sha256": "7960f473e21a8363dbc144cd6ec445b1ab506e36252af485c6eebcd0b661f2ac",
+      "taille_octets": 6271724,
+      "pages": 642,
+      "structure": "HS 2022, 642 pages"
+    }
+  }
+}
