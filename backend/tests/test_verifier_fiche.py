@@ -114,3 +114,82 @@ def test_les_fiches_du_depot_passent_toutes():
     }
 
     assert not en_anomalie, f"fiches en anomalie : {en_anomalie}"
+
+
+# ── Troisième défaut du même genre : les règles NOMMÉES ───────────────────────
+def test_une_regle_qui_nomme_ses_sous_regles_est_acceptee(tmp_path):
+    """Une fiche qui établit plusieurs règles distinctes les nomme.
+
+    Défaut constaté le 2026-09-18 : une fiche mauritanienne portant deux
+    règles entièrement sourcées — déclaration en détail et prohibitions, avec
+    leurs articles et leurs citations — a été refusée parce que le bloc qui
+    les CONTIENT ne citait rien lui-même. L'outil jugeait de nouveau la forme.
+    """
+    chemin = _ecrire(
+        tmp_path,
+        {
+            "declaration_en_detail": {
+                "article": "Art. 111-114",
+                "verbatim": "Toutes les marchandises importées doivent faire l'objet "
+                "d'une déclaration en détail leur assignant un régime douanier.",
+                "portee": "Générale — toutes positions.",
+            },
+            "prohibitions": {
+                "article": "Art. 33-36",
+                "verbatim": "Sont considérées comme prohibées toutes marchandises dont "
+                "l'importation est interdite à quelque titre que ce soit.",
+                "portee": "Huit motifs, levée sur titre régulier.",
+            },
+            "licences_economiques": "Aucune restriction quantitative.",
+        },
+    )
+    anomalies, _, statut = verifier_fiche.verifier(chemin)
+    assert anomalies == []
+    assert statut == "fiche"
+
+
+def test_une_sous_regle_sans_citation_ne_sauve_pas_les_autres(tmp_path):
+    """Contrôle négatif : le conteneur ne dilue pas l'exigence.
+
+    Une sous-règle qui ne cite rien n'est pas retenue comme règle — elle ne
+    peut donc pas servir de caution à un bloc qui, lui, résume au lieu de citer.
+    """
+    chemin = _ecrire(
+        tmp_path,
+        {
+            "premiere": {"article": "Art. 1", "portee": "résumé sans citation"},
+            "seconde": {"article": "Art. 2", "portee": "résumé sans citation"},
+        },
+    )
+    anomalies, _, _ = verifier_fiche.verifier(chemin)
+    assert any("verbatim absent" in a for a in anomalies)
+
+
+def test_une_regle_plate_reste_jugee_comme_avant(tmp_path):
+    """Non-régression : la forme historique n'est pas dégradée par la nouvelle."""
+    chemin = _ecrire(
+        tmp_path,
+        {
+            "article": "Art. 21",
+            "verbatim": "La taxe sur la valeur ajoutée est assise sur la valeur en douane.",
+            "assiette": "CIF",
+        },
+    )
+    anomalies, _, statut = verifier_fiche.verifier(chemin)
+    assert anomalies == []
+    assert statut == "fiche"
+
+
+def test_un_conteneur_dont_aucune_sous_regle_ne_porte_de_valeur_est_signale(tmp_path):
+    """Une sous-règle qui cite mais ne retient rien reste une anomalie."""
+    chemin = _ecrire(
+        tmp_path,
+        {
+            "une_regle": {
+                "article": "Art. 7",
+                "verbatim": "Le présent article est cité fidèlement mais n'est pas exploité.",
+            }
+        },
+    )
+    anomalies, _, _ = verifier_fiche.verifier(chemin)
+    assert any("aucune valeur retenue" in a for a in anomalies)

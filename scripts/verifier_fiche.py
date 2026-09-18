@@ -138,14 +138,37 @@ def _verifier_empreintes(fiche, dossier):
     return anomalies, reserves, verifies
 
 
-def _etablit_une_valeur(fiche):
-    """La fiche porte-t-elle une règle ? Rendu : (blocs de règle, verbatim vu).
+def _sous_regles(regle):
+    """Les sous-règles nommées d'un bloc `regle`, ou rien.
 
-    Une règle vit dans `regle`, ou dans chaque entrée de `determinations[]` —
-    les deux formes existent au dépôt et établissent également une donnée."""
+    Une fiche qui établit PLUSIEURS règles distinctes les nomme plutôt que de
+    les entasser : `regle: {declaration_en_detail: {...}, prohibitions: {...}}`.
+    Chaque sous-bloc porte alors son article, sa citation et sa portée, et le
+    bloc qui les contient n'en porte aucune.
+
+    Exiger la citation sur le conteneur jugerait la FORME de la fiche : c'est
+    ainsi qu'une fiche mauritanienne portant deux règles entièrement sourcées,
+    articles et verbatim compris, a été refusée. Le critère est donc le
+    contenu — un conteneur ne cite rien lui-même et abrite au moins un bloc
+    qui cite. Une `regle` plate reste une règle, et une `regle` qui ne cite
+    rien nulle part reste en anomalie.
+    """
+    if _verbatims(regle):
+        return []
+    enfants = [v for v in regle.values() if isinstance(v, dict)]
+    return [e for e in enfants if _verbatims(e)]
+
+
+def _etablit_une_valeur(fiche):
+    """La fiche porte-t-elle une règle ? Rendu : les blocs de règle.
+
+    Une règle vit dans `regle`, dans les sous-règles nommées de `regle`, ou
+    dans chaque entrée de `determinations[]` — ces formes existent au dépôt et
+    établissent également une donnée."""
     regles = []
-    if isinstance(fiche.get("regle"), dict):
-        regles.append(fiche["regle"])
+    regle = fiche.get("regle")
+    if isinstance(regle, dict):
+        regles.extend(_sous_regles(regle) or [regle])
     determinations = fiche.get("determinations")
     if isinstance(determinations, list):
         regles.extend(d for d in determinations if isinstance(d, dict))
@@ -188,7 +211,7 @@ def verifier(chemin):
         return anomalies, reserves, "ignore"
 
     for i, regle in enumerate(regles):
-        ou = "regle" if len(regles) == 1 and "regle" in fiche else f"détermination {i + 1}"
+        ou = "regle" if len(regles) == 1 and regles[0] is fiche.get("regle") else f"règle {i + 1}"
         if _premier(regle, CLES_VALEUR)[0] is None:
             anomalies.append(f"{ou} : aucune valeur retenue")
         citations = _verbatims(regle)
