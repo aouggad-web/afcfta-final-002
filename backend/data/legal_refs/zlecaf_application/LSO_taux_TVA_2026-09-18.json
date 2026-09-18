@@ -3,7 +3,7 @@
   "objet": "Taux de la TVA au Lesotho : 15 % (VAT Act 2001 s.19(3), LN 18/2020)",
   "verified_at": "2026-09-18",
   "etabli": true,
-  "evidence_level": "primaire — VAT Act 2001 (lra.org.ls, texte lu) + LN No. 18 of 2020 (PDF scanné — OCR easyocr, deux passes cohérentes).",
+  "evidence_level": "acte primaire CITÉ mais NON ARCHIVÉ — VAT Act 2001 (lra.org.ls, texte lu) + LN No. 18 of 2020 (PDF scanné — OCR easyocr, deux passes cohérentes). | Téléchargement tenté le 2026-09-18 : www.lra.org.ls injoignable depuis cet environnement (relais coupé par le mandataire (tunnel fermé, code 1006)). La déclaration n'est donc pas contrôlable dans le dépôt, et le niveau de preuve le dit plutôt que de l'affirmer.",
   "source": {
     "url": "https://www.lra.org.ls/sites/default/files/2026-09/VAT%20ACT%20-%202001.pdf",
     "institution": "LRA",
@@ -20,6 +20,13 @@
   ],
   "doutes": "LRA non joignable en direct lors des premières tentatives (timeout), succès ensuite. La valeur supprimée lue '12%' en OCR doit être vérifiée sur l'original papier.",
   "remaining_work": [
-    "Valider sur la Gazette originale"
-  ]
+    "Valider sur la Gazette originale",
+    "Archiver l'acte depuis www.lra.org.ls — injoignable le 2026-09-18 — et consigner son empreinte."
+  ],
+  "document_non_archive": {
+    "hote": "www.lra.org.ls",
+    "motif_echec": "relais coupé par le mandataire (tunnel fermé, code 1006)",
+    "tente_le": "2026-09-18",
+    "consequence": "La valeur retenue reste celle lue dans l'acte, mais aucune empreinte ne la rend opposable ici. À archiver dès que l'hôte répond."
+  }
 }

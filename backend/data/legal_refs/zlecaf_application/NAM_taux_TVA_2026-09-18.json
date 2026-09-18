@@ -7,12 +7,15 @@
   "source": {
     "url": "https://www.namra.org.na/documents/cms/uploaded/value-added-tax-act-10-of-2000-8d9c425ffc.pdf",
     "institution": "NamRA",
-    "pdf_non_archive": "PDF du texte annoté non archivé ; verbatim transcrit du texte extractible."
+    "pdf_archive": "sources/NAM_vat_act_10_2000_taux.texte-extrait.txt"
   },
   "regle": {
     "valeur": "15 % (taux standard)",
     "verbatim": "6. (1) … there shall be levied and paid, for the benefit of the State Revenue Fund, a tax (to be known as the value-added tax) — … (b) on every import of goods or import of services, other than an exempt import, calculated at the rate of 15 per cent on the value of the supply or import. [subsection (1) substituted by Act 6 of 2002]",
-    "portee": "Taux standard, explicitement applicable aux IMPORTATIONS. Version annotée consolidée jusqu'à 2011."
+    "portee": "Taux standard, explicitement applicable aux IMPORTATIONS. Version annotée consolidée jusqu'à 2011.",
+    "texte_archive": "sources/NAM_vat_act_10_2000_taux.texte-extrait.txt",
+    "sha256": "1f4a77e61a91c7783733c46a4b3c3a68ee81eb0b2a33484386fa4554ede8c313",
+    "sha256_pdf_origine": "ac9b9431d1da05718cba217ab7d5f3c1470a6e9567120125fe5757cbe04199ad"
   },
   "ce_que_cela_ne_tranche_pas": [
     "Un amendement postérieur à 2011 éventuel non vérifiable (version annotée limitée)"
