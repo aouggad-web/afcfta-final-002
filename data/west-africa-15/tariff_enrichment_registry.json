@@ -61,7 +61,7 @@
         "MRT"
       ],
       "tariff": {
-        "status": "COMPLETE",
+        "status": "DOCUMENTED",
         "line_count_per_country": 6129,
         "national_line_digits": [
           10
@@ -249,13 +249,13 @@
     },
     "MRT": {
       "region": "MRT_MFN",
-      "national_extension_status": "NATIONAL_TARIFF_COLLECTED",
+      "national_extension_status": "DOCUMENTED",
       "vat_status": "DOCUMENTED",
-      "other_taxes_status": "COMPLETE",
-      "calculation_order_status": "COMPLETE",
+      "other_taxes_status": "DOCUMENTED",
+      "calculation_order_status": "DOCUMENTED",
       "afcfta_status": "NOT_AVAILABLE",
       "regulatory_status": "DOCUMENTED",
-      "required_documents_status": "DOCUMENTED",
+      "required_documents_status": "NOT_AVAILABLE",
       "source_paths": [
         "data/mauritania/legal_sources.json",
         "data/mauritania/vat_measures.json",
