@@ -54,7 +54,16 @@ class DemandeCalcul(BaseModel):
     code_sh: str = Field(..., description="Code SH6 ou position nationale")
     valeur_cif: float = Field(..., ge=0, description="Valeur en douane")
     quantite: Optional[float] = Field(
-        None, ge=0, description="Requise par les droits spécifiques (poids, litres, unités)"
+        None,
+        gt=0,
+        description=(
+            "Requise par les droits spécifiques (poids, litres, unités). "
+            "Strictement positive : une quantité nulle n'est pas une quantité "
+            "connue. Acceptée à 0, elle liquidait le droit spécifique à 0,00 "
+            "et déclarait le total COMPLET — un droit effacé en silence, dont "
+            "l'écart n'est pas un arrondi mais le droit entier. Une quantité "
+            "inconnue s'omet, et le moteur la réclame (`QUANTITE_REQUISE`)."
+        ),
     )
     taux_de_change: Optional[float] = Field(
         None,

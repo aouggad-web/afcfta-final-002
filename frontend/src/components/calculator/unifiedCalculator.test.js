@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { buildCalculRequestBody, mapCalculToLegacyResult } from './unifiedCalculator';
+import {
+  buildCalculRequestBody,
+  mapCalculToLegacyResult,
+  moteurRendCompteDesMesures,
+} from './unifiedCalculator';
 
 const contexte = { originCountry: 'GHA', destinationCountry: 'CIV', hsCode: '7612900000', cifValue: 1000 };
 
@@ -401,5 +405,156 @@ describe('simulations régionales', () => {
   it('rend un tableau vide quand le backend n’en fournit aucune', () => {
     expect(mapCalculToLegacyResult(avecSimulations([]), contexte).regional_simulations).toEqual([]);
     expect(mapCalculToLegacyResult(avecSimulations(undefined), contexte).regional_simulations).toEqual([]);
+  });
+});
+
+describe('quantité requise par un droit spécifique', () => {
+  const specifique = (over) => ({
+    code: 'DD', libelle: 'General Customs Duty', famille: 'droit', assiette: 'xQTE',
+    taux_pct: null, montant_unitaire: 0.08, specifique: '8c/kg', unite_quantite: 'kg',
+    statut: 'QUANTITE_REQUISE', montant: null, ...over,
+  });
+
+  it("porte la quantité quand elle est utilisable", () => {
+    expect(buildCalculRequestBody({ destinationISO3: 'ZAF', hsCode: '020830', cifValue: 10000, quantite: 200 }))
+      .toEqual({ destination: 'ZAF', code_sh: '020830', valeur_cif: 10000, quantite: 200 });
+  });
+
+  it.each([
+    ['vide', undefined],
+    ['nulle', null],
+    ['illisible', NaN],
+    ['zéro', 0],
+    ['négative', -5],
+    ['texte', '200'],
+  ])("n'envoie pas une quantité %s — le moteur doit continuer de la réclamer", (_, valeur) => {
+    // Un 0 envoyé liquiderait le droit spécifique à zéro : l'écart est le
+    // montant entier du droit, pas un arrondi.
+    expect(buildCalculRequestBody({
+      destinationISO3: 'ZAF', hsCode: '020830', cifValue: 10000, quantite: valeur,
+    })).toEqual({ destination: 'ZAF', code_sh: '020830', valeur_cif: 10000 });
+  });
+
+  it("annonce l'unité publiée par la source", () => {
+    const calcul = {
+      npf: {
+        lignes: [specifique()],
+        manques: [{ code: 'DD', motif: 'QUANTITE_REQUISE' }],
+        etat: 'INDISPONIBLE', total_a_payer: 10000,
+      },
+    };
+    const res = mapCalculToLegacyResult(calcul, contexte);
+    expect(res.quantite_requise).toEqual({
+      requise: true, unite: 'kg', uniteAmbigue: false,
+      lignes: [{ code: 'DD', libelle: 'General Customs Duty', specifique: '8c/kg', unite: 'kg' }],
+    });
+  });
+
+  it("dit que l'unité n'est pas publiée plutôt que de supposer un poids", () => {
+    // Droit sanitaire vétérinaire tunisien : « 0.1 dinars », sans unité de
+    // quantité. Demander un kg ici produirait un montant faux.
+    const calcul = {
+      npf: {
+        lignes: [specifique({ code: 'DSV', libelle: 'DROIT SANIT.VETERINA',
+          specifique: '0.1 dinars', unite_quantite: undefined, montant_unitaire: 0.1 })],
+        manques: [{ code: 'DSV', motif: 'QUANTITE_REQUISE' }],
+        etat: 'INDISPONIBLE', total_a_payer: 10000,
+      },
+    };
+    const res = mapCalculToLegacyResult(calcul, contexte);
+    expect(res.quantite_requise.requise).toBe(true);
+    expect(res.quantite_requise.unite).toBeNull();
+    expect(res.quantite_requise.uniteAmbigue).toBe(false);
+  });
+
+  it('signale deux unités divergentes au lieu de servir une quantité unique', () => {
+    const calcul = {
+      npf: {
+        lignes: [
+          specifique(),
+          specifique({ code: 'ACC', libelle: 'Excise', unite_quantite: 'li', specifique: '50c/li' }),
+        ],
+        manques: [
+          { code: 'DD', motif: 'QUANTITE_REQUISE' },
+          { code: 'ACC', motif: 'QUANTITE_REQUISE' },
+        ],
+        etat: 'INDISPONIBLE', total_a_payer: 10000,
+      },
+    };
+    const res = mapCalculToLegacyResult(calcul, contexte);
+    expect(res.quantite_requise.uniteAmbigue).toBe(true);
+    expect(res.quantite_requise.unite).toBeNull();
+  });
+
+  it("ne réclame rien quand aucun droit spécifique n'est en cause", () => {
+    const calcul = { npf: { lignes: [ligne()], manques: [], etat: 'COMPLET', total_a_payer: 1200 } };
+    const res = mapCalculToLegacyResult(calcul, contexte);
+    expect(res.quantite_requise).toEqual({ requise: false, unite: null, uniteAmbigue: false, lignes: [] });
+  });
+
+  it("ne confond pas un autre manque avec une quantité manquante", () => {
+    const calcul = {
+      npf: {
+        lignes: [ligne({ statut: 'TAUX_INDISPONIBLE', montant: null })],
+        manques: [{ code: 'DD', motif: 'TAUX_INDISPONIBLE' }],
+        etat: 'INDISPONIBLE', total_a_payer: 1000,
+      },
+    };
+    expect(mapCalculToLegacyResult(calcul, contexte).quantite_requise.requise).toBe(false);
+  });
+});
+
+describe('un refus honnête ne se remplace pas par un total amputé', () => {
+  // Le chemin historique refuse la position (`CALCULATION_UNAVAILABLE`) en
+  // nommant les mesures qui lui manquent. Le moteur ne prend le relais que
+  // s'il rend compte de chacune — qu'il la liquide, ou qu'il dise pourquoi
+  // il ne la liquide pas.
+  it("accepte le moteur quand il liquide la mesure réclamée", () => {
+    const calcul = { npf: { lignes: [ligne()], manques: [] } };
+    expect(moteurRendCompteDesMesures(calcul, ['DD'])).toBe(true);
+  });
+
+  it("accepte le moteur quand il motive explicitement le manque", () => {
+    const calcul = {
+      npf: {
+        lignes: [ligne({ statut: 'QUANTITE_REQUISE', montant: null })],
+        manques: [{ code: 'DD', motif: 'QUANTITE_REQUISE' }],
+      },
+    };
+    expect(moteurRendCompteDesMesures(calcul, ['DD'])).toBe(true);
+  });
+
+  it("refuse le moteur quand il passe la mesure sous silence", () => {
+    // Cas réel : DZA/2710122400. Le socle ne porte aucune ligne de droit ;
+    // le moteur rend 12 444,00 « COMPLET » avec TCS, TVA et PRCT et pas un
+    // centime de droit de douane. 2 936 positions sur 12 pays sont dans ce
+    // cas. Accepter ce total afficherait un montant amputé là où l'autre
+    // chemin refusait honnêtement de calculer.
+    const calcul = {
+      npf: {
+        lignes: [
+          ligne({ code: 'TCS', famille: 'accise', taux_pct: 3, montant: 300 }),
+          ligne({ code: 'TVA', famille: 'tva', taux_pct: 19, montant: 1900 }),
+        ],
+        manques: [],
+        etat: 'COMPLET',
+      },
+    };
+    expect(moteurRendCompteDesMesures(calcul, ['DD'])).toBe(false);
+  });
+
+  it('exige que TOUTES les mesures réclamées soient couvertes, pas une seule', () => {
+    const calcul = {
+      npf: { lignes: [ligne()], manques: [{ code: 'TVA', motif: 'TAUX_INDISPONIBLE' }] },
+    };
+    expect(moteurRendCompteDesMesures(calcul, ['DD', 'TVA'])).toBe(true);
+    expect(moteurRendCompteDesMesures(calcul, ['DD', 'TVA', 'EXC'])).toBe(false);
+  });
+
+  it("n'a rien à vérifier quand aucune mesure n'était réclamée", () => {
+    // Le repli sur 404 (pays sans donnée authentique) ne nomme aucune mesure :
+    // la garde ne doit pas y bloquer un calcul parfaitement légitime.
+    expect(moteurRendCompteDesMesures({ npf: { lignes: [], manques: [] } }, [])).toBe(true);
+    expect(moteurRendCompteDesMesures({}, undefined)).toBe(true);
   });
 });

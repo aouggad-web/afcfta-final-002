@@ -82,10 +82,84 @@ function zlecafStatusLegacy(preferenceZlecaf) {
     : 'NOT_AVAILABLE';
 }
 
-export function buildCalculRequestBody({ destinationISO3, originISO3, hsCode, cifValue }) {
+export function buildCalculRequestBody({ destinationISO3, originISO3, hsCode, cifValue, quantite }) {
   const body = { destination: destinationISO3, code_sh: hsCode, valeur_cif: cifValue };
   if (originISO3) body.origine = originISO3;
+  // Un droit spécifique (« 8c/kg ») se liquide sur une quantité, pas sur la
+  // valeur. Le champ n'est envoyé que s'il porte un nombre utilisable : une
+  // saisie vide ou illisible doit laisser le moteur répondre QUANTITE_REQUISE,
+  // pas être traduite en 0 — un 0 liquiderait le droit à zéro.
+  if (typeof quantite === 'number' && Number.isFinite(quantite) && quantite > 0) {
+    body.quantite = quantite;
+  }
   return body;
+}
+
+/**
+ * Le moteur rend-il vraiment compte de chaque mesure que l'autre chemin a
+ * déclarée manquante ?
+ *
+ * Cette question n'est pas rhétorique. Le chemin historique refuse une
+ * position quand une mesure lui manque (`CALCULATION_UNAVAILABLE`). Le moteur,
+ * lui, ne liquide que les lignes que le socle porte : si le socle ne porte
+ * AUCUNE ligne de droit pour cette position, il n'a rien à réclamer et rend un
+ * total COMPLET — sans droit de douane, sans le dire.
+ *
+ * Mesuré sur le socle du 2026-09-18 : 2 936 positions (0,82 %) réparties sur
+ * 12 pays sont dans ce cas. Exemple : DZA/2710122400, où `/calcul` sert
+ * 12 444,00 « COMPLET » avec TCS, TVA et PRCT, et pas un centime de droit de
+ * douane, alors que le pays est déclaré comme le couvrant.
+ *
+ * Basculer sur le moteur sans cette vérification remplacerait donc un refus
+ * honnête par un total amputé — exactement ce qu'un calculateur douanier ne
+ * doit jamais faire. Une mesure est « prise en compte » si le moteur la
+ * liquide OU s'il dit explicitement pourquoi il ne la liquide pas. Le silence
+ * ne compte pas.
+ */
+export function moteurRendCompteDesMesures(calcul, codesManquants) {
+  const codes = (codesManquants || []).filter(Boolean);
+  if (codes.length === 0) return true;
+  const npf = calcul?.npf || {};
+  const connus = new Set([
+    ...(npf.lignes || []).map((l) => l.code),
+    ...(npf.manques || []).map((m) => m.code),
+  ]);
+  return codes.every((code) => connus.has(code));
+}
+
+/**
+ * Ce que le moteur demande encore pour pouvoir liquider un droit spécifique.
+ *
+ * Trois états, et c'est la distinction qui compte :
+ *   - rien n'est requis ;
+ *   - une quantité est requise ET la source publie son unité (« kg ») : on
+ *     peut la demander à l'opérateur, libellée dans cette unité ;
+ *   - une quantité est requise mais la source NE publie PAS l'unité (cas du
+ *     droit sanitaire vétérinaire tunisien, « 0.1 dinars » sans unité) :
+ *     demander « un poids » y produirait un montant faux. On dit alors que
+ *     l'unité n'est pas publiée, et on ne demande rien.
+ *
+ * Aucune position du socle ne mêle deux unités sur un même code (vérifié sur
+ * les 54 pays) ; si cela arrivait, `uniteAmbigue` le signale plutôt que de
+ * laisser une quantité unique servir deux unités différentes.
+ */
+export function quantiteRequise(npf) {
+  const manques = npf?.manques || [];
+  const codes = manques.filter((m) => m.motif === 'QUANTITE_REQUISE').map((m) => m.code);
+  if (codes.length === 0) return { requise: false, unite: null, uniteAmbigue: false, lignes: [] };
+
+  const lignes = (npf.lignes || [])
+    .filter((l) => codes.includes(l.code))
+    .map((l) => ({ code: l.code, libelle: l.libelle, specifique: l.specifique || null,
+      unite: l.unite_quantite || null }));
+
+  const unites = [...new Set(lignes.map((l) => l.unite).filter(Boolean))];
+  return {
+    requise: true,
+    unite: unites.length === 1 ? unites[0] : null,
+    uniteAmbigue: unites.length > 1,
+    lignes,
+  };
 }
 
 function buildJournal(cifValue, lignes) {
@@ -344,6 +418,10 @@ export function mapCalculToLegacyResult(calcul, { originCountry, destinationCoun
       ? (npf.manques || []).find((m) => m.code === 'DD')?.motif || null
       : null,
     dd_available: dutyAmount !== null,
+    // Ce qui manque encore pour liquider un droit spécifique — et dans quelle
+    // unité le demander. L'écran s'en sert pour n'ouvrir un champ que là où il
+    // sert, et pour le libeller avec l'unité que la source publie.
+    quantite_requise: quantiteRequise(npf),
     _npf_etat: npf.etat,
     _zlecaf_etat: hasPreference ? pref.etat : null,
     _manques_npf: npf.manques || [],

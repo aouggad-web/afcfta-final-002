@@ -37,7 +37,7 @@ import RegulatoryComplianceView, {
 import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
 import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import { normalizeTaxesDetail } from './taxesDetail';
-import { buildCalculRequestBody, mapCalculToLegacyResult } from './unifiedCalculator';
+import { buildCalculRequestBody, mapCalculToLegacyResult, moteurRendCompteDesMesures } from './unifiedCalculator';
 import {
   effectiveTaxRateFromSteps,
   isCustomsDutyTax,
@@ -115,7 +115,26 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     authorizedTariffLines: '',
     authorizedGoods: '',
   });
+  // Quantité saisie pour les droits spécifiques (« 8c/kg »). Vide tant que
+  // le moteur ne l'a pas réclamée : le champ n'apparaît que sur les positions
+  // qui en portent un, et l'unité affichée est celle que la source publie.
+  const [quantity, setQuantity] = useState('');
+  // La quantité appartient à UNE position et à UNE destination. Sans ce
+  // repère, un poids saisi pour une position serait renvoyé tel quel sur la
+  // suivante — et liquiderait son droit spécifique sur une quantité qui n'est
+  // pas la sienne. Le rapprochement est explicite plutôt que remis à un effet
+  // de bord, qui s'exécuterait après l'appel qu'il doit protéger.
+  const [quantityFor, setQuantityFor] = useState(null);
   const profileRequestRef = useRef(0);
+
+  // Vider le champ quand la position ou la destination change. La justesse ne
+  // dépend pas de cet effet — c'est `quantityFor` qui empêche une quantité de
+  // servir sur une autre position, et il est évalué au moment de l'appel. Cet
+  // effet évite seulement d'AFFICHER un poids qui n'est plus celui du calcul.
+  useEffect(() => {
+    setQuantity('');
+    setQuantityFor(null);
+  }, [hsCode, destinationCountry, originCountry]);
 
   const fetchCountryTariffProfile = useCallback(async (countryCode) => {
     if (!countryCode) {
@@ -405,6 +424,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       // PRIORITÉ 1: Essayer d'utiliser les données tarifaires AUTHENTIQUES
       let authenticResult = null;
       let useAuthenticData = false;
+      // Renseignées seulement quand le chemin historique refuse la position
+      // faute de savoir liquider une mesure : elles conditionnent l'acceptation
+      // de la réponse du moteur.
+      let mesuresReclamees = [];
+      let erreurAuthentique = null;
       
       try {
         const remissionEligibility = kenyaRemission.answer === 'no'
@@ -438,10 +462,34 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         // délai dépassé, 401/403, erreur réseau) remonte au `catch` externe
         // et s'affiche à l'utilisateur, plutôt que de dégrader en silence
         // vers un calcul qui ignore les avantages fiscaux et les formalités.
-        if (authError.response?.status !== 404) {
+        // Un 422 `CALCULATION_UNAVAILABLE` n'est pas une panne : c'est le
+        // chemin historique qui dit ne pas savoir liquider cette position —
+        // typiquement un droit spécifique (« 8c/kg »), qu'il ne sait pas
+        // calculer faute de paramètre de quantité. Le moteur unique, lui,
+        // le liquide dès qu'on lui donne la quantité. Laisser ce cas remonter
+        // en erreur revenait à refuser un calcul que le dépôt sait faire.
+        //
+        // Le repli reste étroit à dessein : seul ce code d'erreur passe. Un
+        // 422 de validation (valeur CIF invalide) et tout le reste (500,
+        // délai, 401/403, réseau) remontent comme avant.
+        const codeErreur = authError.response?.data?.detail?.code;
+        const calculIndisponible =
+          authError.response?.status === 422 && codeErreur === 'CALCULATION_UNAVAILABLE';
+        if (authError.response?.status !== 404 && !calculIndisponible) {
           throw authError;
         }
-        console.log('ℹ️ Authentic tariff data not available for', destISO3, '- falling back to calculated data');
+        if (calculIndisponible) {
+          // Ce que l'autre chemin a nommé comme manquant. Le moteur devra en
+          // rendre compte, sinon son total est refusé et l'erreur d'origine
+          // est rétablie — voir `moteurRendCompteDesMesures`.
+          mesuresReclamees = authError.response?.data?.detail?.missing_or_non_ad_valorem_taxes || [];
+          erreurAuthentique = authError;
+        }
+        console.log(
+          calculIndisponible
+            ? `ℹ️ Position non liquidable par le chemin authentique pour ${destISO3} (${(authError.response?.data?.detail?.missing_or_non_ad_valorem_taxes || []).join(', ')}) - passage au moteur unique`
+            : `ℹ️ Authentic tariff data not available for ${destISO3} - falling back to calculated data`
+        );
       }
       
       if (useAuthenticData && authenticResult) {
@@ -686,8 +734,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           originISO3,
           hsCode: cleanHsCode,
           cifValue: parseFloat(value),
+          // `parseFloat('')` rend NaN : `buildCalculRequestBody` l'écarte, et
+          // le moteur continue de réclamer la quantité au lieu de liquider
+          // le droit spécifique à zéro. Une quantité saisie pour une AUTRE
+          // position est écartée de la même façon.
+          quantite: quantityFor === `${destISO3}|${cleanHsCode}`
+            ? parseFloat(quantity)
+            : NaN,
         }));
         const calcul = calculResponse.data;
+        // Un refus honnête ne se remplace pas par un total amputé. Si le
+        // moteur ne dit rien d'une mesure que l'autre chemin réclamait, sa
+        // réponse est écartée et l'erreur d'origine reprend sa place.
+        if (!moteurRendCompteDesMesures(calcul, mesuresReclamees)) {
+          throw erreurAuthentique;
+        }
         const legacyResult = mapCalculToLegacyResult(calcul, {
           originCountry,
           destinationCountry,
@@ -698,6 +759,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         setResult({
           ...legacyResult,
           taxes_detail: normalizeTaxesDetail(legacyResult.taxes_detail, legacyResult.taxes_breakdown),
+          // La clé qui rattache une quantité à SA position. Construite ici, à
+          // l'endroit exact où l'appel est fait, et relue telle quelle par le
+          // champ de saisie : la reconstruire ailleurs à partir des champs
+          // d'affichage (qui peuvent porter un code ISO2) la ferait diverger,
+          // et la quantité saisie serait silencieusement écartée à chaque fois.
+          _quantite_cle: `${destISO3}|${cleanHsCode}`,
         });
         setDetailedResult(null);
         setShowDetailedBreakdown(true);
@@ -1294,6 +1361,97 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   classé par avantage. Trier par montant mettrait en tête le
                   régime dont les règles d'origine sont précisément ce que le
                   moteur ne vérifie pas. */}
+              {/* Droit spécifique : la quantité, demandée seulement là où elle sert.
+
+                  Un droit publié « 8c/kg » ne se liquide pas sur la valeur. Le
+                  moteur rend alors QUANTITE_REQUISE et nomme l'unité que la
+                  source publie ; ce champ la reprend telle quelle. Trois cas,
+                  et ils ne se confondent pas :
+
+                  - unité publiée → on demande la quantité dans CETTE unité ;
+                  - unité non publiée (droit sanitaire vétérinaire tunisien,
+                    « 0.1 dinars » sans unité) → on ne demande RIEN et on dit
+                    pourquoi : demander « un poids » produirait un montant faux ;
+                  - deux unités divergentes sur la même position → une quantité
+                    unique en servirait une pour l'autre ; on refuse de même.
+
+                  0,9 % des positions sont concernées (3 260 sur 358 752) : le
+                  champ reste absent partout ailleurs. */}
+              {result.quantite_requise?.requise && (
+                <div
+                  className="mb-6 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl"
+                  data-testid="quantite-requise"
+                >
+                  <div className="flex items-start gap-3">
+                    <Info className="w-5 h-5 text-amber-400 mt-0.5 flex-shrink-0" />
+                    <div className="w-full">
+                      <p className="text-amber-300 font-semibold text-sm">
+                        {language === 'fr'
+                          ? 'Droit spécifique : quantité nécessaire'
+                          : 'Specific duty: quantity required'}
+                      </p>
+
+                      <div className="mt-2 space-y-1">
+                        {result.quantite_requise.lignes.map((l) => (
+                          <p key={l.code} className="text-amber-200/80 text-xs">
+                            <span className="font-mono">{l.code}</span> — {l.libelle}
+                            {l.specifique ? ` : ${l.specifique}` : ''}
+                          </p>
+                        ))}
+                      </div>
+
+                      {result.quantite_requise.unite ? (
+                        <div className="mt-3 flex flex-wrap items-end gap-2">
+                          <div>
+                            <label
+                              className="block text-amber-200/70 text-xs mb-1"
+                              htmlFor="quantite-droit-specifique"
+                            >
+                              {language === 'fr'
+                                ? `Quantité importée (${result.quantite_requise.unite})`
+                                : `Imported quantity (${result.quantite_requise.unite})`}
+                            </label>
+                            <input
+                              id="quantite-droit-specifique"
+                              data-testid="quantite-saisie"
+                              type="number"
+                              min="0"
+                              step="any"
+                              value={quantity}
+                              onChange={(e) => {
+                                setQuantity(e.target.value);
+                                setQuantityFor(result._quantite_cle);
+                              }}
+                              className="w-40 px-3 py-2 bg-slate-900/60 border border-amber-500/40 rounded-lg text-white text-sm"
+                              placeholder={result.quantite_requise.unite}
+                            />
+                          </div>
+                          <Button
+                            type="button"
+                            data-testid="quantite-recalculer"
+                            onClick={() => calculateTariff()}
+                            disabled={loading || !(parseFloat(quantity) > 0)}
+                            className="bg-amber-600 hover:bg-amber-700"
+                          >
+                            {language === 'fr' ? 'Recalculer' : 'Recalculate'}
+                          </Button>
+                        </div>
+                      ) : (
+                        <p className="text-amber-200/70 text-xs mt-3">
+                          {result.quantite_requise.uniteAmbigue
+                            ? (language === 'fr'
+                              ? "Cette position porte deux droits spécifiques exprimés dans des unités différentes : une quantité unique en liquiderait un dans la mauvaise unité. Le total reste incomplet."
+                              : 'This line carries two specific duties expressed in different units: a single quantity would settle one of them in the wrong unit. The total remains incomplete.')
+                            : (language === 'fr'
+                              ? "La source ne publie pas l'unité de quantité de ce droit. Demander un poids ici produirait un montant faux : le total reste incomplet tant que l'unité n'est pas établie."
+                              : 'The source does not publish this duty\u2019s unit of quantity. Asking for a weight here would produce a wrong amount: the total remains incomplete until the unit is established.')}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {Array.isArray(result.regional_simulations) && result.regional_simulations.length > 0 && (
                 <div className="mb-6 p-4 bg-sky-500/10 border border-sky-500/30 rounded-xl">
                   <div className="flex items-start gap-3">
