@@ -2,7 +2,7 @@
   "schema_version": 1,
   "objet": "Assiette du droit de douane des cinq membres de la SACU : valeur en douane = valeur de transaction sur base FOB (fret et assurance internationaux exclus), et non CIF.",
   "verified_at": "2026-09-17",
-  "evidence_level": "primaire — Customs and Excise Act 1964 (Act 91 of 1964), chapitre IX « Value », s.65(1) et s.67, lus et archivés en extrait ; corroboré par la politique SARS « Valuation of Imports » SC-CR-A-03, rév. 5 (2025-12-11).",
+  "evidence_level": "primaire pour la politique SARS « Valuation of Imports » SC-CR-A-03, rév. 5 du 2025-12-11 — document COURANT, archivé et haché ici. PÉRIMÉE, en revanche, pour la citation de l Acte 91 de 1964 : le PDF utilisé porte « Legislation as at 31 July 1964 » et « This is not the latest available version of this Act ». Voir reserve_version_de_l_acte. La base FOB est donc CORROBORÉE par un document en vigueur, non établie par l acte tel que cité.",
   "source": {
     "instrument": "Customs and Excise Act 1964 (Act 91 of 1964), ch. IX « Value », s.65(1), s.66 et s.67 — corroboré par SARS SC-CR-A-03 rév. 5",
     "url_act": "https://media.lawlibrary.org.za/media/legislation/269/source_file/875131bd5b60afff/1964-91.pdf",
@@ -42,10 +42,18 @@
     "Le mécanisme de majoration sud-africain applicable à certaines impositions (ex. l'« uplift » pour la TVA) : distinct de l'assiette du droit de douane.",
     "Les droits spécifiques et composés (ex. 020830, « 8c/kg ») : ils se liquident à la quantité, pas sur la valeur."
   ],
-  "doutes": "La base FOB du droit de douane SACU est établie par l'acte (s.65 « domestic value or free on board price », s.67 « free on board price ») et corroborée par la politique SARS (transaction value = prix payé ou payable ; fret/assurance du lieu d'exportation exclus). La disposition exacte « méthode 1 » figure dans SC-CR-A-05, à archiver pour une citation complète.",
+  "doutes": "RÉVISÉ le 2026-09-18 — la phrase qui suit reposait sur une version périmée de l'acte, voir reserve_version_de_l_acte. « La base FOB du droit de douane SACU est établie par l'acte (s.65 « domestic value or free on board price », s.67 « free on board price ») et corroborée par la politique SARS (transaction value = prix payé ou payable ; fret/assurance du lieu d'exportation exclus). La disposition exacte « méthode 1 » figure dans SC-CR-A-05, à archiver pour une citation complète. »",
   "remaining_work": [
+    "PRIORITAIRE — obtenir la version CONSOLIDÉE en vigueur de l'Acte 91 de 1964 et y relire la section 65 : la citation actuelle provient du texte de 1964, déclaré périmé par sa propre source. Tant que ce n'est pas fait, la base FOB tient par la politique SARS, pas par l'acte.",
     "Archiver SC-CR-A-05 (transaction value method) pour la citation exacte de l'exclusion fret/assurance en méthode 1.",
     "Ajouter « FOB » à la grammaire des assiettes du moteur, et poser l'assiette DD des cinq membres de la SACU sur « FOB » (corriger ZAF, ajouter BWA/LSO/NAM/SWZ).",
     "Confirmer auprès de chaque autorité nationale (BURS, LRA, NamRA, ERA) que son acte douanier retient la même base FOB (actes harmonisés SACU)."
-  ]
+  ],
+  "reserve_version_de_l_acte": {
+    "constat": "2026-09-18",
+    "verbatim_page_1": "South Africa Customs and Excise Act, 1964 — Act 91 of 1964 — Legislation as at 31 July 1964. Note: This is not the latest available version of this Act. View it online. There may have been updates since this file was created.",
+    "consequence": "Le PDF cité (sha256 9097dd5b8445c297c5f77a4e81a93010da0fce47b771044b3661cb243e98719b, 66 pages) est le TEXTE D'ORIGINE de 1964, et non la version consolidée. L'Acte a été amendé de nombreuses fois en soixante ans, notamment sur l'évaluation en douane. La section 65(1) citée — « the domestic value or the free on board price thereof, whichever is the greater » — est la rédaction de la définition dite de Bruxelles, antérieure à l'adoption de l'Accord de l'OMC sur l'évaluation en douane. Sa reprise telle quelle comme fondement en vigueur n'est pas tenable.",
+    "ce_qui_reste_debout": "La politique SARS SC-CR-A-03 rév. 5 du 2025-12-11 est, elle, un document COURANT. Elle énonce la valeur de transaction et, sur les Incoterms, demande de « deduct approximate freight and insurance charges » quand les conditions sont CIF — une déduction qui n'aurait pas lieu d'être si la valeur en douane était elle-même CIF. La base FOB reste donc plausible, mais elle est CORROBORÉE, non plus établie par l'acte.",
+    "recherche_menee": "Version consolidée cherchée le 2026-09-18 et NON obtenue : lawlibrary.org.za rend ses pages derrière un challenge Cloudflare (seul le PDF de 1964 est servi en direct), saflii.org et gov.za répondent 403 et 404, et les pages de législation primaire de sars.gov.za répondent 404."
+  }
 }

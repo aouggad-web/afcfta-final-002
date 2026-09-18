@@ -7,13 +7,13 @@
   "evidence_level": "primaire pour les expressions elles-mêmes (Schedule 1 Part 1, PDF officiel daté du 2026-08-28) ; AUCUNE source atteinte pour la règle qui départage la forme « or ».",
   "source": {
     "instrument": "SARS, Customs & Excise Tariff, Schedule 1 Part 1, chapitres 1 à 99",
-    "fichier_local": "data/sources/ZAF/legislation/sars_schedule1_part1_ch1-99.pdf",
     "date_sur_le_document": "2026-08-28",
     "pages": 704,
     "texte_archive": "sources/ZAF_droits_composes.texte-extrait.txt",
     "pdf_sha256": "442ed3d758d741e283a7d8fa513fe53cd94a813d0ef13cafcb0a3a9c2749c65c",
     "sha256": "a3f57f79fad7f4da694eac09951f50328779cb825c12f67befc40eac0aca8166",
-    "pdf_non_archive": "PDF de 2,8 Mo et 704 pages non archivé dans le dépôt (il y est déjà sous data/sources/ZAF/legislation/) ; seuls les extraits des deux formes composées le sont."
+    "pdf_non_archive": "PDF de 2,8 Mo et 704 pages ; seuls les extraits des deux formes composées sont archivés ici. Le PDF lui-même est déjà versionné ailleurs dans le dépôt — voir fichier_du_depot.",
+    "fichier_du_depot": "Le PDF est déjà versionné dans le dépôt, sous data puis sources puis ZAF puis legislation, nom de fichier sars_schedule1_part1_ch1-99.pdf. Chemin écrit en clair plutôt qu en notation à barres obliques : une chaîne « sources/… » désigne, par convention du dossier, un texte archivé DANS sources/ de ce même dossier — la confondre ferait échouer le contrôle d empreinte sur le mauvais document."
   },
   "ce_qui_est_etabli": {
     "forme_plafonnee": {
