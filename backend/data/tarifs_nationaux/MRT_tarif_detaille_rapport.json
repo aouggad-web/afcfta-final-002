@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "objet": "Tarif douanier national mauritanien 2021 — extraction détaillée validée (6 129 sous-positions nationales, élimination de la donnée WITS/UNCTAD-TRAINS)",
+  "verified_at": "2026-09-18",
+  "source": {
+    "url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
+    "institution": "Douane mauritanienne (douanes.mr)",
+    "sha256": "3585fbe23bf6b7be3c4e9eb963fdb31bf0336b059bf0019e4b471f178829c182",
+    "pages": 396
+  },
+  "donnees_produites": {
+    "fichier": "backend/data/tarifs_nationaux/MRT_tarif_2021_detaille.json",
+    "parseur": "scripts/parse_tarif_mrt_2021.py",
+    "positions": 6129,
+    "champs": [
+      "code national 10 chiffres",
+      "designation",
+      "unite",
+      "DD (droit de douane %)",
+      "RS (redevance statistique %)",
+      "PC (prélèvement communautaire %)"
+    ],
+    "taux_dd": {
+      "0": 215,
+      "5": 2198,
+      "10": 1374,
+      "20": 2227,
+      "35": 115
+    },
+    "taux_rs": {
+      "0": 131,
+      "1": 5998
+    },
+    "taux_pc": {
+      "0": 131,
+      "0,5": 5998
+    }
+  },
+  "verification": {
+    "V1_decomptes": "6129 codes uniques = 6129 lignes de taux ; comptage indépendant par lignes texte : 6129 identiques",
+    "V2_proprete_colonnes": "chaque ligne de taux porte exactement 3 tokens numériques (0 pollution de désignation, 0 cellule vide)",
+    "V3_appariement_spatial": "0 violation : chaque ligne de taux dans les bornes de son bloc [code i, code i+1)",
+    "V4_plus_proche_code": "223 désaccords tous de signe +1 (blocs multi-lignes : taux rendus en bas de bloc) — attendu",
+    "V5_domaines": "DD ∈ {0,5,10,20,35} ; RS ∈ {0,1} ; PC ∈ {0,0,5}",
+    "V6_texte_brut": "11/11 spot-checks conformes ; triplet consécutif confirmé 6128/6129, cas 9504.40 élucidé (unité 'u(jeu)' fusionnée au DD — positions x confirment DD=20)",
+    "V7_croisement_wits": "source indépendante : 4882/4922 SH6 mono-sous-position identiques (99,2 %) ; 40 écarts vérifiés au texte brut = exemptions nationales réelles (oxygène 0 %, alcool pharma 0 %, huiles 0 %) ; max concordant 35 %",
+    "V8_qualite": "6129/6129 désignations non vides ; 16 fins par l'unité = texte légitime ('25 kg', '2 l') ; 17 mentions 'Chapitre' = libellés officiels"
+  },
+  "limites": [
+    "TVA non portée par le tarif : taux national 16 %, base CIF+TOUS_SAUF_TVA (fiche MRT_assiette_TVA_2026-09-17.json)",
+    "Formalités/réglementation par sous-position ABSENTES du PDF — à collecter sur autre source",
+    "Une désignation tronquée DANS le PDF source : 3814.00.10.00",
+    "Intégration socle (remplacement WITS) : format crawled + rebuild + manifeste — étape suivante"
+  ]
+}
