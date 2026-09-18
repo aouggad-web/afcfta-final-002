@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-18T10:28:49.534488+00:00",
+  "construit_le": "2026-09-18T12:55:29.373956+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -960,30 +960,32 @@
       "fichier": "MRT.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MRT_tariffs.json",
-      "source_sha256": "68f17520e713843a46a5010c2e83916e7972ac34666cbcc9576350fad0637a87",
-      "socle_sha256": "16cb8116255f4c96b2ee95feddeb49e9ff8a47e4cea7aba1a0bb51ba8ad4da50",
-      "collecte": "2026-07-05T10:11:13.873065+00:00",
+      "source_sha256": "eaee2c0a904b08f73c7576373c7064bf39fa0e7148699989c716306c1a1e6bf4",
+      "socle_sha256": "9f51ae9295e100113ba26e0a48b79a201384e7cdc005f79b45b8f4e2d8a74a4a",
+      "collecte": "2026-09-18T00:00:00+00:00",
       "etat": "COMPLET",
       "familles": [
+        "autre",
+        "communautaire",
         "droit",
         "tva"
       ],
       "compteurs": {
-        "positions": 5388,
-        "droits": 10776,
-        "droits_liquidables": 10776,
-        "positions_liquidables": 5388,
+        "positions": 6129,
+        "droits": 24516,
+        "droits_liquidables": 24516,
+        "positions_liquidables": 6129,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "taux_indisponibles": 0,
         "assiettes_source": 0,
-        "assiettes_fichier": 5388,
-        "assiettes_table": 5388,
+        "assiettes_fichier": 18387,
+        "assiettes_table": 6129,
         "assiettes_indisponibles": 0,
-        "sans_designation": 5388,
+        "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
-        "classification_estimee": 44
+        "classification_estimee": 0
       }
     },
     "MUS": {
@@ -1685,8 +1687,8 @@
       "UGA",
       "ZAF"
     ],
-    "positions": 359108,
-    "droits": 1085056,
-    "droits_liquidables": 1026449
+    "positions": 359849,
+    "droits": 1098796,
+    "droits_liquidables": 1040189
   }
 }

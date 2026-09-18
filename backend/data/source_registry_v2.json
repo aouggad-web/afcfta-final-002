@@ -3,7 +3,6 @@
   "created_at": "2026-09-09",
   "updated_at": "2026-09-12",
   "description": "Registre des sources de données tarifaires africaines. Chaque entrée documente : pays, organisme, URL, date de récupération, édition, période d'application, statut (officiel/secondaire), empreinte SHA-256, et conditions de réutilisation.",
-
   "principles": {
     "no_missing_as_zero": "Aucune valeur manquante remplacée par 0",
     "no_sh6_padding": "Aucun code national créé en ajoutant des zéros à un SH6",
@@ -13,7 +12,6 @@
     "secondary_needs_corroboration": "Pour une source secondaire, rechercher une corroboration indépendante ; deux copies du même document ne constituent pas deux confirmations",
     "wto_distinction": "L'OMC distingue les données de droits appliqués des engagements consolidés ; les plafonds OMC ne sont pas les droits effectivement appliqués"
   },
-
   "global_summary": {
     "total_countries_target": 54,
     "countries_registered": 54,
@@ -30,7 +28,6 @@
     "positions_wits_fallback": 32328,
     "note": "Compté sur le contenu réel du registre au 2026-09-12, héritages _shared résolus vers leur source. Le décompte précédent annonçait 45 pays à données nationales authentiques et 5 replis WITS : ni l'un ni l'autre ne correspondait aux entrées."
   },
-
   "countries": {
     "GHA": {
       "organism": "Ghana Revenue Authority (GRA) — TEC CEDEAO",
@@ -45,7 +42,10 @@
       "positions_count": 5387,
       "sha256": "760d0b401a7d482aae9f2ddded5ecd85ed9a92d45be8ce1a36c95b14116bb439",
       "validation_status": "to_verify",
-      "taxes": ["DD", "TVA"],
+      "taxes": [
+        "DD",
+        "TVA"
+      ],
       "note": "Tarif extérieur commun CEDEAO, non une nomenclature nationale ghanéenne détaillée. Les 5387 lignes respectent exactement les cinq bandes officielles du TEC (0/5/10/20/35), sans aucune valeur hors barème. DATA_STATUS: PARTIAL, fiabilité B. Entrée créée le 2026-09-12 : le fichier était servi en production sans aucune fiche de provenance."
     },
     "SOM": {
@@ -61,7 +61,9 @@
       "positions_count": 5602,
       "sha256": "5df6fe9a6be9b62c025b968dda4bb061b44f1f064c2a6daeb525542b6427c3d1",
       "validation_status": "to_verify",
-      "taxes": ["DD"],
+      "taxes": [
+        "DD"
+      ],
       "note": "Tarif dérivé du TEC de l'EAC, non une nomenclature nationale somalienne. ANOMALIE À INSTRUIRE : 45 lignes portent 50, 60, 75 ou 100 %, hors des quatre bandes officielles de l'EAC CET (0/10/25/35) — origine non établie. TVA à 0 % : la Somalie n'applique pas de TVA, ce n'est pas une donnée manquante. Pas de fichier crawled/ : l'artefact est le fichier de production. DATA_STATUS: PARTIAL, fiabilité B. Entrée créée le 2026-09-12 : le fichier était servi en production sans aucune fiche de provenance."
     },
     "ZWE": {
@@ -77,13 +79,19 @@
       "positions_count": 5388,
       "sha256": "5d211c12549ba81b50b206c1bfcc11765d49b650e1dc80cead18ad480dc82fc6",
       "validation_status": "not_available",
-      "taxes": ["DD", "VAT"],
+      "taxes": [
+        "DD",
+        "VAT"
+      ],
       "note": "Droit de douane = moyenne simple MFN 2021 au niveau SH6 (WITS/TRAINS), pas une position tarifaire nationale : agrégat indicatif, jamais opposable. Désignations vides, formalités et avantages fiscaux non couverts. La TVA (15,5 %) est en revanche sourcée nommément — ZIMRA Public Notice 07 of 2026, relèvement de 15 % au 01/01/2026, vérifié. Aucun hs_version déclaré par la source : non renseigné plutôt que supposé."
     },
     "DZA": {
       "organism": "Direction Générale des Douanes (DGD) via conformepro.dz",
       "coverage_gaps": {
-        "missing_chapters": ["22", "24"],
+        "missing_chapters": [
+          "22",
+          "24"
+        ],
         "missing_sh10_codes": 207,
         "nomenclature_present": 17115,
         "nomenclature_official": 17322,
@@ -108,8 +116,24 @@
       "reuse_conditions": "Données publiées par la DGD pour consultation publique. Utilisation informative non opposable.",
       "legal_authority": "Code des Douanes 79-07 + Loi de Finances 2026 (JO n° 88 du 31/12/2025)",
       "validation_status": "verified",
-      "taxes": ["DD", "TVA", "TCS", "PRCT", "DAPS", "TIC"],
-      "taxes_missing": ["TAPT", "DPE", "TSV", "TSP", "T.PNEUS", "T.HUILES", "TPP", "TPI"],
+      "taxes": [
+        "DD",
+        "TVA",
+        "TCS",
+        "PRCT",
+        "DAPS",
+        "TIC"
+      ],
+      "taxes_missing": [
+        "TAPT",
+        "DPE",
+        "TSV",
+        "TSP",
+        "T.PNEUS",
+        "T.HUILES",
+        "TPP",
+        "TPI"
+      ],
       "formalities": "9069 positions avec formalités (46 types uniques)",
       "legal_refs": "17115 positions avec legal_refs (Code Douanes + Tarif D'Usage)",
       "zlecaf": "APPLIED — Circulaire DGD 482/2024, 9 partenaires actifs, calendrier de démantèlement"
@@ -131,7 +155,20 @@
       "reuse_conditions": "Données publiques de la douane tunisienne. Utilisation informative.",
       "legal_authority": "Code des Douanes 2008-34 + Loi de Finances 2026 (JORT)",
       "validation_status": "verified",
-      "taxes": ["DD", "TVA", "DC", "FODEC", "RPD", "TPE", "TLF", "TCA", "TMTS", "FDCSA/V", "P/VIANDE", "P/FRUITS"],
+      "taxes": [
+        "DD",
+        "TVA",
+        "DC",
+        "FODEC",
+        "RPD",
+        "TPE",
+        "TLF",
+        "TCA",
+        "TMTS",
+        "FDCSA/V",
+        "P/VIANDE",
+        "P/FRUITS"
+      ],
       "formalities": "7790 positions avec réglementation import (26 codes)",
       "export_taxes": "17530 positions avec taxes export (RPD/EXPOR, DD/PET.BR, DROIT.EXP.DATTES, T/PCEX, TAXE/FERRAILLES.EXP)",
       "quotas": "17542 positions avec QCS",
@@ -154,8 +191,15 @@
       "reuse_conditions": "Portail ADII public. Utilisation informative.",
       "legal_authority": "Code des Douanes Dahir 1-77-344 + Loi de Finances 2026 (BO)",
       "validation_status": "verified",
-      "taxes": ["DI", "TPI", "TVA"],
-      "taxes_missing": ["TIC", "DCT"],
+      "taxes": [
+        "DI",
+        "TPI",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "TIC",
+        "DCT"
+      ],
       "formalities": "13114 positions avec formalités (27 types uniques)"
     },
     "EGY": {
@@ -177,7 +221,15 @@
       "reuse_conditions": "Données publiques de l'Autorité des Douanes. Textes arabes verbatim.",
       "legal_authority": "Customs Law 207/2020 + VAT Law 67/2016 + Law 157/2025",
       "validation_status": "verified",
-      "taxes": ["ID/DD", "VAT/TVA", "TABLE_TAX", "HEALTH_INS", "TOBACCO_CHAMBER", "TEXTILE_CHAMBER", "LEATHER_CHAMBER"],
+      "taxes": [
+        "ID/DD",
+        "VAT/TVA",
+        "TABLE_TAX",
+        "HEALTH_INS",
+        "TOBACCO_CHAMBER",
+        "TEXTILE_CHAMBER",
+        "LEATHER_CHAMBER"
+      ],
       "formalities": "2878 positions avec formalités administratives (code غ)",
       "restrictions": "7522 positions avec restrictions à l'importation ou à l'exportation (code ق)",
       "zlecaf": "OFFER_ONLY — dataset EGY (10511 lignes, 2 schedules par origine)"
@@ -199,16 +251,67 @@
       "reuse_conditions": "SARS Customs & Excise Act 1964. Publication officielle. Utilisation informative non opposable.",
       "legal_authority": "Customs and Excise Act 1964 + VAT Act 89 of 1991",
       "validation_status": "verified",
-      "taxes": ["DD (GENERAL)", "AfCFTA", "EU_UK", "EFTA", "SADC", "MERCOSUR"],
-      "taxes_missing": ["VAT (non publiée dans Schedule 1 — fallback 15%)"],
+      "taxes": [
+        "DD (GENERAL)",
+        "AfCFTA",
+        "EU_UK",
+        "EFTA",
+        "SADC",
+        "MERCOSUR"
+      ],
+      "taxes_missing": [
+        "VAT (non publiée dans Schedule 1 — fallback 15%)"
+      ],
       "trade_remedies": "Schedules (anti-dumping, countervailing, safeguards) — Schedule 2",
       "zlecaf": "APPLIED — SARS colonne AfCFTA, 9+ partenaires actifs, 8592 lignes 8-digit",
-      "applies_to": ["ZAF", "BWA", "LSO", "SWZ", "NAM"]
+      "applies_to": [
+        "ZAF",
+        "BWA",
+        "LSO",
+        "SWZ",
+        "NAM"
+      ]
     },
-    "BWA": {"version": null, "artifact_path": "backend/data/crawled/BWA_tariffs.json", "artifact_url": null, "sha256": "cf84b1a644cc2b5abc84e02b376d89810f05d1cdcb53dfb190f7653d475476da", "_shared": "ZAF (SACU)", "positions_count": 8562, "code_digits": 8, "validation_status": "verified"},
-    "LSO": {"version": null, "artifact_path": "backend/data/crawled/LSO_tariffs.json", "artifact_url": null, "sha256": "31c5c4f6a56ae594fabb6e4f7093f4960b0f1397e0e25c4900804e23e4ec25dc", "_shared": "ZAF (SACU)", "positions_count": 8562, "code_digits": 8, "validation_status": "verified"},
-    "NAM": {"version": null, "artifact_path": "backend/data/crawled/NAM_tariffs.json", "artifact_url": null, "sha256": "a315efcf13b9f17f0ed677fab8d3cbfe64a5f562aca7868f14bcffda3f2f7ebf", "_shared": "ZAF (SACU)", "positions_count": 8562, "code_digits": 8, "validation_status": "verified"},
-    "SWZ": {"version": null, "artifact_path": "backend/data/crawled/SWZ_tariffs.json", "artifact_url": null, "sha256": "48c38a592819d2c09a86e2ca0c068b8f42bae77bfed21718c4aa27a3cf1049c0", "_shared": "ZAF (SACU)", "positions_count": 8562, "code_digits": 8, "validation_status": "verified"},
+    "BWA": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/BWA_tariffs.json",
+      "artifact_url": null,
+      "sha256": "cf84b1a644cc2b5abc84e02b376d89810f05d1cdcb53dfb190f7653d475476da",
+      "_shared": "ZAF (SACU)",
+      "positions_count": 8562,
+      "code_digits": 8,
+      "validation_status": "verified"
+    },
+    "LSO": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/LSO_tariffs.json",
+      "artifact_url": null,
+      "sha256": "31c5c4f6a56ae594fabb6e4f7093f4960b0f1397e0e25c4900804e23e4ec25dc",
+      "_shared": "ZAF (SACU)",
+      "positions_count": 8562,
+      "code_digits": 8,
+      "validation_status": "verified"
+    },
+    "NAM": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/NAM_tariffs.json",
+      "artifact_url": null,
+      "sha256": "a315efcf13b9f17f0ed677fab8d3cbfe64a5f562aca7868f14bcffda3f2f7ebf",
+      "_shared": "ZAF (SACU)",
+      "positions_count": 8562,
+      "code_digits": 8,
+      "validation_status": "verified"
+    },
+    "SWZ": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/SWZ_tariffs.json",
+      "artifact_url": null,
+      "sha256": "48c38a592819d2c09a86e2ca0c068b8f42bae77bfed21718c4aa27a3cf1049c0",
+      "_shared": "ZAF (SACU)",
+      "positions_count": 8562,
+      "code_digits": 8,
+      "validation_status": "verified"
+    },
     "MDG": {
       "organism": "Direction Générale des Douanes Malagasy",
       "version": "2026.1",
@@ -226,7 +329,11 @@
       "reuse_conditions": "Code des Douanes 2006-023. Publication officielle ISO 9001. Utilisation informative.",
       "legal_authority": "Code des Douanes 2006-023 + Loi de Finances 2026 + LFR 2026",
       "validation_status": "verified",
-      "taxes": ["DD", "TVA", "APEi"],
+      "taxes": [
+        "DD",
+        "TVA",
+        "APEi"
+      ],
       "zlecaf": "Ratifié — Guide rapide Règles d'origine ZLECAf publié par douanes.gov.mg"
     },
     "ZMB": {
@@ -246,7 +353,11 @@
       "reuse_conditions": "Customs and Excise Act (Cap 322). Publication officielle ZRA.",
       "legal_authority": "Customs and Excise Act Cap 322 + VAT Act 1996",
       "validation_status": "verified",
-      "taxes": ["DD", "VAT (16%)", "EXC"],
+      "taxes": [
+        "DD",
+        "VAT (16%)",
+        "EXC"
+      ],
       "zlecaf": "PARTNER_NOTICE_REQUIRED — SI 92/2024, dataset ZMB (5445 lignes)"
     },
     "LBY": {
@@ -266,7 +377,10 @@
       "reuse_conditions": "Données publiques de la douane libyenne. Textes arabes verbatim.",
       "legal_authority": "Customs Law of Libya",
       "validation_status": "to_verify",
-      "taxes": ["DD", "Arab League preferential rate"],
+      "taxes": [
+        "DD",
+        "Arab League preferential rate"
+      ],
       "note": "Édition 2022 — modifications ultérieures non confirmées. Statut 'à vérifier' jusqu'à collecte des mises à jour."
     },
     "MUS": {
@@ -286,8 +400,25 @@
       "reuse_conditions": "Customs Tariff Act 59 of 1969. MRA précise: 'Only the latest of the legal texts make authority'. Utilisation informative non opposable.",
       "legal_authority": "Customs Tariff Act 59 of 1969 + Customs Regulations 2021",
       "validation_status": "verified",
-      "taxes": ["DD (General)", "Excise Duty", "VAT"],
-      "preferential_columns": ["COMESA Group I", "COMESA Group II", "SADC", "IOC", "INDIA", "PAKISTAN", "EC", "TÜRKIYE", "UK", "CHINA", "AfCFTA", "UAE"],
+      "taxes": [
+        "DD (General)",
+        "Excise Duty",
+        "VAT"
+      ],
+      "preferential_columns": [
+        "COMESA Group I",
+        "COMESA Group II",
+        "SADC",
+        "IOC",
+        "INDIA",
+        "PAKISTAN",
+        "EC",
+        "TÜRKIYE",
+        "UK",
+        "CHINA",
+        "AfCFTA",
+        "UAE"
+      ],
       "zlecaf": "5300 positions avec taux AfCFTA — colonne AfCFTA sur toutes les lignes"
     },
     "MOZ": {
@@ -307,7 +438,11 @@
       "reuse_conditions": "Données publiques de la douane mozambicaine via JUE. Utilisation informative.",
       "legal_authority": "Customs regulations of Mozambique",
       "validation_status": "verified",
-      "taxes": ["DD (DIREITOS)", "TVA", "DA (excise)"],
+      "taxes": [
+        "DD (DIREITOS)",
+        "TVA",
+        "DA (excise)"
+      ],
       "note": "Couverture partielle: l'API ne retourne que les positions avec taux publiés. Les positions sans taux restent en WITS."
     },
     "SYC": {
@@ -327,28 +462,35 @@
       "reuse_conditions": "Customs Management Act 2011. Publication officielle SRC.",
       "legal_authority": "Customs Management Act 2011, Schedule 1",
       "validation_status": "verified",
-      "taxes": ["DA (Excise Tax)"],
+      "taxes": [
+        "DA (Excise Tax)"
+      ],
       "note": "Schedule 1 (accises) uniquement. Le tarif douanier complet (General Duty + VAT) reste en WITS."
     },
     "MRT": {
-      "organism": "Direction Générale des Douanes (source: Soa Transit, secondaire)",
-      "version": "2020.1",
+      "organism": "Direction Générale des Douanes (douanes.mr) — source primaire",
+      "version": "2021.1",
       "artifact_path": "backend/data/crawled/MRT_tariffs.json",
-      "artifact_url": null,
-      "source_type": "secondary",
-      "url": "https://assets.zyrosite.com/YrD48kPMbMc5la0W/tarif-des-douanes-2020-AoP4o0poknSZEDBE.pdf",
-      "retrieved_at": "2026-09-09",
-      "edition": "Tarif des Douanes 2020 (09/01/2020)",
-      "application_period": "2020-01-01 to next amendment (obsolète?)",
+      "artifact_url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
+      "source_type": "primary",
+      "url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
+      "retrieved_at": "2026-09-18",
+      "edition": "Tarif des douanes de la République islamique de Mauritanie, édition 2021",
+      "application_period": "2021 — modifications ultérieures non collectées",
       "hs_version": "HS 2017",
       "code_digits": 10,
       "positions_count": 6129,
-      "sha256": "68f17520e713843a46a5010c2e83916e7972ac34666cbcc9576350fad0637a87",
-      "reuse_conditions": "Source secondaire (transitaire). Présenté comme indicatif. Nécessite confirmation de provenance + collecte modifications 2021-2026.",
+      "sha256": "eaee2c0a904b08f73c7576373c7064bf39fa0e7148699989c716306c1a1e6bf4",
+      "reuse_conditions": "Source primaire publiée par la douane mauritanienne. Empreinte du PDF d'origine : 3585fbe23bf6b7be3c4e9eb963fdb31bf0336b059bf0019e4b471f178829c182, recalculée le 2026-09-18 et identique à celle du rapport de collecte.",
       "legal_authority": "Code des Douanes Mauritanie",
-      "validation_status": "to_verify",
-      "taxes": ["DD", "RS", "TVA", "PCS", "PSC", "IMF"],
-      "note": "Statut 'à vérifier'. Aucun classement 'tarif actuel validé' à ce stade. Reconstruire chronologie des modifications 2021-2026."
+      "validation_status": "verified",
+      "taxes": [
+        "DD",
+        "RS",
+        "PC",
+        "TVA"
+      ],
+      "note": "Remplace le tarif 2020 d'origine secondaire (transitaire) précédemment référencé ici. Le tarif publie quatre colonnes — US (unité supplémentaire), DD, RS, PC — et ne définit aucun de ces sigles : voir la fiche MRT_colonnes_tarif_2026-09-18.json. RS = redevance statistique 1 % (OMC WT/TPR/S/371 § 3.47). L'ASSIETTE de la RS et du PC n'est établie par aucun texte consulté, et le rattachement du PC au prélèvement communautaire CEDEAO ne l'est pas non plus. PCS, PSC et IMF, cités par l'entrée précédente, n'ont aucune colonne dans ce tarif."
     },
     "KEN": {
       "organism": "Kenya Revenue Authority (KRA) — EAC CET 2022",
@@ -367,15 +509,68 @@
       "reuse_conditions": "EAC CET — tarif communautaire officiel.",
       "legal_authority": "EAC Legal Notice EAC/321/2022",
       "validation_status": "verified",
-      "taxes": ["DD (CET)", "VAT", "IDF", "RDL"],
+      "taxes": [
+        "DD (CET)",
+        "VAT",
+        "IDF",
+        "RDL"
+      ],
       "zlecaf": "APPLIED — EAC/321/2022, 21 origines acceptées, dataset EAC (4970 lignes), calendrier par année"
     },
-    "TZA": {"version": null, "artifact_path": "backend/data/crawled/TZA_tariffs.json", "artifact_url": null, "sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
-    "UGA": {"version": null, "artifact_path": "backend/data/crawled/UGA_tariffs.json", "artifact_url": null, "sha256": "c2fd9f0d4c8adb545458d5ba6c7bfbec4a93fa3695f5461beddf7f440430f2d4", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
-    "RWA": {"version": null, "artifact_path": "backend/data/crawled/RWA_tariffs.json", "artifact_url": null, "sha256": "1179c1cb7f82adec7315a584da3e5e4fd560666da4572fffd95d2d9b2484020c", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
-    "BDI": {"version": null, "artifact_path": "backend/data/crawled/BDI_tariffs.json", "artifact_url": null, "sha256": "e0a13e7e1414e152e6038dce80bce940fdc0959ffd890d2664c9b0cef30be275", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
-    "SSD": {"version": null, "artifact_path": "backend/data/crawled/SSD_tariffs.json", "artifact_url": null, "sha256": "f275f381be8883cecd2a982c5d236ab9fa84602a370517cd29691a64174d7b1b", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
-    "COD": {"version": null, "artifact_path": "backend/data/crawled/COD_tariffs.json", "artifact_url": null, "sha256": "5a2d1cfceefd2799cdd04d8776f5a5f0799d36b8419656cec2751b49479f667e", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
+    "TZA": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/TZA_tariffs.json",
+      "artifact_url": null,
+      "sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
+    "UGA": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/UGA_tariffs.json",
+      "artifact_url": null,
+      "sha256": "c2fd9f0d4c8adb545458d5ba6c7bfbec4a93fa3695f5461beddf7f440430f2d4",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
+    "RWA": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/RWA_tariffs.json",
+      "artifact_url": null,
+      "sha256": "1179c1cb7f82adec7315a584da3e5e4fd560666da4572fffd95d2d9b2484020c",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
+    "BDI": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/BDI_tariffs.json",
+      "artifact_url": null,
+      "sha256": "e0a13e7e1414e152e6038dce80bce940fdc0959ffd890d2664c9b0cef30be275",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
+    "SSD": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/SSD_tariffs.json",
+      "artifact_url": null,
+      "sha256": "f275f381be8883cecd2a982c5d236ab9fa84602a370517cd29691a64174d7b1b",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
+    "COD": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/COD_tariffs.json",
+      "artifact_url": null,
+      "sha256": "5a2d1cfceefd2799cdd04d8776f5a5f0799d36b8419656cec2751b49479f667e",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
     "BEN": {
       "organism": "Direction Générale des Douanes — douanes.gouv.bj + TEC CEDEAO",
       "version": "2026.1",
@@ -390,22 +585,227 @@
       "code_digits": 13,
       "positions_count": 6129,
       "validation_status": "verified",
-      "taxes": ["DD", "RS", "PCS", "PCC", "PUA", "TVA"],
-      "taxes_missing": ["TIC"],
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PCC",
+        "PUA",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "TIC"
+      ],
       "source_gap": "TIC applicable mais taux non crawlé — signalé dans le schéma"
     },
-    "BFA": {"version": null, "artifact_path": "backend/data/crawled/BFA_tariffs.json", "artifact_url": null, "sha256": "83c4222c2d9cedc3453e9d8aac6ff5b3c50e98f54a6c589a6e9aed34fcd0b667", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PC-AES", "TVA"], "taxes_missing": ["PCC", "PUA", "TIC"]},
-    "CIV": {"version": null, "artifact_path": "backend/data/crawled/CIV_tariffs.json", "artifact_url": null, "sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "DUS", "PSV", "SPEC", "TVA", "TSB_PT", "TUB", "TUF"]},
-    "GIN": {"version": null, "artifact_path": "backend/data/crawled/GIN_tariffs.json", "artifact_url": null, "sha256": "0cba205ad60369ccbb1683a5ae2288db76431dd84e7911e4f708febee9d93f56", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "PCC", "PUA", "TVA"], "taxes_missing": ["RS", "PCS", "TIC"]},
-    "GMB": {"version": null, "artifact_path": "backend/data/crawled/GMB_tariffs.json", "artifact_url": null, "sha256": "df507892b7d475647b66b8ec80b1552b8451b719c3953208bbac82a178aea772", "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre", "taxes": ["DD", "RS", "PCC", "TVA"], "taxes_non_transposees": ["PCS", "PUA"]},
-    "GNB": {"version": null, "artifact_path": "backend/data/crawled/GNB_tariffs.json", "artifact_url": null, "sha256": "292c4b3bcda33103f40caba44f70623c6655a2f16ac46a67005559804a1556ef", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PCC", "PUA", "TVA"]},
-    "LBR": {"version": null, "artifact_path": "backend/data/crawled/LBR_tariffs.json", "artifact_url": null, "sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40", "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre", "taxes": ["DD", "RS", "PCC", "TVA"], "taxes_non_transposees": ["PCS", "PUA"]},
-    "MLI": {"version": null, "artifact_path": "backend/data/crawled/MLI_tariffs.json", "artifact_url": null, "sha256": "ac016ec03cde8facc64ae6a2a366469d64fac10d78f44ab3b2becbfb04f20ad6", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PC-AES", "TVA"], "taxes_missing": ["PCC", "PUA", "TIC"]},
-    "NER": {"version": null, "artifact_path": "backend/data/crawled/NER_tariffs.json", "artifact_url": null, "sha256": "af07aa9e4e0e22c8cb38f59055668a04fcb37d83ffed3f711de2eb06391ad629", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PC-AES", "TVA"], "taxes_missing": ["PCC", "PUA", "TIC"]},
-    "SEN": {"version": null, "artifact_path": "backend/data/crawled/SEN_tariffs.json", "artifact_url": null, "sha256": "733fe61c81cc2b95341cae7c9189cc6520e73c86b648372f27068bdb095f37b0", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PCC", "PUA", "TVA"], "taxes_missing": ["TIC"]},
-    "SLE": {"version": null, "artifact_path": "backend/data/crawled/SLE_tariffs.json", "artifact_url": null, "sha256": "9c5a5d7b2ec90723c8a8bd9e06136b2d1f239086e01650ea131a11fb0ed1df39", "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre", "taxes": ["DD", "RS", "PCC", "TVA"], "taxes_non_transposees": ["PCS", "PUA"]},
-    "TGO": {"version": null, "artifact_path": "backend/data/crawled/TGO_tariffs.json", "artifact_url": null, "sha256": "5a2f5e06f1ca8e20a8a04fbe05c8d5eaa01e2f534cbb08f6c64a082e8e7d9bce", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PCC", "PUA", "TVA"]},
-    "CPV": {"version": null, "artifact_path": "backend/data/crawled/CPV_tariffs.json", "artifact_url": null, "sha256": "67bd2c2b4d57190be7f92609e83db0a1c514e6faa29628b94cf01f36ed132fab", "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre", "taxes": ["DD", "RS", "PCC", "TVA"], "taxes_non_transposees": ["PCS", "PUA"]},
+    "BFA": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/BFA_tariffs.json",
+      "artifact_url": null,
+      "sha256": "83c4222c2d9cedc3453e9d8aac6ff5b3c50e98f54a6c589a6e9aed34fcd0b667",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PC-AES",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "PCC",
+        "PUA",
+        "TIC"
+      ]
+    },
+    "CIV": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/CIV_tariffs.json",
+      "artifact_url": null,
+      "sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "DUS",
+        "PSV",
+        "SPEC",
+        "TVA",
+        "TSB_PT",
+        "TUB",
+        "TUF"
+      ]
+    },
+    "GIN": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/GIN_tariffs.json",
+      "artifact_url": null,
+      "sha256": "0cba205ad60369ccbb1683a5ae2288db76431dd84e7911e4f708febee9d93f56",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "PCC",
+        "PUA",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "RS",
+        "PCS",
+        "TIC"
+      ]
+    },
+    "GMB": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/GMB_tariffs.json",
+      "artifact_url": null,
+      "sha256": "df507892b7d475647b66b8ec80b1552b8451b719c3953208bbac82a178aea772",
+      "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCC",
+        "TVA"
+      ],
+      "taxes_non_transposees": [
+        "PCS",
+        "PUA"
+      ]
+    },
+    "GNB": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/GNB_tariffs.json",
+      "artifact_url": null,
+      "sha256": "292c4b3bcda33103f40caba44f70623c6655a2f16ac46a67005559804a1556ef",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PCC",
+        "PUA",
+        "TVA"
+      ]
+    },
+    "LBR": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/LBR_tariffs.json",
+      "artifact_url": null,
+      "sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40",
+      "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCC",
+        "TVA"
+      ],
+      "taxes_non_transposees": [
+        "PCS",
+        "PUA"
+      ]
+    },
+    "MLI": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/MLI_tariffs.json",
+      "artifact_url": null,
+      "sha256": "ac016ec03cde8facc64ae6a2a366469d64fac10d78f44ab3b2becbfb04f20ad6",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PC-AES",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "PCC",
+        "PUA",
+        "TIC"
+      ]
+    },
+    "NER": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/NER_tariffs.json",
+      "artifact_url": null,
+      "sha256": "af07aa9e4e0e22c8cb38f59055668a04fcb37d83ffed3f711de2eb06391ad629",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PC-AES",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "PCC",
+        "PUA",
+        "TIC"
+      ]
+    },
+    "SEN": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/SEN_tariffs.json",
+      "artifact_url": null,
+      "sha256": "733fe61c81cc2b95341cae7c9189cc6520e73c86b648372f27068bdb095f37b0",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PCC",
+        "PUA",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "TIC"
+      ]
+    },
+    "SLE": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/SLE_tariffs.json",
+      "artifact_url": null,
+      "sha256": "9c5a5d7b2ec90723c8a8bd9e06136b2d1f239086e01650ea131a11fb0ed1df39",
+      "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCC",
+        "TVA"
+      ],
+      "taxes_non_transposees": [
+        "PCS",
+        "PUA"
+      ]
+    },
+    "TGO": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/TGO_tariffs.json",
+      "artifact_url": null,
+      "sha256": "5a2f5e06f1ca8e20a8a04fbe05c8d5eaa01e2f534cbb08f6c64a082e8e7d9bce",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PCC",
+        "PUA",
+        "TVA"
+      ]
+    },
+    "CPV": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/CPV_tariffs.json",
+      "artifact_url": null,
+      "sha256": "67bd2c2b4d57190be7f92609e83db0a1c514e6faa29628b94cf01f36ed132fab",
+      "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCC",
+        "TVA"
+      ],
+      "taxes_non_transposees": [
+        "PCS",
+        "PUA"
+      ]
+    },
     "CMR": {
       "organism": "CEMAC Tarif des Douanes + douanes.cm",
       "version": "2026.1",
@@ -420,14 +820,90 @@
       "code_digits": 10,
       "positions_count": 5239,
       "validation_status": "verified",
-      "taxes": ["DD", "TCI", "RI", "TVA", "DA", "TS"],
+      "taxes": [
+        "DD",
+        "TCI",
+        "RI",
+        "TVA",
+        "DA",
+        "TS"
+      ],
       "zlecaf": "OFFER_ONLY — dataset CEMAC (5284 lignes)"
     },
-    "COG": {"version": null, "artifact_path": "backend/data/crawled/COG_tariffs.json", "artifact_url": null, "sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe", "_shared": "CMR (CEMAC TEC)", "taxes": ["DD", "TCI", "TS", "OHADA", "TVA", "DA"]},
-    "GAB": {"version": null, "artifact_path": "backend/data/crawled/GAB_tariffs.json", "artifact_url": null, "sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3", "_shared": "CMR (CEMAC TEC)", "taxes": ["DD", "TCI", "CIA", "TVA", "DA"]},
-    "TCD": {"version": null, "artifact_path": "backend/data/crawled/TCD_tariffs.json", "artifact_url": null, "sha256": "a0ca51a4030c9aada3d45e5e06548a5c5cda59643c42030eb3c4ee621fdd279e", "_shared": "CMR (CEMAC TEC)", "taxes": ["DD", "TCI", "TS", "PUA", "TVA", "DA"]},
-    "CAF": {"version": null, "artifact_path": "backend/data/crawled/CAF_tariffs.json", "artifact_url": null, "sha256": "021166306006d65273dd676bf0552e10bc5af83869b2d2795f03df3718ae25db", "_shared": "CMR (CEMAC TEC)", "taxes": ["DD", "TCI", "RS", "TS", "TVA", "DA"]},
-    "GNQ": {"version": null, "artifact_path": "backend/data/crawled/GNQ_tariffs.json", "artifact_url": null, "sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0", "_shared": "CMR (CEMAC TEC)", "taxes": ["DD", "TCI", "RI", "TS", "TVA", "DA"]},
+    "COG": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/COG_tariffs.json",
+      "artifact_url": null,
+      "sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe",
+      "_shared": "CMR (CEMAC TEC)",
+      "taxes": [
+        "DD",
+        "TCI",
+        "TS",
+        "OHADA",
+        "TVA",
+        "DA"
+      ]
+    },
+    "GAB": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/GAB_tariffs.json",
+      "artifact_url": null,
+      "sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3",
+      "_shared": "CMR (CEMAC TEC)",
+      "taxes": [
+        "DD",
+        "TCI",
+        "CIA",
+        "TVA",
+        "DA"
+      ]
+    },
+    "TCD": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/TCD_tariffs.json",
+      "artifact_url": null,
+      "sha256": "a0ca51a4030c9aada3d45e5e06548a5c5cda59643c42030eb3c4ee621fdd279e",
+      "_shared": "CMR (CEMAC TEC)",
+      "taxes": [
+        "DD",
+        "TCI",
+        "TS",
+        "PUA",
+        "TVA",
+        "DA"
+      ]
+    },
+    "CAF": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/CAF_tariffs.json",
+      "artifact_url": null,
+      "sha256": "021166306006d65273dd676bf0552e10bc5af83869b2d2795f03df3718ae25db",
+      "_shared": "CMR (CEMAC TEC)",
+      "taxes": [
+        "DD",
+        "TCI",
+        "RS",
+        "TS",
+        "TVA",
+        "DA"
+      ]
+    },
+    "GNQ": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/GNQ_tariffs.json",
+      "artifact_url": null,
+      "sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0",
+      "_shared": "CMR (CEMAC TEC)",
+      "taxes": [
+        "DD",
+        "TCI",
+        "RI",
+        "TS",
+        "TVA",
+        "DA"
+      ]
+    },
     "NGA": {
       "organism": "Nigeria Customs Service — customs.gov.ng",
       "version": "2026.1",
@@ -442,7 +918,12 @@
       "code_digits": 10,
       "positions_count": 6363,
       "validation_status": "verified",
-      "taxes": ["ID (DD)", "VAT", "EXC", "IAT"],
+      "taxes": [
+        "ID (DD)",
+        "VAT",
+        "EXC",
+        "IAT"
+      ],
       "zlecaf": "PARTNER_NOTICE_REQUIRED — PSTC gazettée avril 2025, dataset ECOWAS"
     },
     "ETH": {
@@ -459,7 +940,15 @@
       "code_digits": 11,
       "positions_count": 6296,
       "validation_status": "verified",
-      "taxes": ["DR (DD)", "VAT", "WHR", "D2R (COMESA)", "ER (excise)", "SR (surtax)", "DSR"],
+      "taxes": [
+        "DR (DD)",
+        "VAT",
+        "WHR",
+        "D2R (COMESA)",
+        "ER (excise)",
+        "SR (surtax)",
+        "DSR"
+      ],
       "zlecaf": "PARTNER_NOTICE_REQUIRED — Regulation 574/2025, dataset ETH (5868 lignes)"
     },
     "AGO": {
@@ -476,7 +965,10 @@
       "code_digits": 6,
       "positions_count": 5388,
       "validation_status": "not_available",
-      "taxes": ["DD", "IVA"],
+      "taxes": [
+        "DD",
+        "IVA"
+      ],
       "note": "Portail AGT = SPA AngularJS sans API publique. PDF Pauta Aduaneira non accessible à URL directe. Source secondaire Lex.ao (SPA Docusaurus). OCR à prévoir."
     },
     "MWI": {
@@ -493,7 +985,10 @@
       "code_digits": 6,
       "positions_count": 5388,
       "validation_status": "not_available",
-      "taxes": ["DD", "VAT"],
+      "taxes": [
+        "DD",
+        "VAT"
+      ],
       "note": "Site SPA React sans API accessible. WordPress backend bloque les requêtes externes."
     },
     "STP": {
@@ -510,7 +1005,10 @@
       "code_digits": 6,
       "positions_count": 5388,
       "validation_status": "not_available",
-      "taxes": ["DD", "VAT"],
+      "taxes": [
+        "DD",
+        "VAT"
+      ],
       "note": "Site officiel 403. Téla Nón confirme entrée en vigueur décembre 2023 (5000+ lignes) mais PDF non public. À rechercher: décret-loi 14/2023 auprès du Journal officiel."
     },
     "COM": {
@@ -527,7 +1025,10 @@
       "code_digits": 6,
       "positions_count": 5388,
       "validation_status": "not_available",
-      "taxes": ["DD", "TVA"],
+      "taxes": [
+        "DD",
+        "TVA"
+      ],
       "note": "La douane comorienne ne publie pas les taux en ligne. Contacter: dsallaoui@douane.gov.km. Engagements OMC = piste distincte (ne pas confondre avec droits appliqués)."
     },
     "SDN": {
@@ -544,7 +1045,10 @@
       "code_digits": 6,
       "positions_count": 5388,
       "validation_status": "not_available",
-      "taxes": ["DD", "VAT"],
+      "taxes": [
+        "DD",
+        "VAT"
+      ],
       "note": "PDF officiel 404. Pays en guerre civile. Statut incertain. Solliciter copie datée auprès des autorités."
     },
     "DJI": {
@@ -576,7 +1080,6 @@
       "note": "Site injoignable. Pays sous embargo. Pas de source accessible."
     }
   },
-
   "excise_sources": {
     "pwc_worldwide_tax_summaries": {
       "source_type": "international_cabinet",
@@ -584,18 +1087,45 @@
       "retrieved_at": "2026-09-08",
       "validation_status": "verified",
       "countries_crawled": {
-        "SEN": {"excise_count": 39, "last_reviewed": "07 August 2026", "enriched_positions": 502},
-        "GAB": {"excise_count": 17, "last_reviewed": "06 August 2026", "enriched_positions": 317},
-        "EGY": {"excise_count": 9, "last_reviewed": "17 August 2026", "enriched_positions": 0},
-        "TCD": {"excise_count": 7, "last_reviewed": "12 August 2024", "enriched_positions": 290},
-        "CIV": {"excise_count": 3, "last_reviewed": "11 March 2026", "enriched_positions": 0},
-        "MAR": {"excise_count": 0, "last_reviewed": "30 April 2026", "note": "PwC ne publie pas les taux — voir CGI Maroc"},
-        "TUN": {"excise_count": 0, "last_reviewed": "29 June 2026", "note": "Pas d'accise — DC déjà crawlé"}
+        "SEN": {
+          "excise_count": 39,
+          "last_reviewed": "07 August 2026",
+          "enriched_positions": 502
+        },
+        "GAB": {
+          "excise_count": 17,
+          "last_reviewed": "06 August 2026",
+          "enriched_positions": 317
+        },
+        "EGY": {
+          "excise_count": 9,
+          "last_reviewed": "17 August 2026",
+          "enriched_positions": 0
+        },
+        "TCD": {
+          "excise_count": 7,
+          "last_reviewed": "12 August 2024",
+          "enriched_positions": 290
+        },
+        "CIV": {
+          "excise_count": 3,
+          "last_reviewed": "11 March 2026",
+          "enriched_positions": 0
+        },
+        "MAR": {
+          "excise_count": 0,
+          "last_reviewed": "30 April 2026",
+          "note": "PwC ne publie pas les taux — voir CGI Maroc"
+        },
+        "TUN": {
+          "excise_count": 0,
+          "last_reviewed": "29 June 2026",
+          "note": "Pas d'accise — DC déjà crawlé"
+        }
       },
       "note": "Cabinet de premier ordre. Réflexion de sources officielles (CGI nationaux). CIV/EGY non enrichis (descriptions PwC = lois, pas produits)."
     }
   },
-
   "zlecaf_sources": {
     "treaty": {
       "organism": "Union Africaine (UA)",
@@ -623,33 +1153,88 @@
       "source_type": "regional_org"
     },
     "datasets": {
-      "EAC": {"lines": 4970, "status": "APPLIED", "applied_to": "KEN (21 origines)"},
-      "ZAF": {"lines": 8592, "status": "APPLIED", "applied_to": "ZAF (SARS colonne AfCFTA, 9+ partenaires)"},
-      "DZA": {"source": "Circulaire DGD 482/2024", "status": "APPLIED", "applied_to": "DZA (9 partenaires actifs)"},
-      "EGY": {"lines": 10511, "status": "OFFER_ONLY", "schedules": 2},
-      "TUN": {"lines": 18746, "status": "OFFER_ONLY", "schedules": 2},
-      "ECOWAS": {"lines": 5578, "status": "OFFER_ONLY"},
-      "CEMAC": {"lines": 5284, "status": "OFFER_ONLY"},
-      "ETH": {"lines": 5868, "status": "PARTNER_NOTICE_REQUIRED"},
-      "ZMB": {"lines": 5445, "status": "PARTNER_NOTICE_REQUIRED"}
+      "EAC": {
+        "lines": 4970,
+        "status": "APPLIED",
+        "applied_to": "KEN (21 origines)"
+      },
+      "ZAF": {
+        "lines": 8592,
+        "status": "APPLIED",
+        "applied_to": "ZAF (SARS colonne AfCFTA, 9+ partenaires)"
+      },
+      "DZA": {
+        "source": "Circulaire DGD 482/2024",
+        "status": "APPLIED",
+        "applied_to": "DZA (9 partenaires actifs)"
+      },
+      "EGY": {
+        "lines": 10511,
+        "status": "OFFER_ONLY",
+        "schedules": 2
+      },
+      "TUN": {
+        "lines": 18746,
+        "status": "OFFER_ONLY",
+        "schedules": 2
+      },
+      "ECOWAS": {
+        "lines": 5578,
+        "status": "OFFER_ONLY"
+      },
+      "CEMAC": {
+        "lines": 5284,
+        "status": "OFFER_ONLY"
+      },
+      "ETH": {
+        "lines": 5868,
+        "status": "PARTNER_NOTICE_REQUIRED"
+      },
+      "ZMB": {
+        "lines": 5445,
+        "status": "PARTNER_NOTICE_REQUIRED"
+      }
     },
     "implementation_registry": {
-      "APPLIED": ["KEN (EAC/321/2022)", "DZA (circulaire 482/2024)", "ZAF (SARS colonne AfCFTA)"],
-      "PARTNER_NOTICE_REQUIRED": ["CIV (ordonnance 23/04/2025)", "ETH (Regulation 574/2025)", "NGA (PSTC 04/2025)", "ZMB (SI 92/2024)"],
-      "OFFER_ONLY": ["CMR", "EGY", "GHA", "RWA", "TUN"],
+      "APPLIED": [
+        "KEN (EAC/321/2022)",
+        "DZA (circulaire 482/2024)",
+        "ZAF (SARS colonne AfCFTA)"
+      ],
+      "PARTNER_NOTICE_REQUIRED": [
+        "CIV (ordonnance 23/04/2025)",
+        "ETH (Regulation 574/2025)",
+        "NGA (PSTC 04/2025)",
+        "ZMB (SI 92/2024)"
+      ],
+      "OFFER_ONLY": [
+        "CMR",
+        "EGY",
+        "GHA",
+        "RWA",
+        "TUN"
+      ],
       "NOT_AVAILABLE": "35 pays ratifiés sans instrument national d'implémentation",
-      "NOT_RATIFIED": ["BEN", "LBY", "SDN", "SSD"]
+      "NOT_RATIFIED": [
+        "BEN",
+        "LBY",
+        "SDN",
+        "SSD"
+      ]
     }
   },
-
   "integrity_seals": {
     "description": "Chaque fichier crawled/*.json est scellé avec SHA-256 (_integrity_seal) + fichier .sha256",
     "files_sealed": 53,
     "files_valid": 53,
-    "seal_fields": ["content_hash", "source_url", "crawled_at", "algorithm: SHA-256"],
+    "seal_fields": [
+      "content_hash",
+      "source_url",
+      "crawled_at",
+      "algorithm: SHA-256"
+    ],
     "normalization_trail": "Le schéma unifié préserve source_content_hash pour traçabilité crawled → normalized"
   },
-
   "artifacts": {
     "description": "Les données tarifaires sont publiées comme artefacts immuables versionnés par pays, pas comme des sources versionnées dans git. Elles changent une à trois fois par an et par pays (loi de finances, circulaires) : ce sont des publications, pas du code.",
     "version_scheme": "AAAA.n — année d'application du tarif, puis rang de révision dans l'année. Chaque pays a sa propre ligne de version : l'Algérie peut passer en 2026.2 sans toucher au Kenya.",
@@ -658,7 +1243,6 @@
     "artifact_url_null": "Hébergement non encore tranché : tant que artifact_url vaut null, le chargement se rabat sur artifact_path dans le dépôt. Le mécanisme n'attend qu'une URL pour devenir indépendant de l'hôte.",
     "why": "Le dépôt de code reste petit et portable. Changer d'hébergeur ne coûte qu'une URL par pays dans ce manifeste, au lieu d'une migration de plusieurs gigaoctets d'historique git."
   },
-
   "validation_rules": [
     "Aucune valeur manquante remplacée par 0",
     "Aucun code national créé en ajoutant des zéros à un SH6",
@@ -671,7 +1255,6 @@
     "L'OMC distingue les données de droits appliqués des engagements consolidés",
     "Les plafonds OMC ne sont pas les droits effectivement appliqués"
   ],
-
   "wto_data_availability": {
     "note": "L'OMC publie des profils tarifaires synthétiques (statistiques agrégées, pas de lignes tarifaires). Le WTO IDB contient les taux appliqués par code HS mais nécessite navigation Livewire (non automatable sans navigateur). Les codes OMC pour nos pays: Comoros=C004, Malawi=C178, Mauritania=C458, Mauritius=C480, São Tomé=C682, South Sudan=C144, Sudan=C484.",
     "url": "https://ttd.wto.org/en/data/idb",
