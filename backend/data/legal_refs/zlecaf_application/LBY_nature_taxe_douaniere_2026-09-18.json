@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "objet": "Libye — nature et assiette du prélèvement porté par la colonne « فئة الضريبة » du tarif douanier 2022.",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — « قانون الجمارك الليبية » (loi sur les douanes), publiée par la Mصلحة الجمارك الليبية sur customs.gov.ly, 45 pages, texte extractible, extraits archivés ; croisée avec le tarif douanier officiel 2022 (XLSX, customs.gov.ly) et avec le PDF du même tarif.",
+  "la_question_posee": "Le tarif 2022 titre sa colonne de taux « فئة الضريبة » — la catégorie/le taux de LA TAXE — et non « رسم جمركي » (droit de douane). Nommer ces 5 % « droit de douane » dans le calculateur aurait été une supposition. La loi tranche : c'est elle qui emploie « الضريبة الجمركية » comme nom propre du prélèvement perçu à l'importation. Le tarif ne fait que reprendre le terme légal.",
+  "regle": {
+    "nature_du_prelevement": {
+      "article": "Loi sur les douanes (قانون الجمارك الليبية), dispositions générales sur la perception",
+      "verbatim": "وتحصل الضرائب الجمركية وغيرها من الضرائب والرسوم التي تستحق بمناسبة استيراد البضاعة أو تصديرها وفقاً للقوانين المنظمة لها",
+      "traduction": "« Les TAXES DOUANIÈRES et les autres taxes et redevances dues à l'occasion de l'importation ou de l'exportation des marchandises sont perçues conformément aux lois qui les régissent. »",
+      "portee": "La loi libyenne nomme « الضريبة الجمركية » — taxe douanière — le prélèvement qu'elle assoit sur l'importation, et c'est ce prélèvement que le tarif chiffre dans sa colonne « فئة الضريبة ». Le même terme revient dans la loi pour la marchandise laissée en entrepôt (« دفع الضريبة الجمركية المقررة عليها ») et pour le remboursement (« يجوز رد الضرائب الجمركية »). Il n'y a donc pas à choisir un nom : la source en donne un."
+    },
+    "assiette": {
+      "article": "Loi sur les douanes, articles sur la valeur en douane",
+      "verbatim": "تكون القيمة الجمركية للبضائع الموردة إلى الدولة هي القيمة التعاقدية للصفقة أي الثمن المدفوع فعلاً أو المستحق عن بيع البضائع بعد تعديله بإضافة عناصر التكاليف",
+      "verbatim_ajouts": "مصاريف نقل وتأمين البضائع الموردة … مصاريف الشحن والتفريغ وجميع النفقات الأخرى المرتبطة بعملية نقل البضائع الموردة حتى مكان وصولها إلى مركز الدخول بالإقليم الجمركي",
+      "assiette": "CIF",
+      "portee": "Valeur transactionnelle — le prix effectivement payé ou à payer — ajustée par l'ajout des frais de TRANSPORT ET D'ASSURANCE des marchandises importées, ainsi que des frais de chargement, de déchargement et de toutes autres dépenses liées au transport « jusqu'au lieu d'arrivée au point d'entrée dans le territoire douanier ». C'est la définition même du CIF, sur le modèle de l'Accord de l'OMC sur l'évaluation en douane. La loi exclut réciproquement de cette valeur « les taxes et redevances payées dans l'État »."
+    },
+    "texte_archive": "sources/LBY_nature_et_assiette_taxe_douaniere.texte-extrait.txt",
+    "sha256": "d70c6ad2229e8f101cbbe552e803eae42d61bb58c43fc180607cfb780e3ed56b"
+  },
+  "ce_que_le_tarif_2022_porte": {
+    "source": "https://customs.gov.ly/wp-content/uploads/2023/12/التعريفة-الجمركية-.2022-.xlsx",
+    "sha256_xlsx": "f3bd72e688870986e80bd50fd9d0659b0333ab6e0fddca7a0891f957a532e4b6",
+    "sha256_pdf_jumeau": "déposé par l'utilisateur sur Drive, non recalculé ici",
+    "en_tetes_verbatim": [
+      "رقم البند (numéro de position)",
+      "رمز النظام المنسق (code du Système harmonisé)",
+      "بيان المنتجات (désignation des produits)",
+      "فئة الضريبة (taux de la taxe)",
+      "التعريفة التفضيلية لدول جامعة الدول العربية (tarif préférentiel pour les États de la Ligue des États arabes)"
+    ],
+    "decompte": {
+      "positions_a_code_SH": 5961,
+      "taxe_5_pct": 4738,
+      "detail_5_pct": "4 382 écrites « 0.05 » et 356 écrites « 5% » — MÊME TAUX, DEUX ÉCRITURES",
+      "exonerees": 1026,
+      "taxe_30_pct": 71,
+      "taxe_10_pct": 48,
+      "importation_interdite": 62,
+      "sans_valeur": 9
+    },
+    "colonne_preferentielle": {
+      "exonere": 5890,
+      "importation_interdite": 62,
+      "sans_valeur": 9,
+      "lecture": "Régime d'exonération quasi générale pour les États de la Ligue arabe, pas un barème préférentiel. À traiter comme une colonne publiée par le tarif de destination, jamais comme un taux appliqué sans vérification de l'origine."
+    },
+    "pieges_constates": [
+      "LE FACTEUR CENT. Le même taux s'écrit « 0.05 » ET « 5% » dans le même fichier, de même « 0.3 »/« 30% » et « 0.1 »/« 10% ». Une lecture naïve liquiderait 4 382 positions — 73 % du tarif — à 0,05 % au lieu de 5 %. Le correctif du crawler (backend/crawlers/countries/libya_customs_scraper.py, parse_rate) traite les deux écritures ; sans lui, l'erreur est d'un facteur cent.",
+      "LA SECONDE FEUILLE. Le classeur porte trois feuilles ; « ورقة1 » est le tarif (8 237 lignes, 5 961 positions codées), « ورقة3 » est vide, et « ورقة2 » compte 1 040 896 lignes dont 422 SEULEMENT portent un code. Un collecteur qui lirait cette feuille-là ramasserait 7 % du tarif en croyant tout avoir."
+    ]
+  },
+  "conflit_tranche": "PwC rapporte une abolition des droits de douane libyens en 2005. Le tarif officiel de 2022, publié par la douane libyenne, lève un prélèvement sur 4 935 des 5 961 positions. Les deux se concilient sans contradiction une fois la loi lue : ce que le tarif lève n'est pas un « رسم جمركي » (droit de douane) mais une « ضريبة جمركية » (taxe douanière), et c'est le nom que la loi lui donne. Le calculateur doit donc servir ce prélèvement sous son nom légal, sans le rebaptiser droit de douane et sans le taire.",
+  "ce_que_cela_ne_tranche_pas": "La date d'entrée en vigueur du tarif 2022 et son éventuelle modification depuis. La composition exacte des « États de la Ligue des États arabes » retenue par la douane libyenne. Et l'existence d'autres prélèvements à l'importation hors tarif — la loi en réserve la possibilité (« وغيرها من الضرائب والرسوم »), le tarif n'en porte aucun.",
+  "remaining_work": [
+    "Obtenir le décret 881 fixant la valeur en douane (القرار 881 بتحديد القيمة الجمركية) : l'URL publiée par customs.gov.ly rend une erreur 522.",
+    "Obtenir le décret 537 de 2021 exonérant les denrées alimentaires « des taxes et redevances prévues par le tarif douanier » : URL en 404. Il pourrait modifier les 1 026 exonérations relevées.",
+    "Reconstruire le socle libyen sur ce tarif : il sert aujourd'hui une moyenne SH6 WITS, en état PARTIEL, avec ZÉRO position liquidable."
+  ]
+}
