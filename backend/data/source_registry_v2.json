@@ -364,24 +364,26 @@
       "organism": "Libyan Customs Authority — customs.gov.ly",
       "version": "2022.1",
       "artifact_path": "backend/data/crawled/LBY_tariffs.json",
-      "artifact_url": null,
+      "artifact_url": "https://customs.gov.ly/wp-content/uploads/2023/12/التعريفة-الجمركية-.2022-.xlsx",
       "source_type": "official",
       "url": "https://customs.gov.ly/wp-content/uploads/2023/12/التعريفة-الجمركية-.2022-.xlsx",
-      "retrieved_at": "2026-09-09",
+      "retrieved_at": "2026-09-18",
       "edition": "التعريفة الجمركية 2022 (Tarif douanier 2022)",
       "application_period": "2022-01-01 to next amendment",
       "hs_version": "HS 2017",
       "code_digits": 8,
       "positions_count": 5920,
-      "sha256": "49644077114938ec95f38401fc5f74d146670d6e34ab6ebe930dc592cd4dcfbb",
-      "reuse_conditions": "Données publiques de la douane libyenne. Textes arabes verbatim.",
+      "sha256": "7d4c83398125910cfc50393f3c716b5c90930305aa6498e518ad798e3fd82499",
+      "reuse_conditions": "Données publiques de la douane libyenne. Textes arabes verbatim. Empreinte du XLSX d'origine : f3bd72e688870986e80bd50fd9d0659b0333ab6e0fddca7a0891f957a532e4b6, recalculée le 2026-09-18.",
       "legal_authority": "Customs Law of Libya",
-      "validation_status": "to_verify",
+      "validation_status": "verified",
       "taxes": [
         "DD",
-        "Arab League preferential rate"
+        "TSP",
+        "TP",
+        "LIGUE_ARABE"
       ],
-      "note": "Édition 2022 — modifications ultérieures non confirmées. Statut 'à vérifier' jusqu'à collecte des mises à jour."
+      "note": "Le fichier sert désormais le TARIF NATIONAL 2022 position par position (5 920 positions à huit chiffres, 96 chapitres, désignations arabes), et non plus la moyenne SH6 WITS/UNCTAD-TRAINS qu'il portait malgré cette entrée. Colonnes du tarif : فئة الضريبة (le prélèvement) et التعريفة التفضيلية لدول جامعة الدول العربية (colonne préférentielle, rangée sous le régime LIGUE_ARABE et JAMAIS dans la cascade NPF). PIÈGES CONSIGNÉS : le même taux s'écrit « 0.05 » et « 5% » dans la même colonne (4 382 contre 356) — une lecture naïve liquiderait 73 % du tarif à un centième de sa valeur ; et la feuille « ورقة2 » aligne 1 040 896 lignes dont 422 codées. 62 positions portent « ممنوع استيراده » : importation interdite, portée comme restriction et sans aucun droit. PAS DE TVA en Libye — ne pas en ajouter une. TSP (4 %) et TP (2 %) sont des compléments PwC hors tarif, SANS assiette établie, donc non liquidables : voir LBY_assiette_TSP_TP_2026-09-17.json et LBY_nature_taxe_douaniere_2026-09-18.json."
     },
     "MUS": {
       "organism": "Mauritius Revenue Authority (MRA) — Customs Department",

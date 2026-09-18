@@ -119,6 +119,15 @@ def calcul(demande: DemandeCalcul):
     )
     resultat["provenance"] = provenance
     resultat["complements_nationaux"] = complements
+    # Une interdiction d'importation est une RÉPONSE, et elle doit sortir comme
+    # telle. Sans ce champ, une position prohibée se présente exactement comme
+    # une position dont le calcul a échoué : l'opérateur lit « indisponible »
+    # là où le tarif de destination dit « interdit », et peut croire à une
+    # lacune de données sur une marchandise qui ne peut pas entrer.
+    # Relevé sur le tarif libyen 2022 : 46 positions du socle portent
+    # « ممنوع استيراده ». Elles ne portent aucun droit, et c'est normal.
+    if position.get("restrictions"):
+        resultat["restrictions"] = position["restrictions"]
     # Régimes régionaux que le tarif publie pour ce couloir, sans les
     # appliquer : le total servi reste celui du régime retenu ci-dessus.
     # Taire une colonne à 0 % que le tarif de destination publie n'est pas

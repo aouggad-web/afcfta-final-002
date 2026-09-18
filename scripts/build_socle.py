@@ -119,6 +119,16 @@ PREFERENTIELS = {
     "EUUK": "EU_UK",
     "EFTA": "EFTA",
     "MERCOSUR": "MERCOSUR",
+    # Colonne du tarif libyen : « التعريفة التفضيلية لدول جامعة الدول العربية »,
+    # tarif préférentiel pour les États de la Ligue des États arabes. Le nom du
+    # régime reprend l'en-tête et rien de plus : ni le tarif ni la loi libyenne
+    # n'invoquent la GZALE/GAFTA, et la composition retenue par la douane
+    # libyenne n'est établie par aucune source consultée.
+    # La table est interrogée sur le code NORMALISÉ (`_norm` retire tirets,
+    # points, espaces et soulignés) : la clé s'écrit donc sans souligné, comme
+    # « EUUK » à côté de « EU_UK ». Écrite « LIGUE_ARABE », l'entrée serait
+    # morte et la colonne tomberait dans la cascade NPF comme un droit dû.
+    "LIGUEARABE": "LIGUE_ARABE",
 }
 
 
@@ -618,6 +628,7 @@ def lignes_du_fichier(donnees):
                 ligne.get("unit") or ligne.get("statistical_unit"),
                 droits,
                 ligne.get("source") or source_defaut,
+                ligne.get("restrictions"),
             )
 
     # Schéma « tariff_lines[] » : la ligne SH6 porte les taxes, ses enfants
@@ -636,6 +647,7 @@ def lignes_du_fichier(donnees):
                 ligne.get("unit"),
                 droits_parent,
                 ligne.get("dd_source") or source_defaut,
+                ligne.get("restrictions"),
             )
         for enfant in enfants:
             if not isinstance(enfant, dict):
@@ -668,6 +680,7 @@ def lignes_du_fichier(donnees):
                 ligne.get("unit"),
                 droits,
                 enfant.get("source") or source_defaut,
+                enfant.get("restrictions") or ligne.get("restrictions"),
             )
 
 
@@ -718,11 +731,14 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
+        "restrictions": 0,
         "classification_estimee": 0,
     }
     familles_vues = set()
 
-    for code, designation, unite, droits, source_ligne in lignes_du_fichier(donnees):
+    for code, designation, unite, droits, source_ligne, restrictions in lignes_du_fichier(
+        donnees
+    ):
         retenus, prefs = [], {}
         position_complete = True
         for d in droits:
@@ -820,6 +836,14 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             positions[code]["preferentiels"] = prefs
         if source_ligne:
             positions[code]["source"] = source_ligne
+        # Une interdiction d'importation est une RÉPONSE, pas une absence. Sans
+        # elle, une position prohibée se présente comme un calcul indisponible —
+        # l'opérateur lit « on ne sait pas » là où le tarif dit « interdit ».
+        # Relevé sur le tarif libyen 2022 : 62 positions portent
+        # « ممنوع استيراده ». Elles ne portent aucun droit, et c'est normal.
+        if restrictions:
+            positions[code]["restrictions"] = restrictions
+            compteurs["restrictions"] = compteurs.get("restrictions", 0) + len(restrictions)
         compteurs["positions"] += 1
         compteurs["droits"] += len(retenus)
         if retenus and position_complete:

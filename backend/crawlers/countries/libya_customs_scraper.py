@@ -6,8 +6,8 @@ Format : XLSX avec colonnes en arabe :
   - رقم البند (numéro de position)
   - رمز النظام المنسق (code SH)
   - بيان المنتجات (désignation produit)
-  - فئة الضريبة (taux DD)
-  - التعريفة التفضيلية لدول جامعة الدول العربية (préférence Ligue Arabe)
+  - فئة الضريبة (taux du prélèvement du tarif)
+  - التعريفة التفضيلية لدول جامعة الدول العربية (colonne préférentielle Ligue des États arabes)
 """
 
 import json
@@ -115,10 +115,25 @@ def lire_cellule_droit(val):
     return (None if interdit else parse_rate(val)), interdit
 
 
+#: La feuille qui porte le tarif. Le classeur en compte trois, et la deuxième
+#: est un piège : « ورقة2 » aligne 1 040 896 lignes dont 422 SEULEMENT portent
+#: un code — un collecteur qui la lirait ramasserait 7 % du tarif en croyant
+#: tout avoir. « ورقة3 » est vide. Prendre la feuille par son RANG marcherait
+#: aujourd'hui et casserait en silence le jour où la douane réordonne son
+#: classeur : elle est donc nommée, et le décompte obtenu est contrôlé.
+FEUILLE_TARIF = "ورقة1"
+POSITIONS_ATTENDUES_MIN = 5000
+
+
 def extract_positions(filepath: str) -> List[Dict]:
     wb = openpyxl.load_workbook(filepath, read_only=True, data_only=True)
-    ws = wb[wb.sheetnames[0]]
-    logger.info(f"XLSX: {ws.max_row} rows x {ws.max_column} cols")
+    if FEUILLE_TARIF not in wb.sheetnames:
+        raise SystemExit(
+            f"feuille {FEUILLE_TARIF!r} absente du classeur (présentes : {wb.sheetnames}) — "
+            "le tarif a changé de forme, relire la source avant de collecter"
+        )
+    ws = wb[FEUILLE_TARIF]
+    logger.info(f"XLSX: feuille {FEUILLE_TARIF}, {ws.max_row} rows x {ws.max_column} cols")
 
     positions = []
 
@@ -142,19 +157,62 @@ def extract_positions(filepath: str) -> List[Dict]:
         dd_raw = row[3]
         dd_rate, dd_interdit = lire_cellule_droit(dd_raw)
 
-        # Colonne 4 = préférence GZALE (Grande Zone arabe de libre-échange)
+        # Colonne 4 = colonne préférentielle « États de la Ligue des États arabes »
         arab_pref_raw = row[4] if len(row) > 4 else None
         arab_pref_rate, arab_interdit = lire_cellule_droit(arab_pref_raw)
 
         # Construire les taxes
+        # Le libellé ne tranche pas entre les dénominations. La loi libyenne en
+        # emploie plusieurs pour ce même prélèvement — « الضرائب الجمركية »
+        # (28 fois), « الرسوم الجمركية » (15), « الضريبة الجمركية » (4), et la
+        # forme cumulative « الضرائب والرسوم الجمركية » (8). Son article des
+        # définitions dit que le tarif porte « les taux des DROITS DE DOUANE » ;
+        # son article sur la perception dit que ce sont « les TAXES DOUANIÈRES »
+        # qui sont perçues. Consacrer l'une des deux serait choisir à la place
+        # de la source. Le libellé renvoie donc à la colonne du tarif, dont
+        # l'en-tête arabe est reproduit tel quel.
+        # Voir LBY_nature_taxe_douaniere_2026-09-18.json.
+        # Une cellule VIDE n'est ni une exonération ni une interdiction : c'est
+        # une absence. Ne rien émettre ferait servir la position comme si aucun
+        # prélèvement n'était dû — un total « complet » amputé de son droit.
+        # La ligne est donc émise SANS taux, pour que le moteur la déclare
+        # indisponible au lieu de la taire. Relevé sur le tarif 2022 : 9
+        # positions dans ce cas, sur 5 920.
+        cellule_vide = dd_rate is None and not dd_interdit
         taxes = []
+        if cellule_vide:
+            taxes.append({
+                "code": "DD",
+                "name": "Prélèvement du tarif douanier (colonne « فئة الضريبة »)",
+                "name_fr": "Prélèvement du tarif douanier — taux absent de la source",
+                "name_en": "Customs tariff levy — rate missing from source",
+                "name_ar": "فئة الضريبة",
+                "rate_pct": None,
+                "rate_decimal": None,
+                "raw_value": str(dd_raw),
+                "base": "CIF",
+                "source": "customs.gov.ly",
+                "legal_ref": None,
+                "is_customs_duty": True,
+                "is_vat": False,
+                "is_excise": False,
+                "note": (
+                    "Cellule vide dans le tarif officiel : le taux n'est pas publié "
+                    "pour cette position. Ni exonération, ni interdiction — une absence."
+                ),
+            })
         if dd_rate is not None:
             taxes.append({
                 "code": "DD",
-                "name": "Droit de Douane",
-                "name_fr": "Droit de Douane",
-                "name_en": "Customs Duty",
-                "name_ar": "ضريبة الوارد",
+                "name": "Prélèvement du tarif douanier (colonne « فئة الضريبة »)",
+                "name_fr": "Prélèvement du tarif douanier (colonne « فئة الضريبة »)",
+                "name_en": "Customs tariff levy (column « فئة الضريبة »)",
+                "name_ar": "فئة الضريبة",
+                "denominations_legales": [
+                    "الضرائب الجمركية (taxes douanières)",
+                    "الرسوم الجمركية (droits de douane)",
+                    "الضرائب والرسوم الجمركية (taxes et droits de douane)",
+                ],
                 "rate_pct": dd_rate,
                 "rate_decimal": dd_rate / 100,
                 "raw_value": str(dd_raw),
@@ -166,20 +224,53 @@ def extract_positions(filepath: str) -> List[Dict]:
                 "is_excise": False,
             })
 
-        # Préférence GZALE. Le tarif la PUBLIE position par position : ce
+        # Colonne préférentielle. Le tarif la PUBLIE position par position : ce
         # n'est pas une franchise déduite d'une appartenance à un bloc, mais
         # un taux national, au même titre que le droit NPF de la colonne
-        # précédente. L'appartenance de l'origine à la GZALE reste, elle, une
+        # précédente. L'appartenance de l'origine à la Ligue arabe reste, elle, une
         # condition que ce fichier ne tranche pas.
         preferential_rates = []
         if arab_pref_rate is not None:
             preferential_rates.append({
-                "regime": "GZALE",
-                "regime_name_fr": "Grande Zone arabe de libre-échange (GZALE/GAFTA)",
+                # L'en-tête de la colonne dit « التعريفة التفضيلية لدول جامعة
+                # الدول العربية » — tarif préférentiel pour les ÉTATS DE LA LIGUE
+                # DES ÉTATS ARABES. Il ne dit pas GZALE/GAFTA, qui est un accord
+                # distinct dont ni le tarif ni la loi ne font mention. Nommer
+                # cette colonne GZALE lui prêterait un régime que la source
+                # n'invoque pas, et une liste de pays que rien n'établit ici.
+                "regime": "LIGUE_ARABE",
+                "regime_name_fr": "États de la Ligue des États arabes (colonne du tarif)",
                 "rate_pct": arab_pref_rate,
                 "raw_value": str(arab_pref_raw),
                 "source": "customs.gov.ly",
                 "colonne_source": "التعريفة التفضيلية لدول جامعة الدول العربية",
+            })
+
+        # La colonne préférentielle est aussi émise parmi les taxes, sous le code
+        # que le constructeur du socle reconnaît comme régime préférentiel. Sans
+        # cela elle resterait dans `preferential_rates`, que le constructeur ne
+        # lit pas, et les 5 890 exonérations publiées par le tarif pour les États
+        # de la Ligue arabe seraient perdues. Elle n'entre JAMAIS dans la cascade
+        # NPF : le socle la range sous son propre régime.
+        if arab_pref_rate is not None:
+            taxes.append({
+                "code": "LIGUE_ARABE",
+                "name": "États de la Ligue des États arabes (colonne du tarif)",
+                "name_fr": "États de la Ligue des États arabes (colonne du tarif)",
+                "name_ar": "التعريفة التفضيلية لدول جامعة الدول العربية",
+                "rate_pct": arab_pref_rate,
+                "rate_decimal": arab_pref_rate / 100,
+                "raw_value": str(arab_pref_raw),
+                "base": "CIF",
+                "source": "customs.gov.ly",
+                "is_customs_duty": False,
+                "is_vat": False,
+                "is_excise": False,
+                "note": (
+                    "Colonne publiée par le tarif de destination. L'appartenance de "
+                    "l'origine aux États de la Ligue arabe et les règles d'origine "
+                    "applicables ne sont PAS tranchées par ce fichier."
+                ),
             })
 
         # Une interdiction d'importation n'est pas un droit : elle est portée
@@ -189,8 +280,8 @@ def extract_positions(filepath: str) -> List[Dict]:
         if dd_interdit or arab_interdit:
             restrictions.append({
                 "type": "IMPORTATION_INTERDITE",
-                "portee": "NPF et GZALE" if (dd_interdit and arab_interdit) else (
-                    "NPF" if dd_interdit else "GZALE"
+                "portee": "NPF et Ligue arabe" if (dd_interdit and arab_interdit) else (
+                    "NPF" if dd_interdit else "Ligue arabe"
                 ),
                 "verbatim": MENTION_INTERDIT,
                 "libelle_fr": "Importation interdite",
@@ -232,11 +323,74 @@ def extract_positions(filepath: str) -> List[Dict]:
         })
 
     wb.close()
+    if len(positions) < POSITIONS_ATTENDUES_MIN:
+        raise SystemExit(
+            f"{len(positions)} positions collectées, moins que les "
+            f"{POSITIONS_ATTENDUES_MIN} attendues — collecte refusée plutôt que "
+            "servir un tarif amputé (voir le piège de la feuille ci-dessus)"
+        )
     return positions
+
+
+#: Deux prélèvements que le TARIF NE PORTE PAS, mais que la collecte précédente
+#: servait sur chaque position depuis PwC. Ils sont reportés tels quels — mêmes
+#: taux, même source, même réserve — pour qu'aucun ne disparaisse du calcul au
+#: passage du référentiel WITS au tarif national.
+#:
+#: Ils restent SANS ASSIETTE, comme avant, et donc non liquidables. Ce n'est pas
+#: un oubli : la fiche LBY_assiette_TSP_TP_2026-09-17.json relève elle-même que
+#: « TSP 4 % / TP 2 % du crawl DIVERGENT de la service fee (4-5 %) et des
+#: "autres droits" (0,5 %) documentés ». Leur donner une assiette les rendrait
+#: liquidables et facturerait six points sur une base que notre propre fiche
+#: juge douteuse ; les supprimer amputerait le total s'ils sont réels. Ils sont
+#: donc portés, visibles, et non liquidés — jusqu'à ce qu'une source tranche.
+COMPLEMENTS_NATIONAUX = [
+    {
+        "code": "TSP",
+        "name": "Port Services Tax (taxe des services portuaires)",
+        "rate_pct": 4.0,
+        "raw_value": "4.0 %",
+        "source": "PwC Worldwide Tax Summaries — Libya",
+        "source_url": "https://taxsummaries.pwc.com/libya/corporate/other-taxes",
+        "as_of": "2026",
+        "note": (
+            "Taux national standard, non vérifié position par position, ABSENT du "
+            "tarif douanier 2022. Assiette non établie : voir la fiche "
+            "LBY_assiette_TSP_TP_2026-09-17.json, qui relève une divergence avec la "
+            "service fee (4-5 %) documentée par ailleurs."
+        ),
+    },
+    {
+        "code": "TP",
+        "name": "Production Tax (taxe de production)",
+        "rate_pct": 2.0,
+        "raw_value": "2.0 %",
+        "source": "PwC Worldwide Tax Summaries — Libya",
+        "source_url": "https://taxsummaries.pwc.com/libya/corporate/other-taxes",
+        "as_of": "2026",
+        "note": (
+            "Taux national standard, non vérifié position par position, ABSENT du "
+            "tarif douanier 2022. Assiette non établie : voir la fiche "
+            "LBY_assiette_TSP_TP_2026-09-17.json, qui relève une divergence avec les "
+            "« autres droits » (0,5 %) documentés par ailleurs."
+        ),
+    },
+]
 
 
 def save(positions: List[Dict]):
     DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+    for position in positions:
+        for complement in COMPLEMENTS_NATIONAUX:
+            position["taxes"].append({
+                **complement,
+                "name_fr": complement["name"],
+                "base": None,
+                "is_customs_duty": False,
+                "is_vat": False,
+                "is_excise": True,
+            })
 
     all_tax_codes = set()
     for p in positions:
@@ -246,6 +400,25 @@ def save(positions: List[Dict]):
     result = {
         "country": "LBY",
         "country_name": "Libya",
+        # L'ordre et les bases. Seul le prélèvement du tarif a une assiette
+        # établie — la valeur en douane, définie par la loi libyenne sur les
+        # douanes comme la valeur transactionnelle augmentée du transport et de
+        # l'assurance jusqu'au point d'entrée, soit le CIF. TSP et TP n'en ont
+        # pas, à dessein (voir COMPLEMENTS_NATIONAUX).
+        # PAS DE TVA : la Libye n'en a pas. Zéro occurrence de « القيمة المضافة »
+        # dans la loi, aucune colonne dans le tarif. Ne pas en ajouter une.
+        "calculation_rules": {
+            "order": ["DD", "TSP", "TP"],
+            "bases": {"DD": {"basis": "CIF", "type": "ad_valorem"}},
+            "source": (
+                "Tarif douanier national 2022 (customs.gov.ly), colonne « فئة الضريبة », "
+                "position par position — remplace la moyenne SH6 WITS/UNCTAD-TRAINS. "
+                "Assiette établie par la loi libyenne sur les douanes (valeur en douane = "
+                "valeur transactionnelle + transport + assurance jusqu'au point d'entrée) : "
+                "voir LBY_nature_taxe_douaniere_2026-09-18.json. Pas de TVA en Libye. "
+                "TSP et TP sont des compléments nationaux hors tarif, sans assiette établie."
+            ),
+        },
         "source": "customs.gov.ly (التعريفة الجمركية 2022)",
         "source_url": XLSX_URL,
         "source_quality": "crawled_authentic",

@@ -138,7 +138,7 @@ def test_schema_taxes_detail_avec_assiette():
     }
     lignes = list(bs.lignes_du_fichier(donnees))
     assert len(lignes) == 1
-    code, _, _, droits, _ = lignes[0]
+    code, _, _, droits, _, _ = lignes[0]
     assert code == "7612900000"
     # taxes_detail porte l'assiette : il prime sur le dict `taxes` qui ne l'a pas
     assert [(d["code"], d["assiette"]) for d in droits] == [
@@ -163,7 +163,7 @@ def test_schema_tariff_lines_le_droit_de_l_enfant_prime():
             }
         ]
     }
-    lignes = {c: d for c, _, _, d, _ in bs.lignes_du_fichier(donnees)}
+    lignes = {c: d for c, _, _, d, _, _ in bs.lignes_du_fichier(donnees)}
     assert "010121" in lignes and "0101210000" in lignes
     enfant = {d["code"]: d["taux"] for d in lignes["0101210000"]}
     assert enfant["DD"] == 10.0, "le droit national prime sur celui du parent"
@@ -189,7 +189,7 @@ def test_schema_tunisien_droit_specifique_sans_taux():
             }
         ]
     }
-    ((_, _, _, droits, _),) = bs.lignes_du_fichier(donnees)
+    ((_, _, _, droits, _, _),) = bs.lignes_du_fichier(donnees)
     assert droits[0]["taux"] is None, "un droit spécifique n'a pas de taux ad valorem"
     assert droits[0]["specifique"] == "0.1 dinars"
     assert droits[0]["assiette"] == "xQTE"
