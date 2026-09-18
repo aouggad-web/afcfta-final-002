@@ -67,7 +67,7 @@
           10
         ],
         "source_name": "Tarif des douanes de Mauritanie, édition 2021 (douanes.mr)",
-        "scope_note": "Nomenclature nationale détaillée à dix chiffres, extraite du PDF officiel (SHA-256 consigné) : parseur versionné, suite de vérification V1-V6, croisement WITS à 99,2 %. Remplace le référentiel NPF SH6 WITS/UNCTAD-TRAINS. Le tarif porte quatre colonnes (US, DD, RS, PC) qu'il ne définit nulle part ; l'assiette de la RS et celle du PC ne sont établies par aucun texte consulté."
+        "scope_note": "Nomenclature nationale détaillée à dix chiffres, extraite du PDF officiel (SHA-256 consigné) : parseur versionné, suite de vérification V1-V6, croisement WITS à 99,2 %. Remplace le référentiel NPF SH6 WITS/UNCTAD-TRAINS. Les trois colonnes de taux (DD, RS, PC) sont les « quotités des droits et taxes » du tarif au sens de l'article 4 du Code des douanes, assises sur la valeur en douane par son article 5 § 2."
       }
     }
   },
@@ -251,8 +251,8 @@
       "region": "MRT_MFN",
       "national_extension_status": "DOCUMENTED",
       "vat_status": "DOCUMENTED",
-      "other_taxes_status": "PARTIAL",
-      "calculation_order_status": "PARTIAL",
+      "other_taxes_status": "DOCUMENTED",
+      "calculation_order_status": "DOCUMENTED",
       "afcfta_status": "NOT_AVAILABLE",
       "regulatory_status": "DOCUMENTED",
       "required_documents_status": "NOT_AVAILABLE",
@@ -261,12 +261,13 @@
         "data/mauritania/vat_measures.json",
         "data/mauritania/excise_measures.json",
         "backend/data/tarifs_nationaux/MRT_tarif_2021_detaille.json",
-        "backend/data/legal_refs/zlecaf_application/MRT_formalites_reglementation_2026-09-18.json"
+        "backend/data/legal_refs/zlecaf_application/MRT_formalites_reglementation_2026-09-18.json",
+        "backend/data/legal_refs/zlecaf_application/MRT_assiette_droits_tarif_2026-09-18.json"
       ],
       "vat_measure_path": "data/mauritania/vat_measures.json",
       "required_document_records": [],
       "anomalies": [
-        "Le tarif ne définit aucun de ses sigles : l'assiette de la redevance statistique (RS, 1 %) et celle de la colonne PC (0,5 %) ne sont établies par aucun texte consulté, et le rattachement du PC au prélèvement communautaire CEDEAO ne l'est pas — la Mauritanie n'est pas membre de la CEDEAO. Voir backend/data/legal_refs/zlecaf_application/MRT_colonnes_tarif_2026-09-18.json.",
+        "Le tarif ne développe aucun de ses quatre sigles (US, DD, RS, PC). RS = redevance statistique 1 % est établi par l'OMC (WT/TPR/S/371 § 3.47) ; l'assiette des trois colonnes est établie par le Code des douanes (art. 4 et 5 § 2 de la loi 2017-035) — voir MRT_assiette_droits_tarif_2026-09-18.json. RESTE OUVERT : l'identité de la colonne PC, et le texte instituant la RS, qui pourrait déroger à l'assiette de droit commun sans qu'on le sache.",
         "Les formalités mauritaniennes sont générales et sectorielles, jamais par sous-position : voir MRT_formalites_reglementation_2026-09-18.json. Aucun document requis n'est documenté par position."
       ]
     },

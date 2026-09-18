@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette des droits et taxes inscrits au tarif des douanes mauritanien : la redevance statistique (RS) et la colonne PC sont assises sur la valeur en douane.",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — loi n° 2017-035 portant Code des douanes (finances.gov.mr), articles 4, 5 et 28, texte intégral lu et extrait archivé ; corroborée par la loi n° 2026-015 du 24 mai 2026 (articles 9, 10, 11, 14) telle que publiée par la base tierce legimauritanie.com.",
+  "comment_la_regle_se_lit": "Aucun texte ne nomme la redevance statistique pour lui donner une assiette. Ce n'est pas nécessaire : le Code la saisit par la voie générale, en trois pas. (1) Le tarif des douanes COMPREND les quotités des droits et taxes applicables aux positions — ce sont exactement les colonnes DD, RS et PC du tarif 2021. (2) Les marchandises importées sont passibles des droits et taxes INSCRITS AU TARIF DES DOUANES. (3) Sauf dispositions légales contraires, ces droits sont assis sur la valeur des marchandises, dits « ad-valorem » — et l'article 28 définit cette valeur comme la valeur en douane.",
+  "regle": {
+    "composition_du_tarif": {
+      "article": "Article 4 (loi n° 2017-035) ; articles 9 et 10 (loi n° 2026-015)",
+      "verbatim": "Le tarif des douanes comprend : 1. Les positions et sous-positions de la nomenclature découlant de la Convention internationale sur le Système harmonisé […] ; 2. Les quotités des droits et taxes applicables aux positions et sous-positions précitées.",
+      "portee": "Les trois colonnes de taux du tarif 2021 — DD, RS, PC — sont les « quotités des droits et taxes » que cet article vise. Le Code de 2026 le dit encore plus nettement : « Le Tarif des Douanes est composé : d'une Nomenclature tarifaire et statistique (NTS) ; d'un tableau des droits et taxes » (art. 9)."
+    },
+    "assiette": {
+      "article": "Article 5 § 2 (loi n° 2017-035) ; article 11 § 2 (loi n° 2026-015)",
+      "verbatim": "Sauf dispositions légales contraires, les droits appliqués à l'importation et à l'exportation sont des droits assis sur la valeur des marchandises, dits « ad-valorem ».",
+      "verbatim_2026": "Sauf dispositions légales contraires, les droits appliqués à l'importation et à l'exportation sont des droits assis sur la valeur en douanes des marchandises, dits « ad-valorem ».",
+      "verbatim_valeur_en_douane": "l'expression « valeur en douane des marchandises importées » s'entend de la valeur des marchandises déterminée en vue de la perception des droits de douane ad-valorem sur les marchandises importées",
+      "assiette": "CIF",
+      "portee": "Valeur en douane. Le texte de 2026 ajoute « en douane » là où celui de 2017 écrivait « la valeur » : la précision lève l'ambiguïté sans changer la règle. L'article 28 (2017) et l'article 34 (2026) définissent cette valeur, et l'article 14 § 2 du Code de 2026 confirme que les autres prélèvements perçus par la douane sont « liquidés, recouvrés […] comme en matière de douane », sauf dispositions contraires des textes qui les instituent."
+    },
+    "texte_archive": "sources/MRT_assiette_droits_tarif.texte-extrait.txt",
+    "sha256": "e9f36f8e30365e0346acc419d41a4b2fb840d53b99d1168c42740b8d53f454f0"
+  },
+  "ce_que_cela_ne_tranche_pas": "La règle est une règle par DÉFAUT : elle s'applique « sauf dispositions légales contraires ». Le texte qui institue la redevance statistique n'a pas été retrouvé (voir MRT_colonnes_tarif_2026-09-18.json, recherche étendue) ; une dérogation qu'il porterait resterait donc invisible. Ce qui est établi, c'est que la valeur en douane est l'assiette de droit commun, et qu'y déroger exigerait un texte — non l'inverse.",
+  "ce_que_cela_ne_tranche_pas_non_plus": "L'identité de la colonne PC. Son ASSIETTE est désormais établie comme celle de tout droit inscrit au tarif, mais savoir s'il s'agit du prélèvement communautaire CEDEAO reste ouvert — et sans effet sur le calcul.",
+  "remaining_work": [
+    "Obtenir le texte instituant la redevance statistique (loi de finances entre 2002 et 2011, période où son taux est passé de 3 % à 1 %) pour vérifier qu'il ne déroge pas à l'assiette de droit commun. Les Journaux Officiels mauritaniens de cette période sont des scans sans couche texte : 40 numéros sur 45 examinés le 2026-09-18 ne sont pas fouillables sans OCR.",
+    "Obtenir la loi n° 2026-015 depuis une source officielle, la base legimauritanie.com n'en étant pas une."
+  ]
+}
