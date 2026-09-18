@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "objet": "TVA / fiscalité indirecte en Érythrée — non établie sur source primaire",
+  "verified_at": "2026-09-18",
+  "etabli": false,
+  "evidence_level": null,
+  "source": {
+    "url": null,
+    "institution": "Aucune source officielle joignable"
+  },
+  "regle": null,
+  "ce_que_cela_ne_tranche_pas": [
+    "Aucun texte primaire accessible : mof.gov.er, eritrearevenue.org, mofa.gov.er (DNS introuvables), domaines .er sans site fiscal, shabait.com sans législation publiée, Wayback vide"
+  ],
+  "doutes": "Pays le plus difficile de la collecte : aucun portail fiscal en ligne. Sources papier uniquement.",
+  "remaining_work": [
+    "Obtenir le texte primaire érythréen (proclamation fiscale) par canal hors ligne"
+  ]
+}

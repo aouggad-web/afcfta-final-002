@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "objet": "Taux de la TVA en Namibie : 15 % (VAT Act 10/2000 s.6(1)(b), version annotée NamRA)",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — Value-Added Tax Act 10 of 2000, version annotée NamRA consolidée jusqu'à l'Amendment Act 11 of 2011 (PDF lu intégralement).",
+  "source": {
+    "url": "https://www.namra.org.na/documents/cms/uploaded/value-added-tax-act-10-of-2000-8d9c425ffc.pdf",
+    "institution": "NamRA",
+    "pdf_non_archive": "PDF du texte annoté non archivé ; verbatim transcrit du texte extractible."
+  },
+  "regle": {
+    "valeur": "15 % (taux standard)",
+    "verbatim": "6. (1) … there shall be levied and paid, for the benefit of the State Revenue Fund, a tax (to be known as the value-added tax) — … (b) on every import of goods or import of services, other than an exempt import, calculated at the rate of 15 per cent on the value of the supply or import. [subsection (1) substituted by Act 6 of 2002]",
+    "portee": "Taux standard, explicitement applicable aux IMPORTATIONS. Version annotée consolidée jusqu'à 2011."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "Un amendement postérieur à 2011 éventuel non vérifiable (version annotée limitée)"
+  ],
+  "doutes": "Site namra.org.na SPA JavaScript (contenu extrait via API CMS). namiblii.org bloque curl (Cloudflare).",
+  "remaining_work": [
+    "Vérifier les amendements postérieurs à 2011"
+  ]
+}
