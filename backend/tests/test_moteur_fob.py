@@ -118,13 +118,15 @@ def test_fob_superieure_au_cif_est_refusee():
         calculer(position(droit("DD", 20, "FOB", "droit_de_douane")), 1000, valeur_fob=1100)
 
 
-def test_le_total_partiel_n_calcule_pas_une_economie():
-    """Sans valeur FOB, NPF et préférence sont tous deux partiels : l'économie
-    n'est pas chiffrée plutôt que soustraite de bases incomplètes."""
+def test_le_total_indisponible_n_calcule_pas_une_economie():
+    """Sans valeur FOB, une remise NON nulle laisse NPF et préférence
+    indisponibles : l'économie n'est pas chiffrée plutôt que soustraite de
+    bases inconnues. (Une remise à 0 %, elle, se liquide sans valeur FOB —
+    voir test_une_franchise_a_zero_pour_cent_liquide_sans_valeur_fob.)"""
     r = calculer(
         position(droit("DD", 20, "FOB", "droit_de_douane")),
         1000,
-        taux_preferentiels={"DD": 0.0},
+        taux_preferentiels={"DD": 5.0},
     )
     assert r["npf"]["etat"] == INDISPONIBLE
     assert r["preference"]["etat"] == INDISPONIBLE
