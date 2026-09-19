@@ -359,7 +359,9 @@ def _normalise_crawled_tax_details(raw_taxes) -> dict:
     return details
 
 
-def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) -> dict:
+def compute_tax_cascade(
+    cif_value: float, taxes_rates: dict, country_iso3: str, fob_value: Optional[float] = None
+) -> dict:
     """
     Compute import taxes using the official cascade method for each country.
 
@@ -453,7 +455,25 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         base_formula, add_codes = tax_bases.get(raw_code, tax_bases.get(norm_code, ("CIF", [])))
 
         # Compute the base value
-        if base_formula == "DD_AMOUNT":
+        if base_formula == "FOB":
+            # Valeur en douane SACU : fret et assurance internationaux exclus
+            # (Act 91/1964 s.65-67). Elle ne se déduit JAMAIS de la valeur CIF
+            # — la part du fret et de l'assurance n'est pas connue ici. Sans
+            # valeur FOB fournie, le droit ne se liquide pas : une base CIF
+            # substituée produirait un montant crédible et faux (fail-closed).
+            if fob_value is None:
+                raise ValueError(
+                    "valeur_fob requise : la valeur en douane SACU est la valeur FOB "
+                    "(fret et assurance internationaux exclus) et ne peut être déduite "
+                    "de la valeur CIF — voir Customs and Excise Act 91/1964 s.65-67"
+                )
+            if fob_value > cif_value:
+                raise ValueError(
+                    "valeur_fob ne peut excéder la valeur cif_value : le fret et "
+                    "l'assurance ajoutés à la FOB composent la CIF"
+                )
+            base_value = fob_value
+        elif base_formula == "DD_AMOUNT":
             # e.g. CAC = % of DD_amount
             base_value = computed_amounts.get("DD", 0.0)
         elif base_formula == BASE_TVA_TOUTES_TAXES:
@@ -476,6 +496,8 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         label = _TAX_LABELS.get(norm_code, _TAX_LABELS.get(raw_code, raw_code))
         if base_formula == "DD_AMOUNT":
             base_desc = "DD_montant"
+        elif base_formula == "FOB":
+            base_desc = "FOB"
         elif base_formula == BASE_TVA_TOUTES_TAXES:
             autres = [c for c in computed_amounts if c != norm_code]
             base_desc = "CIF + " + " + ".join(autres) if autres else "CIF"
@@ -1644,7 +1666,13 @@ def _sens_de_la_tva_absente(country_iso3: str, country_data) -> str:
 
 
 def calculate_import_taxes(
-    country_iso3, hs_code, cif_value, apply_zlecaf=False, language="fr", origin_country=None
+    country_iso3,
+    hs_code,
+    cif_value,
+    apply_zlecaf=False,
+    language="fr",
+    origin_country=None,
+    fob_value=None,
 ):
     """Calculate import taxes for a country/HS code/CIF value combination.
 
@@ -1938,7 +1966,13 @@ def calculate_import_taxes(
             taxes_for_cascade[c] = t["rate_pct"]
 
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
-    npf_cascade = compute_tax_cascade(cif_value, taxes_for_cascade, country_iso3)
+    try:
+        npf_cascade = compute_tax_cascade(cif_value, taxes_for_cascade, country_iso3, fob_value=fob_value)
+    except ValueError as exc:
+        # Fail-closed : une assiette exigée par le pays (FOB en SACU, p. ex.)
+        # absente de la demande est une erreur du client, pas une panne —
+        # la substituer par CIF produirait un montant crédible et faux.
+        return {"error": str(exc), "error_detail": str(exc)}
 
     # ── ZLECAf : éligibilité bilatérale + taux préférentiel selon l'origine ──
     # L'avantage ZLECAf n'est accordé que si la paire origine/destination y est
@@ -1983,7 +2017,7 @@ def calculate_import_taxes(
         if "DAPS" in zlecaf_taxes and daps_rate_pct > 0 and _zctx["daps_exempt"]:
             zlecaf_taxes.pop("DAPS", None)
     # Non éligible : zlecaf_taxes == NPF → aucune préférence, économies = 0.
-    zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3)
+    zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3, fob_value=fob_value)
 
     # Traçabilité : un régime ZLECAf peut être éligible (`_preferential`) sans
     # qu'un taux préférentiel réel soit connu pour CETTE ligne (ex. Afrique du

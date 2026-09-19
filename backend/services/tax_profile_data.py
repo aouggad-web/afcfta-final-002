@@ -218,9 +218,21 @@ COUNTRY_TAX_PROFILES = {
     },
     # ── Afrique du Sud — SARS (sars.gov.za) ──────────────────────────────────
     # VAT : base = CIF + DD  (VAT Act s.13(2))
+    # ── Afrique du Sud / SACU ─────────────────────────────────────────────────
+    # Le droit de douane SACU s'assoit sur la valeur FOB — fret et assurance
+    # internationaux exclus (Customs and Excise Act 91/1964, s.65-67 ;
+    # corroboré par la politique SARS SC-CR-A-03 rév. 5). Le poser « CIF »
+    # surestimait la base du fret et de l'assurance internationaux. La valeur
+    # FOB ne se déduit pas de la valeur CIF : compute_tax_cascade exige
+    # `fob_value` et refuse de liquider sans elle (fail-closed).
+    # Voir backend/data/legal_refs/zlecaf_application/SACU_assiette_DD_2026-09-17.json.
     "ZAF": {
-        **_IMPORT_VAT_CIF_DD,
-        "source": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
+        "taxes_order": ["DD", "TVA"],
+        "tax_bases": {
+            "DD": ("FOB", []),
+            "TVA": ("CIF", ["DD"]),  # VAT Act s.13(2) : base TVA = CIF+DD
+        },
+        "source": "Customs and Excise Act 91/1964 s.65-67 + SARS SC-CR-A-03 (DD base = FOB) ; VAT Act s.13(2) (TVA base = CIF+DD)",
     },
     # ── Afrique australe et océan Indien ─────────────────────────────────────
     # Les fichiers tarifaires de ces pays fournissent DD + TVA/IVA par ligne.
