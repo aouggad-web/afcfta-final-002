@@ -1,0 +1,135 @@
+Comores — l'assiette du droit de douane, lue dans le Code des douanes lui-meme.
+
+SOURCE
+  CODE DES DOUANES de l'Union des Comores, VERSION 2024.
+  Loi n°15-016/AU, section 4 « VALEUR DES MARCHANDISES » revisee par la
+  Loi n°23-022/AU adoptee le 26 decembre 2023 et promulguee par le
+  Decret n°24-001/PR du 26 janvier 2024.
+  Ministere des Finances, du Budget et du Secteur bancaire — Direction generale
+  des douanes, droits indirects et accises. 420 pages.
+  https://justice.gouv.km/wp-content/uploads/2025/03/code_des_douanes_union_des_comores_2024.pdf
+  sha256 1fb7a8397782d1fffdcc984c29bc3f6a7ddd0f17cf60d4e9c606ed56f2a13bca
+
+CE QUE CET EXTRAIT ETABLIT, ET CE QU'IL NE RESOUT PAS.
+Il etablit l'ASSIETTE du droit de douane comorien, et rien d'autre. Le socle la
+servait jusqu'ici sous la mention « profil_code » — une hypothese generique, sans
+article. Elle a desormais son texte. LES TAUX, eux, restent non collectes : le
+socle sert encore 5 388 moyennes SH6 de WITS/UNCTAD-TRAINS. Le fichier depose par
+l'utilisateur, « COM_ntc_2017.pdf », porte la nomenclature tarifaire comorienne
+mais n'a pas d'URL citable : douanes.gov.km ne repond pas et le site de la douane
+comorienne (douane.gov.km, joignable) ne publie aucun bareme.
+
+==============================================================================
+I. LA REGLE PRIMAIRE — LA VALEUR TRANSACTIONNELLE
+==============================================================================
+
+  Article 36 :
+  « 1. La valeur en douane des marchandises importees est leur valeur
+    transactionnelle, c'est-a-dire le prix effectivement paye ou a payer pour les
+    marchandises lorsqu'elles sont vendues pour l'exportation a destination du
+    territoire douanier pour autant :
+    a) qu'il n'existe pas de restrictions concernant la cession ou l'utilisation
+       des marchandises par l'acheteur, autres que des restrictions qui :
+       (i) sont imposees ou exigees par la loi ou par les autorites publiques ;
+       (ii) limitent la zone geographique dans laquelle les marchandises peuvent
+            etre revendues, ou
+       (iii) n'affectent pas substantiellement la valeur des marchandises ;
+    b) que la vente ou le prix ne soit pas subordonne a des conditions ou a des
+       prestations dont la valeur n'est pas determinable pour ce qui se rapporte
+       aux marchandises a evaluer ;
+    c) qu'aucune partie du produit de toute revente, cession ou utilisation
+       ulterieure des marchandises par l'acheteur ne revienne directement ou
+       indirectement au vendeur, sauf si un ajustement approprie peut etre
+       opere ; et
+    d) que l'acheteur et le vendeur ne soient pas lies ou, s'ils le sont, que la
+       valeur transactionnelle soit acceptable a des fins douanieres.
+    2. Cette valeur transactionnelle est ajustee des couts a ajouter a la valeur
+    transactionnelle vises a l'article 40 et des frais a exclure de la valeur en
+    douane vises a l'article 41. »
+
+==============================================================================
+II. CE QUE L'ARTICLE 40 AJOUTE — ET C'EST LA QUE SE DECIDE LE CIF
+==============================================================================
+
+  Article 40 :
+  « 1. Pour determiner la valeur en douane par application des articles 36 et
+    36 bis, on ajoute au prix effectivement paye ou a payer pour les marchandises
+    importees :
+    a) les elements suivants, dans la mesure ou ils sont supportes par l'acheteur
+       mais n'ont pas ete inclus dans le prix effectivement paye ou a payer pour
+       les marchandises :
+       (i) commission et frais de courtage, a l'exception des commissions
+           d'achat ;
+       (ii) cout des contenants traites, aux fins douanieres, comme ne faisant
+            qu'un avec la marchandise ;
+       (iii) cout de l'emballage, comprenant aussi bien la main-d'oeuvre que les
+             materiaux ;
+    b) la valeur, imputee de facon appropriee, des produits et services [...]
+       fournis directement ou indirectement par l'acheteur, sans frais ou a cout
+       reduit [...] : (i) matieres, composants, parties et elements similaires
+       incorpores dans les marchandises importees ; (ii) outils, matrices, moules
+       et objets similaires [...] ; (iii) matieres consommees [...] ; (iv) travaux
+       d'ingenierie, d'etude, d'art et de design, plans et croquis, executes
+       ailleurs que dans l'Union des Comores [...] ;
+    c) les redevances et les droits de licence relatifs aux marchandises a
+       evaluer, que l'acheteur est tenu d'acquitter [...] en tant que condition
+       de la vente [...] ;
+    d) la valeur de toute partie du produit de toute revente, cession ou
+       utilisation ulterieure des marchandises importees qui revient directement
+       ou indirectement au vendeur ;
+    e) i) LES FRAIS DE TRANSPORT ET D'ASSURANCE DES MARCHANDISES IMPORTEES
+          JUSQU'AU PORT OU LIEU D'IMPORTATION ;
+       ii) et les frais de chargement et de manutention connexes au transport des
+           marchandises importees, jusqu'au lieu d'importation des marchandises
+           dans le territoire douanier ;
+       iii) cout de l'assurance.
+
+    2. Tout element qui est ajoute par application du present article au prix
+    effectivement paye ou a payer est fonde exclusivement sur des donnees
+    objectives et quantifiables.
+
+    3. Pour la determination de la valeur en douane, AUCUN ELEMENT N'EST AJOUTE
+    au prix effectivement paye ou a payer, a l'exception de ceux qui sont prevus
+    par le present article. »
+
+PORTEE. Le paragraphe 1 e) ajoute le transport, l'assurance, le chargement et la
+manutention JUSQU'AU LIEU D'IMPORTATION : prix + fret + assurance, c'est le CIF.
+Les Comores ont donc exerce dans le sens de l'INCLUSION l'option que l'article 8.2
+de l'Accord de l'OMC sur l'evaluation laisse a chaque membre. Le paragraphe 3
+ferme la liste : rien d'autre ne s'ajoute, ce qui interdit d'y voir une assiette
+plus large.
+
+==============================================================================
+III. CE QUE L'ARTICLE 41 EXCLUT — ET POURQUOI C'EST LA CONFIRMATION
+==============================================================================
+
+  Article 41 :
+  « A condition qu'ils soient distincts du prix effectivement paye ou a payer pour
+    les marchandises importees, la valeur en douane ne comprend pas les elements
+    suivants :
+    a) LES FRAIS DE TRANSPORT DES MARCHANDISES APRES L'ARRIVEE AU LIEU
+       D'INTRODUCTION dans le territoire douanier ;
+    b) les frais relatifs a des travaux de construction, d'installation, de
+       montage, d'entretien ou d'assistance technique entrepris apres
+       l'importation [...] ;
+    c) les montants des interets au titre d'un accord de financement [...] ;
+    d) les frais relatifs au droit de reproduire dans le territoire douanier des
+       marchandises importees ;
+    e) les commissions d'achat ;
+    f) LES DROITS A L'IMPORTATION ET AUTRES TAXES applicables en raison de
+       l'importation ou de la vente des marchandises. »
+
+PORTEE. Le a) et le f) tracent la frontiere des deux cotes : le transport compte
+JUSQU'AU lieu d'introduction et pas au-dela, et les droits eux-memes n'entrent pas
+dans leur propre assiette. C'est exactement le CIF, borne des deux cotes par le
+texte.
+
+==============================================================================
+IV. CE QUE CELA ARTICULE AVEC LA TVA, DEJA ETABLIE
+==============================================================================
+
+La fiche COM_assiette_TVA_2026-09-17.json etablit deja l'assiette de la TVA a
+l'importation sur le Code general des impots, edition 2023, article 140, 4° :
+« la valeur CAF des marchandises importees majoree de tous droits d'entree a
+caractere douanier ». Les deux textes se repondent : le Code des douanes dit ce
+qu'est la valeur CAF, le Code general des impots dit ce que la TVA y ajoute.

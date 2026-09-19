@@ -1,0 +1,145 @@
+Angola — l'assiette du droit de douane, et l'etat exact du bareme promulgue.
+
+SOURCES
+  1. CODIGO ADUANEIRO da Republica de Angola, Decreto-Lei n.º 05/06 de 04 de
+     Outubro. Ministerio das Financas. 240 pages, couche texte complete.
+     http://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/zmlu/mjiy/~edisp/minfin222423.pdf
+     sha256 1e3d468acda878961b586a7432d5d5ce2b4413a9eb31274be35e1f2454db3513
+
+  2. DIARIO DA REPUBLICA, I Serie, Quarta-feira 3 de Janeiro de 2024, 345 pages,
+     qui porte le DECRETO LEGISLATIVO PRESIDENCIAL n.º 1/24 approuvant la nouvelle
+     Pauta Aduaneira dos Direitos de Importacao e Exportacao (version 2022 du SH)
+     et abrogeant le Decreto Legislativo Presidencial n.º 10/19 du 29 novembre
+     2019.
+     https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4z/nzcw/~edisp/minfin3770211.pdf
+     sha256 cc432fc213790c7d1d8d0a5134d366d6b2dec0157bd661c54fdbea125961b470
+     Taille : 20 514 916 octets — le fichier depose par l'utilisateur sous le nom
+     « AGO_pauta_2024_reedition.pdf » en fait 20 514 917 : un octet d'ecart, donc
+     vraisemblablement le meme document, mais ce n'est pas la MEME empreinte et ce
+     n'est donc pas affirme.
+
+==============================================================================
+I. L'ASSIETTE — ARTICLE 117 DU CODE DES DOUANES
+==============================================================================
+
+  Artigo 117.º (Ajustamentos do preco efectivamente pago ou a pagar)
+
+  « 1. Para determinar o valor aduaneiro com base no disposto no artigo 100.º e
+    102.º, deve acrescentar-se ao preco efectivamente pago ou a pagar pelas
+    mercadorias importadas:
+    a) Os seguintes valores, na medida em que tenham sido suportados pelo
+       comprador, mas NAO tenham sido incluidos no preco efectivamente pago ou a
+       pagar pelas mercadorias:
+       i. Comissoes e despesas de corretagem, com exceccao das comissoes de
+          compra;
+       ii. Custo dos recipientes que, para fins aduaneiros, se consideram como
+           constituindo um todo com a mercadoria;
+       iii. Custo do recipiente, compreendendo a mao-de-obra assim como os
+            materiais;
+    b) O valor, imputado de maneira adequada, dos seguintes produtos e servicos,
+       quando forem, directa ou indirectamente, fornecidos pelo comprador, sem
+       despesas ou a custo reduzido [...] : i. Materias-primas, pecas, componentes
+       [...] ; ii. Ferramentas, matrizes, moldes [...] ; iii. Materias-primas
+       consumidas [...] ; iv. Trabalhos de engenharia, de estudo, de arte e de
+       design, planos e esbocos, executados FORA DO PAIS [...] ;
+    c) Royalties e direitos de licenca relativos as mercadorias a avaliar, que o
+       comprador e obrigado a pagar [...] como condicao de venda [...] ;
+    d) O valor de qualquer parte do produto da revenda, cedencia ou utilizacao
+       ulterior das mercadorias importadas que, directa ou indirectamente, reverta
+       para o vendedor.
+
+    2. DEVEM SER INCLUIDOS NO VALOR ADUANEIRO das mercadorias importadas, na
+    medida que tenham sido incluidos no preco efectivamente pago ou a pagar, os
+    seguintes valores:
+    a) DESPESAS DE TRANSPORTE das mercadorias importadas ATE AO PORTO OU LOCAL DE
+       IMPORTACAO;
+    b) Despesas de carga, de descarga e de manipulacao ligadas ao transporte das
+       mercadorias importadas ate ao porto ou local de importacao no Pais; e
+    c) CUSTO DO SEGURO.
+
+    3. Qualquer elemento que, por aplicacao das disposicoes do presente artigo,
+    for acrescentado ao preco efectivamente pago ou a pagar deve basear-se
+    exclusivamente em dados objectivos e quantificaveis. »
+
+  Artigo 119.º (Deducoes)
+
+  « Nao devem ser incluidos no valor aduaneiro, desde que sejam apresentados
+    separadamente do preco efectivamente pago ou a pagar pela mercadoria
+    importada, os seguintes valores:
+    a) Os encargos que resultem do TRANSPORTE de mercadorias APOS A CHEGADA ao
+       local de entrada no Pais;
+    b) Os encargos que resultem da construcao, instalacao, montagem, manutencao ou
+       assistencia tecnica, realizadas, depois da importacao [...] ;
+    c) OS DIREITOS E AS TAXAS pagos ou a pagar em virtude da importacao ou venda
+       das mercadorias no Pais;
+    d) As comissoes de compra;
+    e) Os encargos que derivem do direito de reproduzir no Pais mercadorias
+       importadas;
+    f) Os encargos relativos a juros [...] »
+
+PORTEE. Transport, chargement, dechargement, manutention JUSQU'AU PORT OU LIEU
+D'IMPORTATION et cout de l'assurance entrent dans la valeur en douane ; le
+transport POSTERIEUR a l'arrivee et les droits eux-memes en sortent. Les deux
+bornes sont donc posees, et l'assiette est le CIF.
+
+==============================================================================
+II. UNE PARTICULARITE DE REDACTION QU'IL FAUT SIGNALER, ET NE PAS TAIRE
+==============================================================================
+
+Le paragraphe 1 et le paragraphe 2 de l'article 117 ne sont PAS rediges de la meme
+maniere, et la difference n'est pas anodine :
+
+  — le paragraphe 1 ajoute des elements « na medida em que tenham sido suportados
+    pelo comprador, mas NAO tenham sido incluidos no preco » — donc quand ils ne
+    sont PAS deja dans le prix ;
+  — le paragraphe 2 inclut le fret et l'assurance « na medida que TENHAM SIDO
+    INCLUIDOS no preco efectivamente pago ou a pagar » — donc, lu au pied de la
+    lettre, quand ils SONT deja dans le prix.
+
+Lu strictement, le paragraphe 2 dirait alors que le fret n'est pas AJOUTE a un
+achat FOB dont l'acheteur paierait le transport separement : il dirait seulement
+qu'on ne le DEDUIT pas d'un prix CAF. Ce serait une assiette differente du CIF sur
+les ventes FOB.
+
+CE N'EST PAS LA LECTURE RETENUE, et voici pourquoi. Le paragraphe 2 transpose
+l'article 8.2 de l'Accord de l'OMC sur l'evaluation en douane, qui laisse a chaque
+membre de prevoir « l'inclusion dans la valeur en douane, ou son exclusion, en
+totalite ou en partie » du cout du transport, des frais de chargement et de
+manutention et du cout de l'assurance. La formule « em parte » de l'Accord parait
+avoir ete rendue par « na medida que », et l'intention d'INCLUSION est celle que le
+chapeau du paragraphe enonce sans ambiguite : « DEVEM SER INCLUIDOS NO VALOR
+ADUANEIRO ». L'article 119 a) le confirme par l'autre bout, en n'excluant que le
+transport POSTERIEUR a l'arrivee : si le transport anterieur n'entrait pas, cette
+exclusion n'aurait rien a exclure.
+
+L'assiette retenue est donc le CIF. Mais la particularite est ECRITE ICI plutot que
+tue, parce qu'elle porte sur un cas reel — une vente FOB avec fret paye a part — et
+qu'un lecteur du calculateur doit pouvoir la retrouver.
+
+==============================================================================
+III. LE BAREME LUI-MEME N'EST PAS COLLECTE, ET VOICI L'ETAT EXACT
+==============================================================================
+
+L'INSTRUMENT EST IDENTIFIE. Decreto Legislativo Presidencial n.º 1/24 du 3 janvier
+2024, Diario da Republica I Serie, qui approuve la Pauta Aduaneira dos Direitos de
+Importacao e Exportacao en version 2022 du Systeme harmonise et abroge le Decreto
+Legislativo Presidencial n.º 10/19 du 29 novembre 2019.
+
+IL EST TELECHARGEABLE, ET IL EST ILLISIBLE PAR MACHINE ICI. Le Diario qui le porte
+est un SCAN INTEGRAL : 345 pages, ZERO octet de couche texte. Aucun OCR n'est
+installe dans cet environnement (ni tesseract, ni pdftotext). Lire 345 pages de
+tableaux tarifaires a l'oeil n'est pas une methode de collecte.
+
+UN DOCUMENT AVEC COUCHE TEXTE EXISTE, ET CE N'EST PAS LA LOI. Le meme serveur du
+Ministere des Finances publie un « Projecto da Pauta Aduaneira versao 2022 do SH »
+de la Direccao dos Servicos Aduaneiros — 366 pages, couche texte complete :
+  https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4y/odc4/~edisp/minfin2878038.pdf
+C'est un PROJET. Servir des droits de douane depuis un projet, en les presentant
+comme le tarif en vigueur, serait exactement ce que ce depot s'interdit : une
+donnee credible et non verifiee. Le projet n'est donc PAS collecte. Il est nomme
+ici parce qu'il est la piste la plus courte le jour ou un OCR sera disponible : on
+pourra alors lire le Diario promulgue et VERIFIER le projet contre lui, ligne a
+ligne, au lieu de le supposer conforme.
+
+EN ATTENDANT, le socle sert 5 388 moyennes SH6 de WITS/UNCTAD-TRAINS pour l'Angola,
+et il le declare.

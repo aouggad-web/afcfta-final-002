@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "objet": "Angola — l'assiette du droit de douane, établie sur le Código Aduaneiro ; la particularité de rédaction de son article 117.2, signalée plutôt que tue ; et l'état exact du barème promulgué, identifié mais illisible par machine ici.",
+  "verified_at": "2026-09-19",
+  "etabli": true,
+  "evidence_level": "primaire pour l'assiette — Código Aduaneiro da República de Angola, Decreto-Lei n.º 05/06 de 04 de Outubro, publié par le Ministère des Finances angolais sur son propre serveur documentaire, avec couche texte ; extrait archivé avec son empreinte. AUCUNE ÉVIDENCE, et rien n'est servi, pour les TAUX : le barème en vigueur est identifié mais n'a pas pu être lu.",
+  "la_question_posee": "Le socle liquidait le droit de douane angolais sur le CIF sous la mention « profil_code » — une hypothèse générique, sans article. Il fallait savoir ce que le droit angolais dit lui-même, et notamment si le fret et l'assurance entrent dans la valeur en douane, ce que l'article 8.2 de l'Accord de l'OMC laisse à chaque membre. Deuxième question : où en est le barème lui-même, puisque le socle sert encore une moyenne SH6 de WITS.",
+  "regle": {
+    "ce_que_l_article_117_ajoute": {
+      "article": "Código Aduaneiro da República de Angola (Decreto-Lei n.º 05/06 de 04 de Outubro), artigo 117.º, n.º 1 e n.º 2",
+      "verbatim": "2. Devem ser incluídos no valor aduaneiro das mercadorias importadas, na medida que tenham sido incluídos no preço efectivamente pago ou a pagar, os seguintes valores: a) Despesas de transporte das mercadorias importadas até ao porto ou local de importação; b) Despesas de carga, de descarga e de manipulação ligadas ao transporte das mercadorias importadas até ao porto ou local de importação no País; e c) Custo do seguro.",
+      "portee": "Transport, chargement, déchargement, manutention jusqu'au port ou lieu d'importation, et coût de l'assurance : l'assiette est le CIF.",
+      "assiettes_retenues": {
+        "DD": "CIF"
+      },
+      "texte_archive": "sources/AGO_codigo_aduaneiro_art117_art119_valor.texte-extrait.txt",
+      "sha256": "33d44e8ab5aef5086e45d92df5de2e1bfd45065e82679ac2e65eed017a29d8bc",
+      "sha256_pdf_origine": "1e3d468acda878961b586a7432d5d5ce2b4413a9eb31274be35e1f2454db3513",
+      "source_url": "http://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/zmlu/mjiy/~edisp/minfin222423.pdf"
+    },
+    "ce_que_l_article_119_exclut": {
+      "article": "Código Aduaneiro da República de Angola, artigo 119.º (Deduções)",
+      "verbatim": "Não devem ser incluídos no valor aduaneiro, desde que sejam apresentados separadamente do preço efectivamente pago ou a pagar pela mercadoria importada, os seguintes valores: a) Os encargos que resultem do transporte de mercadorias após a chegada ao local de entrada no País; [...] c) Os direitos e as taxas pagos ou a pagar em virtude da importação ou venda das mercadorias no País;",
+      "portee": "L'autre borne. Le transport POSTÉRIEUR à l'arrivée sort de la valeur, et les droits n'entrent pas dans leur propre assiette. L'assiette est donc bornée des deux côtés par le texte, ce qui la distingue d'une assiette supposée.",
+      "texte_archive": "sources/AGO_codigo_aduaneiro_art117_art119_valor.texte-extrait.txt",
+      "sha256": "33d44e8ab5aef5086e45d92df5de2e1bfd45065e82679ac2e65eed017a29d8bc"
+    },
+    "une_particularite_de_redaction_signalee_et_non_tue": {
+      "article": "Código Aduaneiro, artigo 117.º — comparaison du n.º 1 et du n.º 2",
+      "verbatim_n1": "na medida em que tenham sido suportados pelo comprador, mas não tenham sido incluídos no preço efectivamente pago ou a pagar pelas mercadorias",
+      "verbatim_n2": "Devem ser incluídos no valor aduaneiro das mercadorias importadas, na medida que tenham sido incluídos no preço efectivamente pago ou a pagar",
+      "portee": "Les deux paragraphes ne sont PAS rédigés de la même manière, et la différence n'est pas anodine. Le n.º 1 ajoute des éléments quand ils ne sont PAS déjà dans le prix ; le n.º 2, lu au pied de la lettre, inclut le fret et l'assurance quand ils SONT déjà dans le prix. Lu strictement, il dirait donc que le fret n'est pas AJOUTÉ à un achat FOB dont l'acheteur paie le transport séparément — une assiette différente du CIF sur ces ventes-là. CE N'EST PAS LA LECTURE RETENUE : le n.º 2 transpose l'article 8.2 de l'Accord de l'OMC, dont la formule « en totalité ou en partie » paraît avoir été rendue par « na medida que », et le chapeau du paragraphe énonce sans ambiguïté « DEVEM SER INCLUÍDOS NO VALOR ADUANEIRO ». L'article 119 a) le confirme par l'autre bout : il n'exclut que le transport POSTÉRIEUR à l'arrivée, ce qui n'aurait rien à exclure si le transport antérieur n'entrait pas. La particularité est écrite ici plutôt que tue, parce qu'elle porte sur un cas réel et qu'un lecteur du calculateur doit pouvoir la retrouver.",
+      "texte_archive": "sources/AGO_codigo_aduaneiro_art117_art119_valor.texte-extrait.txt",
+      "sha256": "33d44e8ab5aef5086e45d92df5de2e1bfd45065e82679ac2e65eed017a29d8bc"
+    }
+  },
+  "ou_en_est_le_bareme_lui_meme": {
+    "l_instrument_est_identifie": "Decreto Legislativo Presidencial n.º 1/24 du 3 janvier 2024, Diário da República I Série, qui approuve la Pauta Aduaneira dos Direitos de Importação e Exportação en version 2022 du Système harmonisé et abroge le Decreto Legislativo Presidencial n.º 10/19 du 29 novembre 2019.",
+    "url": "https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4z/nzcw/~edisp/minfin3770211.pdf",
+    "sha256": "cc432fc213790c7d1d8d0a5134d366d6b2dec0157bd661c54fdbea125961b470",
+    "pourquoi_il_n_est_pas_collecte": "Le Diário qui le porte est un SCAN INTÉGRAL : 345 pages, ZÉRO octet de couche texte. Aucun OCR n'est installé dans cet environnement — ni tesseract, ni pdftotext. Lire 345 pages de tableaux tarifaires à l'œil n'est pas une méthode de collecte.",
+    "un_document_avec_couche_texte_existe_et_ce_n_est_pas_la_loi": "Le même serveur du Ministère des Finances publie un « Projecto da Pauta Aduaneira versão 2022 do SH » de la Direcção dos Serviços Aduaneiros — 366 pages, couche texte complète, à l'adresse https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4y/odc4/~edisp/minfin2878038.pdf. C'est un PROJET. Servir des droits de douane depuis un projet en les présentant comme le tarif en vigueur serait exactement ce que ce dépôt s'interdit. Il est nommé ici parce qu'il est la piste la plus courte le jour où un OCR sera disponible : on pourra alors lire le Diário promulgué et VÉRIFIER le projet contre lui, ligne à ligne, au lieu de le supposer conforme.",
+    "le_fichier_depose_par_l_utilisateur": "« AGO_pauta_2024_reedition.pdf » fait 20 514 917 octets ; le Diário téléchargé depuis minfin.gov.ao en fait 20 514 916. Un octet d'écart : vraisemblablement le même document, mais ce n'est PAS la même empreinte, et ce n'est donc pas affirmé.",
+    "pdf_non_archive": "Le Diário da República du 3 janvier 2024 (345 pages, 20,5 Mo) n'est PAS archivé dans sources/ : il est trop volumineux pour le dépôt, et c'est un SCAN dont ce dépôt ne peut de toute façon rien extraire. Son empreinte est citée ici et son URL minfin.gov.ao est citable — on peut donc le retélécharger et vérifier qu'il s'agit du même fichier. Le texte sur lequel la fiche s'appuie réellement, le Código Aduaneiro, est archivé dans sources/ avec son empreinte."
+  },
+  "ce_que_cela_ne_tranche_pas": {
+    "les_taux_ne_sont_pas_collectes": "Le socle sert 5 388 moyennes SH6 de WITS/UNCTAD-TRAINS pour l'Angola, et il le déclare. Cette fiche n'établit QUE l'assiette.",
+    "l_assiette_de_la_tva_est_etablie_ailleurs": "Fiche AGO_assiette_TVA_2026-09-17.json : valeur en douane + prélèvements d'entrée, TVA exclue de sa propre assiette.",
+    "l_imposto_de_consumo_et_les_autres_impositions": "Le Código Aduaneiro parle de « direitos e demais imposições aduaneiras » sans en donner ni les taux ni les assiettes. L'Imposto Especial de Consumo relève d'un autre texte, non lu ici. Rien n'est servi à ce titre.",
+    "la_vente_fob_et_l_article_117_2": "La lecture retenue est le CIF, pour les raisons données. Mais sur une vente FOB où l'acheteur paie le fret séparément, la lettre du n.º 2 pourrait se lire autrement, et cette fiche ne prétend pas avoir tranché ce que seule la pratique douanière angolaise ou une jurisprudence trancherait."
+  }
+}

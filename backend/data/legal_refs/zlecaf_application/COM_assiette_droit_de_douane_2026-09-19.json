@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "objet": "Comores — l'assiette du droit de douane, établie sur le Code des douanes lui-même. Le socle la servait sous la mention « profil_code », c'est-à-dire une hypothèse générique sans article ; elle a désormais son texte, et le texte la borne des deux côtés.",
+  "verified_at": "2026-09-19",
+  "etabli": true,
+  "evidence_level": "primaire — Code des douanes de l'Union des Comores, version 2024 (Loi n°15-016/AU, section 4 révisée par la Loi n°23-022/AU du 26 décembre 2023, promulguée par le Décret n°24-001/PR du 26 janvier 2024), publié par le Ministère de la Justice comorien ; extrait archivé avec son empreinte. Le PDF porte une couche texte : les citations sont des extractions, non des transcriptions.",
+  "la_question_posee": "Le socle liquidait le droit de douane comorien sur le CIF sans qu'aucun article ne l'établisse : l'entrée portait « origine_assiette: profil_code », un profil générique. La valeur servie pouvait donc être juste par chance. Il fallait savoir ce que le droit comorien dit lui-même — et notamment si le fret et l'assurance entrent dans la valeur en douane, ce que l'article 8.2 de l'Accord de l'OMC sur l'évaluation laisse à chaque membre.",
+  "regle": {
+    "la_regle_primaire": {
+      "article": "Code des douanes de l'Union des Comores (Loi n°15-016/AU), article 36, section 4 « Valeur des marchandises », révisée par la Loi n°23-022/AU",
+      "verbatim": "1. La valeur en douane des marchandises importées est leur valeur transactionnelle, c'est-à-dire le prix effectivement payé ou à payer pour les marchandises lorsqu'elles sont vendues pour l'exportation à destination du territoire douanier [...] 2. Cette valeur transactionnelle est ajustée des coûts à ajouter à la valeur transactionnelle visés à l'article 40 et des frais à exclure de la valeur en douane visés à l'article 41.",
+      "portee": "La valeur transactionnelle est la règle primaire, et le texte renvoie explicitement à deux articles pour l'ajuster : l'un ajoute, l'autre exclut. L'assiette ne se lit donc pas dans l'article 36 seul.",
+      "texte_archive": "sources/COM_code_douanes_2024_valeur_en_douane.texte-extrait.txt",
+      "sha256": "6bd45c3ee8aab75af88b5678792ac4f69175ebe8078fa71dc9f45eec22931162",
+      "source_url": "https://justice.gouv.km/wp-content/uploads/2025/03/code_des_douanes_union_des_comores_2024.pdf"
+    },
+    "ce_que_l_article_40_ajoute": {
+      "article": "Code des douanes de l'Union des Comores, article 40, 1 e) et 3",
+      "verbatim": "e) i) les frais de transport et d'assurance des marchandises importées jusqu'au port ou lieu d'importation ; ii) et les frais de chargement et de manutention connexes au transport des marchandises importées, jusqu'au lieu d'importation des marchandises dans le territoire douanier ; iii) coût de l'assurance.",
+      "verbatim_liste_fermee": "3. Pour la détermination de la valeur en douane, aucun élément n'est ajouté au prix effectivement payé ou à payer, à l'exception de ceux qui sont prévus par le présent article.",
+      "portee": "Le transport, l'assurance, le chargement et la manutention JUSQU'AU LIEU D'IMPORTATION s'ajoutent au prix payé : prix + fret + assurance, c'est le CIF. Les Comores ont donc exercé dans le sens de l'INCLUSION l'option que l'article 8.2 de l'Accord de l'OMC laisse à chaque membre. Le paragraphe 3 ferme la liste — rien d'autre ne s'ajoute — ce qui interdit d'y voir une assiette plus large.",
+      "assiettes_retenues": {
+        "DD": "CIF"
+      },
+      "texte_archive": "sources/COM_code_douanes_2024_valeur_en_douane.texte-extrait.txt",
+      "sha256": "6bd45c3ee8aab75af88b5678792ac4f69175ebe8078fa71dc9f45eec22931162",
+      "sha256_pdf_origine": "1fb7a8397782d1fffdcc984c29bc3f6a7ddd0f17cf60d4e9c606ed56f2a13bca",
+      "source_url": "https://justice.gouv.km/wp-content/uploads/2025/03/code_des_douanes_union_des_comores_2024.pdf"
+    },
+    "ce_que_l_article_41_exclut": {
+      "article": "Code des douanes de l'Union des Comores, article 41 a) et f)",
+      "verbatim": "À condition qu'ils soient distincts du prix effectivement payé ou à payer pour les marchandises importées, la valeur en douane ne comprend pas les éléments suivants : a) les frais de transport des marchandises après l'arrivée au lieu d'introduction dans le territoire douanier ; [...] f) les droits à l'importation et autres taxes applicables en raison de l'importation ou de la vente des marchandises.",
+      "portee": "Le a) et le f) tracent la frontière des DEUX CÔTÉS : le transport compte jusqu'au lieu d'introduction et pas au-delà, et les droits n'entrent pas dans leur propre assiette. C'est exactement le CIF, borné par le texte. C'est ce qui distingue une assiette ÉTABLIE d'une assiette supposée : on sait aussi ce qu'elle exclut.",
+      "texte_archive": "sources/COM_code_douanes_2024_valeur_en_douane.texte-extrait.txt",
+      "sha256": "6bd45c3ee8aab75af88b5678792ac4f69175ebe8078fa71dc9f45eec22931162"
+    },
+    "articulation_avec_la_tva_deja_etablie": {
+      "article": "Code général des impôts des Comores, édition 2023, article 140, 4° — voir fiche COM_assiette_TVA_2026-09-17.json",
+      "verbatim": "4° la valeur CAF des marchandises importées majorée de tous droits d'entrée à caractère douanier",
+      "portee": "Les deux textes se répondent : le Code des douanes dit CE QU'EST la valeur CAF, le Code général des impôts dit ce que la TVA y ajoute. L'assiette de la TVA était établie depuis le 17 septembre ; celle du droit ne l'était pas, et c'est ce que cette fiche corrige.",
+      "assiettes_retenues": {
+        "TVA": "CIF+TOUS_SAUF_TVA"
+      },
+      "texte_archive": "sources/COM_code_douanes_2024_valeur_en_douane.texte-extrait.txt",
+      "sha256": "6bd45c3ee8aab75af88b5678792ac4f69175ebe8078fa71dc9f45eec22931162"
+    }
+  },
+  "ce_que_cela_ne_tranche_pas": {
+    "les_taux_ne_sont_toujours_pas_collectes": "Le socle sert encore 5 388 moyennes SH6 de WITS/UNCTAD-TRAINS pour les Comores. Cette fiche n'établit QUE l'assiette. Le fichier déposé par l'utilisateur, « COM_ntc_2017.pdf » (7,5 Mo), porte la nomenclature tarifaire comorienne, mais il n'a pas d'URL citable : douanes.gov.km ne répond pas, et douane.gov.km — qui répond — ne publie aucun barème. Tant qu'une source citable n'est pas trouvée, les taux ne sont pas intégrés : un tarif servi depuis un dépôt privé ne serait pas vérifiable.",
+    "les_regimes_preferentiels": "Les Comores sont membres du COMESA et parties à la ZLECAf. Le Code des douanes ne porte pas de barème préférentiel et cette fiche n'en établit aucun.",
+    "l_accise": "La Direction générale des douanes comorienne s'appelle « droits indirects et accises », mais le Code lu ici ne donne ni taux ni assiette d'accise. Rien n'est servi à ce titre."
+  }
+}

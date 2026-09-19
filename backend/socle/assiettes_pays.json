@@ -18,7 +18,9 @@
       "taxes": {
         "DD": {
           "assiette": "CIF",
-          "origine_assiette": "profil_code"
+          "origine_assiette": "texte_primaire",
+          "texte": "Código Aduaneiro (Decreto-Lei n.º 05/06), art. 117.º n.º 2 — transport, chargement, manutention jusqu'au port ou lieu d'importation et coût de l'assurance entrent dans la valeur en douane ; art. 119.º a) et c) en bornent l'autre côté",
+          "fiche": "AGO_assiette_droit_de_douane_2026-09-19.json"
         },
         "TVA": {
           "assiette": "CIF+TOUS_SAUF_TVA",
@@ -27,7 +29,7 @@
           "fiche": "AGO_assiette_TVA_2026-09-17.json"
         }
       },
-      "reference_legale": "voir fiche AGO_assiette_TVA_2026-09-17.json"
+      "reference_legale": "Código Aduaneiro de Angola, Decreto-Lei n.º 05/06 (assiette du droit) — voir fiches AGO_assiette_droit_de_douane_2026-09-19.json et AGO_assiette_TVA_2026-09-17.json"
     },
     "BDI": {
       "ordre": [
@@ -232,7 +234,9 @@
       "taxes": {
         "DD": {
           "assiette": "CIF",
-          "origine_assiette": "profil_code"
+          "origine_assiette": "texte_primaire",
+          "texte": "Code des douanes de l'Union des Comores (Loi n°15-016/AU), art. 36 et art. 40.1 e) — valeur transactionnelle augmentée du transport, de l'assurance et de la manutention jusqu'au lieu d'importation ; art. 41 a) et f) en bornent l'autre côté",
+          "fiche": "COM_assiette_droit_de_douane_2026-09-19.json"
         },
         "TVA": {
           "assiette": "CIF+TOUS_SAUF_TVA",
@@ -241,7 +245,7 @@
           "fiche": "COM_assiette_TVA_2026-09-17.json"
         }
       },
-      "reference_legale": "voir fiche COM_assiette_TVA_2026-09-17.json"
+      "reference_legale": "Code des douanes de l'Union des Comores, version 2024 (assiette du droit) ; Code général des impôts éd. 2023, art. 140 4° (assiette de la TVA) — voir fiches COM_assiette_droit_de_douane_2026-09-19.json et COM_assiette_TVA_2026-09-17.json"
     },
     "DZA": {
       "ordre": [

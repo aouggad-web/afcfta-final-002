@@ -107,3 +107,41 @@ Artigo 26.º
 Todas as informações que forem de natureza confidencial ou que forem fornecidas a título 
 confidencial, para efeitos de determinação do valor aduaneiro, serão tratadas como estritamente 
 confidenciais pelas autoridades competentes, as quais não as divulgará sem autoriza
+==============================================================================
+ADDENDUM DU 2026-09-19 — LE BAREME EST DESORMAIS IDENTIFIE, MAIS SA SOURCE EST
+REFUSEE PAR LA POLITIQUE RESEAU DE CET ENVIRONNEMENT.
+==============================================================================
+
+L'assiette santomeenne etait etablie ; les TAUX ne l'etaient pas, et le socle sert
+toujours 5 388 moyennes SH6 de WITS/UNCTAD-TRAINS. L'instrument qui les porte est
+maintenant NOMME, ce qui n'etait pas le cas :
+
+  DECRETO-LEI n.º 14/2023
+  « Aprova a Pauta Aduaneira dos Direitos de Importacao e Exportacao (versao 2022
+    da Nomenclatura do Sistema Harmonizado de Designacao e Codificacao de
+    Mercadorias) e as respectivas Instrucoes Preliminares »
+  Diario da Republica de Sao Tome e Principe, SERIE I, n.º 60/2023 du
+  30 novembre 2023. Entre en vigueur le 1er decembre 2023, avec ses annexes qui en
+  font partie integrante. Plus de cinq mille lignes tarifaires, nomenclature
+  SH 2022. C'est la premiere refonte de la pauta depuis quatorze ans, et elle
+  coincide avec l'introduction de la TVA santomeenne.
+
+  URL officielle : https://dre.gov.st/diario/299/2023
+
+POURQUOI ELLE N'EST PAS COLLECTEE ICI. L'hote dre.gov.st est REFUSE par la
+politique reseau du mandataire de cet environnement : la tentative de connexion
+rend « CONNECT tunnel failed, response 502 », c'est-a-dire un refus du mandataire
+lui-meme et non une erreur du site. Ce refus est une decision de politique : il se
+rapporte, il ne se contourne pas. La verification TLS n'a a aucun moment ete
+desactivee et la variable HTTPS_PROXY n'a pas ete retiree.
+
+Aucune autre source citable n'a ete trouvee. Le fichier depose par l'utilisateur,
+« STP_pauta_rdstp.pdf » (7,3 Mo), porte vraisemblablement ce bareme, mais un tarif
+servi depuis un depot prive ne serait pas verifiable par un tiers : il ne serait
+pas moins exact, il serait moins CONTROLABLE, et c'est la meme exigence qui a fait
+retenir les URL de mra.mw pour le Malawi et de src.gov.sc pour les Seychelles.
+
+CE QU'IL FAUDRAIT POUR LEVER LE BLOCAGE : que dre.gov.st soit autorise par la
+politique reseau, ou qu'une autre institution publie le meme Decreto-Lei sous une
+URL joignable. Les deux ont ete cherches le 19 septembre 2026 ; ni l'un ni l'autre
+n'a abouti.
