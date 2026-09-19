@@ -662,20 +662,16 @@
     },
     "MWI": {
       "ordre": [
-        "DD",
-        "TVA"
+        "DD"
       ],
       "taxes": {
         "DD": {
           "assiette": "CIF",
           "origine_assiette": "profil_code"
-        },
-        "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
         }
       },
-      "reference_legale": "Malawi Revenue Authority — import VAT"
+      "reference_legale": "Customs and Excise Act (Cap. 42:01), s.111(2) et Schedule A — prix normal ; voir fiche MWI_colonnes_remises_et_prix_normal_2026-09-19.json",
+      "_tva_retiree": "L'entree portait « TVA sur CIF+DD » sous la seule mention « Malawi Revenue Authority — import VAT » : un nom d'autorite, pas un article. L'Order 2022 publie les TAUX de l'accise, de la TVA et de l'Advance Income Tax (colonnes 10, 11 et 12) et ne dit rien de leur assiette ; aucun texte malawien lu ne l'etablit. La laisser faisait liquider la TVA malawienne sur une assiette que personne n'a lue."
     },
     "NER": {
       "ordre": [

@@ -353,7 +353,13 @@ def test_charger_assiettes_reconstruit_la_table_absente(tmp_path, monkeypatch):
     pays = bs.charger_assiettes_pays()
 
     assert assiettes.exists()
-    assert len(pays) >= 37
+    # 36, et non 37 : le Malawi a ete RETIRE de COUNTRY_TAX_PROFILES. Son entree
+    # portait le profil generique « TVA sur CIF+DD » sous la seule mention
+    # « Malawi Revenue Authority — import VAT » — un nom d'autorite, pas un
+    # article — et faisait liquider la TVA malawienne sur une assiette que
+    # personne n'a lue. Le seuil garde ici un ORDRE DE GRANDEUR, il ne
+    # promet pas un pays en particulier.
+    assert len(pays) >= 36
     assert pays["BEN"]["taxes"]["TVA"]["origine_assiette"] == "texte_primaire"
     with open(assiettes, encoding="utf-8") as f:
         reconstruit = json.load(f)
@@ -375,7 +381,13 @@ def test_charger_assiettes_reconstruit_une_table_malformee_ou_non_conforme(
 
     pays = bs.charger_assiettes_pays()
 
-    assert len(pays) >= 37
+    # 36, et non 37 : le Malawi a ete RETIRE de COUNTRY_TAX_PROFILES. Son entree
+    # portait le profil generique « TVA sur CIF+DD » sous la seule mention
+    # « Malawi Revenue Authority — import VAT » — un nom d'autorite, pas un
+    # article — et faisait liquider la TVA malawienne sur une assiette que
+    # personne n'a lue. Le seuil garde ici un ORDRE DE GRANDEUR, il ne
+    # promet pas un pays en particulier.
+    assert len(pays) >= 36
     with open(assiettes, encoding="utf-8") as f:
         reconstruit = json.load(f)
     assert isinstance(reconstruit["pays"], dict)
@@ -401,7 +413,13 @@ def test_charger_assiettes_reconstruit_apres_oserror_de_lecture(tmp_path, monkey
     monkeypatch.setattr(builtins, "open", open_instable)
     pays = bs.charger_assiettes_pays()
 
-    assert len(pays) >= 37
+    # 36, et non 37 : le Malawi a ete RETIRE de COUNTRY_TAX_PROFILES. Son entree
+    # portait le profil generique « TVA sur CIF+DD » sous la seule mention
+    # « Malawi Revenue Authority — import VAT » — un nom d'autorite, pas un
+    # article — et faisait liquider la TVA malawienne sur une assiette que
+    # personne n'a lue. Le seuil garde ici un ORDRE DE GRANDEUR, il ne
+    # promet pas un pays en particulier.
+    assert len(pays) >= 36
     assert appels["n"] == 1
 
 

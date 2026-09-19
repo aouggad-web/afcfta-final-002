@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "objet": "Malawi — la carte des neuf colonnes de taux, lue dans le paragraphe 4 de l'Order et non déduite de la mise en page ; ce qui sépare les colonnes 5 et 6, que le paragraphe 5 tranche en faisant de la seconde une REMISE de la première ; l'assiette du droit de douane, qui est le PRIX NORMAL de la Schedule A et non la valeur transactionnelle de l'OMC ; et les deux conditions que le texte attache au taux ZLECAf de la colonne 7A.",
+  "verified_at": "2026-09-19",
+  "etabli": true,
+  "evidence_level": "primaire pour la carte des colonnes, pour la nature de remise des colonnes 6 à 9 et pour les conditions du taux ZLECAf — Customs and Excise (Tariffs) (No. 3) Order, 2022, publié par la Malawi Revenue Authority, extrait archivé avec son empreinte. PRIMAIRE MAIS DATÉE pour l'assiette : la consolidation Laws.Africa du Customs and Excise Act (Cap. 42:01) est arrêtée au 30 juin 2018 ; malawilii.org refuse son PDF (403) et une modification postérieure n'est pas exclue. AUCUNE ÉVIDENCE, et rien n'est servi, pour les assiettes de l'accise, de la TVA et de l'Advance Income Tax.",
+  "la_question_posee": "Le tarif malawien aligne NEUF colonnes de taux sans en-tête textuel : le guide d'inspection notait « mapping à construire depuis le texte juridique ». Deux de ces colonnes — 5 et 6 — portent toutes deux « the rates of customs duty », et elles DIFFÈRENT sur 4 409 des 7 373 positions collectées : se tromper de colonne donnerait un droit faux sur la majorité du tarif. Troisième question : le Malawi est le premier tarif de ce lot à publier une colonne ZLECAf dans son instrument légal, et il faut savoir à quelles conditions elle s'applique.",
+  "regle": {
+    "la_carte_des_neuf_colonnes": {
+      "article": "Customs and Excise (Tariffs) (No. 3) Order, 2022, Part I, paragraphe 4 (page 22)",
+      "verbatim_colonnes_5_et_6": "columns 5 and 6 contain the rates of customs duty in respect of the goods classified under the corresponding subheading",
+      "verbatim_colonne_7": "column 7 contains COMESA rates of customs duty in respect of goods classified under the corresponding subheading",
+      "verbatim_colonne_7A": "column 7A contains AfCFTA rates of Customs duty in respect of goods classified under the corresponding subheading",
+      "portee": "La carte est LUE DANS LE DÉCRET, colonne par colonne : 1 position, 2 sous-position, 3 désignation, 4 unité de quantité, 5 et 6 droit de douane, 7 COMESA, 7A ZLECAf, 8 SADC hors Afrique du Sud, 9 SADC Afrique du Sud seulement, 10 accise, 11 TVA, 12 Advance Income Tax. Rien n'y est déduit de la mise en page. La colonne 7A est introduite par le Govt Notice 31 du 28/05/2021, que le décret cite lui-même.",
+      "texte_archive": "sources/MWI_tariffs_order_2022_colonnes_et_prix_normal.texte-extrait.txt",
+      "sha256": "52c4a344d336cbafee887b92fb12765ec1316164902b2599aad35b4651f4973c",
+      "sha256_pdf_origine": "7960f473e21a8363dbc144cd6ec445b1ab506e36252af485c6eebcd0b661f2ac",
+      "source_url": "https://www.mra.mw/admin/storage/downloads/MALAWI_CUSTOMS_AND_EXCISE_(TARIFFS)_ORDER_HS_2022_VERSION_2023-2024_(P).pdf"
+    },
+    "ce_qui_separe_les_colonnes_5_et_6": {
+      "article": "Customs and Excise (Tariffs) (No. 3) Order, 2022, Part I, paragraphe 5 (page 23), pris en vertu de la section 89 du Customs and Excise Act",
+      "verbatim": "rebates shall be allowed to an extent sufficient to reduce the rates of duty set out in column 5 of Part III to the rates respectively set out in column 6 or 7, 7A, 8 or 9 of Part III in respect of goods grown, produced or manufactured in any country which is —",
+      "verbatim_colonne_6": "a Contracting Party of the General Agreement on Tariffs and Trade ( GATT)",
+      "portee": "Ce ne sont PAS deux droits de douane côte à côte : la colonne 5 est le PLEIN DROIT, et les colonnes 6 à 9 en sont des REMISES par origine. La colonne 6 vaut pour un pays qui est (i) « Member State » ou « ACP State » au sens de la Convention de Lomé du 28 février 1975, (ii) un pays indépendant du Commonwealth, ou (iii) partie contractante du GATT. Tout membre de l'OMC entre dans la troisième catégorie : la colonne 6 est donc EN FAIT le taux NPF, et c'est elle qui est servie comme droit de douane sous le code DD. La colonne 5 est conservée à côté, nommée, sous le code DD_PLEIN, pour les origines qui n'entrent dans aucune de ces catégories. Le parallèle avec la colonne « M.F.N. » du Zimbabwe est ainsi ÉTABLI PAR LE TEXTE et non supposé par ressemblance.",
+      "texte_archive": "sources/MWI_tariffs_order_2022_colonnes_et_prix_normal.texte-extrait.txt",
+      "sha256": "52c4a344d336cbafee887b92fb12765ec1316164902b2599aad35b4651f4973c"
+    },
+    "assiette_du_droit_de_douane": {
+      "article": "Customs and Excise Act (Cap. 42:01), section 111(2) et SCHEDULE A « Value of imported goods », paragraphe 1(a) — consolidation Laws.Africa arrêtée au 30 juin 2018 [10 of 2014] [25 of 1988]",
+      "verbatim_renvoi": "The value of imported goods shall be determined in accordance with the provisions of SCHEDULE A and customs duties ad valorem or ad rem shall be paid on that value.",
+      "verbatim_prix_normal": "The value of any imported goods shall be taken to be the normal price, that is to say, the price which they would fetch [...] on a sale in the open market between a buyer and a seller independent of each other",
+      "verbatim_hypotheses": "the goods are delivered to the buyer at the port or place of introduction into Malawi [...] the seller bears all costs, charges and expenses incidental to the sale and to the delivery of the goods at the port or place of introduction, which are hence included in the normal price",
+      "portee": "Par son CONTENU ÉCONOMIQUE l'assiette comprend prix + fret + assurance jusqu'au port malawien : c'est le CIF, et c'est ce que le socle sert. Mais sa FORME juridique est une valeur théorique de marché ouvert, non la valeur transactionnelle de l'Accord de l'OMC : sur une vente entre parties liées, les deux ne donnent pas le même montant. Ma réserve précédente — « ce texte est vraisemblablement périmé puisqu'il ne mentionne pas l'OMC » — ÉTAIT MAL POSÉE : le même amendement (Act 10 of 2014) a fait passer les EXPORTATIONS à la valeur transactionnelle et a laissé les importations sur le prix normal. Ce n'est donc pas un texte oublié, c'est le choix malawien.",
+      "assiettes_retenues": {
+        "DD": "CIF",
+        "DD_PLEIN": "CIF"
+      },
+      "texte_archive": "sources/MWI_tariffs_order_2022_colonnes_et_prix_normal.texte-extrait.txt",
+      "sha256": "52c4a344d336cbafee887b92fb12765ec1316164902b2599aad35b4651f4973c"
+    },
+    "les_deux_conditions_du_taux_zlecaf": {
+      "article": "Customs and Excise (Tariffs) (No. 3) Order, 2022, paragraphe 5(c) (page 23)",
+      "verbatim": "in column 7A of Part III in respect of goods imported into Malawi from a country that is a State Party to the AfCFTA other than Republic of South Africa, being goods grown, produced or manufactured in that State Party with a specified country content of not less than thirty-five per cent",
+      "portee": "Deux conditions, et aucune des deux ne se devine. (1) L'AFRIQUE DU SUD EST EXCLUE de la colonne ZLECAf : une expédition sud-africaine relève de la colonne 9, « South Africa only ». Servir le 7A à une origine sud-africaine serait une exonération inventée. (2) Le taux est CONDITIONNEL à un « specified country content of not less than thirty-five per cent » : le calculateur ne peut pas vérifier cette condition, qui dépend de la marchandise et de son certificat d'origine. Le taux 7A est donc porté SOUS CONDITION NOMMÉE sur chaque ligne, jamais comme un acquis. La même condition de 35 % vaut pour le COMESA (par. 5(b)(i)).",
+      "texte_archive": "sources/MWI_tariffs_order_2022_colonnes_et_prix_normal.texte-extrait.txt",
+      "sha256": "52c4a344d336cbafee887b92fb12765ec1316164902b2599aad35b4651f4973c"
+    }
+  },
+  "provenance_du_tarif": {
+    "document": "Customs and Excise (Tariffs) (No. 3) Order, 2022 (HS 2022 Version) — Malawi Gazette Supplement du 29 juillet 2022, GOVERNMENT NOTICE NO. 30, pris sous le Customs and Excise Act (Cap. 42:01). Publié par la Malawi Revenue Authority, 642 pages. C'est le TEXTE RÉGLEMENTAIRE lui-même, non une publication de facilitation.",
+    "url": "https://www.mra.mw/admin/storage/downloads/MALAWI_CUSTOMS_AND_EXCISE_(TARIFFS)_ORDER_HS_2022_VERSION_2023-2024_(P).pdf",
+    "sha256": "7960f473e21a8363dbc144cd6ec445b1ab506e36252af485c6eebcd0b661f2ac",
+    "remplace": "Une moyenne SH6 WITS/UNCTAD-TRAINS qui servait 5 388 positions SANS AUCUNE désignation. Le décret en porte 7 373 à huit chiffres, avec leur libellé, leur unité de quantité et neuf colonnes de prélèvements.",
+    "certificat_tls": "www.mra.mw n'est joignable que sur le chemin /admin/storage/downloads/. La vérification TLS n'a à aucun moment été désactivée.",
+    "pdf_non_archive": "Le décret lui-même (642 pages, 6,3 Mo) n'est PAS archivé dans sources/ : il est trop volumineux pour le dépôt. Son empreinte est citée ici et portée par `source_sha256` dans backend/data/crawled/MWI_tariffs.json, et son URL MRA est citable — on peut donc le retélécharger et vérifier qu'il s'agit du même fichier. Les pages sur lesquelles la fiche s'appuie — paragraphes 4 et 5 de l'Order, section 111(2) et Schedule A de l'Act — sont archivées dans sources/ avec leur empreinte."
+  },
+  "comment_les_colonnes_sont_rattachees_a_leurs_taux": {
+    "le_probleme": "Le décret dit QUELLE colonne porte quoi, il ne dit pas OÙ chaque colonne tombe sur la page. Or la grille se déplace : sur les 556 lignes qui portent les neuf valeurs, 466 tombent à l'abscisse nominale, mais les pages 452 à 454 — les véhicules automobiles — glissent jusqu'à 24 unités vers la gauche, presque une colonne entière. Comparer une abscisse à une grille fixe y lisait le taux de la colonne voisine : un droit COMESA de 13 % se servait comme droit de douane.",
+    "la_methode": "Ce qui ne bouge pas, c'est l'ÉCART entre deux colonnes. Chaque ligne est donc rattachée par sa FORME et non par sa position : parmi les façons de placer ses valeurs dans les neuf colonnes en respectant leur ordre, on retient celle dont les écarts à la grille sont les plus constants, le décalage commun étant lu et non supposé. Une valeur qui dit « Zero » ou « Exempt » est rattachée d'office à la colonne TVA : ces deux mentions viennent des annexes du VAT Act, aucune autre colonne du barème n'en porte.",
+    "ce_qui_prouve_qu_elle_ne_se_trompe_pas": "Test en LAISSANT-UN-DEHORS : sur chacune des 556 lignes à neuf valeurs — les seules dont l'affectation soit forcée, donc connue — on retire une valeur et on demande à l'affectation de retrouver les huit colonnes restantes, soit 5 004 cas. Elle en lit 3 762 et REFUSE les 1 242 autres, SANS SE TROMPER UNE SEULE FOIS. Relâcher les seuils portait la lecture à 4 600 cas mais introduisait 30 valeurs fausses : le taux d'une colonne servi sous le nom d'une autre. Les seuils stricts ont été gardés. Deux contrôles indépendants du fichier produit — l'un sur les lignes à neuf valeurs, l'autre lisant les seuls écarts entre valeurs sur les lignes à huit — confirment 1 055 droits sans une seule valeur fausse.",
+    "ce_qui_est_refuse": "271 lignes sur 7 373 sont servies SANS droit de douane, avec leur motif nommé sur la ligne : colonnes non identifiées, deux valeurs dans une même colonne, ou aucune valeur lisible. Jamais un zéro, jamais une approximation."
+  },
+  "ce_que_cela_ne_tranche_pas": {
+    "les_assiettes_de_l_accise_de_la_tva_et_de_l_advance_income_tax": "Le décret donne leurs TAUX (colonnes 10, 11 et 12), pas leur assiette, et aucun texte malawien lu ici ne l'établit. Les trois sont portés SANS assiette, donc non liquidables : les poser sur le CIF parce que c'est l'usage ailleurs fabriquerait un montant crédible et faux.",
+    "la_date_de_la_consolidation_de_l_act": "La consolidation lue s'arrête au 30 juin 2018 ; malawilii.org refuse son PDF (403). Une modification postérieure de la section 111 ou de la Schedule A n'est pas exclue, et la réserve est portée sur CHAQUE ligne de droit.",
+    "le_prix_normal_n_est_pas_la_valeur_transactionnelle": "Le socle sert CIF, qui est le contenu économique du prix normal. Sur une vente entre parties liées la valeur théorique de marché ouvert et le prix effectivement payé divergent : le montant servi serait alors celui de la seconde, non celui de la première. C'est dit, ce n'est pas résolu.",
+    "cent_trente_preferences_superieures_au_plein_droit": "Le paragraphe 5 fait des colonnes 6 à 9 des remises du plein droit : aucune ne devrait donc le dépasser. Sur 130 lignes le barème les dépasse pourtant — 3004.90.90 porte « Free » aux colonnes 5 et 6 et 2 % au COMESA, 2801.30.00 porte 5 % au NPF et 6 % au COMESA. Vérifié page à page, c'est le DOCUMENT qui est ainsi. Ces taux sont donc servis tels quels et la ligne porte l'anomalie, pour que personne n'applique une préférence pire que le droit commun sans l'avoir vue.",
+    "la_condition_d_origine_de_trente_cinq_pour_cent": "Portée sur la ligne, jamais vérifiée : elle dépend de la marchandise et de son certificat d'origine.",
+    "deux_cent_soixante_quatorze_droits_non_lus": "274 positions sur 7 373 sont servies SANS droit de douane, avec leur motif nommé sur la ligne. 271 le sont pour un motif structurel — colonnes non identifiées (168), aucune valeur lisible (87), deux valeurs dans une même colonne (16). Les trois dernières tiennent à un défaut du document : sa couche texte rend « Free » tronqué en « Fre », quatre fois sur 642 pages, et écrit une fois « 12,5% » à la virgule. Rien n'est déduit de ces formes : déduire « Free » d'un préfixe serait servir une franchise que personne n'a lue.",
+    "le_profil_generique_de_tva_a_ete_retire": "backend/socle/assiettes_pays.json et backend/services/tax_profile_data.py portaient pour le Malawi un profil générique « TVA sur CIF+DD » sous la seule mention « Malawi Revenue Authority — import VAT » : un nom d'autorité, pas un article. Il faisait liquider la TVA malawienne sur une assiette que personne n'a lue. Il a été RETIRÉ : le socle sert désormais 7 102 lignes de moins comme liquidables, et c'est un gain."
+  }
+}

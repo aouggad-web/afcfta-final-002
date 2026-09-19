@@ -130,6 +130,13 @@ PREFERENTIELS = {
     # « EUUK » à côté de « EU_UK ». Écrite « LIGUE_ARABE », l'entrée serait
     # morte et la colonne tomberait dans la cascade NPF comme un droit dû.
     "LIGUEARABE": "LIGUE_ARABE",
+    # Le tarif malawien publie DEUX colonnes SADC, et sa propre loi les
+    # distingue : « for imports from other Member States other than South
+    # Africa » (col. 8) et « for imports from South Africa only » (col. 9).
+    # Sans une clé propre à la seconde, les deux se rangeraient sous « SADC » et
+    # le garde de collision retirerait la préférence des deux — ce qui serait
+    # honnête mais perdrait une donnée que la source publie clairement.
+    "SADCZAF": "SADC_ZAF",
 }
 
 

@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-19T01:53:43.444325+00:00",
+  "construit_le": "2026-09-19T02:49:41.807324+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1189,35 +1189,37 @@
       "fichier": "MWI.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MWI_tariffs.json",
-      "source_sha256": "b58fff712f7ab84102294c587ccd7f0cf8a3ad219f6dcfbbebfdab75ec4208d2",
-      "socle_sha256": "f42cede0cd789733a2fb26ce45d2fb527cd0551961b5dc94cafb1d545f9bf353",
-      "collecte": "2026-07-05T10:11:13.162602+00:00",
-      "etat": "COMPLET",
+      "source_sha256": "15412bcd25f5b57b2b5226c83c049eb40393473ef30e0faf3fac58467cf419ee",
+      "socle_sha256": "a136d1c460cb9b7cb5b3f883fb32cb8ea0b6b055facf73b1054470c604be6508",
+      "collecte": "2026-09-19",
+      "etat": "PARTIEL",
       "familles": [
+        "accise",
+        "autre",
         "droit",
         "tva"
       ],
       "compteurs": {
-        "positions": 5388,
-        "droits": 10776,
-        "droits_liquidables": 10776,
-        "positions_liquidables": 5388,
-        "preferentiels": 0,
+        "positions": 7373,
+        "droits": 29218,
+        "droits_liquidables": 14200,
+        "positions_liquidables": 0,
+        "preferentiels": 28396,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
-        "taux_indisponibles": 0,
-        "assiettes_source": 0,
-        "assiettes_fichier": 5388,
-        "assiettes_table": 5388,
-        "assiettes_indisponibles": 0,
-        "sans_designation": 5388,
+        "taux_indisponibles": 274,
+        "assiettes_source": 14200,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
+        "assiettes_indisponibles": 14744,
+        "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
-        "droits_absents_completes": 0,
+        "droits_absents_completes": 274,
         "droits_lus_en_designation": 0,
-        "classification_estimee": 9
+        "classification_estimee": 0
       }
     },
     "NAM": {
@@ -1952,6 +1954,7 @@
       "MAR",
       "MOZ",
       "MUS",
+      "MWI",
       "NAM",
       "NGA",
       "RWA",
@@ -1966,8 +1969,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 364170,
-    "droits": 1110860,
-    "droits_liquidables": 1048000
+    "positions": 366155,
+    "droits": 1129302,
+    "droits_liquidables": 1051424
   }
 }

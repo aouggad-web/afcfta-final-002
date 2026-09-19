@@ -236,7 +236,18 @@ COUNTRY_TAX_PROFILES = {
         **_IMPORT_VAT_CIF_DD,
         "source": "Direction Générale des Impôts Madagascar — TVA à l'importation",
     },
-    "MWI": {**_IMPORT_VAT_CIF_DD, "source": "Malawi Revenue Authority — import VAT"},
+    # ── Malawi — RETIRÉ DE CETTE TABLE, ET C'EST VOULU ────────────────────────
+    # L'entrée portait le profil génerique « TVA sur CIF+DD » sous la seule
+    # mention « Malawi Revenue Authority — import VAT » : un nom d'autorité, pas
+    # un article. Le Customs and Excise (Tariffs) (No. 3) Order, 2022 publie les
+    # TAUX de l'accise, de la TVA et de l'Advance Income Tax (colonnes 10, 11 et
+    # 12) et ne dit rien de leur assiette ; aucun texte malawien lu — Customs and
+    # Excise Act (Cap. 42:01), s.111(2) et Schedule A — ne l'établit non plus.
+    # Voir backend/data/legal_refs/zlecaf_application/
+    # MWI_colonnes_remises_et_prix_normal_2026-09-19.json.
+    # Laisser le profil ici faisait liquider la TVA malawienne sur une assiette
+    # que personne n'a lue : un montant crédible et faux. Le droit de douane, lui,
+    # tient son assiette du décret même et n'a jamais eu besoin de cette table.
     # ── Kenya / EAC — KRA (kra.go.ke) ────────────────────────────────────────
     # IDF (3.5%): base CIF  (Finance Act 2022)
     # VAT (16%): base = CIF + DD  (VAT Act Cap 476)
