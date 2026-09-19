@@ -1086,6 +1086,14 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                         },
                     }
                     compteurs["preferentiels_specifiques"] += 1
+                elif d["taux"] is None and d.get("note"):
+                    # UN TAUX ABSENT DOIT DIRE POURQUOI. La source mauricienne
+                    # déclare 129 colonnes non liquidables — 109 sous contingent
+                    # tarifaire, 20 en droit spécifique — et ce motif se perdait
+                    # ici : la préférence sortait en `{"taux": null}` nu,
+                    # indiscernable d'une colonne que le collecteur n'a pas su
+                    # lire. Ce n'est pas la même chose pour l'opérateur.
+                    prefs[regime] = {"taux": None, "motif": d["note"]}
                 else:
                     prefs[regime] = {"taux": d["taux"]}
                 compteurs["preferentiels"] += 1

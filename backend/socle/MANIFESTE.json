@@ -1,13 +1,13 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-19T18:14:27.604638+00:00",
+  "construit_le": "2026-09-19T18:35:27.344655+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/AGO_tariffs.json",
       "source_sha256": "c4334b5d93b46e0173688b1753577cc8ae40571d4289fdbbf0930a2020b67500",
-      "socle_sha256": "b3ba7c7758f6bb97bc6174078cd5cb9f7531891192e1d26d3f499bc821395446",
+      "socle_sha256": "f7db70b3be3428745474193edad4c40947155ff582c62761ce5c3c4344442abb",
       "collecte": "2026-09-19",
       "etat": "PARTIEL",
       "familles": [
@@ -1186,7 +1186,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MUS_tariffs.json",
       "source_sha256": "d4c7cd661c7dfe9f9fef0721e8cee0c4e84dac5981ab77521ee249c4ae5e8675",
-      "socle_sha256": "20bc6af35a5a93ce9811f49636a2aa64a5e8791deb997991f10841fbdf8cdd04",
+      "socle_sha256": "8280c8c15a66302006d214c4214495b279378cf7df09b2582047e2b91b0b9d53",
       "collecte": "2026-09-18",
       "etat": "PARTIEL",
       "familles": [
@@ -1659,7 +1659,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SYC_tariffs.json",
       "source_sha256": "c99030a8bf2eab13d6710a1109c00a0991417be3dcecea7a8435b45622fd92ef",
-      "socle_sha256": "eadfce3abdb76bba321ccef999c37afc48ef0104e374273c0184812a08c4d450",
+      "socle_sha256": "f1bc375361a59e30714f83671ccdfb858d4d5701c99cb63388ea3fb79479da60",
       "collecte": "2026-09-19",
       "etat": "PARTIEL",
       "familles": [

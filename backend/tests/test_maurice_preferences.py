@@ -30,6 +30,7 @@ CE QUE CES TESTS TIENNENT.
 
 from __future__ import annotations
 
+import collections
 import json
 import pathlib
 
@@ -112,13 +113,41 @@ def test_un_regime_hors_de_la_table_du_pays_n_est_pas_servi():
     assert compteurs["preferentiels_non_nommes"] == 1
 
 
-def test_un_taux_non_liquidable_est_rendu_sans_valeur(positions):
-    sans_taux = [
-        (c, regime)
-        for c, p in positions.items()
-        for regime, v in (p.get("preferentiels") or {}).items()
+def test_un_taux_non_liquidable_est_rendu_sans_valeur_ET_AVEC_SON_MOTIF(positions):
+    """Un taux absent doit dire POURQUOI.
+
+    Sans son motif, la préférence sort en ``{"taux": null}`` nu — indiscernable
+    d'une colonne que le collecteur n'a pas su lire. Ce n'est pas la même chose
+    pour l'opérateur : un contingent tarifaire est une préférence qui existe et
+    se demande, une colonne illisible est une lacune.
+    """
+    motifs = collections.Counter(
+        v.get("motif")
+        for p in positions.values()
+        for v in (p.get("preferentiels") or {}).values()
         if v.get("taux") is None
-    ]
-    # Contingents tarifaires et droits spécifiques : la source les déclare, ils
-    # ne sont pas servis à zéro.
-    assert len(sans_taux) > 100
+    )
+    assert motifs == {"TAUX_SOUS_CONTINGENT": 109, "TAUX_SPECIFIQUE_NON_AD_VALOREM": 20}
+
+
+def test_les_regimes_servis_ne_sont_pas_tous_consommes_par_le_calcul(positions):
+    """LIMITE ASSUMÉE ET VERROUILLÉE : le socle PORTE, la route ne CONSOMME pas.
+
+    `simulations_regionales()` cherche la clé « COMESA » exacte, et Maurice
+    publie « COMESA Group I » et « COMESA Group II ». La route ne les trouvera
+    donc pas tant qu'un roster SOURCÉ ne dira pas quel État relève de quel
+    groupe — et ce roster n'est établi nulle part dans ce dépôt. De même, la
+    colonne ZLECAf ne sera servie que lorsque le registre d'application portera
+    une preuve bilatérale pour Maurice.
+
+    Ce test ne valide pas cet état : il le NOMME, pour qu'il soit corrigé
+    sciemment et non découvert en production.
+    """
+    from services.preference import SIMULABLES
+
+    vus = set()
+    for p in positions.values():
+        vus.update(p.get("preferentiels") or {})
+    assert "COMESA" not in vus
+    assert {"COMESA_I", "COMESA_II"} <= vus
+    assert "COMESA" in SIMULABLES
