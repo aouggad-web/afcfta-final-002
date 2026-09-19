@@ -7,7 +7,8 @@
   "source": {
     "url": "https://www.namra.org.na/documents/cms/uploaded/value-added-tax-act-10-of-2000-8d9c425ffc.pdf",
     "institution": "NamRA",
-    "pdf_archive": "sources/NAM_vat_act_10_2000_taux.texte-extrait.txt"
+    "pdf_archive": "sources/NAM_vat_act_10_2000_taux.texte-extrait.txt",
+    "archive": "extraits et PDF sources archivés sous backend/data/legal_refs/zlecaf_application/sources/ (voir documents_archives)"
   },
   "regle": {
     "valeur": "15 % (taux standard)",
@@ -23,5 +24,19 @@
   "doutes": "Site namra.org.na SPA JavaScript (contenu extrait via API CMS). namiblii.org bloque curl (Cloudflare).",
   "remaining_work": [
     "Vérifier les amendements postérieurs à 2011"
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/NAM_vat_act_10_2000_taux.texte-extrait.txt",
+      "texte_sha256": "1f4a77e61a91c7783733c46a4b3c3a68ee81eb0b2a33484386fa4554ede8c313"
+    },
+    {
+      "texte_archive": "sources/NAM_taux_TVA_extrait_vatact2000.txt",
+      "texte_sha256": "5887aa27ff98d388c230d92a2a22fec02d677a95c8f30057f30ea782a7fa6e13"
+    },
+    {
+      "pdf_archive": "sources/nam_vatact2000.pdf",
+      "pdf_sha256": "ac9b9431d1da05718cba217ab7d5f3c1470a6e9567120125fe5757cbe04199ad"
+    }
   ]
 }

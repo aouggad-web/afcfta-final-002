@@ -7,12 +7,8 @@
   "source": {
     "url": "https://www.burs.org.bw/images/img/PUBLIC%20NOTICE_REVERTING%20TO%2014%20PER%20CENT%20VAT%20RATE_.pdf",
     "institution": "BURS",
-    "avis_urls": [
-      "https://www.burs.org.bw/images/Zero-Rated%20FoodStuff-%20Under%20Vat%20Act%20of%202026.pdf",
-      "https://www.burs.org.bw/images/img/PUBLIC%20NOTICE_REVERTING%20TO%2014%20PER%20CENT%20VAT%20RATE_.pdf",
-      "https://www.burs.org.bw/images/img/PUBLIC%20NOTICE_UPDATE%20ON%20THE%20VAT%20CHANGES.pdf"
-    ],
-    "pdf_archive": "sources/BWA_burs_avis_taux_TVA_14.texte-extrait.txt"
+    "pdf_archive": "sources/BWA_burs_avis_taux_TVA_14.texte-extrait.txt",
+    "archive": "extraits et PDF sources archivés sous backend/data/legal_refs/zlecaf_application/sources/ (voir documents_archives)"
   },
   "regle": {
     "valeur": "14 % — départagé : 12 % était une réduction temporaire (août 2022 — 31 mars 2023), remplacée par 14 % au 1er avril 2023, confirmé sous le VAT Act 2026 (01/07/2026).",
@@ -28,5 +24,35 @@
   "doutes": "VAT Act 2026 PDF scanné — avis BURS datés servent d'attestation du taux. Historique 2021 cohérent avec l'avis 'REVERTING TO 14 PER CENT'.",
   "remaining_work": [
     "Archiver le VAT Act 2026 (Gazette) pour fonder l'article du taux"
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/BWA_burs_avis_taux_TVA_14.texte-extrait.txt",
+      "texte_sha256": "d493039cbd3ce63732c703c7819b063ee40d7a4a5a7f0852b0af8899c90eb4c2"
+    },
+    {
+      "texte_archive": "sources/BWA_taux_TVA_avis_reverting_extrait.txt",
+      "texte_sha256": "3183602c2ee228a44d5bea18271ab6f08c8fc8c377196a7456248907e52a64be"
+    },
+    {
+      "pdf_archive": "sources/bwa_avis14.pdf",
+      "pdf_sha256": "bf0beaa5307e243d70ee6b7b4efc19a7d1d5de68aa10198806cdb11352541ba7"
+    },
+    {
+      "texte_archive": "sources/BWA_taux_TVA_avis_update_extrait.txt",
+      "texte_sha256": "5fa2212b284e3d586188d7d8d49c490f60df295c5e95a531222b3781abf05495"
+    },
+    {
+      "pdf_archive": "sources/bwa_avis_update.pdf",
+      "pdf_sha256": "2f2a40e1918158226653ed94d16dce1ab184098080075c330f1cffcfc504de67"
+    },
+    {
+      "texte_archive": "sources/BWA_taux_TVA_avis_zerorated_extrait.txt",
+      "texte_sha256": "853c60dff4f41a06f48a5522e7c8ced4e3558f736e9c8e6cfb01b07679da8eba"
+    },
+    {
+      "pdf_archive": "sources/bwa_zerorated.pdf",
+      "pdf_sha256": "c481ce1b70aa5eeb06782a6727362153a0f3eb19fe6523ce900b43b4d37b9922"
+    }
   ]
 }
