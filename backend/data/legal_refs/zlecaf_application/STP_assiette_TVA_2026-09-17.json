@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette de la TVA à l'importation — STP : valeur en douane + prélèvements d'entrée, TVA exclue",
+  "verified_at": "2026-09-17",
+  "etabli": true,
+  "evidence_level": null,
+  "source": {
+    "instrument": "Lei n.º 13/2019 (Código do IVA) Artigo 15.º, n.º 1",
+    "institution": "Assembleia Nacional / Direcção dos Impostos — São Tomé e Príncipe",
+    "url": "https://impostos.financas.gov.st/phocadownload/Impostos/Legislacoes/Legislacoes_Tributaria/Codigos_Especificos/IVA/Lei%20N%C2%A713_2019_%20Aprova%20a%20Lei%20do%20IVA.pdf",
+    "texte_archive": "sources/STP_iva_art15.texte-extrait.txt",
+    "sha256": "2de83492b53d8583628ed4db0f6d3a2f0952464ec80534682828106ed587358d",
+    "note_transcription": "PDF officiel 404 ; verbatim transcrit à recouper sur le texte intégral."
+  },
+  "regle": {
+    "article": "Artigo 15.º, n.º 1",
+    "verbatim": "O valor tributável dos bens importados é o valor aduaneiro … adicionado de: a) Direitos de importação e quaisquer outros impostos ou taxas … com excepção do próprio imposto; b) Despesas acessórias …",
+    "valeur_moteur": "CIF+TOUS_SAUF_TVA",
+    "portee": "Valeur en douane augmentée des prélèvements d'entrée, la TVA exclue de sa propre assiette."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "les exonérations et taux réduits ; le taux lui-même (porté dans la donnée)."
+  ],
+  "remaining_work": [
+    "Collecter le tarif national détaillé (sous-positions) pour éliminer la donnée DD WITS/TRAINS."
+  ]
+}

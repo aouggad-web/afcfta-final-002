@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette de la TVA au Soudan",
+  "verified_at": "2026-09-17",
+  "etabli": false,
+  "regle": null,
+  "doutes": "Sites officiels soudanais indisponibles depuis le conflit de 2023 ; aucun texte primaire (VAT Act / texte douanier) accessible. Le régime indirect relève historiquement de la Sales Tax ; aucune TVA confirmée par source primaire. Le taux 17 % porté dans la donnée provient d'une source secondaire non vérifiable.",
+  "remaining_work": [
+    "Obtenir le texte primaire soudanais (VAT/Sales Tax Act, Chambre des impôts) dès accès rétabli.",
+    "Confirmer le taux et l'assiette."
+  ]
+}

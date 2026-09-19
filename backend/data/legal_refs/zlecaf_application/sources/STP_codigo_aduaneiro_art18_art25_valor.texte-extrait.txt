@@ -1,0 +1,147 @@
+Codigo Aduaneiro de Sao Tome e Principe — Decreto-Lei n.o 39/2009
+Source : Instituto Nacional de Estatistica (ine.st)
+https://www.ine.st/phocadownload/userupload/Documentos/Legislacao/2018/DL39-2009%20-%20C%C3%B3digo%20Aduaneiro.pdf
+PDF amont : 114 pages, sha256 6e8a7d4b1a84754ea46d9901edfd6ad6c4d0664174ebff04e2350ec311bc8b6f
+Extraits : TITULO II « Valor Aduaneiro », artigo 18.o (valeur transactionnelle)
+et artigo 25.o (ajustements : transport, chargement, assurance).
+
+CE QUE CES EXTRAITS ETABLISSENT :
+  — la valeur en douane santomeenne est la valeur transactionnelle, « o preco
+    efectivamente pago ou a pagar pelas mercadorias quando sao vendidas para
+    exportacao com destino a Sao Tome e Principe » (art. 18.o) ;
+  — l'article 25.o n.o 1 y AJOUTE, aux alineas e), f) et g) : les frais de
+    transport jusqu'au port ou lieu d'importation, les frais de chargement,
+    dechargement et manipulation lies a ce transport, et le cout de l'assurance.
+    C'est donc le CIF ;
+  — l'article 25.o n.o 2 FERME la liste : « nenhum elemento sera acrescentado ao
+    preco efectivamente pago ou a pagar com excepcao dos previstos no presente
+    artigo ». Rien d'autre n'entre dans l'assiette.
+
+CE QU'ILS N'ETABLISSENT PAS : ni les TAUX du tarif santomeen, ni l'assiette des
+autres prelevements (surtaxe, IVA/ICE le cas echeant). Le tarif lui-meme reste a
+collecter ; cet extrait est le socle juridique prepare pour cette collecte.
+========================================================================
+
+--- artigo 18.o ---
+Artigo 18.º 
+ 
+1. O valor aduaneiro das mercadorias importadas é o valor transaccional, isto é, o preço efectivamente 
+pago ou a pagar pelas mercadorias quando são vendidas para exportação com destino a São Tomé e 
+Príncipe ajustado de acordo com as disposições do artigo 25.º desde que: 
+
+ 
+a) Não existam restrições quanto à cessão ou utilização das mercadorias pelo comprador para além 
+das restrições que são impostas ou exigidas pela lei ou pelas autoridades públicas do país de importação, 
+não exista  limite à zona geográfica na qual as mercadorias podem ser revendidas ou não existam 
+restrições que afectem substancialmente o valor das mercadorias; 
+b) A venda ou o preço não estejam subordinados a condições ou prestações cujo valor não se possa 
+determinar relativamente às mercadorias a avaliar ; 
+c) Não reverta directa ou indirectamente para o vendedor nenhuma parte do produto de qualquer 
+revenda cessão ou utilização ulterior das mercadorias pelo comprador, salvo se puder ser efectuado um 
+ajustamento apropriado em conformidade com as disposições do artigo 25.º; 
+d) O comprador e o vendedor não estejam coligados ou se o estiverem que o valor transaccional seja 
+aceitável para fins aduaneiros nos termos do disposto no n.º 2. 
+ 
+2. Sobre a aceitação do valor transaccional deve ter-se  em conta que: 
+ 
+a) Para determinar se o valor transaccional é aceitável para efeitos de aplicação do n.º 1 o facto de o 
+comprador e o vendedor estarem coligados  não constitui em si mesmo motivo suficiente para considerar 
+o valor transaccional inaceitável , devendo em tal caso ser examinadas as circunstâncias próprias da 
+venda e o valor transaccional ser aceite desde que , essa coligação não tenha influenciado o preço. Se 
+tendo em conta informações fornecidas pelo importador ou obtidas de outras fontes a administração 
+aduaneira tiver motivos para considerar que a relação de coligação influenciou o preço comunicará os 
+seus motivos ao importador e dar-lhe-á uma possibilidade razoável de responder devendo, se o 
+importador assim o solicitar, os motivos ser-lhe comunicados por escrito; 
+b) Numa venda entre pessoas coligadas, o valor transaccional será aceite e as mercadorias s
+
+--- artigo 25.o ---
+Artigo 25.º 
+ 
+1. Para determinar o valor aduaneiro por aplicação das disposições do artigo 18.º acrescentar-se-á ao 
+preço efectivamente pago ou a pagar pelas mercadorias importadas: 
+ 
+a) Os elementos seguintes na medida em que forem suportados pelo comprador, mas não tenham sido 
+incluídos no preço efectivamente pago ou a pagar pelas mercadorias: 
+-  
+comissões e despesas de corretagem, com excepção das comissões de compra; 
+-  
+custo dos recipientes que, para fins aduaneiros, se consideram como fazendo um todo com as 
+mercadorias; 
+- custo da embalagem, compreendendo a mão-de-obra, assim como os materiais; 
+b) O valor, imputado de maneira adequada, dos seguintes produtos e serviços quando forem 
+fornecidos directa ou indirectamente pelo comprador, sem despesas ou a custo reduzido, e utilizados 
+aquando da produção e da venda para exportação das mercadorias importadas, na medida em que esse 
+valor não tenha sido incluído no preço efectivamente pago ou a pagar: 
+-  
+matérias, componentes, partes e elementos similares incorporados nas mercadorias importadas; 
+- 
+ferramentas, matrizes, moldes e objectos similares utilizados para a produção das mercadorias 
+importadas; 
+-  
+matérias consumidas na produção das mercadorias importadas; 
+-  
+trabalhos de engenharia, de estudo, de arte e de design planos e esboços executados fora do país de 
+importação e necessários para a produção das mercadorias importadas; 
+c)  Os direitos de exploração e direitos de licença relativos às mercadorias a avaliar, que o comprador 
+é obrigado a pagar, quer directa quer indirectamente, como condição de venda das mercadorias a avaliar, 
+na medida em que esses direitos de exploração e direitos de licença não tenham sido incluídos no preço 
+efectivamente pago ou a pagar; 
+d) O valor de qualquer parte do produto da revenda, cessão ou utilização ulterior das mercadorias 
+importadas que reverta directa ou indirectamente para o vendedor.  
+e) Despesas de transporte das mercadorias importadas até ao porto ou local de importação; 
+f) Despesas de carga de descarga e de manipulação ligadas ao transporte das mercadorias importadas 
+até ao porto ou local de importação  
+g) Custo do seguro. 
+ 
+2. Para a determinação do valor aduaneiro nenhum elemento será acrescentado ao preço efectivamente 
+pago ou a pagar com excepção dos previstos no presente artigo. 
+ 
+ 
+ 
+ 
+3. Os acréscimos ao preço efectivamente pago ou a pagar, previstos neste artigo, são baseados 
+exclusivamente em dados objectivos e quantitativos. 
+ 
+Artigo 26.º 
+ 
+Todas as informações que forem de natureza confidencial ou que forem fornecidas a título 
+confidencial, para efeitos de determinação do valor aduaneiro, serão tratadas como estritamente 
+confidenciais pelas autoridades competentes, as quais não as divulgará sem autoriza
+==============================================================================
+ADDENDUM DU 2026-09-19 — LE BAREME EST DESORMAIS IDENTIFIE, MAIS SA SOURCE EST
+REFUSEE PAR LA POLITIQUE RESEAU DE CET ENVIRONNEMENT.
+==============================================================================
+
+L'assiette santomeenne etait etablie ; les TAUX ne l'etaient pas, et le socle sert
+toujours 5 388 moyennes SH6 de WITS/UNCTAD-TRAINS. L'instrument qui les porte est
+maintenant NOMME, ce qui n'etait pas le cas :
+
+  DECRETO-LEI n.º 14/2023
+  « Aprova a Pauta Aduaneira dos Direitos de Importacao e Exportacao (versao 2022
+    da Nomenclatura do Sistema Harmonizado de Designacao e Codificacao de
+    Mercadorias) e as respectivas Instrucoes Preliminares »
+  Diario da Republica de Sao Tome e Principe, SERIE I, n.º 60/2023 du
+  30 novembre 2023. Entre en vigueur le 1er decembre 2023, avec ses annexes qui en
+  font partie integrante. Plus de cinq mille lignes tarifaires, nomenclature
+  SH 2022. C'est la premiere refonte de la pauta depuis quatorze ans, et elle
+  coincide avec l'introduction de la TVA santomeenne.
+
+  URL officielle : https://dre.gov.st/diario/299/2023
+
+POURQUOI ELLE N'EST PAS COLLECTEE ICI. L'hote dre.gov.st est REFUSE par la
+politique reseau du mandataire de cet environnement : la tentative de connexion
+rend « CONNECT tunnel failed, response 502 », c'est-a-dire un refus du mandataire
+lui-meme et non une erreur du site. Ce refus est une decision de politique : il se
+rapporte, il ne se contourne pas. La verification TLS n'a a aucun moment ete
+desactivee et la variable HTTPS_PROXY n'a pas ete retiree.
+
+Aucune autre source citable n'a ete trouvee. Le fichier depose par l'utilisateur,
+« STP_pauta_rdstp.pdf » (7,3 Mo), porte vraisemblablement ce bareme, mais un tarif
+servi depuis un depot prive ne serait pas verifiable par un tiers : il ne serait
+pas moins exact, il serait moins CONTROLABLE, et c'est la meme exigence qui a fait
+retenir les URL de mra.mw pour le Malawi et de src.gov.sc pour les Seychelles.
+
+CE QU'IL FAUDRAIT POUR LEVER LE BLOCAGE : que dre.gov.st soit autorise par la
+politique reseau, ou qu'une autre institution publie le meme Decreto-Lei sous une
+URL joignable. Les deux ont ete cherches le 19 septembre 2026 ; ni l'un ni l'autre
+n'a abouti.

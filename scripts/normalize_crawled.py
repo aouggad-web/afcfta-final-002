@@ -173,6 +173,16 @@ def detect_schema(data: dict) -> str:
         # TUN: taxes_import (list) au lieu de taxes (dict)
         if s0.get("taxes_import") and isinstance(s0["taxes_import"], list):
             return "tun"
+        # TARIF NATIONAL : `taxes` est une LISTE d'objets portant chacun son
+        # code, son taux ET SON ASSIETTE. C'est ce qu'émettent les collecteurs
+        # de tarifs nationaux (Libye, Maurice, Mozambique…), et c'est plus
+        # riche qu'un dictionnaire {code: taux}, qui ne peut pas porter
+        # l'assiette. Sans cette branche, ces fichiers tombaient en « unknown »
+        # et étaient ignorés EN SILENCE : le pays disparaissait de
+        # `crawled_data_service.get_available_countries()`, et le chemin
+        # historique le refusait en 404 alors que le socle le servait.
+        if isinstance(s0.get("taxes"), list) and s0.get("national_code"):
+            return "national_list"
         if isinstance(s0.get("taxes"), dict):
             if s0.get("hs_code") and len(str(s0["hs_code"])) >= 10:
                 if s0.get("legal_refs") or s0.get("lf2026_provisions"):
@@ -1450,6 +1460,86 @@ def _attach_legal_refs(positions: List[dict], iso3: str):
 # Dispatcheur
 # ──────────────────────────────────────────────────────────────────────────────
 
+def normalize_national_list(data: dict, iso3: str) -> List[dict]:
+    """Normalise un tarif national dont les taxes sont une LISTE.
+
+    C'est le schéma des collecteurs de tarifs nationaux : chaque taxe y porte
+    son code, son taux, son libellé brut et SON ASSIETTE avec la source de
+    celle-ci. Rien n'est recalculé ici — la normalisation ne fait que
+    présenter ces champs sous la forme canonique, et ce qu'elle ne trouve pas
+    reste `None` plutôt que d'être comblé.
+    """
+    positions: List[dict] = []
+    for pos in data.get("sub_positions", []):
+        code = clean_code(str(pos.get("national_code") or ""))
+        if not code:
+            continue
+        designation = pos.get("designation")
+        if not isinstance(designation, dict):
+            designation = {"verbatim": str(designation or "")}
+
+        taxes: List[dict] = []
+        for t in pos.get("taxes", []) or []:
+            if not isinstance(t, dict):
+                continue
+            nom = t.get("name") or t.get("name_fr") or t.get("code") or ""
+            taux = t.get("rate_pct")
+            classe = classify_tax(str(t.get("code") or ""), str(nom))
+            taxes.append({
+                "code": t.get("code"),
+                "name": nom,
+                "name_fr": t.get("name_fr", ""),
+                "name_en": t.get("name_en", ""),
+                "name_ar": t.get("name_ar", ""),
+                "rate_pct": taux,
+                "rate_decimal": (taux / 100.0) if isinstance(taux, (int, float)) else None,
+                "raw_value": t.get("raw_value", ""),
+                "specific_value": t.get("specific_value"),
+                # L'assiette et sa source viennent du collecteur : on ne les
+                # invente pas, et une assiette absente le reste.
+                "base": t.get("base"),
+                "base_source": t.get("base_source"),
+                "source": t.get("source", data.get("source", "")),
+                "legal_ref": t.get("legal_ref"),
+                "note": t.get("note"),
+                "is_cet": False,
+                **classe,
+            })
+
+        positions.append({
+            "national_code": code,
+            "hs6": pos.get("hs6") or code[:6],
+            "chapter": pos.get("chapter", code[:2]),
+            "heading": pos.get("heading", ""),
+            "section": pos.get("section", ""),
+            "statistical_unit": pos.get("statistical_unit", ""),
+            "check_digit": pos.get("check_digit", ""),
+            "designation": {
+                "fr": designation.get("fr", ""),
+                "en": designation.get("en", ""),
+                "ar": designation.get("ar", ""),
+                "pt": designation.get("pt", ""),
+                "full_fr": designation.get("full_fr", ""),
+                "verbatim": designation.get("verbatim", ""),
+            },
+            "taxes": taxes,
+            "export_taxes": pos.get("export_taxes", []),
+            "preferential_rates": pos.get("preferential_rates", []),
+            "fiscal_advantages": pos.get("fiscal_advantages", []),
+            "formalities": pos.get("formalities", []),
+            "restrictions": pos.get("restrictions", []),
+            "legal_refs": pos.get("legal_refs", []),
+            "reglementation": pos.get("reglementation", {"import": [], "export": []}),
+            "quotas": pos.get("quotas", {"qcs": None, "qci": None}),
+            "zlecaf_schedule": pos.get(
+                "zlecaf_schedule",
+                {"applied": False, "rate_pct": None, "instruction": None},
+            ),
+            "source_gaps": pos.get("source_gaps", []),
+        })
+    return positions
+
+
 SCHEMA_DISPATCH = {
     "dza": normalize_dza,
     "egy": normalize_egy,
@@ -1461,6 +1551,7 @@ SCHEMA_DISPATCH = {
     "wits_dict": normalize_wits_dict,
     "nga": normalize_nga,
     "gha_canonical": normalize_gha_canonical,
+    "national_list": normalize_national_list,
 }
 
 

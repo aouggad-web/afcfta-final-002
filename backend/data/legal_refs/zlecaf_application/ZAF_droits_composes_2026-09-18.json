@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "objet": "Règle de liquidation des droits composés du tarif sud-africain (SACU) — deux formes, une seule établie.",
+  "verified_at": "2026-09-18",
+  "etabli": false,
+  "regle": null,
+  "evidence_level": "primaire pour les expressions elles-mêmes (Schedule 1 Part 1, PDF officiel daté du 2026-08-28) ; AUCUNE source atteinte pour la règle qui départage la forme « or ».",
+  "source": {
+    "instrument": "SARS, Customs & Excise Tariff, Schedule 1 Part 1, chapitres 1 à 99",
+    "date_sur_le_document": "2026-08-28",
+    "pages": 704,
+    "texte_archive": "sources/ZAF_droits_composes.texte-extrait.txt",
+    "pdf_sha256": "442ed3d758d741e283a7d8fa513fe53cd94a813d0ef13cafcb0a3a9c2749c65c",
+    "sha256": "a3f57f79fad7f4da694eac09951f50328779cb825c12f67befc40eac0aca8166",
+    "pdf_non_archive": "PDF de 2,8 Mo et 704 pages ; seuls les extraits des deux formes composées sont archivés ici. Le PDF lui-même est déjà versionné ailleurs dans le dépôt — voir fichier_du_depot.",
+    "fichier_du_depot": "Le PDF est déjà versionné dans le dépôt, sous data puis sources puis ZAF puis legislation, nom de fichier sars_schedule1_part1_ch1-99.pdf. Chemin écrit en clair plutôt qu en notation à barres obliques : une chaîne « sources/… » désigne, par convention du dossier, un texte archivé DANS sources/ de ce même dossier — la confondre ferait échouer le contrôle d empreinte sur le mauvais document."
+  },
+  "ce_qui_est_etabli": {
+    "forme_plafonnee": {
+      "expression": "450c/kg with a maximum of 96%",
+      "positions": 46,
+      "lecture": "Le droit est le prélèvement spécifique, borné à un pourcentage de la valeur en douane. La règle est énoncée par l'expression elle-même — « with a maximum of » — et ne demande aucune interprétation.",
+      "valeur_moteur": "specifique + plafond_ad_valorem_pct",
+      "defaut_corrige": "Le crawl rangeait 96,0 dans `rate_pct` : le PLAFOND pris pour le TAUX. Le moteur liquidait donc 96 % ad valorem. Mesuré sur 10 000 kg de lait à 50 ZAR/kg — 480 000 servis contre 45 000 réellement dus, soit un facteur dix."
+    }
+  },
+  "ce_qui_reste_non_etabli": {
+    "forme_alternative": {
+      "expression": "40% or 240c/kg",
+      "positions": 94,
+      "probleme": "Le tarif publie DEUX composantes et n'énonce pas laquelle s'applique. Les lectures possibles — la plus élevée, la plus basse, au choix du déclarant — donnent des montants différents : sur la position 0201.10, la part spécifique l'emporte dès que la valeur unitaire passe sous 6,00 ZAR/kg.",
+      "traitement_retenu": "Le moteur refuse de liquider et rend `REGLE_COMPOSEE_NON_ETABLIE`, en laissant les deux composantes et le verbatim lisibles. Retenir la part ad valorem — ce que faisait le socle — produisait un montant crédible et possiblement faux."
+    }
+  },
+  "recherche_menee": {
+    "date": "2026-09-18",
+    "sources_epuisees": [
+      "Schedule 1 Part 1 (704 pages) : les notes de section et de chapitre lues ne portent que sur le classement des marchandises, jamais sur la liquidation d'une expression composée.",
+      "Customs and Excise Act 91 of 1964, PDF LawLibrary (sha256 9097dd5b8445c297c5f77a4e81a93010da0fce47b771044b3661cb243e98719b) : la seule formule « whichever is the greater » trouvée concerne la VALEUR en douane (s.65(1)) et la bière (s.—), pas les droits composés du tarif.",
+      "Les autres schedules archivés localement (Sch1P2A, Sch1P2B, Sch2, Sch8, ITAC definitive duties) : aucune note générale sur la forme « or ».",
+      "sars.gov.za : les pages de législation primaire et de notes générales du tariff book répondent 404.",
+      "tralac (page SACU), itac.org.za : aucune mention de la règle.",
+      "OMC, Examen des politiques commerciales de la SACU, WT/TPR/S/324 du 30 septembre 2015 (48 pages, secretariat) : le rapport CONFIRME l existence de droits « mixed » dans le tarif SACU (par. 3.16-3.17 : 283 lignes non ad valorem sur 7 426, appliquees aux produits agricoles, au charbon, aux textiles et chaussures) mais n en donne PAS la regle de liquidation."
+    ]
+  },
+  "reserve_majeure_sur_l_acte": "Le PDF de l'Acte 91 de 1964 utilisé ici — et cité par la fiche SACU_assiette_DD — porte en page 1 : « Legislation as at 31 July 1964 » et « Note: This is not the latest available version of this Act. » C'est le TEXTE D'ORIGINE, que la source elle-même déclare périmé. L'Acte a été amendé de nombreuses fois depuis, notamment pour l'évaluation en douane. Toute conclusion tirée de sa section 65 — dont la base FOB retenue par la fiche SACU — doit être reprise sur la version consolidée en vigueur avant d'être tenue pour acquise.",
+  "ce_que_cela_ne_tranche_pas": [
+    "La règle de la forme « or » : aucune source atteinte ne l'énonce.",
+    "Si une note générale du tariff book la porte : les pages SARS correspondantes n'ont pas pu être lues depuis cet environnement.",
+    "Le comportement des colonnes préférentielles composées (EU_UK 89, EFTA 99, MERCOSUR 140, AfCFTA 140 lignes) : elles suivent la même expression que le NPF, mais leur liquidation n'a pas été vérifiée séparément."
+  ],
+  "doutes": "La lecture « la plus élevée des deux » est la convention communément prêtée à cette forme, mais aucune source primaire atteinte ne l'écrit. Elle n'est donc PAS retenue : un montant crédible fondé sur une convention supposée est exactement ce que ce dépôt s'interdit.",
+  "remaining_work": [
+    "Obtenir les notes générales du SARS Tariff Book (Schedule 1, General Notes) et y lire la règle de la forme « X% or Yc/kg ».",
+    "Obtenir la version CONSOLIDÉE en vigueur de l'Acte 91 de 1964, et reprendre sur elle la conclusion « base FOB » de la fiche SACU_assiette_DD.",
+    "Vérifier la liquidation des colonnes préférentielles composées, aujourd'hui non contrôlée séparément."
+  ],
+  "piege_ecarte": {
+    "source": "OMC, WT/TPR/S/324, notes de methode des tableaux 3.1 et 3.2 (p. 21 et 26)",
+    "verbatim": "In case of unavailability, the ad valorem part is used for mixed duty rates — The ad valorem part is used for mixed duty rates if no AVEs are estimated",
+    "pourquoi_ce_n_est_pas_la_regle": "Il s agit d une convention STATISTIQUE du Secretariat de l OMC pour calculer des moyennes tarifaires quand les equivalents ad valorem ne sont pas estimes — la phrase dit elle-meme « in case of unavailability » et « if no AVEs are estimated ». Ce n est pas la regle par laquelle la douane liquide. La retenir comme telle reviendrait a servir 40 % sur « 40% or 240c/kg » au motif qu un organisme international calcule ses moyennes ainsi : precisement l erreur que le socle commettait, et sous une apparence d autorite.",
+    "lecture": "Cette note est au contraire un INDICE que la regle n est pas triviale : si elle l etait, l OMC n aurait pas besoin d une convention de repli."
+  }
+}

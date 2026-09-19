@@ -359,7 +359,9 @@ def _normalise_crawled_tax_details(raw_taxes) -> dict:
     return details
 
 
-def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) -> dict:
+def compute_tax_cascade(
+    cif_value: float, taxes_rates: dict, country_iso3: str, fob_value: Optional[float] = None
+) -> dict:
     """
     Compute import taxes using the official cascade method for each country.
 
@@ -453,7 +455,25 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         base_formula, add_codes = tax_bases.get(raw_code, tax_bases.get(norm_code, ("CIF", [])))
 
         # Compute the base value
-        if base_formula == "DD_AMOUNT":
+        if base_formula == "FOB":
+            # Valeur en douane SACU : fret et assurance internationaux exclus
+            # (Act 91/1964 s.65-67). Elle ne se déduit JAMAIS de la valeur CIF
+            # — la part du fret et de l'assurance n'est pas connue ici. Sans
+            # valeur FOB fournie, le droit ne se liquide pas : une base CIF
+            # substituée produirait un montant crédible et faux (fail-closed).
+            if fob_value is None:
+                raise ValueError(
+                    "valeur_fob requise : la valeur en douane SACU est la valeur FOB "
+                    "(fret et assurance internationaux exclus) et ne peut être déduite "
+                    "de la valeur CIF — voir Customs and Excise Act 91/1964 s.65-67"
+                )
+            if fob_value > cif_value:
+                raise ValueError(
+                    "valeur_fob ne peut excéder la valeur cif_value : le fret et "
+                    "l'assurance ajoutés à la FOB composent la CIF"
+                )
+            base_value = fob_value
+        elif base_formula == "DD_AMOUNT":
             # e.g. CAC = % of DD_amount
             base_value = computed_amounts.get("DD", 0.0)
         elif base_formula == BASE_TVA_TOUTES_TAXES:
@@ -476,6 +496,8 @@ def compute_tax_cascade(cif_value: float, taxes_rates: dict, country_iso3: str) 
         label = _TAX_LABELS.get(norm_code, _TAX_LABELS.get(raw_code, raw_code))
         if base_formula == "DD_AMOUNT":
             base_desc = "DD_montant"
+        elif base_formula == "FOB":
+            base_desc = "FOB"
         elif base_formula == BASE_TVA_TOUTES_TAXES:
             autres = [c for c in computed_amounts if c != norm_code]
             base_desc = "CIF + " + " + ".join(autres) if autres else "CIF"
@@ -936,7 +958,10 @@ def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
         cascade_rates["DD"] = dd
     if tva > 0:
         cascade_rates["TVA"] = tva
-    ref_cascade = compute_tax_cascade(100.0, cascade_rates, country_iso3)
+    # Métrique de référence par position : FOB = CIF ici (fret nul). Ce taux
+    # affiché n'est pas une liquidation — celle-ci exige la valeur FOB réelle
+    # de l'importation (voir compute_tax_cascade, fail-closed).
+    ref_cascade = compute_tax_cascade(100.0, cascade_rates, country_iso3, fob_value=100.0)
     return {
         "hs6": code[:6],
         "national_code": code,
@@ -1585,8 +1610,72 @@ def _resolve_zlecaf_context(
 resolve_zlecaf_context = _resolve_zlecaf_context
 
 
+_country_has_vat_cache: Dict[str, bool] = {}
+
+
+def _tva_presente_dans_le_tarif(country_iso3: str, country_data) -> bool:
+    """Vrai si le fichier du pays publie au moins une TVA (famille présente).
+
+    Sépare un tarif qui collecte la TVA position par position (une position
+    sans TVA est alors une exonération, ex. Algérie) d'un tarif qui n'en porte
+    aucune (Somalie, SARS : la TVA/sales tax n'est pas dans ce fichier). Le
+    verdict est constant pour un même chargement : il est mis en cache.
+    """
+    if country_iso3 in _country_has_vat_cache:
+        return _country_has_vat_cache[country_iso3]
+    presente = False
+    if isinstance(country_data, dict):
+        for line in country_data.get("tariff_lines", []) or []:
+            if not isinstance(line, dict):
+                continue
+            if line.get("vat_rate") is not None or line.get("vat_rate_variants"):
+                presente = True
+                break
+            for tax in line.get("taxes_detail", []) or []:
+                if isinstance(tax, dict) and _is_vat_code(tax.get("tax") or ""):
+                    presente = True
+                    break
+            if presente:
+                break
+            for sp in line.get("sub_positions", []) or []:
+                if isinstance(sp, dict) and sp.get("vat_rate") is not None:
+                    presente = True
+                    break
+            if presente:
+                break
+    _country_has_vat_cache[country_iso3] = presente
+    return presente
+
+
+# Pays dont une source établit que la position sans TVA est EXONÉRÉE, et non
+# incomplète. Algérie : Code des taxes sur le chiffre d'affaires, art. 8/9/10/11
+# (viandes, lait, médicaments, farines et semoules, or, navires) et art. 214
+# LF2025 reconduit LF2026 (café vert). Toute autre entrée exige la même
+# démonstration : sans elle, l'absence reste une absence.
+EXONERATION_TVA_ETABLIE = {"DZA"}
+
+
+def _sens_de_la_tva_absente(country_iso3: str, country_data) -> str:
+    """Qualifie une TVA manquante : EXONEREE, HORS_TARIF ou INCONNUE.
+
+    INCONNUE est le défaut : le taux reste nul et le calcul se déclare
+    indisponible plutôt que de servir un zéro fabriqué.
+    """
+    if country_iso3 in EXONERATION_TVA_ETABLIE:
+        return "EXONEREE"
+    if not _tva_presente_dans_le_tarif(country_iso3, country_data):
+        return "HORS_TARIF"
+    return "INCONNUE"
+
+
 def calculate_import_taxes(
-    country_iso3, hs_code, cif_value, apply_zlecaf=False, language="fr", origin_country=None
+    country_iso3,
+    hs_code,
+    cif_value,
+    apply_zlecaf=False,
+    language="fr",
+    origin_country=None,
+    fob_value=None,
 ):
     """Calculate import taxes for a country/HS code/CIF value combination.
 
@@ -1734,6 +1823,38 @@ def calculate_import_taxes(
         if "DD" in taxes_detail:
             taxes_detail["DD"] = {**taxes_detail["DD"], "rate": dd_rate_pct}
 
+    # TVA absente de la position : deux sens légitimes, jamais un zéro fabriqué
+    # ni un blocage injustifié du calcul.
+    #   (a) famille TVA entièrement absente du tarif (Somalie, SARS…) : la TVA
+    #       n'est pas collectée par ce fichier. On sert les droits collectés et
+    #       on signale la TVA absente (`tva_absente`) ; le total reste PARTIEL,
+    #       il ne prétend pas inclure une taxe que la source n'a pas.
+    #   (b) position publiée sans TVA (Algérie) : exonérée à 0 % par le Code des
+    #       taxes sur le chiffre d'affaires (art. 8/9/10/11 — viandes, lait,
+    #       médicaments, farines et semoules, or, navires ; café vert art. 214
+    #       LF2025 reconduit LF2026), signalée `tva_exoneree`.
+    # Une position sans droit de douane ET sans TVA (ex. DZA 1001110000) reste
+    # réellement incomplète et garde le garde CALCULATION_UNAVAILABLE.
+    tva_exoneree = False
+    tva_absente = False
+    sens = _sens_de_la_tva_absente(country_iso3, country_data)
+    if vat_rate_pct is None and dd_rate_pct is not None:
+        if sens == "EXONEREE":
+            vat_rate_pct = 0.0
+            tva_exoneree = True
+        elif sens == "HORS_TARIF":
+            vat_rate_pct = 0.0
+            tva_absente = True
+    # Le même arbitrage vaut pour une entrée TVA du détail laissée sans taux :
+    # elle ne devient 0 % que lorsqu'une source établit l'exonération. Sinon
+    # elle reste nulle et tombe dans `missing` → CALCULATION_UNAVAILABLE (#472).
+    if sens == "EXONEREE":
+        for code in list(taxes_detail.keys()):
+            entree = taxes_detail[code]
+            if _is_vat_code(code) and isinstance(entree, dict) and entree.get("rate") is None:
+                taxes_detail[code] = {**entree, "rate": 0.0}
+                tva_exoneree = True
+
     missing = [
         code
         for code, rate in (("DD", dd_rate_pct), ("TVA", vat_rate_pct))
@@ -1848,7 +1969,13 @@ def calculate_import_taxes(
             taxes_for_cascade[c] = t["rate_pct"]
 
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
-    npf_cascade = compute_tax_cascade(cif_value, taxes_for_cascade, country_iso3)
+    try:
+        npf_cascade = compute_tax_cascade(cif_value, taxes_for_cascade, country_iso3, fob_value=fob_value)
+    except ValueError as exc:
+        # Fail-closed : une assiette exigée par le pays (FOB en SACU, p. ex.)
+        # absente de la demande est une erreur du client, pas une panne —
+        # la substituer par CIF produirait un montant crédible et faux.
+        return {"error": str(exc), "error_detail": str(exc)}
 
     # ── ZLECAf : éligibilité bilatérale + taux préférentiel selon l'origine ──
     # L'avantage ZLECAf n'est accordé que si la paire origine/destination y est
@@ -1893,7 +2020,7 @@ def calculate_import_taxes(
         if "DAPS" in zlecaf_taxes and daps_rate_pct > 0 and _zctx["daps_exempt"]:
             zlecaf_taxes.pop("DAPS", None)
     # Non éligible : zlecaf_taxes == NPF → aucune préférence, économies = 0.
-    zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3)
+    zlecaf_cascade = compute_tax_cascade(cif_value, zlecaf_taxes, country_iso3, fob_value=fob_value)
 
     # Traçabilité : un régime ZLECAf peut être éligible (`_preferential`) sans
     # qu'un taux préférentiel réel soit connu pour CETTE ligne (ex. Afrique du
@@ -2138,6 +2265,20 @@ def calculate_import_taxes(
         # programme. `None` quand le plancher n'a pas mordu, soit le cas
         # général.
         "plancher_npf": _zctx.get("plancher_npf"),
+        # Renseigné quand une position algérienne est lue sans TVA : l'absence
+        # de TVA sur le tarif DGD est une exonération (0 %), pas un trou.
+        "tva_exoneree": tva_exoneree,
+        "tva_exoneree_source": (
+            "CTCA art. 8, 9, 10 et 11 — fiche DZA_taux_TVA_2026-09-17.json"
+            if tva_exoneree
+            else None
+        ),
+        "tva_absente": tva_absente,
+        "tva_absente_source": (
+            "Famille TVA absente du tarif de ce pays — total sans TVA"
+            if tva_absente
+            else None
+        ),
         # DOCUMENTED | NOT_AVAILABLE | OFFER_ONLY | PARTNER_NOTICE_REQUIRED
         "zlecaf_status": zlecaf_status,
         "zlecaf_rate_expression": zlecaf_rate_expression,

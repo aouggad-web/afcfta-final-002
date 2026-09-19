@@ -1,0 +1,44 @@
+EXTRAIT ARCHIVÉ — reproduit sans retouche depuis le PDF.
+AVERTISSEMENT : ce PDF encode une partie de son texte dans une fonte dont
+l'extraction rend des glyphes illisibles (mojibake). Les passages retenus
+par la fiche sont ceux qui sortent EN CLAIR ; rien n'y est reconstruit.
+Código do Imposto sobre o Valor Acrescentado, Lei n.º 32/2007 de 31 de Dezembro (version consolidée 2025) — artigo 9, isenções
+Source : https://mooremz.co.mz/wp-content/uploads/2025/04/Lei-n.o-32_2007-de-31-de-Dezembro-Codigo-do-Imposto-Sobre-o-Valor-Acrescentado_alteracoes-2025.pdf
+Empreinte SHA-256 du PDF : 6d1f2a3b553757d9e2ac6185cf17be5bd2e286787b9e6ea5627dc220cfe90f86
+Pages : 17
+--------------------------------------------------------------------------
+
+LEI Nº 32/2007 DE 31 DE DEZEMBRO
+CAPÍTULO II – ISENÇÕES
+13
+CAPÍTULO II – ISENÇÕES
+SECÇÃO I – Isenção nas operações internas
+ARTIGO 9 – (Transmissões de bens e prestações de serviços isentas)
+Estão isentas do imposto:
+1. As transmissões de bens e prestações de serviços de Saúde a seguir indicadas:
+a) as prestações de serviços médicos e sanitários e as operações com elas
+estreitamente conexas, efectuadas por estabelecimentos hospitalares públicos11,
+dispensários e similares;
+b) as transmissões de cadeiras de rodas e veículos semelhantes, accionados
+manualmente ou por motor, para portadores de deficiência, aparelhos, máquinas
+de escrever com caracteres braille, impressoras para caracteres braille, artefactos e
+demais material de prótese ou compensação destinados a substituir, no todo ou em
+parte, qualquer membro ou órgão do corpo humano ou o tratamento de fracturas
+e, bem assim, os que se destinam a ser utilizados por invisuais ou a corrigir a audição;
+c) as transmissões de órgãos, sangue e leite humanos;
+d) o transporte de doentes ou feridos em ambulâncias ou outros veículos
+apropriados efectuado por organismos devidamente autorizados;
+e) as transmissões de redes mosquiteiras;
+f) as transmissões de medicamentos, bem como especialidades farmacêuticas e
+outros produtos farmacêuticos destinados exclusivamente a fins terapêuticos e
+profilácticos e as transmissões de pastas, gazes, algodão hidrófilo, tiras e pensos
+adesivos e outros análogos, mesmo impregnados ou revestidos de quaisquer
+substâncias, para usos higiénicos, medicinais ou cirúrgicos.
+g) as transmissões de bens a utilizar como matérias-primas, produtos intermédios
+e componentes para fabrico de medicamentos, quando sejam efectuadas por
+estabelecimentos públicos ou privados integrados no Serviço Nacional de Saúde,
+constantes da Pauta Aduaneira e discriminadas no Anexo III, que é parte integrante
+do presente Código.
+2. As transmissões de bens efectuadas por entidades públicas ou organismos sem
+11 Redacção alterada pelo artigo 1 da Lei n.º 22/2022 de 28 de Dezembro. Redacção anterior: “a) (…)
+estabelecimentos hospitalares, clínicas (…).”

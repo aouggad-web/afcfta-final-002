@@ -15,6 +15,8 @@ Correctif regroupant, de façon cohérente (structurellement dépendants) :
 Réseau neutralisé (OEC/World Bank monkeypatchés) : suite hermétique.
 """
 
+import pathlib
+
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -45,6 +47,31 @@ def client(monkeypatch):
     app = FastAPI()
     app.include_router(calc.router, prefix="/api")
     return TestClient(app, raise_server_exceptions=True)
+
+
+#: Le pays témoin d'une donnée WITS ne peut PAS être écrit en dur : chaque
+#: intégration de tarif national en retire un de la liste. Le Mozambique y
+#: figurait, et ces tests sont tombés le jour où il a reçu son tarif national.
+#: On prend donc le premier pays que le dépôt sert ENCORE par une moyenne
+#: agrégée. Le jour où il n'y en aura plus aucun, ces tests échoueront — et ce
+#: sera la bonne nouvelle qu'il faudra alors constater, non un test à réparer.
+_CANDIDATS_WITS = ("SDN", "MDG", "COM", "STP", "SYC", "MWI", "AGO")
+
+
+def _pays_encore_servi_par_wits() -> str:
+    racine = pathlib.Path(__file__).resolve().parents[1] / "data" / "crawled"
+    for iso in _CANDIDATS_WITS:
+        chemin = racine / f"{iso}_tariffs.json"
+        if not chemin.exists():
+            continue
+        try:
+            with open(chemin, encoding="utf-8") as f:
+                tete = f.read(4000)
+        except OSError:
+            continue
+        if "WITS" in tete.upper():
+            return iso
+    pytest.skip("plus aucun pays servi par une moyenne WITS — à constater, pas à réparer")
 
 
 def _calc(client, origin, dest, hs_code="010121", value=10000.0):
@@ -166,10 +193,10 @@ def test_non_ratified_origin_gets_no_preference(client):
 
 
 def test_wits_country_stays_indicative_mfn_no_preference(client):
-    """MOZ est sourcé WITS/UNCTAD-TRAINS (source_quality=
-    crawled_authentic_partial_national) : duty_status doit être
-    INDICATIVE_MFN et zlecaf_tariff_rate=None (aucune préférence ZLECAf)."""
-    data = _calc(client, "EGY", "MOZ")
+    """Un pays sourcé WITS/UNCTAD-TRAINS doit rendre duty_status=
+    INDICATIVE_MFN et zlecaf_tariff_rate=None : une moyenne agrégée par un
+    tiers ne fonde aucune préférence ZLECAf."""
+    data = _calc(client, "EGY", _pays_encore_servi_par_wits())
     assert data["duty_status"] == "INDICATIVE_MFN"
     assert data["zlecaf_preference_applied"] is False
     assert data["zlecaf_tariff_rate"] is None
@@ -183,7 +210,7 @@ def test_wits_tariff_precision_marked_unverified_not_national_position(client):
     tarifaire nationale vérifiée (tariff_precision, seul champ de précision
     réellement exposé par l'API — rate_source est une variable interne non
     exposée dans le contrat de réponse)."""
-    data = _calc(client, "EGY", "MOZ")
+    data = _calc(client, "EGY", _pays_encore_servi_par_wits())
     assert data["tariff_precision"] == "sh6_mfn_average_unverified"
     assert data["tariff_precision"] != "national_position"
 
@@ -197,7 +224,7 @@ def test_no_generic_category_based_zlecaf_string_anywhere(client):
     pairs = [
         ("EGY", "KEN"),
         ("ERI", "KEN"),
-        ("EGY", "MOZ"),
+        ("EGY", _pays_encore_servi_par_wits()),
         ("BWA", "ZAF"),
         ("EGY", "DZA"),
     ]
@@ -545,7 +572,7 @@ def test_authentic_tariff_service_untraceable_zlecaf_line_has_null_savings():
 
     from services.authentic_tariff_service import calculate_import_taxes
 
-    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="MAR")
+    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="MAR", fob_value=800.0)
 
     assert result["trade_regime"] == "ZLECAF"
     assert result["zlecaf_eligible"] is True
@@ -565,7 +592,7 @@ def test_authentic_tariff_service_customs_union_savings_stay_documented():
     produit un taux et des économies concrets, traçables par construction."""
     from services.authentic_tariff_service import calculate_import_taxes
 
-    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="BWA")
+    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="BWA", fob_value=800.0)
 
     assert result["trade_regime"] == "CUSTOMS_UNION"
     assert result["zlecaf_status"] == "DOCUMENTED"
@@ -580,7 +607,7 @@ def test_authentic_tariff_service_no_origin_is_documented_zero_not_null():
     vérifiées à 0, jamais `None`."""
     from services.authentic_tariff_service import calculate_import_taxes
 
-    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country=None)
+    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country=None, fob_value=800.0)
 
     assert result["trade_regime"] == "NPF"
     assert result["zlecaf_status"] == "DOCUMENTED"

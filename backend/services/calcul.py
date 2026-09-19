@@ -1,10 +1,10 @@
 """
 Moteur de liquidation — chantier L2.
 
-Une fonction, cinq primitives d'assiette, un modificateur. Aucune connaissance
+Une fonction, six primitives d'assiette, un modificateur. Aucune connaissance
 par pays : tout ce que le moteur sait d'un pays lui vient du socle.
 
-Les cinq primitives, et rien d'autre :
+Les six primitives, et rien d'autre :
 
 ===========================  ================================================
 ``CIF``                      la valeur en douane
@@ -12,6 +12,16 @@ Les cinq primitives, et rien d'autre :
                              droits nommés (``CIF+DD+TCI``), ou de tous les
                              prélèvements d'entrée (``CIF+TOUS_SAUF_TVA``,
                              ``CIF+TOUS_SAUF_SOI``)
+``FOB``                      la valeur FOB — la valeur en douane des pays
+                             SACU, où le fret et l'assurance internationaux
+                             sont exclus (Act 91/1964 s.65-67 ; fiche
+                             ``SACU_assiette_DD_2026-09-17.json``). Elle ne
+                             se déduit JAMAIS de la valeur CIF : la part du
+                             fret et de l'assurance n'est pas connue du
+                             moteur. Absente, le droit reste indisponible
+                             (``VALEUR_FOB_REQUISE``) plutôt qu'assumé CIF
+                             — une base CIF devinée surestimerait le droit
+                             d'un montant crédible et faux.
 ``SOMME(TOUS_SAUF_SOI)``     la somme des autres droits, **sans** la valeur
 ``%<CODE>``                  un pourcentage du *montant* d'un autre droit,
                              désigné par son code (``%DD``)
@@ -64,6 +74,17 @@ MANQUE_ASSIETTE = "ASSIETTE_INDISPONIBLE"
 MANQUE_QUANTITE = "QUANTITE_REQUISE"
 MANQUE_CHANGE = "TAUX_DE_CHANGE_REQUIS"
 MANQUE_COMPOSANT = "ASSIETTE_INCOMPLETE"
+#: Valeur FOB exigée par une assiette « FOB » (SACU) et non fournie : la base
+#: ne vaut jamais la valeur CIF — déduire le fret de celle-ci en inventerait
+#: une. Voir la primitive ``FOB`` en tête de module.
+MANQUE_FOB = "VALEUR_FOB_REQUISE"
+#: Le tarif publie DEUX composantes pour un même droit — « 40% or 240c/kg »,
+#: sur 140 positions sud-africaines — sans que la source dise laquelle
+#: s'applique. Le crawl a délibérément gardé le verbatim sans trancher ; le
+#: socle ne tranche pas davantage. Servir la seule part ad valorem donnerait un
+#: montant crédible et possiblement faux : sur la position 020110, la part
+#: spécifique l'emporte dès que la valeur unitaire passe sous 6,00 ZAR/kg.
+MANQUE_REGLE_COMPOSEE = "REGLE_COMPOSEE_NON_ETABLIE"
 
 
 def _facteur_devise_specifique(
@@ -147,6 +168,7 @@ def _assiette_de(
     quantite: Optional[float],
     taux_de_change: Optional[float],
     codes_de_la_position: set,
+    valeur_fob: Optional[float] = None,
 ):
     """Rendre (assiette, manque, détail). Une assiette introuvable ne vaut
     jamais CIF, et une assiette amputée ne se complète jamais par un zéro."""
@@ -180,6 +202,12 @@ def _assiette_de(
         if rates:
             return None, MANQUE_COMPOSANT, {"composants_absents": rates}
         base = sum(montants.values())
+    elif assiette == "FOB":
+        # La valeur en douane SACU exclut fret et assurance internationaux :
+        # elle doit être fournie, jamais déduite de la valeur CIF.
+        if valeur_fob is None:
+            return None, MANQUE_FOB, detail
+        base = valeur_fob
     elif assiette == "CIF":
         base = cif
     elif assiette.startswith("CIF+"):
@@ -202,6 +230,18 @@ def _assiette_de(
             if sans_objet:
                 detail["composants_sans_objet"] = sans_objet
             base = cif + part
+    elif assiette.startswith("FOB+"):
+        # Même sémantique que « CIF+<CODES> », posée sur la valeur FOB.
+        if valeur_fob is None:
+            return None, MANQUE_FOB, detail
+        part, manquants, sans_objet = _composants(
+            _codes_de_l_assiette(assiette), montants, codes_de_la_position
+        )
+        if manquants:
+            return None, MANQUE_COMPOSANT, {"composants_absents": manquants}
+        if sans_objet:
+            detail["composants_sans_objet"] = sans_objet
+        base = valeur_fob + part
     else:
         return None, MANQUE_ASSIETTE, detail
 
@@ -235,6 +275,8 @@ def _liquider(
     taux_preferentiels: Optional[Dict[str, float]],
     facteur_devise_specifique: Optional[float] = 1.0,
     couverture: Optional[Dict[str, Any]] = None,
+    devise_cif: Optional[str] = None,
+    valeur_fob: Optional[float] = None,
 ) -> Dict[str, Any]:
     lignes: List[Dict[str, Any]] = []
     calcules: List[Dict[str, Any]] = []
@@ -272,14 +314,80 @@ def _liquider(
                     if isinstance(droit["specifique"], dict)
                     else droit["specifique"]
                 )
+            npf_specifique = bool(ligne.get("specifique_npf"))
             droit = dict(droit, taux=remise.get("taux"), specifique=remise.get("specifique"))
             ligne["taux_pct"] = droit["taux"]
             ligne["regime_applique"] = "preference"
 
+            if npf_specifique and droit.get("specifique") is None and droit.get("taux") is not None:
+                # Une remise ad valorem remplace un droit spécifique : l'assiette
+                # « xQTE » que portait le NPF devient sans objet, et l'exiger
+                # réclamerait une quantité qui ne sert plus à rien. C'est le cas
+                # de toute franchise intra-union douanière sur une ligne publiée
+                # « 8c/kg ».
+                if droit["taux"] == 0:
+                    # Zéro pour cent vaut zéro sur n'importe quelle assiette :
+                    # celle-ci est immatérielle, on le dit plutôt que de faire
+                    # dépendre un montant nul d'une quantité.
+                    droit = dict(droit, assiette="CIF", plafond=None)
+                    ligne["assiette"] = "CIF"
+                    ligne["assiette_sans_objet"] = (
+                        "taux nul : l'assiette n'influe sur aucun montant"
+                    )
+                else:
+                    # Taux non nul sur un NPF spécifique : l'assiette ad valorem
+                    # de ce prélèvement n'est pas connue. La supposer « CIF »
+                    # fabriquerait un montant crédible sur une base devinée.
+                    droit = dict(droit, assiette=None, plafond=None)
+                    ligne["assiette"] = None
+
         taux = droit.get("taux")
         specifique = droit.get("specifique")
+        if taux == 0 and specifique is None and isinstance(droit.get("assiette"), str) and (
+            droit["assiette"] == "FOB" or droit["assiette"].startswith("FOB+")
+        ):
+            # Zéro pour cent vaut zéro sur n'importe quelle assiette — et en
+            # particulier sur la base FOB des pays SACU : une franchise
+            # intra-union (libre circulation) liquide sans valeur FOB, comme
+            # elle liquide déjà sans quantité sur un NPF spécifique. Exiger la
+            # valeur FOB ici rejetterait une importation dont le droit est
+            # nul — rien n'est dû, la base n'influe sur aucun montant.
+            droit = dict(droit, assiette="CIF", plafond=None)
+            ligne["assiette"] = "CIF"
+            ligne["assiette_sans_objet"] = "taux nul : l'assiette n'influe sur aucun montant"
         manque_devise = False
-        if taux is None and specifique is not None:
+        regle_composee_absente = False
+        compose_departage = None
+        if (
+            droit.get("compose")
+            and droit.get("regle_composee")
+            and taux is not None
+            and specifique is not None
+        ):
+            # Droit composé dont la règle EST énoncée. Le tarif extérieur commun
+            # de l'EAC écrit « 75% or $345/MT whichever is higher » : il n'y a
+            # rien à deviner, seulement à appliquer. On retient donc la plus
+            # élevée — ou la moins élevée — des deux composantes, et la ligne
+            # dira laquelle a mordu.
+            #
+            # À ne pas confondre avec « 40% or 240c/kg » (SARS), qui ne dit PAS
+            # laquelle s'applique : celui-là reste refusé, juste en dessous.
+            compose_departage = droit["regle_composee"]
+        elif droit.get("compose") and taux is not None and specifique is not None:
+            # Droit composé : les deux composantes sont publiées, la règle qui
+            # départage ne l'est pas. On refuse de liquider plutôt que de
+            # retenir celle qui arrange — c'est la même règle que partout
+            # ailleurs ici, appliquée à un cas qui y échappait.
+            regle_composee_absente = True
+            ligne["expression_brute"] = droit.get("expression_brute")
+            ligne["composantes"] = {
+                "ad_valorem_pct": taux,
+                "specifique": (
+                    specifique.get("brut") if isinstance(specifique, dict) else specifique
+                ),
+            }
+            taux = None
+        elif taux is None and specifique is not None:
             # Garde-fou : un droit spécifique se liquide toujours à la quantité.
             # Quelle que soit l'assiette déclarée, la lire comme ad valorem
             # transformerait « 8c/kg » en « 8 % » — un montant faux, et
@@ -318,10 +426,19 @@ def _liquider(
                     )
 
         assiette, manque, detail = _assiette_de(
-            droit, cif, calcules, echecs, quantite, taux_de_change, codes_de_la_position
+            droit,
+            cif,
+            calcules,
+            echecs,
+            quantite,
+            taux_de_change,
+            codes_de_la_position,
+            valeur_fob,
         )
         ligne.update(detail)
-        if manque_devise:
+        if regle_composee_absente:
+            manque = MANQUE_REGLE_COMPOSEE
+        elif manque_devise:
             manque = MANQUE_CHANGE
         elif manque is None and taux is None:
             manque = MANQUE_TAUX
@@ -344,6 +461,76 @@ def _liquider(
             montant = assiette * taux
         else:
             montant = assiette * taux / 100.0
+
+        # Départage d'un droit composé dont la règle est écrite. Les deux
+        # composantes sont calculées, et la ligne nomme celle qui l'emporte :
+        # l'opérateur doit pouvoir constater POURQUOI il paie ce montant-là.
+        if compose_departage:
+            unitaire = _montant_unitaire(specifique)
+            if quantite is None or unitaire is None:
+                ligne["statut"] = MANQUE_QUANTITE
+                ligne["montant"] = None
+                ligne["expression_brute"] = droit.get("expression_brute")
+                if isinstance(specifique, dict) and specifique.get("unite_quantite"):
+                    ligne["unite_quantite"] = specifique["unite_quantite"]
+                manques.append({"code": code, "motif": MANQUE_QUANTITE})
+                echecs.append({"code": code, "famille": ligne["famille"]})
+                lignes.append(ligne)
+                continue
+            # La composante spécifique est libellée dans SA devise — « $345/MT ».
+            # La convertir exige un taux de change dès que la valeur en douane
+            # n'est pas dans cette devise. Sans lui, les deux composantes ne sont
+            # pas comparables, et comparer des montants de devises différentes
+            # rendrait un droit faux sans le dire.
+            devise_specifique = (
+                specifique.get("unite_monetaire") if isinstance(specifique, dict) else None
+            )
+            facteur = 1.0
+            if devise_specifique and devise_cif and devise_specifique != devise_cif:
+                if taux_de_change is None:
+                    ligne["statut"] = MANQUE_CHANGE
+                    ligne["montant"] = None
+                    ligne["expression_brute"] = droit.get("expression_brute")
+                    ligne["devise_specifique"] = devise_specifique
+                    manques.append({"code": code, "motif": MANQUE_CHANGE})
+                    echecs.append({"code": code, "famille": ligne["famille"]})
+                    lignes.append(ligne)
+                    continue
+                facteur = taux_de_change
+            montant_specifique = quantite * unitaire * facteur
+            retenu = (
+                max(montant, montant_specifique)
+                if compose_departage == "LE_PLUS_ELEVE"
+                else min(montant, montant_specifique)
+            )
+            ligne["expression_brute"] = droit.get("expression_brute")
+            ligne["composantes"] = {
+                "ad_valorem_pct": taux,
+                "ad_valorem_montant": round(montant, 4),
+                "specifique": (
+                    specifique.get("brut") if isinstance(specifique, dict) else specifique
+                ),
+                "specifique_montant": round(montant_specifique, 4),
+            }
+            ligne["regle_composee"] = compose_departage
+            ligne["composante_retenue"] = "ad_valorem" if retenu == montant else "specifique"
+            montant = retenu
+
+        # « 450c/kg with a maximum of 96% » : le droit est le spécifique, borné
+        # à un pourcentage de la valeur en douane. Contrairement à « 40% or
+        # 240c/kg », cette forme énonce sa propre règle — il n'y a rien à
+        # deviner, seulement à appliquer. La borne est nommée dans la ligne,
+        # qu'elle morde ou non : l'opérateur doit pouvoir constater pourquoi
+        # son droit s'arrête là.
+        plafond_pct = droit.get("plafond_ad_valorem_pct")
+        if plafond_pct is not None:
+            borne = cif * plafond_pct / 100.0
+            ligne["plafond_ad_valorem_pct"] = plafond_pct
+            ligne["plafond_ad_valorem_montant"] = round(borne, 4)
+            if montant > borne:
+                ligne["montant_avant_plafond"] = round(montant, 4)
+                ligne["plafond_applique"] = True
+                montant = borne
 
         ligne.update({"base": round(assiette, 4), "montant": round(montant, 4), "statut": CALCULE})
         lignes.append(ligne)
@@ -387,6 +574,7 @@ def calculer(
     devise_position: Optional[str] = None,
     devise_cif: Optional[str] = None,
     couverture: Optional[Dict[str, Any]] = None,
+    valeur_fob: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Liquider une position du socle, en NPF et — s'il y a lieu — en préférence.
 
@@ -404,6 +592,11 @@ def calculer(
     """
     if valeur_cif is None or valeur_cif < 0:
         raise ValueError("valeur_cif doit être un nombre positif")
+    if valeur_fob is not None and (valeur_fob < 0 or valeur_fob > valeur_cif):
+        # La valeur FOB ne peut ni être négative ni excéder la valeur CIF :
+        # le fret et l'assurance ajoutés à la première composent la seconde.
+        # L'inverse signalerait une déclaration incohérente, pas une base.
+        raise ValueError("valeur_fob doit être positive et ne pas excéder valeur_cif")
 
     droits = position.get("droits") or []
     facteur_devise = _facteur_devise_specifique(devise_position, devise_cif, taux_de_change)
@@ -415,9 +608,19 @@ def calculer(
         },
         "valeur_cif": valeur_cif,
         "npf": _liquider(
-            droits, valeur_cif, quantite, taux_de_change, None, facteur_devise, couverture
+            droits,
+            valeur_cif,
+            quantite,
+            taux_de_change,
+            None,
+            facteur_devise,
+            couverture,
+            devise_cif,
+            valeur_fob,
         ),
     }
+    if valeur_fob is not None:
+        resultat["valeur_fob"] = valeur_fob
     if taux_preferentiels:
         resultat["preference"] = _liquider(
             droits,
@@ -427,6 +630,8 @@ def calculer(
             taux_preferentiels,
             facteur_devise,
             couverture,
+            devise_cif,
+            valeur_fob,
         )
         resultat["preference"]["prelevements_remises"] = sorted(taux_preferentiels)
         # Une économie n'est comparable que si les deux régimes sont

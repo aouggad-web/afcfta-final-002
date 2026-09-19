@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "objet": "Zimbabwe — l'assiette du droit de douane, établie par le Customs and Excise Act ; et la règle qui départage un droit composé « X% or US$Y/unité », énoncée par le tarif lui-même.",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — Statutory Instrument 203 of 2022 (Customs and Excise (Tariff) Notice, 2022), pris en vertu de la section 225 du Customs and Excise Act [Chapter 23:02] ; et le Customs and Excise Act [Chapter 23:02] lui-même. Extraits archivés, empreintes consignées.",
+  "la_question_posee": "Le tarif zimbabwéen publie deux colonnes de droits (« General » et « M.F.N. ») et n'indique nulle part sur quoi ils se liquident. Deuxième question, distincte : 61 positions portent un droit de la forme « 40% or US$1.50/kg ». Deux composantes, aucune indication — dans le barème — de celle qui s'applique. Le tarif sud-africain publie la même forme et ne la tranche pas : son droit reste donc refusé. Le tarif zimbabwéen la tranche-t-il ?",
+  "regle": {
+    "valeur_en_douane": {
+      "article": "Customs and Excise Act [Chapter 23:02], section 106(1) (Transaction value: primary method of valuation) et section 113(2)(c) (Adjustments to be made in calculating value for duty purposes of imported goods)",
+      "verbatim_valeur_transactionnelle": "Subject to this Act, the value for duty purposes of any imported goods shall be the transaction value of the goods, that is to say, the price actually paid or payable for the goods when sold for export to Zimbabwe, adjusted in terms of section one hundred and thirteen",
+      "verbatim_fret_et_assurance": "there shall be added to the price actually paid or payable for the goods— […] the cost of freight and insurance from the place where the goods were placed on board the means of transport by which they were removed to Zimbabwe to the place of importation in Zimbabwe, if such cost is not included in the price actually paid or payable for the goods to be valued",
+      "portee": "La valeur en douane est la valeur transactionnelle AUGMENTÉE du fret et de l'assurance jusqu'au lieu d'importation au Zimbabwe. C'est le CIF, et c'est l'assiette retenue pour le droit de douane. L'assiette n'est donc PAS déduite d'une ressemblance avec les pays voisins : elle est lue dans la loi zimbabwéenne.",
+      "assiettes_retenues": {
+        "DD": "CIF"
+      },
+      "texte_archive": "sources/ZWE_customs_excise_act_s106_s113_valeur.texte-extrait.txt",
+      "sha256": "7f9bb21c21de4f1fa411396c659c9d901410ac8004490cc63c6b4e87279595bc",
+      "sha256_pdf_origine": "27e397c31d3e10fbb7181ecdc49fe4504e9b3de1dfe3f77236ccd4ca82804699",
+      "source_url": "https://bwcimplementation.org/sites/default/files/resource/ZW_Customs%20and%20Excise%20Act_EN.pdf"
+    },
+    "droit_compose_la_regle_est_enoncee": {
+      "article": "Statutory Instrument 203 of 2022, Part I, paragraphe 3(2) (« Duties Leviable »), page 13",
+      "verbatim": "When a rate of duty in any column of Part II in respect of any goods consists of two parts separated by the word \"or\", each part shall be deemed to be a separate and complete rate of duty, and the rate of duty yielding the higher amount of duty shall be applicable in respect of such goods.",
+      "portee": "Le tarif énonce lui-même la règle qui départage ses droits composés : chacune des deux parties est un droit entier, et c'est la plus élevée qui s'applique. Il n'y a rien à deviner, seulement à appliquer — c'est exactement ce qui manque au tarif SARS, dont le « 40% or 240c/kg » reste pour cette raison non liquidable. 61 positions portées avec la règle LE_PLUS_ELEVE. Mesuré au moteur sur la position 02061000 (« 40% or US$1.50/kg », valeur 1 000 USD) : à 100 kg, l'ad valorem l'emporte (400 contre 150) ; à 500 kg, le spécifique l'emporte (750 contre 400). La ligne nomme la composante retenue.",
+      "texte_archive": "sources/ZWE_si203_2022_duties_leviable.texte-extrait.txt",
+      "sha256": "6e861cbdb2cd12afea23ac4e761b914d956694b807fab1afcfc51df2f89d3a18",
+      "sha256_pdf_origine": "cd6d0c2143a55ac4354b4125b905e8318dc47814d4e938e651ae345f5f690597"
+    },
+    "colonne_retenue_et_taux_ad_valorem": {
+      "article": "Statutory Instrument 203 of 2022, Part I, paragraphes 2 et 3(1), page 13",
+      "verbatim_colonnes": "the customs duties leviable on— (a) all goods, except those mentioned in subparagraph (b) shall be the general duties shown in Part II; (b) goods grown, produced or manufactured in countries— (i) which are Contracting Parties to the General Agreement on Tariffs and Trade (GATT); or (ii) with which the Government of Zimbabwe has concluded agreements containing the most-favoured-nation tariff clause; shall be the M.F.N. duties shown in Part II.",
+      "verbatim_ad_valorem": "The duties expressed as percentage rates shall be ad valorem duties.",
+      "portee": "La colonne « M.F.N. » est celle qui s'applique aux marchandises originaires des Parties contractantes du GATT — donc de tout membre de l'OMC, et de tout partenaire de la ZLECAf qui en est membre. C'est elle qui est servie. Le contrôle est interne au document : les deux colonnes concordent sur 6 637 positions sur 6 637, ce qui valide l'extraction par le document lui-même.",
+      "texte_archive": "sources/ZWE_si203_2022_duties_leviable.texte-extrait.txt",
+      "sha256": "6e861cbdb2cd12afea23ac4e761b914d956694b807fab1afcfc51df2f89d3a18"
+    },
+    "accise_mentionnee_sans_taux": {
+      "article": "Statutory Instrument 203 of 2022, Part II, colonnes « General » et « M.F.N. » — mention « Excise »",
+      "verbatim": "section 225 of the Customs and Excise Act [Chapter 23:02]",
+      "portee": "116 positions portent « Excise » — seul, ou en cumul (« 5% + Excise ») — dans leur colonne de droits. Le droit d'accise est dû, mais son TAUX n'est pas porté par ce tarif : il relève du tarif d'accise, qui est un instrument distinct. L'accise est donc portée SANS TAUX et SANS ASSIETTE, et le moteur la déclare indisponible. La traiter comme un zéro exonérerait alcools et tabacs — c'est-à-dire précisément les produits qu'elle vise.",
+      "texte_archive": "sources/ZWE_si203_2022_duties_leviable.texte-extrait.txt",
+      "sha256": "6e861cbdb2cd12afea23ac4e761b914d956694b807fab1afcfc51df2f89d3a18"
+    }
+  },
+  "ce_que_cela_ne_tranche_pas": {
+    "le_tarif_d_accise": "116 positions renvoient à un tarif d'accise dont le taux n'a pas été collecté. Elles sont servies PARTIEL, avec le motif nommé sur la ligne.",
+    "onze_spiritueux_a_deux_composantes_specifiques": "Onze positions du chapitre 22 portent « US$5.00/L or US$10.00/LAA + Excise » : deux montants spécifiques dans DES UNITÉS DIFFÉRENTES — par litre de produit, ou par litre d'alcool pur. Appliquer la règle du plus élevé suppose de les comparer, ce qui exige le titre alcoométrique que le tarif ne porte pas. Le droit est porté SANS valeur liquidable, avec son verbatim : n'en retenir qu'une servirait un montant crédible et faux. Une première version de la collecte gardait silencieusement la dernière lue — le défaut a été relevé et corrigé avant intégration.",
+    "le_paiement_en_dollars_zimbabweens": "Le paragraphe 3(3) prescrit que le droit libellé en dollars des États-Unis est payable en dollars zimbabwéens au taux de change douanier en vigueur, sauf marchandises désignées pour payer en devises. Le socle porte la composante spécifique dans SA devise (USD) ; le moteur exige un taux de change dès que la valeur en douane n'est pas dans cette devise, et refuse de liquider sans lui. Le taux de change douanier lui-même n'est pas collecté.",
+    "les_taux_forfaitaires_du_chapitre_98": "Le paragraphe 4 renvoie à des « flat rates of assessment » spécifiés au chapitre 98. Ils n'ont pas été extraits : ils concernent des régimes particuliers (voyageurs, envois), non le tarif de droit commun.",
+    "la_tva": "La TVA zimbabwéenne (15,5 %, ZIMRA Public Notice 07 of 2026) n'est PAS portée par le SI 203. Elle reste sourcée à part, et son assiette n'est pas établie par cette fiche.",
+    "deux_pieges_de_mise_en_page_releves_et_corriges": "Le code d'une sous-position est CENTRÉ VERTICALEMENT dans sa ligne : quand celle-ci tient sur deux lignes de texte, il tombe sur la seconde. Une première version de la collecte ancrait la position sur le code, et la première ligne — désignation ET début du taux — allait grossir la position précédente. Relevé page 437 : 4011.20.10 se servait « 15% + US$5.00/Kg », c'est-à-dire le droit de sa voisine 4011.20.90, laquelle se servait sans aucun taux. Corrigé, et verrouillé par un test. Second piège : neuf codes sont écrits de travers par la source (« 9608.9900 » sans un point, « 5113. 00.00 » avec une espace) ; n'accepter que la forme canonique les faisait disparaître en silence. Ils sont reconnus et ramenés à huit chiffres."
+  },
+  "remaining_work": [
+    "Collecter le tarif d'accise zimbabwéen, pour les 116 positions qui y renvoient.",
+    "Établir le titre alcoométrique ou la règle de conversion L / LAA, pour les onze positions de spiritueux à deux composantes spécifiques.",
+    "Collecter le taux de change douanier publié par ZIMRA, que le paragraphe 3(3) rend nécessaire au paiement.",
+    "Établir l'assiette de la TVA zimbabwéenne sur source primaire (Value Added Tax Act [Chapter 23:12])."
+  ]
+}

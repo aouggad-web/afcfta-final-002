@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "objet": "Taux de la TVA en Eswatini : 15 % (VAT Act 2011 s.24(3), LN 142/2018)",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — VAT Act 2011 (ers.org.sz, texte lu) + LN No. 142 of 2018 (PDF scanné — OCR easyocr) + page officielle ERS. | Téléchargement tenté le 2026-09-18 : www.ers.org.sz:8000 injoignable depuis cet environnement (connexion réinitialisée par l'hôte (curl 35)). La déclaration n'est donc pas contrôlable dans le dépôt, et le niveau de preuve le dit plutôt que de l'affirmer.",
+  "source": {
+    "url": "https://www.ers.org.sz:8000/documents/ValueAddedTaxAct2011.pdf",
+    "institution": "ERS",
+    "archive": "extraits et PDF sources archivés sous backend/data/legal_refs/zlecaf_application/sources/ (voir documents_archives)"
+  },
+  "regle": {
+    "valeur": "15 % (taux standard)",
+    "verbatim": "VAT Act 2011, s.24(3) : « Subject to subsection (4), the rate of tax shall be as specified in the VAT Regulations. » — LN 142/2018 : « …replacing it with a new sub-regulation (1) as follows — (1) The rate of Value Added Tax shall be fifteen percent (15%). » (1er août 2018)",
+    "portee": "Taux standard national. Le taux n'est pas dans l'Act mais dans les Regulations (s.24(3))."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "LN 142/2018 PDF scanné : verbatim par OCR (cohérent avec page ERS) — à valider sur la Gazette"
+  ],
+  "doutes": "Page ERS confirme le taux 15 % et le cadre légal (VAT Act 2011).",
+  "remaining_work": [
+    "Valider sur la Gazette originale",
+    "Archiver l'acte depuis www.ers.org.sz:8000 — injoignable le 2026-09-18 — et consigner son empreinte."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/SWZ_taux_TVA_extrait_vatact2011.txt",
+      "texte_sha256": "acf598f6886e4e87c42b02e98ae5378ec787f0b5933b7b9e81cbcf62d4e78b5e"
+    },
+    {
+      "pdf_archive": "sources/swz_vatact2011.pdf",
+      "pdf_sha256": "a2afebb01dee31b2bcd8ed9b6564f596170bdc91d0859a2a2faac90447a58e5a"
+    },
+    {
+      "texte_archive": "sources/SWZ_taux_TVA_extrait_ln142_2018_ocr.txt",
+      "texte_sha256": "907800fa6682f7d68c86fc2d7fe2cafcd9009348e91585646dbb40ab6750b03a"
+    },
+    {
+      "pdf_archive": "sources/swz_ln142_2018.pdf",
+      "pdf_sha256": "ed4ec0f17eea26f97e48f3c1c8a478da74e347ffc3d6328f2f627f74b75554a3"
+    }
+  ]
+}

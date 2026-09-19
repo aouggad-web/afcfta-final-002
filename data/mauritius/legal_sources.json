@@ -1,18 +1,18 @@
 {
   "schema_version": "1.0",
   "country": "MUS",
-  "as_of": "2026-07-29",
+  "as_of": "2026-09-18",
   "sources": [
     {
-      "source_id": "MUS-WITS-MFN-RUNTIME-20260705",
-      "official_title": "WITS / UNCTAD-TRAINS MFN applied tariff extract",
-      "institution": "World Bank WITS / UNCTAD-TRAINS",
-      "legal_date": null,
-      "url": null,
-      "sha256": "2e4308ee758d2860eda0acb9307b3895cab8932ccdac91befabc7dbe3b7ea2d6",
-      "verification_status": "PARTIAL_RUNTIME_DATASET",
+      "source_id": "MUS-MRA-TARIFF-HS2022-20260813",
+      "official_title": "Customs Tariff Schedules (Integrated Tariff), HS 2022 version, as at 13 August 2026",
+      "institution": "Mauritius Revenue Authority — Customs Department",
+      "legal_date": "2026-08-13",
+      "url": "https://www.mra.mu/download/TariffInf130826.pdf",
+      "sha256": "d4c7cd661c7dfe9f9fef0721e8cee0c4e84dac5981ab77521ee249c4ae5e8675",
+      "verification_status": "NATIONAL_TARIFF_INTEGRATED",
       "registry_path": "backend/data/crawled/MUS_tariffs.json",
-      "notes": "Empreinte du fichier runtime SH6 ; ne constitue pas le tarif national intégré MRA."
+      "notes": "Tarif national intégré, 807 pages, position par position — remplace l'extrait SH6 WITS/UNCTAD-TRAINS qui servait 5 619 positions sans aucune désignation. Empreinte du PDF source : 26c0e4c6764096639bfb3cbc4dd683eb389c99d45758d2344f7df17c9e65fe11. Assiettes établies par le Customs Act 1988 s.18/18A (droit, CIF) et le VAT Act 1998 s.13 (TVA, CIF+DD+EXC) — voir la fiche MUS_assiettes_DD_TVA_2026-09-18.json."
     },
     {
       "source_id": "MUS-MRA-CUSTOMS-CHARGES-20260729",

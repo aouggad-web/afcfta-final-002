@@ -1,0 +1,65 @@
+EXTRAIT ARCHIVÉ — reproduit sans retouche depuis le PDF officiel.
+Les sauts de ligne et l'indentation viennent de l'extraction, pas du texte.
+Customs Act 1988 (Act 47 of 1988) — s.18 « Mode of ascertaining ad valorem duties » et s.18A « Transaction value of goods »
+Source : https://www.mra.mu/download/CustomsAct1988.pdf
+Empreinte SHA-256 du PDF d'origine : 84722792fc8ca691f174bfc2c4c720b3906432172294e489c32fc3e4c40e1b21
+Page : 27
+------------------------------------------------------------------------
+
+ 
+27 
+ 
+(3) 
+Notwithstanding any other enactment, subsection (2) shall apply to brokers, 
+commission agents, manufacturers' representatives, commodity syndicates, and to 
+other commercial enterprises and parastatal bodies, as the case may be. 
+(4) 
+Any person who refuses or neglects to comply with a request of the Director-
+General under this section, and any person who produces any false book, invoice or 
+document or makes any false representation in regard to the country in which any 
+goods were grown, produced or manufactured or processed, or makes any false 
+representation with the intent to contravene this section, shall commit an offence 
+and shall, on conviction, be liable to a fine not exceeding 2202OO,OOO rupees 
+221and to imprisonment for a term not exceeding 4 years. 
+(5) 
+For the purposes of subsection (4), an invoice which is drawn in a fictitious name or 
+in the name of a person other than the specified importer of the goods shall be 
+deemed to be a false invoice. 
+ 
+22218. Mode of ascertaining ad valorem duties 
+(1) 
+Where duty223 is leviable on goods by reference to their value, the value of 224the 
+goods shall be the transaction value of the goods as determined 225in accordance 
+with section 18A. 
+(2) 
+Subject to subsections (3) and (4), where the value of the goods cannot be 
+determined in accordance with section 18A, the value of those goods shall be 
+determined in accordance with any of the paragraphs (a), (b), (c) or (d) in the 
+sequential order in which they appear - 
+(a) 
+the transaction value of identical goods in accordance with section 18B; 
+(b) 
+the transaction value of similar goods in accordance with section 18C; 
+(c) 
+the deductive method of valuation in accordance with section 18D; or 
+(d) 
+the computed method of valuation in accordance with section 18E. 
+(3) 
+The importer may, by notice in writing to the 226Director-General, opt for the 
+sequence of subsection (2) (c) and (d) to be reversed. 
+(4) 
+Where the value of the goods cannot be determined in accordance with 227section 
+18A, 18B, 18C, 18D, or 18E, the value of those goods shall be determined in 
+accordance with the fall back method of valuation under section 18F. 
+ 
+18A. Transaction value of goods 
+The transaction value of the goods shall be the price actually paid or payable for the goods 
+when sold for export to an importer in Mauritius, adjusted where appropriate in 
+circumstances as may be prescribed, and shall in addition include - 
+(a) 
+all costs, charges and expenses incidental to the sale contract and delivery of 
+those goods; and 
+(b) 
+the loading charges, freight, insurance and other charges and expenses in 
+respect of those goods as may be prescribed, 
+provided that the prescribed conditions are satisfied. 

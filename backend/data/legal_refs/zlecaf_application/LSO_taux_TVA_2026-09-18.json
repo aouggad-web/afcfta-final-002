@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "objet": "Taux de la TVA au Lesotho : 15 % (VAT Act 2001 s.19(3), LN 18/2020)",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — VAT Act 2001 (lra.org.ls, texte lu) + LN No. 18 of 2020 (PDF scanné — OCR easyocr, deux passes cohérentes). | Téléchargement tenté le 2026-09-18 : www.lra.org.ls injoignable depuis cet environnement (relais coupé par le mandataire (tunnel fermé, code 1006)). La déclaration n'est donc pas contrôlable dans le dépôt, et le niveau de preuve le dit plutôt que de l'affirmer.",
+  "source": {
+    "url": "https://www.lra.org.ls/sites/default/files/2026-09/VAT%20ACT%20-%202001.pdf",
+    "institution": "LRA",
+    "archive": "extraits et PDF sources archivés sous backend/data/legal_refs/zlecaf_application/sources/ (voir documents_archives)"
+  },
+  "regle": {
+    "valeur": "15 % (taux standard)",
+    "verbatim": "VAT Act 2001, s.19(3) : « The rates of value added tax shall be prescribed by regulation but shall not exceed four rates, including a zero rate. » — LN 18/2020 : « Regulation 6(1) … is amended by deleting … '12%' in paragraph (d) and substituting '15%' » (1er avril 2020)",
+    "portee": "Taux standard national. LN 30/2021 modifie un taux non standard ('9%' → '10%')."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "LN 18/2020 PDF scanné : verbatim par OCR (deux passes cohérentes) — à valider sur l'original"
+  ],
+  "doutes": "LRA non joignable en direct lors des premières tentatives (timeout), succès ensuite. La valeur supprimée lue '12%' en OCR doit être vérifiée sur l'original papier.",
+  "remaining_work": [
+    "Valider sur la Gazette originale",
+    "Archiver l'acte depuis www.lra.org.ls — injoignable le 2026-09-18 — et consigner son empreinte."
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/LSO_taux_TVA_extrait_vatact2001.txt",
+      "texte_sha256": "8d115a27aebfc9ba86abd6311f1f5ded49463c9c8310144dc26b742d338f9496"
+    },
+    {
+      "pdf_archive": "sources/lso_vatact2001.pdf",
+      "pdf_sha256": "c267571dc362147a0d88a87ce0762dde50ab0e6b49b8e800f350c6ecba68dffa"
+    },
+    {
+      "texte_archive": "sources/LSO_taux_TVA_extrait_ln18_2020_ocr.txt",
+      "texte_sha256": "358fefd8a8b0f9a57c7ff1be01f35ed6f6301534088ce70127fd1d092640d865"
+    },
+    {
+      "pdf_archive": "sources/lso_ln18_2020.pdf",
+      "pdf_sha256": "9999d9a39b53907e7aed2e8714cd176a3e768b1b3992c79dadd5a6690715fa31"
+    }
+  ]
+}

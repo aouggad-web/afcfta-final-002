@@ -20,6 +20,18 @@ celui qui a été lu.
 | `MAR_circulaire_6705-222_2025-12-31.pdf` | Maroc | ADII | **Preuve négative** : concerne les accords Maroc/USA et Maroc/Royaume-Uni, sans aucune mention de la ZLECAf. Archivée pour établir qu'elle n'affecte pas la détermination |
 | `EGY_manshour_ittifaqiyat_38.pdf` | Égypte | Douane égyptienne | Circulaire Accords n° 38 : 17 origines en deux groupes, 10 ans à 50 % de réduction au 1/1/2025 et 5 ans à 100 %. Listes B et C non entrées en vigueur |
 | `EGY_manshour_ittifaqiyat_36_2024-12-22.pdf` | Égypte | Ministère de l'Investissement et du Commerce extérieur | Notifie l'entrée en échanges du Burundi, de l'Eswatini, du Lesotho, du Malawi, de la Gambie et de l'Ouganda. Référence le décret présidentiel n° 212 de 2023 |
+| `SOM_customs_tariff_2020.preambule-extrait.txt` | Somalie | Ministère des Finances | Somali Customs Tariff 2020, règles générales concernant les droits (B.3) et applicables à la nomenclature et aux droits (C.1) : le droit ad valorem est liquidé sur la valeur en douane, déterminée sur la valeur de transaction. Extrait des pages 9-10 ; PDF de 341 p. non archivé |
+| `SOM_somcas_sop_annexe-C.texte-extrait.txt` | Somalie | Somalia Revenue Directorate / Somali Customs | SOP SOMCAS, Annexe C « Customs Valuation » : valeur = « normal price » alignée sur la « transaction value » du WTO Valuation Agreement ; traitement FOB/CIF (fret + assurance). Extrait des pages 29-31 ; PDF de 35 p. non archivé |
+| `DZA_ctca_TVA_extrait.txt` | Algérie | Direction Générale des Douanes | Code des taxes sur le chiffre d'affaires (CTCA), extraits TVA : taux normal 19 % (art. 21), taux réduit 9 % (art. 23), exonérations (art. 8/9/10/11) ; + art. 214 LF2025 (café vert) reconduit par la LF2026. Extrait du PDF de 83 p. non archivé |
+| `SACU_assiette_DD.source-extrait.txt` | SACU (BWA/LSO/NAM/SWZ/ZAF) | SARS + BURS/LRA/NamRA/ERA | Customs and Excise Act 91/1964 s.65/67 + politique SARS SC-CR-A-03 : le droit de douane s'assied sur la valeur de transaction base FOB (fret/assurance internationaux exclus), pas CIF. PDF non archivés |
+| `NGA_ncsa_2023_s69.texte-extrait.txt` | Nigéria | Nigeria Customs Service | NCSA 2023, s.69 : base d'évaluation = transaction value (CIF) ; IAT et accises ad valorem sur CIF. Texte intégral JO à archiver |
+| `LBY_loi_10_2010_art26-31.texte-extrait.txt` | Libye | Douane libyenne | Loi n° 10 de 2010, art. 26-31 : valeur en douane CAF/CIF ; droits de douane abolis (2005) sauf tabac ; service fee. Texte intégral à archiver |
+| `MRT_assiette_TVA.texte-extrait.txt` | Mauritanie | Direction Générale des Impôts | CGI (TVA), chapitre 3 : base TVA import = valeur en douane + tous prélèvements, TVA exclue. PDF douanes.mr |
+| `SYC_vat_act_s23.texte-extrait.txt` | Seychelles | Seychelles Revenue Commission | VAT Act 2010, s.23(1) (amendé Act 16/2024) : valeur en douane + fret/assurance + duty + excise + fees (hors levies). |
+| `AGO_iva_art18.texte-extrait.txt` | Angola | AGT / Diário da República | Código do IVA (Lei 7/19), art. 18.º : valeur en douane + droits/taxes + frais accessoires, IVA exclu. |
+| `COM_cgi_art140.texte-extrait.txt` | Comores | DGI Comores | CGI 2023, art. 140-4° : valeur CAF + tous droits d'entrée à caractère douanier (taxe sur la consommation 10 %). |
+| `STP_iva_art15.texte-extrait.txt` | São Tomé | Direcção dos Impostos | Código do IVA (Lei 13/2019), art. 15.º : valeur en douane + droits/taxes + frais accessoires, IVA exclu. PDF à ré-archiver. |
+| `MRT_tarif2021.pdf` (tarif national, 6129 sous-positions) | Mauritanie | douanes.mr | Tarif douanier national 2021 : sous-positions 10 chiffres, colonnes DD/RS/PC — à intégrer pour éliminer WITS/TRAINS |
 
 ## Fichiers `.ocr-ara.txt`
 

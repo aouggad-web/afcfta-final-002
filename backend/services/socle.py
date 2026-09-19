@@ -36,8 +36,10 @@ RACINE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file_
 SOCLE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "socle")
 MANIFESTE = os.path.join(SOCLE_DIR, "MANIFESTE.json")
 DEVISES = os.path.join(SOCLE_DIR, "devises_pays.json")
+TVA_NATIONALE = os.path.join(SOCLE_DIR, "tva_nationale.json")
 
 _devises_cache: Optional[Dict[str, str]] = None
+_tva_cache: Optional[Dict[str, Dict[str, Any]]] = None
 
 #: Les fichiers pays pèsent de 3 à 60 Mo. On en garde quelques-uns en mémoire,
 #: pas les cinquante-quatre.
@@ -153,6 +155,25 @@ def devise_nationale(iso3: str) -> Optional[str]:
     return _devises_cache.get(_iso3(iso3))
 
 
+def tva_nationale(iso3: str) -> Optional[Dict[str, Any]]:
+    """Taux de TVA établi sur source primaire pour un pays dont le crawl n'en
+    porte aucun, ou ``None``.
+
+    Cette table ne complète qu'une famille **entièrement absente** de la
+    source. Elle ne corrige jamais un taux collecté position par position :
+    une donnée nationale moyenne ne vaut pas mieux qu'une donnée de ligne, et
+    la substituer ferait reculer la précision là où elle existe.
+    """
+    global _tva_cache
+    if _tva_cache is None:
+        if not os.path.exists(TVA_NATIONALE):
+            _tva_cache = {}
+        else:
+            with open(TVA_NATIONALE, encoding="utf-8") as f:
+                _tva_cache = json.load(f).get("pays", {})
+    return _tva_cache.get(_iso3(iso3))
+
+
 def normaliser_code(code: str) -> str:
     chiffres = re.sub(r"\D", "", str(code or ""))
     if len(chiffres) < 6:
@@ -206,8 +227,9 @@ def position(iso3: str, code: str) -> Tuple[Dict[str, Any], dict]:
 
 
 def vider_cache() -> None:
-    """Oublier les pays chargés, le manifeste et les devises (utile aux tests)."""
-    global _manifeste, _devises_cache
+    """Oublier les pays chargés, le manifeste et les tables (utile aux tests)."""
+    global _manifeste, _devises_cache, _tva_cache
     _cache.clear()
     _manifeste = None
     _devises_cache = None
+    _tva_cache = None

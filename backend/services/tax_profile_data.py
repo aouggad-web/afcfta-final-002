@@ -86,6 +86,17 @@ ASSIETTE_TVA_ETABLIE = {
         "TGO",
     )
 }
+ASSIETTE_TVA_ETABLIE["MRT"] = {
+    "texte": (
+        "Mauritanie, Code Général des Impôts, Livre II Titre I (TVA), chapitre 3 : "
+        "« La base imposable pour les importations est constituée par la valeur "
+        "définie par la législation douanière, y compris les taxes et prélèvements "
+        "de toute nature perçus lors du franchissement du cordon douanier, à "
+        "l'exception de la taxe sur la valeur ajoutée elle-même » — doctrine DGI "
+        "(impots.gov.mr, Livre2-Titre1-TVA-20191010.pdf), texte lu et archivé"
+    ),
+    "fiche": "MRT_assiette_TVA_2026-09-17.json",
+}
 ASSIETTE_TVA_ETABLIE["KEN"] = {
     "texte": (
         "Kenya, Value Added Tax Act No. 35 of 2013, section 14 (1) (c) : « the "
@@ -207,9 +218,21 @@ COUNTRY_TAX_PROFILES = {
     },
     # ── Afrique du Sud — SARS (sars.gov.za) ──────────────────────────────────
     # VAT : base = CIF + DD  (VAT Act s.13(2))
+    # ── Afrique du Sud / SACU ─────────────────────────────────────────────────
+    # Le droit de douane SACU s'assoit sur la valeur FOB — fret et assurance
+    # internationaux exclus (Customs and Excise Act 91/1964, s.65-67 ;
+    # corroboré par la politique SARS SC-CR-A-03 rév. 5). Le poser « CIF »
+    # surestimait la base du fret et de l'assurance internationaux. La valeur
+    # FOB ne se déduit pas de la valeur CIF : compute_tax_cascade exige
+    # `fob_value` et refuse de liquider sans elle (fail-closed).
+    # Voir backend/data/legal_refs/zlecaf_application/SACU_assiette_DD_2026-09-17.json.
     "ZAF": {
-        **_IMPORT_VAT_CIF_DD,
-        "source": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)",
+        "taxes_order": ["DD", "TVA"],
+        "tax_bases": {
+            "DD": ("FOB", []),
+            "TVA": ("CIF", ["DD"]),  # VAT Act s.13(2) : base TVA = CIF+DD
+        },
+        "source": "Customs and Excise Act 91/1964 s.65-67 + SARS SC-CR-A-03 (DD base = FOB) ; VAT Act s.13(2) (TVA base = CIF+DD)",
     },
     # ── Afrique australe et océan Indien ─────────────────────────────────────
     # Les fichiers tarifaires de ces pays fournissent DD + TVA/IVA par ligne.
@@ -225,7 +248,18 @@ COUNTRY_TAX_PROFILES = {
         **_IMPORT_VAT_CIF_DD,
         "source": "Direction Générale des Impôts Madagascar — TVA à l'importation",
     },
-    "MWI": {**_IMPORT_VAT_CIF_DD, "source": "Malawi Revenue Authority — import VAT"},
+    # ── Malawi — RETIRÉ DE CETTE TABLE, ET C'EST VOULU ────────────────────────
+    # L'entrée portait le profil génerique « TVA sur CIF+DD » sous la seule
+    # mention « Malawi Revenue Authority — import VAT » : un nom d'autorité, pas
+    # un article. Le Customs and Excise (Tariffs) (No. 3) Order, 2022 publie les
+    # TAUX de l'accise, de la TVA et de l'Advance Income Tax (colonnes 10, 11 et
+    # 12) et ne dit rien de leur assiette ; aucun texte malawien lu — Customs and
+    # Excise Act (Cap. 42:01), s.111(2) et Schedule A — ne l'établit non plus.
+    # Voir backend/data/legal_refs/zlecaf_application/
+    # MWI_colonnes_remises_et_prix_normal_2026-09-19.json.
+    # Laisser le profil ici faisait liquider la TVA malawienne sur une assiette
+    # que personne n'a lue : un montant crédible et faux. Le droit de douane, lui,
+    # tient son assiette du décret même et n'a jamais eu besoin de cette table.
     # ── Kenya / EAC — KRA (kra.go.ke) ────────────────────────────────────────
     # IDF (3.5%): base CIF  (Finance Act 2022)
     # VAT (16%): base = CIF + DD  (VAT Act Cap 476)

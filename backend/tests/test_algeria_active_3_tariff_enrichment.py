@@ -59,7 +59,11 @@ def test_registered_line_counts_and_national_depths_match_runtime_data():
         # EGY customs.gov.eg → 8 818 positions 10 chiffres (8 746 en juin) ;
         # TUN Tarif Web douane.gov.tn → 17 542 positions 11 chiffres (17 512 en juin).
         "EGY": (8818, {10}),
-        "MUS": (5619, {6}),
+        # MUS : le socle servait 5 619 lignes SH6 issues de la moyenne WITS.
+        # Le tarif national MRA (HS 2022, 807 pages) en porte 6 941 à HUIT
+        # chiffres. La profondeur est verrouillée ici : y revenir à six
+        # signifierait que la moyenne a repris la place du tarif.
+        "MUS": (6941, {8}),
         "TUN": (17542, {10, 11}),
     }
     for country, (line_count, digit_depths) in expected.items():
@@ -67,7 +71,7 @@ def test_registered_line_counts_and_national_depths_match_runtime_data():
         assert len(lines) == line_count
         code_field = {
             "EGY": "hs_code",
-            "MUS": "hs_code",
+            "MUS": "national_code",
             "TUN": "hs_code",
         }[country]
         actual_depths = {

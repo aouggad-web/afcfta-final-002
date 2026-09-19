@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette de la TVA à l'importation — AGO : valeur en douane + prélèvements d'entrée, TVA exclue",
+  "verified_at": "2026-09-17",
+  "etabli": true,
+  "evidence_level": null,
+  "source": {
+    "instrument": "Lei n.º 7/19 (Código do IVA) Artigo 18.º, n.º 1",
+    "institution": "Diário da República / Administração Geral Tributária (AGT)",
+    "url": "https://lex.ao/docs/assembleia-nacional/2019/lei-n-o-7-19-de-24-de-abril/",
+    "texte_archive": "sources/AGO_iva_art18.texte-extrait.txt",
+    "sha256": "8ae7123599f503ffdca564e76b71a76ffde1f7eed7ee7f1a43babe9b7590f751"
+  },
+  "regle": {
+    "article": "Artigo 18.º, n.º 1",
+    "verbatim": "O valor tributável dos bens importados é o valor aduaneiro … adicionado de: a) Direitos de importação, impostos ou taxas … com excepção do próprio IVA; b) Despesas acessórias (embalagem, transportes, seguros, despesas portuárias ou aeroportuárias) …",
+    "valeur_moteur": "CIF+TOUS_SAUF_TVA",
+    "portee": "Valeur en douane augmentée des prélèvements d'entrée, la TVA exclue de sa propre assiette."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "les exonérations et taux réduits ; le taux lui-même (porté dans la donnée)."
+  ],
+  "remaining_work": [
+    "Collecter le tarif national détaillé (sous-positions) pour éliminer la donnée DD WITS/TRAINS."
+  ]
+}

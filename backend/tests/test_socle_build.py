@@ -11,9 +11,6 @@ import builtins
 import importlib.util
 import json
 import os
-import importlib.util
-import json
-import os
 import shutil
 
 import pytest
@@ -141,7 +138,7 @@ def test_schema_taxes_detail_avec_assiette():
     }
     lignes = list(bs.lignes_du_fichier(donnees))
     assert len(lignes) == 1
-    code, _, _, droits, _ = lignes[0]
+    code, _, _, droits, _, _ = lignes[0]
     assert code == "7612900000"
     # taxes_detail porte l'assiette : il prime sur le dict `taxes` qui ne l'a pas
     assert [(d["code"], d["assiette"]) for d in droits] == [
@@ -166,7 +163,7 @@ def test_schema_tariff_lines_le_droit_de_l_enfant_prime():
             }
         ]
     }
-    lignes = {c: d for c, _, _, d, _ in bs.lignes_du_fichier(donnees)}
+    lignes = {c: d for c, _, _, d, _, _ in bs.lignes_du_fichier(donnees)}
     assert "010121" in lignes and "0101210000" in lignes
     enfant = {d["code"]: d["taux"] for d in lignes["0101210000"]}
     assert enfant["DD"] == 10.0, "le droit national prime sur celui du parent"
@@ -192,7 +189,7 @@ def test_schema_tunisien_droit_specifique_sans_taux():
             }
         ]
     }
-    ((_, _, _, droits, _),) = bs.lignes_du_fichier(donnees)
+    ((_, _, _, droits, _, _),) = bs.lignes_du_fichier(donnees)
     assert droits[0]["taux"] is None, "un droit spécifique n'a pas de taux ad valorem"
     assert droits[0]["specifique"] == "0.1 dinars"
     assert droits[0]["assiette"] == "xQTE"
@@ -251,12 +248,18 @@ def test_un_pays_sans_position_est_declare_vide_jamais_estime():
 def test_une_couverture_complete_exige_des_droits_liquidables():
     """Annoncer COMPLET sur la seule présence des familles reproduirait les
     « 100 % de couverture » déduits de listes non vides que l'audit
-    reprochait au module : l'Angola porte un droit et une TVA, mais aucune
-    assiette pour la seconde."""
-    chemin = os.path.join(CRAWL, "AGO_tariffs.json")
+    reprochait au module : le Soudan porte un droit et une TVA, mais aucune
+    assiette pour la seconde.
+
+    Ce test visait l'Angola jusqu'à ce que sa TVA soit collectée : il passait
+    alors non plus parce que le garde-fou tient, mais parce que le pays était
+    devenu complet — un test vert pour la mauvaise raison. Il est repointé sur
+    un pays qui illustre encore le cas, et devra l'être de nouveau le jour où
+    le Soudan sera collecté à son tour."""
+    chemin = os.path.join(CRAWL, "SDN_tariffs.json")
     if not os.path.exists(chemin):
-        pytest.skip("crawl AGO absent de ce clone")
-    socle, c = bs.construire_pays("AGO", chemin, "crawl", bs.charger_assiettes_pays())
+        pytest.skip("crawl SDN absent de ce clone")
+    socle, c = bs.construire_pays("SDN", chemin, "crawl", bs.charger_assiettes_pays())
     couverture = socle["couverture"]
     assert couverture["droit_de_douane"] and couverture["tva"]
     assert couverture["etat"] == "PARTIEL"
@@ -314,6 +317,12 @@ def test_une_construction_partielle_n_ampute_pas_le_manifeste(tmp_path, monkeypa
         "{invalide",
         json.dumps(["pas_un_objet"]),
         json.dumps({"pays": ["pas_un_dict"]}),
+        # Une entrée qui *est* un dictionnaire mais à laquelle il manque ce que
+        # les totaux lisent — `etat`, `compteurs.positions`, `compteurs.droits`.
+        # Conservée telle quelle, elle interrompait la construction sur un
+        # KeyError : l'abandon même que cette tolérance doit empêcher.
+        json.dumps({"pays": {"XXX": {"fichier": "XXX.json"}}}),
+        json.dumps({"pays": {"XXX": {"etat": "COMPLET", "compteurs": {"positions": 1}}}}),
     ],
 )
 def test_main_tolere_un_manifeste_malforme_ou_non_conforme(tmp_path, monkeypatch, contenu):
@@ -344,14 +353,22 @@ def test_charger_assiettes_reconstruit_la_table_absente(tmp_path, monkeypatch):
     pays = bs.charger_assiettes_pays()
 
     assert assiettes.exists()
-    assert len(pays) >= 37
+    # 36, et non 37 : le Malawi a ete RETIRE de COUNTRY_TAX_PROFILES. Son entree
+    # portait le profil generique « TVA sur CIF+DD » sous la seule mention
+    # « Malawi Revenue Authority — import VAT » — un nom d'autorite, pas un
+    # article — et faisait liquider la TVA malawienne sur une assiette que
+    # personne n'a lue. Le seuil garde ici un ORDRE DE GRANDEUR, il ne
+    # promet pas un pays en particulier.
+    assert len(pays) >= 36
     assert pays["BEN"]["taxes"]["TVA"]["origine_assiette"] == "texte_primaire"
     with open(assiettes, encoding="utf-8") as f:
         reconstruit = json.load(f)
     assert "BEN" in reconstruit["pays"]
 
 
-@pytest.mark.parametrize("contenu", ["{invalide", json.dumps(["pas_un_objet"]), json.dumps({"pays": []})])
+@pytest.mark.parametrize(
+    "contenu", ["{invalide", json.dumps(["pas_un_objet"]), json.dumps({"pays": []})]
+)
 def test_charger_assiettes_reconstruit_une_table_malformee_ou_non_conforme(
     tmp_path, monkeypatch, contenu
 ):
@@ -364,7 +381,13 @@ def test_charger_assiettes_reconstruit_une_table_malformee_ou_non_conforme(
 
     pays = bs.charger_assiettes_pays()
 
-    assert len(pays) >= 37
+    # 36, et non 37 : le Malawi a ete RETIRE de COUNTRY_TAX_PROFILES. Son entree
+    # portait le profil generique « TVA sur CIF+DD » sous la seule mention
+    # « Malawi Revenue Authority — import VAT » — un nom d'autorite, pas un
+    # article — et faisait liquider la TVA malawienne sur une assiette que
+    # personne n'a lue. Le seuil garde ici un ORDRE DE GRANDEUR, il ne
+    # promet pas un pays en particulier.
+    assert len(pays) >= 36
     with open(assiettes, encoding="utf-8") as f:
         reconstruit = json.load(f)
     assert isinstance(reconstruit["pays"], dict)
@@ -390,7 +413,13 @@ def test_charger_assiettes_reconstruit_apres_oserror_de_lecture(tmp_path, monkey
     monkeypatch.setattr(builtins, "open", open_instable)
     pays = bs.charger_assiettes_pays()
 
-    assert len(pays) >= 37
+    # 36, et non 37 : le Malawi a ete RETIRE de COUNTRY_TAX_PROFILES. Son entree
+    # portait le profil generique « TVA sur CIF+DD » sous la seule mention
+    # « Malawi Revenue Authority — import VAT » — un nom d'autorite, pas un
+    # article — et faisait liquider la TVA malawienne sur une assiette que
+    # personne n'a lue. Le seuil garde ici un ORDRE DE GRANDEUR, il ne
+    # promet pas un pays en particulier.
+    assert len(pays) >= 36
     assert appels["n"] == 1
 
 
@@ -410,15 +439,91 @@ def test_charger_assiettes_signale_un_import_indisponible(tmp_path, monkeypatch)
 
 def test_la_table_d_assiettes_conserve_ses_references_legales():
     pays = bs.charger_assiettes_pays()
-    assert len(pays) >= 37
-    # Les dix assiettes de TVA établies sur texte primaire citent leur texte.
+    assert len(pays) >= 38
+    # Les assiettes établies sur texte primaire citent leur texte.
     etablies = [
-        (iso, t)
+        (iso, code, t)
         for iso, v in pays.items()
         for code, t in v["taxes"].items()
         if t["origine_assiette"] == "texte_primaire"
     ]
-    assert len(etablies) == 10
-    for iso, t in etablies:
+    # Les dix assiettes de TVA établies sur texte primaire sont toutes
+    # « CIF + tous les prélèvements d'entrée, TVA exclue ».
+    tva = [(iso, code, t) for iso, code, t in etablies if code == "TVA"]
+    assert len(tva) >= 10
+    for iso, _code, t in tva:
         assert t["assiette"] == "CIF+TOUS_SAUF_TVA"
         assert t.get("texte"), f"{iso} : une assiette établie doit citer son texte"
+    # Somalie : l'assiette du droit de douane est établie sur le tarif national
+    # (valeur en douane), distincte des assiettes de TVA ci-dessus.
+    som = {code: t for iso, code, t in etablies if iso == "SOM"}
+    assert som["DD"]["assiette"] == "CIF"
+    assert som["DD"].get("texte"), "SOM : une assiette établie doit citer son texte"
+
+
+def test_l_assiette_somalienne_rend_les_droits_liquidables():
+    """La Somalie portait 11 545 droits tous non liquidables, faute d'assiette.
+    L'assiette CIF (valeur en douane) du tarif national doit les rendre tous
+    liquidables, sans en laisser un seul « indisponible »."""
+    chemin = os.path.join(REPO, "backend", "data", "SOM_tariffs.json")
+    if not os.path.exists(chemin):
+        pytest.skip("SOM_tariffs.json absent de ce clone")
+    assiettes = bs.charger_assiettes_pays()
+    assert assiettes["SOM"]["taxes"]["DD"]["assiette"] == "CIF"
+
+    socle, c = bs.construire_pays("SOM", chemin, "etl", assiettes)
+
+    assert c["positions"] > 0
+    assert c["droits"] > 0
+    assert c["droits_liquidables"] == c["droits"], (
+        "chaque droit de douane somalien doit devenir liquidable avec "
+        "l'assiette CIF établie sur le tarif national"
+    )
+    assert c["assiettes_indisponibles"] == 0
+    assert c["positions_liquidables"] > 0
+
+
+# ── Réserve WITS : un agrégat SH6 ne se présente pas comme une position ───────
+def test_un_droit_wits_porte_sa_reserve():
+    """Le droit venu de WITS/TRAINS dit qu'il est un agrégat SH6.
+
+    Treize pays servent leur droit de douane depuis la moyenne SH6 de la
+    Banque mondiale. Leur TVA portait déjà la mention « non vérifié position
+    par position » ; le droit, lui, ne la portait pas — alors que c'est
+    précisément lui qui vient de l'agrégat. Sur la même position, l'opérateur
+    lisait donc une réserve sur une ligne et rien sur l'autre.
+    """
+    droit = bs._droit(
+        "DD",
+        "Droit de douane (MFN appliqué, WITS/TRAINS)",
+        5.0,
+        "CIF",
+        "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+    )
+    assert "non vérifié position par position" in droit["note"]
+    assert "SH6" in droit["note"]
+
+
+def test_la_reserve_wits_ne_recouvre_pas_une_note_de_la_source():
+    """Une note publiée par la source prime : la réserve ne l'écrase jamais."""
+    droit = bs._droit(
+        "TVA",
+        "Taxe sur la Valeur Ajoutée",
+        20.0,
+        "CIF+DD",
+        "WITS / UNCTAD-TRAINS (Banque mondiale) — MFN appliqué SH6",
+        note="Taux national standard (non vérifié position par position).",
+    )
+    assert droit["note"] == "Taux national standard (non vérifié position par position)."
+
+
+def test_un_droit_national_ne_recoit_aucune_reserve_wits():
+    """Contrôle négatif : une source nationale n'est pas un agrégat."""
+    droit = bs._droit(
+        "DD",
+        "Customs duty",
+        40.0,
+        "CIF",
+        "SARS Schedule No. 1 Part 1",
+    )
+    assert droit["note"] is None

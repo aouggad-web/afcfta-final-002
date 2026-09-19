@@ -3,7 +3,6 @@
   "created_at": "2026-09-09",
   "updated_at": "2026-09-12",
   "description": "Registre des sources de données tarifaires africaines. Chaque entrée documente : pays, organisme, URL, date de récupération, édition, période d'application, statut (officiel/secondaire), empreinte SHA-256, et conditions de réutilisation.",
-
   "principles": {
     "no_missing_as_zero": "Aucune valeur manquante remplacée par 0",
     "no_sh6_padding": "Aucun code national créé en ajoutant des zéros à un SH6",
@@ -13,7 +12,6 @@
     "secondary_needs_corroboration": "Pour une source secondaire, rechercher une corroboration indépendante ; deux copies du même document ne constituent pas deux confirmations",
     "wto_distinction": "L'OMC distingue les données de droits appliqués des engagements consolidés ; les plafonds OMC ne sont pas les droits effectivement appliqués"
   },
-
   "global_summary": {
     "total_countries_target": 54,
     "countries_registered": 54,
@@ -30,7 +28,6 @@
     "positions_wits_fallback": 32328,
     "note": "Compté sur le contenu réel du registre au 2026-09-12, héritages _shared résolus vers leur source. Le décompte précédent annonçait 45 pays à données nationales authentiques et 5 replis WITS : ni l'un ni l'autre ne correspondait aux entrées."
   },
-
   "countries": {
     "GHA": {
       "organism": "Ghana Revenue Authority (GRA) — TEC CEDEAO",
@@ -45,7 +42,10 @@
       "positions_count": 5387,
       "sha256": "760d0b401a7d482aae9f2ddded5ecd85ed9a92d45be8ce1a36c95b14116bb439",
       "validation_status": "to_verify",
-      "taxes": ["DD", "TVA"],
+      "taxes": [
+        "DD",
+        "TVA"
+      ],
       "note": "Tarif extérieur commun CEDEAO, non une nomenclature nationale ghanéenne détaillée. Les 5387 lignes respectent exactement les cinq bandes officielles du TEC (0/5/10/20/35), sans aucune valeur hors barème. DATA_STATUS: PARTIAL, fiabilité B. Entrée créée le 2026-09-12 : le fichier était servi en production sans aucune fiche de provenance."
     },
     "SOM": {
@@ -61,29 +61,42 @@
       "positions_count": 5602,
       "sha256": "5df6fe9a6be9b62c025b968dda4bb061b44f1f064c2a6daeb525542b6427c3d1",
       "validation_status": "to_verify",
-      "taxes": ["DD"],
+      "taxes": [
+        "DD"
+      ],
       "note": "Tarif dérivé du TEC de l'EAC, non une nomenclature nationale somalienne. ANOMALIE À INSTRUIRE : 45 lignes portent 50, 60, 75 ou 100 %, hors des quatre bandes officielles de l'EAC CET (0/10/25/35) — origine non établie. TVA à 0 % : la Somalie n'applique pas de TVA, ce n'est pas une donnée manquante. Pas de fichier crawled/ : l'artefact est le fichier de production. DATA_STATUS: PARTIAL, fiabilité B. Entrée créée le 2026-09-12 : le fichier était servi en production sans aucune fiche de provenance."
     },
     "ZWE": {
-      "organism": "ZIMRA — Zimbabwe Revenue Authority (tarif national non crawlable)",
-      "version": "2021.1",
+      "organism": "ZIMRA — Zimbabwe Revenue Authority (Ministry of Finance and Economic Development)",
+      "version": "2026.1",
       "artifact_path": "backend/data/crawled/ZWE_tariffs.json",
       "artifact_url": null,
-      "source_type": "wits_fallback",
+      "source_type": "official",
       "url": "https://www.zimra.co.zw",
-      "retrieved_at": "2026-07-05",
-      "edition": "WITS / UNCTAD-TRAINS — MFN appliqué SH6 (SimpleAverage 2021)",
-      "code_digits": 6,
-      "positions_count": 5388,
-      "sha256": "5d211c12549ba81b50b206c1bfcc11765d49b650e1dc80cead18ad480dc82fc6",
-      "validation_status": "not_available",
-      "taxes": ["DD", "VAT"],
-      "note": "Droit de douane = moyenne simple MFN 2021 au niveau SH6 (WITS/TRAINS), pas une position tarifaire nationale : agrégat indicatif, jamais opposable. Désignations vides, formalités et avantages fiscaux non couverts. La TVA (15,5 %) est en revanche sourcée nommément — ZIMRA Public Notice 07 of 2026, relèvement de 15 % au 01/01/2026, vérifié. Aucun hs_version déclaré par la source : non renseigné plutôt que supposé."
+      "retrieved_at": "2026-09-18",
+      "edition": "Statutory Instrument 203 of 2022 — Customs and Excise (Tariff) Notice, colonne M.F.N., 1 162 pages",
+      "code_digits": 8,
+      "positions_count": 6637,
+      "sha256": "f0c79ba1b0f05b375506308340439669405d70e2af01fe1351fc21307d817aa8",
+      "validation_status": "verified",
+      "taxes": [
+        "DD (customs duty, colonne M.F.N.)",
+        "EXC (excise duty, mentionnée sans taux)"
+      ],
+      "note": "Remplace la moyenne simple MFN 2021 au niveau SH6 (WITS/UNCTAD-TRAINS, 5 388 positions sans désignation) par le tarif national à huit chiffres. La TVA (15,5 %) reste sourcée à part — ZIMRA Public Notice 07 of 2026 — et n'est pas portée par le SI 203.",
+      "application_period": "depuis le 1er janvier 2023 (SI 203 of 2022)",
+      "hs_version": "HS 2022",
+      "source_sha256": "cd6d0c2143a55ac4354b4125b905e8318dc47814d4e938e651ae345f5f690597",
+      "legal_authority": "Customs and Excise Act [Chapter 23:02], s.225 (habilitation du SI), s.106(1) et s.113(2)(c) (valeur en douane)",
+      "notes": "6 637 positions, 97 chapitres, avec leur désignation anglaise. Assiette DD = CIF, établie par le Customs and Excise Act s.106(1) et s.113(2)(c). CONTRÔLE INTERNE : le tarif publie DEUX colonnes de droits (« General » et « M.F.N. ») ; elles concordent sur 6 637 positions sur 6 637, ce qui valide l'extraction par le document lui-même. DROITS COMPOSÉS : 61 positions « X% or US$Y/unité » ; la règle de départage est ÉNONCÉE par le texte (p. 13 : « the rate of duty yielding the higher amount of duty shall be applicable ») et donc liquidée — à la différence du tarif SARS, qui ne l'énonce pas et reste refusé. 414 positions cumulatives (« + »). SPÉCIFIQUES INCOMPARABLES : 11 positions de spiritueux opposent deux montants dans des unités différentes (« US$5.00/L or US$10.00/LAA ») ; les départager exige le titre alcoométrique, que le tarif ne porte pas — portées sans valeur liquidable, avec leur verbatim. ACCISE SANS TAUX : 116 positions mentionnent « Excise » sans en porter le taux, qui relève du tarif d'accise séparé ; portées sans taux ni assiette, jamais à zéro — les traiter comme un zéro exonérerait alcools et tabacs. COQUILLES DE LA SOURCE : neuf codes y sont écrits sans un de leurs points (« 9608.9900 ») ou avec une espace (« 5113. 00.00 ») ; ils sont reconnus et ramenés à huit chiffres, faute de quoi ils disparaissaient en silence. Aucun taux non lu."
     },
     "DZA": {
       "organism": "Direction Générale des Douanes (DGD) via conformepro.dz",
       "coverage_gaps": {
-        "missing_chapters": ["22", "24"],
+        "missing_chapters": [
+          "22",
+          "24"
+        ],
         "missing_sh10_codes": 207,
         "nomenclature_present": 17115,
         "nomenclature_official": 17322,
@@ -108,8 +121,24 @@
       "reuse_conditions": "Données publiées par la DGD pour consultation publique. Utilisation informative non opposable.",
       "legal_authority": "Code des Douanes 79-07 + Loi de Finances 2026 (JO n° 88 du 31/12/2025)",
       "validation_status": "verified",
-      "taxes": ["DD", "TVA", "TCS", "PRCT", "DAPS", "TIC"],
-      "taxes_missing": ["TAPT", "DPE", "TSV", "TSP", "T.PNEUS", "T.HUILES", "TPP", "TPI"],
+      "taxes": [
+        "DD",
+        "TVA",
+        "TCS",
+        "PRCT",
+        "DAPS",
+        "TIC"
+      ],
+      "taxes_missing": [
+        "TAPT",
+        "DPE",
+        "TSV",
+        "TSP",
+        "T.PNEUS",
+        "T.HUILES",
+        "TPP",
+        "TPI"
+      ],
       "formalities": "9069 positions avec formalités (46 types uniques)",
       "legal_refs": "17115 positions avec legal_refs (Code Douanes + Tarif D'Usage)",
       "zlecaf": "APPLIED — Circulaire DGD 482/2024, 9 partenaires actifs, calendrier de démantèlement"
@@ -131,7 +160,20 @@
       "reuse_conditions": "Données publiques de la douane tunisienne. Utilisation informative.",
       "legal_authority": "Code des Douanes 2008-34 + Loi de Finances 2026 (JORT)",
       "validation_status": "verified",
-      "taxes": ["DD", "TVA", "DC", "FODEC", "RPD", "TPE", "TLF", "TCA", "TMTS", "FDCSA/V", "P/VIANDE", "P/FRUITS"],
+      "taxes": [
+        "DD",
+        "TVA",
+        "DC",
+        "FODEC",
+        "RPD",
+        "TPE",
+        "TLF",
+        "TCA",
+        "TMTS",
+        "FDCSA/V",
+        "P/VIANDE",
+        "P/FRUITS"
+      ],
       "formalities": "7790 positions avec réglementation import (26 codes)",
       "export_taxes": "17530 positions avec taxes export (RPD/EXPOR, DD/PET.BR, DROIT.EXP.DATTES, T/PCEX, TAXE/FERRAILLES.EXP)",
       "quotas": "17542 positions avec QCS",
@@ -154,8 +196,15 @@
       "reuse_conditions": "Portail ADII public. Utilisation informative.",
       "legal_authority": "Code des Douanes Dahir 1-77-344 + Loi de Finances 2026 (BO)",
       "validation_status": "verified",
-      "taxes": ["DI", "TPI", "TVA"],
-      "taxes_missing": ["TIC", "DCT"],
+      "taxes": [
+        "DI",
+        "TPI",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "TIC",
+        "DCT"
+      ],
       "formalities": "13114 positions avec formalités (27 types uniques)"
     },
     "EGY": {
@@ -177,7 +226,15 @@
       "reuse_conditions": "Données publiques de l'Autorité des Douanes. Textes arabes verbatim.",
       "legal_authority": "Customs Law 207/2020 + VAT Law 67/2016 + Law 157/2025",
       "validation_status": "verified",
-      "taxes": ["ID/DD", "VAT/TVA", "TABLE_TAX", "HEALTH_INS", "TOBACCO_CHAMBER", "TEXTILE_CHAMBER", "LEATHER_CHAMBER"],
+      "taxes": [
+        "ID/DD",
+        "VAT/TVA",
+        "TABLE_TAX",
+        "HEALTH_INS",
+        "TOBACCO_CHAMBER",
+        "TEXTILE_CHAMBER",
+        "LEATHER_CHAMBER"
+      ],
       "formalities": "2878 positions avec formalités administratives (code غ)",
       "restrictions": "7522 positions avec restrictions à l'importation ou à l'exportation (code ق)",
       "zlecaf": "OFFER_ONLY — dataset EGY (10511 lignes, 2 schedules par origine)"
@@ -199,16 +256,67 @@
       "reuse_conditions": "SARS Customs & Excise Act 1964. Publication officielle. Utilisation informative non opposable.",
       "legal_authority": "Customs and Excise Act 1964 + VAT Act 89 of 1991",
       "validation_status": "verified",
-      "taxes": ["DD (GENERAL)", "AfCFTA", "EU_UK", "EFTA", "SADC", "MERCOSUR"],
-      "taxes_missing": ["VAT (non publiée dans Schedule 1 — fallback 15%)"],
+      "taxes": [
+        "DD (GENERAL)",
+        "AfCFTA",
+        "EU_UK",
+        "EFTA",
+        "SADC",
+        "MERCOSUR"
+      ],
+      "taxes_missing": [
+        "VAT (non publiée dans Schedule 1 — fallback 15%)"
+      ],
       "trade_remedies": "Schedules (anti-dumping, countervailing, safeguards) — Schedule 2",
       "zlecaf": "APPLIED — SARS colonne AfCFTA, 9+ partenaires actifs, 8592 lignes 8-digit",
-      "applies_to": ["ZAF", "BWA", "LSO", "SWZ", "NAM"]
+      "applies_to": [
+        "ZAF",
+        "BWA",
+        "LSO",
+        "SWZ",
+        "NAM"
+      ]
     },
-    "BWA": {"version": null, "artifact_path": "backend/data/crawled/BWA_tariffs.json", "artifact_url": null, "sha256": "cf84b1a644cc2b5abc84e02b376d89810f05d1cdcb53dfb190f7653d475476da", "_shared": "ZAF (SACU)", "positions_count": 8562, "code_digits": 8, "validation_status": "verified"},
-    "LSO": {"version": null, "artifact_path": "backend/data/crawled/LSO_tariffs.json", "artifact_url": null, "sha256": "31c5c4f6a56ae594fabb6e4f7093f4960b0f1397e0e25c4900804e23e4ec25dc", "_shared": "ZAF (SACU)", "positions_count": 8562, "code_digits": 8, "validation_status": "verified"},
-    "NAM": {"version": null, "artifact_path": "backend/data/crawled/NAM_tariffs.json", "artifact_url": null, "sha256": "a315efcf13b9f17f0ed677fab8d3cbfe64a5f562aca7868f14bcffda3f2f7ebf", "_shared": "ZAF (SACU)", "positions_count": 8562, "code_digits": 8, "validation_status": "verified"},
-    "SWZ": {"version": null, "artifact_path": "backend/data/crawled/SWZ_tariffs.json", "artifact_url": null, "sha256": "48c38a592819d2c09a86e2ca0c068b8f42bae77bfed21718c4aa27a3cf1049c0", "_shared": "ZAF (SACU)", "positions_count": 8562, "code_digits": 8, "validation_status": "verified"},
+    "BWA": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/BWA_tariffs.json",
+      "artifact_url": null,
+      "sha256": "cf84b1a644cc2b5abc84e02b376d89810f05d1cdcb53dfb190f7653d475476da",
+      "_shared": "ZAF (SACU)",
+      "positions_count": 8562,
+      "code_digits": 8,
+      "validation_status": "verified"
+    },
+    "LSO": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/LSO_tariffs.json",
+      "artifact_url": null,
+      "sha256": "31c5c4f6a56ae594fabb6e4f7093f4960b0f1397e0e25c4900804e23e4ec25dc",
+      "_shared": "ZAF (SACU)",
+      "positions_count": 8562,
+      "code_digits": 8,
+      "validation_status": "verified"
+    },
+    "NAM": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/NAM_tariffs.json",
+      "artifact_url": null,
+      "sha256": "a315efcf13b9f17f0ed677fab8d3cbfe64a5f562aca7868f14bcffda3f2f7ebf",
+      "_shared": "ZAF (SACU)",
+      "positions_count": 8562,
+      "code_digits": 8,
+      "validation_status": "verified"
+    },
+    "SWZ": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/SWZ_tariffs.json",
+      "artifact_url": null,
+      "sha256": "48c38a592819d2c09a86e2ca0c068b8f42bae77bfed21718c4aa27a3cf1049c0",
+      "_shared": "ZAF (SACU)",
+      "positions_count": 8562,
+      "code_digits": 8,
+      "validation_status": "verified"
+    },
     "MDG": {
       "organism": "Direction Générale des Douanes Malagasy",
       "version": "2026.1",
@@ -226,129 +334,184 @@
       "reuse_conditions": "Code des Douanes 2006-023. Publication officielle ISO 9001. Utilisation informative.",
       "legal_authority": "Code des Douanes 2006-023 + Loi de Finances 2026 + LFR 2026",
       "validation_status": "verified",
-      "taxes": ["DD", "TVA", "APEi"],
+      "taxes": [
+        "DD",
+        "TVA",
+        "APEi"
+      ],
       "zlecaf": "Ratifié — Guide rapide Règles d'origine ZLECAf publié par douanes.gov.mg"
     },
     "ZMB": {
-      "organism": "Zambia Revenue Authority (ZRA)",
+      "organism": "ZRA — Zambia Revenue Authority, Customs Services Division",
       "version": "2026.1",
       "artifact_path": "backend/data/crawled/ZMB_tariffs.json",
-      "artifact_url": null,
+      "artifact_url": "https://www.zra.org.zm/wp-content/uploads/2026/08/Customs-Tariff-Book.pdf",
       "source_type": "official",
-      "url": "https://www.zra.org.zm/wp-content/uploads/2026/08/Customs-Tariff-Book.pdf",
-      "retrieved_at": "2026-09-09",
-      "edition": "Customs Tariff Book 2026",
-      "application_period": "2026-01-01 to 2026-12-31",
+      "url": "https://www.zra.org.zm",
+      "retrieved_at": "2026-09-18",
+      "edition": "Customs and Excise Tariff — nomenclature SH de l'OMD, « Last updated in January 2026 », 682 pages ; reproduit la Premiere annexe (s.72) de la Customs and Excise Act",
+      "application_period": "janvier 2026",
       "hs_version": "HS 2022",
       "code_digits": 8,
-      "positions_count": 8803,
-      "sha256": "836adcabd867967cca767ec470ac7df2ef6b0da454df62fdb5a8dc8eff9baefa",
+      "positions_count": 6753,
+      "sha256": "f2756c61a728b73ed948ccf936f752a0990403f3b132f4655f08c2dcdd455cd3",
       "reuse_conditions": "Customs and Excise Act (Cap 322). Publication officielle ZRA.",
-      "legal_authority": "Customs and Excise Act Cap 322 + VAT Act 1996",
+      "legal_authority": "Customs and Excise Act, s.72 (Premiere annexe), s.88 (assiette de l'accise a l'importation), Cinquieme annexe (valeur en douane), Additional Zambian Rules regle 2 ; Value Added Tax Act Cap. 331, s.9 et s.10(3)",
       "validation_status": "verified",
-      "taxes": ["DD", "VAT (16%)", "EXC"],
-      "zlecaf": "PARTNER_NOTICE_REQUIRED — SI 92/2024, dataset ZMB (5445 lignes)"
+      "taxes": [
+        "DD (customs duty)",
+        "EXC (excise duty)",
+        "TVA (VAT, lettre S/E/Z au tarif)"
+      ],
+      "zlecaf": "PARTNER_NOTICE_REQUIRED — SI 92/2024, dataset ZMB (5445 lignes)",
+      "source_sha256": "4e625caf4b9ce399cf4b61cfa6d8cc92350648a24ec1801b1e88da2304c71101",
+      "note": "Remplace la moyenne simple MFN au niveau SH6 (WITS/UNCTAD-TRAINS, 5 388 positions sans designation) par le tarif national a huit chiffres. Le fichier publie par ZRA et celui deposé par l'utilisateur ont la MEME taille a l'octet pres : le tarif est donc servi depuis une URL citable.",
+      "notes": "6 753 positions — LES 6 753 codes distincts que le PDF porte, verifie par recoupement — et 98 chapitres. CASCADE ETABLIE SECTION PAR SECTION : DD sur CIF (Cinquieme annexe cl. 2 et 3(1)(a)(vii)-(viii) — prix paye + fret + assurance, les transports etant ajoutes DEUX FOIS, avant et apres la sortie du pays d'exportation) ; EXC sur CIF+DD (s.88 : « the customs value […] and any customs duty payable ») ; TVA sur CIF+DD+EXC (VAT Act s.10(3) : « any duty or other impost payable otherwise than under this Act »). DROIT ALTERNATIF LIQUIDABLE : la regle 2(b) des Additional Zambian Rules l'enonce — « the rate which yields the greater amount of duty shall apply » — donc 121 positions « X% or K Y per unit » sont servies sous LE_PLUS_ELEVE, a la difference du tarif SARS qui ne l'enonce pas. Le droit lui-meme est dans une NOTE DE BAS DE PAGE, appariee par son nombre d'asterisques ; la note vit parfois sur la page suivante ou en haut de celle-ci. LA COLONNE DE TVA PORTE UNE LETTRE, PAS UN TAUX, et le tarif ne publie aucune legende : S (standard, 6 032 positions), E (exempt — premiere annexe du VAT Act, 598), Z (taux zero — seconde annexe, 12). E et Z sont des ZEROS PUBLIES, pas des lacunes. RESERVE SUR LE TAUX DE TVA : le texte consolide de l'Acte porte 17,5 % « unless the Minister, by statutory order, determines a lower rate » ; l'ordre en vigueur n'a PAS ete identifie. Le taux servi est 16 %, celui qu'enonce ZRA dans son VAT Guide — niveau de preuve SECONDAIRE, declare tel dans la fiche. 40 accises specifiques en kwacha (K0.25/l, K40/ton, K750/mille). 100 cellules non interpretees et 87 lignes de pages non calibrees, toutes servies SANS TAUX avec leur motif nomme. CONTROLE INDEPENDANT : une seconde lecture du PDF, sans calibrage de colonnes, concorde sur 6 178 des 6 205 lignes sans ambiguite ; les 26 ecarts sont des indisponibilites declarees, AUCUNE valeur fausse. LACUNES NOMMEES : aucune colonne preferentielle (ni SADC, ni COMESA, ni ZLECAf) ; la surtaxe de la Quatrieme annexe (s.77, emissions de carbone des vehicules 8702/8703/8704) n'est pas collectee, l'assiette de TVA servie est donc minoree la ou elle s'applique. Voir ZMB_cascade_et_lettres_TVA_2026-09-18.json.",
+      "correction_du_registre": "AVANT LE 2026-09-18, CETTE ENTREE DECRIVAIT UN DOCUMENT QUE LE DEPOT NE CONTENAIT PAS. Elle portait organism « Zambia Revenue Authority (ZRA) », edition « Customs Tariff Book 2026 », positions_count 8803, source_type official et validation_status verified — alors que backend/data/crawled/ZMB_tariffs.json etait une moyenne WITS/UNCTAD-TRAINS de 5 613 positions SH6, se declarant elle-meme « WITS / UNCTAD-TRAINS (Banque mondiale) — MFN applique SH6 ». L'EMPREINTE, ELLE, ETAIT JUSTE : elle pointait bien le fichier WITS. C'est la PROSE qui decrivait autre chose. Le chiffre de 8 803 etait en outre un decompte d'OCCURRENCES de codes dans le PDF (8 812 exactement), non de positions : le tarif en porte 6 753 distinctes. Un validation_status « verified » ne vaut rien sans un decompte qui concorde avec l'artefact."
     },
     "LBY": {
       "organism": "Libyan Customs Authority — customs.gov.ly",
       "version": "2022.1",
       "artifact_path": "backend/data/crawled/LBY_tariffs.json",
-      "artifact_url": null,
+      "artifact_url": "https://customs.gov.ly/wp-content/uploads/2023/12/التعريفة-الجمركية-.2022-.xlsx",
       "source_type": "official",
       "url": "https://customs.gov.ly/wp-content/uploads/2023/12/التعريفة-الجمركية-.2022-.xlsx",
-      "retrieved_at": "2026-09-09",
+      "retrieved_at": "2026-09-18",
       "edition": "التعريفة الجمركية 2022 (Tarif douanier 2022)",
       "application_period": "2022-01-01 to next amendment",
       "hs_version": "HS 2017",
       "code_digits": 8,
       "positions_count": 5920,
-      "sha256": "49644077114938ec95f38401fc5f74d146670d6e34ab6ebe930dc592cd4dcfbb",
-      "reuse_conditions": "Données publiques de la douane libyenne. Textes arabes verbatim.",
+      "sha256": "7d4c83398125910cfc50393f3c716b5c90930305aa6498e518ad798e3fd82499",
+      "reuse_conditions": "Données publiques de la douane libyenne. Textes arabes verbatim. Empreinte du XLSX d'origine : f3bd72e688870986e80bd50fd9d0659b0333ab6e0fddca7a0891f957a532e4b6, recalculée le 2026-09-18.",
       "legal_authority": "Customs Law of Libya",
-      "validation_status": "to_verify",
-      "taxes": ["DD", "Arab League preferential rate"],
-      "note": "Édition 2022 — modifications ultérieures non confirmées. Statut 'à vérifier' jusqu'à collecte des mises à jour."
+      "validation_status": "verified",
+      "taxes": [
+        "DD",
+        "TSP",
+        "TP",
+        "LIGUE_ARABE"
+      ],
+      "note": "Le fichier sert désormais le TARIF NATIONAL 2022 position par position (5 920 positions à huit chiffres, 96 chapitres, désignations arabes), et non plus la moyenne SH6 WITS/UNCTAD-TRAINS qu'il portait malgré cette entrée. Colonnes du tarif : فئة الضريبة (le prélèvement) et التعريفة التفضيلية لدول جامعة الدول العربية (colonne préférentielle, rangée sous le régime LIGUE_ARABE et JAMAIS dans la cascade NPF). PIÈGES CONSIGNÉS : le même taux s'écrit « 0.05 » et « 5% » dans la même colonne (4 382 contre 356) — une lecture naïve liquiderait 73 % du tarif à un centième de sa valeur ; et la feuille « ورقة2 » aligne 1 040 896 lignes dont 422 codées. 62 positions portent « ممنوع استيراده » : importation interdite, portée comme restriction et sans aucun droit. PAS DE TVA en Libye — ne pas en ajouter une. TSP (4 %) et TP (2 %) sont des compléments PwC hors tarif, SANS assiette établie, donc non liquidables : voir LBY_assiette_TSP_TP_2026-09-17.json et LBY_nature_taxe_douaniere_2026-09-18.json."
     },
     "MUS": {
       "organism": "Mauritius Revenue Authority (MRA) — Customs Department",
-      "version": "2026.1",
+      "version": "2026.2",
       "artifact_path": "backend/data/crawled/MUS_tariffs.json",
       "artifact_url": null,
       "source_type": "official",
       "url": "https://www.mra.mu/download/TariffInf130826.pdf",
-      "retrieved_at": "2026-09-09",
+      "retrieved_at": "2026-09-18",
       "edition": "Customs Tariff Schedules (Integrated Tariff) — HS 2022, as at 13 August 2026",
       "application_period": "2026-08-13 to next amendment",
       "hs_version": "HS 2022",
       "code_digits": 8,
-      "positions_count": 5300,
-      "sha256": "2e4308ee758d2860eda0acb9307b3895cab8932ccdac91befabc7dbe3b7ea2d6",
+      "positions_count": 6941,
+      "sha256": "d4c7cd661c7dfe9f9fef0721e8cee0c4e84dac5981ab77521ee249c4ae5e8675",
       "reuse_conditions": "Customs Tariff Act 59 of 1969. MRA précise: 'Only the latest of the legal texts make authority'. Utilisation informative non opposable.",
       "legal_authority": "Customs Tariff Act 59 of 1969 + Customs Regulations 2021",
       "validation_status": "verified",
-      "taxes": ["DD (General)", "Excise Duty", "VAT"],
-      "preferential_columns": ["COMESA Group I", "COMESA Group II", "SADC", "IOC", "INDIA", "PAKISTAN", "EC", "TÜRKIYE", "UK", "CHINA", "AfCFTA", "UAE"],
-      "zlecaf": "5300 positions avec taux AfCFTA — colonne AfCFTA sur toutes les lignes"
+      "taxes": [
+        "DD (General)",
+        "Excise Duty",
+        "VAT"
+      ],
+      "preferential_columns": [
+        "COMESA Group I",
+        "COMESA Group II",
+        "SADC",
+        "IOC",
+        "INDIA",
+        "PAKISTAN",
+        "EC",
+        "TÜRKIYE",
+        "UK",
+        "CHINA",
+        "AfCFTA",
+        "UAE"
+      ],
+      "zlecaf": "5300 positions avec taux AfCFTA — colonne AfCFTA sur toutes les lignes",
+      "notes": "Tarif national intégré MRA (Customs Tariff Schedules, HS 2022, as at 13 August 2026), 807 pages, 6 941 positions à huit chiffres — remplace l'extrait SH6 WITS/UNCTAD-TRAINS qui servait 5 619 positions sans aucune désignation. Empreinte du PDF source : 26c0e4c6764096639bfb3cbc4dd683eb389c99d45758d2344f7df17c9e65fe11. Assiettes établies : droit de douane sur CIF (Customs Act 1988, s.18(1) et s.18A) ; TVA sur CIF+DD+EXC (VAT Act 1998, s.13 — l'accise entre dans l'assiette). L'assiette de l'accise n'est établie par aucun de ces textes : elle reste sans assiette, donc non liquidable. Voir la fiche MUS_assiettes_DD_TVA_2026-09-18.json."
     },
     "MOZ": {
       "organism": "Direcção Geral das Alfândegas — JUE (Janela Única Eletrónica)",
-      "version": "2026.1",
+      "version": "2026.2",
       "artifact_path": "backend/data/crawled/MOZ_tariffs.json",
       "artifact_url": null,
       "source_type": "official",
       "url": "https://jue.mcnet.co.mz/mcnet/portal/homepage",
-      "retrieved_at": "2026-09-09",
-      "edition": "API JUE — données en ligne",
+      "retrieved_at": "2026-09-18",
+      "edition": "Pauta Aduaneira — extrait du système douanier national (colonnes DIREITOS_GERAL, ICE_AD_VAL, ICE_VAL_MIN, SOBRETX, TXSOBVAL, IVA)",
       "application_period": "current (dates de validité par taxe dans l'API)",
       "hs_version": "HS 2022",
       "code_digits": 8,
-      "positions_count": 421,
-      "sha256": "a34999e367fe2faaf0fff0bf9619fbf4310245aa45006e3e43076a3692f44c7f",
+      "positions_count": 5822,
+      "sha256": "12d0e01602ad8bdd22a0cdde5b1b4d71194fe33b4095ebee531f9e7303d35a2f",
       "reuse_conditions": "Données publiques de la douane mozambicaine via JUE. Utilisation informative.",
-      "legal_authority": "Customs regulations of Mozambique",
+      "legal_authority": "Lei n.º 11/2016 de 30 de Dezembro (Pauta Aduaneira, Instruções Preliminares) ; Código do IVA, Lei n.º 32/2007",
       "validation_status": "verified",
-      "taxes": ["DD (DIREITOS)", "TVA", "DA (excise)"],
-      "note": "Couverture partielle: l'API ne retourne que les positions avec taux publiés. Les positions sans taux restent en WITS."
+      "taxes": [
+        "DD (DIREITOS)",
+        "TVA",
+        "DA (excise)"
+      ],
+      "note": "Couverture partielle: l'API ne retourne que les positions avec taux publiés. Les positions sans taux restent en WITS.",
+      "notes": "5 822 positions à huit chiffres avec leur libellé portugais — remplace l'extrait SH6 WITS/UNCTAD-TRAINS qui servait 5 388 positions sans aucune désignation. Cascade établie par la Lei n.º 11/2016 art. 4 et art. 15 : DD et sobretaxa sur CIF, ICE sur CIF+DD, IVA sur CIF+DD+ICE+SOBRETX. Une colonne d'IVA vide est une EXONÉRATION (Código do IVA art. 9). RÉSERVE DE PROVENANCE : export de base de données, non un document publié — contrôlé contre le barème de la Lei n.º 11/2016, 1 131 concordances sur 1 142 positions communes. L'extrait n'a PAS les colonnes préférentielles SADC et UE que le barème publié porte. Voir MOZ_cascade_et_exonerations_IVA_2026-09-18.json."
     },
     "SYC": {
       "organism": "Seychelles Revenue Commission (SRC) — Customs Division",
       "version": "2022.1",
       "artifact_path": "backend/data/crawled/SYC_tariffs.json",
-      "artifact_url": null,
+      "artifact_url": "https://src.gov.sc/wp-content/uploads/2025/10/SI-113-2022-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf",
       "source_type": "official",
-      "url": "https://src.gov.sc/wp-content/uploads/2022/11/SCHEDULE-1-Excise-Tax-Rates.pdf",
-      "retrieved_at": "2026-09-09",
-      "edition": "Schedule 1 — Excise Tax Rates (Customs Management Act 2011)",
-      "application_period": "2022-11 to next amendment",
-      "hs_version": "HS 2017",
+      "url": "https://src.gov.sc",
+      "retrieved_at": "2026-09-19",
+      "edition": "Customs Management (Tariff and Classification of Goods) Regulations, 2022 — S.I. 113 of 2022, Supplement to Official Gazette du 28 octobre 2022, 827 pages, pris sous la s.270 du Customs Management Act, 2011. Modifie par S.I. 7 of 2024, dont les douze insertions sont portees avec leur source propre.",
+      "application_period": "a compter du 1er novembre 2022",
+      "hs_version": "HS 2022",
       "code_digits": 8,
-      "positions_count": 162,
-      "sha256": "9c39470145e0ecc574cb8740e2f09d2e81748c4a8e4d07e97768a3bc1ad82c45",
-      "reuse_conditions": "Customs Management Act 2011. Publication officielle SRC.",
-      "legal_authority": "Customs Management Act 2011, Schedule 1",
+      "positions_count": 6019,
+      "sha256": "c99030a8bf2eab13d6710a1109c00a0991417be3dcecea7a8435b45622fd92ef",
+      "source_sha256": "8eb2452b3e242d536ec68717d893d373fe94d6407e19b1d34f3e3967246cac3f",
+      "reuse_conditions": "Customs Management Act, 2011. Publication officielle SRC au Gazette.",
+      "legal_authority": "Customs Management Act, 2011 (Act 22 of 2011), s.270 et s.41 ; Customs Management Regulations, 2014 (S.I. 42 of 2014), reg. 5 et reg. 8(1)(e) — valeur en douane ; S.I. 113 of 2022, reg. 2 et Schedules I a VI",
       "validation_status": "verified",
-      "taxes": ["DA (Excise Tax)"],
-      "note": "Schedule 1 (accises) uniquement. Le tarif douanier complet (General Duty + VAT) reste en WITS."
+      "taxes": [
+        "DD (col. « MFN » — droit de douane de droit commun ; assiette CIF)",
+        "COMESA, EU_UK (Schedules III et V) — regimes preferentiels, sans assiette",
+        "SADC_2022 a SADC_2026 (Schedule IV) — CINQ taux, un par annee civile",
+        "AFCFTA_2022 a AFCFTA_2026 (Schedule VI) — CINQ taux, un par annee civile",
+        "COI (Schedule II) — taux DEDUIT du NPF, cinq points de moins, cinq exceptions"
+      ],
+      "zlecaf": "CALENDRIER DE DEMANTELEMENT PUBLIE AU BAREME : cinq taux ZLECAf, un par annee civile de 2022 a 2026, sur 5 997 positions. Aucun des tarifs integres avant celui-ci ne publie de calendrier. Le taux de l'annee en vigueur est aussi servi sous le nom AFCFTA. ELIGIBILITE PAR LISTE FERMEE : la Schedule VI enumere 38 Etats parties — une origine absente de la liste n'y a pas droit. Au-dela de 2026 le reglement ne dit plus rien et rien n'est reconduit.",
+      "note": "Remplace une moyenne simple MFN au niveau SH6 (WITS/UNCTAD-TRAINS, 5 396 positions) par le tarif national a huit chiffres. L'entree precedente decrivait la seule Schedule 1 des accises (162 positions) et notait elle-meme : « Le tarif douanier complet (General Duty + VAT) reste en WITS ». Ce n'est plus le cas pour le droit de douane. L'ACCISE n'est pas a ce bareme — elle releve de l'Excise Tax Act et de S.I. 110 of 2023 — et la TVA non plus : son assiette est etablie (fiche SYC_assiette_TVA), son TAUX ne l'est pas.",
+      "notes": "6 019 positions, 97 chapitres, TREIZE colonnes de taux. UNE SEULE est un droit du, la colonne « MFN » ; les douze autres sont des regimes preferentiels et ne portent aucune assiette. LA CARTE DES COLONNES EST DANS LE REGLEMENT (reg. 2, qui renvoie chaque regime a son annexe) et dans l'en-tete du barème, repete sur ses 591 pages. LES ABSCISSES NE SONT PAS ECRITES EN DUR : la grille se deplace — la colonne NPF tombe a 256 page 35 et a 354 page 132 — et ce sont les mots de l'en-tete qui donnent les treize abscisses de chaque page ; 582 des 591 pages en portent un complet, les neuf autres sont declarees. CONTROLE INDEPENDANT, qui n'utilise ni l'en-tete ni les ancres : 17 231 concordances sur trois colonnes, AUCUNE valeur fausse. ASSIETTE : la s.41 de l'Act DELEGUE l'evaluation au reglement ; S.I. 42 of 2014 reg. 5 retient la valeur transactionnelle et reg. 8(1)(e) y ajoute transport, manutention et assurance jusqu'au port — le CIF. 13 positions sont servies SANS droit de douane, avec leur motif sur la ligne ; jamais un zero. Fiche : backend/data/legal_refs/zlecaf_application/SYC_treize_colonnes_calendrier_zlecaf_et_valeur_2026-09-19.json.",
+      "correction_du_registre": "L'entree precedente se declarait « official » et « verified » avec 162 positions, mais elle decrivait la Schedule 1 des ACCISES, pas le tarif douanier — et elle le disait dans sa note. Son `artifact_path` pointait neanmoins vers SYC_tariffs.json, qui portait en realite 5 396 moyennes SH6 de WITS. Le chemin et la prose ne parlaient donc pas du meme fichier. Remplacee, et non corrigee en silence."
     },
     "MRT": {
-      "organism": "Direction Générale des Douanes (source: Soa Transit, secondaire)",
-      "version": "2020.1",
+      "organism": "Douane mauritanienne (douanes.mr) — source primaire",
+      "version": "2021",
       "artifact_path": "backend/data/crawled/MRT_tariffs.json",
-      "artifact_url": null,
-      "source_type": "secondary",
-      "url": "https://assets.zyrosite.com/YrD48kPMbMc5la0W/tarif-des-douanes-2020-AoP4o0poknSZEDBE.pdf",
-      "retrieved_at": "2026-09-09",
-      "edition": "Tarif des Douanes 2020 (09/01/2020)",
-      "application_period": "2020-01-01 to next amendment (obsolète?)",
+      "artifact_url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
+      "source_type": "primary",
+      "url": "https://www.douanes.mr/uploads/pics/tarif_fr_2021.pdf",
+      "retrieved_at": "2026-09-18",
+      "edition": "Tarif des Douanes 2021 (douanes.mr, 396 pages, texte extractible)",
+      "application_period": "2021 — modifications ultérieures non collectées",
       "hs_version": "HS 2017",
       "code_digits": 10,
       "positions_count": 6129,
-      "sha256": "68f17520e713843a46a5010c2e83916e7972ac34666cbcc9576350fad0637a87",
-      "reuse_conditions": "Source secondaire (transitaire). Présenté comme indicatif. Nécessite confirmation de provenance + collecte modifications 2021-2026.",
+      "sha256": "eaee2c0a904b08f73c7576373c7064bf39fa0e7148699989c716306c1a1e6bf4",
+      "reuse_conditions": "Source primaire (PDF officiel douanes.mr, texte extractible). Empreinte du PDF : 3585fbe23bf6b7be3c4e9eb963fdb31bf0336b059bf0019e4b471f178829c182, recalculée le 2026-09-18 et identique à celle du rapport de collecte. Parseur scripts/parse_tarif_mrt_2021.py + suite de vérification intégrée (V1-V6) + croisement WITS 99,2 %.",
       "legal_authority": "Code des Douanes Mauritanie",
-      "validation_status": "to_verify",
-      "taxes": ["DD", "RS", "TVA", "PCS", "PSC", "IMF"],
-      "note": "Statut 'à vérifier'. Aucun classement 'tarif actuel validé' à ce stade. Reconstruire chronologie des modifications 2021-2026."
+      "validation_status": "verified",
+      "taxes": [
+        "DD",
+        "RS",
+        "PC",
+        "TVA"
+      ],
+      "note": "Nomenclature nationale à dix chiffres, 6 129 sous-positions — remplace la source secondaire (transitaire, tarif 2020) précédemment référencée ici. TVA 16 %, assiette CIF+TOUS_SAUF_TVA sur texte primaire (fiche MRT_assiette_TVA_2026-09-17). Formalités : cadre général et sectoriel (Code des douanes art. 33-36, 111-117, 157 — fiche MRT_formalites_reglementation_2026-09-18). RÉSERVE : le tarif publie quatre colonnes (US, DD, RS, PC) et n'en définit aucune. RS = redevance statistique 1 % (OMC WT/TPR/S/371 § 3.47), mais son ASSIETTE n'est établie par aucun texte consulté, pas plus que celle du PC ni le rattachement de ce dernier au prélèvement communautaire CEDEAO — voir la fiche MRT_colonnes_tarif_2026-09-18. PCS, PSC et IMF, que l'entrée précédente listait, n'ont aucune colonne dans ce tarif."
     },
     "KEN": {
       "organism": "Kenya Revenue Authority (KRA) — EAC CET 2022",
@@ -367,15 +530,68 @@
       "reuse_conditions": "EAC CET — tarif communautaire officiel.",
       "legal_authority": "EAC Legal Notice EAC/321/2022",
       "validation_status": "verified",
-      "taxes": ["DD (CET)", "VAT", "IDF", "RDL"],
+      "taxes": [
+        "DD (CET)",
+        "VAT",
+        "IDF",
+        "RDL"
+      ],
       "zlecaf": "APPLIED — EAC/321/2022, 21 origines acceptées, dataset EAC (4970 lignes), calendrier par année"
     },
-    "TZA": {"version": null, "artifact_path": "backend/data/crawled/TZA_tariffs.json", "artifact_url": null, "sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
-    "UGA": {"version": null, "artifact_path": "backend/data/crawled/UGA_tariffs.json", "artifact_url": null, "sha256": "c2fd9f0d4c8adb545458d5ba6c7bfbec4a93fa3695f5461beddf7f440430f2d4", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
-    "RWA": {"version": null, "artifact_path": "backend/data/crawled/RWA_tariffs.json", "artifact_url": null, "sha256": "1179c1cb7f82adec7315a584da3e5e4fd560666da4572fffd95d2d9b2484020c", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
-    "BDI": {"version": null, "artifact_path": "backend/data/crawled/BDI_tariffs.json", "artifact_url": null, "sha256": "e0a13e7e1414e152e6038dce80bce940fdc0959ffd890d2664c9b0cef30be275", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
-    "SSD": {"version": null, "artifact_path": "backend/data/crawled/SSD_tariffs.json", "artifact_url": null, "sha256": "f275f381be8883cecd2a982c5d236ab9fa84602a370517cd29691a64174d7b1b", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
-    "COD": {"version": null, "artifact_path": "backend/data/crawled/COD_tariffs.json", "artifact_url": null, "sha256": "5a2d1cfceefd2799cdd04d8776f5a5f0799d36b8419656cec2751b49479f667e", "_shared": "KEN (EAC CET)", "positions_count": 5984, "validation_status": "verified"},
+    "TZA": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/TZA_tariffs.json",
+      "artifact_url": null,
+      "sha256": "e5f9a044b91cc4c5e7497cfa7de360b650d4188e978367f6c1cfca246e1e62c6",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
+    "UGA": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/UGA_tariffs.json",
+      "artifact_url": null,
+      "sha256": "c2fd9f0d4c8adb545458d5ba6c7bfbec4a93fa3695f5461beddf7f440430f2d4",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
+    "RWA": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/RWA_tariffs.json",
+      "artifact_url": null,
+      "sha256": "1179c1cb7f82adec7315a584da3e5e4fd560666da4572fffd95d2d9b2484020c",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
+    "BDI": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/BDI_tariffs.json",
+      "artifact_url": null,
+      "sha256": "e0a13e7e1414e152e6038dce80bce940fdc0959ffd890d2664c9b0cef30be275",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
+    "SSD": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/SSD_tariffs.json",
+      "artifact_url": null,
+      "sha256": "f275f381be8883cecd2a982c5d236ab9fa84602a370517cd29691a64174d7b1b",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
+    "COD": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/COD_tariffs.json",
+      "artifact_url": null,
+      "sha256": "5a2d1cfceefd2799cdd04d8776f5a5f0799d36b8419656cec2751b49479f667e",
+      "_shared": "KEN (EAC CET)",
+      "positions_count": 5984,
+      "validation_status": "verified"
+    },
     "BEN": {
       "organism": "Direction Générale des Douanes — douanes.gouv.bj + TEC CEDEAO",
       "version": "2026.1",
@@ -390,22 +606,227 @@
       "code_digits": 13,
       "positions_count": 6129,
       "validation_status": "verified",
-      "taxes": ["DD", "RS", "PCS", "PCC", "PUA", "TVA"],
-      "taxes_missing": ["TIC"],
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PCC",
+        "PUA",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "TIC"
+      ],
       "source_gap": "TIC applicable mais taux non crawlé — signalé dans le schéma"
     },
-    "BFA": {"version": null, "artifact_path": "backend/data/crawled/BFA_tariffs.json", "artifact_url": null, "sha256": "83c4222c2d9cedc3453e9d8aac6ff5b3c50e98f54a6c589a6e9aed34fcd0b667", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PC-AES", "TVA"], "taxes_missing": ["PCC", "PUA", "TIC"]},
-    "CIV": {"version": null, "artifact_path": "backend/data/crawled/CIV_tariffs.json", "artifact_url": null, "sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "DUS", "PSV", "SPEC", "TVA", "TSB_PT", "TUB", "TUF"]},
-    "GIN": {"version": null, "artifact_path": "backend/data/crawled/GIN_tariffs.json", "artifact_url": null, "sha256": "0cba205ad60369ccbb1683a5ae2288db76431dd84e7911e4f708febee9d93f56", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "PCC", "PUA", "TVA"], "taxes_missing": ["RS", "PCS", "TIC"]},
-    "GMB": {"version": null, "artifact_path": "backend/data/crawled/GMB_tariffs.json", "artifact_url": null, "sha256": "df507892b7d475647b66b8ec80b1552b8451b719c3953208bbac82a178aea772", "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre", "taxes": ["DD", "RS", "PCC", "TVA"], "taxes_non_transposees": ["PCS", "PUA"]},
-    "GNB": {"version": null, "artifact_path": "backend/data/crawled/GNB_tariffs.json", "artifact_url": null, "sha256": "292c4b3bcda33103f40caba44f70623c6655a2f16ac46a67005559804a1556ef", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PCC", "PUA", "TVA"]},
-    "LBR": {"version": null, "artifact_path": "backend/data/crawled/LBR_tariffs.json", "artifact_url": null, "sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40", "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre", "taxes": ["DD", "RS", "PCC", "TVA"], "taxes_non_transposees": ["PCS", "PUA"]},
-    "MLI": {"version": null, "artifact_path": "backend/data/crawled/MLI_tariffs.json", "artifact_url": null, "sha256": "ac016ec03cde8facc64ae6a2a366469d64fac10d78f44ab3b2becbfb04f20ad6", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PC-AES", "TVA"], "taxes_missing": ["PCC", "PUA", "TIC"]},
-    "NER": {"version": null, "artifact_path": "backend/data/crawled/NER_tariffs.json", "artifact_url": null, "sha256": "af07aa9e4e0e22c8cb38f59055668a04fcb37d83ffed3f711de2eb06391ad629", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PC-AES", "TVA"], "taxes_missing": ["PCC", "PUA", "TIC"]},
-    "SEN": {"version": null, "artifact_path": "backend/data/crawled/SEN_tariffs.json", "artifact_url": null, "sha256": "733fe61c81cc2b95341cae7c9189cc6520e73c86b648372f27068bdb095f37b0", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PCC", "PUA", "TVA"], "taxes_missing": ["TIC"]},
-    "SLE": {"version": null, "artifact_path": "backend/data/crawled/SLE_tariffs.json", "artifact_url": null, "sha256": "9c5a5d7b2ec90723c8a8bd9e06136b2d1f239086e01650ea131a11fb0ed1df39", "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre", "taxes": ["DD", "RS", "PCC", "TVA"], "taxes_non_transposees": ["PCS", "PUA"]},
-    "TGO": {"version": null, "artifact_path": "backend/data/crawled/TGO_tariffs.json", "artifact_url": null, "sha256": "5a2f5e06f1ca8e20a8a04fbe05c8d5eaa01e2f534cbb08f6c64a082e8e7d9bce", "_shared": "BEN (UEMOA TEC)", "taxes": ["DD", "RS", "PCS", "PCC", "PUA", "TVA"]},
-    "CPV": {"version": null, "artifact_path": "backend/data/crawled/CPV_tariffs.json", "artifact_url": null, "sha256": "67bd2c2b4d57190be7f92609e83db0a1c514e6faa29628b94cf01f36ed132fab", "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre", "taxes": ["DD", "RS", "PCC", "TVA"], "taxes_non_transposees": ["PCS", "PUA"]},
+    "BFA": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/BFA_tariffs.json",
+      "artifact_url": null,
+      "sha256": "83c4222c2d9cedc3453e9d8aac6ff5b3c50e98f54a6c589a6e9aed34fcd0b667",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PC-AES",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "PCC",
+        "PUA",
+        "TIC"
+      ]
+    },
+    "CIV": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/CIV_tariffs.json",
+      "artifact_url": null,
+      "sha256": "5e76a451a4438b23ae45b47708de0c80cb144049f0e78696000a006aa1a04221",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "DUS",
+        "PSV",
+        "SPEC",
+        "TVA",
+        "TSB_PT",
+        "TUB",
+        "TUF"
+      ]
+    },
+    "GIN": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/GIN_tariffs.json",
+      "artifact_url": null,
+      "sha256": "0cba205ad60369ccbb1683a5ae2288db76431dd84e7911e4f708febee9d93f56",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "PCC",
+        "PUA",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "RS",
+        "PCS",
+        "TIC"
+      ]
+    },
+    "GMB": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/GMB_tariffs.json",
+      "artifact_url": null,
+      "sha256": "df507892b7d475647b66b8ec80b1552b8451b719c3953208bbac82a178aea772",
+      "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCC",
+        "TVA"
+      ],
+      "taxes_non_transposees": [
+        "PCS",
+        "PUA"
+      ]
+    },
+    "GNB": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/GNB_tariffs.json",
+      "artifact_url": null,
+      "sha256": "292c4b3bcda33103f40caba44f70623c6655a2f16ac46a67005559804a1556ef",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PCC",
+        "PUA",
+        "TVA"
+      ]
+    },
+    "LBR": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/LBR_tariffs.json",
+      "artifact_url": null,
+      "sha256": "c10f39802f5206797caa4a04bfa930c0610b945bfbb4b714061842bf98756b40",
+      "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCC",
+        "TVA"
+      ],
+      "taxes_non_transposees": [
+        "PCS",
+        "PUA"
+      ]
+    },
+    "MLI": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/MLI_tariffs.json",
+      "artifact_url": null,
+      "sha256": "ac016ec03cde8facc64ae6a2a366469d64fac10d78f44ab3b2becbfb04f20ad6",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PC-AES",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "PCC",
+        "PUA",
+        "TIC"
+      ]
+    },
+    "NER": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/NER_tariffs.json",
+      "artifact_url": null,
+      "sha256": "af07aa9e4e0e22c8cb38f59055668a04fcb37d83ffed3f711de2eb06391ad629",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PC-AES",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "PCC",
+        "PUA",
+        "TIC"
+      ]
+    },
+    "SEN": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/SEN_tariffs.json",
+      "artifact_url": null,
+      "sha256": "733fe61c81cc2b95341cae7c9189cc6520e73c86b648372f27068bdb095f37b0",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PCC",
+        "PUA",
+        "TVA"
+      ],
+      "taxes_missing": [
+        "TIC"
+      ]
+    },
+    "SLE": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/SLE_tariffs.json",
+      "artifact_url": null,
+      "sha256": "9c5a5d7b2ec90723c8a8bd9e06136b2d1f239086e01650ea131a11fb0ed1df39",
+      "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCC",
+        "TVA"
+      ],
+      "taxes_non_transposees": [
+        "PCS",
+        "PUA"
+      ]
+    },
+    "TGO": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/TGO_tariffs.json",
+      "artifact_url": null,
+      "sha256": "5a2f5e06f1ca8e20a8a04fbe05c8d5eaa01e2f534cbb08f6c64a082e8e7d9bce",
+      "_shared": "BEN (UEMOA TEC)",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCS",
+        "PCC",
+        "PUA",
+        "TVA"
+      ]
+    },
+    "CPV": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/CPV_tariffs.json",
+      "artifact_url": null,
+      "sha256": "67bd2c2b4d57190be7f92609e83db0a1c514e6faa29628b94cf01f36ed132fab",
+      "_shared": "BEN (TEC CEDEAO). PCS et PUA non transposés : prélèvements UEMOA, ce pays n'en est pas membre",
+      "taxes": [
+        "DD",
+        "RS",
+        "PCC",
+        "TVA"
+      ],
+      "taxes_non_transposees": [
+        "PCS",
+        "PUA"
+      ]
+    },
     "CMR": {
       "organism": "CEMAC Tarif des Douanes + douanes.cm",
       "version": "2026.1",
@@ -420,14 +841,90 @@
       "code_digits": 10,
       "positions_count": 5239,
       "validation_status": "verified",
-      "taxes": ["DD", "TCI", "RI", "TVA", "DA", "TS"],
+      "taxes": [
+        "DD",
+        "TCI",
+        "RI",
+        "TVA",
+        "DA",
+        "TS"
+      ],
       "zlecaf": "OFFER_ONLY — dataset CEMAC (5284 lignes)"
     },
-    "COG": {"version": null, "artifact_path": "backend/data/crawled/COG_tariffs.json", "artifact_url": null, "sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe", "_shared": "CMR (CEMAC TEC)", "taxes": ["DD", "TCI", "TS", "OHADA", "TVA", "DA"]},
-    "GAB": {"version": null, "artifact_path": "backend/data/crawled/GAB_tariffs.json", "artifact_url": null, "sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3", "_shared": "CMR (CEMAC TEC)", "taxes": ["DD", "TCI", "CIA", "TVA", "DA"]},
-    "TCD": {"version": null, "artifact_path": "backend/data/crawled/TCD_tariffs.json", "artifact_url": null, "sha256": "a0ca51a4030c9aada3d45e5e06548a5c5cda59643c42030eb3c4ee621fdd279e", "_shared": "CMR (CEMAC TEC)", "taxes": ["DD", "TCI", "TS", "PUA", "TVA", "DA"]},
-    "CAF": {"version": null, "artifact_path": "backend/data/crawled/CAF_tariffs.json", "artifact_url": null, "sha256": "021166306006d65273dd676bf0552e10bc5af83869b2d2795f03df3718ae25db", "_shared": "CMR (CEMAC TEC)", "taxes": ["DD", "TCI", "RS", "TS", "TVA", "DA"]},
-    "GNQ": {"version": null, "artifact_path": "backend/data/crawled/GNQ_tariffs.json", "artifact_url": null, "sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0", "_shared": "CMR (CEMAC TEC)", "taxes": ["DD", "TCI", "RI", "TS", "TVA", "DA"]},
+    "COG": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/COG_tariffs.json",
+      "artifact_url": null,
+      "sha256": "09987cdae241a3b1e8180be7855efb206ef3774dc185d8225213dbf29c39bdfe",
+      "_shared": "CMR (CEMAC TEC)",
+      "taxes": [
+        "DD",
+        "TCI",
+        "TS",
+        "OHADA",
+        "TVA",
+        "DA"
+      ]
+    },
+    "GAB": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/GAB_tariffs.json",
+      "artifact_url": null,
+      "sha256": "66cb8b4cc69416c0adf921aeec258b04fc0e58cbd79c120244e013b24cbfbfe3",
+      "_shared": "CMR (CEMAC TEC)",
+      "taxes": [
+        "DD",
+        "TCI",
+        "CIA",
+        "TVA",
+        "DA"
+      ]
+    },
+    "TCD": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/TCD_tariffs.json",
+      "artifact_url": null,
+      "sha256": "a0ca51a4030c9aada3d45e5e06548a5c5cda59643c42030eb3c4ee621fdd279e",
+      "_shared": "CMR (CEMAC TEC)",
+      "taxes": [
+        "DD",
+        "TCI",
+        "TS",
+        "PUA",
+        "TVA",
+        "DA"
+      ]
+    },
+    "CAF": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/CAF_tariffs.json",
+      "artifact_url": null,
+      "sha256": "021166306006d65273dd676bf0552e10bc5af83869b2d2795f03df3718ae25db",
+      "_shared": "CMR (CEMAC TEC)",
+      "taxes": [
+        "DD",
+        "TCI",
+        "RS",
+        "TS",
+        "TVA",
+        "DA"
+      ]
+    },
+    "GNQ": {
+      "version": null,
+      "artifact_path": "backend/data/crawled/GNQ_tariffs.json",
+      "artifact_url": null,
+      "sha256": "aa05b056cc07e8ee02e272a88f8316caf6668b7e70181a66d69647bc6c9eece0",
+      "_shared": "CMR (CEMAC TEC)",
+      "taxes": [
+        "DD",
+        "TCI",
+        "RI",
+        "TS",
+        "TVA",
+        "DA"
+      ]
+    },
     "NGA": {
       "organism": "Nigeria Customs Service — customs.gov.ng",
       "version": "2026.1",
@@ -442,7 +939,12 @@
       "code_digits": 10,
       "positions_count": 6363,
       "validation_status": "verified",
-      "taxes": ["ID (DD)", "VAT", "EXC", "IAT"],
+      "taxes": [
+        "ID (DD)",
+        "VAT",
+        "EXC",
+        "IAT"
+      ],
       "zlecaf": "PARTNER_NOTICE_REQUIRED — PSTC gazettée avril 2025, dataset ECOWAS"
     },
     "ETH": {
@@ -459,42 +961,76 @@
       "code_digits": 11,
       "positions_count": 6296,
       "validation_status": "verified",
-      "taxes": ["DR (DD)", "VAT", "WHR", "D2R (COMESA)", "ER (excise)", "SR (surtax)", "DSR"],
+      "taxes": [
+        "DR (DD)",
+        "VAT",
+        "WHR",
+        "D2R (COMESA)",
+        "ER (excise)",
+        "SR (surtax)",
+        "DSR"
+      ],
       "zlecaf": "PARTNER_NOTICE_REQUIRED — Regulation 574/2025, dataset ETH (5868 lignes)"
     },
     "AGO": {
-      "organism": "AGT — Administração Geral Tributária (portail SPA inaccessible)",
+      "organism": "Ministerio das Financas de Angola — Administracao Geral Tributaria (AGT)",
       "version": "2024.1",
-      "sha256": "7c1bb39f2547d72f05b36332e64f805e634a64557dfa4489b08e9ae49846c9f3",
       "artifact_path": "backend/data/crawled/AGO_tariffs.json",
-      "artifact_url": null,
-      "source_type": "wits_fallback",
-      "url": "https://www.agt.minfin.gov.ao/PortalAGT/",
-      "retrieved_at": "N/A",
-      "edition": "DLP 1/24 du 3 janvier 2024 (non crawlable)",
+      "artifact_url": "https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4z/nzcw/~edisp/minfin3770211.pdf",
+      "source_type": "official",
+      "url": "https://www.minfin.gov.ao",
+      "retrieved_at": "2026-09-19",
+      "edition": "Pauta Aduaneira dos Direitos de Importacao e Exportacao (versao 2022 do SH) et ses Instrucoes Preliminares, approuvees par le DECRETO LEGISLATIVO PRESIDENCIAL n.º 1/24 de 3 de Janeiro, Diario da Republica I Serie n.º 2, 345 pages, abrogeant le DLP n.º 10/19 de 29 de Novembro de 2019.",
+      "application_period": "a compter du 3 janvier 2024",
       "hs_version": "HS 2022",
-      "code_digits": 6,
-      "positions_count": 5388,
-      "validation_status": "not_available",
-      "taxes": ["DD", "IVA"],
-      "note": "Portail AGT = SPA AngularJS sans API publique. PDF Pauta Aduaneira non accessible à URL directe. Source secondaire Lex.ao (SPA Docusaurus). OCR à prévoir."
+      "code_digits": 8,
+      "positions_count": 5959,
+      "sha256": "c4334b5d93b46e0173688b1753577cc8ae40571d4289fdbbf0930a2020b67500",
+      "source_sha256": "cc432fc213790c7d1d8d0a5134d366d6b2dec0157bd661c54fdbea125961b470",
+      "reuse_conditions": "Publication officielle au Diario da Republica de Angola.",
+      "legal_authority": "Decreto Legislativo Presidencial n.º 1/24, Instrucoes Preliminares da Pauta : art. 2.º (abreviaturas, dont R.G, SADC, UA et ZCLCA), art. 43.º n.º 1 (« taxa Livre (0%) »), n.º 2 (colonnes 5 et 6 reservees) et n.º 4 (la taxe de service survit aux exonerations), art. 58.º n.º 3 (emolumentos gerais 2 %) et n.º 5 (ad valorem sur le valor aduaneiro) ; Codigo Aduaneiro (Decreto-Lei n.º 05/06), art. 117.º n.º 2 et art. 119.º (valor aduaneiro) ; Codigo do IVA (Lei n.º 7/19), art. 19.º (taux de 14 %)",
+      "validation_status": "verified",
+      "taxes": [
+        "DD (coluna 4, R.G — Regime Geral ; assiette CIF ; « Livre » = 0 % sur 2 152 positions)",
+        "EGA (emolumentos gerais aduaneiros, 2 % — IPP art. 58.º n.º 3, assiette CIF)",
+        "SADC (coluna 5) — colonne PUBLIEE ET VIDE, reservee par l'art. 43.º n.º 2",
+        "AFCFTA/ZCLCA (coluna 6) — colonne PUBLIEE ET VIDE, reservee par l'art. 43.º n.º 2",
+        "TVA 14 % — ABSENTE DU TARIF, completee par backend/socle/tva_nationale.json"
+      ],
+      "zlecaf": "COLONNE ZLECAf PUBLIEE ET VIDE, ET LE TEXTE DIT POURQUOI. La colonne 6, que l'en-tete intitule « U.A » et que l'article 2.º des Instrucoes Preliminares nomme ZCLCA — Zona de Comercio Livre Continental Africana — est declaree par l'article 43.º n.º 2 « reservada a aplicacao de taxas preferenciais, A SEREM DEFINIDAS EM LEGISLACAO ESPECIFICA ». Verifie sur les 5 830 positions : aucune ne porte de valeur. Servir une preference ZLECAf angolaise serait donc inventer une exoneration que le legislateur a lui-meme remise a plus tard.",
+      "note": "Remplace une moyenne simple MFN au niveau SH6 (WITS/UNCTAD-TRAINS, 5 388 positions) par le tarif national a huit chiffres lu dans le Diario promulgue. LE DOCUMENT EST UN SCAN INTEGRAL : 345 pages, zero octet de couche texte. Il est lu optiquement, colonne par colonne, sur la grille du tableau detectee dans l'image.",
+      "notes": "5 830 positions, 94 chapitres, SIX colonnes : 1 Codigo, 2 Designacao, 3 UQ, 4 R.G, 5 PREF. SADC, 6 PREF. U.A. LA CARTE DES COLONNES EST DANS LE TEXTE (art. 2.º des IPP), pas deduite de l'en-tete. « LIVRE » EST UN ZERO PUBLIE : l'art. 43.º n.º 1 en donne la valeur entre parentheses, « taxa Livre (0%) », et c'est un benefice fiscal nomme ; 2 152 positions sur 5 830 le portent, plus du tiers du tarif, et une premiere passe du collecteur les effacait toutes. DEUX PRELEVEMENTS sur la meme assiette : le droit de la colonne 4 et les emolumentos gerais aduaneiros a 2 %, tous deux ad valorem sur le valor aduaneiro (art. 58.º n.º 5) que le Codigo Aduaneiro art. 117.º n.º 2 definit comme le CIF ; les emolumentos survivent aux exonerations (art. 43.º n.º 4). CONTROLE INDEPENDANT : douze pages tirees au sort relues cellule par cellule a 400 points par pouce en mode « une seule ligne » — 187 droits relus, 185 concordants, et les deux ecarts tranches sur l'image en faveur du collecteur. LE PROJET QUI CIRCULE N'EST PAS LA LOI : un « Projecto da Pauta » avec couche texte est publie sur le meme serveur ministeriel et diverge sur 730 des 3 058 taux comparables ; aucun de ses taux n'est servi. 24 positions sans droit, 30 sans designation, chacune avec son motif. Fiches : AGO_assiette_droit_de_douane_2026-09-19.json et AGO_taux_TVA_2026-09-19.json.",
+      "correction_du_registre": "L'entree precedente servait 5 388 moyennes SH6 de WITS/UNCTAD-TRAINS avec une TVA de 14 % dont la seule source etait « PwC Worldwide Tax Summaries ». Le tarif vient desormais du texte promulgue, et le taux de TVA de l'article 19.º du Codigo do IVA — lu sur lex.ao, le Diario da Republica du 24 avril 2019 n'ayant pas ete obtenu, ce que la fiche declare. Ancienne entree conservee ici pour memoire : {\"source_type\": \"wits_fallback\", \"positions_count\": 5388, \"edition\": \"DLP 1/24 du 3 janvier 2024 (non crawlable)\", \"note\": \"Portail AGT = SPA AngularJS sans API publique. PDF Pauta Aduaneira non accessible à URL directe. Source secondaire Lex.ao (SPA Docusaurus). OCR à prévoir.\"}"
     },
     "MWI": {
       "organism": "Malawi Revenue Authority (MRA)",
       "version": "2022.1",
-      "sha256": "b58fff712f7ab84102294c587ccd7f0cf8a3ad219f6dcfbbebfdab75ec4208d2",
       "artifact_path": "backend/data/crawled/MWI_tariffs.json",
-      "artifact_url": null,
-      "source_type": "wits_fallback",
-      "url": "https://www.mra.mw/",
-      "retrieved_at": "N/A",
-      "edition": "HS 2022, novembre 2022 (référencée mais non téléchargeable)",
-      "hs_version": "HS 2017",
-      "code_digits": 6,
-      "positions_count": 5388,
-      "validation_status": "not_available",
-      "taxes": ["DD", "VAT"],
-      "note": "Site SPA React sans API accessible. WordPress backend bloque les requêtes externes."
+      "artifact_url": "https://www.mra.mw/admin/storage/downloads/MALAWI_CUSTOMS_AND_EXCISE_(TARIFFS)_ORDER_HS_2022_VERSION_2023-2024_(P).pdf",
+      "source_type": "official",
+      "url": "https://www.mra.mw",
+      "retrieved_at": "2026-09-19",
+      "edition": "Customs and Excise (Tariffs) (No. 3) Order, 2022 (HS 2022 Version) — Malawi Gazette Supplement du 29 juillet 2022, Government Notice No. 30, pris sous le Customs and Excise Act (Cap. 42:01) ; 642 pages. C'est le TEXTE REGLEMENTAIRE lui-meme, non une publication de facilitation.",
+      "application_period": "2023-2024",
+      "hs_version": "HS 2022",
+      "code_digits": 8,
+      "positions_count": 7364,
+      "sha256": "e87df0657f73b0816e789c178aec6db011b4a93695bbea9d54482c129e5e569e",
+      "source_sha256": "7960f473e21a8363dbc144cd6ec445b1ab506e36252af485c6eebcd0b661f2ac",
+      "reuse_conditions": "Customs and Excise Act (Cap. 42:01). Publication officielle MRA au Gazette.",
+      "legal_authority": "Customs and Excise (Tariffs) (No. 3) Order, 2022, par. 4 (carte des colonnes) et par. 5 (remises par origine, pris sous s.89 de l'Act) ; Customs and Excise Act (Cap. 42:01), s.111(2) et Schedule A (valeur des marchandises importees — prix normal)",
+      "validation_status": "verified",
+      "taxes": [
+        "DD (col. 6 — droit de douane NPF, parties contractantes du GATT ; assiette CIF)",
+        "DD_PLEIN (col. 5 — plein droit, dont les colonnes 6 a 9 sont des remises ; assiette CIF)",
+        "EXC (col. 10 — accise ; TAUX publie, ASSIETTE NON ETABLIE, non liquidable)",
+        "TVA (col. 11 — TVA ; TAUX publie, ASSIETTE NON ETABLIE, non liquidable)",
+        "AIT (col. 12 — Advance Income Tax ; TAUX publie, ASSIETTE NON ETABLIE, non liquidable)"
+      ],
+      "zlecaf": "COLONNE ZLECAf PUBLIEE AU TARIF (col. 7A, Govt Notice 31 du 28/05/2021) — 7 093 lignes. DEUX CONDITIONS QUE LE TEXTE ENONCE : l'Afrique du Sud en est EXCLUE (« a State Party to the AfCFTA other than Republic of South Africa »), et le taux exige « a specified country content of not less than thirty-five per cent » que le calculateur ne verifie pas. Portee sur chaque ligne, jamais servie comme un acquis.",
+      "note": "Remplace la moyenne simple MFN au niveau SH6 (WITS/UNCTAD-TRAINS, 5 388 positions SANS AUCUNE designation) par le tarif national a huit chiffres, avec ses libelles et son unite de quantite. L'entree precedente se declarait « wits_fallback », « not_available », « Site SPA React sans API accessible » : le PDF est en fait servi sur le chemin /admin/storage/downloads/ de mra.mw, et c'est ce chemin qui a ete utilise.",
+      "notes": "7 373 positions, 96 chapitres, NEUF colonnes de taux. LA CARTE DES COLONNES EST DANS LE DECRET (par. 4, page 22), pas deduite de la mise en page. CE QUI SEPARE LES COLONNES 5 ET 6 EST ECRIT : le par. 5, pris sous s.89 de l'Act, fait de la colonne 5 le PLEIN DROIT et des colonnes 6 a 9 des REMISES par origine ; la colonne 6 vaut pour « a Contracting Party of the GATT », donc pour tout membre de l'OMC, et c'est elle qui est servie comme droit de douane. Les deux colonnes DIVERGENT sur 4 409 des 7 373 positions : les confondre donnerait un droit faux sur la majorite du tarif. ASSIETTE DU DROIT : prix normal de la Schedule A (s.111(2)), marchandises « delivered to the buyer at the port or place of introduction into Malawi », le vendeur supportant tous les frais jusque-la — le CIF par son contenu economique, la Definition de Bruxelles par sa forme ; la consolidation lue s'arrete au 30 juin 2018 et la reserve est portee sur CHAQUE ligne de droit. ACCISE, TVA ET ADVANCE INCOME TAX SONT PORTEES SANS ASSIETTE, donc NON LIQUIDABLES : le decret donne leurs taux, aucun texte malawien lu ne donne leur assiette, et le profil generique « TVA sur CIF+DD » qui figurait sous la seule mention « Malawi Revenue Authority — import VAT » a ete RETIRE pour cette raison. 274 positions sont servies SANS droit de douane, avec leur motif nomme sur la ligne — jamais un zero. 130 lignes portent une preference SUPERIEURE au plein droit, ce qui contredit le par. 5 : verifie page a page, c'est le DOCUMENT qui est ainsi, et l'anomalie est portee sur la ligne. Fiche : backend/data/legal_refs/zlecaf_application/MWI_colonnes_remises_et_prix_normal_2026-09-19.json.",
+      "correction_du_registre": "L'entree precedente annoncait 5 388 positions SH6 en « wits_fallback » et une edition « referencee mais non telechargeable ». C'etait exact a la date ou elle a ete ecrite ; elle est remplacee, et non corrigee en silence, par le decret lui-meme."
     },
     "STP": {
       "organism": "Direção das Alfândegas / AGA",
@@ -510,7 +1046,10 @@
       "code_digits": 6,
       "positions_count": 5388,
       "validation_status": "not_available",
-      "taxes": ["DD", "VAT"],
+      "taxes": [
+        "DD",
+        "VAT"
+      ],
       "note": "Site officiel 403. Téla Nón confirme entrée en vigueur décembre 2023 (5000+ lignes) mais PDF non public. À rechercher: décret-loi 14/2023 auprès du Journal officiel."
     },
     "COM": {
@@ -527,7 +1066,10 @@
       "code_digits": 6,
       "positions_count": 5388,
       "validation_status": "not_available",
-      "taxes": ["DD", "TVA"],
+      "taxes": [
+        "DD",
+        "TVA"
+      ],
       "note": "La douane comorienne ne publie pas les taux en ligne. Contacter: dsallaoui@douane.gov.km. Engagements OMC = piste distincte (ne pas confondre avec droits appliqués)."
     },
     "SDN": {
@@ -544,7 +1086,10 @@
       "code_digits": 6,
       "positions_count": 5388,
       "validation_status": "not_available",
-      "taxes": ["DD", "VAT"],
+      "taxes": [
+        "DD",
+        "VAT"
+      ],
       "note": "PDF officiel 404. Pays en guerre civile. Statut incertain. Solliciter copie datée auprès des autorités."
     },
     "DJI": {
@@ -576,7 +1121,6 @@
       "note": "Site injoignable. Pays sous embargo. Pas de source accessible."
     }
   },
-
   "excise_sources": {
     "pwc_worldwide_tax_summaries": {
       "source_type": "international_cabinet",
@@ -584,18 +1128,45 @@
       "retrieved_at": "2026-09-08",
       "validation_status": "verified",
       "countries_crawled": {
-        "SEN": {"excise_count": 39, "last_reviewed": "07 August 2026", "enriched_positions": 502},
-        "GAB": {"excise_count": 17, "last_reviewed": "06 August 2026", "enriched_positions": 317},
-        "EGY": {"excise_count": 9, "last_reviewed": "17 August 2026", "enriched_positions": 0},
-        "TCD": {"excise_count": 7, "last_reviewed": "12 August 2024", "enriched_positions": 290},
-        "CIV": {"excise_count": 3, "last_reviewed": "11 March 2026", "enriched_positions": 0},
-        "MAR": {"excise_count": 0, "last_reviewed": "30 April 2026", "note": "PwC ne publie pas les taux — voir CGI Maroc"},
-        "TUN": {"excise_count": 0, "last_reviewed": "29 June 2026", "note": "Pas d'accise — DC déjà crawlé"}
+        "SEN": {
+          "excise_count": 39,
+          "last_reviewed": "07 August 2026",
+          "enriched_positions": 502
+        },
+        "GAB": {
+          "excise_count": 17,
+          "last_reviewed": "06 August 2026",
+          "enriched_positions": 317
+        },
+        "EGY": {
+          "excise_count": 9,
+          "last_reviewed": "17 August 2026",
+          "enriched_positions": 0
+        },
+        "TCD": {
+          "excise_count": 7,
+          "last_reviewed": "12 August 2024",
+          "enriched_positions": 290
+        },
+        "CIV": {
+          "excise_count": 3,
+          "last_reviewed": "11 March 2026",
+          "enriched_positions": 0
+        },
+        "MAR": {
+          "excise_count": 0,
+          "last_reviewed": "30 April 2026",
+          "note": "PwC ne publie pas les taux — voir CGI Maroc"
+        },
+        "TUN": {
+          "excise_count": 0,
+          "last_reviewed": "29 June 2026",
+          "note": "Pas d'accise — DC déjà crawlé"
+        }
       },
       "note": "Cabinet de premier ordre. Réflexion de sources officielles (CGI nationaux). CIV/EGY non enrichis (descriptions PwC = lois, pas produits)."
     }
   },
-
   "zlecaf_sources": {
     "treaty": {
       "organism": "Union Africaine (UA)",
@@ -623,33 +1194,88 @@
       "source_type": "regional_org"
     },
     "datasets": {
-      "EAC": {"lines": 4970, "status": "APPLIED", "applied_to": "KEN (21 origines)"},
-      "ZAF": {"lines": 8592, "status": "APPLIED", "applied_to": "ZAF (SARS colonne AfCFTA, 9+ partenaires)"},
-      "DZA": {"source": "Circulaire DGD 482/2024", "status": "APPLIED", "applied_to": "DZA (9 partenaires actifs)"},
-      "EGY": {"lines": 10511, "status": "OFFER_ONLY", "schedules": 2},
-      "TUN": {"lines": 18746, "status": "OFFER_ONLY", "schedules": 2},
-      "ECOWAS": {"lines": 5578, "status": "OFFER_ONLY"},
-      "CEMAC": {"lines": 5284, "status": "OFFER_ONLY"},
-      "ETH": {"lines": 5868, "status": "PARTNER_NOTICE_REQUIRED"},
-      "ZMB": {"lines": 5445, "status": "PARTNER_NOTICE_REQUIRED"}
+      "EAC": {
+        "lines": 4970,
+        "status": "APPLIED",
+        "applied_to": "KEN (21 origines)"
+      },
+      "ZAF": {
+        "lines": 8592,
+        "status": "APPLIED",
+        "applied_to": "ZAF (SARS colonne AfCFTA, 9+ partenaires)"
+      },
+      "DZA": {
+        "source": "Circulaire DGD 482/2024",
+        "status": "APPLIED",
+        "applied_to": "DZA (9 partenaires actifs)"
+      },
+      "EGY": {
+        "lines": 10511,
+        "status": "OFFER_ONLY",
+        "schedules": 2
+      },
+      "TUN": {
+        "lines": 18746,
+        "status": "OFFER_ONLY",
+        "schedules": 2
+      },
+      "ECOWAS": {
+        "lines": 5578,
+        "status": "OFFER_ONLY"
+      },
+      "CEMAC": {
+        "lines": 5284,
+        "status": "OFFER_ONLY"
+      },
+      "ETH": {
+        "lines": 5868,
+        "status": "PARTNER_NOTICE_REQUIRED"
+      },
+      "ZMB": {
+        "lines": 5445,
+        "status": "PARTNER_NOTICE_REQUIRED"
+      }
     },
     "implementation_registry": {
-      "APPLIED": ["KEN (EAC/321/2022)", "DZA (circulaire 482/2024)", "ZAF (SARS colonne AfCFTA)"],
-      "PARTNER_NOTICE_REQUIRED": ["CIV (ordonnance 23/04/2025)", "ETH (Regulation 574/2025)", "NGA (PSTC 04/2025)", "ZMB (SI 92/2024)"],
-      "OFFER_ONLY": ["CMR", "EGY", "GHA", "RWA", "TUN"],
+      "APPLIED": [
+        "KEN (EAC/321/2022)",
+        "DZA (circulaire 482/2024)",
+        "ZAF (SARS colonne AfCFTA)"
+      ],
+      "PARTNER_NOTICE_REQUIRED": [
+        "CIV (ordonnance 23/04/2025)",
+        "ETH (Regulation 574/2025)",
+        "NGA (PSTC 04/2025)",
+        "ZMB (SI 92/2024)"
+      ],
+      "OFFER_ONLY": [
+        "CMR",
+        "EGY",
+        "GHA",
+        "RWA",
+        "TUN"
+      ],
       "NOT_AVAILABLE": "35 pays ratifiés sans instrument national d'implémentation",
-      "NOT_RATIFIED": ["BEN", "LBY", "SDN", "SSD"]
+      "NOT_RATIFIED": [
+        "BEN",
+        "LBY",
+        "SDN",
+        "SSD"
+      ]
     }
   },
-
   "integrity_seals": {
     "description": "Chaque fichier crawled/*.json est scellé avec SHA-256 (_integrity_seal) + fichier .sha256",
     "files_sealed": 53,
     "files_valid": 53,
-    "seal_fields": ["content_hash", "source_url", "crawled_at", "algorithm: SHA-256"],
+    "seal_fields": [
+      "content_hash",
+      "source_url",
+      "crawled_at",
+      "algorithm: SHA-256"
+    ],
     "normalization_trail": "Le schéma unifié préserve source_content_hash pour traçabilité crawled → normalized"
   },
-
   "artifacts": {
     "description": "Les données tarifaires sont publiées comme artefacts immuables versionnés par pays, pas comme des sources versionnées dans git. Elles changent une à trois fois par an et par pays (loi de finances, circulaires) : ce sont des publications, pas du code.",
     "version_scheme": "AAAA.n — année d'application du tarif, puis rang de révision dans l'année. Chaque pays a sa propre ligne de version : l'Algérie peut passer en 2026.2 sans toucher au Kenya.",
@@ -658,7 +1284,6 @@
     "artifact_url_null": "Hébergement non encore tranché : tant que artifact_url vaut null, le chargement se rabat sur artifact_path dans le dépôt. Le mécanisme n'attend qu'une URL pour devenir indépendant de l'hôte.",
     "why": "Le dépôt de code reste petit et portable. Changer d'hébergeur ne coûte qu'une URL par pays dans ce manifeste, au lieu d'une migration de plusieurs gigaoctets d'historique git."
   },
-
   "validation_rules": [
     "Aucune valeur manquante remplacée par 0",
     "Aucun code national créé en ajoutant des zéros à un SH6",
@@ -671,7 +1296,6 @@
     "L'OMC distingue les données de droits appliqués des engagements consolidés",
     "Les plafonds OMC ne sont pas les droits effectivement appliqués"
   ],
-
   "wto_data_availability": {
     "note": "L'OMC publie des profils tarifaires synthétiques (statistiques agrégées, pas de lignes tarifaires). Le WTO IDB contient les taux appliqués par code HS mais nécessite navigation Livewire (non automatable sans navigateur). Les codes OMC pour nos pays: Comoros=C004, Malawi=C178, Mauritania=C458, Mauritius=C480, São Tomé=C682, South Sudan=C144, Sudan=C484.",
     "url": "https://ttd.wto.org/en/data/idb",

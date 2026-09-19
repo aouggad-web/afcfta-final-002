@@ -280,20 +280,27 @@ def test_un_droit_specifique_sans_quantite_est_indisponible_pas_approche(client)
     sans = client.post(
         "/calcul", json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000}
     ).json()
+    # La TVA sud-africaine est désormais complétée depuis sa fiche, mais son
+    # assiette est « CIF+DD » : le droit manquant l'ampute, et elle ne se
+    # liquide donc pas non plus. Rien n'étant calculable, l'état reste
+    # INDISPONIBLE — et les deux manques sont nommés avec leur cause propre,
+    # la seconde citant le composant absent plutôt que de le compter zéro.
     assert sans["npf"]["etat"] == "INDISPONIBLE"
-    # La TVA sud-africaine n'est pas non plus tracée à la source (crawl SARS) :
-    # le manque de quantité pour le DD et l'absence structurelle de TVA sont
-    # deux causes distinctes, toutes deux nommées.
     assert sans["npf"]["manques"] == [
         {"code": "DD", "motif": "QUANTITE_REQUISE"},
-        {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"},
+        {"code": "TVA", "motif": "ASSIETTE_INCOMPLETE", "composants": ["DD"]},
     ]
 
     avec = client.post(
         "/calcul",
         json={"destination": "ZAF", "code_sh": "020830", "valeur_cif": 1000, "quantite": 500},
     ).json()
-    assert avec["npf"]["total_droits"] == 40.0  # 8c/kg × 500 kg, et non 8 %
+    # Le droit lui-même : 8c/kg × 500 kg, et non 8 % de la valeur.
+    lignes = {ligne["code"]: ligne for ligne in avec["npf"]["lignes"]}
+    assert lignes["DD"]["montant"] == 40.0
+    # Le total porte en plus la TVA sud-africaine complétée : 15 % de 1 040.
+    assert lignes["TVA"]["montant"] == 156.0
+    assert avec["npf"]["total_droits"] == 196.0
 
 
 @besoin_socle
@@ -328,3 +335,353 @@ def test_la_liste_des_pays_annonce_les_couvertures_partielles(client):
     assert "ZAF" in corps["totaux"]["pays_partiels"]
     assert corps["pays"]["ZAF"]["etat"] == "PARTIEL"
     assert set(corps["totaux"]["pays_vides"]) == {"DJI", "ERI"}
+
+
+# ── Union douanière : libre circulation, prioritaire sur la ZLECAf ───────────
+@besoin_socle
+def test_deux_membres_d_une_meme_union_douaniere_echangent_a_droit_nul(client):
+    """Botswana → Afrique du Sud : deux membres de la SACU. Le droit de douane
+    est nul par définition du marché unique, quelle que soit la position et
+    quel que soit l'état de la ZLECAf. Avant ce correctif, la route unifiée
+    liquidait le droit NPF plein (8c/kg) sur un échange en libre circulation."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            "quantite": 100,
+        },
+    ).json()
+    npf = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
+    pref = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert npf["DD"]["montant"] == 8.0  # 8c/kg × 100 kg, régime NPF
+    assert pref["DD"]["montant"] == 0.0  # libre circulation intra-SACU
+    assert corps["regime_commercial"]["regime"] == "UNION_DOUANIERE"
+    assert corps["regime_commercial"]["code_bloc"] == "SACU"
+
+
+@besoin_socle
+def test_une_franchise_intra_union_n_exige_pas_la_quantite_d_un_droit_specifique(client):
+    """Le droit sud-africain de la position 020830 est publié « 8c/kg » : son
+    assiette est la quantité. Sous franchise intra-SACU le taux devient nul, et
+    l'assiette n'influe plus sur rien — réclamer une quantité rendrait
+    inutilisable une importation dont le droit est zéro."""
+    corps = client.post(
+        "/calcul",
+        json={"destination": "ZAF", "origine": "BWA", "code_sh": "020830", "valeur_cif": 10000},
+    ).json()
+    preference = corps["preference"]
+    lignes = {ligne["code"]: ligne for ligne in preference["lignes"]}
+    assert lignes["DD"]["montant"] == 0.0
+    assert lignes["DD"]["statut"] == "CALCULE"
+    assert preference["etat"] == "COMPLET"
+    # Le NPF, lui, garde son exigence : son droit dépend réellement du poids.
+    assert {"code": "DD", "motif": "QUANTITE_REQUISE"} in corps["npf"]["manques"]
+
+
+@besoin_socle
+def test_une_union_douaniere_n_est_jamais_presentee_comme_une_preference_zlecaf(client):
+    """La confusion de régimes est le défaut que cette PR refuse : afficher
+    « préférence ZLECAf appliquée » là où la ZLECAf est précisément écartée
+    serait la même faute qu'une colonne COMESA lue comme un taux ZLECAf."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "code_sh": "020830",
+            "valeur_cif": 10000,
+            "quantite": 100,
+        },
+    ).json()
+    assert corps["preference_zlecaf"]["applique"] is False
+    assert corps["preference_zlecaf"]["statut"] == "REGIME_UNION_DOUANIERE"
+    assert "union douanière" in corps["preference_zlecaf"]["note"]
+
+
+@besoin_socle
+def test_la_franchise_intra_union_ne_touche_pas_la_fiscalite_interne(client):
+    """Le périmètre est le seul droit de douane. Étendre la franchise à la TVA
+    ou aux accises ferait disparaître des taxes réellement perçues."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "CMR",
+            "origine": "GAB",
+            "code_sh": "01011010",
+            "valeur_cif": 10000,
+        },
+    ).json()
+    assert corps["regime_commercial"]["code_bloc"] == "CEMAC"
+    pref = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert pref["DD"]["taux_pct"] == 0.0
+    # Tout prélèvement hors droit de douane garde son taux NPF.
+    npf = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
+    for code, ligne in npf.items():
+        if code != "DD" and ligne["statut"] == "CALCULE":
+            assert pref[code]["taux_pct"] == ligne["taux_pct"]
+
+
+@besoin_socle
+def test_une_zone_de_libre_echange_ne_donne_aucune_franchise_automatique(client):
+    """CEDEAO : la franchise dépend des règles d'origine et des listes
+    sensibles, que ce moteur n'a pas. La rendre à 0 % serait fabriquer une
+    exonération — le couloir reste au régime que le registre décide."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "CIV",
+            "origine": "GHA",
+            "code_sh": "7612900000",
+            "valeur_cif": 10000,
+        },
+    ).json()
+    assert corps["regime_commercial"]["regime"] == "ZLECAF"
+    assert corps["regime_commercial"].get("code_bloc") is None
+
+
+@besoin_socle
+def test_la_fiscalite_interne_diverge_entre_membres_d_une_meme_union(client):
+    """Une union douanière harmonise le tarif *extérieur* et supprime le droit
+    *intérieur* — elle n'harmonise pas la fiscalité interne. Sur la même
+    position 01011010, importée depuis le même partenaire CEMAC, le Cameroun
+    liquide 19,25 % de TVA et le Gabon 18 %. Supposer un taux de bloc unique
+    ferait payer au Gabon la TVA camerounaise."""
+    taux = {}
+    for destination, origine in (("CMR", "GAB"), ("GAB", "CMR")):
+        corps = client.post(
+            "/calcul",
+            json={
+                "destination": destination,
+                "origine": origine,
+                "code_sh": "01011010",
+                "valeur_cif": 10000,
+            },
+        ).json()
+        assert corps["regime_commercial"]["code_bloc"] == "CEMAC"
+        lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+        assert lignes["DD"]["taux_pct"] == 0.0  # franchise intra-union des deux côtés
+        taux[destination] = lignes["TVA"]["taux_pct"]
+
+    assert taux["CMR"] == 19.25
+    assert taux["GAB"] == 18.0
+    assert taux["CMR"] != taux["GAB"], "la TVA doit rester celle du pays de destination"
+
+
+@besoin_socle
+def test_une_tva_non_collectee_est_nommee_au_lieu_d_etre_comptee_zero(client):
+    """Le revers de la règle précédente : quand la fiscalité interne du pays
+    de destination n'est pas collectée, le total ne doit pas se présenter comme
+    complet. Les cinq pays SACU sont `PENDING_OFFICIAL_COLLECTION` pour la TVA
+    (registre des sources nationales), et aucun taux ne leur est prêté. La
+    Namibie sert de témoin : son crawl ne porte aucune TVA et aucune fiche ne
+    l'établit, donc rien n'est complété et le manque reste nommé."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "NAM",
+            "origine": "ZAF",
+            "code_sh": "010121",
+            "valeur_cif": 10000,
+        },
+    ).json()
+    preference = corps["preference"]
+    assert preference["etat"] != "COMPLET"
+    assert {"code": "TVA", "motif": "NON_TRACEE_A_LA_SOURCE"} in preference["manques"]
+    assert corps["complements_nationaux"] == []
+    # Aucune économie n'est annoncée : comparer deux totaux incomplets
+    # produirait un chiffre plausible construit sur une base inconnue.
+    assert corps["economie"] is None
+
+
+@besoin_socle
+def test_la_tva_sud_africaine_est_completee_et_sa_provenance_annoncee(client):
+    """L'Afrique du Sud est le point de liquidation réel d'une grande part des
+    importations de la SACU — elle dédouane pour les membres enclavés, dans le
+    cadre du pool de recettes commun. Son crawl SARS ne porte pourtant aucune
+    TVA : une importation intra-SACU affichait « rien à payer ».
+
+    Le taux, établi sur source primaire (fiche ZAF_taux_TVA_2026-09-17), est
+    désormais appliqué — et jamais en silence : la ligne porte sa source et sa
+    réserve, et la réponse l'annonce dans `complements_nationaux`."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "BWA",
+            "code_sh": "010121",
+            "valeur_cif": 10000,
+        },
+    ).json()
+    lignes = {ligne["code"]: ligne for ligne in corps["preference"]["lignes"]}
+    assert lignes["DD"]["montant"] == 0.0  # libre circulation intra-SACU
+    assert lignes["TVA"]["taux_pct"] == 15.0
+    assert lignes["TVA"]["montant"] == 1500.0  # 15 % de (10 000 + 0)
+    assert corps["preference"]["total_droits"] == 1500.0
+
+    complement = corps["complements_nationaux"][0]
+    assert complement["code"] == "TVA"
+    assert complement["motif"] == "FAMILLE_ABSENTE_DE_LA_SOURCE"
+    assert "ZAF_taux_TVA" in complement["fiche"]
+    assert "zero-rated" in complement["note"]
+    # La ligne elle-même reste traçable jusqu'à l'affichage.
+    assert lignes["TVA"]["classification_source"] == "table_nationale_documentee"
+
+
+@besoin_socle
+def test_un_taux_national_ne_remplace_jamais_une_tva_deja_collectee(client):
+    """La table nationale ne comble qu'une famille entièrement absente. Là où
+    la TVA est collectée position par position, elle ne doit rien substituer :
+    une moyenne nationale ferait reculer la précision là où elle existe."""
+    corps = client.post(
+        "/calcul",
+        json={"destination": "CMR", "code_sh": "01011010", "valeur_cif": 10000},
+    ).json()
+    assert corps["complements_nationaux"] == []
+    lignes = {ligne["code"]: ligne for ligne in corps["npf"]["lignes"]}
+    assert lignes["TVA"]["taux_pct"] == 19.25  # le taux camerounais collecté
+
+
+# ── Le bloc réglementaire — chantier L4 ───────────────────────────────────────
+@besoin_socle
+def test_la_route_sert_le_bloc_reglementaire_comme_le_chemin_historique(client):
+    """`build_regulatory_blocks` est le point d'entrée unique de toutes les
+    routes de calcul. Ne pas l'appeler ici faisait dire à la même importation
+    deux choses différentes selon la route servie."""
+    corps = client.post(
+        "/calcul",
+        json={
+            "destination": "CIV",
+            "origine": "GHA",
+            "code_sh": "7612900000",
+            "valeur_cif": 10000,
+        },
+    ).json()
+    assert corps["regulatory_compliance"]["country_iso3"] == "CIV"
+    assert "regulatory_cost_total" in corps["regulatory_cost"]
+    assert "reliability" in corps["regulatory_reported"]
+
+
+@besoin_socle
+def test_les_frais_reglementaires_n_entrent_jamais_dans_le_cout_douanier(client):
+    """L'invariant du bloc : il est informatif. Un frais de prestataire ajouté
+    au total douanier ferait payer à l'importateur une somme que la douane ne
+    perçoit pas — et la rendrait indiscernable d'un droit."""
+    # Couloir Ghana → Nigeria : l'un des rares dont les frais réglementaires
+    # soient réellement chiffrés. Ailleurs le service rend `None` — « non
+    # chiffré » — et le test ne mordrait sur rien.
+    charge = {
+        "destination": "NGA",
+        "origine": "GHA",
+        "code_sh": "0101210000",
+        "valeur_cif": 10000,
+    }
+    corps = client.post("/calcul", json=charge).json()
+    frais = corps["regulatory_cost"]["regulatory_cost_total"]
+    assert frais, "le couloir de référence doit porter un frais chiffré"
+    # Le total douanier reste exactement la somme des droits liquidés.
+    total_lignes = sum(
+        ligne["montant"] for ligne in corps["npf"]["lignes"] if ligne["statut"] == "CALCULE"
+    )
+    assert corps["npf"]["total_droits"] == pytest.approx(total_lignes, abs=0.01)
+    assert corps["npf"]["total_a_payer"] == pytest.approx(
+        corps["valeur_cif"] + corps["npf"]["total_droits"], abs=0.01
+    )
+
+
+@besoin_socle
+def test_un_bloc_reglementaire_en_panne_n_interrompt_pas_le_calcul(client, monkeypatch):
+    """Fail-safe : l'indisponibilité du registre réglementaire rend trois
+    `None` — « non consulté », jamais « zéro frais » — et laisse le calcul
+    tarifaire intact."""
+    import routes_calcul_test as module
+
+    def _tombe(*_args, **_kwargs):
+        raise RuntimeError("registre réglementaire indisponible")
+
+    monkeypatch.setattr(module, "build_regulatory_blocks", _tombe)
+    corps = client.post(
+        "/calcul",
+        json={"destination": "CIV", "code_sh": "7612900000", "valeur_cif": 1000},
+    ).json()
+    assert corps["npf"]["total_droits"] == 380.0
+    assert corps["npf"]["etat"] in {"COMPLET", "PARTIEL"}
+    for cle in ("regulatory_compliance", "regulatory_cost", "regulatory_reported"):
+        assert corps[cle] is None
+
+
+# ── Simulations régionales : chiffrées par le moteur, jamais servies ─────────
+
+
+def test_une_simulation_regionale_est_chiffree_par_le_moteur(client):
+    """Un taux seul ne répond pas à « combien je paierais sous ce régime ».
+
+    Et le chiffrer à la main se tromperait : sur ce couloir, effacer le droit
+    de douane retire 82 000 de droit MAIS AUSSI la TVA qui s'assied dessus.
+    L'écart réel est de 94 300 — d'où le passage par le moteur, qui connaît
+    l'assiette, le plafond, la devise et la cascade.
+
+    Ce test visait 020110 jusqu'à ce que le garde-fou des droits composés
+    rende cette position indisponible : son droit « 40% or 240c/kg » ne se
+    liquide pas. Repointé sur une position au droit simple, plutôt que
+    d'affaiblir l'assertion pour la faire passer.
+    """
+    reponse = client.post(
+        "/calcul",
+        json={
+            "destination": "ZAF",
+            "origine": "MOZ",
+            "code_sh": "02071290",
+            "valeur_cif": 100000,
+            "valeur_fob": 100000,
+        },
+    )
+    assert reponse.status_code == 200
+    corps = reponse.json()
+
+    simulations = corps["simulations_regionales"]
+    assert [s["regime"] for s in simulations] == ["SADC"]
+
+    sadc = simulations[0]
+    servi = corps["npf"]["total_a_payer"]
+    assert corps["npf"]["etat"] == "COMPLET", "l'écart n'a de sens que sur un NPF liquidé"
+    assert sadc["total_simule"] is not None
+    assert sadc["total_simule"] < servi
+    assert sadc["ecart_vs_total_servi"] == round(servi - sadc["total_simule"], 2)
+    # Le cœur du test : l'écart dépasse le SEUL droit effacé (82 % de 100 000),
+    # parce que la TVA s'assied sur CIF+DD. Une multiplication `cif × taux`
+    # aurait rendu 82 000 et manqué 12 300.
+    assert sadc["ecart_vs_total_servi"] > 82000
+
+
+def test_une_simulation_ne_change_jamais_le_total_servi(client):
+    """La borne qui sépare une simulation d'une franchise fabriquée.
+
+    Le montant opposable reste celui du régime retenu ; la simulation vit à
+    côté, avec sa réserve d'origine.
+    """
+    payload = {
+        "destination": "ZAF",
+        "origine": "MOZ",
+        "code_sh": "02071290",
+        "valeur_cif": 100000,
+        # FOB = CIF : le droit ad valorem sud-africain exige la valeur FOB
+        # fournie ; avec un fret nul, les montants attendus ne bougent pas.
+        "valeur_fob": 100000,
+    }
+    corps = client.post("/calcul", json=payload).json()
+
+    assert all(s["applique"] is False for s in corps["simulations_regionales"])
+    assert corps["npf"]["total_a_payer"] == 209300.0
+
+
+def test_aucune_simulation_sans_origine(client):
+    """Sans origine déclarée, aucune éligibilité ne peut être établie."""
+    corps = client.post(
+        "/calcul",
+        json={"destination": "ZAF", "code_sh": "02071290", "valeur_cif": 100000},
+    ).json()
+
+    assert corps["simulations_regionales"] == []

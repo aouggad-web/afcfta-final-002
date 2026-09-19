@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "objet": "Seychelles — les treize colonnes du tarif, nommées régime par régime par le règlement lui-même, dont une TRAJECTOIRE ZLECAf année par année de 2022 à 2026 ; la liste fermée des 38 États parties qui y ont droit ; la règle de calcul du taux de la Commission de l'océan Indien, que le texte énonce au lieu de le publier ; et l'assiette du droit de douane, qui est le CIF parce que la regulation 8(1)(e) y ajoute le fret, la manutention et l'assurance.",
+  "verified_at": "2026-09-19",
+  "etabli": true,
+  "evidence_level": "primaire pour tout ce que la fiche établit — Customs Management (Tariff and Classification of Goods) Regulations, 2022 (S.I. 113 of 2022) et Customs Management Regulations, 2014 (S.I. 42 of 2014), tous deux publiés par la Seychelles Revenue Commission. RÉSERVE DE FORME sur le second : son PDF est un SCAN SANS COUCHE TEXTE et aucun OCR n'est installé ici ; les passages cités ont été TRANSCRITS à la lecture des pages rendues en image, et l'extrait archivé le déclare.",
+  "la_question_posee": "Le barème seychellois aligne TREIZE colonnes de taux. Il faut savoir laquelle est le droit dû et lesquelles sont des préférences — se tromper ferait réclamer treize fois le droit d'une position. Deuxième question : dix de ces colonnes sont des MILLÉSIMES, cinq pour la SADC et cinq pour la ZLECAf, et il faut savoir lequel s'applique aujourd'hui sans reconduire en silence celui d'hier. Troisième question : l'assiette du droit, que l'Act ne donne pas lui-même puisqu'il la renvoie au règlement.",
+  "regle": {
+    "la_carte_des_treize_colonnes": {
+      "article": "S.I. 113 of 2022, regulation 2, et en-tête du barème (Schedule I, Part III)",
+      "verbatim_regulation_2": "(2) The preferential rates of duty for goods originating from Member states of the Indian Ocean Commission are specified in Schedule II. (3) The list of Common Market for Eastern and Southern Africa (COMESA) Free Trade Area Member States are specified in Schedule III. (4) The list of Southern African Development Community (SADC) Free Trade Area Member States are specified in Schedule IV. (5) The list of European Union Member States (EU) and Eastern and Southern African (ESA) Member States forming part of the Interim Economic Partnership Agreement are specified in Schedule V. (6) The list of African Continental Free Trade Area (AfCFTA) State Parties are specified in Schedule VI.",
+      "verbatim_entete": "Heading | HS Code | Description of goods | Unit of Qty | Rate of Duty : MFN | COMESA FTA | European Union & UK | SADC FTA 2022 2023 2024 2025 2026 | AfCFTA 2022 2023 2024 2025 2026",
+      "portee": "UNE seule colonne est un droit dû — « MFN », servie sous le code DD. Les douze autres sont des RÉGIMES PRÉFÉRENTIELS et ne portent aucune assiette. Le point remarquable : la SADC et la ZLECAf ont CINQ taux chacune, un par année civile. Aucun des tarifs intégrés avant celui-ci ne publie de calendrier de démantèlement. Chaque millésime est servi sous son nom propre — AFCFTA_2022 à AFCFTA_2026 — et celui de l'année en vigueur est servi EN PLUS sous le nom AFCFTA, qui est celui que le calculateur applique. Au-delà de 2026 le règlement ne dit plus rien : rien n'est reconduit, la ligne le déclare.",
+      "texte_archive": "sources/SYC_si113_2022_colonnes_et_valeur_en_douane.texte-extrait.txt",
+      "sha256": "12883a1ede190a3fe6b9da83968bdd71a0df0d191f539076bc673edfcfe1c5db",
+      "sha256_pdf_origine": "8eb2452b3e242d536ec68717d893d373fe94d6407e19b1d34f3e3967246cac3f",
+      "source_url": "https://src.gov.sc/wp-content/uploads/2025/10/SI-113-2022-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf"
+    },
+    "qui_a_droit_a_la_colonne_zlecaf": {
+      "article": "S.I. 113 of 2022, Schedule VI — « List of African Continental Free Trade Area (AfCFTA) Member States »",
+      "verbatim": "1. Arab Republic of Egypt 2. Central African Republic 3. Equatorial Guinea 4. Kingdom of Eswatini 5. Kingdom of Lesotho 6. Republic of Angola [...] 38. Socialist Republic of Algeria",
+      "portee": "38 États parties, ÉNUMÉRÉS. C'est ce qui sépare les Seychelles du Malawi : là-bas le taux ZLECAf dépend d'un « specified country content of not less than thirty-five per cent » qu'aucun calculateur ne peut vérifier ; ici l'éligibilité se lit sur une liste fermée. Une origine absente de la liste n'a pas droit à la colonne. La liste est portée dans la donnée, pas résumée.",
+      "texte_archive": "sources/SYC_si113_2022_colonnes_et_valeur_en_douane.texte-extrait.txt",
+      "sha256": "12883a1ede190a3fe6b9da83968bdd71a0df0d191f539076bc673edfcfe1c5db"
+    },
+    "le_taux_de_la_commission_de_l_ocean_indien_est_une_regle_de_calcul": {
+      "article": "S.I. 113 of 2022, Schedule II",
+      "verbatim": "Goods originating from the countries named above and classified in Part III, will pay a rate of duty of 5% lower than the rate of duty prescribed in sub column 5, entitled “MFN”, of that Part, except if: 1. The rate of duty in Part III is 5% or lower. 2. The Goods are classified in Chapter 22 (Beverages, Spirits and Vinegar) 3. The Goods are classified in Chapter 24 (Tobacco and manufactured tobacco products) 4. The Goods are classified in Heading 27.10 (Petroleum oils) 5. The Goods are classified in Heading 27.11 (Petroleum gases) [...] Subject to the acceptance of the certificate of origin",
+      "portee": "Le taux COI n'est PAS publié colonne par colonne : il se DÉDUIT du NPF, et le texte donne lui-même la formule et ses cinq exceptions. Le déduire n'est donc pas extrapoler, c'est appliquer une règle écrite. CINQ POINTS de moins, non cinq pour cent du taux. Deux garde-fous : là où une exception joue, le taux servi est celui du NPF et la ligne nomme l'exception ; sur un droit NPF SPÉCIFIQUE (roupies au litre), « 5 % de moins » n'a pas de sens et la ligne le déclare au lieu de fabriquer un nombre. La condition de certificat d'origine est portée sur la ligne, jamais vérifiée.",
+      "texte_archive": "sources/SYC_si113_2022_colonnes_et_valeur_en_douane.texte-extrait.txt",
+      "sha256": "12883a1ede190a3fe6b9da83968bdd71a0df0d191f539076bc673edfcfe1c5db"
+    },
+    "assiette_du_droit_de_douane": {
+      "article": "Customs Management Act, 2011 (Act 22 of 2011), s.41 ; Customs Management Regulations, 2014 (S.I. 42 of 2014), regulation 5 et regulation 8(1)(e)",
+      "verbatim_delegation": "41. The origin and valuation of goods for customs purposes shall be prescribed by regulations.",
+      "verbatim_valeur": "5. The customs value of imported goods shall be the transaction value, that is the price actually paid or payable for the goods when sold for export to Seychelles adjusted in accordance with the provisions of regulation 8",
+      "verbatim_ajustements": "8.(1) In determining the customs value under regulation 5, there shall be added to the price actually paid or payable for the imported goods — [...] (e) The following costs, to the extent that they are incurred by the buyer but not included in the price actually paid or payable (i) the cost of transport of the imported goods to the port or place of importation; (ii) loading, unloading and handling charges associated with the transport of the imported goods to the port or place of importation; and (iii) the cost of insurance.",
+      "portee": "L'Act ne donne pas l'assiette : il la DÉLÈGUE. Le règlement la donne — valeur transactionnelle augmentée du transport, de la manutention et de l'assurance jusqu'au port d'importation. Prix + fret + assurance : c'est le CIF, et les Seychelles ont donc exercé dans le sens de l'INCLUSION l'option que l'article 8.2 de l'Accord de l'OMC sur l'évaluation laisse à chaque membre. UNE DÉDUCTION QUI A FAILLI ÊTRE FAITE ICI, ET QUI ÉTAIT FAUSSE : le VAT Act s.23(1) définit la valeur d'une importation comme « (a) the value of the goods for customs duty (b) insurance and freight (c) [les droits] », et ce (b) séparé donne à penser que la valeur en douane, elle, EXCLUT le fret — donc que le droit porterait sur un FOB. La regulation 8(1)(e) montre que non. On ne déduit pas l'assiette d'un impôt de la rédaction d'un autre.",
+      "assiettes_retenues": {
+        "DD": "CIF"
+      },
+      "texte_archive": "sources/SYC_si113_2022_colonnes_et_valeur_en_douane.texte-extrait.txt",
+      "sha256": "12883a1ede190a3fe6b9da83968bdd71a0df0d191f539076bc673edfcfe1c5db",
+      "sha256_pdf_origine": "0f886e8a1684b7ab88f283b3f78d53d3f19f8de90312d8bfe1fc9f8c60690707",
+      "source_url": "https://src.gov.sc/wp-content/uploads/2022/12/SI-42-of-2014-Customs-management-Regulations-2014.pdf"
+    }
+  },
+  "provenance_du_tarif": {
+    "document": "Customs Management (Tariff and Classification of Goods) Regulations, 2022 — S.I. 113 of 2022, Supplement to Official Gazette du 28 octobre 2022, 827 pages, pris sous la section 270 du Customs Management Act, 2011. C'est le TEXTE RÉGLEMENTAIRE lui-même, non une publication de facilitation.",
+    "url": "https://src.gov.sc/wp-content/uploads/2025/10/SI-113-2022-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf",
+    "sha256": "8eb2452b3e242d536ec68717d893d373fe94d6407e19b1d34f3e3967246cac3f",
+    "remplace": "Une moyenne SH6 WITS/UNCTAD-TRAINS qui servait 5 396 positions. Le règlement en porte 6 019 à huit chiffres, avec leur libellé, leur unité de quantité et treize colonnes de taux.",
+    "recuperation": "Le fichier déposé par l'utilisateur dans Drive et le fichier publié par la SRC ont la MÊME taille à l'octet près (19 414 252). Le tarif est donc servi depuis une URL citable, et non depuis un dépôt privé.",
+    "pdf_non_archive": "Ni le règlement (827 pages, 19,4 Mo) ni les Customs Management Regulations 2014 (71 pages, 10,4 Mo) ne sont archivés dans sources/ : ils sont trop volumineux pour le dépôt. Leurs empreintes sont citées ici, celle du tarif est portée par `source_sha256` dans backend/data/crawled/SYC_tariffs.json, et leurs URL SRC sont citables — on peut donc les retélécharger et vérifier qu'il s'agit des mêmes fichiers. Les passages sur lesquels la fiche s'appuie sont archivés dans sources/ avec leur empreinte."
+  },
+  "comment_les_colonnes_sont_rattachees_a_leurs_taux": {
+    "le_probleme": "Le règlement dit QUELLE colonne porte quoi, il ne dit pas OÙ chaque colonne tombe sur la page. Et la grille se déplace : la colonne NPF tombe à l'abscisse 256 page 35 et à 354 page 132 — presque trois colonnes d'écart — parce que la largeur de la colonne de désignation varie.",
+    "la_methode": "Aucune abscisse n'est écrite en dur. Sur chaque page on lit les mots « MFN », « FTA », « UK » et les dix millésimes de l'EN-TÊTE, et ce sont eux qui donnent les treize abscisses ; l'en-tête bouge avec la grille puisqu'il en fait partie. Sur les 591 pages de barème, 582 portent un en-tête complet ; les neuf autres sont déclarées. Les morceaux d'une valeur coupée — « SCR » sur une bande et « 60/l » sur la suivante — sont rassemblés PAR COLONNE et non par adjacence horizontale, qui ne verrait pas la coupure verticale.",
+    "le_code_n_est_pas_toujours_sur_la_bande_de_ses_taux": "Quand une désignation tient sur plusieurs lignes, le code est centré verticalement contre son bloc et sort donc SOUS ses propres taux. Rattacher ces bandes à la ligne précédente donnait à 0306.3300 deux jeux de treize valeurs et laissait 0306.3400 sans aucun taux. Le code d'une ligne de valeurs est donc celui de sa propre bande ou, à défaut, celui de la prochaine bande qui porte un code SANS valeur.",
+    "ce_qui_prouve_qu_elle_ne_se_trompe_pas": "Contrôle indépendant qui n'utilise NI l'en-tête NI les ancres : sur les lignes dont la bande du code porte à elle seule ses treize valeurs — donc celles dont l'affectation est forcée par le seul ordre — on compare le premier rang au droit NPF servi, le huitième au taux SADC 2026 et le treizième au taux ZLECAf 2026. 17 231 concordances, AUCUNE valeur fausse.",
+    "ce_qui_est_refuse": "13 positions sur 6 019 sont servies SANS droit de douane, et 225 cellules ne sont pas lues — 156 parce que deux lignes du barème s'y sont fondues, 49 parce que la cellule est absente, 20 parce que l'expression n'a pas été comprise. Chacune porte son motif sur la ligne. Jamais un zéro, jamais une approximation."
+  },
+  "ce_que_cela_ne_tranche_pas": {
+    "l_accise_et_la_tva_ne_sont_pas_a_ce_bareme": "L'accise relève de l'Excise Tax Act et de ses règlements de taux (S.I. 110 of 2023 et ses modifications) : elle n'est pas collectée ici. L'assiette de la TVA est établie par la fiche SYC_assiette_TVA_2026-09-17.json (VAT Act s.23(1), CIF + prélèvements d'entrée, TVA exclue), mais son TAUX n'est pas dans ce règlement et n'est pas servi.",
+    "la_modification_de_2024_n_est_appliquee_qu_en_partie": "S.I. 7 of 2024 (22 janvier 2024) modifie S.I. 113 of 2022. Les DOUZE sous-positions qu'il insère au chapitre 87 — véhicules « full hybrid » des 8703.40 et 8703.50, panneaux de carrosserie 8708.9911 et 8708.9919 — sont portées, avec leurs treize taux lus dans l'instrument modificatif et leur source propre. La SUBSTITUTION qu'il opère au chapitre 22, entre les codes 2208.7039 et 2208.9011, n'est PAS appliquée : la couche texte de l'instrument n'en rend ni le code ni les taux, et les inventer serait pire que de les déclarer.",
+    "le_scan_des_regulations_de_2014": "Le PDF des Customs Management Regulations, 2014 n'a pas de couche texte (142 octets pour 71 pages) et aucun OCR n'est installé ici. Les passages cités ont été TRANSCRITS à la lecture des pages rendues en image à 140 dpi. La transcription est fidèle mais elle n'est pas une extraction automatique, et l'extrait archivé le dit.",
+    "les_regimes_preferentiels_ne_sont_pas_verifies": "Le calculateur porte les listes d'États et la condition de certificat d'origine ; il ne vérifie ni l'origine d'une expédition ni son certificat. Une préférence est un taux SOUS CONDITION NOMMÉE, jamais un acquis."
+  }
+}

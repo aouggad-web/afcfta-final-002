@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette du droit de douane (DD) à l'importation en Somalie : la valeur en douane, déterminée sur la valeur de transaction.",
+  "verified_at": "2026-09-17",
+  "evidence_level": "primaire — Somali Customs Tariff 2020 (min. des Finances de Somalie), règles générales concernant les droits, lues dans le PDF officiel et archivées en extrait. Corroboré par le SOP SOMCAS de la Somali Customs, Annexe C.",
+  "source": {
+    "instrument": "Somali Customs Tariff 2020 — « General rules concerning duties » §B.3 et « General rules applicable both to nomenclature and to duties » §C.1 (pages 9-10 du PDF)",
+    "url": "https://mof.gov.so/sites/default/files/2020-12/_Somali_Customs_Tariff_2020_Tariff_Schedule.pdf",
+    "institution": "Ministère des Finances — République fédérale de Somalie (mof.gov.so)",
+    "texte_archive": "sources/SOM_customs_tariff_2020.preambule-extrait.txt",
+    "sha256": "7c1d4ba1cbc4ac5b367df435831774217ad35312edd04443b9b8cfa969ab4567",
+    "pdf_non_archive": "PDF de 7,2 Mo et 341 pages non archivé dans le dépôt ; seul l'extrait des règles générales l'est. Empreinte du PDF au moment de la lecture, à titre d'identification et non d'archivage.",
+    "pdf_sha256": "a2665d6da7952b3126a120340a2f8d27a3dc3facb4d43e42068c1bf9ceb0e397",
+    "pdf_taille_octets": 7245205,
+    "pdf_pages": 341
+  },
+  "regle": {
+    "article": "Somali Customs Tariff 2020, General rules applicable both to nomenclature and to duties, règle 1 — corroboré par General rules concerning duties, règle 3",
+    "verbatim": "The assessment of the amount of ad valorem Customs duties will be made on the base of Customs value of imported or exported goods. As provided in the Customs valuation related provisions, the base for determination of the Customs value will be the transaction value of goods being imported or exported.",
+    "verbatim_b3": "The duties expressed as percentage rates are ad valorem duties and are calculated as a percentage of Customs value of goods. Customs value will be based on the transaction value.",
+    "portee": "Le droit de douane ad valorem est liquidé sur la valeur en douane (Customs value), laquelle est déterminée sur la valeur de transaction. Dans la grammaire du socle, « CIF » signifie précisément « valeur en douane » : l'assiette retenue est donc CIF, sans ajout d'aucun autre droit dans l'assiette du droit lui-même.",
+    "valeur_moteur": "CIF"
+  },
+  "corroboration_sop": {
+    "instrument": "Somali Customs Automated System (SOMCAS), Standard Operating Procedures, Annexe C « Customs Valuation » (pages 29-31)",
+    "url": "https://revenuedirectorate.gov.so/sites/default/files/pdf/Standard%20Operating%20Procedures%20on%20the%20Process%20of%20Customs%20Declarations%20Through%20SOMCAS.pdf",
+    "institution": "Somalia Revenue Directorate / Somali Customs Department",
+    "texte_archive": "sources/SOM_somcas_sop_annexe-C.texte-extrait.txt",
+    "sha256": "5ceaccdec098b83e1f6a7ad874e87c9566f55bc326a671fc652f6fe1f0f9160e",
+    "pdf_non_archive": "PDF de 1,4 Mo et 35 pages non archivé ; seul l'extrait de l'Annexe C l'est.",
+    "pdf_sha256": "eaca61d7aea7857a561bd4db3ea2d1b1783009c82724b728dcda250fc627071d",
+    "verbatim": "Under the Customs Act 2020, the dutiable value of imported goods is determined by reference to the goods' \"normal price\". The evidence of a \"normal price\" is usually an invoice issued under normal commercial arms' length arrangements. These arrangements are aligned to some extent with the principle of \"transaction value\" of imported goods set out in the WTO Valuation Agreement.",
+    "incoterms_fob_cif": "When the terms are FOB, the Commercial Invoice should be supported by Freight Invoices and Insurance Certificates. Freight and Insurance are commonly undervalued. — When the terms are CIF, deduct approximate freight and insurance charges to check the unit value of the goods (if not shown separately).",
+    "lecture": "Le SOP confirme la base « valeur de transaction » (WTO), et le traitement FOB/CIF indique que le fret et l'assurance entrent dans la valeur retenue pour la douane : sur FOB, la douane exige les factures fret et assurance pour les intégrer ; sur CIF, elles sont déjà incluses."
+  },
+  "ce_que_cela_ne_tranche_pas": "Le document ne tranche pas, à lui seul, la frontière exacte entre FOB et CIF : la règle du tarif dit « Customs value » et « transaction value » sans détailler quels éléments s'y ajoutent. C'est le SOP (Incoterms) qui l'établit en exigeant fret et assurance sur les envois FOB. Le tarif fixe en outre un droit à l'exportation de 2 % (non concerné ici), les droits spécifiques à la quantité (règle C.2), et les listes PRB/LIC/STR/FREE du préambule.",
+  "doutes": "Le Customs Act 2020 et les Customs Valuation Regulations 2023 (qui définissent la « normal price » et les CRV) n'ont pas pu être obtenus en ligne : seul le SOP les cite. La transcription précise de « transaction value » vers l'Incoterm CIF repose donc sur le SOP, pas sur l'acte lui-même. Si l'acte ou le règlement de valuation est retrouvé, il prime sur cette lecture.",
+  "remaining_work": [
+    "Obtenir et archiver le Customs Act 2020 et les Customs Valuation Regulations 2023 pour fonder la 'normal price' et la frontière FOB/CIF.",
+    "Brancher l'assiette DD dans assiettes_pays.json (SOM, assiette CIF, origine texte_primaire) puis reconstruire le socle SOM.",
+    "Collecter le taux de TVA somalien à l'importation (actuellement aucune ligne TVA au socle), qui relève d'un texte distinct."
+  ]
+}

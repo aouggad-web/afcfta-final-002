@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette de la TVA à l'importation en Mauritanie : valeur en douane + tous prélèvements d'entrée, TVA exclue",
+  "verified_at": "2026-09-17",
+  "etabli": true,
+  "evidence_level": "primaire — doctrine officielle de la Direction Générale des Impôts (impots.gov.mr), « Livre 2, Titre 1 : TVA », 10/10/2019, PDF lu intégralement et archivé en extrait.",
+  "source": {
+    "instrument": "CGI, Livre II Titre I (TVA), chapitre 3 « Base d'imposition, fait générateur et exigibilité » — 1. Importations",
+    "url": "https://impots.gov.mr/DGI/files/doctrine/Livre2-Titre1-TVA-20191010.pdf",
+    "institution": "Direction Générale des Impôts — République islamique de Mauritanie",
+    "texte_archive": "sources/MRT_assiette_TVA.texte-extrait.txt",
+    "sha256": "9a2c9a66a32d3bf2d9fce3e13b68f4151e4655f4991f3165c39130d2eb3c1035",
+    "pdf_non_archive": "PDF de 1,1 Mo et 55 pages non archivé ; seul l'extrait de la règle d'assiette l'est.",
+    "pdf_sha256": "d3e6a69245f2d67ced0c05e7f311c3e63d77a3332c292a83ee6acc92f77362b8"
+  },
+  "regle": {
+    "article": "CGI — TVA, chapitre 3 (Importations) ; importation définie à l'art. 209 CGI ; valeur en douane définie par le Code des Douanes",
+    "verbatim": "La base imposable pour les importations est constituée par la valeur définie par la législation douanière, y compris les taxes et prélèvements de toute nature perçus lors du franchissement du cordon douanier, à l'exception de la taxe sur la valeur ajoutée elle-même.",
+    "valeur_moteur": "CIF+TOUS_SAUF_TVA",
+    "portee": "Valeur en douane (CIF) augmentée de TOUS les droits, taxes et prélèvements perçus au franchissement du cordon douanier, la TVA seule exclue de sa propre assiette. Règle identique sur le fond à l'UEMOA, la Tunisie, le Kenya et l'Ouganda."
+  },
+  "ce_que_cela_ne_tranche_pas": "La liste des biens exonérés ou à taux réduit ; le taux lui-même (porté séparément dans la donnée, 16 %).",
+  "remaining_work": [
+    "Confirmer le numéro d'article exact du CGI pour la base d'imposition des importations (la doctrine le présente sous le chapitre 3 sans numéro).",
+    "Collecter le tarif national mauritanien détaillé (sous-positions) pour éliminer la donnée DD WITS/TRAINS."
+  ]
+}

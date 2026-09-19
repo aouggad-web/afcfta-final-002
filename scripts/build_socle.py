@@ -27,6 +27,7 @@ Usage :
 
 from __future__ import annotations
 
+import collections
 import glob
 import hashlib
 import importlib
@@ -119,7 +120,51 @@ PREFERENTIELS = {
     "EUUK": "EU_UK",
     "EFTA": "EFTA",
     "MERCOSUR": "MERCOSUR",
+    # Colonne du tarif libyen : « التعريفة التفضيلية لدول جامعة الدول العربية »,
+    # tarif préférentiel pour les États de la Ligue des États arabes. Le nom du
+    # régime reprend l'en-tête et rien de plus : ni le tarif ni la loi libyenne
+    # n'invoquent la GZALE/GAFTA, et la composition retenue par la douane
+    # libyenne n'est établie par aucune source consultée.
+    # La table est interrogée sur le code NORMALISÉ (`_norm` retire tirets,
+    # points, espaces et soulignés) : la clé s'écrit donc sans souligné, comme
+    # « EUUK » à côté de « EU_UK ». Écrite « LIGUE_ARABE », l'entrée serait
+    # morte et la colonne tomberait dans la cascade NPF comme un droit dû.
+    "LIGUEARABE": "LIGUE_ARABE",
+    # Le tarif malawien publie DEUX colonnes SADC, et sa propre loi les
+    # distingue : « for imports from other Member States other than South
+    # Africa » (col. 8) et « for imports from South Africa only » (col. 9).
+    # Sans une clé propre à la seconde, les deux se rangeraient sous « SADC » et
+    # le garde de collision retirerait la préférence des deux — ce qui serait
+    # honnête mais perdrait une donnée que la source publie clairement.
+    "SADCZAF": "SADC_ZAF",
+    # Le tarif seychellois ne publie pas UN taux préférentiel par régime mais un
+    # CALENDRIER : cinq taux SADC et cinq taux ZLECAf, un par année civile de 2022
+    # à 2026 (S.I. 113 of 2022, en-tête du barème). Les ranger tous sous « SADC » et
+    # « AFCFTA » ferait jouer le garde de collision et retirerait la préférence de
+    # toutes ces lignes ; les laisser hors de cette table serait bien pire — chaque
+    # millésime tomberait dans la cascade NPF comme un droit DÛ, et une position à
+    # 25 % de droit se verrait réclamer treize fois. Chaque millésime est donc un
+    # régime nommé, et le collecteur sert EN PLUS, sous le nom sans millésime, celui
+    # de l'année en vigueur.
+    **{f"SADC{annee}": f"SADC_{annee}" for annee in range(2022, 2027)},
+    **{f"AFCFTA{annee}": f"AFCFTA_{annee}" for annee in range(2022, 2027)},
+    # Commission de l'océan Indien : la Schedule II du même instrument accorde
+    # « a rate of duty of 5% lower than the rate of duty prescribed in sub column 5 ».
+    # C'est une préférence par origine, pas un prélèvement.
+    "COI": "COI",
 }
+
+
+def _est_une_interdiction(restriction) -> bool:
+    """Vrai si la restriction interdit l'importation, pas seulement l'encadre.
+
+    Le champ `restrictions` des sources mêle deux natures : une INTERDICTION
+    (le tarif libyen, « ممنوع استيراده » — la marchandise ne peut pas entrer)
+    et une MENTION RÉGLEMENTAIRE (la source égyptienne, autorisations et
+    normes — la marchandise entre, sous condition). Les confondre ferait
+    passer 26 502 positions égyptiennes pour prohibées.
+    """
+    return isinstance(restriction, dict) and restriction.get("type") == "IMPORTATION_INTERDITE"
 
 
 def _norm(code: str) -> str:
@@ -140,6 +185,17 @@ def code_canonique(code: str, libelle: str = "") -> str:
     n = _norm(sigle.group(1)) if sigle else _norm(code)
 
     if n in {"DD", "DI", "ID", "DROIT", "GENERAL", "CET", "DR"}:
+        return "DD"
+    # Droit de douane SECTORIEL. Le tarif tunisien décline son droit par produit
+    # — « DD/VEH.AU » (véhicules, 667 positions), « DD/AUT.CA » (autres
+    # carburants, 57), « DD/FUEL » (34), « DD/MAZOUT » (20), « DD/PET.BR »
+    # (pétrole brut, 8) — avec des taux bien réels : 0 %, 15 %, 30 %.
+    # Faute d'être reconnus, ces 786 droits étaient rangés en famille « autre ».
+    # Leurs MONTANTS étaient justes, ils étaient liquidés ; c'est leur nature
+    # qui était perdue, et avec elle la possibilité de dire que la position
+    # porte un droit de douane. Aucune de ces positions ne porte par ailleurs un
+    # DD générique : le rattachement ne peut donc pas écraser un autre droit.
+    if re.match(r"^DD\s*[/-]", str(code or "").strip(), re.I):
         return "DD"
     if n in {"TVA", "TVAI", "TVAAP", "TVAAPTAXE", "VAT", "IVA"}:
         return "TVA"
@@ -188,6 +244,15 @@ ASSIETTES_SOURCE = {
     "CIF+DD": ("CIF+DD", None),
     "CIF + DD + RS + PCS": ("CIF+DD+RS+PCS", None),
     "CIF + DD + TCI": ("CIF+DD+TCI", None),
+    # Maurice — VAT Act 1998, s.13 : valeur en douane + droit de douane
+    # ET ACCISE. Le profil générique posait « CIF+DD », qui omet l'accise
+    # et sous-facturait la TVA sur les positions qui en portent une.
+    "CIF+DD+EXC": ("CIF+DD+EXC", None),
+    # Mozambique — Lei n.º 11/2016, art. 15 : l'ICE s'assoit sur le valor
+    # aduaneiro augmenté des droits (§6), et l'IVA sur le valor aduaneiro
+    # augmenté des droits, de l'ICE et de la sobretaxa (§7).
+    "CIF+DD+ICE+SOBRETX": ("CIF+DD+ICE+SOBRETX", None),
+    "CIF + DD + EXC": ("CIF+DD+EXC", None),
     "CIF+DUTY": ("CIF+DD", None),
     "CIF+DUTY+FEES": ("CIF+TOUS_SAUF_TVA", None),
     "CIF+DUTY+LEVIES": ("CIF+TOUS_SAUF_TVA", None),
@@ -313,6 +378,21 @@ def _reconstruire_assiettes_pays():
     _ecrire_json_atomique(ASSIETTES_PATH, {"pays": pays}, ensure_ascii=False, indent=2)
 
 
+def _entree_exploitable(entree):
+    """Une entrée de manifeste que les totaux savent lire.
+
+    Il ne s'agit pas de valider le manifeste, mais de ne pas se faire
+    interrompre par une entrée tronquée : `etat` et `compteurs.positions` /
+    `compteurs.droits` sont lus sans garde plus bas.
+    """
+    if not isinstance(entree, dict) or not entree.get("etat"):
+        return False
+    compteurs = entree.get("compteurs")
+    return isinstance(compteurs, dict) and all(
+        isinstance(compteurs.get(cle), int) for cle in ("positions", "droits")
+    )
+
+
 def _ecrire_json_atomique(chemin, contenu, **kwargs):
     os.makedirs(os.path.dirname(chemin), exist_ok=True)
     fd, tmp_path = tempfile.mkstemp(
@@ -328,8 +408,6 @@ def _ecrire_json_atomique(chemin, contenu, **kwargs):
         except OSError:
             pass
         raise
-    with open(ASSIETTES_PATH, encoding="utf-8") as f:
-        return json.load(f)["pays"]
 
 
 def assiettes_du_fichier(donnees):
@@ -424,6 +502,90 @@ def nettoyer_code(*candidats) -> str:
     return ""
 
 
+# Un droit servi depuis WITS/UNCTAD-TRAINS n'est pas une position nationale : la
+# Banque mondiale agrège les lignes du tarif national au niveau SH6. La
+# sous-position réelle peut donc porter un autre taux. La TVA de ces mêmes pays
+# porte déjà sa réserve ; le droit de douane ne la portait pas, alors que c'est lui
+# qui vient de l'agrégat. Il la porte désormais aussi : l'opérateur lit la même
+# mise en garde sur les deux lignes d'une même position.
+RESERVE_WITS = (
+    "Taux MFN appliqué agrégé au niveau SH6 par WITS/UNCTAD-TRAINS (Banque "
+    "mondiale), non vérifié position par position : la nomenclature nationale "
+    "peut porter un taux différent au niveau de la sous-position."
+)
+
+
+def _vient_de_wits(source) -> bool:
+    texte = str(source or "").upper()
+    return "WITS" in texte or "UNCTAD-TRAINS" in texte or "TRAINS" in texte
+
+
+#: Droit composé dont la DÉSIGNATION porte le taux, et dont la règle de
+#: liquidation est ÉNONCÉE. Le tarif extérieur commun de l'EAC procède ainsi
+#: pour ses produits sensibles : la colonne de taux est vide — la source note
+#: « Rate determined by national schedule » — et le barème est écrit dans le
+#: libellé, « 75% or $345/MT whichever is higher ».
+#:
+#: Sans cette lecture, ces positions n'ont AUCUN droit et se servent comme si
+#: rien n'était dû : 273 positions sur les sept pays de l'EAC, dont tout le riz
+#: et tout le sucre. Relevé le 2026-09-18, en quatre barèmes seulement —
+#: 25 %/200 $ la tonne (154), 100 %/460 $ (63), 75 %/345 $ (35) et
+#: 35 %/0,40 $ le kilo (21) — sans une seule forme non reconnue.
+#:
+#: Ce cas se distingue nettement du « 40% or 240c/kg » sud-africain, que le
+#: socle REFUSE de liquider : celui-là ne dit pas laquelle des deux composantes
+#: s'applique, celui-ci le dit — « whichever is higher ».
+MOTIF_COMPOSE_DESIGNATION = re.compile(
+    r"([\d]+(?:[.,][\d]+)?)\s*%\s*or\s*(?:\$|USD|US\$)\s*([\d]+(?:[.,][\d]+)?)\s*/\s*"
+    r"(MT|kg|t|L)\b\s*whichever\s+is\s+(higher|lower)",
+    re.I,
+)
+
+REGLES_COMPOSEES = {"higher": "LE_PLUS_ELEVE", "lower": "LE_MOINS_ELEVE"}
+
+
+def droit_compose_depuis_designation(designation, source):
+    """Rendre le droit composé écrit dans une désignation, ou ``None``.
+
+    Ne rend un droit que si les DEUX composantes et la RÈGLE sont lues. Une
+    désignation qui ne porte pas la formule complète ne produit rien — elle
+    tombe alors sur la ligne sans taux, qui dit l'indisponibilité.
+    """
+    texte = designation
+    if isinstance(texte, dict):
+        texte = texte.get("en") or texte.get("fr") or texte.get("ar") or ""
+    m = MOTIF_COMPOSE_DESIGNATION.search(str(texte or ""))
+    if not m:
+        return None
+    ad_valorem = float(m.group(1).replace(",", "."))
+    montant = float(m.group(2).replace(",", "."))
+    return {
+        "code": "DD",
+        "code_source": "DD",
+        "libelle": "Droit de douane (produit sensible, barème national)",
+        "famille": "droit",
+        "taux": ad_valorem,
+        "assiette": "CIF",
+        "assiette_origine": "designation",
+        "specifique": {
+            "montant": montant,
+            "unite_monetaire": "USD",
+            "unite_quantite": m.group(3).lower(),
+            "brut": m.group(0),
+        },
+        "compose": True,
+        "regle_composee": REGLES_COMPOSEES[m.group(4).lower()],
+        "expression_brute": m.group(0),
+        "source": source,
+        "note": (
+            "Taux absent de la colonne du tarif — la source note « Rate determined "
+            "by national schedule » — et porté par la désignation de la position. "
+            "Les deux composantes et la règle de liquidation sont citées telles "
+            "qu'écrites."
+        ),
+    }
+
+
 # ── Adaptateurs : une fonction par forme de ligne fiscale ─────────────────────
 def _droit(
     code_src,
@@ -435,6 +597,7 @@ def _droit(
     specifique=None,
     qualite=None,
     classification=None,
+    regle_composee=None,
 ):
     canon = code_canonique(code_src, libelle)
     prefer = PREFERENTIELS.get(_norm(code_src))
@@ -452,8 +615,14 @@ def _droit(
         "plafond": plafond,
         "source": source,
         "qualite": qualite,
-        "note": note,
+        "note": note if note else (RESERVE_WITS if _vient_de_wits(source) else None),
         "classification_source": classification,
+        # La règle qui départage un droit composé ne se devine pas : elle vient
+        # de la source, quand la source l'énonce. Le tarif zimbabwéen le fait
+        # (« the rate of duty yielding the higher amount of duty shall be
+        # applicable ») ; le tarif sud-africain ne le fait pas, et son droit
+        # composé reste donc non liquidable.
+        "regle_composee": regle_composee,
         "_preferentiel": prefer,
     }
 
@@ -490,7 +659,44 @@ def droits_depuis_liste(taxes, source_defaut):
         taux = lire_taux(row.get("rate") if row.get("rate") is not None else row.get("rate_pct"))
         if taux is None:
             taux = lire_taux(row.get("raw_value"))
-        specifique = row.get("specific_value")
+        # Un droit peut porter DEUX composantes. Le tarif SARS publie
+        # « 40% or 240c/kg » sur 140 positions : `rate_pct` 40,0 ET
+        # `specific_component` « 240c/kg », avec `compound: true`.
+        #
+        # La première version ne lisait que `specific_value`, et seulement en
+        # l'absence de taux ad valorem. Un droit composé perdait donc
+        # silencieusement sa part spécifique ET son verbatim : le moteur
+        # servait 40 % comme s'il était le droit entier. Sur la position
+        # 020110, la part spécifique l'emporte en dessous de 6,00 ZAR/kg de
+        # valeur unitaire — l'écart n'est pas théorique.
+        #
+        # Les deux composantes sont désormais conservées, avec l'expression
+        # brute. Laquelle s'applique n'est PAS tranchée ici : le crawl a
+        # délibérément gardé `raw_value verbatim` sans décider, et le moteur
+        # ne doit pas décider à sa place.
+        specifique = row.get("specific_value") or row.get("specific_component")
+        compose = bool(row.get("compound")) and taux is not None and specifique
+
+        # Deux formes composées coexistent dans le tarif SARS, et elles n'ont
+        # PAS le même statut.
+        #
+        # « 450c/kg with a maximum of 96% » (46 positions) énonce sa propre
+        # règle : le droit est le spécifique, borné à un pourcentage de la
+        # valeur. Rien n'est laissé à deviner. Le crawl, lui, a rangé 96,0 dans
+        # `rate_pct` — c'est-à-dire le PLAFOND pris pour le TAUX. Le moteur
+        # liquidait donc 96 % ad valorem là où le droit dû est 450c/kg, soit
+        # environ 9 % pour du lait en poudre à 50 ZAR/kg : un facteur dix.
+        #
+        # « 40% or 240c/kg » (94 positions) est l'autre forme, et celle-là ne
+        # dit pas laquelle des deux composantes s'applique. Elle reste non
+        # tranchée ; voir `compose`.
+        plafond_ad_valorem = None
+        brut = str(row.get("raw_value") or "")
+        borne = re.search(r"maximum of\s+([\d]+(?:[.,][\d]+)?)\s*%", brut, re.I)
+        if borne and specifique:
+            plafond_ad_valorem = float(borne.group(1).replace(",", "."))
+            taux = None  # 96 % est la BORNE, pas le taux : ne pas le liquider
+            compose = False
         if specifique and row.get("rate_pct") is None:
             taux = None
         out.append(
@@ -506,6 +712,20 @@ def droits_depuis_liste(taxes, source_defaut):
                 classification=row.get("classification_source"),
             )
         )
+        if plafond_ad_valorem is not None:
+            out[-1]["plafond_ad_valorem_pct"] = plafond_ad_valorem
+            out[-1]["expression_brute"] = brut
+        if compose:
+            # Le verbatim est ce qui permet à l'opérateur — et au relecteur —
+            # de constater que le droit a deux composantes, sans que le socle
+            # ait eu à choisir entre elles.
+            out[-1]["expression_brute"] = str(row.get("raw_value") or "")
+            out[-1]["compose"] = True
+            # Si — et seulement si — la source énonce la règle de départage,
+            # elle est reportée telle quelle et le moteur peut liquider.
+            regle = REGLES_COMPOSEES.get(str(row.get("compound_rule") or "").lower())
+            if regle:
+                out[-1]["regle_composee"] = regle
     return out
 
 
@@ -522,6 +742,11 @@ def lignes_du_fichier(donnees):
                 ligne.get("hs_code"),
                 ligne.get("code"),
                 ligne.get("code_raw"),
+                # `national_code` doit passer AVANT `hs6`, sans quoi une collecte
+                # nationale est rabattue sur six chiffres et ses sous-positions
+                # entrent en collision. La Libye perdait ainsi 349 de ses 5 920
+                # positions, sans que rien ne le signale.
+                ligne.get("national_code"),
                 ligne.get("hs6"),
             )
             if not code:
@@ -541,6 +766,7 @@ def lignes_du_fichier(donnees):
                 ligne.get("unit") or ligne.get("statistical_unit"),
                 droits,
                 ligne.get("source") or source_defaut,
+                ligne.get("restrictions"),
             )
 
     # Schéma « tariff_lines[] » : la ligne SH6 porte les taxes, ses enfants
@@ -559,6 +785,7 @@ def lignes_du_fichier(donnees):
                 ligne.get("unit"),
                 droits_parent,
                 ligne.get("dd_source") or source_defaut,
+                ligne.get("restrictions"),
             )
         for enfant in enfants:
             if not isinstance(enfant, dict):
@@ -591,6 +818,7 @@ def lignes_du_fichier(donnees):
                 ligne.get("unit"),
                 droits,
                 enfant.get("source") or source_defaut,
+                enfant.get("restrictions") or ligne.get("restrictions"),
             )
 
 
@@ -601,6 +829,63 @@ def sha256(chemin: str) -> str:
         for bloc in iter(lambda: f.read(1 << 20), b""):
             h.update(bloc)
     return h.hexdigest()
+
+
+#: Pays dont le tarif ne publie sa désignation que dans une langue, et pour
+#: lesquels l'utilisateur a demandé que le socle serve aussi un libellé français
+#: et anglais. LISTE NOMMÉE, pays par pays : rien n'est enrichi sans y figurer.
+#: Le libellé NATIONAL n'est jamais remplacé — il reste le verbatim qui fait foi.
+PAYS_LIBELLES_TRADUITS = {
+    "MOZ": "pt",   # Pauta Aduaneira, portugais
+    "EGY": "ar",   # tarif douanier égyptien, arabe — et son libellé est VIDE
+    "AGO": "pt",   # Pauta Aduaneira, portugais
+}
+
+LIBELLES_SH6_PATH = os.path.join(ETL_DIR, "hs6_designations_fr_en.json")
+
+
+def charger_libelles_sh6():
+    """Les libellés SH6 en français et en anglais, EMPRUNTÉS à d'autres tarifs
+    nationaux par scripts/construire_libelles_sh6.py — jamais traduits ici."""
+    try:
+        with open(LIBELLES_SH6_PATH, encoding="utf-8") as f:
+            charge = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {}
+    table = charge.get("libelles")
+    return table if isinstance(table, dict) else {}
+
+
+def traduire_designation(designation, hs6, libelles, langue_origine):
+    """Ajouter `fr` et `en` à une désignation, SANS toucher au libellé national.
+
+    Les libellés empruntés décrivent le PARENT SH6, pas la subdivision
+    nationale : la désignation le déclare, pour que personne ne les prenne
+    pour le libellé de la ligne servie.
+    """
+    entree = libelles.get(hs6) or {}
+    if not entree:
+        return designation
+    if isinstance(designation, str):
+        designation = {langue_origine: designation, "verbatim": designation}
+    elif isinstance(designation, dict):
+        designation = dict(designation)
+    else:
+        return designation
+    ajoutes = []
+    for langue in ("fr", "en"):
+        if not entree.get(langue):
+            continue
+        # Ne JAMAIS écraser un libellé que le tarif national publie lui-même.
+        if str(designation.get(langue) or "").strip():
+            continue
+        designation[langue] = entree[langue]
+        designation[f"{langue}_source"] = entree.get(f"{langue}_source")
+        ajoutes.append(langue)
+    if ajoutes:
+        designation["langues_empruntees"] = ajoutes
+        designation["niveau_libelle_emprunte"] = "SH6"
+    return designation
 
 
 def sources_disponibles():
@@ -618,6 +903,8 @@ def sources_disponibles():
 
 
 def construire_pays(iso, chemin, origine, assiettes_pays):
+    langue_origine = PAYS_LIBELLES_TRADUITS.get(iso)
+    libelles_sh6 = charger_libelles_sh6() if langue_origine else None
     with open(chemin, encoding="utf-8") as f:
         donnees = json.load(f)
 
@@ -625,6 +912,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     assiettes_codees = profil.get("taxes", {})
     assiettes_fichier = assiettes_du_fichier(donnees)
 
+    source_defaut_pays = donnees.get("source") or donnees.get("source_name") or ""
     positions = {}
     compteurs = {
         "positions": 0,
@@ -633,6 +921,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         "positions_liquidables": 0,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
+        "preferentiels_collision": 0,
         "taux_indisponibles": 0,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
@@ -640,11 +929,21 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         "assiettes_indisponibles": 0,
         "sans_designation": 0,
         "droits_specifiques": 0,
+        "droits_composes": 0,
+        "restrictions": 0,
+        "interdictions": 0,
+        "droits_absents_completes": 0,
+        "droits_lus_en_designation": 0,
         "classification_estimee": 0,
     }
     familles_vues = set()
+    #: Les couples (position, régime) où deux colonnes se réclament du même
+    #: régime préférentiel. Rapportés, jamais absorbés.
+    collisions = []
 
-    for code, designation, unite, droits, source_ligne in lignes_du_fichier(donnees):
+    for code, designation, unite, droits, source_ligne, restrictions in lignes_du_fichier(
+        donnees
+    ):
         retenus, prefs = [], {}
         position_complete = True
         for d in droits:
@@ -652,6 +951,34 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 # Une colonne préférentielle est conservée telle quelle, sous son
                 # propre régime. Elle n'entre jamais dans la cascade NPF.
                 regime = PREFERENTIELS[_norm(d["code_source"])]
+                # DEUX COLONNES NE PEUVENT PAS SE PARTAGER UN RÉGIME EN SILENCE.
+                # `prefs` est un dictionnaire : une seconde colonne rangée sous le
+                # même régime écrasait la première sans rien dire. Le tarif
+                # malawien en donne le cas — il publie DEUX colonnes SADC, l'une
+                # « for imports from other Member States other than South Africa »
+                # (col. 8), l'autre « for imports from South Africa only »
+                # (col. 9) — et la distinction que sa loi établit disparaîtrait.
+                # Le taux servi serait alors celui de la dernière colonne lue :
+                # crédible, et faux pour la moitié des origines.
+                if regime in prefs:
+                    # Deux cas, et un seul est dangereux. Si les deux colonnes
+                    # portent LE MÊME taux, le doublon est sans effet et l'on
+                    # garde ce qu'on a. Si elles DIVERGENT, aucune ne peut être
+                    # retenue : servir l'une ou l'autre serait juste pour une
+                    # moitié des origines et faux pour l'autre. Le régime est
+                    # alors retiré — le moteur ne servira pas de préférence, au
+                    # lieu d'en servir une tirée au sort — et la collision est
+                    # comptée pour que le relecteur la voie.
+                    ancien = prefs.get(regime) or {}
+                    if ancien.get("taux") == d["taux"] and not d.get("specifique"):
+                        continue
+                    compteurs["preferentiels_collision"] += 1
+                    collisions.append((code, regime, d["code_source"]))
+                    prefs[regime] = {
+                        "taux": None,
+                        "motif": "DEUX_COLONNES_POUR_UN_MEME_REGIME",
+                    }
+                    continue
                 # La colonne se conserve sous la même forme qu'un droit NPF —
                 # taux ad valorem OU montant spécifique — parce qu'elle en prend
                 # la forme : 181 lignes sud-africaines opposent un « 8c/kg » NPF
@@ -687,6 +1014,18 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 compteurs["assiettes_table"] += 1
             else:
                 compteurs["assiettes_indisponibles"] += 1
+            if d["specifique"] and not isinstance(d["specifique"], dict):
+                # La décomposition vaut pour TOUTE composante spécifique, y
+                # compris celle d'un droit composé qui porte aussi un taux :
+                # le moteur refuse une chaîne (« 1.50 USD/kg ») pour ne pas en
+                # relire le seul nombre, et rendait donc QUANTITE_REQUISE sur
+                # les 61 droits zimbabwéens « X % or US$ Y/kg » alors même que
+                # la quantité était fournie et la règle de départage énoncée.
+                d["specifique"] = lire_specifique(d["specifique"]) or {
+                    "brut": str(d["specifique"]),
+                    "montant": None,
+                    "motif": "expression non lisible",
+                }
             if d["specifique"] and d["taux"] is None:
                 # Un droit spécifique se liquide à la quantité, jamais sur la
                 # valeur. Si l'assiette héritée dit « CIF », elle décrit le
@@ -695,11 +1034,6 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 d["assiette"] = "xQTE"
                 d["assiette_origine"] = "droit_specifique"
                 d["plafond"] = None
-                d["specifique"] = lire_specifique(d["specifique"]) or {
-                    "brut": str(d["specifique"]),
-                    "montant": None,
-                    "motif": "expression non lisible",
-                }
                 compteurs["droits_specifiques"] += 1
             if d["taux"] is None and not d["specifique"]:
                 compteurs["taux_indisponibles"] += 1
@@ -713,7 +1047,15 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             specifique_lisible = (
                 isinstance(d.get("specifique"), dict) and d["specifique"].get("montant") is not None
             )
-            if d["assiette"] and (d["taux"] is not None or specifique_lisible):
+            # Un droit COMPOSÉ porte ses deux composantes mais pas la règle qui
+            # les départage : le moteur refuse de le liquider. Le compter ici
+            # comme liquidable ferait dire au manifeste qu'un montant est
+            # calculable là où la réponse servie est une indisponibilité
+            # nommée — deux vérités pour un même droit.
+            if d.get("compose"):
+                compteurs["droits_composes"] = compteurs.get("droits_composes", 0) + 1
+                position_complete = False
+            elif d["assiette"] and (d["taux"] is not None or specifique_lisible):
                 compteurs["droits_liquidables"] += 1
             else:
                 position_complete = False
@@ -722,6 +1064,10 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         retenus.sort(key=lambda d: ORDRE_FAMILLES.index(d.get("famille", "autre")))
         if not designation:
             compteurs["sans_designation"] += 1
+        if libelles_sh6 is not None:
+            designation = traduire_designation(
+                designation, code[:6], libelles_sh6, langue_origine
+            )
         positions[code] = {
             "designation": designation,
             "hs6": code[:6],
@@ -734,10 +1080,134 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             positions[code]["preferentiels"] = prefs
         if source_ligne:
             positions[code]["source"] = source_ligne
+        # Une interdiction d'importation est une RÉPONSE, pas une absence. Sans
+        # elle, une position prohibée se présente comme un calcul indisponible —
+        # l'opérateur lit « on ne sait pas » là où le tarif dit « interdit ».
+        # Relevé sur le tarif libyen 2022 : 62 positions portent
+        # « ممنوع استيراده ». Elles ne portent aucun droit, et c'est normal.
+        if restrictions:
+            positions[code]["restrictions"] = restrictions
+            compteurs["restrictions"] = compteurs.get("restrictions", 0) + len(restrictions)
+            compteurs["interdictions"] = compteurs.get("interdictions", 0) + sum(
+                1 for r in restrictions if _est_une_interdiction(r)
+            )
         compteurs["positions"] += 1
         compteurs["droits"] += len(retenus)
         if retenus and position_complete:
             compteurs["positions_liquidables"] += 1
+
+    # ── Une position sans droit, dans un pays qui en publie ────────────────
+    # Le socle ne liquide que ce qu'il porte. Une position dépourvue de toute
+    # ligne de droit se sert donc COMPLÈTE, sans droit de douane — un total qui
+    # paraît entier et ne l'est pas. Mesuré sur le socle du 2026-09-18 :
+    # 2 915 positions dans ce cas, sur douze pays, dont 12 444,00 servis
+    # « COMPLET » pour DZA/2710122400 avec accise, TVA et zéro droit.
+    #
+    # Trois causes distinctes ont été trouvées en remontant aux sources : un
+    # zéro publié supprimé à la collecte (Éthiopie), une source qui ne publie
+    # rien (Maroc, dont le champ `taxes` est vide), et un droit bien présent
+    # mais non reconnu (les droits sectoriels tunisiens, traités plus haut).
+    # Aucune ne justifie de servir la position comme si rien n'était dû.
+    #
+    # La ligne est donc posée SANS TAUX : le moteur la déclare indisponible et
+    # refuse le total, au lieu de le rendre amputé. Elle n'est posée que si le
+    # pays publie des droits ailleurs — un pays qui n'en collecte aucun
+    # (couverture sans la famille « droit ») n'en reçoit pas, et une position
+    # dont l'importation est interdite non plus : là, l'absence est la réponse.
+    if "droit" in familles_vues:
+        # L'assiette du droit de douane est une règle de PAYS, pas de position :
+        # on reprend celle que la même source pose sur ses autres positions,
+        # plutôt que d'en supposer une. Sans elle, le moteur signalerait une
+        # assiette manquante là où c'est le TAUX qui manque — un motif juste
+        # mais qui désigne le mauvais trou.
+        assiettes_du_droit = collections.Counter(
+            d.get("assiette")
+            for pos in positions.values()
+            for d in pos["droits"]
+            if d.get("famille") == "droit" and d.get("assiette")
+        )
+        assiette_courante = assiettes_du_droit.most_common(1)[0][0] if assiettes_du_droit else None
+        for code, position in positions.items():
+            # SEULE une interdiction d'importer explique l'absence de droit.
+            # Le champ `restrictions` transporte aussi des mentions
+            # RÉGLEMENTAIRES — la source égyptienne en porte 26 502, du type
+            # « ق3034 : pas de déclaration d'export des espèces CITES sans
+            # accord du jardin zoologique ». Une marchandise soumise à
+            # autorisation entre quand même, et son droit reste dû : la traiter
+            # comme prohibée dispenserait 26 502 positions de déclarer un droit
+            # manquant, sur la foi d'une note qui ne dit rien du droit.
+            if any(_est_une_interdiction(r) for r in position.get("restrictions") or []):
+                continue
+            if any(d.get("famille") == "droit" for d in position["droits"]):
+                continue
+            # Le barème peut être écrit dans la désignation : on le lit avant de
+            # conclure à l'absence. Une absence déclarée vaut mieux qu'un
+            # silence, mais un droit lu vaut mieux qu'une absence déclarée.
+            compose = droit_compose_depuis_designation(
+                position.get("designation"), position.get("source") or source_defaut_pays
+            )
+            if compose:
+                position["droits"].insert(0, compose)
+                compteurs["droits"] += 1
+                compteurs["droits_composes"] = compteurs.get("droits_composes", 0) + 1
+                compteurs["droits_lus_en_designation"] = (
+                    compteurs.get("droits_lus_en_designation", 0) + 1
+                )
+                continue
+            position["droits"].insert(
+                0,
+                {
+                    "code": "DD",
+                    "code_source": "DD",
+                    "libelle": "Droit de douane — taux absent de la source",
+                    "famille": "droit",
+                    "taux": None,
+                    "assiette": assiette_courante,
+                    "assiette_origine": "regle_de_pays" if assiette_courante else None,
+                    "source": position.get("source") or source_defaut_pays,
+                    "note": (
+                        "Aucun droit de douane n'est publié pour cette position, alors "
+                        "que la source en publie pour d'autres. Le total ne peut pas "
+                        "être servi comme complet : le droit est déclaré indisponible "
+                        "plutôt que supposé nul."
+                    ),
+                },
+            )
+            compteurs["droits"] += 1
+            compteurs["taux_indisponibles"] += 1
+            compteurs["droits_absents_completes"] = (
+                compteurs.get("droits_absents_completes", 0) + 1
+            )
+
+    # Les compteurs s'incrémentaient PAR LIGNE LUE. Deux lignes qui portent le
+    # même code sont comptées deux fois et servies une seule : le compteur
+    # annonçait donc plus de positions que le socle n'en porte, et c'est ce qui
+    # a masqué la perte de 349 positions libyennes rabattues sur le SH6.
+    # Ils comptent désormais ce qui est RÉELLEMENT SERVI.
+    compteurs["positions"] = len(positions)
+    compteurs["droits"] = sum(len(p.get("droits") or []) for p in positions.values())
+    compteurs["droits_composes"] = sum(
+        1 for p in positions.values() for d in p.get("droits") or [] if d.get("compose")
+    )
+    compteurs["droits_liquidables"] = sum(
+        1
+        for p in positions.values()
+        for d in p.get("droits") or []
+        if not d.get("compose")
+        and d.get("assiette")
+        and (d.get("taux") is not None or d.get("specifique"))
+    )
+    compteurs["positions_liquidables"] = sum(
+        1
+        for p in positions.values()
+        if (p.get("droits") or [])
+        and all(
+            not d.get("compose")
+            and d.get("assiette")
+            and (d.get("taux") is not None or d.get("specifique"))
+            for d in p["droits"]
+        )
+    )
 
     socle = {
         "iso3": iso,
@@ -832,18 +1302,38 @@ def main(argv):
     # Une construction partielle ne doit pas amputer le manifeste : les pays
     # non reconstruits restent sur disque, et les retirer de l'index les rendrait
     # introuvables alors qu'ils sont servables. On repart donc de l'existant.
+    # Un manifeste illisible ou non conforme se reconstruit, il n'arrête pas la
+    # construction : les fichiers pays présents sur disque restent servables, et
+    # échouer ici les rendrait introuvables pour rien. On repart alors d'un
+    # index vide, que la boucle ci-dessous regarnit.
     ancien = {}
-    if os.path.exists(os.path.join(SOCLE_DIR, "MANIFESTE.json")):
-        with open(os.path.join(SOCLE_DIR, "MANIFESTE.json"), encoding="utf-8") as f:
-            ancien = json.load(f).get("pays", {})
+    chemin_manifeste = os.path.join(SOCLE_DIR, "MANIFESTE.json")
+    if os.path.exists(chemin_manifeste):
+        try:
+            with open(chemin_manifeste, encoding="utf-8") as f:
+                charge = json.load(f)
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"[build_socle] manifeste illisible ({exc}) : reconstruction depuis zéro")
+            charge = None
+        pays_existants = charge.get("pays") if isinstance(charge, dict) else None
+        ancien = pays_existants if isinstance(pays_existants, dict) else {}
     manifeste = {
         "socle_version": SOCLE_VERSION,
         "construit_le": datetime.now(timezone.utc).isoformat(),
-        "pays": {
-            iso: entree
-            for iso, entree in ancien.items()
-            if os.path.exists(os.path.join(SOCLE_DIR, entree.get("fichier", "")))
-        },
+        # Les entrées non reconstruites sont conservées, même si leur fichier
+        # n'est pas sur le disque à cet instant : dans un clone frais, le
+        # manifeste est versionné quand les 54 fichiers pays ne le sont pas, et
+        # les filtrer sur leur présence réduirait l'index au seul pays demandé.
+        # L'absence d'un fichier se dit déjà au chargement (`SocleIndisponible :
+        # fichier de socle absent — le régénérer`), ce qui est une panne
+        # nommée ; un pays disparu de l'index, lui, est muet.
+        #
+        # Conservées, mais pas au prix d'un plantage : les totaux plus bas
+        # lisent `etat` et `compteurs`, et une entrée tronquée les ferait
+        # échouer sur un KeyError — exactement l'interruption que la tolérance
+        # au manifeste illisible existe pour éviter. Une entrée inexploitable
+        # est donc écartée, comme le serait un manifeste entier illisible.
+        "pays": {iso: e for iso, e in ancien.items() if _entree_exploitable(e)},
         "totaux": {},
     }
     vides = []

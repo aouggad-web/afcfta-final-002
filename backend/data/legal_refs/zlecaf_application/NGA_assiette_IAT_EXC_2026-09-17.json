@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette des prélèvements IAT (Import Adjustment Tax) et EXC (Excise Duty ad valorem) au Nigéria : la valeur CIF",
+  "verified_at": "2026-09-17",
+  "etabli": true,
+  "evidence_level": "primaire (loi identifiée) — Nigeria Customs Service Act, 2023 (Act No. 20), section 69 ; verbatim transcrit, texte intégral du Journal Officiel encore à archiver.",
+  "source": {
+    "instrument": "Nigeria Customs Service Act, 2023 (Act No. 20), section 69 — remplace la CEMA de 1958",
+    "institution": "Nigeria Customs Service (customs.gov.ng) — République fédérale du Nigéria",
+    "texte_archive": "sources/NGA_ncsa_2023_s69.texte-extrait.txt",
+    "sha256": "bdfd2e7da15cffdbb53021318ee321dbb8c7f1f20f1e60159c615004128ded26",
+    "pdf_non_archive": "Le texte intégral (PDF) de la loi, publié au Journal Officiel de la République fédérale du Nigéria, n'a pas pu être téléchargé depuis cet environnement ; seul le verbatim transcrit l'est, à recouper.",
+    "note_transcription": "Le verbatim est transcrit de la recherche référencée et doit être recoupé sur le texte officiel intégral avant citation « primaire » opposable."
+  },
+  "regle": {
+    "article": "NCSA 2023, section 69 — valeur en douane ; IAT et accises ancrées sur le Customs, Excise Tariff, etc. (Consolidation) Act, Cap C49, amendé par les Finance Acts 2021-2023",
+    "verbatim": "The primary basis for Customs value of goods shall be the transaction value, which is the price paid or payable for goods when sold for export to the Federal Republic of Nigeria, adjusted in accordance with the provisions of [...]",
+    "valeur_moteur": "CIF",
+    "portee": "L'évaluation en douane (transaction value, ajustée du fret et de l'assurance = CIF) est la base du droit d'importation (ID), de l'IAT et des accises ad valorem. Le droit de douane de base n'entre dans la base que pour certains produits (à confirmer position par position). La TVA reste sur CIF + droit (VAITA)."
+  },
+  "assiettes_retenues": {
+    "DD": "CIF",
+    "IAT": "CIF",
+    "EXC": "CIF",
+    "TVA": "CIF+DD"
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "La ventilation « CIF + droit de douane de base, si applicable, selon le type de produit » : la liste des produits dont l'IAT/l'accise s'applique sur CIF+droit reste à établir position par position.",
+    "Les taux IAT et accises en vigueur (révisés annuellement par les Finance Acts / Fiscal Policy Measures) : cette fiche porte la base, pas les taux."
+  ],
+  "doutes": "Le verbatim de la section 69 est transcrit de la recherche référencée et non lu dans le texte officiel intégral, inaccessible depuis cet environnement (void opinion). À recouper sur le Journal Officiel.",
+  "remaining_work": [
+    "Archiver le texte intégral du NCSA 2023 (Journal Officiel) et confirmer le verbatim de la section 69.",
+    "Établir position par position si l'IAT/l'accise s'applique sur CIF ou sur CIF+droit de douane.",
+    "Brancher IAT et EXC au socle (assiette CIF)."
+  ]
+}

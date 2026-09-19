@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "objet": "Taux de la TVA en Namibie : 15 % (VAT Act 10/2000 s.6(1)(b), version annotée NamRA)",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — Value-Added Tax Act 10 of 2000, version annotée NamRA consolidée jusqu'à l'Amendment Act 11 of 2011 (PDF lu intégralement).",
+  "source": {
+    "url": "https://www.namra.org.na/documents/cms/uploaded/value-added-tax-act-10-of-2000-8d9c425ffc.pdf",
+    "institution": "NamRA",
+    "pdf_archive": "sources/NAM_vat_act_10_2000_taux.texte-extrait.txt",
+    "archive": "extraits et PDF sources archivés sous backend/data/legal_refs/zlecaf_application/sources/ (voir documents_archives)"
+  },
+  "regle": {
+    "valeur": "15 % (taux standard)",
+    "verbatim": "6. (1) … there shall be levied and paid, for the benefit of the State Revenue Fund, a tax (to be known as the value-added tax) — … (b) on every import of goods or import of services, other than an exempt import, calculated at the rate of 15 per cent on the value of the supply or import. [subsection (1) substituted by Act 6 of 2002]",
+    "portee": "Taux standard, explicitement applicable aux IMPORTATIONS. Version annotée consolidée jusqu'à 2011.",
+    "texte_archive": "sources/NAM_vat_act_10_2000_taux.texte-extrait.txt",
+    "sha256": "1f4a77e61a91c7783733c46a4b3c3a68ee81eb0b2a33484386fa4554ede8c313",
+    "sha256_pdf_origine": "ac9b9431d1da05718cba217ab7d5f3c1470a6e9567120125fe5757cbe04199ad"
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "Un amendement postérieur à 2011 éventuel non vérifiable (version annotée limitée)"
+  ],
+  "doutes": "Site namra.org.na SPA JavaScript (contenu extrait via API CMS). namiblii.org bloque curl (Cloudflare).",
+  "remaining_work": [
+    "Vérifier les amendements postérieurs à 2011"
+  ],
+  "documents_archives": [
+    {
+      "texte_archive": "sources/NAM_vat_act_10_2000_taux.texte-extrait.txt",
+      "texte_sha256": "1f4a77e61a91c7783733c46a4b3c3a68ee81eb0b2a33484386fa4554ede8c313"
+    },
+    {
+      "texte_archive": "sources/NAM_taux_TVA_extrait_vatact2000.txt",
+      "texte_sha256": "5887aa27ff98d388c230d92a2a22fec02d677a95c8f30057f30ea782a7fa6e13"
+    },
+    {
+      "pdf_archive": "sources/nam_vatact2000.pdf",
+      "pdf_sha256": "ac9b9431d1da05718cba217ab7d5f3c1470a6e9567120125fe5757cbe04199ad"
+    }
+  ]
+}

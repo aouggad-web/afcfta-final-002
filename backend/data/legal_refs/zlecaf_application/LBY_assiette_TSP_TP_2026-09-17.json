@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "objet": "Assiette des prélèvements à l'importation en Libye : la valeur en douane CAF/CIF (Loi n° 10 de 2010, art. 26-31)",
+  "verified_at": "2026-09-17",
+  "etabli": true,
+  "evidence_level": "primaire (loi identifiée) — Loi n° 10 de 2010 sur les douanes, articles 26 à 31 ; verbatim transcrit, texte intégral encore à archiver.",
+  "objectif": "Éliminer la donnée WITS/UNCTAD-TRAINS (moyenne SH6) et collecter le tarif national libyen détaillé, position par position (famille D du relevé).",
+  "source": {
+    "instrument": "Law No. (10) of 2010 on Customs, articles 26 à 31",
+    "institution": "Douane libyenne (Mashruat al-Jamarik) — État de Libye",
+    "texte_archive": "sources/LBY_loi_10_2010_art26-31.texte-extrait.txt",
+    "sha256": "063e9e7dc1083bfc7056525ac821bf2f815aa0ad3dc294fab212a9a273f86daf",
+    "pdf_non_archive": "Le texte intégral de la loi n'a pas pu être téléchargé depuis cet environnement ; seul le verbatim transcrit l'est, à recouper.",
+    "note_transcription": "Le verbatim est transcrit de la recherche référencée et doit être recoupé sur le texte officiel intégral."
+  },
+  "regle": {
+    "article": "Loi n° 10 de 2010, articles 26 à 31 (valeur en douane)",
+    "verbatim": "Customs value does not include the following elements: Expenses of the imported goods after they enter Libyan territory. Taxes and fees paid in the State. Expenses relating to building, assembly, maintenance, or technical assistance conducted after the goods have been imported ...",
+    "valeur_moteur": "CIF",
+    "portee": "Les frais de transport et d'assurance jusqu'au port d'entrée libyen sont intégrés : la valeur transactionnelle brute est la base CAF/CIF. Les prélèvements effectifs à l'importation (taxe de service/port forfaitaire, taxes sectorielles) s'appliquent sur cette valeur."
+  },
+  "decouvertes_associees": {
+    "pas_de_tva": "Pas de TVA en Libye (PwC) — cohérent avec l'absence de famille TVA au socle.",
+    "droit_de_douane_aboli": "Droits de douane abolis en 2005, sauf tabac (PwC).",
+    "pas_d_accise": "Pas de taxe d'accise (PwC).",
+    "dollar_douanier_aboli": "Décision ministérielle n° 160 de 2026 : abolit le « dollar douanier » fixe, aligne l'évaluation sur le taux de change réel de la Banque centrale de Libye.",
+    "ecart_avec_WITS_TRAINS": "Le DD du socle (WITS/UNCTAD-TRAINS, MFN SH6 5-35 %) ne correspond pas au régime réel libyen ; TSP 4 % / TP 2 % du crawl divergent de la service fee (4-5 %) et des « autres droits » (0,5 %) documentés. Chantier « famille D » : remplacer par le tarif national détaillé."
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "Les taux effectifs du prélèvement forfaitaire de service/port et des taxes sectorielles en vigueur (à lire dans le texte primaire libyen).",
+    "La liste des positions encore soumises à un droit (tabac) et de celles exemptées."
+  ],
+  "doutes": "Le verbatim des articles 26-31 est transcrit de la recherche référencée et non lu dans le texte officiel intégral, inaccessible depuis cet environnement. À recouper sur le portail juridique libyen (dès accès).",
+  "remaining_work": [
+    "Archiver le texte intégral de la Loi n° 10 de 2010 et confirmer le verbatim des articles 26 à 31.",
+    "Remplacer la donnée DD WITS/TRAINS de la Libye par le prélèvement réel, position par position (élimination WITS).",
+    "Recaler TSP/TP (ou service fee / taxes sectorielles) sur les prélèvements effectifs, base CIF."
+  ]
+}

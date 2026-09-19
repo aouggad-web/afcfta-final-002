@@ -1,0 +1,72 @@
+Angola — le taux de la TVA et l'assiette de la TVA a l'importation.
+
+INSTRUMENT
+  LEI n.º 7/19 de 24 de Abril — « Aprova o Codigo do Imposto Sobre o Valor
+  Acrescentado. Revoga o Regulamento do Imposto de Consumo, republicado pelo
+  Decreto Legislativo Presidencial n.º 3-A/14, de 21 de Outubro, e o Imposto de
+  Selo previsto na Verba n.º 15 [...] »
+  Assembleia Nacional de la Republique d'Angola.
+
+COMMENT CE TEXTE A ETE OBTENU, ET CE QUE CELA VAUT — A LIRE AVANT DE S'EN SERVIR.
+Le Diario da Republica qui publie la Lei n.º 7/19 n'a PAS ete obtenu. Les articles
+cites ci-dessous proviennent de LEX.AO, base de donnees juridique angolaise qui
+reproduit le texte de la loi. C'est donc le texte de l'instrument, mais lu par un
+VEHICULE SECONDAIRE, et la fiche qui s'en sert le declare. La page de lex.ao est
+elle-meme incomplete : elle s'interrompt au milieu de l'article 48.
+
+  https://lex.ao/docs/assembleia-nacional/2019/lei-n-o-7-19-de-24-de-abril/
+
+TROIS CORROBORATIONS INDEPENDANTES DU MEME CHIFFRE. Le taux de 14 % est enonce par
+(1) la presentation officielle du Grupo Tecnico de Implementacao do IVA (GTIIVA) du
+Ministere des Finances angolais, publiee sur ucm.minfin.gov.ao ; (2) le Portal do
+Contribuinte du meme ministere ; (3) PwC Worldwide Tax Summaries, qui etait jusqu'ici
+la seule source de ce depot pour cette valeur. Aucune de ces trois n'est l'instrument ;
+elles concordent toutes avec l'article 19 cite ci-dessous.
+
+==============================================================================
+I. LE TAUX
+==============================================================================
+
+  ARTIGO 19.º (Taxa do Imposto)
+
+  « A taxa do imposto e de 14% (catorze por cento). »
+
+C'est la seule phrase de l'article, et elle ne prevoit ni taux reduit ni taux zero
+en son sein. Le Code en prevoit ailleurs — exonerations et operations detaxees — et
+CETTE FICHE NE LES ETABLIT PAS : le taux servi est le taux STANDARD, et toute ligne
+qu'il produit porte cette reserve.
+
+==============================================================================
+II. L'ASSIETTE A L'IMPORTATION
+==============================================================================
+
+  ARTIGO 18.º (Valor Tributavel nas Importacoes)
+
+  « O valor tributavel dos bens importados e o valor aduaneiro, determinado nos
+    termos da legislacao aduaneira, adicionado dos elementos a seguir indicados [...] »
+
+CE QUI EST CITE ICI S'ARRETE LA, ET C'EST VOULU. La suite de l'article — la liste des
+elements qui s'ajoutent — n'a PAS ete obtenue mot pour mot ; le vehicule consulte la
+resume en prose au lieu de la citer. Elle n'est donc pas reproduite : un resume n'est
+pas un verbatim, et ce depot ne cite que ce qu'il a lu.
+
+L'assiette retenue par le socle — valeur en douane augmentee des prelevements
+d'entree, la TVA exclue de sa propre assiette — est etablie par une AUTRE fiche,
+AGO_assiette_TVA_2026-09-17.json, sur le Codigo do IVA art. 140. Le present extrait
+ne la refonde pas : il confirme seulement que l'article 18 part bien du VALOR
+ADUANEIRO « determinado nos termos da legislacao aduaneira », c'est-a-dire de celui
+que le Codigo Aduaneiro art. 117.º n.º 2 definit, et qui est le CIF.
+
+==============================================================================
+III. POURQUOI CET EXTRAIT EXISTE
+==============================================================================
+
+Jusqu'au 19 septembre 2026, le socle servait la TVA angolaise a 14 % depuis le
+fichier WITS, avec pour seule source « PwC Worldwide Tax Summaries — Angola ». Ce
+fichier a ete remplace par le tarif national lu dans le Diario promulgue, qui ne
+porte AUCUNE TVA — et la ligne aurait disparu avec lui.
+
+Plutot que de perdre la donnee ou de la reconduire sur une source secondaire, le
+taux est desormais porte par backend/socle/tva_nationale.json, la table que ce depot
+reserve aux TVA absentes de leur source, avec l'article de loi qui l'enonce et la
+reserve ci-dessus sur le vehicule.

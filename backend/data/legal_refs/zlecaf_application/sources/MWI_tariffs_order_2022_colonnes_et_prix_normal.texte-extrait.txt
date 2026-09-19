@@ -1,0 +1,496 @@
+Malawi — Customs and Excise (Tariffs) (No. 3) Order, 2022 (HS 2022 Version)
+Malawi Gazette Supplement du 29 juillet 2022, GOVERNMENT NOTICE NO. 30,
+pris sous le Customs and Excise Act (Cap. 42:01).
+Source : Malawi Revenue Authority
+https://www.mra.mw/admin/storage/downloads/MALAWI_CUSTOMS_AND_EXCISE_(TARIFFS)_ORDER_HS_2022_VERSION_2023-2024_(P).pdf
+PDF : 642 pages, sha256 7960f473e21a8363dbc144cd6ec445b1ab506e36252af485c6eebcd0b661f2ac
+
+CE QUE CE DOCUMENT ETABLIT — LA CARTE DES COLONNES, EN DROIT.
+Le guide d'inspection notait « 8 colonnes de taux SANS en-tete textuel : mapping a
+construire depuis le texte juridique ». Le voici : le paragraphe 4 de l'Order,
+page 22, definit CHAQUE colonne. Il n'y a donc rien a deviner.
+
+  col. 1   numero de position        col. 7A  taux ZLECAf (AfCFTA)
+  col. 2   sous-position             col. 8   taux SADC hors Afrique du Sud
+  col. 3   designation               col. 9   taux SADC, Afrique du Sud seulement
+  col. 4   unite de quantite         col. 10  accise
+  col. 5   droit de douane           col. 11  TVA
+  col. 6   droit de douane           col. 12  Advance Income Tax a l'importation
+  col. 7   taux COMESA
+
+POINT CAPITAL POUR CE CALCULATEUR : le Malawi publie une COLONNE ZLECAf (7A),
+introduite par le Govt Notice 31 du 28/05/2021. C'est le premier des tarifs de ce
+lot a porter un taux preferentiel ZLECAf dans son instrument legal — ni le
+Zimbabwe ni la Zambie n'en publient, et l'extrait mozambicain avait perdu ses
+colonnes SADC et UE. Releve sur 0101.30.90 : droit 10 % / 10 %, COMESA 3 %,
+ZLECAf 5 %, SADC « Free » / « Free », TVA 16,5 %, Advance Income Tax 10 %.
+
+DEUX RESERVES, A LEVER AVANT TOUTE INTEGRATION :
+  1. Les colonnes 5 ET 6 portent toutes deux « the rates of customs duty » sans que
+     le paragraphe 4 les distingue. Ce qui les separe n'est PAS etabli et ne doit
+     pas etre suppose.
+  2. L'ASSIETTE N'EST PAS ETABLIE. La section 111 du Customs and Excise Act
+     (Cap. 42:01), telle que la consolidation obtenue la porte, retient le « normal
+     price » — la Definition de Bruxelles — et non la valeur transactionnelle de
+     l'Accord de l'OMC sur l'evaluation. Cette consolidation ne mentionne l'OMC
+     NULLE PART, alors que le Malawi en est membre depuis 1995 : le texte obtenu
+     est donc vraisemblablement PERIME sur ce point. Le meme piege a ete rencontre
+     en Zambie, ou le texte consolide portait un taux de TVA de 17,5 % qui n'est
+     plus en vigueur. Tant qu'un texte a jour n'est pas obtenu, l'assiette
+     malawienne reste NON ETABLIE — et aucune ligne ne sera servie sur elle.
+==============================================================================
+
+--- Order, paragraphe 4 : structure des colonnes (page 22) ---
+ 
+ 
+ 
+22
+articles for which they are intended, shall be classified with such articles when of a kind normally sold therewith. This Rule 
+does not, however, apply to containers which give the whole its essential character; 
+(b) Subject to the provisions of Rule 5 (a) above, packing materials and packing containers presented with the goods therein 
+shall be classified with the goods if they are of a kind normally used for packing such goods. However, this provision is not 
+winding when such packing materials or packing containers are clearly suitable for repetitive use. 
+(6) For legal purposes, the classification of goods in the subheadings of a heading shall be determined according to the terms of those 
+subheadings and any related Subheading Notes and, mutatis mutandis, to the above Rules, on the understanding that only subheadings 
+at the same level are comparable. For the purposes of this Rule the relative Section and Chapter Notes also apply, unless the context 
+otherwise requires. 
+(7) When any chapter note is preceded by the words, “informative note”, such note shall be construed as indicating the goods 
+or the class of goods to be classified within that chapter but, in the event of conflict, the provisions of the Nomenclature relating to 
+that chapter shall prevail. 
+(8) Goods classified in Section XXII of Part III shall be admitted thereunder notwithstanding the fact that they are also classifiable 
+in any preceding section of that Part. 
+4.  In the column structure of Part III 
+(a) column 1 contains the heading number; 
+(b) column 2 contains subheading number; 
+(c) column 3 contains a description of the goods classified thereunder; 
+(d) column 4 contains a description of unit of quantity, weight, or quantity of goods classified thereunder; 
+(e) columns 5 and 6 contain the rates of customs duty in respect of the goods classified under the corresponding subheading; 
+(f) column 7 contains COMESA rates of customs duty in respect of goods classified under the corresponding subheading; 
+(fa) column 7A contains AfCFTA rates of Customs duty in respect of goods classified under the corresponding  
+   subheading;                                                                                       (Refer to Govt Not. 31 of 28/05/2021) 
+(g) column 8 contains SADC rates of customs duty for imports from other Member States other than South Africa, in 
+respect of goods classified under the corresponding subheading; 
+(h) column 9 contains SADC rates of customs duty for imports from South Africa only, in respect of goods classified under 
+the corresponding subheading; 
+(i) column 10 contains excise rates; 
+(j) column 11 contains Value Added Tax rates;           
+(ja) column 12 contains Advance Income Tax on imports                     (Refer to Govt Not. 31 of 28/05/2021)                    
+(k) the last two digits of a subheading represent both as a statistical code and as a Customs commodity identification code; 
+“dashes”in third column represent as follows
+__
+ 
+ 
+one dash represents subdivision of the heading text;                
+ 
+two dashes represent subdivision of one dash subheading text; 
+ 
+three or four dashes represent national subdivisions of the two or three dashes subheading texts,  
+ 
+respectively. 
+5. Where goods are classified in Part III according to their use, either, by way of general description of their use or by   reference 
+to their use after importation, the intended use of such goods shall be proved by the importer to the satisfaction of the Commissioner 
+General in accordance with such conditions as he may impose. 
+6. A miniature bottle of potable spirituous liquor may be deemed to contain spirituous liquor of the highest strength ordinarily 
+imported or sold of like description. 
+7. The following quantities shall apply for the purposes of Part III 
+(a) unless otherwise specially provided, where goods are subject to duty by weight or quantity, such weight or quantity 
+shall be the net weight or quantity, and duty shall be charged in proportion on any fraction of a whole unit of such weight or 
+quantity. The weight of any goods may be ascertained by weighing net or by deducting from the gross weight the actual tare or 
+an allowance therefor. The Commissioner General may fix allowances for tare and may, in his discretion, grant such allowances 
+subject to such conditions as he may impose; 
+(b) unless otherwise specially provided, where the duty or rate of duty on goods is determined by a reference to weight or 
+quantity, the Commissioner General may determine that a package of such goods shall be deemed to contain a specified weight 
+or quantity of such goods; 
+
+
+--- Customs and Excise Act (Cap. 42:01), s.111 « Value of imported goods »,
+    texte de la consolidation obtenue (malawitradeportal.com) — SOUS RESERVE ---
+ 
+ 
+ 
+ 
+ 
+ 
+MALAWI REVENUE AUTHORITY 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+CUSTOMS & EXCISE DIVISION 
+ 
+ 
+CUSTOMS & EXCISE ACT 
+ 
+ 
+ 
+(Chapter 42:01) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+LAWS OF MALAWI 
+                                              Customs and Excise            Cap. 42:01                1 
+ 
+CHAPTER 42:01 
+CUSTOMS AND EXCISE 
+ARRANGEMENT OF SECTIONS 
+ 
+PART 1 
+PRELIMINARY 
+ 
+ 
+SECTION 
+ 
+1. 
+Short title 
+2. 
+Interpretation 
+3. 
+Goods subject to customs control 
+4. 
+Time of importation and exportation 
+5. 
+Entered goods 
+ 
+ 
+PART II 
+ADMINISTRATION 
+ 
+6. 
+Appointment and duties of Controller 
+7. 
+Delegation 
+8. 
+Prescriptions and appointments by Minister 
+9. 
+Appointments by Controller 
+10. 
+Licensed private sidings and air freight licensees 
+11. 
+Conditions in respect of customs areas 
+12. 
+Hours of service 
+ 
+PART III 
+GENERAL POWERS OF OFFICERS 
+ 
+13. 
+Powers in respect of persons 
+14. 
+Powers in respect of packages 
+15. 
+Powers of entry etc. of proper officers 
+16. 
+Powers in respect of conveyances etc. 
+17. 
+Power to patrol freely 
+18. 
+Power to take samples 
+19. 
+Power of arrest 
+20. 
+Damage to premises etc. resulting from exercising of powers 
+ 
+PART IV 
+IMPORTATION 
+ 
+21. 
+Prohibited and restricted imports 
+22. 
+Arrival of aircraft and vessels 
+23. 
+Boarding of aircraft or vessels 
+24. 
+Declaration of master 
+25. 
+Controller may dispense with declaration 
+26. 
+Retention and unloading of cargo 
+27. 
+Arrival of trains 
+28. 
+Arrival of vehicles other than trains 
+29. 
+Arrival of persons 
+30. 
+Imported goods 
+31. 
+Unloading and removal of goods 
+32. 
+Entry of goods 
+33. 
+Exceptions to removal and entry requirements 
+34. 
+Entry in absence of documents 
+35. 
+Responsibility for imported of goods and duty 
+36. 
+Temporary importation 
+
+LAWS OF MALAWI 
+ 
+2 
+Cap. 42:01 
+ 
+              Customs and E
+
+==============================================================================
+ADDENDUM DU 2026-09-19 — L'ASSIETTE EST DESORMAIS ETABLIE, ET MA RESERVE
+PRECEDENTE ETAIT MAL POSEE.
+==============================================================================
+
+J'avais ecrit que la consolidation obtenue etait « vraisemblablement PERIMEE »
+parce qu'elle retenait le « normal price » sans mentionner l'OMC. La
+consolidation Laws.Africa (etat au 31 decembre 2014, valable jusqu'au 30 juin
+2018) montre que c'est FAUX : le prix normal n'est pas un residu, c'est le choix
+malawien pour les IMPORTATIONS, et l'amendement de 2014 l'a confirme.
+
+  s.111(2) — « The value of imported goods shall be determined in accordance with
+  the provisions of SCHEDULE A and customs duties ad valorem or ad rem shall be
+  paid on that value. »   [10 of 2014] [25 of 1988]
+
+  Schedule A (Section 111), « Value of imported goods », par. 1 :
+  (a) « The value of any imported goods shall be taken to be the NORMAL PRICE,
+      that is to say, the price which they would fetch at the time when the duty
+      becomes payable [...] on a sale in the open market between a buyer and a
+      seller independent of each other. »
+  (b) « the normal price [...] shall be determined on the following assumptions—
+      (i) that the goods are delivered to the buyer at the PORT OR PLACE OF
+          INTRODUCTION INTO MALAWI ;
+      (ii) that the seller bears ALL COSTS, CHARGES AND EXPENSES incidental to
+          the sale and to the delivery of the goods at the port or place of
+          introduction, WHICH ARE HENCE INCLUDED IN THE NORMAL PRICE. »
+
+CE QUI TRANCHE : le MEME amendement, Act 10 of 2014, a fait passer les
+EXPORTATIONS a la valeur transactionnelle (Schedule B, section 114 : « the value
+of export goods shall be the transaction value ») et a LAISSE les importations
+sur le prix normal de la Schedule A. Le legislateur a donc touche aux deux
+regimes la meme annee et n'a pas aligne l'importation sur l'OMC. Le prix normal
+n'est pas un oubli : c'est la regle.
+
+PORTEE POUR LE CALCUL : le prix normal suppose la livraison AU PORT D'ENTREE au
+Malawi, le vendeur supportant tous les frais jusque-la, « hence included ». Par
+son contenu economique, l'assiette comprend donc le prix, le fret et l'assurance
+jusqu'au port malawien — c'est le CIF. La FORME juridique, en revanche, n'est PAS
+celle de l'Accord de l'OMC : c'est la Definition de Bruxelles, une valeur
+theorique de marche ouvert, et non la valeur transactionnelle effective. Les
+trois pays precedents (ZMB, ZWE, STP) retiennent la valeur transactionnelle ;
+le Malawi non. C'est precisement pourquoi on ne reporte pas une assiette d'un
+pays sur un autre.
+
+RESERVE QUI SUBSISTE, ET ELLE EST BORNEE : la consolidation lue porte « as it was
+at 31 December 2014 to 30 June 2018 ». Une modification POSTERIEURE a juin 2018
+n'est donc pas exclue. malawilii.org refuse le PDF a l'origine (403). Avant de
+servir la moindre ligne malawienne, cette reserve doit etre levee sur un texte
+plus recent — ou declaree dans la fiche comme le niveau de preuve reellement
+atteint.
+
+Source de l'addendum : consolidation Laws.Africa du Customs and Excise Act
+(Chapter 42:01), https://bwcimplementation.org/sites/default/files/resource/
+MW_Customs%20and%20Excise%20Act%201969_EN.pdf — 72 pages, sha256 147a95c04bb6002fb17b609679b94e6c142d0fc787671732f3596a044f9f8e01
+------------------------------------------------------------------------------
+
+--- s.111 (consolidation Laws.Africa) ---
+f any
+goods for the purpose of the liability to duty is altered with the result that less duty is thereafter
+charged on goods of the same class or description, no person shall thereby become entitled to any
+refund of any duty paid before such alteration took place.
+Part XIIA – Sutrax
+[Sections 110A-110R repealed by section 65 of the Surtax Act, Cap. 42: 02]
+[25 of 1988]
+[14 of 2001]
+Part XIII – Value, quantity and origin
+111. Value of imported goods
+(1)
+The proper ofﬁcer may value or cause to be valued, in accordance with the provisions of this Act,
+any imported goods and such valuation shall be presumed to be the correct valuation of the goods
+until the contrary is proved.
+[25 of 1988]
+(2)
+The value of imported goods shall be determined in accordance with the provisions of Schedule A
+and customs duties ad valorem or ad rem shall be paid on that value.
+[10 of 2014]
+[25 of 1988]
+112. Appeals against valuation
+If an owner or importer is of the opinion that goods have been incorrectly valued under section 111 (1) he
+may appeal to the Controller.
+113. Rate of exchange
+The rate of exchange to be used for the conversion of any value expressed in the currency of a foreign
+country shall be the rate of exchange, as the Controller may determine after consultation with the Reserve
+Bank of Malawi, at the time when the duty becomes payable.
+[3 of 1993]
+By Laws.Africa and contributors. Licen
+
+--- Schedule A (Section 111), Value of imported goods ---
+Schedule A (Section 111)
+Value of imported goods
+1.
+(a)
+The value of any imported goods shall be taken to be the normal price, that is to say, the price
+which they would fetch at the time when the duty becomes payable, or in the case of warehoused
+goods, at the time of their entry for warehousing, on a sale in the open market between a buyer and
+a seller independent of each other.
+(b)
+the normal price of any imported goods shall be determined on the following assumptions—
+(i)
+that the goods are delivered to the buyer at the port or place of introduction into Malawi;
+(ii)
+that the seller bears all costs, charges and expenses incidental to the sale and to the delivery
+of the goods at the port or place of introduction, which are hence included in the normal
+price;
+(iii)
+that the buyer bears all duties or taxes applicable in Malawi, which are hence not included in
+the normal price.
+2.
+(a)
+A sale in the open market between a buyer and a seller independent of each other pre-supposes—
+(i)
+that the price is the sole consideration;
+(ii)
+that the price is not inﬂuenced by any commercial, ﬁnancial or other relationship, whether
+by contract or otherwise between the seller or any person associated in business with him
+and the buyer or any person associated in business with him, other than the relationship
+created by the sale itself;
+(iii)
+that no part of the proceeds of any subsequent resale, other disposal or use of the goods will
+accrue, either directly or indirectly, to the seller or any person associated in business with
+him.
+(b)
+Two persons shall be deemed to be associated in business with one another, if, whether directly
+or indirectly, either of them has an interest in the business or property of the other or both have a
+common interest in any business or property or some third person has an interest in the business or
+property of both of them.
+3.
+When the goods to be valued—
+(i)
+are manufactured in accordance with any patented invention or are goods to which any protected
+design has been applied; or
+By Laws.Africa and contributors. Licensed under CC-BY. Share widely and freely. 
+62
+
+Customs and Excise Act 
+ Malawi
+(ii)
+are imported under a foreign trade mark; or
+(iii)
+are imported for sale, other disposal or use under a foreign trade mark,
+the normal price shall be determined on the assumption that it includes the value of the right to use the
+patent, design or trade mark in respect of the goods.
+4.
+For the purposes of paragraph 3, the expression “trade mark” includes a trade name and style, and a trade
+mark shall be treated as a foreign trade mark if it is t
+
+--- Schedule B (Section 114), pour comparaison : les EXPORTATIONS ---
+Schedule B (Section 114)
+Customs valuation for goods exported from Malawi
+1.
+In this Schedule, unless the context otherwise requires—
+“goods of like kind and quality” means export goods which are identical or similar in physical
+characteristics, quality and reputation as the goods being valued, and perform the same functions or are
+commercially interchangeable with the goods being valued, produced by the same person or a different
+person; and
+“transaction value” means the value of export goods within the meaning of subsection (1) of section 114 of
+this Act.
+2.
+For the purposes of this Schedule, persons shall be deemed to be related only if—
+(a)
+they are ofﬁcers or directors of one another's businesses;
+(b)
+they are legally recognized partners in business;
+(c)
+they are employer and employee;
+(d)
+a person directly or indirectly owns, controls or holds ﬁve per cent or more of the outstandin
+
+==============================================================================
+ADDENDUM 2 DU 2026-09-19 — CE QUI SEPARE LES COLONNES 5 ET 6 EST ECRIT, ET LA
+COLONNE ZLECAf PORTE DEUX CONDITIONS QUE LE CALCULATEUR DOIT RESPECTER.
+==============================================================================
+
+MESURE PREALABLE : les colonnes 5 et 6 DIFFERENT sur 3 284 lignes sur 6 399 —
+plus de la moitie du tarif. Sur 0201.10.00 (viande bovine) : 15 % en colonne 5,
+10 % en colonne 6. Se tromper de colonne donnerait donc un droit faux sur la
+majorite des positions. La question n'etait pas academique.
+
+LA REPONSE EST AU PARAGRAPHE 5 DE L'ORDER (page 23), pris en vertu de la
+section 89 de l'Act. La structure n'est pas « deux colonnes de droit de douane »
+cote a cote : c'est UNE colonne de plein droit, et cinq colonnes de REMISE.
+
+  « rebates shall be allowed to an extent sufficient to reduce the rates of duty
+    set out in COLUMN 5 of Part III to the rates respectively set out in COLUMN 6
+    or 7, 7A, 8 or 9 of Part III in respect of goods grown, produced or
+    manufactured in any country which is — »
+
+  col. 5  PLEIN DROIT. C'est la base, celle dont les autres sont des remises.
+
+  col. 6  remise pour les marchandises produites dans un pays qui est :
+          (i) un « Member State » ou un « ACP State » au sens de la Convention de
+              Lome du 28 fevrier 1975 ;
+          (ii) un pays independant du Commonwealth, ou l'un de ses territoires ;
+          (iii) « a Contracting Party of the General Agreement on Tariffs and
+              Trade (GATT) ».
+          => c'est donc, EN FAIT, le taux NPF : toute partie contractante du GATT
+          y a droit, donc tout membre de l'OMC. Le parallele avec la colonne
+          « M.F.N. » du Zimbabwe est desormais ETABLI PAR LE TEXTE, et non
+          suppose par ressemblance.
+
+  col. 7  remise COMESA, « with a specified country content of not less than
+          THIRTY-FIVE PER CENT ». Et : un Etat membre du COMESA qui a ramene ses
+          droits a zero fait entrer ses marchandises « free of the customs duties
+          specified in column 7 ».
+
+  col. 7A remise ZLECAf : « in respect of goods imported into Malawi from a
+          country that is a State Party to the AfCFTA OTHER THAN REPUBLIC OF
+          SOUTH AFRICA, being goods grown, produced or manufactured in that State
+          Party with a specified country content of not less than THIRTY-FIVE PER
+          CENT ».
+
+DEUX REGLES QUE LE CALCULATEUR DOIT RESPECTER, ET QUI NE SE DEVINENT PAS :
+
+  1. L'AFRIQUE DU SUD EST EXCLUE DE LA COLONNE ZLECAf. Une expedition
+     sud-africaine vers le Malawi ne beneficie PAS du taux 7A — elle relEve des
+     colonnes SADC (col. 9, « South Africa only »). Servir 7A a une origine
+     sud-africaine serait une exoneration inventee.
+
+  2. LE TAUX PREFERENTIEL EST CONDITIONNEL a un contenu d'origine d'au moins
+     35 %. Le calculateur ne peut pas verifier cette condition : elle depend de
+     la marchandise et de son certificat d'origine. Le taux 7A ne doit donc
+     jamais etre servi comme un acquis, mais comme un taux SOUS CONDITION
+     NOMMEE — faute de quoi on promettrait une preference que la douane
+     refuserait.
+
+PORTEE : le Malawi est le premier tarif de ce lot a publier ses taux ZLECAf dans
+son instrument legal, avec leur condition d'origine et leur exclusion nommee.
+------------------------------------------------------------------------------
+
+--- Order, paragraphe 5 (page 23) : les remises par origine ---
+5. Pursuant to section 89 of the Act and subject to the  provision of paragraphs 3 and 4 of this Part, rebates shall be allowed to 
+an extent sufficient to reduce the rates of duty set out in column 5 of Part III to the rates respectively  set out in column 6 or 7, 
+7A, 8 or 9 of Part III in respect of goods grown, produced or manufactured in any country which is -
+__
+ 
+(a) in column 6 of Part III in respect of goods grown, produced or manufactured in any country which is.... 
+(i) one of the “Member States” or one of the “ACP States” within the meaning given to such terms by the Convention 
+between Member States of the European Union and certain African, Caribbean and Pacific States signed at Lomé, Togo, 
+on the 28th February, 1975; 
+(ii) an independent country of the Commonwealth, any dependent territory, protectorate or protected state of such 
+independent country, or a territory administered by the Government of such independent country under the trusteeship 
+system of the United Nations; or 
+(iii) a Contracting Party of the General Agreement on Tariffs and Trade ( GATT); 
+(b) (i) in column 7 of Part III in respect of goods imported into Malawi from a COMESA Member State, being goods 
+grown, produced or manufactured in that Member State with a specified country content of not less than thirty-five per 
+cent; 
+(ii) notwithstanding the provisions of subparagraph 2 (b) (i) and pursuant to the specified country content of thirty-
+five per cent, goods imported from a COMESA Member State that has reduced customs duties to “zero” shall be entered 
+for consumption in Malawi, free of the customs duties specified in column 7 of Part III; 
+ 
+(c) in column 7A of Part III in respect of goods imported into Malawi from a country that is a State Party to the AfCFTA 
+other than Republic of South  Africa, being goods grown, produced or manufactured in that State Party with a specified 
+country  content of not less than thirty-five per cent 

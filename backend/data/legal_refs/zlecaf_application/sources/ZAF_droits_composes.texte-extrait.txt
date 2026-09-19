@@ -1,0 +1,40 @@
+Source : SARS, Customs & Excise Tariff, Schedule 1 / Part 1
+Fichier : data/sources/ZAF/legislation/sars_schedule1_part1_ch1-99.pdf
+sha256  : 442ed3d758d741e283a7d8fa513fe53cd94a813d0ef13cafcb0a3a9c2749c65c
+Date portée par le document : 2026-08-28
+Relevé  : 2026-09-18
+
+--- extrait verbatim, page 7 (chapitre 2, viandes) ---
+
+Heading / CD Article Description Statistical Rate of Duty
+Subheading Unit General EU / UK EFTA SADC MERCOSUR AfCFTA
+
+02.01 Meat of bovine animals, fresh or chilled:
+0201.10  2  - Carcasses and half-carcasses  kg  40% or 240c/kg  40% or 240c/kg
+         40% or 240c/kg  free  40% or 240c/kg  40% or 240c/kg
+
+--- extrait verbatim, page 33 (chapitre 4, lait) ---
+
+0402.10.10  7  - - Not flavoured and not containing added sugar or other
+sweetening matter  kg  450c/kg with a maximum of 96%  450c/kg with a maximum
+of 96%  450c/kg with a maximum of 96%  free  450c/kg with a maximum of 96%
+180c/kg with a maximum of 38,4%
+
+--- fin des extraits ---
+
+DEUX FORMES COMPOSÉES, DE STATUTS DIFFÉRENTS.
+
+« 450c/kg with a maximum of 96% » énonce sa propre règle : le droit est le
+spécifique, borné à un pourcentage de la valeur. Rien à interpréter.
+
+« 40% or 240c/kg » ne dit pas laquelle des deux composantes s'applique. La
+recherche du 2026-09-18 n'a trouvé aucune source l'énonçant — ni dans les 704
+pages de ce Schedule, ni dans l'Acte 91/1964, ni dans les autres schedules
+archivés, ni sur sars.gov.za dont les pages de notes générales répondent 404.
+
+La convention communément prêtée à cette forme est « la plus élevée des deux ».
+Elle n'est PAS retenue faute de source : un montant crédible fondé sur une
+convention supposée est précisément ce que ce dépôt s'interdit.
+
+On notera au passage que la colonne SADC porte « free » sur les deux positions
+citées — ce qui fonde, sur source primaire, la simulation régionale SADC.

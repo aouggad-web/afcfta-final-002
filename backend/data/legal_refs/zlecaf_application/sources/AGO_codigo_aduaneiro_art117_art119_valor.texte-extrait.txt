@@ -1,0 +1,273 @@
+Angola — l'assiette du droit de douane, et l'etat exact du bareme promulgue.
+
+SOURCES
+  1. CODIGO ADUANEIRO da Republica de Angola, Decreto-Lei n.º 05/06 de 04 de
+     Outubro. Ministerio das Financas. 240 pages, couche texte complete.
+     http://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/zmlu/mjiy/~edisp/minfin222423.pdf
+     sha256 1e3d468acda878961b586a7432d5d5ce2b4413a9eb31274be35e1f2454db3513
+
+  2. DIARIO DA REPUBLICA, I Serie, Quarta-feira 3 de Janeiro de 2024, 345 pages,
+     qui porte le DECRETO LEGISLATIVO PRESIDENCIAL n.º 1/24 approuvant la nouvelle
+     Pauta Aduaneira dos Direitos de Importacao e Exportacao (version 2022 du SH)
+     et abrogeant le Decreto Legislativo Presidencial n.º 10/19 du 29 novembre
+     2019.
+     https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4z/nzcw/~edisp/minfin3770211.pdf
+     sha256 cc432fc213790c7d1d8d0a5134d366d6b2dec0157bd661c54fdbea125961b470
+     Taille : 20 514 916 octets — le fichier depose par l'utilisateur sous le nom
+     « AGO_pauta_2024_reedition.pdf » en fait 20 514 917 : un octet d'ecart, donc
+     vraisemblablement le meme document, mais ce n'est pas la MEME empreinte et ce
+     n'est donc pas affirme.
+
+==============================================================================
+I. L'ASSIETTE — ARTICLE 117 DU CODE DES DOUANES
+==============================================================================
+
+  Artigo 117.º (Ajustamentos do preco efectivamente pago ou a pagar)
+
+  « 1. Para determinar o valor aduaneiro com base no disposto no artigo 100.º e
+    102.º, deve acrescentar-se ao preco efectivamente pago ou a pagar pelas
+    mercadorias importadas:
+    a) Os seguintes valores, na medida em que tenham sido suportados pelo
+       comprador, mas NAO tenham sido incluidos no preco efectivamente pago ou a
+       pagar pelas mercadorias:
+       i. Comissoes e despesas de corretagem, com exceccao das comissoes de
+          compra;
+       ii. Custo dos recipientes que, para fins aduaneiros, se consideram como
+           constituindo um todo com a mercadoria;
+       iii. Custo do recipiente, compreendendo a mao-de-obra assim como os
+            materiais;
+    b) O valor, imputado de maneira adequada, dos seguintes produtos e servicos,
+       quando forem, directa ou indirectamente, fornecidos pelo comprador, sem
+       despesas ou a custo reduzido [...] : i. Materias-primas, pecas, componentes
+       [...] ; ii. Ferramentas, matrizes, moldes [...] ; iii. Materias-primas
+       consumidas [...] ; iv. Trabalhos de engenharia, de estudo, de arte e de
+       design, planos e esbocos, executados FORA DO PAIS [...] ;
+    c) Royalties e direitos de licenca relativos as mercadorias a avaliar, que o
+       comprador e obrigado a pagar [...] como condicao de venda [...] ;
+    d) O valor de qualquer parte do produto da revenda, cedencia ou utilizacao
+       ulterior das mercadorias importadas que, directa ou indirectamente, reverta
+       para o vendedor.
+
+    2. DEVEM SER INCLUIDOS NO VALOR ADUANEIRO das mercadorias importadas, na
+    medida que tenham sido incluidos no preco efectivamente pago ou a pagar, os
+    seguintes valores:
+    a) DESPESAS DE TRANSPORTE das mercadorias importadas ATE AO PORTO OU LOCAL DE
+       IMPORTACAO;
+    b) Despesas de carga, de descarga e de manipulacao ligadas ao transporte das
+       mercadorias importadas ate ao porto ou local de importacao no Pais; e
+    c) CUSTO DO SEGURO.
+
+    3. Qualquer elemento que, por aplicacao das disposicoes do presente artigo,
+    for acrescentado ao preco efectivamente pago ou a pagar deve basear-se
+    exclusivamente em dados objectivos e quantificaveis. »
+
+  Artigo 119.º (Deducoes)
+
+  « Nao devem ser incluidos no valor aduaneiro, desde que sejam apresentados
+    separadamente do preco efectivamente pago ou a pagar pela mercadoria
+    importada, os seguintes valores:
+    a) Os encargos que resultem do TRANSPORTE de mercadorias APOS A CHEGADA ao
+       local de entrada no Pais;
+    b) Os encargos que resultem da construcao, instalacao, montagem, manutencao ou
+       assistencia tecnica, realizadas, depois da importacao [...] ;
+    c) OS DIREITOS E AS TAXAS pagos ou a pagar em virtude da importacao ou venda
+       das mercadorias no Pais;
+    d) As comissoes de compra;
+    e) Os encargos que derivem do direito de reproduzir no Pais mercadorias
+       importadas;
+    f) Os encargos relativos a juros [...] »
+
+PORTEE. Transport, chargement, dechargement, manutention JUSQU'AU PORT OU LIEU
+D'IMPORTATION et cout de l'assurance entrent dans la valeur en douane ; le
+transport POSTERIEUR a l'arrivee et les droits eux-memes en sortent. Les deux
+bornes sont donc posees, et l'assiette est le CIF.
+
+==============================================================================
+II. UNE PARTICULARITE DE REDACTION QU'IL FAUT SIGNALER, ET NE PAS TAIRE
+==============================================================================
+
+Le paragraphe 1 et le paragraphe 2 de l'article 117 ne sont PAS rediges de la meme
+maniere, et la difference n'est pas anodine :
+
+  — le paragraphe 1 ajoute des elements « na medida em que tenham sido suportados
+    pelo comprador, mas NAO tenham sido incluidos no preco » — donc quand ils ne
+    sont PAS deja dans le prix ;
+  — le paragraphe 2 inclut le fret et l'assurance « na medida que TENHAM SIDO
+    INCLUIDOS no preco efectivamente pago ou a pagar » — donc, lu au pied de la
+    lettre, quand ils SONT deja dans le prix.
+
+Lu strictement, le paragraphe 2 dirait alors que le fret n'est pas AJOUTE a un
+achat FOB dont l'acheteur paierait le transport separement : il dirait seulement
+qu'on ne le DEDUIT pas d'un prix CAF. Ce serait une assiette differente du CIF sur
+les ventes FOB.
+
+CE N'EST PAS LA LECTURE RETENUE, et voici pourquoi. Le paragraphe 2 transpose
+l'article 8.2 de l'Accord de l'OMC sur l'evaluation en douane, qui laisse a chaque
+membre de prevoir « l'inclusion dans la valeur en douane, ou son exclusion, en
+totalite ou en partie » du cout du transport, des frais de chargement et de
+manutention et du cout de l'assurance. La formule « em parte » de l'Accord parait
+avoir ete rendue par « na medida que », et l'intention d'INCLUSION est celle que le
+chapeau du paragraphe enonce sans ambiguite : « DEVEM SER INCLUIDOS NO VALOR
+ADUANEIRO ». L'article 119 a) le confirme par l'autre bout, en n'excluant que le
+transport POSTERIEUR a l'arrivee : si le transport anterieur n'entrait pas, cette
+exclusion n'aurait rien a exclure.
+
+L'assiette retenue est donc le CIF. Mais la particularite est ECRITE ICI plutot que
+tue, parce qu'elle porte sur un cas reel — une vente FOB avec fret paye a part — et
+qu'un lecteur du calculateur doit pouvoir la retrouver.
+
+==============================================================================
+III. LE BAREME EST DESORMAIS COLLECTE — ADDENDUM DU 2026-09-19
+==============================================================================
+
+La version precedente de cet extrait disait que le bareme promulgue etait
+« telechargeable, et illisible par machine ici », faute d'OCR. CE N'EST PLUS LE CAS :
+tesseract 5.3.4 et ses donnees portugaises ont ete installes, le Diario a ete lu, et
+le tarif angolais est servi depuis le texte promulgue. Ce qui suit remplace cette
+section.
+
+SOURCE DU BAREME
+  DECRETO LEGISLATIVO PRESIDENCIAL n.º 1/24 du 3 janvier 2024, Diario da Republica
+  I Serie n.º 2, qui approuve la Pauta Aduaneira dos Direitos de Importacao e
+  Exportacao (version 2022 du Systeme harmonise) et ses Instrucoes Preliminares, et
+  abroge le Decreto Legislativo Presidencial n.º 10/19 du 29 novembre 2019.
+  345 pages, SCAN INTEGRAL sans couche texte.
+  https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4z/nzcw/~edisp/minfin3770211.pdf
+  sha256 cc432fc213790c7d1d8d0a5134d366d6b2dec0157bd661c54fdbea125961b470
+
+------------------------------------------------------------------------------
+III.1 LA CARTE DES COLONNES — INSTRUCOES PRELIMINARES, ARTICLE 2
+------------------------------------------------------------------------------
+
+  « b) CIF — Cost, Insurance and Freight (Custo, Seguro e Frete);
+    [...]
+    f) EXW — Ex Works (preco no local de venda);
+    g) FOB — Free on board (Livre a Bordo);
+    h) IEC — Imposto Especial de Consumo;
+    i) IVA — Imposto sobre o Valor Acrescentado;
+    j) IPP — Instrucoes Preliminares da Pauta;
+    [...]
+    m) PREF — Preferenciais;
+    n) R.G. — Regime Geral;
+    o) SADC — Comunidade de Desenvolvimento da Africa Austral;
+    p) UA — Uniao Africana;
+    q) ZCLCA — Zona de Comercio Livre Continental Africana. »
+
+Le bareme aligne SIX colonnes : 1 Codigo, 2 Designacao das mercadorias, 3 UQ,
+4 R.G, 5 PREF. SADC, 6 PREF. U.A. La colonne 6, que l'en-tete du tableau intitule
+« U.A », est nommee ZCLCA par l'article 43 ci-dessous : c'est la ZONE DE LIBRE-ECHANGE
+CONTINENTALE AFRICAINE, la ZLECAf.
+
+------------------------------------------------------------------------------
+III.2 « LIVRE » EST UN ZERO PUBLIE, ET DEUX COLONNES SONT VIDES EXPRES
+------------------------------------------------------------------------------
+
+  ARTIGO 43.º (Ambito de aplicacao dos beneficios fiscais aduaneiros)
+
+  « 1. Os beneficios fiscais aduaneiros automaticos e reais, previstos na tabela dos
+    direitos de importacao constantes da Pauta Aduaneira, sao os indicados a TAXA
+    LIVRE (0%), na coluna 4 da mesma.
+
+    2. As colunas 5 (SADC) e 6 (ZCLCA), estao RESERVADAS a aplicacao de taxas
+    preferenciais, A SEREM DEFINIDAS EM LEGISLACAO ESPECIFICA, no ambito da adesao e
+    implementacao do Protocolo sobre Trocas Comerciais da Comunidade de
+    Desenvolvimento da Africa Austral (SADC) e da Zona de Comercio Livre Continental
+    Africana (ZCLCA).
+
+    [...]
+
+    4. Salvo disposicao em contrario em legislacao complementar, os beneficios
+    fiscais aduaneiros previstos nos numeros anteriores correspondem a isencao dos
+    direitos aduaneiros, COM EXCEPCAO DA TAXA DEVIDA PELA PRESTACAO DE SERVICOS. »
+
+DEUX CONSEQUENCES, ET ELLES SONT DECISIVES.
+
+  — « LIVRE » VAUT ZERO, ET LE TEXTE LE DIT ENTRE PARENTHESES. C'est meme un
+    BENEFICE FISCAL AUTOMATIQUE ET REEL que le legislateur nomme, non une case
+    oubliee. 2 152 positions sur 5 830 le portent, plus du tiers du tarif. Une
+    premiere passe du collecteur, qui ne cherchait que des chiffres dans la
+    colonne 4, les effacait toutes : un tiers du tarif se serait servi « droit
+    indisponible » alors que la loi lui donne un droit, et ce droit est zero.
+
+  — L'ANGOLA PUBLIE UNE COLONNE ZLECAf ET LA LAISSE VIDE, EXPRES. Les colonnes 5 et 6
+    sont « reservadas [...] a serem definidas em legislacao especifica » : elles
+    attendent leur texte d'application. Verifie sur les 5 830 positions collectees,
+    elles ne portent AUCUNE valeur. Servir une preference ZLECAf angolaise serait
+    donc inventer une exoneration que le legislateur a lui-meme remise a plus tard.
+
+------------------------------------------------------------------------------
+III.3 DEUX PRELEVEMENTS SUR LA MEME ASSIETTE — ARTICLE 58
+------------------------------------------------------------------------------
+
+  ARTIGO 58.º (Direitos e demais imposicoes devidos na importacao)
+
+  « 1. As mercadorias importadas definitivamente estao sujeitas ao pagamento de
+    direitos e demais imposicoes aduaneiras.
+
+    2. Os direitos aduaneiros incidentes na importacao sao tributados no momento da
+    tramitacao do respectivo despacho aduaneiro e calculados mediante a aplicacao das
+    taxas indicadas nas respectivas colunas de tributacao da Pauta Aduaneira.
+
+    3. Os EMOLUMENTOS GERAIS ADUANEIROS sao calculados mediante a aplicacao da TAXA
+    DE 2%.
+
+    4. A importacao de mercadorias ao abrigo do regime aduaneiro aplicavel ao Sector
+    Petrolifero ou Mineiro, quando importadas nos termos da legislacao especifica,
+    ficam sujeitas ao pagamento de emolumentos gerais aduaneiros calculados a taxa de
+    0,1% para o Sector Petrolifero e 2% para o Sector Mineiro [...]
+
+    5. As taxas a que se referem os numeros anteriores sao taxas «ad valorem» e
+    INCIDEM SOBRE O VALOR ADUANEIRO da mercadoria expresso em moeda nacional. »
+
+PORTEE. Le n.º 5 ferme la boucle avec le Codigo Aduaneiro cite plus haut : les taux
+du bareme ET les emolumentos gerais portent sur le valor aduaneiro, et l'article
+117.º n.º 2 du Code dit que ce valor aduaneiro comprend le transport, la manutention
+et l'assurance jusqu'au port — le CIF, que la liste des abreviations de l'IPP nomme
+d'ailleurs elle-meme. Les emolumentos sont donc un SECOND prelevement du sur la meme
+assiette, a 2 %, hors colonnes du bareme, et ils survivent aux exonerations puisque
+l'article 43 n.º 4 n'exempte pas « a taxa devida pela prestacao de servicos ». Les
+deux taux sectoriels du n.º 4 dependent d'un regime douanier que le calculateur ne
+connait pas et ne sont pas appliques.
+
+------------------------------------------------------------------------------
+III.4 COMMENT UN SCAN A ETE LU, ET CE QUI LE CONTROLE
+------------------------------------------------------------------------------
+
+Le Diario ne porte AUCUNE couche texte : 345 pages, zero octet. Un OCR de pleine page
+ne suffit pas — il rend « r]ao » pour un « 30 » et « EE » pour un code, parce qu'il
+prend les traits du tableau pour des lettres. Mais le bareme est un TABLEAU REGLE :
+ses traits se detectent sur l'image, chaque colonne est decoupee en bande, et chaque
+bande est lue avec le seul vocabulaire qu'elle peut contenir. Les codes sortent alors
+intacts et les taux aussi.
+
+CONTROLE INDEPENDANT. Douze pages tirees au sort ont ete RELUES cellule par cellule,
+a 400 points par pouce au lieu de 300 et en mode « une seule ligne » au lieu de
+« un bloc » : 187 droits relus, 185 concordants d'emblee. Les DEUX ecarts ont ete
+tranches en regardant l'image : sur 1512.19.10 le document porte 40 et sur 8483.90.00
+il porte 5 — ce que le collecteur sert, et ce que la RELECTURE avait mal lu en
+tronquant un chiffre. La lecture servie est donc juste sur les 187 cellules, et c'est
+le controle qui s'etait trompe deux fois.
+
+------------------------------------------------------------------------------
+III.5 LE PROJET QUI CIRCULE N'EST PAS LA LOI, ET IL EN DIFFERE
+------------------------------------------------------------------------------
+
+Le meme serveur du Ministere des Finances publie un « Projecto da Pauta Aduaneira
+versao 2022 do SH » de la Direccao dos Servicos Aduaneiros — 366 pages, AVEC couche
+texte, donc infiniment plus commode a lire :
+  https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4y/odc4/~edisp/minfin2878038.pdf
+
+IL NE FAUT PAS S'EN SERVIR, ET C'EST MESURE. Sa nomenclature est quasiment celle de
+la loi — 5 836 sous-positions contre 5 830 lues au Diario — mais SES TAUX DIFFERENT.
+Compare code a code sur 3 058 positions ou les deux documents portent un taux, il
+diverge sur 730, soit pres d'une sur quatre. Deux exemples verifies en regardant
+l'image du Diario promulgue :
+  — 0204.22.00 : le projet porte 10, LA LOI PORTE 20 ;
+  — 7325.91.00 : la loi porte 10.
+Un calculateur nourri au projet servirait donc des droits faux sur des centaines de
+positions, avec l'apparence d'une source ministerielle. C'est exactement le piege que
+la doctrine de ce depot interdit : un document credible qui n'est pas l'instrument.
+
+Le projet a servi ici a UNE SEULE CHOSE, et elle est legitime : constater que les
+deux documents portent la meme nomenclature, ce qui conforte la lecture des CODES.
+Aucun de ses taux n'est servi.

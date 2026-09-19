@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "objet": "Mauritanie — formalités et réglementation à l'importation : cadre général (déclaration en détail, prohibitions, autorisations sectorielles)",
+  "verified_at": "2026-09-18",
+  "etabli": true,
+  "evidence_level": "primaire — Loi n° 2017-035 portant Code des douanes (finances.gov.mr, texte intégral, extraits archivés) + Guide officiel des procédures de dédouanement 2026 (douanes.mr, extraits archivés) ; WTO Trade Policy Review WT/TPR/S/371 utilisé pour localiser les textes.",
+  "constat_structurel": "Les formalités mauritaniennes ne sont PAS par sous-position tarifaire : elles sont GÉNÉRALES (déclaration en détail SYDONIA pour toute importation) et SECTORIELLES (prohibitions et autorisations par liste de produits, fixées par d'autres textes). Le tarif 2021 ne porte aucune colonne de formalités (code/désignation/unité/DD/RS/PC seulement). Ne PAS inventer des formalités par sous-position.",
+  "source": {
+    "instrument": "Loi n° 2017-035 portant Code des douanes — articles 33 à 36 (prohibitions), 111 à 117 (déclaration en détail), 157 (exclusions des régimes suspensifs)",
+    "url": "https://www.finances.gov.mr/sites/default/files/2022-11/CODE_DES_DOUANES.pdf",
+    "institution": "Ministère des Finances — République islamique de Mauritanie",
+    "texte_archive": "sources/MRT_formalites_extrait_code2017.txt",
+    "sha256": "18f37fb7a537cfedb77da27e854f8724fd64dc7fff6b7a34defd7234725e5c3f",
+    "pdf_non_archive": "Code complet (68 p.) et Guide de procédures 2026 (38 p.) non archivés ; SHA-256 consignés.",
+    "code_pdf_sha256": "1173b46078c0da1854bb23ada6ae14e9f3a8d45b7e3e94bbba2c777f05f03262",
+    "guide_pdf_sha256": "5499f84df525a21bd4f9f1ee80ce6cb89a3e86b65296865d6d1e621f84b82583",
+    "guide_url": "https://www.douanes.mr/uploads/files/P2026 Guide de procédures de dédouanement des marchandises à l'importation et à l'exportation.pdf"
+  },
+  "regle": {
+    "declaration_en_detail": {
+      "article": "Art. 111-114 et 117 (Code des douanes 2017-035)",
+      "verbatim": "1. Toutes les marchandises importées ou présentées à l'exportation doivent faire l'objet d'une déclaration en détail leur assignant un régime douanier. 2. L'exemption des droits et taxes soit à l'importation, soit à l'exportation, ne dispense pas de l'obligation prévue par le présent article.",
+      "portee": "Générale — toutes positions. Dépôt dans un bureau de douane ; à l'importation, dans les 3 jours francs après déclaration sommaire (art. 112.3.b). Enregistrement via SYDONIA World (guide 2026, proc. P02) ; circuit de risque (vert/jaune/bleu/rouge). Forme et contenu fixés par arrêté du ministre chargé des Finances (art. 114.6)."
+    },
+    "prohibitions": {
+      "article": "Chap. V, art. 33-36 ; art. 157",
+      "verbatim": "Sont considérées comme prohibées toutes marchandises dont l'importation ou l'exportation est interdite à quelque titre que ce soit, ou soumises à des restrictions, à des règles de qualité ou de conditionnement ou à des formalités particulières. [art. 33 §1] — Lorsque l'importation ou l'exportation n'est permise que sur présentation d'une autorisation, licence, certificat, etc., la marchandise est prohibée si elle n'est pas accompagnée d'un titre régulier… [art. 33 §3]",
+      "portee": "8 motifs : ordre public, sécurité publique, santé/vie des personnes et animaux, moralité publique, environnement, trésors nationaux, propriété intellectuelle, défense des consommateurs. Levée sur titre régulier (art. 34). Art. 157 : la même liste exclut les marchandises des régimes suspensifs (animaux et marchandises de pays contaminés ; stupéfiants ; armes de guerre ; écrits pornographiques ; produits portant emblèmes nationaux)."
+    },
+    "autorisations_sectorielles": [
+      "Bateaux de pêche : autorisation préalable du ministre de la Pêche (art. 8, Code des pêches 2015-017 — cité par WT/TPR/S/371 §3.60)",
+      "Produits pétroliers : autorisations gérées par le ministère du Pétrole et de l'Énergie (TPR §3.60)",
+      "Végétaux et produits végétaux : 3 listes prohibées ou soumises à autorisation (TPR §3.60, protection phytosanitaire)",
+      "Sacs plastiques souples : décret 2012-157 du 21 juin 2012 interdisant fabrication, importation, commercialisation et usage (TPR §3.60, note 20)"
+    ],
+    "licences_economiques": "Aucune restriction quantitative à l'importation à des fins économiques ; aucune notification au titre de l'Accord sur les licences d'importation depuis l'adhésion à l'OMC (TPR §3.58).",
+    "valeur": "Cadre général + secteurs : déclaration en détail (DED, SYDONIA) obligatoire pour toute importation ; prohibitions sur 8 motifs (art. 33) ; levée sur titre régulier ; autorisations sectorielles (pêche, pétrole, phytosanitaire, plastiques) ; aucune licence d'importation à caractère économique (OMC).",
+    "verbatim": "1. Toutes les marchandises importées ou présentées à l'exportation doivent faire l'objet d'une déclaration en détail leur assignant un régime douanier. 2. L'exemption des droits et taxes soit à l'importation, soit à l'exportation, ne dispense pas de l'obligation prévue par le présent article. [art. 111] — Sont considérées comme prohibées toutes marchandises dont l'importation ou l'exportation est interdite à quelque titre que ce soit, ou soumises à des restrictions, à des règles de qualité ou de conditionnement ou à des formalités particulières. [art. 33 §1]"
+  },
+  "ce_que_cela_ne_tranche_pas": [
+    "La liste opérationnelle actualisée des licences/autorisations par produit (arrêtés du ministère du Commerce) : à localiser",
+    "Le contenu détaillé de l'arrêté fixant la forme et le contenu de la déclaration en détail (art. 114.6)",
+    "Les textes phytosanitaires/vétérinaires applicables (législation sur la police sanitaire citée par l'art. 157)"
+  ],
+  "doutes": "Le WTO TPR (WT/TPR/S/371, 2021) est une source secondaire de qualité utilisée pour LOCALISER les textes ; les verbatim de l'art. 157 et du guide sont relus dans les PDF primaires archivés. La version 'vertic.org' du Code (édition antérieure) porte un art. 157 différent : seule la loi 2017-035 (finances.gov.mr) fait foi.",
+  "remaining_work": [
+    "Localiser les arrêtés du ministère du Commerce listant les produits soumis à autorisation (listes opérationnelles actualisées)",
+    "Archiver le texte intégral de la loi 2017-035 (PDF 54 Mo via finances.gov.mr est un scan sans texte — la version texte utilisée est le même document ? à confirmer) et du décret plastiques 2012-157",
+    "Codifier le champ 'formalities' du fichier crawled national : général + secteurs, pas par position"
+  ]
+}
