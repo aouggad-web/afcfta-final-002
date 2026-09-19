@@ -194,6 +194,29 @@ REGIMES_PAR_PAYS = {
         "TURKIYE": "TURKIYE",
         "EAU": "EAU",
     },
+    # Tunisie — douane.gov.tn/tarifwebnew (Tarif Web 2026). Le tarif publie une
+    # colonne par PARTENAIRE, nommee en toutes lettres avec son code pays, et
+    # non par bloc. UNE SEULE est servie : l'Algerie.
+    #
+    # POURQUOI UNE SEULE. La colonne ZLECAf du meme tarif n'est PAS SERVIE, et
+    # ce refus est le coeur de cette entree. Elle ne prend que quatre valeurs
+    # sur 84 712 entrees — 0, 40, 80 et 87,5 — et 58 939 d'entre elles, soit
+    # 69,6 %, DEPASSENT le droit NPF de leur propre position. Deux captures du
+    # portail le montrent sur la meme valeur : sur les bananes fraiches
+    # (08039010002) le droit est de 50 % et la colonne affiche 40 % ; sur une
+    # huile moteur (27101981100) le droit est de 0 % et la colonne affiche
+    # encore 40 %. Un TAUX suit le droit de sa position ; un COEFFICIENT de
+    # demantelement ne le suit pas. La source intitule pourtant la colonne
+    # « Taux Preferentiel ». Tant que la douane tunisienne n'aura pas tranche,
+    # la servir ferait payer 40 % de la valeur CIF sur 20 149 lignes que le
+    # tarif laisse en FRANCHISE. Elle est donc ecartee, et comptee.
+    #
+    # L'ALGERIE, ELLE, EST SANS AMBIGUITE : 13 362 entrees, TOUTES a 0 %,
+    # aucune au-dessus du droit NPF. La source lui attribue deux fondements a
+    # la fois — « ZALE (GAFTA) » et « accord bilateral TUN-DZA » — et le
+    # regime est nomme par le PARTENAIRE, non par l'un de ces deux titres,
+    # parce que la source ne dit pas lequel emporte l'autre.
+    "TUN": {"ALGERIE": "DZA"},
 }
 
 
@@ -788,7 +811,12 @@ def preferences_depuis_liste(regimes, entrees, source_defaut, compteurs=None):
     for e in entrees or []:
         if not isinstance(e, dict):
             continue
-        nom = e.get("regime") or e.get("code")
+        # DEUX ECRITURES POUR UNE MEME CHOSE. Maurice nomme le regime dans
+        # `regime` et son taux dans `rate_pct` ; la Tunisie nomme le PARTENAIRE
+        # dans `country_name` et son taux dans `rate` (« 0 % »). Les deux sont
+        # des colonnes preferentielles de la source : une seule lecture les
+        # prend, plutot qu'une fonction par pays.
+        nom = e.get("regime") or e.get("code") or e.get("country_name")
         regime = regimes.get(str(nom))
         if regime is None:
             if compteurs is not None:
@@ -797,10 +825,11 @@ def preferences_depuis_liste(regimes, entrees, source_defaut, compteurs=None):
         # Un taux que la source déclare non liquidable — contingent tarifaire,
         # droit spécifique — n'est pas un taux : il est rendu sans valeur, avec
         # le motif que la source donne, plutôt que servi à zéro.
+        brut = e.get("rate_pct") if "rate_pct" in e else e.get("rate")
         d = _droit(
             str(nom),
             e.get("regime_name_fr") or e.get("colonne_source") or str(nom),
-            lire_taux(e.get("rate_pct")) if not e.get("non_liquidable") else None,
+            lire_taux(brut) if not e.get("non_liquidable") else None,
             None,
             e.get("source") or source_defaut,
             note=e.get("non_liquidable") or None,
@@ -842,9 +871,12 @@ def lignes_du_fichier(donnees, regimes=None, compteurs=None):
                 droits = droits_depuis_dict(ligne["taxes"], source_defaut)
             elif isinstance(ligne.get("taxes_import"), list):
                 droits = droits_depuis_liste(ligne["taxes_import"], source_defaut)
-            if regimes and isinstance(ligne.get("preferential_rates"), list):
+            colonnes = ligne.get("preferential_rates")
+            if not isinstance(colonnes, list):
+                colonnes = ligne.get("preferences")
+            if regimes and isinstance(colonnes, list):
                 droits = droits + preferences_depuis_liste(
-                    regimes, ligne["preferential_rates"], source_defaut, compteurs
+                    regimes, colonnes, source_defaut, compteurs
                 )
             yield (
                 code,
