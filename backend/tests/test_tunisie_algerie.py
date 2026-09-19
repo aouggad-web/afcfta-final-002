@@ -60,11 +60,49 @@ def position_algerienne(positions):
 
 
 def test_l_algerie_est_le_seul_regime_servi(positions):
+    """Le NOM du régime, et le NOMBRE de positions qui le portent.
+
+    Vérifier le seul ensemble des régimes ne suffit pas : une régression qui
+    n'ingérerait qu'UNE position algérienne le satisferait encore. La
+    cardinalité est donc verrouillée sur le compte de la source — 13 362
+    entrées « ALGERIE » dans le crawl — pour qu'une ingestion partielle
+    tombe.
+    """
     vus = set()
+    portent = 0
     for p in positions.values():
-        if isinstance(p, dict):
-            vus.update(p.get("preferentiels") or {})
+        if not isinstance(p, dict):
+            continue
+        pref = p.get("preferentiels") or {}
+        vus.update(pref)
+        if "DZA" in pref:
+            portent += 1
     assert vus == {"DZA"}
+    assert portent == 13362
+
+
+def test_le_compte_servi_est_celui_de_la_source(positions):
+    """Contre-mesure du précédent : 13 362 n'est pas un nombre choisi.
+
+    Il est recompté sur le crawl. Si la source change, les deux tests tombent
+    ensemble et le chiffre se met à jour en connaissance de cause, au lieu
+    d'être ajusté à ce que la construction a bien voulu produire.
+    """
+    if not CRAWL.exists():
+        pytest.skip("crawl absent")
+    donnees = json.loads(CRAWL.read_text(encoding="utf-8"))
+    dans_la_source = sum(
+        1
+        for ligne in donnees["sub_positions"]
+        for pref in ligne.get("preferences") or []
+        if pref.get("country_name") == "ALGERIE"
+    )
+    servies = sum(
+        1
+        for p in positions.values()
+        if isinstance(p, dict) and "DZA" in (p.get("preferentiels") or {})
+    )
+    assert servies == dans_la_source
 
 
 def test_la_colonne_algerienne_est_entierement_a_zero(positions):
