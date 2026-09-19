@@ -343,6 +343,18 @@ def _liquider(
 
         taux = droit.get("taux")
         specifique = droit.get("specifique")
+        if taux == 0 and specifique is None and isinstance(droit.get("assiette"), str) and (
+            droit["assiette"] == "FOB" or droit["assiette"].startswith("FOB+")
+        ):
+            # Zéro pour cent vaut zéro sur n'importe quelle assiette — et en
+            # particulier sur la base FOB des pays SACU : une franchise
+            # intra-union (libre circulation) liquide sans valeur FOB, comme
+            # elle liquide déjà sans quantité sur un NPF spécifique. Exiger la
+            # valeur FOB ici rejetterait une importation dont le droit est
+            # nul — rien n'est dû, la base n'influe sur aucun montant.
+            droit = dict(droit, assiette="CIF", plafond=None)
+            ligne["assiette"] = "CIF"
+            ligne["assiette_sans_objet"] = "taux nul : l'assiette n'influe sur aucun montant"
         manque_devise = False
         regle_composee_absente = False
         compose_departage = None

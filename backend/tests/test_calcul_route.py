@@ -635,6 +635,7 @@ def test_une_simulation_regionale_est_chiffree_par_le_moteur(client):
             "origine": "MOZ",
             "code_sh": "02071290",
             "valeur_cif": 100000,
+            "valeur_fob": 100000,
         },
     )
     assert reponse.status_code == 200
@@ -666,6 +667,9 @@ def test_une_simulation_ne_change_jamais_le_total_servi(client):
         "origine": "MOZ",
         "code_sh": "02071290",
         "valeur_cif": 100000,
+        # FOB = CIF : le droit ad valorem sud-africain exige la valeur FOB
+        # fournie ; avec un fret nul, les montants attendus ne bougent pas.
+        "valeur_fob": 100000,
     }
     corps = client.post("/calcul", json=payload).json()
 

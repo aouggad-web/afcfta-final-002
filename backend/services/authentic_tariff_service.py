@@ -958,7 +958,10 @@ def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
         cascade_rates["DD"] = dd
     if tva > 0:
         cascade_rates["TVA"] = tva
-    ref_cascade = compute_tax_cascade(100.0, cascade_rates, country_iso3)
+    # Métrique de référence par position : FOB = CIF ici (fret nul). Ce taux
+    # affiché n'est pas une liquidation — celle-ci exige la valeur FOB réelle
+    # de l'importation (voir compute_tax_cascade, fail-closed).
+    ref_cascade = compute_tax_cascade(100.0, cascade_rates, country_iso3, fob_value=100.0)
     return {
         "hs6": code[:6],
         "national_code": code,

@@ -95,6 +95,24 @@ def test_la_tva_sur_cif_plus_dd_reste_sur_le_cif_meme_fob_fournie():
     assert r["npf"]["etat"] == COMPLET
 
 
+def test_une_franchise_a_zero_pour_cent_liquide_sans_valeur_fob():
+    """Zéro pour cent vaut zéro sur n'importe quelle assiette : une franchise
+    intra-SACU (libre circulation) ne peut pas exiger la valeur FOB — rien
+    n'est dû, la base n'influe sur aucun montant."""
+    r = calculer(
+        position(
+            droit("DD", 0, "FOB", "droit_de_douane"),
+            droit("TVA", 15, "CIF+DD", "tva"),
+        ),
+        10000,
+    )
+    l = lignes(r)
+    assert l["DD"]["statut"] == "CALCULE"
+    assert l["DD"]["montant"] == 0.0
+    assert l["TVA"]["montant"] == 1500.0  # 15 % de (10 000 + 0)
+    assert r["npf"]["etat"] == COMPLET
+
+
 def test_fob_superieure_au_cif_est_refusee():
     with pytest.raises(ValueError):
         calculer(position(droit("DD", 20, "FOB", "droit_de_douane")), 1000, valeur_fob=1100)
