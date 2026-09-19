@@ -1,40 +1,40 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-19T04:07:26.896974+00:00",
+  "construit_le": "2026-09-19T07:55:06.824275+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/AGO_tariffs.json",
-      "source_sha256": "7c1bb39f2547d72f05b36332e64f805e634a64557dfa4489b08e9ae49846c9f3",
-      "socle_sha256": "289b415c2d9391095c1e2c55ad82cacddf4610a984420ac36d8a51e38e8e7403",
-      "collecte": "2026-07-05T09:59:53.562489+00:00",
-      "etat": "COMPLET",
+      "source_sha256": "d18428011e5901255996b1cfbac275166dcd5c921e9fb84d8ee90536156382e8",
+      "socle_sha256": "5e49164e47b4b16672904619b7180701eec72bfaf31daae5d7895df9bdb757b8",
+      "collecte": "2026-09-19",
+      "etat": "PARTIEL",
       "familles": [
-        "droit",
-        "tva"
+        "autre",
+        "droit"
       ],
       "compteurs": {
-        "positions": 5388,
-        "droits": 10776,
-        "droits_liquidables": 10776,
-        "positions_liquidables": 5388,
-        "preferentiels": 0,
+        "positions": 5830,
+        "droits": 11660,
+        "droits_liquidables": 11636,
+        "positions_liquidables": 5806,
+        "preferentiels": 11660,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
-        "taux_indisponibles": 0,
-        "assiettes_source": 0,
-        "assiettes_fichier": 5388,
-        "assiettes_table": 5388,
+        "taux_indisponibles": 24,
+        "assiettes_source": 11636,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
         "assiettes_indisponibles": 0,
-        "sans_designation": 5388,
+        "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
-        "droits_absents_completes": 0,
+        "droits_absents_completes": 24,
         "droits_lus_en_designation": 0,
-        "classification_estimee": 39
+        "classification_estimee": 0
       }
     },
     "BDI": {
@@ -1940,6 +1940,7 @@
       "ERI"
     ],
     "pays_partiels": [
+      "AGO",
       "BDI",
       "BWA",
       "CIV",
@@ -1969,8 +1970,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 366778,
-    "droits": 1124529,
-    "droits_liquidables": 1046638
+    "positions": 367220,
+    "droits": 1125413,
+    "droits_liquidables": 1047498
   }
 }

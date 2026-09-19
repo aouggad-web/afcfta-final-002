@@ -117,29 +117,157 @@ tue, parce qu'elle porte sur un cas reel — une vente FOB avec fret paye a part
 qu'un lecteur du calculateur doit pouvoir la retrouver.
 
 ==============================================================================
-III. LE BAREME LUI-MEME N'EST PAS COLLECTE, ET VOICI L'ETAT EXACT
+III. LE BAREME EST DESORMAIS COLLECTE — ADDENDUM DU 2026-09-19
 ==============================================================================
 
-L'INSTRUMENT EST IDENTIFIE. Decreto Legislativo Presidencial n.º 1/24 du 3 janvier
-2024, Diario da Republica I Serie, qui approuve la Pauta Aduaneira dos Direitos de
-Importacao e Exportacao en version 2022 du Systeme harmonise et abroge le Decreto
-Legislativo Presidencial n.º 10/19 du 29 novembre 2019.
+La version precedente de cet extrait disait que le bareme promulgue etait
+« telechargeable, et illisible par machine ici », faute d'OCR. CE N'EST PLUS LE CAS :
+tesseract 5.3.4 et ses donnees portugaises ont ete installes, le Diario a ete lu, et
+le tarif angolais est servi depuis le texte promulgue. Ce qui suit remplace cette
+section.
 
-IL EST TELECHARGEABLE, ET IL EST ILLISIBLE PAR MACHINE ICI. Le Diario qui le porte
-est un SCAN INTEGRAL : 345 pages, ZERO octet de couche texte. Aucun OCR n'est
-installe dans cet environnement (ni tesseract, ni pdftotext). Lire 345 pages de
-tableaux tarifaires a l'oeil n'est pas une methode de collecte.
+SOURCE DU BAREME
+  DECRETO LEGISLATIVO PRESIDENCIAL n.º 1/24 du 3 janvier 2024, Diario da Republica
+  I Serie n.º 2, qui approuve la Pauta Aduaneira dos Direitos de Importacao e
+  Exportacao (version 2022 du Systeme harmonise) et ses Instrucoes Preliminares, et
+  abroge le Decreto Legislativo Presidencial n.º 10/19 du 29 novembre 2019.
+  345 pages, SCAN INTEGRAL sans couche texte.
+  https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4z/nzcw/~edisp/minfin3770211.pdf
+  sha256 cc432fc213790c7d1d8d0a5134d366d6b2dec0157bd661c54fdbea125961b470
 
-UN DOCUMENT AVEC COUCHE TEXTE EXISTE, ET CE N'EST PAS LA LOI. Le meme serveur du
-Ministere des Finances publie un « Projecto da Pauta Aduaneira versao 2022 do SH »
-de la Direccao dos Servicos Aduaneiros — 366 pages, couche texte complete :
+------------------------------------------------------------------------------
+III.1 LA CARTE DES COLONNES — INSTRUCOES PRELIMINARES, ARTICLE 2
+------------------------------------------------------------------------------
+
+  « b) CIF — Cost, Insurance and Freight (Custo, Seguro e Frete);
+    [...]
+    f) EXW — Ex Works (preco no local de venda);
+    g) FOB — Free on board (Livre a Bordo);
+    h) IEC — Imposto Especial de Consumo;
+    i) IVA — Imposto sobre o Valor Acrescentado;
+    j) IPP — Instrucoes Preliminares da Pauta;
+    [...]
+    m) PREF — Preferenciais;
+    n) R.G. — Regime Geral;
+    o) SADC — Comunidade de Desenvolvimento da Africa Austral;
+    p) UA — Uniao Africana;
+    q) ZCLCA — Zona de Comercio Livre Continental Africana. »
+
+Le bareme aligne SIX colonnes : 1 Codigo, 2 Designacao das mercadorias, 3 UQ,
+4 R.G, 5 PREF. SADC, 6 PREF. U.A. La colonne 6, que l'en-tete du tableau intitule
+« U.A », est nommee ZCLCA par l'article 43 ci-dessous : c'est la ZONE DE LIBRE-ECHANGE
+CONTINENTALE AFRICAINE, la ZLECAf.
+
+------------------------------------------------------------------------------
+III.2 « LIVRE » EST UN ZERO PUBLIE, ET DEUX COLONNES SONT VIDES EXPRES
+------------------------------------------------------------------------------
+
+  ARTIGO 43.º (Ambito de aplicacao dos beneficios fiscais aduaneiros)
+
+  « 1. Os beneficios fiscais aduaneiros automaticos e reais, previstos na tabela dos
+    direitos de importacao constantes da Pauta Aduaneira, sao os indicados a TAXA
+    LIVRE (0%), na coluna 4 da mesma.
+
+    2. As colunas 5 (SADC) e 6 (ZCLCA), estao RESERVADAS a aplicacao de taxas
+    preferenciais, A SEREM DEFINIDAS EM LEGISLACAO ESPECIFICA, no ambito da adesao e
+    implementacao do Protocolo sobre Trocas Comerciais da Comunidade de
+    Desenvolvimento da Africa Austral (SADC) e da Zona de Comercio Livre Continental
+    Africana (ZCLCA).
+
+    [...]
+
+    4. Salvo disposicao em contrario em legislacao complementar, os beneficios
+    fiscais aduaneiros previstos nos numeros anteriores correspondem a isencao dos
+    direitos aduaneiros, COM EXCEPCAO DA TAXA DEVIDA PELA PRESTACAO DE SERVICOS. »
+
+DEUX CONSEQUENCES, ET ELLES SONT DECISIVES.
+
+  — « LIVRE » VAUT ZERO, ET LE TEXTE LE DIT ENTRE PARENTHESES. C'est meme un
+    BENEFICE FISCAL AUTOMATIQUE ET REEL que le legislateur nomme, non une case
+    oubliee. 2 152 positions sur 5 830 le portent, plus du tiers du tarif. Une
+    premiere passe du collecteur, qui ne cherchait que des chiffres dans la
+    colonne 4, les effacait toutes : un tiers du tarif se serait servi « droit
+    indisponible » alors que la loi lui donne un droit, et ce droit est zero.
+
+  — L'ANGOLA PUBLIE UNE COLONNE ZLECAf ET LA LAISSE VIDE, EXPRES. Les colonnes 5 et 6
+    sont « reservadas [...] a serem definidas em legislacao especifica » : elles
+    attendent leur texte d'application. Verifie sur les 5 830 positions collectees,
+    elles ne portent AUCUNE valeur. Servir une preference ZLECAf angolaise serait
+    donc inventer une exoneration que le legislateur a lui-meme remise a plus tard.
+
+------------------------------------------------------------------------------
+III.3 DEUX PRELEVEMENTS SUR LA MEME ASSIETTE — ARTICLE 58
+------------------------------------------------------------------------------
+
+  ARTIGO 58.º (Direitos e demais imposicoes devidos na importacao)
+
+  « 1. As mercadorias importadas definitivamente estao sujeitas ao pagamento de
+    direitos e demais imposicoes aduaneiras.
+
+    2. Os direitos aduaneiros incidentes na importacao sao tributados no momento da
+    tramitacao do respectivo despacho aduaneiro e calculados mediante a aplicacao das
+    taxas indicadas nas respectivas colunas de tributacao da Pauta Aduaneira.
+
+    3. Os EMOLUMENTOS GERAIS ADUANEIROS sao calculados mediante a aplicacao da TAXA
+    DE 2%.
+
+    4. A importacao de mercadorias ao abrigo do regime aduaneiro aplicavel ao Sector
+    Petrolifero ou Mineiro, quando importadas nos termos da legislacao especifica,
+    ficam sujeitas ao pagamento de emolumentos gerais aduaneiros calculados a taxa de
+    0,1% para o Sector Petrolifero e 2% para o Sector Mineiro [...]
+
+    5. As taxas a que se referem os numeros anteriores sao taxas «ad valorem» e
+    INCIDEM SOBRE O VALOR ADUANEIRO da mercadoria expresso em moeda nacional. »
+
+PORTEE. Le n.º 5 ferme la boucle avec le Codigo Aduaneiro cite plus haut : les taux
+du bareme ET les emolumentos gerais portent sur le valor aduaneiro, et l'article
+117.º n.º 2 du Code dit que ce valor aduaneiro comprend le transport, la manutention
+et l'assurance jusqu'au port — le CIF, que la liste des abreviations de l'IPP nomme
+d'ailleurs elle-meme. Les emolumentos sont donc un SECOND prelevement du sur la meme
+assiette, a 2 %, hors colonnes du bareme, et ils survivent aux exonerations puisque
+l'article 43 n.º 4 n'exempte pas « a taxa devida pela prestacao de servicos ». Les
+deux taux sectoriels du n.º 4 dependent d'un regime douanier que le calculateur ne
+connait pas et ne sont pas appliques.
+
+------------------------------------------------------------------------------
+III.4 COMMENT UN SCAN A ETE LU, ET CE QUI LE CONTROLE
+------------------------------------------------------------------------------
+
+Le Diario ne porte AUCUNE couche texte : 345 pages, zero octet. Un OCR de pleine page
+ne suffit pas — il rend « r]ao » pour un « 30 » et « EE » pour un code, parce qu'il
+prend les traits du tableau pour des lettres. Mais le bareme est un TABLEAU REGLE :
+ses traits se detectent sur l'image, chaque colonne est decoupee en bande, et chaque
+bande est lue avec le seul vocabulaire qu'elle peut contenir. Les codes sortent alors
+intacts et les taux aussi.
+
+CONTROLE INDEPENDANT. Douze pages tirees au sort ont ete RELUES cellule par cellule,
+a 400 points par pouce au lieu de 300 et en mode « une seule ligne » au lieu de
+« un bloc » : 187 droits relus, 185 concordants d'emblee. Les DEUX ecarts ont ete
+tranches en regardant l'image : sur 1512.19.10 le document porte 40 et sur 8483.90.00
+il porte 5 — ce que le collecteur sert, et ce que la RELECTURE avait mal lu en
+tronquant un chiffre. La lecture servie est donc juste sur les 187 cellules, et c'est
+le controle qui s'etait trompe deux fois.
+
+------------------------------------------------------------------------------
+III.5 LE PROJET QUI CIRCULE N'EST PAS LA LOI, ET IL EN DIFFERE
+------------------------------------------------------------------------------
+
+Le meme serveur du Ministere des Finances publie un « Projecto da Pauta Aduaneira
+versao 2022 do SH » de la Direccao dos Servicos Aduaneiros — 366 pages, AVEC couche
+texte, donc infiniment plus commode a lire :
   https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4y/odc4/~edisp/minfin2878038.pdf
-C'est un PROJET. Servir des droits de douane depuis un projet, en les presentant
-comme le tarif en vigueur, serait exactement ce que ce depot s'interdit : une
-donnee credible et non verifiee. Le projet n'est donc PAS collecte. Il est nomme
-ici parce qu'il est la piste la plus courte le jour ou un OCR sera disponible : on
-pourra alors lire le Diario promulgue et VERIFIER le projet contre lui, ligne a
-ligne, au lieu de le supposer conforme.
 
-EN ATTENDANT, le socle sert 5 388 moyennes SH6 de WITS/UNCTAD-TRAINS pour l'Angola,
-et il le declare.
+IL NE FAUT PAS S'EN SERVIR, ET C'EST MESURE. Sa nomenclature est quasiment celle de
+la loi — 5 836 sous-positions contre 5 830 lues au Diario — mais SES TAUX DIFFERENT.
+Compare code a code sur 3 058 positions ou les deux documents portent un taux, il
+diverge sur 730, soit pres d'une sur quatre. Deux exemples verifies en regardant
+l'image du Diario promulgue :
+  — 0204.22.00 : le projet porte 10, LA LOI PORTE 20 ;
+  — 7325.91.00 : la loi porte 10.
+Un calculateur nourri au projet servirait donc des droits faux sur des centaines de
+positions, avec l'apparence d'une source ministerielle. C'est exactement le piege que
+la doctrine de ce depot interdit : un document credible qui n'est pas l'instrument.
+
+Le projet a servi ici a UNE SEULE CHOSE, et elle est legitime : constater que les
+deux documents portent la meme nomenclature, ce qui conforte la lecture des CODES.
+Aucun de ses taux n'est servi.

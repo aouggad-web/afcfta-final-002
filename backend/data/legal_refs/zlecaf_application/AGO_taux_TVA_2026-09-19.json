@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "objet": "Angola — le TAUX de la TVA, 14 %, énoncé par l'article 19.º du Código do Imposto Sobre o Valor Acrescentado. Le socle le servait depuis PwC ; il le sert désormais depuis l'article de loi, avec une réserve nommée sur le véhicule par lequel cet article a été lu.",
+  "verified_at": "2026-09-19",
+  "etabli": true,
+  "evidence_level": "TEXTE DE L'INSTRUMENT, LU PAR UN VÉHICULE SECONDAIRE. L'article est celui de la Lei n.º 7/19 de 24 de Abril, mais le Diário da República qui la publie n'a pas été obtenu : le texte vient de lex.ao, base de données juridique angolaise, dont la page est elle-même incomplète (elle s'interrompt au milieu de l'article 48). TROIS CORROBORATIONS INDÉPENDANTES du même chiffre : la présentation officielle du GTIIVA du Ministère des Finances angolais sur ucm.minfin.gov.ao, le Portal do Contribuinte du même ministère, et PwC Worldwide Tax Summaries — qui était jusqu'ici la seule source de ce dépôt pour cette valeur.",
+  "la_question_posee": "Le socle servait la TVA angolaise à 14 % depuis le fichier WITS, sous la seule mention « PwC Worldwide Tax Summaries ». Ce fichier a été remplacé par le tarif national lu dans le Diário promulgué, qui ne porte AUCUNE TVA : la ligne allait disparaître avec lui. Il fallait donc soit la perdre, soit la reconduire sur la même source secondaire, soit trouver l'article qui l'énonce.",
+  "regle": {
+    "le_taux": {
+      "article": "Código do Imposto Sobre o Valor Acrescentado, approuvé par la Lei n.º 7/19 de 24 de Abril, artigo 19.º (Taxa do Imposto)",
+      "verbatim": "A taxa do imposto é de 14% (catorze por cento).",
+      "valeur": "14,0 % (taux standard)",
+      "portee": "C'est la seule phrase de l'article, et elle ne prévoit en son sein ni taux réduit ni taux zéro. Le Code en prévoit ailleurs — exonérations et opérations détaxées — et CETTE FICHE NE LES ÉTABLIT PAS : le taux servi est le taux STANDARD, et toute ligne qu'il produit porte cette réserve.",
+      "texte_archive": "sources/AGO_codigo_iva_art18_art19.texte-extrait.txt",
+      "sha256": "f3f40874adaa257a20a17c1044d1070d22cd770eef797fef4d0150d915350e80",
+      "source_url": "https://lex.ao/docs/assembleia-nacional/2019/lei-n-o-7-19-de-24-de-abril/",
+      "pdf_non_archive": "Aucun PDF n'est cité : le texte a été lu sur une page web, et c'est l'extrait archivé dans sources/ qui en porte la trace, avec son empreinte. Le Diário da República publiant la Lei n.º 7/19 n'a pas été obtenu, et la fiche le déclare plutôt que de le laisser croire."
+    },
+    "ce_que_l_article_18_confirme_sans_le_refonder": {
+      "article": "Código do IVA, artigo 18.º (Valor Tributável nas Importações) — première clause",
+      "verbatim": "O valor tributável dos bens importados é o valor aduaneiro, determinado nos termos da legislação aduaneira, adicionado dos elementos a seguir indicados [...]",
+      "portee": "LA CITATION S'ARRÊTE LÀ, ET C'EST VOULU : la suite de l'article — la liste des éléments qui s'ajoutent — n'a pas été obtenue mot pour mot, le véhicule consulté la résumant en prose. Un résumé n'est pas un verbatim. Ce qui est acquis, c'est que l'article part du VALOR ADUANEIRO « determinado nos termos da legislação aduaneira », donc de celui que le Código Aduaneiro art. 117.º n.º 2 définit et qui est le CIF. L'assiette servie par le socle — valeur en douane augmentée des prélèvements d'entrée, TVA exclue — reste établie par la fiche AGO_assiette_TVA_2026-09-17.json sur l'article 140 du même Code.",
+      "assiettes_retenues": {
+        "TVA": "CIF+TOUS_SAUF_TVA"
+      },
+      "texte_archive": "sources/AGO_codigo_iva_art18_art19.texte-extrait.txt",
+      "sha256": "f3f40874adaa257a20a17c1044d1070d22cd770eef797fef4d0150d915350e80"
+    }
+  },
+  "ce_que_cela_ne_tranche_pas": {
+    "les_exonerations_et_les_operations_detaxees": "Le taux porté est le taux STANDARD. Le Código do IVA prévoit des exonérations et des opérations détaxées que cette fiche n'établit pas et que le calculateur ne distingue pas : toute ligne produite par ce taux porte la réserve.",
+    "le_diario_da_republica_n_a_pas_ete_obtenu": "L'article est celui de la loi, mais lu sur lex.ao et non au Journal officiel. Trois publications du Ministère des Finances et de PwC concordent avec lui ; aucune n'est l'instrument. Obtenir le Diário da República du 24 avril 2019 lèverait cette réserve.",
+    "l_imposto_especial_de_consumo": "L'IEC est nommé dans les abréviations des Instruções Preliminares de la Pauta mais ni son taux ni son champ n'y figurent. Il relève de son propre code, non lu ici, et rien n'est servi à ce titre.",
+    "le_code_a_ete_modifie": "Le Código do IVA a été modifié par la Lei n.º 17/19 de 13 de Agosto de 2019, que data/angola/legal_sources.json nommait déjà dans ce dépôt. L'article 19.º cité ici est celui du texte d'origine tel que lex.ao le reproduit ; la fiche N'A PAS vérifié si la loi modificative touche à cet article. Les trois corroborations concordent toutes sur 14 % à ce jour, ce qui rend improbable une modification du taux, mais improbable n'est pas vérifié."
+  }
+}

@@ -99,6 +99,15 @@
       "taille_octets": 19414252,
       "pages": 827,
       "structure": "HS 2022, 13 colonnes de taux : MFN, COMESA FTA, European Union & UK, SADC FTA 2022-2026, AfCFTA 2022-2026"
+    },
+    "AGO": {
+      "url": "https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4z/nzcw/~edisp/minfin3770211.pdf",
+      "institution": "Ministerio das Financas de Angola (ucm.minfin.gov.ao)",
+      "annee": "2024",
+      "sha256": "cc432fc213790c7d1d8d0a5134d366d6b2dec0157bd661c54fdbea125961b470",
+      "taille_octets": 20514916,
+      "pages": 345,
+      "structure": "HS 2022, SCAN SANS COUCHE TEXTE, 6 colonnes : Codigo, Designacao, UQ, R.G, PREF. SADC, PREF. U.A (ZCLCA)"
     }
   }
 }

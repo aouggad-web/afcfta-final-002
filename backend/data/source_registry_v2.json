@@ -973,24 +973,34 @@
       "zlecaf": "PARTNER_NOTICE_REQUIRED — Regulation 574/2025, dataset ETH (5868 lignes)"
     },
     "AGO": {
-      "organism": "AGT — Administração Geral Tributária (portail SPA inaccessible)",
+      "organism": "Ministerio das Financas de Angola — Administracao Geral Tributaria (AGT)",
       "version": "2024.1",
-      "sha256": "7c1bb39f2547d72f05b36332e64f805e634a64557dfa4489b08e9ae49846c9f3",
       "artifact_path": "backend/data/crawled/AGO_tariffs.json",
-      "artifact_url": null,
-      "source_type": "wits_fallback",
-      "url": "https://www.agt.minfin.gov.ao/PortalAGT/",
-      "retrieved_at": "N/A",
-      "edition": "DLP 1/24 du 3 janvier 2024 (non crawlable)",
+      "artifact_url": "https://www.ucm.minfin.gov.ao/cs/groups/public/documents/document/aw4z/nzcw/~edisp/minfin3770211.pdf",
+      "source_type": "official",
+      "url": "https://www.minfin.gov.ao",
+      "retrieved_at": "2026-09-19",
+      "edition": "Pauta Aduaneira dos Direitos de Importacao e Exportacao (versao 2022 do SH) et ses Instrucoes Preliminares, approuvees par le DECRETO LEGISLATIVO PRESIDENCIAL n.º 1/24 de 3 de Janeiro, Diario da Republica I Serie n.º 2, 345 pages, abrogeant le DLP n.º 10/19 de 29 de Novembro de 2019.",
+      "application_period": "a compter du 3 janvier 2024",
       "hs_version": "HS 2022",
-      "code_digits": 6,
-      "positions_count": 5388,
-      "validation_status": "not_available",
+      "code_digits": 8,
+      "positions_count": 5830,
+      "sha256": "d18428011e5901255996b1cfbac275166dcd5c921e9fb84d8ee90536156382e8",
+      "source_sha256": "cc432fc213790c7d1d8d0a5134d366d6b2dec0157bd661c54fdbea125961b470",
+      "reuse_conditions": "Publication officielle au Diario da Republica de Angola.",
+      "legal_authority": "Decreto Legislativo Presidencial n.º 1/24, Instrucoes Preliminares da Pauta : art. 2.º (abreviaturas, dont R.G, SADC, UA et ZCLCA), art. 43.º n.º 1 (« taxa Livre (0%) »), n.º 2 (colonnes 5 et 6 reservees) et n.º 4 (la taxe de service survit aux exonerations), art. 58.º n.º 3 (emolumentos gerais 2 %) et n.º 5 (ad valorem sur le valor aduaneiro) ; Codigo Aduaneiro (Decreto-Lei n.º 05/06), art. 117.º n.º 2 et art. 119.º (valor aduaneiro) ; Codigo do IVA (Lei n.º 7/19), art. 19.º (taux de 14 %)",
+      "validation_status": "verified",
       "taxes": [
-        "DD",
-        "IVA"
+        "DD (coluna 4, R.G — Regime Geral ; assiette CIF ; « Livre » = 0 % sur 2 152 positions)",
+        "EGA (emolumentos gerais aduaneiros, 2 % — IPP art. 58.º n.º 3, assiette CIF)",
+        "SADC (coluna 5) — colonne PUBLIEE ET VIDE, reservee par l'art. 43.º n.º 2",
+        "AFCFTA/ZCLCA (coluna 6) — colonne PUBLIEE ET VIDE, reservee par l'art. 43.º n.º 2",
+        "TVA 14 % — ABSENTE DU TARIF, completee par backend/socle/tva_nationale.json"
       ],
-      "note": "Portail AGT = SPA AngularJS sans API publique. PDF Pauta Aduaneira non accessible à URL directe. Source secondaire Lex.ao (SPA Docusaurus). OCR à prévoir."
+      "zlecaf": "COLONNE ZLECAf PUBLIEE ET VIDE, ET LE TEXTE DIT POURQUOI. La colonne 6, que l'en-tete intitule « U.A » et que l'article 2.º des Instrucoes Preliminares nomme ZCLCA — Zona de Comercio Livre Continental Africana — est declaree par l'article 43.º n.º 2 « reservada a aplicacao de taxas preferenciais, A SEREM DEFINIDAS EM LEGISLACAO ESPECIFICA ». Verifie sur les 5 830 positions : aucune ne porte de valeur. Servir une preference ZLECAf angolaise serait donc inventer une exoneration que le legislateur a lui-meme remise a plus tard.",
+      "note": "Remplace une moyenne simple MFN au niveau SH6 (WITS/UNCTAD-TRAINS, 5 388 positions) par le tarif national a huit chiffres lu dans le Diario promulgue. LE DOCUMENT EST UN SCAN INTEGRAL : 345 pages, zero octet de couche texte. Il est lu optiquement, colonne par colonne, sur la grille du tableau detectee dans l'image.",
+      "notes": "5 830 positions, 94 chapitres, SIX colonnes : 1 Codigo, 2 Designacao, 3 UQ, 4 R.G, 5 PREF. SADC, 6 PREF. U.A. LA CARTE DES COLONNES EST DANS LE TEXTE (art. 2.º des IPP), pas deduite de l'en-tete. « LIVRE » EST UN ZERO PUBLIE : l'art. 43.º n.º 1 en donne la valeur entre parentheses, « taxa Livre (0%) », et c'est un benefice fiscal nomme ; 2 152 positions sur 5 830 le portent, plus du tiers du tarif, et une premiere passe du collecteur les effacait toutes. DEUX PRELEVEMENTS sur la meme assiette : le droit de la colonne 4 et les emolumentos gerais aduaneiros a 2 %, tous deux ad valorem sur le valor aduaneiro (art. 58.º n.º 5) que le Codigo Aduaneiro art. 117.º n.º 2 definit comme le CIF ; les emolumentos survivent aux exonerations (art. 43.º n.º 4). CONTROLE INDEPENDANT : douze pages tirees au sort relues cellule par cellule a 400 points par pouce en mode « une seule ligne » — 187 droits relus, 185 concordants, et les deux ecarts tranches sur l'image en faveur du collecteur. LE PROJET QUI CIRCULE N'EST PAS LA LOI : un « Projecto da Pauta » avec couche texte est publie sur le meme serveur ministeriel et diverge sur 730 des 3 058 taux comparables ; aucun de ses taux n'est servi. 24 positions sans droit, 30 sans designation, chacune avec son motif. Fiches : AGO_assiette_droit_de_douane_2026-09-19.json et AGO_taux_TVA_2026-09-19.json.",
+      "correction_du_registre": "L'entree precedente servait 5 388 moyennes SH6 de WITS/UNCTAD-TRAINS avec une TVA de 14 % dont la seule source etait « PwC Worldwide Tax Summaries ». Le tarif vient desormais du texte promulgue, et le taux de TVA de l'article 19.º du Codigo do IVA — lu sur lex.ao, le Diario da Republica du 24 avril 2019 n'ayant pas ete obtenu, ce que la fiche declare. Ancienne entree conservee ici pour memoire : {\"source_type\": \"wits_fallback\", \"positions_count\": 5388, \"edition\": \"DLP 1/24 du 3 janvier 2024 (non crawlable)\", \"note\": \"Portail AGT = SPA AngularJS sans API publique. PDF Pauta Aduaneira non accessible à URL directe. Source secondaire Lex.ao (SPA Docusaurus). OCR à prévoir.\"}"
     },
     "MWI": {
       "organism": "Malawi Revenue Authority (MRA)",

@@ -22,6 +22,16 @@
       "source": "CGI Djibouti, art. 187 (taux normal 10 %) ; art. 179 b) (TVA à l'importation perçue par la douane) — budget.gouv.dj",
       "fiche": "backend/data/legal_refs/zlecaf_application/DJI_taux_TVA_2026-09-18.json",
       "note": "Taux normal national, non vérifié position par position : les biens exonérés et le taux zéro (exports) ne sont pas distingués."
+    },
+    "AGO": {
+      "code": "TVA",
+      "libelle": "Imposto sobre o Valor Acrescentado (IVA)",
+      "famille": "tva",
+      "taux": 14.0,
+      "assiette": "CIF+TOUS_SAUF_TVA",
+      "source": "Código do IVA (Lei n.º 7/19 de 24 de Abril), art. 19.º — « A taxa do imposto é de 14% (catorze por cento) » ; article lu sur lex.ao, le Diário da República n'ayant pas été obtenu, et corroboré par le GTIIVA du Ministère des Finances, le Portal do Contribuinte et PwC",
+      "fiche": "backend/data/legal_refs/zlecaf_application/AGO_taux_TVA_2026-09-19.json",
+      "note": "Taux standard national, non vérifié position par position : les opérations détaxées et exonérées du Código do IVA ne sont pas distinguées. Le tarif douanier angolais ne porte aucune TVA — c'est pourquoi cette table la complète."
     }
   },
   "_sacu_volontairement_hors_table": {
