@@ -422,7 +422,7 @@ def test_uemoa_customs_union_overrides_zlecaf_ratification(synthetic_calc):
 def test_sacu_customs_union_applies_for_non_zlecaf_member(synthetic_calc):
     """BWA (non-membre ZLECAf) → ZAF : SACU prévaut, libre circulation 0%."""
     synthetic_calc.setattr(currency_service, "get_by_country", lambda code: None)
-    result = svc.calculate_import_taxes("ZAF", "100190", 1000.0, origin_country="BWA")
+    result = svc.calculate_import_taxes("ZAF", "100190", 1000.0, origin_country="BWA", fob_value=800.0)
     by_code = {b["code"]: b for b in result["taxes_breakdown"]}
     assert result["trade_regime"] == "CUSTOMS_UNION"
     assert result["trade_regime_code"] == "SACU"

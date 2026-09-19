@@ -439,6 +439,18 @@ async def calculate_taxes_endpoint(
     cif_value: float = Query(..., description="CIF value in USD"),
     language: str = Query("fr", description="Language: fr or en"),
     origin: str = Query(None, description="Origin country ISO3 (gates ZLECAf eligibility)"),
+    fob_value: Optional[float] = Query(
+        None,
+        gt=0,
+        description=(
+            "Valeur FOB (fret et assurance internationaux exclus), en USD. "
+            "Requise pour l'Afrique du Sud et les importations dédouanées "
+            "par SARS (SACU) : la valeur en douane y est la valeur FOB, qui "
+            "ne se déduit jamais de la valeur CIF. Sans elle, le calcul est "
+            "refusé (fail-closed) plutôt que liquidé sur une base CIF "
+            "surestimée."
+        ),
+    ),
     calculation_date: Optional[date] = Query(None, description="Legal calculation date"),
     remission_eligibility: RemissionEligibility = Query(
         RemissionEligibility.ELIGIBILITY_UNKNOWN,
@@ -493,6 +505,7 @@ async def calculate_taxes_endpoint(
         cif_value=cif_value,
         language=language,
         origin_country=origin,
+        fob_value=fob_value,
     )
 
     if "error" in result:

@@ -2,6 +2,8 @@
   "_objet": "Assiettes par pays, migrées depuis COUNTRY_TAX_PROFILES et ASSIETTE_TVA_ETABLIE (services/authentic_tariff_service.py). Utilisées UNIQUEMENT quand la source ne porte pas elle-même l'assiette de la taxe. Une assiette presente dans la donnee prime.",
   "_grammaire": {
     "CIF": "valeur en douane",
+    "FOB": "valeur FOB (valeur en douane SACU : fret et assurance internationaux exclus) — fournie par l'appelant, jamais déduite du CIF",
+    "FOB+<CODES>": "FOB augmenté du montant des droits nommés",
     "CIF+<CODES>": "CIF augmente du montant des droits nommes",
     "CIF+TOUS_SAUF_TVA": "CIF augmente de tous les prelevements d entree, TVA exclue",
     "SOMME(TOUS_SAUF_SOI)": "somme des montants des autres droits, sans le CIF",
@@ -1013,15 +1015,17 @@
       ],
       "taxes": {
         "DD": {
-          "assiette": "CIF",
-          "origine_assiette": "profil_code"
+          "assiette": "FOB",
+          "origine_assiette": "texte_primaire",
+          "texte": "Customs and Excise Act 1964 (Act 91 of 1964), s.65-67, corroboré par la politique SARS SC-CR-A-03 rév. 5 : la valeur en douane SACU est la valeur de transaction sur base FOB — fret et assurance internationaux exclus (art. 8.2 de l'Accord OMC). Le socle exige la valeur FOB de l'appelant : il ne la déduit jamais de la valeur CIF.",
+          "fiche": "SACU_assiette_DD_2026-09-17.json"
         },
         "TVA": {
           "assiette": "CIF+DD",
           "origine_assiette": "profil_code"
         }
       },
-      "reference_legale": "sars.gov.za — VAT Act s.13(2) (VAT base = CIF+DD)"
+      "reference_legale": "Customs and Excise Act 91/1964 s.65-67 + SARS SC-CR-A-03 (assiette du droit = FOB) ; sars.gov.za — VAT Act s.13(2) (TVA base = CIF+DD)"
     },
     "ZMB": {
       "ordre": [

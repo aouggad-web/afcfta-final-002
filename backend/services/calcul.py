@@ -1,10 +1,10 @@
 """
 Moteur de liquidation — chantier L2.
 
-Une fonction, cinq primitives d'assiette, un modificateur. Aucune connaissance
+Une fonction, six primitives d'assiette, un modificateur. Aucune connaissance
 par pays : tout ce que le moteur sait d'un pays lui vient du socle.
 
-Les cinq primitives, et rien d'autre :
+Les six primitives, et rien d'autre :
 
 ===========================  ================================================
 ``CIF``                      la valeur en douane
@@ -12,6 +12,16 @@ Les cinq primitives, et rien d'autre :
                              droits nommés (``CIF+DD+TCI``), ou de tous les
                              prélèvements d'entrée (``CIF+TOUS_SAUF_TVA``,
                              ``CIF+TOUS_SAUF_SOI``)
+``FOB``                      la valeur FOB — la valeur en douane des pays
+                             SACU, où le fret et l'assurance internationaux
+                             sont exclus (Act 91/1964 s.65-67 ; fiche
+                             ``SACU_assiette_DD_2026-09-17.json``). Elle ne
+                             se déduit JAMAIS de la valeur CIF : la part du
+                             fret et de l'assurance n'est pas connue du
+                             moteur. Absente, le droit reste indisponible
+                             (``VALEUR_FOB_REQUISE``) plutôt qu'assumé CIF
+                             — une base CIF devinée surestimerait le droit
+                             d'un montant crédible et faux.
 ``SOMME(TOUS_SAUF_SOI)``     la somme des autres droits, **sans** la valeur
 ``%<CODE>``                  un pourcentage du *montant* d'un autre droit,
                              désigné par son code (``%DD``)
@@ -64,6 +74,10 @@ MANQUE_ASSIETTE = "ASSIETTE_INDISPONIBLE"
 MANQUE_QUANTITE = "QUANTITE_REQUISE"
 MANQUE_CHANGE = "TAUX_DE_CHANGE_REQUIS"
 MANQUE_COMPOSANT = "ASSIETTE_INCOMPLETE"
+#: Valeur FOB exigée par une assiette « FOB » (SACU) et non fournie : la base
+#: ne vaut jamais la valeur CIF — déduire le fret de celle-ci en inventerait
+#: une. Voir la primitive ``FOB`` en tête de module.
+MANQUE_FOB = "VALEUR_FOB_REQUISE"
 #: Le tarif publie DEUX composantes pour un même droit — « 40% or 240c/kg »,
 #: sur 140 positions sud-africaines — sans que la source dise laquelle
 #: s'applique. Le crawl a délibérément gardé le verbatim sans trancher ; le
@@ -154,6 +168,7 @@ def _assiette_de(
     quantite: Optional[float],
     taux_de_change: Optional[float],
     codes_de_la_position: set,
+    valeur_fob: Optional[float] = None,
 ):
     """Rendre (assiette, manque, détail). Une assiette introuvable ne vaut
     jamais CIF, et une assiette amputée ne se complète jamais par un zéro."""
@@ -187,6 +202,12 @@ def _assiette_de(
         if rates:
             return None, MANQUE_COMPOSANT, {"composants_absents": rates}
         base = sum(montants.values())
+    elif assiette == "FOB":
+        # La valeur en douane SACU exclut fret et assurance internationaux :
+        # elle doit être fournie, jamais déduite de la valeur CIF.
+        if valeur_fob is None:
+            return None, MANQUE_FOB, detail
+        base = valeur_fob
     elif assiette == "CIF":
         base = cif
     elif assiette.startswith("CIF+"):
@@ -209,6 +230,18 @@ def _assiette_de(
             if sans_objet:
                 detail["composants_sans_objet"] = sans_objet
             base = cif + part
+    elif assiette.startswith("FOB+"):
+        # Même sémantique que « CIF+<CODES> », posée sur la valeur FOB.
+        if valeur_fob is None:
+            return None, MANQUE_FOB, detail
+        part, manquants, sans_objet = _composants(
+            _codes_de_l_assiette(assiette), montants, codes_de_la_position
+        )
+        if manquants:
+            return None, MANQUE_COMPOSANT, {"composants_absents": manquants}
+        if sans_objet:
+            detail["composants_sans_objet"] = sans_objet
+        base = valeur_fob + part
     else:
         return None, MANQUE_ASSIETTE, detail
 
@@ -243,6 +276,7 @@ def _liquider(
     facteur_devise_specifique: Optional[float] = 1.0,
     couverture: Optional[Dict[str, Any]] = None,
     devise_cif: Optional[str] = None,
+    valeur_fob: Optional[float] = None,
 ) -> Dict[str, Any]:
     lignes: List[Dict[str, Any]] = []
     calcules: List[Dict[str, Any]] = []
@@ -309,6 +343,18 @@ def _liquider(
 
         taux = droit.get("taux")
         specifique = droit.get("specifique")
+        if taux == 0 and specifique is None and isinstance(droit.get("assiette"), str) and (
+            droit["assiette"] == "FOB" or droit["assiette"].startswith("FOB+")
+        ):
+            # Zéro pour cent vaut zéro sur n'importe quelle assiette — et en
+            # particulier sur la base FOB des pays SACU : une franchise
+            # intra-union (libre circulation) liquide sans valeur FOB, comme
+            # elle liquide déjà sans quantité sur un NPF spécifique. Exiger la
+            # valeur FOB ici rejetterait une importation dont le droit est
+            # nul — rien n'est dû, la base n'influe sur aucun montant.
+            droit = dict(droit, assiette="CIF", plafond=None)
+            ligne["assiette"] = "CIF"
+            ligne["assiette_sans_objet"] = "taux nul : l'assiette n'influe sur aucun montant"
         manque_devise = False
         regle_composee_absente = False
         compose_departage = None
@@ -380,7 +426,14 @@ def _liquider(
                     )
 
         assiette, manque, detail = _assiette_de(
-            droit, cif, calcules, echecs, quantite, taux_de_change, codes_de_la_position
+            droit,
+            cif,
+            calcules,
+            echecs,
+            quantite,
+            taux_de_change,
+            codes_de_la_position,
+            valeur_fob,
         )
         ligne.update(detail)
         if regle_composee_absente:
@@ -521,6 +574,7 @@ def calculer(
     devise_position: Optional[str] = None,
     devise_cif: Optional[str] = None,
     couverture: Optional[Dict[str, Any]] = None,
+    valeur_fob: Optional[float] = None,
 ) -> Dict[str, Any]:
     """Liquider une position du socle, en NPF et — s'il y a lieu — en préférence.
 
@@ -538,6 +592,11 @@ def calculer(
     """
     if valeur_cif is None or valeur_cif < 0:
         raise ValueError("valeur_cif doit être un nombre positif")
+    if valeur_fob is not None and (valeur_fob < 0 or valeur_fob > valeur_cif):
+        # La valeur FOB ne peut ni être négative ni excéder la valeur CIF :
+        # le fret et l'assurance ajoutés à la première composent la seconde.
+        # L'inverse signalerait une déclaration incohérente, pas une base.
+        raise ValueError("valeur_fob doit être positive et ne pas excéder valeur_cif")
 
     droits = position.get("droits") or []
     facteur_devise = _facteur_devise_specifique(devise_position, devise_cif, taux_de_change)
@@ -557,8 +616,11 @@ def calculer(
             facteur_devise,
             couverture,
             devise_cif,
+            valeur_fob,
         ),
     }
+    if valeur_fob is not None:
+        resultat["valeur_fob"] = valeur_fob
     if taux_preferentiels:
         resultat["preference"] = _liquider(
             droits,
@@ -569,6 +631,7 @@ def calculer(
             facteur_devise,
             couverture,
             devise_cif,
+            valeur_fob,
         )
         resultat["preference"]["prelevements_remises"] = sorted(taux_preferentiels)
         # Une économie n'est comparable que si les deux régimes sont

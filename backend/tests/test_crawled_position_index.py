@@ -281,7 +281,9 @@ def test_search_handles_raw_tax_lists_and_returns_position_provenance(monkeypatc
     assert result["source_url"] == "https://sars.example/tariff.pdf"
     assert (
         result["effective_rate"]
-        == service.compute_tax_cascade(100, {"DD": 10, "TVA": 15}, "ZAF")["effective_rate_pct"]
+        == service.compute_tax_cascade(100, {"DD": 10, "TVA": 15}, "ZAF", fob_value=100)[
+            "effective_rate_pct"
+        ]
     )
     assert service.load_crawled_position_index("ZAF")["01012100"]["taxes"] == raw_taxes
 

@@ -79,6 +79,18 @@ class DemandeCalcul(BaseModel):
             "quoi il reste indisponible plutôt que mélangé à la valeur CIF."
         ),
     )
+    valeur_fob: Optional[float] = Field(
+        None,
+        gt=0,
+        description=(
+            "Valeur FOB (fret et assurance internationaux exclus). Requise "
+            "par les pays SACU (ZA, BW, LS, NA, SZ) : leur valeur en douane "
+            "est la valeur FOB, jamais déduite de la valeur CIF — fournie "
+            "ou omise, le fret ne se devine pas. Absente, le droit liquide "
+            "sur base FOB reste indisponible (`VALEUR_FOB_REQUISE`). Ne "
+            "peut excéder `valeur_cif`."
+        ),
+    )
 
 
 @router.post("/calcul", summary="Liquider les droits et taxes d'une importation")
@@ -107,16 +119,22 @@ def calcul(demande: DemandeCalcul):
 
     position, complements = _completer_famille_absente(position, demande.destination, provenance)
 
-    resultat = calculer(
-        position,
-        demande.valeur_cif,
-        quantite=demande.quantite,
-        taux_de_change=demande.taux_de_change,
-        taux_preferentiels=preference.get("taux") or None,
-        devise_position=provenance.get("devise_nationale"),
-        devise_cif=demande.devise_cif,
-        couverture=provenance.get("couverture"),
-    )
+    try:
+        resultat = calculer(
+            position,
+            demande.valeur_cif,
+            quantite=demande.quantite,
+            taux_de_change=demande.taux_de_change,
+            taux_preferentiels=preference.get("taux") or None,
+            devise_position=provenance.get("devise_nationale"),
+            devise_cif=demande.devise_cif,
+            couverture=provenance.get("couverture"),
+            valeur_fob=demande.valeur_fob,
+        )
+    except ValueError as exc:
+        # Une demande incohérente (valeur_fob excédant la valeur CIF, p. ex.)
+        # est une erreur du client, pas une panne du service.
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     resultat["provenance"] = provenance
     resultat["complements_nationaux"] = complements
     # Une interdiction d'importation est une RÉPONSE, et elle doit sortir comme
@@ -191,6 +209,7 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
                 devise_position=provenance.get("devise_nationale"),
                 devise_cif=demande.devise_cif,
                 couverture=provenance.get("couverture"),
+                valeur_fob=demande.valeur_fob,
             )
         except Exception as exc:  # pragma: no cover - le moteur ne doit pas faire tomber la route
             logger.warning("Simulation %s non chiffrée : %s", simulation.get("regime"), exc)

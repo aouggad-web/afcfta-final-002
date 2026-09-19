@@ -1,0 +1,26 @@
+Lesotho — Value Added Tax Act 2001, section 19(3)
+Extrait du texte intégral du PDF (archivé en face) :
+---
+is calculated by applying the relevant rate of value added tax to the 
+taxable value of the transaction. 
+ 
+(2) 
+The rate of value added tax imposed on an export of goods or services 
+from Lesotho by a vendor is zero. 
+ 
+(3) 
+The rates of value added tax shall be prescribed by regulation but shall 
+not exceed four rates, including a zero rate. 
+ 
+Calculation of Value Added Tax Payable on the Invoice Method for a Tax 
+Period 
+ 
+20. 
+(1) 
+Subject to sections 21 and 22, the value added tax payable by a 
+vendor for a tax period is calculated according to the following formula:  
+ 
+A - B 
+ 
+where,
+---

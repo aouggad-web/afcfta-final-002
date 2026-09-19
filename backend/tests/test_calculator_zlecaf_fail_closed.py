@@ -572,7 +572,7 @@ def test_authentic_tariff_service_untraceable_zlecaf_line_has_null_savings():
 
     from services.authentic_tariff_service import calculate_import_taxes
 
-    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="MAR")
+    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="MAR", fob_value=800.0)
 
     assert result["trade_regime"] == "ZLECAF"
     assert result["zlecaf_eligible"] is True
@@ -592,7 +592,7 @@ def test_authentic_tariff_service_customs_union_savings_stay_documented():
     produit un taux et des économies concrets, traçables par construction."""
     from services.authentic_tariff_service import calculate_import_taxes
 
-    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="BWA")
+    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country="BWA", fob_value=800.0)
 
     assert result["trade_regime"] == "CUSTOMS_UNION"
     assert result["zlecaf_status"] == "DOCUMENTED"
@@ -607,7 +607,7 @@ def test_authentic_tariff_service_no_origin_is_documented_zero_not_null():
     vérifiées à 0, jamais `None`."""
     from services.authentic_tariff_service import calculate_import_taxes
 
-    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country=None)
+    result = calculate_import_taxes("ZAF", "020110", 1000, origin_country=None, fob_value=800.0)
 
     assert result["trade_regime"] == "NPF"
     assert result["zlecaf_status"] == "DOCUMENTED"
