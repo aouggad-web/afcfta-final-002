@@ -1,0 +1,242 @@
+Malawi — Customs and Excise (Tariffs) (No. 3) Order, 2022 (HS 2022 Version)
+Malawi Gazette Supplement du 29 juillet 2022, GOVERNMENT NOTICE NO. 30,
+pris sous le Customs and Excise Act (Cap. 42:01).
+Source : Malawi Revenue Authority
+https://www.mra.mw/admin/storage/downloads/MALAWI_CUSTOMS_AND_EXCISE_(TARIFFS)_ORDER_HS_2022_VERSION_2023-2024_(P).pdf
+PDF : 642 pages, sha256 7960f473e21a8363dbc144cd6ec445b1ab506e36252af485c6eebcd0b661f2ac
+
+CE QUE CE DOCUMENT ETABLIT — LA CARTE DES COLONNES, EN DROIT.
+Le guide d'inspection notait « 8 colonnes de taux SANS en-tete textuel : mapping a
+construire depuis le texte juridique ». Le voici : le paragraphe 4 de l'Order,
+page 22, definit CHAQUE colonne. Il n'y a donc rien a deviner.
+
+  col. 1   numero de position        col. 7A  taux ZLECAf (AfCFTA)
+  col. 2   sous-position             col. 8   taux SADC hors Afrique du Sud
+  col. 3   designation               col. 9   taux SADC, Afrique du Sud seulement
+  col. 4   unite de quantite         col. 10  accise
+  col. 5   droit de douane           col. 11  TVA
+  col. 6   droit de douane           col. 12  Advance Income Tax a l'importation
+  col. 7   taux COMESA
+
+POINT CAPITAL POUR CE CALCULATEUR : le Malawi publie une COLONNE ZLECAf (7A),
+introduite par le Govt Notice 31 du 28/05/2021. C'est le premier des tarifs de ce
+lot a porter un taux preferentiel ZLECAf dans son instrument legal — ni le
+Zimbabwe ni la Zambie n'en publient, et l'extrait mozambicain avait perdu ses
+colonnes SADC et UE. Releve sur 0101.30.90 : droit 10 % / 10 %, COMESA 3 %,
+ZLECAf 5 %, SADC « Free » / « Free », TVA 16,5 %, Advance Income Tax 10 %.
+
+DEUX RESERVES, A LEVER AVANT TOUTE INTEGRATION :
+  1. Les colonnes 5 ET 6 portent toutes deux « the rates of customs duty » sans que
+     le paragraphe 4 les distingue. Ce qui les separe n'est PAS etabli et ne doit
+     pas etre suppose.
+  2. L'ASSIETTE N'EST PAS ETABLIE. La section 111 du Customs and Excise Act
+     (Cap. 42:01), telle que la consolidation obtenue la porte, retient le « normal
+     price » — la Definition de Bruxelles — et non la valeur transactionnelle de
+     l'Accord de l'OMC sur l'evaluation. Cette consolidation ne mentionne l'OMC
+     NULLE PART, alors que le Malawi en est membre depuis 1995 : le texte obtenu
+     est donc vraisemblablement PERIME sur ce point. Le meme piege a ete rencontre
+     en Zambie, ou le texte consolide portait un taux de TVA de 17,5 % qui n'est
+     plus en vigueur. Tant qu'un texte a jour n'est pas obtenu, l'assiette
+     malawienne reste NON ETABLIE — et aucune ligne ne sera servie sur elle.
+==============================================================================
+
+--- Order, paragraphe 4 : structure des colonnes (page 22) ---
+ 
+ 
+ 
+22
+articles for which they are intended, shall be classified with such articles when of a kind normally sold therewith. This Rule 
+does not, however, apply to containers which give the whole its essential character; 
+(b) Subject to the provisions of Rule 5 (a) above, packing materials and packing containers presented with the goods therein 
+shall be classified with the goods if they are of a kind normally used for packing such goods. However, this provision is not 
+winding when such packing materials or packing containers are clearly suitable for repetitive use. 
+(6) For legal purposes, the classification of goods in the subheadings of a heading shall be determined according to the terms of those 
+subheadings and any related Subheading Notes and, mutatis mutandis, to the above Rules, on the understanding that only subheadings 
+at the same level are comparable. For the purposes of this Rule the relative Section and Chapter Notes also apply, unless the context 
+otherwise requires. 
+(7) When any chapter note is preceded by the words, “informative note”, such note shall be construed as indicating the goods 
+or the class of goods to be classified within that chapter but, in the event of conflict, the provisions of the Nomenclature relating to 
+that chapter shall prevail. 
+(8) Goods classified in Section XXII of Part III shall be admitted thereunder notwithstanding the fact that they are also classifiable 
+in any preceding section of that Part. 
+4.  In the column structure of Part III 
+(a) column 1 contains the heading number; 
+(b) column 2 contains subheading number; 
+(c) column 3 contains a description of the goods classified thereunder; 
+(d) column 4 contains a description of unit of quantity, weight, or quantity of goods classified thereunder; 
+(e) columns 5 and 6 contain the rates of customs duty in respect of the goods classified under the corresponding subheading; 
+(f) column 7 contains COMESA rates of customs duty in respect of goods classified under the corresponding subheading; 
+(fa) column 7A contains AfCFTA rates of Customs duty in respect of goods classified under the corresponding  
+   subheading;                                                                                       (Refer to Govt Not. 31 of 28/05/2021) 
+(g) column 8 contains SADC rates of customs duty for imports from other Member States other than South Africa, in 
+respect of goods classified under the corresponding subheading; 
+(h) column 9 contains SADC rates of customs duty for imports from South Africa only, in respect of goods classified under 
+the corresponding subheading; 
+(i) column 10 contains excise rates; 
+(j) column 11 contains Value Added Tax rates;           
+(ja) column 12 contains Advance Income Tax on imports                     (Refer to Govt Not. 31 of 28/05/2021)                    
+(k) the last two digits of a subheading represent both as a statistical code and as a Customs commodity identification code; 
+“dashes”in third column represent as follows
+__
+ 
+ 
+one dash represents subdivision of the heading text;                
+ 
+two dashes represent subdivision of one dash subheading text; 
+ 
+three or four dashes represent national subdivisions of the two or three dashes subheading texts,  
+ 
+respectively. 
+5. Where goods are classified in Part III according to their use, either, by way of general description of their use or by   reference 
+to their use after importation, the intended use of such goods shall be proved by the importer to the satisfaction of the Commissioner 
+General in accordance with such conditions as he may impose. 
+6. A miniature bottle of potable spirituous liquor may be deemed to contain spirituous liquor of the highest strength ordinarily 
+imported or sold of like description. 
+7. The following quantities shall apply for the purposes of Part III 
+(a) unless otherwise specially provided, where goods are subject to duty by weight or quantity, such weight or quantity 
+shall be the net weight or quantity, and duty shall be charged in proportion on any fraction of a whole unit of such weight or 
+quantity. The weight of any goods may be ascertained by weighing net or by deducting from the gross weight the actual tare or 
+an allowance therefor. The Commissioner General may fix allowances for tare and may, in his discretion, grant such allowances 
+subject to such conditions as he may impose; 
+(b) unless otherwise specially provided, where the duty or rate of duty on goods is determined by a reference to weight or 
+quantity, the Commissioner General may determine that a package of such goods shall be deemed to contain a specified weight 
+or quantity of such goods; 
+
+
+--- Customs and Excise Act (Cap. 42:01), s.111 « Value of imported goods »,
+    texte de la consolidation obtenue (malawitradeportal.com) — SOUS RESERVE ---
+ 
+ 
+ 
+ 
+ 
+ 
+MALAWI REVENUE AUTHORITY 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+CUSTOMS & EXCISE DIVISION 
+ 
+ 
+CUSTOMS & EXCISE ACT 
+ 
+ 
+ 
+(Chapter 42:01) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+LAWS OF MALAWI 
+                                              Customs and Excise            Cap. 42:01                1 
+ 
+CHAPTER 42:01 
+CUSTOMS AND EXCISE 
+ARRANGEMENT OF SECTIONS 
+ 
+PART 1 
+PRELIMINARY 
+ 
+ 
+SECTION 
+ 
+1. 
+Short title 
+2. 
+Interpretation 
+3. 
+Goods subject to customs control 
+4. 
+Time of importation and exportation 
+5. 
+Entered goods 
+ 
+ 
+PART II 
+ADMINISTRATION 
+ 
+6. 
+Appointment and duties of Controller 
+7. 
+Delegation 
+8. 
+Prescriptions and appointments by Minister 
+9. 
+Appointments by Controller 
+10. 
+Licensed private sidings and air freight licensees 
+11. 
+Conditions in respect of customs areas 
+12. 
+Hours of service 
+ 
+PART III 
+GENERAL POWERS OF OFFICERS 
+ 
+13. 
+Powers in respect of persons 
+14. 
+Powers in respect of packages 
+15. 
+Powers of entry etc. of proper officers 
+16. 
+Powers in respect of conveyances etc. 
+17. 
+Power to patrol freely 
+18. 
+Power to take samples 
+19. 
+Power of arrest 
+20. 
+Damage to premises etc. resulting from exercising of powers 
+ 
+PART IV 
+IMPORTATION 
+ 
+21. 
+Prohibited and restricted imports 
+22. 
+Arrival of aircraft and vessels 
+23. 
+Boarding of aircraft or vessels 
+24. 
+Declaration of master 
+25. 
+Controller may dispense with declaration 
+26. 
+Retention and unloading of cargo 
+27. 
+Arrival of trains 
+28. 
+Arrival of vehicles other than trains 
+29. 
+Arrival of persons 
+30. 
+Imported goods 
+31. 
+Unloading and removal of goods 
+32. 
+Entry of goods 
+33. 
+Exceptions to removal and entry requirements 
+34. 
+Entry in absence of documents 
+35. 
+Responsibility for imported of goods and duty 
+36. 
+Temporary importation 
+
+LAWS OF MALAWI 
+ 
+2 
+Cap. 42:01 
+ 
+              Customs and E
