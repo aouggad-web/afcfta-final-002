@@ -240,3 +240,171 @@ LAWS OF MALAWI
 Cap. 42:01 
  
               Customs and E
+
+==============================================================================
+ADDENDUM DU 2026-09-19 — L'ASSIETTE EST DESORMAIS ETABLIE, ET MA RESERVE
+PRECEDENTE ETAIT MAL POSEE.
+==============================================================================
+
+J'avais ecrit que la consolidation obtenue etait « vraisemblablement PERIMEE »
+parce qu'elle retenait le « normal price » sans mentionner l'OMC. La
+consolidation Laws.Africa (etat au 31 decembre 2014, valable jusqu'au 30 juin
+2018) montre que c'est FAUX : le prix normal n'est pas un residu, c'est le choix
+malawien pour les IMPORTATIONS, et l'amendement de 2014 l'a confirme.
+
+  s.111(2) — « The value of imported goods shall be determined in accordance with
+  the provisions of SCHEDULE A and customs duties ad valorem or ad rem shall be
+  paid on that value. »   [10 of 2014] [25 of 1988]
+
+  Schedule A (Section 111), « Value of imported goods », par. 1 :
+  (a) « The value of any imported goods shall be taken to be the NORMAL PRICE,
+      that is to say, the price which they would fetch at the time when the duty
+      becomes payable [...] on a sale in the open market between a buyer and a
+      seller independent of each other. »
+  (b) « the normal price [...] shall be determined on the following assumptions—
+      (i) that the goods are delivered to the buyer at the PORT OR PLACE OF
+          INTRODUCTION INTO MALAWI ;
+      (ii) that the seller bears ALL COSTS, CHARGES AND EXPENSES incidental to
+          the sale and to the delivery of the goods at the port or place of
+          introduction, WHICH ARE HENCE INCLUDED IN THE NORMAL PRICE. »
+
+CE QUI TRANCHE : le MEME amendement, Act 10 of 2014, a fait passer les
+EXPORTATIONS a la valeur transactionnelle (Schedule B, section 114 : « the value
+of export goods shall be the transaction value ») et a LAISSE les importations
+sur le prix normal de la Schedule A. Le legislateur a donc touche aux deux
+regimes la meme annee et n'a pas aligne l'importation sur l'OMC. Le prix normal
+n'est pas un oubli : c'est la regle.
+
+PORTEE POUR LE CALCUL : le prix normal suppose la livraison AU PORT D'ENTREE au
+Malawi, le vendeur supportant tous les frais jusque-la, « hence included ». Par
+son contenu economique, l'assiette comprend donc le prix, le fret et l'assurance
+jusqu'au port malawien — c'est le CIF. La FORME juridique, en revanche, n'est PAS
+celle de l'Accord de l'OMC : c'est la Definition de Bruxelles, une valeur
+theorique de marche ouvert, et non la valeur transactionnelle effective. Les
+trois pays precedents (ZMB, ZWE, STP) retiennent la valeur transactionnelle ;
+le Malawi non. C'est precisement pourquoi on ne reporte pas une assiette d'un
+pays sur un autre.
+
+RESERVE QUI SUBSISTE, ET ELLE EST BORNEE : la consolidation lue porte « as it was
+at 31 December 2014 to 30 June 2018 ». Une modification POSTERIEURE a juin 2018
+n'est donc pas exclue. malawilii.org refuse le PDF a l'origine (403). Avant de
+servir la moindre ligne malawienne, cette reserve doit etre levee sur un texte
+plus recent — ou declaree dans la fiche comme le niveau de preuve reellement
+atteint.
+
+Source de l'addendum : consolidation Laws.Africa du Customs and Excise Act
+(Chapter 42:01), https://bwcimplementation.org/sites/default/files/resource/
+MW_Customs%20and%20Excise%20Act%201969_EN.pdf — 72 pages, sha256 147a95c04bb6002fb17b609679b94e6c142d0fc787671732f3596a044f9f8e01
+------------------------------------------------------------------------------
+
+--- s.111 (consolidation Laws.Africa) ---
+f any
+goods for the purpose of the liability to duty is altered with the result that less duty is thereafter
+charged on goods of the same class or description, no person shall thereby become entitled to any
+refund of any duty paid before such alteration took place.
+Part XIIA – Sutrax
+[Sections 110A-110R repealed by section 65 of the Surtax Act, Cap. 42: 02]
+[25 of 1988]
+[14 of 2001]
+Part XIII – Value, quantity and origin
+111. Value of imported goods
+(1)
+The proper ofﬁcer may value or cause to be valued, in accordance with the provisions of this Act,
+any imported goods and such valuation shall be presumed to be the correct valuation of the goods
+until the contrary is proved.
+[25 of 1988]
+(2)
+The value of imported goods shall be determined in accordance with the provisions of Schedule A
+and customs duties ad valorem or ad rem shall be paid on that value.
+[10 of 2014]
+[25 of 1988]
+112. Appeals against valuation
+If an owner or importer is of the opinion that goods have been incorrectly valued under section 111 (1) he
+may appeal to the Controller.
+113. Rate of exchange
+The rate of exchange to be used for the conversion of any value expressed in the currency of a foreign
+country shall be the rate of exchange, as the Controller may determine after consultation with the Reserve
+Bank of Malawi, at the time when the duty becomes payable.
+[3 of 1993]
+By Laws.Africa and contributors. Licen
+
+--- Schedule A (Section 111), Value of imported goods ---
+Schedule A (Section 111)
+Value of imported goods
+1.
+(a)
+The value of any imported goods shall be taken to be the normal price, that is to say, the price
+which they would fetch at the time when the duty becomes payable, or in the case of warehoused
+goods, at the time of their entry for warehousing, on a sale in the open market between a buyer and
+a seller independent of each other.
+(b)
+the normal price of any imported goods shall be determined on the following assumptions—
+(i)
+that the goods are delivered to the buyer at the port or place of introduction into Malawi;
+(ii)
+that the seller bears all costs, charges and expenses incidental to the sale and to the delivery
+of the goods at the port or place of introduction, which are hence included in the normal
+price;
+(iii)
+that the buyer bears all duties or taxes applicable in Malawi, which are hence not included in
+the normal price.
+2.
+(a)
+A sale in the open market between a buyer and a seller independent of each other pre-supposes—
+(i)
+that the price is the sole consideration;
+(ii)
+that the price is not inﬂuenced by any commercial, ﬁnancial or other relationship, whether
+by contract or otherwise between the seller or any person associated in business with him
+and the buyer or any person associated in business with him, other than the relationship
+created by the sale itself;
+(iii)
+that no part of the proceeds of any subsequent resale, other disposal or use of the goods will
+accrue, either directly or indirectly, to the seller or any person associated in business with
+him.
+(b)
+Two persons shall be deemed to be associated in business with one another, if, whether directly
+or indirectly, either of them has an interest in the business or property of the other or both have a
+common interest in any business or property or some third person has an interest in the business or
+property of both of them.
+3.
+When the goods to be valued—
+(i)
+are manufactured in accordance with any patented invention or are goods to which any protected
+design has been applied; or
+By Laws.Africa and contributors. Licensed under CC-BY. Share widely and freely. 
+62
+
+Customs and Excise Act 
+ Malawi
+(ii)
+are imported under a foreign trade mark; or
+(iii)
+are imported for sale, other disposal or use under a foreign trade mark,
+the normal price shall be determined on the assumption that it includes the value of the right to use the
+patent, design or trade mark in respect of the goods.
+4.
+For the purposes of paragraph 3, the expression “trade mark” includes a trade name and style, and a trade
+mark shall be treated as a foreign trade mark if it is t
+
+--- Schedule B (Section 114), pour comparaison : les EXPORTATIONS ---
+Schedule B (Section 114)
+Customs valuation for goods exported from Malawi
+1.
+In this Schedule, unless the context otherwise requires—
+“goods of like kind and quality” means export goods which are identical or similar in physical
+characteristics, quality and reputation as the goods being valued, and perform the same functions or are
+commercially interchangeable with the goods being valued, produced by the same person or a different
+person; and
+“transaction value” means the value of export goods within the meaning of subsection (1) of section 114 of
+this Act.
+2.
+For the purposes of this Schedule, persons shall be deemed to be related only if—
+(a)
+they are ofﬁcers or directors of one another's businesses;
+(b)
+they are legally recognized partners in business;
+(c)
+they are employer and employee;
+(d)
+a person directly or indirectly owns, controls or holds ﬁve per cent or more of the outstandin
