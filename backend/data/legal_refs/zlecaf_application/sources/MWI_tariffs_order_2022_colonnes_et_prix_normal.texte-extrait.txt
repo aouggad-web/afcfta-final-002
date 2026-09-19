@@ -408,3 +408,89 @@ they are legally recognized partners in business;
 they are employer and employee;
 (d)
 a person directly or indirectly owns, controls or holds ﬁve per cent or more of the outstandin
+
+==============================================================================
+ADDENDUM 2 DU 2026-09-19 — CE QUI SEPARE LES COLONNES 5 ET 6 EST ECRIT, ET LA
+COLONNE ZLECAf PORTE DEUX CONDITIONS QUE LE CALCULATEUR DOIT RESPECTER.
+==============================================================================
+
+MESURE PREALABLE : les colonnes 5 et 6 DIFFERENT sur 3 284 lignes sur 6 399 —
+plus de la moitie du tarif. Sur 0201.10.00 (viande bovine) : 15 % en colonne 5,
+10 % en colonne 6. Se tromper de colonne donnerait donc un droit faux sur la
+majorite des positions. La question n'etait pas academique.
+
+LA REPONSE EST AU PARAGRAPHE 5 DE L'ORDER (page 23), pris en vertu de la
+section 89 de l'Act. La structure n'est pas « deux colonnes de droit de douane »
+cote a cote : c'est UNE colonne de plein droit, et cinq colonnes de REMISE.
+
+  « rebates shall be allowed to an extent sufficient to reduce the rates of duty
+    set out in COLUMN 5 of Part III to the rates respectively set out in COLUMN 6
+    or 7, 7A, 8 or 9 of Part III in respect of goods grown, produced or
+    manufactured in any country which is — »
+
+  col. 5  PLEIN DROIT. C'est la base, celle dont les autres sont des remises.
+
+  col. 6  remise pour les marchandises produites dans un pays qui est :
+          (i) un « Member State » ou un « ACP State » au sens de la Convention de
+              Lome du 28 fevrier 1975 ;
+          (ii) un pays independant du Commonwealth, ou l'un de ses territoires ;
+          (iii) « a Contracting Party of the General Agreement on Tariffs and
+              Trade (GATT) ».
+          => c'est donc, EN FAIT, le taux NPF : toute partie contractante du GATT
+          y a droit, donc tout membre de l'OMC. Le parallele avec la colonne
+          « M.F.N. » du Zimbabwe est desormais ETABLI PAR LE TEXTE, et non
+          suppose par ressemblance.
+
+  col. 7  remise COMESA, « with a specified country content of not less than
+          THIRTY-FIVE PER CENT ». Et : un Etat membre du COMESA qui a ramene ses
+          droits a zero fait entrer ses marchandises « free of the customs duties
+          specified in column 7 ».
+
+  col. 7A remise ZLECAf : « in respect of goods imported into Malawi from a
+          country that is a State Party to the AfCFTA OTHER THAN REPUBLIC OF
+          SOUTH AFRICA, being goods grown, produced or manufactured in that State
+          Party with a specified country content of not less than THIRTY-FIVE PER
+          CENT ».
+
+DEUX REGLES QUE LE CALCULATEUR DOIT RESPECTER, ET QUI NE SE DEVINENT PAS :
+
+  1. L'AFRIQUE DU SUD EST EXCLUE DE LA COLONNE ZLECAf. Une expedition
+     sud-africaine vers le Malawi ne beneficie PAS du taux 7A — elle relEve des
+     colonnes SADC (col. 9, « South Africa only »). Servir 7A a une origine
+     sud-africaine serait une exoneration inventee.
+
+  2. LE TAUX PREFERENTIEL EST CONDITIONNEL a un contenu d'origine d'au moins
+     35 %. Le calculateur ne peut pas verifier cette condition : elle depend de
+     la marchandise et de son certificat d'origine. Le taux 7A ne doit donc
+     jamais etre servi comme un acquis, mais comme un taux SOUS CONDITION
+     NOMMEE — faute de quoi on promettrait une preference que la douane
+     refuserait.
+
+PORTEE : le Malawi est le premier tarif de ce lot a publier ses taux ZLECAf dans
+son instrument legal, avec leur condition d'origine et leur exclusion nommee.
+------------------------------------------------------------------------------
+
+--- Order, paragraphe 5 (page 23) : les remises par origine ---
+5. Pursuant to section 89 of the Act and subject to the  provision of paragraphs 3 and 4 of this Part, rebates shall be allowed to 
+an extent sufficient to reduce the rates of duty set out in column 5 of Part III to the rates respectively  set out in column 6 or 7, 
+7A, 8 or 9 of Part III in respect of goods grown, produced or manufactured in any country which is -
+__
+ 
+(a) in column 6 of Part III in respect of goods grown, produced or manufactured in any country which is.... 
+(i) one of the “Member States” or one of the “ACP States” within the meaning given to such terms by the Convention 
+between Member States of the European Union and certain African, Caribbean and Pacific States signed at Lomé, Togo, 
+on the 28th February, 1975; 
+(ii) an independent country of the Commonwealth, any dependent territory, protectorate or protected state of such 
+independent country, or a territory administered by the Government of such independent country under the trusteeship 
+system of the United Nations; or 
+(iii) a Contracting Party of the General Agreement on Tariffs and Trade ( GATT); 
+(b) (i) in column 7 of Part III in respect of goods imported into Malawi from a COMESA Member State, being goods 
+grown, produced or manufactured in that Member State with a specified country content of not less than thirty-five per 
+cent; 
+(ii) notwithstanding the provisions of subparagraph 2 (b) (i) and pursuant to the specified country content of thirty-
+five per cent, goods imported from a COMESA Member State that has reduced customs duties to “zero” shall be entered 
+for consumption in Malawi, free of the customs duties specified in column 7 of Part III; 
+ 
+(c) in column 7A of Part III in respect of goods imported into Malawi from a country that is a State Party to the AfCFTA 
+other than Republic of South  Africa, being goods grown, produced or manufactured in that State Party with a specified 
+country  content of not less than thirty-five per cent 
