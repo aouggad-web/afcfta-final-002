@@ -346,4 +346,34 @@ def simulations_regionales(
                 ),
             }
         )
+
+    # COLONNE NOMMEE POUR LE PAYS D'ORIGINE LUI-MEME.
+    #
+    # Tous les tarifs ne publient pas leurs préférences par BLOC. Le tarif
+    # tunisien les publie par PARTENAIRE : « Code Pays 12 / ALGERIE / Taux
+    # Préférentiel 0 % ». Il n'y a alors aucun roster à établir — la source
+    # nomme elle-même le pays auquel la colonne s'applique, ce qui est une
+    # preuve plus directe qu'une liste de membres reconstituée.
+    #
+    # La même discipline s'applique qu'aux blocs : la colonne est MONTRÉE,
+    # jamais appliquée, avec la réserve d'origine nommée.
+    bilaterale = _taux_colonne(position, origine)
+    if bilaterale is not None and origine not in SIMULABLES:
+        simulations.append(
+            {
+                "regime": origine,
+                "libelle": f"Colonne préférentielle publiée pour {origine}",
+                "taux_publie_pct": bilaterale,
+                "prelevement": "DD",
+                "applique": False,
+                "eligibilite": "COLONNE_NOMMEE_POUR_CE_PAYS_PAR_LA_SOURCE",
+                "source": "colonne préférentielle de la position (socle)",
+                "reserve": (
+                    "Simulation. Le tarif de destination publie cette colonne au "
+                    "nom du pays d'origine ; la franchise reste subordonnée aux "
+                    "règles d'origine de l'accord, que ce moteur ne vérifie pas. "
+                    "Le certificat d'origine reste à produire."
+                ),
+            }
+        )
     return simulations
