@@ -137,6 +137,21 @@ PREFERENTIELS = {
     # le garde de collision retirerait la préférence des deux — ce qui serait
     # honnête mais perdrait une donnée que la source publie clairement.
     "SADCZAF": "SADC_ZAF",
+    # Le tarif seychellois ne publie pas UN taux préférentiel par régime mais un
+    # CALENDRIER : cinq taux SADC et cinq taux ZLECAf, un par année civile de 2022
+    # à 2026 (S.I. 113 of 2022, en-tête du barème). Les ranger tous sous « SADC » et
+    # « AFCFTA » ferait jouer le garde de collision et retirerait la préférence de
+    # toutes ces lignes ; les laisser hors de cette table serait bien pire — chaque
+    # millésime tomberait dans la cascade NPF comme un droit DÛ, et une position à
+    # 25 % de droit se verrait réclamer treize fois. Chaque millésime est donc un
+    # régime nommé, et le collecteur sert EN PLUS, sous le nom sans millésime, celui
+    # de l'année en vigueur.
+    **{f"SADC{annee}": f"SADC_{annee}" for annee in range(2022, 2027)},
+    **{f"AFCFTA{annee}": f"AFCFTA_{annee}" for annee in range(2022, 2027)},
+    # Commission de l'océan Indien : la Schedule II du même instrument accorde
+    # « a rate of duty of 5% lower than the rate of duty prescribed in sub column 5 ».
+    # C'est une préférence par origine, pas un prélèvement.
+    "COI": "COI",
 }
 
 

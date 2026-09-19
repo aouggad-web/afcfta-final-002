@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-19T02:49:41.807324+00:00",
+  "construit_le": "2026-09-19T03:45:54.146518+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1613,35 +1613,34 @@
       "fichier": "SYC.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/SYC_tariffs.json",
-      "source_sha256": "9c39470145e0ecc574cb8740e2f09d2e81748c4a8e4d07e97768a3bc1ad82c45",
-      "socle_sha256": "bc3258c7d6f953992a873214d0a65fbb9ecbca1b20548b138b6cc2b2904d6bcf",
-      "collecte": "2026-07-05T10:11:23.264941+00:00",
-      "etat": "COMPLET",
+      "source_sha256": "c99030a8bf2eab13d6710a1109c00a0991417be3dcecea7a8435b45622fd92ef",
+      "socle_sha256": "0ff1187f9c235c361d1007de9c584ac3acc6dce51866e62c69859dcc070424f9",
+      "collecte": "2026-09-19",
+      "etat": "PARTIEL",
       "familles": [
-        "droit",
-        "tva"
+        "droit"
       ],
       "compteurs": {
-        "positions": 5396,
-        "droits": 10792,
-        "droits_liquidables": 10792,
-        "positions_liquidables": 5396,
-        "preferentiels": 0,
-        "preferentiels_specifiques": 0,
+        "positions": 6019,
+        "droits": 6019,
+        "droits_liquidables": 6006,
+        "positions_liquidables": 6006,
+        "preferentiels": 90049,
+        "preferentiels_specifiques": 2673,
         "preferentiels_collision": 0,
-        "taux_indisponibles": 0,
-        "assiettes_source": 0,
-        "assiettes_fichier": 5396,
-        "assiettes_table": 5396,
+        "taux_indisponibles": 13,
+        "assiettes_source": 6006,
+        "assiettes_fichier": 0,
+        "assiettes_table": 0,
         "assiettes_indisponibles": 0,
-        "sans_designation": 5396,
-        "droits_specifiques": 0,
+        "sans_designation": 0,
+        "droits_specifiques": 249,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
-        "droits_absents_completes": 0,
+        "droits_absents_completes": 13,
         "droits_lus_en_designation": 0,
-        "classification_estimee": 5
+        "classification_estimee": 0
       }
     },
     "TCD": {
@@ -1962,6 +1961,7 @@
       "SOM",
       "SSD",
       "SWZ",
+      "SYC",
       "TUN",
       "TZA",
       "UGA",
@@ -1969,8 +1969,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 366155,
-    "droits": 1129302,
-    "droits_liquidables": 1051424
+    "positions": 366778,
+    "droits": 1124529,
+    "droits_liquidables": 1046638
   }
 }

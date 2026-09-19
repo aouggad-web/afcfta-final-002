@@ -1,0 +1,220 @@
+Seychelles — la carte des treize colonnes du tarif, et l'assiette du droit de douane.
+
+DEUX INSTRUMENTS, TOUS DEUX PUBLIES PAR LA SEYCHELLES REVENUE COMMISSION.
+
+  1. Customs Management (Tariff and Classification of Goods) Regulations, 2022
+     S.I. 113 of 2022, Supplement to Official Gazette du 28 octobre 2022, 827 pages.
+     https://src.gov.sc/wp-content/uploads/2025/10/SI-113-2022-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf
+     sha256 8eb2452b3e242d536ec68717d893d373fe94d6407e19b1d34f3e3967246cac3f
+     (19 414 252 octets — exactement la taille du fichier depose par l'utilisateur
+     dans Drive sous le nom SYC_si113_2022.pdf : c'est le meme document, mais servi
+     depuis une URL citable.)
+
+  2. Customs Management Regulations, 2014
+     S.I. 42 of 2014, Supplement to Official Gazette du 2 juin 2014, 71 pages.
+     https://src.gov.sc/wp-content/uploads/2022/12/SI-42-of-2014-Customs-management-Regulations-2014.pdf
+     sha256 voir provenance dans la fiche.
+     ATTENTION : ce PDF est un SCAN SANS COUCHE TEXTE (142 octets de texte pour
+     71 pages) et aucun OCR n'est installe dans cet environnement. Les passages
+     cites plus bas ont ete TRANSCRITS A LA LECTURE DES PAGES RENDUES EN IMAGE
+     (140 dpi, pages 9 a 13 du PDF, pages 1217 a 1221 du Gazette). La transcription
+     est fidele mais elle n'est pas une extraction automatique : elle est declaree
+     comme telle.
+
+==============================================================================
+I. LA CARTE DES TREIZE COLONNES — ELLE EST ECRITE, ET NOMMEE PAR REGIME
+==============================================================================
+
+S.I. 113 of 2022, regulation 2 (page 1088 du Gazette) :
+
+  « 2.(1) The tariff and classification of goods including general rules for the
+    interpretation are specified in Schedule I.
+    (2) The preferential rates of duty for goods originating from Member states of
+    the Indian Ocean Commission are specified in Schedule II.
+    (3) The list of Common Market for Eastern and Southern Africa (COMESA) Free
+    Trade Area Member States are specified in Schedule III.
+    (4) The list of Southern African Development Community (SADC) Free Trade Area
+    Member States are specified in Schedule IV.
+    (5) The list of European Union Member States (EU) and Eastern and Southern
+    African (ESA) Member States forming part of the Interim Economic Partnership
+    Agreement are specified in Schedule V.
+    (6) The list of African Continental Free Trade Area (AfCFTA) State Parties are
+    specified in Schedule VI. »
+
+L'EN-TETE DU BAREME, repete sur chacune de ses 591 pages, nomme les colonnes :
+
+  Heading | HS Code | Description of goods | Unit of Qty | Rate of Duty
+                                                          MFN
+                                                          COMESA FTA
+                                                          European Union & UK
+                                                          SADC FTA    2022 2023 2024 2025 2026
+                                                          AfCFTA      2022 2023 2024 2025 2026
+
+TREIZE colonnes de taux. LE POINT REMARQUABLE : les Seychelles publient une
+TRAJECTOIRE ZLECAf ANNEE PAR ANNEE, 2022 a 2026 — non pas un taux preferentiel
+unique, mais cinq, un par annee civile. Aucun des tarifs integres avant celui-ci
+ne publie de calendrier de demantelement. La colonne SADC en porte un aussi.
+
+==============================================================================
+II. QUI A DROIT A LA COLONNE ZLECAf — UNE LISTE, PAS UNE CONDITION A VERIFIER
+==============================================================================
+
+SCHEDULE VI (page 1901-1902), « List of African Continental Free Trade Area
+(AfCFTA) Member States », enumere 38 Etats parties :
+
+  1. Arab Republic of Egypt          20. Republic of Malawi
+  2. Central African Republic        21. Republic of Mali
+  3. Equatorial Guinea               22. Republic of Mauritania
+  4. Kingdom of Eswatini             23. Republic of Mauritius
+  5. Kingdom of Lesotho              24. Republic of Namibia
+  6. Republic of Angola              25. Republic of Niger
+  7. Republic of Burkina Faso        26. Republic of Nigeria
+  8. Republic of Burundi             27. Republic of Rwanda
+  9. Republic of Cameroon            28. Republic of Sao Tome and Principe
+ 10. Republic of Chad                29. Republic of Senegal
+ 11. Republic of the Congo           30. Republic of Sierra Leone
+ 12. Republic of Djibouti            31. Republic of South Africa
+ 13. Republic of Ethiopia            32. Republic of Togo
+ 14. Republic of Gambia              33. Republic of Tunisia
+ 15. Republic of Gabon               34. Republic of Uganda
+ 16. Republic of Ghana               35. Republic of Zambia
+ 17. Republic of Guinea              36. Republic of Zimbabwe
+ 18. Republic of Ivory Coast         37. Sahrawi Arab Democratic Republic
+ 19. Republic of Kenya               38. Socialist Republic of Algeria
+
+C'est une LISTE FERMEE, et c'est ce qui distingue les Seychelles du Malawi : la
+ou le Malawi soumet son taux 7A a un « specified country content of not less than
+thirty-five per cent » que le calculateur ne peut pas verifier, les Seychelles
+nomment les origines eligibles une par une. Une expedition venant d'un Etat
+absent de cette liste ne beneficie pas de la colonne ZLECAf.
+
+SCHEDULE III (COMESA FTA) enumere 15 Etats ; SCHEDULE IV (SADC FTA) en enumere 13 ;
+SCHEDULE V enumere les 27 Etats membres de l'Union europeenne, la Communaute
+europeenne, et cinq Etats ESA (Madagascar, Comores, Maurice, Seychelles, Zimbabwe)
+au titre de l'Accord de partenariat economique interimaire.
+
+==============================================================================
+III. SCHEDULE II — LE REGIME COI EST UNE REGLE DE CALCUL, PAS UNE COLONNE
+==============================================================================
+
+SCHEDULE II (page 1896), « Preferential Rates of duty for goods originating from
+member states of the Indian Ocean Commission (Mauritius, Reunion, Comoros,
+Madagascar & Seychelles) » :
+
+  « Goods originating from the countries named above and classified in Part III,
+    will pay a rate of duty of 5% lower than the rate of duty prescribed in sub
+    column 5, entitled "MFN", of that Part, except if:
+    1. The rate of duty in Part III is 5% or lower.
+    2. The Goods are classified in Chapter 22 (Beverages, Spirits and Vinegar)
+    3. The Goods are classified in Chapter 24 (Tobacco and manufactured tobacco
+       products)
+    4. The Goods are classified in Heading 27.10 (Petroleum oils)
+    5. The Goods are classified in Heading 27.11 (Petroleum gases)
+
+    Subject to the acceptance of the certificate of origin »
+
+Le taux COI n'est donc PAS publie colonne par colonne : il se DEDUIT du taux NPF,
+et le texte donne lui-meme la formule et ses cinq exceptions. C'est une regle
+enoncee, non une extrapolation.
+
+==============================================================================
+IV. CHAPITRE 99 — LE TARIF DES TRANSACTIONS PARTICULIERES
+==============================================================================
+
+« SPECIAL SEYCHELLES TRANSACTIONS TARIFF — Chapter 99 » (page 1892), Note 3 :
+
+  « Goods cleared under this Part shall be exempted from Value Added Tax (VAT)
+    except for goods classified under heading 99.03. »
+
+Note 2 : pour les marchandises reimportees apres reparation de la position 99.03,
+  « the taxable value of such goods shall be based on either the cost of labour
+    and materials used, as appropriate. »
+
+==============================================================================
+V. L'ASSIETTE DU DROIT DE DOUANE — C'EST LE CIF, ET LE TEXTE LE DIT
+==============================================================================
+
+Customs Management Act, 2011 (Act 22 of 2011), section 41 :
+
+  « 41. The origin and valuation of goods for customs purposes shall be prescribed
+    by regulations. »
+
+L'Acte DELEGUE donc l'assiette. Elle est dans les Customs Management Regulations,
+2014 (S.I. 42 of 2014), chapitre 2 « VALUATION OF GOODS », regulations 3 a 17.
+
+  Regulation 5 (page 1217 du Gazette) — « Price actually paid or payable » :
+
+  « 5. The customs value of imported goods shall be the transaction value, that is
+    the price actually paid or payable for the goods when sold for export to
+    Seychelles adjusted in accordance with the provisions of regulation 8,
+    provided that — (a) there are no restrictions as to the disposal or use of the
+    goods by the buyer other than restrictions which (i) are imposed or required
+    by law; (ii) limit the geographical area in which the goods may be resold; or
+    (iii) do not substantially affect the value of the goods; (b) the sale or price
+    is not subject to any term or external condition for which a value cannot be
+    determined with respect to the goods being valued; (c) no part of the proceeds
+    of any disposal, use or subsequent resale of the goods by the buyer will accrue
+    directly or indirectly to the seller, unless an appropriate adjustment can be
+    made in terms of regulation 8; and (d) the buyer and the seller are not related,
+    or where the buyer and seller are related, that the transaction value is
+    acceptable for customs purposes within the meaning of regulation 6. »
+
+  Regulation 8(1) (pages 1219-1221) — « Adjustments of price actually paid or
+  payable » :
+
+  « 8.(1) In determining the customs value under regulation 5, there shall be added
+    to the price actually paid or payable for the imported goods —
+    (a) the following, to the extent that they are incurred by the buyer but are not
+        included in the price actually paid or payable for the goods —
+        (i) commissions and brokerage, except buying commissions;
+        (ii) the cost of containers which are treated as being one for customs
+             purposes with the goods in question; and
+        (iii) the cost of packing whether for labour or materials;
+    (b) the value, apportioned as appropriate, of [assists : materials, tools,
+        materials consumed, engineering and design undertaken elsewhere than in the
+        country of importation] ;
+    (c) the royalties and licence fees related to the goods being valued that the
+        buyer must pay [...] as a condition of sale of the goods being valued [...] ;
+    (d) the value of any part of the proceeds of any subsequent resale, disposal or
+        use of the imported goods that accrues directly or indirectly to the seller;
+        and
+    (e) The following costs, to the extent that they are incurred by the buyer but
+        not included in the price actually paid or payable
+        (i) the cost of transport of the imported goods to the port or place of
+            importation;
+        (ii) loading, unloading and handling charges associated with the transport
+             of the imported goods to the port or place of importation; and
+        (iii) the cost of insurance.
+
+    (2) Any addition to the price actually paid or payable shall be made on the
+    basis of objective and quantifiable data. »
+
+PORTEE. Valeur transactionnelle AUGMENTEE du transport, de la manutention et de
+l'assurance jusqu'au port d'importation : prix + fret + assurance, c'est le CIF, et
+c'est l'assiette du droit de douane seychellois. Les Seychelles ont donc exerce
+l'option que l'article 8.2 de l'Accord de l'OMC sur l'evaluation laisse a chaque
+membre, et elles l'ont exercee dans le sens de l'INCLUSION.
+
+UNE DEDUCTION A NE PAS FAIRE, ET ELLE A FAILLI ETRE FAITE ICI. Le Value Added Tax
+Act, section 23(1), definit la valeur d'une importation comme la somme de « (a) the
+value of the goods for customs duty (b) insurance and freight (c) the amount of any
+customs duty, excise, or any fee or other charge paid (excluding levies) ». Lu seul,
+ce (b) separe donne a penser que la valeur en douane, elle, EXCLUT le fret et
+l'assurance — donc que le droit de douane porterait sur un FOB. La regulation 8(1)(e)
+montre que c'est FAUX. On ne deduit pas l'assiette d'un impot de la redaction d'un
+autre : on la lit dans son propre texte.
+
+==============================================================================
+VI. CE QUE CET EXTRAIT N'ETABLIT PAS
+==============================================================================
+
+  — L'assiette de la TVA est etablie ailleurs, par la fiche
+    SYC_assiette_TVA_2026-09-17.json (VAT Act s.23(1), CIF + prelevements
+    d'entree, TVA exclue).
+  — L'accise n'est pas dans ce tarif : elle releve de l'Excise Tax Act et de ses
+    reglements de taux (S.I. 110 of 2023 et ses modifications). Non collectee ici.
+  — S.I. 113 of 2022 a ete MODIFIE par S.I. 7 of 2024 (22 janvier 2024), qui
+    insere douze sous-positions au chapitre 87 (vehicules « full hybrid » des
+    8703.40 et 8703.50, panneaux de carrosserie 8708.9911 et 8708.9919), ajoute
+    une note interpretative definissant « full hybrid », et remplace des entrees
+    du chapitre 22 entre 2208.7039 et 2208.9011.

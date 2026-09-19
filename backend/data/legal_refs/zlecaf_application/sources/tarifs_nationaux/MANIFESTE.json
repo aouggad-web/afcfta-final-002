@@ -89,7 +89,16 @@
       "sha256": "7960f473e21a8363dbc144cd6ec445b1ab506e36252af485c6eebcd0b661f2ac",
       "taille_octets": 6271724,
       "pages": 642,
-      "structure": "HS 2022, 642 pages"
+      "structure": "HS 2022, 642 pages, 9 colonnes de taux : plein droit (col. 5), NPF (col. 6), COMESA, ZLECAf (col. 7A), SADC hors Afrique du Sud, SADC Afrique du Sud seulement, accise, TVA, Advance Income Tax"
+    },
+    "SYC": {
+      "url": "https://src.gov.sc/wp-content/uploads/2025/10/SI-113-2022-Customs-Management-Tariff-and-Classification-of-Goods-Regulations-2022.pdf",
+      "institution": "Seychelles Revenue Commission (src.gov.sc)",
+      "annee": "2022",
+      "sha256": "8eb2452b3e242d536ec68717d893d373fe94d6407e19b1d34f3e3967246cac3f",
+      "taille_octets": 19414252,
+      "pages": 827,
+      "structure": "HS 2022, 13 colonnes de taux : MFN, COMESA FTA, European Union & UK, SADC FTA 2022-2026, AfCFTA 2022-2026"
     }
   }
 }
