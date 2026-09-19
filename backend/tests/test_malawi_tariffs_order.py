@@ -3,7 +3,7 @@
 Le socle servait 5 388 moyennes SH6 de WITS, SANS AUCUNE désignation. Le
 Customs and Excise (Tariffs) (No. 3) Order, 2022 — Gazette Supplement du
 29 juillet 2022, Government Notice No. 30, 642 pages, le TEXTE RÉGLEMENTAIRE
-lui-même — en porte 7 373 à huit chiffres, avec neuf colonnes de prélèvements.
+lui-même — en porte 7 364 à huit chiffres, avec neuf colonnes de prélèvements.
 
 CE QUE CES TESTS TIENNENT.
 
@@ -11,7 +11,7 @@ CE QUE CES TESTS TIENNENT.
    le paragraphe 4, page 22, définit chacune des neuf.
 
 2. LES COLONNES 5 ET 6 NE SONT PAS DEUX DROITS CÔTE À CÔTE. Elles diffèrent sur
-   4 409 des 7 373 positions — plus de la moitié du tarif — et le paragraphe 5
+   4 421 des 7 364 positions — plus de la moitié du tarif — et le paragraphe 5
    tranche : la 5 est le PLEIN DROIT, les 6 à 9 en sont des REMISES par origine.
    La 6 vaut pour « a Contracting Party of the GATT », donc pour tout membre de
    l'OMC : c'est elle qui est servie comme droit de douane.

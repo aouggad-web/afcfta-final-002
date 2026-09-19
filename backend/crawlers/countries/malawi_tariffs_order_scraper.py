@@ -184,6 +184,14 @@ X_PREMIERE_COLONNE = 325.0
 #: vocabulaire est ferme : le reconnaitre evite de prendre pour une unite le
 #: dernier mot d'une designation qui deborde, ou le « 4 » de l'en-tete de colonne.
 X_UNITE = 300.0
+#: Bord droit de la COLONNE DES CODES. Dans la Partie III, 7 364 codes tombent entre
+#: x=60 et x=105 ; les 37 au-dela de 140 sont tous des codes CITES DANS UN TEXTE —
+#: « ---Chassis [...] for special conversion into vehicles of subheadings 8704.21.90,
+#: 8704.22.10 [...] », p. 457. Sans cette borne, ces citations devenaient des
+#: positions, et neuf d'entre elles se servaient avec le droit de la ligne qui les
+#: cite : 8704.23.00 rendait « Free » emprunte au chassis de 8706.00.10, et
+#: 7321.11.00 rendait le 30 % de la ligne de pieces 7321.90.10.
+X_COLONNE_DES_CODES = 140.0
 RX_UNITE = re.compile(
     r"^(kg|U|l|m|g|t|tonne|ct|pr|doz|m2|m3"
     r"|[0-9]{1,4}U|kg/[A-Za-z0-9]{1,4}|[A-Za-z0-9]{1,4}/kg)$"
@@ -475,7 +483,7 @@ def extraire(chemin: Path) -> Tuple[List[Dict], Dict[str, int]]:
             continue
         lignes: List[Dict] = []
         for _y, toks in _bandes(mots):
-            code = next((m for x, m in toks if RX_CODE.match(m)), None)
+            code = next((m for x, m in toks if x < X_COLONNE_DES_CODES and RX_CODE.match(m)), None)
             mots = [m for x, m in toks if x < X_UNITE and not RX_CODE.match(m)]
             if code:
                 lignes.append({"code": code, "toks": list(toks), "desc": mots, "desc_close": False})

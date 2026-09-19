@@ -68,12 +68,15 @@ def test_statuses_are_canonical_and_missing_preferences_fail_closed():
 
 def test_registered_line_counts_and_national_depths_match_runtime_data():
     # L'Angola est passé de 5 388 lignes SH6 — une moyenne MFN de WITS/UNCTAD-TRAINS —
-    # aux 5 830 sous-positions à HUIT chiffres du texte promulgué : Decreto Legislativo
+    # aux 5 959 sous-positions à HUIT chiffres du texte promulgué : Decreto Legislativo
     # Presidencial n.º 1/24 de 3 de Janeiro, lu optiquement dans un scan de 345 pages.
+    # Le compte a bougé de 5 830 à 5 959 quand la detection de grille a cesse de
+    # prendre une note de chapitre justifiee pour un trait de tableau : quinze pages
+    # etaient rejetees, dont les chapitres 24 et 50 entiers.
     # La profondeur nationale et le nom du champ de code changent avec la source.
     expected = {
         "MAR": (13114, {10}),
-        "AGO": (5830, {8}),
+        "AGO": (5959, {8}),
     }
     code_field = {"MAR": "code", "AGO": "national_code"}
     for country, (line_count, digit_depths) in expected.items():

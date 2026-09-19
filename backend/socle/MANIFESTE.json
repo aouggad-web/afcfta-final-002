@@ -1,13 +1,13 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-19T07:55:06.824275+00:00",
+  "construit_le": "2026-09-19T10:06:59.525195+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/AGO_tariffs.json",
-      "source_sha256": "d18428011e5901255996b1cfbac275166dcd5c921e9fb84d8ee90536156382e8",
-      "socle_sha256": "5e49164e47b4b16672904619b7180701eec72bfaf31daae5d7895df9bdb757b8",
+      "source_sha256": "c4334b5d93b46e0173688b1753577cc8ae40571d4289fdbbf0930a2020b67500",
+      "socle_sha256": "b713266538f93fffe2ffe1ea5f67249bf8032caab186df2e2886c41ce37f8980",
       "collecte": "2026-09-19",
       "etat": "PARTIEL",
       "familles": [
@@ -15,15 +15,15 @@
         "droit"
       ],
       "compteurs": {
-        "positions": 5830,
-        "droits": 11660,
-        "droits_liquidables": 11636,
-        "positions_liquidables": 5806,
-        "preferentiels": 11660,
+        "positions": 5959,
+        "droits": 11918,
+        "droits_liquidables": 11893,
+        "positions_liquidables": 5934,
+        "preferentiels": 11918,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
-        "taux_indisponibles": 24,
-        "assiettes_source": 11636,
+        "taux_indisponibles": 25,
+        "assiettes_source": 11893,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
         "assiettes_indisponibles": 0,
@@ -32,7 +32,7 @@
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
-        "droits_absents_completes": 24,
+        "droits_absents_completes": 25,
         "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
@@ -1189,8 +1189,8 @@
       "fichier": "MWI.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MWI_tariffs.json",
-      "source_sha256": "15412bcd25f5b57b2b5226c83c049eb40393473ef30e0faf3fac58467cf419ee",
-      "socle_sha256": "a136d1c460cb9b7cb5b3f883fb32cb8ea0b6b055facf73b1054470c604be6508",
+      "source_sha256": "e87df0657f73b0816e789c178aec6db011b4a93695bbea9d54482c129e5e569e",
+      "socle_sha256": "4f097baf0bd4c60732540dc8da852b6916eb944b98f5ee425cef20554849a318",
       "collecte": "2026-09-19",
       "etat": "PARTIEL",
       "familles": [
@@ -1200,24 +1200,24 @@
         "tva"
       ],
       "compteurs": {
-        "positions": 7373,
-        "droits": 29218,
-        "droits_liquidables": 14200,
+        "positions": 7364,
+        "droits": 29268,
+        "droits_liquidables": 14236,
         "positions_liquidables": 0,
-        "preferentiels": 28396,
+        "preferentiels": 28468,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
-        "taux_indisponibles": 274,
-        "assiettes_source": 14200,
+        "taux_indisponibles": 247,
+        "assiettes_source": 14236,
         "assiettes_fichier": 0,
         "assiettes_table": 0,
-        "assiettes_indisponibles": 14744,
+        "assiettes_indisponibles": 14785,
         "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
-        "droits_absents_completes": 274,
+        "droits_absents_completes": 247,
         "droits_lus_en_designation": 0,
         "classification_estimee": 0
       }
@@ -1832,7 +1832,7 @@
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/ZAF_tariffs.json",
       "source_sha256": "c2d30da6e82e34a0f136edfedfb446597bca256132fdaffdf9e3073ea692af3a",
-      "socle_sha256": "7304a9b12fda77a6a3e6f08dbd330cbb0a59932a607c13ce84b94e88495869bd",
+      "socle_sha256": "9a4f3f1d8bc37ff1e44b11f5a2e0e6ab1d8fe3a62468dea59eabb36229424920",
       "collecte": "2026-08-29T13:26:21.816037",
       "etat": "PARTIEL",
       "familles": [
@@ -1970,8 +1970,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 367220,
-    "droits": 1125413,
-    "droits_liquidables": 1047498
+    "positions": 367340,
+    "droits": 1125721,
+    "droits_liquidables": 1047791
   }
 }

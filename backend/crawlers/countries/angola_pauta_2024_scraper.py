@@ -72,6 +72,7 @@ Valor Acrescentado. L'IPP les nomme dans ses abreviations mais ne donne ni leurs
 ni leur champ ; ils relevent de leurs propres codes, non lus ici.
 """
 
+import bisect
 import collections
 import csv
 import hashlib
@@ -175,6 +176,23 @@ def _grouper(valeurs: List[int], tolerance: int = 3) -> List[int]:
     return [sum(g) // len(g) for g in out]
 
 
+def _serie_contigue(ligne) -> int:
+    """La plus longue suite CONTIGUE de pixels sombres d'une ligne ou d'une colonne.
+
+    UN TRAIT DE TABLEAU EST CONTINU ; UN PARAGRAPHE DENSE NE L'EST PAS. Compter les
+    pixels sombres d'une rangee, sans regarder s'ils se touchent, faisait passer les
+    lignes d'un bloc de notes justifie pour des traits : page 220 du Diario, ou deux
+    petits tableaux encadrent quarante lignes de notes, on relevait ainsi 142 faux
+    traits, les deux tableaux se fondaient en un seul groupe, et la page entiere
+    etait rejetee. LES CHAPITRES 24 (tabacs) ET 50 (soie) MANQUAIENT ENTIEREMENT au
+    tarif pour cette seule raison, avec treize autres pages.
+    """
+    if not ligne.any():
+        return 0
+    bords = np.flatnonzero(np.diff(np.concatenate(([0], ligne.view(np.int8), [0]))))
+    return int((bords[1::2] - bords[0::2]).max())
+
+
 def tableaux(sombre, largeur: int, hauteur: int) -> List[Dict]:
     """Les tableaux de la page, chacun avec ses traits verticaux et horizontaux.
 
@@ -185,7 +203,7 @@ def tableaux(sombre, largeur: int, hauteur: int) -> List[Dict]:
     qu'il arrive ; on en deduit l'etendue verticale du tableau ; et l'on ne cherche
     les traits verticaux que LA, rapportes a la hauteur du tableau.
     """
-    hor = _grouper([y for y in range(hauteur) if sombre[y, :].sum() > largeur * 0.35])
+    hor = _grouper([y for y in range(hauteur) if _serie_contigue(sombre[y, :]) > largeur * 0.30])
     if len(hor) < 3:
         return []
     groupes: List[List[int]] = []
@@ -201,7 +219,9 @@ def tableaux(sombre, largeur: int, hauteur: int) -> List[Dict]:
             continue
         haut, bas = bornes[0], bornes[-1]
         colonne = sombre[haut:bas, :]
-        vert = _grouper([x for x in range(largeur) if colonne[:, x].sum() > (bas - haut) * 0.40])
+        vert = _grouper(
+            [x for x in range(largeur) if _serie_contigue(colonne[:, x]) > (bas - haut) * 0.40]
+        )
         sortie.append({"vert": vert, "hor": bornes})
     return sortie
 
@@ -522,9 +542,64 @@ def extraire(chemin: Path, dossier: Path) -> Tuple[List[Dict], Dict]:
             positions.append(_position(code, cellules, index + 1, stats))
         logger.info("  page %s : %s positions", index + 1, len(positions))
 
+    positions = _refuser_les_codes_hors_sequence(positions, stats)
     stats["total_positions"] = len(positions)
     stats["chapters_covered"] = len({p["chapter"] for p in positions})
     return positions, dict(stats)
+
+
+def _refuser_les_codes_hors_sequence(positions: List[Dict], stats: Dict) -> List[Dict]:
+    """Ecarter les positions dont le code rompt l'ordre croissant du bareme.
+
+    LE BAREME EST EN ORDRE CROISSANT, page apres page, et c'est une propriete du
+    document, pas une hypothese : un code qui redescend entre ses voisins a un chiffre
+    mal lu. Releve sur la collecte : « 02072560 » entre 02072650 et 02072670 — un 6 lu
+    5 —, « 35042100 » entre 39041000 et 39044000, « 34440000 » entre 84439900 et
+    84450000, et page 133 cinq lignes du chapitre 29 dont le 9 est lu 8 : « 28027000 »
+    pour le cumene (2902.70), « 28031100 » pour le chlorometane (2903.11).
+
+    CES LIGNES NE SONT PAS CORRIGEES, ELLES SONT ECARTEES. Deviner le bon code
+    reviendrait a attacher un droit reel a une position que le collecteur n'a pas lue,
+    et un droit sous un mauvais code est pire qu'un droit absent : il se liquiderait
+    sur une autre marchandise. Le code exact est dans le document, il suffit de le
+    relire.
+
+    On garde LA PLUS LONGUE SOUS-SUITE CROISSANTE, et on ecarte le reste. Comparer
+    chaque code a ses deux voisins immediats ne suffisait pas : la ou DEUX codes
+    consecutifs sont mal lus, chacun couvre l'autre — 28027000 suivi de 28029000 forme
+    une paire croissante, et les cinq lignes de la page 133 passaient toutes. La plus
+    longue sous-suite croissante n'a pas cette faiblesse, et elle minimise par
+    construction le nombre de lignes ecartees.
+    """
+    codes = [p["national_code"] for p in positions]
+    n = len(codes)
+    # Plus longue sous-suite croissante (au sens large) : queues[k] est le plus petit
+    # code qui termine une sous-suite de longueur k + 1, dernier[k] son indice.
+    queues: List[str] = []
+    dernier: List[int] = []
+    precedent: List[Optional[int]] = [None] * n
+    for i, code in enumerate(codes):
+        k = bisect.bisect_right(queues, code)
+        precedent[i] = dernier[k - 1] if k > 0 else None
+        if k == len(queues):
+            queues.append(code)
+            dernier.append(i)
+        else:
+            queues[k] = code
+            dernier[k] = i
+    gardes = set()
+    i = dernier[-1] if dernier else None
+    while i is not None:
+        gardes.add(i)
+        i = precedent[i]
+    suspects = [i for i in range(n) if i not in gardes]
+    stats["codes_hors_sequence"] = len(suspects)
+    if suspects:
+        logger.warning(
+            "codes ecartes, hors de l'ordre croissant : %s",
+            ", ".join(codes[i] for i in suspects),
+        )
+    return [p for i, p in enumerate(positions) if i in gardes]
 
 
 def construire(chemin: Path, dossier: Path) -> Dict:
@@ -555,6 +630,22 @@ def construire(chemin: Path, dossier: Path) -> Dict:
             "les taux. Un OCR de pleine page rend « r]ao » pour un "
             "« 30 » et « EE » pour un code : c'est le decoupage "
             "par colonne qui rend la lecture fiable, pas l'OCR seul."
+        ),
+        "residu_connu": (
+            "LECTURE OPTIQUE, DONC RESIDU MESURE ET DECLARE. L'ordre croissant du "
+            "bareme denonce tout code qui redescend, et ces lignes sont ecartees. Il "
+            "est en revanche aveugle a l'erreur d'un chiffre QUI RESTE CROISSANTE : "
+            "confrontes aux nomenclatures des cinquante-deux autres tarifs collectes, "
+            "huit codes sur pres de six mille portent une sous-position qui n'existe nulle part "
+            "ailleurs, et la page les dement — « 9612.10.00 » lu « 9612.16.00 », "
+            "« 9613.10.00 » lu « 9613.16.00 », « 9613.90.00 » lu « 9613.96.00 », et de "
+            "meme 3922.90, 6204.29, 6208.29, 7211.90, 8307.90. Soit 0,13 % des codes. "
+            "ILS NE SONT NI CORRIGES NI ECARTES : une nomenclature tierce est une "
+            "presomption, pas le document, et elle ecarterait aussi des sous-positions "
+            "proprement angolaises — 2903.39 porte ici seize extensions nationales que "
+            "personne d'autre ne publie. Une seconde lecture a 450 points par pouce "
+            "trancherait, mais tesseract met trois minutes par bande de codes a cette "
+            "resolution, treize heures pour le document : hors de portee ici."
         ),
         "calculation_rules": {
             "order": ["DD", "EGA"],

@@ -2,7 +2,7 @@
 
 Le socle servait 5 388 moyennes SH6 de WITS. Le Decreto Legislativo Presidencial
 n.º 1/24 du 3 janvier 2024 — Diário da República I Série n.º 2, 345 pages, qui
-approuve la Pauta Aduaneira et abroge le DLP n.º 10/19 — en porte 5 830 à huit
+approuve la Pauta Aduaneira et abroge le DLP n.º 10/19 — en porte 5 959 à huit
 chiffres. Ce document est un SCAN INTÉGRAL : zéro octet de couche texte.
 
 CE QUE CES TESTS TIENNENT.

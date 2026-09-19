@@ -215,6 +215,12 @@ EXCEPTIONS_COI = (
 TOLERANCE_Y = 3.5
 #: Marge a gauche de la premiere ancre : une valeur y deborde parfois de deux unites.
 MARGE_GAUCHE = 12.0
+#: Bord droit de la COLONNE DES CODES. Des 6 121 codes que porte le document, 6 120
+#: tombent entre x=80 et x=145 ; le seul au-dela (x=360) est cite dans un texte, non
+#: porte par une ligne du bareme. Le Malawi montre ce que coute l'absence de cette
+#: borne : les codes que ses designations citent y devenaient des positions a part
+#: entiere, servies avec le droit de la ligne qui les cite.
+X_COLONNE_DES_CODES = 200.0
 
 #: Les douze sous-positions que S.I. 7 of 2024 INSERE, avec leurs treize taux tels
 #: que l'instrument les publie. Elles sont ecrites ici parce qu'elles sont LUES dans
@@ -317,7 +323,9 @@ def _lignes_de_la_page(mots, ancres: List[float]) -> List[Dict]:
     etiquettes = [
         {
             "y": y,
-            "code": next((w[4] for w in ts if RX_CODE.match(w[4])), None),
+            "code": next(
+                (w[4] for w in ts if w[0] < X_COLONNE_DES_CODES and RX_CODE.match(w[4])), None
+            ),
             "valeurs": sum(
                 1
                 for w in ts
