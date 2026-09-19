@@ -899,6 +899,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         "positions_liquidables": 0,
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
+        "preferentiels_collision": 0,
         "taux_indisponibles": 0,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
@@ -914,6 +915,9 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         "classification_estimee": 0,
     }
     familles_vues = set()
+    #: Les couples (position, régime) où deux colonnes se réclament du même
+    #: régime préférentiel. Rapportés, jamais absorbés.
+    collisions = []
 
     for code, designation, unite, droits, source_ligne, restrictions in lignes_du_fichier(
         donnees
@@ -925,6 +929,34 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                 # Une colonne préférentielle est conservée telle quelle, sous son
                 # propre régime. Elle n'entre jamais dans la cascade NPF.
                 regime = PREFERENTIELS[_norm(d["code_source"])]
+                # DEUX COLONNES NE PEUVENT PAS SE PARTAGER UN RÉGIME EN SILENCE.
+                # `prefs` est un dictionnaire : une seconde colonne rangée sous le
+                # même régime écrasait la première sans rien dire. Le tarif
+                # malawien en donne le cas — il publie DEUX colonnes SADC, l'une
+                # « for imports from other Member States other than South Africa »
+                # (col. 8), l'autre « for imports from South Africa only »
+                # (col. 9) — et la distinction que sa loi établit disparaîtrait.
+                # Le taux servi serait alors celui de la dernière colonne lue :
+                # crédible, et faux pour la moitié des origines.
+                if regime in prefs:
+                    # Deux cas, et un seul est dangereux. Si les deux colonnes
+                    # portent LE MÊME taux, le doublon est sans effet et l'on
+                    # garde ce qu'on a. Si elles DIVERGENT, aucune ne peut être
+                    # retenue : servir l'une ou l'autre serait juste pour une
+                    # moitié des origines et faux pour l'autre. Le régime est
+                    # alors retiré — le moteur ne servira pas de préférence, au
+                    # lieu d'en servir une tirée au sort — et la collision est
+                    # comptée pour que le relecteur la voie.
+                    ancien = prefs.get(regime) or {}
+                    if ancien.get("taux") == d["taux"] and not d.get("specifique"):
+                        continue
+                    compteurs["preferentiels_collision"] += 1
+                    collisions.append((code, regime, d["code_source"]))
+                    prefs[regime] = {
+                        "taux": None,
+                        "motif": "DEUX_COLONNES_POUR_UN_MEME_REGIME",
+                    }
+                    continue
                 # La colonne se conserve sous la même forme qu'un droit NPF —
                 # taux ad valorem OU montant spécifique — parce qu'elle en prend
                 # la forme : 181 lignes sud-africaines opposent un « 8c/kg » NPF

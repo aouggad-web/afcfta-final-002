@@ -85,6 +85,20 @@ Elles ne sont pas décoratives : tout le calculateur repose dessus.
    elle ne se range pas.
 5. **Un manque nommé vaut mieux qu'un trou comblé.** Le moteur sait dire
    « indisponible » ; il ne sait pas rattraper un chiffre inventé.
+6. **Deux valeurs pour une même clé ne se départagent pas toutes seules.** Les
+   structures indexées — un dictionnaire de régimes préférentiels, une table
+   d'assiettes par code — acceptent une seconde écriture *en silence*, et c'est
+   alors la dernière lue qui gagne. Le tarif malawien en donne le cas : il
+   publie **deux colonnes SADC** que sa propre loi distingue, l'une « for
+   imports from other Member States other than South Africa », l'autre « for
+   imports from South Africa only ». Rangées sous une seule clé `SADC`, le taux
+   servi serait juste pour une moitié des origines et faux pour l'autre.
+   `scripts/build_socle.py` distingue désormais les deux cas : un doublon au
+   **même** taux passe sans bruit, deux colonnes **divergentes** ne servent
+   AUCUNE préférence et la collision est comptée au manifeste
+   (`preferentiels_collision`). Mesuré sur les 54 pays : **0 collision
+   aujourd'hui** — le garde est posé avant le besoin, pas après l'incident.
+   Verrouillé par `backend/tests/test_preferentiel_collision.py`.
 
 ---
 
