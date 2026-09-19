@@ -154,6 +154,48 @@ PREFERENTIELS = {
     "COI": "COI",
 }
 
+#: Les régimes que la collecte range dans `preferential_rates` plutôt que dans
+#: `taxes`, PAYS PAR PAYS.
+#:
+#: POURQUOI UNE SECONDE TABLE, ET POURQUOI PAR PAYS. `PREFERENTIELS` est
+#: interrogée avec le code d'une colonne de taxe ; ici la source nomme le régime
+#: elle-même, dans un champ à part. Verser ces noms dans `PREFERENTIELS`
+#: changerait le sort des colonnes homonymes de TOUS les autres pays — « UE »,
+#: « INDE », « UK » sont des mots trop courants pour qu'on les rende
+#: préférentiels partout sur la foi d'un seul tarif. Chaque pays déclare donc
+#: les siens, et un régime absent de sa table n'est PAS servi : il est compté
+#: et écarté, jamais rabattu sur la cascade NPF où il deviendrait un droit dû.
+REGIMES_PAR_PAYS = {
+    # Maurice — mra.mu, Customs Tariff Schedules (HS 2022). Douze colonnes
+    # préférentielles, que le tarif nomme en toutes lettres.
+    "MUS": {
+        "ZLECAF": "AFCFTA",
+        "SADC": "SADC",
+        # DEUX COLONNES COMESA, ET ELLES DIVERGENT. Le tarif publie « COMESA
+        # Group I » et « COMESA Group II » ; leurs taux diffèrent sur 504
+        # positions. Les ranger tous deux sous « COMESA » ferait jouer le garde
+        # de collision et retirerait la préférence de ces 504 lignes. Chacune
+        # garde donc son nom, comme les deux colonnes SADC du Malawi.
+        "COMESA_I": "COMESA_I",
+        "COMESA_II": "COMESA_II",
+        # « Indian Ocean Commission » : la Commission de l'océan Indien, que le
+        # tarif seychellois sert déjà sous « COI ». Même organisation, même nom.
+        "IOC": "COI",
+        # L'Union européenne et le Royaume-Uni ont ICI DEUX COLONNES DISTINCTES
+        # — « European Community » et « United Kingdom ». Leurs taux coïncident
+        # aujourd'hui sur les 6 932 positions comparables, mais les fondre sous
+        # « EU_UK » serait une interprétation : le tarif les sépare, on les sert
+        # séparés.
+        "UE": "UE",
+        "UK": "UK",
+        "INDE": "INDE",
+        "PAKISTAN": "PAKISTAN",
+        "CHINE": "CHINE",
+        "TURKIYE": "TURKIYE",
+        "EAU": "EAU",
+    },
+}
+
 
 def _est_une_interdiction(restriction) -> bool:
     """Vrai si la restriction interdit l'importation, pas seulement l'encadre.
@@ -729,9 +771,49 @@ def droits_depuis_liste(taxes, source_defaut):
     return out
 
 
-def lignes_du_fichier(donnees):
+def preferences_depuis_liste(regimes, entrees, source_defaut, compteurs=None):
+    """Les taux d'un champ ``preferential_rates``, sous les régimes du pays.
+
+    Le champ existe parce que certaines sources publient leurs colonnes
+    préférentielles à part, au lieu de les mêler aux taxes. Le socle ne le
+    lisait pas : 83 176 taux mauriciens, dont la colonne ZLECAf de 6 932
+    positions, étaient collectés puis jetés à la construction.
+
+    UN RÉGIME QUE LA TABLE DU PAYS NE NOMME PAS N'EST PAS SERVI. Il est compté
+    et écarté. C'est la seule issue sûre : le rendre sans le nommer le ferait
+    tomber dans la cascade NPF comme un droit DÛ, et une préférence deviendrait
+    une surtaxe.
+    """
+    out = []
+    for e in entrees or []:
+        if not isinstance(e, dict):
+            continue
+        nom = e.get("regime") or e.get("code")
+        regime = regimes.get(str(nom))
+        if regime is None:
+            if compteurs is not None:
+                compteurs["preferentiels_non_nommes"] += 1
+            continue
+        # Un taux que la source déclare non liquidable — contingent tarifaire,
+        # droit spécifique — n'est pas un taux : il est rendu sans valeur, avec
+        # le motif que la source donne, plutôt que servi à zéro.
+        d = _droit(
+            str(nom),
+            e.get("regime_name_fr") or e.get("colonne_source") or str(nom),
+            lire_taux(e.get("rate_pct")) if not e.get("non_liquidable") else None,
+            None,
+            e.get("source") or source_defaut,
+            note=e.get("non_liquidable") or None,
+        )
+        d["_preferentiel"] = regime
+        out.append(d)
+    return out
+
+
+def lignes_du_fichier(donnees, regimes=None, compteurs=None):
     """Rendre (code, designation, unite, droits_bruts) pour les six schémas."""
     source_defaut = donnees.get("source") or donnees.get("source_name") or ""
+    regimes = regimes or {}
 
     for cle in ("positions", "sub_positions"):
         for ligne in donnees.get(cle, []) or []:
@@ -760,6 +842,10 @@ def lignes_du_fichier(donnees):
                 droits = droits_depuis_dict(ligne["taxes"], source_defaut)
             elif isinstance(ligne.get("taxes_import"), list):
                 droits = droits_depuis_liste(ligne["taxes_import"], source_defaut)
+            if regimes and isinstance(ligne.get("preferential_rates"), list):
+                droits = droits + preferences_depuis_liste(
+                    regimes, ligne["preferential_rates"], source_defaut, compteurs
+                )
             yield (
                 code,
                 ligne.get("designation") or ligne.get("name") or ligne.get("description") or "",
@@ -836,9 +922,9 @@ def sha256(chemin: str) -> str:
 #: et anglais. LISTE NOMMÉE, pays par pays : rien n'est enrichi sans y figurer.
 #: Le libellé NATIONAL n'est jamais remplacé — il reste le verbatim qui fait foi.
 PAYS_LIBELLES_TRADUITS = {
-    "MOZ": "pt",   # Pauta Aduaneira, portugais
-    "EGY": "ar",   # tarif douanier égyptien, arabe — et son libellé est VIDE
-    "AGO": "pt",   # Pauta Aduaneira, portugais
+    "MOZ": "pt",  # Pauta Aduaneira, portugais
+    "EGY": "ar",  # tarif douanier égyptien, arabe — et son libellé est VIDE
+    "AGO": "pt",  # Pauta Aduaneira, portugais
 }
 
 LIBELLES_SH6_PATH = os.path.join(ETL_DIR, "hs6_designations_fr_en.json")
@@ -922,6 +1008,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         "preferentiels": 0,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
+        "preferentiels_non_nommes": 0,
         "taux_indisponibles": 0,
         "assiettes_source": 0,
         "assiettes_fichier": 0,
@@ -942,15 +1029,19 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
     collisions = []
 
     for code, designation, unite, droits, source_ligne, restrictions in lignes_du_fichier(
-        donnees
+        donnees, REGIMES_PAR_PAYS.get(iso), compteurs
     ):
         retenus, prefs = [], {}
         position_complete = True
         for d in droits:
-            if d.pop("_preferentiel", None) is not None:
+            regime = d.pop("_preferentiel", None)
+            if regime is not None:
                 # Une colonne préférentielle est conservée telle quelle, sous son
                 # propre régime. Elle n'entre jamais dans la cascade NPF.
-                regime = PREFERENTIELS[_norm(d["code_source"])]
+                # Le régime est celui que `_droit` a déjà posé — soit par
+                # `PREFERENTIELS` quand il vient d'une colonne de taxe, soit par
+                # `REGIMES_PAR_PAYS` quand la source le nomme elle-même. Le
+                # rechercher une seconde fois interdisait le second cas.
                 # DEUX COLONNES NE PEUVENT PAS SE PARTAGER UN RÉGIME EN SILENCE.
                 # `prefs` est un dictionnaire : une seconde colonne rangée sous le
                 # même régime écrasait la première sans rien dire. Le tarif
@@ -995,6 +1086,14 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
                         },
                     }
                     compteurs["preferentiels_specifiques"] += 1
+                elif d["taux"] is None and d.get("note"):
+                    # UN TAUX ABSENT DOIT DIRE POURQUOI. La source mauricienne
+                    # déclare 129 colonnes non liquidables — 109 sous contingent
+                    # tarifaire, 20 en droit spécifique — et ce motif se perdait
+                    # ici : la préférence sortait en `{"taux": null}` nu,
+                    # indiscernable d'une colonne que le collecteur n'a pas su
+                    # lire. Ce n'est pas la même chose pour l'opérateur.
+                    prefs[regime] = {"taux": None, "motif": d["note"]}
                 else:
                     prefs[regime] = {"taux": d["taux"]}
                 compteurs["preferentiels"] += 1
@@ -1065,9 +1164,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
         if not designation:
             compteurs["sans_designation"] += 1
         if libelles_sh6 is not None:
-            designation = traduire_designation(
-                designation, code[:6], libelles_sh6, langue_origine
-            )
+            designation = traduire_designation(designation, code[:6], libelles_sh6, langue_origine)
         positions[code] = {
             "designation": designation,
             "hs6": code[:6],
@@ -1175,9 +1272,7 @@ def construire_pays(iso, chemin, origine, assiettes_pays):
             )
             compteurs["droits"] += 1
             compteurs["taux_indisponibles"] += 1
-            compteurs["droits_absents_completes"] = (
-                compteurs.get("droits_absents_completes", 0) + 1
-            )
+            compteurs["droits_absents_completes"] = compteurs.get("droits_absents_completes", 0) + 1
 
     # Les compteurs s'incrémentaient PAR LIGNE LUE. Deux lignes qui portent le
     # même code sont comptées deux fois et servies une seule : le compteur
