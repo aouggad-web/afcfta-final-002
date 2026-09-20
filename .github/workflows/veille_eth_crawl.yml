@@ -1,0 +1,208 @@
+name: Veille crawl ETH (portail ERCA)
+
+# Pourquoi cette veille existe
+# ---------------------------
+# Le tarif éthiopien committé (backend/data/crawled/ETH_tariffs.json) a été
+# collecté le 05/07/2026 depuis le portail officiel customs.erca.gov.et, AVANT
+# la correction du collecteur : chaque droit publié à 0 % était écarté
+# (`tax_values[i] > 0`), soit 1 368 positions sans droit au lieu d'un 0 % dû.
+# Le correctif est sur main ; ce qui manque est un CRAWL FRAIS.
+#
+# Or le portail est aujourd'hui injoignable de partout (mesuré : 59 nœuds
+# check-host sur tous les continents, runners GitHub compris — alors qu'ils y
+# arrivaient le 05/07). Aucun HTML brut n'a été conservé et l'artefact du run
+# de juillet est expiré (rétention 30 j) : les 0 % ne se reconstruisent pas
+# hors ligne.
+#
+# Cette veille sonde le portail toutes les 6 h et, dès qu'il répond, lance le
+# crawl corrigé, les contrôles, le gate, et ouvre une PR de données. Elle
+# s'arrête d'elle-même une fois les zéros revenus. Aucun repli WITS — source
+# nationale uniquement, ou rien.
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      forcer:
+        description: "Forcer la collecte même si la sonde déclare le portail injoignable"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: veille-eth
+  cancel-in-progress: false
+
+jobs:
+  veille:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements-crawl.txt
+
+      - name: La lacune est-elle encore ouverte ? (sinon, rien à faire)
+        id: lacune
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json, pathlib
+          p = pathlib.Path("backend/data/crawled/ETH_tariffs.json")
+          z = 0
+          if p.exists():
+              d = json.loads(p.read_text())
+              for x in d.get("sub_positions", []):
+                  dr = (x.get("taxes") or {}).get("DR")
+                  if isinstance(dr, dict) and dr.get("rate") == 0.0:
+                      z += 1
+          print(f"droits à 0 % actuellement : {z}")
+          print(f"zeros={z}")
+          print("ouverte=" + ("oui" if z == 0 else "non"))
+          PY
+
+      - name: Sonde le portail (TCP 443, 20 s)
+        id: sonde
+        if: ${{ steps.lacune.outputs.ouverte == 'oui' }}
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import socket
+          h = "customs.erca.gov.et"
+          try:
+              ip = socket.gethostbyname(h)
+          except Exception as e:
+              print(f"{h} : DNS KO ({e})")
+              print("joignable=non")
+              raise SystemExit(0)
+          s = socket.socket()
+          s.settimeout(20)
+          try:
+              s.connect((ip, 443))
+              print(f"{h} ({ip}) : TCP 443 OK")
+              print("joignable=oui")
+          except Exception as e:
+              print(f"{h} ({ip}) : TCP 443 KO ({e})")
+              print("joignable=non")
+          finally:
+              s.close()
+          PY
+
+      - name: Sommaire (rien à faire)
+        if: ${{ steps.lacune.outputs.ouverte == 'non' || steps.sonde.outputs.joignable != 'oui' }}
+        run: |
+          {
+            echo "### Veille ETH — rien à faire"
+            if [ "${{ steps.lacune.outputs.ouverte }}" = "non" ]; then
+              echo "Les droits à 0 % sont revenus (${{ steps.lacune.outputs.zeros }} trouvés) : la lacune est fermée."
+            else
+              echo "La lacune est ouverte (0 droit à 0 % committé) mais le portail ne répond pas encore (TCP 443 KO)."
+              echo "Nouvelle tentative à la prochaine exécution (toutes les 6 h). Aucun repli WITS."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Dépendances crawl
+        if: ${{ steps.lacune.outputs.ouverte == 'oui' && (steps.sonde.outputs.joignable == 'oui' || inputs.forcer) }}
+        run: python -m pip install --quiet -r backend/requirements-crawl.txt
+
+      - name: Collecte ETH (portail officiel — jamais WITS)
+        id: crawl
+        if: ${{ steps.lacune.outputs.ouverte == 'oui' && (steps.sonde.outputs.joignable == 'oui' || inputs.forcer) }}
+        working-directory: backend
+        timeout-minutes: 300
+        run: |
+          python -m crawlers.scrapling_engine.runner --country ETH --source spec \
+            --out /tmp/ETH_tariffs.json
+
+      - name: Contrôles (zéro publié, volume) — les mêmes que scripts/relancer_crawl_eth.sh
+        if: ${{ steps.crawl.outcome == 'success' }}
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          p = pathlib.Path("/tmp/ETH_tariffs.json")
+          if not p.exists():
+              raise SystemExit("✗ Aucun fichier collecté — rien à contrôler.")
+          d = json.loads(p.read_text())
+          sub = d.get("sub_positions", [])
+          z = n = t = 0
+          for x in sub:
+              dr = (x.get("taxes") or {}).get("DR")
+              if dr is None:
+                  n += 1
+                  continue
+              t += 1
+              if dr.get("rate") == 0.0:
+                  z += 1
+          print(f"   après : {z} droits à 0 % | {n} sans droit | {t} captés | {len(sub)} positions")
+          if z == 0:
+              raise SystemExit("✗ ARRÊT. Aucun droit à 0 % : le portail a changé, ou la session n'a pas abouti. NE PAS PUBLIER.")
+          if len(sub) < 6000:
+              raise SystemExit(f"✗ ARRÊT. {len(sub)} positions (< 6000) : collecte incomplète. NE PAS PUBLIER.")
+          print("✓ contrôles passés")
+          PY
+
+      - name: Gate qualité (étalon = dataset committé)
+        id: gate
+        if: ${{ steps.crawl.outcome == 'success' }}
+        working-directory: backend
+        run: |
+          set +e
+          python -m crawlers.scrapling_engine.quality_gate \
+            --candidate /tmp/ETH_tariffs.json \
+            --reference data/crawled/ETH_tariffs.json \
+            > /tmp/ETH_gate_report.json
+          GATE_RC=$?
+          set -e
+          cat /tmp/ETH_gate_report.json
+          if [ "$GATE_RC" -eq 0 ]; then VERDICT=PASS; else VERDICT=FAIL; fi
+          echo "verdict=$VERDICT" >> "$GITHUB_OUTPUT"
+          echo "Verdict du gate : $VERDICT (rc=$GATE_RC)"
+
+      - name: Artefact (collecte brute + rapport de gate, non publiée)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ETH_tariffs_veille
+          path: |
+            /tmp/ETH_tariffs.json
+            /tmp/ETH_gate_report.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Publier (branche crawl/eth + PR) — uniquement si gate PASS
+        if: ${{ steps.gate.outputs.verdict == 'PASS' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git checkout -B crawl/eth origin/main
+          mkdir -p backend/data/crawled
+          (cd backend && python -m crawlers.scrapling_engine.merge_publish \
+            --new "/tmp/ETH_tariffs.json" \
+            --existing "data/crawled/ETH_tariffs.json" \
+            --out "data/crawled/ETH_tariffs.json")
+          git add backend/data/crawled/ETH_tariffs.json
+          if git diff --cached --quiet; then
+            echo "Dataset ETH inchangé — pas de PR."
+            exit 0
+          fi
+          # Le message nomme la VRAIE source. Le template de tariff_crawl.yml
+          # annonçait « WITS/TRAINS » même pour un crawl de portail national —
+          # c'est ce qui a fait inscrire « WITS/TRAINS » au commit ETH de
+          # juillet alors que la session était customs.erca.gov.et.
+          git commit -m "data(crawl): tarifs douaniers ETH (portail ERCA customs.erca.gov.et, gate PASS)"
+          git push -f origin crawl/eth
+          gh pr create \
+            --base main --head crawl/eth --draft \
+            --title "data(crawl): tarifs douaniers ETH — 0 % publiés récupérés (gate PASS)" \
+            --body "$(printf 'Crawl du portail officiel ERCA, collecteur corrigé (les 0 %% publiés ne sont plus écartés).\n\nContrôles : droits à 0 %% > 0 et ≥ 6000 positions. Gate qualité PASS (rapport en artefact du run %s).\n\nRien n’a été publié automatiquement au-delà de cette PR : relire le rapport avant merge.' "${{ github.run_id }}")" \
+            || echo "PR déjà existante pour crawl/eth — mise à jour par le push."
