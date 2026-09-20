@@ -36,11 +36,22 @@ class MoroccoDouaneScraper:
         # fichier produit.
         #
         # Le portail n'en a pas besoin : `https://www.douane.gov.ma/adil/
-        # info_2.asp?pos=0101210000` répond 200 avec la chaîne vérifiée
-        # (relevé le 20/09/2026). Ce qu'il exige, c'est l'en-tête `User-Agent`
-        # ci-dessous : sans lui, son pare-feu applicatif rend « Request
-        # Rejected ». C'était donc l'en-tête qui manquait, pas la vérification
-        # qui gênait.
+        # info_2.asp?pos=0101210000` répond 200 avec la vérification active.
+        # Ce qu'il exige, c'est l'en-tête `User-Agent` ci-dessous : sans lui,
+        # son pare-feu applicatif rend « Request Rejected ». C'était donc
+        # l'en-tête qui manquait, pas la vérification qui gênait.
+        #
+        # PORTÉE EXACTE DE CETTE VÉRIFICATION, pour ne pas lui faire dire plus
+        # qu'elle ne dit. L'essai a été fait depuis un environnement dont la
+        # sortie HTTPS passe par une passerelle qui RESIGNE le TLS : le
+        # certificat observé y est celui de la passerelle, jamais celui du
+        # portail. Ce qui est donc établi, c'est que le CLIENT n'a pas besoin
+        # de `verify=False` pour fonctionner — pas que la chaîne servie par
+        # douane.gov.ma soit complète en production. Si elle ne l'était pas,
+        # la collecte échouerait bruyamment, ce qui est la bonne issue : un
+        # collecteur qui s'arrête se répare, un collecteur qui accepte
+        # n'importe quel certificat sert des taux dont personne ne sait d'où
+        # ils viennent.
         return httpx.AsyncClient(
             timeout=60.0,
             follow_redirects=True,

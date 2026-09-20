@@ -22,6 +22,12 @@ from typing import Any, Dict, List, Optional
 
 import httpx
 
+# Vérification TLS active (défaut httpx). Elle portait `verify=False` :
+# le collecteur acceptait n'importe quel certificat, et un tiers sur le
+# chemin pouvait donc lui dicter les taux qu'il liquide. Si la chaîne d'un
+# portail se révèle incomplète en production, la réponse est de fournir
+# l'intermédiaire manquant — jamais de redésactiver la vérification.
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -44,7 +50,7 @@ def fetch_json(url: str, params: dict = None, retries: int = 3) -> Optional[dict
     ip_url = url.replace(BASE, BASE_IP)
     for attempt in range(retries):
         try:
-            r = httpx.get(ip_url, params=params, timeout=20, headers=HEADERS, verify=False)
+            r = httpx.get(ip_url, params=params, timeout=20, headers=HEADERS)
             if r.status_code == 200:
                 return r.json()
             logger.warning(f"HTTP {r.status_code} for {url}")
@@ -52,7 +58,7 @@ def fetch_json(url: str, params: dict = None, retries: int = 3) -> Optional[dict
             logger.warning(f"Error (attempt {attempt+1}) {url}: {e}")
         # Fallback: réessayer avec le nom DNS
         try:
-            r = httpx.get(url, params=params, timeout=20, headers=HEADERS, verify=False)
+            r = httpx.get(url, params=params, timeout=20, headers=HEADERS)
             if r.status_code == 200:
                 return r.json()
         except Exception:
@@ -61,7 +67,9 @@ def fetch_json(url: str, params: dict = None, retries: int = 3) -> Optional[dict
     return None
 
 
-async def fetch_json_async(client: httpx.AsyncClient, url: str, params: dict = None) -> Optional[dict]:
+async def fetch_json_async(
+    client: httpx.AsyncClient, url: str, params: dict = None
+) -> Optional[dict]:
     ip_url = url.replace(BASE, BASE_IP)
     try:
         r = await client.get(ip_url, params=params, timeout=20)
@@ -85,12 +93,14 @@ def crawl_mozambique() -> List[Dict]:
 
     async def _crawl():
         sem = asyncio.Semaphore(CONCURRENCY)
-        async with httpx.AsyncClient(headers=HEADERS, verify=False) as client:
+        async with httpx.AsyncClient(headers=HEADERS) as client:
             # 1. Récupérer tous les subheadings par heading (01-97)
             all_subheadings = []
             for i in range(1, 98):
                 heading_id = f"{i:02d}"
-                sub_data = await fetch_json_async(client, f"{BASE}/mcnet/api/v1/subheading", {"headingId": heading_id})
+                sub_data = await fetch_json_async(
+                    client, f"{BASE}/mcnet/api/v1/subheading", {"headingId": heading_id}
+                )
                 if sub_data and sub_data.get("listObj"):
                     all_subheadings.extend(sub_data["listObj"])
                 if i % 20 == 0:
@@ -102,13 +112,15 @@ def crawl_mozambique() -> List[Dict]:
             async def _fetch_one(sub):
                 async with sem:
                     sub_id = sub.get("subHeadingId", sub.get("id", ""))
-                    hs_data = await fetch_json_async(client, f"{BASE}/mcnet/api/v1/hscode", {"subHeadingId": sub_id})
+                    hs_data = await fetch_json_async(
+                        client, f"{BASE}/mcnet/api/v1/hscode", {"subHeadingId": sub_id}
+                    )
                     return hs_data
 
             # Traiter par lots pour éviter trop de tâches en vol
             batch_size = CONCURRENCY * 4
             for j in range(0, len(all_subheadings), batch_size):
-                batch = all_subheadings[j:j+batch_size]
+                batch = all_subheadings[j : j + batch_size]
                 results = await asyncio.gather(*(_fetch_one(s) for s in batch))
 
                 for hs_data in results:
@@ -121,7 +133,9 @@ def crawl_mozambique() -> List[Dict]:
                             positions.append(pos)
 
                 if (j + batch_size) % 200 < batch_size:
-                    logger.info(f"  {len(positions)} positions so far ({j+batch_size}/{len(all_subheadings)} subheadings)")
+                    logger.info(
+                        f"  {len(positions)} positions so far ({j+batch_size}/{len(all_subheadings)} subheadings)"
+                    )
 
         return positions
 
@@ -152,31 +166,39 @@ def _parse_hs(hs: dict) -> Optional[dict]:
             canonical = "DD"
         elif "VAT" in tax_code.upper() or "TVA" in tax_code.upper() or "VALUE" in tax_name.upper():
             canonical = "TVA"
-        elif "EXCISE" in tax_code.upper() or "ACCISE" in tax_name.upper() or "CONSUMO" in tax_code.upper():
+        elif (
+            "EXCISE" in tax_code.upper()
+            or "ACCISE" in tax_name.upper()
+            or "CONSUMO" in tax_code.upper()
+        ):
             canonical = "DA"
 
         ad_valorem = rate.get("adValoremRate", 0)
         specific = rate.get("specificRateAmount")
         rate_str = rate.get("rate", "")
 
-        taxes.append({
-            "code": canonical,
-            "name": tax_name,
-            "name_fr": "",
-            "name_en": tax_name,
-            "name_ar": "",
-            "rate_pct": float(ad_valorem) if ad_valorem else None,
-            "rate_decimal": float(ad_valorem) / 100 if ad_valorem else None,
-            "raw_value": rate_str,
-            "specific_value": f"{specific} {rate.get('specificRateCurrency', '')}" if specific else None,
-            "base": "CIF",
-            "source": "jue.mcnet.co.mz (Alfândegas Moçambique)",
-            "legal_ref": None,
-            "original_code": tax_code,
-            "is_customs_duty": canonical == "DD",
-            "is_vat": canonical == "TVA",
-            "is_excise": canonical == "DA",
-        })
+        taxes.append(
+            {
+                "code": canonical,
+                "name": tax_name,
+                "name_fr": "",
+                "name_en": tax_name,
+                "name_ar": "",
+                "rate_pct": float(ad_valorem) if ad_valorem else None,
+                "rate_decimal": float(ad_valorem) / 100 if ad_valorem else None,
+                "raw_value": rate_str,
+                "specific_value": (
+                    f"{specific} {rate.get('specificRateCurrency', '')}" if specific else None
+                ),
+                "base": "CIF",
+                "source": "jue.mcnet.co.mz (Alfândegas Moçambique)",
+                "legal_ref": None,
+                "original_code": tax_code,
+                "is_customs_duty": canonical == "DD",
+                "is_vat": canonical == "TVA",
+                "is_excise": canonical == "DA",
+            }
+        )
 
     return {
         "national_code": code_clean,
@@ -251,6 +273,7 @@ def main():
         save(positions)
 
         from collections import Counter
+
         dd_dist = Counter()
         for p in positions:
             for t in p["taxes"]:
