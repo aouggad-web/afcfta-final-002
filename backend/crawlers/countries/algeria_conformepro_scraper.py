@@ -56,7 +56,10 @@ class AlgeriaConformeproScraper:
                 headers=HEADERS,
                 timeout=30.0,
                 follow_redirects=True,
-                verify=False,
+                # La vérification TLS est rétablie : `https://conformepro.dz/resources/
+                # tarif-douanier` répond 200 avec la chaîne vérifiée (relevé le
+                # 20/09/2026). Un collecteur qui accepte n'importe quel certificat
+                # laisse un tiers sur le chemin dicter les taux qu'il liquide.
             )
 
     async def _close_client(self):

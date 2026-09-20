@@ -11,14 +11,28 @@ Découvert sur l'Algérie : `conformepro.dz` supprime le bloc quand le droit est
 nul. Le portail officiel de la DGD, lui, publie « D.D 0.00 ». 296 droits
 avaient disparu de cette façon.
 
-LA SIGNATURE, ET POURQUOI ELLE EST FIABLE. Un tarif national comporte toujours
-des milliers de lignes en franchise. Si un pays présente BEAUCOUP de positions
-dont le droit est indisponible et AUCUNE dont le droit vaut zéro, ce n'est pas
-un tarif sans franchise : c'est une chaîne incapable de transporter un zéro.
+LA SIGNATURE, ET CE QU'ELLE NE PROUVE PAS. Un tarif national comporte
+d'ordinaire des milliers de lignes en franchise. Un pays qui présente beaucoup
+de droits indisponibles et AUCUN droit à 0 % mérite donc qu'on aille voir : ce
+n'est probablement pas un tarif sans franchise, mais une chaîne incapable de
+transporter un zéro.
 
-À l'inverse, quand un pays publie des milliers de droits à 0 % ET porte
-quelques droits indisponibles, ces derniers sont de VRAIES lacunes. Les
-combler serait inventer des franchises.
+À l'inverse, un pays qui publie des milliers de droits à 0 % transporte le
+zéro : ses indisponibles sont de VRAIES lacunes, et les combler inventerait des
+franchises.
+
+ENTRE LES DEUX, LES NOMBRES NE TRANCHENT PAS, et il faut le dire franchement.
+Une part de zéros très faible s'explique aussi bien par un PLANCHER TARIFAIRE :
+le Droit d'Importation marocain commence à 2,5 %, taux que portent 51 % de ses
+lignes, et ses 4 seuls zéros sont le soufre — rien n'y est perdu. Mais
+l'Éthiopie affiche la même signature de plancher — 5 %, sur 31,7 % de ses
+lignes — et elle perd bel et bien ses zéros, ce qu'établit le correctif de son
+propre collecteur, pas une statistique.
+
+Aucun seuil ne sépare ces deux cas. Ce script SIGNALE ; seule la lecture de la
+source tranche. C'est pourquoi il affiche le plancher et sa part à côté de
+chaque verdict, et pourquoi il rappelle les examens déjà faits plutôt que de
+re-signaler indéfiniment un cas réglé.
 
 CE QUE CE SCRIPT NE FAIT PAS. Il n'écrit rien, ne corrige rien, ne suppose
 rien. Il mesure, il classe, et il produit l'ordre de travail : la liste exacte
@@ -56,15 +70,44 @@ CODE = "DD"
 #: un échantillon trop mince peut n'en contenir aucun par hasard.
 ASSEZ_DE_DROITS = 500
 
-#: Part des droits captés valant zéro, en deçà de laquelle le doute s'impose
-#: sans que rien ne soit prouvé. Le défaut n'est pas toujours total : une
-#: source peut transporter le zéro sur une partie de son tarif seulement. Les
-#: pays au-dessus de ce seuil vont de 1,7 % (Algérie) à 93 % (Maurice) ; très
-#: en dessous, l'écart demande un examen à la main plutôt qu'un verdict.
-PART_DE_ZEROS_PLAUSIBLE = 0.01
+#: Part des droits captés valant zéro en deçà de laquelle un examen se justifie.
+#:
+#: CE SEUIL NE PROUVE RIEN, et la mesure le montre. Une part faible peut être
+#: un PLANCHER TARIFAIRE : le Maroc n'a que 4 droits nuls sur 12 972, parce que
+#: son Droit d'Importation commence à 2,5 % — taux que portent 51 % de ses
+#: lignes. Rien n'y est perdu.
+#:
+#: Et l'inverse ne se lit pas davantage dans les nombres : l'Éthiopie présente
+#: la MÊME signature de plancher — minimum 5 %, sur 31,7 % de ses lignes — et
+#: elle perd bel et bien ses zéros, ce qu'établit le correctif de son propre
+#: collecteur, pas une statistique.
+#:
+#: Aucun seuil ne sépare donc les deux cas. Ce script signale ; seule la
+#: lecture de la source tranche.
+PART_DE_ZEROS_A_EXAMINER = 0.01
 
 #: Les trois états qui appellent un examen, par ordre de gravité.
-A_EXAMINER = ("ZERO_IMPOSSIBLE", "PART_DE_ZEROS_ANORMALE", "ECHANTILLON_TROP_MINCE")
+A_EXAMINER = ("ZERO_IMPOSSIBLE", "PART_DE_ZEROS_FAIBLE", "ECHANTILLON_TROP_MINCE")
+
+#: EXAMENS DÉJÀ FAITS, avec leur preuve. Un pays examiné ne doit pas être
+#: re-signalé indéfiniment : l'examen est un travail, son résultat se conserve.
+#: Chaque entrée dit ce qui a été LU à la source, et quand.
+EXAMENS_FAITS = {
+    "MAR": (
+        "examiné le 20/09/2026 — RIEN À RÉCUPÉRER. Le Droit d'Importation "
+        "marocain commence à 2,5 % (51 % des lignes) : la rareté des zéros est "
+        "un plancher tarifaire. Les 4 zéros sont le soufre (2503), intrant des "
+        "engrais phosphatés. Les 142 positions sans aucune taxe ont été "
+        "interrogées une par une sur l'ADIL : le portail ne publie RIEN sur "
+        "les 142. Voir data/morocco/verification_positions_muettes.json."
+    ),
+    "DZA": (
+        "examiné le 20/09/2026 — 296 droits RÉCUPÉRÉS à l'e-service DGD. Le "
+        "miroir conformepro.dz supprimait le bloc « Droit de douane » quand il "
+        "valait zéro. Reste 3 positions du chapitre « Effets personnels », "
+        "hors importation commerciale. Voir data/dza/releve_dd_dgd.json."
+    ),
+}
 
 
 def _droit(position: dict) -> dict | None:
@@ -80,6 +123,10 @@ def mesurer(chemin: pathlib.Path) -> dict:
     zeros = indisponibles = captes = sans_ligne = 0
     positions = donnees.get("positions") or {}
     sources: collections.Counter = collections.Counter()
+    # Le plancher tarifaire est la seule lecture qui rende la rareté des zéros
+    # intelligible sans sortir du dépôt : si le plus petit droit publié est
+    # positif ET porté par une part massive des lignes, la rareté s'explique.
+    positifs: collections.Counter = collections.Counter()
 
     for p in positions.values():
         if not isinstance(p, dict):
@@ -95,11 +142,18 @@ def mesurer(chemin: pathlib.Path) -> dict:
                 sources[d["source"]] += 1
         elif d["taux"] == 0.0:
             zeros += 1
+        else:
+            positifs[d["taux"]] += 1
 
+    plancher = min(positifs) if positifs else None
     return {
         "pays": chemin.stem,
         "positions": len(positions),
         "droits_captes": captes,
+        "plancher": plancher,
+        "part_du_plancher": (
+            (positifs[plancher] / captes) if plancher is not None and captes else 0.0
+        ),
         "droits_a_zero": zeros,
         "droits_indisponibles": indisponibles,
         "positions_sans_ligne_de_droit": sans_ligne,
@@ -116,8 +170,8 @@ def verdict(m: dict) -> str:
         return "ECHANTILLON_TROP_MINCE"
     if m["droits_a_zero"] == 0:
         return "ZERO_IMPOSSIBLE"
-    if m["droits_a_zero"] / m["droits_captes"] < PART_DE_ZEROS_PLAUSIBLE:
-        return "PART_DE_ZEROS_ANORMALE"
+    if m["droits_a_zero"] / m["droits_captes"] < PART_DE_ZEROS_A_EXAMINER:
+        return "PART_DE_ZEROS_FAIBLE"
     return "LACUNE_REELLE"
 
 
@@ -126,9 +180,12 @@ EXPLICATION = {
         "Aucun droit à 0 % sur un tarif entier : la chaîne ne sait pas "
         "transporter un zéro. À RELIRE à la source primaire."
     ),
-    "PART_DE_ZEROS_ANORMALE": (
-        "Le zéro passe, mais si rarement que la chaîne en perd "
-        "vraisemblablement une partie. À EXAMINER à la main, sans conclure."
+    "PART_DE_ZEROS_FAIBLE": (
+        "Le zéro passe, mais rarement. Deux explications tiennent également "
+        "dans ce chiffre — un plancher tarifaire, ou une perte partielle — et "
+        "AUCUN seuil ne les sépare. À examiner à la source, sans conclure. "
+        "Regarder d'abord le plus petit droit publié et sa part : un plancher "
+        "net et massif explique la rareté sans qu'il manque quoi que ce soit."
     ),
     "LACUNE_REELLE": (
         "Le pays publie des droits à 0 % que la chaîne transporte : les "
@@ -199,15 +256,20 @@ def main() -> int:
     a_traiter = [m for m in mesures if verdict(m) in ("ZERO_IMPOSSIBLE", "ECHANTILLON_TROP_MINCE")]
 
     largeur = max((len(m["pays"]) for m in mesures), default=4)
-    print(f"{'pays':{largeur}} {'à 0 %':>9} {'indispo.':>9} {'captés':>9}  verdict")
+    print(
+        f"{'pays':{largeur}} {'à 0 %':>8} {'part':>7} {'indispo.':>9} "
+        f"{'captés':>8} {'plancher':>9} {'sa part':>8}  verdict"
+    )
     for m in sorted(mesures, key=lambda m: -(m["droits_indisponibles"])):
         if verdict(m) == "RIEN_A_FAIRE" and not args.pays:
             continue
         manquants = m["droits_indisponibles"] + m["positions_sans_ligne_de_droit"]
         part = m["droits_a_zero"] / m["droits_captes"] * 100 if m["droits_captes"] else 0.0
+        plancher = "—" if m["plancher"] is None else f"{m['plancher']:g} %"
         print(
-            f"{m['pays']:{largeur}} {m['droits_a_zero']:9} {part:7.1f}% {manquants:9} "
-            f"{m['droits_captes']:9}  {verdict(m)}"
+            f"{m['pays']:{largeur}} {m['droits_a_zero']:8} {part:6.1f}% {manquants:9} "
+            f"{m['droits_captes']:8} {plancher:>9} {m['part_du_plancher'] * 100:7.1f}%"
+            f"  {verdict(m)}{'  [examiné]' if m['pays'] in EXAMENS_FAITS else ''}"
         )
 
     print()
@@ -216,6 +278,14 @@ def main() -> int:
         if concernes:
             print(f"{etat} ({len(concernes)}) — {EXPLICATION[etat]}")
             print(f"   {', '.join(concernes)}\n")
+
+    # Un pays déjà examiné n'est pas un pays à examiner : son résultat est
+    # rappelé ici pour que le signalement ne relance pas un travail fait.
+    deja = [m["pays"] for m in mesures if m["pays"] in EXAMENS_FAITS]
+    if deja:
+        print("EXAMENS DÉJÀ FAITS — ne pas relancer sans raison nouvelle :")
+        for pays in deja:
+            print(f"   {pays} : {EXAMENS_FAITS[pays]}\n")
 
     if a_traiter:
         print("Sources déclarées des droits manquants, pour savoir où aller relire :")

@@ -27,9 +27,22 @@ class MoroccoDouaneScraper:
         self.source = "douane.gov.ma/adil"
 
     def _new_client(self) -> httpx.AsyncClient:
+        # LA VÉRIFICATION TLS EST RÉTABLIE. Le client portait `verify=False`,
+        # c'est-à-dire qu'il acceptait n'importe quel certificat. Pour un
+        # collecteur tarifaire, c'est un affaiblissement qui touche au cœur du
+        # sujet : quiconque se trouve sur le chemin peut alors servir des taux
+        # de son choix, et rien dans la chaîne ne le détecterait — ni le sceau
+        # du crawl, qui scelle ce qu'on a reçu, ni le manifeste, qui scelle le
+        # fichier produit.
+        #
+        # Le portail n'en a pas besoin : `https://www.douane.gov.ma/adil/
+        # info_2.asp?pos=0101210000` répond 200 avec la chaîne vérifiée
+        # (relevé le 20/09/2026). Ce qu'il exige, c'est l'en-tête `User-Agent`
+        # ci-dessous : sans lui, son pare-feu applicatif rend « Request
+        # Rejected ». C'était donc l'en-tête qui manquait, pas la vérification
+        # qui gênait.
         return httpx.AsyncClient(
             timeout=60.0,
-            verify=False,
             follow_redirects=True,
             headers={
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
