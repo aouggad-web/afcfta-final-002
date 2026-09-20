@@ -38,6 +38,7 @@ import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
 import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import { normalizeTaxesDetail } from './taxesDetail';
 import { buildCalculRequestBody, mapCalculToLegacyResult, moteurRendCompteDesMesures } from './unifiedCalculator';
+import { trierAvantages } from './avantagesFiscaux';
 import {
   effectiveTaxRateFromSteps,
   isCustomsDutyTax,
@@ -421,7 +422,79 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     const originISO3 = originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry;
     
     try {
-      // PRIORITÉ 1: Essayer d'utiliser les données tarifaires AUTHENTIQUES
+      // LE MÊME APPEL AU SOCLE, DEMANDÉ À DEUX ENDROITS.
+      //
+      // Il sert AVANT le chemin historique pour les pays de
+      // `SOCLE_EN_PREMIER`, et APRÈS lui pour tous les autres. Construit une
+      // seule fois : deux corps de requête écrits séparément finiraient par
+      // diverger, et l'un des deux liquiderait autre chose que l'autre.
+      const demanderLeSocle = () => axios.post(`${API}/calcul`, buildCalculRequestBody({
+        destinationISO3: destISO3,
+        originISO3,
+        hsCode: cleanHsCode,
+        cifValue: parseFloat(value),
+        // `parseFloat('')` rend NaN : `buildCalculRequestBody` l'écarte, et
+        // le moteur continue de réclamer la quantité au lieu de liquider
+        // le droit spécifique à zéro. Une quantité saisie pour une AUTRE
+        // position est écartée de la même façon.
+        quantite: quantityFor === `${destISO3}|${cleanHsCode}`
+          ? parseFloat(quantity)
+          : NaN,
+      }));
+
+      // PRIORITÉ 1 POUR CES PAYS SEULEMENT : LE SOCLE (`POST /calcul`).
+      //
+      // L'ordre était inverse, et il coûtait cher. Le chemin historique
+      // `/authentic-tariffs` sert une quarantaine de pays ; tant qu'il passait
+      // devant, tout ce que le socle vérifie ne parvenait qu'aux autres. La
+      // colonne algérienne du tarif tunisien (13 362 positions) et les douze
+      // régimes préférentiels mauriciens, établis sur source primaire et
+      // scellés par empreinte, n'atteignaient jamais l'opérateur — leurs deux
+      // pays étaient servis par l'autre porte.
+      //
+      // POURQUOI DEUX PAYS ET NON LES CINQUANTE-QUATRE. La bascule générale a
+      // été écrite, puis restreinte : l'interface n'envoie au socle ni
+      // `devise_cif`, ni `taux_de_change`, ni `valeur_fob`. Or la valeur en
+      // douane de la SACU est la valeur FOB, jamais déduite du CIF. Mesuré sur
+      // les 1 500 premières positions sud-africaines, 616 — 41 % — répondent
+      // `VALEUR_FOB_REQUISE` : leur droit de douane devient indisponible. Le
+      // chemin historique, lui, servait un montant. Basculer l'Afrique du Sud
+      // aujourd'hui échangerait donc une préférence manquante contre un droit
+      // manquant, ce qui n'est pas un progrès.
+      //
+      // Deux autres manques tiennent au même périmètre et justifient la même
+      // prudence : les réponses du formulaire de remise kényane
+      // (`remission_eligibility` et ses cinq champs d'autorisation) n'existent
+      // que sur le chemin historique, et `moteurRendCompteDesMesures` ne peut
+      // rien vérifier quand le chemin historique n'a pas été consulté — son
+      // garde devient vide.
+      //
+      // Cette liste s'allonge PAYS PAR PAYS, quand le socle sert ce pays mieux
+      // que l'autre porte et que rien de ce qui précède ne lui manque. Elle ne
+      // se remplace pas par « tous ».
+      const SOCLE_EN_PREMIER = new Set(['TUN', 'MUS']);
+
+      let calculSocle = null;
+      let erreurSocle = null;
+      if (SOCLE_EN_PREMIER.has(destISO3)) {
+        try {
+          calculSocle = (await demanderLeSocle()).data;
+        } catch (socleError) {
+          // Deux refus seulement justifient le repli, et ce sont des ABSENCES,
+          // pas des pannes : 404, la position n'est pas au socle ; 503, le socle
+          // est absent ou périmé et refuse de servir. Tout le reste — 422 de
+          // validation, 500, 401/403, réseau — remonte, comme avant, plutôt que
+          // de dégrader en silence vers une source moins vérifiée.
+          const statut = socleError.response?.status;
+          if (statut !== 404 && statut !== 503) {
+            throw socleError;
+          }
+          erreurSocle = socleError;
+          console.log(`ℹ️ Position absente du socle pour ${destISO3} (${statut}) - repli sur le chemin historique`);
+        }
+      }
+
+      // PRIORITÉ 2 : le chemin historique, quand le socle ne sert pas.
       let authenticResult = null;
       let useAuthenticData = false;
       // Renseignées seulement quand le chemin historique refuse la position
@@ -430,66 +503,69 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
       let mesuresReclamees = [];
       let erreurAuthentique = null;
       
-      try {
-        const remissionEligibility = kenyaRemission.answer === 'no'
-          ? 'NOT_ELIGIBLE'
-          : kenyaRemission.answer === 'yes'
-            ? 'ELIGIBLE_VERIFIED'
-            : 'ELIGIBILITY_UNKNOWN';
-        const authenticResponse = await axios.get(
-          `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}`,
-          {
-            params: {
-              value: parseFloat(value),
-              language,
-              origin: originISO3,
-              remission_eligibility: remissionEligibility,
-              authorization_reference: kenyaRemission.reference || undefined,
-              authorization_valid_from: kenyaRemission.validFrom || undefined,
-              authorization_valid_to: kenyaRemission.validTo || undefined,
-              authorization_hs_codes: kenyaRemission.authorizedTariffLines || undefined,
-              authorization_goods: kenyaRemission.authorizedGoods || undefined,
+      // Le chemin historique n'est CONSULTÉ que si le socle n'a pas servi.
+      if (!calculSocle) {
+        try {
+          const remissionEligibility = kenyaRemission.answer === 'no'
+            ? 'NOT_ELIGIBLE'
+            : kenyaRemission.answer === 'yes'
+              ? 'ELIGIBLE_VERIFIED'
+              : 'ELIGIBILITY_UNKNOWN';
+          const authenticResponse = await axios.get(
+            `${API}/authentic-tariffs/calculate/${destISO3}/${cleanHsCode}`,
+            {
+              params: {
+                value: parseFloat(value),
+                language,
+                origin: originISO3,
+                remission_eligibility: remissionEligibility,
+                authorization_reference: kenyaRemission.reference || undefined,
+                authorization_valid_from: kenyaRemission.validFrom || undefined,
+                authorization_valid_to: kenyaRemission.validTo || undefined,
+                authorization_hs_codes: kenyaRemission.authorizedTariffLines || undefined,
+                authorization_goods: kenyaRemission.authorizedGoods || undefined,
+              },
             },
-          },
-        );
-        authenticResult = authenticResponse.data;
-        useAuthenticData = true;
-        console.log('✅ Using AUTHENTIC tariff data for', destISO3);
-      } catch (authError) {
-        // Un 404 — route absente ou pays/position sans donnée authentique —
-        // est le seul signal qui justifie le repli vers le moteur unifié :
-        // c'est une absence de donnée, pas une panne. Tout le reste (500,
-        // délai dépassé, 401/403, erreur réseau) remonte au `catch` externe
-        // et s'affiche à l'utilisateur, plutôt que de dégrader en silence
-        // vers un calcul qui ignore les avantages fiscaux et les formalités.
-        // Un 422 `CALCULATION_UNAVAILABLE` n'est pas une panne : c'est le
-        // chemin historique qui dit ne pas savoir liquider cette position —
-        // typiquement un droit spécifique (« 8c/kg »), qu'il ne sait pas
-        // calculer faute de paramètre de quantité. Le moteur unique, lui,
-        // le liquide dès qu'on lui donne la quantité. Laisser ce cas remonter
-        // en erreur revenait à refuser un calcul que le dépôt sait faire.
-        //
-        // Le repli reste étroit à dessein : seul ce code d'erreur passe. Un
-        // 422 de validation (valeur CIF invalide) et tout le reste (500,
-        // délai, 401/403, réseau) remontent comme avant.
-        const codeErreur = authError.response?.data?.detail?.code;
-        const calculIndisponible =
-          authError.response?.status === 422 && codeErreur === 'CALCULATION_UNAVAILABLE';
-        if (authError.response?.status !== 404 && !calculIndisponible) {
-          throw authError;
+          );
+          authenticResult = authenticResponse.data;
+          useAuthenticData = true;
+          console.log('✅ Using AUTHENTIC tariff data for', destISO3);
+        } catch (authError) {
+          // Un 404 — route absente ou pays/position sans donnée authentique —
+          // est le seul signal qui justifie le repli vers le moteur unifié :
+          // c'est une absence de donnée, pas une panne. Tout le reste (500,
+          // délai dépassé, 401/403, erreur réseau) remonte au `catch` externe
+          // et s'affiche à l'utilisateur, plutôt que de dégrader en silence
+          // vers un calcul qui ignore les avantages fiscaux et les formalités.
+          // Un 422 `CALCULATION_UNAVAILABLE` n'est pas une panne : c'est le
+          // chemin historique qui dit ne pas savoir liquider cette position —
+          // typiquement un droit spécifique (« 8c/kg »), qu'il ne sait pas
+          // calculer faute de paramètre de quantité. Le moteur unique, lui,
+          // le liquide dès qu'on lui donne la quantité. Laisser ce cas remonter
+          // en erreur revenait à refuser un calcul que le dépôt sait faire.
+          //
+          // Le repli reste étroit à dessein : seul ce code d'erreur passe. Un
+          // 422 de validation (valeur CIF invalide) et tout le reste (500,
+          // délai, 401/403, réseau) remontent comme avant.
+          const codeErreur = authError.response?.data?.detail?.code;
+          const calculIndisponible =
+            authError.response?.status === 422 && codeErreur === 'CALCULATION_UNAVAILABLE';
+          if (authError.response?.status !== 404 && !calculIndisponible) {
+            throw authError;
+          }
+          if (calculIndisponible) {
+            // Ce que l'autre chemin a nommé comme manquant. Le moteur devra en
+            // rendre compte, sinon son total est refusé et l'erreur d'origine
+            // est rétablie — voir `moteurRendCompteDesMesures`.
+            mesuresReclamees = authError.response?.data?.detail?.missing_or_non_ad_valorem_taxes || [];
+            erreurAuthentique = authError;
+          }
+          console.log(
+            calculIndisponible
+              ? `ℹ️ Position non liquidable par le chemin authentique pour ${destISO3} (${(authError.response?.data?.detail?.missing_or_non_ad_valorem_taxes || []).join(', ')}) - passage au moteur unique`
+              : `ℹ️ Authentic tariff data not available for ${destISO3} - falling back to calculated data`
+          );
         }
-        if (calculIndisponible) {
-          // Ce que l'autre chemin a nommé comme manquant. Le moteur devra en
-          // rendre compte, sinon son total est refusé et l'erreur d'origine
-          // est rétablie — voir `moteurRendCompteDesMesures`.
-          mesuresReclamees = authError.response?.data?.detail?.missing_or_non_ad_valorem_taxes || [];
-          erreurAuthentique = authError;
-        }
-        console.log(
-          calculIndisponible
-            ? `ℹ️ Position non liquidable par le chemin authentique pour ${destISO3} (${(authError.response?.data?.detail?.missing_or_non_ad_valorem_taxes || []).join(', ')}) - passage au moteur unique`
-            : `ℹ️ Authentic tariff data not available for ${destISO3} - falling back to calculated data`
-        );
       }
       
       if (useAuthenticData && authenticResult) {
@@ -508,6 +584,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         // Construire le résultat au format compatible
         const transformedResult = {
           origin_country: originCountry,
+          // Code ISO3 de l'origine : la carte des colonnes préférentielles
+          // doit savoir QUEL partenaire est concerné pour écarter celles qui
+          // en nomment un autre.
+          origin_country_iso3: originISO3,
           destination_country: destinationCountry,
           hs_code: cleanHsCode,
           hs6_code: authenticResult.hs6 || cleanHsCode.substring(0, 6),
@@ -515,6 +595,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           
           // Tarifs
           normal_tariff_rate: (rates.dd_rate_pct || 0) / 100,
+          // Droit NPF tel que la source le donne, SANS le `|| 0` ci-dessus :
+          // un droit absent doit rester absent. Comparer une colonne
+          // préférentielle à un zéro de repli ferait passer toute colonne non
+          // nulle pour un désavantage.
+          npf_dd_rate_pct:
+            typeof rates.dd_rate_pct === 'number' && Number.isFinite(rates.dd_rate_pct)
+              ? rates.dd_rate_pct
+              : null,
           normal_tariff_amount: npfCalc.dd?.amount || 0,
           zlecaf_tariff_rate: hasZlecafRate
             ? zlecafAvailability.effectiveRatePct / 100
@@ -729,20 +817,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         // montants sur un profil générique. Aucun repli supplémentaire —
         // une erreur ici remonte au `catch` externe et s'affiche, elle ne
         // bascule pas silencieusement vers une autre source.
-        const calculResponse = await axios.post(`${API}/calcul`, buildCalculRequestBody({
-          destinationISO3: destISO3,
-          originISO3,
-          hsCode: cleanHsCode,
-          cifValue: parseFloat(value),
-          // `parseFloat('')` rend NaN : `buildCalculRequestBody` l'écarte, et
-          // le moteur continue de réclamer la quantité au lieu de liquider
-          // le droit spécifique à zéro. Une quantité saisie pour une AUTRE
-          // position est écartée de la même façon.
-          quantite: quantityFor === `${destISO3}|${cleanHsCode}`
-            ? parseFloat(quantity)
-            : NaN,
-        }));
-        const calcul = calculResponse.data;
+        // DEUX CHEMINS ARRIVENT ICI, ET IL FAUT LES DISTINGUER.
+        //
+        // Pour un pays de `SOCLE_EN_PREMIER`, le socle a DÉJÀ été interrogé
+        // plus haut : s'il n'a rien rendu, c'est que les deux portes ont
+        // refusé, et l'erreur du socle reprend sa place plutôt qu'un écran
+        // vide. Pour tous les autres pays, il n'a PAS encore été consulté —
+        // c'est ici, après le refus du chemin historique, que sa réponse est
+        // demandée, exactement comme avant ce lot. Aucun repli
+        // supplémentaire : une erreur remonte au `catch` externe et s'affiche,
+        // elle ne bascule pas en silence vers une autre source.
+        if (!calculSocle) {
+          if (erreurSocle) {
+            throw erreurSocle;
+          }
+          calculSocle = (await demanderLeSocle()).data;
+        }
+        const calcul = calculSocle;
         // Un refus honnête ne se remplace pas par un total amputé. Si le
         // moteur ne dit rien d'une mesure que l'autre chemin réclamait, sa
         // réponse est écartée et l'erreur d'origine reprend sa place.
@@ -783,6 +874,30 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           setSubPositions(subPosResponse.data);
         } catch (subPosError) {
           setSubPositions(null);
+        }
+        // LES FORMALITÉS SURVIVENT AU CHANGEMENT DE PRIORITÉ.
+        //
+        // Le socle porte des MONTANTS, pas les formalités administratives.
+        // Basculer sur lui sans plus rien demander les aurait fait disparaître
+        // pour les 40 pays que l'autre chemin servait — une régression de
+        // produit déguisée en gain de rigueur. Elles sont donc redemandées
+        // ici, en annexe, comme les sous-positions : un manque y reste
+        // silencieux, parce qu'une formalité absente n'est pas un montant faux.
+        //
+        // Les « avantages fiscaux » du même chemin, eux, ne sont PAS repris :
+        // voir le commentaire sur `fiscal_advantages` plus bas.
+        try {
+          const formalitesResponse = await axios.get(
+            `${API}/authentic-tariffs/country/${destISO3}/formalities/${cleanHsCode}?language=${language}`
+          );
+          const formalites = formalitesResponse.data?.formalities || [];
+          if (formalites.length > 0) {
+            setResult((precedent) => (precedent
+              ? { ...precedent, administrative_formalities: formalites }
+              : precedent));
+          }
+        } catch (formalitesError) {
+          // Silencieux : une formalité absente n'est pas un montant faux.
         }
         try {
           const hs6Response = await axios.get(`${API}/hs6-tariffs/code/${hs6}?language=${language}`);
@@ -1916,37 +2031,110 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             );
           })()}
 
-          {/* Avantages ZLECAf */}
-          {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
-            <Card className="bg-gradient-to-br from-emerald-900/20 to-slate-800/50 border-emerald-500/30">
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
-                    <Shield className="w-5 h-5 text-emerald-400" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg text-white">{language === 'fr' ? 'Avantages ZLECAf' : 'AfCFTA Advantages'}</CardTitle>
-                    <CardDescription className="text-emerald-400/60">
-                      {language === 'fr' ? 'Exonérations applicables' : 'Applicable exemptions'}
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {result.fiscal_advantages.map((adv, idx) => (
-                    <div 
-                      key={idx}
-                      className="flex items-center gap-3 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20"
-                    >
-                      <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0" />
-                      <span className="text-slate-300">{adv.condition_fr || adv.condition_en}</span>
+          {/* ── COLONNES PRÉFÉRENTIELLES PUBLIÉES PAR LE TARIF DE DESTINATION ──
+              `fiscal_advantages` porte TOUTES les colonnes que le tarif de
+              destination publie, quel que soit le partenaire : pour la
+              Tunisie, le Koweït, la Palestine, l'Union européenne, la
+              Turquie... Les afficher toutes sous un titre « Avantages ZLECAf »,
+              avec un coche vert et sans le taux, disait trois choses fausses —
+              le partenaire, le régime, et le sens de la colonne (sur
+              TUN/27101981100, droit NPF 0 %, les colonnes nommées valent 50 %).
+              On ne retient donc que celles qui nomment l'origine choisie ; les
+              autres sont comptées et déclarées, jamais nommées ni affichées. */}
+          {(() => {
+            const tri = trierAvantages(
+              result.fiscal_advantages,
+              result.origin_country_iso3 || result.origin_country || originCountry,
+              result.npf_dd_rate_pct ?? null,
+            );
+            const retenus = [...tri.pourLOrigine, ...tri.generaux];
+            if (retenus.length === 0 && tri.autresPartenaires === 0) return null;
+            const origineNom = getCountryName(
+              result.origin_country_iso3 || result.origin_country || originCountry,
+            );
+            return (
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-slate-700/40 rounded-lg border border-slate-600">
+                      <Shield className="w-5 h-5 text-slate-300" />
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
+                    <div>
+                      <CardTitle className="text-lg text-white">
+                        {language === 'fr'
+                          ? 'Colonnes préférentielles publiées'
+                          : 'Published preferential columns'}
+                      </CardTitle>
+                      <CardDescription className="text-slate-400">
+                        {language === 'fr'
+                          ? `Tarif de destination, colonnes au nom de ${origineNom} — montrées, jamais appliquées`
+                          : `Destination tariff, columns named for ${origineNom} — shown, never applied`}
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {retenus.map((entree, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 p-3 bg-slate-900/40 rounded-lg border border-slate-700"
+                      >
+                        {entree.reduitLeDroit === true ? (
+                          <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                        ) : (
+                          <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
+                        )}
+                        <div className="min-w-0">
+                          <div className="text-slate-200">
+                            {entree.libelle}
+                            {entree.taux !== null && (
+                              <span className="ml-2 font-mono text-white">
+                                {entree.taux} %
+                              </span>
+                            )}
+                          </div>
+                          {entree.reduitLeDroit === false && (
+                            <div className="text-xs text-amber-400/80 mt-1">
+                              {language === 'fr'
+                                ? `Cette colonne ne réduit pas le droit NPF de la position (${result.npf_dd_rate_pct} %).`
+                                : `This column does not reduce the position's MFN duty (${result.npf_dd_rate_pct}%).`}
+                            </div>
+                          )}
+                          {entree.taux === null && (
+                            <div className="text-xs text-slate-500 mt-1">
+                              {language === 'fr'
+                                ? 'Taux non donné par la source.'
+                                : 'Rate not given by the source.'}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {retenus.length === 0 && (
+                    <p className="text-sm text-slate-400">
+                      {language === 'fr'
+                        ? `Le tarif de destination ne publie aucune colonne au nom de ${origineNom} sur cette position.`
+                        : `The destination tariff publishes no column named for ${origineNom} on this position.`}
+                    </p>
+                  )}
+                  {tri.autresPartenaires > 0 && (
+                    <p className="text-xs text-slate-500 mt-3 border-t border-slate-700 pt-2">
+                      {language === 'fr'
+                        ? `${tri.autresPartenaires} autre(s) colonne(s) préférentielle(s) publiée(s) sur cette position concernent d'autres partenaires : elles ne s'appliquent pas à une importation en provenance de ${origineNom} et ne sont pas affichées.`
+                        : `${tri.autresPartenaires} other preferential column(s) published on this position concern other partners: they do not apply to an import from ${origineNom} and are not shown.`}
+                    </p>
+                  )}
+                  <p className="text-xs text-slate-500 mt-2">
+                    {language === 'fr'
+                      ? "Colonnes telles que le tarif de destination les publie. La franchise reste subordonnée aux règles d'origine de l'accord, que ce moteur ne vérifie pas : le certificat d'origine reste à produire."
+                      : 'Columns as published by the destination tariff. Relief remains subject to the agreement\'s rules of origin, which this engine does not verify: the certificate of origin is still required.'}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })()}
 
           {/* Composition du coût réglementaire : droits & taxes publics + frais de
               formalité et de prestataire (lignes séparées). Les frais documentés
