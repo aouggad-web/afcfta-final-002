@@ -38,6 +38,7 @@ import RegulatoryCostBreakdown from './RegulatoryCostBreakdown';
 import RegulatoryReportedIndications from './RegulatoryReportedIndications';
 import { normalizeTaxesDetail } from './taxesDetail';
 import { buildCalculRequestBody, mapCalculToLegacyResult, moteurRendCompteDesMesures } from './unifiedCalculator';
+import { trierAvantages } from './avantagesFiscaux';
 import {
   effectiveTaxRateFromSteps,
   isCustomsDutyTax,
@@ -583,6 +584,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         // Construire le résultat au format compatible
         const transformedResult = {
           origin_country: originCountry,
+          // Code ISO3 de l'origine : la carte des colonnes préférentielles
+          // doit savoir QUEL partenaire est concerné pour écarter celles qui
+          // en nomment un autre.
+          origin_country_iso3: originISO3,
           destination_country: destinationCountry,
           hs_code: cleanHsCode,
           hs6_code: authenticResult.hs6 || cleanHsCode.substring(0, 6),
@@ -590,6 +595,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           
           // Tarifs
           normal_tariff_rate: (rates.dd_rate_pct || 0) / 100,
+          // Droit NPF tel que la source le donne, SANS le `|| 0` ci-dessus :
+          // un droit absent doit rester absent. Comparer une colonne
+          // préférentielle à un zéro de repli ferait passer toute colonne non
+          // nulle pour un désavantage.
+          npf_dd_rate_pct:
+            typeof rates.dd_rate_pct === 'number' && Number.isFinite(rates.dd_rate_pct)
+              ? rates.dd_rate_pct
+              : null,
           normal_tariff_amount: npfCalc.dd?.amount || 0,
           zlecaf_tariff_rate: hasZlecafRate
             ? zlecafAvailability.effectiveRatePct / 100
@@ -2018,37 +2031,110 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             );
           })()}
 
-          {/* Avantages ZLECAf */}
-          {result.fiscal_advantages && result.fiscal_advantages.length > 0 && (
-            <Card className="bg-gradient-to-br from-emerald-900/20 to-slate-800/50 border-emerald-500/30">
-              <CardHeader className="pb-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
-                    <Shield className="w-5 h-5 text-emerald-400" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-lg text-white">{language === 'fr' ? 'Avantages ZLECAf' : 'AfCFTA Advantages'}</CardTitle>
-                    <CardDescription className="text-emerald-400/60">
-                      {language === 'fr' ? 'Exonérations applicables' : 'Applicable exemptions'}
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {result.fiscal_advantages.map((adv, idx) => (
-                    <div 
-                      key={idx}
-                      className="flex items-center gap-3 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/20"
-                    >
-                      <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0" />
-                      <span className="text-slate-300">{adv.condition_fr || adv.condition_en}</span>
+          {/* ── COLONNES PRÉFÉRENTIELLES PUBLIÉES PAR LE TARIF DE DESTINATION ──
+              `fiscal_advantages` porte TOUTES les colonnes que le tarif de
+              destination publie, quel que soit le partenaire : pour la
+              Tunisie, le Koweït, la Palestine, l'Union européenne, la
+              Turquie... Les afficher toutes sous un titre « Avantages ZLECAf »,
+              avec un coche vert et sans le taux, disait trois choses fausses —
+              le partenaire, le régime, et le sens de la colonne (sur
+              TUN/27101981100, droit NPF 0 %, les colonnes nommées valent 50 %).
+              On ne retient donc que celles qui nomment l'origine choisie ; les
+              autres sont comptées et déclarées, jamais nommées ni affichées. */}
+          {(() => {
+            const tri = trierAvantages(
+              result.fiscal_advantages,
+              result.origin_country_iso3 || result.origin_country || originCountry,
+              result.npf_dd_rate_pct ?? null,
+            );
+            const retenus = [...tri.pourLOrigine, ...tri.generaux];
+            if (retenus.length === 0 && tri.autresPartenaires === 0) return null;
+            const origineNom = getCountryName(
+              result.origin_country_iso3 || result.origin_country || originCountry,
+            );
+            return (
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardHeader className="pb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-slate-700/40 rounded-lg border border-slate-600">
+                      <Shield className="w-5 h-5 text-slate-300" />
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
+                    <div>
+                      <CardTitle className="text-lg text-white">
+                        {language === 'fr'
+                          ? 'Colonnes préférentielles publiées'
+                          : 'Published preferential columns'}
+                      </CardTitle>
+                      <CardDescription className="text-slate-400">
+                        {language === 'fr'
+                          ? `Tarif de destination, colonnes au nom de ${origineNom} — montrées, jamais appliquées`
+                          : `Destination tariff, columns named for ${origineNom} — shown, never applied`}
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    {retenus.map((entree, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 p-3 bg-slate-900/40 rounded-lg border border-slate-700"
+                      >
+                        {entree.reduitLeDroit === true ? (
+                          <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+                        ) : (
+                          <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
+                        )}
+                        <div className="min-w-0">
+                          <div className="text-slate-200">
+                            {entree.libelle}
+                            {entree.taux !== null && (
+                              <span className="ml-2 font-mono text-white">
+                                {entree.taux} %
+                              </span>
+                            )}
+                          </div>
+                          {entree.reduitLeDroit === false && (
+                            <div className="text-xs text-amber-400/80 mt-1">
+                              {language === 'fr'
+                                ? `Cette colonne ne réduit pas le droit NPF de la position (${result.npf_dd_rate_pct} %).`
+                                : `This column does not reduce the position's MFN duty (${result.npf_dd_rate_pct}%).`}
+                            </div>
+                          )}
+                          {entree.taux === null && (
+                            <div className="text-xs text-slate-500 mt-1">
+                              {language === 'fr'
+                                ? 'Taux non donné par la source.'
+                                : 'Rate not given by the source.'}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {retenus.length === 0 && (
+                    <p className="text-sm text-slate-400">
+                      {language === 'fr'
+                        ? `Le tarif de destination ne publie aucune colonne au nom de ${origineNom} sur cette position.`
+                        : `The destination tariff publishes no column named for ${origineNom} on this position.`}
+                    </p>
+                  )}
+                  {tri.autresPartenaires > 0 && (
+                    <p className="text-xs text-slate-500 mt-3 border-t border-slate-700 pt-2">
+                      {language === 'fr'
+                        ? `${tri.autresPartenaires} autre(s) colonne(s) préférentielle(s) publiée(s) sur cette position concernent d'autres partenaires : elles ne s'appliquent pas à une importation en provenance de ${origineNom} et ne sont pas affichées.`
+                        : `${tri.autresPartenaires} other preferential column(s) published on this position concern other partners: they do not apply to an import from ${origineNom} and are not shown.`}
+                    </p>
+                  )}
+                  <p className="text-xs text-slate-500 mt-2">
+                    {language === 'fr'
+                      ? "Colonnes telles que le tarif de destination les publie. La franchise reste subordonnée aux règles d'origine de l'accord, que ce moteur ne vérifie pas : le certificat d'origine reste à produire."
+                      : 'Columns as published by the destination tariff. Relief remains subject to the agreement\'s rules of origin, which this engine does not verify: the certificate of origin is still required.'}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })()}
 
           {/* Composition du coût réglementaire : droits & taxes publics + frais de
               formalité et de prestataire (lignes séparées). Les frais documentés
