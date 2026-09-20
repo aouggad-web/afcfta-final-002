@@ -171,18 +171,18 @@
     {
       "id": "dza-dd-absent",
       "country": "DZA",
-      "hs_code": "1001110000",
-      "defect": "La ligne source ne porte aucun droit de douane (seulement TCS 3 % et PRCT 2 %). Le chemin prioritaire lève `TypeError: '>' not supported between instances of 'NoneType' and 'int'` ; le POST rend 0 tout en signalant `duty_status=UNAVAILABLE`.",
+      "hs_code": "9810100000",
+      "defect": "La ligne source ne porte aucun droit de douane (seulement TCS 3 % et PRCT 2 %). Le chemin prioritaire levait `TypeError: '>' not supported between instances of 'NoneType' and 'int'` ; le POST rendait 0 tout en signalant `duty_status=UNAVAILABLE`.",
       "plan_item": "2.1 — `null` ni transformé en 0 ni converti en exception",
       "source_of_truth": {
         "expected_dd_rate_pct": null,
         "file": "backend/data/crawled/DZA_tariffs.json",
         "locator": {
           "kind": "crawled_tax_absent",
-          "code": "1001110000",
+          "code": "9810100000",
           "tax_code": "DD"
         },
-        "note": "Absence de droit dans la source. Ce n'est ni une exonération prouvée ni un droit de 0 %."
+        "note": "Aucun droit de douane publié, et ce n'en est pas une lacune : la position relève du chapitre 98 du tarif algérien, que la nomenclature intitule « Effets personnels » — effets du voyageur et marchandises admises temporairement pour exposition. Ce chapitre ne classe pas des marchandises importées à titre commercial et ne perçoit aucun droit ; il perçoit en revanche T.C.S 3 % et PRCT 2 %. Ni exonération prouvée, ni droit de 0 % : la question du droit ne s'y pose pas."
       },
       "observed": {
         "priority": {
@@ -202,7 +202,8 @@
         "note": "Droit déclaré indisponible sur les deux chemins, sans exception et sans zéro fabriqué."
       },
       "status": "defect_open",
-      "priority_dd_matches_source": false
+      "priority_dd_matches_source": false,
+      "historique": "Ce cas portait auparavant DZA/1001110000, blé dur de semence. L'exemple était mal choisi, et c'est le portail officiel qui l'a montré : le droit N'ÉTAIT PAS absent du tarif, il était absent du MIROIR conformepro.dz, dont la collecte algérienne provient et qui ne publie aucun bloc « Droit de douane » quand celui-ci vaut zéro. L'e-service DGD le donne à 0,00 %. Les 299 positions touchées ont été relues à la source primaire : 296 portent un droit publié à 0 %, et les trois autres relèvent du chapitre « Effets personnels ». Le cas est reporté sur l'une d'elles : elle exerce toujours le chemin d'un droit absent — un `null` ne doit devenir ni 0 ni exception — sans faire croire à une lacune de collecte."
     },
     {
       "id": "eth-ligne-hors-canonique",

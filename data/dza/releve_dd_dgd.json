@@ -1,0 +1,1791 @@
+{
+ "source": "douane.gov.dz — Tarif douanier (e-service DGD)",
+ "source_root_url": "https://www.douane.gov.dz/spip.php?page=tarif_douanier",
+ "releve_le": null,
+ "motif": "Droit relu à la source primaire (e-service DGD). Le miroir conformepro.dz, dont provient le reste de cette ligne, ne publie aucun bloc « Droit de douane » quand celui-ci vaut zéro : le taux n'était pas absent du tarif, il était absent du miroir.",
+ "positions_relues": 299,
+ "droits_verses": 296,
+ "sans_droit_a_la_source": [
+  "9800000000",
+  "9810100000",
+  "9810200000"
+ ],
+ "droits": {
+  "1001110000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=02&chapitre=10&range=01&position=110000&sous_position=1001110000"
+  },
+  "1001911000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=02&chapitre=10&range=01&position=911000&sous_position=1001911000"
+  },
+  "1001919000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=02&chapitre=10&range=01&position=919000&sous_position=1001919000"
+  },
+  "1201901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=02&chapitre=12&range=01&position=901000&sous_position=1201901000"
+  },
+  "1205109100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=02&chapitre=12&range=05&position=109100&sous_position=1205109100"
+  },
+  "1206009100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=02&chapitre=12&range=06&position=009100&sous_position=1206009100"
+  },
+  "2709001100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=09&position=001100&sous_position=2709001100"
+  },
+  "2709001200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=09&position=001200&sous_position=2709001200"
+  },
+  "2709001900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=09&position=001900&sous_position=2709001900"
+  },
+  "2710122100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=122100&sous_position=2710122100"
+  },
+  "2710122210": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=122210&sous_position=2710122210"
+  },
+  "2710122290": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=122290&sous_position=2710122290"
+  },
+  "2710122300": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=122300&sous_position=2710122300"
+  },
+  "2710122400": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=122400&sous_position=2710122400"
+  },
+  "2710122500": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=122500&sous_position=2710122500"
+  },
+  "2710122900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=122900&sous_position=2710122900"
+  },
+  "2710194100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=194100&sous_position=2710194100"
+  },
+  "2710194200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=194200&sous_position=2710194200"
+  },
+  "2710194300": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=194300&sous_position=2710194300"
+  },
+  "2710194400": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=194400&sous_position=2710194400"
+  },
+  "2710194500": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=194500&sous_position=2710194500"
+  },
+  "2710194600": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=194600&sous_position=2710194600"
+  },
+  "2710194910": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=194910&sous_position=2710194910"
+  },
+  "2710194920": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=194920&sous_position=2710194920"
+  },
+  "2710194990": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=194990&sous_position=2710194990"
+  },
+  "2710202000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=10&position=202000&sous_position=2710202000"
+  },
+  "2711122100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=122100&sous_position=2711122100"
+  },
+  "2711122900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=122900&sous_position=2711122900"
+  },
+  "2711132100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=132100&sous_position=2711132100"
+  },
+  "2711132900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=132900&sous_position=2711132900"
+  },
+  "2711142100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=142100&sous_position=2711142100"
+  },
+  "2711142200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=142200&sous_position=2711142200"
+  },
+  "2711142300": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=142300&sous_position=2711142300"
+  },
+  "2711192100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=192100&sous_position=2711192100"
+  },
+  "2711192900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=192900&sous_position=2711192900"
+  },
+  "2711292100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=292100&sous_position=2711292100"
+  },
+  "2711292910": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=292910&sous_position=2711292910"
+  },
+  "2711292920": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=292920&sous_position=2711292920"
+  },
+  "2711292990": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=11&position=292990&sous_position=2711292990"
+  },
+  "2712102100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=12&position=102100&sous_position=2712102100"
+  },
+  "2712102900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=12&position=102900&sous_position=2712102900"
+  },
+  "2712202100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=12&position=202100&sous_position=2712202100"
+  },
+  "2712202900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=12&position=202900&sous_position=2712202900"
+  },
+  "2712902000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=12&position=902000&sous_position=2712902000"
+  },
+  "2712904000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=12&position=904000&sous_position=2712904000"
+  },
+  "2712909100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=12&position=909100&sous_position=2712909100"
+  },
+  "2712909200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=12&position=909200&sous_position=2712909200"
+  },
+  "2712909900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=12&position=909900&sous_position=2712909900"
+  },
+  "2713112000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=13&position=112000&sous_position=2713112000"
+  },
+  "2713122000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=13&position=122000&sous_position=2713122000"
+  },
+  "2713202000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=13&position=202000&sous_position=2713202000"
+  },
+  "2713902100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=13&position=902100&sous_position=2713902100"
+  },
+  "2713902990": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=13&position=902990&sous_position=2713902990"
+  },
+  "2714102000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=14&position=102000&sous_position=2714102000"
+  },
+  "2714104000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=14&position=104000&sous_position=2714104000"
+  },
+  "2714902100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=14&position=902100&sous_position=2714902100"
+  },
+  "2714902910": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=14&position=902910&sous_position=2714902910"
+  },
+  "2714902920": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=14&position=902920&sous_position=2714902920"
+  },
+  "2715002000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=15&position=002000&sous_position=2715002000"
+  },
+  "2715004000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=15&position=004000&sous_position=2715004000"
+  },
+  "2715009100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=15&position=009100&sous_position=2715009100"
+  },
+  "2715009200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=15&position=009200&sous_position=2715009200"
+  },
+  "2715009900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=05&chapitre=27&range=15&position=009900&sous_position=2715009900"
+  },
+  "3002411000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=06&chapitre=30&range=02&position=411000&sous_position=3002411000"
+  },
+  "3002419000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=06&chapitre=30&range=02&position=419000&sous_position=3002419000"
+  },
+  "3006910000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=06&chapitre=30&range=06&position=910000&sous_position=3006910000"
+  },
+  "3403111000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=06&chapitre=34&range=03&position=111000&sous_position=3403111000"
+  },
+  "3403191000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=06&chapitre=34&range=03&position=191000&sous_position=3403191000"
+  },
+  "4014100000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=07&chapitre=40&range=14&position=100000&sous_position=4014100000"
+  },
+  "6602001000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=12&chapitre=66&range=02&position=001000&sous_position=6602001000"
+  },
+  "7108200000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=14&chapitre=71&range=08&position=200000&sous_position=7108200000"
+  },
+  "8421291000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=16&chapitre=84&range=21&position=291000&sous_position=8421291000"
+  },
+  "8470502110": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=16&chapitre=84&range=70&position=502110&sous_position=8470502110"
+  },
+  "8470502190": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=16&chapitre=84&range=70&position=502190&sous_position=8470502190"
+  },
+  "8472902000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=16&chapitre=84&range=72&position=902000&sous_position=8472902000"
+  },
+  "8524117000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=16&chapitre=85&range=24&position=117000&sous_position=8524117000"
+  },
+  "8524127000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=16&chapitre=85&range=24&position=127000&sous_position=8524127000"
+  },
+  "8524197000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=16&chapitre=85&range=24&position=197000&sous_position=8524197000"
+  },
+  "8524917000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=16&chapitre=85&range=24&position=917000&sous_position=8524917000"
+  },
+  "8524927000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=16&chapitre=85&range=24&position=927000&sous_position=8524927000"
+  },
+  "8524997000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=16&chapitre=85&range=24&position=997000&sous_position=8524997000"
+  },
+  "8701211000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=01&position=211000&sous_position=8701211000"
+  },
+  "8701221000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=01&position=221000&sous_position=8701221000"
+  },
+  "8701231000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=01&position=231000&sous_position=8701231000"
+  },
+  "8701241000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=01&position=241000&sous_position=8701241000"
+  },
+  "8701291000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=01&position=291000&sous_position=8701291000"
+  },
+  "8702101000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=02&position=101000&sous_position=8702101000"
+  },
+  "8702201000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=02&position=201000&sous_position=8702201000"
+  },
+  "8703211000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": "*Lf2010 telex 01/DGD/D042/010 du 05/01/2010",
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=211000&sous_position=8703211000"
+  },
+  "8703221000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": "*lf2010 telex 01/DGD/D042/010 du 05/01/2010",
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=221000&sous_position=8703221000"
+  },
+  "8703231100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": "*lf2010 telex 01/DGD/D042/010 du 05/01/2010",
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=231100&sous_position=8703231100"
+  },
+  "8703231200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": "*lf2010 telex 01/DGD/D042/010 du 05/01/2010",
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=231200&sous_position=8703231200"
+  },
+  "8703241000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": "*lf2010 telex 01/DGD/D042/010 du 05/01/2010",
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=241000&sous_position=8703241000"
+  },
+  "8703311000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": "*lf2010 telex 01/DGD/D042/010 du 05/01/2010",
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=311000&sous_position=8703311000"
+  },
+  "8703321000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": "*lf2010 telex 01/DGD/D042/010 du 05/01/2010",
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=321000&sous_position=8703321000"
+  },
+  "8703331000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": "*lf2010 telex 01/DGD/D042/010 du 05/01/2010",
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=331000&sous_position=8703331000"
+  },
+  "8703401100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=401100&sous_position=8703401100"
+  },
+  "8703402100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=402100&sous_position=8703402100"
+  },
+  "8703403110": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=403110&sous_position=8703403110"
+  },
+  "8703403120": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=403120&sous_position=8703403120"
+  },
+  "8703404100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=404100&sous_position=8703404100"
+  },
+  "8703501100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=501100&sous_position=8703501100"
+  },
+  "8703502100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=502100&sous_position=8703502100"
+  },
+  "8703503100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=503100&sous_position=8703503100"
+  },
+  "8703601100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=601100&sous_position=8703601100"
+  },
+  "8703602100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=602100&sous_position=8703602100"
+  },
+  "8703603110": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=603110&sous_position=8703603110"
+  },
+  "8703603120": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=603120&sous_position=8703603120"
+  },
+  "8703604100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=604100&sous_position=8703604100"
+  },
+  "8703701100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=701100&sous_position=8703701100"
+  },
+  "8703702100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=702100&sous_position=8703702100"
+  },
+  "8703703100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=03&position=703100&sous_position=8703703100"
+  },
+  "8704211000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=04&position=211000&sous_position=8704211000"
+  },
+  "8704221000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=04&position=221000&sous_position=8704221000"
+  },
+  "8704231000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=04&position=231000&sous_position=8704231000"
+  },
+  "8704411000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=04&position=411000&sous_position=8704411000"
+  },
+  "8704421000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=04&position=421000&sous_position=8704421000"
+  },
+  "8704431000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=04&position=431000&sous_position=8704431000"
+  },
+  "8708401100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": "*LFC2010 telex 316/DGD/D0421/10 du 13/09/2010",
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=08&position=401100&sous_position=8708401100"
+  },
+  "8710001000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=10&position=001000&sous_position=8710001000"
+  },
+  "8710002000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=10&position=002000&sous_position=8710002000"
+  },
+  "8710009000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=10&position=009000&sous_position=8710009000"
+  },
+  "8713100000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=13&position=100000&sous_position=8713100000"
+  },
+  "8713901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=13&position=901000&sous_position=8713901000"
+  },
+  "8713909000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=13&position=909000&sous_position=8713909000"
+  },
+  "8714200000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=87&range=14&position=200000&sous_position=8714200000"
+  },
+  "8802110000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=02&position=110000&sous_position=8802110000"
+  },
+  "8802120000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=02&position=120000&sous_position=8802120000"
+  },
+  "8802200000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=02&position=200000&sous_position=8802200000"
+  },
+  "8802300000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=02&position=300000&sous_position=8802300000"
+  },
+  "8802400000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=02&position=400000&sous_position=8802400000"
+  },
+  "8802601000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=02&position=601000&sous_position=8802601000"
+  },
+  "8802602000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=02&position=602000&sous_position=8802602000"
+  },
+  "8804001000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=04&position=001000&sous_position=8804001000"
+  },
+  "8804002000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=04&position=002000&sous_position=8804002000"
+  },
+  "8804003000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=04&position=003000&sous_position=8804003000"
+  },
+  "8804004000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=04&position=004000&sous_position=8804004000"
+  },
+  "8805101000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=05&position=101000&sous_position=8805101000"
+  },
+  "8805109000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=05&position=109000&sous_position=8805109000"
+  },
+  "8805210000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=05&position=210000&sous_position=8805210000"
+  },
+  "8805291000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=05&position=291000&sous_position=8805291000"
+  },
+  "8805299000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=05&position=299000&sous_position=8805299000"
+  },
+  "8806100000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=100000&sous_position=8806100000"
+  },
+  "8806219000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=219000&sous_position=8806219000"
+  },
+  "8806229000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=229000&sous_position=8806229000"
+  },
+  "8806239000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=239000&sous_position=8806239000"
+  },
+  "8806249000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=249000&sous_position=8806249000"
+  },
+  "8806299000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=299000&sous_position=8806299000"
+  },
+  "8806919000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=919000&sous_position=8806919000"
+  },
+  "8806929000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=929000&sous_position=8806929000"
+  },
+  "8806939000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=939000&sous_position=8806939000"
+  },
+  "8806949000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=949000&sous_position=8806949000"
+  },
+  "8806999000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=06&position=999000&sous_position=8806999000"
+  },
+  "8807100000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=07&position=100000&sous_position=8807100000"
+  },
+  "8807200000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=07&position=200000&sous_position=8807200000"
+  },
+  "8807300000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=07&position=300000&sous_position=8807300000"
+  },
+  "8807901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=07&position=901000&sous_position=8807901000"
+  },
+  "8807902000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=07&position=902000&sous_position=8807902000"
+  },
+  "8807903000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=07&position=903000&sous_position=8807903000"
+  },
+  "8807909000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=88&range=07&position=909000&sous_position=8807909000"
+  },
+  "8901101000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=01&position=101000&sous_position=8901101000"
+  },
+  "8901102000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=01&position=102000&sous_position=8901102000"
+  },
+  "8901201000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=01&position=201000&sous_position=8901201000"
+  },
+  "8901202000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=01&position=202000&sous_position=8901202000"
+  },
+  "8901203000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=01&position=203000&sous_position=8901203000"
+  },
+  "8901209000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=01&position=209000&sous_position=8901209000"
+  },
+  "8901300000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=01&position=300000&sous_position=8901300000"
+  },
+  "8901901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=01&position=901000&sous_position=8901901000"
+  },
+  "8901909000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=01&position=909000&sous_position=8901909000"
+  },
+  "8904001000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=04&position=001000&sous_position=8904001000"
+  },
+  "8904002000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=04&position=002000&sous_position=8904002000"
+  },
+  "8905100000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=05&position=100000&sous_position=8905100000"
+  },
+  "8905201000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=05&position=201000&sous_position=8905201000"
+  },
+  "8905202000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=05&position=202000&sous_position=8905202000"
+  },
+  "8905901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=05&position=901000&sous_position=8905901000"
+  },
+  "8905902000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=05&position=902000&sous_position=8905902000"
+  },
+  "8905903000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=05&position=903000&sous_position=8905903000"
+  },
+  "8905904000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=05&position=904000&sous_position=8905904000"
+  },
+  "8905909000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=05&position=909000&sous_position=8905909000"
+  },
+  "8906100000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=06&position=100000&sous_position=8906100000"
+  },
+  "8906901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=06&position=901000&sous_position=8906901000"
+  },
+  "8906902000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=06&position=902000&sous_position=8906902000"
+  },
+  "8906903000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=06&position=903000&sous_position=8906903000"
+  },
+  "8906909100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=06&position=909100&sous_position=8906909100"
+  },
+  "8906909900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=06&position=909900&sous_position=8906909900"
+  },
+  "8907100000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=07&position=100000&sous_position=8907100000"
+  },
+  "8907901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=07&position=901000&sous_position=8907901000"
+  },
+  "8907902000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=07&position=902000&sous_position=8907902000"
+  },
+  "8907903000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=07&position=903000&sous_position=8907903000"
+  },
+  "8907904000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=07&position=904000&sous_position=8907904000"
+  },
+  "8907909000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=07&position=909000&sous_position=8907909000"
+  },
+  "8908000000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=17&chapitre=89&range=08&position=000000&sous_position=8908000000"
+  },
+  "9018901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=18&position=901000&sous_position=9018901000"
+  },
+  "9018903000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=18&position=903000&sous_position=9018903000"
+  },
+  "9018905000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=18&position=905000&sous_position=9018905000"
+  },
+  "9021101000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=101000&sous_position=9021101000"
+  },
+  "9021102000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=102000&sous_position=9021102000"
+  },
+  "9021103000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=103000&sous_position=9021103000"
+  },
+  "9021291000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=291000&sous_position=9021291000"
+  },
+  "9021292000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=292000&sous_position=9021292000"
+  },
+  "9021299000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=299000&sous_position=9021299000"
+  },
+  "9021310000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=310000&sous_position=9021310000"
+  },
+  "9021391000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=391000&sous_position=9021391000"
+  },
+  "9021392000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=392000&sous_position=9021392000"
+  },
+  "9021393000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=393000&sous_position=9021393000"
+  },
+  "9021400000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=400000&sous_position=9021400000"
+  },
+  "9021500000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=500000&sous_position=9021500000"
+  },
+  "9021900000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=18&chapitre=90&range=21&position=900000&sous_position=9021900000"
+  },
+  "9301101000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=101000&sous_position=9301101000"
+  },
+  "9301109000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=109000&sous_position=9301109000"
+  },
+  "9301200000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=200000&sous_position=9301200000"
+  },
+  "9301901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=901000&sous_position=9301901000"
+  },
+  "9301902100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=902100&sous_position=9301902100"
+  },
+  "9301902200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=902200&sous_position=9301902200"
+  },
+  "9301902300": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=902300&sous_position=9301902300"
+  },
+  "9301902900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=902900&sous_position=9301902900"
+  },
+  "9301903000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=903000&sous_position=9301903000"
+  },
+  "9301904100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=904100&sous_position=9301904100"
+  },
+  "9301904900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=904900&sous_position=9301904900"
+  },
+  "9301909000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=01&position=909000&sous_position=9301909000"
+  },
+  "9302001000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=02&position=001000&sous_position=9302001000"
+  },
+  "9302002100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=02&position=002100&sous_position=9302002100"
+  },
+  "9302002900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=02&position=002900&sous_position=9302002900"
+  },
+  "9302003000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=02&position=003000&sous_position=9302003000"
+  },
+  "9305101000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=101000&sous_position=9305101000"
+  },
+  "9305102000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=102000&sous_position=9305102000"
+  },
+  "9305103000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=103000&sous_position=9305103000"
+  },
+  "9305104000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=104000&sous_position=9305104000"
+  },
+  "9305105000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=105000&sous_position=9305105000"
+  },
+  "9305106000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=106000&sous_position=9305106000"
+  },
+  "9305107000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=107000&sous_position=9305107000"
+  },
+  "9305108000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=108000&sous_position=9305108000"
+  },
+  "9305109000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=109000&sous_position=9305109000"
+  },
+  "9305911100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=911100&sous_position=9305911100"
+  },
+  "9305911200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=911200&sous_position=9305911200"
+  },
+  "9305911300": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=911300&sous_position=9305911300"
+  },
+  "9305911400": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=911400&sous_position=9305911400"
+  },
+  "9305911500": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=911500&sous_position=9305911500"
+  },
+  "9305911600": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=911600&sous_position=9305911600"
+  },
+  "9305911700": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=911700&sous_position=9305911700"
+  },
+  "9305911800": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=911800&sous_position=9305911800"
+  },
+  "9305911900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=911900&sous_position=9305911900"
+  },
+  "9305919000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=05&position=919000&sous_position=9305919000"
+  },
+  "9306301000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=06&position=301000&sous_position=9306301000"
+  },
+  "9306901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=06&position=901000&sous_position=9306901000"
+  },
+  "9306909000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=19&chapitre=93&range=06&position=909000&sous_position=9306909000"
+  },
+  "9701211000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=211000&sous_position=9701211000"
+  },
+  "9701219100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=219100&sous_position=9701219100"
+  },
+  "9701219200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=219200&sous_position=9701219200"
+  },
+  "9701219300": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=219300&sous_position=9701219300"
+  },
+  "9701219900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=219900&sous_position=9701219900"
+  },
+  "9701220000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=220000&sous_position=9701220000"
+  },
+  "9701291000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=291000&sous_position=9701291000"
+  },
+  "9701299100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=299100&sous_position=9701299100"
+  },
+  "9701299200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=299200&sous_position=9701299200"
+  },
+  "9701299900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=299900&sous_position=9701299900"
+  },
+  "9701911000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=911000&sous_position=9701911000"
+  },
+  "9701919100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=919100&sous_position=9701919100"
+  },
+  "9701919200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=919200&sous_position=9701919200"
+  },
+  "9701919300": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=919300&sous_position=9701919300"
+  },
+  "9701919900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=919900&sous_position=9701919900"
+  },
+  "9701920000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=920000&sous_position=9701920000"
+  },
+  "9701991000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=991000&sous_position=9701991000"
+  },
+  "9701999100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=999100&sous_position=9701999100"
+  },
+  "9701999200": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=999200&sous_position=9701999200"
+  },
+  "9701999900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=01&position=999900&sous_position=9701999900"
+  },
+  "9702100000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=02&position=100000&sous_position=9702100000"
+  },
+  "9702900000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=02&position=900000&sous_position=9702900000"
+  },
+  "9703101000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=03&position=101000&sous_position=9703101000"
+  },
+  "9703102000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=03&position=102000&sous_position=9703102000"
+  },
+  "9703103000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=03&position=103000&sous_position=9703103000"
+  },
+  "9703109000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=03&position=109000&sous_position=9703109000"
+  },
+  "9703901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=03&position=901000&sous_position=9703901000"
+  },
+  "9703902000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=03&position=902000&sous_position=9703902000"
+  },
+  "9703903000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=03&position=903000&sous_position=9703903000"
+  },
+  "9703909000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=03&position=909000&sous_position=9703909000"
+  },
+  "9704000000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=04&position=000000&sous_position=9704000000"
+  },
+  "9705100000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=100000&sous_position=9705100000"
+  },
+  "9705210000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=210000&sous_position=9705210000"
+  },
+  "9705220000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=220000&sous_position=9705220000"
+  },
+  "9705291100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=291100&sous_position=9705291100"
+  },
+  "9705291900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=291900&sous_position=9705291900"
+  },
+  "9705292100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=292100&sous_position=9705292100"
+  },
+  "9705292900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=292900&sous_position=9705292900"
+  },
+  "9705293100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=293100&sous_position=9705293100"
+  },
+  "9705293900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=293900&sous_position=9705293900"
+  },
+  "9705299100": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=299100&sous_position=9705299100"
+  },
+  "9705299900": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=299900&sous_position=9705299900"
+  },
+  "9705310000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=310000&sous_position=9705310000"
+  },
+  "9705390000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=05&position=390000&sous_position=9705390000"
+  },
+  "9706101000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=06&position=101000&sous_position=9706101000"
+  },
+  "9706102000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=06&position=102000&sous_position=9706102000"
+  },
+  "9706109000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=06&position=109000&sous_position=9706109000"
+  },
+  "9706901000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=06&position=901000&sous_position=9706901000"
+  },
+  "9706902000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=06&position=902000&sous_position=9706902000"
+  },
+  "9706909000": {
+   "rate": 0.0,
+   "label_published": "D.D",
+   "observation": null,
+   "source_url": "https://www.douane.gov.dz/spip.php?page=sous_position&section=21&chapitre=97&range=06&position=909000&sous_position=9706909000"
+  }
+ }
+}
