@@ -14,6 +14,15 @@ name: ETH crawl (portail ERCA)
 # aucun droit à 0 % ⇒ le portail a changé ⇒ ne pas publier.
 
 on:
+  # Déclencheur principal : un push qui touche ce fichier ou le script de
+  # relance. `workflow_dispatch` ne peut être enregistré que depuis la branche
+  # par défaut — d'ici là, pousser à nouveau le fichier relance la collecte.
+  push:
+    branches:
+      - claude/eth-crawl-actions
+    paths:
+      - ".github/workflows/eth-crawl.yml"
+      - "scripts/relancer_crawl_eth.sh"
   workflow_dispatch:
     inputs:
       essai:
