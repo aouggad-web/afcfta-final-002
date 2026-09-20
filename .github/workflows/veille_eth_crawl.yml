@@ -54,7 +54,7 @@ jobs:
         id: lacune
         run: |
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import json, pathlib
+          import json, pathlib, sys
           p = pathlib.Path("backend/data/crawled/ETH_tariffs.json")
           z = 0
           if p.exists():
@@ -75,7 +75,7 @@ jobs:
         if: ${{ steps.lacune.outputs.ouverte == 'oui' }}
         run: |
           python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import socket
+          import socket, sys
           h = "customs.erca.gov.et"
           try:
               ip = socket.gethostbyname(h)
