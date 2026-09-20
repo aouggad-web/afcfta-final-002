@@ -63,7 +63,9 @@ jobs:
                   dr = (x.get("taxes") or {}).get("DR")
                   if isinstance(dr, dict) and dr.get("rate") == 0.0:
                       z += 1
-          print(f"droits à 0 % actuellement : {z}")
+          # Les lignes lisibles vont sur stderr (le journal) : GITHUB_OUTPUT
+          # n'accepte que des paires clé=valeur — une phrase le fait échouer.
+          print(f"droits à 0 % actuellement : {z}", file=sys.stderr)
           print(f"zeros={z}")
           print("ouverte=" + ("oui" if z == 0 else "non"))
           PY
@@ -78,17 +80,17 @@ jobs:
           try:
               ip = socket.gethostbyname(h)
           except Exception as e:
-              print(f"{h} : DNS KO ({e})")
+              print(f"{h} : DNS KO ({e})", file=sys.stderr)
               print("joignable=non")
               raise SystemExit(0)
           s = socket.socket()
           s.settimeout(20)
           try:
               s.connect((ip, 443))
-              print(f"{h} ({ip}) : TCP 443 OK")
+              print(f"{h} ({ip}) : TCP 443 OK", file=sys.stderr)
               print("joignable=oui")
           except Exception as e:
-              print(f"{h} ({ip}) : TCP 443 KO ({e})")
+              print(f"{h} ({ip}) : TCP 443 KO ({e})", file=sys.stderr)
               print("joignable=non")
           finally:
               s.close()
