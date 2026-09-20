@@ -48,7 +48,14 @@ def test_collected_duty_agrees_in_listing_rate_and_amount(country, code, duty):
 @pytest.mark.parametrize(
     "country,code",
     [
-        ("DZA", "1001110000"),
+        # Chapitre 98 — régimes douaniers particuliers (marchandises d'exposition
+        # et de démonstration). Le cas algérien était auparavant 1001110000, blé
+        # dur de semence : un droit que le MIROIR conformepro.dz ne publiait pas,
+        # alors que l'e-service DGD le donne à 0,00 %. Ce n'était donc pas une
+        # absence de la source mais une perte à la collecte, corrigée depuis en
+        # relisant les 299 positions concernées. Le cas est reporté sur une
+        # position dont la source PRIMAIRE elle-même ne publie aucun droit.
+        ("DZA", "9810100000"),
         ("KEN", "04011000"),
         ("MAR", "0405100010"),
         ("ZAF", "020830"),

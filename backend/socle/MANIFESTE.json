@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-20T12:00:43.402317+00:00",
+  "construit_le": "2026-09-20T12:23:55.715817+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -482,8 +482,8 @@
       "fichier": "DZA.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/DZA_tariffs.json",
-      "source_sha256": "c7c04ea17a20a7447f4f652bc2313b5aae5aae992010fd9704a8cb71ff376f62",
-      "socle_sha256": "a463d49eaa0bcab321761716ea19538b21c10b68bce8c22877bbc6663a899465",
+      "source_sha256": "273d3fa29bb2990b1c8c0244a468b019a8230d3f063dc8007536f1930ccf69f0",
+      "socle_sha256": "6506f7df1dde0f4e10ee6c51308c29698afa5f4bf8cdef034975ce96abaeeb36",
       "collecte": "2026-08-29T11:11:39.900916+00:00",
       "etat": "PARTIEL",
       "familles": [

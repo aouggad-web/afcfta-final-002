@@ -22,8 +22,10 @@ import argparse
 import hashlib
 import json
 import pathlib
+import sys
 
 RACINE = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(RACINE / "backend"))
 CRAWL = RACINE / "backend" / "data" / "crawled" / "DZA_tariffs.json"
 REGISTRE = RACINE / "backend" / "data" / "source_registry_v2.json"
 ARCHIVE = RACINE / "data" / "dza" / "releve_dd_dgd.json"
@@ -89,6 +91,23 @@ def main() -> int:
         versees += 1
 
     CRAWL.write_text(json.dumps(crawl, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+    # LE SCEAU SE REFAIT, SINON LE FICHIER SE DÉNONCE LUI-MÊME.
+    #
+    # `DZA_tariffs.json` porte un `_integrity_seal` dont le `content_hash`
+    # couvre tout le document sauf le sceau. Modifier le contenu sans refaire
+    # le sceau rend le crawl invérifiable : `verify_crawled_file` répond
+    # `content_hash_match: False`, et deux tests d'intégrité tombent — ce qui
+    # est exactement leur raison d'être. L'oubli a été commis une fois ; le
+    # sceau est désormais refait ici, AVANT toute empreinte de fichier.
+    #
+    # Les URL de source du sceau existant sont conservées : ce lot ajoute une
+    # source (l'e-service DGD) sans retirer l'autre, et le sceau doit continuer
+    # de nommer les deux.
+    from crawlers.integrity import seal_crawled_file
+
+    urls = (crawl.get("_integrity_seal") or {}).get("source_url") or ""
+    seal_crawled_file(str(CRAWL), source_url=urls)
     empreinte = hashlib.sha256(CRAWL.read_bytes()).hexdigest()
 
     ARCHIVE.parent.mkdir(parents=True, exist_ok=True)

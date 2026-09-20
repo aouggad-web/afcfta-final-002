@@ -60,9 +60,22 @@ def test_les_etats_couvrent_toutes_les_lignes(rapport):
 
 
 def test_le_residu_retrouve_les_cas_cites_par_la_note(rapport):
-    """Recoupement indépendant : la note citait ces volumes avant la mesure."""
+    """Recoupement indépendant : la note citait ces volumes avant la mesure.
+
+    LE CHIFFRE ALGÉRIEN A BAISSÉ, ET C'EST UNE CORRECTION, PAS UNE DÉRIVE. Il
+    valait 299 tant que la collecte passait par le miroir `conformepro.dz`, qui
+    ne publie aucun bloc « Droit de douane » quand celui-ci vaut zéro. Les 299
+    positions ont été relues sur l'e-service officiel de la DGD : 296 y portent
+    un droit publié à 0,00 %, et trois seulement — le chapitre 98, régimes
+    douaniers particuliers — n'en portent aucun. Le résidu irréductible
+    algérien est donc de 3.
+
+    L'éthiopien, lui, reste à 1 368 : son collecteur a été corrigé le
+    18/09/2026, mais la collecte n'a pas été refaite. Ce chiffre baissera quand
+    elle le sera — et ce test le signalera.
+    """
     pays = rapport["par_pays"]
-    assert pays["DZA"]["lignes_residu_irreductible"] == 299
+    assert pays["DZA"]["lignes_residu_irreductible"] == 3
     assert pays["ETH"]["lignes_residu_irreductible"] == 1368
 
 
@@ -71,7 +84,7 @@ def test_la_mesure_est_rejouable():
     from measure_unavailability_cost import measure
 
     refait = measure({"DZA"})
-    assert refait["par_pays"]["DZA"]["lignes_residu_irreductible"] == 299
+    assert refait["par_pays"]["DZA"]["lignes_residu_irreductible"] == 3
 
 
 def test_les_deux_lectures_du_residu_sont_publiees(rapport):
