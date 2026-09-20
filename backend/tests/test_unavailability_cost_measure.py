@@ -66,9 +66,14 @@ def test_le_residu_retrouve_les_cas_cites_par_la_note(rapport):
     valait 299 tant que la collecte passait par le miroir `conformepro.dz`, qui
     ne publie aucun bloc « Droit de douane » quand celui-ci vaut zéro. Les 299
     positions ont été relues sur l'e-service officiel de la DGD : 296 y portent
-    un droit publié à 0,00 %, et trois seulement — le chapitre 98, régimes
-    douaniers particuliers — n'en portent aucun. Le résidu irréductible
-    algérien est donc de 3.
+    un droit publié à 0,00 %, et trois n'en portent aucun. Ces trois-là relèvent
+    du chapitre 98, que le tarif intitule « Effets personnels » : hors
+    importation commerciale, aucun droit de douane n'y est perçu. Le résidu
+    algérien est donc de 3 LIGNES NON LIQUIDABLES, mais de ZÉRO lacune à
+    combler — la mesure compte ce qui ne se liquide pas, et ces lignes n'ont
+    pas à se liquider. Elles sont laissées dans le compte plutôt que retirées
+    par une exclusion « chapitre 98 » qui serait fausse ailleurs : d'un tarif à
+    l'autre, ce numéro ne désigne pas la même chose.
 
     L'éthiopien, lui, reste à 1 368 : son collecteur a été corrigé le
     18/09/2026, mais la collecte n'a pas été refaite. Ce chiffre baissera quand

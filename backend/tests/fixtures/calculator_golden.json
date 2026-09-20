@@ -182,7 +182,7 @@
           "code": "9810100000",
           "tax_code": "DD"
         },
-        "note": "Absence de droit dans la source PRIMAIRE elle-même : l'e-service DGD ne publie, pour cette position du chapitre 98 (régimes douaniers particuliers — marchandises d'exposition et de démonstration), que PRCT 2 % et T.C.S 3 %. Ce n'est ni une exonération prouvée ni un droit de 0 %."
+        "note": "Aucun droit de douane publié, et ce n'en est pas une lacune : la position relève du chapitre 98 du tarif algérien, que la nomenclature intitule « Effets personnels » — effets du voyageur et marchandises admises temporairement pour exposition. Ce chapitre ne classe pas des marchandises importées à titre commercial et ne perçoit aucun droit ; il perçoit en revanche T.C.S 3 % et PRCT 2 %. Ni exonération prouvée, ni droit de 0 % : la question du droit ne s'y pose pas."
       },
       "observed": {
         "priority": {
@@ -203,7 +203,7 @@
       },
       "status": "defect_open",
       "priority_dd_matches_source": false,
-      "historique": "Ce cas portait auparavant DZA/1001110000, blé dur de semence. L'exemple était mal choisi, et c'est le portail officiel qui l'a montré : le droit N'ÉTAIT PAS absent du tarif, il était absent du MIROIR conformepro.dz, dont la collecte algérienne provient et qui ne publie aucun bloc « Droit de douane » quand celui-ci vaut zéro. L'e-service DGD le donne à 0,00 %. Les 299 positions touchées ont été relues à la source primaire : 296 portent un droit publié à 0 %, et trois seulement — celles du chapitre 98 — n'en portent aucun. Le cas est reporté sur l'une d'elles, pour qu'il continue de tenir ce qu'il doit tenir : un `null` ne devient ni 0 ni exception."
+      "historique": "Ce cas portait auparavant DZA/1001110000, blé dur de semence. L'exemple était mal choisi, et c'est le portail officiel qui l'a montré : le droit N'ÉTAIT PAS absent du tarif, il était absent du MIROIR conformepro.dz, dont la collecte algérienne provient et qui ne publie aucun bloc « Droit de douane » quand celui-ci vaut zéro. L'e-service DGD le donne à 0,00 %. Les 299 positions touchées ont été relues à la source primaire : 296 portent un droit publié à 0 %, et les trois autres relèvent du chapitre « Effets personnels ». Le cas est reporté sur l'une d'elles : elle exerce toujours le chemin d'un droit absent — un `null` ne doit devenir ni 0 ni exception — sans faire croire à une lacune de collecte."
     },
     {
       "id": "eth-ligne-hors-canonique",

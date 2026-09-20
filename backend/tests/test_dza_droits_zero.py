@@ -18,11 +18,19 @@ CE QUE CES TESTS TIENNENT.
    avait aucun sur 17 226. Un tarif national sans une seule ligne en franchise
    n'existe pas : ce compte est le garde-fou de tout le lot.
 
-2. LA LACUNE QUI SUBSISTE RESTE UNE LACUNE. Trois positions du chapitre 98 —
-   régimes particuliers, marchandises d'exposition et de démonstration — ne
-   portent aucun droit **même à la DGD**. Elles ne sont pas comblées. Sans ce
-   test, la tentation de « finir le travail » en posant 0 sur ces trois-là
-   serait la prochaine régression.
+2. LES TROIS POSITIONS SANS DROIT NE SONT PAS UNE LACUNE — ET C'EST LA NUANCE
+   QUI COMPTE. Elles relèvent du chapitre 98, que le tarif algérien intitule
+   **« Effets personnels »** : la nomenclature y range les vêtements et
+   articles de toilette du voyageur, et les marchandises admises
+   temporairement pour être exposées. Ce chapitre ne classe pas des
+   marchandises importées à titre commercial, et aucun droit de douane n'y est
+   perçu — la DGD n'en publie donc aucun, ce qui est cohérent et non lacunaire.
+
+   Conséquence pour ce lot : il ne reste RIEN à combler en Algérie. Les 299
+   positions visées se répartissent en 296 droits publiés à 0 % et 3 positions
+   hors importation commerciale. Poser 0 sur ces trois-là serait doublement
+   faux : inventer une franchise, et pour un chapitre où la question ne se
+   pose pas.
 
 3. LE RELEVÉ FAIT FOI. Chaque droit versé est adossé à sa fiche officielle,
    archivée dans `data/dza/releve_dd_dgd.json` avec son URL. Le crawl et
@@ -42,8 +50,10 @@ SOCLE = RACINE / "backend" / "socle" / "DZA.json"
 CRAWL = RACINE / "backend" / "data" / "crawled" / "DZA_tariffs.json"
 RELEVE = RACINE / "data" / "dza" / "releve_dd_dgd.json"
 
-# Chapitre 98 : régimes douaniers particuliers. La DGD n'y publie pas de droit.
-SANS_DROIT_A_LA_SOURCE = {"9800000000", "9810100000", "9810200000"}
+# Chapitre 98 du tarif algérien — « Effets personnels ». Hors importation
+# commerciale : aucun droit de douane n'y est perçu, et la DGD n'en publie
+# aucun. Ce n'est pas une lacune de collecte.
+HORS_IMPORTATION_COMMERCIALE = {"9800000000", "9810100000", "9810200000"}
 
 
 @pytest.fixture(scope="module")
@@ -99,9 +109,13 @@ def test_le_kerosene_se_liquide_au_lieu_d_etre_refuse(positions):
     }
 
 
-def test_les_positions_sans_droit_a_la_source_le_restent(positions):
-    """Contrôle négatif : ce qui n'est pas publié n'est pas inventé."""
-    for code in SANS_DROIT_A_LA_SOURCE:
+def test_les_positions_hors_importation_commerciale_ne_sont_pas_comblees(positions):
+    """Contrôle négatif : ce qui n'est pas publié n'est pas inventé.
+
+    Et ici la raison de l'absence est établie, pas supposée : voir le test
+    suivant, qui la lit dans la nomenclature elle-même.
+    """
+    for code in HORS_IMPORTATION_COMMERCIALE:
         p = positions.get(code)
         if p is None:
             continue
@@ -125,3 +139,28 @@ def test_chaque_droit_verse_est_adosse_a_sa_fiche_officielle():
         assert dd["rate"] == fiche["rate"]
         assert dd["label_verification"] == "PUBLISHED_BY_DGD"
         assert fiche["source_url"], f"{code} : un taux sans son URL de fiche"
+
+
+def test_le_chapitre_98_est_bien_celui_des_effets_personnels():
+    """La qualification se lit dans la source, elle ne se déduit pas du numéro.
+
+    Un chapitre 98 ne veut pas dire la même chose d'un tarif à l'autre : des
+    nomenclatures y placent des dispositions de classement spéciales, d'autres
+    des régimes nationaux. Ici c'est la désignation complète publiée par le
+    tarif algérien qui établit qu'il s'agit d'effets personnels — donc hors
+    importation commerciale, donc sans droit de douane à percevoir.
+
+    Ce test existe pour que personne n'étende cette qualification à un autre
+    pays sur la seule foi du numéro de chapitre.
+    """
+    if not CRAWL.exists():
+        pytest.skip("crawl absent")
+    crawl = json.loads(CRAWL.read_text(encoding="utf-8"))
+    ch98 = [x for x in crawl["sub_positions"] if x.get("chapter") == "98"]
+    assert {x["hs_code"] for x in ch98} == HORS_IMPORTATION_COMMERCIALE
+    for ligne in ch98:
+        assert ligne["designation_full"].startswith("Effets personnels"), ligne["hs_code"]
+        # Le chapitre ne perçoit pas de droit, mais il perçoit les deux
+        # prélèvements de formalité : leur présence montre que la ligne est
+        # bien collectée, et que seule la colonne du droit est vide.
+        assert set(ligne["taxes"]) == {"TCS", "PRCT"}, ligne["hs_code"]
