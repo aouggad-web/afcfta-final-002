@@ -91,7 +91,7 @@
       "notes": "6 637 positions, 97 chapitres, avec leur désignation anglaise. Assiette DD = CIF, établie par le Customs and Excise Act s.106(1) et s.113(2)(c). CONTRÔLE INTERNE : le tarif publie DEUX colonnes de droits (« General » et « M.F.N. ») ; elles concordent sur 6 637 positions sur 6 637, ce qui valide l'extraction par le document lui-même. DROITS COMPOSÉS : 61 positions « X% or US$Y/unité » ; la règle de départage est ÉNONCÉE par le texte (p. 13 : « the rate of duty yielding the higher amount of duty shall be applicable ») et donc liquidée — à la différence du tarif SARS, qui ne l'énonce pas et reste refusé. 414 positions cumulatives (« + »). SPÉCIFIQUES INCOMPARABLES : 11 positions de spiritueux opposent deux montants dans des unités différentes (« US$5.00/L or US$10.00/LAA ») ; les départager exige le titre alcoométrique, que le tarif ne porte pas — portées sans valeur liquidable, avec leur verbatim. ACCISE SANS TAUX : 116 positions mentionnent « Excise » sans en porter le taux, qui relève du tarif d'accise séparé ; portées sans taux ni assiette, jamais à zéro — les traiter comme un zéro exonérerait alcools et tabacs. COQUILLES DE LA SOURCE : neuf codes y sont écrits sans un de leurs points (« 9608.9900 ») ou avec une espace (« 5113. 00.00 ») ; ils sont reconnus et ramenés à huit chiffres, faute de quoi ils disparaissaient en silence. Aucun taux non lu."
     },
     "DZA": {
-      "organism": "Direction Générale des Douanes (DGD) via conformepro.dz",
+      "organism": "Direction Générale des Douanes (DGD) via conformepro.dz, droits nuls relus sur l'e-service DGD",
       "coverage_gaps": {
         "missing_chapters": [
           "22",
@@ -117,7 +117,7 @@
       "hs_version": "HS 2022",
       "code_digits": 10,
       "positions_count": 17115,
-      "sha256": "fead59b16f2b833f971319b2ebd91a08d8f7152e8e8b146c7d6beaa5892d7341",
+      "sha256": "c7c04ea17a20a7447f4f652bc2313b5aae5aae992010fd9704a8cb71ff376f62",
       "reuse_conditions": "Données publiées par la DGD pour consultation publique. Utilisation informative non opposable.",
       "legal_authority": "Code des Douanes 79-07 + Loi de Finances 2026 (JO n° 88 du 31/12/2025)",
       "validation_status": "verified",
