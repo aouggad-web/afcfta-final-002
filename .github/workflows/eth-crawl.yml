@@ -1,0 +1,96 @@
+name: ETH crawl (portail ERCA)
+
+# Pourquoi ce workflow existe
+# ---------------------------
+# customs.erca.gov.et n'est joignable ni depuis le poste de collecte
+# (connexion TCP coupée sur 443 et 80), ni par les relais de lecture.
+# Le collecteur est corrigé (les 0 % publiés étaient écartés, 1 368 droits
+# perdus) : ce qui manque est un CRAWL FRAIS depuis un réseau qui atteint
+# le portail. Les runners GitHub en sont un.
+#
+# Ce workflow NE COMMITTE RIEN. Il collecte, contrôle, et laisse l'artefact
+# `ETH_tariffs` à télécharger — la publication reste une décision humaine,
+# gardée par le même contrôle que scripts/relancer_crawl_eth.sh :
+# aucun droit à 0 % ⇒ le portail a changé ⇒ ne pas publier.
+
+on:
+  workflow_dispatch:
+    inputs:
+      essai:
+        description: "Essai borné (~200 positions, pour valider la connexion)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  crawl-eth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Dépendances (requests seul suffit au collecteur ETH)
+        run: python -m pip install --quiet requests
+
+      - name: Connectivité au portail (diagnostic, non bloquant)
+        run: |
+          curl -sS -o /dev/null -w "josso login.do : %{http_code} en %{time_total}s\n" \
+            --max-time 60 "https://customs.erca.gov.et/josso/signon/login.do?josso_cmd=login_optional&josso_back_to=https%3A%2F%2Fcustoms.erca.gov.et%2Ftrade%2Fjosso_security_check" || true
+          curl -sS -o /dev/null -w "tarif search  : %{http_code} en %{time_total}s\n" \
+            --max-time 60 "https://customs.erca.gov.et/trade/customs-division/tariff?lang=en" || true
+
+      - name: Collecte ETH (portail officiel, source spec — jamais WITS)
+        run: |
+          cd backend
+          if [ "${{ inputs.essai }}" = "true" ]; then
+            python3 -m crawlers.scrapling_engine.runner --country ETH \
+              --max-positions 200 --out data/crawled/ETH_tariffs.json.actions
+          else
+            python3 -m crawlers.scrapling_engine.runner --country ETH \
+              --out data/crawled/ETH_tariffs.json.actions
+          fi
+
+      - name: Contrôles (zéro publié, volume) — les mêmes que le script local
+        run: |
+          python3 - <<'PY'
+          import json, pathlib
+          p = pathlib.Path("backend/data/crawled/ETH_tariffs.json.actions")
+          if not p.exists():
+              raise SystemExit("✗ Aucun fichier collecté — portail injoignable depuis ce runner ou collecte interrompue.")
+          d = json.loads(p.read_text())
+          z = n = t = 0
+          for x in d["sub_positions"]:
+              dr = (x.get("taxes") or {}).get("DR")
+              if dr is None:
+                  n += 1
+                  continue
+              t += 1
+              if dr.get("rate") == 0.0:
+                  z += 1
+          print(f"   après : {z} droits à 0 % | {n} sans droit | {t} captés | {len(d['sub_positions'])} positions")
+          if z == 0:
+              raise SystemExit(
+                  "✗ ARRÊT. Aucun droit à 0 % : le portail a changé, ou la session "
+                  "n'a pas abouti. NE PAS PUBLIER."
+              )
+          if len(d["sub_positions"]) < 6000:
+              raise SystemExit(
+                  f"✗ ARRÊT. {len(d['sub_positions'])} positions (< 6000) : collecte incomplète. NE PAS PUBLIER."
+              )
+          print("✓ contrôles passés — l'artefact peut être publié après vérification")
+          PY
+
+      - name: Artefact ETH_tariffs (collecte brute, non publiée)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ETH_tariffs
+          path: backend/data/crawled/ETH_tariffs.json.actions
+          if-no-files-found: warn
+          retention-days: 30
