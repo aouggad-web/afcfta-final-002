@@ -421,42 +421,76 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
     const originISO3 = originCountry.length === 2 ? ISO2_TO_ISO3[originCountry] || originCountry : originCountry;
     
     try {
-      // PRIORITÉ 1 : LE SOCLE (`POST /calcul`).
+      // LE MÊME APPEL AU SOCLE, DEMANDÉ À DEUX ENDROITS.
+      //
+      // Il sert AVANT le chemin historique pour les pays de
+      // `SOCLE_EN_PREMIER`, et APRÈS lui pour tous les autres. Construit une
+      // seule fois : deux corps de requête écrits séparément finiraient par
+      // diverger, et l'un des deux liquiderait autre chose que l'autre.
+      const demanderLeSocle = () => axios.post(`${API}/calcul`, buildCalculRequestBody({
+        destinationISO3: destISO3,
+        originISO3,
+        hsCode: cleanHsCode,
+        cifValue: parseFloat(value),
+        // `parseFloat('')` rend NaN : `buildCalculRequestBody` l'écarte, et
+        // le moteur continue de réclamer la quantité au lieu de liquider
+        // le droit spécifique à zéro. Une quantité saisie pour une AUTRE
+        // position est écartée de la même façon.
+        quantite: quantityFor === `${destISO3}|${cleanHsCode}`
+          ? parseFloat(quantity)
+          : NaN,
+      }));
+
+      // PRIORITÉ 1 POUR CES PAYS SEULEMENT : LE SOCLE (`POST /calcul`).
       //
       // L'ordre était inverse, et il coûtait cher. Le chemin historique
-      // `/authentic-tariffs` sert 40 pays ; tant qu'il passait devant, tout ce
-      // que le socle vérifie ne parvenait qu'aux 14 autres. La colonne
-      // algérienne du tarif tunisien et les douze régimes mauriciens, établis
-      // sur source primaire et scellés par empreinte, n'atteignaient jamais
-      // l'opérateur — leur pays était servi par l'autre porte.
+      // `/authentic-tariffs` sert une quarantaine de pays ; tant qu'il passait
+      // devant, tout ce que le socle vérifie ne parvenait qu'aux autres. La
+      // colonne algérienne du tarif tunisien (13 362 positions) et les douze
+      // régimes préférentiels mauriciens, établis sur source primaire et
+      // scellés par empreinte, n'atteignaient jamais l'opérateur — leurs deux
+      // pays étaient servis par l'autre porte.
       //
-      // Le socle passe donc devant. Le chemin historique reste en REPLI, pour
-      // les positions que le socle ne sert pas : un socle qui ne connaît pas
-      // une position doit céder la place, pas faire écran.
+      // POURQUOI DEUX PAYS ET NON LES CINQUANTE-QUATRE. La bascule générale a
+      // été écrite, puis restreinte : l'interface n'envoie au socle ni
+      // `devise_cif`, ni `taux_de_change`, ni `valeur_fob`. Or la valeur en
+      // douane de la SACU est la valeur FOB, jamais déduite du CIF. Mesuré sur
+      // les 1 500 premières positions sud-africaines, 616 — 41 % — répondent
+      // `VALEUR_FOB_REQUISE` : leur droit de douane devient indisponible. Le
+      // chemin historique, lui, servait un montant. Basculer l'Afrique du Sud
+      // aujourd'hui échangerait donc une préférence manquante contre un droit
+      // manquant, ce qui n'est pas un progrès.
+      //
+      // Deux autres manques tiennent au même périmètre et justifient la même
+      // prudence : les réponses du formulaire de remise kényane
+      // (`remission_eligibility` et ses cinq champs d'autorisation) n'existent
+      // que sur le chemin historique, et `moteurRendCompteDesMesures` ne peut
+      // rien vérifier quand le chemin historique n'a pas été consulté — son
+      // garde devient vide.
+      //
+      // Cette liste s'allonge PAYS PAR PAYS, quand le socle sert ce pays mieux
+      // que l'autre porte et que rien de ce qui précède ne lui manque. Elle ne
+      // se remplace pas par « tous ».
+      const SOCLE_EN_PREMIER = new Set(['TUN', 'MUS']);
+
       let calculSocle = null;
       let erreurSocle = null;
-      try {
-        calculSocle = (await axios.post(`${API}/calcul`, buildCalculRequestBody({
-          destinationISO3: destISO3,
-          originISO3,
-          hsCode: cleanHsCode,
-          cifValue: parseFloat(value),
-          quantite: quantityFor === `${destISO3}|${cleanHsCode}`
-            ? parseFloat(quantity)
-            : NaN,
-        }))).data;
-      } catch (socleError) {
-        // Deux refus seulement justifient le repli, et ce sont des ABSENCES,
-        // pas des pannes : 404, la position n'est pas au socle ; 503, le socle
-        // est absent ou périmé et refuse de servir. Tout le reste — 422 de
-        // validation, 500, 401/403, réseau — remonte, comme avant, plutôt que
-        // de dégrader en silence vers une source moins vérifiée.
-        const statut = socleError.response?.status;
-        if (statut !== 404 && statut !== 503) {
-          throw socleError;
+      if (SOCLE_EN_PREMIER.has(destISO3)) {
+        try {
+          calculSocle = (await demanderLeSocle()).data;
+        } catch (socleError) {
+          // Deux refus seulement justifient le repli, et ce sont des ABSENCES,
+          // pas des pannes : 404, la position n'est pas au socle ; 503, le socle
+          // est absent ou périmé et refuse de servir. Tout le reste — 422 de
+          // validation, 500, 401/403, réseau — remonte, comme avant, plutôt que
+          // de dégrader en silence vers une source moins vérifiée.
+          const statut = socleError.response?.status;
+          if (statut !== 404 && statut !== 503) {
+            throw socleError;
+          }
+          erreurSocle = socleError;
+          console.log(`ℹ️ Position absente du socle pour ${destISO3} (${statut}) - repli sur le chemin historique`);
         }
-        erreurSocle = socleError;
-        console.log(`ℹ️ Position absente du socle pour ${destISO3} (${statut}) - repli sur le chemin historique`);
       }
 
       // PRIORITÉ 2 : le chemin historique, quand le socle ne sert pas.
@@ -770,12 +804,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         // montants sur un profil générique. Aucun repli supplémentaire —
         // une erreur ici remonte au `catch` externe et s'affiche, elle ne
         // bascule pas silencieusement vers une autre source.
-        // La réponse du socle a déjà été obtenue plus haut, AVANT que le
-        // chemin historique ne soit envisagé. Si elle est absente ici, c'est
-        // que les deux chemins ont refusé : l'erreur du socle reprend sa
-        // place plutôt qu'un écran vide.
+        // DEUX CHEMINS ARRIVENT ICI, ET IL FAUT LES DISTINGUER.
+        //
+        // Pour un pays de `SOCLE_EN_PREMIER`, le socle a DÉJÀ été interrogé
+        // plus haut : s'il n'a rien rendu, c'est que les deux portes ont
+        // refusé, et l'erreur du socle reprend sa place plutôt qu'un écran
+        // vide. Pour tous les autres pays, il n'a PAS encore été consulté —
+        // c'est ici, après le refus du chemin historique, que sa réponse est
+        // demandée, exactement comme avant ce lot. Aucun repli
+        // supplémentaire : une erreur remonte au `catch` externe et s'affiche,
+        // elle ne bascule pas en silence vers une autre source.
         if (!calculSocle) {
-          throw erreurSocle;
+          if (erreurSocle) {
+            throw erreurSocle;
+          }
+          calculSocle = (await demanderLeSocle()).data;
         }
         const calcul = calculSocle;
         // Un refus honnête ne se remplace pas par un total amputé. Si le
