@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-20T12:23:55.715817+00:00",
+  "construit_le": "2026-09-21T19:31:46.596887+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1037,36 +1037,36 @@
       "fichier": "MDG.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MDG_tariffs.json",
-      "source_sha256": "5fa9f5746ea5a02f4ff6daa787797bdd1dd3209cfce31762d9257f39c76fe02f",
-      "socle_sha256": "c8d99d32aee46f52d26ce670a02cd40f9995118caa662ea293ee4d52a0302ef0",
-      "collecte": "2026-07-05T10:03:55.556241+00:00",
-      "etat": "COMPLET",
+      "source_sha256": "f63c40e969ffa8e6349d12b28a7f371c7fb5e7684216b99fa8a4a45f7047e78a",
+      "socle_sha256": "69c660c31a3141cf2034221258296556c6ebfac721ce75a485dd2cb4121d546d",
+      "collecte": "2026-09-21T00:00:00+00:00",
+      "etat": "PARTIEL",
       "familles": [
         "droit",
         "tva"
       ],
       "compteurs": {
-        "positions": 5624,
-        "droits": 11248,
-        "droits_liquidables": 11248,
-        "positions_liquidables": 5624,
-        "preferentiels": 0,
+        "positions": 6527,
+        "droits": 13054,
+        "droits_liquidables": 13049,
+        "positions_liquidables": 6522,
+        "preferentiels": 6481,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
-        "taux_indisponibles": 0,
+        "taux_indisponibles": 5,
         "assiettes_source": 0,
-        "assiettes_fichier": 5624,
-        "assiettes_table": 5624,
+        "assiettes_fichier": 6527,
+        "assiettes_table": 6527,
         "assiettes_indisponibles": 0,
-        "sans_designation": 5624,
+        "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
         "droits_absents_completes": 0,
         "droits_lus_en_designation": 0,
-        "classification_estimee": 1
+        "classification_estimee": 0
       }
     },
     "MLI": {
@@ -2006,6 +2006,7 @@
       "LBY",
       "LSO",
       "MAR",
+      "MDG",
       "MOZ",
       "MUS",
       "MWI",
@@ -2024,8 +2025,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 367340,
-    "droits": 1125721,
-    "droits_liquidables": 1048087
+    "positions": 368243,
+    "droits": 1127527,
+    "droits_liquidables": 1049888
   }
 }

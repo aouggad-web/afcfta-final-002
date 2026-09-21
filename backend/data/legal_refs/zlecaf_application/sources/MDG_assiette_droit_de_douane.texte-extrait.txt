@@ -1,0 +1,14 @@
+Madagascar — Code des douanes (Loi n° 2006-023), version consolidée après la Loi de Finances 2026 (Loi n° 2025-021 du 20/12/2025), article 23.
+Source : https://www.douanes.gov.mg/srcs/uploads/2026/01/CODE-DES-DOUANES-APRES-LFI-2026.pdf — Direction générale des douanes malagasy (douanes.gov.mg), consulté le 2026-09-21.
+SHA-256 du PDF source : 7dc9ce4abb205c36d2e7a5c6f07b61393467141c58b9ad41f1edbe0ddad060d6
+Extrait reflowé (mots du PDF, espaces normalisés ; « [...] » marque les passages non cités). PDF officiel non archivé ici ; seul cet extrait l'est.
+
+Art. 23.- 1° La valeur en douane des marchandises importées est leur valeur transactionnelle, c'est-à-dire le prix effectivement payé ou à payer pour les marchandises lorsqu'elles sont vendues pour l'exportation à destination de Madagascar, le cas échéant, après ajustement effectué conformément aux dispositions du paragraphe 4° du présent article, pour autant :
+
+[...]
+
+4° Pour déterminer la valeur en douane par application des dispositions du présent article, on ajoute au prix effectivement payé ou à payer pour les marchandises importées :
+[...]
+c) les frais, relatifs aux services et prestations ci-après, intervenus jusqu'au port ou lieu d'introduction à Madagascar : i) transport et assurance des marchandises importées, et ii) chargement et manutention connexes au transport des marchandises importées.
+
+5° Tout élément qui est ajouté par application du paragraphe 4 du présent article au prix effectivement payé ou à payer est fondé exclusivement sur des données objectives et quantifiables.

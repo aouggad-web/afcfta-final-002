@@ -1,0 +1,32 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette de la TVA à l'importation — Madagascar : valeur des importations, frais et taxes inclus, TVA exclue",
+ "verified_at": "2026-09-21",
+ "etabli": true,
+ "evidence_level": "primaire — Code général des impôts malgache, édition 2025 (CDI n° 2025-MEF/SG/DGI du 2025-02-06), article 06.01.11, publié par la Direction générale des impôts ; extrait archivé avec son empreinte. Le PDF porte une couche texte : les citations sont des extractions, non des transcriptions.",
+ "source": {
+  "instrument": "Code général des impôts, article 06.01.11, paragraphe 1° et alinéa « Cette valeur est égale au prix de revient… »",
+  "institution": "Direction générale des impôts — Ministère de l'Économie et des Finances (Madagascar)",
+  "url": "https://portal.impots.mg/textes/textes/2025-02-06--N-2025-MEF.SG.DGI-Ref-HIH9EC-3OPLT3.pdf",
+  "texte_archive": "sources/MDG_assiette_TVA.texte-extrait.txt",
+  "sha256": "b4ca5a489e468675b0fda4d195972aea33b0c287a922481b0661c97ca220848f",
+  "pdf_sha256": "028c396999b3f7aaf911100e63e7a64240662d43806a17fa3fd05cdcd370266b",
+  "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est."
+ },
+ "regle": {
+  "article": "Article 06.01.11 du CGI",
+  "verbatim": "1° Sur la valeur des importations, y compris les frais et les taxes autres que la taxe sur la valeur ajoutée ;",
+  "verbatim_valeur": "Cette valeur est égale au prix de revient des marchandises, biens, travaux ou services ou à défaut au prix normal au consommateur ou à l’utilisateur, pratiqué au lieu de la livraison ou de la prestation, y compris les frais et les taxes autres que la taxe sur la valeur ajoutée.",
+  "assiette": "CIF+TOUS_SAUF_TVA",
+  "valeur_moteur": "CIF+TOUS_SAUF_TVA",
+  "portee": "La TVA à l'importation s'assied sur la valeur des importations, y compris les frais et les taxes autres que la TVA elle-même : valeur en douane (CIF) augmentée des droits et taxes d'entrée, la TVA exclue de sa propre assiette."
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "le taux lui-même (20 % standard, taux réduits et exonérations — portés par le tarif national et le CGI) ;",
+  "le détail des « frais et taxes » selon le régime douanier (admission temporaire, régimes économiques) ;",
+  "l'articulation avec les accises et redevances perçues par la douane (Titre IX du Code des douanes)."
+ ],
+ "remaining_work": [
+  "Vérifier l'édition 2026 du CGI dès sa publication sur portal.impots.mg (l'édition 2025 est la dernière publiée à la date de la fiche)."
+ ]
+}

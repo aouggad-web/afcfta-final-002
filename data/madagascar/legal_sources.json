@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "country": "MDG",
+  "as_of": "2026-09-21",
+  "sources": [
+    {
+      "source_id": "MDG-DOUANES-TARIF-2026-LFR",
+      "official_title": "Tarif des douanes (basé sur la version 2022 du S.H), édition 2026 — mise à jour LFR 2026",
+      "institution": "Direction Générale des Douanes Malagasy — Ministère de l'Économie et des Finances",
+      "legal_date": "2026-01-01",
+      "url": "https://www.douanes.gov.mg/srcs/uploads/2026/07/TARIF-DES-DOUANES-2026-MAJ-LFR.pdf",
+      "sha256": "9f26e514d5bbbb69e3c45082b49694bb39378c983a975568a46490c02b326e5f",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "registry_path": null,
+      "notes": "PDF officiel de 292 pages, texte extractible. Empreinte du PDF source du tarif national ; 6 527 sous-positions nationales à 8 chiffres lues par scripts/parse_tarif_mdg_2026.py (colonnes DD / TVA / DD APEi, en-têtes de sous-tables). Quatre positions non lisibles sont écartées et déclarées. PDF non archivé dans le dépôt ; l'empreinte permet de le retélécharger à l'identique."
+    },
+    {
+      "source_id": "MDG-DOUANES-TARIF-RUNTIME-20260921",
+      "official_title": "Tarif des douanes de Madagascar, édition 2026 — fichier runtime normalisé",
+      "institution": "Direction Générale des Douanes Malagasy",
+      "legal_date": "2026-01-01",
+      "url": "https://www.douanes.gov.mg/tarifs-des-douanes/",
+      "sha256": "f63c40e969ffa8e6349d12b28a7f371c7fb5e7684216b99fa8a4a45f7047e78a",
+      "verification_status": "VERIFIED_RUNTIME_DATASET",
+      "registry_path": "backend/data/crawled/MDG_tariffs.json",
+      "notes": "Empreinte du fichier runtime scellé (_integrity_seal) : 6 527 positions nationales à 8 chiffres, colonnes DD / TVA et colonne préférentielle DD APEi (APE intérimaire, UE). Remplace la donnée WITS/UNCTAD-TRAINS (moyenne SH6) servie jusqu'au 2026-09-21."
+    },
+    {
+      "source_id": "MDG-CODE-DOUANES-LFI2026-ART23",
+      "official_title": "Code des douanes de Madagascar (Loi n° 2006-023), version consolidée après la Loi de Finances 2026 (Loi n° 2025-021 du 20/12/2025)",
+      "institution": "Direction Générale des Douanes Malagasy",
+      "legal_date": "2026-01-01",
+      "url": "https://www.douanes.gov.mg/srcs/uploads/2026/01/CODE-DES-DOUANES-APRES-LFI-2026.pdf",
+      "sha256": "7dc9ce4abb205c36d2e7a5c6f07b61393467141c58b9ad41f1edbe0ddad060d6",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "registry_path": null,
+      "notes": "Article 23 (paragraphes 1° et 4° c)) : la valeur en douane est la valeur transactionnelle, augmentée du transport, de l'assurance et des frais de chargement/manutention jusqu'au port ou lieu d'introduction à Madagascar — assiette CIF du droit de douane. Fiche : backend/data/legal_refs/zlecaf_application/MDG_assiette_droit_de_douane_2026-09-21.json ; extrait archivé avec empreinte."
+    },
+    {
+      "source_id": "MDG-CGI-2025-ART060111",
+      "official_title": "Code général des impôts — édition 2025, Partie VI « Taxe sur la valeur ajoutée », article 06.01.11",
+      "institution": "Direction Générale des Impôts (DGI) — Ministère de l'Économie et des Finances",
+      "legal_date": "2025-02-06",
+      "url": "https://portal.impots.mg/textes/textes/2025-02-06--N-2025-MEF.SG.DGI-Ref-HIH9EC-3OPLT3.pdf",
+      "sha256": "028c396999b3f7aaf911100e63e7a64240662d43806a17fa3fd05cdcd370266b",
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "registry_path": null,
+      "notes": "Article 06.01.11 : la TVA est établie sur la valeur des importations, y compris les frais et les taxes autres que la TVA elle-même — assiette CIF+TOUS_SAUF_TVA. Fiche : backend/data/legal_refs/zlecaf_application/MDG_assiette_TVA_2026-09-21.json ; extrait archivé avec empreinte. L'édition 2026 du CGI reste à vérifier dès sa publication."
+    },
+    {
+      "source_id": "MDG-CODE-DOUANES-TITRE-IX",
+      "official_title": "Code des douanes, Titre IX « Taxes diverses perçues par la douane » (articles 257 à 265) et articles 2, 3, 9, 16",
+      "institution": "Direction Générale des Douanes Malagasy",
+      "legal_date": "2026-01-01",
+      "url": "https://www.douanes.gov.mg/srcs/uploads/2026/01/CODE-DES-DOUANES-APRES-LFI-2026.pdf",
+      "sha256": null,
+      "verification_status": "VERIFIED_PRIMARY_TEXT",
+      "registry_path": null,
+      "notes": "Droit d'accises (art. 257, tarif en Loi de Finances), droit de sortie (260), TVA (261, assiette au CGI), droit de navigation (262-263, assiette tonnage), autres droits et taxes (264), redevance informatique et frais de prestation (265, forfait). Fiche consolidée : backend/data/legal_refs/zlecaf_application/MDG_cascade_droits_et_taxes_2026-09-21.json ; extraits archivés avec empreintes."
+    }
+  ]
+}
