@@ -679,7 +679,8 @@
         "countryValue": "Valeur Pays",
         "regionalAvg": "Moyenne Régionale",
         "globalAvg": "Moyenne Mondiale"
-      }
+      },
+      "loadFailed": "L'analyse n'a pas pu être chargée. Réessayez, ou vérifiez le code SH saisi."
     },
     "sectoralAnalysis": {
       "indstatUnidoOfficialStatistic": "INDSTAT — statistique officielle UNIDO",

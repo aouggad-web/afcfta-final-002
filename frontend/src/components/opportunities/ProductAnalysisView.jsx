@@ -20,7 +20,8 @@ import {
 } from 'recharts';
 import { 
   Search, Package, TrendingUp, Globe, Factory,
-  ArrowRight, Loader2, ChevronRight, BarChart3, Building2, Sparkles, Info
+  ArrowRight, Loader2, ChevronRight, BarChart3, Building2, Sparkles, Info,
+  AlertCircle
 } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
 import { useHsLabel } from '../../hooks/useHsLabel';
@@ -333,7 +334,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
 
     } catch (err) {
       console.error('Error fetching product data:', err);
-      setError('Erreur lors du chargement des données');
+      setError(t('opportunities.productAnalysisView.loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -631,8 +632,21 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         </Card>
       )}
 
+      {/* L'échec se disait au `console.error` et nulle part ailleurs : l'écran
+          retombait sur « aucune donnée », qui affirme tout autre chose. Un
+          lecteur en concluait que le produit n'existe pas et ressaisissait son
+          code, sans jamais apprendre que le service avait échoué. */}
+      {error && !loading && (
+        <Card className="bg-red-50 border-red-200" data-testid="product-analysis-error">
+          <CardContent className="py-8 flex items-center gap-3 justify-center">
+            <AlertCircle className="h-6 w-6 text-red-500 shrink-0" />
+            <p className="text-red-700">{error}</p>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Empty State */}
-      {!productData && !loading && (
+      {!productData && !loading && !error && (
         <Card className="bg-slate-50 border-slate-200">
           <CardContent className="py-16 text-center">
             <Package className="h-16 w-16 text-slate-300 mx-auto mb-4" />

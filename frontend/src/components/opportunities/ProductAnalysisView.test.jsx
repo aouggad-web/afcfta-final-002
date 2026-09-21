@@ -62,6 +62,24 @@ describe('ProductAnalysisView', () => {
     expect(await screen.findByText(/temporairement indisponible/i)).toBeInTheDocument();
   });
 
+  it('affiche l’échec au lieu de « aucune donnée », qui dit autre chose', async () => {
+    // L'échec était consigné au `console.error` et nulle part ailleurs :
+    // l'écran retombait sur son état vide, et le lecteur en concluait que le
+    // produit n'existe pas. Un jet SYNCHRONE atteint le `catch` externe, le
+    // seul qui alimente l'état d'erreur — les deux appels portent chacun le
+    // leur.
+    axios.get.mockImplementation(() => {
+      throw new Error('axios indisponible');
+    });
+    render(<ProductAnalysisView language="fr" />);
+    await chercher('090111');
+    const bloc = await screen.findByTestId('product-analysis-error');
+    expect(bloc).toHaveTextContent(/n'a pas pu être chargée|could not be loaded/i);
+    // L'état vide ne doit pas s'afficher en même temps : il affirmerait le
+    // contraire de ce que dit le bloc d'erreur.
+    expect(screen.queryByText(/^Aucune donnée/i)).not.toBeInTheDocument();
+  });
+
   it('ne laisse aucune clé i18n brute à l’écran', async () => {
     axios.get.mockImplementation((url) =>
       url.includes('/ai/product/') ? Promise.resolve({ data: AI }) : Promise.resolve({ data: null }),

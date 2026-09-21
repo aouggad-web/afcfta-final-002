@@ -679,7 +679,8 @@
         "countryValue": "Country Value",
         "regionalAvg": "Regional Average",
         "globalAvg": "Global Average"
-      }
+      },
+      "loadFailed": "The analysis could not be loaded. Try again, or check the HS code entered."
     },
     "sectoralAnalysis": {
       "indstatUnidoOfficialStatistic": "INDSTAT — UNIDO official statistic",
