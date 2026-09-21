@@ -293,11 +293,13 @@ attend une source ou une décision.
   périmé ou corrompu ». Le second ne devrait pas se replier en silence.
 - **Onze collecteurs portent `verify=False`** — correctif écrit, **pas encore
   sur `main`**. Il est dans la PR #488 (branche `claude/maroc-examine`) et
-  couvre les onze fichiers : `backend/scripts/verify_government_sources.py`
-  (2 occurrences), `crawlers/scrapling_engine/recon.py` (4),
-  `scrapling_engine/wits_source.py` (2), `mozambique_jue_scraper.py` (3), puis
-  une occurrence chacun dans les collecteurs tunisien, mauritanien, libyen,
-  seychellois et zambien.
+  couvre les onze fichiers, **18 occurrences** :
+  `crawlers/scrapling_engine/recon.py` (4),
+  `crawlers/countries/mozambique_jue_scraper.py` (3),
+  `backend/scripts/verify_government_sources.py` (2),
+  `scrapling_engine/wits_source.py` (2), puis une occurrence chacun dans les
+  collecteurs marocain, algérien, tunisien, mauritanien, libyen, seychellois
+  et zambien.
   **Tant que cette PR n'est pas fusionnée, `main` collecte sans vérifier le
   TLS** — ne pas lire cette ligne comme un point réglé. Si la chaîne d'un
   portail se révèle incomplète en production, la réponse est de fournir
