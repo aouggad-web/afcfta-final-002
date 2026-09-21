@@ -648,33 +648,56 @@ Chaînes de valeur) renvoient encore une erreur nue.
 |---|---|---|---|
 | 4.1a | Constante `TABS` d'Opportunités → i18n | ✅ | deux listes parallèles supprimées ; libellés servis par `opportunities.tabs.*` |
 | 4.1b | Parité des locales sous test | ✅ | une clé traduite d'un seul côté fait échouer la suite, au lieu d'afficher son nom à l'écran |
-| 4.1c | Les **173 ternaires de langue** restants → i18n | ⏳ | 0 ternaire résiduel |
+| 4.1c | Les **427 libellés en dur** restants → i18n | ✅ | 0 dictionnaire de langue, 0 ternaire de libellé ; 425 clés sous `opportunities`, chacune sous test |
 | 4.2 | Ajouter `ar` et `pt` (langues de travail ZLECAf) | ⏳ | les deux locales se chargent ; RTL vérifié pour l'arabe |
 | 4.3 | Réduire les 428 styles inline vers les jetons de design de Production | ⏳ | ≤ 50 `style={{}}` restants |
 | 4.4 | Tests front sur les deux modules | ⏳ partiel | ≥ 1 test de rendu et d'état d'erreur par sous-onglet (9 + 4) |
 
-**Le décompte exact de 4.1c**, mesuré, pour que le coût soit connu avant
-d'être engagé :
+**Le décompte de 4.1c annoncé ici était faux, et l'erreur méritait mieux
+qu'une correction discrète.** Le plan comptait 173 ternaires dans 8 fichiers.
+Il y en avait 200, dans 10. Surtout, il ne comptait qu'une famille sur deux.
 
-| Fichier | Ternaires |
-|---|---:|
-| `AIAnalysis.jsx` | 72 |
-| `SectoralAnalysis.jsx` | 33 |
-| `SubstitutionAnalysis.jsx` | 30 |
-| `ProductAnalysisView.jsx` | 12 |
-| `ValueChains.jsx` | 10 |
-| `OpportunitySummary.jsx` | 9 |
-| `CountryComparison.jsx` | 6 |
-| `ZlecafImpactSimulator.jsx` | 1 |
-| **Total** | **173** |
+| Famille | Annoncé | Réel |
+|---|---:|---:|
+| Ternaires `lang === 'fr' ? 'X' : 'Y'` | 173 | **200** |
+| Dictionnaires `{ fr: {…}, en: {…} }` | *non vus* | **227** |
+| **Total** | **173** | **427** |
 
-Ils sont de forme simple (`{lang === 'fr' ? 'X' : 'Y'}`) et donc migrables un
-à un sans difficulté — mais c'est un diff de plusieurs centaines de lignes
-**sans aucun changement de comportement**. Et une migration partielle
-n'apporte rien : tant que les 135 ternaires d'`AIAnalysis`,
-`SectoralAnalysis` et `SubstitutionAnalysis` subsistent, ajouter l'arabe ou le
-portugais (4.2) donnerait un module à moitié traduit, pire qu'un module
-bilingue cohérent. 4.1c est donc à faire d'un bloc, ou pas du tout.
+Les dictionnaires vivaient dans 17 constantes écrites à la main, dont deux
+fichiers entiers — `StrategicFlows.jsx` (34 libellés) et
+`TradeSankeyDiagram.jsx` (13) — que le décompte ignorait **parce qu'ils
+n'avaient aucun ternaire**. Le critère annoncé, « 0 ternaire résiduel »,
+aurait donc été atteint en laissant 227 libellés en dur, et 4.2 exactement
+aussi bloquée qu'avant : ajouter l'arabe aurait demandé un troisième bloc
+dans chacun des 17 dictionnaires.
+
+C'est le défaut typique d'un critère qui mesure le geste plutôt que le but.
+Le but de 4.1c n'est pas de supprimer une tournure de code, c'est de rendre
+4.2 possible. Le critère a été réécrit en conséquence.
+
+**Ce qui a été fait**, en deux commits séparés pour rester relisibles :
+les 200 ternaires, puis les 227 libellés de dictionnaire. Les 810 valeurs
+servies (405 × 2 langues) ont été confrontées une à une au code d'origine.
+
+**Ce qui reste en dur, délibérément :**
+
+- **4 ternaires de code de langue** — une locale de formatage
+  (`fr-FR`/`en-US`), deux arguments de `getAllCountries`, un paramètre
+  `lang` de requête. Ce ne sont pas des libellés ; les traduire produirait
+  un code traduit. Ils devront être **dérivés d'i18n** au moment de 4.2,
+  puisqu'un choix binaire fr/en devient faux à quatre langues.
+- **`difficultyLabelEn`** (SubstitutionAnalysis) traduit les libellés
+  **français que renvoie le backend** — « Facile » → « Easy ». Ce n'est pas
+  un dictionnaire de langue mais le contournement d'un défaut d'API : le
+  serveur émet du texte destiné à l'affichage au lieu d'un code stable.
+  L'externaliser en i18n figerait le contournement. **Arbitrage demandé
+  avant 4.2** : faire émettre au backend un code (`easy`, `moderate`…), ce
+  qui est la bonne correction, ou accepter la table côté front.
+
+**Ce que 4.2 doit encore faire**, maintenant qu'elle est débloquée : les
+425 clés existent en français et en anglais et sont sous test de parité ;
+ajouter `ar` et `pt` revient à fournir deux fichiers de plus, à dériver les
+4 codes de langue restants d'i18n, et à traiter le RTL de l'arabe.
 
 ---
 
