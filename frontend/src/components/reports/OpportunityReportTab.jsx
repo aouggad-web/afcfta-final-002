@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import SubstitutionAnalysis from "../opportunities/SubstitutionAnalysis";
 import StrategicFlows from "../opportunities/StrategicFlows";
@@ -130,18 +130,19 @@ function EstBadge({ isEstimation, level, fr }) {
 }
 
 /* ── Mode 1: producer looking for markets ─────────────────────────────────── */
-function MarketSeekingView({ fr }) {
-  const [hsCode, setHsCode] = useState("1801");
+function MarketSeekingView({ fr, prefill }) {
+  const [hsCode, setHsCode] = useState(prefill?.hsCode || "1801");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [rep, setRep] = useState(null);
 
-  const run = async () => {
+  const run = async (code) => {
+    const target = code || hsCode;
     setLoading(true);
     setError(null);
     setRep(null);
     try {
-      const params = new URLSearchParams({ hs_code: hsCode, lang: fr ? "fr" : "en" });
+      const params = new URLSearchParams({ hs_code: target, lang: fr ? "fr" : "en" });
       const res = await axios.get(`${API}/reports/market-seeking?${params.toString()}`);
       setRep(res.data);
     } catch (e) {
@@ -150,6 +151,25 @@ function MarketSeekingView({ fr }) {
       setLoading(false);
     }
   };
+
+  // ``setHsCode`` est asynchrone : l'effet de pré-remplissage doit passer le
+  // code explicitement, sinon la requête partirait avec l'ancienne valeur.
+  const runRef = useRef(null);
+  runRef.current = () => run(prefill?.hsCode);
+
+  // Arrivée depuis le module Production : le code SH est déjà choisi, l'utilisateur
+  // vient de cliquer « voir les débouchés ». Lui redemander de valider une
+  // saisie qu'il n'a pas faite n'aurait pas de sens — on lance la recherche.
+  // ``k`` est un jeton d'unicité : deux clics sur le même produit doivent
+  // relancer, ce qu'un effet indexé sur le seul code SH ne ferait pas.
+  const prefillKey = prefill?.k;
+  const prefillHs = prefill?.hsCode;
+  useEffect(() => {
+    if (!prefillHs) return;
+    setHsCode(prefillHs);
+    runRef.current?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [prefillHs, prefillKey]);
 
   const demand = rep?.demand || {};
   const supply = rep?.supply || {};
@@ -2203,6 +2223,7 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
   const [mode, setMode] = useState("market");
   const [prefill, setPrefill] = useState(null);
   const [s3Prefill, setS3Prefill] = useState(null);
+  const [marketPrefill, setMarketPrefill] = useState(null);
 
   // Hand off from a scenario to the full ultra-fine bilateral report.
   const openBilateral = (origin, destination, hsCode, goodsValue) => {
@@ -2219,9 +2240,22 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
       if (!raw) return;
       sessionStorage.removeItem("zlecaf_opportunites_handoff");
       const h = JSON.parse(raw);
-      if (h && h.country && h.hsCode) {
-        setS3Prefill({ country: h.country, hsCode: h.hsCode, withImports: true, k: h.k || Date.now() });
-        setMode("s3");
+      if (h && h.hsCode) {
+        const k = h.k || Date.now();
+        // Deux intentions arrivent ici, et elles sont opposées :
+        //   - « market » vient du module Production — ce pays PRODUIT ce
+        //     produit, où le vendre ? C'est la perspective exportateur ;
+        //   - « s3 » (défaut historique, module Statistiques) — ce pays a-t-il
+        //     un BESOIN de ce produit ? Perspective importateur.
+        // Ouvrir S3 pour une intention d'export enverrait le lecteur vers
+        // l'écran qui répond à l'autre question.
+        if (h.mode === "market") {
+          setMarketPrefill({ hsCode: h.hsCode, k });
+          setMode("market");
+        } else if (h.country) {
+          setS3Prefill({ country: h.country, hsCode: h.hsCode, withImports: true, k });
+          setMode("s3");
+        }
       }
     } catch {
       /* handoff illisible : ignorer */
@@ -2251,7 +2285,7 @@ export default function OpportunityReportTab({ countries = [], language = "fr" }
         {tabBtn("s5", fr ? "S5 · Substitution" : "S5 · Substitution")}
         {tabBtn("s6", fr ? "S6 · Flux stratégiques" : "S6 · Strategic flows")}
       </div>
-      {mode === "market" && <MarketSeekingView fr={fr} />}
+      {mode === "market" && <MarketSeekingView fr={fr} prefill={marketPrefill} />}
       {mode === "bilateral" && <BilateralView countries={countries} fr={fr} prefill={prefill} />}
       {mode === "s2" && <DirectExportView countries={countries} fr={fr} onAnalyze={openBilateral} />}
       {mode === "s1" && <TransformationView countries={countries} fr={fr} onAnalyze={openBilateral} />}

@@ -181,7 +181,27 @@
       "fullSubtitle": "Production de minerais et métaux par pays africain",
       "source1": "USGS MCS",
       "source2": "Commodity Summaries"
-    }
+    },
+    "outlets": {
+      "title": "Débouchés — de la production au marché",
+      "intro": "Ce que ce pays produit réellement, et où le vendre sous la ZLECAf. Chaque ligne porte son code SH : un clic ouvre la recherche de marchés pour ce produit, sans ressaisie.",
+      "loading": "Lecture du profil de production…",
+      "error": "Profil de production indisponible pour ce pays.",
+      "empty": "Aucun produit de ce pays n'est relié à un code SH dans le référentiel. Sa production n'est donc pas encore exploitable côté débouchés.",
+      "count": "{{count}} produits reliés à un code SH",
+      "colProduct": "Produit",
+      "colHs": "Code SH",
+      "colOutput": "Production",
+      "colRank": "Rang africain",
+      "colSource": "Source",
+      "rankOf": "{{rank}}ᵉ sur {{total}} pays couverts",
+      "findMarkets": "Voir les débouchés",
+      "footnote": "Rangs et parts portent sur les seuls pays présents dans le référentiel, jamais sur l'Afrique entière. Le nombre de pays couverts accompagne donc chaque rang.",
+      "datasetAgri": "agriculture",
+      "datasetMining": "mines",
+      "datasetManufacturing": "manufacturier"
+    },
+    "outletsTab": "Débouchés"
   },
   "statistics": {
     "title": "Statistiques Commerciales ZLECAf",

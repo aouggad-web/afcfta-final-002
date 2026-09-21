@@ -181,7 +181,27 @@
       "fullSubtitle": "Mineral and metal production by African country",
       "source1": "USGS MCS",
       "source2": "Commodity Summaries"
-    }
+    },
+    "outlets": {
+      "title": "Outlets — from production to market",
+      "intro": "What this country actually produces, and where to sell it under the AfCFTA. Every row carries its HS code: one click opens the market search for that product, with nothing to retype.",
+      "loading": "Loading production profile…",
+      "error": "Production profile unavailable for this country.",
+      "empty": "None of this country's products is linked to an HS code in the dataset, so its production cannot yet be used on the outlets side.",
+      "count": "{{count}} products linked to an HS code",
+      "colProduct": "Product",
+      "colHs": "HS code",
+      "colOutput": "Output",
+      "colRank": "African rank",
+      "colSource": "Source",
+      "rankOf": "#{{rank}} of {{total}} covered countries",
+      "findMarkets": "Find markets",
+      "footnote": "Ranks and shares cover only the countries present in the dataset, never the whole continent. The number of covered countries therefore accompanies every rank.",
+      "datasetAgri": "agriculture",
+      "datasetMining": "mining",
+      "datasetManufacturing": "manufacturing"
+    },
+    "outletsTab": "Outlets"
   },
   "statistics": {
     "title": "AfCFTA Trade Statistics",

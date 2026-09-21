@@ -596,10 +596,29 @@ Elles attendent que le pont sache exprimer une relation un-à-plusieurs.
 vert, aucune résolution existante modifiée (extension purement additive),
 269 tests du périmètre.
 
-**3.2 — Faire exister le chaînage à l'écran. ⏳ non livré.** Le seul volet de
-cette phase qui soit du front-end. Les briques sont prêtes côté serveur —
-`get_country_profile`, `get_continental_producers`, le handoff
-`sessionStorage` — mais le parcours n'existe dans aucun écran.
+**3.2 — Le chaînage existe à l'écran. ✅ livré.**
+
+Nouveau sous-onglet **Débouchés** dans Production : le pays choisi, sa
+production réelle ligne à ligne avec son code SH, et un bouton par produit qui
+ouvre la recherche de marchés — sans ressaisie. Un composant nouveau, aucun
+des quatre sous-onglets existants touché.
+
+**Le piège évité.** Le canal `sessionStorage` existait déjà, mais il ouvrait
+systématiquement l'écran du *besoin national* — la perspective **importateur**
+(« ce pays a-t-il besoin de ceci ? »). Or le chaînage depuis Production pose
+la question inverse : « ce pays produit ceci, où le vendre ? ». Le handoff
+porte donc désormais une **intention** ; `market` ouvre la recherche de
+marchés, et l'absence d'intention conserve le comportement historique du
+module Statistiques, inchangé.
+
+**Le rang n'est jamais montré seul.** « 1ᵉʳ producteur » ne veut rien dire
+quand trois pays sont couverts ; « 1ᵉʳ sur 3 pays couverts » se juge. Le
+dénominateur accompagne donc chaque rang, et les réserves que le serveur
+attache à une commodité sont rendues telles quelles — c'est le même garde-fou
+que celui posé côté serveur, tenu jusqu'à l'écran.
+
+*Vérification tenue* : 14 tests front (8 sur l'écran, 6 sur l'aiguillage du
+handoff) ; suite front passée de 261 à 275 tests ; `yarn build` vert.
 
 **3.3 — Un repli non-IA. ✅ livré (onglet principal).**
 
@@ -680,6 +699,8 @@ Les lignes marquées ✅ ont été livrées par le premier lot d'implémentation
 | ✅ Entrées du pont SH | 232 | **270** | ≥ 260 |
 | ✅ Produits suivis (`list_tracked_products`) | 114 | **137** | ≥ 130 |
 | ✅ Sous-onglets Opportunités servant des faits sans clé IA | 0 / 4 | **1 / 4** | 4 / 4 |
+| ✅ Parcours production → débouché à l'écran | non | **oui** | oui |
+| ✅ Tests front | 261 | **275** | — |
 | Commodités minières ingérées | 30 / 46 | 30 / 46 | ≥ 44 / 46 |
 | Produits manufacturiers suivis | 15 | 15 | borné par INDSTAT (403) |
 | Pays avec détail ISIC4 réel | 20 / 54 | 20 / 54 | ≥ 30 / 54 |
