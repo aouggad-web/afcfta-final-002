@@ -28,6 +28,12 @@ from typing import Dict, List, Optional
 
 import httpx
 
+# Vérification TLS active (défaut httpx). Elle portait `verify=False` :
+# le collecteur acceptait n'importe quel certificat, et un tiers sur le
+# chemin pouvait donc lui dicter les taux qu'il liquide. Si la chaîne d'un
+# portail se révèle incomplète en production, la réponse est de fournir
+# l'intermédiaire manquant — jamais de redésactiver la vérification.
+
 BASE = "https://wits.worldbank.org/API/V1"
 COUNTRY_LIST = f"{BASE}/wits/datasource/trn/country/ALL"
 HEADERS = {
@@ -71,7 +77,7 @@ def _local(tag: str) -> str:
 
 def _reporter_code(iso3: str) -> Optional[str]:
     """ISO3 -> code WITS du pays déclarant (isreporter=1)."""
-    with httpx.Client(headers=HEADERS, timeout=60.0, follow_redirects=True, verify=False) as c:
+    with httpx.Client(headers=HEADERS, timeout=60.0, follow_redirects=True) as c:
         xml = c.get(COUNTRY_LIST).text
     root = ET.fromstring(xml.encode("utf-8"))
     for country in root.iter():
@@ -104,7 +110,7 @@ def _fetch_year(code: str, year: int, datatype: str) -> Optional[str]:
         f"{BASE}/SDMX/V21/datasource/TRN/reporter/{code}/partner/000/"
         f"product/all/year/{year}/datatype/{datatype}"
     )
-    with httpx.Client(headers=HEADERS, timeout=120.0, follow_redirects=True, verify=False) as c:
+    with httpx.Client(headers=HEADERS, timeout=120.0, follow_redirects=True) as c:
         resp = c.get(url)
     if resp.status_code == 200 and "<" in resp.text[:200]:
         return resp.text

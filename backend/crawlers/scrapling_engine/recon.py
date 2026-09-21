@@ -26,6 +26,12 @@ from typing import Dict, List
 import httpx
 from bs4 import BeautifulSoup
 
+# Vérification TLS active (défaut httpx). Elle portait `verify=False` :
+# le collecteur acceptait n'importe quel certificat, et un tiers sur le
+# chemin pouvait donc lui dicter les taux qu'il liquide. Si la chaîne d'un
+# portail se révèle incomplète en production, la réponse est de fournir
+# l'intermédiaire manquant — jamais de redésactiver la vérification.
+
 # Mots-clés d'un lien/formulaire menant à une base tarifaire (FR/EN/PT/AR-lat).
 TARIFF_KEYWORDS = re.compile(
     r"tarif|tariff|nomenclat|douan|customs|hs\s*code|sh\d|harmoniz|"
@@ -93,9 +99,7 @@ def _classify(resp: httpx.Response) -> str:
 
 def _probe(url: str) -> str:
     try:
-        with httpx.Client(
-            headers=HEADERS, timeout=25.0, follow_redirects=True, verify=False
-        ) as client:
+        with httpx.Client(headers=HEADERS, timeout=25.0, follow_redirects=True) as client:
             resp = client.get(url)
         size = len(resp.content)
         return (
@@ -111,9 +115,7 @@ def _dump_tariff_links(url: str) -> str:
     base tarifaire (mots-clés). Sert à localiser la vraie page tarif avant
     d'écrire un scraper."""
     try:
-        with httpx.Client(
-            headers=HEADERS, timeout=25.0, follow_redirects=True, verify=False
-        ) as client:
+        with httpx.Client(headers=HEADERS, timeout=25.0, follow_redirects=True) as client:
             resp = client.get(url)
     except Exception as e:  # noqa: BLE001
         return f"ERREUR {type(e).__name__}: {str(e)[:120]}"
@@ -152,7 +154,7 @@ def _dump_api_endpoints(url: str) -> str:
     extrait tous les chemins d'API (Angular embarque les URLs en clair). Révèle
     définitivement les endpoints à scraper — sans piloter le navigateur."""
     try:
-        with httpx.Client(headers=HEADERS, timeout=30.0, follow_redirects=True, verify=False) as c:
+        with httpx.Client(headers=HEADERS, timeout=30.0, follow_redirects=True) as c:
             idx = c.get(url)
             base = str(idx.url)
             soup = BeautifulSoup(idx.text, "html.parser")
@@ -189,7 +191,7 @@ def _dump_body(url: str, n: int = 6000) -> str:
     """Imprime les premiers octets du corps — pour inspecter le format d'une API
     (ex. WITS/TRAINS SDMX-JSON/XML) et rétro-concevoir le parseur."""
     try:
-        with httpx.Client(headers=HEADERS, timeout=40.0, follow_redirects=True, verify=False) as c:
+        with httpx.Client(headers=HEADERS, timeout=40.0, follow_redirects=True) as c:
             resp = c.get(url)
         body = resp.text[:n]
         return f"      corps[{len(resp.content)}o]: {body!r}"
