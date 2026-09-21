@@ -639,8 +639,18 @@ au-delà de l'absence de clé : quota épuisé, fournisseur indisponible.
 *Vérification tenue* : 7 tests ; l'état dégradé est annoncé, jamais déguisé en
 analyse complète qui n'aurait rien trouvé.
 
-*Reste à faire* : les trois autres sous-onglets (Par produit, Comparaison,
-Chaînes de valeur) renvoient encore une erreur nue.
+*Correction (vérifiée le 2026-09-21)* : cette phrase était fausse pour deux
+des trois. **Par produit** (`real_product_service`) et **Comparaison**
+(`real_comparison_service`) ne passent pas par le modèle du tout — leurs
+chiffres viennent d'IMF, de la Banque mondiale, du PNUD et de l'OEC, et ces
+onglets fonctionnent sans clé.
+
+Le seul des trois qui dépende du modèle est **Chaînes de valeur**
+(`get_value_chains_analysis`). Son échec est désormais couvert à l'écran par
+le bandeau de valeurs de référence (§5.1) — mais avec un jeu ÉCRIT EN DUR,
+là où l'onglet Analyse IA sert, lui, un ancrage factuel réel. C'est le reste
+à faire : donner à `/value-chains` le même repli sourcé (production FAOSTAT /
+USGS / UNIDO par chaîne) plutôt qu'un jeu inventé.
 
 ### Phase 4 — Harmoniser la forme
 
