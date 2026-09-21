@@ -291,25 +291,28 @@ attend une source ou une décision.
   peut donc pas décider seul du périmètre produit.
 - **Le repli sur 503 du socle** ne distingue pas « socle absent » de « socle
   périmé ou corrompu ». Le second ne devrait pas se replier en silence.
-- **Onze collecteurs portent `verify=False`** — correctif écrit, **pas encore
-  sur `main`**. Il est dans la PR #488 (branche `claude/maroc-examine`) et
-  couvre les onze fichiers, **18 occurrences** :
-  `crawlers/scrapling_engine/recon.py` (4),
-  `crawlers/countries/mozambique_jue_scraper.py` (3),
-  `backend/scripts/verify_government_sources.py` (2),
-  `scrapling_engine/wits_source.py` (2), puis une occurrence chacun dans les
-  collecteurs marocain, algérien, tunisien, mauritanien, libyen, seychellois
-  et zambien.
-  **Tant que cette PR n'est pas fusionnée, `main` collecte sans vérifier le
-  TLS** — ne pas lire cette ligne comme un point réglé. Si la chaîne d'un
+- **`verify=False` dans onze collecteurs — RÉGLÉ le 21/09/2026** (PR #488,
+  fusionnée). Les onze fichiers et leurs 18 occurrences sont traités ; il ne
+  reste dans le code que des commentaires qui rappellent la règle. L'entrée
+  est conservée parce que la règle, elle, reste valable : **si la chaîne d'un
   portail se révèle incomplète en production, la réponse est de fournir
-  l'intermédiaire manquant, **jamais** de redésactiver la vérification.
+  l'intermédiaire manquant, jamais de redésactiver la vérification.**
 
-  Une réserve sur la portée du correctif : le réseau de cet environnement
-  resigne le TLS (« Egress Gateway SDS Issuing CA »), si bien que les
-  certificats observés sont ceux de la passerelle et jamais ceux de l'origine.
-  Rétablir la vérification est établi comme fonctionnant **ici** ; la chaîne
-  réelle de chaque portail reste à constater depuis le réseau de production.
+  Ce qui n'est PAS établi, et qui se constatera seulement en production : le
+  réseau de cet environnement resigne le TLS (« Egress Gateway SDS Issuing
+  CA »), si bien que les certificats observés y sont ceux de la passerelle et
+  jamais ceux de l'origine. Ce qui est établi, c'est que les clients n'ont pas
+  besoin de `verify=False` pour fonctionner. Deux portails — `douane.gov.tn`,
+  `zra.org.zm` — échouaient déjà à travers la passerelle : si leur collecte
+  s'arrête, **c'est le comportement voulu**, et elle se répare par
+  l'intermédiaire, pas par un retour en arrière.
+
+  Un piège rencontré, à connaître avant de toucher à un collecteur : le
+  contournement DNS mozambicain vise une IP en posant l'en-tête `Host`. La
+  vérification de nom porte sur l'hôte de l'**URL**, pas sur cet en-tête — le
+  contournement était donc mort dès la vérification rétablie, et le disait
+  seulement en journal. Il se répare par `extensions={"sni_hostname": ...}`,
+  qui fixe le `server_hostname` de la poignée de main.
 
 ### G4 — en attente d'arbitrage ou de source
 
