@@ -8,14 +8,27 @@ sources en ligne le jour de l'audit, pas estimées. Les commandes de mesure sont
 rappelées en annexe pour que chaque chiffre soit reproductible.
 
 > **État d'avancement.** Le constat (§ 1 et 2) décrit le dépôt tel qu'il était
-> à l'audit. Les **phases 0 et 1 ont depuis été implémentées** : macro en
-> valeurs absolues sur dix ans, surfaces et rendements FAOSTAT, rang
-> continental, correction d'un passage mensuel qui faisait régresser le
-> fichier, puis une dimension manufacturière mesurée contournant le 403
-> d'UNIDO et une explication sourcée pour les treize pays sans donnée minière.
-> Le tableau du § 6 marque d'un ✅ ce qui est livré. Deux actions du plan se
-> sont révélées mal formulées à l'usage ; les corrections sont écrites en
-> phase 0 et en phase 1, elles ne sont pas masquées.
+> à l'audit. Le tableau du § 6 marque d'un ✅ ce qui est livré depuis.
+>
+> | Phase | État |
+> |---|---|
+> | 0 — sans nouvelle source | ✅ livrée |
+> | 1 — manufacturing et mining | ✅ livrée |
+> | 2 — offices nationaux | ✅ 2.1, 2.2, 2.4 livrées ; **2.3 livrée pour un premier lot de cinq pays** — 1 intégré, 4 écartés avec motifs |
+> | 3 — pont Production ↔ Opportunités | ✅ livrée (3.3 complétée : les Chaînes de valeur servent des producteurs réels, plus un jeu en dur) |
+> | 4 — forme | ✅ 4.1, 4.3 (couleurs), 4.4 livrées ; **4.2 en suspens** (traduction ar/pt) ; la mise en page reste ouverte, versée au chantier de refonte |
+> | 5 — constats nés des tests de 4.4 | ✅ livrée |
+>
+> **Ce qui reste ouvert, et pourquoi.** La phase 2 est le seul chantier long :
+> elle avance pays par pays et dépend de ce que chaque office publie
+> réellement — le lot de cinq pays traité en 2.3 en donne la mesure, un seul
+> est entré. La phase 4.2 attend une traduction humaine des 854 clés, pas du
+> code. La refonte UX/front est le chantier suivant, décidé après ces deux
+> modules.
+>
+> Plusieurs actions du plan se sont révélées mal formulées à l'usage ; les
+> corrections sont écrites dans les phases concernées, elles ne sont pas
+> masquées.
 
 ---
 
@@ -525,8 +538,8 @@ pour 48 pays. Les paliers ne sont donc plus « portail / PDF / rien » mais
 
 | Palier | Sens | Pays |
 |---|---|---:|
-| **A** | Collecte directe — bloc adossé à une publication nommée et datée | **1** |
-| **B** | Republiée harmonisée — ILOSTAT ou UNSD, rien à négocier | **47** |
+| **A** | Collecte directe — bloc adossé à une publication nommée et datée | **2** |
+| **B** | Republiée harmonisée — ILOSTAT ou UNSD, rien à négocier | **46** |
 | **C** | Non atteinte | **6** |
 
 **Et pourquoi le palier B ne suffit pas.** Les republications portent l'emploi
@@ -536,10 +549,68 @@ ZLECAf. Un pays en palier B est **couvert pour l'emploi, découvert pour
 l'origine**. C'est vers cette distinction que la collecte directe doit aller,
 et vers les pays à zones franches actives d'abord.
 
-**2.3 — Viser d'abord ce que seuls les NSO savent dire.** Inchangé, et
-confirmé par le tableau ci-dessus : la séparation domestique / réexportation
-reste la priorité, parce qu'elle est la seule chose qu'aucune republication
-ne fournit.
+**2.3 — Viser d'abord ce que seuls les NSO savent dire. ✅ livré — un lot de
+cinq pays à zones franches actives, dont un seul est entré, et pas comme
+prévu.**
+
+Cible : Maroc, Kenya, Égypte, Togo, Djibouti — les pays où la distinction
+domestique / réexportation change réellement une conclusion. Résultat :
+
+| Pays | Issue | Motif |
+|---|---|---|
+| **Togo** | **INTÉGRÉ**, mais en avertissement | voir ci-dessous |
+| Maroc | écarté — **sur le fond** | L'Office des Changes ne publie pas cette ventilation. L'analogue marocain est l'admission temporaire : un concept douanier *différent*. Le plaquer sur ce schéma serait une fabrication par analogie. |
+| Kenya | écarté — accès | `knbs.or.ke` échoue au handshake TLS depuis le bac à sable (`unknown CA`), bundle CA du proxy compris. Ce n'est pas un refus de politique. **À revalider sur un runner** : le KNBS Economic Survey publie « Domestic Exports » et « Re-exports » en propre — c'est le meilleur candidat restant. |
+| Égypte | écarté — accès | Page CAPMAS du commerce extérieur : 1 421 octets, coquille JavaScript. |
+| Djibouti | écarté — accès | INSTAD : coquille de 4 309 octets, tunnel interrompu en cours d'échange. |
+
+Aucun fichier n'est créé pour les quatre écartés : un bloc vide vaut moins
+qu'un bloc absent.
+
+**Le Togo est le cas intéressant, parce qu'il a échoué utilement.** Son
+bulletin trimestriel (INSEED, 4ᵉ trimestre 2025, 137 pages) dit trois choses
+qui, ensemble, ferment la porte :
+
+1. sa note méthodologique (p. xii) pose que « L'exportation regroupe
+   l'exportation simple et la réexportation » — le total publié de
+   258 434,7 millions de FCFA **contient** donc les réexportations ;
+2. ses 89 tableaux portent tous sur l'exportation *totale* ; les deux flux ne
+   se distinguent qu'au Tableau 83, par régime douanier, **jamais par produit
+   ni par client** ;
+3. et ce Tableau 83 **ne se réconcilie pas** avec le total publié :
+   311 490,1 pour les régimes 1xxx + 3xxx contre 258 434,7, soit 53 055,4
+   d'écart. Recherche exhaustive : aucun sous-ensemble des régimes de
+   réexportation ne reproduit le total sur les cinq trimestres du tableau.
+
+Recomposer un « export domestique togolais » aurait donc été une agrégation
+maison que la source elle-même contredit. Elle n'est pas faite.
+
+**Ce qui est servi à la place**, et qui est vérifiable :
+
+- `export_flow_caveat` — l'avertissement daté avec la définition citée. Il
+  interdit de lire un chiffre d'export togolais comme de la production
+  domestique — **y compris ceux d'OEC et de Comtrade, qui héritent de la même
+  définition**. C'est un fait sourcé, pas un chiffre reconstitué.
+- `free_zone_regimes` — quatre lignes du Tableau 83 reprises verbatim. Elles
+  disent l'essentiel sur l'origine : la zone franche industrielle **reçoit**
+  100 527,6 et **expédie** 84 248,9 millions de FCFA. Une zone qui importe
+  plus qu'elle n'exporte en valeur transforme des intrants étrangers ; ses
+  sorties n'établissent pas à elles seules l'origine togolaise.
+
+Chaque valeur est vérifiée caractère par caractère contre le texte du PDF. Un
+test interdit qu'un pays porte à la fois l'avertissement et une ventilation :
+l'un des deux serait faux. Détail et empreintes :
+`docs/data-sources/TGO_STATS_REGISTER.md`.
+
+> **Une piste ouverte, non vérifiée.** Le docstring de
+> `national_official_stats.py` affirme qu'« aucune source internationale ne
+> publie cette ventilation ». C'est probablement trop fort : UN Comtrade porte
+> des codes de flux `DX` / `RX` pour les déclarants qui les soumettent. Le
+> dépôt a bien `comtrade_service.py`, mais en repli **opt-in à clé**, et
+> aucune clé n'est configurée — impossible de contrôler ici quels pays
+> africains soumettent réellement `RX`. Si la piste tient, elle est plus
+> rentable que la collecte manuelle pays par pays. **Elle demande une clé
+> Comtrade pour être tranchée, et n'a donc pas été inscrite comme un fait.**
 
 **2.4 — La règle qui ne se négocie pas. ✅ livré et testé.**
 
@@ -646,11 +717,25 @@ chiffres viennent d'IMF, de la Banque mondiale, du PNUD et de l'OEC, et ces
 onglets fonctionnent sans clé.
 
 Le seul des trois qui dépende du modèle est **Chaînes de valeur**
-(`get_value_chains_analysis`). Son échec est désormais couvert à l'écran par
-le bandeau de valeurs de référence (§5.1) — mais avec un jeu ÉCRIT EN DUR,
-là où l'onglet Analyse IA sert, lui, un ancrage factuel réel. C'est le reste
-à faire : donner à `/value-chains` le même repli sourcé (production FAOSTAT /
-USGS / UNIDO par chaîne) plutôt qu'un jeu inventé.
+(`get_value_chains_analysis`).
+
+**3.3 (suite) — le repli sourcé des Chaînes de valeur. ✅ livré.** L'onglet
+servait un jeu ÉCRIT EN DUR dont les valeurs par maillon n'avaient aucune
+source. `factual_value_chains()` le remplace par des producteurs réels :
+**6 chaînes, 13 commodités, 48 producteurs**, tirés de FAOSTAT / USGS / UNIDO
+avant tout appel au modèle, donc à coût nul.
+
+Ce que ce repli **ne fabrique pas**, et c'est le point :
+
+- les **étapes** (`stages`) restent VIDES. Découper une filière en maillons et
+  leur affecter des pays est une analyse, pas une mesure : aucune de nos
+  sources ne la porte ;
+- les **potentiels** (`intra_african_potential_musd`, `global_exports_musd`)
+  sont absents pour la même raison.
+
+Ce qui se perd est le récit ; ce qui reste est mesuré. L'onglet a désormais
+trois états distincts à l'écran — analyse complète, repli factuel annoncé,
+valeurs de référence datées (§5.1) — et 9 tests les tiennent.
 
 ### Phase 4 — Harmoniser la forme
 
@@ -925,22 +1010,22 @@ Les lignes marquées ✅ ont été livrées par le premier lot d'implémentation
 | ✅ Pays sans donnée minière **ni explication** | 13 | **0** | 0 |
 | ✅ Indicateurs manufacturiers mesurés (hors estimation) | 0 | **3** | ≥ 3 |
 | ✅ Pays avec manufacturier mesuré | 0 | **53** | ≥ 45 |
-| ✅ Lignes de production hors agriculture et macro | 622 | **1 534** | ≥ 2 000 |
+| ✅ Lignes de production hors agriculture et macro | 622 | **1 630** | ≥ 2 000 |
 | ✅ Commodités agricoles importées | 69 | **92** | ≥ 90 des 233 atteignables |
-| ✅ Entrées du pont SH | 232 | **270** | ≥ 260 |
-| ✅ Produits suivis (`list_tracked_products`) | 114 | **137** | ≥ 130 |
+| ✅ Entrées du pont SH | 232 | **293** | ≥ 260 |
+| ✅ Produits suivis (`list_tracked_products`) | 114 | **161** | ≥ 130 |
 | ✅ Sous-onglets Opportunités servant des faits sans clé IA | 0 / 4 | **1 / 4** | 4 / 4 |
 | ✅ Parcours production → débouché à l'écran | non | **oui** | oui |
-| ✅ Tests front | 261 | **275** | — |
-| Commodités minières ingérées | 30 / 46 | 30 / 46 | ≥ 44 / 46 |
+| ✅ Tests front | 261 | **324** | — |
+| ✅ Commodités minières ingérées | 30 | **54** | ≥ 44 |
 | Produits manufacturiers suivis | 15 | 15 | borné par INDSTAT (403) |
 | Pays avec détail ISIC4 réel | 20 / 54 | 20 / 54 | ≥ 30 / 54 |
 | ✅ Registre NSO piloté par la donnée | non | **oui** | oui |
 | ✅ Pays classés par voie d'accès (généré) | 0 | **54** | 54 |
-| Pays en collecte directe (palier A) | 1 | 1 | ≥ 10 |
-| Pays atteints par republication (palier B) | 0 | **47** | ≥ 45 |
+| Pays en collecte directe (palier A) | 1 | **2** | ≥ 10 |
+| Pays atteints par republication (palier B) | 0 | **46** | ≥ 45 |
 | Sous-onglets Opportunités vivants sans clé IA | 5 / 9 | **6 / 9** | 9 / 9 |
-| Clés i18n Opportunités | 0 | 0 | ≥ 150 |
+| ✅ Clés i18n Opportunités | 0 | **436** | ≥ 150 |
 
 Deux cibles du tableau d'origine ont été retirées parce qu'elles reposaient sur
 une hypothèse fausse : « pays en `is_estimation` seule < 15 » (aucune source
