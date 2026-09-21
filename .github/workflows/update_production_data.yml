@@ -50,6 +50,15 @@ jobs:
         working-directory: backend
         run: python scripts/fetch_wdi_macro.py
 
+      # Même politique que WDI : l'API UNSD est libre et sans clé ; si elle est
+      # injoignable, etl/unsd_manufacturing_data.py garde les valeurs déjà
+      # committées. Sans cette étape, la dimension manufacturière mesurée
+      # resterait figée pendant que les autres sources se rafraîchissent.
+      - name: Refresh UNSD measured manufacturing series
+        continue-on-error: true
+        working-directory: backend
+        run: python scripts/fetch_unsd_manufacturing.py
+
       # ÉTAPE INDISPENSABLE, et longtemps absente : le script de construction
       # ci-dessus n'écrit que le socle (macro et mines dans leur version
       # minimale). Les dimensions complètes — macro World Bank, minéraux
@@ -79,6 +88,8 @@ jobs:
           # surcouche — le socle seul en compte 166 et 162.
           assert counts['mining'] >= 400, f"mining: {counts['mining']} < 400"
           assert counts['macro'] >= 4000, f"macro: {counts['macro']} < 4000"
+          assert counts.get('manufacturing_unsd', 0) >= 800, (
+              f"manufacturing_unsd: {counts.get('manufacturing_unsd', 0)} < 800")
 
           from services import production_capacity_service as pcs
           # Vérités de terrain stables : la Côte d'Ivoire doit rester visible

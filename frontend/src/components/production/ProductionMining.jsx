@@ -22,6 +22,9 @@ function ProductionMining({ language = 'fr' }) {
       minerals: "minerais",
       loading: "Chargement des données minières...",
       noData: "Aucune donnée minière disponible pour ce pays.",
+      noProductionTitle: "Aucune production minière rapportée pour ce pays",
+      sourcesConsulted: "Sources consultées",
+      notIngestedTitle: "Production recensée, pas encore ingérée",
       evolutionTitle: "Évolution de la Production Minière",
       comparisonTitle: "Production par Minerai et Année",
       detailsTitle: "Données Détaillées par Minerai",
@@ -36,6 +39,9 @@ function ProductionMining({ language = 'fr' }) {
       minerals: "minerals",
       loading: "Loading mining data...",
       noData: "No mining data available for this country.",
+      noProductionTitle: "No mining production reported for this country",
+      sourcesConsulted: "Sources consulted",
+      notIngestedTitle: "Production recorded, not yet ingested",
       evolutionTitle: "Mining Production Evolution",
       comparisonTitle: "Production by Mineral and Year",
       detailsTitle: "Detailed Data by Mineral",
@@ -153,7 +159,7 @@ function ProductionMining({ language = 'fr' }) {
             </div>
           </CardContent>
         </Card>
-      ) : miningData && miningData.data_by_commodity ? (
+      ) : miningData && miningData.total_records > 0 ? (
         <>
           {/* Line Chart: Evolution Production */}
           <Card className="shadow-lg">
@@ -271,6 +277,43 @@ function ProductionMining({ language = 'fr' }) {
             </CardContent>
           </Card>
         </>
+      ) : miningData?.coverage ? (
+        /* Le serveur dit CE QU'IL A CONSULTÉ et ce que la source en rapporte.
+           Une phrase « aucune donnée » laissait le lecteur conclure que la
+           plateforme avait perdu la donnée — la qualification produite côté
+           serveur ne lui parvenait pas. */
+        <Card>
+          <CardContent className="py-8" data-testid="mining-coverage">
+            <p className="font-semibold text-[var(--text)]">
+              {miningData.coverage.status === 'LISTED_BY_USGS_NOT_INGESTED'
+                ? t.notIngestedTitle
+                : t.noProductionTitle}
+            </p>
+            <p className="mt-2 text-sm text-gray-500 max-w-3xl">
+              {miningData.coverage.note}
+            </p>
+            {miningData.coverage.sources_consulted?.length > 0 && (
+              <div className="mt-4 text-xs text-gray-500">
+                <p className="uppercase tracking-wide mb-1">{t.sourcesConsulted}</p>
+                <ul className="list-disc list-inside space-y-0.5">
+                  {miningData.coverage.sources_consulted.map((src) => (
+                    <li key={src}>{src}</li>
+                  ))}
+                </ul>
+                {miningData.coverage.usgs_source_url && (
+                  <a
+                    href={miningData.coverage.usgs_source_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-2 underline text-[var(--gold)]"
+                  >
+                    {miningData.coverage.usgs_edition}
+                  </a>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       ) : (
         <Card>
           <CardContent className="text-center py-12 text-gray-500">

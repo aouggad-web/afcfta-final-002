@@ -1225,6 +1225,59 @@ export default function AIAnalysis({ language = 'fr' }) {
       )}
 
       {/* Results */}
+      {/* État DÉGRADÉ : le serveur n'a pas pu produire d'analyse narrative
+          (clé absente, quota épuisé, fournisseur indisponible) mais renvoie
+          l'ancrage factuel, qui ne dépend pas du modèle. Sans ce bloc, la
+          liste d'opportunités vide s'affichait sans explication et le lecteur
+          concluait que rien n'avait été trouvé — alors que les faits étaient
+          dans la réponse. */}
+      {!loading && !error && data?.degraded && (
+        <div
+          data-testid="ai-degraded"
+          style={{
+            border: '1px solid var(--afcfta-border)',
+            borderRadius: 12,
+            padding: 16,
+            background: 'var(--afcfta-card)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+            <AlertTriangle style={{ width: 16, height: 16, color: 'var(--gold)', flexShrink: 0, marginTop: 2 }} />
+            <p style={{ fontSize: 13, color: 'var(--text)', margin: 0 }}>{data.notice}</p>
+          </div>
+          {data.grounding_stats && (
+            <p style={{ fontSize: 12, color: 'var(--afcfta-muted)', margin: 0 }}>
+              {lang === 'fr'
+                ? `${data.grounding_stats.production_products || 0} produits de production réelle, `
+                  + `${data.grounding_stats.oec_flows || 0} flux commerciaux observés`
+                : `${data.grounding_stats.production_products || 0} real production products, `
+                  + `${data.grounding_stats.oec_flows || 0} observed trade flows`}
+              {data.grounding_stats.oec_year ? ` (${data.grounding_stats.oec_year})` : ''}
+            </p>
+          )}
+          {data.grounding && (
+            <pre
+              data-testid="ai-degraded-grounding"
+              style={{
+                margin: 0,
+                whiteSpace: 'pre-wrap',
+                wordBreak: 'break-word',
+                fontSize: 12,
+                lineHeight: 1.5,
+                color: 'var(--afcfta-muted)',
+                maxHeight: 420,
+                overflowY: 'auto',
+              }}
+            >
+              {data.grounding}
+            </pre>
+          )}
+        </div>
+      )}
+
       {!loading && !error && data && (
         <>
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>

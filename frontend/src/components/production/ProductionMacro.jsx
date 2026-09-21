@@ -43,6 +43,8 @@ function ProductionMacro({ language = 'fr' }) {
       selectedCountry: 'Pays',
       source: 'Source',
       dataCoverage: 'Couverture',
+      usdTitle: 'Montants en USD courants (World Bank)',
+      usdHint: "Une part de PIB situe un secteur dans son économie ; elle ne dit pas sa taille. Ces montants sont publiés séparément, en dollars courants — ils ne se comparent pas aux pourcentages ci-dessus.",
     },
     en: {
       title: 'Macro Value Added (World Bank WDI)',
@@ -62,6 +64,8 @@ function ProductionMacro({ language = 'fr' }) {
       selectedCountry: 'Country',
       source: 'Source',
       dataCoverage: 'Coverage',
+      usdTitle: 'Amounts in current US$ (World Bank)',
+      usdHint: 'A share of GDP places a sector within its economy; it does not state its size. These amounts are published separately, in current dollars — they are not comparable to the percentages above.',
     },
   };
 
@@ -144,6 +148,20 @@ function ProductionMacro({ language = 'fr' }) {
   }, [valueAddedSectors, availableYears]);
 
   const sectorNames = Object.keys(valueAddedSectors);
+
+  // Les montants arrivent dans un champ SÉPARÉ, et y restent : « Manufacturing »
+  // désigne un secteur, pas une mesure. Mélanger 7,4 (% du PIB) et
+  // 21 839 012 706 (USD) dans une même série produirait un graphe illisible et
+  // un chiffre faux — d'où un bloc distinct plutôt qu'une colonne de plus.
+  const usdSectors = useMemo(() => macroData?.data_by_sector_usd || {}, [macroData]);
+  const usdSectorNames = Object.keys(usdSectors);
+  const formatUsd = (value) => {
+    if (typeof value !== 'number') return '—';
+    const locale = language === 'fr' ? 'fr-FR' : 'en-US';
+    if (Math.abs(value) >= 1e9) return `${(value / 1e9).toLocaleString(locale, { maximumFractionDigits: 2 })} Md USD`;
+    if (Math.abs(value) >= 1e6) return `${(value / 1e6).toLocaleString(locale, { maximumFractionDigits: 1 })} M USD`;
+    return `${value.toLocaleString(locale)} USD`;
+  };
 
   const seriesColors = ['#9b6ef5', '#4f8ef7', '#20c997', '#d4891a'];
 
@@ -340,6 +358,45 @@ function ProductionMacro({ language = 'fr' }) {
                       <p className="text-xl font-bold mt-1 text-[var(--text)]">{record.value}%</p>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {usdSectorNames.length > 0 && (
+            <Card className="afcfta-card" data-testid="macro-usd">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xl text-[var(--text)]">
+                  💵 {t.usdTitle}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <p className="text-xs text-gray-500 mb-4 max-w-3xl">{t.usdHint}</p>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {usdSectorNames.map((sectorName) => {
+                    const series = usdSectors[sectorName] || [];
+                    const latest = series[series.length - 1];
+                    if (!latest) return null;
+                    return (
+                      <div
+                        key={sectorName}
+                        className="rounded-xl border p-4"
+                        style={{
+                          background: 'rgba(255,255,255,0.03)',
+                          borderColor: 'rgba(212,137,26,0.12)',
+                        }}
+                      >
+                        <p className="text-sm text-[var(--afcfta-muted)]">{sectorName}</p>
+                        <p className="text-xl font-bold mt-1 text-[var(--text)]">
+                          {formatUsd(latest.value)}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {latest.year} · {series.length} {t.year.toLowerCase()}
+                          {series.length > 1 ? 's' : ''}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>

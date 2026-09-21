@@ -1030,9 +1030,10 @@ STRICT DATA RULES:
         ce que le pays produit, ce qu'il échange, dans quel ordre. Ce qui se
         perd est la mise en récit et le classement argumenté, pas les faits.
 
-        Sert aussi de repli quand le quota est épuisé ou le fournisseur
-        indisponible : mieux vaut un module amputé de sa prose qu'un module
-        muet.
+        Sert aussi de repli quand le quota est épuisé, le fournisseur
+        indisponible ou la réponse inexploitable — le chemin d'échec de
+        ``analyze_trade_opportunities`` y renvoie. Mieux vaut un module amputé
+        de sa prose qu'un module muet.
         """
         iso3 = self._resolve_iso3(country_name)
         grounding_text, stats = await self._country_opportunity_grounding(country_name, iso3, mode)
@@ -1644,7 +1645,20 @@ Wrap ALL 15 in this envelope:
 
         except Exception as e:
             logger.error(f"Error in Claude trade analysis: {e}", exc_info=True)
-            return {"error": str(e), "opportunities": []}
+            # Quota épuisé, fournisseur indisponible, réponse inexploitable :
+            # l'ancrage factuel, lui, ne dépend pas du modèle. Le servir coûte
+            # zéro appel et laisse au lecteur ce que le pays produit et
+            # échange réellement, au lieu d'un écran vide. Le docstring de
+            # factual_opportunities promettait déjà ce comportement ; il n'était
+            # câblé qu'à l'absence de clé.
+            try:
+                payload = await self.factual_opportunities(country_name, mode=mode, lang=lang)
+            except Exception as fallback_error:  # pragma: no cover - dernier recours
+                logger.error(f"Factual fallback also failed: {fallback_error}")
+                return {"error": str(e), "opportunities": []}
+            payload["error"] = str(e)
+            payload["degraded_reason"] = f"analysis_failed: {e}"
+            return payload
 
     # ── Country Economic Profile ───────────────────────────────────────────────
 

@@ -3,7 +3,11 @@ name: Production — Ingestion FAOSTAT + USGS
 # Ingestion des données de production africaine (réseau ouvert sur runner GitHub) :
 #   • FAOSTAT bulk QCL (Production Crops & Livestock — Afrique), 2019-2024 ;
 #   • USGS Mineral Commodity Summaries (données curées multi-années intégrées) ;
-#   • UNIDO INDSTAT (valeur ajoutée manufacturière, curée).
+#   • UNIDO INDSTAT (valeur ajoutée manufacturière, curée) ;
+#   • puis la SURCOUCHE d'enrichissement (macro World Bank, minéraux étendus,
+#     manufacturier mesuré UNSD, prévisions OCDE-FAO). Elle est indispensable :
+#     le script de construction n'écrit que le socle, et committer celui-ci
+#     seul ÉCRASERAIT les dimensions enrichies.
 # Le script filtre FAOSTAT via FAOSTAT_ITEM_TO_COMMODITY : élargir cette table
 # (fait) importe davantage de produits. Aucune valeur inventée : réseau
 # indisponible -> conserve les données existantes.
@@ -66,6 +70,36 @@ jobs:
           FLAG=""
           if [ "${{ inputs.faostat_only }}" = "true" ]; then FLAG="--faostat-only"; fi
           python3 scripts/build_production_faostat_usgs.py $FLAG
+
+      # Sans cette étape, ce workflow commet le SOCLE SEUL : macro retombe à
+      # ~162 enregistrements et les mines à ~166, écrasant les dimensions
+      # enrichies déjà committées. Le workflow mensuel a reçu le même
+      # correctif ; celui-ci commet directement sur la branche, il était donc
+      # le plus dangereux des deux.
+      - name: Rafraîchir les sources à API libre (non bloquant)
+        continue-on-error: true
+        working-directory: backend
+        run: |
+          python3 scripts/fetch_wdi_macro.py
+          python3 scripts/fetch_unsd_manufacturing.py
+
+      - name: Appliquer la surcouche d'enrichissement
+        working-directory: backend
+        run: python3 scripts/enrich_production_data.py
+
+      # Garde-fou anti-régression, calé sur la surcouche et non sur le socle :
+      # un fichier amputé ne doit jamais être committé.
+      - name: Refuser de committer un dataset amputé
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          counts = json.load(open("data/json/production_africaine.json"))["metadata"]["record_counts"]
+          seuils = {"agriculture": 5000, "mining": 400, "macro": 4000, "manufacturing_unsd": 800}
+          manquants = {k: counts.get(k, 0) for k, v in seuils.items() if counts.get(k, 0) < v}
+          if manquants:
+              sys.exit(f"Dataset amputé, commit refusé : {manquants} (seuils {seuils})")
+          print(f"OK — {counts}")
+          PY
 
       - name: Comptage produits APRÈS
         run: |
