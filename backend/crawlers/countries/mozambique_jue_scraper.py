@@ -33,13 +33,27 @@ logger = logging.getLogger(__name__)
 
 BASE = "https://jue.mcnet.co.mz"
 BASE_IP = "https://196.11.135.134"
+NOM_TLS = "jue.mcnet.co.mz"
+
+#: POURQUOI L'APPEL PAR IP PORTE UN NOM D'HÔTE À PART.
+#:
+#: Le contournement DNS vise `BASE_IP` directement. Or la vérification TLS
+#: contrôle le certificat contre l'hôte de l'URL — donc contre l'IP — et non
+#: contre l'en-tête `Host`. Le portail présentant un certificat émis pour son
+#: nom DNS, la vérification échouerait systématiquement sur ce chemin : le
+#: contournement serait mort, et ne le dirait qu'en journal.
+#:
+#: `sni_hostname` fixe le `server_hostname` de la poignée de main : le SNI ET
+#: le contrôle de nom portent alors sur le nom DNS, tandis que la connexion
+#: va bien à l'IP. Le contournement fonctionne, et le certificat est vérifié.
+EXTENSIONS_IP = {"sni_hostname": NOM_TLS}
 DATA_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "crawled"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0",
     "Accept": "application/json",
     "Referer": f"{BASE}/mcnet/portal/homepage",
-    "Host": "jue.mcnet.co.mz",
+    "Host": NOM_TLS,
 }
 
 CONCURRENCY = 5
@@ -50,7 +64,13 @@ def fetch_json(url: str, params: dict = None, retries: int = 3) -> Optional[dict
     ip_url = url.replace(BASE, BASE_IP)
     for attempt in range(retries):
         try:
-            r = httpx.get(ip_url, params=params, timeout=20, headers=HEADERS)
+            r = httpx.get(
+                ip_url,
+                params=params,
+                timeout=20,
+                headers=HEADERS,
+                extensions=EXTENSIONS_IP,
+            )
             if r.status_code == 200:
                 return r.json()
             logger.warning(f"HTTP {r.status_code} for {url}")
@@ -72,7 +92,7 @@ async def fetch_json_async(
 ) -> Optional[dict]:
     ip_url = url.replace(BASE, BASE_IP)
     try:
-        r = await client.get(ip_url, params=params, timeout=20)
+        r = await client.get(ip_url, params=params, timeout=20, extensions=EXTENSIONS_IP)
         if r.status_code == 200:
             return r.json()
     except Exception:

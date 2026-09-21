@@ -253,7 +253,12 @@ def main() -> int:
             return 1
 
     mesures = [mesurer(f) for f in fichiers]
-    a_traiter = [m for m in mesures if verdict(m) in ("ZERO_IMPOSSIBLE", "ECHANTILLON_TROP_MINCE")]
+    # La liste se construit sur A_EXAMINER, pas sur deux verdicts recopiés : la
+    # recopie avait déjà divergé — PART_DE_ZEROS_FAIBLE y manquait, si bien
+    # qu'un pays signalé comme à examiner voyait ses sources tues, juste sous
+    # le signalement. Un pays déjà examiné en sort : son résultat est rappelé
+    # plus bas, et le relancer serait du travail refait.
+    a_traiter = [m for m in mesures if verdict(m) in A_EXAMINER and m["pays"] not in EXAMENS_FAITS]
 
     largeur = max((len(m["pays"]) for m in mesures), default=4)
     print(
