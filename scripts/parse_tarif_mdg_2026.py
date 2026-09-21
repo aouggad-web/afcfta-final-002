@@ -8,20 +8,26 @@ SHA-256 : 9f26e514d5bbbb69e3c45082b49694bb39378c983a975568a46490c02b326e5f
 Produit un fichier au modèle de `backend/data/crawled/MRT_tariffs.json` :
 sous-positions nationales à 8 chiffres, colonnes DD / TVA / DD APEi.
 
-Méthode : positions x/y des mots (PyMuPDF). Les colonnes changent de page en
-page : elles sont donc lues sur l'en-tête `UQN DD TVA APEi` qui précède chaque
-sous-table, et non supposées fixes. Seules les sous-tables STANDARD
-(`UQN DD TVA APEi`) sont collectées : les sous-tables pétrolières (colonnes
-TPP/TVP avec droits spécifiques en Ariary/litre ou Ariary/kg, footnotes (1*)/(2*))
-et les sous-tables à colonne DS sont ÉCARTÉES et déclarées, faute d'une lecture
-univoque de leur schéma.
+Méthode : positions x/y des mots (PyMuPDF). Les colonnes changent d'une page à
+l'autre : elles sont donc lues sur l'en-tête `UQN DD TVA [APEi]` qui précède
+chaque sous-table, et non supposées fixes.
 
-Règles de liquidation (assiettes) établies sur texte primaire :
-- DD  : valeur transactionnelle + transport/assurance jusqu'au port d'introduction
-        (Code des douanes, Loi n° 2006-023, version après LFI 2026, art. 23 §1/§4 c)) → CIF ;
-- TVA : valeur des importations, frais et taxes inclus, TVA exclue
-        (CGI éd. 2025, art. 06.01.11) → CIF+TOUS_SAUF_TVA.
-- `ex` (exonéré) est un zéro publié : rate 0.0, raw « ex ».
+DEUX RÈGLES QUE LA PREMIÈRE VERSION AVAIT RATÉES, ET QUI ONT COÛTÉ DES POSITIONS :
+
+1. **Les valeurs d'une ligne peuvent être réparties sur plusieurs lignes.** Une
+   désignation qui se replie repousse l'unité et la TVA (voire l'APEi) sur la
+   ligne suivante, alors que le DD reste sur la ligne du code. La première
+   version finalisait la position dès la ligne du code : cinq TVA publiées
+   (4010.31 à 4010.34, 8423.81) sortaient à `null`. On accumule désormais les
+   valeurs colonne par colonne jusqu'au code suivant.
+
+2. **Un en-tête non strictement `UQN DD TVA APEi` n'est pas forcément
+   spécial.** Sept chapitres (25, 26, 27, 50, 71, 75, 81) disparaissaient parce
+   que leur en-tête variait (`UQN DD TVA`, `UQN DD TVA DD`, ou six colonnes avec
+   un second `UQN`/`DS`). On collecte les schémas compatibles (`UQN DD TVA`,
+   `APEi` optionnel) ; on ÉCARTE et DÉCLARE les schémas non univoques
+   (colonnes `TPP`/`TVP` à droits spécifiques en Ariary/litre ou Ariary/kg-net,
+   colonnes `DS`), qui ne sont jamais devinées.
 
 Usage : python3 scripts/parse_tarif_mdg_2026.py <tarif.pdf> <sortie.json>
 """
@@ -31,8 +37,14 @@ import fitz
 
 PDF_SHA_ATTENDU = "9f26e514d5bbbb69e3c45082b49694bb39378c983a975568a46490c02b326e5f"
 PDF_URL = "https://www.douanes.gov.mg/srcs/uploads/2026/07/TARIF-DES-DOUANES-2026-MAJ-LFR.pdf"
-STANDARD = ("UQN", "DD", "TVA", "APEi")
-LABELS = {"UQN", "DD", "TVA", "TVP", "TPP", "APEi", "APEI", "DS", "Valeur", "TVAPP", "TPPAPEI", "DDAPEi"}
+SRC_NAME = "Tarif des douanes de Madagascar, édition 2026 (douanes.gov.mg)"
+
+#: Colonnes de taxe reconnues. Les unes situent une colonne, les autres
+#: rendent la sous-table NON univoque et sont écartées en bloc.
+COLONNES_TAXE = {"DD", "TVA", "TVP", "TPP", "DS", "TVAPP", "TPPAPEI", "DDAPEi"}
+COLONNES_APEi = {"APEi", "APEI", "DDAPEi", "TPPAPEI"}
+COLONNES_SPECIALES = {"TPP", "TVP", "DS", "TVAPP", "TPPAPEI"}
+LABELS = {"UQN", "DD", "TVA", "APEi", "APEI", "DS", "Valeur"} | COLONNES_TAXE
 RATE = re.compile(r"^(?:ex|EX|\d{1,3}(?:[.,]\d+)?%?)$")
 CODE4 = re.compile(r"^\d{4}\.\d{2}$")
 SUF2 = re.compile(r"^\d{2}$")
@@ -56,34 +68,65 @@ def clean_designation(tokens):
     return txt.strip()
 
 
+def _colonnes(lw):
+    """Colonnes d'un en-tête : UQN(1er), DD(1er), TVA, APEi. Rend (cols, active, signature)."""
+    labels = [(w[4], w[0]) for w in lw if w[4] in LABELS]
+    if not any(l == "UQN" for l, _ in labels):
+        return None, None, None
+    signature = tuple(l for l, _ in labels)
+    cols = {}
+    for nom, x in labels:
+        if nom == "UQN" and "UQN" not in cols:
+            cols["UQN"] = x
+        elif nom == "DD" and "DD" not in cols:
+            cols["DD"] = x
+        elif nom == "TVA" and "TVA" not in cols:
+            cols["TVA"] = x
+        elif nom in COLONNES_APEi and "APEi" not in cols:
+            cols["APEi"] = x
+    special = any(l in COLONNES_SPECIALES for l in signature)
+    actif = ("UQN" in cols and "DD" in cols and "TVA" in cols and not special)
+    return (cols if actif else None), actif, signature
+
+
+def _valeurs(lw, cols):
+    out = {}
+    for nom, cx in cols.items():
+        for w in lw:
+            if abs(w[0] - cx) <= 7 and (RATE.match(w[4]) or nom == "UQN"):
+                out[nom] = w[4]
+                break
+    return out
+
+
 def parse(pdf_path):
     doc = fitz.open(pdf_path)
     cols = None
-    active = False
-    pending = None            # [code, tokens, pno]
-    positions = {}            # code -> (tokens, vals, pno)
-    dropped = []              # codes écartés et déclarés
-    stray = 0
+    signature = None
+    actif = False
+    cur = None                 # {"code","tokens","valeurs","page"}
+    positions = {}             # code -> record (première occurrence conservée)
+    ecartees = []              # (code, motif, page)
+    doublons = 0
 
-    def finalize(code, tokens, vals, pno):
-        if code in positions:
-            return  # doublon de reprise de page : première occurrence conservée
-        positions[code] = (tokens, vals, pno)
+    def finaliser():
+        nonlocal cur, doublons
+        if cur is None:
+            return
+        if not cur["valeurs"].get("DD"):
+            ecartees.append((cur["code"], "droit de douane non lu (schéma de ligne)", cur["page"]))
+        elif cur["code"] in positions:
+            doublons += 1
+        else:
+            positions[cur["code"]] = cur
+        cur = None
 
     for pno in range(17, doc.page_count):
         for y, lw in cluster(doc[pno].get_text("words")):
-            labels = []
-            for w in lw:
-                if w[4] in LABELS:
-                    labels.append((w[4], w[0]))
-            if any(l[0] == "UQN" for l in labels):
-                active = tuple(l[0] for l in labels) == STANDARD
-                cols = {n: x for n, x in labels if n in ("UQN", "DD", "TVA", "APEi")} if active else None
-                if pending is not None:
-                    dropped.append((pending[0], "en-tête rencontré avant ses taux", pno))
-                    pending = None
-                continue
-            if not active or cols is None:
+            nouvelles, est_actif, sig = _colonnes(lw)
+            if sig is not None and "UQN" in sig:
+                finaliser()
+                actif, cols, signature = est_actif, nouvelles, sig
                 continue
 
             c1 = [w for w in lw if CODE4.match(w[4]) and w[0] < 140]
@@ -92,88 +135,62 @@ def parse(pdf_path):
             heading = bool(c1) and not code
             toks = [w[4] for w in lw if 113 <= w[0] < 378]
 
-            got = {}
-            for n, cx in cols.items():
-                ts = [w for w in lw if abs(w[0] - cx) <= 7 and (RATE.match(w[4]) or n == "UQN")]
-                if ts:
-                    got[n] = ts[0][4]
-            has = got.get("DD") is not None and bool(RATE.match(got["DD"]))
+            if not actif:
+                if code:
+                    ecartees.append((code, f"sous-table à schéma non standard {signature}", pno))
+                elif heading:
+                    pass
+                continue
 
             if code:
-                if pending is not None and has:
-                    finalize(pending[0], pending[1], got, pending[2])
-                    pending = None
-                elif pending is not None and not has:
-                    dropped.append((pending[0], "aucun taux publié avant le code suivant", pno))
-                    pending = None
-                if has:
-                    finalize(code, toks, got, pno)
-                else:
-                    pending = [code, list(toks), pno]
+                finaliser()
+                cur = {"code": code, "tokens": list(toks), "valeurs": {}, "page": pno}
+                cur["valeurs"].update(_valeurs(lw, cols))
             elif heading:
-                if pending is not None and has:
-                    finalize(pending[0], pending[1], got, pending[2])
-                    pending = None
-                elif pending is not None:
-                    dropped.append((pending[0], "aucun taux publié avant l'en-tête de position", pno))
-                    pending = None
-            else:
-                if has and pending is not None:
-                    finalize(pending[0], pending[1] + list(toks), got, pending[2])
-                    pending = None
-                elif has and pending is None:
-                    stray += 1
-                elif pending is not None:
-                    pending[1].extend(toks)
-
-    if pending is not None:
-        dropped.append((pending[0], "fin de document avant ses taux", None))
-
-    return positions, dropped, stray
+                finaliser()
+            elif cur is not None:
+                for k, v in _valeurs(lw, cols).items():
+                    cur["valeurs"].setdefault(k, v)
+                cur["tokens"].extend(toks)
+    finaliser()
+    return positions, ecartees, doublons
 
 
 def build(pdf_path, source_sha):
-    positions, dropped, stray = parse(pdf_path)
+    positions, ecartees, doublons = parse(pdf_path)
     sub = []
     chapters = set()
-    notes = {"ex": "ex = exonéré (mention publiée par le tarif)"}
     for code in sorted(positions):
-        toks, vals, pno = positions[code]
+        rec = positions[code]
         chapters.add(code[:2])
-        desig = clean_designation(toks)
+        vals = rec["valeurs"]
+        desig = clean_designation(rec["tokens"])
         unit = vals.get("UQN") or ""
 
-        def tax(name, raw, note=None):
+        def tax(name, raw):
             if raw is None:
                 return {"name": name, "rate": None, "raw": "",
                         "note": "taux non publié par le tarif à cette ligne",
                         "source": SRC_NAME, "source_url": PDF_URL, "source_sha256": source_sha}
             low = raw.strip().lower()
             if low in ("ex", "exempt", "exonere", "exonéré"):
-                rate = 0.0
-                extra = notes["ex"]
-                raw_out = raw
-            else:
-                try:
-                    rate = float(low.replace(",", ".").replace("%", ""))
-                except ValueError:
-                    rate = None
-                extra = None
-                raw_out = raw
-            d = {"name": name, "rate": rate, "raw": raw_out,
-                 "source": SRC_NAME, "source_url": PDF_URL, "source_sha256": source_sha}
-            if note:
-                d["note"] = note
-            if extra:
-                d["note"] = extra
-            return d
+                return {"name": name, "rate": 0.0, "raw": raw, "note": "ex = exonéré (mention publiée par le tarif)",
+                        "source": SRC_NAME, "source_url": PDF_URL, "source_sha256": source_sha}
+            try:
+                rate = float(low.replace(",", ".").replace("%", ""))
+            except ValueError:
+                rate = None
+            return {"name": name, "rate": rate, "raw": raw,
+                    "source": SRC_NAME, "source_url": PDF_URL, "source_sha256": source_sha}
 
-        taxes = {
-            "DD": tax("Droit de douane (tarif national 2026)", vals.get("DD")),
-            "TVA": tax("Taxe sur la valeur ajoutée (tarif national 2026)", vals.get("TVA")),
+        pos = {
+            "hs_code": code, "chapter": code[:2], "name": desig, "description": desig,
+            "unit": unit,
+            "taxes": {
+                "DD": tax("Droit de douane (tarif national 2026)", vals.get("DD")),
+                "TVA": tax("Taxe sur la valeur ajoutée (tarif national 2026)", vals.get("TVA")),
+            },
         }
-        pos = {"hs_code": code, "chapter": code[:2], "name": desig, "description": desig,
-               "unit": unit, "taxes": taxes}
         ap = vals.get("APEi")
         if ap is not None:
             low = ap.strip().lower()
@@ -186,15 +203,12 @@ def build(pdf_path, source_sha):
                     rate = None
                 raw_out = ap
             pos["preferential_rates"] = [{
-                "regime": "APEI",
-                "rate_pct": rate,
-                "raw_value": raw_out,
-                "source": SRC_NAME,
-                "source_url": PDF_URL,
-                "source_sha256": source_sha,
+                "regime": "APEI", "rate_pct": rate, "raw_value": raw_out,
+                "source": SRC_NAME, "source_url": PDF_URL, "source_sha256": source_sha,
             }]
         sub.append(pos)
 
+    par_motif = Counter(r for _, r, _ in ecartees)
     return {
         "country": "MDG",
         "country_name": "Madagascar",
@@ -204,7 +218,8 @@ def build(pdf_path, source_sha):
         "source_sha256": source_sha,
         "extracted_at": "2026-09-21T00:00:00+00:00",
         "source_quality": "crawled_authentic_national",
-        "stats": {"sections": 0, "chapters": len(chapters), "sub_positions": len(sub), "errors": len(dropped)},
+        "stats": {"sections": 0, "chapters": len(chapters), "sub_positions": len(sub),
+                  "errors": len(ecartees), "duplicates": doublons},
         "calculation_rules": {
             "order": ["DD", "TVA"],
             "bases": {
@@ -214,31 +229,27 @@ def build(pdf_path, source_sha):
             "source": (
                 "Tarif national 2026 (douanes.gov.mg, SHA-256 consigné) : sous-positions "
                 "nationales à 8 chiffres, colonnes DD/TVA/DD APEi — remplace la donnée "
-                "WITS/UNCTAD-TRAINS (moyenne SH6). Assiettes sur texte primaire : DD = valeur "
-                "transactionnelle + transport/assurance jusqu'au port d'introduction (Code des "
-                "douanes, Loi n° 2006-023 après LFI 2026, art. 23 §1 et §4 c)) → CIF ; TVA = valeur "
-                "des importations, frais et taxes inclus, TVA exclue (CGI éd. 2025, art. 06.01.11) "
-                "→ CIF+TOUS_SAUF_TVA. Colonne DD APEi = droit préférentiel APE intérimaire (UE), "
-                "servie à part. Les sous-tables pétrolières à droits spécifiques (Ariary/litre ou "
-                "Ariary/kg, colonnes TPP/TVP) et les sous-tables à colonne DS sont écartées et "
-                "déclarées : " + str(len(dropped)) + " position(s) non collectée(s)."
+                "WITS/UNCTAD-TRAINS (moyenne SH6). Assiettes sur texte primaire : DD = CIF "
+                "(Code des douanes, Loi n° 2006-023 après LFI 2026, art. 23 §1 et §4 c)) ; TVA = "
+                "CIF+TOUS_SAUF_TVA (CGI éd. 2025, art. 06.01.11). Colonne DD APEi = droit "
+                "préférentiel APE intérimaire (UE), servie à part. Les sous-tables à schéma non "
+                "univoque (colonnes TPP/TVP à droits spécifiques Ariary/litre ou Ariary/kg-net, "
+                "colonnes DS) sont écartées et énumérées dans `non_collected` — "
+                + str(len(ecartees)) + " position(s)."
             ),
         },
         "regimes_registry": [{
-            "code": "APEI",
-            "name": "Droit préférentiel APE intérimaire (Union européenne)",
-            "column_label": "DD APEi",
-            "source_url": PDF_URL,
-            "source_sha256": source_sha,
+            "code": "APEI", "name": "Droit préférentiel APE intérimaire (Union européenne)",
+            "column_label": "DD APEi", "source_url": PDF_URL, "source_sha256": source_sha,
         }],
-        "non_collected": [
-            {"code": c, "reason": r, "page": p} for c, r, p in dropped
-        ],
+        "non_collected": [{"code": c, "reason": r, "page": p} for c, r, p in ecartees],
+        "non_collected_summary": {
+            "total": len(ecartees),
+            "par_motif": dict(par_motif),
+            "chapitres": dict(Counter(c[:2] for c, _, _ in ecartees)),
+        },
         "sub_positions": sub,
     }
-
-
-SRC_NAME = "Tarif des douanes de Madagascar, édition 2026 (douanes.gov.mg)"
 
 
 def main(argv):
@@ -256,7 +267,8 @@ def main(argv):
         json.dump(data, f, ensure_ascii=False, indent=1)
     st = data["stats"]
     print(f"{st['sub_positions']} sous-positions, {st['chapters']} chapitres, "
-          f"{st['errors']} écartée(s) → {dst}")
+          f"{st['errors']} écartée(s) ({data['non_collected_summary']['par_motif']}) "
+          f"→ {dst}")
     return 0
 
 

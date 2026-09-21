@@ -12,7 +12,7 @@
       "sha256": "9f26e514d5bbbb69e3c45082b49694bb39378c983a975568a46490c02b326e5f",
       "verification_status": "VERIFIED_PRIMARY_TEXT",
       "registry_path": null,
-      "notes": "PDF officiel de 292 pages, texte extractible. Empreinte du PDF source du tarif national ; 6 527 sous-positions nationales à 8 chiffres lues par scripts/parse_tarif_mdg_2026.py (colonnes DD / TVA / DD APEi, en-têtes de sous-tables). Quatre positions non lisibles sont écartées et déclarées. PDF non archivé dans le dépôt ; l'empreinte permet de le retélécharger à l'identique."
+      "notes": "PDF officiel de 292 pages, texte extractible. Empreinte du PDF source du tarif national ; 6 544 sous-positions nationales à 8 chiffres lues par scripts/parse_tarif_mdg_2026.py (colonnes DD / TVA / DD APEi, en-têtes de sous-tables, valeurs réparties sur les lignes repliées). 343 positions écartées et déclarées. PDF non archivé dans le dépôt ; l'empreinte permet de le retélécharger à l'identique."
     },
     {
       "source_id": "MDG-DOUANES-TARIF-RUNTIME-20260921",
@@ -20,10 +20,10 @@
       "institution": "Direction Générale des Douanes Malagasy",
       "legal_date": "2026-01-01",
       "url": "https://www.douanes.gov.mg/tarifs-des-douanes/",
-      "sha256": "f63c40e969ffa8e6349d12b28a7f371c7fb5e7684216b99fa8a4a45f7047e78a",
+      "sha256": "fad20f649681ae5a7be2abaac4a9fac73d2cf3264a96e6e7c86837d86650eec7",
       "verification_status": "VERIFIED_RUNTIME_DATASET",
       "registry_path": "backend/data/crawled/MDG_tariffs.json",
-      "notes": "Empreinte du fichier runtime scellé (_integrity_seal) : 6 527 positions nationales à 8 chiffres, colonnes DD / TVA et colonne préférentielle DD APEi (APE intérimaire, UE). Remplace la donnée WITS/UNCTAD-TRAINS (moyenne SH6) servie jusqu'au 2026-09-21."
+      "notes": "Empreinte du fichier runtime scellé (_integrity_seal) : 6 544 positions nationales à 8 chiffres, colonnes DD / TVA et colonne préférentielle DD APEi (APE intérimaire, UE). Remplace la donnée WITS/UNCTAD-TRAINS (moyenne SH6) servie jusqu'au 2026-09-21. 343 positions écartées et déclarées dans `non_collected` (motif + page)."
     },
     {
       "source_id": "MDG-CODE-DOUANES-LFI2026-ART23",

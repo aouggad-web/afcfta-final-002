@@ -321,7 +321,7 @@
       "organism": "Direction Générale des Douanes Malagasy — source primaire",
       "version": "2026",
       "artifact_path": "backend/data/crawled/MDG_tariffs.json",
-      "artifact_url": "https://www.douanes.gov.mg/srcs/uploads/2026/07/TARIF-DES-DOUANES-2026-MAJ-LFR.pdf",
+      "artifact_url": null,
       "source_type": "primary",
       "url": "https://www.douanes.gov.mg/srcs/uploads/2026/07/TARIF-DES-DOUANES-2026-MAJ-LFR.pdf",
       "retrieved_at": "2026-09-21",
@@ -329,9 +329,9 @@
       "application_period": "2026-01-01 to 2026-12-31",
       "hs_version": "HS 2022",
       "code_digits": 8,
-      "positions_count": 6527,
-      "sha256": "f63c40e969ffa8e6349d12b28a7f371c7fb5e7684216b99fa8a4a45f7047e78a",
-      "reuse_conditions": "Source primaire (PDF officiel douanes.gov.mg, texte extractible). Empreinte du PDF : 9f26e514d5bbbb69e3c45082b49694bb39378c983a975568a46490c02b326e5f. Parseur scripts/parse_tarif_mdg_2026.py (lecture par en-têtes de colonnes, sous-tables standard UQN/DD/TVA/APEi) ; 4 positions écartées et déclarées dans le fichier (non_collected).",
+      "positions_count": 6544,
+      "sha256": "fad20f649681ae5a7be2abaac4a9fac73d2cf3264a96e6e7c86837d86650eec7",
+      "reuse_conditions": "Source primaire (PDF officiel douanes.gov.mg, texte extractible). Empreinte du PDF : 9f26e514d5bbbb69e3c45082b49694bb39378c983a975568a46490c02b326e5f. Parseur scripts/parse_tarif_mdg_2026.py (lecture par en-têtes de colonnes, accumulation des lignes repliées). 343 positions écartées et énumérées dans `non_collected` avec motif et page (sous-tables à schéma non univoque TPP/TVP/DS, lignes illisibles).",
       "legal_authority": "Code des Douanes 2006-023 + Loi de Finances 2026 + LFR 2026",
       "validation_status": "verified",
       "taxes": [
@@ -339,7 +339,7 @@
         "TVA",
         "APEi"
       ],
-      "note": "Nomenclature nationale à 8 chiffres, 6 527 sous-positions lues sur le tarif 2026 — remplace la donnée WITS/UNCTAD-TRAINS (moyenne SH6) précédemment servie. Assiettes sur texte primaire : DD = CIF (Code des douanes, art. 23 §1 et §4 c), Loi n° 2006-023 après LFI 2026) ; TVA = CIF+TOUS_SAUF_TVA (CGI éd. 2025, art. 06.01.11) — fiches MDG_assiette_droit_de_douane_2026-09-21.json et MDG_assiette_TVA_2026-09-21.json. Colonne « DD APEi » = droit préférentiel APE intérimaire (UE), servie à part. RÉSERVE : les sous-tables pétrolières à droits spécifiques (Ariary/litre, Ariary/kg-net — notes (1*) et (2*)) et les sous-tables à colonne DS sont écartées faute de schéma univoque ; 4 positions non collectées sont déclarées dans le fichier.",
+      "note": "Nomenclature nationale à 8 chiffres, 6 544 sous-positions lues sur le tarif 2026 — remplace la donnée WITS/UNCTAD-TRAINS (moyenne SH6). Assiettes sur texte primaire : DD = CIF (Code des douanes art. 23 §1/§4 c), Loi n° 2006-023 après LFI 2026) ; TVA = CIF+TOUS_SAUF_TVA (CGI éd. 2025, art. 06.01.11 pour l'assiette ; taux publiés par ligne, dont réduits 5 % et 10 %). Colonne « DD APEi » = droit préférentiel APE intérimaire (UE), servie à part. RÉSERVE : les sous-tables pétrolières à droits spécifiques (Ariary/litre, Ariary/kg-net — notes (1*)/(2*)) et les sous-tables à colonne DS sont écartées et énumérées (343 positions), jamais devinées.",
       "zlecaf": "Ratifié — Guide rapide Règles d'origine ZLECAf publié par douanes.gov.mg"
     },
     "ZMB": {
