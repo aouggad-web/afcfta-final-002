@@ -204,7 +204,11 @@ jobs:
             echo "Dataset ${COUNTRY} inchangé — pas de PR."
             exit 0
           fi
-          git commit -m "data(crawl): tarifs douaniers ${COUNTRY} (WITS/TRAINS, gate PASS)"
+          # Le message nomme la source RÉELLE : le template écrivait
+          # « WITS/TRAINS » en dur, y compris pour un crawl de portail
+          # national — c'est ainsi que le commit ETH de juillet a été
+          # étiqueté WITS alors que la session était customs.erca.gov.et.
+          git commit -m "data(crawl): tarifs douaniers ${COUNTRY} (source ${{ inputs.source }}, gate PASS)"
           git push -f origin "$BRANCH"
           gh pr create \
             --base main --head "$BRANCH" --draft \
