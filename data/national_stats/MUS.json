@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "country_iso3": "MUS",
+  "country_name": "Maurice",
+  "source": {
+    "publisher": "EDB Mauritius (Economic Development Board)",
+    "publication": "Newsletter juillet 2024 — Industry Overview",
+    "url": "https://edbmauritius.org/newsletter2024/july/overview.html",
+    "data_year": 2023,
+    "currency": "MUR",
+    "unit": "millions de MUR",
+    "unit_short": "MUR Mn"
+  },
+  "top_domestic_export_product": {
+    "hs4": "1604",
+    "label": "Thon en conserve",
+    "value": 11500
+  },
+  "domestic_export_products": [
+    {
+      "hs4": "1604",
+      "label": "Thon en conserve"
+    },
+    {
+      "hs4": "1701",
+      "label": "Sucre de canne"
+    },
+    {
+      "hs4": "6203",
+      "label": "Vêtements en denim — hommes"
+    },
+    {
+      "hs4": "6204",
+      "label": "Vêtements en denim — femmes"
+    },
+    {
+      "hs4": "6109",
+      "label": "T-shirts"
+    },
+    {
+      "hs4": "6205",
+      "label": "Chemises pour hommes"
+    },
+    {
+      "hs4": "6105",
+      "label": "Chemises pour hommes (maille)"
+    },
+    {
+      "hs4": "6006",
+      "label": "Tissu"
+    },
+    {
+      "hs4": "9018",
+      "label": "Dispositifs médicaux"
+    },
+    {
+      "hs4": "2301",
+      "label": "Aliments pour animaux"
+    },
+    {
+      "hs4": "1504",
+      "label": "Graisses et huiles de poisson"
+    },
+    {
+      "hs4": "7204",
+      "label": "Déchets ferreux"
+    },
+    {
+      "hs4": "7403",
+      "label": "Cuivre"
+    },
+    {
+      "hs4": "0106",
+      "label": "Animaux vivants"
+    },
+    {
+      "hs4": "0603",
+      "label": "Fleurs coupées"
+    }
+  ],
+  "top_domestic_export_markets": [
+    {
+      "market": "Afrique du Sud",
+      "iso3": "ZAF",
+      "share_pct": 13,
+      "value": 7664
+    },
+    {
+      "market": "Royaume-Uni",
+      "iso3": "GBR",
+      "share_pct": 12,
+      "value": 7489
+    },
+    {
+      "market": "France",
+      "iso3": "FRA",
+      "share_pct": 11,
+      "value": 6597
+    },
+    {
+      "market": "États-Unis",
+      "iso3": "USA",
+      "share_pct": 11,
+      "value": 6543
+    },
+    {
+      "market": "Espagne",
+      "iso3": "ESP",
+      "share_pct": 8,
+      "value": 4943
+    },
+    {
+      "market": "Madagascar",
+      "iso3": "MDG",
+      "share_pct": 8,
+      "value": 4910
+    },
+    {
+      "market": "Italie",
+      "iso3": "ITA",
+      "share_pct": 6,
+      "value": 3819
+    },
+    {
+      "market": "Pays-Bas",
+      "iso3": "NLD",
+      "share_pct": 5,
+      "value": 2946
+    },
+    {
+      "market": "Inde",
+      "iso3": "IND",
+      "share_pct": 3,
+      "value": 2111
+    },
+    {
+      "market": "Kenya",
+      "iso3": "KEN",
+      "share_pct": 3,
+      "value": 1571
+    }
+  ],
+  "top_reexport_markets": [
+    {
+      "market": "Vietnam",
+      "iso3": "VNM",
+      "share_pct": 13,
+      "value": 3082
+    },
+    {
+      "market": "Réunion",
+      "iso3": "REU",
+      "share_pct": 8,
+      "value": 1967
+    },
+    {
+      "market": "États-Unis",
+      "iso3": "USA",
+      "share_pct": 6,
+      "value": 1385
+    },
+    {
+      "market": "Afrique du Sud",
+      "iso3": "ZAF",
+      "share_pct": 6,
+      "value": 1353
+    },
+    {
+      "market": "France",
+      "iso3": "FRA",
+      "share_pct": 6,
+      "value": 1336
+    },
+    {
+      "market": "Taïwan, Chine",
+      "iso3": "TWN",
+      "share_pct": 5,
+      "value": 1261
+    },
+    {
+      "market": "Madagascar",
+      "iso3": "MDG",
+      "share_pct": 5,
+      "value": 1239
+    },
+    {
+      "market": "Mayotte",
+      "iso3": "MYT",
+      "share_pct": 4,
+      "value": 1040
+    },
+    {
+      "market": "Émirats arabes unis",
+      "iso3": "ARE",
+      "share_pct": 4,
+      "value": 918
+    },
+    {
+      "market": "Thaïlande",
+      "iso3": "THA",
+      "share_pct": 4,
+      "value": 841
+    }
+  ]
+}

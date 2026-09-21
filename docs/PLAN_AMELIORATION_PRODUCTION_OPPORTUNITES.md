@@ -493,52 +493,62 @@ d'intégration n'a été écrite avant elle.
 C'est la demande explicite, et le chantier structurant. Il ne s'agit pas
 d'ajouter des chiffres mais de **créer la couche qui manque**.
 
-**2.1 — Passer d'un dictionnaire en dur à un registre piloté par la donnée.**
-`national_official_stats.py` devient un lecteur ; la donnée part dans
+**2.1 — Du dictionnaire en dur au registre piloté par la donnée. ✅ livré.**
+
+`national_official_stats.py` est désormais un lecteur ; la donnée vit dans
 `data/national_stats/<ISO3>.json`, documentée par
-`docs/data-sources/<ISO3>_STATS_REGISTER.md` — en réutilisant **exactement** la
-discipline des registres juridiques existants : éditeur, publication, URL, année
-des données, monnaie, SHA-256, `verification_status`.
+`docs/data-sources/<ISO3>_STATS_REGISTER.md` — même discipline que les
+registres juridiques du dépôt : éditeur, publication, URL, année des données,
+devise, SHA-256. **Ajouter un pays ne demande plus de toucher au Python.**
 
-*Vérification* : Maurice est migré sans changement de comportement (les tests de
-`test_claude_opportunities_grounding.py` passent inchangés) ; ajouter un pays ne
-demande plus de toucher au Python.
+Maurice est migré sans changement de comportement : le texte d'ancrage injecté
+dans le prompt est identique au caractère près (`11,500 MUR Mn`).
 
-**2.2 — Classer les 54 pays par ce qu'ils publient réellement.** Une collecte
-NSO échoue quand elle traite 54 offices comme un seul. Trois régimes :
+> **Une clé a dû changer.** Le montant se lisait dans `value_mur_mn` — une clé
+> portant la devise. La garder aurait obligé chaque pays ajouté à inventer la
+> sienne (`value_kes_mn`, `value_ngn_mn`…), ce qui ruine l'idée même de
+> registre. Le montant se lit maintenant dans `value`, l'unité dans `source`.
+> Une assertion de test a été mise à jour en conséquence, et l'explication y
+> figure. Les valeurs servies et les lignes d'ancrage, elles, n'ont pas bougé.
 
-- **Palier A — portail ou API exploitable.** Confirmés joignables : ZAF, EGY,
-  MAR, TUN, TZA, MUS. À retester sur runner : KEN, RWA, UGA, GHA, NGA.
-  → connecteur automatisable, sur le modèle des crawlers tarifaires existants
-  (`backend/services/crawlers/`).
-- **Palier B — bulletins PDF/Excel réguliers.** La plupart des offices
-  francophones (ANSD Sénégal, INS Côte d'Ivoire, INS Cameroun…).
-  → extraction semi-automatique + revue humaine, archivage horodaté et haché.
-- **Palier C — rien d'exploitable.** → on reste sur les sources internationales,
-  **et on l'affiche**.
+**2.2 — Classer les 54 pays par ce qu'ils publient réellement. ✅ livré.**
 
-*Vérification* : un tableau de couverture par pays, généré et non rédigé à la
-main, indiquant palier, dernière collecte et fraîcheur.
+Le classement est **généré**, pas rédigé :
+`backend/scripts/report_national_stats_coverage.py` écrit
+`docs/data-sources/COUVERTURE_STATISTIQUES_NATIONALES.md`. Un tableau de
+couverture écrit à la main vieillit mal et ment vite.
 
-**2.3 — Viser d'abord ce que seuls les NSO savent dire.** Ne pas recollecter ce
-que la Banque mondiale donne déjà. Trois priorités :
+La phase 1 a changé l'économie de ce chantier. La sonde ILOSTAT a montré que
+les enquêtes emploi des offices nationaux nous parviennent déjà harmonisées
+pour 48 pays. Les paliers ne sont donc plus « portail / PDF / rien » mais
+**par voie d'accès**, du moins cher au plus cher :
 
-1. **Exportations domestiques vs réexportations** — la distinction qui commande
-   les règles d'origine ZLECAf. Introuvable ailleurs. C'est déjà la raison d'être
-   du bloc Maurice ; la généraliser est **l'apport de données le plus rentable de
-   tout ce plan** pour le module Opportunités.
-2. **Indices et recensements de production industrielle** — la seule voie autour
-   du mur UNIDO.
-3. **Production infranationale** — où se trouve la capacité dans le pays, donnée
-   qu'aucune source internationale ne descend.
+| Palier | Sens | Pays |
+|---|---|---:|
+| **A** | Collecte directe — bloc adossé à une publication nommée et datée | **1** |
+| **B** | Republiée harmonisée — ILOSTAT ou UNSD, rien à négocier | **47** |
+| **C** | Non atteinte | **6** |
 
-**2.4 — La règle qui ne se négocie pas.** Valeurs reprises telles que publiées,
-dans la monnaie de publication, source et année attachées, aucune conversion
-maison, aucun trou comblé. Elle est déjà écrite en tête de
-`national_official_stats.py` ; elle doit tenir à 54 pays comme elle tient à un.
+**Et pourquoi le palier B ne suffit pas.** Les republications portent l'emploi
+et l'activité. Elles ne portent pas la séparation exportations domestiques /
+réexportations — que seul l'office national publie, et qui commande l'origine
+ZLECAf. Un pays en palier B est **couvert pour l'emploi, découvert pour
+l'origine**. C'est vers cette distinction que la collecte directe doit aller,
+et vers les pays à zones franches actives d'abord.
 
-*Vérification* : un test refuse toute entrée NSO sans `publisher`, `url`,
-`data_year`, `currency` et empreinte.
+**2.3 — Viser d'abord ce que seuls les NSO savent dire.** Inchangé, et
+confirmé par le tableau ci-dessus : la séparation domestique / réexportation
+reste la priorité, parce qu'elle est la seule chose qu'aucune republication
+ne fournit.
+
+**2.4 — La règle qui ne se négocie pas. ✅ livré et testé.**
+
+Un bloc dépourvu d'éditeur, de publication, d'URL, d'année de données ou de
+devise est **refusé au chargement** plutôt que servi à moitié
+(`_REQUIRED_SOURCE_FIELDS`). Un chiffre invérifiable vaut moins qu'un chiffre
+absent : il inspire confiance sans la mériter. Un test paramétré retire chacun
+des cinq champs et vérifie le refus ; un autre exige qu'un pays enregistré ait
+son document de registre.
 
 ### Phase 3 — Élargir le pont Production ↔ Opportunités
 
@@ -673,7 +683,10 @@ Les lignes marquées ✅ ont été livrées par le premier lot d'implémentation
 | Commodités minières ingérées | 30 / 46 | 30 / 46 | ≥ 44 / 46 |
 | Produits manufacturiers suivis | 15 | 15 | borné par INDSTAT (403) |
 | Pays avec détail ISIC4 réel | 20 / 54 | 20 / 54 | ≥ 30 / 54 |
-| Pays avec source NSO enregistrée | 1 | 1 | ≥ 15 (palier A + B) |
+| ✅ Registre NSO piloté par la donnée | non | **oui** | oui |
+| ✅ Pays classés par voie d'accès (généré) | 0 | **54** | 54 |
+| Pays en collecte directe (palier A) | 1 | 1 | ≥ 10 |
+| Pays atteints par republication (palier B) | 0 | **47** | ≥ 45 |
 | Sous-onglets Opportunités vivants sans clé IA | 5 / 9 | **6 / 9** | 9 / 9 |
 | Clés i18n Opportunités | 0 | 0 | ≥ 150 |
 
