@@ -651,7 +651,7 @@ Chaînes de valeur) renvoient encore une erreur nue.
 | 4.1c | Les **427 libellés en dur** restants → i18n | ✅ | 0 dictionnaire de langue, 0 ternaire de libellé ; 425 clés sous `opportunities`, chacune sous test |
 | 4.2 | Ajouter `ar` et `pt` (langues de travail ZLECAf) | ⏳ | les deux locales se chargent ; RTL vérifié pour l'arabe |
 | 4.3 | Réduire les 428 styles inline vers les jetons de design de Production | ⏳ | ≤ 50 `style={{}}` restants |
-| 4.4 | Tests front sur les deux modules | ⏳ partiel | ≥ 1 test de rendu et d'état d'erreur par sous-onglet (9 + 4) |
+| 4.4 | Tests front sur les deux modules | ✅ | les 9 sous-onglets d'Opportunités et les 5 de Production ont rendu + état d'absence ; 313 tests front (+30) |
 
 **Le décompte de 4.1c annoncé ici était faux, et l'erreur méritait mieux
 qu'une correction discrète.** Le plan comptait 173 ternaires dans 8 fichiers.
@@ -698,6 +698,64 @@ servies (405 × 2 langues) ont été confrontées une à une au code d'origine.
 425 clés existent en français et en anglais et sont sous test de parité ;
 ajouter `ar` et `pt` revient à fournir deux fichiers de plus, à dériver les
 4 codes de langue restants d'i18n, et à traiter le RTL de l'arabe.
+
+---
+
+### Phase 5 — Trois constats faits en écrivant les tests de 4.4
+
+Ces trois points ne figuraient pas à l'audit initial. Ils sont sortis de
+l'écriture des tests, ce qui est leur intérêt : aucun ne se voit en lisant le
+code, tous se voient en essayant de décrire à un test ce que l'écran affiche.
+
+| # | Action | État | Vérification |
+|---|---|---|---|
+| 5.1 | Supprimer les valeurs servies **sans source** en repli | ⏳ **arbitrage** | échec d'appel → « — » et mention de l'échec, jamais un chiffre |
+| 5.2 | Rendre visibles les états d'erreur déclarés et jamais affichés | ⏳ | chaque `setError` a un rendu correspondant |
+| 5.3 | Les 154 libellés en dur du module **Production** → i18n | ⏳ | 0 dictionnaire de langue dans `components/production/` |
+
+#### 5.1 — Des chiffres sans source, sur l'écran d'accueil du module
+
+C'est le constat le plus sérieux, parce qu'il contredit frontalement la règle
+qui tient tout le reste du dépôt.
+
+Quand l'API échoue, **`OpportunitySummary` affiche des valeurs écrites en
+dur** : 5 387 opportunités, 1 650 Md$ de commerce total, 186 Md$ de commerce
+intra-africain, « +12,3 % » de croissance annuelle, et un tableau des huit
+premiers produits dont les comptes et les montants sont **entièrement
+inventés** — 19 littéraux numériques dans le seul bloc de repli.
+`ValueChains` fait de même avec `DEFAULT_VALUE_CHAINS` : 34 littéraux, noms
+d'étapes, pays et valeurs par maillon.
+
+Rien à l'écran ne distingue ces chiffres des chiffres sourcés. Pire, **l'état
+d'erreur est inatteignable** : chaque appel porte son propre `.catch`, si bien
+que le repli se déclenche silencieusement. Un lecteur sans clé d'API — le cas
+courant, mesuré à l'audit — voit donc un tableau de bord d'apparence complète
+dont il ne peut pas savoir qu'il est fictif.
+
+La correction est simple (servir « — », dire l'échec) mais elle **change ce
+que voit l'utilisateur** : l'écran d'accueil passerait d'impressionnant à
+manifestement vide tant qu'aucune source ne répond. C'est une décision de
+produit, pas une correction technique, et elle est donc posée ici plutôt que
+prise. Deux tests portent la mention `DÉFAUT CONNU` et échoueront le jour où
+elle sera appliquée — c'est voulu, c'est leur façon de ne pas laisser oublier.
+
+#### 5.2 — Des états d'erreur déclarés et jamais affichés
+
+`ValueChains` et `ProductAnalysisView` déclarent un état `error`, l'alimentent
+dans leur `catch`, et ne le rendent nulle part. L'échec est donc gardé en
+mémoire et tu. `OpportunitySummary` en rend un sur deux. C'est la même racine
+que 5.1, vue sous un autre angle, et c'est corrigeable sans arbitrage.
+
+#### 5.3 — Production porte le même obstacle qu'Opportunités vient de lever
+
+La phase 4.1c a sorti 427 libellés du dur côté Opportunités. Le module
+**Production en compte 154**, dans 8 dictionnaires `{ fr, en }` répartis sur
+5 fichiers. L'audit initial ne l'avait pas vu parce qu'il avait mesuré les
+clés i18n **présentes** dans Production (32) sans mesurer les libellés
+**absents** — un comptage qui ne peut que rassurer.
+
+Tant qu'ils y sont, l'arabe et le portugais (4.2) ne couvriraient qu'un module
+sur deux.
 
 ---
 
