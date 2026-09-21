@@ -932,14 +932,28 @@ FORMALITES_POSITION_INTROUVABLE = "POSITION_INTROUVABLE"
 #:
 #: Ce que cet état n'affirme toujours PAS : que l'importation soit dispensée de
 #: toute obligation. Il dit qu'aucune formalité PARTICULIÈRE ne frappe cette
-#: marchandise. Les obligations générales du pays — déclaration, domiciliation,
-#: procédures de guichet unique — ne sont volontairement pas portées par le
-#: produit : elles s'appliquent à toute importation sans distinction de
-#: position, elles changent souvent (la procédure algérienne du code 910 est
-#: passée au dépôt électronique fin août 2026, à titre provisoire), et
+#: marchandise. Les obligations générales du pays — déclaration en douane,
+#: domiciliation bancaire — ne sont volontairement pas portées par le produit :
+#: elles s'appliquent à toute importation sans distinction de position, et
 #: l'opérateur qui consulte une position tarifaire les connaît. Décision du
 #: propriétaire, prise le 21/09/2026 — déclarée ici pour qu'elle ne soit pas
 #: reprise plus tard comme un oubli.
+#:
+#: CORRECTION D'UNE ERREUR DE MA PART, relevée par le propriétaire. J'avais
+#: rangé la « déclaration d'importation du produit » algérienne parmi ces
+#: obligations générales. C'est faux : ce n'est pas la déclaration en douane,
+#: c'est une demande adressée aux services du contrôle de la qualité du
+#: ministère du Commerce. Elle est donc PARTICULIÈRE, attachée à des
+#: marchandises précises — et le produit la sert déjà, sur 6 816 positions
+#: algériennes.
+#:
+#: 902 ET 910 SONT DES CODES DE DOCUMENTS, pas des noms de procédure : la DGD
+#: codifie ainsi les pièces de sa liste FAP — 902 « Autorisation d'admission du
+#: produit », 910 « Déclaration d'importation du produit », et de même 140,
+#: 150, 160, 210, 215. Sur les 6 816 positions portant la déclaration
+#: d'importation, 96 seulement en portent le code : les 6 720 autres ont le
+#: même libellé sans code, faute de rapprochement à la liste. Écart constaté,
+#: non corrigé ici — il n'ôte rien à l'exigence, il en retire l'identifiant.
 #:
 #: Chaque entrée exige sa preuve, relevée sur le portail. Ne jamais ajouter un
 #: pays ici « par analogie » : c'est exactement la généralisation que le Maroc a
