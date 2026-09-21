@@ -915,9 +915,54 @@ def _normalize_crawled_formalities(raw_formalities):
     return normalized
 
 
+#: États d'une demande de formalités. Les trois se confondaient en une liste
+#: vide, et cette confusion est la plus coûteuse du produit : une absence
+#: d'information n'est pas une absence d'obligation.
+FORMALITES_DOCUMENTEES = "DOCUMENTEES"
+FORMALITES_NON_ETABLIES = "NON_ETABLIES"
+FORMALITES_POSITION_INTROUVABLE = "POSITION_INTROUVABLE"
+
+
 def get_administrative_formalities(country_iso3, hs_code):
+    """Les formalités documentées pour cette position, éventuellement vides.
+
+    Conservée telle quelle pour ses appelants existants. Qui a besoin de
+    SAVOIR pourquoi la liste est vide appelle `formalites_et_statut()` :
+    c'est cette distinction, et non la liste, qui empêche le produit
+    d'affirmer qu'aucune obligation n'existe.
+    """
+    return formalites_et_statut(country_iso3, hs_code)[0]
+
+
+def formalites_et_statut(country_iso3, hs_code):
+    """(formalités, statut) — et le statut dit POURQUOI la liste est vide.
+
+    LE DÉFAUT CORRIGÉ. `get_administrative_formalities()` rendait `[]` dans
+    trois situations que rien ne distinguait ensuite :
+
+      * la position porte des formalités              → on les sert ;
+      * la position existe et n'en porte aucune       → rien n'est documenté ;
+      * la position est INTROUVABLE                   → on n'a rien cherché.
+
+    L'interface masquait alors purement et simplement la carte « Documents
+    requis ». L'opérateur voyait un résultat complet — taxes, avantages, coût
+    réglementaire — sans le moindre signe que les formalités n'avaient jamais
+    été établies. Mesuré sur les crawls du 21/09/2026 : **315 185 positions sur
+    350 022 (90 %) ne portent aucune formalité, et 46 pays sur 54 n'en portent
+    aucune du tout**. Le silence était donc la règle, pas l'exception.
+
+    Ce que ce statut n'affirme PAS : `NON_ETABLIES` ne veut pas dire
+    « aucune obligation ». Le dépôt ne collecte nulle part une attestation
+    d'absence d'obligation ; il collecte des formalités, ou rien. Tant qu'une
+    telle attestation n'existe pas dans la source, `NON_ETABLIES` est le seul
+    état honnête pour une liste vide, et l'interface doit le dire au lieu de
+    se taire.
+    """
     line = get_tariff_line(country_iso3, hs_code)
-    return line.get("administrative_formalities", []) if line else []
+    if line is None:
+        return [], FORMALITES_POSITION_INTROUVABLE
+    formalites = line.get("administrative_formalities") or []
+    return (formalites, FORMALITES_DOCUMENTEES) if formalites else ([], FORMALITES_NON_ETABLIES)
 
 
 def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
@@ -1970,7 +2015,9 @@ def calculate_import_taxes(
 
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
     try:
-        npf_cascade = compute_tax_cascade(cif_value, taxes_for_cascade, country_iso3, fob_value=fob_value)
+        npf_cascade = compute_tax_cascade(
+            cif_value, taxes_for_cascade, country_iso3, fob_value=fob_value
+        )
     except ValueError as exc:
         # Fail-closed : une assiette exigée par le pays (FOB en SACU, p. ex.)
         # absente de la demande est une erreur du client, pas une panne —
@@ -2275,9 +2322,7 @@ def calculate_import_taxes(
         ),
         "tva_absente": tva_absente,
         "tva_absente_source": (
-            "Famille TVA absente du tarif de ce pays — total sans TVA"
-            if tva_absente
-            else None
+            "Famille TVA absente du tarif de ce pays — total sans TVA" if tva_absente else None
         ),
         # DOCUMENTED | NOT_AVAILABLE | OFFER_ONLY | PARTNER_NOTICE_REQUIRED
         "zlecaf_status": zlecaf_status,

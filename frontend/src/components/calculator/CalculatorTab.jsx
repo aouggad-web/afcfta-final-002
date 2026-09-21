@@ -891,11 +891,21 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             `${API}/authentic-tariffs/country/${destISO3}/formalities/${cleanHsCode}?language=${language}`
           );
           const formalites = formalitesResponse.data?.formalities || [];
-          if (formalites.length > 0) {
-            setResult((precedent) => (precedent
-              ? { ...precedent, administrative_formalities: formalites }
-              : precedent));
-          }
+          // Le STATUT accompagne la liste, et il est transmis même quand elle
+          // est vide : c'est lui qui empêche l'écran de se taire, et le
+          // silence de se lire « aucune obligation ».
+          const statutFormalites = formalitesResponse.data?.statut || null;
+          const reserveFormalites = formalitesResponse.data?.reserve || null;
+          setResult((precedent) => (precedent
+            ? {
+              ...precedent,
+              administrative_formalities: formalites.length > 0
+                ? formalites
+                : precedent.administrative_formalities,
+              formalites_statut: statutFormalites,
+              formalites_reserve: reserveFormalites,
+            }
+            : precedent));
         } catch (formalitesError) {
           // Silencieux : une formalité absente n'est pas un montant faux.
         }
@@ -1959,7 +1969,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             const formalities = (isPositionLevel && selectedSubPositionFormalities)
               || result.administrative_formalities;
             const positionCode = isPositionLevel ? resolvedCode : null;
-            if (!formalities || formalities.length === 0) return null;
+
+            // LA CARTE NE DISPARAÎT PLUS QUAND LA LISTE EST VIDE.
+            //
+            // Elle rendait `null`, et l'opérateur voyait un résultat complet —
+            // taxes, avantages, coût réglementaire — sans le moindre signe que
+            // les formalités n'avaient jamais été établies. Mesuré sur les
+            // crawls du 21/09/2026 : 315 185 positions sur 350 022 (90 %) n'en
+            // portent aucune, et 46 pays sur 54 n'en portent aucune du tout.
+            // Le silence était la règle, et il se lisait « rien à faire ».
+            //
+            // Une absence d'information n'est pas une absence d'obligation :
+            // la carte reste, et dit laquelle des deux elle constate.
+            const aucuneFormalite = !formalities || formalities.length === 0;
+            const reserve = result.formalites_reserve
+              || (language === 'fr'
+                ? "Formalités non établies pour cette position. Une absence d'information n'est pas une absence d'obligation : vérifier auprès de l'administration douanière de destination."
+                : 'Formalities not established for this position. Missing information is not an absence of obligation: check with the destination customs administration.');
             return (
               <Card className="bg-slate-800/50 border-slate-700">
                 <CardHeader className="pb-3">
@@ -1973,7 +1999,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           {language === 'fr' ? 'Documents Requis' : 'Required Documents'}
                         </CardTitle>
                         <CardDescription className="text-slate-400">
-                          {formalities.length} {language === 'fr' ? 'formalités' : 'formalities'}
+                          {aucuneFormalite
+                            ? (language === 'fr' ? 'Non établies' : 'Not established')
+                            : `${formalities.length} ${language === 'fr' ? 'formalités' : 'formalities'}`}
                           {isPositionLevel && (
                             <span className="ml-2 text-amber-400 text-xs font-mono">
                               — position {positionCode}
@@ -1990,8 +2018,14 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                 </CardHeader>
                 <CardContent>
+                  {aucuneFormalite && (
+                    <div className="flex items-start gap-3 p-3 bg-amber-500/10 rounded-lg border border-amber-500/20">
+                      <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                      <p className="text-slate-300 text-sm">{reserve}</p>
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {formalities.map((form, idx) => (
+                    {(formalities || []).map((form, idx) => (
                       <div
                         key={idx}
                         className={`p-3 rounded-lg border ${form.is_mandatory === false ? 'bg-slate-700/20 border-slate-700' : 'bg-slate-700/30 border-slate-700'}`}
