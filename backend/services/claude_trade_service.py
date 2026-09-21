@@ -1019,6 +1019,49 @@ STRICT DATA RULES:
         result["production_capacities"] = kept
         return removed
 
+    async def factual_opportunities(
+        self, country_name: str, mode: str = "export", lang: str = "fr"
+    ) -> Dict:
+        """Opportunités SANS narration : les données d'ancrage, servies telles quelles.
+
+        L'ancrage factuel — production réelle du pays, flux commerciaux réels —
+        est calculé AVANT tout appel au modèle, et n'en dépend en rien. Sans
+        clé d'API, le renvoyer coûte donc zéro appel et conserve l'essentiel :
+        ce que le pays produit, ce qu'il échange, dans quel ordre. Ce qui se
+        perd est la mise en récit et le classement argumenté, pas les faits.
+
+        Sert aussi de repli quand le quota est épuisé ou le fournisseur
+        indisponible : mieux vaut un module amputé de sa prose qu'un module
+        muet.
+        """
+        iso3 = self._resolve_iso3(country_name)
+        grounding_text, stats = await self._country_opportunity_grounding(country_name, iso3, mode)
+        return {
+            "country": country_name,
+            "country_iso3": iso3,
+            "mode": mode,
+            "lang": lang,
+            "ai_available": False,
+            "degraded": True,
+            "degraded_reason": "ANTHROPIC_API_KEY not configured",
+            "notice": (
+                "Analyse narrative indisponible : aucune clé d'API n'est configurée. "
+                "Les données réelles ci-dessous sont celles qui servent d'ancrage à "
+                "l'analyse — production du pays et flux commerciaux observés. Elles "
+                "ne sont ni classées ni commentées."
+                if lang == "fr"
+                else (
+                    "Narrative analysis unavailable: no API key configured. The real "
+                    "data below is what normally grounds the analysis — the country's "
+                    "production and observed trade flows. It is neither ranked nor "
+                    "commented."
+                )
+            ),
+            "grounding": grounding_text,
+            "grounding_stats": stats,
+            "opportunities": [],
+        }
+
     async def analyze_trade_opportunities(
         self,
         country_name: str,
@@ -1026,7 +1069,12 @@ STRICT DATA RULES:
         lang: str = "fr",
     ) -> Dict:
         if not self._is_ready():
-            return {"error": "ANTHROPIC_API_KEY not configured", "opportunities": []}
+            # Plutôt qu'une erreur nue : l'ancrage factuel ne dépend pas du
+            # modèle, autant le servir. Le champ ``error`` est conservé pour
+            # les consommateurs qui le testent déjà.
+            payload = await self.factual_opportunities(country_name, mode=mode, lang=lang)
+            payload["error"] = "ANTHROPIC_API_KEY not configured"
+            return payload
 
         # "pv" = version du prompt : incrémentée à chaque évolution majeure du
         # prompt OU des enrichissements post-LLM (v3 : proxy d'exportations

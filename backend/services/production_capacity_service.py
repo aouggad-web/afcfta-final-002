@@ -21,6 +21,7 @@ import json
 import os
 from typing import Dict, List, Optional, Tuple
 
+from etl.faostat_hs_mapping import FAOSTAT_HS_TO_COMMODITY
 from production_data import load_production_data
 
 # ── HS → commodité de production ────────────────────────────────────────────────
@@ -331,6 +332,17 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("282530", "mining", "Vanadium"),  # oxydes/hydroxydes de vanadium (HS6 spécifique)
     ("261400", "mining", "Titanium (ilmenite)"),  # minerais de titane (HS6)
 ]
+
+# Extension GÉNÉRÉE du pont, dérivée de deux correspondances publiées :
+# item FAOSTAT → CPC v2.1 (bulk FAO) puis CPC v2.1 → SH 2017 (table officielle
+# UNSD). Voir scripts/build_faostat_hs_mapping.py pour la dérivation et
+# etl/faostat_hs_mapping.py pour le bilan de génération.
+#
+# Elle est AJOUTÉE APRÈS la table curée et ne contient aucun code que celle-ci
+# résout déjà : le pont existant garde exactement son comportement. La règle
+# « le préfixe le plus spécifique l'emporte » continue de s'appliquer à
+# l'ensemble.
+HS_TO_COMMODITY += FAOSTAT_HS_TO_COMMODITY
 
 # Repli par chapitre HS (2 chiffres) — moins précis mais utile pour couverture large.
 # Couvre les grands secteurs manufacturiers (UNIDO, valeur ajoutée) et agro/mines.

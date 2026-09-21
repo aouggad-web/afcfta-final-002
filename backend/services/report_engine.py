@@ -1268,6 +1268,19 @@ def get_import_opportunities_scenario(
         local_recorded = bool(local.get("available")) and local.get("latest_value") is not None
         local_value = float(local.get("latest_value") or 0.0) if local_recorded else None
 
+        # Production locale INCONNUE — pas nulle. La traiter comme un déficit
+        # mesuré transformerait une ignorance en opportunité, exactement la
+        # symétrie que ce travail corrige. Le caveat vaut dans TOUTES les
+        # branches ci-dessous, y compris quand le service a su établir un
+        # besoin importable : celui-ci peut fort bien avoir été calculé sans
+        # connaître la production nationale, et son propre commentaire être
+        # vide. Le laisser tomber là rendait l'avertissement intermittent.
+        unknown_local_note = (
+            "Production locale NON ÉTABLIE dans le référentiel : le besoin entier "
+            "est retenu comme borne HAUTE, pas comme un déficit mesuré. Le pays "
+            "produit peut-être tout ou partie de sa consommation."
+        )
+
         # Le déficit reprend le besoin importable quand le service a su
         # l'établir — il porte déjà la soustraction de la production nationale
         # et la qualification du panier de consommation.
@@ -1276,23 +1289,18 @@ def get_import_opportunities_scenario(
             deficit = importable
             deficit_share = round(deficit / need_value, 4) if need_value else None
             deficit_note = need.get("importable_need_note")
+            if not local_recorded and not deficit_note:
+                deficit_note = unknown_local_note
         elif local_recorded:
             deficit = max(need_value - local_value, 0.0)
             deficit_share = round(deficit / need_value, 4) if need_value else None
             deficit_note = None
         else:
-            # Production locale INCONNUE — pas nulle. La traiter comme un
-            # déficit complet transformait une ignorance en opportunité
-            # maximale, exactement la symétrie que ce travail corrige. La borne
-            # haute est conservée pour ne pas effacer un marché réel, mais son
-            # incertitude est désormais dite au lieu d'être minimisée.
+            # La borne haute est conservée pour ne pas effacer un marché réel,
+            # mais son incertitude est dite au lieu d'être minimisée.
             deficit = need_value
             deficit_share = 1.0
-            deficit_note = (
-                "Production locale NON ÉTABLIE dans le référentiel : le besoin entier "
-                "est retenu comme borne HAUTE, pas comme un déficit mesuré. Le pays "
-                "produit peut-être tout ou partie de sa consommation."
-            )
+            deficit_note = unknown_local_note
 
         continental_total = producers.get("continental_total") or 0
         import_pressure = round(need_value / continental_total, 4) if continental_total else None

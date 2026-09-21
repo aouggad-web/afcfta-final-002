@@ -542,45 +542,76 @@ maison, aucun trou comblé. Elle est déjà écrite en tête de
 
 ### Phase 3 — Élargir le pont Production ↔ Opportunités
 
-**3.1 — Casser le plafond des 114 codes SH, et élargir l'ingestion avec lui.**
-C'est ici que revient l'élargissement des commodités FAOSTAT, parce que
-l'invariant du dépôt interdit de le faire seul (voir la correction en phase 0).
-Le pont et l'ingestion avancent du même pas. Trois gisements :
+**3.1 — Le pont élargi par une correspondance publiée. ✅ livré.**
 
-- **FAOSTAT** : le bulk contient 254 items, dont 233 hors agrégats, contre 69
-  commodités mappées aujourd'hui. Chaque item ajouté doit arriver avec son code
-  SH, sa classification CPC (cultures / élevage / transformé) et l'exclusion des
-  21 agrégats ;
-- descendre le mapping au SH6 là où la commodité le permet ;
-- brancher la correspondance standard **ISIC ↔ chapitres SH** pour que le
-  manufacturing dépasse ses 15 codes.
+La chaîne retenue est sourcée de bout en bout, en deux maillons publiés :
+**item FAOSTAT → CPC v2.1** (membre `*_ItemCodes.csv` du bulk FAO) puis
+**CPC v2.1 → SH 2017** (table officielle UNSD `CPC21-HS2017.csv`). Aucune
+attribution au jugé : rattacher une production au mauvais produit échangé
+tromperait le module plus sûrement qu'une absence.
 
-*Point de décision* : la table de correspondance item FAOSTAT → code SH doit
-venir d'une source publiée (correspondance CPC↔SH de l'UNSD, ou table FAO), pas
-d'une attribution au jugé. Une correspondance fausse est pire qu'une absence :
-elle rattache une production réelle au mauvais produit échangé.
+| Mesure | Avant | Après |
+|---|---:|---:|
+| Entrées du pont SH | 232 | **270** |
+| Produits suivis (`list_tracked_products`) | 114 | **137** |
+| Commodités agricoles dans la donnée | 69 | **92** |
+| Lignes `agri_faostat` | 10 138 | **12 955** |
 
-*Vérification* : `list_tracked_products()` ≥ 400 codes, dont ≥ 80 en
-manufacturing ; `agri_faostat` ≳ 24 000 lignes ; l'invariant
-`test_no_production_commodity_left_without_hs_mapping` reste vert ;
-`production_products` relevé avant/après par pays dans les stats d'ancrage.
+232 des 233 items non agrégés se résolvent vers un code SH, atteignant 294
+codes SH6 sur 99 positions SH4.
 
-**3.2 — Faire exister le chaînage à l'écran.** Un parcours *pays → ce qu'il
-produit → où le vendre sous la ZLECAf → à quel tarif → sous quelle règle
-d'origine*. `get_country_profile()` et `get_continental_producers()` existent
-déjà et ne sont appelés qu'une fois dans tout le front.
+**Le filtre d'atteignabilité, et pourquoi il fallait l'inventer.** Un item
+dont tous les codes SH sont déjà pris ou contestés n'est atteignable par
+aucun code : l'ingérer casserait l'invariant du dépôt. Le générateur calcule
+donc l'atteignabilité par item et exporte l'ensemble des commodités
+joignables ; l'ingestion s'en sert comme filtre. **L'invariant est tenu par
+construction, plus par vigilance.**
 
-*Vérification* : depuis un pays choisi dans Production, on atteint une
-opportunité chiffrée dans Opportunités sans ressaisir quoi que ce soit — le
-mécanisme de handoff par `sessionStorage` existe déjà
-(`zlecaf_opportunites_handoff`).
+**Ce qui reste hors de portée, et pourquoi.** 138 commodités sont écartées.
+La cause n'est pas une lacune de la correspondance mais une propriété des
+nomenclatures : **un code SH recouvre parfois plusieurs commodités FAOSTAT**.
+Le SH 0201 « viande de bovins » vaut pour les bovins *et* les buffles, le
+SH 0205 pour les chevaux *et* les ânes. Le pont n'associant qu'un libellé par
+préfixe, trancher reviendrait à attribuer une production au mauvais produit.
+Elles attendent que le pont sache exprimer une relation un-à-plusieurs.
 
-**3.3 — Un repli non-IA.** Les données d'ancrage sont calculées **avant** l'appel
-au LLM. Sans clé, servir cet ancrage brut — classements, flux réels, tarifs —
-plutôt qu'un message d'erreur. Le module perd sa narration, pas sa substance.
+> **Deux critères corrigés.** « ≥ 400 codes SH » confondait deux grandeurs :
+> `list_tracked_products()` compte des **produits**, pas des codes SH. Les
+> deux sont désormais suivis séparément. Et « ≥ 80 en manufacturing » se
+> heurte au même mur qu'en phase 1 : le nombre de produits manufacturiers
+> suivis est borné par les divisions ISIC présentes dans la donnée, donc par
+> INDSTAT, donc par le 403. Il reste à 15.
 
-*Vérification* : avec `ANTHROPIC_API_KEY` vidée, les 9 sous-onglets affichent du
-contenu ; aucun ne renvoie d'erreur nue.
+*Vérification tenue* : invariant `test_no_production_commodity_left_without_hs_mapping`
+vert, aucune résolution existante modifiée (extension purement additive),
+269 tests du périmètre.
+
+**3.2 — Faire exister le chaînage à l'écran. ⏳ non livré.** Le seul volet de
+cette phase qui soit du front-end. Les briques sont prêtes côté serveur —
+`get_country_profile`, `get_continental_producers`, le handoff
+`sessionStorage` — mais le parcours n'existe dans aucun écran.
+
+**3.3 — Un repli non-IA. ✅ livré (onglet principal).**
+
+L'audit annonçait cinq sous-onglets morts sans clé. **Le compte exact est
+quatre** : « Vue d'ensemble » passe par `real_summary_service` et survit.
+Correction faite.
+
+L'ancrage factuel est calculé **avant** tout appel au modèle et n'en dépend
+pas. Sans clé, `analyze_trade_opportunities` sert désormais ces données —
+production réelle du pays, flux commerciaux observés — au lieu d'une erreur
+nue, avec un état `degraded` annoncé et le champ `error` historique conservé
+pour les consommateurs qui le testent. Mesuré sur le Kenya : 2 517 caractères
+d'ancrage, 20 produits avec tonnages et rangs continentaux.
+
+Le repli s'appelle aussi seul (`factual_opportunities`), ce qui le rend utile
+au-delà de l'absence de clé : quota épuisé, fournisseur indisponible.
+
+*Vérification tenue* : 7 tests ; l'état dégradé est annoncé, jamais déguisé en
+analyse complète qui n'aurait rien trouvé.
+
+*Reste à faire* : les trois autres sous-onglets (Par produit, Comparaison,
+Chaînes de valeur) renvoient encore une erreur nue.
 
 ### Phase 4 — Harmoniser la forme
 
@@ -635,13 +666,15 @@ Les lignes marquées ✅ ont été livrées par le premier lot d'implémentation
 | ✅ Indicateurs manufacturiers mesurés (hors estimation) | 0 | **3** | ≥ 3 |
 | ✅ Pays avec manufacturier mesuré | 0 | **53** | ≥ 45 |
 | ✅ Lignes de production hors agriculture et macro | 622 | **1 534** | ≥ 2 000 |
-| Commodités agricoles importées | 69 / 254 | 69 / 254 | ≥ 200 / 254 |
-| Codes SH reliés à la production | 114 | 114 | ≥ 400 |
-| dont manufacturing | 15 | 15 | ≥ 80 |
+| ✅ Commodités agricoles importées | 69 | **92** | ≥ 90 des 233 atteignables |
+| ✅ Entrées du pont SH | 232 | **270** | ≥ 260 |
+| ✅ Produits suivis (`list_tracked_products`) | 114 | **137** | ≥ 130 |
+| ✅ Sous-onglets Opportunités servant des faits sans clé IA | 0 / 4 | **1 / 4** | 4 / 4 |
 | Commodités minières ingérées | 30 / 46 | 30 / 46 | ≥ 44 / 46 |
+| Produits manufacturiers suivis | 15 | 15 | borné par INDSTAT (403) |
 | Pays avec détail ISIC4 réel | 20 / 54 | 20 / 54 | ≥ 30 / 54 |
 | Pays avec source NSO enregistrée | 1 | 1 | ≥ 15 (palier A + B) |
-| Sous-onglets Opportunités vivants sans clé IA | 4 / 9 | 4 / 9 | 9 / 9 |
+| Sous-onglets Opportunités vivants sans clé IA | 5 / 9 | **6 / 9** | 9 / 9 |
 | Clés i18n Opportunités | 0 | 0 | ≥ 150 |
 
 Deux cibles du tableau d'origine ont été retirées parce qu'elles reposaient sur

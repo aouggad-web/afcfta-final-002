@@ -49,6 +49,7 @@ SOURCES_DIR = BACKEND_DIR / "engine" / "sources"  # gitignored
 
 sys.path.insert(0, str(BACKEND_DIR))
 from etl.faostat_data import FAOSTAT_AGRICULTURE_DATA
+from etl.faostat_hs_mapping import FAOSTAT_REACHABLE_COMMODITIES
 from etl.unido_data import UNIDO_INDUSTRY_DATA
 
 # ── URLs FAOSTAT officielles ───────────────────────────────────────────────────
@@ -761,16 +762,25 @@ def fetch_faostat_bulk(
             if not iso3:
                 continue
 
-            # Résolution commodity. La table curée ne sert pas qu'à normaliser
-            # les libellés : elle porte l'invariant du dépôt — toute commodité
-            # présente dans le dataset doit être atteignable par un code SH,
-            # sans quoi sa donnée est invisible au module Opportunités et le
-            # besoin national retombe sur un proxy (cf.
-            # tests/test_hs_commodity_mapping.py). Élargir l'ingestion suppose
-            # donc d'élargir d'abord le pont SH ; un item non mappé est ignoré.
+            # Résolution commodity, en deux temps.
+            #
+            # 1. La table curée NORMALISE : elle réconcilie les variantes de
+            #    libellé d'un même produit selon le millésime FAOSTAT
+            #    ('Cassava' / 'Cassava, fresh'). Un item absent de cette table
+            #    n'est pas douteux pour autant : on retient alors le libellé
+            #    PUBLIÉ par la FAO, tel quel.
+            # 2. Le filtre d'atteignabilité porte l'invariant du dépôt — toute
+            #    commodité présente doit être joignable par un code SH, sans
+            #    quoi sa donnée est invisible au module Opportunités et le
+            #    besoin national retombe sur un proxy
+            #    (tests/test_hs_commodity_mapping.py). L'ensemble est dérivé de
+            #    la correspondance publiée CPC↔SH, pas maintenu à la main :
+            #    voir scripts/build_faostat_hs_mapping.py.
             item_raw = row.get("Item", "").strip()
-            commodity = FAOSTAT_ITEM_TO_COMMODITY.get(item_raw)
-            if not commodity:
+            if not item_raw:
+                continue
+            commodity = FAOSTAT_ITEM_TO_COMMODITY.get(item_raw, item_raw)
+            if commodity not in FAOSTAT_REACHABLE_COMMODITIES:
                 unknown_items.add(item_raw)
                 continue
 
@@ -795,10 +805,11 @@ def fetch_faostat_bulk(
 
         print(f"      {total_rows:,} lignes lues → {matched_rows:,} retenues")
         if unknown_items:
-            sample = sorted(unknown_items)[:15]
-            print(f"      Items FAOSTAT non mappés (ignorés, {len(unknown_items)} total) :")
-            for it in sample:
-                print(f"        - {it!r}")
+            print(
+                f"      Items écartés faute de code SH propre : {len(unknown_items)} "
+                "(un même SH recouvre plusieurs commodités — voir "
+                "etl/faostat_hs_mapping.py)"
+            )
 
         return records
 
