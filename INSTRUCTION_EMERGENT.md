@@ -206,17 +206,23 @@ minutes. C'est le moment où le coût d'une erreur est maximal.
 
 ### Ce qui remplace les jalons de validation
 
-Rien d'humain en routine. Trois automatismes :
+Deux automatismes, **et un contrôle humain qui n'est pas automatisable.**
+
+Les deux automatismes :
 
 - **la CI** dit si le dépôt est sain ;
 - **les tests ciblés avant chaque poussée, la suite complète avant chaque
   fusion.** Ne pas inverser : une poussée faite avant la fin de la suite a déjà
-  coûté cinq échecs rattrapés par l'intégration ;
+  coûté cinq échecs rattrapés par l'intégration.
+
+Le contrôle humain, **distinct des deux et non couvert par eux** :
+
 - **le propriétaire, sur un pays qu'il connaît.** Une fiche de portail produite
   à la main a trouvé ce que trois mois de chaîne automatique n'avaient pas vu.
   Ce n'est pas un contrôle qualité, c'est de l'expertise métier : aucun
   processus ne la remplace, et une méthode qui la met en bout de chaîne comme
-  simple approbation la gaspille.
+  simple approbation la gaspille. Une CI verte ne vaut pas ce contrôle et ne
+  dispense pas de le demander.
 
 ### Ce qu'on ne fait pas
 
@@ -255,6 +261,10 @@ attend une source ou une décision.
 
 ### G2 — le produit cache du vrai
 
+- **Un taux réduit réel s'affiche vide.** `RegulatoryDetailsPanel.jsx` lit
+  `adv.reduced_rate_pct` quand `postgres_tariff_service.py` renvoie
+  `reduced_rate` : la valeur existe, elle n'atteint jamais l'écran. Un seul
+  nom de champ à aligner.
 - **Éthiopie : 1 368 droits perdus à la collecte.** Le collecteur a été corrigé
   le 18/09/2026 ; la collecte, jamais refaite. Le portail `customs.erca.gov.et`
   est injoignable, une veille le sonde et collectera dès son retour. Aucun code
@@ -268,10 +278,6 @@ attend une source ou une décision.
   conception, pas correction.
 - **Remises kényanes absentes de `/calcul`.** `remission_eligibility` et ses
   cinq champs d'autorisation n'existent que sur le chemin historique.
-- **Taux de São Tomé-et-Príncipe** : non collectés. `dre.gov.st` est refusé par
-  le proxy réseau (CONNECT 502). L'assiette, elle, est établie.
-- **Taux des Comores** : non collectés, aucune URL citable trouvée. L'assiette
-  est établie.
 
 ### G3 — juste, mais lourd
 
@@ -281,18 +287,34 @@ attend une source ou une décision.
   qui débloque l'archive des sources originales.
 - **Chemin historique** `/authentic-tariffs/calculate`, qui double `/calcul`.
   Sa dépose est la correction de fond, non faite.
-- **`RegulatoryDetailsPanel.jsx`** lit `adv.reduced_rate_pct` quand
-  `postgres_tariff_service.py` renvoie `reduced_rate` : le taux s'y affiche vide.
 - **`build_regulatory_blocks()`** ne reçoit pas le code SH : le bloc commun ne
   peut donc pas décider seul du périmètre produit.
 - **Le repli sur 503 du socle** ne distingue pas « socle absent » de « socle
   périmé ou corrompu ». Le second ne devrait pas se replier en silence.
-- **Onze collecteurs portaient `verify=False`** — corrigé. Si la chaîne d'un
+- **Onze collecteurs portent `verify=False`** — correctif écrit, **pas encore
+  sur `main`**. Il est dans la PR #488 (branche `claude/maroc-examine`) et
+  couvre les onze fichiers : `backend/scripts/verify_government_sources.py`
+  (2 occurrences), `crawlers/scrapling_engine/recon.py` (4),
+  `scrapling_engine/wits_source.py` (2), `mozambique_jue_scraper.py` (3), puis
+  une occurrence chacun dans les collecteurs tunisien, mauritanien, libyen,
+  seychellois et zambien.
+  **Tant que cette PR n'est pas fusionnée, `main` collecte sans vérifier le
+  TLS** — ne pas lire cette ligne comme un point réglé. Si la chaîne d'un
   portail se révèle incomplète en production, la réponse est de fournir
   l'intermédiaire manquant, **jamais** de redésactiver la vérification.
 
+  Une réserve sur la portée du correctif : le réseau de cet environnement
+  resigne le TLS (« Egress Gateway SDS Issuing CA »), si bien que les
+  certificats observés sont ceux de la passerelle et jamais ceux de l'origine.
+  Rétablir la vérification est établi comme fonctionnant **ici** ; la chaîne
+  réelle de chaque portail reste à constater depuis le réseau de production.
+
 ### G4 — en attente d'arbitrage ou de source
 
+- **Taux de São Tomé-et-Príncipe** : non collectés. `dre.gov.st` est refusé par
+  le proxy réseau (CONNECT 502). L'assiette, elle, est établie.
+- **Taux des Comores** : non collectés, aucune URL citable trouvée. L'assiette
+  est établie.
 - **Colonne ZLECAf tunisienne** : quatre valeurs seulement (0, 40, 80, 87,5) et
   69,6 % d'entre elles dépassent le droit NPF de leur propre position. Deux
   captures du portail confirment que notre collecte est fidèle. Servie, elle
