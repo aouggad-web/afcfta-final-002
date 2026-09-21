@@ -392,6 +392,12 @@ async def get_ai_value_chains(
     try:
         result = await claude_trade_service.get_value_chains_analysis(sector=sector, lang=lang)
 
+        # Un repli explicitement dégradé porte des DONNÉES : il doit atteindre
+        # le client. Le laisser passer par un comptage de clés fonctionnait par
+        # accident — c'est ce même comptage qui, sur la route des opportunités,
+        # a converti un repli en HTTP 500 et rendu la fonctionnalité invisible.
+        if result.get("degraded"):
+            return result
         if "error" in result and len(result) <= 2:
             raise HTTPException(status_code=500, detail=result["error"])
 

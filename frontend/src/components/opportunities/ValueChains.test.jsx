@@ -60,6 +60,55 @@ describe('ValueChains', () => {
     await waitFor(() => expect(screen.getAllByText(/Café/).length).toBeGreaterThan(0));
   });
 
+  it('sert les producteurs mesurés sans les mêler au jeu écrit en dur', async () => {
+    // Troisième état, distinct des deux autres : le serveur n'a pas de clé,
+    // mais il renvoie les producteurs RÉELS. Deux choses se jouent ici.
+    //
+    // La première est que l'écran le dise autrement qu'une panne : ce sont
+    // des faits mesurés, seul le récit manque.
+    //
+    // La seconde est plus facile à rater. Le composant fusionnait la réponse
+    // avec `DEFAULT_VALUE_CHAINS`. En mode dégradé, cette fusion mettrait
+    // dans une même liste des chaînes sourcées et des chaînes inventées, sans
+    // que rien ne les distingue — pire que l'un ou l'autre. « Cacao »
+    // n'existe que dans le jeu en dur : son absence prouve le non-mélange.
+    axios.get.mockImplementation((url) =>
+      url.includes('/ai/value-chains')
+        ? Promise.resolve({
+            data: {
+              degraded: true,
+              notice: 'Analyse narrative indisponible : producteurs mesurés ci-dessous.',
+              value_chains: [
+                {
+                  id: 'minerals',
+                  name: { fr: 'Minerais', en: 'Minerals' },
+                  icon: '💎',
+                  hs_code: '7108',
+                  stages: [],
+                  top_producers: [
+                    { country: 'Ghana', iso3: 'GHA', production_tonnes: 135, role: 'raw_material' },
+                  ],
+                },
+              ],
+            },
+          })
+        : Promise.resolve({ data: {} }),
+    );
+    render(<ValueChains language="fr" />);
+
+    const bandeau = await screen.findByTestId('chains-factual-banner');
+    expect(bandeau).toHaveTextContent(/producteurs mesurés/i);
+    // Ni l'un ni l'autre des deux autres états ne doit s'afficher en même temps.
+    expect(screen.queryByTestId('chains-reference-banner')).not.toBeInTheDocument();
+    // L'assertion porte sur la LISTE DES CHAÎNES, pas sur la page : « Cacao »
+    // figure aussi parmi les suggestions de codes SH, et le chercher partout
+    // ferait croire à un mélange qui n'existe pas.
+    const liste = await screen.findByTestId('value-chain-list');
+    expect(liste).toHaveTextContent(/Minerais/);
+    expect(liste).not.toHaveTextContent(/Cacao/i);
+    expect(liste).not.toHaveTextContent(/Coton/i);
+  });
+
   it('ne montre aucun bandeau quand le service répond', async () => {
     axios.get.mockImplementation((url) =>
       url.includes('/ai/value-chains')

@@ -497,6 +497,15 @@ export default function ValueChains({ language = 'fr' }) {
   const [valueChains, setValueChains] = useState(DEFAULT_VALUE_CHAINS);
   // Vrai quand l'écran sert le jeu de référence et non celui du service.
   const [isReferenceData, setIsReferenceData] = useState(false);
+  // Trois états, et il faut les tenir distincts :
+  //   • analyse complète — récit du modèle + producteurs réels ;
+  //   • MESURÉ SANS RÉCIT — le serveur n'a pas de clé mais renvoie les
+  //     producteurs réels ; on affiche des faits, sans les étapes ;
+  //   • valeurs de RÉFÉRENCE — l'appel a échoué, on retombe sur le jeu
+  //     écrit en dur.
+  // Les confondre reviendrait à présenter du mesuré et de l'écrit en dur
+  // sous la même étiquette.
+  const [factualNotice, setFactualNotice] = useState(null);
   const [isAiGenerated, setIsAiGenerated] = useState(false);
 
   // HS6 search state
@@ -517,8 +526,12 @@ export default function ValueChains({ language = 'fr' }) {
             return { data: null };
           });
 
+        const degraded = Boolean(aiResponse.data?.degraded);
+
         if (aiResponse.data && aiResponse.data.value_chains && aiResponse.data.value_chains.length > 0) {
-          setIsAiGenerated(true);
+          setIsAiGenerated(!degraded);
+          setIsReferenceData(false);
+          setFactualNotice(degraded ? aiResponse.data.notice : null);
           
           // Convert AI response to our format
           const chainsMap = {};
@@ -550,9 +563,14 @@ export default function ValueChains({ language = 'fr' }) {
           
           // Merge with defaults to ensure all chains exist
           setIsReferenceData(false);
-          setValueChains({ ...DEFAULT_VALUE_CHAINS, ...chainsMap });
+          // En mode dégradé, on sert UNIQUEMENT les chaînes mesurées. Les
+          // fusionner avec `DEFAULT_VALUE_CHAINS` mêlerait dans une même
+          // liste des chaînes sourcées et des chaînes écrites en dur, sans
+          // que rien ne les distingue à l'écran — pire que l'un ou l'autre.
+          setValueChains(degraded ? chainsMap : { ...DEFAULT_VALUE_CHAINS, ...chainsMap });
         } else {
           setIsReferenceData(true);
+          setFactualNotice(null);
           // REPLI — VALEURS DE RÉFÉRENCE, ANNONCÉES COMME TELLES.
           // `DEFAULT_VALUE_CHAINS` est un jeu écrit en dur (noms d'étapes,
           // pays, valeurs par maillon), conservé par décision — voir §5.1 du
@@ -622,6 +640,19 @@ export default function ValueChains({ language = 'fr' }) {
     <div className="space-y-8" data-testid="value-chains">
       {/* Le jeu de référence ne se substitue pas en silence : il s'annonce,
           et porte la date de sa dernière révision. */}
+      {/* Mesuré sans récit : les producteurs sont réels et sourcés, seules
+          l'analyse et la découpe en étapes manquent. À ne pas confondre avec
+          le bandeau de valeurs de référence ci-dessous, qui annonce l'inverse
+          — des chiffres écrits en dur. */}
+      {factualNotice && (
+        <Card className="bg-sky-50 border-sky-200" data-testid="chains-factual-banner">
+          <CardContent className="py-4 flex items-start gap-3">
+            <Info className="h-5 w-5 text-sky-600 shrink-0 mt-0.5" />
+            <p className="text-sm text-sky-900">{factualNotice}</p>
+          </CardContent>
+        </Card>
+      )}
+
       {isReferenceData && (
         <Card className="bg-amber-50 border-amber-200" data-testid="chains-reference-banner">
           <CardContent className="py-4 flex items-start gap-3">
@@ -736,7 +767,10 @@ export default function ValueChains({ language = 'fr' }) {
         <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
           {t('opportunities.valueChains.selectChain')}
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          data-testid="value-chain-list"
+        >
           {Object.values(valueChains).map((vc) => (
             <ValueChainCard
               key={vc.id}
