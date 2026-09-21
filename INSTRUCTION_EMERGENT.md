@@ -288,6 +288,41 @@ touche.
 
 ### G2 — le produit cache du vrai
 
+- **394 taxes dont le taux ne se liquide pas — Égypte et les sept du TEC.**
+  Mesuré le 21/09/2026 ; constat complet dans
+  `reports/TAUX_INDISPONIBLES_EGY_EAC_2026-09-21.md`. Deux familles sans
+  rapport l'une avec l'autre :
+
+  **Égypte, 58 taxes sur 40 positions** — des droits spécifiques que le
+  collecteur a fidèlement recopiés sans les convertir : 9 £E/kg net sur les
+  tabacs, 0,48 £E/litre sur le pétrole, 15 £E/litre sur l'alcool, 0,1 £E par
+  vingt cigarettes. La mention est intacte dans `raw`, en arabe ; c'est la
+  structuration en `{montant, unité, devise}` qui manque, et le moteur sait
+  déjà liquider cette forme.
+
+  **LE PIÈGE, à connaître avant d'y toucher : 18 des 58 ne sont pas des
+  taxes.** Le suffixe `_2` (`VAT_2`, `ضريبة الجدول_2`) marque le **plancher**
+  de la taxe qui le précède — « بحد ادنى », « avec un minimum de ». La
+  correspondance est exacte, 18 sur 18, vérifiable dans le crawl. Les
+  structurer comme des taxes séparées créerait dix-huit lignes fantômes et
+  **doublerait** le montant, avec l'air d'être plus complet. Il y a donc 40
+  droits à structurer et 18 planchers à rattacher : deux travaux, pas un.
+
+  **Sept pays du TEC — Kenya, Tanzanie, Ouganda, Rwanda, Burundi, RD Congo,
+  Soudan du Sud — 48 taxes chacun, 336 en tout.** Produits sensibles du tarif
+  extérieur commun (laitiers, céréales, minoterie, sucres, coton, fibres
+  synthétiques, vêtements), dont le taux relève du barème national de chaque
+  pays. **Cette lacune-là est correctement déclarée** : le collecteur écrit
+  `note: "Rate determined by national schedule"` et laisse `null` au lieu de
+  deviner. Le travail est de collecter sept barèmes nationaux, pas de réparer
+  un parseur.
+
+  Ce n'est pas un G1 : les deux chemins que l'application utilise refusent
+  correctement de calculer — `/calcul` rend `PARTIEL` avec
+  `TAUX_INDISPONIBLE`, et `/authentic-tariffs/calculate` rend
+  `CALCULATION_UNAVAILABLE` en nommant les droits spécifiques. Seul
+  `enhanced_calculator_service` ramenait le taux absent à 0 %, sur trois
+  points d'API que le frontend n'appelle pas ; corrigé par la PR #497.
 - **Un taux réduit réel s'affiche vide.** `RegulatoryDetailsPanel.jsx` lit
   `adv.reduced_rate_pct` quand `postgres_tariff_service.py` renvoie
   `reduced_rate` : la valeur existe, elle n'atteint jamais l'écran. Un seul
