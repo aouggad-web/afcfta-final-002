@@ -119,6 +119,14 @@ async def get_ai_trade_opportunities(
             country_name=country_name, mode=mode, lang=lang
         )
 
+        # Un repli DÉGRADÉ n'est pas une panne : il porte les données réelles
+        # d'ancrage — production du pays, flux observés — que le service sait
+        # servir sans modèle. Le convertir en 500 rendait la fonctionnalité
+        # inaccessible aux clients de l'API alors que la couche service la
+        # produisait correctement. Seule une erreur SANS contenu reste une 500.
+        if result.get("degraded"):
+            return result
+
         if "error" in result and not result.get("opportunities"):
             raise HTTPException(status_code=500, detail=result["error"])
 

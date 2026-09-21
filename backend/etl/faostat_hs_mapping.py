@@ -16,7 +16,7 @@ Cette liste est ADDITIVE. Les codes SH que la table curée de
 ``services/production_capacity_service.py`` résout déjà n'y figurent pas :
 le pont existant garde son comportement, tests compris.
 
-Généré le : 2026-09-21T18:53:14.836594+00:00
+Généré le : 2026-09-21T19:42:42.932851+00:00
 Bilan de génération :
 #   SH revendiqués par plusieurs items     119
 #   agrégats écartés                       21

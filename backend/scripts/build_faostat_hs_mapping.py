@@ -25,9 +25,13 @@ Relevé du 2026-09-21 : 232 des 233 items non agrégés se résolvent ainsi, ver
 
 TROIS RÈGLES DE PRUDENCE
 ------------------------
-* **Additif seulement.** Un code SH déjà résolu par la table curée de
-  ``production_capacity_service`` n'est jamais réécrit. Le pont existant garde
-  exactement le comportement qu'il a aujourd'hui, tests compris.
+* **Additif seulement, et IDEMPOTENT.** Un code SH déjà résolu par la table
+  curée de ``production_capacity_service`` n'est jamais réécrit — et la
+  comparaison porte sur cette table curée SEULE, jamais sur le pont complet.
+  Se comparer au pont complet reviendrait à se comparer à sa propre sortie
+  précédente : la deuxième exécution verrait ses entrées comme déjà couvertes
+  et écrirait un module vide. Un test rejoue la génération et vérifie qu'elle
+  redonne le même résultat.
 * **Agrégats écartés.** Les items de code CPC ``F1…`` sont des agrégats
   FAOSTAT (« Cereals, primary », « Meat, Total ») : les rattacher doublerait
   les totaux et placerait un agrégat en tête des classements.
@@ -167,7 +171,7 @@ def build() -> tuple[list[tuple[str, str]], dict]:
     # et non recopiée : le pont doit pointer vers le libellé que l'ingestion
     # écrit réellement. Deux copies dériveraient au premier ajout.
     from build_production_faostat_usgs import FAOSTAT_ITEM_TO_COMMODITY
-    from services.production_capacity_service import _match_commodity
+    from services.production_capacity_service import HS_TO_COMMODITY_CURATED, _match_commodity
 
     _ensure_unsd_table()
     cpc_to_hs = _load_cpc_to_hs()
@@ -204,7 +208,11 @@ def build() -> tuple[list[tuple[str, str]], dict]:
     for label, hs_codes in resolved.values():
         emitted = False
         for hs in hs_codes:
-            existing = _match_commodity(hs)
+            # Contre la table CURÉE seule. Interroger le pont complet
+            # reviendrait à se comparer à la sortie de la génération
+            # précédente : la deuxième exécution verrait ses propres entrées
+            # comme « déjà couvertes » et écrirait un module vide.
+            existing = _match_commodity(hs, table=HS_TO_COMMODITY_CURATED)
             if existing is not None:
                 # Déjà résolu par la table curée. Si c'est vers NOTRE libellé,
                 # l'item est atteignable sans rien ajouter ; sinon on n'y

@@ -1270,16 +1270,46 @@ def get_import_opportunities_scenario(
 
         # Production locale INCONNUE — pas nulle. La traiter comme un déficit
         # mesuré transformerait une ignorance en opportunité, exactement la
-        # symétrie que ce travail corrige. Le caveat vaut dans TOUTES les
-        # branches ci-dessous, y compris quand le service a su établir un
-        # besoin importable : celui-ci peut fort bien avoir été calculé sans
-        # connaître la production nationale, et son propre commentaire être
-        # vide. Le laisser tomber là rendait l'avertissement intermittent.
-        unknown_local_note = (
-            "Production locale NON ÉTABLIE dans le référentiel : le besoin entier "
-            "est retenu comme borne HAUTE, pas comme un déficit mesuré. Le pays "
-            "produit peut-être tout ou partie de sa consommation."
-        )
+        # symétrie que ce travail corrige.
+        #
+        # Deux précisions, apprises d'une relecture :
+        #
+        # 1. Une production nulle ÉTABLIE n'est PAS une inconnue. Quand la
+        #    source couvre le pays et se tait — FAOSTAT couvre tous les pays
+        #    africains — le zéro est une mesure. L'avertir d'incertitude
+        #    déprécierait une information solide.
+        # 2. Le caveat doit S'AJOUTER au commentaire du service, pas
+        #    disparaître devant lui. Le chemin « besoin importable établi » est
+        #    le cas courant ; n'avertir que lorsqu'il ne dit rien rendait
+        #    l'avertissement intermittent, donc peu fiable à lire.
+        absence_established = bool((need.get("self_sufficiency") or {}).get("absence_established"))
+        if absence_established:
+            # Zéro MESURÉ : la source couvre le pays et se tait. C'est une
+            # information, et elle se dit — mais elle ne se dit pas comme une
+            # incertitude, sans quoi on déprécierait une donnée solide.
+            local_status_note = (
+                "Production locale nulle ÉTABLIE : la source couvre ce pays et ne "
+                "lui rapporte aucune production. Le besoin est donc intégralement "
+                "importable."
+            )
+        else:
+            local_status_note = (
+                "Production locale NON ÉTABLIE dans le référentiel : le besoin entier "
+                "est retenu comme borne HAUTE, pas comme un déficit mesuré. Le pays "
+                "produit peut-être tout ou partie de sa consommation."
+            )
+
+        def _with_local_status(note):
+            """Ajoute l'état de la production locale au commentaire du service.
+
+            Il s'ajoute, il ne remplace pas : le chemin « besoin importable
+            établi » est le cas courant, et n'avertir que lorsque le service
+            ne dit rien de son côté rendait l'avertissement intermittent —
+            donc peu fiable à lire.
+            """
+            if local_recorded:
+                return note
+            return f"{note} {local_status_note}" if note else local_status_note
 
         # Le déficit reprend le besoin importable quand le service a su
         # l'établir — il porte déjà la soustraction de la production nationale
@@ -1288,9 +1318,7 @@ def get_import_opportunities_scenario(
         if importable is not None:
             deficit = importable
             deficit_share = round(deficit / need_value, 4) if need_value else None
-            deficit_note = need.get("importable_need_note")
-            if not local_recorded and not deficit_note:
-                deficit_note = unknown_local_note
+            deficit_note = _with_local_status(need.get("importable_need_note"))
         elif local_recorded:
             deficit = max(need_value - local_value, 0.0)
             deficit_share = round(deficit / need_value, 4) if need_value else None
@@ -1300,7 +1328,7 @@ def get_import_opportunities_scenario(
             # mais son incertitude est dite au lieu d'être minimisée.
             deficit = need_value
             deficit_share = 1.0
-            deficit_note = unknown_local_note
+            deficit_note = _with_local_status(None)
 
         continental_total = producers.get("continental_total") or 0
         import_pressure = round(need_value / continental_total, 4) if continental_total else None

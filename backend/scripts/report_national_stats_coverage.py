@@ -64,11 +64,18 @@ def gather(use_ilo: bool = True) -> dict:
 
     ilo: set[str] = set()
     ilo_error = None
+    ilo_batch_failures: list = []
     if use_ilo:
         try:
             from probe_ilostat_coverage import probe
 
-            ilo = set(probe()["countries_covered"])
+            result = probe()
+            ilo = set(result["countries_covered"])
+            # La sonde interroge par lots. Un lot en échec ne lève rien : ses
+            # pays ressortent simplement sans donnée, et seraient rangés en
+            # palier C — un rapport d'apparence complète affirmerait alors
+            # qu'ils sont hors de portée alors qu'on ne les a pas interrogés.
+            ilo_batch_failures = result.get("batch_failures") or []
         except Exception as exc:  # pragma: no cover - dépend du réseau
             ilo_error = f"{type(exc).__name__}: {exc}"
 
@@ -93,7 +100,12 @@ def gather(use_ilo: bool = True) -> dict:
                 "unsd": has_unsd,
             }
         )
-    return {"rows": rows, "ilo_error": ilo_error, "ilo_probed": use_ilo}
+    return {
+        "rows": rows,
+        "ilo_error": ilo_error,
+        "ilo_probed": use_ilo,
+        "ilo_batch_failures": ilo_batch_failures,
+    }
 
 
 def render(data: dict) -> str:
@@ -124,6 +136,13 @@ def render(data: dict) -> str:
         ilo_note = (
             "\n> ⚠ Exécution `--no-ilo` : la colonne ILOSTAT est vide par choix, "
             "les paliers sont sous-estimés.\n"
+        )
+    elif data.get("ilo_batch_failures"):
+        failed = ", ".join(iso for f in data["ilo_batch_failures"] for iso in f.get("batch", []))
+        ilo_note = (
+            f"\n> ⚠ Certains lots ILOSTAT ont échoué à cette exécution. Les pays "
+            f"suivants n'ont PAS été interrogés et leur palier est donc "
+            f"sous-estimé, non constaté : {failed}.\n"
         )
 
     return f"""# Couverture des statistiques nationales, par pays
@@ -183,6 +202,8 @@ def main() -> None:
         print(f"   {tier:28} {n:3} pays")
     if data["ilo_error"]:
         print(f"   ⚠ sonde ILOSTAT en échec : {data['ilo_error']}")
+    if data.get("ilo_batch_failures"):
+        print(f"   ⚠ lots ILOSTAT en échec : {data['ilo_batch_failures']}")
 
     if args.dry_run:
         print("\n(--dry-run) Rapport NON écrit.")

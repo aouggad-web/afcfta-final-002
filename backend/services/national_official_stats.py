@@ -51,13 +51,42 @@ REGISTRY_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "nationa
 #: Un chiffre dont on ne peut pas dire qui l'a publié, quand, et dans quelle
 #: unité ne vaut pas mieux qu'un chiffre absent — il vaut moins, parce qu'il
 #: inspire confiance.
-_REQUIRED_SOURCE_FIELDS = ("publisher", "publication", "url", "data_year", "currency")
+#: ``unit`` en fait partie parce que ``grounding_lines`` l'injecte dans le
+#: texte servi au modèle : l'omettre produirait « values in None ».
+_REQUIRED_SOURCE_FIELDS = ("publisher", "publication", "url", "data_year", "currency", "unit")
 
 _registry_cache: Optional[Dict[str, Dict]] = None
 
 
-def _entry_is_valid(iso3: str, entry: Dict) -> bool:
-    source = entry.get("source") or {}
+def _entry_is_valid(iso3: str, entry: object) -> bool:
+    """Un bloc est-il assez vérifiable pour être servi ?
+
+    Trois refus, dans cet ordre, parce qu'ils échouent différemment :
+
+    * **forme.** Un JSON valide n'est pas un bloc valide : ``[]`` ou
+      ``{"source": []}`` se chargent sans erreur puis font tomber la lecture
+      plus loin. Le type est donc vérifié avant tout accès.
+    * **provenance.** Sans éditeur, publication, URL, année, devise ou unité,
+      le chiffre n'est pas vérifiable par un lecteur — et ``unit`` manquante
+      se retrouverait telle quelle dans le texte servi au modèle.
+    * **identité.** Le code porté par le fichier doit correspondre à son nom.
+      Un bloc copié d'un pays à l'autre sans changer le code servirait les
+      chiffres de l'un sous le nom de l'autre — l'erreur la plus difficile à
+      repérer à l'écran, parce que rien n'a l'air cassé.
+    """
+    if not isinstance(entry, dict):
+        logger.warning(
+            "Statistiques nationales %s ignorées — le fichier ne contient pas un objet", iso3
+        )
+        return False
+
+    source = entry.get("source")
+    if not isinstance(source, dict):
+        logger.warning(
+            "Statistiques nationales %s ignorées — bloc « source » absent ou mal formé", iso3
+        )
+        return False
+
     missing = [f for f in _REQUIRED_SOURCE_FIELDS if not source.get(f)]
     if missing:
         logger.warning(
@@ -66,8 +95,18 @@ def _entry_is_valid(iso3: str, entry: Dict) -> bool:
             ", ".join(missing),
         )
         return False
-    if not entry.get("country_iso3"):
+
+    declared = entry.get("country_iso3")
+    if not declared:
         logger.warning("Statistiques nationales %s ignorées — country_iso3 absent", iso3)
+        return False
+    if str(declared).strip().upper() != iso3:
+        logger.warning(
+            "Statistiques nationales %s ignorées — le fichier déclare %s : "
+            "un bloc servi sous le nom d'un autre pays est pire qu'un bloc absent",
+            iso3,
+            declared,
+        )
         return False
     return True
 

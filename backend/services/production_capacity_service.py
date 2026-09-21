@@ -31,7 +31,7 @@ from production_data import load_production_data
 #
 # Format : (hs_prefix, dataset, commodity_label)
 #   dataset ∈ {"agri", "mining", "manufacturing"}
-HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
+HS_TO_COMMODITY_CURATED: List[Tuple[str, str, str]] = [
     # ── Agriculture (FAO / FAOSTAT) ──
     ("0901", "agri", "Coffee"),
     ("0902", "agri", "Tea"),
@@ -342,7 +342,7 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
 # résout déjà : le pont existant garde exactement son comportement. La règle
 # « le préfixe le plus spécifique l'emporte » continue de s'appliquer à
 # l'ensemble.
-HS_TO_COMMODITY += FAOSTAT_HS_TO_COMMODITY
+HS_TO_COMMODITY: List[Tuple[str, str, str]] = HS_TO_COMMODITY_CURATED + FAOSTAT_HS_TO_COMMODITY
 
 # Repli par chapitre HS (2 chiffres) — moins précis mais utile pour couverture large.
 # Couvre les grands secteurs manufacturiers (UNIDO, valeur ajoutée) et agro/mines.
@@ -544,13 +544,23 @@ def _normalize_hs(hs_code: Optional[str]) -> str:
     return "".join(ch for ch in str(hs_code) if ch.isdigit())
 
 
-def _match_commodity(hs_code: str) -> Optional[Tuple[str, str, str]]:
-    """Retourne (dataset, commodity_label, match_level) ou None."""
+def _match_commodity(
+    hs_code: str, table: Optional[List[Tuple[str, str, str]]] = None
+) -> Optional[Tuple[str, str, str]]:
+    """Retourne (dataset, commodity_label, match_level) ou None.
+
+    ``table`` permet d'interroger un pont RESTREINT. Le générateur du pont
+    FAOSTAT s'en sert pour se comparer à la seule table curée : se comparer au
+    pont complet reviendrait à se comparer à sa propre sortie précédente, et
+    chaque regénération viderait le module produit.
+    """
     code = _normalize_hs(hs_code)
     if not code:
         return None
     # Match le plus spécifique d'abord (préfixe le plus long)
-    for prefix, dataset, label in sorted(HS_TO_COMMODITY, key=lambda x: -len(x[0])):
+    for prefix, dataset, label in sorted(
+        HS_TO_COMMODITY if table is None else table, key=lambda x: -len(x[0])
+    ):
         if code.startswith(prefix):
             return dataset, label, f"HS{len(prefix)}"
     # Repli par chapitre

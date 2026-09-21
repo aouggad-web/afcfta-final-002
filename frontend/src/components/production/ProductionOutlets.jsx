@@ -19,7 +19,7 @@
  * 2. Rien n'est recalculé ici. Les valeurs, rangs et parts viennent du
  *    serveur ; cet écran les met en page, il ne les produit pas.
  */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { AlertTriangle, ArrowRight, Loader2, PackageSearch } from 'lucide-react';
@@ -62,13 +62,23 @@ function ProductionOutlets({ language = 'fr' }) {
   const [profile, setProfile] = useState(null);
   const [status, setStatus] = useState('idle');
 
+  // Les requêtes peuvent se croiser : choisir B pendant que A charge, et la
+  // réponse de A — plus lente — écraserait le profil de B. Le tableau
+  // afficherait alors les produits de A pendant que le bouton enverrait le
+  // pays B. Une réponse dont le pays n'est plus celui sélectionné est donc
+  // ignorée.
+  const requestedCountry = useRef(null);
+
   const fetchProfile = useCallback(async (iso3) => {
+    requestedCountry.current = iso3;
     setStatus('loading');
     try {
       const res = await axios.get(`${API}/production/country-profile/${iso3}?top_n=40`);
+      if (requestedCountry.current !== iso3) return;
       setProfile(res.data || null);
       setStatus('ready');
     } catch {
+      if (requestedCountry.current !== iso3) return;
       setProfile(null);
       setStatus('error');
     }
