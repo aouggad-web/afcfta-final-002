@@ -55,12 +55,31 @@ en cas de doute sur un champ, c'est lui qui tranche.
   "source_sha256": "<SHA-256 du fichier téléchargé, octet pour octet>",
   "extracted_at": "<date ISO 8601 de la collecte>",
   "source_quality": "crawled_authentic_national",
-  "stats": { "positions": 0, "chapters": 0 },
-  "calculation_rules": { "order": [...], "bases": {...}, "source": "..." },
-  "regimes_registry": {},
+  "stats": { "sections": 0, "chapters": 96, "sub_positions": 6129, "errors": 0 },
+  "calculation_rules": {
+    "order": ["DD", "TVA"],
+    "bases": {
+      "DD": { "basis": "CIF", "type": "ad_valorem" },
+      "TVA": { "basis": "CIF+TOUS_SAUF_TVA", "type": "ad_valorem" }
+    },
+    "source": "<le texte qui fixe l'ordre et les assiettes, article par article>"
+  },
+  "regimes_registry": [],
   "sub_positions": [ ... ]
 }
 ```
+
+Les valeurs ci-dessus sont celles du fichier de référence, pas des exemples
+libres : `stats` porte bien les quatre clés `sections`, `chapters`,
+`sub_positions` et `errors`, et **`regimes_registry` est une LISTE**, vide
+quand le pays n'a pas de régime particulier à enregistrer. Un JSON « conforme
+au contrat » mais d'une autre forme ne passerait pas l'outillage existant : en
+cas de doute, ouvrir `backend/data/crawled/MRT_tariffs.json` et recopier la
+structure.
+
+`calculation_rules` n'est pas décoratif — c'est lui qui dit dans quel ordre les
+prélèvements se liquident et sur quelle base chacun s'applique. Son `source`
+doit citer le texte, pas un usage constaté.
 
 `source_sha256` est **l'empreinte du document source lui-même** (le PDF, le
 fichier tarif), pas celle du JSON produit. Le document doit être conservé et
