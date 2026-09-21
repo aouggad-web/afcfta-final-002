@@ -12,8 +12,8 @@ croissant. Le palier dit **où porter l'effort**, jamais la qualité de l'office
 
 | Palier | Sens | Pays |
 |---|---|---:|
-| **A** | Collecte directe — un bloc adossé à une publication nommée et datée, dans `data/national_stats/` | 1 |
-| **B** | Republiée harmonisée — l'enquête de l'office nous parvient via ILOSTAT ou l'UNSD, sans rien négocier | 47 |
+| **A** | Collecte directe — un bloc adossé à une publication nommée et datée, dans `data/national_stats/` | 2 |
+| **B** | Republiée harmonisée — l'enquête de l'office nous parvient via ILOSTAT ou l'UNSD, sans rien négocier | 46 |
 | **C** | Non atteinte — ni republiée, ni collectée | 6 |
 
 ## Pourquoi le palier B ne suffit pas
@@ -79,7 +79,7 @@ priorité, et vers les pays à zones franches actives d'abord.
 | SWZ | Eswatini | B | — | oui | oui |
 | SYC | Seychelles | B | — | oui | oui |
 | TCD | Tchad | B | — | oui | oui |
-| TGO | Togo | B | — | oui | oui |
+| TGO | Togo | A | oui | oui | oui |
 | TUN | Tunisie | B | — | oui | oui |
 | TZA | Tanzanie | B | — | oui | oui |
 | UGA | Ouganda | B | — | oui | oui |

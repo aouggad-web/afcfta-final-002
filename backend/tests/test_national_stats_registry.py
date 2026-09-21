@@ -116,3 +116,76 @@ def test_every_registered_country_has_a_source_register_document():
     docs = nos.REGISTRY_DIR.parent.parent / "docs" / "data-sources"
     for iso3 in nos.list_covered_countries():
         assert (docs / f"{iso3}_STATS_REGISTER.md").is_file(), iso3
+
+
+# ---------------------------------------------------------------------------
+# Togo — le cas où la ventilation N'EXISTE PAS, et où le dire est la donnée
+# ---------------------------------------------------------------------------
+# Maurice publie la séparation domestique/réexportation jusqu'au produit et au
+# marché. Le Togo, dont la zone franche est très active, ne la publie qu'au
+# niveau du régime douanier (Tableau 83) — jamais par produit ni par client —
+# et ce tableau ne se réconcilie pas avec le total d'exportations publié : la
+# somme des régimes d'exportation et de réexportation donne 311 490,1 millions
+# de FCFA au 2025T4 contre 258 434,7 publiés, et aucun sous-ensemble des
+# régimes de réexportation ne reproduit le total sur les cinq trimestres.
+# Reconstituer un « export domestique togolais » serait donc une agrégation
+# maison contredite par la source elle-même.
+#
+# Ce qui est servi à la place est ce qui est vrai et vérifiable : un
+# avertissement daté, sa définition citée, et les régimes de zone franche
+# repris tels que publiés.
+
+
+def test_togo_is_registered_and_carries_no_invented_split():
+    stats = nos.get_official_stats("TGO")
+    assert stats is not None
+    # L'invariant qui ne se négocie pas : puisque la source ne publie pas la
+    # ventilation, aucun champ de ventilation ne doit apparaître ici. Les
+    # remplir depuis OEC ou Comtrade serait exactement la fabrication que
+    # cette couche existe pour empêcher.
+    for field in (
+        "top_domestic_export_product",
+        "domestic_export_products",
+        "top_domestic_export_markets",
+        "top_reexport_markets",
+    ):
+        assert field not in stats, field
+
+
+def test_togo_grounding_warns_that_the_flows_are_not_separable():
+    text = "\n".join(nos.grounding_lines("TGO"))
+    assert "the two flows are NOT separable for Togo" in text
+    assert "258,434.7 FCFA M" in text  # total publié, tel que publié
+    assert "2025T4" in text
+    assert "no split by product or by market" in text
+    # La définition de la source est citée, pas paraphrasée : c'est elle qui
+    # établit que le total inclut les réexportations.
+    assert "L'exportation regroupe l'exportation simple et la réexportation." in text
+
+
+def test_togo_free_zone_regimes_are_published_values_not_totals():
+    stats = nos.get_official_stats("TGO")
+    zones = {z["code"]: z["value"] for z in stats["free_zone_regimes"]}
+    # Repris ligne à ligne du Tableau 83, colonne 2025T4.
+    assert zones["9300"] == 100527.6  # entrées en zone franche industrielle
+    assert zones["1093"] == 84248.9  # exportations en suite de zone franche
+    text = "\n".join(nos.grounding_lines("TGO"))
+    assert "100,527.6 FCFA M" in text
+    assert "do not by themselves establish local origin" in text
+    # Aucun total de zone franche n'est servi : la source n'en publie pas.
+    assert str(round(sum(zones.values()), 1)) not in text
+
+
+def test_a_caveat_and_a_published_split_are_mutually_exclusive():
+    # Un pays ne peut pas à la fois déclarer la ventilation impossible et
+    # servir une ventilation : l'un des deux serait faux.
+    for iso3 in nos.list_covered_countries():
+        stats = nos.get_official_stats(iso3)
+        if "export_flow_caveat" in stats:
+            assert "top_reexport_markets" not in stats, iso3
+
+
+def test_mauritius_grounding_gains_no_line_from_the_togo_fields():
+    text = "\n".join(nos.grounding_lines("MUS"))
+    assert "NOT separable" not in text
+    assert "Free-zone customs regimes" not in text

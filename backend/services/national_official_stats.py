@@ -33,6 +33,15 @@ GARDE-FOUS « ZÉRO FABRICATION »
   n'est comparable ni entre pays ni à un montant en USD sans conversion
   explicite, que cette couche ne fait pas.
 
+QUAND LA VENTILATION N'EST PAS PUBLIABLE
+-----------------------------------------
+Certains pays ne publient pas la séparation, même en ayant des zones franches
+très actives. Le bloc porte alors ``export_flow_caveat`` : l'avertissement
+daté et la définition citée de la source, qui interdisent de lire un chiffre
+d'export du pays comme de la production domestique. C'est un fait sourcé, pas
+un chiffre reconstitué — voir ``docs/data-sources/TGO_STATS_REGISTER.md``, où
+la tentative de recomposition est montrée en échec contre le total publié.
+
 Premier pays intégré : Maurice (EDB, newsletter de juillet 2024).
 """
 
@@ -188,5 +197,29 @@ def grounding_lines(country_iso3: str) -> List[str]:
             + ", ".join(f"{m['market']} ({m['share_pct']}%)" for m in reexports[:5])
             + " — re-exported merchandise does NOT acquire local AfCFTA origin and must "
             "never be presented as domestic production or origin-qualifying supply."
+        )
+    caveat = stats.get("export_flow_caveat")
+    if isinstance(caveat, dict):
+        lines.append(
+            f"- WARNING — the two flows are NOT separable for {stats['country_name']}: "
+            f"the national source records total exports "
+            f"({_amount(caveat.get('total_exports_fob'), unit_short)} in "
+            f"{caveat.get('period')}) as domestic exports PLUS re-exports, and publishes "
+            "no split by product or by market. No export figure for this country, from "
+            "this source or from any international source derived from it, may be read "
+            "as domestic production or as origin-qualifying supply. Source definition: "
+            f"\u00ab\u00a0{caveat.get('source_definition')}\u00a0\u00bb"
+        )
+    zones = stats.get("free_zone_regimes") or []
+    if zones:
+        lines.append(
+            "- Free-zone customs regimes, as published (values in "
+            f"{src['unit']}): "
+            + "; ".join(
+                f"{z['label']} = {_amount(z.get('value'), unit_short)}" for z in zones
+            )
+            + " — goods merely entering and leaving a free zone are transformed there at "
+            "most partially; free-zone outflows do not by themselves establish local "
+            "origin."
         )
     return lines
