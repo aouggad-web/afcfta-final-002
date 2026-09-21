@@ -272,7 +272,7 @@ const EntryStrategy = ({ strategy }) => {
           <div style={{ display: 'grid', gridTemplateColumns: keyBarriers.length && certifications.length ? '1fr 1fr' : '1fr', gap: 8 }}>
             {keyBarriers.length > 0 && (
               <div style={{ background: 'rgba(200,16,46,0.06)', borderRadius: 6, padding: '8px 10px' }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: '#e05070', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--danger)', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
                   <XCircle style={{ width: 10, height: 10 }} />
                   {t('opportunities.aiAnalysis.barriers')}
                 </div>
@@ -283,7 +283,7 @@ const EntryStrategy = ({ strategy }) => {
             )}
             {certifications.length > 0 && (
               <div style={{ background: 'rgba(79,142,247,0.07)', borderRadius: 6, padding: '8px 10px' }}>
-                <div style={{ fontSize: 10, fontWeight: 700, color: '#4f8ef7', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--info)', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
                   <Award style={{ width: 10, height: 10 }} />
                   {t('opportunities.aiAnalysis.certifications')}
                 </div>
@@ -319,7 +319,7 @@ const fmtBig = (v, unit) => {
 const SOURCE_BADGE = {
   agri: { label: 'FAO · FAOSTAT', color: 'var(--green)', bg: 'rgba(26,122,74,0.10)' },
   mining: { label: 'USGS · MCS', color: '#c84b1a', bg: 'rgba(200,75,26,0.10)' },
-  manufacturing: { label: 'UNIDO · INDSTAT4', color: '#4f8ef7', bg: 'rgba(79,142,247,0.10)' },
+  manufacturing: { label: 'UNIDO · INDSTAT4', color: 'var(--info)', bg: 'rgba(79,142,247,0.10)' },
 };
 
 const LogisticsSizing = ({ logistics, lang }) => {
@@ -332,7 +332,7 @@ const LogisticsSizing = ({ logistics, lang }) => {
     <div style={{ marginTop: 14, borderTop: '2px solid rgba(79,142,247,0.20)', paddingTop: 14 }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 7,
-        fontSize: 12, fontWeight: 800, color: '#4f8ef7',
+        fontSize: 12, fontWeight: 800, color: 'var(--info)',
         marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em',
       }}>
         <Truck style={{ width: 14, height: 14 }} />
@@ -388,7 +388,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
           continental = {}, integration_scenarios = {}, source = {},
           is_proxy, proxy_caveat, measure, match_level } = capacity;
   const badge = is_proxy
-    ? { label: source.institution || 'OEC / BACI', bg: '#fef3c7', color: '#92400e' }
+    ? { label: source.institution || 'OEC / BACI', bg: '#fef3c7', color: 'var(--gold)' }
     : (SOURCE_BADGE[dimension] || SOURCE_BADGE.agri);
   const rank = continental.rank;
   const share = continental.country_share_pct;
@@ -471,7 +471,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
 
       {is_proxy && proxy_caveat && (
         <div style={{
-          fontSize: 10.5, color: '#92400e', background: '#fef3c7',
+          fontSize: 10.5, color: 'var(--gold)', background: '#fef3c7',
           border: '1px solid #fde68a', borderRadius: 6, padding: '6px 9px',
           marginBottom: 10, lineHeight: 1.4,
         }}>
@@ -491,7 +491,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
 
       {continental.coverage_caveat && (
         <div style={{
-          fontSize: 10.5, color: '#92400e', background: '#fef3c7',
+          fontSize: 10.5, color: 'var(--gold)', background: '#fef3c7',
           border: '1px solid #fde68a', borderRadius: 6, padding: '6px 9px',
           marginBottom: 10, lineHeight: 1.4,
         }}>
@@ -501,7 +501,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
 
       {continental.commodity_caveat && (
         <div style={{
-          fontSize: 10.5, color: '#92400e', background: '#fef3c7',
+          fontSize: 10.5, color: 'var(--gold)', background: '#fef3c7',
           border: '1px solid #fde68a', borderRadius: 6, padding: '6px 9px',
           marginBottom: 10, lineHeight: 1.4,
         }}>
@@ -680,7 +680,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
           padding: '10px 14px',
           marginBottom: 12,
         }}>
-          <div style={{ fontSize: 11, color: '#4f8ef7', fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          <div style={{ fontSize: 11, color: 'var(--info)', fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {t('opportunities.aiAnalysis.valueChain')}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
@@ -692,7 +692,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
                 </div>
               )}
             </div>
-            <ArrowRight style={{ width: 14, height: 14, color: '#4f8ef7', flexShrink: 0 }} />
+            <ArrowRight style={{ width: 14, height: 14, color: 'var(--info)', flexShrink: 0 }} />
             <div>
               <div style={{ fontWeight: 700, color: 'var(--text)' }}>{productName}</div>
               {product.hs6Code && (
@@ -847,8 +847,8 @@ const ExpectedResults = ({ data, mode }) => {
         )}
         {rows5.length > 0 && (
           <div style={{ background: 'var(--afcfta-bg)', borderRadius: 8, padding: '12px 14px' }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#4f8ef7', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ background: '#4f8ef7', color: '#fff', borderRadius: 4, padding: '1px 7px', fontSize: 10 }}>5</span>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--info)', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ background: 'var(--info)', color: '#fff', borderRadius: 4, padding: '1px 7px', fontSize: 10 }}>5</span>
               {label5}
             </div>
             {rows5.map(([k, v], i) => (
@@ -1176,7 +1176,7 @@ export default function AIAnalysis({ language = 'fr' }) {
           borderLeft: '3px solid rgba(200,16,46,0.4)',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <AlertCircle style={{ width: 18, height: 18, color: '#e05070', flexShrink: 0 }} />
+            <AlertCircle style={{ width: 18, height: 18, color: 'var(--danger)', flexShrink: 0 }} />
             <span style={{ fontSize: 14, color: 'var(--text)' }}>{error}</span>
           </div>
         </div>

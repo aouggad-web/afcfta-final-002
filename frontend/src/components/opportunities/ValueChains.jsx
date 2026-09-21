@@ -257,7 +257,7 @@ const HS6SearchResult = ({ result, onClear }) => {
   };
 
   const score = trends.afcfta_opportunity_score || 0;
-  const scoreColor = score >= 7 ? '#059669' : score >= 4 ? '#d97706' : '#dc2626';
+  const scoreColor = score >= 7 ? 'var(--success)' : score >= 4 ? 'var(--gold)' : 'var(--danger)';
 
   const trendIcon = (t) => t === 'growing' ? '↑' : t === 'declining' ? '↓' : '→';
   const trendColor = (t) => t === 'growing' ? 'text-emerald-600' : t === 'declining' ? 'text-red-500' : 'text-slate-500';
@@ -845,7 +845,7 @@ export default function ValueChains({ language = 'fr' }) {
                             className="h-full rounded-full transition-all"
                             style={{
                               width: `${producer.share || producer.market_share_percent}%`,
-                              backgroundColor: isNotPrimaryProducer ? '#d97706' : chain.color
+                              backgroundColor: isNotPrimaryProducer ? 'var(--gold)' : chain.color
                             }}
                           />
                         </div>

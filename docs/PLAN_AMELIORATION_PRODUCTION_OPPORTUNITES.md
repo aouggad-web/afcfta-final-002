@@ -649,8 +649,8 @@ Chaînes de valeur) renvoient encore une erreur nue.
 | 4.1a | Constante `TABS` d'Opportunités → i18n | ✅ | deux listes parallèles supprimées ; libellés servis par `opportunities.tabs.*` |
 | 4.1b | Parité des locales sous test | ✅ | une clé traduite d'un seul côté fait échouer la suite, au lieu d'afficher son nom à l'écran |
 | 4.1c | Les **427 libellés en dur** restants → i18n | ✅ | 0 dictionnaire de langue, 0 ternaire de libellé ; 425 clés sous `opportunities`, chacune sous test |
-| 4.2 | Ajouter `ar` et `pt` (langues de travail ZLECAf) | ⏳ **débloquée** | les deux locales se chargent ; RTL vérifié pour l'arabe — reste à faire TRADUIRE les 843 clés, voir ci-dessous |
-| 4.3 | Réduire les styles inline vers les jetons de design | ⏳ **mal cadrée** | le critère suppose une substitution ; la mesure dit une réécriture — voir ci-dessous |
+| 4.2 | Ajouter `ar` et `pt` (langues de travail ZLECAf) | ⏸ **en suspens** | les deux locales se chargent ; RTL vérifié pour l'arabe — reste à faire TRADUIRE les 843 clés, voir ci-dessous |
+| 4.3 | Couleurs sémantiques → jetons de thème | ✅ | 40 teintes converties ; 0 couleur sémantique en dur ; garde-fou `semanticColors.test.js`. La conversion de la MISE EN PAGE reste ouverte, voir ci-dessous |
 | 4.4 | Tests front sur les deux modules | ✅ | les 9 sous-onglets d'Opportunités et les 5 de Production ont rendu + état d'absence ; 313 tests front (+30) |
 
 **Le décompte de 4.1c annoncé ici était faux, et l'erreur méritait mieux
@@ -726,42 +726,63 @@ code, tous se voient en essayant de décrire à un test ce que l'écran affiche.
 | 5.2 | Rendre visibles les états d'erreur déclarés et jamais affichés | ✅ | `ProductAnalysisView` affiche son erreur ; les deux autres annoncent leur repli (5.1) |
 | 5.3 | Les libellés en dur du module **Production** → i18n | ✅ | 0 dictionnaire de langue ; 199 libellés migrés (154 de dictionnaire + 45 ternaires) ; 843 clés au total |
 
-#### 4.3 telle qu'énoncée n'est pas faisable sans arbitrage de design
+#### 4.3 — ce n'était pas de la cosmétique, et le critère le masquait
 
-Le plan demande de « réduire les 428 styles inline **vers les jetons de
-design** », critère « ≤ 50 `style={{}}` restants ». Cette formulation suppose
-une substitution mécanique — remplacer des valeurs par les jetons qui leur
-correspondent. La mesure dit autre chose.
+Le plan classait cette phase comme la seule « à n'améliorer aucune substance ».
+C'est faux, et la mesure le montre. Le critère — « ≤ 50 `style={{}}` restants »
+— comptait des blocs, donc il ne pouvait pas voir le vrai problème.
 
-| Mesure sur `components/opportunities` | Valeur |
-|---|---:|
-| Blocs `style={{…}}` | 434 |
-| Déclarations au total | 1 593 |
-| … dont déjà en `var(--…)` | 257 |
-| Couleurs écrites en dur | 61 occurrences, **20 valeurs distinctes** |
-| … correspondant **exactement** à un jeton déclaré | **2** |
+**Le thème sombre est celui par défaut** (`localStorage.getItem('zlecaf_theme')
+|| 'dark'`). Or les couleurs écrites en dur avaient été choisies sur fond
+clair. Contraste mesuré sur la carte réelle de chaque thème :
 
-Les deux seules correspondances sont `#d4891a` (1 occurrence) et `#ffffff`
-(4), et cette dernière vaut à la fois `--surface` et `--afcfta-card` : même
-là, il faut choisir. Les 18 autres valeurs — `#667`, `#4f8ef7`, `#e05070`… —
-n'ont **aucun** équivalent : les rattacher à un jeton, ou en créer, est une
-décision de charte graphique, pas une réécriture.
+| Couleur | Emploi | Sombre (défaut) | Clair |
+|---|---|---:|---:|
+| `#92400e` | avertissement | **2,30:1** ✗ | 7,09:1 |
+| `#1a7f37` | statistique officielle | **3,21:1** ✗ | 5,08:1 |
+| `#9a6700` | estimation dérivée | **3,35:1** ✗ | 4,87:1 |
+| `#0969da` | lien | **3,14:1** ✗ | 5,19:1 |
+| `#4f8ef7` | accent | 5,08:1 | **3,21:1** ✗ |
 
-Et le gros du volume n'est pas de la couleur. Les déclarations les plus
-fréquentes sont `fontSize` (190), `display` (118), `fontWeight` (118),
-`gap` (102), `padding` (73) : des propriétés de mise en page, pour lesquelles
-« passer aux jetons » veut en réalité dire **passer à Tailwind**. C'est une
-réécriture du style du module, pas une substitution — un diff de plusieurs
-milliers de lignes dont le seul juge est l'œil, et que rien dans la suite de
-tests ne peut valider.
+**30 occurrences de texte sous le seuil AA (4,5:1) dans le thème par défaut.**
+Et le motif est instructif : ce qui passe dans un thème échoue dans l'autre.
+Une valeur fixe ne peut pas satisfaire deux fonds — c'est précisément ce que
+les jetons résolvent, puisqu'ils changent avec le thème.
 
-**Ce que je propose**, si 4.3 doit être engagée : la scinder. (a) fixer
-d'abord la correspondance des 18 couleurs orphelines — c'est la décision, et
-elle tient en une page ; (b) puis convertir, fichier par fichier, avec une
-relecture visuelle à chaque étape. Engager (b) sans (a) revient à inventer une
-charte en la codant.
+**Fait : 40 teintes sémantiques converties** (`--danger`, `--success`,
+`--gold`, `--info`), plus deux dégradés. Il ne reste aucune couleur sémantique
+en dur dans le module, et `semanticColors.test.js` refuse leur retour.
 
----
+**Ce qui a été délibérément laissé, parce que le convertir serait une faute.**
+Toute couleur en dur n'est pas fautive. Le tri a séparé deux problèmes que
+« 428 styles inline » confondait :
+
+- les **palettes catégorielles** (`COLORS`, `DEFAULT_VALUE_CHAINS[].color`)
+  dont le rôle est de distinguer des séries entre elles. Mapper `#dc2626`
+  (cacao) sur `--danger` ferait dire « erreur » à « cacao », et fondrait deux
+  chaînes dans la même teinte. Elles posent un vrai problème — quatre palettes
+  différentes coexistent dans le module, aucune n'est adaptée au thème ni
+  vérifiée pour le daltonisme — mais c'est un **autre** chantier ;
+- le **chrome recharts** (axes, grilles, info-bulles) : la bibliothèque ne lit
+  pas les variables CSS, il faut lui passer des valeurs résolues ;
+- les **replis de jeton** `var(--afcfta-muted, #667)`, déjà corrects ;
+- le **blanc sur aplat coloré**, juste dans les deux thèmes.
+
+**Deux points qui appellent encore votre arbitrage.**
+
+1. **Les jetons eux-mêmes ne sont pas tous AA.** Après conversion, `--red`
+   tombe à 2,94:1 en sombre, `--green` à 3,05:1, `--gold` à 3,72:1 en clair.
+   La migration améliore beaucoup — le pire cas passe de 2,30:1 à 3,86:1 — mais
+   n'atteint pas le seuil partout. Ajuster ces valeurs est une décision de
+   charte graphique, pas une correction technique.
+2. **Le violet n'a pas de jeton.** `#9333ea` (2 emplois dans StrategicFlows)
+   n'a aucun équivalent. Il est resté en dur faute de quoi le remplacer.
+
+**Ce qui reste hors périmètre couleur.** Les ~1 300 déclarations de mise en
+page (`fontSize` 190, `display` 118, `gap` 102) : là, « passer aux jetons »
+signifie passer à Tailwind, c'est-à-dire réécrire le style du module. Diff de
+plusieurs milliers de lignes dont le seul juge est l'œil, qu'aucun test ne
+valide. Non engagé.
 
 #### 5.1 — Valeurs de repli : conservées, mais annoncées et datées
 

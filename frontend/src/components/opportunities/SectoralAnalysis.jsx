@@ -51,14 +51,14 @@ const provMeta = (nature, t) => {
     return {
       t: "off.",
       title: t("opportunities.sectoralAnalysis.indstatUnidoOfficialStatistic"),
-      fg: "#1a7f37",
+      fg: "var(--success)",
       bg: "rgba(26,127,55,0.12)",
     };
   if (nature === "derived_estimate")
     return {
       t: "est.",
       title: t("opportunities.sectoralAnalysis.idsbUnidoDerivedEstimate"),
-      fg: "#9a6700",
+      fg: "var(--gold)",
       bg: "rgba(154,103,0,0.12)",
     };
   if (nature === "mixed")
@@ -95,9 +95,9 @@ function Prov({ nature }) {
 
 /* Colour per demand-supply verdict (IDSB reading). */
 const BALANCE_STYLE = {
-  supply_and_demand: { bg: "rgba(26,127,55,0.12)", fg: "#1a7f37" },
-  demand_without_supply: { bg: "rgba(154,103,0,0.12)", fg: "#9a6700" },
-  supply_without_demand: { bg: "rgba(154,103,0,0.12)", fg: "#9a6700" },
+  supply_and_demand: { bg: "rgba(26,127,55,0.12)", fg: "var(--success)" },
+  demand_without_supply: { bg: "rgba(154,103,0,0.12)", fg: "var(--gold)" },
+  supply_without_demand: { bg: "rgba(154,103,0,0.12)", fg: "var(--gold)" },
   insufficient_data: { bg: "rgba(102,102,102,0.12)", fg: "#667" },
 };
 
@@ -118,7 +118,7 @@ function Chip({ ok, children }) {
         padding: "2px 8px",
         borderRadius: 999,
         background: ok ? "rgba(26,127,55,0.12)" : "rgba(102,102,102,0.12)",
-        color: ok ? "#1a7f37" : "#667",
+        color: ok ? "var(--success)" : "#667",
       }}
     >
       {children}
@@ -171,7 +171,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
   // Request failed — surface it instead of silently vanishing like loading does.
   if (error) {
     return (
-      <div style={{ ...card, color: "#9a6700", fontSize: 13, lineHeight: 1.6 }}>
+      <div style={{ ...card, color: "var(--gold)", fontSize: 13, lineHeight: 1.6 }}>
         <div style={{ ...label, marginBottom: 4, fontWeight: 700 }}>
           {t("opportunities.sectoralAnalysis.sectoralAnalysisIsic4Idsb")}
         </div>
@@ -226,7 +226,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
               padding: "2px 10px",
               borderRadius: 999,
               background: "rgba(9,105,218,0.12)",
-              color: "#0969da",
+              color: "var(--info)",
             }}
           >
             ISIC {isic4?.code}

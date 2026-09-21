@@ -481,7 +481,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           {/* Data-status notice (e.g. OEC trade flows temporarily unavailable) */}
           {productData.note && (
             <div className="flex items-center gap-2 px-4 py-3 text-sm" style={{ background: 'rgba(212,137,26,0.08)', borderBottom: '1px solid rgba(212,137,26,0.25)' }}>
-              <Info className="h-4 w-4" style={{ color: '#d4891a', flexShrink: 0 }} />
+              <Info className="h-4 w-4" style={{ color: 'var(--gold)', flexShrink: 0 }} />
               <span>{productData.note}</span>
             </div>
           )}

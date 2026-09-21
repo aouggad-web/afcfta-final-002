@@ -70,7 +70,7 @@ function SignalBadge({ signal, emerging }) {
       <span style={{
         padding: '3px 8px', borderRadius: 999, fontSize: 10, fontWeight: 600,
         background: emerging ? 'rgba(202,138,4,0.14)' : 'rgba(37,99,235,0.12)',
-        color: emerging ? '#ca8a04' : '#2563eb',
+        color: emerging ? 'var(--gold)' : 'var(--info)',
       }}>
         {emerging ? t('opportunities.strategicFlows.emerging') : t('opportunities.strategicFlows.operational')}
       </span>
@@ -92,16 +92,16 @@ function MarketList({ markets }) {
         {rows.map((m) => (
           <div key={m.iso3} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ flex: '0 0 34%', display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 13, fontWeight: 600, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              <MapPin style={{ width: 12, height: 12, color: '#059669', flexShrink: 0 }} />{m.name}
+              <MapPin style={{ width: 12, height: 12, color: 'var(--success)', flexShrink: 0 }} />{m.name}
             </span>
             <span style={{ flex: 1, height: 6, borderRadius: 3, background: 'var(--afcfta-bg)' }}>
-              <span style={{ display: 'block', height: '100%', width: `${Math.max(5, ((m.import_usd || 0) / max) * 100)}%`, borderRadius: 3, background: 'linear-gradient(90deg,#059669,#0891b2)' }} />
+              <span style={{ display: 'block', height: '100%', width: `${Math.max(5, ((m.import_usd || 0) / max) * 100)}%`, borderRadius: 3, background: 'linear-gradient(90deg,var(--success),var(--info))' }} />
             </span>
             <span style={{ flex: '0 0 auto', fontSize: 12, color: 'var(--afcfta-muted)', whiteSpace: 'nowrap' }}>
               {t('opportunities.strategicFlows.imports')} <strong style={{ color: 'var(--text)' }}>{fmtImport(m.import_usd)}</strong>
               {m.lead_time_days != null && <span> · {m.lead_time_days} {t('opportunities.strategicFlows.days')}</span>}
               {m.logistics_accessibility?.available && (m.logistics_accessibility.index ?? 1) < 0.35 && (
-                <span style={{ color: '#b45309', fontWeight: 600 }}> · ⚠ {t('opportunities.strategicFlows.limitedAccess')}</span>
+                <span style={{ color: 'var(--gold)', fontWeight: 600 }}> · ⚠ {t('opportunities.strategicFlows.limitedAccess')}</span>
               )}
             </span>
           </div>
@@ -162,7 +162,7 @@ function FlowCard({ flow }) {
         </div>
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontSize: 11, color: 'var(--afcfta-muted)' }}>{t('opportunities.strategicFlows.potential')}</div>
-          <div style={{ fontSize: 22, fontWeight: 900, color: '#059669' }}>{fmtUsd(flow.potential_usd)}</div>
+          <div style={{ fontSize: 22, fontWeight: 900, color: 'var(--success)' }}>{fmtUsd(flow.potential_usd)}</div>
         </div>
       </div>
 
@@ -199,7 +199,7 @@ function FlowCard({ flow }) {
                 <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>
                   {tr.input_source}
                   <ArrowRight style={{ width: 12, height: 12, color: 'var(--afcfta-muted)', margin: '0 5px', verticalAlign: 'middle' }} />
-                  <span style={{ color: '#059669' }}>{flow.product}</span>
+                  <span style={{ color: 'var(--success)' }}>{flow.product}</span>
                 </div>
                 {inQty && <div style={{ fontSize: 11, color: 'var(--afcfta-muted)' }}>{inQty}</div>}
               </div>
@@ -315,7 +315,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
       )}
 
       {error && !loading && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: 16, borderRadius: 10, background: 'rgba(220,38,38,0.08)', color: '#dc2626' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: 16, borderRadius: 10, background: 'rgba(220,38,38,0.08)', color: 'var(--danger)' }}>
           <AlertCircle style={{ width: 18, height: 18 }} />{error}
         </div>
       )}
@@ -334,7 +334,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
             </div>
             <div style={{ flex: '1 1 160px', padding: 16, borderRadius: 12, background: 'var(--afcfta-card)', border: '1px solid var(--afcfta-border)' }}>
               <div style={{ fontSize: 12, color: 'var(--afcfta-muted)' }}>{t('opportunities.strategicFlows.totalPotential')}</div>
-              <div style={{ fontSize: 28, fontWeight: 900, color: '#059669' }}>{fmtUsd(summary.total_potential_usd)}</div>
+              <div style={{ fontSize: 28, fontWeight: 900, color: 'var(--success)' }}>{fmtUsd(summary.total_potential_usd)}</div>
             </div>
           </div>
 
@@ -367,7 +367,7 @@ export default function StrategicFlows({ language = 'fr', initialCountry = null 
                       <span style={{ color: 'var(--afcfta-muted)' }}>{fmtUsd(p.potential_usd)}</span>
                     </div>
                     <div style={{ height: 5, borderRadius: 3, background: 'var(--afcfta-bg)' }}>
-                      <div style={{ height: '100%', width: `${Math.max(4, (p.potential_usd / max) * 100)}%`, borderRadius: 3, background: 'linear-gradient(90deg,#059669,#0891b2)' }} />
+                      <div style={{ height: '100%', width: `${Math.max(4, (p.potential_usd / max) * 100)}%`, borderRadius: 3, background: 'linear-gradient(90deg,var(--success),var(--info))' }} />
                     </div>
                   </div>
                 );

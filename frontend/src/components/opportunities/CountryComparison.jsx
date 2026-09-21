@@ -266,7 +266,7 @@ export default function CountryComparison({ language = 'fr' }) {
       {error && !loading && (
         <div className="afcfta-card" style={{ padding: '20px', borderLeft: '3px solid rgba(200,16,46,0.4)', background: 'rgba(200,16,46,0.06)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--text)' }}>
-            <AlertCircle style={{ width: 16, height: 16, color: '#e05070', flexShrink: 0 }} />
+            <AlertCircle style={{ width: 16, height: 16, color: 'var(--danger)', flexShrink: 0 }} />
             {error}
           </div>
         </div>
@@ -332,7 +332,7 @@ export default function CountryComparison({ language = 'fr' }) {
               format={v => v != null ? `${Number(v).toFixed(1)}%` : '—'} color="var(--green)" />
             <KpiChip label={t('opportunities.countryComparison.hdi')} valueA={econ.hdi_a} valueB={econ.hdi_b}
               countryA={nameA} countryB={nameB}
-              format={v => v != null ? Number(v).toFixed(3) : '—'} color="#4f8ef7" />
+              format={v => v != null ? Number(v).toFixed(3) : '—'} color="var(--info)" />
             <KpiChip label={t('opportunities.countryComparison.inflation')} valueA={econ.inflation_a} valueB={econ.inflation_b}
               countryA={nameA} countryB={nameB}
               format={v => v != null ? `${Number(v).toFixed(1)}%` : '—'}
@@ -379,7 +379,7 @@ export default function CountryComparison({ language = 'fr' }) {
                 )}
                 {comp.b_can_supply_to_a?.length > 0 && (
                   <div>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: '#4f8ef7', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--info)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                       {nameB} → {nameA}
                     </div>
                     {comp.b_can_supply_to_a.map((item, i) => (
@@ -428,7 +428,7 @@ export default function CountryComparison({ language = 'fr' }) {
               )}
               {afcfta.barriers?.length > 0 && (
                 <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--afcfta-border)' }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: '#e05070', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--danger)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     {t('opportunities.countryComparison.barriers')}
                   </div>
                   {afcfta.barriers.map((b, i) => (
