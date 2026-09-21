@@ -644,12 +644,37 @@ Chaînes de valeur) renvoient encore une erreur nue.
 
 ### Phase 4 — Harmoniser la forme
 
-| # | Action | Vérification |
-|---|---|---|
-| 4.1 | Migrer les 60 ternaires et la constante `TABS` d'Opportunités vers i18n | `opportunities.*` ≥ 150 clés ; 0 ternaire de langue résiduel |
-| 4.2 | Ajouter `ar` et `pt` (langues de travail ZLECAf) | les deux locales se chargent ; RTL vérifié pour l'arabe |
-| 4.3 | Réduire les 428 styles inline vers les jetons de design de Production | ≤ 50 `style={{}}` restants ; les deux modules partagent la même grammaire visuelle |
-| 4.4 | Tests front sur les deux modules | ≥ 1 test de rendu et d'état d'erreur par sous-onglet (9 + 4) |
+| # | Action | État | Vérification |
+|---|---|---|---|
+| 4.1a | Constante `TABS` d'Opportunités → i18n | ✅ | deux listes parallèles supprimées ; libellés servis par `opportunities.tabs.*` |
+| 4.1b | Parité des locales sous test | ✅ | une clé traduite d'un seul côté fait échouer la suite, au lieu d'afficher son nom à l'écran |
+| 4.1c | Les **173 ternaires de langue** restants → i18n | ⏳ | 0 ternaire résiduel |
+| 4.2 | Ajouter `ar` et `pt` (langues de travail ZLECAf) | ⏳ | les deux locales se chargent ; RTL vérifié pour l'arabe |
+| 4.3 | Réduire les 428 styles inline vers les jetons de design de Production | ⏳ | ≤ 50 `style={{}}` restants |
+| 4.4 | Tests front sur les deux modules | ⏳ partiel | ≥ 1 test de rendu et d'état d'erreur par sous-onglet (9 + 4) |
+
+**Le décompte exact de 4.1c**, mesuré, pour que le coût soit connu avant
+d'être engagé :
+
+| Fichier | Ternaires |
+|---|---:|
+| `AIAnalysis.jsx` | 72 |
+| `SectoralAnalysis.jsx` | 33 |
+| `SubstitutionAnalysis.jsx` | 30 |
+| `ProductAnalysisView.jsx` | 12 |
+| `ValueChains.jsx` | 10 |
+| `OpportunitySummary.jsx` | 9 |
+| `CountryComparison.jsx` | 6 |
+| `ZlecafImpactSimulator.jsx` | 1 |
+| **Total** | **173** |
+
+Ils sont de forme simple (`{lang === 'fr' ? 'X' : 'Y'}`) et donc migrables un
+à un sans difficulté — mais c'est un diff de plusieurs centaines de lignes
+**sans aucun changement de comportement**. Et une migration partielle
+n'apporte rien : tant que les 135 ternaires d'`AIAnalysis`,
+`SectoralAnalysis` et `SubstitutionAnalysis` subsistent, ajouter l'arabe ou le
+portugais (4.2) donnerait un module à moitié traduit, pire qu'un module
+bilingue cohérent. 4.1c est donc à faire d'un bloc, ou pas du tout.
 
 ---
 

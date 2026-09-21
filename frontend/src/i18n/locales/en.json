@@ -256,5 +256,18 @@
     "generating": "Generating PDF...",
     "success": "PDF generated successfully",
     "error": "Error generating PDF"
+  },
+  "opportunities": {
+    "tabs": {
+      "ai": "AI Analysis",
+      "strategic": "Strategic Flows",
+      "substitution": "Substitution",
+      "simulator": "AfCFTA Simulator",
+      "bilateral": "Bilateral comparator",
+      "summary": "Overview",
+      "valueChains": "Value Chains",
+      "byProduct": "By Product",
+      "comparison": "Comparison"
+    }
   }
 }

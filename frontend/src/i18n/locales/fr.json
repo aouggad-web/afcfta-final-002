@@ -256,5 +256,18 @@
     "generating": "Génération du PDF...",
     "success": "PDF généré avec succès",
     "error": "Erreur lors de la génération du PDF"
+  },
+  "opportunities": {
+    "tabs": {
+      "ai": "Analyse IA",
+      "strategic": "Flux stratégiques",
+      "substitution": "Substitution",
+      "simulator": "Simulateur ZLECAf",
+      "bilateral": "Comparateur bilatéral",
+      "summary": "Vue d'ensemble",
+      "valueChains": "Chaînes de Valeur",
+      "byProduct": "Par Produit",
+      "comparison": "Comparaison"
+    }
   }
 }
