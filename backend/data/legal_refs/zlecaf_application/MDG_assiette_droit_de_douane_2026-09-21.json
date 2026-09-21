@@ -1,0 +1,33 @@
+{
+ "schema_version": 1,
+ "objet": "Assiette du droit de douane à Madagascar — valeur transactionnelle ajustée du transport et de l'assurance jusqu'au port ou lieu d'introduction (CIF)",
+ "verified_at": "2026-09-21",
+ "etabli": true,
+ "evidence_level": "primaire — Code des douanes de Madagascar (Loi n° 2006-023), version consolidée après la LFI 2026 (Loi n° 2025-021 du 20/12/2025), publiée par la Direction générale des douanes malagasy ; extrait archivé avec son empreinte. Le PDF porte une couche texte : les citations sont des extractions, non des transcriptions.",
+ "la_question_posee": "Le socle servait l'assiette du droit de douane malgache sous « origine_assiette: profil_code », une hypothèse générique sans article. Il fallait savoir ce que le droit malgache dit lui-même : le fret et l'assurance entrent-ils dans la valeur en douane, et jusqu'où ?",
+ "source": {
+  "instrument": "Code des douanes de Madagascar (Loi n° 2006-023), article 23, paragraphes 1° et 4° c)",
+  "institution": "Direction générale des douanes malagasy — Ministère de l'Économie et des Finances",
+  "url": "https://www.douanes.gov.mg/srcs/uploads/2026/01/CODE-DES-DOUANES-APRES-LFI-2026.pdf",
+  "texte_archive": "sources/MDG_assiette_droit_de_douane.texte-extrait.txt",
+  "sha256": "9677eecd1345fc278be18460c5dec8c6faec0ecbc839d48c3aa31ed243d0c928",
+  "pdf_sha256": "7dc9ce4abb205c36d2e7a5c6f07b61393467141c58b9ad41f1edbe0ddad060d6",
+  "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est."
+ },
+ "regle": {
+  "article": "Article 23, paragraphes 1° et 4° c) du Code des douanes",
+  "verbatim": "c) les frais, relatifs aux services et prestations ci-après, intervenus jusqu'au port ou lieu d'introduction à Madagascar : i) transport et assurance des marchandises importées, et ii) chargement et manutention connexes au transport des marchandises importées.",
+  "verbatim_valeur_transactionnelle": "1° La valeur en douane des marchandises importées est leur valeur transactionnelle, c'est-à-dire le prix effectivement payé ou à payer pour les marchandises lorsqu'elles sont vendues pour l'exportation à destination de Madagascar, le cas échéant, après ajustement effectué conformément aux dispositions du paragraphe 4° du présent article, pour autant :",
+  "assiette": "CIF",
+  "valeur_moteur": "CIF",
+  "portee": "La valeur en douane est la valeur transactionnelle (prix effectivement payé ou à payer), augmentée notamment du transport, de l'assurance et des frais de chargement/manutention jusqu'au port ou lieu d'introduction à Madagascar. Le droit de douane ad valorem s'assied donc sur une base CIF."
+ },
+ "ce_que_cela_ne_tranche_pas": [
+  "les taux eux-mêmes (portés par le tarif national 2026) ;",
+  "les droits spécifiques et les taux réduits/exonérations ;",
+  "l'assiette des autres prélèvements (TVA, accises, redevances) — voir la fiche MDG_assiette_TVA."
+ ],
+ "remaining_work": [
+  "Aucune : l'assiette du droit est établie sur texte primaire."
+ ]
+}

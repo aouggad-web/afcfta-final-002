@@ -97,6 +97,16 @@ ASSIETTE_TVA_ETABLIE["MRT"] = {
     ),
     "fiche": "MRT_assiette_TVA_2026-09-17.json",
 }
+ASSIETTE_TVA_ETABLIE["MDG"] = {
+    "texte": (
+        "Madagascar, Code général des impôts, édition 2025 (CDI n° 2025-MEF/SG/DGI "
+        "du 2025-02-06), article 06.01.11 : « La taxe est établie : 1° Sur la valeur "
+        "des importations, y compris les frais et les taxes autres que la taxe sur la "
+        "valeur ajoutée » — la TVA est donc assise sur la valeur en douane augmentée "
+        "des droits et taxes d'entrée, TVA exclue de sa propre assiette"
+    ),
+    "fiche": "MDG_assiette_TVA_2026-09-21.json",
+}
 ASSIETTE_TVA_ETABLIE["KEN"] = {
     "texte": (
         "Kenya, Value Added Tax Act No. 35 of 2013, section 14 (1) (c) : « the "

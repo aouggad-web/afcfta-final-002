@@ -575,14 +575,18 @@
       "taxes": {
         "DD": {
           "assiette": "CIF",
-          "origine_assiette": "profil_code"
+          "origine_assiette": "texte_primaire",
+          "texte": "Code des douanes de Madagascar (Loi n° 2006-023), version consolidée après la LFI 2026 (Loi n° 2025-021 du 20/12/2025), art. 23 §1 et §4 c) — valeur transactionnelle augmentée du transport, de l'assurance et des frais de chargement/manutention jusqu'au port ou lieu d'introduction à Madagascar",
+          "fiche": "MDG_assiette_droit_de_douane_2026-09-21.json"
         },
         "TVA": {
-          "assiette": "CIF+DD",
-          "origine_assiette": "profil_code"
+          "assiette": "CIF+TOUS_SAUF_TVA",
+          "origine_assiette": "texte_primaire",
+          "texte": "CGI malgache, édition 2025 (CDI n° 2025-MEF/SG/DGI du 2025-02-06), art. 06.01.11 — TVA assise sur la valeur des importations, frais et taxes inclus, TVA exclue de sa propre assiette",
+          "fiche": "MDG_assiette_TVA_2026-09-21.json"
         }
       },
-      "reference_legale": "Direction Générale des Impôts Madagascar — TVA à l'importation"
+      "reference_legale": "Code des douanes (Loi n° 2006-023, version après LFI 2026), art. 23 (assiette du droit) ; Code général des impôts éd. 2025, art. 06.01.11 (assiette de la TVA) — voir fiches MDG_assiette_droit_de_douane_2026-09-21.json et MDG_assiette_TVA_2026-09-21.json"
     },
     "MLI": {
       "ordre": [

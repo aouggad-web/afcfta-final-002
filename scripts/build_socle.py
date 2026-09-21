@@ -217,6 +217,13 @@ REGIMES_PAR_PAYS = {
     # regime est nomme par le PARTENAIRE, non par l'un de ces deux titres,
     # parce que la source ne dit pas lequel emporte l'autre.
     "TUN": {"ALGERIE": "DZA"},
+    # Madagascar — tarif des douanes 2026 (douanes.gov.mg). Le tarif publie une
+    # colonne « DD APEi » : le droit de douane préférentiel de l'Accord de
+    # partenariat économique intérimaire (APEi, Union européenne). Elle est
+    # servie sous « UE », régime que la table PREFERENTIELS connaît déjà — la
+    # laisser hors de cette table la ferait tomber dans la cascade NPF comme un
+    # droit dû.
+    "MDG": {"APEI": "UE"},
 }
 
 

@@ -762,14 +762,14 @@
     {
       "country_iso3": "MDG",
       "base_tariff_available": true,
-      "base_tariff_status": "AVAILABLE_UNVERIFIED",
-      "hs_version": "HS2022_OR_SOURCE_PENDING",
-      "tariff_year": null,
+      "base_tariff_status": "AVAILABLE_VERIFIED",
+      "hs_version": "HS 2022",
+      "tariff_year": 2026,
       "customs_unions": [],
       "regional_affiliations_pending": [
         "membership source and effective dates"
       ],
-      "national_taxes": "PENDING_OFFICIAL_COLLECTION",
+      "national_taxes": "DOCUMENTED_PRIMARY_SOURCE",
       "gazettes_available": "SOURCE_PENDING",
       "zlecaf_preference": "SOURCE_PENDING",
       "reciprocity": "SOURCE_PENDING",
@@ -778,12 +778,11 @@
       "complete_hs6_count": 0,
       "partial_hs6_count": 0,
       "sources_missing": [
-        "dated official tariff or validated national source",
         "dated regional overrides",
         "preferential regime and reciprocity evidence",
         "origin rules and formalities"
       ],
-      "next_action_priority": 5,
+      "next_action_priority": 3,
       "overall_calculation_confidence": 0.0
     },
     {
