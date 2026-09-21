@@ -1195,7 +1195,19 @@ def normalize_wits_dict(data: dict, iso3: str) -> List[dict]:
                 "verbatim": "",
             },
             "taxes": taxes,
-            "preferential_rates": [],
+            "preferential_rates": [
+                {
+                    "regime": e.get("regime", ""),
+                    "rate_pct": e.get("rate_pct"),
+                    "raw_value": e.get("raw_value", ""),
+                    "code": e.get("code", ""),
+                    "source": e.get("source", data.get("source", "")),
+                    "source_url": e.get("source_url"),
+                    "source_sha256": e.get("source_sha256"),
+                }
+                for e in pos.get("preferential_rates", [])
+                if isinstance(e, dict)
+            ],
             "fiscal_advantages": advantages,
             "formalities": formalities,
             "restrictions": [],

@@ -32,6 +32,10 @@ celui qui a été lu.
 | `COM_cgi_art140.texte-extrait.txt` | Comores | DGI Comores | CGI 2023, art. 140-4° : valeur CAF + tous droits d'entrée à caractère douanier (taxe sur la consommation 10 %). |
 | `STP_iva_art15.texte-extrait.txt` | São Tomé | Direcção dos Impostos | Código do IVA (Lei 13/2019), art. 15.º : valeur en douane + droits/taxes + frais accessoires, IVA exclu. PDF à ré-archiver. |
 | `MRT_tarif2021.pdf` (tarif national, 6129 sous-positions) | Mauritanie | douanes.mr | Tarif douanier national 2021 : sous-positions 10 chiffres, colonnes DD/RS/PC — à intégrer pour éliminer WITS/TRAINS |
+| `MDG_assiette_droit_de_douane.texte-extrait.txt` | Madagascar | Direction générale des douanes malagasy | Code des douanes (Loi n° 2006-023, version après LFI 2026), art. 23 §1 et §4 c) : valeur transactionnelle + transport/assurance/chargement jusqu'au port d'introduction — assiette CIF du droit de douane. PDF source SHA-256 `7dc9ce4a…` |
+| `MDG_assiette_TVA.texte-extrait.txt` | Madagascar | Direction générale des impôts | CGI éd. 2025 (CDI n° 2025-MEF/SG/DGI du 2025-02-06), art. 06.01.11 : TVA assise sur la valeur des importations, frais et taxes inclus, TVA exclue. PDF source SHA-256 `028c3969…` |
+| `MDG_droits_et_taxes_base_art2_3_9_16.texte-extrait.txt` | Madagascar | Direction générale des douanes malagasy | Code des douanes, art. 2 et 3 (nature ad valorem/spécifique), art. 9 (tarifs fiscaux fixés par la loi), art. 16 (espèce/nomenclature). PDF source SHA-256 `7dc9ce4a…` |
+| `MDG_titre_IX_taxes_diverses.texte-extrait.txt` | Madagascar | Direction générale des douanes malagasy | Code des douanes, Titre IX : droit d'accises (art. 257), droit de sortie (260), TVA (261), droit de navigation (262-263), autres droits et taxes (264), redevance informatique (265). PDF source SHA-256 `7dc9ce4a…` |
 
 ## Fichiers `.ocr-ara.txt`
 

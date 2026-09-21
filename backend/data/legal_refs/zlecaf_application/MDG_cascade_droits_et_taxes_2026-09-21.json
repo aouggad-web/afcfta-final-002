@@ -1,0 +1,97 @@
+{
+ "schema_version": 1,
+ "objet": "Cascade et assiettes des droits et taxes perçus par la douane malgache — droit de douane, TVA, accises, droits de sortie, droit de navigation, autres droits et redevance informatique",
+ "verified_at": "2026-09-21",
+ "etabli": true,
+ "evidence_level": "primaire — Code des douanes de Madagascar (Loi n° 2006-023), version consolidée après la LFI 2026, et Code général des impôts éd. 2025 ; extraits archivés avec leurs empreintes.",
+ "source": {
+  "instrument": "Code des douanes de Madagascar (Loi n° 2006-023), art. 2, 3, 9, 23, 257-265 ; Code général des impôts éd. 2025, art. 06.01.11",
+  "institution": "Direction générale des douanes malagasy / Direction générale des impôts — Ministère de l'Économie et des Finances",
+  "url": "https://www.douanes.gov.mg/srcs/uploads/2026/01/CODE-DES-DOUANES-APRES-LFI-2026.pdf",
+  "texte_archive": "sources/MDG_droits_et_taxes_base_art2_3_9_16.texte-extrait.txt",
+  "sha256": "8c8cced21d9fbdffef258cb96b75b274cc7cc85c4fa0b0849f783bc05eff1935",
+  "pdf_sha256": "7dc9ce4abb205c36d2e7a5c6f07b61393467141c58b9ad41f1edbe0ddad060d6",
+  "pdf_non_archive": "PDF officiel non archivé ; seuls les extraits le sont."
+ },
+ "determinations": [
+  {
+   "article": "Art. 23 du Code des douanes (par. 1° et 4° c))",
+   "verbatim": "c) les frais, relatifs aux services et prestations ci-après, intervenus jusqu'au port ou lieu d'introduction à Madagascar : i) transport et assurance des marchandises importées, et ii) chargement et manutention connexes au transport des marchandises importées.",
+   "assiette": "CIF",
+   "portee": "Droit de douane ad valorem assis sur la valeur transactionnelle augmentée du transport et de l'assurance jusqu'au port d'introduction (CIF).",
+   "texte_archive": "sources/MDG_assiette_droit_de_douane.texte-extrait.txt",
+   "sha256": "9677eecd1345fc278be18460c5dec8c6faec0ecbc839d48c3aa31ed243d0c928",
+   "pdf_sha256": "7dc9ce4abb205c36d2e7a5c6f07b61393467141c58b9ad41f1edbe0ddad060d6",
+   "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est."
+  },
+  {
+   "article": "Art. 06.01.11 du CGI (par. 1°)",
+   "verbatim": "1° Sur la valeur des importations, y compris les frais et les taxes autres que la taxe sur la valeur ajoutée ;",
+   "assiette": "CIF+TOUS_SAUF_TVA",
+   "portee": "TVA à l'importation assise sur la valeur des importations, frais et taxes inclus, TVA exclue de sa propre assiette.",
+   "texte_archive": "sources/MDG_assiette_TVA.texte-extrait.txt",
+   "sha256": "b4ca5a489e468675b0fda4d195972aea33b0c287a922481b0661c97ca220848f",
+   "pdf_sha256": "028c396999b3f7aaf911100e63e7a64240662d43806a17fa3fd05cdcd370266b",
+   "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est."
+  },
+  {
+   "article": "Art. 257 du Code des douanes (renvoi aux art. 3, 9 et 16)",
+   "verbatim": "Art. 257. – (nouveau) Certains produits consommés dans le territoire douanier, qu’ils y aient été importés, récoltés ou fabriqués, sont soumis à une taxe dite « Droit d’accise ». Cette taxe est établie dans les conditions fixées aux articles 3, 9 et 16 ci-dessus. Le droit d’accise est liquidé, perçu et recouvré par les agents des douanes, dans les conditions et suivant les règles fixées par le présent Code, dont les modalités sur Tarif seront fixées dans la Loi de Finances (Loi n° 2024-025 du 18/12/2024 portant LFI 2025)",
+   "assiette": "selon tarif de la Loi de Finances : ad valorem (valeur) ou spécifique (quantité) — art. 2 et 3 du Code",
+   "portee": "Le droit d'accise est liquidé par la douane ; son tarif (taux/assiette par produit) est fixé dans la Loi de Finances. La nature ad valorem ou spécifique est définie aux art. 2 et 3.",
+   "texte_archive": "sources/MDG_titre_IX_taxes_diverses.texte-extrait.txt",
+   "sha256": "5d038ed5ae22deea5739414c95f22320a8fdccb8f89dc5334a18b1d3867b5c3a",
+   "pdf_sha256": "7dc9ce4abb205c36d2e7a5c6f07b61393467141c58b9ad41f1edbe0ddad060d6",
+   "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est."
+  },
+  {
+   "article": "Art. 260 du Code des douanes",
+   "verbatim": "Art. 260. - Certains produits originaires du territoire douanier déclarés pour l’exportation sont soumis quelle que soit leur destination, à un droit fiscal dit \" droit de sortie \". Ce droit est établi dans les conditions fixées aux articles 3, 9 et 16 ci- dessus. Il est liquidé et perçu par les agents des douanes dans les conditions et suivant les règles fixées par le présent Code. Les entreprises qui auront fait l’objet d’un agrément en tant que concourant à l’exécution des plans de développement économique et social, pourront bénéficier d’une exonération totale ou partielle des droits de sortie applicables aux produits provenant de leur exploitation ou de leur fabrication. Les décisions d’agrément fixeront le pourcentage de déduction des droits de sortie accordé à chaque entreprise.",
+   "assiette": "droit de sortie (exportation) — tarif fiscal fixé par la loi",
+   "portee": "Droit fiscal à l'exportation, sans effet sur le calcul à l'importation ; documenté pour la cascade.",
+   "texte_archive": "sources/MDG_titre_IX_taxes_diverses.texte-extrait.txt",
+   "sha256": "5d038ed5ae22deea5739414c95f22320a8fdccb8f89dc5334a18b1d3867b5c3a",
+   "pdf_sha256": "7dc9ce4abb205c36d2e7a5c6f07b61393467141c58b9ad41f1edbe0ddad060d6",
+   "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est."
+  },
+  {
+   "article": "Art. 262 du Code des douanes",
+   "verbatim": "Art. 262. - Il est perçu pour tout navire en provenance de l’extérieur un droit global de navigation établi dans les conditions fixées aux articles 3 et 9 ci-dessus. Ce droit est liquidé et perçu par les agents des douanes dans les conditions et suivant les règles fixées par le présent Code. Le taux de ce droit est fixé à 400 Ariary par tonneau de jauge nette et par voyage. Ce taux est réduit de moitié pour les navires entrant sur lest et sortant avec un chargement, ou entrant avec un chargement et sortant sur lest. Est considéré comme étant sur lest le navire dont la cargaison ne dépasse pas en volume le vingtième de sa capacité utilisable. Le capitaine désireux de bénéficier de ce taux réduit doit en faire la demande au Receveur des douanes, produire toutes justifications utiles et soumettre son navire à toute visite jugée nécessaire. Est considéré, pour l’application des dispositions ci- dessus comme constituant un voyage, l’ensemble de touchées d’un navire dans les ports du territoire douanier ou des Comores au cours d’un itinéraire \" aller et retour \". Au cours de ce voyage, l’itinéraire peut comporter une ou plusieurs escales dans les ports de l’île de la Réunion, de l’île Maurice et de ses dépendances, de l’Union Sud -Africaine, du Mozambique, de la Tanzanie, du Kenya, intercalées entre les touchées à Madagascar. 84 Les navires affectés uniquement à la navigation entre les ports du territoire douanier ou des Comores doivent acquitter un droit annuel de 1.000 Ariary par tonneau de jauge. (Loi n° 2016-32 du 28/12/16 portant LFI 2017) Ce droit, liquidé au vu de la déclaration du capitaine, est payable par ce dernier au début de l’année, auprès d’un bureau des douanes. Aucun autre droit de navigation n’est exigible si le navire côtier effectue, au cours de l’année civile, un maximum de dix voyages à destination d’un port de l’île de la Réunion, de l’île Maurice et de ses dépendances, de l’Union Sud- Africaine, du Mozambique, de la Tanzanie du Kenya, ou de plusieurs de ces pays. Si le navire admis au bénéfice du droit annuel entreprend, dans l’année civile, plus de dix voyages à destination des pays énumérés ci-dessus, ou encore un voyage vers un autre pays, le droit prévu au premier paragraphe du présent article devient exigible au port d’arrivée, lors du retour dans un port du territoire douanier. Lorsque pour une raison quelconque, le navire reste immobilisé dans un port pendant six mois consécutifs de l’année, le redevable peut obtenir la restitution de la moitié des droits acquittés. Le tonnage imposable est le tonnage net, indiqué par les documents officiels du navire, arrondi à la dizaine de tonneaux la plus proche. Dans les vingt- quatre heures de l’arrivée du bateau, le capitaine (ou son représentant à terre) doit déposer au bureau des douanes une déclaration conforme au modèle fixé par le Directeur Général des Douanes, comportant toutes les indications nécessaires en vue de la liquidation de la taxe. Le navire et sa cargaison répondent du paiement du droit de navigation, qui doit être garanti ou acquitté au port de prime abord à Madagascar. Toutefois les navires entrés sur lest ou avec un plein chargement de charbon peuvent, s’ils ont embarqué une cargaison, se libérer au port de sortie.",
+   "assiette": "xQTE (tonneau de jauge nette) — 400 Ar/tonneau/voyage ; 1 000 Ar/tonneau/an pour la navigation côtière",
+   "portee": "Droit de navigation perçu sur le navire, non sur la valeur de la marchandise : assiette = tonnage net.",
+   "texte_archive": "sources/MDG_titre_IX_taxes_diverses.texte-extrait.txt",
+   "sha256": "5d038ed5ae22deea5739414c95f22320a8fdccb8f89dc5334a18b1d3867b5c3a",
+   "pdf_sha256": "7dc9ce4abb205c36d2e7a5c6f07b61393467141c58b9ad41f1edbe0ddad060d6",
+   "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est."
+  },
+  {
+   "article": "Art. 264 du Code des douanes",
+   "verbatim": "Art. 264. - L’Administration des Douanes est également chargée, sur liquidation établie par les services compétents, de percevoir ou de faire garantir la perception de tous droits et taxes exigibles à l’importation ou à l’exportation, notamment : - taxes de vérifications, plombage et vacations du service du contrôle du conditionnement ; - droit de visite et de sécurité des navires ; - droits sanitaires maritimes. - Il assure, éventuellement, la perception des droits de timbre, notamment sur les connaissements.",
+   "assiette": "droits et taxes exigibles à l'importation ou à l'exportation, liquidés par les services compétents (vérification/plombage conditionnement, visite et sécurité des navires, droits sanitaires maritimes, timbre)",
+   "portee": "La douane assure la perception de taxes instituées par d'autres services ; leurs assiettes relèvent des textes qui les instituent.",
+   "texte_archive": "sources/MDG_titre_IX_taxes_diverses.texte-extrait.txt",
+   "sha256": "5d038ed5ae22deea5739414c95f22320a8fdccb8f89dc5334a18b1d3867b5c3a",
+   "pdf_sha256": "7dc9ce4abb205c36d2e7a5c6f07b61393467141c58b9ad41f1edbe0ddad060d6",
+   "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est."
+  },
+  {
+   "article": "Art. 265 du Code des douanes",
+   "verbatim": "Art. 265. - Une redevance informatique forfaitaire ainsi que des frais de prestation similaires, fixés par voie réglementaire, sont prélevés sur toutes les opérations en douane utilisant son système informatique. Les frais de prestation peuvent être perçus par des entités agissant pour le compte de l'administration des douanes ou travaillant en partenariat avec elle. Ces frais de prestation ainsi que leurs utilisations sont déterminés par arrêté du Ministre chargé des Douanes.",
+   "assiette": "forfait par opération en douane utilisant le système informatique (fixé par voie réglementaire)",
+   "portee": "Redevance informatique et frais de prestation : montant forfaitaire, sans assiette ad valorem sur la marchandise.",
+   "texte_archive": "sources/MDG_titre_IX_taxes_diverses.texte-extrait.txt",
+   "sha256": "5d038ed5ae22deea5739414c95f22320a8fdccb8f89dc5334a18b1d3867b5c3a",
+   "pdf_sha256": "7dc9ce4abb205c36d2e7a5c6f07b61393467141c58b9ad41f1edbe0ddad060d6",
+   "pdf_non_archive": "PDF officiel non archivé ; seul l'extrait l'est."
+  }
+ ],
+ "ne_tranche_pas": [
+  "les taux et montants forfaitaires eux-mêmes (renvoyés à la Loi de Finances et aux arrêtés) ;",
+  "l'application aux régimes économiques (admission temporaire, zones franches) ;",
+  "les exonérations et franchises."
+ ],
+ "remaining_work": [
+  "Collecter le barème d'accises par produit dans la Loi de Finances 2026 ;",
+  "Collecter le montant de la redevance informatique fixé par arrêté."
+ ]
+}

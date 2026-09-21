@@ -1,6 +1,6 @@
 {
   "socle_version": "1",
-  "construit_le": "2026-09-20T12:23:55.715817+00:00",
+  "construit_le": "2026-09-21T22:27:02.702341+00:00",
   "pays": {
     "AGO": {
       "fichier": "AGO.json",
@@ -1037,36 +1037,36 @@
       "fichier": "MDG.json",
       "origine": "crawl",
       "source_fichier": "backend/data/crawled/MDG_tariffs.json",
-      "source_sha256": "5fa9f5746ea5a02f4ff6daa787797bdd1dd3209cfce31762d9257f39c76fe02f",
-      "socle_sha256": "c8d99d32aee46f52d26ce670a02cd40f9995118caa662ea293ee4d52a0302ef0",
-      "collecte": "2026-07-05T10:03:55.556241+00:00",
+      "source_sha256": "fad20f649681ae5a7be2abaac4a9fac73d2cf3264a96e6e7c86837d86650eec7",
+      "socle_sha256": "d88145a7cfea086623159af1cf7db0899fb122e759e6d8688c1a568e5b5ef3a8",
+      "collecte": "2026-09-21T00:00:00+00:00",
       "etat": "COMPLET",
       "familles": [
         "droit",
         "tva"
       ],
       "compteurs": {
-        "positions": 5624,
-        "droits": 11248,
-        "droits_liquidables": 11248,
-        "positions_liquidables": 5624,
-        "preferentiels": 0,
+        "positions": 6544,
+        "droits": 13088,
+        "droits_liquidables": 13088,
+        "positions_liquidables": 6544,
+        "preferentiels": 6483,
         "preferentiels_specifiques": 0,
         "preferentiels_collision": 0,
         "preferentiels_non_nommes": 0,
         "taux_indisponibles": 0,
         "assiettes_source": 0,
-        "assiettes_fichier": 5624,
-        "assiettes_table": 5624,
+        "assiettes_fichier": 6544,
+        "assiettes_table": 6544,
         "assiettes_indisponibles": 0,
-        "sans_designation": 5624,
+        "sans_designation": 0,
         "droits_specifiques": 0,
         "droits_composes": 0,
         "restrictions": 0,
         "interdictions": 0,
         "droits_absents_completes": 0,
         "droits_lus_en_designation": 0,
-        "classification_estimee": 1
+        "classification_estimee": 0
       }
     },
     "MLI": {
@@ -2024,8 +2024,8 @@
       "ZMB",
       "ZWE"
     ],
-    "positions": 367340,
-    "droits": 1125721,
-    "droits_liquidables": 1048087
+    "positions": 368260,
+    "droits": 1127561,
+    "droits_liquidables": 1049927
   }
 }

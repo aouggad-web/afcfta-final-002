@@ -1,0 +1,11 @@
+Madagascar — Code général des impôts (CGI), édition 2025, Partie VI « Taxe sur la valeur ajoutée », Titre premier, Chapitre V « Base taxable », article 06.01.11.
+Source : https://portal.impots.mg/textes/textes/2025-02-06--N-2025-MEF.SG.DGI-Ref-HIH9EC-3OPLT3.pdf — Direction générale des impôts (portal.impots.mg), Code des impôts CDI n° 2025-MEF/SG/DGI du 2025-02-06, consulté le 2026-09-21.
+SHA-256 du PDF source : 028c396999b3f7aaf911100e63e7a64240662d43806a17fa3fd05cdcd370266b
+Extrait reflowé (mots du PDF, espaces normalisés ; « [...] » marque les passages non cités). PDF officiel non archivé ici ; seul cet extrait l'est.
+
+Article 06.01.11.- La taxe est établie :
+1° Sur la valeur des importations, y compris les frais et les taxes autres que la taxe sur la valeur ajoutée ;
+
+[...]
+
+Cette valeur est égale au prix de revient des marchandises, biens, travaux ou services ou à défaut au prix normal au consommateur ou à l’utilisateur, pratiqué au lieu de la livraison ou de la prestation, y compris les frais et les taxes autres que la taxe sur la valeur ajoutée.
