@@ -16,7 +16,7 @@ Source des taux : fichiers JSON pays ({ISO3}_tariffs.json), champ taxes_detail p
 import json
 import logging
 import os
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from decimal import ROUND_HALF_UP, Decimal
 from typing import Any, Dict, List, Optional
 
@@ -194,10 +194,28 @@ def _build_tax_list_from_crawled(tariff_line: Dict, country_iso3: str = "", zlec
             continue
         code = entry.get("code", "")
         raw_name = entry.get("name", code)
-        rate_pct = entry.get("rate_pct", entry.get("rate", 0.0))
-        if rate_pct is None:
-            rate_pct = 0.0
-        rate_pct = float(rate_pct)
+        # LE DÉFAUT CORRIGÉ ICI. Ces trois lignes disaient :
+        #
+        #     if rate_pct is None:
+        #         rate_pct = 0.0
+        #
+        # Un taux que la source ne publie PAS devenait donc zéro, et la
+        # position se liquidait comme exonérée. Mesuré au 21/09/2026 sur les
+        # crawls versionnés : 51 taxes égyptiennes portent `rate: null` — 12
+        # sur la TVA, 16 sur la TVA_2, 23 sur le droit d'importation. Autant
+        # d'exonérations fabriquées, servies avec l'apparence d'un calcul.
+        #
+        # `rate_pct` reste donc None, et le montant ne se calcule pas.
+        rate_pct = entry.get("rate_pct", entry.get("rate"))
+        if rate_pct == "":
+            rate_pct = None
+        if rate_pct is not None:
+            try:
+                rate_pct = float(rate_pct)
+            except (TypeError, ValueError):
+                # Un taux illisible n'est pas un taux nul : même traitement
+                # que l'absence — nommé, jamais deviné.
+                rate_pct = None
 
         # Ignorer les colonnes préférentielles (EU_UK, EFTA, SADC, MERCOSUR, AfCFTA)
         # AfCFTA est traité séparément via preferential_rates
@@ -217,6 +235,9 @@ def _build_tax_list_from_crawled(tariff_line: Dict, country_iso3: str = "", zlec
             canonical = "TVA"
 
         # Appliquer la préférence ZLECAf sur le DD
+        # Une préférence remplace un taux ; elle peut donc s'appliquer même si
+        # le plein droit est indisponible — c'est le taux préférentiel qui est
+        # dû, pas le NPF manquant.
         if zlecaf and canonical == "DD":
             if "DD" in preferential_rates:
                 rate_pct = preferential_rates["DD"]
@@ -237,8 +258,9 @@ def _build_tax_list_from_crawled(tariff_line: Dict, country_iso3: str = "", zlec
                 "raw_name": raw_name,
                 "name_fr": meta["name_fr"],
                 "name_en": meta["name_en"],
-                "rate": rate_pct / 100.0,
+                "rate": None if rate_pct is None else rate_pct / 100.0,
                 "rate_pct": rate_pct,
+                "taux_indisponible": rate_pct is None,
                 "observation": entry.get("observation", entry.get("source", "")),
                 "is_tva": canonical == "TVA",
                 "exclu_base_tva": canonical in TVA_EXCLUDED_CODES,
@@ -307,13 +329,18 @@ class TaxLine:
     code: str
     name_fr: str
     name_en: str
-    rate: float
-    rate_pct: str
+    # `rate`, `rate_pct` et `amount` sont FACULTATIFS, et c'est le fond de ce
+    # correctif : quand la source ne publie pas de taux, il n'y a ni taux ni
+    # montant à servir. Les mettre à zéro liquiderait la position comme
+    # exonérée — une exonération fabriquée, indiscernable d'une vraie.
+    rate: Optional[float]
+    rate_pct: Optional[str]
     base_type: str
     base_value: float
-    amount: float
+    amount: Optional[float]
     is_zlecaf_exempt: bool = False
     notes: Optional[str] = None
+    taux_indisponible: bool = False
 
 
 @dataclass
@@ -331,6 +358,10 @@ class CalculationBreakdown:
     total_taxes: float
     total_to_pay: float
     currency: str
+    # Les codes dont le taux n'est pas publié. Non vide, le total est la somme
+    # des SEULES lignes calculables : il est partiel, et le dire ici est la
+    # seule façon qu'un appelant ne le prenne pas pour le total dû.
+    codes_taux_indisponible: List[str] = field(default_factory=list)
 
 
 @dataclass
@@ -388,8 +419,34 @@ def _compute_regime(
 
     tax_lines: List[TaxLine] = []
     cumulative_before_tva = 0.0
+    codes_indisponibles: List[str] = []
 
     for t in taxes:
+        # UNE LIGNE SANS TAUX NE SE CALCULE PAS. Elle est servie quand même —
+        # la taire ferait disparaître une taxe due de la ventilation, ce qui
+        # est la même faute vue de l'autre côté — mais sans montant, et son
+        # code est remonté pour que le total ne passe pas pour complet.
+        if t.get("taux_indisponible"):
+            codes_indisponibles.append(t["code"])
+            tax_lines.append(
+                TaxLine(
+                    code=t["code"],
+                    name_fr=t["name_fr"],
+                    name_en=t["name_en"],
+                    rate=None,
+                    rate_pct=None,
+                    base_type="indisponible",
+                    base_value=_round2(cif_value + cumulative_before_tva),
+                    amount=None,
+                    notes=(
+                        "Taux non publié par la source : ni montant ni exonération. "
+                        "Vérifier auprès de l'administration douanière de destination."
+                    ),
+                    taux_indisponible=True,
+                )
+            )
+            continue
+
         if t["is_tva"]:
             # BASE TVA = CIF + toutes les taxes précédentes (hors exclusions)
             base_value = _round2(cif_value + cumulative_before_tva)
@@ -405,6 +462,8 @@ def _compute_regime(
                 cumulative_before_tva += amount
 
         is_exempt = is_zlecaf and t["code"] == "DD" and t["rate"] == 0.0
+        # Atteint uniquement avec un taux connu : les lignes sans taux sont
+        # sorties plus haut par `continue`.
         notes = None
         if is_zlecaf and t["code"] == "DD":
             if t["rate"] == 0.0:
@@ -427,7 +486,11 @@ def _compute_regime(
             )
         )
 
-    total_taxes = _round2(sum(tl.amount for tl in tax_lines))
+    # `tl.amount` vaut None sur les lignes sans taux : les additionner lèverait
+    # une TypeError, et les compter pour zéro rendrait le total faux en silence.
+    # Elles sont donc exclues de la somme, et `codes_taux_indisponible` dit
+    # lesquelles — c'est ce qui distingue un total partiel d'un total dû.
+    total_taxes = _round2(sum(tl.amount for tl in tax_lines if tl.amount is not None))
     total_to_pay = _round2(cif_value + total_taxes)
 
     regime_names = {
@@ -463,6 +526,7 @@ def _compute_regime(
         total_taxes=total_taxes,
         total_to_pay=total_to_pay,
         currency=currency,
+        codes_taux_indisponible=codes_indisponibles,
     )
 
 
