@@ -649,7 +649,10 @@
       "tradeVolume": "Trade (B$)",
       "aiGenerated": "Real data",
       "sectorsUnavailable": "Continental sector data unavailable",
-      "source": "Sources: IMF DOTS 2024, UNCTAD 2024, AfCFTA Database"
+      "source": "Sources: IMF DOTS 2024, UNCTAD 2024, AfCFTA Database",
+      "referenceTitle": "Reference figures",
+      "referenceBody": "The data service cannot be reached at the moment. The figures below are reference values, last revised on {{date}}; they do not reflect today's situation.",
+      "referenceDate": "9 September 2026"
     },
     "productAnalysisView": {
       "productAnalysisServiceTemporarily": "Product analysis service temporarily unavailable. Please try again later.",
@@ -860,7 +863,10 @@
       "certs": "Required certifications",
       "notes": "Analysis",
       "close": "Close search",
-      "substitutes": "Related products"
+      "substitutes": "Related products",
+      "referenceTitle": "Reference figures",
+      "referenceBody": "The data service cannot be reached at the moment. The figures below are reference values, last revised on {{date}}; they do not reflect today's situation.",
+      "referenceDate": "9 September 2026"
     },
     "zlecafImpactSimulator": {
       "afcftaSimulator": "AfCFTA SIMULATOR",

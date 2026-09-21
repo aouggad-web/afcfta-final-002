@@ -17,7 +17,7 @@ import {
 } from 'recharts';
 import { 
   TrendingUp, DollarSign, Globe, Package, 
-  ArrowUpRight, Loader2, AlertCircle, Sparkles 
+  ArrowUpRight, Loader2, AlertCircle, Sparkles, Info 
 } from 'lucide-react';
 import { DataFreshnessIndicator } from '../ui/data-freshness-indicator';
 
@@ -90,6 +90,11 @@ export default function OpportunitySummary({ language = 'fr' }) {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [isAiGenerated, setIsAiGenerated] = useState(false);
+  // Vrai quand l'écran sert les valeurs de référence et non la donnée du
+  // service. Symétrique d'`isAiGenerated`, mais dans l'autre sens : celui-là
+  // AJOUTE un badge quand tout va bien, et l'absence d'un badge ne se remarque
+  // pas. Ici on veut que l'écran de repli s'ANNONCE.
+  const [isReferenceData, setIsReferenceData] = useState(false);
   const [dataFreshness, setDataFreshness] = useState(null);
 
   // Fetch trade summary data from AI API
@@ -108,6 +113,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
           // Use AI-generated data
           const aiData = aiSummary.data;
           setIsAiGenerated(true);
+          setIsReferenceData(false);
           setDataFreshness(aiData.data_freshness || null);
           
           setData({
@@ -139,7 +145,27 @@ export default function OpportunitySummary({ language = 'fr' }) {
             dataYear: aiData.overview?.year || 2024
           });
         } else {
-          // Fallback to combined API data
+          setIsReferenceData(true);
+          // REPLI — VALEURS DE RÉFÉRENCE, ANNONCÉES COMME TELLES.
+          //
+          // Les valeurs écrites en dur plus bas (5 387 opportunités,
+          // 1 650 Md$, 186 Md$, « +12,3 % », le tableau des huit produits)
+          // sont CONSERVÉES par décision de la propriétaire de la
+          // plateforme, qui s'engage à provisionner l'API en permanence.
+          // Mais elles ne se substituent plus en silence : `isReferenceData`
+          // fait apparaître un bandeau qui les qualifie et les date.
+          //
+          // À savoir avant d'y toucher :
+          //   • la condition ci-dessus est `aiSummary.data &&
+          //     aiSummary.data.overview`. On passe donc aussi ici sur un
+          //     délai dépassé, un 5xx, une limite de débit, ou une réponse
+          //     200 sans `overview` — pas seulement quand la clé manque ;
+          //   • la date affichée (`referenceDate`) est celle de la dernière
+          //     RÉVISION de ces valeurs dans le code, pas le millésime de la
+          //     donnée. Rien ici n'atteste l'année qu'elles décrivent.
+          //     Si vous changez un chiffre, changez la date.
+          //
+          // Retenu par `OpportunitySummary.test.jsx`. Voir §5.1 du plan.
           const [tradePerf, countries, hsStats] = await Promise.all([
             axios.get(`${API}/statistics/trade-performance`).catch(() => ({ data: null })),
             axios.get(`${API}/countries`).catch(() => ({ data: [] })),
@@ -270,6 +296,26 @@ export default function OpportunitySummary({ language = 'fr' }) {
 
   return (
     <div className="space-y-8" data-testid="opportunity-summary">
+      {/* Les valeurs de référence ne se substituent pas en silence : elles
+          s'annoncent, et portent la date de leur dernière révision. */}
+      {isReferenceData && (
+        <Card className="bg-amber-50 border-amber-200" data-testid="summary-reference-banner">
+          <CardContent className="py-4 flex items-start gap-3">
+            <Info className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-amber-900">
+                {t('opportunities.opportunitySummary.referenceTitle')}
+              </p>
+              <p className="text-sm text-amber-800 mt-1">
+                {t('opportunities.opportunitySummary.referenceBody', {
+                  date: t('opportunities.opportunitySummary.referenceDate'),
+                })}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Header */}
       <div className="text-center">
         <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">

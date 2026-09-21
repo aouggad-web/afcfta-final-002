@@ -62,23 +62,39 @@ describe('OpportunitySummary', () => {
     expect(screen.queryByText(/186/)).not.toBeInTheDocument();
   });
 
-  it('DÉFAUT CONNU : quand tout échoue, l’écran affiche des chiffres inventés', async () => {
-    // Ce test ne bénit pas ce comportement, il le RETIENT. Chaque appel de ce
-    // composant porte son propre `.catch`, si bien que l'état d'erreur est
-    // inatteignable : la branche de repli sert alors des valeurs écrites en
-    // dur — 5 387 opportunités, 186 Md$ de commerce intra-africain, « +12,3 % »
-    // de croissance, et un tableau de produits entièrement inventé — sans que
-    // rien à l'écran n'indique que la donnée manque.
+  it('annonce les valeurs de référence, datées, au lieu de les substituer en silence', async () => {
+    // Les chiffres de repli sont CONSERVÉS — c'est une décision assumée : la
+    // propriétaire de la plateforme s'engage à provisionner l'API, de sorte
+    // que ce chemin ne serve pratiquement jamais.
     //
-    // C'est une infraction directe au contrat « zéro fabrication », sur
-    // l'écran d'accueil du module. La correction (afficher « — » et dire
-    // l'échec) change ce que voit l'utilisateur : elle est proposée au plan
-    // et attend un arbitrage. Le jour où elle sera faite, CE TEST DOIT
-    // ÉCHOUER — c'est le signal qu'il est temps de le réécrire.
+    // Ce qui est verrouillé ici, c'est qu'ils ne se substituent plus en
+    // silence. Auparavant les deux branches rendaient le MÊME écran, la seule
+    // différence étant un badge vert qui apparaissait en cas de succès — et
+    // l'absence d'un badge ne se remarque pas. Un écran s'intercale désormais.
+    //
+    // La date affichée est celle de la dernière RÉVISION de ces valeurs dans
+    // le code, pas un millésime de la donnée : rien dans le dépôt n'atteste
+    // l'année qu'elles décrivent, et l'inventer serait exactement la
+    // fabrication que ce bandeau sert à éviter.
     axios.get.mockRejectedValue(new Error('réseau'));
     render(<OpportunitySummary language="fr" />);
-    await screen.findByTestId('opportunity-summary');
+
+    const bandeau = await screen.findByTestId('summary-reference-banner');
+    expect(bandeau).toHaveTextContent(/Valeurs de référence/i);
+    expect(bandeau).toHaveTextContent(/9 septembre 2026/);
+    // Les chiffres restent servis : le bandeau les qualifie, il ne les cache pas.
     expect(screen.getByText('5,387')).toBeInTheDocument();
-    expect(screen.queryByText(/Erreur lors du chargement/i)).not.toBeInTheDocument();
+  });
+
+  it('ne montre aucun bandeau quand le service répond', async () => {
+    mockSummary({
+      total_opportunities_identified: 5387,
+      total_african_trade_billion_usd: 1650,
+      intra_african_trade_billion_usd: 186,
+      afcfta_countries: 54,
+    });
+    render(<OpportunitySummary language="fr" />);
+    await screen.findByTestId('opportunity-summary');
+    expect(screen.queryByTestId('summary-reference-banner')).not.toBeInTheDocument();
   });
 });

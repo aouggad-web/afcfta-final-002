@@ -16,7 +16,7 @@ import {
 } from 'recharts';
 import {
   ArrowRight, TrendingUp, Loader2, ChevronRight, Layers, Sparkles, AlertCircle,
-  Search, X, PackageSearch, BarChart3, Globe, Award, ShieldCheck
+  Search, X, PackageSearch, BarChart3, Globe, Award, ShieldCheck, Info
 } from 'lucide-react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
@@ -495,6 +495,8 @@ export default function ValueChains({ language = 'fr' }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [valueChains, setValueChains] = useState(DEFAULT_VALUE_CHAINS);
+  // Vrai quand l'écran sert le jeu de référence et non celui du service.
+  const [isReferenceData, setIsReferenceData] = useState(false);
   const [isAiGenerated, setIsAiGenerated] = useState(false);
 
   // HS6 search state
@@ -547,8 +549,17 @@ export default function ValueChains({ language = 'fr' }) {
           });
           
           // Merge with defaults to ensure all chains exist
+          setIsReferenceData(false);
           setValueChains({ ...DEFAULT_VALUE_CHAINS, ...chainsMap });
         } else {
+          setIsReferenceData(true);
+          // REPLI — VALEURS DE RÉFÉRENCE, ANNONCÉES COMME TELLES.
+          // `DEFAULT_VALUE_CHAINS` est un jeu écrit en dur (noms d'étapes,
+          // pays, valeurs par maillon), conservé par décision — voir §5.1 du
+          // plan — mais désormais qualifié et daté par un bandeau, via
+          // `isReferenceData`. On passe aussi ici quand l'API répond avec un
+          // `value_chains` vide, pas seulement quand elle échoue.
+          // Retenu par `ValueChains.test.jsx`.
           setValueChains(DEFAULT_VALUE_CHAINS);
         }
         
@@ -609,6 +620,26 @@ export default function ValueChains({ language = 'fr' }) {
 
   return (
     <div className="space-y-8" data-testid="value-chains">
+      {/* Le jeu de référence ne se substitue pas en silence : il s'annonce,
+          et porte la date de sa dernière révision. */}
+      {isReferenceData && (
+        <Card className="bg-amber-50 border-amber-200" data-testid="chains-reference-banner">
+          <CardContent className="py-4 flex items-start gap-3">
+            <Info className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="font-semibold text-amber-900">
+                {t('opportunities.valueChains.referenceTitle')}
+              </p>
+              <p className="text-sm text-amber-800 mt-1">
+                {t('opportunities.valueChains.referenceBody', {
+                  date: t('opportunities.valueChains.referenceDate'),
+                })}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Header */}
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-2">

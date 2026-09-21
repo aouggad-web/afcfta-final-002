@@ -47,14 +47,28 @@ describe('ValueChains', () => {
     expect(container.textContent).not.toMatch(/opportunities\.[a-zA-Z]+\./);
   });
 
-  it('DÉFAUT CONNU : sur échec de l’API, sert un jeu écrit en dur sans le dire', async () => {
-    // Le jour où l'écran dira « données de démonstration » ou affichera
-    // l'échec, CE TEST DOIT ÉCHOUER — c'est le signal de le réécrire.
+  it('annonce le jeu de référence, daté, au lieu de le substituer en silence', async () => {
+    // Même décision et même garde-fou que pour la Vue d'ensemble : le jeu
+    // `DEFAULT_VALUE_CHAINS` reste servi, mais il s'annonce.
     axios.get.mockRejectedValue(new Error('réseau'));
     render(<ValueChains language="fr" />);
-    await screen.findByTestId('value-chains');
+
+    const bandeau = await screen.findByTestId('chains-reference-banner');
+    expect(bandeau).toHaveTextContent(/Valeurs de référence/i);
+    expect(bandeau).toHaveTextContent(/9 septembre 2026/);
     // Le repli nomme ses chaînes ; plusieurs libellés contiennent « Café ».
     await waitFor(() => expect(screen.getAllByText(/Café/).length).toBeGreaterThan(0));
-    expect(screen.queryByText(/indisponible|démonstration|erreur/i)).not.toBeInTheDocument();
+  });
+
+  it('ne montre aucun bandeau quand le service répond', async () => {
+    axios.get.mockImplementation((url) =>
+      url.includes('/ai/value-chains')
+        ? Promise.resolve({ data: CHAINS })
+        : Promise.resolve({ data: {} }),
+    );
+    render(<ValueChains language="fr" />);
+    await screen.findByTestId('value-chains');
+    await waitFor(() =>
+      expect(screen.queryByTestId('chains-reference-banner')).not.toBeInTheDocument());
   });
 });

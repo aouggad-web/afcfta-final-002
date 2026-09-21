@@ -722,8 +722,8 @@ code, tous se voient en essayant de décrire à un test ce que l'écran affiche.
 
 | # | Action | État | Vérification |
 |---|---|---|---|
-| 5.1 | Supprimer les valeurs servies **sans source** en repli | ⏳ **arbitrage** | échec d'appel → « — » et mention de l'échec, jamais un chiffre |
-| 5.2 | Rendre visibles les états d'erreur déclarés et jamais affichés | ⏳ | chaque `setError` a un rendu correspondant |
+| 5.1 | Valeurs servies sans source en repli | ✅ | valeurs **conservées** par décision, mais un écran de repli s'intercale, les qualifie de « valeurs de référence » et les date |
+| 5.2 | Rendre visibles les états d'erreur déclarés et jamais affichés | ✅ | `ProductAnalysisView` affiche son erreur ; les deux autres annoncent leur repli (5.1) |
 | 5.3 | Les libellés en dur du module **Production** → i18n | ✅ | 0 dictionnaire de langue ; 199 libellés migrés (154 de dictionnaire + 45 ternaires) ; 843 clés au total |
 
 #### 4.3 telle qu'énoncée n'est pas faisable sans arbitrage de design
@@ -763,38 +763,64 @@ charte en la codant.
 
 ---
 
-#### 5.1 — Des chiffres sans source, sur l'écran d'accueil du module
+#### 5.1 — Valeurs de repli : conservées, mais annoncées et datées
 
-C'est le constat le plus sérieux, parce qu'il contredit frontalement la règle
-qui tient tout le reste du dépôt.
+**Constat.** Quand l'appel n'aboutit pas, `OpportunitySummary` sert des valeurs
+écrites en dur — 5 387 opportunités, 1 650 Md$ de commerce total, 186 Md$ de
+commerce intra-africain, « +12,3 % » de croissance, et un tableau des huit
+premiers produits dont les comptes et montants sont inventés. `ValueChains`
+fait de même avec `DEFAULT_VALUE_CHAINS`.
 
-Quand l'API échoue, **`OpportunitySummary` affiche des valeurs écrites en
-dur** : 5 387 opportunités, 1 650 Md$ de commerce total, 186 Md$ de commerce
-intra-africain, « +12,3 % » de croissance annuelle, et un tableau des huit
-premiers produits dont les comptes et les montants sont **entièrement
-inventés** — 19 littéraux numériques dans le seul bloc de repli.
-`ValueChains` fait de même avec `DEFAULT_VALUE_CHAINS` : 34 littéraux, noms
-d'étapes, pays et valeurs par maillon.
+**Le vrai défaut était plus précis que « des chiffres en dur ».** Les deux
+branches rendaient le **même écran**, avec les mêmes composants. Un drapeau les
+distinguait bien (`isAiGenerated`), mais il servait à *ajouter* un badge vert
+quand tout allait bien. En cas d'échec, le badge disparaissait — et l'absence
+d'un badge ne se remarque pas. La substitution était donc invisible.
 
-Rien à l'écran ne distingue ces chiffres des chiffres sourcés. Pire, **l'état
-d'erreur est inatteignable** : chaque appel porte son propre `.catch`, si bien
-que le repli se déclenche silencieusement. Un lecteur sans clé d'API — le cas
-courant, mesuré à l'audit — voit donc un tableau de bord d'apparence complète
-dont il ne peut pas savoir qu'il est fictif.
+**Décision retenue : conserver les valeurs, mais faire s'intercaler un écran.**
+La propriétaire de la plateforme assume les valeurs de repli — il lui revient
+de provisionner l'API, de sorte que ce chemin ne serve pratiquement jamais.
+Ce qui change est qu'elles ne se substituent plus en silence :
 
-La correction est simple (servir « — », dire l'échec) mais elle **change ce
-que voit l'utilisateur** : l'écran d'accueil passerait d'impressionnant à
-manifestement vide tant qu'aucune source ne répond. C'est une décision de
-produit, pas une correction technique, et elle est donc posée ici plutôt que
-prise. Deux tests portent la mention `DÉFAUT CONNU` et échoueront le jour où
-elle sera appliquée — c'est voulu, c'est leur façon de ne pas laisser oublier.
+| | Écran servi | Signe distinctif |
+|---|---|---|
+| Le service répond | données réelles | badge « Données enrichies par IA » |
+| Le service ne répond pas | valeurs de référence | **bandeau « Valeurs de référence », daté** |
 
-#### 5.2 — Des états d'erreur déclarés et jamais affichés
+Le ton retenu est délibérément mesuré — « valeurs de référence », non « panne »
+— pour ne pas alarmer un visiteur là où il n'y a qu'une donnée non actualisée.
+Et comme ce chemin ne doit pas servir, le bandeau ne coûte rien à l'usage
+courant : il ne parle que quand on voudrait être prévenu.
 
-`ValueChains` et `ProductAnalysisView` déclarent un état `error`, l'alimentent
-dans leur `catch`, et ne le rendent nulle part. L'échec est donc gardé en
-mémoire et tu. `OpportunitySummary` en rend un sur deux. C'est la même racine
-que 5.1, vue sous un autre angle, et c'est corrigeable sans arbitrage.
+**Sur la date, un point de méthode.** Ces valeurs n'ont **aucun millésime
+documenté** : rien dans le dépôt n'atteste l'année qu'elles décrivent. La seule
+date vérifiable est celle de leur dernière révision dans le code — le
+2026-09-09, commit `3aa882c`. C'est donc elle qui est affichée, et le libellé
+dit « révisées le », non « chiffres de ». Écrire « données 2024 » aurait été
+inventer une provenance, c'est-à-dire commettre à l'échelle de l'étiquette la
+fabrication que ce bandeau sert précisément à éviter. **Si un chiffre change,
+la clé `referenceDate` doit changer avec lui** — c'est écrit en commentaire aux
+deux endroits.
+
+**À savoir avant d'y toucher.** La condition d'entrée dans le repli n'est pas
+« pas de clé d'API » mais `aiSummary.data && aiSummary.data.overview`. Elle
+couvre donc aussi les échecs passagers — délai dépassé, 5xx, limite de débit,
+quota — et le cas d'une réponse 200 sans `overview`. `ValueChains` a la même
+forme : un `value_chains` vide renvoyé par une API en bonne santé mène au jeu
+de référence. Le bandeau s'affiche dans tous ces cas, ce qui est le
+comportement voulu.
+
+#### 5.2 — Erreurs déclarées et jamais affichées
+
+`ProductAnalysisView` alimentait un état `error` qu'il ne rendait nulle part :
+l'échec partait au `console.error` et l'écran retombait sur « aucune donnée »,
+qui affirme tout autre chose. **Corrigé** — l'erreur s'affiche, l'état vide ne
+s'affiche plus en même temps, et le message passe par i18n.
+
+`ValueChains` et `OpportunitySummary` gardent leur état `error` non rendu, mais
+le point est **traité autrement** : chez eux l'échec n'aboutit pas à un écran
+muet, il aboutit au bandeau de valeurs de référence (5.1). Afficher en plus une
+erreur à côté de chiffres qualifiés serait redondant.
 
 #### 5.3 — Production porte le même obstacle qu'Opportunités vient de lever
 

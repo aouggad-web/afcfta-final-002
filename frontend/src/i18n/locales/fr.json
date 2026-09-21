@@ -649,7 +649,10 @@
       "tradeVolume": "Commerce (Md$)",
       "aiGenerated": "Données réelles",
       "sectorsUnavailable": "Données sectorielles continentales indisponibles",
-      "source": "Sources: IMF DOTS 2024, UNCTAD 2024, Base de données ZLECAf"
+      "source": "Sources: IMF DOTS 2024, UNCTAD 2024, Base de données ZLECAf",
+      "referenceTitle": "Valeurs de référence",
+      "referenceBody": "Le service de données n'est pas joignable pour l'instant. Les chiffres ci-dessous sont des valeurs de référence, révisées le {{date}} ; ils ne reflètent pas la situation du jour.",
+      "referenceDate": "9 septembre 2026"
     },
     "productAnalysisView": {
       "productAnalysisServiceTemporarily": "Service d'analyse produit temporairement indisponible. Veuillez réessayer plus tard.",
@@ -860,7 +863,10 @@
       "certs": "Certifications requises",
       "notes": "Analyse",
       "close": "Fermer la recherche",
-      "substitutes": "Produits liés"
+      "substitutes": "Produits liés",
+      "referenceTitle": "Valeurs de référence",
+      "referenceBody": "Le service de données n'est pas joignable pour l'instant. Les chiffres ci-dessous sont des valeurs de référence, révisées le {{date}} ; ils ne reflètent pas la situation du jour.",
+      "referenceDate": "9 septembre 2026"
     },
     "zlecafImpactSimulator": {
       "afcftaSimulator": "SIMULATEUR ZLECAf",
