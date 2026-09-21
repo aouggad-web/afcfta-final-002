@@ -649,7 +649,7 @@ Chaînes de valeur) renvoient encore une erreur nue.
 | 4.1a | Constante `TABS` d'Opportunités → i18n | ✅ | deux listes parallèles supprimées ; libellés servis par `opportunities.tabs.*` |
 | 4.1b | Parité des locales sous test | ✅ | une clé traduite d'un seul côté fait échouer la suite, au lieu d'afficher son nom à l'écran |
 | 4.1c | Les **427 libellés en dur** restants → i18n | ✅ | 0 dictionnaire de langue, 0 ternaire de libellé ; 425 clés sous `opportunities`, chacune sous test |
-| 4.2 | Ajouter `ar` et `pt` (langues de travail ZLECAf) | ⏳ | les deux locales se chargent ; RTL vérifié pour l'arabe |
+| 4.2 | Ajouter `ar` et `pt` (langues de travail ZLECAf) | ⏳ **débloquée** | les deux locales se chargent ; RTL vérifié pour l'arabe — reste à faire TRADUIRE les 843 clés, voir ci-dessous |
 | 4.3 | Réduire les 428 styles inline vers les jetons de design de Production | ⏳ | ≤ 50 `style={{}}` restants |
 | 4.4 | Tests front sur les deux modules | ✅ | les 9 sous-onglets d'Opportunités et les 5 de Production ont rendu + état d'absence ; 313 tests front (+30) |
 
@@ -694,10 +694,23 @@ servies (405 × 2 langues) ont été confrontées une à une au code d'origine.
   avant 4.2** : faire émettre au backend un code (`easy`, `moderate`…), ce
   qui est la bonne correction, ou accepter la table côté front.
 
-**Ce que 4.2 doit encore faire**, maintenant qu'elle est débloquée : les
-425 clés existent en français et en anglais et sont sous test de parité ;
-ajouter `ar` et `pt` revient à fournir deux fichiers de plus, à dériver les
-4 codes de langue restants d'i18n, et à traiter le RTL de l'arabe.
+**Ce que 4.2 doit encore faire**, maintenant que les deux modules sont
+débloqués : **843 clés** existent en français et en anglais, sous test de
+parité. Ajouter `ar` et `pt` demande trois choses de nature différente :
+
+1. **La traduction elle-même — 1 686 chaînes, et ce n'est pas un travail de
+   machine.** Le vocabulaire est celui de la politique commerciale (règles
+   d'origine, valeur ajoutée manufacturière, démantèlement tarifaire), où un
+   terme mal rendu change le sens d'une recommandation. Une traduction
+   automatique livrée comme locale officielle serait une fabrication de plus,
+   de la même famille que 5.1 : du contenu présenté comme utilisable sans que
+   personne l'ait validé. **C'est la seule partie de tout ce plan qui demande
+   une compétence humaine que l'outillage ne remplace pas.**
+2. **Dériver d'i18n les 5 derniers codes de langue** (une locale de formatage
+   dans chaque module, deux arguments de `getAllCountries`, un paramètre
+   `lang` de requête). Un choix binaire fr/en devient faux à quatre langues.
+3. **Le RTL de l'arabe** : `dir="rtl"`, et la relecture des mises en page qui
+   supposent un sens de lecture.
 
 ---
 
@@ -711,7 +724,7 @@ code, tous se voient en essayant de décrire à un test ce que l'écran affiche.
 |---|---|---|---|
 | 5.1 | Supprimer les valeurs servies **sans source** en repli | ⏳ **arbitrage** | échec d'appel → « — » et mention de l'échec, jamais un chiffre |
 | 5.2 | Rendre visibles les états d'erreur déclarés et jamais affichés | ⏳ | chaque `setError` a un rendu correspondant |
-| 5.3 | Les 154 libellés en dur du module **Production** → i18n | ⏳ | 0 dictionnaire de langue dans `components/production/` |
+| 5.3 | Les libellés en dur du module **Production** → i18n | ✅ | 0 dictionnaire de langue ; 199 libellés migrés (154 de dictionnaire + 45 ternaires) ; 843 clés au total |
 
 #### 5.1 — Des chiffres sans source, sur l'écran d'accueil du module
 
@@ -756,6 +769,18 @@ clés i18n **présentes** dans Production (32) sans mesurer les libellés
 
 Tant qu'ils y sont, l'arabe et le portugais (4.2) ne couvriraient qu'un module
 sur deux.
+
+**Fait.** Le décompte s'est encore révélé court : 154 libellés de dictionnaire,
+mais aussi **45 ternaires** que la première mesure n'avait pas cherchés dans ce
+module. Le garde-fou `opportunitiesI18n.test.js` ne lisait qu'un répertoire ; il
+lit désormais les deux, et c'est son extension qui a trouvé les 45. Un
+garde-fou partiel rassure à proportion exacte de ce qu'il ignore.
+
+**Une lacune de couverture, découverte au passage.** Trois composants
+(`IsicDivisionCard`, `Isic4DetailPanel`, `EstimatedDetail`) appelaient `t()`
+sans l'avoir en portée et auraient planté à l'affichage. Aucun des 313 tests
+ne les atteint : ils ne se rendent que dans le détail ISIC4 **déplié**. La
+phase 4.4 couvre les onglets, pas les vues au clic — à compléter.
 
 ---
 
