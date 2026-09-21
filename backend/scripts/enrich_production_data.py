@@ -8,8 +8,9 @@ afin de préserver les 10 000+ enregistrements agricoles FAOSTAT bulk déjà en 
 Applique quatre enrichissements curés (valeurs publiées uniquement) :
 
   1. MINING      — nouveaux minéraux + extension 2024   (etl/mining_extended.py)
-  2. MACRO       — valeur ajoutée sectorielle & croissance PIB réels, World Bank
-                   WDI 2023-2024 (etl/macro_extended.py ← etl/macro_wdi_data.py)
+  2. MACRO       — valeur ajoutée sectorielle (parts du PIB et montants en USD
+                   courants) & croissance PIB réels, World Bank WDI 2015-2024
+                   (etl/macro_extended.py ← etl/macro_wdi_data.py)
   3. AGRICULTURE — prévisions OECD-FAO (2025/2030)        (etl/faostat_projections.py)
 
 La dimension MANUFACTURING est laissée aux valeurs publiées (aucune série
@@ -134,7 +135,7 @@ def main() -> None:
         ["country_iso3", "indicator_code", "sector_isic_section", "year"],
         overwrite=True,
     )
-    print(f"[2] Macro       : +{mac_add} enreg., {mac_up} mis à jour (World Bank WDI 2023-2024)")
+    print(f"[2] Macro       : +{mac_add} enreg., {mac_up} mis à jour (World Bank WDI 2015-2024)")
 
     # ── 3. Agriculture : prévisions OECD-FAO (clé DÉDIÉE agri_projections) ───
     # Stockées à part de agri_faostat : ce sont des PRÉVISIONS (pas des

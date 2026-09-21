@@ -6,9 +6,15 @@ avec des valeurs RÉELLES publiées par le World Bank (World Development Indicat
 récupérées via l'API publique et figées dans ``etl/macro_wdi_data.py`` (généré par
 ``scripts/fetch_wdi_macro.py``).
 
-  • Séries 2023-2024 pour les 54 pays africains (contre 2023 seule auparavant).
-  • Indicateurs : agriculture / industrie / manufacturier / services (% PIB) +
-    croissance du PIB réel (% annuel).
+  • Séries 2015-2024 pour les 54 pays africains.
+  • Parts sectorielles : agriculture / industrie / manufacturier / services
+    (% du PIB) + croissance du PIB réel (% annuel).
+  • Montants : les mêmes agrégats en USD courants, plus le PIB. Une part de PIB
+    situe un secteur dans son économie ; elle ne dit pas sa taille, et ne permet
+    donc pas de comparer deux pays autrement qu'en structure.
+
+Les deux familles cohabitent dans la même dimension et se distinguent par
+``unit`` (``percent`` / ``USD``) — jamais par le seul libellé de secteur.
 
 Principe impératif : chiffres PUBLIÉS uniquement (World Bank WDI). Aucune valeur
 hand-curée ni extrapolée. Un couple (pays, indicateur, année) sans donnée publiée
@@ -16,7 +22,10 @@ est simplement omis. Pour rafraîchir les valeurs, relancer
 ``python3 scripts/fetch_wdi_macro.py`` là où l'API World Bank est joignable.
 
 Source : World Bank — World Development Indicators
-  NV.AGR.TOTL.ZS, NV.IND.TOTL.ZS, NV.IND.MANF.ZS, NV.SRV.TOTL.ZS, NY.GDP.MKTP.KD.ZG
+  Parts : NV.AGR.TOTL.ZS, NV.IND.TOTL.ZS, NV.IND.MANF.ZS, NV.SRV.TOTL.ZS,
+          NY.GDP.MKTP.KD.ZG
+  USD   : NV.AGR.TOTL.CD, NV.IND.TOTL.CD, NV.IND.MANF.CD, NV.SRV.TOTL.CD,
+          NY.GDP.MKTP.CD
   https://data.worldbank.org/
 """
 
@@ -32,7 +41,8 @@ except Exception:  # pragma: no cover - module généré absent
     WDI_MACRO = {}
     WDI_FETCHED_AT = None
 
-# clef WDI -> (section ISIC, sector_detail, indicator_code, indicator_label)
+# clef WDI -> (section ISIC, sector_detail, indicator_code, indicator_label,
+#              unit, currency)
 _INDICATORS = [
     (
         "agri",
@@ -40,6 +50,8 @@ _INDICATORS = [
         "Agriculture, forestry and fishing",
         "NV.AGR.TOTL.ZS",
         "Agriculture, value added (% of GDP)",
+        "percent",
+        None,
     ),
     (
         "ind",
@@ -47,6 +59,8 @@ _INDICATORS = [
         "Industry (including construction)",
         "NV.IND.TOTL.ZS",
         "Industry, value added (% of GDP)",
+        "percent",
+        None,
     ),
     (
         "manuf",
@@ -54,6 +68,8 @@ _INDICATORS = [
         "Manufacturing",
         "NV.IND.MANF.ZS",
         "Manufacturing, value added (% of GDP)",
+        "percent",
+        None,
     ),
     (
         "serv",
@@ -61,6 +77,8 @@ _INDICATORS = [
         "Services",
         "NV.SRV.TOTL.ZS",
         "Services, value added (% of GDP)",
+        "percent",
+        None,
     ),
     (
         "gdp_growth",
@@ -68,6 +86,53 @@ _INDICATORS = [
         "Gross domestic product",
         "NY.GDP.MKTP.KD.ZG",
         "GDP growth (annual %)",
+        "percent",
+        None,
+    ),
+    (
+        "agri_usd",
+        "A",
+        "Agriculture, forestry and fishing",
+        "NV.AGR.TOTL.CD",
+        "Agriculture, value added (current US$)",
+        "USD",
+        "USD",
+    ),
+    (
+        "ind_usd",
+        "B-F",
+        "Industry (including construction)",
+        "NV.IND.TOTL.CD",
+        "Industry, value added (current US$)",
+        "USD",
+        "USD",
+    ),
+    (
+        "manuf_usd",
+        "C",
+        "Manufacturing",
+        "NV.IND.MANF.CD",
+        "Manufacturing, value added (current US$)",
+        "USD",
+        "USD",
+    ),
+    (
+        "serv_usd",
+        "G-T",
+        "Services",
+        "NV.SRV.TOTL.CD",
+        "Services, value added (current US$)",
+        "USD",
+        "USD",
+    ),
+    (
+        "gdp_usd",
+        "TOTAL",
+        "Gross domestic product",
+        "NY.GDP.MKTP.CD",
+        "GDP (current US$)",
+        "USD",
+        "USD",
     ),
 ]
 
@@ -75,10 +140,15 @@ _INDICATORS = [
 def build_macro_series() -> List[Dict]:
     """Enregistrements macro (schéma value_added_macro) depuis les données WDI réelles.
 
-    Émet, pour chaque pays et chaque année disponibles (2023-2024), un
-    enregistrement par indicateur publié. Source : World Bank WDI (aucune valeur
-    synthétisée). Pas de projection ni d'``is_projection`` : uniquement des
-    observations publiées.
+    Émet, pour chaque pays et chaque année disponibles (2015-2024), un
+    enregistrement par indicateur publié — parts de PIB (``unit="percent"``) et
+    montants en USD courants (``unit="USD"``). Source : World Bank WDI (aucune
+    valeur synthétisée). Pas de projection ni d'``is_projection`` : uniquement
+    des observations publiées.
+
+    Les deux familles partagent le même ``sector_detail`` : un consommateur qui
+    les agrège doit filtrer sur ``unit``, sous peine d'additionner un
+    pourcentage et un montant.
     """
     records: List[Dict] = []
     for iso3 in sorted(WDI_MACRO):
@@ -86,7 +156,7 @@ def build_macro_series() -> List[Dict]:
         by_year = WDI_MACRO[iso3]
         for year in sorted(by_year):
             vals = by_year[year]
-            for key, section, detail, ind_code, ind_label in _INDICATORS:
+            for key, section, detail, ind_code, ind_label, unit, currency in _INDICATORS:
                 value = vals.get(key)
                 if value is None:
                     continue
@@ -100,8 +170,8 @@ def build_macro_series() -> List[Dict]:
                         "indicator_code": ind_code,
                         "indicator_label": ind_label,
                         "value": value,
-                        "unit": "percent",
-                        "currency": None,
+                        "unit": unit,
+                        "currency": currency,
                         "price_base_year": None,
                         "source_institution": "World Bank",
                         "source_dataset": "World Development Indicators",

@@ -137,17 +137,28 @@ def get_value_added(
 
 
 def get_value_added_by_country(country_iso3: str) -> Dict:
-    """Récupère toutes les séries de valeur ajoutée pour un pays"""
+    """Récupère toutes les séries de valeur ajoutée pour un pays.
+
+    Les parts de PIB et les montants en USD partagent le même ``sector_detail``
+    (« Manufacturing » désigne le secteur, pas la mesure). Les grouper sur ce
+    seul libellé mettrait 7,4 (% du PIB) et 21 839 012 706 (USD) dans la même
+    série. Les deux familles sont donc rendues séparément :
+
+    * ``data_by_sector`` — les parts et la croissance, en pourcentage. C'est le
+      contenu historique de ce champ : inchangé, y compris quand aucun montant
+      n'est publié ;
+    * ``data_by_sector_usd`` — les montants en USD courants.
+    """
     country_iso3 = _normalize_country_iso3(country_iso3)
     records = get_value_added(country_iso3=country_iso3)
 
-    # Organiser par secteur
-    by_sector = {}
+    # Organiser par secteur, en tenant les deux unités à l'écart.
+    by_sector: Dict[str, List[Dict]] = {}
+    by_sector_usd: Dict[str, List[Dict]] = {}
     for record in records:
         sector = record.get("sector_detail", "Unknown")
-        if sector not in by_sector:
-            by_sector[sector] = []
-        by_sector[sector].append(record)
+        target = by_sector_usd if record.get("unit") == "USD" else by_sector
+        target.setdefault(sector, []).append(record)
 
     years_covered = _extract_years(records)
 
@@ -155,6 +166,7 @@ def get_value_added_by_country(country_iso3: str) -> Dict:
         "country_iso3": country_iso3,
         "country_name": records[0].get("country_name") if records else None,
         "data_by_sector": by_sector,
+        "data_by_sector_usd": by_sector_usd,
         "total_records": len(records),
         "years_covered": years_covered,
         "latest_year": years_covered[-1] if years_covered else None,

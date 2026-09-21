@@ -7,6 +7,14 @@ Toutes les valeurs de cette page ont été **mesurées** sur le dépôt et sur l
 sources en ligne le jour de l'audit, pas estimées. Les commandes de mesure sont
 rappelées en annexe pour que chaque chiffre soit reproductible.
 
+> **État d'avancement.** Le constat (§ 1 et 2) décrit le dépôt tel qu'il était
+> à l'audit. La **phase 0 a depuis été implémentée** : macro en valeurs
+> absolues sur dix ans, surfaces et rendements FAOSTAT, rang continental, et
+> correction d'un passage mensuel qui faisait régresser le fichier. Le tableau
+> du § 6 marque d'un ✅ ce qui est livré. Une action du plan s'est révélée mal
+> découpée à l'usage ; la correction est expliquée en phase 0, elle n'est pas
+> masquée.
+
 ---
 
 ## 0. Ce qu'il faut retenir
@@ -55,7 +63,7 @@ L'agriculture porte 89 % des enregistrements. Les trois autres dimensions
 réunies pèsent 1 136 lignes pour 54 pays — soit, en moyenne, **7 points de
 donnée par pays et par dimension**, toutes années confondues.
 
-### 1.2 Les six trous, par ordre de coût de réparation
+### 1.2 Les sept trous, par ordre de coût de réparation
 
 **(a) Macro : que du relatif, et deux ans.** Les 514 lignes ne portent que cinq
 indicateurs, tous en pourcentage : `NV.AGR.TOTL.ZS`, `NV.IND.TOTL.ZS`,
@@ -169,6 +177,21 @@ dans l'ancrage IA d'Opportunités — qui lit `production_africaine.json` via
 C'est dommage, parce que c'est la donnée qui transforme « ce pays produit X » en
 « ce pays sait faire X, avec tant de monde ». Elle est déjà là ; elle est juste
 rangée trop bas.
+
+**(g) Le passage mensuel fait *régresser* le fichier.** Trouvé en implémentant
+la phase 0, pas à l'audit initial — et c'est le défaut le plus grave de la
+chaîne.
+
+`update_production_data.yml` lance `build_production_faostat_usgs.py`, qui
+n'écrit que le **socle** : 162 enregistrements macro et 166 miniers. Les
+dimensions complètes (macro World Bank, minéraux étendus, prévisions OCDE-FAO)
+sont posées par une seconde étape, `enrich_production_data.py` — et **aucun
+workflow ne la lance**.
+
+Un passage mensuel produit donc une PR qui ramène macro de 514 à 162 et les
+mines de 432 à 166. Le garde-fou de validation ne l'attrape pas : il vérifie
+`mining >= 100`, et 166 passe. Le fichier n'a survécu jusqu'ici que parce que
+personne n'a laissé le cron aboutir.
 
 ### 1.3 La chaîne d'ingestion ne tourne pas
 
@@ -337,16 +360,33 @@ téléchargé ou déjà joignable.
 | # | Action | Fichier | Vérification |
 |---|---|---|---|
 | 0.1 | Étendre `INDICATORS` aux valeurs absolues (`NV.IND.MANF.CD`, `NV.AGR.TOTL.CD`, `NV.IND.TOTL.CD`, `NV.SRV.TOTL.CD`, `NY.GDP.MKTP.CD`) et `YEARS` à 2015-2024 | `backend/scripts/fetch_wdi_macro.py` | `value_added_macro` passe de 514 à ≳ 4 500 lignes ; chaque pays a une série USD sur ≥ 8 ans |
-| 0.2 | Parser les éléments FAOSTAT **5312** (surface) et **5412** (rendement), et élargir `FAOSTAT_ITEM_TO_COMMODITY` de 69 à ~250 items — le bulk est déjà téléchargé | `backend/scripts/build_production_faostat_usgs.py` | `agri_faostat` passe de 10 138 à ≳ 50 000 lignes ; `area_ha`/`yield_kg_ha` non nuls là où la FAO les publie ; test de non-régression |
+| 0.2 | Parser les éléments FAOSTAT **5312** (surface) et **5412** (rendement) — le bulk est déjà téléchargé | `backend/scripts/build_production_faostat_usgs.py` | `area_ha`/`yield_kg_ha` non nuls sur ≥ 95 % des lignes de culture ; aucune valeur de production modifiée |
 | 0.3 | Calculer `rank_africa` au build (champ déclaré, jamais rempli) | idem | rang continental présent par commodité × année ; classements affichables sans calcul côté client |
 | 0.4 | Promouvoir l'emploi ISIC4 (`01`/`04`/`05`/`31`) en dimension du dataset principal, pas seulement en détail au clic | `backend/scripts/build_production_faostat_usgs.py`, `production_capacity_service` | l'emploi apparaît dans `production_africaine.json` et dans `get_country_profile()` pour les 20 pays ISIC4 |
-| 0.5 | Mettre `production_etl.yml` sur `schedule` | `.github/workflows/production_etl.yml` | le workflow porte un `cron` ; une exécution à blanc passe |
+| 0.5 | Faire lancer `fetch_wdi_macro.py` **et** `enrich_production_data.py` par le passage mensuel, et caler les garde-fous sur la surcouche (`mining >= 400`, `macro >= 4000`) et non sur le socle | `.github/workflows/update_production_data.yml` | le workflow échoue si le fichier produit est amputé de sa surcouche |
 
-**Pourquoi d'abord.** 0.1 et 0.2 multiplient le volume utile de la production par
-un facteur proche de 5 pour un coût de quelques heures, sans ajouter une seule
-dépendance. Et comme l'ancrage IA est indexé sur la version du fichier de
-production, **les analyses d'Opportunités s'enrichissent automatiquement** dès le
-rebuild, sans toucher à ce module.
+**Pourquoi d'abord.** Ces actions augmentent nettement le contenu utile de la
+production pour un coût de quelques heures, sans ajouter une seule dépendance.
+Et comme l'ancrage IA est indexé sur la version du fichier de production, **les
+analyses d'Opportunités s'enrichissent automatiquement** dès le rebuild, sans
+toucher à ce module.
+
+> **Correction apportée par la mise en œuvre.** Ce plan proposait d'abord
+> d'élargir `FAOSTAT_ITEM_TO_COMMODITY` de 69 à ~250 items en phase 0. C'était
+> une erreur, et le dépôt l'a dit tout seul :
+> `tests/test_hs_commodity_mapping.py::test_no_production_commodity_left_without_hs_mapping`
+> pose un invariant explicite — **toute commodité présente dans le dataset doit
+> être atteignable par un code SH**, faute de quoi sa donnée est invisible au
+> module Opportunités et le calcul de besoin national retombe silencieusement
+> sur un proxy.
+>
+> L'élargissement de l'ingestion et l'élargissement du pont SH ne sont donc pas
+> deux chantiers : c'est le même. Il est déplacé en **phase 3.1**, où il doit
+> être mené avec sa table de correspondance. Mesuré au passage : le bulk
+> contient 254 items, dont 21 sont des **agrégats** FAOSTAT (« Cereals,
+> primary », « Meat, Total ») qu'il faudra écarter sous peine de doubler chaque
+> total, et le zip publie un code **CPC** par item qui permet de classer
+> cultures / élevage / produits transformés sans rien deviner.
 
 ### Phase 1 — Combler manufacturing et mining (1 à 2 semaines)
 
@@ -437,16 +477,28 @@ maison, aucun trou comblé. Elle est déjà écrite en tête de
 
 ### Phase 3 — Élargir le pont Production ↔ Opportunités
 
-**3.1 — Casser le plafond des 114 codes SH.** Trois gisements :
-- FAOSTAT publie pour l'Afrique nettement plus que les 69 commodités
-  actuellement mappées ;
+**3.1 — Casser le plafond des 114 codes SH, et élargir l'ingestion avec lui.**
+C'est ici que revient l'élargissement des commodités FAOSTAT, parce que
+l'invariant du dépôt interdit de le faire seul (voir la correction en phase 0).
+Le pont et l'ingestion avancent du même pas. Trois gisements :
+
+- **FAOSTAT** : le bulk contient 254 items, dont 233 hors agrégats, contre 69
+  commodités mappées aujourd'hui. Chaque item ajouté doit arriver avec son code
+  SH, sa classification CPC (cultures / élevage / transformé) et l'exclusion des
+  21 agrégats ;
 - descendre le mapping au SH6 là où la commodité le permet ;
 - brancher la correspondance standard **ISIC ↔ chapitres SH** pour que le
   manufacturing dépasse ses 15 codes.
 
+*Point de décision* : la table de correspondance item FAOSTAT → code SH doit
+venir d'une source publiée (correspondance CPC↔SH de l'UNSD, ou table FAO), pas
+d'une attribution au jugé. Une correspondance fausse est pire qu'une absence :
+elle rattache une production réelle au mauvais produit échangé.
+
 *Vérification* : `list_tracked_products()` ≥ 400 codes, dont ≥ 80 en
-manufacturing ; `production_products` relevé avant/après par pays dans les stats
-d'ancrage.
+manufacturing ; `agri_faostat` ≳ 24 000 lignes ; l'invariant
+`test_no_production_commodity_left_without_hs_mapping` reste vert ;
+`production_products` relevé avant/après par pays dans les stats d'ancrage.
 
 **3.2 — Faire exister le chaînage à l'écran.** Un parcours *pays → ce qu'il
 produit → où le vendre sous la ZLECAf → à quel tarif → sous quelle règle
@@ -503,21 +555,26 @@ phase 2 en un mois.
 
 ## 6. Critères de réussite globaux
 
-| Indicateur | Aujourd'hui | Cible |
-|---|---:|---:|
-| Lignes de production hors agriculture | 1 136 | ≥ 6 000 |
-| Dimensions macro en valeur absolue | 0 | 5 |
-| Exploitation du bulk FAOSTAT (2019-2024) | 16 % | ≥ 80 % |
-| Champs `area_ha` / `yield_kg_ha` remplis | 0 % | ≥ 90 % |
-| Commodités agricoles importées | 69 / 254 | ≥ 200 / 254 |
-| Pays avec détail ISIC4 réel | 20 / 54 | ≥ 30 / 54 |
-| Pays sans donnée minière ni explication | 13 | 0 |
-| Codes SH reliés à la production | 114 | ≥ 400 |
-| dont manufacturing | 15 | ≥ 80 |
-| Pays avec source NSO enregistrée | 1 | ≥ 15 (palier A + B) |
-| Sous-onglets Opportunités vivants sans clé IA | 4 / 9 | 9 / 9 |
-| Dimensions de production sur cron | 1 / 4 | 4 / 4 |
-| Clés i18n Opportunités | 0 | ≥ 150 |
+Les lignes marquées ✅ ont été livrées par le premier lot d'implémentation
+(phase 0) ; les valeurs « aujourd'hui » des autres restent celles de l'audit.
+
+| Indicateur | Audit | Aujourd'hui | Cible |
+|---|---:|---:|---:|
+| ✅ Lignes macro | 514 | **5 070** | ≥ 4 500 |
+| ✅ Années couvertes en macro | 2 | **10** | ≥ 8 |
+| ✅ Dimensions macro en valeur absolue | 0 | **5** | 5 |
+| ✅ `area_ha` / `yield_kg_ha` remplis (cultures) | 0 % | **96 %** | ≥ 95 % |
+| ✅ `rank_africa` rempli | 0 % | **100 %** | 100 % |
+| ✅ Le passage mensuel préserve la surcouche | non | **oui** | oui |
+| Commodités agricoles importées | 69 / 254 | 69 / 254 | ≥ 200 / 254 |
+| Codes SH reliés à la production | 114 | 114 | ≥ 400 |
+| dont manufacturing | 15 | 15 | ≥ 80 |
+| Lignes de production hors agriculture et macro | 622 | 622 | ≥ 2 000 |
+| Pays avec détail ISIC4 réel | 20 / 54 | 20 / 54 | ≥ 30 / 54 |
+| Pays sans donnée minière ni explication | 13 | 13 | 0 |
+| Pays avec source NSO enregistrée | 1 | 1 | ≥ 15 (palier A + B) |
+| Sous-onglets Opportunités vivants sans clé IA | 4 / 9 | 4 / 9 | 9 / 9 |
+| Clés i18n Opportunités | 0 | 0 | ≥ 150 |
 
 ---
 
