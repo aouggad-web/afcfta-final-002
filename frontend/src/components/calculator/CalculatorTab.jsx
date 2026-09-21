@@ -899,9 +899,12 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
           setResult((precedent) => (precedent
             ? {
               ...precedent,
-              administrative_formalities: formalites.length > 0
-                ? formalites
-                : precedent.administrative_formalities,
+              // La liste se remplace À CHAQUE RÉPONSE, y compris vide. La
+              // garder quand la nouvelle est vide ferait afficher les
+              // documents de la position PRÉCÉDENTE sous le statut de la
+              // nouvelle — et, la liste n'étant plus vide, supprimerait
+              // justement l'avertissement que ce lot installe.
+              administrative_formalities: formalites,
               formalites_statut: statutFormalites,
               formalites_reserve: reserveFormalites,
             }
