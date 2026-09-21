@@ -102,14 +102,12 @@ const BALANCE_STYLE = {
 };
 
 /* Localized label per verdict — never show the raw wire-format enum. */
-const VERDICT_LABEL = {
-  supply_and_demand: { fr: "Offre & demande", en: "Supply & demand" },
-  demand_without_supply: { fr: "Demande sans offre", en: "Demand without supply" },
-  supply_without_demand: { fr: "Offre sans demande", en: "Supply without demand" },
-  insufficient_data: { fr: "Données insuffisantes", en: "Insufficient data" },
-};
-const verdictLabel = (verdict, fr) =>
-  VERDICT_LABEL[verdict]?.[fr ? "fr" : "en"] || (verdict || "—").replace(/_/g, " ");
+// Le verdict arrive du serveur sous sa forme machine ; le repli rend cette
+// forme lisible plutôt que la clé i18n, qu'i18next renverrait telle quelle.
+const verdictLabel = (verdict, t) =>
+  t(`opportunities.sectoralAnalysis.verdict.${verdict}`, {
+    defaultValue: (verdict || "—").replace(/_/g, " "),
+  });
 
 function Chip({ ok, children }) {
   return (
@@ -285,7 +283,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                 textTransform: "uppercase",
               }}
             >
-              {verdictLabel(bal.verdict, fr)}
+              {verdictLabel(bal.verdict, t)}
             </span>
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>

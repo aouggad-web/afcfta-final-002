@@ -952,6 +952,7 @@ const SummaryStrip = ({ data, mode }) => {
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function AIAnalysis({ language = 'fr' }) {
   const { t, i18n } = useTranslation();
+  const steps = t('opportunities.aiAnalysis.steps', { returnObjects: true });
   const lang = i18n.language || language;
 
   const [mode, setMode] = useState('export');
@@ -963,63 +964,13 @@ export default function AIAnalysis({ language = 'fr' }) {
   const [aiHealthy, setAiHealthy] = useState(null);
   const [loadingStep, setLoadingStep] = useState(0);
 
-  const txt = {
-    fr: {
-      title: 'Analyse IA des Opportunités',
-      subtitle: 'Propulsé par Claude AI — Sources OEC, UN Comtrade, IMF, UNCTAD',
-      selectCountry: 'Sélectionnez un pays',
-      analyze: 'Analyser avec Claude',
-      exportMode: 'Export',
-      importMode: 'Import',
-      industrialMode: 'Industriel',
-      loading: 'Analyse Claude en cours…',
-      steps: [
-        'Synchronisation données ZLECAf…',
-        'Analyse flux commerciaux IMF 2024…',
-        'Extraction patterns OEC / UN Comtrade…',
-        'Calcul hiérarchie SH2/SH4/SH6…',
-        'Évaluation compétitivité tarifaire…',
-        'Cartographie des opportunités…',
-      ],
-      noData: 'Sélectionnez un pays pour lancer l\'analyse Claude',
-      aiReady: 'Claude opérationnel',
-      aiNotReady: 'ANTHROPIC_API_KEY non configurée',
-      sources: 'Sources',
-    },
-    en: {
-      title: 'AI Trade Opportunity Analysis',
-      subtitle: 'Powered by Claude AI — OEC, UN Comtrade, IMF, UNCTAD sources',
-      selectCountry: 'Select a country',
-      analyze: 'Analyze with Claude',
-      exportMode: 'Export',
-      importMode: 'Import',
-      industrialMode: 'Industrial',
-      loading: 'Claude analysis in progress…',
-      steps: [
-        'Synchronizing AfCFTA data…',
-        'Analyzing IMF 2024 trade flows…',
-        'Extracting OEC / UN Comtrade patterns…',
-        'Computing SH2/SH4/SH6 hierarchy…',
-        'Evaluating tariff competitiveness…',
-        'Mapping opportunities…',
-      ],
-      noData: 'Select a country to start Claude analysis',
-      aiReady: 'Claude operational',
-      aiNotReady: 'ANTHROPIC_API_KEY not set',
-      sources: 'Sources',
-    },
-  }[lang] || {
-    title: 'Analyse IA', subtitle: '', selectCountry: 'Pays', analyze: 'Analyser',
-    exportMode: 'Export', importMode: 'Import', industrialMode: 'Industriel',
-    loading: '…', steps: ['…'], noData: '—', aiReady: '✓', aiNotReady: '✗', sources: 'Sources',
-  };
 
   // Rotate loading step
   useEffect(() => {
     if (!loading) return;
-    const id = setInterval(() => setLoadingStep(s => (s + 1) % txt.steps.length), 2000);
+    const id = setInterval(() => setLoadingStep(s => (s + 1) % steps.length), 2000);
     return () => clearInterval(id);
-  }, [loading, txt.steps.length]);
+  }, [loading, steps.length]);
 
   // Health check
   useEffect(() => {
@@ -1072,10 +1023,10 @@ export default function AIAnalysis({ language = 'fr' }) {
             color: 'var(--text)',
             letterSpacing: '-0.01em',
           }}>
-            {txt.title}
+            {t('opportunities.aiAnalysis.title')}
           </h2>
         </div>
-        <p style={{ fontSize: 13, color: 'var(--afcfta-muted)' }}>{txt.subtitle}</p>
+        <p style={{ fontSize: 13, color: 'var(--afcfta-muted)' }}>{t('opportunities.aiAnalysis.subtitle')}</p>
 
         {/* AI status badge */}
         {aiHealthy !== null && (
@@ -1089,8 +1040,8 @@ export default function AIAnalysis({ language = 'fr' }) {
               border: `1px solid ${aiHealthy ? 'rgba(26,122,74,0.22)' : 'rgba(200,16,46,0.20)'}`,
             }}>
               {aiHealthy
-                ? <><CheckCircle style={{ width: 11, height: 11 }} />{txt.aiReady}</>
-                : <><AlertCircle style={{ width: 11, height: 11 }} />{txt.aiNotReady}</>}
+                ? <><CheckCircle style={{ width: 11, height: 11 }} />{t('opportunities.aiAnalysis.aiReady')}</>
+                : <><AlertCircle style={{ width: 11, height: 11 }} />{t('opportunities.aiAnalysis.aiNotReady')}</>}
             </span>
           </div>
         )}
@@ -1106,9 +1057,9 @@ export default function AIAnalysis({ language = 'fr' }) {
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               {[
-                { value: 'export', label: txt.exportMode, icon: TrendingUp },
-                { value: 'import', label: txt.importMode, icon: TrendingDown },
-                { value: 'industrial', label: txt.industrialMode, icon: Factory },
+                { value: 'export', label: t('opportunities.aiAnalysis.exportMode'), icon: TrendingUp },
+                { value: 'import', label: t('opportunities.aiAnalysis.importMode'), icon: TrendingDown },
+                { value: 'industrial', label: t('opportunities.aiAnalysis.industrialMode'), icon: Factory },
               ].map(({ value, label, icon: Icon }) => (
                 <button
                   key={value}
@@ -1141,11 +1092,11 @@ export default function AIAnalysis({ language = 'fr' }) {
           <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end' }}>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--afcfta-muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                {txt.selectCountry}
+                {t('opportunities.aiAnalysis.selectCountry')}
               </div>
               <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                 <SelectTrigger style={{ background: 'var(--afcfta-bg)', border: '1px solid var(--afcfta-border)', color: 'var(--text)' }}>
-                  <SelectValue placeholder={txt.selectCountry} />
+                  <SelectValue placeholder={t('opportunities.aiAnalysis.selectCountry')} />
                 </SelectTrigger>
                 <SelectContent>
                   {countries.map(c => (
@@ -1175,7 +1126,7 @@ export default function AIAnalysis({ language = 'fr' }) {
               {loading
                 ? <Loader2 style={{ width: 14, height: 14, animation: 'spin 1s linear infinite' }} />
                 : <Sparkles style={{ width: 14, height: 14 }} />}
-              {txt.analyze}
+              {t('opportunities.aiAnalysis.analyze')}
             </button>
           </div>
         </div>
@@ -1209,10 +1160,10 @@ export default function AIAnalysis({ language = 'fr' }) {
             </div>
           </div>
           <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--text)', marginBottom: 6 }}>
-            {txt.loading}
+            {t('opportunities.aiAnalysis.loading')}
           </div>
           <div style={{ fontSize: 13, color: 'var(--gold)', fontWeight: 500 }}>
-            {txt.steps[loadingStep]}
+            {steps[loadingStep]}
           </div>
         </div>
       )}
@@ -1347,7 +1298,6 @@ export default function AIAnalysis({ language = 'fr' }) {
             <TradeSankeyDiagram
               opportunities={data.opportunities.map(o => ({ ...o, country: data.country, exportingCountry: data.country }))}
               mode={mode}
-              language={lang}
             />
           )}
 
@@ -1377,7 +1327,7 @@ export default function AIAnalysis({ language = 'fr' }) {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <Info style={{ width: 13, height: 13 }} />
-                <span><strong>{txt.sources}:</strong> {data.sources.join(' · ')}</span>
+                <span><strong>{t('opportunities.aiAnalysis.sources')}:</strong> {data.sources.join(' · ')}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 {data.data_freshness && <DataFreshnessIndicator freshness={data.data_freshness} language={lang} />}
@@ -1401,7 +1351,7 @@ export default function AIAnalysis({ language = 'fr' }) {
           color: 'var(--afcfta-muted)',
         }}>
           <Sparkles style={{ width: 48, height: 48, margin: '0 auto 16px', opacity: 0.25, color: 'var(--gold)' }} />
-          <p style={{ fontSize: 14 }}>{txt.noData}</p>
+          <p style={{ fontSize: 14 }}>{t('opportunities.aiAnalysis.noData')}</p>
         </div>
       )}
 

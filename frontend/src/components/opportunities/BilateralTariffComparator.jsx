@@ -8,74 +8,36 @@ import { useHsLabel } from '../../hooks/useHsLabel';
 import OpportunityPdfExport from './OpportunityPdfExport';
 import { opportunityPdfFilename } from '../../utils/opportunityPdf';
 
-const TEXTS = {
-  fr: {
-    title: 'Comparateur tarifaire bilatéral',
-    subtitle: 'Traitement tarifaire d’un produit dans les deux sens d’une paire de pays',
-    countryA: 'Pays A',
-    countryB: 'Pays B',
-    hs6: 'Code produit (HS6)',
-    compare: 'Comparer',
-    loading: 'Comparaison…',
-    error: 'Impossible de comparer ces paramètres.',
-    sameCountry: 'Choisissez deux pays différents.',
-    flowAB: 'A → B (import par {b})',
-    flowBA: 'B → A (import par {a})',
-    mfn: 'Taux NPF',
-    zlecaf: 'Taux ZLECAf',
-    margin: 'Marge de préférence',
-    best: 'Préférence ZLECAf la plus forte',
-    equal: 'Préférence équivalente dans les deux sens',
-    placeholderHs6: 'ex. 520100',
-  },
-  en: {
-    title: 'Bilateral tariff comparator',
-    subtitle: 'How a product is taxed in both directions of a country pair',
-    countryA: 'Country A',
-    countryB: 'Country B',
-    hs6: 'Product code (HS6)',
-    compare: 'Compare',
-    loading: 'Comparing…',
-    error: 'Could not compare these parameters.',
-    sameCountry: 'Pick two different countries.',
-    flowAB: 'A → B (imported by {b})',
-    flowBA: 'B → A (imported by {a})',
-    mfn: 'MFN rate',
-    zlecaf: 'AfCFTA rate',
-    margin: 'Preference margin',
-    best: 'Strongest AfCFTA preference',
-    equal: 'Equivalent preference both ways',
-    placeholderHs6: 'e.g. 520100',
-  },
-};
 
-const DirectionCard = ({ title, flow, txt, highlight }) => (
-  <div
-    className={`rounded-lg p-4 border ${
-      highlight ? 'border-emerald-500/50 bg-emerald-500/5' : 'border-slate-700 bg-slate-900/50'
-    }`}
-  >
-    <p className="text-xs font-semibold text-slate-300 mb-3">{title}</p>
-    <div className="space-y-2">
-      <div className="flex justify-between text-sm">
-        <span className="text-slate-400">{txt.mfn}</span>
-        <span className="text-slate-200 font-medium">{flow.mfn_rate}%</span>
-      </div>
-      <div className="flex justify-between text-sm">
-        <span className="text-slate-400">{txt.zlecaf}</span>
-        <span className="text-emerald-400 font-medium">{flow.zlecaf_rate}%</span>
-      </div>
-      <div className="flex justify-between text-sm border-t border-slate-700 pt-2">
-        <span className="text-slate-300 font-semibold">{txt.margin}</span>
-        <span className="text-emerald-300 font-bold">{flow.preference_margin} pts</span>
+const DirectionCard = ({ title, flow, highlight }) => {
+  const { t } = useTranslation();
+  return (
+    <div
+      className={`rounded-lg p-4 border ${
+        highlight ? 'border-emerald-500/50 bg-emerald-500/5' : 'border-slate-700 bg-slate-900/50'
+      }`}
+    >
+      <p className="text-xs font-semibold text-slate-300 mb-3">{title}</p>
+      <div className="space-y-2">
+        <div className="flex justify-between text-sm">
+          <span className="text-slate-400">{t('opportunities.bilateralTariffComparator.mfn')}</span>
+          <span className="text-slate-200 font-medium">{flow.mfn_rate}%</span>
+        </div>
+        <div className="flex justify-between text-sm">
+          <span className="text-slate-400">{t('opportunities.bilateralTariffComparator.zlecaf')}</span>
+          <span className="text-emerald-400 font-medium">{flow.zlecaf_rate}%</span>
+        </div>
+        <div className="flex justify-between text-sm border-t border-slate-700 pt-2">
+          <span className="text-slate-300 font-semibold">{t('opportunities.bilateralTariffComparator.margin')}</span>
+          <span className="text-emerald-300 font-bold">{flow.preference_margin} pts</span>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const BilateralTariffComparator = ({ language = 'fr' }) => {
   const { t } = useTranslation();
-  const txt = TEXTS[language] || TEXTS.fr;
   const countries = getAllCountries(language === 'en' ? 'en' : 'fr');
   // Noms localisés (FR/EN) résolus côté frontend depuis l'ISO3 — l'API ne
   // renvoie que des libellés FR, donc on ne s'y fie pas pour l'affichage.
@@ -115,23 +77,23 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
     const flowSection = (label, flow) => ({
       title: label,
       keyValues: [
-        { label: txt.mfn, value: `${flow?.mfn_rate ?? '—'}%` },
-        { label: txt.zlecaf, value: `${flow?.zlecaf_rate ?? '—'}%` },
-        { label: txt.margin, value: `${flow?.preference_margin ?? '—'} pts` },
+        { label: t('opportunities.bilateralTariffComparator.mfn'), value: `${flow?.mfn_rate ?? '—'}%` },
+        { label: t('opportunities.bilateralTariffComparator.zlecaf'), value: `${flow?.zlecaf_rate ?? '—'}%` },
+        { label: t('opportunities.bilateralTariffComparator.margin'), value: `${flow?.preference_margin ?? '—'} pts` },
       ],
     });
     const bestText =
       result.best_preference_direction === 'equal'
         ? t('opportunities.bilateralTariffComparator.equalPreferenceBothDirections')
-        : `${txt.best}: ${result.best_preference_direction === 'a_to_b' ? `${nA} → ${nB}` : `${nB} → ${nA}`}`;
+        : `${t('opportunities.bilateralTariffComparator.best')}: ${result.best_preference_direction === 'a_to_b' ? `${nA} → ${nB}` : `${nB} → ${nA}`}`;
     return {
       badge: t('opportunities.bilateralTariffComparator.bilateralComparator'),
       title: `${nA} ⇄ ${nB} · SH6 ${hs6}`,
-      subtitle: txt.subtitle,
+      subtitle: t('opportunities.bilateralTariffComparator.subtitle'),
       sections: [
-        flowSection(fill(txt.flowAB, { a: nA, b: nB }), result.flow_a_to_b),
-        flowSection(fill(txt.flowBA, { a: nA, b: nB }), result.flow_b_to_a),
-        { title: txt.best, paragraphs: [bestText] },
+        flowSection(fill(t('opportunities.bilateralTariffComparator.flowAB'), { a: nA, b: nB }), result.flow_a_to_b),
+        flowSection(fill(t('opportunities.bilateralTariffComparator.flowBA'), { a: nA, b: nB }), result.flow_b_to_a),
+        { title: t('opportunities.bilateralTariffComparator.best'), paragraphs: [bestText] },
       ],
       source: t('opportunities.bilateralTariffComparator.nationalTariffsAfcftaSchedules'),
       filename: opportunityPdfFilename('Comparateur', `${result.country_a}_${result.country_b}_${hs6}`),
@@ -144,16 +106,16 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <CardTitle className="flex items-center gap-2 text-white">
             <Scale className="w-5 h-5 text-emerald-400" />
-            {txt.title}
+            {t('opportunities.bilateralTariffComparator.title')}
           </CardTitle>
           {result && <OpportunityPdfExport getSpec={buildPdfSpec} language={language} />}
         </div>
-        <p className="text-sm text-slate-400">{txt.subtitle}</p>
+        <p className="text-sm text-slate-400">{t('opportunities.bilateralTariffComparator.subtitle')}</p>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-semibold text-slate-400">{txt.countryA}</span>
+            <span className="text-xs font-semibold text-slate-400">{t('opportunities.bilateralTariffComparator.countryA')}</span>
             <select
               value={a}
               onChange={(e) => setA(e.target.value)}
@@ -169,7 +131,7 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
           </label>
 
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-semibold text-slate-400">{txt.countryB}</span>
+            <span className="text-xs font-semibold text-slate-400">{t('opportunities.bilateralTariffComparator.countryB')}</span>
             <select
               value={b}
               onChange={(e) => setB(e.target.value)}
@@ -185,11 +147,11 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
           </label>
 
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-semibold text-slate-400">{txt.hs6}</span>
+            <span className="text-xs font-semibold text-slate-400">{t('opportunities.bilateralTariffComparator.hs6')}</span>
             <input
               value={hs6}
               onChange={(e) => setHs6(e.target.value.replace(/\D/g, '').slice(0, 6))}
-              placeholder={txt.placeholderHs6}
+              placeholder={t('opportunities.bilateralTariffComparator.placeholderHs6')}
               inputMode="numeric"
               className="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white"
             />
@@ -204,7 +166,7 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
         {sameCountry && (
           <p className="text-amber-400 text-xs flex items-center gap-1">
             <Info className="w-3.5 h-3.5" />
-            {txt.sameCountry}
+            {t('opportunities.bilateralTariffComparator.sameCountry')}
           </p>
         )}
 
@@ -214,13 +176,13 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold"
         >
           <ArrowLeftRight className="w-4 h-4" />
-          {loading ? txt.loading : txt.compare}
+          {loading ? t('opportunities.bilateralTariffComparator.loading') : t('opportunities.bilateralTariffComparator.compare')}
         </button>
 
         {error && (
           <div className="flex items-center gap-2 text-red-400 text-sm">
             <Info className="w-4 h-4" />
-            {txt.error}
+            {t('opportunities.bilateralTariffComparator.error')}
           </div>
         )}
 
@@ -228,15 +190,13 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <DirectionCard
-                title={fill(txt.flowAB, { a: nameOf(result.country_a), b: nameOf(result.country_b) })}
+                title={fill(t('opportunities.bilateralTariffComparator.flowAB'), { a: nameOf(result.country_a), b: nameOf(result.country_b) })}
                 flow={result.flow_a_to_b}
-                txt={txt}
                 highlight={result.best_preference_direction === 'a_to_b'}
               />
               <DirectionCard
-                title={fill(txt.flowBA, { a: nameOf(result.country_a), b: nameOf(result.country_b) })}
+                title={fill(t('opportunities.bilateralTariffComparator.flowBA'), { a: nameOf(result.country_a), b: nameOf(result.country_b) })}
                 flow={result.flow_b_to_a}
-                txt={txt}
                 highlight={result.best_preference_direction === 'b_to_a'}
               />
             </div>
@@ -244,8 +204,8 @@ const BilateralTariffComparator = ({ language = 'fr' }) => {
               <TrendingDown className="w-4 h-4 text-emerald-400" />
               <span className="text-slate-300">
                 {result.best_preference_direction === 'equal'
-                  ? txt.equal
-                  : `${txt.best}: ${
+                  ? t('opportunities.bilateralTariffComparator.equal')
+                  : `${t('opportunities.bilateralTariffComparator.best')}: ${
                       result.best_preference_direction === 'a_to_b'
                         ? `${nameOf(result.country_a)} → ${nameOf(result.country_b)}`
                         : `${nameOf(result.country_b)} → ${nameOf(result.country_a)}`

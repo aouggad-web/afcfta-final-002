@@ -203,40 +203,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
     fetchData();
   }, [language]);
 
-  const texts = {
-    fr: {
-      title: "Résumé des Opportunités Commerciales",
-      subtitle: "Vue agrégée du potentiel commercial intra-africain",
-      totalOpportunities: "Opportunités Identifiées",
-      totalPotentialValue: "Commerce Total Africain",
-      intraAfricanTrade: "Commerce Intra-Africain",
-      afcftaCountries: "Pays ZLECAf",
-      topPartners: "Principaux Partenaires",
-      topProducts: "Secteurs Clés",
-      opportunities: "opportunités",
-      tradeVolume: "Commerce (Md$)",
-      aiGenerated: "Données réelles",
-      sectorsUnavailable: "Données sectorielles continentales indisponibles",
-      source: "Sources: IMF DOTS 2024, UNCTAD 2024, Base de données ZLECAf"
-    },
-    en: {
-      title: "Trade Opportunities Summary",
-      subtitle: "Aggregate view of intra-African trade potential",
-      totalOpportunities: "Identified Opportunities",
-      totalPotentialValue: "Total African Trade",
-      intraAfricanTrade: "Intra-African Trade",
-      afcftaCountries: "AfCFTA Countries",
-      topPartners: "Top Partners",
-      topProducts: "Key Sectors",
-      opportunities: "opportunities",
-      tradeVolume: "Trade (B$)",
-      aiGenerated: "Real data",
-      sectorsUnavailable: "Continental sector data unavailable",
-      source: "Sources: IMF DOTS 2024, UNCTAD 2024, AfCFTA Database"
-    }
-  };
 
-  const txt = texts[language] || texts.fr;
 
   if (loading) {
     return (
@@ -265,12 +232,12 @@ export default function OpportunitySummary({ language = 'fr' }) {
     const fr = language !== 'en';
     return {
       badge: t('opportunities.opportunitySummary.overview'),
-      title: txt.title,
-      subtitle: txt.subtitle,
+      title: t('opportunities.opportunitySummary.title'),
+      subtitle: t('opportunities.opportunitySummary.subtitle'),
       kpis: [
-        { label: txt.totalOpportunities, value: data.totalOpportunities?.toLocaleString() ?? '—', sub: data.yearlyGrowth || undefined, accent: 'gold' },
-        { label: txt.totalPotentialValue, value: formatValue(data.totalPotentialValue), accent: 'green' },
-        { label: txt.intraAfricanTrade || t('opportunities.opportunitySummary.intraAfricanTrade'), value: data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—', accent: 'terra' },
+        { label: t('opportunities.opportunitySummary.totalOpportunities'), value: data.totalOpportunities?.toLocaleString() ?? '—', sub: data.yearlyGrowth || undefined, accent: 'gold' },
+        { label: t('opportunities.opportunitySummary.totalPotentialValue'), value: formatValue(data.totalPotentialValue), accent: 'green' },
+        { label: t('opportunities.opportunitySummary.intraAfricanTrade') || t('opportunities.opportunitySummary.intraAfricanTrade'), value: data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—', accent: 'terra' },
         { label: t('opportunities.opportunitySummary.afcftaCountries'), value: String(data.afcftaCountries ?? '—'), accent: 'gold' },
       ],
       sections: [
@@ -296,7 +263,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
           },
         },
       ].filter(Boolean),
-      source: data.sources ? data.sources.join(', ') : txt.source,
+      source: data.sources ? data.sources.join(', ') : t('opportunities.opportunitySummary.source'),
       filename: opportunityPdfFilename('VueEnsemble'),
     };
   };
@@ -306,14 +273,14 @@ export default function OpportunitySummary({ language = 'fr' }) {
       {/* Header */}
       <div className="text-center">
         <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">
-          {txt.title}
+          {t('opportunities.opportunitySummary.title')}
         </h2>
-        <p className="text-slate-500 mt-2">{txt.subtitle}</p>
+        <p className="text-slate-500 mt-2">{t('opportunities.opportunitySummary.subtitle')}</p>
         <div className="mt-2 flex items-center justify-center gap-3 flex-wrap">
           {isAiGenerated && (
             <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">
               <Sparkles className="h-3 w-3 mr-1" />
-              {txt.aiGenerated}
+              {t('opportunities.opportunitySummary.aiGenerated')}
             </Badge>
           )}
           <OpportunityPdfExport getSpec={buildPdfSpec} language={language} />
@@ -323,26 +290,26 @@ export default function OpportunitySummary({ language = 'fr' }) {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <StatCard
-          title={txt.totalOpportunities}
+          title={t('opportunities.opportunitySummary.totalOpportunities')}
           value={data.totalOpportunities.toLocaleString()}
           icon={TrendingUp}
           trend={data.yearlyGrowth}
           color="emerald"
         />
         <StatCard
-          title={txt.totalPotentialValue}
+          title={t('opportunities.opportunitySummary.totalPotentialValue')}
           value={formatValue(data.totalPotentialValue)}
           icon={DollarSign}
           color="blue"
         />
         <StatCard
-          title={txt.intraAfricanTrade}
+          title={t('opportunities.opportunitySummary.intraAfricanTrade')}
           value={data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—'}
           icon={Globe}
           color="purple"
         />
         <StatCard
-          title={txt.afcftaCountries}
+          title={t('opportunities.opportunitySummary.afcftaCountries')}
           value={data.afcftaCountries.toString()}
           icon={Package}
           color="orange"
@@ -355,7 +322,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
         <Card className="shadow-lg border-slate-200">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-black uppercase tracking-widest text-slate-400">
-              {txt.topPartners}
+              {t('opportunities.opportunitySummary.topPartners')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -374,7 +341,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
                   width={90} 
                   interval={0} 
                 />
-                <Tooltip content={<CustomTooltip valueLabel={txt.tradeVolume} />} cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }} />
+                <Tooltip content={<CustomTooltip valueLabel={t('opportunities.opportunitySummary.tradeVolume')} />} cursor={{ fill: 'rgba(16, 185, 129, 0.05)' }} />
                 <Bar dataKey="value" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
               </BarChart>
             </ResponsiveContainer>
@@ -385,7 +352,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
         <Card className="shadow-lg border-slate-200">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-black uppercase tracking-widest text-slate-400">
-              {txt.topProducts}
+              {t('opportunities.opportunitySummary.topProducts')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -406,14 +373,14 @@ export default function OpportunitySummary({ language = 'fr' }) {
                       {product.name}
                     </span>
                     <span className="font-black text-[10px] bg-emerald-50 text-emerald-600 px-2 py-1 rounded-md uppercase whitespace-nowrap">
-                      {product.count} {txt.opportunities}
+                      {product.count} {t('opportunities.opportunitySummary.opportunities')}
                     </span>
                   </li>
                 ))}
               </ul>
             ) : (
               <div className="flex items-center justify-center h-[260px] text-sm text-slate-400 text-center px-6">
-                {txt.sectorsUnavailable}
+                {t('opportunities.opportunitySummary.sectorsUnavailable')}
               </div>
             )}
           </CardContent>
@@ -423,7 +390,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
       {/* Source Footer with Data Freshness */}
       <div className="flex items-center justify-center gap-4 flex-wrap">
         <p className="text-xs text-slate-400 italic">
-          {data.sources ? data.sources.join(', ') : txt.source}
+          {data.sources ? data.sources.join(', ') : t('opportunities.opportunitySummary.source')}
         </p>
         <DataFreshnessIndicator 
           freshness={dataFreshness} 

@@ -4,6 +4,7 @@
  * Adapted from AI Studio app with real data integration
  */
 import React, { useMemo, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   ResponsiveContainer, 
   Sankey, 
@@ -51,22 +52,8 @@ const formatValue = (value) => {
 };
 
 // Custom Tooltip
-const CustomSankeyTooltip = ({ active, payload, language = 'fr' }) => {
-  const texts = {
-    fr: {
-      from: 'De',
-      to: 'Vers',
-      value: 'Valeur',
-      potential: 'Potentiel'
-    },
-    en: {
-      from: 'From',
-      to: 'To',
-      value: 'Value',
-      potential: 'Potential'
-    }
-  };
-  const t = texts[language] || texts.fr;
+const CustomSankeyTooltip = ({ active, payload }) => {
+  const { t } = useTranslation();
 
   if (active && payload && payload.length) {
     const { source, target, value } = payload[0];
@@ -84,7 +71,7 @@ const CustomSankeyTooltip = ({ active, payload, language = 'fr' }) => {
           </span>
         </div>
         <p className="font-semibold text-emerald-600 dark:text-emerald-400">
-          {t.value}: {formatValue(value)}
+          {t('opportunities.tradeSankeyDiagram.value')}: {formatValue(value)}
         </p>
       </div>
     );
@@ -158,9 +145,9 @@ const CustomSankeyNode = (props) => {
 export default function TradeSankeyDiagram({ 
   opportunities = [], 
   mode = 'export',
-  language = 'fr',
   onFilterChange
 }) {
+  const { t } = useTranslation();
   const [valueType, setValueType] = useState('potential'); // potential or current
   const [activeFilters, setActiveFilters] = useState({
     source: '',
@@ -168,33 +155,6 @@ export default function TradeSankeyDiagram({
     target: ''
   });
 
-  const texts = {
-    fr: {
-      title: 'Flux Commerciaux',
-      subtitle: 'Visualisation des opportunités',
-      noData: 'Aucune donnée à visualiser',
-      filterTip: 'Cliquez sur un nœud pour filtrer',
-      clearFilters: 'Réinitialiser',
-      potential: 'Potentiel',
-      current: 'Actuel',
-      source: 'Source',
-      product: 'Produit',
-      destination: 'Destination'
-    },
-    en: {
-      title: 'Trade Flows',
-      subtitle: 'Opportunities visualization',
-      noData: 'No data to display',
-      filterTip: 'Click a node to filter',
-      clearFilters: 'Reset',
-      potential: 'Potential',
-      current: 'Current',
-      source: 'Source',
-      product: 'Product',
-      destination: 'Destination'
-    }
-  };
-  const t = texts[language] || texts.fr;
 
   const hasAnyFilter = activeFilters.source || activeFilters.product || activeFilters.target;
 
@@ -316,7 +276,7 @@ export default function TradeSankeyDiagram({
           <div className="text-slate-400 mb-4">
             <Filter className="h-12 w-12 mx-auto opacity-50" />
           </div>
-          <p className="text-slate-500 italic mb-4">{t.noData}</p>
+          <p className="text-slate-500 italic mb-4">{t('opportunities.tradeSankeyDiagram.noData')}</p>
           {hasAnyFilter && (
             <Button
               variant="outline"
@@ -325,7 +285,7 @@ export default function TradeSankeyDiagram({
               className="text-xs"
             >
               <RotateCcw className="h-3 w-3 mr-2" />
-              {t.clearFilters}
+              {t('opportunities.tradeSankeyDiagram.clearFilters')}
             </Button>
           )}
         </CardContent>
@@ -338,8 +298,8 @@ export default function TradeSankeyDiagram({
       <CardHeader className="pb-2">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <CardTitle className="text-lg font-bold">{t.title}</CardTitle>
-            <p className="text-sm text-slate-500">{t.subtitle}</p>
+            <CardTitle className="text-lg font-bold">{t('opportunities.tradeSankeyDiagram.title')}</CardTitle>
+            <p className="text-sm text-slate-500">{t('opportunities.tradeSankeyDiagram.subtitle')}</p>
           </div>
           
           {/* Value type toggle */}
@@ -353,7 +313,7 @@ export default function TradeSankeyDiagram({
                     : 'text-slate-600 hover:bg-slate-100'
                 }`}
               >
-                {t.potential}
+                {t('opportunities.tradeSankeyDiagram.potential')}
               </button>
               <button
                 onClick={() => setValueType('current')}
@@ -363,7 +323,7 @@ export default function TradeSankeyDiagram({
                     : 'text-slate-600 hover:bg-slate-100'
                 }`}
               >
-                {t.current}
+                {t('opportunities.tradeSankeyDiagram.current')}
               </button>
             </div>
           </div>
@@ -373,7 +333,7 @@ export default function TradeSankeyDiagram({
         <div className="flex flex-wrap gap-2 mt-3">
           {activeFilters.source && (
             <Badge variant="secondary" className="bg-blue-100 text-blue-700 gap-1">
-              {t.source}: {activeFilters.source}
+              {t('opportunities.tradeSankeyDiagram.source')}: {activeFilters.source}
               <button onClick={() => handleNodeClick('source', activeFilters.source)}>
                 <X className="h-3 w-3" />
               </button>
@@ -381,7 +341,7 @@ export default function TradeSankeyDiagram({
           )}
           {activeFilters.product && (
             <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 gap-1">
-              {t.product}: {activeFilters.product.substring(0, 20)}...
+              {t('opportunities.tradeSankeyDiagram.product')}: {activeFilters.product.substring(0, 20)}...
               <button onClick={() => handleNodeClick('product', activeFilters.product)}>
                 <X className="h-3 w-3" />
               </button>
@@ -389,7 +349,7 @@ export default function TradeSankeyDiagram({
           )}
           {activeFilters.target && (
             <Badge variant="secondary" className="bg-orange-100 text-orange-700 gap-1">
-              {t.destination}: {activeFilters.target}
+              {t('opportunities.tradeSankeyDiagram.destination')}: {activeFilters.target}
               <button onClick={() => handleNodeClick('target', activeFilters.target)}>
                 <X className="h-3 w-3" />
               </button>
@@ -403,11 +363,11 @@ export default function TradeSankeyDiagram({
               className="h-6 px-2 text-xs text-slate-500"
             >
               <RotateCcw className="h-3 w-3 mr-1" />
-              {t.clearFilters}
+              {t('opportunities.tradeSankeyDiagram.clearFilters')}
             </Button>
           )}
           {!hasAnyFilter && (
-            <span className="text-xs text-slate-400 italic">{t.filterTip}</span>
+            <span className="text-xs text-slate-400 italic">{t('opportunities.tradeSankeyDiagram.filterTip')}</span>
           )}
         </div>
       </CardHeader>
@@ -422,7 +382,7 @@ export default function TradeSankeyDiagram({
               margin={{ top: 10, right: 120, bottom: 10, left: 120 }}
               link={{ stroke: '#cbd5e1', strokeOpacity: 0.3 }}
             >
-              <Tooltip content={<CustomSankeyTooltip language={language} />} />
+              <Tooltip content={<CustomSankeyTooltip />} />
             </Sankey>
           </ResponsiveContainer>
         </div>
@@ -431,15 +391,15 @@ export default function TradeSankeyDiagram({
         <div className="flex justify-center gap-6 mt-4 text-xs">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded bg-blue-500"></div>
-            <span className="text-slate-600">{t.source}</span>
+            <span className="text-slate-600">{t('opportunities.tradeSankeyDiagram.source')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded bg-emerald-500"></div>
-            <span className="text-slate-600">{t.product}</span>
+            <span className="text-slate-600">{t('opportunities.tradeSankeyDiagram.product')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded bg-orange-500"></div>
-            <span className="text-slate-600">{t.destination}</span>
+            <span className="text-slate-600">{t('opportunities.tradeSankeyDiagram.destination')}</span>
           </div>
         </div>
       </CardContent>

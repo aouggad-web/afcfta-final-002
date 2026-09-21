@@ -234,7 +234,7 @@ const StageFlow = ({ stages, language, color }) => {
 };
 
 // HS6 Search Result Panel
-const HS6SearchResult = ({ result, language, onClear }) => {
+const HS6SearchResult = ({ result, onClear }) => {
   const { t } = useTranslation();
   const product = result.product || {};
   const summary = result.african_trade_summary || {};
@@ -262,41 +262,6 @@ const HS6SearchResult = ({ result, language, onClear }) => {
   const trendIcon = (t) => t === 'growing' ? '↑' : t === 'declining' ? '↓' : '→';
   const trendColor = (t) => t === 'growing' ? 'text-emerald-600' : t === 'declining' ? 'text-red-500' : 'text-slate-500';
 
-  const titles = {
-    fr: {
-      product: 'Produit analysé',
-      exports: 'Export africain total',
-      imports: 'Import africain total',
-      intra: 'Commerce intra-africain',
-      exporters: 'Principaux exportateurs africains',
-      importers: 'Principaux importateurs africains',
-      capacities: 'Capacités de production',
-      score: 'Score opportunité ZLECAf',
-      fastGrow: 'Croissance la plus rapide',
-      dependency: 'Dépendance import principale',
-      certs: 'Certifications requises',
-      notes: 'Analyse',
-      close: 'Fermer la recherche',
-      substitutes: 'Produits liés',
-    },
-    en: {
-      product: 'Analyzed product',
-      exports: 'Total African exports',
-      imports: 'Total African imports',
-      intra: 'Intra-African trade',
-      exporters: 'Top African exporters',
-      importers: 'Top African importers',
-      capacities: 'Production capacities',
-      score: 'AfCFTA opportunity score',
-      fastGrow: 'Fastest growing',
-      dependency: 'Main import dependency',
-      certs: 'Required certifications',
-      notes: 'Analysis',
-      close: 'Close search',
-      substitutes: 'Related products',
-    },
-  };
-  const txt = titles[language] || titles.fr;
 
   return (
     <div className="border-2 border-emerald-400 rounded-2xl overflow-hidden shadow-xl bg-white">
@@ -305,7 +270,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         <div className="flex items-center gap-3">
           <PackageSearch className="h-6 w-6" />
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-200">{txt.product}</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-200">{t('opportunities.valueChains.product')}</p>
             <h3 className="font-black text-lg leading-tight">
               {product.hs6Name || product.description || `HS ${product.hs6Code}`}
             </h3>
@@ -317,7 +282,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         <button
           onClick={onClear}
           className="p-2 rounded-full hover:bg-white/20 transition-colors"
-          title={txt.close}
+          title={t('opportunities.valueChains.close')}
         >
           <X className="h-5 w-5" />
         </button>
@@ -327,9 +292,9 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         {/* Trade summary stats */}
         <div className="grid grid-cols-3 gap-4">
           {[
-            { label: txt.exports, value: summary.total_african_exports_musd, icon: Globe, color: 'text-emerald-600' },
-            { label: txt.imports, value: summary.total_african_imports_musd, icon: BarChart3, color: 'text-blue-600' },
-            { label: txt.intra, value: summary.intra_african_trade_musd, icon: ArrowRight, color: 'text-purple-600' },
+            { label: t('opportunities.valueChains.exports'), value: summary.total_african_exports_musd, icon: Globe, color: 'text-emerald-600' },
+            { label: t('opportunities.valueChains.imports'), value: summary.total_african_imports_musd, icon: BarChart3, color: 'text-blue-600' },
+            { label: t('opportunities.valueChains.intra'), value: summary.intra_african_trade_musd, icon: ArrowRight, color: 'text-purple-600' },
           ].map(({ label, value, icon: Icon, color }) => (
             <div key={label} className="text-center p-3 bg-slate-50 rounded-xl border border-slate-200">
               <Icon className={`h-5 w-5 mx-auto mb-1 ${color}`} />
@@ -350,7 +315,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
               {score.toFixed(1)}
             </div>
             <div className="flex-1">
-              <p className="font-bold text-slate-800">{txt.score} <span className="font-normal text-slate-500">/ 10</span></p>
+              <p className="font-bold text-slate-800">{t('opportunities.valueChains.score')} <span className="font-normal text-slate-500">/ 10</span></p>
               {trends.notes && <p className="text-sm text-slate-600 mt-0.5">{trends.notes}</p>}
               <div className="flex flex-wrap gap-3 mt-1 text-xs">
                 {trends.fastest_growing_exporter && (
@@ -368,7 +333,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {exporters.length > 0 && (
             <div>
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{txt.exporters}</h4>
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t('opportunities.valueChains.exporters')}</h4>
               <div className="space-y-2">
                 {exporters.slice(0, 5).map((exp, i) => (
                   <div key={exp.iso3 || i} className="flex items-center gap-2">
@@ -395,7 +360,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
 
           {importers.length > 0 && (
             <div>
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{txt.importers}</h4>
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t('opportunities.valueChains.importers')}</h4>
               <div className="space-y-2">
                 {importers.slice(0, 5).map((imp, i) => (
                   <div key={imp.iso3 || i} className="flex items-center gap-2">
@@ -466,7 +431,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         {/* Production capacities */}
         {capacities.length > 0 && (
           <div>
-            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{txt.capacities}</h4>
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t('opportunities.valueChains.capacities')}</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {capacities.slice(0, 6).map((cap, i) => (
                 <div key={cap.iso3 || i} className="p-2 bg-slate-50 rounded-lg border border-slate-200">
@@ -483,7 +448,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         {(specs.key_certifications?.length > 0 || specs.quality_standards?.length > 0) && (
           <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl">
             <h4 className="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1 mb-2">
-              <Award className="h-3 w-3" /> {txt.certs}
+              <Award className="h-3 w-3" /> {t('opportunities.valueChains.certs')}
             </h4>
             <div className="flex flex-wrap gap-2">
               {[...(specs.key_certifications || []), ...(specs.quality_standards || [])].map((c, i) => (
@@ -501,7 +466,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         {/* Related products */}
         {(result.substitutes || []).length > 0 && (
           <div>
-            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{txt.substitutes}</h4>
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t('opportunities.valueChains.substitutes')}</h4>
             <div className="flex flex-wrap gap-2">
               {(result.substitutes || []).map((s, i) => (
                 <Badge key={i} variant="outline" className="text-xs">
@@ -630,60 +595,7 @@ export default function ValueChains({ language = 'fr' }) {
     }
   };
 
-  const texts = {
-    fr: {
-      title: "Chaînes de Valeur Africaines",
-      subtitle: "Analyse des opportunités de transformation industrielle et d'intégration régionale",
-      selectChain: "Sélectionnez une chaîne de valeur",
-      stagesTitle: "Étapes de la Chaîne de Valeur",
-      topProducers: "Principaux Producteurs",
-      valueAddedPotential: "Potentiel de Valeur Ajoutée",
-      intraAfricanTrade: "Commerce Intra-Africain",
-      globalExports: "Exportations Mondiales",
-      production: "Production (tonnes)",
-      share: "Part (%)",
-      opportunities: "Opportunités ZLECAf",
-      aiGenerated: "Données enrichies par IA",
-      source: "Sources: FAOSTAT 2024, UNCTAD 2024, ITC Trade Map, Données sectorielles",
-      searchPlaceholder: "Entrez un code SH (ex: 090111, 1801, 72)",
-      searchBtn: "Analyser",
-      searchTitle: "Recherche par code SH",
-      searchSub: "Analysez n'importe quel produit : chaîne de valeur, opportunités ZLECAf, marchés africains",
-      roleLabels: {
-        raw_material: "Producteur de matière première",
-        processor: "Transformateur (pas producteur primaire)",
-        manufacturer: "Fabricant",
-        exporter: "Hub d'exportation/réexport (pas producteur primaire)"
-      }
-    },
-    en: {
-      title: "African Value Chains",
-      subtitle: "Analysis of industrial transformation and regional integration opportunities",
-      selectChain: "Select a value chain",
-      stagesTitle: "Value Chain Stages",
-      topProducers: "Top Producers",
-      valueAddedPotential: "Value Added Potential",
-      intraAfricanTrade: "Intra-African Trade",
-      globalExports: "Global Exports",
-      production: "Production (tonnes)",
-      share: "Share (%)",
-      opportunities: "AfCFTA Opportunities",
-      aiGenerated: "AI-enhanced data",
-      source: "Sources: FAOSTAT 2024, UNCTAD 2024, ITC Trade Map, Sector data",
-      searchPlaceholder: "Enter HS code (e.g. 090111, 1801, 72)",
-      searchBtn: "Analyze",
-      searchTitle: "Search by HS code",
-      searchSub: "Analyze any product: value chain, AfCFTA opportunities, African markets",
-      roleLabels: {
-        raw_material: "Raw material producer",
-        processor: "Processor (not a primary producer)",
-        manufacturer: "Manufacturer",
-        exporter: "Export/re-export hub (not a primary producer)"
-      }
-    }
-  };
 
-  const txt = texts[language] || texts.fr;
   const chain = valueChains[selectedChain];
 
   if (loading) {
@@ -702,14 +614,14 @@ export default function ValueChains({ language = 'fr' }) {
         <div className="flex items-center justify-center gap-3 mb-2">
           <Layers className="h-8 w-8 text-emerald-600" />
           <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">
-            {txt.title}
+            {t('opportunities.valueChains.title')}
           </h2>
         </div>
-        <p className="text-slate-500">{txt.subtitle}</p>
+        <p className="text-slate-500">{t('opportunities.valueChains.subtitle')}</p>
         {isAiGenerated && (
           <Badge className="mt-2 bg-purple-100 text-purple-700 border-purple-200">
             <Sparkles className="h-3 w-3 mr-1" />
-            {txt.aiGenerated}
+            {t('opportunities.valueChains.aiGenerated')}
           </Badge>
         )}
       </div>
@@ -718,15 +630,15 @@ export default function ValueChains({ language = 'fr' }) {
       <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 shadow-xl">
         <div className="flex items-center gap-2 mb-1">
           <Search className="h-5 w-5 text-emerald-400" />
-          <h3 className="font-bold text-white">{txt.searchTitle}</h3>
+          <h3 className="font-bold text-white">{t('opportunities.valueChains.searchTitle')}</h3>
         </div>
-        <p className="text-slate-400 text-sm mb-4">{txt.searchSub}</p>
+        <p className="text-slate-400 text-sm mb-4">{t('opportunities.valueChains.searchSub')}</p>
         <form onSubmit={handleHsSearch} className="flex gap-2">
           <input
             type="text"
             value={hsQuery}
             onChange={(e) => { setHsQuery(e.target.value); setHsSearchError(null); }}
-            placeholder={txt.searchPlaceholder}
+            placeholder={t('opportunities.valueChains.searchPlaceholder')}
             maxLength={8}
             className="flex-1 px-4 py-2.5 rounded-xl bg-slate-700 border border-slate-600 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm font-mono tracking-widest"
           />
@@ -739,7 +651,7 @@ export default function ValueChains({ language = 'fr' }) {
               ? <Loader2 className="h-4 w-4 animate-spin" />
               : <Search className="h-4 w-4" />
             }
-            {txt.searchBtn}
+            {t('opportunities.valueChains.searchBtn')}
           </button>
         </form>
         {hsQueryLabel && !hsSearchError && (
@@ -784,7 +696,6 @@ export default function ValueChains({ language = 'fr' }) {
       {hsSearchResult && !hsSearchLoading && (
         <HS6SearchResult
           result={hsSearchResult}
-          language={language}
           onClear={() => { setHsSearchResult(null); setHsQuery(''); }}
         />
       )}
@@ -792,7 +703,7 @@ export default function ValueChains({ language = 'fr' }) {
       {/* Value Chain Selection Grid */}
       <div>
         <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
-          {txt.selectChain}
+          {t('opportunities.valueChains.selectChain')}
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {Object.values(valueChains).map((vc) => (
@@ -839,9 +750,9 @@ export default function ValueChains({ language = 'fr' }) {
                     title: chainName,
                     subtitle: `HS ${chain.hsCode || chain.hs_code} · ${t('opportunities.valueChains.intraAfricanPotential')}: $${chain.intraAfricanPotential || chain.intra_african_potential_musd}M`,
                     sections: [
-                      stages.length && { title: txt.stagesTitle, paragraphs: stages },
+                      stages.length && { title: t('opportunities.valueChains.stagesTitle'), paragraphs: stages },
                       producers.length && {
-                        title: txt.topProducers,
+                        title: t('opportunities.valueChains.topProducers'),
                         table: {
                           columns: [
                             { key: 'country', label: t('opportunities.valueChains.country'), width: 2 },
@@ -864,7 +775,7 @@ export default function ValueChains({ language = 'fr' }) {
             {/* Stages Flow */}
             <div>
               <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
-                {txt.stagesTitle}
+                {t('opportunities.valueChains.stagesTitle')}
               </h3>
               <StageFlow stages={chain.stages || []} language={language} color={chain.color} />
             </div>
@@ -874,7 +785,7 @@ export default function ValueChains({ language = 'fr' }) {
               {/* Top Producers */}
               <div>
                 <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
-                  {txt.topProducers}
+                  {t('opportunities.valueChains.topProducers')}
                 </h3>
                 <div className="space-y-3">
                   {(chain.topProducers || chain.top_producers || []).map((producer, idx) => {
@@ -890,9 +801,9 @@ export default function ValueChains({ language = 'fr' }) {
                             {isNotPrimaryProducer && (
                               <span
                                 className="text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded bg-amber-100 text-amber-700"
-                                title={txt.roleLabels?.[role]}
+                                title={t(`opportunities.valueChains.roleLabels.${role}`, { defaultValue: role })}
                               >
-                                {txt.roleLabels?.[role] || role}
+                                {t(`opportunities.valueChains.roleLabels.${role}`, { defaultValue: role })}
                               </span>
                             )}
                           </span>
@@ -917,14 +828,14 @@ export default function ValueChains({ language = 'fr' }) {
               {/* Trade Potential Chart */}
               <div>
                 <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4">
-                  {txt.valueAddedPotential}
+                  {t('opportunities.valueChains.valueAddedPotential')}
                 </h3>
                 <ResponsiveContainer width="100%" height={200}>
                   <PieChart>
                     <Pie
                       data={[
-                        { name: txt.intraAfricanTrade, value: chain.intraAfricanPotential || chain.intra_african_potential_musd || 0 },
-                        { name: txt.globalExports, value: (chain.globalExports || chain.global_exports_musd || 0) - (chain.intraAfricanPotential || chain.intra_african_potential_musd || 0) }
+                        { name: t('opportunities.valueChains.intraAfricanTrade'), value: chain.intraAfricanPotential || chain.intra_african_potential_musd || 0 },
+                        { name: t('opportunities.valueChains.globalExports'), value: (chain.globalExports || chain.global_exports_musd || 0) - (chain.intraAfricanPotential || chain.intra_african_potential_musd || 0) }
                       ]}
                       cx="50%"
                       cy="50%"
@@ -953,7 +864,7 @@ export default function ValueChains({ language = 'fr' }) {
               <CardContent className="p-4">
                 <h4 className="font-bold text-emerald-800 flex items-center gap-2 mb-2">
                   <TrendingUp className="h-5 w-5" />
-                  {txt.opportunities}
+                  {t('opportunities.valueChains.opportunities')}
                 </h4>
                 <ul className="text-sm text-emerald-700 space-y-1">
                   {(chain.afcftaOpportunities && chain.afcftaOpportunities.length > 0) ? (
@@ -977,7 +888,7 @@ export default function ValueChains({ language = 'fr' }) {
 
       {/* Source Footer */}
       <div className="text-center">
-        <p className="text-xs text-slate-400 italic">{txt.source}</p>
+        <p className="text-xs text-slate-400 italic">{t('opportunities.valueChains.source')}</p>
       </div>
     </div>
   );

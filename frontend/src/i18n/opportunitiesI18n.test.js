@@ -73,10 +73,16 @@ describe('module Opportunités — les libellés sont passés à i18n', () => {
   });
 
   it('chaque clé appelée par le code existe dans la locale de référence', () => {
+    // Une clé peut manquer de deux façons. La seconde est la plus sournoise :
+    // elle EXISTE mais désigne une BRANCHE, parce qu'un espace de noms a
+    // recouvert un libellé de même nom. i18next rend alors la clé brute à
+    // l'écran, sans rien casser. Exiger une feuille attrape les deux.
     const missing = [];
+    const isLeaf = (v) =>
+      typeof v === 'string' || (Array.isArray(v) && v.every((x) => typeof x === 'string'));
     SOURCES.forEach(({ file, code }) => {
       for (const match of code.matchAll(KEY_CALL)) {
-        if (typeof lookup(fr, match[1]) !== 'string') {
+        if (!isLeaf(lookup(fr, match[1]))) {
           const line = code.slice(0, match.index).split('\n').length;
           missing.push(`${file}:${line} — ${match[1]}`);
         }

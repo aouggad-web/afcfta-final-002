@@ -148,35 +148,19 @@ const DataBarChart = ({ data, barColor, title, valueKey = 'tradeValue' }) => {
 };
 
 // Market Share Trend Chart
-const MarketShareTrendChart = ({ trends, language }) => {
+const MarketShareTrendChart = ({ trends }) => {
+  const { t } = useTranslation();
   if (!trends || trends.length === 0) return null;
 
-  const texts = {
-    fr: {
-      title: "Tendances des Parts de Marché",
-      subtitle: "Évolution historique comparée aux moyennes régionale et mondiale",
-      countryValue: "Valeur Pays",
-      regionalAvg: "Moyenne Régionale",
-      globalAvg: "Moyenne Mondiale"
-    },
-    en: {
-      title: "Market Share Trends",
-      subtitle: "Historical evolution compared to regional and global averages",
-      countryValue: "Country Value",
-      regionalAvg: "Regional Average",
-      globalAvg: "Global Average"
-    }
-  };
 
-  const txt = texts[language] || texts.fr;
 
   return (
     <Card className="mt-8 shadow-lg">
       <CardHeader>
         <CardTitle className="text-xl font-black uppercase tracking-tight">
-          {txt.title}
+          {t('opportunities.productAnalysisView.trend.title')}
         </CardTitle>
-        <CardDescription>{txt.subtitle}</CardDescription>
+        <CardDescription>{t('opportunities.productAnalysisView.trend.subtitle')}</CardDescription>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
@@ -212,7 +196,7 @@ const MarketShareTrendChart = ({ trends, language }) => {
             <Line 
               type="monotone" 
               dataKey="countryValue" 
-              name={txt.countryValue}
+              name={t('opportunities.productAnalysisView.trend.countryValue')}
               stroke="#3b82f6" 
               strokeWidth={4} 
               dot={{ r: 6, strokeWidth: 2 }} 
@@ -221,7 +205,7 @@ const MarketShareTrendChart = ({ trends, language }) => {
             <Line 
               type="monotone" 
               dataKey="regionalAverage" 
-              name={txt.regionalAvg}
+              name={t('opportunities.productAnalysisView.trend.regionalAvg')}
               stroke="#10b981" 
               strokeWidth={3} 
               strokeDasharray="5 5" 
@@ -230,7 +214,7 @@ const MarketShareTrendChart = ({ trends, language }) => {
             <Line 
               type="monotone" 
               dataKey="globalAverage" 
-              name={txt.globalAvg}
+              name={t('opportunities.productAnalysisView.trend.globalAvg')}
               stroke="#f59e0b" 
               strokeWidth={2} 
               strokeDasharray="3 3" 
@@ -263,36 +247,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
     { code: '271111', name: 'Gaz naturel' }
   ];
 
-  const texts = {
-    fr: {
-      title: "Analyse par Produit",
-      subtitle: "Intelligence de marché détaillée par code HS",
-      searchLabel: "Code HS (6 chiffres)",
-      searchPlaceholder: "Ex: 090111 (Café)",
-      searchBtn: "Analyser",
-      popularProducts: "Produits populaires",
-      productionTitle: "Capacités de Production Africaines",
-      topImporters: "Principaux Importateurs",
-      topExporters: "Principaux Exportateurs",
-      noData: "Entrez un code HS pour voir l'analyse",
-      source: "Sources: FAOSTAT, UNIDO INDSTAT, USGS Minerals, UNCTADstat, ITC Trademap (2024)"
-    },
-    en: {
-      title: "Product Analysis",
-      subtitle: "Detailed market intelligence by HS code",
-      searchLabel: "HS Code (6 digits)",
-      searchPlaceholder: "Ex: 090111 (Coffee)",
-      searchBtn: "Analyze",
-      popularProducts: "Popular products",
-      productionTitle: "African Production Capacities",
-      topImporters: "Top Importers",
-      topExporters: "Top Exporters",
-      noData: "Enter an HS code to see the analysis",
-      source: "Sources: FAOSTAT, UNIDO INDSTAT, USGS Minerals, UNCTADstat, ITC Trademap (2024)"
-    }
-  };
 
-  const txt = texts[language] || texts.fr;
 
   // Search product data - NOW USES AI API
   const searchProduct = async () => {
@@ -460,10 +415,10 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         <div className="flex items-center justify-center gap-3 mb-2">
           <Package className="h-8 w-8 text-blue-600" />
           <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">
-            {txt.title}
+            {t('opportunities.productAnalysisView.title')}
           </h2>
         </div>
-        <p className="text-slate-500">{txt.subtitle}</p>
+        <p className="text-slate-500">{t('opportunities.productAnalysisView.subtitle')}</p>
       </div>
 
       {/* Search Section */}
@@ -471,11 +426,11 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             <div className="md:col-span-2 space-y-2">
-              <Label className="text-sm font-medium">{txt.searchLabel}</Label>
+              <Label className="text-sm font-medium">{t('opportunities.productAnalysisView.searchLabel')}</Label>
               <Input
                 value={hsCode}
                 onChange={(e) => setHsCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                placeholder={txt.searchPlaceholder}
+                placeholder={t('opportunities.productAnalysisView.searchPlaceholder')}
                 className="text-lg font-mono"
                 data-testid="product-hs-input"
               />
@@ -486,7 +441,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               )}
               {/* Popular products */}
               <div className="flex flex-wrap gap-2 mt-2">
-                <span className="text-xs text-slate-500">{txt.popularProducts}:</span>
+                <span className="text-xs text-slate-500">{t('opportunities.productAnalysisView.popularProducts')}:</span>
                 {popularProducts.map((prod) => (
                   <button
                     key={prod.code}
@@ -513,7 +468,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               ) : (
                 <Search className="h-4 w-4 mr-2" />
               )}
-              {txt.searchBtn}
+              {t('opportunities.productAnalysisView.searchBtn')}
             </Button>
           </div>
         </CardContent>
@@ -565,7 +520,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                           },
                         },
                         productData.importers?.length && {
-                          title: txt.topImporters,
+                          title: t('opportunities.productAnalysisView.topImporters'),
                           table: {
                             columns: [
                               { key: 'country', label: t('opportunities.productAnalysisView.country'), width: 2 },
@@ -575,7 +530,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                           },
                         },
                         productData.exporters?.length && {
-                          title: txt.topExporters,
+                          title: t('opportunities.productAnalysisView.topExporters'),
                           table: {
                             columns: [
                               { key: 'country', label: t('opportunities.productAnalysisView.country'), width: 2 },
@@ -621,7 +576,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                 <div className="flex items-center gap-4 mb-6">
                   <Factory className="h-6 w-6 text-emerald-600" />
                   <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">
-                    {txt.productionTitle}
+                    {t('opportunities.productAnalysisView.productionTitle')}
                   </h3>
                   <div className="flex-grow h-px bg-slate-200" />
                 </div>
@@ -639,7 +594,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               <Card className="bg-slate-50 border-0 shadow-sm">
                 <CardHeader className="border-l-4 border-blue-500 ml-4">
                   <CardTitle className="text-lg font-black uppercase tracking-tight text-slate-800">
-                    {txt.topImporters}
+                    {t('opportunities.productAnalysisView.topImporters')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -655,7 +610,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               <Card className="bg-slate-50 border-0 shadow-sm">
                 <CardHeader className="border-l-4 border-emerald-500 ml-4">
                   <CardTitle className="text-lg font-black uppercase tracking-tight text-slate-800">
-                    {txt.topExporters}
+                    {t('opportunities.productAnalysisView.topExporters')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -670,10 +625,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
 
             {/* Market Share Trends (only when a real time series exists) */}
             {productData.marketShareTrends?.length > 0 && (
-              <MarketShareTrendChart
-                trends={productData.marketShareTrends}
-                language={language}
-              />
+              <MarketShareTrendChart trends={productData.marketShareTrends} />
             )}
           </CardContent>
         </Card>
@@ -684,14 +636,14 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         <Card className="bg-slate-50 border-slate-200">
           <CardContent className="py-16 text-center">
             <Package className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-500">{txt.noData}</p>
+            <p className="text-slate-500">{t('opportunities.productAnalysisView.noData')}</p>
           </CardContent>
         </Card>
       )}
 
       {/* Source Footer */}
       <div className="text-center">
-        <p className="text-xs text-slate-400 italic">{txt.source}</p>
+        <p className="text-xs text-slate-400 italic">{t('opportunities.productAnalysisView.source')}</p>
       </div>
     </div>
   );

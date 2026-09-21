@@ -56,7 +56,14 @@ describe('parité des locales', () => {
     Object.entries(LOCALES).forEach(([code, bundle]) => {
       const blanks = [];
       const walk = (node, prefix = '') => {
-        if (node === null || typeof node !== 'object' || Array.isArray(node)) {
+        // Une liste de chaînes est une valeur traduite légitime : les étapes de
+        // chargement de l'analyse IA sont lues par index, pas une à une.
+        if (Array.isArray(node)) {
+          const ok = node.length > 0 && node.every((v) => typeof v === 'string' && v.trim() !== '');
+          if (!ok) blanks.push(prefix);
+          return;
+        }
+        if (node === null || typeof node !== 'object') {
           if (typeof node !== 'string' || node.trim() === '') blanks.push(prefix);
           return;
         }
