@@ -919,8 +919,42 @@ def _normalize_crawled_formalities(raw_formalities):
 #: vide, et cette confusion est la plus coûteuse du produit : une absence
 #: d'information n'est pas une absence d'obligation.
 FORMALITES_DOCUMENTEES = "DOCUMENTEES"
+FORMALITES_AUCUNE_PARTICULIERE = "AUCUNE_FORMALITE_PARTICULIERE"
 FORMALITES_NON_ETABLIES = "NON_ETABLIES"
 FORMALITES_POSITION_INTROUVABLE = "POSITION_INTROUVABLE"
+
+#: PAYS DONT LA SOURCE PUBLIE SES FORMALITÉS DE FAÇON EXHAUSTIVE.
+#:
+#: Pour ces pays — et pour eux seuls — une liste vide n'est PAS une lacune :
+#: c'est un constat de la source, qui publie le bloc quand une formalité
+#: particulière existe et ne publie rien quand il n'y en a pas. Le produit dit
+#: alors quelque chose de POSITIF au lieu d'une réserve.
+#:
+#: Ce que cet état n'affirme toujours PAS : que l'importation soit dispensée de
+#: toute obligation. Il dit qu'aucune formalité PARTICULIÈRE ne frappe cette
+#: marchandise. Les obligations générales du pays — déclaration, domiciliation,
+#: procédures de guichet unique — ne sont volontairement pas portées par le
+#: produit : elles s'appliquent à toute importation sans distinction de
+#: position, elles changent souvent (la procédure algérienne du code 910 est
+#: passée au dépôt électronique fin août 2026, à titre provisoire), et
+#: l'opérateur qui consulte une position tarifaire les connaît. Décision du
+#: propriétaire, prise le 21/09/2026 — déclarée ici pour qu'elle ne soit pas
+#: reprise plus tard comme un oubli.
+#:
+#: Chaque entrée exige sa preuve, relevée sur le portail. Ne jamais ajouter un
+#: pays ici « par analogie » : c'est exactement la généralisation que le Maroc a
+#: démentie sur les droits nuls.
+SOURCES_EXHAUSTIVES_FORMALITES = {
+    "DZA": (
+        "conformepro.dz publie un bloc « Formalités » lorsqu'une formalité "
+        "administrative particulière (FAP) existe, et aucun bloc sinon. Vérifié "
+        "le 21/09/2026 sur un échantillon tiré au sort de 80 positions : les 60 "
+        "positions sans formalité au crawl ne portent AUCUN bloc au portail, et "
+        "19 des 20 positions avec formalité en portent un (la vingtième a échoué "
+        "en réseau). Le crawl conserve d'ailleurs le code officiel de chaque "
+        "formalité (`fap_code`, `match_status: MATCHED_DGD_FAP_LIST`)."
+    ),
+}
 
 
 def get_administrative_formalities(country_iso3, hs_code):
@@ -962,7 +996,14 @@ def formalites_et_statut(country_iso3, hs_code):
     if line is None:
         return [], FORMALITES_POSITION_INTROUVABLE
     formalites = line.get("administrative_formalities") or []
-    return (formalites, FORMALITES_DOCUMENTEES) if formalites else ([], FORMALITES_NON_ETABLIES)
+    if formalites:
+        return formalites, FORMALITES_DOCUMENTEES
+    # Une source exhaustive change la nature de la liste vide : elle cesse
+    # d'être une lacune pour devenir un constat. Voir
+    # SOURCES_EXHAUSTIVES_FORMALITES, dont chaque entrée porte sa preuve.
+    if str(country_iso3 or "").upper() in SOURCES_EXHAUSTIVES_FORMALITES:
+        return [], FORMALITES_AUCUNE_PARTICULIERE
+    return [], FORMALITES_NON_ETABLIES
 
 
 def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):

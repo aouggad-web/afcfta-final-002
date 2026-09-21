@@ -74,10 +74,11 @@ def test_aucun_etat_ne_signifie_aucune_obligation(service):
     """
     etats = {
         service.FORMALITES_DOCUMENTEES,
+        service.FORMALITES_AUCUNE_PARTICULIERE,
         service.FORMALITES_NON_ETABLIES,
         service.FORMALITES_POSITION_INTROUVABLE,
     }
-    assert len(etats) == 3, "les trois états doivent rester distincts"
+    assert len(etats) == 4, "les quatre états doivent rester distincts"
     for etat in etats:
         assert "AUCUNE_OBLIGATION" not in etat
         assert "DISPENSE" not in etat
@@ -121,3 +122,45 @@ def test_une_position_servie_ne_porte_aucune_reserve():
     assert corps["statut"] == "DOCUMENTEES"
     assert corps["reserve"] is None
     assert corps["formalities"]
+
+
+def test_une_source_exhaustive_dit_le_constat_pas_la_lacune(service):
+    """Algérie : le silence du portail est une information, pas un manque.
+
+    `conformepro.dz` publie un bloc « Formalités » quand une formalité
+    particulière existe, et aucun bloc sinon. Vérifié le 21/09/2026 sur un
+    échantillon tiré au sort : 60 positions sans formalité au crawl, 60 fois
+    aucun bloc au portail ; 20 positions avec formalité, 19 blocs présents
+    (la vingtième a échoué en réseau).
+
+    Le produit peut donc dire à l'opérateur quelque chose de POSITIF — cette
+    marchandise n'est soumise à aucune formalité particulière — au lieu de lui
+    servir une réserve qui ferait passer une information solide pour un trou.
+    """
+    _, statut = service.formalites_et_statut("DZA", "5201001000")
+    assert statut == service.FORMALITES_AUCUNE_PARTICULIERE
+
+    documentees, statut = service.formalites_et_statut("DZA", "0101211100")
+    assert statut == service.FORMALITES_DOCUMENTEES
+    assert documentees
+
+
+def test_le_constat_ne_se_generalise_pas_aux_autres_pays(service):
+    """CONTRÔLE NÉGATIF — la leçon du Maroc, appliquée aux formalités.
+
+    Un pays dont la source n'a PAS été vérifiée exhaustive garde « non
+    établies ». Étendre le constat par analogie transformerait 297 794 lacunes
+    en autant de déclarations d'absence de formalité — une valeur fabriquée à
+    l'échelle du continent.
+    """
+    assert set(service.SOURCES_EXHAUSTIVES_FORMALITES) == {"DZA"}
+    for pays, code in (("KEN", "01012900"), ("MAR", "0902100000")):
+        _, statut = service.formalites_et_statut(pays, code)
+        assert statut != service.FORMALITES_AUCUNE_PARTICULIERE, pays
+
+
+def test_chaque_source_exhaustive_porte_sa_preuve(service):
+    """Une entrée sans preuve relevée n'a rien à faire dans la table."""
+    for pays, preuve in service.SOURCES_EXHAUSTIVES_FORMALITES.items():
+        assert len(preuve) > 150, f"{pays} : la preuve doit être circonstanciée"
+        assert "chantillon" in preuve or "rifi" in preuve, pays

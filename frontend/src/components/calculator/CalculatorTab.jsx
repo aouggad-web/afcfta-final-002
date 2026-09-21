@@ -1982,10 +1982,23 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             // Une absence d'information n'est pas une absence d'obligation :
             // la carte reste, et dit laquelle des deux elle constate.
             const aucuneFormalite = !formalities || formalities.length === 0;
+            // Deux silences très différents, et l'opérateur doit les distinguer.
+            //
+            // Quand la source publie ses formalités de façon EXHAUSTIVE — c'est
+            // établi pour l'Algérie, échantillon à l'appui — une liste vide est
+            // un CONSTAT : la marchandise n'est soumise à aucune formalité
+            // particulière. Dire « non établies » sous-estimerait ce que l'on
+            // sait, et ferait passer une information solide pour une lacune.
+            // Partout ailleurs, le silence reste une lacune, et se dit comme tel.
+            const constatSource = result.formalites_statut === 'AUCUNE_FORMALITE_PARTICULIERE';
             const reserve = result.formalites_reserve
-              || (language === 'fr'
-                ? "Formalités non établies pour cette position. Une absence d'information n'est pas une absence d'obligation : vérifier auprès de l'administration douanière de destination."
-                : 'Formalities not established for this position. Missing information is not an absence of obligation: check with the destination customs administration.');
+              || (constatSource
+                ? (language === 'fr'
+                  ? "Aucune formalité administrative particulière n'est publiée pour cette position. Les obligations générales à l'importation demeurent."
+                  : 'No specific administrative formality is published for this position. General import obligations still apply.')
+                : (language === 'fr'
+                  ? "Formalités non établies pour cette position. Une absence d'information n'est pas une absence d'obligation : vérifier auprès de l'administration douanière de destination."
+                  : 'Formalities not established for this position. Missing information is not an absence of obligation: check with the destination customs administration.'));
             return (
               <Card className="bg-slate-800/50 border-slate-700">
                 <CardHeader className="pb-3">
@@ -2000,7 +2013,9 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                         </CardTitle>
                         <CardDescription className="text-slate-400">
                           {aucuneFormalite
-                            ? (language === 'fr' ? 'Non établies' : 'Not established')
+                            ? (constatSource
+                              ? (language === 'fr' ? 'Aucune formalité particulière' : 'No specific formality')
+                              : (language === 'fr' ? 'Non établies' : 'Not established'))
                             : `${formalities.length} ${language === 'fr' ? 'formalités' : 'formalities'}`}
                           {isPositionLevel && (
                             <span className="ml-2 text-amber-400 text-xs font-mono">
@@ -2019,8 +2034,10 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                 </CardHeader>
                 <CardContent>
                   {aucuneFormalite && (
-                    <div className="flex items-start gap-3 p-3 bg-amber-500/10 rounded-lg border border-amber-500/20">
-                      <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                    <div className={`flex items-start gap-3 p-3 rounded-lg border ${constatSource ? 'bg-slate-900/40 border-slate-700' : 'bg-amber-500/10 border-amber-500/20'}`}>
+                      {constatSource
+                        ? <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
+                        : <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />}
                       <p className="text-slate-300 text-sm">{reserve}</p>
                     </div>
                   )}
