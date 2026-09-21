@@ -21,6 +21,12 @@ from typing import Any, Dict, List, Optional
 import fitz
 import httpx
 
+# Vérification TLS active (défaut httpx). Elle portait `verify=False` :
+# le collecteur acceptait n'importe quel certificat, et un tiers sur le
+# chemin pouvait donc lui dicter les taux qu'il liquide. Si la chaîne d'un
+# portail se révèle incomplète en production, la réponse est de fournir
+# l'intermédiaire manquant — jamais de redésactiver la vérification.
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -43,7 +49,7 @@ def download_pdf() -> Optional[str]:
         return str(filepath)
 
     logger.info("Downloading Zambia tariff PDF...")
-    resp = httpx.get(PDF_URL, timeout=120, follow_redirects=True, verify=False, headers=HEADERS)
+    resp = httpx.get(PDF_URL, timeout=120, follow_redirects=True, headers=HEADERS)
     if resp.status_code == 200 and len(resp.content) > 100000:
         with open(filepath, "wb") as f:
             f.write(resp.content)
@@ -103,77 +109,94 @@ def extract_positions(filepath: str) -> List[Dict]:
                 # Construire les taxes
                 taxes = []
                 if dd_rate is not None:
-                    taxes.append({
-                        "code": "DD",
-                        "name": "Customs Duty",
-                        "name_fr": "Droit de Douane",
-                        "name_en": "Customs Duty",
-                        "rate_pct": dd_rate,
-                        "rate_decimal": dd_rate / 100,
-                        "raw_value": f"{dd_rate}%",
-                        "base": "CIF",
-                        "source": "zra.org.zm",
-                    })
+                    taxes.append(
+                        {
+                            "code": "DD",
+                            "name": "Customs Duty",
+                            "name_fr": "Droit de Douane",
+                            "name_en": "Customs Duty",
+                            "rate_pct": dd_rate,
+                            "rate_decimal": dd_rate / 100,
+                            "raw_value": f"{dd_rate}%",
+                            "base": "CIF",
+                            "source": "zra.org.zm",
+                        }
+                    )
                 if excise_rate is not None:
-                    taxes.append({
-                        "code": "DA",
-                        "name": "Excise Duty",
-                        "name_fr": "Droit d'Accise",
-                        "name_en": "Excise Duty",
-                        "rate_pct": excise_rate,
-                        "rate_decimal": excise_rate / 100,
-                        "raw_value": f"{excise_rate}%",
-                        "base": "CIF+DD",
-                        "source": "zra.org.zm",
-                    })
+                    taxes.append(
+                        {
+                            "code": "DA",
+                            "name": "Excise Duty",
+                            "name_fr": "Droit d'Accise",
+                            "name_en": "Excise Duty",
+                            "rate_pct": excise_rate,
+                            "rate_decimal": excise_rate / 100,
+                            "raw_value": f"{excise_rate}%",
+                            "base": "CIF+DD",
+                            "source": "zra.org.zm",
+                        }
+                    )
 
                 # TVA Zambie = 16% (standard, non publié par ligne dans le PDF)
                 # On l'ajoute depuis le fallback
-                taxes.append({
-                    "code": "TVA",
-                    "name": "Value Added Tax",
-                    "name_fr": "TVA",
-                    "name_en": "VAT",
-                    "rate_pct": 16.0,
-                    "rate_decimal": 0.16,
-                    "raw_value": "16%",
-                    "base": "CIF+DD+Excise",
-                    "source": "zra.org.zm (standard rate)",
-                })
+                taxes.append(
+                    {
+                        "code": "TVA",
+                        "name": "Value Added Tax",
+                        "name_fr": "TVA",
+                        "name_en": "VAT",
+                        "rate_pct": 16.0,
+                        "rate_decimal": 0.16,
+                        "raw_value": "16%",
+                        "base": "CIF+DD+Excise",
+                        "source": "zra.org.zm (standard rate)",
+                    }
+                )
 
-                positions.append({
-                    "national_code": code_clean,
-                    "hs6": hs6,
-                    "chapter": chapter,
-                    "heading": code_clean[:4] + "." + code_clean[4:6],
-                    "section": "",
-                    "statistical_unit": "",
-                    "check_digit": "",
-                    "designation": {
-                        "fr": "",
-                        "en": desc,
-                        "ar": "",
-                        "full_fr": "",
-                        "verbatim": "",
-                    },
-                    "taxes": taxes,
-                    "export_taxes": [],
-                    "preferential_rates": [],
-                    "fiscal_advantages": [],
-                    "formalities": [],
-                    "restrictions": [],
-                    "legal_refs": [],
-                    "reglementation": {"import": [], "export": []},
-                    "quotas": {"qcs": None, "qci": None},
-                    "zlecaf_schedule": {"applied": False, "rate_pct": None, "instruction": None},
-                    "source_gaps": [],
-                    "lf_provisions": None,
-                    "data_status": "crawled_authentic",
-                    "source_quality": "crawled_authentic",
-                    "source": "zra.org.zm (Customs Tariff Book)",
-                    "source_url": PDF_URL,
-                    "raw_data": {"code": code_raw, "designation": desc, "dd": dd_rate, "excise": excise_rate},
-                })
+                positions.append(
+                    {
+                        "national_code": code_clean,
+                        "hs6": hs6,
+                        "chapter": chapter,
+                        "heading": code_clean[:4] + "." + code_clean[4:6],
+                        "section": "",
+                        "statistical_unit": "",
+                        "check_digit": "",
+                        "designation": {
+                            "fr": "",
+                            "en": desc,
+                            "ar": "",
+                            "full_fr": "",
+                            "verbatim": "",
+                        },
+                        "taxes": taxes,
+                        "export_taxes": [],
+                        "preferential_rates": [],
+                        "fiscal_advantages": [],
+                        "formalities": [],
+                        "restrictions": [],
+                        "legal_refs": [],
+                        "reglementation": {"import": [], "export": []},
+                        "quotas": {"qcs": None, "qci": None},
+                        "zlecaf_schedule": {
+                            "applied": False,
+                            "rate_pct": None,
+                            "instruction": None,
+                        },
+                        "source_gaps": [],
+                        "lf_provisions": None,
+                        "data_status": "crawled_authentic",
+                        "source_quality": "crawled_authentic",
+                        "source": "zra.org.zm (Customs Tariff Book)",
+                        "source_url": PDF_URL,
+                        "raw_data": {
+                            "code": code_raw,
+                            "designation": desc,
+                            "dd": dd_rate,
+                            "excise": excise_rate,
+                        },
+                    }
+                )
                 i += 2
                 continue
 
@@ -228,6 +251,7 @@ def main():
         save(positions)
 
         from collections import Counter
+
         dd_dist = Counter()
         for p in positions:
             for t in p["taxes"]:

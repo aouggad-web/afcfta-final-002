@@ -56,7 +56,13 @@ class AlgeriaConformeproScraper:
                 headers=HEADERS,
                 timeout=30.0,
                 follow_redirects=True,
-                verify=False,
+                # La vérification TLS est rétablie : `https://conformepro.dz/
+                # resources/tarif-douanier` répond 200 avec la vérification
+                # active. Un collecteur qui accepte n'importe quel certificat
+                # laisse un tiers sur le chemin dicter les taux qu'il liquide.
+                # L'essai ayant été fait derrière une passerelle qui resigne le
+                # TLS, il établit que le client fonctionne sans `verify=False`,
+                # non que la chaîne du portail soit complète en production.
             )
 
     async def _close_client(self):
