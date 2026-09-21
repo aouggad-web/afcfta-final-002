@@ -696,13 +696,19 @@ servies (405 × 2 langues) ont été confrontées une à une au code d'origine.
   `lang` de requête. Ce ne sont pas des libellés ; les traduire produirait
   un code traduit. Ils devront être **dérivés d'i18n** au moment de 4.2,
   puisqu'un choix binaire fr/en devient faux à quatre langues.
-- **`difficultyLabelEn`** (SubstitutionAnalysis) traduit les libellés
-  **français que renvoie le backend** — « Facile » → « Easy ». Ce n'est pas
-  un dictionnaire de langue mais le contournement d'un défaut d'API : le
-  serveur émet du texte destiné à l'affichage au lieu d'un code stable.
-  L'externaliser en i18n figerait le contournement. **Arbitrage demandé
-  avant 4.2** : faire émettre au backend un code (`easy`, `moderate`…), ce
-  qui est la bonne correction, ou accepter la table côté front.
+- **`difficultyLabelEn`** (SubstitutionAnalysis) traduisait les libellés
+  **français que renvoyait le backend** — « Facile » → « Easy ». Ce n'était
+  pas un dictionnaire de langue mais le contournement d'un défaut d'API : le
+  serveur émettait du texte destiné à l'affichage au lieu d'un code stable.
+  L'externaliser en i18n aurait figé le contournement.
+  **✅ Corrigé à la source** : `_assess_difficulty` rend un code
+  (`easy`, `moderate`, `difficult`, `very_difficult`), la répartition est
+  clée dessus, et l'écran choisit les mots. `difficulty` reste servi en
+  français, **déprécié**, pour ne casser aucun client externe ; le retirer
+  est un geste séparé. Le défaut d'origine méritait d'être nommé : les
+  tables du front étaient clés en anglais, rien ne correspondait, et toutes
+  les cartes s'affichaient « Difficile » en ambre quel que soit le niveau
+  réel. Un texte d'affichage est un mauvais identifiant.
 
 **Ce que 4.2 doit encore faire**, maintenant que les deux modules sont
 débloqués : **843 clés** existent en français et en anglais, sous test de

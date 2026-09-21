@@ -217,19 +217,17 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
   const product = isImport ? opportunity.imported_product : (opportunity.exportable_product || opportunity.export_product);
   const targets = isImport ? opportunity.african_suppliers : (opportunity.target_markets || opportunity.potential_markets);
   
-  // _assess_difficulty (real_substitution_service.py) renvoie directement les
-  // libellés français "Facile"/"Modéré"/"Difficile"/"Très difficile" — les
-  // comparer à des clés anglaises ('easy'/'moderate'/'difficult') ne matchait
-  // jamais, donc toutes les cartes s'affichaient en "Difficile"/ambre par
-  // défaut quel que soit le niveau réel.
+  // Le serveur émet désormais un CODE (`difficulty_code`), pas un libellé.
+  // Il émettait auparavant le français directement, et cet écran comparait
+  // ce texte d'affichage à des clés anglaises : rien ne correspondait, et
+  // toutes les cartes sortaient « Difficile » en ambre quel que soit le
+  // niveau réel. Un texte d'affichage est un mauvais identifiant.
+  // `difficulty` reste lu en repli, le temps que d'anciens clients passent.
   const difficultyColors = {
-    'Facile': "bg-emerald-100 text-emerald-700",
-    'Modéré': "bg-amber-100 text-amber-700",
-    'Difficile': "bg-orange-100 text-orange-700",
-    'Très difficile': "bg-red-100 text-red-700",
-  };
-  const difficultyLabelEn = {
-    'Facile': 'Easy', 'Modéré': 'Moderate', 'Difficile': 'Difficult', 'Très difficile': 'Very difficult',
+    easy: "bg-emerald-100 text-emerald-700",
+    moderate: "bg-amber-100 text-amber-700",
+    difficult: "bg-orange-100 text-orange-700",
+    very_difficult: "bg-red-100 text-red-700",
   };
 
   const competitivenessColors = {
@@ -252,8 +250,12 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
             </h3>
           </div>
           {isImport ? (
-            <Badge className={difficultyColors[opportunity.difficulty] || difficultyColors['Modéré']}>
-              {language === 'en' ? (difficultyLabelEn[opportunity.difficulty] || opportunity.difficulty) : opportunity.difficulty}
+            <Badge className={difficultyColors[opportunity.difficulty_code] || difficultyColors.moderate}>
+              {opportunity.difficulty_code
+                ? t(`opportunities.substitutionAnalysis.difficulty.${opportunity.difficulty_code}`, {
+                    defaultValue: opportunity.difficulty,
+                  })
+                : opportunity.difficulty}
             </Badge>
           ) : (
             <Badge className={competitivenessColors[opportunity.competitiveness] || competitivenessColors.competitive}>
@@ -371,9 +373,6 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
 const AnalysisSummaryPanel = ({ analysis, language }) => {
   const { t } = useTranslation();
   if (!analysis || Object.keys(analysis).length === 0) return null;
-  const difficultyLabelEn = {
-    'Facile': 'Easy', 'Modéré': 'Moderate', 'Difficile': 'Difficult', 'Très difficile': 'Very difficult',
-  };
 
   return (
     <Card className="shadow-lg border-slate-200" data-testid="analysis-summary">
@@ -395,9 +394,10 @@ const AnalysisSummaryPanel = ({ analysis, language }) => {
         <div className="bg-slate-50 rounded-lg p-3">
           <p className="text-xs text-slate-500 mb-1.5">{t('opportunities.substitutionAnalysis.enriched.difficulties')}</p>
           <div className="flex flex-wrap gap-1.5">
-            {Object.entries(analysis.difficulty_distribution || {}).map(([label, count]) => (
-              <span key={label} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700">
-                {language === 'en' ? (difficultyLabelEn[label] || label) : label} · {count}
+            {Object.entries(analysis.difficulty_distribution || {}).map(([code, count]) => (
+              <span key={code} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700">
+                {t(`opportunities.substitutionAnalysis.difficulty.${code}`, { defaultValue: code })}
+                {' · '}{count}
               </span>
             ))}
           </div>
@@ -604,7 +604,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         title: t('opportunities.substitutionAnalysis.enriched.analysisTitle'),
         keyValues: [
           { label: t('opportunities.substitutionAnalysis.enriched.avgCoef'), value: analysis.avg_feasibility_coefficient != null ? `${Math.round(analysis.avg_feasibility_coefficient * 100)}%` : '—' },
-          { label: t('opportunities.substitutionAnalysis.enriched.difficulties'), value: Object.entries(analysis.difficulty_distribution || {}).map(([k, v]) => `${k}: ${v}`).join(' · ') || '—' },
+          { label: t('opportunities.substitutionAnalysis.enriched.difficulties'), value: Object.entries(analysis.difficulty_distribution || {}).map(([k, v]) => `${t(`opportunities.substitutionAnalysis.difficulty.${k}`, { defaultValue: k })}: ${v}`).join(' · ') || '—' },
           { label: t('opportunities.substitutionAnalysis.enriched.constraints'), value: Object.entries(analysis.binding_constraint_distribution || {}).map(([k, v]) => `${k}: ${v}`).join(' · ') || '—' },
           { label: t('opportunities.substitutionAnalysis.enriched.verifiedCount'), value: String(analysis.verified_production_count ?? 0) },
         ],

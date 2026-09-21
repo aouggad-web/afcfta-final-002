@@ -815,6 +815,12 @@
         "capacité africaine": "African capacity",
         "capacité exportateur": "Exporter capacity",
         "substituabilité": "Substitutability"
+      },
+      "difficulty": {
+        "easy": "Easy",
+        "moderate": "Moderate",
+        "difficult": "Difficult",
+        "very_difficult": "Very difficult"
       }
     },
     "valueChains": {

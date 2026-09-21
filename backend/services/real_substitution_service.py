@@ -753,8 +753,11 @@ class RealSubstitutionService:
         weight = 0.0
         verified = 0
         for opp in opportunities:
-            if opp.get("difficulty"):
-                difficulty_dist[opp["difficulty"]] += 1
+            # Agrégée par CODE et non par libellé : une clé de répartition est
+            # un identifiant. Clé sur le français, elle changerait de forme
+            # avec la langue et l'écran devrait re-traduire des clés.
+            if opp.get("difficulty_code"):
+                difficulty_dist[opp["difficulty_code"]] += 1
             if opp.get("binding_constraint"):
                 constraint_dist[opp["binding_constraint"]] += 1
             if opp.get("verified_production"):
@@ -995,7 +998,7 @@ class RealSubstitutionService:
                         "substitution_feasibility": realistic["feasibility"],
                         "addressable_value": realistic["addressable_value_usd"],
                         "binding_constraint": realistic["binding_constraint"],
-                        "difficulty": self._assess_difficulty(import_value, total_supply),
+                        **self._difficulty_fields(import_value, total_supply),
                         # Production africaine RÉELLE (FAOSTAT/UNIDO/USGS) du produit :
                         # la preuve matérielle derrière les fournisseurs potentiels.
                         "verified_production": self._verified_production(hs_code, production_memo),
@@ -1087,7 +1090,7 @@ class RealSubstitutionService:
                     "substitution_feasibility": realistic["feasibility"],
                     "addressable_value": realistic["addressable_value_usd"],
                     "binding_constraint": realistic["binding_constraint"],
-                    "difficulty": self._assess_difficulty(
+                    **self._difficulty_fields(
                         import_value, sum(s["export_value"] for s in african_suppliers)
                     ),
                     "verified_production": self._verified_production(
@@ -1443,16 +1446,43 @@ class RealSubstitutionService:
             "is_estimation": True,
         }
 
+    #: Le serveur émet un CODE, l'écran choisit les mots.
+    #:
+    #: Cette fonction rendait auparavant le libellé français directement
+    #: (« Facile », « Modéré »…). Le front devait alors comparer des chaînes
+    #: d'affichage pour choisir une couleur et une traduction — et s'est
+    #: trompé : ses tables étaient clés en anglais, rien ne correspondait, et
+    #: toutes les cartes s'affichaient « Difficile » en ambre quel que soit le
+    #: niveau réel. Un texte d'affichage est un mauvais identifiant : il change
+    #: avec la langue, avec la typographie, avec l'humeur d'une relecture.
+    _DIFFICULTY_FR = {
+        "easy": "Facile",
+        "moderate": "Modéré",
+        "difficult": "Difficile",
+        "very_difficult": "Très difficile",
+    }
+
     def _assess_difficulty(self, import_value: float, african_capacity: float) -> str:
-        """Assess substitution difficulty based on value and capacity"""
+        """Code de difficulté de substitution — stable, non traduit."""
         if african_capacity >= import_value * 0.5:
-            return "Facile"
+            return "easy"
         elif african_capacity >= import_value * 0.25:
-            return "Modéré"
+            return "moderate"
         elif african_capacity >= import_value * 0.1:
-            return "Difficile"
+            return "difficult"
         else:
-            return "Très difficile"
+            return "very_difficult"
+
+    def _difficulty_fields(self, import_value: float, african_capacity: float) -> dict:
+        """Les deux champs à émettre : le code, et le libellé de compatibilité.
+
+        ``difficulty`` reste servi en français pour ne casser aucun
+        consommateur existant, mais il est DÉPRÉCIÉ : c'est ``difficulty_code``
+        qui fait foi. Le retirer demande de s'assurer qu'aucun client externe
+        ne le lit — un geste séparé.
+        """
+        code = self._assess_difficulty(import_value, african_capacity)
+        return {"difficulty_code": code, "difficulty": self._DIFFICULTY_FR[code]}
 
     def _identify_top_sectors(
         self,
