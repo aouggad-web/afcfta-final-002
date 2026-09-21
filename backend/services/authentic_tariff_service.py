@@ -915,9 +915,109 @@ def _normalize_crawled_formalities(raw_formalities):
     return normalized
 
 
+#: États d'une demande de formalités. Les trois se confondaient en une liste
+#: vide, et cette confusion est la plus coûteuse du produit : une absence
+#: d'information n'est pas une absence d'obligation.
+FORMALITES_DOCUMENTEES = "DOCUMENTEES"
+FORMALITES_AUCUNE_PARTICULIERE = "AUCUNE_FORMALITE_PARTICULIERE"
+FORMALITES_NON_ETABLIES = "NON_ETABLIES"
+FORMALITES_POSITION_INTROUVABLE = "POSITION_INTROUVABLE"
+
+#: PAYS DONT LA SOURCE PUBLIE SES FORMALITÉS DE FAÇON EXHAUSTIVE.
+#:
+#: Pour ces pays — et pour eux seuls — une liste vide n'est PAS une lacune :
+#: c'est un constat de la source, qui publie le bloc quand une formalité
+#: particulière existe et ne publie rien quand il n'y en a pas. Le produit dit
+#: alors quelque chose de POSITIF au lieu d'une réserve.
+#:
+#: Ce que cet état n'affirme toujours PAS : que l'importation soit dispensée de
+#: toute obligation. Il dit qu'aucune formalité PARTICULIÈRE ne frappe cette
+#: marchandise. Les obligations générales du pays — déclaration en douane,
+#: domiciliation bancaire — ne sont volontairement pas portées par le produit :
+#: elles s'appliquent à toute importation sans distinction de position, et
+#: l'opérateur qui consulte une position tarifaire les connaît. Décision du
+#: propriétaire, prise le 21/09/2026 — déclarée ici pour qu'elle ne soit pas
+#: reprise plus tard comme un oubli.
+#:
+#: CORRECTION D'UNE ERREUR DE MA PART, relevée par le propriétaire. J'avais
+#: rangé la « déclaration d'importation du produit » algérienne parmi ces
+#: obligations générales. C'est faux : ce n'est pas la déclaration en douane,
+#: c'est une demande adressée aux services du contrôle de la qualité du
+#: ministère du Commerce. Elle est donc PARTICULIÈRE, attachée à des
+#: marchandises précises — et le produit la sert déjà, sur 6 816 positions
+#: algériennes.
+#:
+#: 902 ET 910 SONT DES CODES DE DOCUMENTS, pas des noms de procédure : la DGD
+#: codifie ainsi les pièces de sa liste FAP — 902 « Autorisation d'admission du
+#: produit », 910 « Déclaration d'importation du produit », et de même 140,
+#: 150, 160, 210, 215. Sur les 6 816 positions portant la déclaration
+#: d'importation, 96 seulement en portent le code : les 6 720 autres ont le
+#: même libellé sans code, faute de rapprochement à la liste. Écart constaté,
+#: non corrigé ici — il n'ôte rien à l'exigence, il en retire l'identifiant.
+#:
+#: Chaque entrée exige sa preuve, relevée sur le portail. Ne jamais ajouter un
+#: pays ici « par analogie » : c'est exactement la généralisation que le Maroc a
+#: démentie sur les droits nuls.
+SOURCES_EXHAUSTIVES_FORMALITES = {
+    "DZA": (
+        "conformepro.dz publie un bloc « Formalités » lorsqu'une formalité "
+        "administrative particulière (FAP) existe, et aucun bloc sinon. Vérifié "
+        "le 21/09/2026 sur un échantillon tiré au sort de 80 positions : les 60 "
+        "positions sans formalité au crawl ne portent AUCUN bloc au portail, et "
+        "19 des 20 positions avec formalité en portent un (la vingtième a échoué "
+        "en réseau). Le crawl conserve d'ailleurs le code officiel de chaque "
+        "formalité (`fap_code`, `match_status: MATCHED_DGD_FAP_LIST`)."
+    ),
+}
+
+
 def get_administrative_formalities(country_iso3, hs_code):
+    """Les formalités documentées pour cette position, éventuellement vides.
+
+    Conservée telle quelle pour ses appelants existants. Qui a besoin de
+    SAVOIR pourquoi la liste est vide appelle `formalites_et_statut()` :
+    c'est cette distinction, et non la liste, qui empêche le produit
+    d'affirmer qu'aucune obligation n'existe.
+    """
+    return formalites_et_statut(country_iso3, hs_code)[0]
+
+
+def formalites_et_statut(country_iso3, hs_code):
+    """(formalités, statut) — et le statut dit POURQUOI la liste est vide.
+
+    LE DÉFAUT CORRIGÉ. `get_administrative_formalities()` rendait `[]` dans
+    trois situations que rien ne distinguait ensuite :
+
+      * la position porte des formalités              → on les sert ;
+      * la position existe et n'en porte aucune       → rien n'est documenté ;
+      * la position est INTROUVABLE                   → on n'a rien cherché.
+
+    L'interface masquait alors purement et simplement la carte « Documents
+    requis ». L'opérateur voyait un résultat complet — taxes, avantages, coût
+    réglementaire — sans le moindre signe que les formalités n'avaient jamais
+    été établies. Mesuré sur les crawls du 21/09/2026 : **315 185 positions sur
+    350 022 (90 %) ne portent aucune formalité, et 46 pays sur 54 n'en portent
+    aucune du tout**. Le silence était donc la règle, pas l'exception.
+
+    Ce que ce statut n'affirme PAS : `NON_ETABLIES` ne veut pas dire
+    « aucune obligation ». Le dépôt ne collecte nulle part une attestation
+    d'absence d'obligation ; il collecte des formalités, ou rien. Tant qu'une
+    telle attestation n'existe pas dans la source, `NON_ETABLIES` est le seul
+    état honnête pour une liste vide, et l'interface doit le dire au lieu de
+    se taire.
+    """
     line = get_tariff_line(country_iso3, hs_code)
-    return line.get("administrative_formalities", []) if line else []
+    if line is None:
+        return [], FORMALITES_POSITION_INTROUVABLE
+    formalites = line.get("administrative_formalities") or []
+    if formalites:
+        return formalites, FORMALITES_DOCUMENTEES
+    # Une source exhaustive change la nature de la liste vide : elle cesse
+    # d'être une lacune pour devenir un constat. Voir
+    # SOURCES_EXHAUSTIVES_FORMALITES, dont chaque entrée porte sa preuve.
+    if str(country_iso3 or "").upper() in SOURCES_EXHAUSTIVES_FORMALITES:
+        return [], FORMALITES_AUCUNE_PARTICULIERE
+    return [], FORMALITES_NON_ETABLIES
 
 
 def _build_result_from_crawled_position(code, sp, etl_positions, country_iso3):
@@ -1970,7 +2070,9 @@ def calculate_import_taxes(
 
     # ── NPF cascade (régime normal / Most-Favoured-Nation) ───────────────────
     try:
-        npf_cascade = compute_tax_cascade(cif_value, taxes_for_cascade, country_iso3, fob_value=fob_value)
+        npf_cascade = compute_tax_cascade(
+            cif_value, taxes_for_cascade, country_iso3, fob_value=fob_value
+        )
     except ValueError as exc:
         # Fail-closed : une assiette exigée par le pays (FOB en SACU, p. ex.)
         # absente de la demande est une erreur du client, pas une panne —
@@ -2275,9 +2377,7 @@ def calculate_import_taxes(
         ),
         "tva_absente": tva_absente,
         "tva_absente_source": (
-            "Famille TVA absente du tarif de ce pays — total sans TVA"
-            if tva_absente
-            else None
+            "Famille TVA absente du tarif de ce pays — total sans TVA" if tva_absente else None
         ),
         # DOCUMENTED | NOT_AVAILABLE | OFFER_ONLY | PARTNER_NOTICE_REQUIRED
         "zlecaf_status": zlecaf_status,

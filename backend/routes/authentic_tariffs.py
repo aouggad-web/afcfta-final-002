@@ -270,13 +270,52 @@ async def get_formalities_endpoint(
         Liste des documents/formalités requis
     """
     _ensure_servable_or_404(country_iso3)
-    formalities = get_administrative_formalities(country_iso3.upper(), hs_code)
+    from services.authentic_tariff_service import (
+        FORMALITES_AUCUNE_PARTICULIERE,
+        FORMALITES_DOCUMENTEES,
+        FORMALITES_NON_ETABLIES,
+        formalites_et_statut,
+    )
+
+    formalities, statut = formalites_et_statut(country_iso3.upper(), hs_code)
+
+    # LE STATUT ACCOMPAGNE TOUJOURS LA LISTE. Une liste vide ne dit pas
+    # pourquoi elle l'est, et le consommateur qui n'a que la liste finit par
+    # traduire « vide » en « aucune obligation ». Les trois états sont donc
+    # rendus explicitement, et la réserve est écrite dans la réponse plutôt
+    # que laissée à l'interprétation de chaque écran.
+    RESERVES = {
+        # Un CONSTAT, pas une réserve : la source publie ses formalités quand
+        # elles existent, et n'en publie aucune ici. Dire « non établies »
+        # serait sous-estimer ce que l'on sait.
+        FORMALITES_AUCUNE_PARTICULIERE: (
+            "Aucune formalité administrative particulière n'est publiée pour "
+            "cette position. Les obligations générales à l'importation "
+            "demeurent."
+        ),
+        FORMALITES_NON_ETABLIES: (
+            "Formalités non établies pour cette position. Une absence "
+            "d'information n'est pas une absence d'obligation : vérifier "
+            "auprès de l'administration douanière de destination."
+        ),
+    }
+    reserve = (
+        None
+        if statut == FORMALITES_DOCUMENTEES
+        else RESERVES.get(
+            statut,
+            "Position introuvable dans les données servies pour ce pays : "
+            "aucune formalité n'a pu être recherchée.",
+        )
+    )
 
     return {
         "success": True,
         "country_iso3": country_iso3.upper(),
         "hs_code": hs_code,
         "formalities": formalities,
+        "statut": statut,
+        "reserve": reserve,
     }
 
 
