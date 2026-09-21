@@ -32,6 +32,12 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+# Vérification TLS active (défaut httpx). Elle portait `verify=False` :
+# le collecteur acceptait n'importe quel certificat, et un tiers sur le
+# chemin pouvait donc lui dicter les taux qu'il liquide. Si la chaîne d'un
+# portail se révèle incomplète en production, la réponse est de fournir
+# l'intermédiaire manquant — jamais de redésactiver la vérification.
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 CRAWLED_DIR = Path(__file__).parent.parent / "data" / "crawled"
@@ -127,7 +133,7 @@ async def verify_dza(positions):
     TAX_LABELS = ("Droit de douane", "TVA", "TCS", "PRCT", "DAPS", "TIC")
     results = []
     async with httpx.AsyncClient(
-        headers={"User-Agent": "Mozilla/5.0"}, verify=False, timeout=30, follow_redirects=True
+        headers={"User-Agent": "Mozilla/5.0"}, timeout=30, follow_redirects=True
     ) as client:
         for pos in positions:
             code = str(pos.get("hs_code", pos.get("raw_code", ""))).replace(".", "")
@@ -227,7 +233,7 @@ async def verify_egy(positions):
 
     results = []
     async with httpx.AsyncClient(
-        headers={"User-Agent": "Mozilla/5.0"}, verify=False, timeout=30, follow_redirects=True
+        headers={"User-Agent": "Mozilla/5.0"}, timeout=30, follow_redirects=True
     ) as client:
         for pos in positions:
             code = str(pos.get("hs_code", "")).replace(".", "")

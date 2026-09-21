@@ -35,7 +35,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from services import socle
-from services.calcul import calculer
+from services.calcul import COMPLET, INDICATIF, calculer
 from services.preference import simulations_regionales, taux_preferentiels
 from services.regulatory_fee_service import build_regulatory_blocks
 
@@ -187,8 +187,16 @@ def _chiffrer_simulations(simulations, position, demande, provenance, resultat):
     # simulation pourtant avantageuse, ce qui est pire que pas d'écart du tout.
     # Cas rencontré : ZAF/020110, dont le droit composé « 40% or 240c/kg »
     # n'est pas liquidable, faisait afficher −15 000 sur une franchise SADC.
+    # INDICATIF est admis ici : contrairement à PARTIEL, toutes ses lignes sont
+    # liquidées — la réserve porte sur la nature d'un taux (une moyenne), pas
+    # sur l'exhaustivité du total. L'écart reste donc comparable, et la réserve
+    # voyage avec le bloc NPF.
     bloc_npf = resultat.get("npf") or {}
-    servi = bloc_npf.get("total_a_payer") if bloc_npf.get("etat") == "COMPLET" else None
+    servi = (
+        bloc_npf.get("total_a_payer")
+        if bloc_npf.get("etat") in (COMPLET, INDICATIF)
+        else None
+    )
     motif_sans_ecart = (
         None
         if servi is not None

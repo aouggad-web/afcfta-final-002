@@ -21,6 +21,12 @@ from typing import Dict, List, Optional
 import httpx
 import openpyxl
 
+# Vérification TLS active (défaut httpx). Elle portait `verify=False` :
+# le collecteur acceptait n'importe quel certificat, et un tiers sur le
+# chemin pouvait donc lui dicter les taux qu'il liquide. Si la chaîne d'un
+# portail se révèle incomplète en production, la réponse est de fournir
+# l'intermédiaire manquant — jamais de redésactiver la vérification.
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -42,7 +48,7 @@ def download_xlsx() -> Optional[str]:
         logger.info(f"Using cached XLSX: {filepath}")
         return str(filepath)
     logger.info("Downloading Libya tariff XLSX...")
-    resp = httpx.get(XLSX_URL, timeout=120, follow_redirects=True, verify=False, headers=HEADERS)
+    resp = httpx.get(XLSX_URL, timeout=120, follow_redirects=True, headers=HEADERS)
     if resp.status_code == 200 and len(resp.content) > 100000:
         with open(filepath, "wb") as f:
             f.write(resp.content)
@@ -181,48 +187,52 @@ def extract_positions(filepath: str) -> List[Dict]:
         cellule_vide = dd_rate is None and not dd_interdit
         taxes = []
         if cellule_vide:
-            taxes.append({
-                "code": "DD",
-                "name": "Prélèvement du tarif douanier (colonne « فئة الضريبة »)",
-                "name_fr": "Prélèvement du tarif douanier — taux absent de la source",
-                "name_en": "Customs tariff levy — rate missing from source",
-                "name_ar": "فئة الضريبة",
-                "rate_pct": None,
-                "rate_decimal": None,
-                "raw_value": str(dd_raw),
-                "base": "CIF",
-                "source": "customs.gov.ly",
-                "legal_ref": None,
-                "is_customs_duty": True,
-                "is_vat": False,
-                "is_excise": False,
-                "note": (
-                    "Cellule vide dans le tarif officiel : le taux n'est pas publié "
-                    "pour cette position. Ni exonération, ni interdiction — une absence."
-                ),
-            })
+            taxes.append(
+                {
+                    "code": "DD",
+                    "name": "Prélèvement du tarif douanier (colonne « فئة الضريبة »)",
+                    "name_fr": "Prélèvement du tarif douanier — taux absent de la source",
+                    "name_en": "Customs tariff levy — rate missing from source",
+                    "name_ar": "فئة الضريبة",
+                    "rate_pct": None,
+                    "rate_decimal": None,
+                    "raw_value": str(dd_raw),
+                    "base": "CIF",
+                    "source": "customs.gov.ly",
+                    "legal_ref": None,
+                    "is_customs_duty": True,
+                    "is_vat": False,
+                    "is_excise": False,
+                    "note": (
+                        "Cellule vide dans le tarif officiel : le taux n'est pas publié "
+                        "pour cette position. Ni exonération, ni interdiction — une absence."
+                    ),
+                }
+            )
         if dd_rate is not None:
-            taxes.append({
-                "code": "DD",
-                "name": "Prélèvement du tarif douanier (colonne « فئة الضريبة »)",
-                "name_fr": "Prélèvement du tarif douanier (colonne « فئة الضريبة »)",
-                "name_en": "Customs tariff levy (column « فئة الضريبة »)",
-                "name_ar": "فئة الضريبة",
-                "denominations_legales": [
-                    "الضرائب الجمركية (taxes douanières)",
-                    "الرسوم الجمركية (droits de douane)",
-                    "الضرائب والرسوم الجمركية (taxes et droits de douane)",
-                ],
-                "rate_pct": dd_rate,
-                "rate_decimal": dd_rate / 100,
-                "raw_value": str(dd_raw),
-                "base": "CIF",
-                "source": "customs.gov.ly",
-                "legal_ref": None,
-                "is_customs_duty": True,
-                "is_vat": False,
-                "is_excise": False,
-            })
+            taxes.append(
+                {
+                    "code": "DD",
+                    "name": "Prélèvement du tarif douanier (colonne « فئة الضريبة »)",
+                    "name_fr": "Prélèvement du tarif douanier (colonne « فئة الضريبة »)",
+                    "name_en": "Customs tariff levy (column « فئة الضريبة »)",
+                    "name_ar": "فئة الضريبة",
+                    "denominations_legales": [
+                        "الضرائب الجمركية (taxes douanières)",
+                        "الرسوم الجمركية (droits de douane)",
+                        "الضرائب والرسوم الجمركية (taxes et droits de douane)",
+                    ],
+                    "rate_pct": dd_rate,
+                    "rate_decimal": dd_rate / 100,
+                    "raw_value": str(dd_raw),
+                    "base": "CIF",
+                    "source": "customs.gov.ly",
+                    "legal_ref": None,
+                    "is_customs_duty": True,
+                    "is_vat": False,
+                    "is_excise": False,
+                }
+            )
 
         # Colonne préférentielle. Le tarif la PUBLIE position par position : ce
         # n'est pas une franchise déduite d'une appartenance à un bloc, mais
@@ -231,20 +241,22 @@ def extract_positions(filepath: str) -> List[Dict]:
         # condition que ce fichier ne tranche pas.
         preferential_rates = []
         if arab_pref_rate is not None:
-            preferential_rates.append({
-                # L'en-tête de la colonne dit « التعريفة التفضيلية لدول جامعة
-                # الدول العربية » — tarif préférentiel pour les ÉTATS DE LA LIGUE
-                # DES ÉTATS ARABES. Il ne dit pas GZALE/GAFTA, qui est un accord
-                # distinct dont ni le tarif ni la loi ne font mention. Nommer
-                # cette colonne GZALE lui prêterait un régime que la source
-                # n'invoque pas, et une liste de pays que rien n'établit ici.
-                "regime": "LIGUE_ARABE",
-                "regime_name_fr": "États de la Ligue des États arabes (colonne du tarif)",
-                "rate_pct": arab_pref_rate,
-                "raw_value": str(arab_pref_raw),
-                "source": "customs.gov.ly",
-                "colonne_source": "التعريفة التفضيلية لدول جامعة الدول العربية",
-            })
+            preferential_rates.append(
+                {
+                    # L'en-tête de la colonne dit « التعريفة التفضيلية لدول جامعة
+                    # الدول العربية » — tarif préférentiel pour les ÉTATS DE LA LIGUE
+                    # DES ÉTATS ARABES. Il ne dit pas GZALE/GAFTA, qui est un accord
+                    # distinct dont ni le tarif ni la loi ne font mention. Nommer
+                    # cette colonne GZALE lui prêterait un régime que la source
+                    # n'invoque pas, et une liste de pays que rien n'établit ici.
+                    "regime": "LIGUE_ARABE",
+                    "regime_name_fr": "États de la Ligue des États arabes (colonne du tarif)",
+                    "rate_pct": arab_pref_rate,
+                    "raw_value": str(arab_pref_raw),
+                    "source": "customs.gov.ly",
+                    "colonne_source": "التعريفة التفضيلية لدول جامعة الدول العربية",
+                }
+            )
 
         # La colonne préférentielle est aussi émise parmi les taxes, sous le code
         # que le constructeur du socle reconnaît comme régime préférentiel. Sans
@@ -253,74 +265,87 @@ def extract_positions(filepath: str) -> List[Dict]:
         # de la Ligue arabe seraient perdues. Elle n'entre JAMAIS dans la cascade
         # NPF : le socle la range sous son propre régime.
         if arab_pref_rate is not None:
-            taxes.append({
-                "code": "LIGUE_ARABE",
-                "name": "États de la Ligue des États arabes (colonne du tarif)",
-                "name_fr": "États de la Ligue des États arabes (colonne du tarif)",
-                "name_ar": "التعريفة التفضيلية لدول جامعة الدول العربية",
-                "rate_pct": arab_pref_rate,
-                "rate_decimal": arab_pref_rate / 100,
-                "raw_value": str(arab_pref_raw),
-                "base": "CIF",
-                "source": "customs.gov.ly",
-                "is_customs_duty": False,
-                "is_vat": False,
-                "is_excise": False,
-                "note": (
-                    "Colonne publiée par le tarif de destination. L'appartenance de "
-                    "l'origine aux États de la Ligue arabe et les règles d'origine "
-                    "applicables ne sont PAS tranchées par ce fichier."
-                ),
-            })
+            taxes.append(
+                {
+                    "code": "LIGUE_ARABE",
+                    "name": "États de la Ligue des États arabes (colonne du tarif)",
+                    "name_fr": "États de la Ligue des États arabes (colonne du tarif)",
+                    "name_ar": "التعريفة التفضيلية لدول جامعة الدول العربية",
+                    "rate_pct": arab_pref_rate,
+                    "rate_decimal": arab_pref_rate / 100,
+                    "raw_value": str(arab_pref_raw),
+                    "base": "CIF",
+                    "source": "customs.gov.ly",
+                    "is_customs_duty": False,
+                    "is_vat": False,
+                    "is_excise": False,
+                    "note": (
+                        "Colonne publiée par le tarif de destination. L'appartenance de "
+                        "l'origine aux États de la Ligue arabe et les règles d'origine "
+                        "applicables ne sont PAS tranchées par ce fichier."
+                    ),
+                }
+            )
 
         # Une interdiction d'importation n'est pas un droit : elle est portée
         # comme restriction de la position, et le prélèvement correspondant
         # reste absent plutôt que fixé à zéro.
         restrictions = []
         if dd_interdit or arab_interdit:
-            restrictions.append({
-                "type": "IMPORTATION_INTERDITE",
-                "portee": "NPF et Ligue arabe" if (dd_interdit and arab_interdit) else (
-                    "NPF" if dd_interdit else "Ligue arabe"
-                ),
-                "verbatim": MENTION_INTERDIT,
-                "libelle_fr": "Importation interdite",
-                "source": "customs.gov.ly (التعريفة الجمركية 2022)",
-            })
+            restrictions.append(
+                {
+                    "type": "IMPORTATION_INTERDITE",
+                    "portee": (
+                        "NPF et Ligue arabe"
+                        if (dd_interdit and arab_interdit)
+                        else ("NPF" if dd_interdit else "Ligue arabe")
+                    ),
+                    "verbatim": MENTION_INTERDIT,
+                    "libelle_fr": "Importation interdite",
+                    "source": "customs.gov.ly (التعريفة الجمركية 2022)",
+                }
+            )
 
-        positions.append({
-            "national_code": code_clean,
-            "hs6": code_clean[:6],
-            "chapter": code_clean[:2],
-            "heading": code_clean[:4] + "." + code_clean[4:6],
-            "section": "",
-            "statistical_unit": "",
-            "check_digit": "",
-            "designation": {
-                "fr": "",
-                "en": "",
-                "ar": designation,
-                "full_fr": "",
-                "verbatim": hs_code,
-            },
-            "taxes": taxes,
-            "export_taxes": [],
-            "preferential_rates": preferential_rates,
-            "fiscal_advantages": [],
-            "formalities": [],
-            "restrictions": restrictions,
-            "legal_refs": [],
-            "reglementation": {"import": [], "export": []},
-            "quotas": {"qcs": None, "qci": None},
-            "zlecaf_schedule": {"applied": False, "rate_pct": None, "instruction": None},
-            "source_gaps": [],
-            "lf_provisions": None,
-            "data_status": "crawled_authentic",
-            "source_quality": "crawled_authentic",
-            "source": "customs.gov.ly (التعريفة الجمركية 2022)",
-            "source_url": XLSX_URL,
-            "raw_data": {"hs_code": hs_code, "designation_ar": designation, "dd_raw": str(dd_raw), "arab_pref_raw": str(arab_pref_raw)},
-        })
+        positions.append(
+            {
+                "national_code": code_clean,
+                "hs6": code_clean[:6],
+                "chapter": code_clean[:2],
+                "heading": code_clean[:4] + "." + code_clean[4:6],
+                "section": "",
+                "statistical_unit": "",
+                "check_digit": "",
+                "designation": {
+                    "fr": "",
+                    "en": "",
+                    "ar": designation,
+                    "full_fr": "",
+                    "verbatim": hs_code,
+                },
+                "taxes": taxes,
+                "export_taxes": [],
+                "preferential_rates": preferential_rates,
+                "fiscal_advantages": [],
+                "formalities": [],
+                "restrictions": restrictions,
+                "legal_refs": [],
+                "reglementation": {"import": [], "export": []},
+                "quotas": {"qcs": None, "qci": None},
+                "zlecaf_schedule": {"applied": False, "rate_pct": None, "instruction": None},
+                "source_gaps": [],
+                "lf_provisions": None,
+                "data_status": "crawled_authentic",
+                "source_quality": "crawled_authentic",
+                "source": "customs.gov.ly (التعريفة الجمركية 2022)",
+                "source_url": XLSX_URL,
+                "raw_data": {
+                    "hs_code": hs_code,
+                    "designation_ar": designation,
+                    "dd_raw": str(dd_raw),
+                    "arab_pref_raw": str(arab_pref_raw),
+                },
+            }
+        )
 
     wb.close()
     if len(positions) < POSITIONS_ATTENDUES_MIN:
@@ -383,14 +408,16 @@ def save(positions: List[Dict]):
 
     for position in positions:
         for complement in COMPLEMENTS_NATIONAUX:
-            position["taxes"].append({
-                **complement,
-                "name_fr": complement["name"],
-                "base": None,
-                "is_customs_duty": False,
-                "is_vat": False,
-                "is_excise": True,
-            })
+            position["taxes"].append(
+                {
+                    **complement,
+                    "name_fr": complement["name"],
+                    "base": None,
+                    "is_customs_duty": False,
+                    "is_vat": False,
+                    "is_excise": True,
+                }
+            )
 
     all_tax_codes = set()
     for p in positions:
@@ -450,6 +477,7 @@ def main():
         save(positions)
 
         from collections import Counter
+
         dd_dist = Counter()
         for p in positions:
             for t in p["taxes"]:

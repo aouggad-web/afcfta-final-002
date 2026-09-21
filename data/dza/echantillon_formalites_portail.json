@@ -1,0 +1,18 @@
+{
+ "objet": "Établir si conformepro.dz publie ses formalités de façon EXHAUSTIVE — c'est-à-dire si l'absence de bloc « Formalités » signifie « aucune formalité particulière » plutôt que « non collecté ». 8 056 des 17 226 positions algériennes (46,8 %) sont concernées.",
+ "verifie_le": "2026-09-21",
+ "source": "conformepro.dz — page de sous-position (données douane.gov.dz)",
+ "methode": "Échantillon tiré au sort (graine 20260921) de 60 positions SANS formalité au crawl et 20 positions AVEC. Chaque page interrogée en TLS vérifié ; recherche d'un bloc « vstack » dont le titre commence par « Formalit ».",
+ "resultat": {
+  "sans": {
+   "BLOC_ABSENT": 60
+  },
+  "avec": {
+   "BLOC_PRESENT": 19,
+   "ERREUR": 1
+  },
+  "contre_exemples": []
+ },
+ "conclusion": "Le bloc est publié quand et seulement quand une formalité particulière existe : 60 positions sans formalité au crawl, 60 fois aucun bloc au portail ; 19 des 20 positions avec formalité portent un bloc (la vingtième a échoué en réseau, pas au contenu). La collecte est donc FIDÈLE, et l'absence est un CONSTAT de la source.",
+ "ce_qui_n_est_pas_affirme": "Que l'importation soit dispensée de toute obligation. Les obligations GÉNÉRALES à l'importation — déclaration, domiciliation, procédures de guichet unique — s'appliquent sans distinction de position et ne sont volontairement pas portées par le produit : décision du propriétaire du 21/09/2026, au motif qu'elles changent souvent et que l'opérateur qui consulte une position tarifaire les connaît."
+}

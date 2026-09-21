@@ -891,11 +891,24 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             `${API}/authentic-tariffs/country/${destISO3}/formalities/${cleanHsCode}?language=${language}`
           );
           const formalites = formalitesResponse.data?.formalities || [];
-          if (formalites.length > 0) {
-            setResult((precedent) => (precedent
-              ? { ...precedent, administrative_formalities: formalites }
-              : precedent));
-          }
+          // Le STATUT accompagne la liste, et il est transmis même quand elle
+          // est vide : c'est lui qui empêche l'écran de se taire, et le
+          // silence de se lire « aucune obligation ».
+          const statutFormalites = formalitesResponse.data?.statut || null;
+          const reserveFormalites = formalitesResponse.data?.reserve || null;
+          setResult((precedent) => (precedent
+            ? {
+              ...precedent,
+              // La liste se remplace À CHAQUE RÉPONSE, y compris vide. La
+              // garder quand la nouvelle est vide ferait afficher les
+              // documents de la position PRÉCÉDENTE sous le statut de la
+              // nouvelle — et, la liste n'étant plus vide, supprimerait
+              // justement l'avertissement que ce lot installe.
+              administrative_formalities: formalites,
+              formalites_statut: statutFormalites,
+              formalites_reserve: reserveFormalites,
+            }
+            : precedent));
         } catch (formalitesError) {
           // Silencieux : une formalité absente n'est pas un montant faux.
         }
@@ -907,17 +920,32 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         }
 
         const npfEtat = calcul.npf?.etat;
+        // INDICATIF n'est pas un échec : toutes les lignes sont liquidées. La
+        // réserve porte sur la nature d'un taux — une moyenne statistique, pas
+        // un tarif — et doit se lire, sans faire passer le calcul pour cassé.
+        const codesStatistiques = calcul.npf?.lignes_base_statistique || [];
+        let titreToast;
+        let descriptionToast;
+        if (npfEtat === 'COMPLET') {
+          titreToast = t.calculationSuccess;
+          descriptionToast = legacyResult.savings != null
+            ? `${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}`
+            : `${destISO3} — ${language === 'fr' ? 'régime NPF' : 'MFN regime'}`;
+        } else if (npfEtat === 'INDICATIF') {
+          titreToast = language === 'fr' ? 'Calcul indicatif' : 'Indicative calculation';
+          descriptionToast = language === 'fr'
+            ? `${destISO3} : ${codesStatistiques.join(', ') || '—'} repose sur une moyenne statistique SH6 (WITS/TRAINS), pas sur un tarif national — montant indicatif`
+            : `${destISO3}: ${codesStatistiques.join(', ') || '—'} rests on an HS6 statistical average (WITS/TRAINS), not a national tariff — indicative amount`;
+        } else {
+          titreToast = language === 'fr' ? 'Calcul incomplet' : 'Incomplete calculation';
+          descriptionToast = language === 'fr'
+            ? `${destISO3} : un ou plusieurs droits n'ont pas pu être liquidés (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — total partiel, jamais un montant fabriqué`
+            : `${destISO3}: one or more duties could not be liquidated (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — partial total, never a fabricated amount`;
+        }
         toast({
-          title: npfEtat === 'COMPLET' ? t.calculationSuccess
-            : (language === 'fr' ? 'Calcul incomplet' : 'Incomplete calculation'),
-          description: npfEtat === 'COMPLET'
-            ? (legacyResult.savings != null
-              ? `${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}`
-              : `${destISO3} — ${language === 'fr' ? 'régime NPF' : 'MFN regime'}`)
-            : (language === 'fr'
-              ? `${destISO3} : un ou plusieurs droits n'ont pas pu être liquidés (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — total partiel, jamais un montant fabriqué`
-              : `${destISO3}: one or more duties could not be liquidated (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — partial total, never a fabricated amount`),
-          variant: npfEtat === 'COMPLET' ? 'default' : 'destructive',
+          title: titreToast,
+          description: descriptionToast,
+          variant: npfEtat === 'COMPLET' || npfEtat === 'INDICATIF' ? 'default' : 'destructive',
         });
       }
     } catch (error) {
@@ -1959,7 +1987,36 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
             const formalities = (isPositionLevel && selectedSubPositionFormalities)
               || result.administrative_formalities;
             const positionCode = isPositionLevel ? resolvedCode : null;
-            if (!formalities || formalities.length === 0) return null;
+
+            // LA CARTE NE DISPARAÎT PLUS QUAND LA LISTE EST VIDE.
+            //
+            // Elle rendait `null`, et l'opérateur voyait un résultat complet —
+            // taxes, avantages, coût réglementaire — sans le moindre signe que
+            // les formalités n'avaient jamais été établies. Mesuré sur les
+            // crawls du 21/09/2026 : 315 185 positions sur 350 022 (90 %) n'en
+            // portent aucune, et 46 pays sur 54 n'en portent aucune du tout.
+            // Le silence était la règle, et il se lisait « rien à faire ».
+            //
+            // Une absence d'information n'est pas une absence d'obligation :
+            // la carte reste, et dit laquelle des deux elle constate.
+            const aucuneFormalite = !formalities || formalities.length === 0;
+            // Deux silences très différents, et l'opérateur doit les distinguer.
+            //
+            // Quand la source publie ses formalités de façon EXHAUSTIVE — c'est
+            // établi pour l'Algérie, échantillon à l'appui — une liste vide est
+            // un CONSTAT : la marchandise n'est soumise à aucune formalité
+            // particulière. Dire « non établies » sous-estimerait ce que l'on
+            // sait, et ferait passer une information solide pour une lacune.
+            // Partout ailleurs, le silence reste une lacune, et se dit comme tel.
+            const constatSource = result.formalites_statut === 'AUCUNE_FORMALITE_PARTICULIERE';
+            const reserve = result.formalites_reserve
+              || (constatSource
+                ? (language === 'fr'
+                  ? "Aucune formalité administrative particulière n'est publiée pour cette position. Les obligations générales à l'importation demeurent."
+                  : 'No specific administrative formality is published for this position. General import obligations still apply.')
+                : (language === 'fr'
+                  ? "Formalités non établies pour cette position. Une absence d'information n'est pas une absence d'obligation : vérifier auprès de l'administration douanière de destination."
+                  : 'Formalities not established for this position. Missing information is not an absence of obligation: check with the destination customs administration.'));
             return (
               <Card className="bg-slate-800/50 border-slate-700">
                 <CardHeader className="pb-3">
@@ -1973,7 +2030,11 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                           {language === 'fr' ? 'Documents Requis' : 'Required Documents'}
                         </CardTitle>
                         <CardDescription className="text-slate-400">
-                          {formalities.length} {language === 'fr' ? 'formalités' : 'formalities'}
+                          {aucuneFormalite
+                            ? (constatSource
+                              ? (language === 'fr' ? 'Aucune formalité particulière' : 'No specific formality')
+                              : (language === 'fr' ? 'Non établies' : 'Not established'))
+                            : `${formalities.length} ${language === 'fr' ? 'formalités' : 'formalities'}`}
                           {isPositionLevel && (
                             <span className="ml-2 text-amber-400 text-xs font-mono">
                               — position {positionCode}
@@ -1990,8 +2051,16 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                   </div>
                 </CardHeader>
                 <CardContent>
+                  {aucuneFormalite && (
+                    <div className={`flex items-start gap-3 p-3 rounded-lg border ${constatSource ? 'bg-slate-900/40 border-slate-700' : 'bg-amber-500/10 border-amber-500/20'}`}>
+                      {constatSource
+                        ? <Info className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
+                        : <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />}
+                      <p className="text-slate-300 text-sm">{reserve}</p>
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {formalities.map((form, idx) => (
+                    {(formalities || []).map((form, idx) => (
                       <div
                         key={idx}
                         className={`p-3 rounded-lg border ${form.is_mandatory === false ? 'bg-slate-700/20 border-slate-700' : 'bg-slate-700/30 border-slate-700'}`}
