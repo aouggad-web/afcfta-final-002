@@ -95,6 +95,7 @@ def get_production_data_version() -> str:
                 str(meta.get("last_updated", "")),
                 str(len(data.get("agri_faostat", []))),
                 str(len(data.get("manufacturing_unido", []))),
+                str(len(data.get("manufacturing_unsd", []))),
                 str(len(data.get("mining_usgs", []))),
                 str(len(data.get("value_added_macro", []))),
             ]
@@ -387,6 +388,64 @@ def get_manufacturing_profile(country_iso3: str) -> Dict:
 
 
 # ==========================================
+# MANUFACTURING MESURÉ — agrégats nationaux UNSD (source UNIDO)
+# ==========================================
+
+
+def get_manufacturing_unsd(
+    country_iso3: Optional[str] = None,
+    year: Optional[int] = None,
+    indicator_code: Optional[str] = None,
+) -> List[Dict]:
+    """Agrégats manufacturiers mesurés publiés par l'UNSD (base ODD, cible 9.2).
+
+    Dimension distincte de ``manufacturing_unido`` : celle-ci ventile par
+    division ISIC et repose sur une structure estimée pour 32 pays, faute
+    d'accès libre à INDSTAT ; celle-là mesure trois agrégats nationaux.
+    Les confondre ferait passer du mesuré pour de l'estimé.
+
+    Args:
+        country_iso3: Code ISO3 du pays (ex: 'KEN')
+        year: Année
+        indicator_code: Série UNSD ('NV_IND_MANFPC', 'SL_TLF_MANF', 'NV_IND_TECH')
+    """
+    records = load_production_data().get("manufacturing_unsd", [])
+
+    country_iso3 = _normalize_country_iso3(country_iso3)
+    if country_iso3:
+        records = [r for r in records if r.get("country_iso3") == country_iso3]
+    if year:
+        records = [r for r in records if r.get("year") == year]
+    if indicator_code:
+        records = [r for r in records if r.get("indicator_code") == indicator_code]
+
+    return records
+
+
+def get_manufacturing_unsd_by_country(country_iso3: str) -> Dict:
+    """Séries manufacturières mesurées d'un pays, groupées par indicateur."""
+    country_iso3 = _normalize_country_iso3(country_iso3)
+    records = get_manufacturing_unsd(country_iso3=country_iso3)
+
+    by_indicator: Dict[str, List[Dict]] = {}
+    for record in records:
+        by_indicator.setdefault(record.get("indicator_code", "Unknown"), []).append(record)
+    for series in by_indicator.values():
+        series.sort(key=lambda r: r.get("year") or 0)
+
+    years_covered = _extract_years(records)
+
+    return {
+        "country_iso3": country_iso3,
+        "country_name": records[0].get("country_name") if records else None,
+        "data_by_indicator": by_indicator,
+        "total_records": len(records),
+        "years_covered": years_covered,
+        "latest_year": years_covered[-1] if years_covered else None,
+    }
+
+
+# ==========================================
 # MINING USGS
 # ==========================================
 
@@ -424,8 +483,74 @@ def get_mining_production(
     return records
 
 
+#: Sources consultées pour la dimension minière, dans l'ordre où elles couvrent
+#: le terrain. Nommées dans la réponse afin qu'une absence soit vérifiable.
+_MINING_SOURCES = (
+    "USGS Mineral Commodity Summaries 2025 (minéraux)",
+    "EIA International Energy Statistics (pétrole, gaz)",
+    "OPEC Annual Statistical Bulletin (pétrole)",
+    "World Nuclear Association (uranium)",
+)
+
+
+def get_mining_coverage(country_iso3: str, has_records: bool) -> Dict:
+    """Explique l'état de couverture minière d'un pays.
+
+    Treize pays africains n'ont aucun enregistrement minier. Leur servir un
+    onglet vide laisse le lecteur conclure ce qu'il veut — le plus souvent que
+    la plateforme a perdu la donnée. Cette fonction dit ce qui a été consulté
+    et ce que la source en rapporte.
+
+    Distinction qui fait tout : l'absence chez USGS n'est PAS une absence
+    d'extraction. MCS ne recense ni la production artisanale, ni les volumes
+    sous son seuil de significativité, ni les hydrocarbures, ni l'uranium.
+    Le statut renvoyé porte donc sur nos sources, jamais sur le pays.
+    """
+    from etl.usgs_world_coverage import (
+        USGS_LISTED_PRODUCERS_AFRICA,
+        USGS_MCS_EDITION,
+        USGS_MCS_SOURCE_URL,
+    )
+
+    listed_by_usgs = country_iso3 in USGS_LISTED_PRODUCERS_AFRICA
+
+    if has_records:
+        status = "COVERED"
+        note = "Production publiée par au moins une des sources consultées."
+    elif listed_by_usgs:
+        # Cas à traiter en priorité : USGS recense ce pays, mais nous n'avons
+        # pas ingéré ses commodités. C'est un trou d'ingestion, pas un trait
+        # du pays.
+        status = "LISTED_BY_USGS_NOT_INGESTED"
+        note = (
+            "USGS recense une production minérale pour ce pays, mais aucune de ses "
+            "commodités n'est encore ingérée ici. Lacune de collecte, à combler."
+        )
+    else:
+        status = "NOT_LISTED_BY_SOURCES"
+        note = (
+            "Aucune production rapportée pour ce pays par les sources consultées. "
+            "Cela ne signifie pas qu'il n'extrait rien : USGS ne recense ni la "
+            "production artisanale, ni les volumes sous son seuil de "
+            "significativité ; les hydrocarbures et l'uranium relèvent des autres "
+            "sources listées, qui ne le mentionnent pas davantage."
+        )
+
+    return {
+        "status": status,
+        "listed_by_usgs": listed_by_usgs,
+        "sources_consulted": list(_MINING_SOURCES),
+        "usgs_edition": USGS_MCS_EDITION,
+        "usgs_source_url": USGS_MCS_SOURCE_URL,
+        "note": note,
+    }
+
+
 def get_mining_by_country(country_iso3: str) -> Dict:
-    """Récupère toutes les productions minières pour un pays"""
+    """Récupère toutes les productions minières pour un pays.
+
+    Une absence de donnée est renseignée plutôt que muette : voir ``coverage``.
+    """
     country_iso3 = _normalize_country_iso3(country_iso3)
     records = get_mining_production(country_iso3=country_iso3)
 
@@ -446,6 +571,7 @@ def get_mining_by_country(country_iso3: str) -> Dict:
         "total_records": len(records),
         "years_covered": years_covered,
         "latest_year": years_covered[-1] if years_covered else None,
+        "coverage": get_mining_coverage(country_iso3, bool(records)),
     }
 
 
@@ -462,17 +588,21 @@ def get_production_statistics() -> Dict:
     countries_va = set(r.get("country_iso3") for r in data.get("value_added_macro", []))
     countries_agri = set(r.get("country_iso3") for r in data.get("agri_faostat", []))
     countries_manuf = set(r.get("country_iso3") for r in data.get("manufacturing_unido", []))
+    countries_manuf_unsd = set(r.get("country_iso3") for r in data.get("manufacturing_unsd", []))
     countries_mining = set(r.get("country_iso3") for r in data.get("mining_usgs", []))
 
-    all_countries = countries_va | countries_agri | countries_manuf | countries_mining
+    all_countries = (
+        countries_va | countries_agri | countries_manuf | countries_manuf_unsd | countries_mining
+    )
 
     # Années couvertes
     years_va = set(r.get("year") for r in data.get("value_added_macro", []))
     years_agri = set(r.get("year") for r in data.get("agri_faostat", []))
     years_manuf = set(r.get("year") for r in data.get("manufacturing_unido", []))
+    years_manuf_unsd = set(r.get("year") for r in data.get("manufacturing_unsd", []))
     years_mining = set(r.get("year") for r in data.get("mining_usgs", []))
 
-    all_years = sorted(years_va | years_agri | years_manuf | years_mining)
+    all_years = sorted(years_va | years_agri | years_manuf | years_manuf_unsd | years_mining)
 
     return {
         "total_countries": len(all_countries),
@@ -493,6 +623,11 @@ def get_production_statistics() -> Dict:
                 "total_records": len(data.get("manufacturing_unido", [])),
                 "countries": len(countries_manuf),
                 "years": sorted(list(years_manuf)),
+            },
+            "manufacturing_unsd": {
+                "total_records": len(data.get("manufacturing_unsd", [])),
+                "countries": len(countries_manuf_unsd),
+                "years": sorted(list(years_manuf_unsd)),
             },
             "mining_usgs": {
                 "total_records": len(data.get("mining_usgs", [])),

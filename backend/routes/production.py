@@ -7,27 +7,28 @@ Endpoints pour exposer :
   - Classements continentaux et scénarios d'intégration ZLECAf
 """
 
-from fastapi import APIRouter, HTTPException, Path, Query
-from typing import Optional, Dict, List
+from typing import Dict, List, Optional
 
-from etl.unido_data import get_isic4_breakdown
 from etl.isic4_idsb_data import (
     get_all_isic4_timeseries,
     get_country_isic4_summary,
     get_isic4_timeseries,
+    is_country_covered,
     list_covered_countries,
     list_covered_countries_filtered,
-    is_country_covered,
 )
+from etl.unido_data import get_isic4_breakdown
+from fastapi import APIRouter, HTTPException, Path, Query
 
 # Production capacity service is optional (depends on production_data.py)
 try:
     from services.production_capacity_service import (
         get_capacity,
-        get_country_profile,
         get_continental_producers,
+        get_country_profile,
         list_tracked_products,
     )
+
     HAS_CAPACITY_SERVICE = True
 except (ImportError, ModuleNotFoundError):
     HAS_CAPACITY_SERVICE = False
@@ -46,7 +47,9 @@ router = APIRouter(prefix="/production", tags=["production"])
     description="Retourne la liste ISO3 des pays ayant des données ISIC4 (officielles ou estimées).",
 )
 def list_isic4_countries(
-    include_estimates: bool = Query(True, description="Inclure les pays avec données estimées UNIDO (par défaut: vrai)")
+    include_estimates: bool = Query(
+        True, description="Inclure les pays avec données estimées UNIDO (par défaut: vrai)"
+    )
 ):
     """GET /api/production/isic4/countries?include_estimates=true
 
@@ -73,9 +76,9 @@ def list_isic4_countries(
 
     measured = list_covered_countries_filtered(official_only=not include_estimates)
     structural = sorted(
-        iso for iso in UNIDO_INDUSTRY_DATA
-        if not is_country_covered(iso)
-        and (get_isic4_breakdown(iso) or {}).get("isic4_breakdown")
+        iso
+        for iso in UNIDO_INDUSTRY_DATA
+        if not is_country_covered(iso) and (get_isic4_breakdown(iso) or {}).get("isic4_breakdown")
     )
     return {
         "countries": sorted(set(measured) | set(structural)),
@@ -321,6 +324,7 @@ def get_isic4_timeseries_data(
 # ═══════════════════════════════════════════════════════════════════════════════
 
 if HAS_CAPACITY_SERVICE:
+
     @router.get(
         "/capacity",
         summary="Capacité de production — code HS + pays",
@@ -352,7 +356,9 @@ if HAS_CAPACITY_SERVICE:
     )
     def get_country_production_profile(
         country_iso3: str = Path(..., description="Code ISO3"),
-        top_n: int = Query(20, ge=1, le=100, description="Nombre de top produits à retourner (1-100)"),
+        top_n: int = Query(
+            20, ge=1, le=100, description="Nombre de top produits à retourner (1-100)"
+        ),
     ):
         """GET /api/production/country-profile/ETH?top_n=20"""
         return get_country_profile(country_iso3, top_n)
@@ -391,6 +397,7 @@ if HAS_CAPACITY_SERVICE:
                 "USGS/EIA/OPEC (mines & hydrocarbures)",
             ],
         }
+
 else:
     # Capacity service not available - return 503
     @router.get("/capacity")
@@ -402,6 +409,7 @@ else:
             status_code=503,
             detail="Production capacity service not available (missing data files)",
         )
+
 
 # ---------------------------------------------------------------------------
 # Routes legacy restaurées (fe425a8f) — Macro / Agriculture / Manufacturing /
@@ -416,6 +424,8 @@ from production_data import (
     get_country_production_overview,
     get_manufacturing_by_country,
     get_manufacturing_production,
+    get_manufacturing_unsd,
+    get_manufacturing_unsd_by_country,
 )
 from production_data import get_mining_by_country as get_mining_by_country_data
 from production_data import (
@@ -430,7 +440,6 @@ try:
     from etl.unido_data import UNIDO_INDUSTRY_DATA
 except ImportError:
     UNIDO_INDUSTRY_DATA = {}
-
 
 
 @router.get("/statistics")
@@ -518,6 +527,35 @@ async def get_manuf_production(
     - isic_code: ISIC Rev.4 code (e.g., '10', '11')
     """
     return get_manufacturing_production(country_iso3=country_iso3, year=year, isic_code=isic_code)
+
+
+# Ces deux routes sont déclarées AVANT /manufacturing/{country_iso3} :
+# FastAPI apparie dans l'ordre d'enregistrement, et le chemin paramétré
+# capturerait sinon "measured" comme un code pays.
+@router.get("/manufacturing/measured")
+async def get_manuf_measured(
+    country_iso3: Optional[str] = None,
+    year: Optional[int] = None,
+    indicator_code: Optional[str] = None,
+):
+    """
+    Agrégats manufacturiers MESURÉS (UNSD, base ODD cible 9.2 — source UNIDO).
+
+    Trois séries nationales, distinctes de /manufacturing qui ventile par
+    division ISIC sur une structure estimée pour 32 pays :
+    - NV_IND_MANFPC : valeur ajoutée manufacturière par habitant (USD const. 2020)
+    - SL_TLF_MANF   : part de l'emploi manufacturier dans l'emploi total (%)
+    - NV_IND_TECH   : part de la moyenne et haute technologie dans la VAM (%)
+    """
+    return get_manufacturing_unsd(
+        country_iso3=country_iso3, year=year, indicator_code=indicator_code
+    )
+
+
+@router.get("/manufacturing/measured/{country_iso3}")
+async def get_manuf_measured_by_country(country_iso3: str):
+    """Séries manufacturières mesurées d'un pays, groupées par indicateur."""
+    return get_manufacturing_unsd_by_country(country_iso3)
 
 
 @router.get("/manufacturing/{country_iso3}")

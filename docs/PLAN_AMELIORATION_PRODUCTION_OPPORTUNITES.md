@@ -8,12 +8,14 @@ sources en ligne le jour de l'audit, pas estimées. Les commandes de mesure sont
 rappelées en annexe pour que chaque chiffre soit reproductible.
 
 > **État d'avancement.** Le constat (§ 1 et 2) décrit le dépôt tel qu'il était
-> à l'audit. La **phase 0 a depuis été implémentée** : macro en valeurs
-> absolues sur dix ans, surfaces et rendements FAOSTAT, rang continental, et
-> correction d'un passage mensuel qui faisait régresser le fichier. Le tableau
-> du § 6 marque d'un ✅ ce qui est livré. Une action du plan s'est révélée mal
-> découpée à l'usage ; la correction est expliquée en phase 0, elle n'est pas
-> masquée.
+> à l'audit. Les **phases 0 et 1 ont depuis été implémentées** : macro en
+> valeurs absolues sur dix ans, surfaces et rendements FAOSTAT, rang
+> continental, correction d'un passage mensuel qui faisait régresser le
+> fichier, puis une dimension manufacturière mesurée contournant le 403
+> d'UNIDO et une explication sourcée pour les treize pays sans donnée minière.
+> Le tableau du § 6 marque d'un ✅ ce qui est livré. Deux actions du plan se
+> sont révélées mal formulées à l'usage ; les corrections sont écrites en
+> phase 0 et en phase 1, elles ne sont pas masquées.
 
 ---
 
@@ -390,38 +392,101 @@ toucher à ce module.
 
 ### Phase 1 — Combler manufacturing et mining (1 à 2 semaines)
 
-**1.1 — Manufacturing, par contournement.** UNIDO INDSTAT n'a pas d'endpoint
-libre (403 confirmé). Trois voies complémentaires, aucune ne remplace INDSTAT
-mais ensemble elles couvrent l'essentiel :
+**1.1 — Manufacturing, par contournement. ✅ livré.** UNIDO INDSTAT n'a pas
+d'endpoint libre (403 reconfirmé). Deux voies ont été exploitées :
 
-- **WDI `NV.IND.MANF.CD`** — valeur ajoutée manufacturière absolue, les 54 pays,
-  gratuit. Sert d'**ancre de total** : on connaît alors la taille du gâteau même
-  quand on ignore la part de chaque division.
-- **API ODD de l'ONU** (200 confirmé) — indicateurs 9.2.1 et 9.2.2, alimentés par
-  les offices nationaux et harmonisés par l'UNSD.
-- **Offices nationaux** pour les dix premières économies industrielles
-  (recensements industriels, indices de production industrielle) — voir phase 2.
+- **WDI `NV.IND.MANF.CD`** — valeur ajoutée manufacturière absolue. Livré en
+  phase 0 : 48 pays sur 50 ont ≥ 5 ans. LBY (3 ans) et SSD (1 an) restent en
+  deçà parce que la Banque mondiale n'en publie pas davantage.
+- **Base ODD de l'UNSD** — l'UNSD republie librement les séries qu'UNIDO lui
+  fournit comme dépositaire de la cible 9.2. Nouvelle dimension
+  `manufacturing_unsd` : **912 enregistrements, 53 pays, 2015-2025**.
 
-*Vérification* : chaque pays a une VAM absolue sur ≥ 5 ans ; le nombre de pays
-dont le manufacturing repose uniquement sur `is_estimation: true` passe sous 15.
+| Série | Pays | Points | Apport |
+|---|---:|---:|---|
+| `NV_IND_MANFPC` — VAM par habitant | 53 | 583 | taille rapportée à la population |
+| `SL_TLF_MANF` — part de l'emploi manufacturier | 44 | 166 | poids dans l'emploi |
+| `NV_IND_TECH` — part moyenne et haute technologie | 26 | 163 | **sophistication industrielle**, absente sous toute forme jusqu'ici |
+| `NV_IND_SSIS` — part des petites industries | 2 | 7 | **écartée** : trop mince pour porter une lecture continentale |
 
-**1.2 — Mining, en distinguant les deux cas.** Pour BEN, CAF, GNB, MWI, SWZ,
-SOM : compléter via USGS *Minerals Yearbook* (chapitres pays), rapports ITIE et
-bulletins des ministères des mines. Pour SYC, COM, STP, CPV, DJI, GMB : **ne rien
-inventer** — introduire un état explicite « pas de production extractive
-significative », affiché comme tel.
+> **Correction apportée par la mise en œuvre.** Le critère écrit ici — « le
+> nombre de pays en `is_estimation` seule passe sous 15 » — est **inatteignable
+> par cette voie**, et il fallait le dire plutôt que de le contourner. Ces 32
+> pays le sont sur la *ventilation par division ISIC* ; l'UNSD republie des
+> **agrégats nationaux**, pas des divisions. Aucune source libre ne publie la
+> ventilation : elle reste derrière le 403.
+>
+> Ce que la voie UNSD apporte est autre chose, et utile : trois grandeurs
+> manufacturières **mesurées** qui permettent de juger un pays sans s'appuyer
+> sur l'estimation de structure. Les deux dimensions sont donc tenues
+> séparées — les fondre ferait passer de l'estimé pour du mesuré.
 
-*Vérification* : plus aucun pays n'affiche un onglet Mining vide sans explication ;
-chaque pays est soit couvert, soit explicitement déclaré non extractif.
+*Vérification tenue* : dimension séparée de `manufacturing_unido`, unités et
+bases de prix portées par chaque enregistrement, 13 tests.
 
-**1.3 — Emploi sectoriel via ILOSTAT.** L'endpoint a répondu 200 mais ma requête
-n'a rien rendu, et le bulk a été coupé par le proxy. À valider sur un runner
-avant de s'engager. L'intérêt reste élevé : ILOSTAT republie de la donnée
-d'offices nationaux, déjà harmonisée — c'est l'accès le moins cher à la matière
-des NSO.
+**1.2 — Mining, en disant ce que les sources disent. ✅ livré.**
 
-*Vérification* : un script de sonde tourne en CI et rapporte la couverture
-africaine réelle d'ILOSTAT avant qu'une ligne d'intégration soit écrite.
+Ce plan proposait de répartir les treize pays en « production réelle à
+collecter » (BEN, CAF, GNB, MWI, SWZ, SOM) et « pas de production
+significative » (SYC, COM, STP, CPV, DJI, GMB). **Cette répartition était une
+supposition de ma part, pas un fait sourcé** — exactement ce que le contrat de
+données du dépôt interdit. Elle n'a pas été retenue.
+
+À la place, une source publiée et lisible par machine a été trouvée : le *USGS
+Mineral Commodity Summaries 2025 Data Release*, membre
+`MCS2025_World_Data.csv` (ScienceBase, 1 250 lignes, production 2023 et
+estimation 2024 par commodité et par pays). Il tranche la question :
+**aucun des treize pays n'y figure**, alors que 32 pays africains y sont
+recensés.
+
+La réponse minière porte désormais un bloc `coverage` à trois états :
+
+| Statut | Pays | Sens |
+|---|---:|---|
+| `COVERED` | 41 | production publiée par au moins une source ingérée |
+| `NOT_LISTED_BY_SOURCES` | 13 | aucune production rapportée par les sources consultées |
+| `LISTED_BY_USGS_NOT_INGESTED` | 0 | recensé par USGS mais pas encore ingéré — lacune de collecte |
+
+La nuance est écrite dans la réponse et verrouillée par un test : **absent
+d'USGS ne veut pas dire sans extraction**. MCS ne recense ni la production
+artisanale, ni les volumes sous son seuil, ni les hydrocarbures (EIA/OPEC chez
+nous) ni l'uranium (WNA). Le statut porte sur nos sources, jamais sur le pays —
+le Niger l'illustre : `COVERED` par la WNA, absent d'USGS.
+
+*Vérification tenue* : les 54 pays reçoivent une couverture, aucun onglet muet ;
+9 tests.
+
+*Trouvé au passage, non traité ici* : ce même fichier USGS recense **46
+commodités africaines contre 30 ingérées**. Seize commodités sont donc
+disponibles gratuitement, et remplaceraient une partie du dictionnaire Python
+écrit à la main. À faire dans un lot dédié.
+
+**1.3 — Emploi sectoriel via ILOSTAT. ✅ sondé, intégration à décider.**
+
+L'audit avait conclu « peut-être injoignable » : l'endpoint `rplumber.ilo.org`
+répond HTTP 200 et renvoie **zéro octet**. C'était le mauvais endpoint, pas une
+source fermée. L'interface **SDMX** (`sdmx.ilo.org`) sert les données sans clé.
+La sonde est figée dans le dépôt : `scripts/probe_ilostat_coverage.py`.
+
+Relevé du 2026-09-21, dataflow `DF_EMP_TEMP_SEX_ECO_NB`, fenêtre 2015+ :
+
+- **48 pays sur 54**, 6 204 observations, 2015-2025 ;
+- **56 classifications d'activité** (total, agriculture, industrie, services,
+  puis détail ISIC) ;
+- manquants : CAF, COG, ERI, GIN, LBY, SSD ;
+- contrainte : une requête portant les 54 pays est refusée (403, URL trop
+  longue) — interroger par lots de 8.
+
+**Ce que la colonne `SOURCE` révèle, et qui compte pour la phase 2** : chaque
+observation nomme son enquête d'origine — « LFS - Labour Force Survey »,
+« LFS - Enquête Nationale sur l'Emploi », « LFS - Enquête sur la Population
+Active »… Ce sont les **enquêtes emploi des offices nationaux de statistique**,
+harmonisées par l'OIT. C'est donc une voie d'accès à la statistique nationale
+qui ne demande ni de négocier avec 54 offices ni d'extraire des PDF — à
+verser au raisonnement de la phase 2.
+
+*Vérification tenue* : la sonde tourne et se reproduit ; aucune ligne
+d'intégration n'a été écrite avant elle.
 
 ### Phase 2 — La couche « offices nationaux de statistique »
 
@@ -566,15 +631,24 @@ Les lignes marquées ✅ ont été livrées par le premier lot d'implémentation
 | ✅ `area_ha` / `yield_kg_ha` remplis (cultures) | 0 % | **96 %** | ≥ 95 % |
 | ✅ `rank_africa` rempli | 0 % | **100 %** | 100 % |
 | ✅ Le passage mensuel préserve la surcouche | non | **oui** | oui |
+| ✅ Pays sans donnée minière **ni explication** | 13 | **0** | 0 |
+| ✅ Indicateurs manufacturiers mesurés (hors estimation) | 0 | **3** | ≥ 3 |
+| ✅ Pays avec manufacturier mesuré | 0 | **53** | ≥ 45 |
+| ✅ Lignes de production hors agriculture et macro | 622 | **1 534** | ≥ 2 000 |
 | Commodités agricoles importées | 69 / 254 | 69 / 254 | ≥ 200 / 254 |
 | Codes SH reliés à la production | 114 | 114 | ≥ 400 |
 | dont manufacturing | 15 | 15 | ≥ 80 |
-| Lignes de production hors agriculture et macro | 622 | 622 | ≥ 2 000 |
+| Commodités minières ingérées | 30 / 46 | 30 / 46 | ≥ 44 / 46 |
 | Pays avec détail ISIC4 réel | 20 / 54 | 20 / 54 | ≥ 30 / 54 |
-| Pays sans donnée minière ni explication | 13 | 13 | 0 |
 | Pays avec source NSO enregistrée | 1 | 1 | ≥ 15 (palier A + B) |
 | Sous-onglets Opportunités vivants sans clé IA | 4 / 9 | 4 / 9 | 9 / 9 |
 | Clés i18n Opportunités | 0 | 0 | ≥ 150 |
+
+Deux cibles du tableau d'origine ont été retirées parce qu'elles reposaient sur
+une hypothèse fausse : « pays en `is_estimation` seule < 15 » (aucune source
+libre ne publie la ventilation par division ISIC, cf. phase 1.1) et « chaque
+pays déclaré non extractif » (une telle déclaration demanderait une source
+qui l'affirme, cf. phase 1.2).
 
 ---
 
