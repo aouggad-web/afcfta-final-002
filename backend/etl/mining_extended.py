@@ -598,9 +598,59 @@ def build_mining_year_2024() -> List[Dict]:
     return records
 
 
+def build_mcs_derived() -> List[Dict]:
+    """Minerais DÉRIVÉS du fichier USGS, par opposition aux tables saisies.
+
+    Les données viennent de ``etl/mining_usgs_mcs.py``, généré depuis le
+    membre CSV de la publication ScienceBase (voir
+    ``scripts/build_mining_from_usgs_mcs.py``). L'émission reste ici, écrite à
+    la main : un fichier généré porte des données, pas de la logique — sans
+    quoi la prochaine régénération effacerait toute correction apportée au
+    code d'émission.
+
+    Ces commodités ne recoupent aucune des tables curées : le générateur les
+    exclut, pour qu'un même minerai n'ait jamais deux séries concurrentes.
+    """
+    from etl.mining_usgs_mcs import MCS_DERIVED, USGS_MCS_EDITION, USGS_MCS_SOURCE_URL
+
+    records: List[Dict] = []
+    for commodity, spec in MCS_DERIVED.items():
+        for iso3, by_year in spec["by_country"].items():
+            for year, value in sorted(by_year.items()):
+                records.append(
+                    {
+                        "country_name": ISO3_FR_NAME.get(iso3, iso3),
+                        "country_iso3": iso3,
+                        "year": year,
+                        "sector_isic_section": "B",
+                        "sector_detail": "Mining and quarrying",
+                        "indicator_code": "USGS_PROD",
+                        "indicator_label": "Production",
+                        "value": value,
+                        "unit": spec["unit"],
+                        "currency": None,
+                        "price_base_year": None,
+                        "source_institution": "USGS",
+                        "source_dataset": USGS_MCS_EDITION,
+                        "source_url": USGS_MCS_SOURCE_URL,
+                        "commodity_code": _COMMODITY_CODE.get(
+                            commodity, commodity[:2].upper()
+                        ),
+                        "commodity_label": commodity,
+                        # La MESURE est portée jusqu'ici : « Mine production »
+                        # et « Plant production » ne se comparent pas, et le
+                        # lecteur doit pouvoir le voir.
+                        "usgs_table_name": f"{commodity} — {spec['measure']} {year}",
+                        # MCS 2025 publie 2023 révisé et 2024 estimé.
+                        "is_estimate": year >= 2024,
+                    }
+                )
+    return records
+
+
 def build_all() -> List[Dict]:
-    """Toutes les additions minières (nouveaux minéraux + extension 2024)."""
-    return build_mining_extended() + build_mining_year_2024()
+    """Toutes les additions minières : tables curées + dérivation USGS."""
+    return build_mining_extended() + build_mining_year_2024() + build_mcs_derived()
 
 
 if __name__ == "__main__":

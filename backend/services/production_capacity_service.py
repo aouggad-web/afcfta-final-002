@@ -331,6 +331,46 @@ HS_TO_COMMODITY_CURATED: List[Tuple[str, str, str]] = [
     # sous laquelle la production vanadium est usuellement rapportée).
     ("282530", "mining", "Vanadium"),  # oxydes/hydroxydes de vanadium (HS6 spécifique)
     ("261400", "mining", "Titanium (ilmenite)"),  # minerais de titane (HS6)
+    # ── Minéraux DÉRIVÉS du fichier USGS (etl/mining_usgs_mcs.py) ──
+    # Assignations lues dans la nomenclature SH, pas devinées. Trois positions
+    # génériques étaient déjà prises et imposent le HS6 : 7102 = Diamonds,
+    # 2523 et 2804 = dimension manufacturière. Le préfixe le plus long gagne,
+    # donc un code HS6 ajouté ici ne masque pas le HS4 voisin.
+    ("280480", "mining", "Arsenic"),  # arsenic
+    ("251110", "mining", "Barite"),  # sulfate de baryum naturel (barytine)
+    # Pas de position minerai propre au béryllium (2617.90 est le fourre-tout
+    # « autres minerais ») → on pointe la forme échangée, le métal brut.
+    ("811212", "mining", "Beryllium"),  # béryllium brut
+    ("252329", "mining", "Cement"),  # ciment Portland, autres (HS6 : 2523 pris)
+    ("2512", "mining", "Diatomite"),  # farines siliceuses fossiles
+    ("252910", "mining", "Feldspar"),  # feldspath
+    ("251320", "mining", "Garnet (industrial)"),  # grenat et abrasifs naturels
+    # « Gemstones » mesure le diamant de QUALITÉ GEMME, quand notre série
+    # « Diamonds » porte l'industriel : deux mesures distinctes du même
+    # minéral, d'où deux codes distincts plutôt qu'une fusion trompeuse.
+    ("710231", "mining", "Gemstones"),  # diamants non industriels, bruts
+    ("280429", "mining", "Helium"),  # gaz rares autres que l'argon
+    ("2522", "mining", "Lime"),  # chaux vive, éteinte, hydraulique
+    ("280540", "mining", "Mercury"),  # mercure
+    ("2525", "mining", "Mica (Natural)"),  # mica
+    # Même raisonnement que pour le vanadium plus haut : 261590 couvre
+    # conjointement niobium/tantale/vanadium et écraserait 2615 = Tantalum.
+    # On pointe donc le ferro-niobium, forme sous laquelle il est échangé.
+    ("720293", "mining", "Niobium"),  # ferro-niobium
+    ("2814", "mining", "Nitrogen(fixed) - Ammonia"),  # ammoniac
+    ("251310", "mining", "Pumice & Pumicite"),  # pierre ponce
+    ("280530", "mining", "Rare earths"),  # terres rares, scandium, yttrium
+    ("280490", "mining", "Selenium"),  # sélénium
+    ("280461", "mining", "Silicon"),  # silicium >= 99,99 %
+    ("280469", "mining", "Silicon"),  # silicium, autres (qualité métallurgique)
+    ("2526", "mining", "Talc, crude"),  # stéatite naturelle, talc
+    ("280450", "mining", "Tellurium"),  # bore, tellure
+    ("2611", "mining", "Tungsten"),  # minerais de tungstène
+    # 2530.10 couvre vermiculite ET perlite : la nomenclature ne les sépare
+    # pas. 2530 reste sur Perlite ; ce HS6, plus spécifique, va à la
+    # vermiculite. Une recherche sur 2530 rend donc Perlite, sur 253010
+    # Vermiculite — c'est une ambiguïté du SH, pas un choix arbitraire.
+    ("253010", "mining", "Vermiculite"),  # vermiculite (perlite partagée)
 ]
 
 # Extension GÉNÉRÉE du pont, dérivée de deux correspondances publiées :
