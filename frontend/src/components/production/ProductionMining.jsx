@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -9,48 +10,12 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 function ProductionMining({ language = 'fr' }) {
+  const { t } = useTranslation();
   const [selectedCountry, setSelectedCountry] = useState('ZAF');
   const [miningData, setMiningData] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // Translations
-  const texts = {
-    fr: {
-      title: "Production Minière (USGS)",
-      subtitle: "Production de minerais et métaux par pays africain (2021-2024)",
-      records: "enregistrements",
-      minerals: "minerais",
-      loading: "Chargement des données minières...",
-      noData: "Aucune donnée minière disponible pour ce pays.",
-      noProductionTitle: "Aucune production minière rapportée pour ce pays",
-      sourcesConsulted: "Sources consultées",
-      notIngestedTitle: "Production recensée, pas encore ingérée",
-      evolutionTitle: "Évolution de la Production Minière",
-      comparisonTitle: "Production par Minerai et Année",
-      detailsTitle: "Données Détaillées par Minerai",
-      production: "Production",
-      year: "Année",
-      latestData: "Dernière donnée"
-    },
-    en: {
-      title: "Mining Production (USGS)",
-      subtitle: "Mineral and metal production by African country (2021-2024)",
-      records: "records",
-      minerals: "minerals",
-      loading: "Loading mining data...",
-      noData: "No mining data available for this country.",
-      noProductionTitle: "No mining production reported for this country",
-      sourcesConsulted: "Sources consulted",
-      notIngestedTitle: "Production recorded, not yet ingested",
-      evolutionTitle: "Mining Production Evolution",
-      comparisonTitle: "Production by Mineral and Year",
-      detailsTitle: "Detailed Data by Mineral",
-      production: "Production",
-      year: "Year",
-      latestData: "Latest data"
-    }
-  };
-  const t = texts[language] || texts.fr;
 
   useEffect(() => {
     if (selectedCountry) {
@@ -117,10 +82,10 @@ function ProductionMining({ language = 'fr' }) {
         <CardHeader>
           <CardTitle className="text-3xl font-bold flex items-center gap-3">
             <span>⛏️</span>
-            <span>{t.title}</span>
+            <span>{t('production.mining.panel.title')}</span>
           </CardTitle>
           <CardDescription className="text-amber-100 text-lg">
-            {t.subtitle}
+            {t('production.mining.panel.subtitle')}
           </CardDescription>
         </CardHeader>
       </Card>
@@ -131,17 +96,17 @@ function ProductionMining({ language = 'fr' }) {
           <EnhancedCountrySelector
             value={selectedCountry}
             onChange={setSelectedCountry}
-            label={language === 'en' ? "Country" : "Pays"}
+            label={t('production.mining.panel.country')}
             language={language}
           />
           {miningData && (
             <div className="mt-3">
               <Badge variant="outline" className="text-sm">
-                {miningData.total_records} {t.records} • {Object.keys(miningData.data_by_commodity).length} {t.minerals}
+                {miningData.total_records} {t('production.mining.panel.records')} • {Object.keys(miningData.data_by_commodity).length} {t('production.mining.panel.minerals')}
               </Badge>
               {latestYear && (
                 <Badge variant="outline" className="text-sm ml-2">
-                  {t.latestData}: {latestYear}
+                  {t('production.mining.panel.latestData')}: {latestYear}
                 </Badge>
               )}
             </div>
@@ -155,7 +120,7 @@ function ProductionMining({ language = 'fr' }) {
           <CardContent className="flex items-center justify-center h-96">
             <div className="text-center">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto"></div>
-              <p className="mt-4 text-gray-600">{t.loading}</p>
+              <p className="mt-4 text-gray-600">{t('production.mining.panel.loading')}</p>
             </div>
           </CardContent>
         </Card>
@@ -165,7 +130,7 @@ function ProductionMining({ language = 'fr' }) {
           <Card className="shadow-lg">
             <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50">
               <CardTitle className="text-xl text-amber-700">
-                📈 {t.evolutionTitle}
+                📈 {t('production.mining.panel.evolutionTitle')}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
@@ -174,7 +139,7 @@ function ProductionMining({ language = 'fr' }) {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="year" />
                   <YAxis 
-                    label={{ value: t.production, angle: -90, position: 'insideLeft' }}
+                    label={{ value: t('production.mining.panel.production'), angle: -90, position: 'insideLeft' }}
                     tickFormatter={formatNumber}
                   />
                   <Tooltip 
@@ -182,7 +147,7 @@ function ProductionMining({ language = 'fr' }) {
                       const unit = Object.values(miningData.data_by_commodity)[0]?.[0]?.unit || '';
                       return `${value.toLocaleString()} ${unit}`;
                     }}
-                    labelFormatter={(label) => `${t.year} ${label}`}
+                    labelFormatter={(label) => `${t('production.mining.panel.year')} ${label}`}
                   />
                   <Legend />
                   {Object.keys(miningData.data_by_commodity).map((commodity, index) => (
@@ -204,7 +169,7 @@ function ProductionMining({ language = 'fr' }) {
           <Card className="shadow-lg">
             <CardHeader className="bg-gradient-to-r from-orange-50 to-red-50">
               <CardTitle className="text-xl text-orange-700">
-                📊 {t.comparisonTitle}
+                📊 {t('production.mining.panel.comparisonTitle')}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
@@ -213,7 +178,7 @@ function ProductionMining({ language = 'fr' }) {
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="year" />
                   <YAxis 
-                    label={{ value: t.production, angle: -90, position: 'insideLeft' }}
+                    label={{ value: t('production.mining.panel.production'), angle: -90, position: 'insideLeft' }}
                     tickFormatter={formatNumber}
                   />
                   <Tooltip 
@@ -221,7 +186,7 @@ function ProductionMining({ language = 'fr' }) {
                       const unit = Object.values(miningData.data_by_commodity)[0]?.[0]?.unit || '';
                       return `${value.toLocaleString()} ${unit}`;
                     }}
-                    labelFormatter={(label) => `${t.year} ${label}`}
+                    labelFormatter={(label) => `${t('production.mining.panel.year')} ${label}`}
                   />
                   <Legend />
                   {Object.keys(miningData.data_by_commodity).map((commodity, index) => (
@@ -240,7 +205,7 @@ function ProductionMining({ language = 'fr' }) {
           <Card className="shadow-lg">
             <CardHeader className="bg-gradient-to-r from-gray-50 to-slate-50">
               <CardTitle className="text-xl text-gray-700">
-                ⛏️ {t.detailsTitle}
+                ⛏️ {t('production.mining.panel.detailsTitle')}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-6">
@@ -254,7 +219,7 @@ function ProductionMining({ language = 'fr' }) {
                       {records.map(record => (
                         <div key={record.year} className="bg-white p-3 rounded shadow-sm flex justify-between items-center">
                           <div>
-                            <p className="text-sm text-gray-600">{t.year} {record.year}</p>
+                            <p className="text-sm text-gray-600">{t('production.mining.panel.year')} {record.year}</p>
                             <p className="text-xs text-gray-500">
                               {record.commodity_code} - {record.usgs_table_name}
                             </p>
@@ -286,15 +251,15 @@ function ProductionMining({ language = 'fr' }) {
           <CardContent className="py-8" data-testid="mining-coverage">
             <p className="font-semibold text-[var(--text)]">
               {miningData.coverage.status === 'LISTED_BY_USGS_NOT_INGESTED'
-                ? t.notIngestedTitle
-                : t.noProductionTitle}
+                ? t('production.mining.panel.notIngestedTitle')
+                : t('production.mining.panel.noProductionTitle')}
             </p>
             <p className="mt-2 text-sm text-gray-500 max-w-3xl">
               {miningData.coverage.note}
             </p>
             {miningData.coverage.sources_consulted?.length > 0 && (
               <div className="mt-4 text-xs text-gray-500">
-                <p className="uppercase tracking-wide mb-1">{t.sourcesConsulted}</p>
+                <p className="uppercase tracking-wide mb-1">{t('production.mining.panel.sourcesConsulted')}</p>
                 <ul className="list-disc list-inside space-y-0.5">
                   {miningData.coverage.sources_consulted.map((src) => (
                     <li key={src}>{src}</li>
@@ -317,7 +282,7 @@ function ProductionMining({ language = 'fr' }) {
       ) : (
         <Card>
           <CardContent className="text-center py-12 text-gray-500">
-            {t.noData}
+            {t('production.mining.panel.noData')}
           </CardContent>
         </Card>
       )}

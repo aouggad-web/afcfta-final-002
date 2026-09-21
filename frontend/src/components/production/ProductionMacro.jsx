@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -20,56 +21,12 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
 
 function ProductionMacro({ language = 'fr' }) {
+  const { t } = useTranslation();
   const [selectedCountry, setSelectedCountry] = useState('DZA');
   const [macroData, setMacroData] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const texts = {
-    fr: {
-      title: 'Valeur Ajoutée Macro (World Bank WDI)',
-      subtitle: 'Structure sectorielle du PIB des économies africaines (données récentes)',
-      projection: 'Projection',
-      projectionHint: 'Projection FMI (World Economic Outlook)',
-      records: 'enregistrements',
-      sectors: 'secteurs',
-      loading: 'Chargement des données macro...',
-      noData: 'Aucune donnée disponible pour ce pays.',
-      evolutionTitle: 'Évolution de la Valeur Ajoutée par Secteur (% du PIB)',
-      comparisonTitle: 'Comparaison Sectorielle par Année',
-      growthTitle: 'Croissance du PIB réel (variation annuelle %) — World Bank',
-      detailsTitle: 'Données Détaillées',
-      gdpPercent: '% du PIB',
-      year: 'Année',
-      selectedCountry: 'Pays',
-      source: 'Source',
-      dataCoverage: 'Couverture',
-      usdTitle: 'Montants en USD courants (World Bank)',
-      usdHint: "Une part de PIB situe un secteur dans son économie ; elle ne dit pas sa taille. Ces montants sont publiés séparément, en dollars courants — ils ne se comparent pas aux pourcentages ci-dessus.",
-    },
-    en: {
-      title: 'Macro Value Added (World Bank WDI)',
-      subtitle: 'Sectoral structure of GDP for African economies (recent data)',
-      projection: 'Projection',
-      projectionHint: 'IMF projection (World Economic Outlook)',
-      records: 'records',
-      sectors: 'sectors',
-      loading: 'Loading macro data...',
-      noData: 'No data available for this country.',
-      evolutionTitle: 'Value Added Evolution by Sector (% of GDP)',
-      comparisonTitle: 'Sectoral Comparison by Year',
-      growthTitle: 'Real GDP growth (annual %) — World Bank',
-      detailsTitle: 'Detailed Data',
-      gdpPercent: '% of GDP',
-      year: 'Year',
-      selectedCountry: 'Country',
-      source: 'Source',
-      dataCoverage: 'Coverage',
-      usdTitle: 'Amounts in current US$ (World Bank)',
-      usdHint: 'A share of GDP places a sector within its economy; it does not state its size. These amounts are published separately, in current dollars — they are not comparable to the percentages above.',
-    },
-  };
 
-  const t = texts[language] || texts.fr;
 
   useEffect(() => {
     if (selectedCountry) {
@@ -173,16 +130,16 @@ function ProductionMacro({ language = 'fr' }) {
             <div>
               <CardTitle className="text-2xl md:text-3xl font-bold text-[var(--gold)] flex items-center gap-3">
                 <span>📊</span>
-                <span>{t.title}</span>
+                <span>{t('production.macro.panel.title')}</span>
               </CardTitle>
               <CardDescription className="text-[var(--text)]/80 text-base mt-2">
-                {t.subtitle}
+                {t('production.macro.panel.subtitle')}
               </CardDescription>
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
               <Badge className="bg-[rgba(255,255,255,0.06)] text-[var(--text)] border border-[rgba(255,255,255,0.08)]">
-                {t.source}: World Bank
+                {t('production.macro.panel.source')}: World Bank
               </Badge>
               {coverageYears.length > 0 && (
                 <Badge className="bg-[rgba(212,137,26,0.12)] text-[var(--gold)] border border-[rgba(212,137,26,0.2)]">
@@ -201,7 +158,7 @@ function ProductionMacro({ language = 'fr' }) {
               <EnhancedCountrySelector
                 value={selectedCountry}
                 onChange={setSelectedCountry}
-                label={t.selectedCountry}
+                label={t('production.macro.panel.selectedCountry')}
                 language={language}
                 variant="prominent"
               />
@@ -209,10 +166,10 @@ function ProductionMacro({ language = 'fr' }) {
               {macroData && (
                 <div className="flex flex-wrap gap-2 xl:justify-end">
                   <Badge className="bg-[rgba(79,142,247,0.12)] text-[#8db8ff] border border-[rgba(79,142,247,0.22)]">
-                    {macroData.total_records} {t.records}
+                    {macroData.total_records} {t('production.macro.panel.records')}
                   </Badge>
                   <Badge className="bg-[rgba(32,201,151,0.12)] text-[#66e0bb] border border-[rgba(32,201,151,0.22)]">
-                    {sectorNames.length} {t.sectors}
+                    {sectorNames.length} {t('production.macro.panel.sectors')}
                   </Badge>
                 </div>
               )}
@@ -226,7 +183,7 @@ function ProductionMacro({ language = 'fr' }) {
           <CardContent className="flex items-center justify-center h-80">
             <div className="text-center">
               <div className="afcfta-spinner mx-auto" />
-              <p className="mt-4 text-[var(--afcfta-muted)]">{t.loading}</p>
+              <p className="mt-4 text-[var(--afcfta-muted)]">{t('production.macro.panel.loading')}</p>
             </div>
           </CardContent>
         </Card>
@@ -235,7 +192,7 @@ function ProductionMacro({ language = 'fr' }) {
           <Card className="afcfta-card">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl text-[var(--text)]">
-                📈 {t.evolutionTitle}
+                📈 {t('production.macro.panel.evolutionTitle')}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-4">
@@ -247,7 +204,7 @@ function ProductionMacro({ language = 'fr' }) {
                     stroke="rgba(255,255,255,0.55)"
                     tick={{ fill: '#9aa7b8', fontSize: 12 }}
                     label={{
-                      value: t.gdpPercent,
+                      value: t('production.macro.panel.gdpPercent'),
                       angle: -90,
                       position: 'insideLeft',
                       offset: -5,
@@ -282,7 +239,7 @@ function ProductionMacro({ language = 'fr' }) {
           <Card className="afcfta-card">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl text-[var(--text)]">
-                📊 {t.comparisonTitle}
+                📊 {t('production.macro.panel.comparisonTitle')}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-4">
@@ -294,7 +251,7 @@ function ProductionMacro({ language = 'fr' }) {
                     stroke="rgba(255,255,255,0.55)"
                     tick={{ fill: '#9aa7b8', fontSize: 12 }}
                     label={{
-                      value: t.gdpPercent,
+                      value: t('production.macro.panel.gdpPercent'),
                       angle: -90,
                       position: 'insideLeft',
                       offset: -5,
@@ -327,7 +284,7 @@ function ProductionMacro({ language = 'fr' }) {
             <Card className="afcfta-card">
               <CardHeader className="pb-2">
                 <CardTitle className="text-xl text-[var(--text)]">
-                  📈 {t.growthTitle}
+                  📈 {t('production.macro.panel.growthTitle')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-4">
@@ -343,15 +300,15 @@ function ProductionMacro({ language = 'fr' }) {
                     >
                       <div className="flex items-center justify-between gap-1">
                         <p className="text-xs text-[var(--afcfta-muted)]">
-                          {t.year} {record.year}
+                          {t('production.macro.panel.year')} {record.year}
                         </p>
                         {record.is_projection && (
                           <span
                             className="text-[9px] font-semibold px-1.5 py-0.5 rounded"
                             style={{ background: 'rgba(155,110,245,0.18)', color: '#c3a3ff' }}
-                            title={t.projectionHint}
+                            title={t('production.macro.panel.projectionHint')}
                           >
-                            {t.projection}
+                            {t('production.macro.panel.projection')}
                           </span>
                         )}
                       </div>
@@ -367,11 +324,11 @@ function ProductionMacro({ language = 'fr' }) {
             <Card className="afcfta-card" data-testid="macro-usd">
               <CardHeader className="pb-2">
                 <CardTitle className="text-xl text-[var(--text)]">
-                  💵 {t.usdTitle}
+                  💵 {t('production.macro.panel.usdTitle')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-4">
-                <p className="text-xs text-gray-500 mb-4 max-w-3xl">{t.usdHint}</p>
+                <p className="text-xs text-gray-500 mb-4 max-w-3xl">{t('production.macro.panel.usdHint')}</p>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {usdSectorNames.map((sectorName) => {
                     const series = usdSectors[sectorName] || [];
@@ -391,7 +348,7 @@ function ProductionMacro({ language = 'fr' }) {
                           {formatUsd(latest.value)}
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
-                          {latest.year} · {series.length} {t.year.toLowerCase()}
+                          {latest.year} · {series.length} {t('production.macro.panel.year').toLowerCase()}
                           {series.length > 1 ? 's' : ''}
                         </p>
                       </div>
@@ -405,7 +362,7 @@ function ProductionMacro({ language = 'fr' }) {
           <Card className="afcfta-card">
             <CardHeader className="pb-2">
               <CardTitle className="text-xl text-[var(--text)]">
-                📋 {t.detailsTitle}
+                📋 {t('production.macro.panel.detailsTitle')}
               </CardTitle>
             </CardHeader>
             <CardContent className="pt-4">
@@ -429,7 +386,7 @@ function ProductionMacro({ language = 'fr' }) {
                           borderColor: `${seriesColors[index % seriesColors.length]}55`,
                         }}
                       >
-                        {records.length} {t.records}
+                        {records.length} {t('production.macro.panel.records')}
                       </Badge>
                     </div>
 
@@ -445,7 +402,7 @@ function ProductionMacro({ language = 'fr' }) {
                         >
                           <div className="flex items-center justify-between gap-1">
                             <p className="text-xs text-[var(--afcfta-muted)]">
-                              {t.year} {record.year}
+                              {t('production.macro.panel.year')} {record.year}
                             </p>
                             {record.is_projection && (
                               <span
@@ -454,9 +411,9 @@ function ProductionMacro({ language = 'fr' }) {
                                   background: 'rgba(155,110,245,0.18)',
                                   color: '#c3a3ff',
                                 }}
-                                title={t.projectionHint}
+                                title={t('production.macro.panel.projectionHint')}
                               >
-                                {t.projection}
+                                {t('production.macro.panel.projection')}
                               </span>
                             )}
                           </div>
@@ -476,7 +433,7 @@ function ProductionMacro({ language = 'fr' }) {
       ) : (
         <Card className="afcfta-card">
           <CardContent className="text-center py-12 text-[var(--afcfta-muted)]">
-            {t.noData}
+            {t('production.macro.panel.noData')}
           </CardContent>
         </Card>
       )}

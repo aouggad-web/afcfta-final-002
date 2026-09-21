@@ -27,12 +27,21 @@ import { describe, it, expect } from 'vitest';
 import fr from './locales/fr.json';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
-const MODULE_DIR = path.resolve(HERE, '../components/opportunities');
 
-const SOURCES = fs
-  .readdirSync(MODULE_DIR)
-  .filter((f) => f.endsWith('.jsx') && !f.endsWith('.test.jsx'))
-  .map((f) => ({ file: f, code: fs.readFileSync(path.join(MODULE_DIR, f), 'utf-8') }));
+// Les DEUX modules, pas seulement Opportunités. Production portait le même
+// obstacle — 154 libellés dans 8 dictionnaires — et n'était pas surveillé :
+// une clé fautive y est passée jusqu'aux tests de rendu au lieu d'être prise
+// ici. Un garde-fou qui ne couvre qu'un module sur deux rassure à moitié.
+const MODULE_DIRS = ['../components/opportunities', '../components/production'].map((d) =>
+  path.resolve(HERE, d),
+);
+
+const SOURCES = MODULE_DIRS.flatMap((dir) =>
+  fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith('.jsx') && !f.endsWith('.test.jsx'))
+    .map((f) => ({ file: `${path.basename(dir)}/${f}`, code: fs.readFileSync(path.join(dir, f), 'utf-8') })),
+);
 
 const LITERAL = "(?:'(?:[^'\\\\]|\\\\.)*'|\"(?:[^\"\\\\]|\\\\.)*\"|`(?:[^`\\\\]|\\\\.)*`)";
 const CONDITION = "(?:fr|lang|language|currentLang|currentLanguage)\\s*(?:===|!==)\\s*['\"](?:fr|en)['\"]|\\bfr\\b";
@@ -55,7 +64,7 @@ const KEY_CALL = /\bt\(\s*['"]((?:opportunities|production|common)\.[^'"]+)['"]/
 const lookup = (bundle, dotted) =>
   dotted.split('.').reduce((node, part) => (node == null ? undefined : node[part]), bundle);
 
-describe('module Opportunités — les libellés sont passés à i18n', () => {
+describe('modules Opportunités et Production — les libellés sont passés à i18n', () => {
   it('aucun libellé n’est choisi par un ternaire de langue', () => {
     const offenders = [];
     SOURCES.forEach(({ file, code }) => {
@@ -95,6 +104,6 @@ describe('module Opportunités — les libellés sont passés à i18n', () => {
     // Un garde-fou qui ne garde rien passerait tout aussi vert : si la
     // migration était annulée, ce compte s'effondrerait.
     const calls = SOURCES.reduce((n, { code }) => n + [...code.matchAll(KEY_CALL)].length, 0);
-    expect(calls).toBeGreaterThan(150);
+    expect(calls).toBeGreaterThan(300);
   });
 });

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -20,90 +21,6 @@ const COLORS_CULTURES  = ['#16a34a','#15803d','#22c55e','#84cc16','#f59e0b','#ea
 const COLORS_ELEVAGE   = ['#92400e','#b45309','#d97706','#fbbf24','#fde68a'];
 const COLORS_PECHE     = ['#0369a1','#0284c7','#0ea5e9','#38bdf8','#7dd3fc'];
 
-const TEXTS = {
-  fr: {
-    title: 'Production Agricole FAO',
-    subtitle: 'Données officielles FAOSTAT — Cultures, Élevage, Pêche & Aquaculture',
-    selectCountry: 'Sélectionner un pays',
-    loading: 'Chargement des données FAO…',
-    noData: 'Aucune donnée disponible pour ce pays',
-    tabCultures: 'Cultures',
-    tabElevage: 'Élevage',
-    tabPeche: 'Pêche & Aquaculture',
-    cultures: 'Grandes cultures',
-    production: 'Production (dernière année)',
-    tonnes: 'tonnes',
-    tetes: 'têtes',
-    hectares: 'ha',
-    rendement: 'Rendement',
-    surface: 'Surface',
-    rankAfrique: 'Rang Afrique',
-    evolution: 'Évolution 2020–2023',
-    livestock: 'Cheptel',
-    livestockProd: 'Production animale',
-    capture: 'Pêche de capture',
-    aquaculture: 'Aquaculture',
-    species: 'Espèces principales',
-    ports: 'Principaux ports',
-    indicators: 'Indicateurs clés',
-    agriGDP: 'Part dans le PIB',
-    agriEmploy: 'Emploi agricole',
-    arable: 'Terres arables',
-    irrigated: 'Terres irriguées',
-    source: 'Source',
-    noLivestock: 'Données élevage non disponibles pour ce pays',
-    noFisheries: 'Données pêche non disponibles pour ce pays',
-    topCerealsDZA: 'Grandes céréales (cultures stratégiques)',
-    perspectives: 'Perspectives 2025–2030',
-    perspectivesSubtitle: 'Prévisions de production par grand agrégat',
-    perspectivesSource: 'Source : OCDE-FAO Agricultural Outlook 2024-2033',
-    projection: 'Projection',
-    sectorCrops: 'Cultures',
-    sectorLivestock: 'Élevage',
-    latestObserved: 'Dernière donnée observée',
-  },
-  en: {
-    title: 'FAO Agricultural Production',
-    subtitle: 'Official FAOSTAT data — Crops, Livestock, Fisheries & Aquaculture',
-    selectCountry: 'Select a country',
-    loading: 'Loading FAO data…',
-    noData: 'No data available for this country',
-    tabCultures: 'Crops',
-    tabElevage: 'Livestock',
-    tabPeche: 'Fisheries & Aquaculture',
-    cultures: 'Major crops',
-    production: 'Production (latest year)',
-    tonnes: 'tonnes',
-    tetes: 'heads',
-    hectares: 'ha',
-    rendement: 'Yield',
-    surface: 'Area',
-    rankAfrique: 'Africa Rank',
-    evolution: 'Trend 2020–2023',
-    livestock: 'Livestock population',
-    livestockProd: 'Animal production',
-    capture: 'Capture fisheries',
-    aquaculture: 'Aquaculture',
-    species: 'Main species',
-    ports: 'Main ports',
-    indicators: 'Key indicators',
-    agriGDP: 'Share of GDP',
-    agriEmploy: 'Agricultural employment',
-    arable: 'Arable land',
-    irrigated: 'Irrigated land',
-    source: 'Source',
-    noLivestock: 'Livestock data not available for this country',
-    noFisheries: 'Fisheries data not available for this country',
-    topCerealsDZA: 'Major cereals (strategic crops)',
-    perspectives: '2025–2030 Outlook',
-    perspectivesSubtitle: 'Production forecasts by major aggregate',
-    perspectivesSource: 'Source: OECD-FAO Agricultural Outlook 2024-2033',
-    projection: 'Projection',
-    sectorCrops: 'Crops',
-    sectorLivestock: 'Livestock',
-    latestObserved: 'Latest observed value',
-  }
-};
 
 const fmt = (n) => {
   if (!n && n !== 0) return '—';
@@ -115,7 +32,7 @@ const fmt = (n) => {
 const fmtUnit = (n, unit = 'tonnes') => `${fmt(n)} ${unit}`;
 
 export default function ProductionAgriculture({ language = 'fr' }) {
-  const t = TEXTS[language] || TEXTS.fr;
+  const { t } = useTranslation();
   const [country, setCountry]   = useState('DZA');
   const [detail, setDetail]     = useState(null);
   const [faoStats, setFaoStats] = useState(null);
@@ -192,34 +109,19 @@ export default function ProductionAgriculture({ language = 'fr' }) {
     const p = detail?.peche_aquaculture;
     if (!p) return [];
     return [
-      { name: t.capture, value: p.capture_tonnes, fill: COLORS_PECHE[0] },
-      { name: t.aquaculture, value: p.aquaculture_tonnes, fill: COLORS_PECHE[2] },
+      { name: t('production.agriculture.panel.capture'), value: p.capture_tonnes, fill: COLORS_PECHE[0] },
+      { name: t('production.agriculture.panel.aquaculture'), value: p.aquaculture_tonnes, fill: COLORS_PECHE[2] },
     ].filter(x => x.value > 0);
   };
 
   const evoLines = Object.keys(detail?.evolution || {}).slice(0, 5);
 
-  const PROJECTION_AGGREGATE_LABELS = {
-    fr: {
-      cereals: 'Céréales',
-      oilseeds: 'Oléagineux',
-      sugar: 'Sucre',
-      meat: 'Viande',
-      'roots & tubers': 'Racines & tubercules',
-    },
-    en: {
-      cereals: 'Cereals',
-      oilseeds: 'Oilseeds',
-      sugar: 'Sugar',
-      meat: 'Meat',
-      'roots & tubers': 'Roots & tubers',
-    },
-  };
 
   const commodityShortLabel = (name) => {
     const short = (name || '').replace(/\s*\(projection\)\s*$/i, '').trim();
-    const localized = PROJECTION_AGGREGATE_LABELS[language]?.[short.toLowerCase()];
-    return localized || short;
+    return t(`production.agriculture.projectionAggregate.${short.toLowerCase()}`, {
+      defaultValue: short,
+    });
   };
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -232,9 +134,9 @@ export default function ProductionAgriculture({ language = 'fr' }) {
           <div className="flex items-start justify-between flex-wrap gap-4">
             <div>
               <CardTitle className="text-2xl font-bold flex items-center gap-3">
-                <Wheat className="w-7 h-7" /> {t.title}
+                <Wheat className="w-7 h-7" /> {t('production.agriculture.panel.title')}
               </CardTitle>
-              <CardDescription className="text-green-100 mt-1">{t.subtitle}</CardDescription>
+              <CardDescription className="text-green-100 mt-1">{t('production.agriculture.panel.subtitle')}</CardDescription>
             </div>
             {faoStats && (
               <div className="flex flex-col items-end gap-1">
@@ -256,7 +158,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
           <EnhancedCountrySelector
             value={country}
             onChange={setCountry}
-            label={t.selectCountry}
+            label={t('production.agriculture.panel.selectCountry')}
             variant="prominent"
             language={language}
           />
@@ -269,7 +171,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
           <CardContent className="flex items-center justify-center h-48">
             <div className="text-center">
               <Loader2 className="w-10 h-10 animate-spin text-green-600 mx-auto" />
-              <p className="mt-3 text-gray-500">{t.loading}</p>
+              <p className="mt-3 text-gray-500">{t('production.agriculture.panel.loading')}</p>
             </div>
           </CardContent>
         </Card>
@@ -306,7 +208,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xs text-gray-500">{t.source}</p>
+                  <p className="text-xs text-gray-500">{t('production.agriculture.panel.source')}</p>
                   {(detail.sources?.length ? detail.sources : [detail.source]).map((s) => (
                     <p key={s} className="text-xs font-medium text-gray-700">{s}</p>
                   ))}
@@ -322,21 +224,21 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                 value="cultures"
                 className="data-[state=active]:bg-green-600 data-[state=active]:text-white py-2.5"
               >
-                <Wheat className="w-4 h-4 mr-2" /> {t.tabCultures}
+                <Wheat className="w-4 h-4 mr-2" /> {t('production.agriculture.panel.tabCultures')}
               </TabsTrigger>
               <TabsTrigger
                 value="elevage"
                 className="data-[state=active]:bg-amber-600 data-[state=active]:text-white py-2.5"
                 disabled={!detail.has_livestock}
               >
-                <Beef className="w-4 h-4 mr-2" /> {t.tabElevage}
+                <Beef className="w-4 h-4 mr-2" /> {t('production.agriculture.panel.tabElevage')}
               </TabsTrigger>
               <TabsTrigger
                 value="peche"
                 className="data-[state=active]:bg-blue-600 data-[state=active]:text-white py-2.5"
                 disabled={!detail.has_fisheries}
               >
-                <Fish className="w-4 h-4 mr-2" /> {t.tabPeche}
+                <Fish className="w-4 h-4 mr-2" /> {t('production.agriculture.panel.tabPeche')}
               </TabsTrigger>
             </TabsList>
 
@@ -349,7 +251,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                     <Card className="shadow-md">
                       <CardHeader>
                         <CardTitle className="text-base text-gray-700 flex items-center gap-2">
-                          <BarChart3 className="w-4 h-4 text-green-600" /> {t.production}
+                          <BarChart3 className="w-4 h-4 text-green-600" /> {t('production.agriculture.panel.production')}
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -360,7 +262,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <YAxis type="category" dataKey="name" width={105} tick={{ fontSize: 11 }} />
                             <Tooltip
                               formatter={(v, _, p) => [
-                                `${fmtUnit(v, t.tonnes)}${p?.payload?.year ? ` (${p.payload.year})` : ''}`,
+                                `${fmtUnit(v, t('production.agriculture.panel.tonnes'))}${p?.payload?.year ? ` (${p.payload.year})` : ''}`,
                                 p?.payload?.fullName || '',
                               ]}
                             />
@@ -377,7 +279,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                     {/* Detailed table */}
                     <Card className="shadow-md">
                       <CardHeader>
-                        <CardTitle className="text-base text-gray-700">{t.cultures}</CardTitle>
+                        <CardTitle className="text-base text-gray-700">{t('production.agriculture.panel.cultures')}</CardTitle>
                       </CardHeader>
                       <CardContent className="p-0">
                         <div className="overflow-x-auto">
@@ -385,9 +287,9 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <thead>
                               <tr className="bg-green-50 border-b">
                                 <th className="text-left px-3 py-2 font-semibold">Produit</th>
-                                <th className="text-right px-3 py-2 font-semibold">{t.production}</th>
-                                <th className="text-right px-3 py-2 font-semibold hidden sm:table-cell">{t.surface}</th>
-                                <th className="text-center px-3 py-2 font-semibold">{t.rankAfrique}</th>
+                                <th className="text-right px-3 py-2 font-semibold">{t('production.agriculture.panel.production')}</th>
+                                <th className="text-right px-3 py-2 font-semibold hidden sm:table-cell">{t('production.agriculture.panel.surface')}</th>
+                                <th className="text-center px-3 py-2 font-semibold">{t('production.agriculture.panel.rankAfrique')}</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -431,7 +333,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                     <Card className="shadow-md">
                       <CardHeader>
                         <CardTitle className="text-base text-green-700 flex items-center gap-2">
-                          <TrendingUp className="w-4 h-4" /> {t.evolution}
+                          <TrendingUp className="w-4 h-4" /> {t('production.agriculture.panel.evolution')}
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -440,7 +342,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="year" />
                             <YAxis tickFormatter={fmt} />
-                            <Tooltip formatter={(v) => [fmt(v) + ' ' + t.tonnes]} />
+                            <Tooltip formatter={(v) => [fmt(v) + ' ' + t('production.agriculture.panel.tonnes')]} />
                             <Legend />
                             {evoLines.map((crop, i) => (
                               <Line
@@ -464,7 +366,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                     <Card className="shadow-md bg-green-50 border-green-200">
                       <CardHeader>
                         <CardTitle className="text-base text-green-800 flex items-center gap-2">
-                          <Info className="w-4 h-4" /> {t.indicators}
+                          <Info className="w-4 h-4" /> {t('production.agriculture.panel.indicators')}
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -472,25 +374,25 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                           {detail.key_indicators.agri_gdp_percent && (
                             <div className="text-center">
                               <p className="text-2xl font-bold text-green-700">{detail.key_indicators.agri_gdp_percent}%</p>
-                              <p className="text-xs text-gray-600 mt-1">{t.agriGDP}</p>
+                              <p className="text-xs text-gray-600 mt-1">{t('production.agriculture.panel.agriGDP')}</p>
                             </div>
                           )}
                           {detail.key_indicators.agri_employment_percent && (
                             <div className="text-center">
                               <p className="text-2xl font-bold text-green-700">{detail.key_indicators.agri_employment_percent}%</p>
-                              <p className="text-xs text-gray-600 mt-1">{t.agriEmploy}</p>
+                              <p className="text-xs text-gray-600 mt-1">{t('production.agriculture.panel.agriEmploy')}</p>
                             </div>
                           )}
                           {detail.key_indicators.arable_land_ha && (
                             <div className="text-center">
                               <p className="text-2xl font-bold text-green-700">{fmt(detail.key_indicators.arable_land_ha)}</p>
-                              <p className="text-xs text-gray-600 mt-1">{t.arable} (ha)</p>
+                              <p className="text-xs text-gray-600 mt-1">{t('production.agriculture.panel.arable')} (ha)</p>
                             </div>
                           )}
                           {detail.key_indicators.irrigated_land_ha && (
                             <div className="text-center">
                               <p className="text-2xl font-bold text-blue-700">{fmt(detail.key_indicators.irrigated_land_ha)}</p>
-                              <p className="text-xs text-gray-600 mt-1">{t.irrigated} (ha)</p>
+                              <p className="text-xs text-gray-600 mt-1">{t('production.agriculture.panel.irrigated')} (ha)</p>
                             </div>
                           )}
                         </div>
@@ -502,7 +404,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                 <Card className="border-l-4 border-l-amber-400">
                   <CardContent className="flex items-center gap-4 py-8">
                     <AlertTriangle className="w-10 h-10 text-amber-500 flex-shrink-0" />
-                    <p className="text-gray-600">{t.noData}</p>
+                    <p className="text-gray-600">{t('production.agriculture.panel.noData')}</p>
                   </CardContent>
                 </Card>
               )}
@@ -517,7 +419,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                     <Card className="shadow-md">
                       <CardHeader>
                         <CardTitle className="text-base text-amber-800 flex items-center gap-2">
-                          <Beef className="w-4 h-4" /> {t.livestock} 2023
+                          <Beef className="w-4 h-4" /> {t('production.agriculture.panel.livestock')} 2023
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
@@ -526,7 +428,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis type="number" tickFormatter={fmt} tick={{ fontSize: 11 }} />
                             <YAxis type="category" dataKey="name" width={90} tick={{ fontSize: 11 }} />
-                            <Tooltip formatter={(v) => [fmt(v) + ' ' + t.tetes]} />
+                            <Tooltip formatter={(v) => [fmt(v) + ' ' + t('production.agriculture.panel.tetes')]} />
                             <Bar dataKey="value" radius={[0, 4, 4, 0]}>
                               {elevageChartData().map((e, i) => (
                                 <Cell key={i} fill={e.fill} />
@@ -540,7 +442,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                     {/* Table élevage */}
                     <Card className="shadow-md">
                       <CardHeader>
-                        <CardTitle className="text-base text-amber-800">{t.livestock}</CardTitle>
+                        <CardTitle className="text-base text-amber-800">{t('production.agriculture.panel.livestock')}</CardTitle>
                       </CardHeader>
                       <CardContent className="p-0">
                         <table className="w-full text-sm">
@@ -548,7 +450,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <tr className="bg-amber-50 border-b">
                               <th className="text-left px-3 py-2 font-semibold">Espèce</th>
                               <th className="text-right px-3 py-2 font-semibold">Effectif</th>
-                              <th className="text-center px-3 py-2 font-semibold">{t.rankAfrique}</th>
+                              <th className="text-center px-3 py-2 font-semibold">{t('production.agriculture.panel.rankAfrique')}</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -583,7 +485,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                   {detail.livestock_production_2023 && Object.keys(detail.livestock_production_2023).length > 0 && (
                     <Card className="shadow-md bg-amber-50 border-amber-200">
                       <CardHeader>
-                        <CardTitle className="text-base text-amber-900">{t.livestockProd} 2023</CardTitle>
+                        <CardTitle className="text-base text-amber-900">{t('production.agriculture.panel.livestockProd')} 2023</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -603,7 +505,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                 <Card className="border-l-4 border-l-amber-400">
                   <CardContent className="flex items-center gap-4 py-8">
                     <AlertTriangle className="w-10 h-10 text-amber-500 flex-shrink-0" />
-                    <p className="text-gray-600">{t.noLivestock}</p>
+                    <p className="text-gray-600">{t('production.agriculture.panel.noLivestock')}</p>
                   </CardContent>
                 </Card>
               )}
@@ -623,7 +525,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <p className="text-3xl font-bold text-blue-800">
                               {fmt(detail.peche_aquaculture?.capture_tonnes)} t
                             </p>
-                            <p className="text-sm text-blue-600 mt-1">{t.capture} 2023</p>
+                            <p className="text-sm text-blue-600 mt-1">{t('production.agriculture.panel.capture')} 2023</p>
                             {detail.peche_aquaculture?.capture_rank_africa && (
                               <Badge className="bg-blue-100 text-blue-800 mt-2 text-xs">
                                 Rang Afrique #{detail.peche_aquaculture.capture_rank_africa}
@@ -642,7 +544,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                             <p className="text-3xl font-bold text-teal-800">
                               {fmt(detail.peche_aquaculture?.aquaculture_tonnes)} t
                             </p>
-                            <p className="text-sm text-teal-600 mt-1">{t.aquaculture} 2023</p>
+                            <p className="text-sm text-teal-600 mt-1">{t('production.agriculture.panel.aquaculture')} 2023</p>
                             {detail.peche_aquaculture?.aquaculture_rank_africa && (
                               <Badge className="bg-teal-100 text-teal-800 mt-2 text-xs">
                                 Rang Afrique #{detail.peche_aquaculture.aquaculture_rank_africa}
@@ -691,7 +593,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                         {detail.peche_aquaculture?.species?.length > 0 && (
                           <div>
                             <p className="text-sm font-semibold text-gray-700 mb-2">
-                              <Fish className="w-3.5 h-3.5 inline mr-1 text-blue-500" /> {t.species}
+                              <Fish className="w-3.5 h-3.5 inline mr-1 text-blue-500" /> {t('production.agriculture.panel.species')}
                             </p>
                             <div className="flex flex-wrap gap-2">
                               {detail.peche_aquaculture.species.map(s => (
@@ -703,7 +605,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                         {detail.peche_aquaculture?.main_ports?.length > 0 && (
                           <div>
                             <p className="text-sm font-semibold text-gray-700 mb-2">
-                              ⚓ {t.ports}
+                              ⚓ {t('production.agriculture.panel.ports')}
                             </p>
                             <div className="flex flex-wrap gap-2">
                               {detail.peche_aquaculture.main_ports.map(p => (
@@ -723,7 +625,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                 <Card className="border-l-4 border-l-blue-400">
                   <CardContent className="flex items-center gap-4 py-8">
                     <AlertTriangle className="w-10 h-10 text-blue-500 flex-shrink-0" />
-                    <p className="text-gray-600">{t.noFisheries}</p>
+                    <p className="text-gray-600">{t('production.agriculture.panel.noFisheries')}</p>
                   </CardContent>
                 </Card>
               )}
@@ -736,10 +638,10 @@ export default function ProductionAgriculture({ language = 'fr' }) {
             <Card className="shadow-md border-emerald-200">
               <CardHeader>
                 <CardTitle className="text-base text-emerald-800 flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4" /> {t.perspectives}
+                  <TrendingUp className="w-4 h-4" /> {t('production.agriculture.panel.perspectives')}
                 </CardTitle>
                 <CardDescription className="text-xs text-gray-500">
-                  {t.perspectivesSubtitle}
+                  {t('production.agriculture.panel.perspectivesSubtitle')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -766,7 +668,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                               proj.is_livestock ? 'bg-amber-600' : 'bg-emerald-600'
                             }`}
                           >
-                            {proj.is_livestock ? t.sectorLivestock : t.sectorCrops}
+                            {proj.is_livestock ? t('production.agriculture.panel.sectorLivestock') : t('production.agriculture.panel.sectorCrops')}
                           </Badge>
                         </div>
                         <div className="flex items-end gap-3 flex-wrap">
@@ -791,7 +693,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
                     );
                   })}
                 </div>
-                <p className="text-[11px] text-gray-400 mt-3">{t.perspectivesSource}</p>
+                <p className="text-[11px] text-gray-400 mt-3">{t('production.agriculture.panel.perspectivesSource')}</p>
               </CardContent>
             </Card>
           )}
@@ -803,7 +705,7 @@ export default function ProductionAgriculture({ language = 'fr' }) {
         <Card className="border-l-4 border-l-amber-400">
           <CardContent className="flex items-center gap-4 py-8">
             <AlertTriangle className="w-10 h-10 text-amber-500 flex-shrink-0" />
-            <p className="text-gray-600">{t.noData}</p>
+            <p className="text-gray-600">{t('production.agriculture.panel.noData')}</p>
           </CardContent>
         </Card>
       )}

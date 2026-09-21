@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createPortal } from 'react-dom';
 import { Badge } from '../ui/badge';
 import { Search, ChevronDown, X, Globe, Star } from 'lucide-react';
@@ -7,6 +8,7 @@ import { getCountriesByRegion } from '../../utils/translations';
 const MAJOR_ECONOMIES = ['ZAF', 'NGA', 'EGY', 'KEN', 'GHA', 'ETH', 'MAR', 'DZA', 'TZA', 'CIV'];
 
 function EnhancedCountrySelector({ value, onChange, label, variant = 'default', language = 'fr' }) {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
@@ -16,33 +18,8 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
 
   const AFRICAN_COUNTRIES_BY_REGION = useMemo(() => getCountriesByRegion(language), [language]);
 
-  const texts = {
-    fr: {
-      selectCountry: 'Sélectionner un pays',
-      searchPlaceholder: 'Rechercher un pays...',
-      majorEconomies: 'Grandes économies',
-      availableCountries: 'pays africains disponibles',
-      results: 'résultats',
-      noResults: 'Aucun pays trouvé',
-      searchCountry: 'Rechercher un pays africain...',
-      code: 'Code',
-      top10: 'Top 10',
-    },
-    en: {
-      selectCountry: 'Select a country',
-      searchPlaceholder: 'Search for a country...',
-      majorEconomies: 'Major economies',
-      availableCountries: 'African countries available',
-      results: 'results',
-      noResults: 'No country found',
-      searchCountry: 'Search for an African country...',
-      code: 'Code',
-      top10: 'Top 10',
-    },
-  };
 
-  const t = texts[language] || texts.fr;
-  const displayLabel = label || t.selectCountry;
+  const displayLabel = label || t('production.countrySelector.selectCountry');
   const isProminent = variant === 'prominent';
 
   useEffect(() => {
@@ -207,20 +184,20 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
                   {selectedCountry.name}
                 </p>
                 <p className="text-xs text-[var(--afcfta-muted)]">
-                  {t.code}: {selectedCountry.code}
+                  {t('production.countrySelector.code')}: {selectedCountry.code}
                 </p>
               </div>
 
               {MAJOR_ECONOMIES.includes(selectedCountry.code) && (
                 <Badge className="ml-1 bg-[rgba(212,137,26,0.14)] text-[var(--gold)] border border-[rgba(212,137,26,0.28)] hover:bg-[rgba(212,137,26,0.14)]">
-                  <Star className="w-3 h-3 mr-1" /> {t.top10}
+                  <Star className="w-3 h-3 mr-1" /> {t('production.countrySelector.top10')}
                 </Badge>
               )}
             </div>
           ) : (
             <div className="flex items-center gap-2 text-[var(--afcfta-muted)] min-w-0">
               <Search className="w-5 h-5 shrink-0" />
-              <span className={isProminent ? 'text-base' : 'text-sm'}>{t.searchCountry}</span>
+              <span className={isProminent ? 'text-base' : 'text-sm'}>{t('production.countrySelector.searchCountry')}</span>
             </div>
           )}
 
@@ -269,7 +246,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
                 <input
                   ref={inputRef}
                   type="text"
-                  placeholder={t.searchPlaceholder}
+                  placeholder={t('production.countrySelector.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onClick={(e) => e.stopPropagation()}
@@ -284,8 +261,8 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
 
               <p className="text-xs text-[var(--afcfta-muted)] mt-2 flex items-center gap-1">
                 <Globe className="w-3 h-3" />
-                {allCountries.length} {t.availableCountries}
-                {searchTerm && ` • ${totalResults} ${t.results}`}
+                {allCountries.length} {t('production.countrySelector.availableCountries')}
+                {searchTerm && ` • ${totalResults} ${t('production.countrySelector.results')}`}
               </p>
             </div>
 
@@ -301,7 +278,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
                     }}
                   >
                     <Star className="w-3.5 h-3.5" />
-                    {t.majorEconomies}
+                    {t('production.countrySelector.majorEconomies')}
                   </div>
 
                   <div className="grid grid-cols-2 gap-1.5">
@@ -396,7 +373,7 @@ function EnhancedCountrySelector({ value, onChange, label, variant = 'default', 
                 <div className="p-8 text-center text-[var(--afcfta-muted)]">
                   <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
                   <p>
-                    {t.noResults} "{searchTerm}"
+                    {t('production.countrySelector.noResults')} "{searchTerm}"
                   </p>
                 </div>
               )}
