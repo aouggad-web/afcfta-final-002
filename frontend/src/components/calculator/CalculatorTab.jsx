@@ -907,17 +907,32 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
         }
 
         const npfEtat = calcul.npf?.etat;
+        // INDICATIF n'est pas un échec : toutes les lignes sont liquidées. La
+        // réserve porte sur la nature d'un taux — une moyenne statistique, pas
+        // un tarif — et doit se lire, sans faire passer le calcul pour cassé.
+        const codesStatistiques = calcul.npf?.lignes_base_statistique || [];
+        let titreToast;
+        let descriptionToast;
+        if (npfEtat === 'COMPLET') {
+          titreToast = t.calculationSuccess;
+          descriptionToast = legacyResult.savings != null
+            ? `${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}`
+            : `${destISO3} — ${language === 'fr' ? 'régime NPF' : 'MFN regime'}`;
+        } else if (npfEtat === 'INDICATIF') {
+          titreToast = language === 'fr' ? 'Calcul indicatif' : 'Indicative calculation';
+          descriptionToast = language === 'fr'
+            ? `${destISO3} : ${codesStatistiques.join(', ') || '—'} repose sur une moyenne statistique SH6 (WITS/TRAINS), pas sur un tarif national — montant indicatif`
+            : `${destISO3}: ${codesStatistiques.join(', ') || '—'} rests on an HS6 statistical average (WITS/TRAINS), not a national tariff — indicative amount`;
+        } else {
+          titreToast = language === 'fr' ? 'Calcul incomplet' : 'Incomplete calculation';
+          descriptionToast = language === 'fr'
+            ? `${destISO3} : un ou plusieurs droits n'ont pas pu être liquidés (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — total partiel, jamais un montant fabriqué`
+            : `${destISO3}: one or more duties could not be liquidated (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — partial total, never a fabricated amount`;
+        }
         toast({
-          title: npfEtat === 'COMPLET' ? t.calculationSuccess
-            : (language === 'fr' ? 'Calcul incomplet' : 'Incomplete calculation'),
-          description: npfEtat === 'COMPLET'
-            ? (legacyResult.savings != null
-              ? `${t.potentialSavings}: ${formatCurrency(legacyResult.savings)}`
-              : `${destISO3} — ${language === 'fr' ? 'régime NPF' : 'MFN regime'}`)
-            : (language === 'fr'
-              ? `${destISO3} : un ou plusieurs droits n'ont pas pu être liquidés (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — total partiel, jamais un montant fabriqué`
-              : `${destISO3}: one or more duties could not be liquidated (${(calcul.npf?.manques || []).map((m) => m.code).join(', ') || '—'}) — partial total, never a fabricated amount`),
-          variant: npfEtat === 'COMPLET' ? 'default' : 'destructive',
+          title: titreToast,
+          description: descriptionToast,
+          variant: npfEtat === 'COMPLET' || npfEtat === 'INDICATIF' ? 'default' : 'destructive',
         });
       }
     } catch (error) {

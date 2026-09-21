@@ -65,8 +65,30 @@ from typing import Any, Dict, List, Optional
 FAMILLE_TVA = "tva"
 
 COMPLET = "COMPLET"
+INDICATIF = "INDICATIF"
 PARTIEL = "PARTIEL"
 INDISPONIBLE = "INDISPONIBLE"
+
+#: SOURCES QUI SONT DES MOYENNES, PAS DES TAUX.
+#:
+#: WITS/UNCTAD-TRAINS publie une moyenne simple des lignes nationales au niveau
+#: SH6. C'est une statistique honnête de la Banque mondiale — et ce n'est PAS
+#: le droit applicable à une marchandise : aucune déclaration en douane ne se
+#: liquide sur une moyenne.
+#:
+#: Quatre pays en dépendent pour la totalité de leur droit de douane — Comores,
+#: Madagascar, São Tomé, Soudan — soit 21 788 droits. Trois d'entre eux
+#: rendaient jusqu'ici un total COMPLET : le produit affirmait donc une
+#: liquidation entière construite sur un agrégat. Le montant reste servi, avec
+#: sa source ; c'est le mot « complet » qui était faux.
+SOURCES_STATISTIQUES = ("WITS", "UNCTAD-TRAINS", "TRAINS (")
+
+
+def _est_moyenne_statistique(source):
+    """Vrai si ce taux provient d'un agrégat statistique, non d'un tarif."""
+    texte = str(source or "")
+    return any(marqueur in texte for marqueur in SOURCES_STATISTIQUES)
+
 
 CALCULE = "CALCULE"
 MANQUE_TAUX = "TAUX_INDISPONIBLE"
@@ -533,6 +555,10 @@ def _liquider(
                 montant = borne
 
         ligne.update({"base": round(assiette, 4), "montant": round(montant, 4), "statut": CALCULE})
+        # Le montant est servi, mais il est né d'une moyenne : la ligne le dit,
+        # et l'état global cessera de se déclarer complet.
+        if _est_moyenne_statistique(ligne.get("source")):
+            ligne["base_statistique"] = True
         lignes.append(ligne)
         calcules.append({"code": code, "montant": montant, "famille": ligne["famille"]})
 
@@ -549,7 +575,11 @@ def _liquider(
         # « rien à payer » réel serait la fabrication la plus trompeuse.
         etat = INDISPONIBLE
     elif not manques:
-        etat = COMPLET
+        # Un total dont au moins un droit vient d'une moyenne n'est pas
+        # complet : il est indicatif. Le distinguer d'un PARTIEL importe —
+        # PARTIEL dit qu'il manque une mesure, INDICATIF dit qu'une mesure
+        # servie n'a pas la valeur d'un tarif.
+        etat = INDICATIF if any(l.get("base_statistique") for l in lignes) else COMPLET
     elif not calcules:
         etat = INDISPONIBLE
     else:
@@ -557,6 +587,7 @@ def _liquider(
     return {
         "lignes": lignes,
         "manques": manques,
+        "lignes_base_statistique": [l["code"] for l in lignes if l.get("base_statistique")],
         "total_droits": round(total, 2),
         "total_a_payer": round(cif + total, 2),
         "taux_effectif_pct": round(total / cif * 100, 4) if cif else None,
