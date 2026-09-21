@@ -12,7 +12,7 @@
 `test_*.py`, ni `*.test.js`, ni scénario de recette. N'en ajoute pas, n'en
 complète pas, n'en « répare » pas un que tu jugerais insuffisant.
 
-La suite existante (3 440 tests collectés au 21/09/2026) reste en place et
+La suite existante (3 452 tests collectés au 21/09/2026) reste en place et
 doit continuer à passer :
 tu peux **l'exécuter** pour vérifier que tu n'as rien cassé, mais tu ne
 l'étends pas. Si une modification demandée exige de modifier un test existant
@@ -252,12 +252,39 @@ attend une source ou une décision.
 
 ### G1 — le produit affirme du faux
 
-- **Formalités : une liste vide se lit « aucune obligation ».**
-  `get_administrative_formalities()` rend `[]` aussi bien quand la position
-  n'a aucune formalité documentée que quand elle est **introuvable**. Un
-  opérateur à qui l'on affiche « aucune formalité » sur une position qu'on n'a
-  pas trouvée peut importer sans licence. Ce n'est pas un montant faux, c'est
-  une infraction.
+**Aucun G1 ouvert à ce jour.** L'entrée ci-dessous est conservée réglée, parce
+que le garde qu'elle a laissé derrière elle doit être compris avant qu'on y
+touche.
+
+- **Formalités : une liste vide se lisait « aucune obligation » — RÉGLÉ le
+  21/09/2026** (PR #492). `get_administrative_formalities()` rendait `[]` aussi
+  bien quand la position n'a aucune formalité documentée que quand elle est
+  **introuvable**, et l'interface, devant cette liste vide, ne disait rien. Un
+  opérateur à qui l'on n'affiche rien sur une position qu'on n'a pas trouvée
+  peut importer sans licence : pas un montant faux, une infraction.
+
+  `formalites_et_statut()` nomme désormais quatre états, et la réserve voyage
+  dans la réponse de l'API, pas seulement dans l'écran.
+
+  **Le garde à ne pas contourner.** Aucun de ces états ne peut signifier
+  « aucune obligation » : le dépôt ne collecte nulle part une attestation
+  d'absence d'obligation, il collecte des formalités, ou rien. Un test tombe si
+  quelqu'un ajoute `AUCUNE_OBLIGATION`, `DISPENSE` ou `EXEMPT`. Sans lui, le
+  prochain qui passe « termine le travail » et transforme 315 185 silences en
+  autant de dispenses — la faute réparée ici, retournée.
+
+  Une seule exception existe, et elle est verrouillée : l'Algérie, dont la
+  source publie ses formalités de façon exhaustive — établi par échantillon de
+  80 positions au portail, archivé dans
+  `data/dza/echantillon_formalites_portail.json`. Là, et là seulement, une
+  liste vide est un CONSTAT (« aucune formalité particulière »). Un test exige
+  que toute entrée de `SOURCES_EXHAUSTIVES_FORMALITES` porte sa preuve
+  circonstanciée : **étendre ce constat par analogie transformerait 297 794
+  lacunes en autant de déclarations d'absence de formalité.**
+
+  Ce qui reste ouvert est autre chose, et relève du G2 : 46 pays sur 54 n'ont
+  AUCUNE formalité collectée, nulle part. Ce lot n'a pas comblé cette lacune,
+  il a fait que le produit cesse de la présenter comme une dispense.
 
 ### G2 — le produit cache du vrai
 
@@ -316,10 +343,29 @@ attend une source ou une décision.
 
 ### G4 — en attente d'arbitrage ou de source
 
-- **Taux de São Tomé-et-Príncipe** : non collectés. `dre.gov.st` est refusé par
-  le proxy réseau (CONNECT 502). L'assiette, elle, est établie.
-- **Taux des Comores** : non collectés, aucune URL citable trouvée. L'assiette
-  est établie.
+- **Quatre pays servent la TOTALITÉ de leur droit de douane depuis une moyenne
+  statistique SH6** : Comores, Madagascar, São Tomé, Soudan — **21 788 droits**,
+  tous de la forme `20.0 % (MFN, SimpleAverage, 2021)`, issus de
+  WITS / UNCTAD-TRAINS. Une moyenne des lignes nationales n'est le droit
+  d'aucune marchandise, et un SH6 n'est pas la position qu'un déclarant saisit.
+
+  Le produit ne le cache plus : un total dont une ligne vient d'une moyenne se
+  déclare **`INDICATIF`**, jamais `COMPLET` (PR #494). Le montant reste servi,
+  avec sa source ; c'est le mot « complet » qui était faux. Ne supprime pas cet
+  état pour « faire propre ».
+
+  Ce qu'il faut pour les sortir de là est écrit :
+  `docs/CONTRAT_COLLECTE_COM_MDG_SDN_STP.md` (PR #493) — forme du fichier,
+  cinq refus, chaîne d'ingestion. **Le point qui décide de tout y est l'assiette**,
+  pas les taux : celle des Comores est établie sur texte primaire, celle de São
+  Tomé ne l'est que pour l'IVA, celle de Madagascar pour ni l'une ni l'autre
+  (`origine_assiette: profil_code`), et **le Soudan n'a aucune entrée** dans
+  `assiettes_pays.json`. Pour Madagascar et le Soudan, collecter les taux sans
+  établir l'assiette ne produit aucun montant liquidable.
+
+  Sur la collecte elle-même : `dre.gov.st` est refusé par le proxy réseau
+  (CONNECT 502) pour São Tomé, et aucune URL citable n'a été trouvée pour les
+  Comores.
 - **Colonne ZLECAf tunisienne** : quatre valeurs seulement (0, 40, 80, 87,5) et
   69,6 % d'entre elles dépassent le droit NPF de leur propre position. Deux
   captures du portail confirment que notre collecte est fidèle. Servie, elle
