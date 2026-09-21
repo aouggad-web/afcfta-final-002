@@ -650,7 +650,7 @@ Chaînes de valeur) renvoient encore une erreur nue.
 | 4.1b | Parité des locales sous test | ✅ | une clé traduite d'un seul côté fait échouer la suite, au lieu d'afficher son nom à l'écran |
 | 4.1c | Les **427 libellés en dur** restants → i18n | ✅ | 0 dictionnaire de langue, 0 ternaire de libellé ; 425 clés sous `opportunities`, chacune sous test |
 | 4.2 | Ajouter `ar` et `pt` (langues de travail ZLECAf) | ⏳ **débloquée** | les deux locales se chargent ; RTL vérifié pour l'arabe — reste à faire TRADUIRE les 843 clés, voir ci-dessous |
-| 4.3 | Réduire les 428 styles inline vers les jetons de design de Production | ⏳ | ≤ 50 `style={{}}` restants |
+| 4.3 | Réduire les styles inline vers les jetons de design | ⏳ **mal cadrée** | le critère suppose une substitution ; la mesure dit une réécriture — voir ci-dessous |
 | 4.4 | Tests front sur les deux modules | ✅ | les 9 sous-onglets d'Opportunités et les 5 de Production ont rendu + état d'absence ; 313 tests front (+30) |
 
 **Le décompte de 4.1c annoncé ici était faux, et l'erreur méritait mieux
@@ -725,6 +725,43 @@ code, tous se voient en essayant de décrire à un test ce que l'écran affiche.
 | 5.1 | Supprimer les valeurs servies **sans source** en repli | ⏳ **arbitrage** | échec d'appel → « — » et mention de l'échec, jamais un chiffre |
 | 5.2 | Rendre visibles les états d'erreur déclarés et jamais affichés | ⏳ | chaque `setError` a un rendu correspondant |
 | 5.3 | Les libellés en dur du module **Production** → i18n | ✅ | 0 dictionnaire de langue ; 199 libellés migrés (154 de dictionnaire + 45 ternaires) ; 843 clés au total |
+
+#### 4.3 telle qu'énoncée n'est pas faisable sans arbitrage de design
+
+Le plan demande de « réduire les 428 styles inline **vers les jetons de
+design** », critère « ≤ 50 `style={{}}` restants ». Cette formulation suppose
+une substitution mécanique — remplacer des valeurs par les jetons qui leur
+correspondent. La mesure dit autre chose.
+
+| Mesure sur `components/opportunities` | Valeur |
+|---|---:|
+| Blocs `style={{…}}` | 434 |
+| Déclarations au total | 1 593 |
+| … dont déjà en `var(--…)` | 257 |
+| Couleurs écrites en dur | 61 occurrences, **20 valeurs distinctes** |
+| … correspondant **exactement** à un jeton déclaré | **2** |
+
+Les deux seules correspondances sont `#d4891a` (1 occurrence) et `#ffffff`
+(4), et cette dernière vaut à la fois `--surface` et `--afcfta-card` : même
+là, il faut choisir. Les 18 autres valeurs — `#667`, `#4f8ef7`, `#e05070`… —
+n'ont **aucun** équivalent : les rattacher à un jeton, ou en créer, est une
+décision de charte graphique, pas une réécriture.
+
+Et le gros du volume n'est pas de la couleur. Les déclarations les plus
+fréquentes sont `fontSize` (190), `display` (118), `fontWeight` (118),
+`gap` (102), `padding` (73) : des propriétés de mise en page, pour lesquelles
+« passer aux jetons » veut en réalité dire **passer à Tailwind**. C'est une
+réécriture du style du module, pas une substitution — un diff de plusieurs
+milliers de lignes dont le seul juge est l'œil, et que rien dans la suite de
+tests ne peut valider.
+
+**Ce que je propose**, si 4.3 doit être engagée : la scinder. (a) fixer
+d'abord la correspondance des 18 couleurs orphelines — c'est la décision, et
+elle tient en une page ; (b) puis convertir, fichier par fichier, avec une
+relecture visuelle à chaque étape. Engager (b) sans (a) revient à inventer une
+charte en la codant.
+
+---
 
 #### 5.1 — Des chiffres sans source, sur l'écran d'accueil du module
 
