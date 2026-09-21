@@ -237,7 +237,7 @@ export default function OpportunitySummary({ language = 'fr' }) {
       kpis: [
         { label: t('opportunities.opportunitySummary.totalOpportunities'), value: data.totalOpportunities?.toLocaleString() ?? '—', sub: data.yearlyGrowth || undefined, accent: 'gold' },
         { label: t('opportunities.opportunitySummary.totalPotentialValue'), value: formatValue(data.totalPotentialValue), accent: 'green' },
-        { label: t('opportunities.opportunitySummary.intraAfricanTrade') || t('opportunities.opportunitySummary.intraAfricanTrade'), value: data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—', accent: 'terra' },
+        { label: t('opportunities.opportunitySummary.intraAfricanTrade'), value: data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—', accent: 'terra' },
         { label: t('opportunities.opportunitySummary.afcftaCountries'), value: String(data.afcftaCountries ?? '—'), accent: 'gold' },
       ],
       sections: [
