@@ -12,7 +12,8 @@
 `test_*.py`, ni `*.test.js`, ni scénario de recette. N'en ajoute pas, n'en
 complète pas, n'en « répare » pas un que tu jugerais insuffisant.
 
-La suite existante (3 009 tests) reste en place et doit continuer à passer :
+La suite existante (3 452 tests collectés au 21/09/2026) reste en place et
+doit continuer à passer :
 tu peux **l'exécuter** pour vérifier que tu n'as rien cassé, mais tu ne
 l'étends pas. Si une modification demandée exige de modifier un test existant
 pour passer, **arrête-toi et signale-le** au lieu de toucher au test : dans ce
@@ -156,19 +157,221 @@ Deux particularités angolaises à ne pas prendre pour des bugs :
 
 ---
 
-## 5. Ce qui reste ouvert — déclaré, pas comblé
+## 5. Comment on travaille — six règles
+
+Elles ne sont pas une théorie : elles décrivent ce qui a produit, en une
+journée, la récupération de 296 droits de douane algériens qu'une chaîne
+automatique avait perdus pendant des mois.
+
+**1. Un défaut, une PR, un jour.** Pas de lots. Un défaut nommé, une branche,
+une fusion dans la journée. Ce qui ne tient pas dans une journée n'est pas un
+défaut mais un chantier : il se traite à part, avec une décision du
+propriétaire.
+
+**2. Mesurer, jamais affirmer.** Toute affirmation porte son chiffre et la
+commande qui l'a produit. « Le Maroc perd ses zéros » ne vaut rien ; « 4 droits
+à 0 % sur 12 972, plancher à 2,5 % sur 51 % des lignes » se vérifie — et se
+contredit. **Le message de commit EST le dossier de preuves** : le
+raisonnement, les chiffres, et ce qui n'est PAS établi, écrits là où ils
+survivront au projet.
+
+**3. Tout défaut corrigé laisse un test — et son contrôle négatif.**
+
+> **À qui cette règle s'adresse.** Elle vaut pour qui corrige la donnée ou le
+> moteur dans ce dépôt. Elle ne lève PAS la consigne du §0, qui interdit à
+> l'agent Emergent d'écrire ou de modifier des tests : cet agent travaille sur
+> le déploiement et l'interface, il exécute la suite sans l'étendre. Les deux
+> consignes ne se contredisent pas, elles s'adressent à deux rôles.
+ Le test
+tient deux choses : ce qui a été corrigé, et **ce qu'il ne faut pas
+« finir »**. Exemple : les 296 droits algériens récupérés, ET les 3 positions
+du chapitre « Effets personnels » qu'on ne comble pas. Le second compte plus
+que le premier — sans lui, le prochain qui passe termine le travail et invente
+trois franchises.
+
+**4. Ce qui se décide seul, ce qui remonte.**
+
+| Se décide seul | Remonte au propriétaire |
+|---|---|
+| Un correctif dont la preuve tient dans la PR | Une règle fiscale à interpréter |
+| Un test déplacé parce que son exemple est devenu faux | Un choix visible par le client |
+| Le refus de combler une lacune | Ce qui coûte de l'argent ou du temps récurrent |
+
+**5. La file d'attente est ordonnée par gravité client** — voir le registre au
+§6. Un G1 passe devant tout.
+
+**6. Une seule cérémonie, et seulement avant une démonstration client :** la
+grille de recette passée sur trois positions réelles de trois pays. Vingt
+minutes. C'est le moment où le coût d'une erreur est maximal.
+
+### Ce qui remplace les jalons de validation
+
+Deux automatismes, **et un contrôle humain qui n'est pas automatisable.**
+
+Les deux automatismes :
+
+- **la CI** dit si le dépôt est sain ;
+- **les tests ciblés avant chaque poussée, la suite complète avant chaque
+  fusion.** Ne pas inverser : une poussée faite avant la fin de la suite a déjà
+  coûté cinq échecs rattrapés par l'intégration.
+
+Le contrôle humain, **distinct des deux et non couvert par eux** :
+
+- **le propriétaire, sur un pays qu'il connaît.** Une fiche de portail produite
+  à la main a trouvé ce que trois mois de chaîne automatique n'avaient pas vu.
+  Ce n'est pas un contrôle qualité, c'est de l'expertise métier : aucun
+  processus ne la remplace, et une méthode qui la met en bout de chaîne comme
+  simple approbation la gaspille. Une CI verte ne vaut pas ce contrôle et ne
+  dispense pas de le demander.
+
+### Ce qu'on ne fait pas
+
+Pas de programme en dix lots, pas de jalons numérotés, pas de dossier de
+preuves annexe, pas une PR par pays sur 54 pays. Un tel appareil gouverne un
+sous-traitant qu'on ne voit pas ; il coûte plus que le code qu'il surveille.
+
+---
+
+## 6. Le registre des défauts — gradué par ce qu'il en coûte au client
 
 Ne « répare » aucun de ces points en inventant la donnée manquante.
 
-- **Taux de São Tomé-et-Príncipe** : non collectés. `dre.gov.st` est refusé par
-  le proxy réseau (CONNECT 502). L'assiette, elle, est établie.
-- **Taux des Comores** : non collectés, aucune URL citable trouvée. L'assiette
-  est établie.
-- **Grammaire FOB du moteur** : deux bases d'évaluation divergentes coexistent
-  dans la donnée — la SACU liquide sur le prix FOB (Act 91 of 1964, s.65(1)),
-  la Somalie sur le CIF. Le moteur ne reçoit qu'un seul montant, `valeur_cif`.
-  Tant que le calculateur ne sait pas **ce que le prix saisi contient**, l'une
-  des deux est fausse. C'est un chantier de conception, pas une correction.
+La gravité se lit sur **ce que le produit dit à l'opérateur**, pas sur la
+difficulté technique. Elle rend la priorité automatique, au lieu de la faire
+débattre :
+
+| | | Délai |
+|---|---|---|
+| **G1** | Le produit **affirme quelque chose de faux** qui engage l'opérateur — un montant, une obligation | immédiat |
+| **G2** | Le produit **cache quelque chose de vrai** — une préférence acquise, un droit récupérable | dans la semaine |
+| **G3** | Le produit est juste mais **lourd ou incohérent** — code mort, chemins concurrents, dépôt alourdi | au fil de l'eau |
+| **G4** | Ce qu'on **ne sait pas encore** — lacune déclarée, en attente d'arbitrage | décision du propriétaire |
+
+Un G1 passe devant tout le reste. Un G4 ne se traite jamais en devinant : il
+attend une source ou une décision.
+
+### G1 — le produit affirme du faux
+
+**Aucun G1 ouvert à ce jour.** L'entrée ci-dessous est conservée réglée, parce
+que le garde qu'elle a laissé derrière elle doit être compris avant qu'on y
+touche.
+
+- **Formalités : une liste vide se lisait « aucune obligation » — RÉGLÉ le
+  21/09/2026** (PR #492). `get_administrative_formalities()` rendait `[]` aussi
+  bien quand la position n'a aucune formalité documentée que quand elle est
+  **introuvable**, et l'interface, devant cette liste vide, ne disait rien. Un
+  opérateur à qui l'on n'affiche rien sur une position qu'on n'a pas trouvée
+  peut importer sans licence : pas un montant faux, une infraction.
+
+  `formalites_et_statut()` nomme désormais quatre états, et la réserve voyage
+  dans la réponse de l'API, pas seulement dans l'écran.
+
+  **Le garde à ne pas contourner.** Aucun de ces états ne peut signifier
+  « aucune obligation » : le dépôt ne collecte nulle part une attestation
+  d'absence d'obligation, il collecte des formalités, ou rien. Un test tombe si
+  quelqu'un ajoute `AUCUNE_OBLIGATION`, `DISPENSE` ou `EXEMPT`. Sans lui, le
+  prochain qui passe « termine le travail » et transforme 315 185 silences en
+  autant de dispenses — la faute réparée ici, retournée.
+
+  Une seule exception existe, et elle est verrouillée : l'Algérie, dont la
+  source publie ses formalités de façon exhaustive — établi par échantillon de
+  80 positions au portail, archivé dans
+  `data/dza/echantillon_formalites_portail.json`. Là, et là seulement, une
+  liste vide est un CONSTAT (« aucune formalité particulière »). Un test exige
+  que toute entrée de `SOURCES_EXHAUSTIVES_FORMALITES` porte sa preuve
+  circonstanciée : **étendre ce constat par analogie transformerait 297 794
+  lacunes en autant de déclarations d'absence de formalité.**
+
+  Ce qui reste ouvert est autre chose, et relève du G2 : 46 pays sur 54 n'ont
+  AUCUNE formalité collectée, nulle part. Ce lot n'a pas comblé cette lacune,
+  il a fait que le produit cesse de la présenter comme une dispense.
+
+### G2 — le produit cache du vrai
+
+- **Un taux réduit réel s'affiche vide.** `RegulatoryDetailsPanel.jsx` lit
+  `adv.reduced_rate_pct` quand `postgres_tariff_service.py` renvoie
+  `reduced_rate` : la valeur existe, elle n'atteint jamais l'écran. Un seul
+  nom de champ à aligner.
+- **Éthiopie : 1 368 droits perdus à la collecte.** Le collecteur a été corrigé
+  le 18/09/2026 ; la collecte, jamais refaite. Le portail `customs.erca.gov.et`
+  est injoignable, une veille le sonde et collectera dès son retour. Aucun code
+  à écrire.
+- **Grammaire FOB et devise du moteur.** `buildCalculRequestBody` n'envoie ni
+  `devise_cif`, ni `taux_de_change`, ni `valeur_fob`. La valeur en douane de la
+  SACU est la valeur FOB, jamais déduite du CIF (Act 91 of 1964, s.65(1)) :
+  mesuré sur les 1 500 premières positions sud-africaines, **616 — 41 % —**
+  répondent `VALEUR_FOB_REQUISE`. C'est ce qui interdit d'étendre
+  `SOCLE_EN_PREMIER` au-delà de la Tunisie et de Maurice. Chantier de
+  conception, pas correction.
+- **Remises kényanes absentes de `/calcul`.** `remission_eligibility` et ses
+  cinq champs d'autorisation n'existent que sur le chemin historique.
+
+### G3 — juste, mais lourd
+
+- **`backend/data/crawled` versionné : 4,7 Go.** Coût mesuré : 1 min 20 de
+  `checkout` par job, quatre jobs par exécution d'intégration. Et un mur à
+  100 Mo par fichier, que les Seychelles approchent à 75 Mo. C'est la décision
+  qui débloque l'archive des sources originales.
+- **Chemin historique** `/authentic-tariffs/calculate`, qui double `/calcul`.
+  Sa dépose est la correction de fond, non faite.
+- **`build_regulatory_blocks()`** ne reçoit pas le code SH : le bloc commun ne
+  peut donc pas décider seul du périmètre produit.
+- **Le repli sur 503 du socle** ne distingue pas « socle absent » de « socle
+  périmé ou corrompu ». Le second ne devrait pas se replier en silence.
+- **`verify=False` dans onze collecteurs — RÉGLÉ le 21/09/2026** (PR #488,
+  fusionnée). Les onze fichiers et leurs 18 occurrences sont traités ; il ne
+  reste dans le code que des commentaires qui rappellent la règle. L'entrée
+  est conservée parce que la règle, elle, reste valable : **si la chaîne d'un
+  portail se révèle incomplète en production, la réponse est de fournir
+  l'intermédiaire manquant, jamais de redésactiver la vérification.**
+
+  Ce qui n'est PAS établi, et qui se constatera seulement en production : le
+  réseau de cet environnement resigne le TLS (« Egress Gateway SDS Issuing
+  CA »), si bien que les certificats observés y sont ceux de la passerelle et
+  jamais ceux de l'origine. Ce qui est établi, c'est que les clients n'ont pas
+  besoin de `verify=False` pour fonctionner. Deux portails — `douane.gov.tn`,
+  `zra.org.zm` — échouaient déjà à travers la passerelle : si leur collecte
+  s'arrête, **c'est le comportement voulu**, et elle se répare par
+  l'intermédiaire, pas par un retour en arrière.
+
+  Un piège rencontré, à connaître avant de toucher à un collecteur : le
+  contournement DNS mozambicain vise une IP en posant l'en-tête `Host`. La
+  vérification de nom porte sur l'hôte de l'**URL**, pas sur cet en-tête — le
+  contournement était donc mort dès la vérification rétablie, et le disait
+  seulement en journal. Il se répare par `extensions={"sni_hostname": ...}`,
+  qui fixe le `server_hostname` de la poignée de main.
+
+### G4 — en attente d'arbitrage ou de source
+
+- **Quatre pays servent la TOTALITÉ de leur droit de douane depuis une moyenne
+  statistique SH6** : Comores, Madagascar, São Tomé, Soudan — **21 788 droits**,
+  tous de la forme `20.0 % (MFN, SimpleAverage, 2021)`, issus de
+  WITS / UNCTAD-TRAINS. Une moyenne des lignes nationales n'est le droit
+  d'aucune marchandise, et un SH6 n'est pas la position qu'un déclarant saisit.
+
+  Le produit ne le cache plus : un total dont une ligne vient d'une moyenne se
+  déclare **`INDICATIF`**, jamais `COMPLET` (PR #494). Le montant reste servi,
+  avec sa source ; c'est le mot « complet » qui était faux. Ne supprime pas cet
+  état pour « faire propre ».
+
+  Ce qu'il faut pour les sortir de là est écrit :
+  `docs/CONTRAT_COLLECTE_COM_MDG_SDN_STP.md` (PR #493) — forme du fichier,
+  cinq refus, chaîne d'ingestion. **Le point qui décide de tout y est l'assiette**,
+  pas les taux : celle des Comores est établie sur texte primaire, celle de São
+  Tomé ne l'est que pour l'IVA, celle de Madagascar pour ni l'une ni l'autre
+  (`origine_assiette: profil_code`), et **le Soudan n'a aucune entrée** dans
+  `assiettes_pays.json`. Pour Madagascar et le Soudan, collecter les taux sans
+  établir l'assiette ne produit aucun montant liquidable.
+
+  Sur la collecte elle-même : `dre.gov.st` est refusé par le proxy réseau
+  (CONNECT 502) pour São Tomé, et aucune URL citable n'a été trouvée pour les
+  Comores.
+- **Colonne ZLECAf tunisienne** : quatre valeurs seulement (0, 40, 80, 87,5) et
+  69,6 % d'entre elles dépassent le droit NPF de leur propre position. Deux
+  captures du portail confirment que notre collecte est fidèle. Servie, elle
+  ferait payer 40 % de la valeur CIF sur 20 149 lignes en franchise. Refusée,
+  et le refus est mesuré par un test sur la source elle-même.
+- **Règle égyptienne** ر6790 / ر6791 : non tranchée.
 - **Assiette IAT/EXC nigériane** : non établie (`etabli: false`). Les 12 700
   droits nigérians non liquidables le restent. Ne leur pose pas `CIF` de mémoire.
 - **TVA somalienne** : non collectée, nommée `NON_TRACEE_A_LA_SOURCE`.
@@ -178,12 +381,16 @@ Ne « répare » aucun de ces points en inventant la donnée manquante.
   d'après une nomenclature tierce : elle écarterait aussi des sous-positions
   proprement angolaises (2903.39 porte seize extensions nationales que personne
   d'autre ne publie).
-- **Chemin historique** `/authentic-tariffs/calculate`, qui double `/calcul`.
-  Sa dépose est la correction de fond, non faite.
+- **Sort de `engine/`** : instantané figé au 01/03/2026, encore lu par
+  `/regulatory-engine/details`.
+- **Nomenclatures import et export** : une opération peut exiger DEUX codes
+  nationaux différents — celui du pays de destination à l'import, celui du pays
+  d'exportation à l'export. Aucune correspondance ne se déduit du préfixe SH6.
+  Non traité.
 
 ---
 
-## 6. Déploiement
+## 7. Déploiement
 
 Dans le Shell Emergent :
 
@@ -212,7 +419,7 @@ curl -s http://localhost:8000/api/reports/oec-health
 
 ---
 
-## 7. Conventions de code
+## 8. Conventions de code
 
 - Python : `black --line-length 100`, `flake8 --max-line-length=110`.
 - **`pytest-timeout` n'est pas installé** : ne passe jamais `--timeout`.
@@ -230,11 +437,14 @@ curl -s http://localhost:8000/api/reports/oec-health
 
 ---
 
-## 8. Résumé en cinq lignes
+## 9. Résumé en six lignes
 
-1. **Aucun test écrit.** Tu peux exécuter la suite, pas l'étendre.
+1. **Aucun test écrit** par l'agent Emergent. Tu peux exécuter la suite, pas
+   l'étendre. (Qui corrige la donnée ou le moteur, lui, laisse un test : §5.)
 2. Aucune valeur fiscale fabriquée : une lacune se nomme, elle ne se comble pas.
 3. Un pays à la fois ; ne généralise jamais une règle nationale.
 4. Le socle se reconstruit, il ne s'édite pas ; un socle périmé doit rester inerte.
 5. Tout taux ajouté cite son texte officiel, article par article, avec l'extrait
    archivé et son empreinte.
+6. Un défaut, une PR, un jour — et la priorité se lit au registre du §6 : un
+   **G1**, où le produit affirme du faux, passe devant tout le reste.
