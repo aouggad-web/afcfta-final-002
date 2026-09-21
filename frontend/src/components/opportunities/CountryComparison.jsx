@@ -3,6 +3,7 @@
  * Powered by Claude AI
  */
 import React, { useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import {
@@ -103,6 +104,7 @@ const ProductFlowRow = ({ item, lang }) => (
 );
 
 export default function CountryComparison({ language = 'fr' }) {
+  const { t } = useTranslation();
   const lang = language;
   const [countryA, setCountryA] = useState('');
   const [countryB, setCountryB] = useState('');
@@ -178,7 +180,7 @@ export default function CountryComparison({ language = 'fr' }) {
       });
       setData(res.data);
     } catch (err) {
-      setError(err.response?.data?.detail || (lang === 'fr' ? 'Erreur analyse' : 'Analysis error'));
+      setError(err.response?.data?.detail || t('opportunities.countryComparison.analysisError'));
     } finally {
       setLoading(false);
     }
@@ -204,12 +206,12 @@ export default function CountryComparison({ language = 'fr' }) {
       ],
     });
     return {
-      badge: fr ? 'COMPARAISON PAYS' : 'COUNTRY COMPARISON',
+      badge: t('opportunities.countryComparison.countryComparison'),
       title: `${nameA} ⇄ ${nameB}`,
       subtitle: txt.subtitle || txt.title,
       sections: [
         (bilateral.exports_a_to_b_musd != null || bilateral.exports_b_to_a_musd != null) && {
-          title: fr ? 'Commerce bilatéral' : 'Bilateral trade',
+          title: t('opportunities.countryComparison.bilateralTrade'),
           keyValues: [
             { label: `${nameA} → ${nameB}`, value: fmtMUSD(bilateral.exports_a_to_b_musd) },
             { label: `${nameB} → ${nameA}`, value: fmtMUSD(bilateral.exports_b_to_a_musd) },
@@ -223,7 +225,7 @@ export default function CountryComparison({ language = 'fr' }) {
         pair(txt.growth, econ.gdp_growth_a != null ? `${econ.gdp_growth_a}%` : null, econ.gdp_growth_b != null ? `${econ.gdp_growth_b}%` : null),
         pair(txt.hdi, econ.hdi_a, econ.hdi_b),
         pair(txt.inflation, econ.inflation_a != null ? `${econ.inflation_a}%` : null, econ.inflation_b != null ? `${econ.inflation_b}%` : null),
-        data.note && { title: fr ? 'Note' : 'Note', paragraphs: [data.note] },
+        data.note && { title: t('opportunities.countryComparison.note'), paragraphs: [data.note] },
       ].filter(Boolean),
       source: data.sources ? data.sources.join(' · ') : 'IMF, UNDP, OEC',
       filename: opportunityPdfFilename('Comparaison', `${countryA}_${countryB}`),
@@ -353,7 +355,7 @@ export default function CountryComparison({ language = 'fr' }) {
                   </div>
                 </div>
                 <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginBottom: 4 }}>{lang === 'fr' ? 'Balance' : 'Balance'}</div>
+                  <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginBottom: 4 }}>{t('opportunities.countryComparison.balance')}</div>
                   <div style={{
                     fontSize: 22, fontWeight: 800,
                     color: bilateral.balance_musd >= 0 ? 'var(--green)' : '#e05070',
@@ -512,9 +514,7 @@ export default function CountryComparison({ language = 'fr' }) {
         <div style={{ textAlign: 'center', padding: '64px 24px', color: 'var(--afcfta-muted)' }}>
           <ArrowLeftRight style={{ width: 48, height: 48, margin: '0 auto 16px', opacity: 0.2, color: 'var(--gold)' }} />
           <p style={{ fontSize: 14 }}>
-            {lang === 'fr'
-              ? 'Sélectionnez deux pays AfCFTA pour analyser leur complémentarité commerciale'
-              : 'Select two AfCFTA countries to analyze their trade complementarity'}
+            {t('opportunities.countryComparison.selectTwoAfcftaCountries')}
           </p>
         </div>
       )}

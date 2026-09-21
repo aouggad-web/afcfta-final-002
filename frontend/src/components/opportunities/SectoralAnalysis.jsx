@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 const API = `${import.meta.env.VITE_BACKEND_URL || ""}/api`;
@@ -45,33 +46,34 @@ const srcText = (s) =>
 
 /* Provenance micro-badge: IDSB values are UNIDO DERIVED ESTIMATES, INDSTAT values
    are OFFICIAL statistics. Never conflate the two — show each metric's real nature. */
-const provMeta = (nature, fr) => {
+const provMeta = (nature, t) => {
   if (nature === "official")
     return {
       t: "off.",
-      title: fr ? "INDSTAT — statistique officielle UNIDO" : "INDSTAT — UNIDO official statistic",
+      title: t("opportunities.sectoralAnalysis.indstatUnidoOfficialStatistic"),
       fg: "#1a7f37",
       bg: "rgba(26,127,55,0.12)",
     };
   if (nature === "derived_estimate")
     return {
       t: "est.",
-      title: fr ? "IDSB — estimation dérivée UNIDO" : "IDSB — UNIDO derived estimate",
+      title: t("opportunities.sectoralAnalysis.idsbUnidoDerivedEstimate"),
       fg: "#9a6700",
       bg: "rgba(154,103,0,0.12)",
     };
   if (nature === "mixed")
     return {
-      t: fr ? "mixte" : "mixed",
-      title: fr ? "Sources mêlées (officielle + estimation)" : "Mixed sources (official + estimate)",
+      t: t("opportunities.sectoralAnalysis.mixed"),
+      title: t("opportunities.sectoralAnalysis.mixedSourcesOfficialEstimate"),
       fg: "#667",
       bg: "rgba(102,102,102,0.12)",
     };
   return null;
 };
 
-function Prov({ nature, fr }) {
-  const m = provMeta(nature, fr);
+function Prov({ nature }) {
+  const { t } = useTranslation();
+  const m = provMeta(nature, t);
   if (!m) return null;
   return (
     <sup
@@ -127,6 +129,7 @@ function Chip({ ok, children }) {
 }
 
 function SectoralAnalysis({ hsCode, origin, destination, fr }) {
+  const { t } = useTranslation();
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState(false);
 
@@ -172,11 +175,9 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
     return (
       <div style={{ ...card, color: "#9a6700", fontSize: 13, lineHeight: 1.6 }}>
         <div style={{ ...label, marginBottom: 4, fontWeight: 700 }}>
-          {fr ? "Analyse sectorielle (ISIC4 / IDSB)" : "Sectoral analysis (ISIC4 / IDSB)"}
+          {t("opportunities.sectoralAnalysis.sectoralAnalysisIsic4Idsb")}
         </div>
-        {fr
-          ? "Service momentanément indisponible — analyse sectorielle non chargée."
-          : "Service temporarily unavailable — sectoral analysis could not be loaded."}
+        {t("opportunities.sectoralAnalysis.serviceTemporarilyUnavailableSectoral")}
       </div>
     );
   }
@@ -190,7 +191,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
     return analysis.note ? (
       <div style={{ ...card, color: "var(--afcfta-muted,#667)", fontSize: 13, lineHeight: 1.6 }}>
         <div style={{ ...label, marginBottom: 4, fontWeight: 700 }}>
-          {fr ? "Analyse sectorielle (ISIC4 / IDSB)" : "Sectoral analysis (ISIC4 / IDSB)"}
+          {t("opportunities.sectoralAnalysis.sectoralAnalysisIsic4Idsb")}
         </div>
         {analysis.note}
       </div>
@@ -218,7 +219,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
       <div style={card}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 12 }}>
           <span style={{ ...label, margin: 0, fontWeight: 700 }}>
-            {fr ? "Classification industrielle ISIC Rev.4" : "ISIC Rev.4 industrial classification"}
+            {t("opportunities.sectoralAnalysis.isicRev4Industrial")}
           </span>
           <span
             style={{
@@ -246,9 +247,9 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
         {transformation_chain && (
           <div style={{ display: "flex", alignItems: "stretch", gap: 12, flexWrap: "wrap", marginTop: 14 }}>
             {[
-              { k: "input", t: fr ? "Intrant" : "Input" },
-              { k: "process", t: fr ? "Procédé" : "Process" },
-              { k: "output", t: fr ? "Extrant" : "Output" },
+              { k: "input", t: t("opportunities.sectoralAnalysis.input") },
+              { k: "process", t: t("opportunities.sectoralAnalysis.process") },
+              { k: "output", t: t("opportunities.sectoralAnalysis.output") },
             ].map((seg, i) => (
               <React.Fragment key={seg.k}>
                 {i > 0 && (
@@ -271,7 +272,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
         <div style={card}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
             <span style={{ ...label, margin: 0, fontWeight: 700 }}>
-              {fr ? "Équilibre offre-demande (UNIDO IDSB)" : "Demand–supply balance (UNIDO IDSB)"}
+              {t("opportunities.sectoralAnalysis.demandSupplyBalanceUnido")}
             </span>
             <span
               style={{
@@ -289,17 +290,17 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
           </div>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
             <Chip ok={bal.supply_measured}>
-              {fr ? "Offre" : "Supply"} {bal.supply_measured ? (fr ? "attestée ✓" : "recorded ✓") : fr ? "non attestée" : "not recorded"}
+              {t("opportunities.sectoralAnalysis.supply")} {bal.supply_measured ? t("opportunities.sectoralAnalysis.recorded") : t("opportunities.sectoralAnalysis.notRecorded")}
             </Chip>
             <Chip ok={bal.demand_measured}>
-              {fr ? "Demande" : "Demand"} {bal.demand_measured ? (fr ? "attestée ✓" : "recorded ✓") : fr ? "non attestée" : "not recorded"}
+              {t("opportunities.sectoralAnalysis.demand")} {bal.demand_measured ? t("opportunities.sectoralAnalysis.recorded") : t("opportunities.sectoralAnalysis.notRecorded")}
             </Chip>
             {bal.origin_exports_division && (
-              <Chip ok>{fr ? "Origine exporte déjà" : "Origin already exports"}</Chip>
+              <Chip ok>{t("opportunities.sectoralAnalysis.originAlreadyExports")}</Chip>
             )}
             {bal.hs_import_demand?.value != null && (
               <Chip ok>
-                {fr ? "Imports OEC (SH exact)" : "OEC imports (exact HS)"} · {money(bal.hs_import_demand.value)}
+                {t("opportunities.sectoralAnalysis.oecImportsExactHs")} · {money(bal.hs_import_demand.value)}
                 {bal.hs_import_demand.year ? ` (${bal.hs_import_demand.year})` : ""}
               </Chip>
             )}
@@ -309,7 +310,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
           </div>
           {bal.hs_import_demand?.source && (
             <div style={{ fontSize: 11, color: "var(--afcfta-muted,#667)", marginTop: 6 }}>
-              {fr ? "Source demande (SH exact)" : "Demand source (exact HS)"} :{" "}
+              {t("opportunities.sectoralAnalysis.demandSourceExactHs")} :{" "}
               {srcText(bal.hs_import_demand.source)}
               {bal.hs_import_demand.year ? ` · ${bal.hs_import_demand.year}` : ""}
             </div>
@@ -322,37 +323,37 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
         {/* Origin industrial base (real UNIDO IDSB/INDSTAT) */}
         <div style={card}>
           <div style={{ ...label, marginBottom: 10, fontWeight: 700 }}>
-            {fr ? `Base industrielle — origine ${origin}` : `Industrial base — origin ${origin}`}
+            {t("opportunities.sectoralAnalysis.industrialBaseOrigin", { origin })}
           </div>
           {industrial_base?.available ? (
             <>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: 12 }}>
                 <div>
-                  <div style={label}>{fr ? "Production" : "Output"}</div>
+                  <div style={label}>{t("opportunities.sectoralAnalysis.output2")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
                     {moneyShort(industrial_base.output_usd)}
-                    <Prov nature={industrial_base.provenance?.output_usd} fr={fr} />
+                    <Prov nature={industrial_base.provenance?.output_usd} />
                   </div>
                 </div>
                 <div>
-                  <div style={label}>{fr ? "Valeur ajoutée" : "Value added"}</div>
+                  <div style={label}>{t("opportunities.sectoralAnalysis.valueAdded")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
                     {moneyShort(industrial_base.value_added_usd)}
-                    <Prov nature={industrial_base.provenance?.value_added_usd} fr={fr} />
+                    <Prov nature={industrial_base.provenance?.value_added_usd} />
                   </div>
                 </div>
                 <div>
-                  <div style={label}>{fr ? "Exports mondiaux" : "World exports"}</div>
+                  <div style={label}>{t("opportunities.sectoralAnalysis.worldExports")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
                     {moneyShort(industrial_base.exports_world_usd)}
-                    <Prov nature={industrial_base.provenance?.exports_world_usd} fr={fr} />
+                    <Prov nature={industrial_base.provenance?.exports_world_usd} />
                   </div>
                 </div>
                 <div>
-                  <div style={label}>{fr ? "Emplois" : "Employees"}</div>
+                  <div style={label}>{t("opportunities.sectoralAnalysis.employees")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
                     {intFmt(industrial_base.employees)}
-                    <Prov nature={industrial_base.provenance?.employees} fr={fr} />
+                    <Prov nature={industrial_base.provenance?.employees} />
                   </div>
                 </div>
                 {/* Establishments counts toward "supply recorded" on the backend,
@@ -360,23 +361,23 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                     metric shows every value as — yet claims supply. */}
                 {industrial_base.establishments != null && (
                   <div>
-                    <div style={label}>{fr ? "Établissements" : "Establishments"}</div>
+                    <div style={label}>{t("opportunities.sectoralAnalysis.establishments")}</div>
                     <div style={{ fontSize: 17, fontWeight: 700 }}>
                       {intFmt(industrial_base.establishments)}
-                      <Prov nature={industrial_base.provenance?.establishments} fr={fr} />
+                      <Prov nature={industrial_base.provenance?.establishments} />
                     </div>
                   </div>
                 )}
               </div>
               {industrial_base.top_subsectors?.length > 0 && (
                 <div style={{ marginTop: 12 }}>
-                  <div style={label}>{fr ? "Principaux sous-secteurs (production)" : "Top sub-sectors (output)"}</div>
+                  <div style={label}>{t("opportunities.sectoralAnalysis.topSubSectorsOutput")}</div>
                   <table style={{ width: "100%", fontSize: 12, borderCollapse: "collapse" }}>
                     <thead>
                       <tr>
-                        <th style={th} scope="col">{fr ? "ISIC" : "ISIC"}</th>
-                        <th style={th} scope="col">{fr ? "Sous-secteur" : "Sub-sector"}</th>
-                        <th style={{ ...th, textAlign: "right" }} scope="col">{fr ? "Production" : "Output"}</th>
+                        <th style={th} scope="col">{t("opportunities.sectoralAnalysis.isic")}</th>
+                        <th style={th} scope="col">{t("opportunities.sectoralAnalysis.subSector")}</th>
+                        <th style={{ ...th, textAlign: "right" }} scope="col">{t("opportunities.sectoralAnalysis.output2")}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -396,20 +397,14 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
                 {industrial_base.year_range ? ` · ${industrial_base.year_range}` : ""}
               </div>
               <div style={{ fontSize: 10, color: "var(--afcfta-muted,#667)", marginTop: 4 }}>
-                {fr
-                  ? "est. = estimation dérivée UNIDO (IDSB) · off. = statistique officielle (INDSTAT)"
-                  : "est. = UNIDO derived estimate (IDSB) · off. = official statistic (INDSTAT)"}
+                {t("opportunities.sectoralAnalysis.estUnidoDerivedEstimate")}
               </div>
             </>
           ) : (
             <div style={{ fontSize: 13, color: "var(--afcfta-muted,#667)" }}>
               {industrial_base?.reason === "country_not_in_unido_idsb_coverage"
-                ? fr
-                  ? `${origin} hors couverture UNIDO IDSB (20 pays africains) — non estimé.`
-                  : `${origin} outside UNIDO IDSB coverage (20 African countries) — not estimated.`
-                : fr
-                ? "Aucune donnée industrielle UNIDO pour cette division — non estimée."
-                : "No UNIDO industrial data for this division — not estimated."}
+                ? t("opportunities.sectoralAnalysis.outsideUnidoIdsbCoverage", { origin })
+                : t("opportunities.sectoralAnalysis.noUnidoIndustrialData")}
             </div>
           )}
         </div>
@@ -417,23 +412,23 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
         {/* Destination market demand (real UNIDO IDSB) */}
         <div style={card}>
           <div style={{ ...label, marginBottom: 10, fontWeight: 700 }}>
-            {fr ? `Demande du marché — destination ${destination}` : `Market demand — destination ${destination}`}
+            {t("opportunities.sectoralAnalysis.marketDemandDestination", { destination })}
           </div>
           {market_demand?.available ? (
             <>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12 }}>
                 <div>
-                  <div style={label}>{fr ? "Consommation apparente" : "Apparent consumption"}</div>
+                  <div style={label}>{t("opportunities.sectoralAnalysis.apparentConsumption")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
                     {moneyShort(market_demand.apparent_consumption_usd)}
-                    <Prov nature={market_demand.provenance?.apparent_consumption_usd} fr={fr} />
+                    <Prov nature={market_demand.provenance?.apparent_consumption_usd} />
                   </div>
                 </div>
                 <div>
-                  <div style={label}>{fr ? "Imports mondiaux" : "World imports"}</div>
+                  <div style={label}>{t("opportunities.sectoralAnalysis.worldImports")}</div>
                   <div style={{ fontSize: 17, fontWeight: 700 }}>
                     {moneyShort(market_demand.imports_world_usd)}
-                    <Prov nature={market_demand.provenance?.imports_world_usd} fr={fr} />
+                    <Prov nature={market_demand.provenance?.imports_world_usd} />
                   </div>
                 </div>
               </div>
@@ -445,12 +440,8 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
           ) : (
             <div style={{ fontSize: 13, color: "var(--afcfta-muted,#667)" }}>
               {market_demand?.reason === "country_not_in_unido_idsb_coverage"
-                ? fr
-                  ? `${destination} hors couverture UNIDO IDSB (20 pays africains) — non estimé.`
-                  : `${destination} outside UNIDO IDSB coverage (20 African countries) — not estimated.`
-                : fr
-                ? "Aucune donnée de demande UNIDO pour cette division — non estimée."
-                : "No UNIDO demand data for this division — not estimated."}
+                ? t("opportunities.sectoralAnalysis.outsideUnidoIdsbCoverage2", { destination })
+                : t("opportunities.sectoralAnalysis.noUnidoDemandData")}
             </div>
           )}
         </div>
@@ -460,15 +451,13 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
       {diversification_products && diversification_products.length > 0 && (
         <div style={card}>
           <div style={{ ...label, marginBottom: 8, fontWeight: 700 }}>
-            {fr
-              ? "Diversification — mêmes intrants et procédé (division ISIC)"
-              : "Diversification — same inputs and process (ISIC division)"}
+            {t("opportunities.sectoralAnalysis.diversificationSameInputsProcess")}
           </div>
           <table style={{ width: "100%", fontSize: 12, borderCollapse: "collapse" }}>
             <thead>
               <tr>
-                <th style={th} scope="col">{fr ? "Code SH" : "HS code"}</th>
-                <th style={th} scope="col">{fr ? "Produit exportable" : "Exportable product"}</th>
+                <th style={th} scope="col">{t("opportunities.sectoralAnalysis.hsCode")}</th>
+                <th style={th} scope="col">{t("opportunities.sectoralAnalysis.exportableProduct")}</th>
               </tr>
             </thead>
             <tbody>
@@ -489,9 +478,7 @@ function SectoralAnalysis({ hsCode, origin, destination, fr }) {
           <>
             {" "}
             ·{" "}
-            {fr
-              ? "aucun des deux pays n'est dans la couverture UNIDO IDSB"
-              : "neither country is in UNIDO IDSB coverage"}
+            {t("opportunities.sectoralAnalysis.neitherCountryIsUnido")}
           </>
         ) : null}
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -73,7 +74,8 @@ const fmtUSD = (v) =>
   v == null ? '—' : `$${Number(v).toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
 
 const ZlecafImpactSimulator = ({ language = 'fr' }) => {
-  const t = TEXTS[language] || TEXTS.fr;
+  const { t } = useTranslation();
+  const txt = TEXTS[language] || TEXTS.fr;
   const countries = getAllCountries(language === 'en' ? 'en' : 'fr');
 
   const [importer, setImporter] = useState('');
@@ -112,34 +114,32 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
     if (!result) return null;
     const fr = language !== 'en';
     return {
-      badge: fr ? 'SIMULATEUR ZLECAf' : 'AfCFTA SIMULATOR',
-      title: `${t.title} — ${importer} · SH6 ${hs6}`,
-      subtitle: `${t.subtitle}`,
+      badge: t('opportunities.zlecafImpactSimulator.afcftaSimulator'),
+      title: `${txt.title} — ${importer} · SH6 ${hs6}`,
+      subtitle: `${txt.subtitle}`,
       kpis: [
-        { label: t.npfRate, value: `${result.npf_rate}%`, accent: 'red' },
-        { label: t.currentRate, value: `${result.current_zlecaf_rate}%`, accent: 'green' },
-        { label: t.savingNow, value: fmtUSD(result.annual_saving_now), accent: 'green' },
-        { label: t.totalSaving, value: fmtUSD(result.total_saving_over_schedule), accent: 'gold' },
+        { label: txt.npfRate, value: `${result.npf_rate}%`, accent: 'red' },
+        { label: txt.currentRate, value: `${result.current_zlecaf_rate}%`, accent: 'green' },
+        { label: txt.savingNow, value: fmtUSD(result.annual_saving_now), accent: 'green' },
+        { label: txt.totalSaving, value: fmtUSD(result.total_saving_over_schedule), accent: 'gold' },
       ],
       sections: [
         {
-          title: t.chartTitle,
+          title: txt.chartTitle,
           table: {
             columns: [
-              { key: 'calendar_year', label: t.tableYear, width: 0.8 },
-              { key: 'zlecaf_rate', label: t.tableRate, align: 'right', width: 0.9, fmt: (v) => `${v}%` },
-              { key: 'duty_npf', label: t.tableDutyNpf, align: 'right', width: 1.1, fmt: fmtUSD },
-              { key: 'duty_zlecaf', label: t.tableDutyZlecaf, align: 'right', width: 1.1, fmt: fmtUSD },
-              { key: 'annual_saving', label: t.tableSaving, align: 'right', width: 1.1, fmt: fmtUSD },
-              { key: 'cumulative_saving', label: t.tableCum, align: 'right', width: 1.1, fmt: fmtUSD },
+              { key: 'calendar_year', label: txt.tableYear, width: 0.8 },
+              { key: 'zlecaf_rate', label: txt.tableRate, align: 'right', width: 0.9, fmt: (v) => `${v}%` },
+              { key: 'duty_npf', label: txt.tableDutyNpf, align: 'right', width: 1.1, fmt: fmtUSD },
+              { key: 'duty_zlecaf', label: txt.tableDutyZlecaf, align: 'right', width: 1.1, fmt: fmtUSD },
+              { key: 'annual_saving', label: txt.tableSaving, align: 'right', width: 1.1, fmt: fmtUSD },
+              { key: 'cumulative_saving', label: txt.tableCum, align: 'right', width: 1.1, fmt: fmtUSD },
             ],
             rows: result.projection || [],
           },
         },
       ],
-      source: fr
-        ? 'Calendrier officiel de démantèlement ZLECAf + tarifs nationaux'
-        : 'Official AfCFTA dismantlement schedule + national tariffs',
+      source: t('opportunities.zlecafImpactSimulator.officialAfcftaDismantlementSchedule'),
       filename: opportunityPdfFilename('Simulateur', `${importer}_${hs6}`),
     };
   };
@@ -150,17 +150,17 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <CardTitle className="flex items-center gap-2 text-white">
             <Calculator className="w-5 h-5 text-emerald-400" />
-            {t.title}
+            {txt.title}
           </CardTitle>
           {result && <OpportunityPdfExport getSpec={buildPdfSpec} language={language} />}
         </div>
-        <p className="text-sm text-slate-400">{t.subtitle}</p>
+        <p className="text-sm text-slate-400">{txt.subtitle}</p>
       </CardHeader>
       <CardContent className="space-y-5">
         {/* ── Formulaire ─────────────────────────────────────────── */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-semibold text-slate-400">{t.importer}</span>
+            <span className="text-xs font-semibold text-slate-400">{txt.importer}</span>
             <select
               value={importer}
               onChange={(e) => setImporter(e.target.value)}
@@ -176,11 +176,11 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
           </label>
 
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-semibold text-slate-400">{t.hs6}</span>
+            <span className="text-xs font-semibold text-slate-400">{txt.hs6}</span>
             <input
               value={hs6}
               onChange={(e) => setHs6(e.target.value.replace(/\D/g, '').slice(0, 6))}
-              placeholder={t.placeholderHs6}
+              placeholder={txt.placeholderHs6}
               inputMode="numeric"
               className="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white"
             />
@@ -192,7 +192,7 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
           </label>
 
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-semibold text-slate-400">{t.value}</span>
+            <span className="text-xs font-semibold text-slate-400">{txt.value}</span>
             <input
               value={value}
               onChange={(e) => setValue(e.target.value.replace(/[^\d.]/g, ''))}
@@ -203,7 +203,7 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
           </label>
 
           <label className="flex flex-col gap-1">
-            <span className="text-xs font-semibold text-slate-400">{t.npfOverride}</span>
+            <span className="text-xs font-semibold text-slate-400">{txt.npfOverride}</span>
             <input
               value={npf}
               onChange={(e) => setNpf(e.target.value.replace(/[^\d.]/g, ''))}
@@ -211,7 +211,7 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
               inputMode="decimal"
               className="bg-slate-900 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white"
             />
-            <span className="text-[11px] text-slate-500">{t.npfHint}</span>
+            <span className="text-[11px] text-slate-500">{txt.npfHint}</span>
           </label>
         </div>
 
@@ -221,13 +221,13 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold"
         >
           <Calculator className="w-4 h-4" />
-          {loading ? t.loading : t.simulate}
+          {loading ? txt.loading : txt.simulate}
         </button>
 
         {error && (
           <div className="flex items-center gap-2 text-red-400 text-sm">
             <Info className="w-4 h-4" />
-            {t.error}
+            {txt.error}
           </div>
         )}
 
@@ -237,43 +237,43 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
             {/* KPIs */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="bg-slate-900/60 rounded-lg p-3 border border-slate-700">
-                <p className="text-[11px] text-slate-400">{t.npfRate}</p>
+                <p className="text-[11px] text-slate-400">{txt.npfRate}</p>
                 <p className="text-lg font-bold text-white">{result.npf_rate}%</p>
                 <p className="text-[10px] text-slate-500">
-                  {result.npf_auto_detected ? t.sourceAuto : ''}
+                  {result.npf_auto_detected ? txt.sourceAuto : ''}
                 </p>
               </div>
               <div className="bg-slate-900/60 rounded-lg p-3 border border-slate-700">
-                <p className="text-[11px] text-slate-400">{t.currentRate}</p>
+                <p className="text-[11px] text-slate-400">{txt.currentRate}</p>
                 <p className="text-lg font-bold text-emerald-400">{result.current_zlecaf_rate}%</p>
               </div>
               <div className="bg-slate-900/60 rounded-lg p-3 border border-slate-700">
-                <p className="text-[11px] text-slate-400">{t.savingNow}</p>
+                <p className="text-[11px] text-slate-400">{txt.savingNow}</p>
                 <p className="text-lg font-bold text-emerald-400">{fmtUSD(result.annual_saving_now)}</p>
               </div>
               <div className="bg-slate-900/60 rounded-lg p-3 border border-slate-700">
-                <p className="text-[11px] text-slate-400">{t.fullYear}</p>
+                <p className="text-[11px] text-slate-400">{txt.fullYear}</p>
                 <p className="text-lg font-bold text-white">{result.full_liberalization_year || '—'}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-2 text-sm">
               <TrendingDown className="w-4 h-4 text-emerald-400" />
-              <span className="text-slate-300">{t.totalSaving}:</span>
+              <span className="text-slate-300">{txt.totalSaving}:</span>
               <span className="font-bold text-emerald-400">{fmtUSD(result.total_saving_over_schedule)}</span>
             </div>
 
             {result.category === 'C' && (
               <div className="flex items-center gap-2 text-amber-400 text-sm">
                 <Info className="w-4 h-4" />
-                {t.excluded}
+                {txt.excluded}
               </div>
             )}
 
             {/* Graphique cumul */}
             {chartData.length > 0 && (
               <div>
-                <p className="text-xs font-semibold text-slate-400 mb-2">{t.chartTitle}</p>
+                <p className="text-xs font-semibold text-slate-400 mb-2">{txt.chartTitle}</p>
                 <ResponsiveContainer width="100%" height={240}>
                   <AreaChart data={chartData} margin={{ top: 8, right: 16, left: 8, bottom: 4 }}>
                     <defs>
@@ -290,7 +290,7 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
                       contentStyle={{ background: 'rgba(15,23,42,0.97)', border: '1px solid rgba(52,211,153,0.3)', borderRadius: 8, fontSize: 12 }}
                       labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
                     />
-                    <Area type="monotone" dataKey="cumulative_saving" stroke="#34d399" strokeWidth={2.5} fill="url(#savingGrad)" name={t.tableCum} />
+                    <Area type="monotone" dataKey="cumulative_saving" stroke="#34d399" strokeWidth={2.5} fill="url(#savingGrad)" name={txt.tableCum} />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
@@ -301,12 +301,12 @@ const ZlecafImpactSimulator = ({ language = 'fr' }) => {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-slate-400 text-xs border-b border-slate-700">
-                    <th className="text-left py-2 px-2">{t.tableYear}</th>
-                    <th className="text-right py-2 px-2">{t.tableRate}</th>
-                    <th className="text-right py-2 px-2">{t.tableDutyNpf}</th>
-                    <th className="text-right py-2 px-2">{t.tableDutyZlecaf}</th>
-                    <th className="text-right py-2 px-2">{t.tableSaving}</th>
-                    <th className="text-right py-2 px-2">{t.tableCum}</th>
+                    <th className="text-left py-2 px-2">{txt.tableYear}</th>
+                    <th className="text-right py-2 px-2">{txt.tableRate}</th>
+                    <th className="text-right py-2 px-2">{txt.tableDutyNpf}</th>
+                    <th className="text-right py-2 px-2">{txt.tableDutyZlecaf}</th>
+                    <th className="text-right py-2 px-2">{txt.tableSaving}</th>
+                    <th className="text-right py-2 px-2">{txt.tableCum}</th>
                   </tr>
                 </thead>
                 <tbody>

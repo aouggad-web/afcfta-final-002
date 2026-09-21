@@ -264,33 +264,33 @@ export default function OpportunitySummary({ language = 'fr' }) {
   const buildPdfSpec = () => {
     const fr = language !== 'en';
     return {
-      badge: fr ? "VUE D'ENSEMBLE" : 'OVERVIEW',
+      badge: t('opportunities.opportunitySummary.overview'),
       title: txt.title,
       subtitle: txt.subtitle,
       kpis: [
         { label: txt.totalOpportunities, value: data.totalOpportunities?.toLocaleString() ?? '—', sub: data.yearlyGrowth || undefined, accent: 'gold' },
         { label: txt.totalPotentialValue, value: formatValue(data.totalPotentialValue), accent: 'green' },
-        { label: txt.intraAfricanTrade || (fr ? 'Commerce intra-africain' : 'Intra-African trade'), value: data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—', accent: 'terra' },
-        { label: fr ? 'Pays ZLECAf' : 'AfCFTA countries', value: String(data.afcftaCountries ?? '—'), accent: 'gold' },
+        { label: txt.intraAfricanTrade || t('opportunities.opportunitySummary.intraAfricanTrade'), value: data.intraAfricanTrade != null ? formatValue(data.intraAfricanTrade) : '—', accent: 'terra' },
+        { label: t('opportunities.opportunitySummary.afcftaCountries'), value: String(data.afcftaCountries ?? '—'), accent: 'gold' },
       ],
       sections: [
         data.topPartners?.length && {
-          title: fr ? 'Premiers pays commerçants (Md$)' : 'Top trading countries ($B)',
+          title: t('opportunities.opportunitySummary.topTradingCountriesB'),
           table: {
             columns: [
-              { key: 'name', label: fr ? 'Pays' : 'Country', width: 2.5 },
-              { key: 'value', label: fr ? 'Volume (Md$)' : 'Volume ($B)', align: 'right', width: 1 },
+              { key: 'name', label: t('opportunities.opportunitySummary.country'), width: 2.5 },
+              { key: 'value', label: t('opportunities.opportunitySummary.volumeB'), align: 'right', width: 1 },
             ],
             rows: [...data.topPartners].reverse(),
           },
         },
         data.topProducts?.length && {
-          title: fr ? 'Secteurs prioritaires' : 'Priority sectors',
+          title: t('opportunities.opportunitySummary.prioritySectors'),
           table: {
             columns: [
               { key: 'code', label: 'SH2', width: 0.6 },
-              { key: 'name', label: fr ? 'Secteur' : 'Sector', width: 2.5 },
-              { key: 'value', label: fr ? 'Valeur (Md$)' : 'Value ($B)', align: 'right', width: 1 },
+              { key: 'name', label: t('opportunities.opportunitySummary.sector'), width: 2.5 },
+              { key: 'value', label: t('opportunities.opportunitySummary.valueB'), align: 'right', width: 1 },
             ],
             rows: data.topProducts,
           },

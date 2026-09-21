@@ -79,6 +79,7 @@ const HSBadge = ({ product }) => {
 
 // ── Advantage Metrics strip ───────────────────────────────────────────────────
 const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin, hs6Code, lang }) => {
+  const { t } = useTranslation();
   if (!leadTimeSavings && !priceCompetitiveness && !rulesOfOrigin) return null;
   return (
     <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[var(--afcfta-border)] text-center text-[11px]">
@@ -86,21 +87,21 @@ const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin
         <div className="flex flex-col items-center gap-0.5">
           <Clock className="h-3.5 w-3.5 text-[var(--afcfta-muted)]" />
           <span className="font-bold text-[var(--text)]">-{leadTimeSavings}j</span>
-          <span className="text-[var(--afcfta-muted)]">{lang === 'fr' ? 'Délai' : 'Lead time'}</span>
+          <span className="text-[var(--afcfta-muted)]">{t('opportunities.aiAnalysis.leadTime')}</span>
         </div>
       )}
       {priceCompetitiveness != null && (
         <div className="flex flex-col items-center gap-0.5">
           <BarChart2 className="h-3.5 w-3.5 text-[var(--green)]" />
           <span className="font-bold text-[var(--green)]">-{fmtPct(priceCompetitiveness)}</span>
-          <span className="text-[var(--afcfta-muted)]">{lang === 'fr' ? 'Coût' : 'Cost'}</span>
+          <span className="text-[var(--afcfta-muted)]">{t('opportunities.aiAnalysis.cost')}</span>
         </div>
       )}
       {rulesOfOrigin && (
         <div className="flex flex-col items-center gap-0.5 col-span-3 text-left mt-1 border-t border-[var(--afcfta-border)] pt-2">
           <div className="flex items-center gap-1 text-[var(--afcfta-muted)]">
             <ShieldCheck className="h-3 w-3 flex-shrink-0" />
-            <span className="font-medium">{lang === 'fr' ? 'Règles d\'origine ZLECAf' : 'AfCFTA Rules of Origin'}:</span>
+            <span className="font-medium">{t('opportunities.aiAnalysis.afcftaRulesOrigin')}:</span>
           </div>
           <span className="text-[var(--text)] text-[11px] leading-tight">{rulesOfOrigin}</span>
           <OfficialRuleOfOrigin hs6Code={hs6Code} lang={lang} />
@@ -116,6 +117,7 @@ const AdvantageMetrics = ({ leadTimeSavings, priceCompetitiveness, rulesOfOrigin
 const ruleOfOriginCache = new Map();
 
 const OfficialRuleOfOrigin = ({ hs6Code, lang }) => {
+  const { t } = useTranslation();
   const [rule, setRule] = useState(null);
 
   useEffect(() => {
@@ -153,7 +155,7 @@ const OfficialRuleOfOrigin = ({ hs6Code, lang }) => {
         </span>
         {rule.status === 'YTB' && (
           <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--gold)' }}>
-            {lang === 'fr' ? '· en négociation' : '· under negotiation'}
+            {t('opportunities.aiAnalysis.underNegotiation')}
           </span>
         )}
       </div>
@@ -165,7 +167,8 @@ const OfficialRuleOfOrigin = ({ hs6Code, lang }) => {
 };
 
 // ── OEC Data Badge ────────────────────────────────────────────────────────────
-const OECBadge = ({ oecData, lang }) => {
+const OECBadge = ({ oecData }) => {
+  const { t } = useTranslation();
   if (!oecData) return null;
   const verified = oecData.data_quality === 'verified';
   const score = oecData.confidence_score;
@@ -181,14 +184,15 @@ const OECBadge = ({ oecData, lang }) => {
       <Database style={{ width: 9, height: 9 }} />
       {verified
         ? `OEC ✓ ${oecData.verified_trade_value != null ? fmtMUSD(oecData.verified_trade_value) : ''}`
-        : (lang === 'fr' ? 'Estimation' : 'Estimate')}
+        : t('opportunities.aiAnalysis.estimate')}
       {!verified && score && ` ${Math.round(score * 100)}%`}
     </div>
   );
 };
 
 // ── Entry Strategy Section ────────────────────────────────────────────────────
-const EntryStrategy = ({ strategy, lang }) => {
+const EntryStrategy = ({ strategy }) => {
+  const { t } = useTranslation();
   if (!strategy) return null;
   const { quickWins = [], keyBarriers = [], certifications = [], priorityActions = [], timelineMonths } = strategy;
   if (!quickWins.length && !keyBarriers.length && !priorityActions.length) return null;
@@ -209,7 +213,7 @@ const EntryStrategy = ({ strategy, lang }) => {
         letterSpacing: '0.06em',
       }}>
         <Lightbulb style={{ width: 14, height: 14 }} />
-        {lang === 'fr' ? "Stratégie d'entrée" : 'Entry Strategy'}
+        {t('opportunities.aiAnalysis.entryStrategy')}
         {timelineMonths && (
           <span style={{
             marginLeft: 'auto', fontSize: 10, fontWeight: 600,
@@ -217,7 +221,7 @@ const EntryStrategy = ({ strategy, lang }) => {
             padding: '1px 7px', borderRadius: 8,
             color: 'var(--gold)',
           }}>
-            ~{timelineMonths} {lang === 'fr' ? 'mois' : 'mo.'}
+            ~{timelineMonths} {t('opportunities.aiAnalysis.mo')}
           </span>
         )}
       </div>
@@ -229,7 +233,7 @@ const EntryStrategy = ({ strategy, lang }) => {
           <div>
             <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--green)', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
               <Zap style={{ width: 10, height: 10 }} />
-              {lang === 'fr' ? 'Actions rapides' : 'Quick Wins'}
+              {t('opportunities.aiAnalysis.quickWins')}
             </div>
             {quickWins.map((w, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: 12, color: 'var(--text)', marginBottom: 3 }}>
@@ -245,7 +249,7 @@ const EntryStrategy = ({ strategy, lang }) => {
           <div>
             <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--terra, #c84b1a)', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
               <ListChecks style={{ width: 10, height: 10 }} />
-              {lang === 'fr' ? 'Actions prioritaires' : 'Priority Actions'}
+              {t('opportunities.aiAnalysis.priorityActions')}
             </div>
             {priorityActions.map((a, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: 12, color: 'var(--text)', marginBottom: 3 }}>
@@ -270,7 +274,7 @@ const EntryStrategy = ({ strategy, lang }) => {
               <div style={{ background: 'rgba(200,16,46,0.06)', borderRadius: 6, padding: '8px 10px' }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: '#e05070', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
                   <XCircle style={{ width: 10, height: 10 }} />
-                  {lang === 'fr' ? 'Obstacles' : 'Barriers'}
+                  {t('opportunities.aiAnalysis.barriers')}
                 </div>
                 {keyBarriers.map((b, i) => (
                   <div key={i} style={{ fontSize: 11, color: 'var(--text)', marginBottom: 2, lineHeight: 1.4 }}>• {b}</div>
@@ -281,7 +285,7 @@ const EntryStrategy = ({ strategy, lang }) => {
               <div style={{ background: 'rgba(79,142,247,0.07)', borderRadius: 6, padding: '8px 10px' }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: '#4f8ef7', marginBottom: 5, display: 'flex', alignItems: 'center', gap: 4 }}>
                   <Award style={{ width: 10, height: 10 }} />
-                  {lang === 'fr' ? 'Certifications' : 'Certifications'}
+                  {t('opportunities.aiAnalysis.certifications')}
                 </div>
                 {certifications.map((c, i) => (
                   <div key={i} style={{ fontSize: 11, color: 'var(--text)', marginBottom: 2, lineHeight: 1.4 }}>• {c}</div>
@@ -319,6 +323,7 @@ const SOURCE_BADGE = {
 };
 
 const LogisticsSizing = ({ logistics, lang }) => {
+  const { t } = useTranslation();
   if (!logistics || !logistics.available) return null;
   const fr = lang === 'fr';
   const { containers_needed, container_type, total_freight_usd, estimated_weight_kg, accessibility_index } = logistics;
@@ -331,13 +336,13 @@ const LogisticsSizing = ({ logistics, lang }) => {
         marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em',
       }}>
         <Truck style={{ width: 14, height: 14 }} />
-        {fr ? 'Logistique estimée' : 'Estimated logistics'}
+        {t('opportunities.aiAnalysis.estimatedLogistics')}
       </div>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         {containers_needed != null && (
           <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
             <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
-              {fr ? 'Conteneurs' : 'Containers'}
+              {t('opportunities.aiAnalysis.containers')}
             </div>
             <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
               {containers_needed} × {container_type === 'feu' ? "40′" : "20′"}
@@ -347,7 +352,7 @@ const LogisticsSizing = ({ logistics, lang }) => {
         {total_freight_usd != null && (
           <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
             <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
-              {fr ? 'Fret total estimé' : 'Est. total freight'}
+              {t('opportunities.aiAnalysis.estTotalFreight')}
             </div>
             <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
               {fmtBig(total_freight_usd, 'USD')}
@@ -357,7 +362,7 @@ const LogisticsSizing = ({ logistics, lang }) => {
         {accessibility_index != null && (
           <div style={{ flex: '1 1 90px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
             <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
-              {fr ? 'Accessibilité' : 'Accessibility'}
+              {t('opportunities.aiAnalysis.accessibility')}
             </div>
             <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--gold)' }}>
               {Math.round(accessibility_index * 100)}%
@@ -367,7 +372,7 @@ const LogisticsSizing = ({ logistics, lang }) => {
       </div>
       {estimated_weight_kg != null && (
         <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginTop: 6 }}>
-          {fr ? 'Poids estimé depuis la valeur potentielle' : 'Weight estimated from potential value'}:{' '}
+          {t('opportunities.aiAnalysis.weightEstimatedFromPotential')}:{' '}
           {Math.round(estimated_weight_kg).toLocaleString()} kg
         </div>
       )}
@@ -376,6 +381,7 @@ const LogisticsSizing = ({ logistics, lang }) => {
 };
 
 const ProductionCapacity = ({ capacity, lang }) => {
+  const { t } = useTranslation();
   if (!capacity || !capacity.available) return null;
   const fr = lang === 'fr';
   const { commodity, unit, dimension, latest_value, latest_year, cagr_pct,
@@ -399,8 +405,8 @@ const ProductionCapacity = ({ capacity, lang }) => {
       }}>
         <Factory style={{ width: 14, height: 14 }} />
         {is_proxy
-          ? (fr ? 'Capacité de production — proxy export' : 'Production capacity — export proxy')
-          : (fr ? 'Capacité de production' : 'Production capacity')}
+          ? t('opportunities.aiAnalysis.productionCapacityExportProxy')
+          : t('opportunities.aiAnalysis.productionCapacity')}
         <span style={{
           marginLeft: 'auto', fontSize: 9, fontWeight: 700,
           background: badge.bg, color: badge.color,
@@ -415,7 +421,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
         <div style={{ flex: '1 1 110px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
           <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
             {is_proxy
-              ? `${fr ? 'Exportations' : 'Exports'}${match_level ? ` ${match_level}` : ''} · ${latest_year}`
+              ? `${t('opportunities.aiAnalysis.exports')}${match_level ? ` ${match_level}` : ''} · ${latest_year}`
               : `${commodity} · ${latest_year}`}
           </div>
           <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--text)' }}>
@@ -430,7 +436,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
         {cagr_pct != null && (
           <div style={{ flex: '1 1 90px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
             <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
-              {fr ? 'Tendance' : 'Trend'} 21–{String(latest_year).slice(2)}
+              {t('opportunities.aiAnalysis.trend')} 21–{String(latest_year).slice(2)}
             </div>
             <div style={{ fontSize: 18, fontWeight: 800, color: trendUp ? 'var(--green)' : '#e05070', display: 'flex', alignItems: 'center', gap: 4 }}>
               {trendUp ? <TrendingUp style={{ width: 14, height: 14 }} /> : <TrendingDown style={{ width: 14, height: 14 }} />}
@@ -441,7 +447,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
         {rank != null && (
           <div style={{ flex: '1 1 90px', background: 'var(--afcfta-bg)', borderRadius: 8, padding: '8px 10px' }}>
             <div style={{ fontSize: 10, color: 'var(--afcfta-muted)', marginBottom: 2 }}>
-              {fr ? 'Rang africain' : 'African rank'}
+              {t('opportunities.aiAnalysis.africanRank')}
             </div>
             <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--gold)' }}>
               {rank}<span style={{ fontSize: 11, color: 'var(--afcfta-muted)' }}>/{continental.total_countries}</span>
@@ -455,10 +461,10 @@ const ProductionCapacity = ({ capacity, lang }) => {
       {continental.leader && (
         <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginBottom: 10, lineHeight: 1.4 }}>
           <Globe style={{ width: 11, height: 11, display: 'inline', marginRight: 4, color: 'var(--green)' }} />
-          {fr ? 'Leader continental' : 'Continental leader'}: <strong style={{ color: 'var(--text)' }}>{continental.leader.country_name}</strong>
+          {t('opportunities.aiAnalysis.continentalLeader')}: <strong style={{ color: 'var(--text)' }}>{continental.leader.country_name}</strong>
           {' '}({fmtBig(continental.leader.value, unit)})
           {continental.continental_total != null && (
-            <> · {fr ? 'Total Afrique' : 'Africa total'}: {fmtBig(continental.continental_total, unit)}</>
+            <> · {t('opportunities.aiAnalysis.africaTotal')}: {fmtBig(continental.continental_total, unit)}</>
           )}
         </div>
       )}
@@ -475,7 +481,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
 
       {is_proxy && capacity.measured_reference && (
         <div style={{ fontSize: 10.5, color: 'var(--afcfta-muted)', marginBottom: 10, lineHeight: 1.4 }}>
-          {fr ? 'Référence mesurée (couverture partielle)' : 'Measured reference (partial coverage)'} :{' '}
+          {t('opportunities.aiAnalysis.measuredReferencePartialCoverage')} :{' '}
           {capacity.measured_reference.institution} — {capacity.measured_reference.commodity}
           {capacity.measured_reference.latest_value != null && (
             <> · {fmtBig(capacity.measured_reference.latest_value, capacity.measured_reference.unit)} ({capacity.measured_reference.latest_year})</>
@@ -508,7 +514,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
         <div>
           <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--green)', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
             <BarChart2 style={{ width: 10, height: 10 }} />
-            {fr ? "Scénarios d'intégration africaine — horizon 2030" : 'African integration scenarios — 2030 horizon'}
+            {t('opportunities.aiAnalysis.africanIntegrationScenarios2030')}
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
             {scenarioList.map((s, i) => (
@@ -533,9 +539,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
             ))}
           </div>
           <div style={{ fontSize: 9, color: 'var(--afcfta-muted)', marginTop: 6, fontStyle: 'italic', lineHeight: 1.4 }}>
-            {fr
-              ? `Projections dérivées du CAGR réel observé. Production: ${source.institution}. Scénarios ≠ prévisions.`
-              : `Projections derived from observed real CAGR. Production: ${source.institution}. Scenarios ≠ forecasts.`}
+            {t('opportunities.aiAnalysis.projectionsDerivedFromObserved', { institution: source.institution })}
           </div>
         </div>
       )}
@@ -545,6 +549,7 @@ const ProductionCapacity = ({ capacity, lang }) => {
 
 // ── Opportunity Card ──────────────────────────────────────────────────────────
 const OpportunityCard = ({ opp, mode, lang, index }) => {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const isExport = mode === 'export';
   const isIndustrial = mode === 'industrial';
@@ -593,7 +598,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
           <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 700 }}>
             #{index + 1}
           </span>
-          <OECBadge oecData={oecData} lang={lang} />
+          <OECBadge oecData={oecData} />
         </div>
       </div>
 
@@ -607,10 +612,10 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
         <Globe style={{ width: 14, height: 14, color: 'var(--green)' }} />
         <span>
           {isExport
-            ? (lang === 'fr' ? 'Vers' : 'To')
+            ? t('opportunities.aiAnalysis.to')
             : isIndustrial
-            ? (lang === 'fr' ? 'Marchés cibles' : 'Target markets')
-            : (lang === 'fr' ? 'De' : 'From')}
+            ? t('opportunities.aiAnalysis.targetMarkets')
+            : t('opportunities.aiAnalysis.from')}
           {': '}
           <strong style={{ color: 'var(--text)' }}>{partner || '—'}</strong>
         </span>
@@ -630,10 +635,10 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
         <div>
           <div style={{ fontSize: 11, color: 'var(--green)', fontWeight: 600, marginBottom: 2 }}>
             {isExport
-              ? (lang === 'fr' ? 'Potentiel' : 'Potential')
+              ? t('opportunities.aiAnalysis.potential')
               : isIndustrial
-              ? (lang === 'fr' ? 'Valeur potentielle' : 'Potential value')
-              : (lang === 'fr' ? 'Substitution potentielle' : 'Substitution potential')}
+              ? t('opportunities.aiAnalysis.potentialValue')
+              : t('opportunities.aiAnalysis.substitutionPotential')}
           </div>
           <div style={{
             fontSize: 22,
@@ -653,7 +658,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
             fontWeight: 700,
             color: 'var(--green)',
           }}>
-            -{fmtPct(tariff)} {lang === 'fr' ? 'tarif' : 'tariff'}
+            -{fmtPct(tariff)} {t('opportunities.aiAnalysis.tariff')}
           </div>
         )}
       </div>
@@ -662,7 +667,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
       {currentSource && (
         <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 4 }}>
           <Tag style={{ width: 11, height: 11 }} />
-          {lang === 'fr' ? 'Source actuelle' : 'Current source'}: <strong style={{ color: 'var(--text)' }}>{currentSource}</strong>
+          {t('opportunities.aiAnalysis.currentSource')}: <strong style={{ color: 'var(--text)' }}>{currentSource}</strong>
         </div>
       )}
 
@@ -676,7 +681,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
           marginBottom: 12,
         }}>
           <div style={{ fontSize: 11, color: '#4f8ef7', fontWeight: 700, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            {lang === 'fr' ? 'Chaîne de valeur' : 'Value chain'}
+            {t('opportunities.aiAnalysis.valueChain')}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
             <div>
@@ -699,7 +704,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
           </div>
           {inputVolume && (
             <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginTop: 6 }}>
-              {lang === 'fr' ? 'Volume importé' : 'Import volume'}: {inputVolume}
+              {t('opportunities.aiAnalysis.importVolume')}: {inputVolume}
             </div>
           )}
         </div>
@@ -726,7 +731,7 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
               padding: '6px 0',
             }}
           >
-            <span>{isIndustrial ? (lang === 'fr' ? 'Logique de transformation' : 'Transformation logic') : (lang === 'fr' ? 'Justification' : 'Rationale')}</span>
+            <span>{isIndustrial ? t('opportunities.aiAnalysis.transformationLogic') : t('opportunities.aiAnalysis.rationale')}</span>
             {expanded ? <ChevronUp style={{ width: 14, height: 14 }} /> : <ChevronDown style={{ width: 14, height: 14 }} />}
           </button>
           {expanded && (
@@ -742,12 +747,12 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
               {rationale}
               {(opp.year || opp.data_year) && (
                 <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', marginTop: 6, fontStyle: 'italic' }}>
-                  {lang === 'fr' ? 'Données' : 'Data'}: {opp.year || opp.data_year}
+                  {t('opportunities.aiAnalysis.data')}: {opp.year || opp.data_year}
                 </div>
               )}
               {(opp.sourceUrl || opp.source_url || opp.data_source) && (
                 <div style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontStyle: 'italic' }}>
-                  {lang === 'fr' ? 'Source' : 'Source'}: {opp.sourceUrl || opp.source_url || opp.data_source}
+                  {t('opportunities.aiAnalysis.source')}: {opp.sourceUrl || opp.source_url || opp.data_source}
                 </div>
               )}
             </div>
@@ -771,48 +776,49 @@ const OpportunityCard = ({ opp, mode, lang, index }) => {
       <LogisticsSizing logistics={logistics} lang={lang} />
 
       {/* Entry Strategy — section clé manquante */}
-      <EntryStrategy strategy={entryStrategy} lang={lang} />
+      <EntryStrategy strategy={entryStrategy} />
     </div>
   );
 };
 
 // ── Expected Results panel ────────────────────────────────────────────────────
-const ExpectedResults = ({ data, mode, lang }) => {
+const ExpectedResults = ({ data, mode }) => {
+  const { t } = useTranslation();
   if (!data) return null;
   const s3 = data.scenario_3_years;
   const s5 = data.scenario_5_years;
   if (!s3 && !s5) return null;
 
-  const label3 = lang === 'fr' ? '3 ans — Court terme' : '3 Years — Short term';
-  const label5 = lang === 'fr' ? '5 ans — Moyen terme' : '5 Years — Medium term';
+  const label3 = t('opportunities.aiAnalysis.3YearsShortTerm');
+  const label5 = t('opportunities.aiAnalysis.5YearsMediumTerm');
 
   const rows3 = [];
   const rows5 = [];
 
   if (s3) {
-    if (s3.export_growth_percent) rows3.push([lang === 'fr' ? 'Croissance exports' : 'Export growth', `+${fmtPct(s3.export_growth_percent)}`]);
-    if (s3.import_substitution_percent) rows3.push([lang === 'fr' ? 'Substitution imports' : 'Import substitution', fmtPct(s3.import_substitution_percent)]);
-    if (s3.savings_musd) rows3.push([lang === 'fr' ? 'Économies' : 'Savings', fmtMUSD(s3.savings_musd)]);
-    if (s3.new_jobs_created) rows3.push([lang === 'fr' ? 'Emplois créés' : 'Jobs created', s3.new_jobs_created.toLocaleString()]);
-    if (s3.industrial_value_added_musd) rows3.push([lang === 'fr' ? 'Valeur ajoutée' : 'Value added', fmtMUSD(s3.industrial_value_added_musd)]);
-    if (s3.total_export_value_musd) rows3.push([lang === 'fr' ? 'Valeur totale' : 'Total value', fmtMUSD(s3.total_export_value_musd)]);
-    if (s3.new_market_penetration) rows3.push([lang === 'fr' ? 'Nouveaux marchés' : 'New markets', s3.new_market_penetration]);
+    if (s3.export_growth_percent) rows3.push([t('opportunities.aiAnalysis.exportGrowth'), `+${fmtPct(s3.export_growth_percent)}`]);
+    if (s3.import_substitution_percent) rows3.push([t('opportunities.aiAnalysis.importSubstitution'), fmtPct(s3.import_substitution_percent)]);
+    if (s3.savings_musd) rows3.push([t('opportunities.aiAnalysis.savings'), fmtMUSD(s3.savings_musd)]);
+    if (s3.new_jobs_created) rows3.push([t('opportunities.aiAnalysis.jobsCreated'), s3.new_jobs_created.toLocaleString()]);
+    if (s3.industrial_value_added_musd) rows3.push([t('opportunities.aiAnalysis.valueAdded'), fmtMUSD(s3.industrial_value_added_musd)]);
+    if (s3.total_export_value_musd) rows3.push([t('opportunities.aiAnalysis.totalValue'), fmtMUSD(s3.total_export_value_musd)]);
+    if (s3.new_market_penetration) rows3.push([t('opportunities.aiAnalysis.newMarkets'), s3.new_market_penetration]);
   }
   if (s5) {
-    if (s5.export_growth_percent) rows5.push([lang === 'fr' ? 'Croissance exports' : 'Export growth', `+${fmtPct(s5.export_growth_percent)}`]);
-    if (s5.import_substitution_percent) rows5.push([lang === 'fr' ? 'Substitution totale' : 'Total substitution', fmtPct(s5.import_substitution_percent)]);
-    if (s5.total_savings_musd) rows5.push([lang === 'fr' ? 'Économies totales' : 'Total savings', fmtMUSD(s5.total_savings_musd)]);
-    if (s5.new_jobs_created) rows5.push([lang === 'fr' ? 'Emplois totaux' : 'Total jobs', s5.new_jobs_created.toLocaleString()]);
+    if (s5.export_growth_percent) rows5.push([t('opportunities.aiAnalysis.exportGrowth'), `+${fmtPct(s5.export_growth_percent)}`]);
+    if (s5.import_substitution_percent) rows5.push([t('opportunities.aiAnalysis.totalSubstitution'), fmtPct(s5.import_substitution_percent)]);
+    if (s5.total_savings_musd) rows5.push([t('opportunities.aiAnalysis.totalSavings'), fmtMUSD(s5.total_savings_musd)]);
+    if (s5.new_jobs_created) rows5.push([t('opportunities.aiAnalysis.totalJobs'), s5.new_jobs_created.toLocaleString()]);
     if (s5.afcfta_market_share_percent) rows5.push(['AfCFTA %', fmtPct(s5.afcfta_market_share_percent)]);
     if (s5.afcfta_share_percent) rows5.push(['AfCFTA %', fmtPct(s5.afcfta_share_percent)]);
-    if (s5.total_export_value_musd) rows5.push([lang === 'fr' ? 'Valeur totale' : 'Total value', fmtMUSD(s5.total_export_value_musd)]);
+    if (s5.total_export_value_musd) rows5.push([t('opportunities.aiAnalysis.totalValue'), fmtMUSD(s5.total_export_value_musd)]);
   }
 
   return (
     <div className="afcfta-card" style={{ padding: '18px 22px' }}>
       <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
         <TrendingUp style={{ width: 16, height: 16, color: 'var(--green)' }} />
-        {lang === 'fr' ? 'Résultats attendus' : 'Expected results'}
+        {t('opportunities.aiAnalysis.expectedResults')}
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
         {rows3.length > 0 && (
@@ -830,7 +836,7 @@ const ExpectedResults = ({ data, mode, lang }) => {
             {s3?.key_milestones?.length > 0 && (
               <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--afcfta-border)' }}>
                 <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--afcfta-muted)', marginBottom: 4 }}>
-                  {lang === 'fr' ? 'Jalons' : 'Milestones'}
+                  {t('opportunities.aiAnalysis.milestones')}
                 </div>
                 {s3.key_milestones.map((m, i) => (
                   <div key={i} style={{ fontSize: 11, color: 'var(--text)', marginBottom: 2 }}>• {m}</div>
@@ -859,7 +865,8 @@ const ExpectedResults = ({ data, mode, lang }) => {
 };
 
 // ── Summary KPI Strip ─────────────────────────────────────────────────────────
-const SummaryStrip = ({ data, mode, lang }) => {
+const SummaryStrip = ({ data, mode }) => {
+  const { t } = useTranslation();
   const opps = data?.opportunities || [];
   if (!opps.length) return null;
 
@@ -878,23 +885,23 @@ const SummaryStrip = ({ data, mode, lang }) => {
   const kpis = [
     {
       icon: Target,
-      label: lang === 'fr' ? 'Opportunités' : 'Opportunities',
+      label: t('opportunities.aiAnalysis.opportunities'),
       value: opps.length,
       color: 'var(--terra)',
     },
     {
       icon: DollarSign,
-      label: lang === 'fr' ? 'Potentiel total' : 'Total potential',
+      label: t('opportunities.aiAnalysis.totalPotential'),
       value: fmtMUSD(totalValue),
       color: 'var(--green)',
     },
     {
       icon: quality === 'verified' ? CheckCircle : AlertTriangle,
-      label: lang === 'fr' ? 'Qualité données' : 'Data quality',
+      label: t('opportunities.aiAnalysis.dataQuality'),
       value: quality === 'verified'
-        ? (lang === 'fr' ? 'Vérifiées' : 'Verified')
+        ? t('opportunities.aiAnalysis.verified')
         : quality === 'estimated'
-        ? (lang === 'fr' ? 'Estimations' : 'Estimated')
+        ? t('opportunities.aiAnalysis.estimated')
         : 'Mixed',
       color: quality === 'verified' ? 'var(--green)' : 'var(--gold)',
     },
@@ -922,7 +929,7 @@ const SummaryStrip = ({ data, mode, lang }) => {
       {topSectors.length > 0 && (
         <div style={{ gridColumn: '1 / -1', display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' }}>
           <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 600 }}>
-            {lang === 'fr' ? 'Secteurs prioritaires' : 'Priority sectors'}:
+            {t('opportunities.aiAnalysis.prioritySectors')}:
           </span>
           {topSectors.map((s, i) => (
             <span key={i} style={{
@@ -944,7 +951,7 @@ const SummaryStrip = ({ data, mode, lang }) => {
 
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function AIAnalysis({ language = 'fr' }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const lang = i18n.language || language;
 
   const [mode, setMode] = useState('export');
@@ -1045,7 +1052,7 @@ export default function AIAnalysis({ language = 'fr' }) {
       );
       setData(res.data);
     } catch (err) {
-      setError(err.response?.data?.detail || (lang === 'fr' ? 'Erreur lors de l\'analyse' : 'Analysis error'));
+      setError(err.response?.data?.detail || t('opportunities.aiAnalysis.analysisError'));
     } finally {
       setLoading(false);
     }
@@ -1095,7 +1102,7 @@ export default function AIAnalysis({ language = 'fr' }) {
           {/* Mode tabs */}
           <div>
             <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--afcfta-muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-              {lang === 'fr' ? 'Mode d\'analyse' : 'Analysis mode'}
+              {t('opportunities.aiAnalysis.analysisMode')}
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               {[
@@ -1288,24 +1295,22 @@ export default function AIAnalysis({ language = 'fr' }) {
                 const opps = data.opportunities || [];
                 const musd = (v) => (v ? `$${Number(v).toLocaleString(fr ? 'fr-FR' : 'en-US', { maximumFractionDigits: 1 })}M` : '—');
                 return {
-                  badge: fr ? 'ANALYSE IA' : 'AI ANALYSIS',
-                  title: `${fr ? 'Opportunités' : 'Opportunities'} ${mode === 'export' ? 'export' : mode === 'import' ? 'import' : ''} — ${data.country || selectedCountry}`,
-                  subtitle: fr
-                    ? 'Analyse générée par IA — à recouper avec les flux réels OEC/BACI'
-                    : 'AI-generated analysis — cross-check against real OEC/BACI flows',
+                  badge: t('opportunities.aiAnalysis.aiAnalysis'),
+                  title: `${t('opportunities.aiAnalysis.opportunities')} ${mode === 'export' ? 'export' : mode === 'import' ? 'import' : ''} — ${data.country || selectedCountry}`,
+                  subtitle: t('opportunities.aiAnalysis.aiGeneratedAnalysisCross'),
                   sections: [
                     opps.length && {
-                      title: fr ? 'Opportunités identifiées' : 'Identified opportunities',
+                      title: t('opportunities.aiAnalysis.identifiedOpportunities'),
                       table: {
                         columns: [
-                          { key: 'product', label: fr ? 'Produit' : 'Product', width: 2.4, fmt: (v, o) => o.product?.name || o.output_product || o.product_name || '—' },
+                          { key: 'product', label: t('opportunities.aiAnalysis.product'), width: 2.4, fmt: (v, o) => o.product?.name || o.output_product || o.product_name || '—' },
                           {
                             // Même résolution par mode que la carte à l'écran
                             // (voir OpportunityCard ci-dessus, isExport/isIndustrial) :
                             // le mode "industriel" a ses propres champs
                             // (targetMarkets, potentialTradeValue) et tombait
                             // sinon dans la branche import -> colonnes à "—".
-                            key: 'partner', label: fr ? 'Partenaire / marché' : 'Partner / market', width: 1.6,
+                            key: 'partner', label: t('opportunities.aiAnalysis.partnerMarket'), width: 1.6,
                             fmt: (v, o) =>
                               (mode === 'export'
                                 ? (o.potentialPartner || o.potential_partner)
@@ -1314,7 +1319,7 @@ export default function AIAnalysis({ language = 'fr' }) {
                                 : (o.potentialSupplier || o.potential_supplier)) || '—',
                           },
                           {
-                            key: 'value', label: fr ? 'Potentiel (M$)' : 'Potential ($M)', align: 'right', width: 1,
+                            key: 'value', label: t('opportunities.aiAnalysis.potentialM'), align: 'right', width: 1,
                             fmt: (v, o) =>
                               musd(
                                 mode === 'export'
@@ -1329,13 +1334,13 @@ export default function AIAnalysis({ language = 'fr' }) {
                       },
                     },
                   ].filter(Boolean),
-                  source: fr ? 'Claude AI + OEC, UN Comtrade, IMF, UNCTAD' : 'Claude AI + OEC, UN Comtrade, IMF, UNCTAD',
+                  source: t('opportunities.aiAnalysis.claudeAiOecComtrade'),
                   filename: opportunityPdfFilename('AnalyseIA', `${data.country || selectedCountry}_${mode}`),
                 };
               }}
             />
           </div>
-          <SummaryStrip data={data} mode={mode} lang={lang} />
+          <SummaryStrip data={data} mode={mode} />
 
           {/* Sankey */}
           {data.opportunities?.length > 0 && (
@@ -1346,7 +1351,7 @@ export default function AIAnalysis({ language = 'fr' }) {
             />
           )}
 
-          <ExpectedResults data={data.expected_results} mode={mode} lang={lang} />
+          <ExpectedResults data={data.expected_results} mode={mode} />
 
           {/* Opportunity cards grid */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 16 }}>

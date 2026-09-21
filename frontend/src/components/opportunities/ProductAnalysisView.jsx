@@ -371,9 +371,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           importers: [],
           exporters: [],
           marketShareTrends: [],
-          note: language === 'fr'
-            ? "Service d'analyse produit temporairement indisponible. Veuillez réessayer plus tard."
-            : 'Product analysis service temporarily unavailable. Please try again later.',
+          note: t('opportunities.productAnalysisView.productAnalysisServiceTemporarily'),
           isAiGenerated: false
         });
       }
@@ -551,17 +549,17 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                     const p = productData.product || {};
                     const usd = (v) => (v >= 1e9 ? `$${(v / 1e9).toFixed(2)}B` : v >= 1e6 ? `$${(v / 1e6).toFixed(1)}M` : `$${Math.round(v || 0).toLocaleString()}`);
                     return {
-                      badge: fr ? 'PAR PRODUIT' : 'BY PRODUCT',
+                      badge: t('opportunities.productAnalysisView.byProduct'),
                       title: `${p.name || ''} — SH6 ${p.hsCode || ''}`,
                       subtitle: `${p.hs2Name || ''} (${p.hs2Code || ''}) · ${p.hs4Name || ''} (${p.hs4Code || ''})`,
                       sections: [
                         productData.productionCapacities?.length && {
-                          title: fr ? 'Capacités de production africaines' : 'African production capacities',
+                          title: t('opportunities.productAnalysisView.africanProductionCapacities'),
                           table: {
                             columns: [
-                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
-                              { key: 'volume', label: fr ? 'Volume' : 'Volume', align: 'right', width: 1, fmt: (v, row) => `${Number(v || 0).toLocaleString()} ${row.unit || ''}` },
-                              { key: 'share', label: fr ? 'Part (%)' : 'Share (%)', align: 'right', width: 0.7, fmt: (v) => `${v ?? '—'}%` },
+                              { key: 'country', label: t('opportunities.productAnalysisView.country'), width: 2 },
+                              { key: 'volume', label: t('opportunities.productAnalysisView.volume'), align: 'right', width: 1, fmt: (v, row) => `${Number(v || 0).toLocaleString()} ${row.unit || ''}` },
+                              { key: 'share', label: t('opportunities.productAnalysisView.share'), align: 'right', width: 0.7, fmt: (v) => `${v ?? '—'}%` },
                             ],
                             rows: productData.productionCapacities,
                           },
@@ -570,8 +568,8 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                           title: txt.topImporters,
                           table: {
                             columns: [
-                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
-                              { key: 'tradeValue', label: fr ? 'Importations' : 'Imports', align: 'right', width: 1, fmt: usd },
+                              { key: 'country', label: t('opportunities.productAnalysisView.country'), width: 2 },
+                              { key: 'tradeValue', label: t('opportunities.productAnalysisView.imports'), align: 'right', width: 1, fmt: usd },
                             ],
                             rows: productData.importers,
                           },
@@ -580,13 +578,13 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                           title: txt.topExporters,
                           table: {
                             columns: [
-                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
-                              { key: 'tradeValue', label: fr ? 'Exportations' : 'Exports', align: 'right', width: 1, fmt: usd },
+                              { key: 'country', label: t('opportunities.productAnalysisView.country'), width: 2 },
+                              { key: 'tradeValue', label: t('opportunities.productAnalysisView.exports'), align: 'right', width: 1, fmt: usd },
                             ],
                             rows: productData.exporters,
                           },
                         },
-                        productData.note && { title: fr ? 'Note' : 'Note', paragraphs: [productData.note] },
+                        productData.note && { title: t('opportunities.productAnalysisView.note'), paragraphs: [productData.note] },
                       ].filter(Boolean),
                       source: (productData.sources || []).join(', '),
                       filename: opportunityPdfFilename('ParProduit', p.hsCode),
@@ -606,7 +604,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                 Code HS6: {productData.product.hsCode}
                 {productData.product.supplementaryUnitLabel && (
                   <span className="ml-2 inline-flex items-center rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold">
-                    {language === 'fr' ? 'Unité' : 'Unit'} : {productData.product.supplementaryUnitLabel}
+                    {t('opportunities.productAnalysisView.unit')} : {productData.product.supplementaryUnitLabel}
                   </span>
                 )}
               </p>

@@ -267,6 +267,7 @@ const StatCard = ({ title, value, icon: Icon, trend, color = "emerald", subtitle
 // devoir mocker tout le cycle de fetch axios de SubstitutionAnalysis pour
 // vérifier l'affichage difficulté/faisabilité).
 export const OpportunityCard = ({ opportunity, type, language }) => {
+  const { t } = useTranslation();
   const isImport = type === 'import';
   const product = isImport ? opportunity.imported_product : (opportunity.exportable_product || opportunity.export_product);
   const targets = isImport ? opportunity.african_suppliers : (opportunity.target_markets || opportunity.potential_markets);
@@ -363,16 +364,14 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
           <div className="mb-3 flex items-center gap-2 text-sm text-slate-600" data-testid="exporter-avg-price">
             <DollarSign className="h-4 w-4 text-slate-400" />
             <span>
-              {language === 'en' ? 'Average export price' : "Prix moyen à l'export"} :{' '}
+              {t('opportunities.substitutionAnalysis.averageExportPrice')} :{' '}
               <strong className="text-slate-800">{fmtPerTonne(opportunity.exporter_avg_price_usd_per_tonne)}</strong>
             </span>
           </div>
         )}
         {!isImport && opportunity.market_match_level === 'hs4' && (
           <p className="mb-3 text-[11px] text-amber-700 bg-amber-50 rounded-md px-2.5 py-1.5" data-testid="market-match-caveat">
-            {language === 'en'
-              ? 'Markets estimated at HS4 level (this exact HS6 product is absent from the top imports of the countries surveyed).'
-              : "Marchés estimés au niveau SH4 (ce produit SH6 exact est absent des top-imports des pays sondés)."}
+            {t('opportunities.substitutionAnalysis.marketsEstimatedAtHs4')}
           </p>
         )}
 
@@ -404,7 +403,7 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
                 {!isImport && target.price_positioning && (
                   <div className="mt-1.5 flex items-center justify-between gap-2" data-testid="price-positioning">
                     <span className="text-[11px] text-slate-500">
-                      {language === 'en' ? 'Market pays' : 'Le marché paie'}{' '}
+                      {t('opportunities.substitutionAnalysis.marketPays')}{' '}
                       <strong>{fmtPerTonne(target.price_positioning.market_avg_price_usd_per_tonne)}</strong>
                       {' · '}
                       {target.price_positioning.price_delta_pct > 0 ? '+' : ''}
@@ -698,7 +697,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
     const kpis = [
       { label: txt.totalOpportunities, value: String(summary.total_opportunities ?? 0), accent: 'gold' },
       {
-        label: isImport ? txt.substitutableValue : (fr ? 'Potentiel de marché' : 'Market potential'),
+        label: isImport ? txt.substitutableValue : t('opportunities.substitutionAnalysis.marketPotential'),
         value: formatValue(isImport ? summary.total_substitutable_value : summary.total_market_potential),
         accent: 'green',
       },
@@ -724,15 +723,15 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
     }
     if (isImport) {
       sections.push({
-        title: fr ? 'Opportunités de substitution d’imports' : 'Import substitution opportunities',
+        title: t('opportunities.substitutionAnalysis.importSubstitutionOpportunities'),
         table: {
           columns: [
             { key: 'hs', label: 'SH', width: 0.7 },
-            { key: 'name', label: fr ? 'Produit' : 'Product', width: 2.6 },
-            { key: 'imp', label: fr ? 'Import actuel' : 'Current import', align: 'right', width: 1.1 },
-            { key: 'coef', label: fr ? 'Substituabilité' : 'Substitutability', align: 'right', width: 1.0 },
-            { key: 'pot', label: fr ? 'Potentiel' : 'Potential', align: 'right', width: 1.1 },
-            { key: 'constraint', label: fr ? 'Contrainte' : 'Constraint', width: 1.2 },
+            { key: 'name', label: t('opportunities.substitutionAnalysis.product'), width: 2.6 },
+            { key: 'imp', label: t('opportunities.substitutionAnalysis.currentImport'), align: 'right', width: 1.1 },
+            { key: 'coef', label: t('opportunities.substitutionAnalysis.substitutability'), align: 'right', width: 1.0 },
+            { key: 'pot', label: t('opportunities.substitutionAnalysis.potential'), align: 'right', width: 1.1 },
+            { key: 'constraint', label: t('opportunities.substitutionAnalysis.constraint'), width: 1.2 },
           ],
           rows: opportunities.map((o) => ({
             hs: o.imported_product?.hs_code || '—',
@@ -746,15 +745,15 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       });
     } else {
       sections.push({
-        title: fr ? 'Opportunités d’export (niveau produit SH6)' : 'Export opportunities (SH6 product level)',
+        title: t('opportunities.substitutionAnalysis.exportOpportunitiesSh6Product'),
         table: {
           columns: [
             { key: 'hs', label: 'SH', width: 0.7 },
-            { key: 'name', label: fr ? 'Produit' : 'Product', width: 2.4 },
-            { key: 'price', label: fr ? 'Prix export' : 'Export price', align: 'right', width: 1.0 },
-            { key: 'coef', label: fr ? 'Substituabilité' : 'Substitutability', align: 'right', width: 1.0 },
-            { key: 'pot', label: fr ? 'Potentiel' : 'Potential', align: 'right', width: 1.1 },
-            { key: 'constraint', label: fr ? 'Contrainte' : 'Constraint', width: 1.2 },
+            { key: 'name', label: t('opportunities.substitutionAnalysis.product'), width: 2.4 },
+            { key: 'price', label: t('opportunities.substitutionAnalysis.exportPrice'), align: 'right', width: 1.0 },
+            { key: 'coef', label: t('opportunities.substitutionAnalysis.substitutability'), align: 'right', width: 1.0 },
+            { key: 'pot', label: t('opportunities.substitutionAnalysis.potential'), align: 'right', width: 1.1 },
+            { key: 'constraint', label: t('opportunities.substitutionAnalysis.constraint'), width: 1.2 },
           ],
           rows: opportunities.map((o) => ({
             hs: o.export_product?.hs_code || '—',
@@ -781,15 +780,15 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       );
       if (marketRows.length) {
         sections.push({
-          title: fr ? 'Marchés cibles et positionnement prix' : 'Target markets and price positioning',
+          title: t('opportunities.substitutionAnalysis.targetMarketsPricePositioning'),
           table: {
             columns: [
-              { key: 'product', label: fr ? 'Produit' : 'Product', width: 2.2 },
-              { key: 'market', label: fr ? 'Marché' : 'Market', width: 1.2 },
-              { key: 'size', label: fr ? 'Taille' : 'Size', align: 'right', width: 0.9 },
-              { key: 'marketPrice', label: fr ? 'Prix marché' : 'Market price', align: 'right', width: 1.0 },
-              { key: 'delta', label: fr ? 'Écart' : 'Delta', align: 'right', width: 0.7 },
-              { key: 'positioning', label: fr ? 'Position' : 'Position', width: 1.0 },
+              { key: 'product', label: t('opportunities.substitutionAnalysis.product'), width: 2.2 },
+              { key: 'market', label: t('opportunities.substitutionAnalysis.market'), width: 1.2 },
+              { key: 'size', label: t('opportunities.substitutionAnalysis.size'), align: 'right', width: 0.9 },
+              { key: 'marketPrice', label: t('opportunities.substitutionAnalysis.marketPrice'), align: 'right', width: 1.0 },
+              { key: 'delta', label: t('opportunities.substitutionAnalysis.delta'), align: 'right', width: 0.7 },
+              { key: 'positioning', label: t('opportunities.substitutionAnalysis.position'), width: 1.0 },
             ],
             rows: marketRows,
           },
@@ -819,8 +818,8 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         table: {
           columns: [
             { key: 'hs', label: 'SH', width: 0.7 },
-            { key: 'commodity', label: fr ? 'Commodité' : 'Commodity', width: 1.8 },
-            { key: 'producers', label: fr ? 'Top producteurs réels' : 'Top real producers', width: 3.0 },
+            { key: 'commodity', label: t('opportunities.substitutionAnalysis.commodity'), width: 1.8 },
+            { key: 'producers', label: t('opportunities.substitutionAnalysis.topRealProducers'), width: 3.0 },
             { key: 'source', label: 'Source', width: 0.9 },
           ],
           rows: verifiedRows,
@@ -844,11 +843,11 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         title: enr2.hierarchyTitle,
         table: {
           columns: [
-            { key: 'chapter', label: fr ? 'Chapitre' : 'Chapter', width: 1.7 },
+            { key: 'chapter', label: t('opportunities.substitutionAnalysis.chapter'), width: 1.7 },
             { key: 'hs4', label: 'SH4', width: 0.6 },
             { key: 'hs6', label: 'SH6', width: 0.7 },
-            { key: 'name', label: fr ? 'Produit' : 'Product', width: 2.4 },
-            { key: 'value', label: fr ? 'Valeur' : 'Value', align: 'right', width: 0.9 },
+            { key: 'name', label: t('opportunities.substitutionAnalysis.product'), width: 2.4 },
+            { key: 'value', label: t('opportunities.substitutionAnalysis.value'), align: 'right', width: 0.9 },
           ],
           rows: hierarchyRows,
         },
@@ -857,10 +856,10 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
 
     return {
       badge: 'SUBSTITUTION',
-      title: `${isImport ? (fr ? 'Substitution d’imports' : 'Import substitution') : (fr ? 'Opportunités d’export' : 'Export opportunities')} — ${countryName}`,
+      title: `${isImport ? t('opportunities.substitutionAnalysis.importSubstitution') : t('opportunities.substitutionAnalysis.exportOpportunities')} — ${countryName}`,
       subtitle: currentData.is_estimation
-        ? (fr ? 'Estimation (repli statique — OEC indisponible)' : 'Estimate (static fallback — OEC unavailable)')
-        : (fr ? 'Flux réels OEC / BACI' : 'Real OEC / BACI flows'),
+        ? t('opportunities.substitutionAnalysis.estimateStaticFallbackOec')
+        : t('opportunities.substitutionAnalysis.realOecBaciFlows'),
       kpis,
       sections,
       source: currentData.data_source || 'OEC BACI',

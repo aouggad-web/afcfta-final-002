@@ -235,6 +235,7 @@ const StageFlow = ({ stages, language, color }) => {
 
 // HS6 Search Result Panel
 const HS6SearchResult = ({ result, language, onClear }) => {
+  const { t } = useTranslation();
   const product = result.product || {};
   const summary = result.african_trade_summary || {};
   const exporters = result.top_african_exporters || [];
@@ -295,7 +296,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
       substitutes: 'Related products',
     },
   };
-  const t = titles[language] || titles.fr;
+  const txt = titles[language] || titles.fr;
 
   return (
     <div className="border-2 border-emerald-400 rounded-2xl overflow-hidden shadow-xl bg-white">
@@ -304,7 +305,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         <div className="flex items-center gap-3">
           <PackageSearch className="h-6 w-6" />
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-200">{t.product}</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-200">{txt.product}</p>
             <h3 className="font-black text-lg leading-tight">
               {product.hs6Name || product.description || `HS ${product.hs6Code}`}
             </h3>
@@ -316,7 +317,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         <button
           onClick={onClear}
           className="p-2 rounded-full hover:bg-white/20 transition-colors"
-          title={t.close}
+          title={txt.close}
         >
           <X className="h-5 w-5" />
         </button>
@@ -326,9 +327,9 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         {/* Trade summary stats */}
         <div className="grid grid-cols-3 gap-4">
           {[
-            { label: t.exports, value: summary.total_african_exports_musd, icon: Globe, color: 'text-emerald-600' },
-            { label: t.imports, value: summary.total_african_imports_musd, icon: BarChart3, color: 'text-blue-600' },
-            { label: t.intra, value: summary.intra_african_trade_musd, icon: ArrowRight, color: 'text-purple-600' },
+            { label: txt.exports, value: summary.total_african_exports_musd, icon: Globe, color: 'text-emerald-600' },
+            { label: txt.imports, value: summary.total_african_imports_musd, icon: BarChart3, color: 'text-blue-600' },
+            { label: txt.intra, value: summary.intra_african_trade_musd, icon: ArrowRight, color: 'text-purple-600' },
           ].map(({ label, value, icon: Icon, color }) => (
             <div key={label} className="text-center p-3 bg-slate-50 rounded-xl border border-slate-200">
               <Icon className={`h-5 w-5 mx-auto mb-1 ${color}`} />
@@ -349,7 +350,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
               {score.toFixed(1)}
             </div>
             <div className="flex-1">
-              <p className="font-bold text-slate-800">{t.score} <span className="font-normal text-slate-500">/ 10</span></p>
+              <p className="font-bold text-slate-800">{txt.score} <span className="font-normal text-slate-500">/ 10</span></p>
               {trends.notes && <p className="text-sm text-slate-600 mt-0.5">{trends.notes}</p>}
               <div className="flex flex-wrap gap-3 mt-1 text-xs">
                 {trends.fastest_growing_exporter && (
@@ -367,7 +368,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {exporters.length > 0 && (
             <div>
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t.exporters}</h4>
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{txt.exporters}</h4>
               <div className="space-y-2">
                 {exporters.slice(0, 5).map((exp, i) => (
                   <div key={exp.iso3 || i} className="flex items-center gap-2">
@@ -394,7 +395,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
 
           {importers.length > 0 && (
             <div>
-              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t.importers}</h4>
+              <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{txt.importers}</h4>
               <div className="space-y-2">
                 {importers.slice(0, 5).map((imp, i) => (
                   <div key={imp.iso3 || i} className="flex items-center gap-2">
@@ -427,7 +428,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
             <div className="flex items-center justify-between mb-3">
               <h4 className="text-xs font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1">
                 <BarChart3 className="h-3 w-3" />
-                {language === 'fr' ? 'Production réelle' : 'Real production'} · {prod.commodity}
+                {t('opportunities.valueChains.realProduction')} · {prod.commodity}
               </h4>
               <Badge className="text-[10px] bg-emerald-700 text-white">
                 {prod.source?.institution} {prod.year}
@@ -446,7 +447,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
             <p className="text-[10px] text-emerald-600 mt-2 italic">
               {prod.source?.dataset}
               {!prod.coverage_caveat && (
-                <> · {language === 'fr' ? 'Total Afrique' : 'Africa total'}: {fmtProd(prod.continental_total, prod.unit)}</>
+                <> · {t('opportunities.valueChains.africaTotal')}: {fmtProd(prod.continental_total, prod.unit)}</>
               )}
             </p>
             {prod.coverage_caveat && (
@@ -465,7 +466,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         {/* Production capacities */}
         {capacities.length > 0 && (
           <div>
-            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{t.capacities}</h4>
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">{txt.capacities}</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {capacities.slice(0, 6).map((cap, i) => (
                 <div key={cap.iso3 || i} className="p-2 bg-slate-50 rounded-lg border border-slate-200">
@@ -482,7 +483,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         {(specs.key_certifications?.length > 0 || specs.quality_standards?.length > 0) && (
           <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl">
             <h4 className="text-xs font-bold text-blue-700 uppercase tracking-wider flex items-center gap-1 mb-2">
-              <Award className="h-3 w-3" /> {t.certs}
+              <Award className="h-3 w-3" /> {txt.certs}
             </h4>
             <div className="flex flex-wrap gap-2">
               {[...(specs.key_certifications || []), ...(specs.quality_standards || [])].map((c, i) => (
@@ -500,7 +501,7 @@ const HS6SearchResult = ({ result, language, onClear }) => {
         {/* Related products */}
         {(result.substitutes || []).length > 0 && (
           <div>
-            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{t.substitutes}</h4>
+            <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">{txt.substitutes}</h4>
             <div className="flex flex-wrap gap-2">
               {(result.substitutes || []).map((s, i) => (
                 <Badge key={i} variant="outline" className="text-xs">
@@ -602,9 +603,7 @@ export default function ValueChains({ language = 'fr' }) {
     e.preventDefault();
     const code = hsQuery.trim().replace(/\D/g, '');
     if (!code || ![2, 4, 6].includes(code.length)) {
-      setHsSearchError(language === 'fr'
-        ? 'Entrez un code SH valide (2, 4 ou 6 chiffres)'
-        : 'Enter a valid HS code (2, 4 or 6 digits)');
+      setHsSearchError(t('opportunities.valueChains.enterValidHsCode'));
       return;
     }
     setHsSearchError(null);
@@ -624,7 +623,7 @@ export default function ValueChains({ language = 'fr' }) {
     } catch (err) {
       setHsSearchError(
         err.response?.data?.detail ||
-        (language === 'fr' ? 'Erreur lors de l\'analyse du produit' : 'Error analyzing product')
+        t('opportunities.valueChains.errorAnalyzingProduct')
       );
     } finally {
       setHsSearchLoading(false);
@@ -779,7 +778,7 @@ export default function ValueChains({ language = 'fr' }) {
       {hsSearchLoading && (
         <div className="flex items-center justify-center py-12 gap-3 text-slate-500">
           <Loader2 className="h-6 w-6 animate-spin text-emerald-500" />
-          <span>{language === 'fr' ? 'Analyse en cours...' : 'Analyzing...'}</span>
+          <span>{t('opportunities.valueChains.analyzing')}</span>
         </div>
       )}
       {hsSearchResult && !hsSearchLoading && (
@@ -836,18 +835,18 @@ export default function ValueChains({ language = 'fr' }) {
                     return `${stageName} : ${(s.countries || []).join(', ') || '—'}`;
                   });
                   return {
-                    badge: fr ? 'CHAÎNES DE VALEUR' : 'VALUE CHAINS',
+                    badge: t('opportunities.valueChains.valueChains'),
                     title: chainName,
-                    subtitle: `HS ${chain.hsCode || chain.hs_code} · ${fr ? 'Potentiel intra-africain' : 'Intra-African potential'}: $${chain.intraAfricanPotential || chain.intra_african_potential_musd}M`,
+                    subtitle: `HS ${chain.hsCode || chain.hs_code} · ${t('opportunities.valueChains.intraAfricanPotential')}: $${chain.intraAfricanPotential || chain.intra_african_potential_musd}M`,
                     sections: [
                       stages.length && { title: txt.stagesTitle, paragraphs: stages },
                       producers.length && {
                         title: txt.topProducers,
                         table: {
                           columns: [
-                            { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
-                            { key: 'role', label: fr ? 'Rôle' : 'Role', width: 1 },
-                            { key: 'share', label: fr ? 'Part (%)' : 'Share (%)', align: 'right', width: 0.8, fmt: (v, row) => `${v ?? row.market_share_percent ?? '—'}%` },
+                            { key: 'country', label: t('opportunities.valueChains.country'), width: 2 },
+                            { key: 'role', label: t('opportunities.valueChains.role'), width: 1 },
+                            { key: 'share', label: t('opportunities.valueChains.share'), align: 'right', width: 0.8, fmt: (v, row) => `${v ?? row.market_share_percent ?? '—'}%` },
                           ],
                           rows: producers,
                         },
