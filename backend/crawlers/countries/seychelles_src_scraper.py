@@ -22,6 +22,12 @@ from typing import Dict, List, Optional
 import fitz
 import httpx
 
+# Vérification TLS active (défaut httpx). Elle portait `verify=False` :
+# le collecteur acceptait n'importe quel certificat, et un tiers sur le
+# chemin pouvait donc lui dicter les taux qu'il liquide. Si la chaîne d'un
+# portail se révèle incomplète en production, la réponse est de fournir
+# l'intermédiaire manquant — jamais de redésactiver la vérification.
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -38,7 +44,7 @@ def download_pdf() -> Optional[str]:
     if filepath.exists() and filepath.stat().st_size > 100000:
         return str(filepath)
     logger.info("Downloading Seychelles Excise PDF...")
-    resp = httpx.get(PDF_URL, timeout=60, follow_redirects=True, verify=False, headers=HEADERS)
+    resp = httpx.get(PDF_URL, timeout=60, follow_redirects=True, headers=HEADERS)
     if resp.status_code == 200 and len(resp.content) > 100000:
         with open(filepath, "wb") as f:
             f.write(resp.content)
@@ -94,9 +100,11 @@ def extract_positions(filepath: str) -> List[Dict]:
             for j in range(i + 1, min(i + 5, len(lines))):
                 val = lines[j]
                 # Taux spécifique (SCR/litre, /bot, etc.)
-                if re.search(r"(?:SCR|SR|Rs)\.?\s*\d+", val, re.IGNORECASE) or \
-                   re.search(r"\d+\.?\d*\s*%", val) or \
-                   re.search(r"\d+\.?\d*/(?:bot|l|lt|kg|unit)", val, re.IGNORECASE):
+                if (
+                    re.search(r"(?:SCR|SR|Rs)\.?\s*\d+", val, re.IGNORECASE)
+                    or re.search(r"\d+\.?\d*\s*%", val)
+                    or re.search(r"\d+\.?\d*/(?:bot|l|lt|kg|unit)", val, re.IGNORECASE)
+                ):
                     excise_raw = val
                     # Parser
                     pct_m = re.search(r"(\d+\.?\d*)\s*%", val)
@@ -115,56 +123,69 @@ def extract_positions(filepath: str) -> List[Dict]:
                         break
 
             if excise_raw or excise_rate is not None:
-                taxes = [{
-                    "code": "DA",
-                    "name": "Excise Tax",
-                    "name_fr": "Droit d'Accise",
-                    "name_en": "Excise Tax",
-                    "rate_pct": excise_rate,
-                    "rate_decimal": excise_rate / 100 if excise_rate else None,
-                    "raw_value": excise_raw,
-                    "specific_value": excise_raw if excise_rate is None else None,
-                    "base": taxable_base or "CIF",
-                    "source": "src.gov.sc (Schedule 1 Excise Tax Rates)",
-                    "legal_ref": "Customs Management Act 2011, Schedule 1",
-                    "is_excise": True,
-                    "is_customs_duty": False,
-                    "is_vat": False,
-                }]
+                taxes = [
+                    {
+                        "code": "DA",
+                        "name": "Excise Tax",
+                        "name_fr": "Droit d'Accise",
+                        "name_en": "Excise Tax",
+                        "rate_pct": excise_rate,
+                        "rate_decimal": excise_rate / 100 if excise_rate else None,
+                        "raw_value": excise_raw,
+                        "specific_value": excise_raw if excise_rate is None else None,
+                        "base": taxable_base or "CIF",
+                        "source": "src.gov.sc (Schedule 1 Excise Tax Rates)",
+                        "legal_ref": "Customs Management Act 2011, Schedule 1",
+                        "is_excise": True,
+                        "is_customs_duty": False,
+                        "is_vat": False,
+                    }
+                ]
 
-                positions.append({
-                    "national_code": code_clean,
-                    "hs6": code_clean[:6],
-                    "chapter": code_clean[:2],
-                    "heading": code_clean[:4] + "." + code_clean[4:6],
-                    "section": "",
-                    "statistical_unit": "",
-                    "check_digit": "",
-                    "designation": {
-                        "fr": "",
-                        "en": desc,
-                        "ar": "",
-                        "full_fr": "",
-                        "verbatim": code_raw,
-                    },
-                    "taxes": taxes,
-                    "export_taxes": [],
-                    "preferential_rates": [],
-                    "fiscal_advantages": [],
-                    "formalities": [],
-                    "restrictions": [],
-                    "legal_refs": [],
-                    "reglementation": {"import": [], "export": []},
-                    "quotas": {"qcs": None, "qci": None},
-                    "zlecaf_schedule": {"applied": False, "rate_pct": None, "instruction": None},
-                    "source_gaps": [],
-                    "lf_provisions": None,
-                    "data_status": "crawled_authentic",
-                    "source_quality": "crawled_authentic",
-                    "source": "src.gov.sc (Schedule 1 Excise Tax Rates)",
-                    "source_url": PDF_URL,
-                    "raw_data": {"code": code_raw, "desc": desc, "excise_raw": excise_raw, "taxable_base": taxable_base},
-                })
+                positions.append(
+                    {
+                        "national_code": code_clean,
+                        "hs6": code_clean[:6],
+                        "chapter": code_clean[:2],
+                        "heading": code_clean[:4] + "." + code_clean[4:6],
+                        "section": "",
+                        "statistical_unit": "",
+                        "check_digit": "",
+                        "designation": {
+                            "fr": "",
+                            "en": desc,
+                            "ar": "",
+                            "full_fr": "",
+                            "verbatim": code_raw,
+                        },
+                        "taxes": taxes,
+                        "export_taxes": [],
+                        "preferential_rates": [],
+                        "fiscal_advantages": [],
+                        "formalities": [],
+                        "restrictions": [],
+                        "legal_refs": [],
+                        "reglementation": {"import": [], "export": []},
+                        "quotas": {"qcs": None, "qci": None},
+                        "zlecaf_schedule": {
+                            "applied": False,
+                            "rate_pct": None,
+                            "instruction": None,
+                        },
+                        "source_gaps": [],
+                        "lf_provisions": None,
+                        "data_status": "crawled_authentic",
+                        "source_quality": "crawled_authentic",
+                        "source": "src.gov.sc (Schedule 1 Excise Tax Rates)",
+                        "source_url": PDF_URL,
+                        "raw_data": {
+                            "code": code_raw,
+                            "desc": desc,
+                            "excise_raw": excise_raw,
+                            "taxable_base": taxable_base,
+                        },
+                    }
+                )
 
             i += 1
 

@@ -20,6 +20,12 @@ from typing import Dict, List, Optional
 import fitz
 import httpx
 
+# Vérification TLS active (défaut httpx). Elle portait `verify=False` :
+# le collecteur acceptait n'importe quel certificat, et un tiers sur le
+# chemin pouvait donc lui dicter les taux qu'il liquide. Si la chaîne d'un
+# portail se révèle incomplète en production, la réponse est de fournir
+# l'intermédiaire manquant — jamais de redésactiver la vérification.
+
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -38,7 +44,7 @@ def download_pdf() -> Optional[str]:
     if filepath.exists() and filepath.stat().st_size > 100000:
         return str(filepath)
     logger.info("Downloading Mauritania tariff PDF...")
-    resp = httpx.get(PDF_URL, timeout=60, follow_redirects=True, verify=False, headers=HEADERS)
+    resp = httpx.get(PDF_URL, timeout=60, follow_redirects=True, headers=HEADERS)
     if resp.status_code == 200 and len(resp.content) > 100000:
         with open(filepath, "wb") as f:
             f.write(resp.content)
@@ -119,55 +125,64 @@ def extract_positions(filepath: str) -> List[Dict]:
                         canonical = "PCS"
                     elif tax_code == "PSC":
                         canonical = "PCC"
-                    taxes.append({
-                        "code": canonical,
-                        "name": tax_code,
-                        "name_fr": tax_code,
-                        "name_en": "",
-                        "rate_pct": rate,
-                        "rate_decimal": rate / 100,
-                        "raw_value": str(rate),
-                        "base": "CIF",
-                        "source": "Soa Transit (tarif des douanes 2020)",
-                        "legal_ref": None,
-                        "is_customs_duty": tax_code == "DD",
-                        "is_vat": tax_code == "TVA",
-                        "is_excise": False,
-                    })
+                    taxes.append(
+                        {
+                            "code": canonical,
+                            "name": tax_code,
+                            "name_fr": tax_code,
+                            "name_en": "",
+                            "rate_pct": rate,
+                            "rate_decimal": rate / 100,
+                            "raw_value": str(rate),
+                            "base": "CIF",
+                            "source": "Soa Transit (tarif des douanes 2020)",
+                            "legal_ref": None,
+                            "is_customs_duty": tax_code == "DD",
+                            "is_vat": tax_code == "TVA",
+                            "is_excise": False,
+                        }
+                    )
 
-            positions.append({
-                "national_code": code_clean,
-                "hs6": code_clean[:6],
-                "chapter": code_clean[:2],
-                "heading": code_clean[:4] + "." + code_clean[4:6],
-                "section": "",
-                "statistical_unit": unit,
-                "check_digit": "",
-                "designation": {
-                    "fr": desc,
-                    "en": "",
-                    "ar": "",
-                    "full_fr": "",
-                    "verbatim": code_raw,
-                },
-                "taxes": taxes,
-                "export_taxes": [],
-                "preferential_rates": [],
-                "fiscal_advantages": [],
-                "formalities": [],
-                "restrictions": [],
-                "legal_refs": [],
-                "reglementation": {"import": [], "export": []},
-                "quotas": {"qcs": None, "qci": None},
-                "zlecaf_schedule": {"applied": False, "rate_pct": None, "instruction": None},
-                "source_gaps": [],
-                "lf_provisions": None,
-                "data_status": "secondary_to_verify",
-                "source_quality": "secondary_source_to_verify",
-                "source": "Soa Transit (tarif des douanes 2020) — source secondaire, à vérifier",
-                "source_url": PDF_URL,
-                "raw_data": {"code": code_raw, "desc": desc, "rates": rate_values, "unit": unit},
-            })
+            positions.append(
+                {
+                    "national_code": code_clean,
+                    "hs6": code_clean[:6],
+                    "chapter": code_clean[:2],
+                    "heading": code_clean[:4] + "." + code_clean[4:6],
+                    "section": "",
+                    "statistical_unit": unit,
+                    "check_digit": "",
+                    "designation": {
+                        "fr": desc,
+                        "en": "",
+                        "ar": "",
+                        "full_fr": "",
+                        "verbatim": code_raw,
+                    },
+                    "taxes": taxes,
+                    "export_taxes": [],
+                    "preferential_rates": [],
+                    "fiscal_advantages": [],
+                    "formalities": [],
+                    "restrictions": [],
+                    "legal_refs": [],
+                    "reglementation": {"import": [], "export": []},
+                    "quotas": {"qcs": None, "qci": None},
+                    "zlecaf_schedule": {"applied": False, "rate_pct": None, "instruction": None},
+                    "source_gaps": [],
+                    "lf_provisions": None,
+                    "data_status": "secondary_to_verify",
+                    "source_quality": "secondary_source_to_verify",
+                    "source": "Soa Transit (tarif des douanes 2020) — source secondaire, à vérifier",
+                    "source_url": PDF_URL,
+                    "raw_data": {
+                        "code": code_raw,
+                        "desc": desc,
+                        "rates": rate_values,
+                        "unit": unit,
+                    },
+                }
+            )
             i += 1
 
         if (page_idx + 1) % 50 == 0:
@@ -225,6 +240,7 @@ def main():
         save(positions)
 
         from collections import Counter
+
         dd_dist = Counter()
         for p in positions:
             for t in p["taxes"]:

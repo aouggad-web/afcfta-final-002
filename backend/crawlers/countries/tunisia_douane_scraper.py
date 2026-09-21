@@ -9,6 +9,12 @@ from typing import Optional
 import httpx
 from bs4 import BeautifulSoup
 
+# Vérification TLS active (défaut httpx). Elle portait `verify=False` :
+# le collecteur acceptait n'importe quel certificat, et un tiers sur le
+# chemin pouvait donc lui dicter les taux qu'il liquide. Si la chaîne d'un
+# portail se révèle incomplète en production, la réponse est de fournir
+# l'intermédiaire manquant — jamais de redésactiver la vérification.
+
 logger = logging.getLogger(__name__)
 
 RATE_LIMIT_DELAY = 1.5
@@ -33,7 +39,6 @@ class TunisiaDouaneScraper:
         if not self.client:
             self.client = httpx.AsyncClient(
                 timeout=30.0,
-                verify=False,
                 follow_redirects=True,
                 headers={
                     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
