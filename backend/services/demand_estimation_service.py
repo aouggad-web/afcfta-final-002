@@ -431,10 +431,31 @@ def get_gdp_per_capita(country_iso3: str) -> Dict:
 
 
 def _apparent_consumption(apparent: Optional[Dict]) -> Optional[float]:
-    """Production + Imports − Exports, only if all three legs are present."""
+    """Production + Importations − Exportations.
+
+    Exiger les trois jambes NON NULLES écartait un cas pourtant mesurable, et
+    fréquent : celui où la production est absente parce qu'elle est NULLE, et
+    que cette nullité est établie. Le café en Afrique du Nord en est l'exemple
+    type — l'Algérie n'en produit pas, FAOSTAT couvre tous les pays africains,
+    donc son silence sur ce couple pays/commodité PROUVE une production nulle
+    (voir :func:`domestic_supply` et son ``absence_established``).
+
+    Dans ce cas, la consommation apparente vaut 0 + importations − exportations
+    et elle est MESURÉE. La refuser faisait retomber le besoin sur le proxy
+    démographique L2 alors qu'un chiffre réel existait : pour le café algérien
+    2024, 86 630 tonnes mesurées contre une estimation par population.
+
+    La distinction qui ne se négocie pas reste entière : une production
+    absente et NON établie continue de rendre ``None``. Ne pas savoir n'est
+    pas savoir que c'est zéro, et traiter l'un comme l'autre attribuerait la
+    totalité du besoin à l'importation pour un pays qui produit peut-être tout
+    ce qu'il consomme.
+    """
     if not apparent:
         return None
     p, m, x = apparent.get("production"), apparent.get("imports"), apparent.get("exports")
+    if p is None and apparent.get("production_absence_established"):
+        p = 0.0
     if p is None or m is None or x is None:
         return None
     return float(p) + float(m) - float(x)
@@ -662,6 +683,8 @@ def _l1_importable(apparent: Optional[Dict], consumption: float) -> Dict:
     production = src.get("production")
     imports = src.get("imports")
     exports = src.get("exports")
+    if production is None and src.get("production_absence_established"):
+        production = 0.0
     if imports is None:
         return {}
 
@@ -759,6 +782,14 @@ def estimate_national_need(
                 "production": apparent.get("production"),
                 "imports": apparent.get("imports"),
                 "exports": apparent.get("exports"),
+                # Un zéro ÉTABLI est une mesure, pas une absence de mesure —
+                # le payload doit dire lequel des deux il porte, sinon un
+                # lecteur ne peut pas distinguer « ne produit pas » de
+                # « production non documentée, comptée pour zéro ».
+                "production_absence_established": bool(
+                    apparent.get("production") is None
+                    and apparent.get("production_absence_established")
+                ),
             },
             "sources": [(apparent or {}).get("source", "production + trade")],
             "observed_imports": observed_imports if observed_imports else None,
