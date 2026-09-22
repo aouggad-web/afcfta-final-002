@@ -288,6 +288,41 @@ touche.
 
 ### G2 — le produit cache du vrai
 
+- **394 taxes dont le taux ne se liquide pas — Égypte et les sept du TEC.**
+  Mesuré le 21/09/2026 ; constat complet dans
+  `reports/TAUX_INDISPONIBLES_EGY_EAC_2026-09-21.md`. Deux familles sans
+  rapport l'une avec l'autre :
+
+  **Égypte, 58 taxes sur 40 positions** — des droits spécifiques que le
+  collecteur a fidèlement recopiés sans les convertir : 9 £E/kg net sur les
+  tabacs, 0,48 £E/litre sur le pétrole, 15 £E/litre sur l'alcool, 0,1 £E par
+  vingt cigarettes. La mention est intacte dans `raw`, en arabe ; c'est la
+  structuration en `{montant, unité, devise}` qui manque, et le moteur sait
+  déjà liquider cette forme.
+
+  **LE PIÈGE, à connaître avant d'y toucher : 18 des 58 ne sont pas des
+  taxes.** Le suffixe `_2` (`VAT_2`, `ضريبة الجدول_2`) marque le **plancher**
+  de la taxe qui le précède — « بحد ادنى », « avec un minimum de ». La
+  correspondance est exacte, 18 sur 18, vérifiable dans le crawl. Les
+  structurer comme des taxes séparées créerait dix-huit lignes fantômes et
+  **doublerait** le montant, avec l'air d'être plus complet. Il y a donc 40
+  droits à structurer et 18 planchers à rattacher : deux travaux, pas un.
+
+  **Sept pays du TEC — Kenya, Tanzanie, Ouganda, Rwanda, Burundi, RD Congo,
+  Soudan du Sud — 48 taxes chacun, 336 en tout.** Produits sensibles du tarif
+  extérieur commun (laitiers, céréales, minoterie, sucres, coton, fibres
+  synthétiques, vêtements), dont le taux relève du barème national de chaque
+  pays. **Cette lacune-là est correctement déclarée** : le collecteur écrit
+  `note: "Rate determined by national schedule"` et laisse `null` au lieu de
+  deviner. Le travail est de collecter sept barèmes nationaux, pas de réparer
+  un parseur.
+
+  Ce n'est pas un G1 : les deux chemins que l'application utilise refusent
+  correctement de calculer — `/calcul` rend `PARTIEL` avec
+  `TAUX_INDISPONIBLE`, et `/authentic-tariffs/calculate` rend
+  `CALCULATION_UNAVAILABLE` en nommant les droits spécifiques. Seul
+  `enhanced_calculator_service` ramenait le taux absent à 0 %, sur trois
+  points d'API que le frontend n'appelle pas ; corrigé par la PR #497.
 - **Un taux réduit réel s'affiche vide.** `RegulatoryDetailsPanel.jsx` lit
   `adv.reduced_rate_pct` quand `postgres_tariff_service.py` renvoie
   `reduced_rate` : la valeur existe, elle n'atteint jamais l'écran. Un seul
@@ -343,29 +378,37 @@ touche.
 
 ### G4 — en attente d'arbitrage ou de source
 
-- **Quatre pays servent la TOTALITÉ de leur droit de douane depuis une moyenne
-  statistique SH6** : Comores, Madagascar, São Tomé, Soudan — **21 788 droits**,
-  tous de la forme `20.0 % (MFN, SimpleAverage, 2021)`, issus de
-  WITS / UNCTAD-TRAINS. Une moyenne des lignes nationales n'est le droit
-  d'aucune marchandise, et un SH6 n'est pas la position qu'un déclarant saisit.
+- **TROIS pays servent la TOTALITÉ de leur droit de douane depuis une moyenne
+  statistique SH6** : Comores, São Tomé, Soudan. Tous de la forme
+  `20.0 % (MFN, SimpleAverage, 2021)`, issus de WITS / UNCTAD-TRAINS. Une
+  moyenne des lignes nationales n'est le droit d'aucune marchandise, et un SH6
+  n'est pas la position qu'un déclarant saisit.
 
-  Le produit ne le cache plus : un total dont une ligne vient d'une moyenne se
-  déclare **`INDICATIF`**, jamais `COMPLET` (PR #494). Le montant reste servi,
-  avec sa source ; c'est le mot « complet » qui était faux. Ne supprime pas cet
-  état pour « faire propre ».
+  **Madagascar est SORTI de cette liste le 21/09/2026** (PR #496) : 6 544
+  positions nationales à 8 chiffres lues sur le Tarif des douanes 2026, avec
+  ses deux assiettes établies sur texte primaire — DD = CIF (Code des douanes
+  art. 23 §1 et §4 c) et TVA = CIF+TOUS_SAUF_TVA (CGI art. 06.01.11). Son état
+  passe d'`INDICATIF` à `COMPLET`. **C'est la preuve que le contrat de collecte
+  fonctionne**, et le modèle à suivre pour les trois autres.
 
-  Ce qu'il faut pour les sortir de là est écrit :
+  Le produit ne cache pas ce qui reste : un total dont une ligne vient d'une
+  moyenne se déclare **`INDICATIF`**, jamais `COMPLET` (PR #494). Le montant
+  reste servi, avec sa source ; c'est le mot « complet » qui était faux. Ne
+  supprime pas cet état pour « faire propre ».
+
+  Ce qu'il faut pour sortir les trois derniers est écrit :
   `docs/CONTRAT_COLLECTE_COM_MDG_SDN_STP.md` (PR #493) — forme du fichier,
-  cinq refus, chaîne d'ingestion. **Le point qui décide de tout y est l'assiette**,
-  pas les taux : celle des Comores est établie sur texte primaire, celle de São
-  Tomé ne l'est que pour l'IVA, celle de Madagascar pour ni l'une ni l'autre
-  (`origine_assiette: profil_code`), et **le Soudan n'a aucune entrée** dans
-  `assiettes_pays.json`. Pour Madagascar et le Soudan, collecter les taux sans
-  établir l'assiette ne produit aucun montant liquidable.
+  cinq refus, chaîne d'ingestion. **Le point qui décide de tout y est
+  l'assiette**, pas les taux : celle des Comores est établie sur texte
+  primaire, celle de São Tomé ne l'est que pour l'IVA, et **le Soudan n'a
+  aucune entrée** dans `assiettes_pays.json`. Pour le Soudan, collecter les
+  taux sans établir l'assiette ne produirait aucun montant liquidable.
 
   Sur la collecte elle-même : `dre.gov.st` est refusé par le proxy réseau
-  (CONNECT 502) pour São Tomé, et aucune URL citable n'a été trouvée pour les
-  Comores.
+  (CONNECT 502) pour São Tomé, aucune URL citable n'a été trouvée pour les
+  Comores, et le livre tarifaire officiel soudanais répond 404 — preuves
+  négatives consignées dans
+  `reports/COLLECTE_TARIFS_NATIONAUX_2026-09-21.md`.
 - **Colonne ZLECAf tunisienne** : quatre valeurs seulement (0, 40, 80, 87,5) et
   69,6 % d'entre elles dépassent le droit NPF de leur propre position. Deux
   captures du portail confirment que notre collecte est fidèle. Servie, elle
