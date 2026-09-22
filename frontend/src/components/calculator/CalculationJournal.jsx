@@ -23,7 +23,7 @@ function JournalTable({ steps, language }) {
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="text-xs uppercase tracking-wide text-slate-500 border-b border-slate-700">
+          <tr className="text-xs uppercase tracking-wide text-[var(--afcfta-muted)] border-b border-[var(--afcfta-border)]">
             <th className="text-left py-2 pr-2 font-medium">{fr ? 'Étape' : 'Step'}</th>
             <th className="text-right py-2 px-2 font-medium">{fr ? 'Base' : 'Base'}</th>
             <th className="text-right py-2 px-2 font-medium">{fr ? 'Taux' : 'Rate'}</th>
@@ -33,11 +33,11 @@ function JournalTable({ steps, language }) {
         </thead>
         <tbody>
           {steps.map((s, idx) => (
-            <tr key={idx} className="border-b border-slate-700/50 last:border-0">
+            <tr key={idx} className="border-b border-[var(--afcfta-border)] last:border-0">
               <td className="py-2 pr-2">
-                <span className="text-slate-200">{s.component}</span>
+                <span className="text-[var(--text)]">{s.component}</span>
                 {s.legal_ref && (
-                  <span className="block text-[11px] text-slate-500">
+                  <span className="block text-[11px] text-[var(--afcfta-muted)]">
                     {s.legal_ref_url ? (
                       <a
                         href={s.legal_ref_url}
@@ -54,10 +54,10 @@ function JournalTable({ steps, language }) {
                   </span>
                 )}
               </td>
-              <td className="py-2 px-2 text-right font-mono text-slate-400">{usd(s.base)}</td>
-              <td className="py-2 px-2 text-right font-mono text-slate-400">{s.rate ?? '—'}</td>
+              <td className="py-2 px-2 text-right font-mono text-[var(--afcfta-muted)]">{usd(s.base)}</td>
+              <td className="py-2 px-2 text-right font-mono text-[var(--afcfta-muted)]">{s.rate ?? '—'}</td>
               <td className="py-2 px-2 text-right font-mono text-white font-semibold">{usd(s.amount)}</td>
-              <td className="py-2 pl-2 text-right font-mono text-slate-300">{usd(s.cumulative)}</td>
+              <td className="py-2 pl-2 text-right font-mono text-[var(--text)]">{usd(s.cumulative)}</td>
             </tr>
           ))}
         </tbody>
@@ -84,7 +84,7 @@ export default function CalculationJournal({ normalJournal, zlecafJournal, langu
         type="button"
         onClick={() => setTab(id)}
         className={`px-3 py-1.5 rounded-lg border text-sm transition-colors ${
-          on ? onColor : 'border-slate-600 text-slate-300 bg-slate-700/40 hover:border-slate-500'
+          on ? onColor : 'border-[var(--afcfta-border)] text-[var(--text)] bg-[var(--overlay)] hover:border-[var(--afcfta-border)]'
         }`}
       >
         {label}
@@ -93,7 +93,7 @@ export default function CalculationJournal({ normalJournal, zlecafJournal, langu
   };
 
   return (
-    <Card className="bg-slate-800/50 border-slate-700 overflow-hidden">
+    <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)] overflow-hidden">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
@@ -104,7 +104,7 @@ export default function CalculationJournal({ normalJournal, zlecafJournal, langu
               <CardTitle className="text-lg text-white">
                 {fr ? 'Journal de calcul' : 'Calculation journal'}
               </CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardDescription className="text-[var(--afcfta-muted)]">
                 {fr
                   ? 'Étapes détaillées avec base, taux et références légales (USD)'
                   : 'Step-by-step with base, rate and legal references (USD)'}

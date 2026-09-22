@@ -8,33 +8,51 @@ html.theme-light,
 body.theme-light,
 html.theme-light body {
   /* ── Fond & surfaces ──────────────────────────────────────── */
-  --bg:           #FAF6EE;   /* parchemin clair */
-  --surface:      #FFFFFF;
-  --afcfta-card:  #FFFFFF;
-  --afcfta-card2: #F5EFE3;
-  --afcfta-border: rgba(200,83,26,0.22);
+  --bg:           #F7F1E6;   /* parchemin clair, réchauffé */
+  --surface:      #FFFDF8;
+  --afcfta-card:  #FFFDF8;
+  --afcfta-card2: #F1E9DA;
+  --afcfta-border: #E0D5C2;
+
+  /* ── Surfaces composées ────────────────────────────────────── */
+  --sidebar-bg:    linear-gradient(180deg, #F1E9DA 0%, #E9DFCB 100%);
+  --panel:         radial-gradient(900px 260px at 0% 0%, rgba(143,92,8,0.09), transparent 55%),
+                   radial-gradient(700px 220px at 100% 0%, rgba(19,97,67,0.07), transparent 60%),
+                   linear-gradient(135deg, #FFFDF8, #F6EFE2);
+  --panel-border:  rgba(143,92,8,0.22);
+  --panel-shadow:  0 18px 40px rgba(46,30,15,0.08);
+  --lift:          linear-gradient(180deg, #FFFDF8, #FBF6EC);
+  --lift-border:   #E7DCC8;
+  --lift-shadow:   0 10px 26px rgba(46,30,15,0.06);
+  --overlay:       rgba(36,31,24,0.045);
+  --overlay-border: rgba(36,31,24,0.10);
+  --text-soft:     rgba(36,31,24,0.88);
+  --field:         #FFFDF8;
+  --card-grad:     linear-gradient(to bottom right, #FFFDF8, #F4EDDF);
+  --card-head:     linear-gradient(135deg, rgba(175,71,24,0.10), rgba(143,92,8,0.07));
+  --field-border:  #E0D5C2;
 
   /* Accents légèrement assombris pour contraste sur fond clair */
-  --terra:        #B0461A;
-  --gold:         #B8761A;
-  --green:        #156A40;
-  --red:          #B22222;
-  --atlantic:     #155F7A;
+  --terra:        #AF4718;
+  --gold:         #8F5C08;   /* relevé : 3,95:1 → 5,21:1 */
+  --green:        #136143;
+  --red:          #A82424;
+  --atlantic:     #175C77;
 
-  --terrasoft:    rgba(176,70,26,0.10);
-  --goldSoft:     rgba(184,118,26,0.12);
-  --greenSoft:    rgba(21,106,64,0.12);
+  --terrasoft:    rgba(175,71,24,0.10);
+  --goldSoft:     rgba(143,92,8,0.12);
+  --greenSoft:    rgba(19,97,67,0.12);
 
   /* ── Texte ────────────────────────────────────────────────── */
-  --text:         #1F2A36;   /* gris-bleu profond */
-  --afcfta-muted: #5C6B80;
+  --text:         #241F18;   /* brun-noir chaud, en place du gris-bleu */
+  --afcfta-muted: #615748;
 
   /* ── Statuts ──────────────────────────────────────────────── */
-  --success:      #1E8E4E;
-  --info:         #1A6B8A;
-  --violet:       #7849D0;
-  --warning:      #B8761A;
-  --danger:       #B83030;
+  --success:      #136143;
+  --info:         #175C77;
+  --violet:       #6A3FC0;
+  --warning:      #8F5C08;
+  --danger:       #A82424;
 
   /* Ombres adoucies */
   --shadow:    0 18px 40px rgba(46,30,15,.10);
@@ -206,7 +224,7 @@ html.theme-light [style*="background:#18"] {
 html.theme-light .afcfta-shell select,
 html.theme-light .afcfta-shell input,
 html.theme-light .afcfta-shell textarea {
-  background: #FFFFFF !important;
+  background: var(--surface) !important;
   color: var(--text) !important;
   border-color: var(--afcfta-border) !important;
 }

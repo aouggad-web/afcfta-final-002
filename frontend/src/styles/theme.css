@@ -12,34 +12,60 @@
   --afcfta-card2: #131B28;   /* cartes secondaires */
   --afcfta-border: rgba(200,83,26,0.13);
 
-  /* ── Palette africaine ─────────────────────────────────────── */
-  --terra:        #C8531A;   /* terre rouge — accent principal */
-  --gold:         #D4891A;   /* or saharien */
-  --green:        #1A7A4A;   /* vert baobab */
-  --red:          #C62B2B;   /* rouge kente */
-  --atlantic:     #1A6B8A;   /* bleu atlantique */
+  /* ── Caractères ────────────────────────────────────────────── */
+  --font-ui:      'Readex Pro', system-ui, -apple-system, sans-serif;
+  --font-display: 'Young Serif', Georgia, serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
 
-  --terrasoft:    rgba(200,83,26,0.16);
+  /* ── Surfaces composées ────────────────────────────────────── */
+  /* Écrites en dur dans les composants, elles ne suivaient pas la
+     bascule de thème : le bandeau et la barre latérale restaient
+     sombres en thème clair, avec un texte devenu illisible. */
+  --sidebar-bg:    linear-gradient(180deg, #0e1620 0%, #0a1018 100%);
+  --panel:         radial-gradient(900px 260px at 0% 0%, rgba(212,137,26,0.10), transparent 55%),
+                   radial-gradient(700px 220px at 100% 0%, rgba(46,158,104,0.08), transparent 60%),
+                   linear-gradient(135deg, rgba(18,26,40,0.98), rgba(12,18,25,0.98));
+  --panel-border:  rgba(212,137,26,0.14);
+  --panel-shadow:  0 22px 50px rgba(0,0,0,0.22);
+  --lift:          linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+  --lift-border:   rgba(255,255,255,0.07);
+  --lift-shadow:   0 16px 36px rgba(0,0,0,0.18);
+  --overlay:       rgba(255,255,255,0.05);
+  --overlay-border: rgba(255,255,255,0.07);
+  --text-soft:     rgba(234,224,208,0.90);
+  --field:         rgba(24,32,48,0.95);
+  --card-grad:     linear-gradient(to bottom right, #1e293b, #0f172a);
+  --card-head:     linear-gradient(135deg, rgba(193,122,43,0.15), rgba(212,175,55,0.08));
+  --field-border:  rgba(200,83,26,0.20);
+
+  /* ── Palette africaine ─────────────────────────────────────── */
+  --terra:        #D9642B;   /* terre rouge — accent principal (relevé : 4,22:1 → 5,20:1) */
+  --gold:         #D4891A;   /* or saharien */
+  --green:        #2E9E68;   /* vert baobab (relevé : 3,52:1 → 5,56:1) */
+  --red:          #E76060;   /* rouge kente (relevé : 3,12:1 → 5,59:1) */
+  --atlantic:     #3E9CBF;   /* bleu atlantique (relevé : 3,15:1 → 6,01:1) */
+
+  --terrasoft:    rgba(217,100,43,0.16);
   --goldSoft:     rgba(212,137,26,0.16);
-  --greenSoft:    rgba(26,122,74,0.16);
+  --greenSoft:    rgba(46,158,104,0.16);
 
   /* ── Texte ─────────────────────────────────────────────────── */
   --text:         #EAE0D0;   /* parchemin — doux et chaud */
-  --afcfta-muted: #8E9BAE;
+  --afcfta-muted: #9AA6B6;
 
   /* ── Statuts ───────────────────────────────────────────────── */
-  --success:      #22A55E;
-  --info:         #2A8FBF;
-  --violet:       #9B6EF5;
+  --success:      #35B972;
+  --info:         #4BA8D4;
+  --violet:       #A98BF7;
   --warning:      #D4891A;
-  --danger:       #E04040;
+  --danger:       #E76060;
 
   /* ── Sidebar ───────────────────────────────────────────────── */
   --sidebar-w:    228px;
   --sidebar-collapsed: 60px;
 
   /* ── Géométrie ─────────────────────────────────────────────── */
-  --r-lg: 16px;
+  --r-lg: 16px;   /* inchangé — le rayon Tailwind vient de --radius */
   --r-md: 12px;
   --r-sm: 8px;
   --shadow:    0 24px 60px rgba(0,0,0,.55);
@@ -61,7 +87,7 @@ body {
     radial-gradient(600px  400px at 50% 90%,  rgba(26,122,74,0.06),  transparent 55%),
     var(--bg);
   color: var(--text);
-  font-family: 'Outfit', Inter, system-ui, -apple-system, sans-serif;
+  font-family: var(--font-ui);
   font-size: 15px;
   line-height: 1.65;
 }
@@ -105,8 +131,8 @@ body::before {
   left: 0;
   height: 100vh;
   width: var(--sidebar-w);
-  background: linear-gradient(180deg, #0e1620 0%, #0a1018 100%);
-  border-right: 1px solid rgba(200,83,26,0.15);
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--afcfta-border);
   display: flex;
   flex-direction: column;
   z-index: 201;
@@ -261,7 +287,7 @@ body::before {
   align-items: center;
   justify-content: center;
   border-radius: 7px;
-  background: rgba(255,255,255,0.04);
+  background: var(--overlay);
   transition: background 0.15s ease;
 }
 
@@ -694,9 +720,9 @@ body::before {
 .afcfta-shell select,
 .afcfta-select {
   width: 100%;
-  background: rgba(24,32,48,0.95) !important;
+  background: var(--field) !important;
   color: var(--text) !important;
-  border: 1px solid rgba(200,83,26,0.24) !important;
+  border: 1px solid var(--field-border) !important;
   border-radius: 10px;
   padding: 11px 12px;
   outline: none;
@@ -718,13 +744,24 @@ body::before {
 .afcfta-shell input,
 .afcfta-shell textarea {
   width: 100%;
-  background: rgba(24,32,48,0.95) !important;
+  background: var(--field) !important;
   color: var(--text) !important;
-  border: 1px solid rgba(200,83,26,0.18) !important;
+  border: 1px solid var(--field-border) !important;
   border-radius: 10px;
-  padding: 11px 12px;
+  padding-block: 11px;
   outline: none;
   font-size: 14px;
+}
+
+/* Le retrait horizontal par défaut ne doit pas écraser celui qu'un composant
+   demande. Sans :where(), la spécificité (0,1,1) de la règle ci-dessus battait
+   les classes Tailwind pl-9 / pl-10 posées pour réserver la place d'une icône
+   de loupe : le champ retombait à 12px et l'icône, large de 28px, masquait les
+   premiers caractères saisis. :where() ramène le sélecteur à (0,0,1) — un
+   composant qui réserve la place l'obtient, un champ nu garde ce retrait. */
+:where(.afcfta-shell) input,
+:where(.afcfta-shell) textarea {
+  padding-inline: 12px;
 }
 
 .afcfta-shell input:focus,
@@ -739,8 +776,8 @@ body::before {
 /* Radix combobox/select */
 .afcfta-shell [role="combobox"],
 .afcfta-shell [data-radix-collection-item] {
-  background: rgba(24,32,48,0.95) !important;
-  border: 1px solid rgba(200,83,26,0.24) !important;
+  background: var(--field) !important;
+  border: 1px solid var(--field-border) !important;
   color: var(--text) !important;
   border-radius: 10px;
 }
@@ -916,20 +953,24 @@ body::before {
   background: linear-gradient(135deg, rgba(24,32,48,0.96), rgba(18,26,40,0.96)) !important;
 }
 
-.afcfta-shell [class*="from-blue-50"],
-.afcfta-shell [class*="from-cyan-50"],
-.afcfta-shell [class*="from-green-50"],
-.afcfta-shell [class*="from-emerald-50"],
-.afcfta-shell [class*="from-purple-50"],
-.afcfta-shell [class*="from-pink-50"],
-.afcfta-shell [class*="from-indigo-50"],
-.afcfta-shell [class*="from-slate-50"],
-.afcfta-shell [class*="from-gray-50"],
-.afcfta-shell [class*="from-orange-50"],
-.afcfta-shell [class*="from-amber-50"],
-.afcfta-shell [class*="from-blue-100"],
-.afcfta-shell [class*="from-purple-100"],
-.afcfta-shell [class*="from-green-100"] {
+/* ~= et non *= : la correspondance par sous-chaîne attrapait aussi les
+   dégradés saturés — [class*="from-amber-50"] matche « from-amber-500 » —
+   et vidait 33 boutons colorés de l'application, dont « Calculer avec
+   Données Officielles ». Seuls les pastels -50 et -100 sont visés ici. */
+.afcfta-shell [class~="from-blue-50"],
+.afcfta-shell [class~="from-cyan-50"],
+.afcfta-shell [class~="from-green-50"],
+.afcfta-shell [class~="from-emerald-50"],
+.afcfta-shell [class~="from-purple-50"],
+.afcfta-shell [class~="from-pink-50"],
+.afcfta-shell [class~="from-indigo-50"],
+.afcfta-shell [class~="from-slate-50"],
+.afcfta-shell [class~="from-gray-50"],
+.afcfta-shell [class~="from-orange-50"],
+.afcfta-shell [class~="from-amber-50"],
+.afcfta-shell [class~="from-blue-100"],
+.afcfta-shell [class~="from-purple-100"],
+.afcfta-shell [class~="from-green-100"] {
   background-image: none !important;
   background-color: var(--afcfta-card) !important;
 }

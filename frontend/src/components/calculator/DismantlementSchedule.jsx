@@ -14,13 +14,13 @@ const CustomTooltip = ({ active, payload, language }) => {
   if (!active || !payload?.length) return null;
   const d = payload[0].payload;
   return (
-    <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-xl text-sm">
-      <p className="text-slate-300 font-semibold">
+    <div className="bg-[var(--overlay)] border border-[var(--afcfta-border)] rounded-lg p-3 shadow-xl text-sm">
+      <p className="text-[var(--text)] font-semibold">
         {language === 'fr' ? `Année ${d.year}` : `Year ${d.year}`} — {d.calendar_year}
       </p>
       <p className="text-emerald-400 font-bold text-base">{d.rate.toFixed(2)}%</p>
       {d.reduction_pct > 0 && (
-        <p className="text-slate-400 text-xs">
+        <p className="text-[var(--afcfta-muted)] text-xs">
           {language === 'fr' ? 'Réduction cumulée' : 'Cumulative reduction'}: {d.reduction_pct.toFixed(1)}%
         </p>
       )}
@@ -75,7 +75,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
 
   if (!countryIso3 || !hs6 || npfRate === undefined) return null;
   if (loading) return (
-    <div className="flex items-center gap-2 py-4 text-slate-400 text-sm">
+    <div className="flex items-center gap-2 py-4 text-[var(--afcfta-muted)] text-sm">
       <div className="w-4 h-4 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
       {language === 'fr' ? 'Chargement du schéma de démantèlement…' : 'Loading dismantlement schedule…'}
     </div>
@@ -85,7 +85,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
   // Taux déjà à 0%
   if (data.category === 'D' || npfRate === 0) {
     return (
-      <Card className="bg-slate-800/50 border-slate-700">
+      <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
         <CardContent className="pt-4 pb-3">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20">
@@ -95,7 +95,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
               <p className="text-sm font-medium text-white">
                 {language === 'fr' ? 'Déjà en franchise ZLECAf (0%)' : 'Already duty-free under AfCFTA (0%)'}
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[var(--afcfta-muted)]">
                 {language === 'fr' ? 'Catégorie D — consolidé immédiatement à 0%' : 'Category D — immediately bound at 0%'}
               </p>
             </div>
@@ -108,7 +108,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
   // Produits exclus — Catégorie C
   if (data.category === 'C') {
     return (
-      <Card className="bg-slate-800/50 border-slate-700">
+      <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
         <CardContent className="pt-4 pb-3">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-red-500/10 rounded-lg border border-red-500/20">
@@ -118,7 +118,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
               <p className="text-sm font-medium text-white">
                 {language === 'fr' ? 'Produit exclu du démantèlement ZLECAf' : 'Product excluded from AfCFTA dismantlement'}
               </p>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[var(--afcfta-muted)]">
                 {language === 'fr' ? 'Catégorie C — taux NPF maintenu' : 'Category C — MFN rate maintained'}
               </p>
             </div>
@@ -137,7 +137,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
   const savingsPct = data.npf_rate > 0 ? (savings / data.npf_rate * 100) : 0;
 
   return (
-    <Card className="bg-slate-800/50 border-slate-700 overflow-hidden">
+    <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)] overflow-hidden">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-3">
@@ -148,7 +148,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
               <CardTitle className="text-lg text-white">
                 {language === 'fr' ? 'Schéma de Démantèlement ZLECAf' : 'AfCFTA Dismantlement Schedule'}
               </CardTitle>
-              <p className="text-xs text-slate-400 mt-0.5">
+              <p className="text-xs text-[var(--afcfta-muted)] mt-0.5">
                 {language === 'fr'
                   ? 'Annexe 1, Protocole sur le Commerce des Marchandises — UA 2018'
                   : 'Annex 1, Protocol on Trade in Goods — AU 2018'}
@@ -208,7 +208,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
         {/* Graphique */}
         {schedule.length > 1 && (
           <div>
-            <p className="text-xs text-slate-400 mb-3 flex items-center gap-1">
+            <p className="text-xs text-[var(--afcfta-muted)] mb-3 flex items-center gap-1">
               <Calendar className="w-3.5 h-3.5" />
               {language === 'fr'
                 ? `Réductions linéaires annuelles — ${data.is_ldc ? 'PMA' : 'Non-PMA'}`
@@ -275,28 +275,28 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
 
         {/* Tableau annuel — affichage compact */}
         <details className="group">
-          <summary className="text-xs text-slate-400 cursor-pointer hover:text-slate-300 select-none">
+          <summary className="text-xs text-[var(--afcfta-muted)] cursor-pointer hover:text-[var(--text)] select-none">
             {language === 'fr' ? '▶ Voir le calendrier annuel complet' : '▶ View full annual schedule'}
           </summary>
           <div className="mt-3 overflow-x-auto">
             <table className="w-full text-xs text-left">
               <thead>
-                <tr className="border-b border-slate-700">
-                  <th className="pb-2 text-slate-400 font-medium pr-4">
+                <tr className="border-b border-[var(--afcfta-border)]">
+                  <th className="pb-2 text-[var(--afcfta-muted)] font-medium pr-4">
                     {language === 'fr' ? 'Année ZLECAf' : 'AfCFTA Year'}
                   </th>
-                  <th className="pb-2 text-slate-400 font-medium pr-4">
+                  <th className="pb-2 text-[var(--afcfta-muted)] font-medium pr-4">
                     {language === 'fr' ? 'Calendrier' : 'Calendar'}
                   </th>
-                  <th className="pb-2 text-slate-400 font-medium pr-4">
+                  <th className="pb-2 text-[var(--afcfta-muted)] font-medium pr-4">
                     {language === 'fr' ? 'Taux DD' : 'Duty Rate'}
                   </th>
-                  <th className="pb-2 text-slate-400 font-medium">
+                  <th className="pb-2 text-[var(--afcfta-muted)] font-medium">
                     {language === 'fr' ? 'Réduction' : 'Reduction'}
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-700/50">
+              <tbody className="divide-y divide-[var(--afcfta-border)]">
                 {schedule.map((row) => {
                   const isCurrent = row.calendar_year === currentCalendarYear;
                   return (
@@ -304,9 +304,9 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
                       key={row.year}
                       className={isCurrent
                         ? 'bg-amber-500/10 font-semibold'
-                        : 'hover:bg-slate-700/30'}
+                        : 'hover:bg-[var(--overlay)]'}
                     >
-                      <td className="py-1.5 pr-4 text-slate-300">
+                      <td className="py-1.5 pr-4 text-[var(--text)]">
                         {row.year === 0
                           ? (language === 'fr' ? 'Avant EIV' : 'Pre-EIF')
                           : `An ${row.year}`}
@@ -314,11 +314,11 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
                           <span className="ml-1 text-amber-400">←</span>
                         )}
                       </td>
-                      <td className="py-1.5 pr-4 text-slate-300">{row.calendar_year}</td>
+                      <td className="py-1.5 pr-4 text-[var(--text)]">{row.calendar_year}</td>
                       <td className={`py-1.5 pr-4 font-mono ${row.rate === 0 ? 'text-emerald-400' : 'text-white'}`}>
                         {row.rate.toFixed(2)}%
                       </td>
-                      <td className="py-1.5 text-slate-400">
+                      <td className="py-1.5 text-[var(--afcfta-muted)]">
                         {row.reduction_pct > 0 ? `-${row.reduction_pct.toFixed(1)}%` : '—'}
                       </td>
                     </tr>
@@ -330,7 +330,7 @@ const DismantlementSchedule = ({ countryIso3, hs6, npfRate, language = 'fr' }) =
         </details>
 
         {/* Note légale */}
-        <p className="text-xs text-slate-500 border-t border-slate-700 pt-3">
+        <p className="text-xs text-[var(--afcfta-muted)] border-t border-[var(--afcfta-border)] pt-3">
           {language === 'fr'
             ? `Source: Annexe 1, Protocole sur le Commerce des Marchandises, Union Africaine (2018). EIV: 1er janvier 2021. Statut: ${data.is_ldc ? 'PMA' : 'Non-PMA'}.`
             : `Source: Annex 1, Protocol on Trade in Goods, African Union (2018). EIF: January 1, 2021. Status: ${data.is_ldc ? 'LDC' : 'Non-LDC'}.`}

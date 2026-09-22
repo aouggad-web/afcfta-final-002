@@ -83,9 +83,9 @@ function DashboardMetricCard({ item }) {
     <div
       className="rounded-2xl border p-5 md:p-6"
       style={{
-        background: 'linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015))',
-        borderColor: 'rgba(255,255,255,0.07)',
-        boxShadow: '0 16px 36px rgba(0,0,0,0.18)',
+        background: 'var(--lift)',
+        borderColor: 'var(--lift-border)',
+        boxShadow: 'var(--lift-shadow)',
         minHeight: 160,
         display: 'flex',
         flexDirection: 'column',
@@ -126,7 +126,7 @@ function DashboardMetricCard({ item }) {
         <span
           className="inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold"
           style={{
-            background: 'rgba(255,255,255,0.06)',
+            background: 'var(--overlay)',
             color: 'var(--text)',
           }}
         >
@@ -229,9 +229,9 @@ const DashboardTabNew = ({ language = 'fr' }) => {
         className="rounded-2xl border overflow-hidden"
         style={{
           background:
-            'radial-gradient(900px 260px at 0% 0%, rgba(212,137,26,0.10), transparent 55%), radial-gradient(700px 220px at 100% 0%, rgba(32,201,151,0.08), transparent 60%), linear-gradient(135deg, rgba(18,26,40,0.98), rgba(12,18,25,0.98))',
-          borderColor: 'rgba(212,137,26,0.14)',
-          boxShadow: '0 22px 50px rgba(0,0,0,0.22)',
+            'var(--panel)',
+          borderColor: 'var(--panel-border)',
+          boxShadow: 'var(--panel-shadow)',
         }}
       >
         <div className="p-5 md:p-6">
@@ -246,7 +246,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                 {t.overview}
               </h2>
 
-              <p className="mt-2 text-sm md:text-base text-[rgba(234,224,208,0.9)]">
+              <p className="mt-2 text-sm md:text-base text-[var(--text-soft)]">
                 {t.lead}
               </p>
 
@@ -259,7 +259,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                 { label: t.coverage, value: stats?.overview?.verified_positions ? Math.round(stats.overview.verified_positions / 1000) + 'K' : '229K' },
                 { label: t.authentic, value: String(stats?.overview?.authentic_countries || 54) },
               ].map(({ label, value }) => (
-                <div key={label} className="rounded-xl border px-3 py-4 text-center bg-[rgba(255,255,255,0.04)] border-[rgba(255,255,255,0.07)]">
+                <div key={label} className="rounded-xl border px-3 py-4 text-center bg-[var(--overlay)] border-[var(--overlay-border)]">
                   <div className="text-[10px] uppercase tracking-[0.8px] text-[var(--afcfta-muted)] font-bold">{label}</div>
                   <div
                     className="mt-2 font-bold text-[var(--text)]"
@@ -288,11 +288,11 @@ const DashboardTabNew = ({ language = 'fr' }) => {
       {atr && (
         <section
           className="rounded-2xl border p-5 md:p-6"
-          style={{ background: 'rgba(255,255,255,0.025)', borderColor: 'rgba(255,255,255,0.06)' }}
+          style={{ background: 'var(--overlay)', borderColor: 'var(--overlay-border)' }}
         >
           <div className="flex items-center justify-between gap-4 flex-wrap mb-4">
             <h3 className="text-lg md:text-xl font-bold text-[var(--text)]">{t.continentalTitle}</h3>
-            <span className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-[rgba(255,255,255,0.05)] text-xs text-[var(--afcfta-muted)]">
+            <span className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-[var(--overlay)] text-xs text-[var(--afcfta-muted)]">
               <ShieldCheck className="w-3.5 h-3.5" />
               {t.afreximbankSource}
             </span>
@@ -324,7 +324,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
                 key={label}
                 className="rounded-xl border p-5"
                 style={{
-                  background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))',
+                  background: 'var(--lift)',
                   borderColor: `${accent}44`,
                   borderLeftWidth: 3,
                   borderLeftColor: accent,
@@ -353,8 +353,8 @@ const DashboardTabNew = ({ language = 'fr' }) => {
       <section
         className="rounded-2xl border p-5 md:p-6"
         style={{
-          background: 'rgba(255,255,255,0.025)',
-          borderColor: 'rgba(255,255,255,0.06)',
+          background: 'var(--overlay)',
+          borderColor: 'var(--overlay-border)',
         }}
       >
         <div className="flex items-start justify-between gap-4 flex-wrap mb-4">
@@ -363,7 +363,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
             <p className="text-sm text-[var(--afcfta-muted)] mt-1">{t.strategicCoverageSub}</p>
           </div>
 
-          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-[rgba(255,255,255,0.05)] text-xs text-[var(--afcfta-muted)]">
+          <div className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-[var(--overlay)] text-xs text-[var(--afcfta-muted)]">
             <Globe className="w-3.5 h-3.5" />
             AfCFTA data fabric
           </div>
@@ -375,7 +375,7 @@ const DashboardTabNew = ({ language = 'fr' }) => {
               key={bloc.name}
               className="rounded-xl border p-5"
               style={{
-                background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015))',
+                background: 'var(--lift)',
                 borderColor: `${bloc.accent}44`,
                 borderLeftWidth: 3,
                 borderLeftColor: bloc.accent,

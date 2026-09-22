@@ -77,42 +77,42 @@ function ReportedItem({ item, t, language }) {
   const payerLabels = PAYER_LABELS[language !== 'en' ? 'fr' : 'en'];
   const period = item.period ? `${item.period.start || '?'} → ${item.period.end || '?'}` : null;
   return (
-    <div className="p-3 rounded-lg bg-slate-800/40 border border-dashed border-slate-600 text-sm">
+    <div className="p-3 rounded-lg bg-[var(--overlay)] border border-dashed border-[var(--afcfta-border)] text-sm">
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div className="min-w-0">
-          <p className="text-slate-200 font-medium">
+          <p className="text-[var(--text)] font-medium">
             {item.country_name} — {item.program}
           </p>
           {!!(item.providers || []).length && (
-            <p className="text-slate-400 text-xs mt-0.5">
-              {t.providers}: <span className="text-slate-300">{item.providers.join(', ')}</span>
+            <p className="text-[var(--afcfta-muted)] text-xs mt-0.5">
+              {t.providers}: <span className="text-[var(--text)]">{item.providers.join(', ')}</span>
             </p>
           )}
-          {item.mission && <p className="text-slate-500 text-xs mt-0.5">{item.mission}</p>}
+          {item.mission && <p className="text-[var(--afcfta-muted)] text-xs mt-0.5">{item.mission}</p>}
           {item.payer && (
-            <p className="text-slate-400 text-xs mt-0.5">
-              {t.payer}: <span className="text-slate-300">{payerLabels[item.payer] || item.payer}</span>
+            <p className="text-[var(--afcfta-muted)] text-xs mt-0.5">
+              {t.payer}: <span className="text-[var(--text)]">{payerLabels[item.payer] || item.payer}</span>
             </p>
           )}
           {period && (
-            <p className="text-slate-400 text-xs">
-              {t.period}: <span className="text-slate-300">{period}</span>
+            <p className="text-[var(--afcfta-muted)] text-xs">
+              {t.period}: <span className="text-[var(--text)]">{period}</span>
             </p>
           )}
           {item.traceability && (
-            <p className="text-slate-500 text-[11px] mt-1 italic">
+            <p className="text-[var(--afcfta-muted)] text-[11px] mt-1 italic">
               {t.traceability}: {item.traceability}
             </p>
           )}
         </div>
         <div className="text-right shrink-0">
-          <Badge variant="outline" className="bg-slate-600/20 text-slate-300 border-slate-500/40">
+          <Badge variant="outline" className="bg-[var(--overlay)] text-[var(--text)] border-[var(--afcfta-border)]">
             {item.side === 'export' ? t.sideExport : t.sideImport}
           </Badge>
           <p className="mt-1 text-xs text-amber-300/90">
             {t.reportedFee}: <span className="italic">{item.reported_fee_range || t.toConfirm}</span>
           </p>
-          <p className="text-[10px] text-slate-500 mt-0.5">{t.toConfirm}</p>
+          <p className="text-[10px] text-[var(--afcfta-muted)] mt-0.5">{t.toConfirm}</p>
         </div>
       </div>
     </div>
@@ -124,10 +124,10 @@ function StageBlock({ title, desc, icon: Icon, items, t, language }) {
   return (
     <div className="space-y-2">
       <div>
-        <p className="text-sm font-semibold text-slate-300 flex items-center gap-2">
+        <p className="text-sm font-semibold text-[var(--text)] flex items-center gap-2">
           <Icon className="w-4 h-4" /> {title}
         </p>
-        <p className="text-[11px] text-slate-500 ml-6">{desc}</p>
+        <p className="text-[11px] text-[var(--afcfta-muted)] ml-6">{desc}</p>
       </div>
       {items.map((item, idx) => (
         <ReportedItem key={idx} item={item} t={t} language={language} />
@@ -147,20 +147,20 @@ export default function RegulatoryReportedIndications({ result, language = 'fr' 
   const importItems = layer.items.filter((i) => i.side !== 'export');
 
   return (
-    <Card className="bg-slate-900/40 border border-dashed border-slate-600">
+    <Card className="bg-[var(--overlay)] border border-dashed border-[var(--afcfta-border)]">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-slate-500/10 rounded-lg border border-slate-500/20">
-            <FlaskConical className="w-5 h-5 text-slate-300" />
+          <div className="p-2 bg-[var(--overlay)] rounded-lg border border-[var(--afcfta-border)]">
+            <FlaskConical className="w-5 h-5 text-[var(--text)]" />
           </div>
           <div>
-            <CardTitle className="text-base text-slate-200 flex items-center gap-2">
+            <CardTitle className="text-base text-[var(--text)] flex items-center gap-2">
               {t.title}
               <Badge variant="outline" className="bg-amber-600/15 text-amber-300 border-amber-500/40 text-[10px]">
                 {t.unverified}
               </Badge>
             </CardTitle>
-            <CardDescription className="text-slate-400">{t.desc}</CardDescription>
+            <CardDescription className="text-[var(--afcfta-muted)]">{t.desc}</CardDescription>
           </div>
         </div>
       </CardHeader>
@@ -175,7 +175,7 @@ export default function RegulatoryReportedIndications({ result, language = 'fr' 
           <p className="text-sm font-semibold text-sky-200 flex items-center gap-2">
             <Info className="w-4 h-4" /> {t.explainTitle}
           </p>
-          <p className="text-xs text-slate-300/90 mt-1">{t.explainBody}</p>
+          <p className="text-xs text-[var(--text)]/90 mt-1">{t.explainBody}</p>
         </div>
 
         {/* Volet EXPORT (amont, pays d'origine) */}

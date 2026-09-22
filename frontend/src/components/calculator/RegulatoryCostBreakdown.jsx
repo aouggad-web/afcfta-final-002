@@ -14,8 +14,8 @@ const FEE_STATUS_STYLES = {
   DOCUMENTED_PERCENTAGE: 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40',
   PARTIAL: 'bg-amber-600/20 text-amber-300 border-amber-500/40',
   FEE_EXISTS_AMOUNT_NOT_AVAILABLE: 'bg-amber-600/20 text-amber-300 border-amber-500/40',
-  NOT_AVAILABLE: 'bg-slate-600/20 text-slate-300 border-slate-500/40',
-  NOT_APPLICABLE: 'bg-slate-600/20 text-slate-400 border-slate-600/40',
+  NOT_AVAILABLE: 'bg-[var(--overlay)] text-[var(--text)] border-[var(--afcfta-border)]',
+  NOT_APPLICABLE: 'bg-[var(--overlay)] text-[var(--afcfta-muted)] border-[var(--afcfta-border)]',
 };
 
 const COMPUTED = new Set(['CALCULABLE', 'DOCUMENTED_FIXED_AMOUNT', 'DOCUMENTED_PERCENTAGE']);
@@ -113,7 +113,7 @@ function ScopeTag({ item, t }) {
     <span
       className={`text-[9px] px-1.5 py-0.5 rounded border ${
         isPublic
-          ? 'bg-slate-600/20 text-slate-300 border-slate-500/40'
+          ? 'bg-[var(--overlay)] text-[var(--text)] border-[var(--afcfta-border)]'
           : 'bg-indigo-500/15 text-indigo-300 border-indigo-500/40'
       }`}
     >
@@ -130,7 +130,7 @@ function StageBlock({ title, desc, icon: Icon, items, t, language }) {
         <p className="text-sm font-semibold text-amber-300 flex items-center gap-2">
           <Icon className="w-4 h-4" /> {title}
         </p>
-        <p className="text-[11px] text-slate-500 ml-6">{desc}</p>
+        <p className="text-[11px] text-[var(--afcfta-muted)] ml-6">{desc}</p>
       </div>
       {items.map((item, idx) => (
         <div key={idx} className="relative">
@@ -174,21 +174,21 @@ function FeeLine({ item, t, language }) {
   const range = computed && item.is_range ? rangeText(item, t) : null;
   const href = safeHref(item.contact);
   return (
-    <div className="p-3 rounded-lg bg-slate-800/50 border border-slate-700 text-sm">
+    <div className="p-3 rounded-lg bg-[var(--overlay)] border border-[var(--afcfta-border)] text-sm">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-slate-200 font-medium truncate">{item.measure_name}</p>
+          <p className="text-[var(--text)] font-medium truncate">{item.measure_name}</p>
           {item.actor_name && (
-            <p className="text-slate-400 text-xs mt-0.5">
-              {t.provider}: <span className="text-slate-300">{item.actor_name}</span>
+            <p className="text-[var(--afcfta-muted)] text-xs mt-0.5">
+              {t.provider}: <span className="text-[var(--text)]">{item.actor_name}</span>
             </p>
           )}
           {item.mandating_authority && (
-            <p className="text-slate-400 text-xs">
-              {t.mandatingAuthority}: <span className="text-slate-300">{item.mandating_authority}</span>
+            <p className="text-[var(--afcfta-muted)] text-xs">
+              {t.mandatingAuthority}: <span className="text-[var(--text)]">{item.mandating_authority}</span>
             </p>
           )}
-          {item.service && <p className="text-slate-500 text-xs mt-0.5">{item.service}</p>}
+          {item.service && <p className="text-[var(--afcfta-muted)] text-xs mt-0.5">{item.service}</p>}
           {href && (
             <p className="text-xs mt-0.5">
               {t.contact}:{' '}
@@ -198,7 +198,7 @@ function FeeLine({ item, t, language }) {
             </p>
           )}
           {item.conditions && (
-            <p className="text-slate-500 text-[11px] mt-1 italic">
+            <p className="text-[var(--afcfta-muted)] text-[11px] mt-1 italic">
               {t.conditions}: {item.conditions}
             </p>
           )}
@@ -230,12 +230,12 @@ function FeeLine({ item, t, language }) {
             )}
           </p>
           {item.is_range && rateBracket(item, t) && (
-            <p className="text-[10px] text-slate-400">{rateBracket(item, t)}</p>
+            <p className="text-[10px] text-[var(--afcfta-muted)]">{rateBracket(item, t)}</p>
           )}
           {item.ad_valorem && (range || amount) && (
-            <p className="text-[10px] text-slate-500">{t.adValoremUnit}</p>
+            <p className="text-[10px] text-[var(--afcfta-muted)]">{t.adValoremUnit}</p>
           )}
-          <p className="text-[10px] text-slate-500 font-mono mt-0.5">{item.fee_status}</p>
+          <p className="text-[10px] text-[var(--afcfta-muted)] font-mono mt-0.5">{item.fee_status}</p>
         </div>
       </div>
     </div>
@@ -266,7 +266,7 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
   const complete = rc.complete;
 
   return (
-    <Card className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 border border-amber-500/30">
+    <Card className="bg-[image:var(--card-grad)] border border-amber-500/30">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3">
@@ -275,7 +275,7 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
             </div>
             <div>
               <CardTitle className="text-lg text-white">{t.title}</CardTitle>
-              <CardDescription className="text-slate-400">{t.desc}</CardDescription>
+              <CardDescription className="text-[var(--afcfta-muted)]">{t.desc}</CardDescription>
             </div>
           </div>
           <Badge
@@ -288,7 +288,7 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Droits & taxes publics */}
-        <div className="rounded-lg border border-slate-700 divide-y divide-slate-700/60">
+        <div className="rounded-lg border border-[var(--afcfta-border)] divide-y divide-[var(--afcfta-border)]">
           <Row label={t.duty} value={fmt(duty, '')} />
           {result?.normal_vat_amount != null && <Row label={t.vat} value={fmt(vat, '')} />}
           <Row label={t.other} value={fmt(other, '')} />
@@ -300,9 +300,9 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
           <p className="text-sm font-semibold text-sky-200 flex items-center gap-2">
             <Info className="w-4 h-4" /> {t.explainTitle}
           </p>
-          <p className="text-xs text-slate-300/90 mt-1">{t.explainBody}</p>
-          <p className="text-[11px] text-slate-400 mt-2 flex items-start gap-2">
-            <Info className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" />
+          <p className="text-xs text-[var(--text)]/90 mt-1">{t.explainBody}</p>
+          <p className="text-[11px] text-[var(--afcfta-muted)] mt-2 flex items-start gap-2">
+            <Info className="w-3.5 h-3.5 text-[var(--afcfta-muted)] shrink-0 mt-0.5" />
             <span>{t.separatedNote}</span>
           </p>
         </div>
@@ -330,7 +330,7 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
         {/* Coût réglementaire total */}
         <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm font-semibold text-slate-200">{t.regulatoryTotal}</span>
+            <span className="text-sm font-semibold text-[var(--text)]">{t.regulatoryTotal}</span>
             <span className="text-sm font-bold text-amber-300">
               {regTotal != null ? fmt(regTotal, regCcy) : <span className="italic">{t.toConfirm}</span>}
             </span>
@@ -365,8 +365,8 @@ export default function RegulatoryCostBreakdown({ result, language = 'fr' }) {
 function Row({ label, value, strong }) {
   return (
     <div className="flex items-center justify-between px-3 py-2">
-      <span className={`text-sm ${strong ? 'font-semibold text-slate-200' : 'text-slate-400'}`}>{label}</span>
-      <span className={`text-sm ${strong ? 'font-bold text-white' : 'text-slate-300'}`}>{value}</span>
+      <span className={`text-sm ${strong ? 'font-semibold text-[var(--text)]' : 'text-[var(--afcfta-muted)]'}`}>{label}</span>
+      <span className={`text-sm ${strong ? 'font-bold text-white' : 'text-[var(--text)]'}`}>{value}</span>
     </div>
   );
 }

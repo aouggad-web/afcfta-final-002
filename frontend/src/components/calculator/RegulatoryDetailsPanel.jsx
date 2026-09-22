@@ -55,7 +55,7 @@ const measureStyles = {
   },
   'LEVY': { 
     icon: Building2, 
-    color: 'text-purple-400', 
+    color: 'text-[var(--violet)]', 
     bg: 'bg-purple-500/10', 
     border: 'border-purple-500/30',
     label: 'Prélèvement'
@@ -69,9 +69,9 @@ const measureStyles = {
   },
   'OTHER_TAX': { 
     icon: FileText, 
-    color: 'text-slate-400', 
-    bg: 'bg-slate-500/10', 
-    border: 'border-slate-500/30',
+    color: 'text-[var(--afcfta-muted)]', 
+    bg: 'bg-[var(--overlay)]', 
+    border: 'border-[var(--afcfta-border)]',
     label: 'Autre taxe'
   }
 };
@@ -247,13 +247,13 @@ export default function RegulatoryDetailsPanel({
   // Loading state
   if (loading) {
     return (
-      <Card className="bg-slate-800/50 border-slate-700 overflow-hidden">
+      <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)] overflow-hidden">
         <CardContent className="p-12 text-center">
           <div className="relative w-16 h-16 mx-auto mb-4">
             <div className="absolute inset-0 border-4 border-amber-500/30 rounded-full"></div>
             <div className="absolute inset-0 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <p className="text-slate-400 text-lg">{t.loading}</p>
+          <p className="text-[var(--afcfta-muted)] text-lg">{t.loading}</p>
         </CardContent>
       </Card>
     );
@@ -262,13 +262,13 @@ export default function RegulatoryDetailsPanel({
   // Error state
   if (error || !data) {
     return (
-      <Card className="bg-slate-800/50 border-slate-700">
+      <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
         <CardContent className="p-12 text-center">
-          <div className="w-16 h-16 mx-auto mb-4 bg-slate-700/50 rounded-full flex items-center justify-center">
-            <AlertCircle className="w-8 h-8 text-slate-500" />
+          <div className="w-16 h-16 mx-auto mb-4 bg-[var(--overlay)] rounded-full flex items-center justify-center">
+            <AlertCircle className="w-8 h-8 text-[var(--afcfta-muted)]" />
           </div>
-          <p className="text-slate-400 text-lg">{error || t.noData}</p>
-          <p className="text-slate-500 text-sm mt-2">
+          <p className="text-[var(--afcfta-muted)] text-lg">{error || t.noData}</p>
+          <p className="text-[var(--afcfta-muted)] text-sm mt-2">
             {language === 'fr' ? 'Vérifiez le code HS ou essayez un autre pays' : 'Check the HS code or try another country'}
           </p>
         </CardContent>
@@ -283,7 +283,7 @@ export default function RegulatoryDetailsPanel({
     <div className="space-y-4" data-testid="regulatory-details-panel">
       
       {/* === HEADER - Synthèse Économique === */}
-      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 overflow-hidden">
+      <Card className="bg-[image:var(--card-grad)] border-[var(--afcfta-border)] overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
         
         <CardHeader className="relative pb-2">
@@ -294,11 +294,11 @@ export default function RegulatoryDetailsPanel({
               </div>
               <div>
                 <CardTitle className="text-xl text-white">{t.title}</CardTitle>
-                <CardDescription className="text-slate-400">{t.subtitle}</CardDescription>
+                <CardDescription className="text-[var(--afcfta-muted)]">{t.subtitle}</CardDescription>
               </div>
             </div>
             {processing_time_ms && (
-              <Badge variant="outline" className="bg-slate-800/80 text-slate-300 border-slate-600 font-mono">
+              <Badge variant="outline" className="bg-[var(--overlay)] text-[var(--text)] border-[var(--afcfta-border)] font-mono">
                 <Clock className="w-3 h-3 mr-1.5" />
                 {processing_time_ms.toFixed(1)}ms
               </Badge>
@@ -310,29 +310,29 @@ export default function RegulatoryDetailsPanel({
           {/* Barres de comparaison visuelles */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {/* Total NPF */}
-            <div className="relative bg-slate-800/60 rounded-xl p-5 border border-slate-700/50 overflow-hidden group hover:border-red-500/30 transition-colors">
+            <div className="relative bg-[var(--overlay)] rounded-xl p-5 border border-[var(--afcfta-border)] overflow-hidden group hover:border-red-500/30 transition-colors">
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-red-500/20">
                 <div 
                   className="h-full bg-gradient-to-r from-red-500 to-red-400 transition-all duration-500"
                   style={{ width: `${Math.min(total_npf_pct || 0, 100)}%` }}
                 ></div>
               </div>
-              <p className="text-slate-400 text-sm font-medium uppercase tracking-wide">{t.totalNPF}</p>
+              <p className="text-[var(--afcfta-muted)] text-sm font-medium uppercase tracking-wide">{t.totalNPF}</p>
               <p className="text-3xl font-bold text-red-400 mt-1">{(total_npf_pct || 0).toFixed(1)}%</p>
-              <p className="text-slate-500 text-xs mt-1">{language === 'fr' ? 'Tarif Nation Plus Favorisée' : 'Most Favored Nation'}</p>
+              <p className="text-[var(--afcfta-muted)] text-xs mt-1">{language === 'fr' ? 'Tarif Nation Plus Favorisée' : 'Most Favored Nation'}</p>
             </div>
             
             {/* Total ZLECAf */}
-            <div className="relative bg-slate-800/60 rounded-xl p-5 border border-slate-700/50 overflow-hidden group hover:border-emerald-500/30 transition-colors">
+            <div className="relative bg-[var(--overlay)] rounded-xl p-5 border border-[var(--afcfta-border)] overflow-hidden group hover:border-emerald-500/30 transition-colors">
               <div className="absolute bottom-0 left-0 right-0 h-1 bg-emerald-500/20">
                 <div 
                   className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 transition-all duration-500"
                   style={{ width: `${Math.min(total_zlecaf_pct || 0, 100)}%` }}
                 ></div>
               </div>
-              <p className="text-slate-400 text-sm font-medium uppercase tracking-wide">{t.totalZLECAf}</p>
+              <p className="text-[var(--afcfta-muted)] text-sm font-medium uppercase tracking-wide">{t.totalZLECAf}</p>
               <p className="text-3xl font-bold text-emerald-400 mt-1">{(total_zlecaf_pct || 0).toFixed(1)}%</p>
-              <p className="text-slate-500 text-xs mt-1">{language === 'fr' ? 'Accord de Libre-Échange' : 'Free Trade Agreement'}</p>
+              <p className="text-[var(--afcfta-muted)] text-xs mt-1">{language === 'fr' ? 'Accord de Libre-Échange' : 'Free Trade Agreement'}</p>
             </div>
             
             {/* Économie */}
@@ -350,7 +350,7 @@ export default function RegulatoryDetailsPanel({
 
       {/* === INFORMATIONS PRODUIT === */}
       {commodity && (
-        <Card className="bg-slate-800/50 border-slate-700">
+        <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)]">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20">
@@ -361,26 +361,26 @@ export default function RegulatoryDetailsPanel({
           </CardHeader>
           <CardContent>
             {/* Description du produit */}
-            <div className="bg-slate-700/30 rounded-lg p-4 mb-4 border-l-4 border-blue-500">
+            <div className="bg-[var(--overlay)] rounded-lg p-4 mb-4 border-l-4 border-blue-500">
               <p className="text-white text-lg leading-relaxed">{commodity.description_fr}</p>
             </div>
             
             {/* Grille d'informations */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-700/20 rounded-lg p-3">
-                <p className="text-slate-500 text-xs uppercase tracking-wide mb-1">{t.nationalCode}</p>
+              <div className="bg-[var(--overlay)] rounded-lg p-3">
+                <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide mb-1">{t.nationalCode}</p>
                 <p className="text-white font-mono text-lg font-semibold">{commodity.national_code}</p>
               </div>
-              <div className="bg-slate-700/20 rounded-lg p-3">
-                <p className="text-slate-500 text-xs uppercase tracking-wide mb-1">{t.hs6Code}</p>
+              <div className="bg-[var(--overlay)] rounded-lg p-3">
+                <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide mb-1">{t.hs6Code}</p>
                 <p className="text-white font-mono text-lg">{commodity.hs6}</p>
               </div>
-              <div className="bg-slate-700/20 rounded-lg p-3">
-                <p className="text-slate-500 text-xs uppercase tracking-wide mb-1">{t.chapter}</p>
+              <div className="bg-[var(--overlay)] rounded-lg p-3">
+                <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide mb-1">{t.chapter}</p>
                 <p className="text-white text-lg">{commodity.chapter}</p>
               </div>
-              <div className="bg-slate-700/20 rounded-lg p-3">
-                <p className="text-slate-500 text-xs uppercase tracking-wide mb-1">{t.sensitivity}</p>
+              <div className="bg-[var(--overlay)] rounded-lg p-3">
+                <p className="text-[var(--afcfta-muted)] text-xs uppercase tracking-wide mb-1">{t.sensitivity}</p>
                 <Badge className={`${sensStyle.bg} ${sensStyle.text} ${sensStyle.border} border`}>
                   {t[commodity.sensitivity] || commodity.sensitivity}
                 </Badge>
@@ -392,9 +392,9 @@ export default function RegulatoryDetailsPanel({
 
       {/* === DROITS ET TAXES === */}
       {measures && measures.length > 0 && (
-        <Card className="bg-slate-800/50 border-slate-700 overflow-hidden">
+        <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)] overflow-hidden">
           <CardHeader 
-            className="pb-3 cursor-pointer hover:bg-slate-700/20 transition-colors"
+            className="pb-3 cursor-pointer hover:bg-[var(--overlay)] transition-colors"
             onClick={() => toggleSection('measures')}
           >
             <div className="flex items-center justify-between">
@@ -404,7 +404,7 @@ export default function RegulatoryDetailsPanel({
                 </div>
                 <div>
                   <CardTitle className="text-lg text-white">{t.measures}</CardTitle>
-                  <CardDescription className="text-slate-400">{t.measuresDesc}</CardDescription>
+                  <CardDescription className="text-[var(--afcfta-muted)]">{t.measuresDesc}</CardDescription>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -412,8 +412,8 @@ export default function RegulatoryDetailsPanel({
                   {measures.length} {language === 'fr' ? 'taxes' : 'taxes'}
                 </Badge>
                 {expandedSections.measures ? 
-                  <ChevronUp className="w-5 h-5 text-slate-400" /> : 
-                  <ChevronDown className="w-5 h-5 text-slate-400" />
+                  <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> : 
+                  <ChevronDown className="w-5 h-5 text-[var(--afcfta-muted)]" />
                 }
               </div>
             </div>
@@ -433,7 +433,7 @@ export default function RegulatoryDetailsPanel({
                       className={`flex items-center justify-between p-4 rounded-lg ${style.bg} border ${style.border} transition-all hover:scale-[1.01]`}
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`p-2 rounded-lg bg-slate-900/50`}>
+                        <div className={`p-2 rounded-lg bg-[var(--overlay)]`}>
                           <Icon className={`w-5 h-5 ${style.color}`} />
                         </div>
                         <div>
@@ -445,20 +445,20 @@ export default function RegulatoryDetailsPanel({
                               </Badge>
                             )}
                           </div>
-                          <p className="text-slate-300 text-sm">{measure.name_fr}</p>
+                          <p className="text-[var(--text)] text-sm">{measure.name_fr}</p>
                         </div>
                       </div>
                       
                       <div className="flex items-center gap-6">
                         <div className="text-right">
-                          <p className="text-slate-500 text-xs uppercase">{t.taxRate}</p>
+                          <p className="text-[var(--afcfta-muted)] text-xs uppercase">{t.taxRate}</p>
                           <p className={`text-lg font-bold ${hasReduction ? 'text-red-400 line-through opacity-60' : 'text-white'}`}>
                             {measure.rate_pct}%
                           </p>
                         </div>
                         {measure.is_zlecaf_applicable && (
                           <div className="text-right">
-                            <p className="text-slate-500 text-xs uppercase">{t.zlecafRate}</p>
+                            <p className="text-[var(--afcfta-muted)] text-xs uppercase">{t.zlecafRate}</p>
                             <p className="text-lg font-bold text-emerald-400">
                               {measure.zlecaf_rate_pct ?? measure.rate_pct}%
                             </p>
@@ -476,9 +476,9 @@ export default function RegulatoryDetailsPanel({
 
       {/* === DOCUMENTS REQUIS === */}
       {requirements && requirements.length > 0 && (
-        <Card className="bg-slate-800/50 border-slate-700 overflow-hidden">
+        <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)] overflow-hidden">
           <CardHeader 
-            className="pb-3 cursor-pointer hover:bg-slate-700/20 transition-colors"
+            className="pb-3 cursor-pointer hover:bg-[var(--overlay)] transition-colors"
             onClick={() => toggleSection('requirements')}
           >
             <div className="flex items-center justify-between">
@@ -488,7 +488,7 @@ export default function RegulatoryDetailsPanel({
                 </div>
                 <div>
                   <CardTitle className="text-lg text-white">{t.requirements}</CardTitle>
-                  <CardDescription className="text-slate-400">{t.requirementsDesc}</CardDescription>
+                  <CardDescription className="text-[var(--afcfta-muted)]">{t.requirementsDesc}</CardDescription>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -496,8 +496,8 @@ export default function RegulatoryDetailsPanel({
                   {requirements.length} {language === 'fr' ? 'documents' : 'documents'}
                 </Badge>
                 {expandedSections.requirements ? 
-                  <ChevronUp className="w-5 h-5 text-slate-400" /> : 
-                  <ChevronDown className="w-5 h-5 text-slate-400" />
+                  <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> : 
+                  <ChevronDown className="w-5 h-5 text-[var(--afcfta-muted)]" />
                 }
               </div>
             </div>
@@ -509,7 +509,7 @@ export default function RegulatoryDetailsPanel({
                 {requirements.map((req, idx) => (
                   <div 
                     key={idx} 
-                    className="bg-slate-700/30 rounded-lg p-4 border border-slate-700 hover:border-blue-500/30 transition-colors"
+                    className="bg-[var(--overlay)] rounded-lg p-4 border border-[var(--afcfta-border)] hover:border-blue-500/30 transition-colors"
                   >
                     <div className="flex items-start gap-4">
                       <div className="p-2.5 bg-blue-500/10 rounded-lg border border-blue-500/20 shrink-0">
@@ -528,8 +528,8 @@ export default function RegulatoryDetailsPanel({
                         </div>
                         <p className="text-white font-medium text-base">{req.document_fr}</p>
                         {req.issuing_authority && (
-                          <div className="flex items-center gap-2 mt-2 text-slate-400 text-sm">
-                            <Landmark className="w-4 h-4 text-slate-500" />
+                          <div className="flex items-center gap-2 mt-2 text-[var(--afcfta-muted)] text-sm">
+                            <Landmark className="w-4 h-4 text-[var(--afcfta-muted)]" />
                             <span>{req.issuing_authority}</span>
                           </div>
                         )}
@@ -547,7 +547,7 @@ export default function RegulatoryDetailsPanel({
       {fiscal_advantages && fiscal_advantages.length > 0 && (
         <Card className="bg-gradient-to-br from-emerald-900/20 to-slate-800/50 border-emerald-500/30 overflow-hidden">
           <CardHeader 
-            className="pb-3 cursor-pointer hover:bg-slate-700/20 transition-colors"
+            className="pb-3 cursor-pointer hover:bg-[var(--overlay)] transition-colors"
             onClick={() => toggleSection('advantages')}
           >
             <div className="flex items-center justify-between">
@@ -565,8 +565,8 @@ export default function RegulatoryDetailsPanel({
                   {fiscal_advantages.length}
                 </Badge>
                 {expandedSections.advantages ? 
-                  <ChevronUp className="w-5 h-5 text-slate-400" /> : 
-                  <ChevronDown className="w-5 h-5 text-slate-400" />
+                  <ChevronUp className="w-5 h-5 text-[var(--afcfta-muted)]" /> : 
+                  <ChevronDown className="w-5 h-5 text-[var(--afcfta-muted)]" />
                 }
               </div>
             </div>
@@ -588,7 +588,7 @@ export default function RegulatoryDetailsPanel({
                         {adv.reduced_rate_pct}%
                       </span>
                     </div>
-                    <p className="text-slate-300">{adv.condition_fr}</p>
+                    <p className="text-[var(--text)]">{adv.condition_fr}</p>
                   </div>
                 ))}
               </div>

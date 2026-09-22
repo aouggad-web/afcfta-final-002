@@ -38,16 +38,16 @@ const TaxLineRow = ({ tax, language }) => {
             </Badge>
           )}
         </div>
-        <span className="text-xs text-slate-500">{tax.code}</span>
+        <span className="text-xs text-[var(--afcfta-muted)]">{tax.code}</span>
       </TableCell>
       <TableCell className="text-center">
-        <span className={`font-mono ${isExempt ? 'line-through text-slate-400' : ''}`}>
+        <span className={`font-mono ${isExempt ? 'line-through text-[var(--afcfta-muted)]' : ''}`}>
           {tax.rate_pct}
         </span>
       </TableCell>
-      <TableCell className="text-right text-slate-600">
+      <TableCell className="text-right text-[var(--afcfta-muted)]">
         {formatCurrency(tax.base_value)}
-        <span className="text-xs text-slate-400 ml-1">
+        <span className="text-xs text-[var(--afcfta-muted)] ml-1">
           ({tax.base_type === 'cif_plus_dd' ? 'CIF+DD' : 'CIF'})
         </span>
       </TableCell>
@@ -118,11 +118,11 @@ const RegimeBreakdown = ({ calculation, language, isZlecaf = false }) => {
             {txt.cifBreakdown}
           </h4>
           <div className="grid grid-cols-2 gap-2 text-sm">
-            <span className="text-slate-600">{txt.fob}:</span>
+            <span className="text-[var(--afcfta-muted)]">{txt.fob}:</span>
             <span className="text-right font-mono">{formatCurrency(calculation.fob_value)}</span>
-            <span className="text-slate-600">{txt.freight}:</span>
+            <span className="text-[var(--afcfta-muted)]">{txt.freight}:</span>
             <span className="text-right font-mono">{formatCurrency(calculation.freight)}</span>
-            <span className="text-slate-600">{txt.insurance}:</span>
+            <span className="text-[var(--afcfta-muted)]">{txt.insurance}:</span>
             <span className="text-right font-mono">{formatCurrency(calculation.insurance)}</span>
             <Separator className="col-span-2 my-1" />
             <span className="font-semibold text-slate-800">{txt.cifTotal}:</span>
@@ -158,7 +158,7 @@ const RegimeBreakdown = ({ calculation, language, isZlecaf = false }) => {
         {/* Totals */}
         <div className={`${accentColor} rounded-lg p-3`}>
           <div className="flex justify-between items-center">
-            <span className="text-sm text-slate-600">{txt.totalTaxes}:</span>
+            <span className="text-sm text-[var(--afcfta-muted)]">{txt.totalTaxes}:</span>
             <span className="font-mono font-bold">{formatCurrency(calculation.total_taxes)}</span>
           </div>
           <Separator className="my-2" />
@@ -213,22 +213,22 @@ export default function DetailedCalculationBreakdown({ result, language = 'fr' }
           <Calculator className="h-6 w-6 text-purple-600" />
           {txt.title}
         </h3>
-        <p className="text-sm text-slate-500">{txt.subtitle}</p>
+        <p className="text-sm text-[var(--afcfta-muted)]">{txt.subtitle}</p>
       </div>
       
       {/* Product Info */}
       <div className="flex flex-wrap gap-4 justify-center">
         <Badge variant="outline" className="px-3 py-1">
-          <span className="text-slate-500 mr-2">{txt.product}:</span>
+          <span className="text-[var(--afcfta-muted)] mr-2">{txt.product}:</span>
           <span className="font-mono font-bold">{result.hs_code}</span>
           {result.hs_code_description_fr && (
-            <span className="ml-2 text-slate-600">
+            <span className="ml-2 text-[var(--afcfta-muted)]">
               - {language === 'fr' ? result.hs_code_description_fr : result.hs_code_description_en}
             </span>
           )}
         </Badge>
         <Badge variant="outline" className="px-3 py-1">
-          <span className="text-slate-500 mr-2">{txt.country}:</span>
+          <span className="text-[var(--afcfta-muted)] mr-2">{txt.country}:</span>
           <span className="font-bold">
             {language === 'fr' ? result.country_name_fr : result.country_name_en}
           </span>
@@ -272,10 +272,10 @@ export default function DetailedCalculationBreakdown({ result, language = 'fr' }
       <Card className="bg-slate-50 border-slate-200">
         <CardContent className="py-4">
           <div className="flex items-start gap-2">
-            <Info className="h-5 w-5 text-slate-400 mt-0.5 shrink-0" />
+            <Info className="h-5 w-5 text-[var(--afcfta-muted)] mt-0.5 shrink-0" />
             <div>
               <p className="text-sm font-semibold text-slate-700">{txt.methodology}</p>
-              <p className="text-xs text-slate-500 mt-1">{txt.methodologyText}</p>
+              <p className="text-xs text-[var(--afcfta-muted)] mt-1">{txt.methodologyText}</p>
             </div>
           </div>
         </CardContent>

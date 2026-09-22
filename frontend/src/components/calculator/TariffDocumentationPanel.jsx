@@ -57,7 +57,7 @@ const dimensionColor = (value) => {
   if (value === 'DOCUMENTED') return 'text-emerald-300';
   if (value === 'PARTIAL') return 'text-amber-300';
   if (value === 'UNVERIFIED') return 'text-amber-300';
-  return 'text-slate-300';
+  return 'text-[var(--text)]';
 };
 
 const amountFor = (legal, key) => {
@@ -140,7 +140,7 @@ export default function TariffDocumentationPanel({ result, language = 'fr' }) {
             const rawComponentStatus = component.documentation_status || component.verification_status || component.status;
             const componentStatus = rawComponentStatus === 'VERIFIED' ? 'DOCUMENTED' : rawComponentStatus || 'UNVERIFIED';
             return (
-              <span key={`${component.code || 'component'}-${index}`} className="rounded bg-slate-900/40 px-2 py-1 text-amber-100/80">
+              <span key={`${component.code || 'component'}-${index}`} className="rounded bg-[var(--overlay)] px-2 py-1 text-amber-100/80">
                 {component.code || 'COMPOSANT'} : {componentStatus}
               </span>
             );
@@ -150,7 +150,7 @@ export default function TariffDocumentationPanel({ result, language = 'fr' }) {
       <p className="mt-3 text-xs text-amber-100/80">
         Simulation informative fondée sur les données disponibles. Elle ne remplace pas la confirmation administrative auprès de l’autorité compétente.
       </p>
-      <details className="mt-4 rounded-lg border border-amber-400/20 bg-slate-900/20 p-3" open>
+      <details className="mt-4 rounded-lg border border-amber-400/20 bg-[var(--overlay)] p-3" open>
         <summary className="cursor-pointer text-sm font-semibold text-amber-100">Comprendre ce calcul</summary>
         <div className="mt-3 grid gap-2 text-xs text-amber-100/90 sm:grid-cols-2 lg:grid-cols-3">
           {[

@@ -51,7 +51,7 @@ export default function TaxBreakdownDual({
   const slZlc = sl.zlecaf || {};
 
   return (
-    <Card className="bg-slate-800/50 border-slate-700 overflow-hidden">
+    <Card className="bg-[var(--overlay)] border-[var(--afcfta-border)] overflow-hidden">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
@@ -62,12 +62,12 @@ export default function TaxBreakdownDual({
               <CardTitle className="text-lg text-white">
                 {fr ? 'Détail des droits et taxes — NPF vs ZLECAf' : 'Duties & taxes — MFN vs AfCFTA'}
               </CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardDescription className="text-[var(--afcfta-muted)]">
                 {fr
                   ? 'Chaque taxe calculée sur sa base (assiette) déclarée'
                   : 'Each tax computed on its declared base'}
                 {currency && currency.local_code && (
-                  <span className="ml-1 text-slate-500">
+                  <span className="ml-1 text-[var(--afcfta-muted)]">
                     · {currency.local_code}
                     {hasLocal
                       ? ` @ ${Number(currency.usd_to_local_rate).toLocaleString('fr-FR', { maximumFractionDigits: 2 })}/USD`
@@ -81,7 +81,7 @@ export default function TaxBreakdownDual({
             <button
               type="button"
               onClick={() => setMode(useLocal ? 'USD' : 'LOCAL')}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-600 bg-slate-700/40 text-slate-200 text-sm hover:border-indigo-500/40 transition-colors"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--afcfta-border)] bg-[var(--overlay)] text-[var(--text)] text-sm hover:border-indigo-500/40 transition-colors"
             >
               <ArrowLeftRight className="w-4 h-4" />
               {useLocal ? (currency.local_code) : 'USD'}
@@ -99,7 +99,7 @@ export default function TaxBreakdownDual({
           </div>
         )}
         {/* En-tête de colonnes */}
-        <div className="hidden md:grid grid-cols-12 gap-2 px-3 pb-2 text-xs uppercase tracking-wide text-slate-500">
+        <div className="hidden md:grid grid-cols-12 gap-2 px-3 pb-2 text-xs uppercase tracking-wide text-[var(--afcfta-muted)]">
           <div className="col-span-5">{fr ? 'Taxe / Base' : 'Tax / Base'}</div>
           <div className="col-span-3 text-right">{fr ? 'NPF' : 'MFN'}</div>
           <div className="col-span-4 text-right">ZLECAf</div>
@@ -114,12 +114,12 @@ export default function TaxBreakdownDual({
             return (
               <div
                 key={idx}
-                className="grid grid-cols-1 md:grid-cols-12 gap-2 items-center p-3 bg-slate-700/30 rounded-lg border border-slate-700"
+                className="grid grid-cols-1 md:grid-cols-12 gap-2 items-center p-3 bg-[var(--overlay)] rounded-lg border border-[var(--afcfta-border)]"
               >
                 <div className="md:col-span-5">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-white font-semibold">{b.name}</span>
-                    <Badge variant="outline" className="text-[10px] border-slate-600 text-slate-300">
+                    <Badge variant="outline" className="text-[10px] border-[var(--afcfta-border)] text-[var(--text)]">
                       {b.code}
                     </Badge>
                     {b.cap && (
@@ -128,26 +128,26 @@ export default function TaxBreakdownDual({
                       </Badge>
                     )}
                   </div>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-[var(--afcfta-muted)] mt-0.5">
                     {fr ? cat.fr : cat.en} · {fr ? 'base' : 'base'}: {b.base_expr}
                   </p>
                 </div>
 
                 <div className="md:col-span-3 flex md:block items-center justify-between md:text-right">
-                  <span className="md:hidden text-xs text-slate-500">{fr ? 'NPF' : 'MFN'}</span>
+                  <span className="md:hidden text-xs text-[var(--afcfta-muted)]">{fr ? 'NPF' : 'MFN'}</span>
                   <div>
                     <span className="text-white font-bold">{fmt(b.amount_npf, b.amount_npf_local)}</span>
-                    <span className="text-slate-500 text-xs ml-1">({b.rate_npf_pct}%)</span>
+                    <span className="text-[var(--afcfta-muted)] text-xs ml-1">({b.rate_npf_pct}%)</span>
                   </div>
                 </div>
 
                 <div className="md:col-span-4 flex md:block items-center justify-between md:text-right">
-                  <span className="md:hidden text-xs text-slate-500">ZLECAf</span>
+                  <span className="md:hidden text-xs text-[var(--afcfta-muted)]">ZLECAf</span>
                   <div>
-                    <span className={`font-bold ${reduced ? 'text-emerald-400' : 'text-slate-200'}`}>
+                    <span className={`font-bold ${reduced ? 'text-emerald-400' : 'text-[var(--text)]'}`}>
                       {zlecafAvailable ? fmt(b.amount_zlecaf, b.amount_zlecaf_local) : '—'}
                     </span>
-                    <span className="text-slate-500 text-xs ml-1">
+                    <span className="text-[var(--afcfta-muted)] text-xs ml-1">
                       {zlecafAvailable && b.rate_zlecaf_pct !== null && b.rate_zlecaf_pct !== undefined
                         ? `(${b.rate_zlecaf_pct}%)`
                         : '(—)'}
@@ -218,17 +218,17 @@ function SummaryCard({ title, s, sLocal, useLocal, currency, language, tone }) {
   };
   const Row = ({ label, k }) => (
     <div className="flex items-center justify-between text-sm">
-      <span className="text-slate-400">{label}</span>
-      <span className="text-slate-100 font-mono">{val(k)}</span>
+      <span className="text-[var(--afcfta-muted)]">{label}</span>
+      <span className="text-[var(--text)] font-mono">{val(k)}</span>
     </div>
   );
   return (
-    <div className="p-3 rounded-lg bg-slate-700/30 border border-slate-700 space-y-1.5">
+    <div className="p-3 rounded-lg bg-[var(--overlay)] border border-[var(--afcfta-border)] space-y-1.5">
       <p className={`font-semibold ${color}`}>{title}</p>
       <Row label={fr ? 'Droit de douane' : 'Customs duty'} k="droit_douane" />
       <Row label={fr ? 'Autres taxes' : 'Other levies'} k="autres_taxes" />
       <Row label="TVA" k="tva" />
-      <div className="border-t border-slate-600 my-1" />
+      <div className="border-t border-[var(--afcfta-border)] my-1" />
       <Row label={fr ? 'Coût total' : 'Total cost'} k="cout_total" />
     </div>
   );
