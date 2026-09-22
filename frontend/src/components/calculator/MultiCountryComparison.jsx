@@ -513,7 +513,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                             )}
                           </div>
                         </td>
-                        <td className="text-right p-3 font-mono text-slate-600">
+                        <td className="text-right p-3 font-mono text-[var(--afcfta-muted)]">
                           {formatCurrency(r.npfTotal)}
                         </td>
                         <td className="text-right p-3 font-mono font-bold text-emerald-600">
@@ -523,7 +523,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                           <div className="text-green-600 font-bold">
                             {formatCurrency(r.savings)}
                           </div>
-                          <div className="text-xs text-slate-500">
+                          <div className="text-xs text-[var(--afcfta-muted)]">
                             -{r.savingsPercent}%
                           </div>
                         </td>

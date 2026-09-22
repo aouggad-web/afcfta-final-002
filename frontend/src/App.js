@@ -472,7 +472,7 @@ function App() {
             }}>
               <span style={{ fontSize: 15 }}>⚡</span>
               <span>
-                <strong style={{ color: '#e05070' }}>
+                <strong style={{ color: 'var(--danger)' }}>
                   {language === 'fr' ? 'Serveur hors ligne' : 'Server offline'}
                 </strong>
                 {' — '}

@@ -33,6 +33,10 @@
   --overlay:       rgba(255,255,255,0.05);
   --overlay-border: rgba(255,255,255,0.07);
   --text-soft:     rgba(234,224,208,0.90);
+  --field:         rgba(24,32,48,0.95);
+  --card-grad:     linear-gradient(to bottom right, #1e293b, #0f172a);
+  --card-head:     linear-gradient(135deg, rgba(193,122,43,0.15), rgba(212,175,55,0.08));
+  --field-border:  rgba(200,83,26,0.20);
 
   /* ── Palette africaine ─────────────────────────────────────── */
   --terra:        #D9642B;   /* terre rouge — accent principal (relevé : 4,22:1 → 5,20:1) */
@@ -716,9 +720,9 @@ body::before {
 .afcfta-shell select,
 .afcfta-select {
   width: 100%;
-  background: rgba(24,32,48,0.95) !important;
+  background: var(--field) !important;
   color: var(--text) !important;
-  border: 1px solid rgba(200,83,26,0.24) !important;
+  border: 1px solid var(--field-border) !important;
   border-radius: 10px;
   padding: 11px 12px;
   outline: none;
@@ -740,9 +744,9 @@ body::before {
 .afcfta-shell input,
 .afcfta-shell textarea {
   width: 100%;
-  background: rgba(24,32,48,0.95) !important;
+  background: var(--field) !important;
   color: var(--text) !important;
-  border: 1px solid rgba(200,83,26,0.18) !important;
+  border: 1px solid var(--field-border) !important;
   border-radius: 10px;
   padding-block: 11px;
   outline: none;
@@ -772,8 +776,8 @@ body::before {
 /* Radix combobox/select */
 .afcfta-shell [role="combobox"],
 .afcfta-shell [data-radix-collection-item] {
-  background: rgba(24,32,48,0.95) !important;
-  border: 1px solid rgba(200,83,26,0.24) !important;
+  background: var(--field) !important;
+  border: 1px solid var(--field-border) !important;
   color: var(--text) !important;
   border-radius: 10px;
 }
@@ -949,20 +953,24 @@ body::before {
   background: linear-gradient(135deg, rgba(24,32,48,0.96), rgba(18,26,40,0.96)) !important;
 }
 
-.afcfta-shell [class*="from-blue-50"],
-.afcfta-shell [class*="from-cyan-50"],
-.afcfta-shell [class*="from-green-50"],
-.afcfta-shell [class*="from-emerald-50"],
-.afcfta-shell [class*="from-purple-50"],
-.afcfta-shell [class*="from-pink-50"],
-.afcfta-shell [class*="from-indigo-50"],
-.afcfta-shell [class*="from-slate-50"],
-.afcfta-shell [class*="from-gray-50"],
-.afcfta-shell [class*="from-orange-50"],
-.afcfta-shell [class*="from-amber-50"],
-.afcfta-shell [class*="from-blue-100"],
-.afcfta-shell [class*="from-purple-100"],
-.afcfta-shell [class*="from-green-100"] {
+/* ~= et non *= : la correspondance par sous-chaîne attrapait aussi les
+   dégradés saturés — [class*="from-amber-50"] matche « from-amber-500 » —
+   et vidait 33 boutons colorés de l'application, dont « Calculer avec
+   Données Officielles ». Seuls les pastels -50 et -100 sont visés ici. */
+.afcfta-shell [class~="from-blue-50"],
+.afcfta-shell [class~="from-cyan-50"],
+.afcfta-shell [class~="from-green-50"],
+.afcfta-shell [class~="from-emerald-50"],
+.afcfta-shell [class~="from-purple-50"],
+.afcfta-shell [class~="from-pink-50"],
+.afcfta-shell [class~="from-indigo-50"],
+.afcfta-shell [class~="from-slate-50"],
+.afcfta-shell [class~="from-gray-50"],
+.afcfta-shell [class~="from-orange-50"],
+.afcfta-shell [class~="from-amber-50"],
+.afcfta-shell [class~="from-blue-100"],
+.afcfta-shell [class~="from-purple-100"],
+.afcfta-shell [class~="from-green-100"] {
   background-image: none !important;
   background-color: var(--afcfta-card) !important;
 }

@@ -46,9 +46,9 @@ export default function CalculationMethodStatus({
           >
             {title}
           </p>
-          <p className="mt-1 text-sm text-slate-300">{description}</p>
+          <p className="mt-1 text-sm text-[var(--text)]">{description}</p>
           {legalSource && (
-            <p className="mt-2 flex items-start gap-1.5 text-xs text-slate-400">
+            <p className="mt-2 flex items-start gap-1.5 text-xs text-[var(--afcfta-muted)]">
               <Scale className="mt-0.5 h-3.5 w-3.5 shrink-0" />
               <span>
                 {fr ? "Référence" : "Reference"} : {legalSource}

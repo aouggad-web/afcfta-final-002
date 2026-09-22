@@ -113,8 +113,8 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
     <div ref={containerRef} className="relative w-full">
       {/* Label */}
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs text-slate-400 font-medium flex items-center gap-1.5">
-          <Search className="w-3 h-3 text-purple-400" />
+        <span className="text-xs text-[var(--afcfta-muted)] font-medium flex items-center gap-1.5">
+          <Search className="w-3 h-3 text-[var(--violet)]" />
           {labelText}
         </span>
         {selected && (
@@ -127,7 +127,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
 
       {/* Input */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--afcfta-muted)] pointer-events-none" />
         <input
           ref={inputRef}
           type="text"
@@ -135,24 +135,24 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
           onChange={e => setQuery(e.target.value)}
           onFocus={() => results.length > 0 && setOpen(true)}
           placeholder={placeholder}
-          className="w-full h-11 pl-9 pr-9 rounded-lg bg-slate-800/60 border border-slate-600 text-slate-200 text-sm placeholder-slate-500 focus:outline-none focus:border-purple-500/70 focus:ring-1 focus:ring-purple-500/30 transition-colors"
+          className="w-full h-11 pl-9 pr-9 rounded-lg bg-[var(--overlay)] border border-[var(--afcfta-border)] text-[var(--text)] text-sm placeholder-slate-500 focus:outline-none focus:border-purple-500/70 focus:ring-1 focus:ring-purple-500/30 transition-colors"
         />
         {loading && (
-          <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-purple-400 animate-spin" />
+          <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--violet)] animate-spin" />
         )}
         {!loading && query && (
-          <button onClick={handleClear} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors">
+          <button onClick={handleClear} className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--afcfta-muted)] hover:text-[var(--text)] transition-colors">
             <X className="w-4 h-4" />
           </button>
         )}
       </div>
 
       {/* Hint */}
-      <p className="text-[11px] text-slate-600 mt-1">{hintText}</p>
+      <p className="text-[11px] text-[var(--afcfta-muted)] mt-1">{hintText}</p>
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute z-50 w-full mt-1 bg-slate-800 border border-slate-700 rounded-xl shadow-2xl overflow-hidden">
+        <div className="absolute z-50 w-full mt-1 bg-[var(--overlay)] border border-[var(--afcfta-border)] rounded-xl shadow-2xl overflow-hidden">
           {error && (
             <div className="flex items-center gap-2 px-4 py-3 text-red-400 text-sm">
               <AlertCircle className="w-4 h-4 shrink-0" />
@@ -161,17 +161,17 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
           )}
 
           {!error && results.length === 0 && !loading && (
-            <div className="px-4 py-4 text-slate-500 text-sm text-center">
-              {language === 'fr' ? 'Aucun résultat pour' : 'No results for'} <span className="text-slate-300">"{query}"</span>
+            <div className="px-4 py-4 text-[var(--afcfta-muted)] text-sm text-center">
+              {language === 'fr' ? 'Aucun résultat pour' : 'No results for'} <span className="text-[var(--text)]">"{query}"</span>
             </div>
           )}
 
           {results.length > 0 && (
             <>
-              <div className="px-4 py-2 border-b border-slate-700 flex items-center justify-between">
-                <span className="text-xs text-slate-500">
+              <div className="px-4 py-2 border-b border-[var(--afcfta-border)] flex items-center justify-between">
+                <span className="text-xs text-[var(--afcfta-muted)]">
                   {results.length} {language === 'fr' ? 'résultats' : 'results'}
-                  {iso3 && <span className="ml-1 text-purple-400">· {iso3}</span>}
+                  {iso3 && <span className="ml-1 text-[var(--violet)]">· {iso3}</span>}
                 </span>
                 {results[0]?.source_quality === 'crawled_authentic' && (
                   <span className="text-[10px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full">
@@ -180,7 +180,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
                 )}
               </div>
 
-              <ul className="max-h-80 overflow-y-auto divide-y divide-slate-700/50">
+              <ul className="max-h-80 overflow-y-auto divide-y divide-[var(--afcfta-border)]">
                 {results.map((item, i) => {
                   const code = item.national_code || item.hs6 || '';
                   const desc = item.description_fr || item.designation || '';
@@ -197,19 +197,19 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
                     <li key={i}>
                       <button
                         onClick={() => handleSelect(item)}
-                        className="w-full text-left px-4 py-3 hover:bg-slate-700/60 transition-colors group"
+                        className="w-full text-left px-4 py-3 hover:bg-[var(--overlay)] transition-colors group"
                       >
                         <div className="flex items-start gap-3">
                           {/* Code */}
                           <div className="shrink-0 mt-0.5">
-                            <span className="font-mono text-xs font-bold text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded">
+                            <span className="font-mono text-xs font-bold text-[var(--violet)] bg-purple-500/10 px-2 py-0.5 rounded">
                               {code}
                             </span>
                           </div>
 
                           {/* Description + taxes */}
                           <div className="flex-1 min-w-0">
-                            <p className="text-slate-200 text-sm leading-tight line-clamp-2">
+                            <p className="text-[var(--text)] text-sm leading-tight line-clamp-2">
                               {desc}
                             </p>
                             {/* Tax badges */}
@@ -218,7 +218,7 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
                               {daps > 0 && <TaxBadge label="DAPS" value={daps} color="bg-orange-500/15 text-orange-300" />}
                               {prct > 0 && <TaxBadge label="PRCT" value={prct} color="bg-yellow-500/15 text-yellow-300" />}
                               {tcs > 0 && <TaxBadge label="TCS" value={tcs} color="bg-cyan-500/15 text-cyan-300" />}
-                              {tva != null && <TaxBadge label="TVA" value={tva} color="bg-slate-500/30 text-slate-300" />}
+                              {tva != null && <TaxBadge label="TVA" value={tva} color="bg-[var(--overlay)] text-[var(--text)]" />}
                               {total != null && (
                                 <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-semibold bg-red-500/15 text-red-300">
                                   Total {total}%
@@ -230,14 +230,14 @@ export default function ProductKeywordSearch({ destinationCountry, language = 'f
                                 </span>
                               )}
                               {isAuthentic && (
-                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] bg-purple-500/15 text-purple-300">
+                                <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] bg-purple-500/15 text-[var(--violet)]">
                                   authentique
                                 </span>
                               )}
                             </div>
                           </div>
 
-                          <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-slate-400 shrink-0 mt-1 transition-colors" />
+                          <ChevronRight className="w-4 h-4 text-[var(--afcfta-muted)] group-hover:text-[var(--afcfta-muted)] shrink-0 mt-1 transition-colors" />
                         </div>
                       </button>
                     </li>
