@@ -118,7 +118,6 @@ def test_each_derived_commodity_is_reachable_by_its_hs_code():
         "710231": "Gemstones",
         "280530": "Rare earths",
         "2611": "Tungsten",
-        "253010": "Vermiculite",
         "720293": "Niobium",
         "252329": "Cement",
         "280480": "Arsenic",
@@ -127,6 +126,78 @@ def test_each_derived_commodity_is_reachable_by_its_hs_code():
     for hs, label in expected.items():
         match = _match_commodity(hs)
         assert match and match[1] == label, (hs, match)
+
+
+def test_vermiculite_is_reachable_as_a_candidate_not_as_a_verdict():
+    """La vermiculite reste joignable — mais 2530.10 ne la DÉSIGNE plus seule.
+
+    Ce test remplace une assertion ``253010 -> Vermiculite`` qui figeait un
+    choix arbitraire. 2530.10 « perlite, chlorites et vermiculite » couvre
+    deux minerais réellement produits en Afrique ; renvoyer l'un des deux
+    rattachait une opportunité à la mauvaise production une fois sur deux.
+    """
+    from services.production_capacity_service import (
+        _ambiguous_candidates,
+        _match_commodity,
+    )
+
+    assert _match_commodity("253010") is None
+    dataset, candidates = _ambiguous_candidates("253010")
+    assert dataset == "mining"
+    assert candidates == ["Perlite", "Vermiculite"]
+
+
+def test_ambiguity_propagates_to_national_subheadings():
+    """Une sous-position nationale hérite de l'ambiguïté de son SH6.
+
+    C'est le cas qui rendait le défaut visible : ``2530100000`` renvoyait
+    Vermiculite avec l'assurance d'un code à dix chiffres, alors que les dix
+    chiffres n'apportaient aucune information nouvelle.
+    """
+    from services.production_capacity_service import (
+        _ambiguous_candidates,
+        _match_commodity,
+    )
+
+    assert _match_commodity("2530100000") is None
+    assert _ambiguous_candidates("2530100000")[1] == ["Perlite", "Vermiculite"]
+
+
+def test_a_finer_entry_resolves_the_ambiguity():
+    """L'ambiguïté se lève par une information supplémentaire, pas par défaut.
+
+    Contrôle miroir : si une entrée PLUS FINE tranche (une sous-position
+    nationale rattachée explicitement à l'un des deux minerais), elle doit
+    l'emporter. Sans ce test, ``_ambiguous_candidates`` pourrait bloquer
+    définitivement un code que la donnée sait pourtant résoudre.
+    """
+    from services import production_capacity_service as pcs
+
+    finer = ("2530100010", "mining", "Perlite")
+    pcs.HS_TO_COMMODITY.append(finer)
+    try:
+        assert pcs._ambiguous_candidates("2530100010") is None
+        assert pcs._match_commodity("2530100010") == ("mining", "Perlite", "HS10")
+        # Le SH6 nu, lui, reste ambigu : la précision ne remonte pas.
+        assert pcs._match_commodity("253010") is None
+    finally:
+        pcs.HS_TO_COMMODITY.remove(finer)
+
+
+def test_the_ambiguous_payload_names_the_candidates():
+    """L'écran doit pouvoir dire « deux matières possibles », pas « rien ».
+
+    ``no_mapping`` et ``ambiguous_mapping`` ne se valent pas : le premier dit
+    qu'on ne sait rien, le second qu'on sait trop. Les confondre effaçait
+    l'information la plus utile.
+    """
+    from services.production_capacity_service import get_continental_producers
+
+    r = get_continental_producers("253010")
+    assert r["available"] is False
+    assert r["reason"] == "ambiguous_mapping"
+    assert r["candidates"] == ["Perlite", "Vermiculite"]
+    assert get_continental_producers("999999")["reason"] == "no_mapping"
 
 
 def test_no_pre_existing_code_was_masked():

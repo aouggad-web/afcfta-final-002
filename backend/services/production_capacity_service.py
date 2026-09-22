@@ -53,7 +53,13 @@ HS_TO_COMMODITY_CURATED: List[Tuple[str, str, str]] = [
     ("0714", "agri", "Cassava"),
     ("0803", "agri", "Plantain"),
     ("0801", "agri", "Cashew nuts"),
-    ("0802", "agri", "Cashew nuts"),
+    # 0802 « AUTRES fruits à coques » (amandes, noisettes, noix, châtaignes,
+    # pistaches) a longtemps pointé ici sur Cashew nuts. C'était faux : la
+    # noix de cajou est en 0801.3x, que la ligne ci-dessus couvre déjà. Comme
+    # 0802 est un HS4, l'erreur masquait TOUTES ses sous-positions — 080212
+    # (amandes décortiquées) et 080232 (noix décortiquées) remontaient sous
+    # le libellé « cajou ». Les sous-positions justes sont curées plus bas
+    # (080211, 080270) ou dérivées par le pont FAOSTAT.
     ("0805", "agri", "Citrus fruits"),
     ("0804", "agri", "Dates"),
     ("2401", "agri", "Tobacco"),
@@ -366,11 +372,26 @@ HS_TO_COMMODITY_CURATED: List[Tuple[str, str, str]] = [
     ("2526", "mining", "Talc, crude"),  # stéatite naturelle, talc
     ("280450", "mining", "Tellurium"),  # bore, tellure
     ("2611", "mining", "Tungsten"),  # minerais de tungstène
-    # 2530.10 couvre vermiculite ET perlite : la nomenclature ne les sépare
-    # pas. 2530 reste sur Perlite ; ce HS6, plus spécifique, va à la
-    # vermiculite. Une recherche sur 2530 rend donc Perlite, sur 253010
-    # Vermiculite — c'est une ambiguïté du SH, pas un choix arbitraire.
-    ("253010", "mining", "Vermiculite"),  # vermiculite (perlite partagée)
+]
+
+# Codes SH que la nomenclature ne permet PAS de rattacher à UNE matière.
+# ----------------------------------------------------------------------
+# Y répondre par un choix unique est arbitraire, même bien commenté. Le code
+# portait ``("253010", "mining", "Vermiculite")`` avec la note « c'est une
+# ambiguïté du SH, pas un choix arbitraire » : l'ambiguïté est bien celle du
+# SH, mais sa RÉSOLUTION était la nôtre, et elle était arbitraire. Une
+# recherche sur 2530.10 renvoyait Vermiculite sans jamais dire que Perlite
+# était aussi plausible — et les deux sont réellement produites en Afrique.
+#
+# On représente donc les candidats au lieu de trancher. Une entrée concrète
+# PLUS FINE (sous-position nationale rattachée explicitement à l'un des deux)
+# lève l'ambiguïté ; sans elle, l'appelant reçoit les candidats et décide.
+HS_AMBIGUOUS: List[Tuple[str, str, Tuple[str, ...]]] = [
+    # 2530.10 « perlite, chlorites et vermiculite, non expansés » : une seule
+    # sous-position pour deux minerais que l'Afrique produit séparément —
+    # vermiculite (UGA, ZAF, ZWE) et perlite (ZAF). Trancher rattacherait une
+    # opportunité à la mauvaise production.
+    ("253010", "mining", ("Perlite", "Vermiculite")),
 ]
 
 # Extension GÉNÉRÉE du pont, dérivée de deux correspondances publiées :
@@ -584,6 +605,62 @@ def _normalize_hs(hs_code: Optional[str]) -> str:
     return "".join(ch for ch in str(hs_code) if ch.isdigit())
 
 
+def _no_match_payload(hs_code: str) -> Dict:
+    """Pourquoi ce code SH ne mène à aucune production — en distinguant deux cas.
+
+    « Aucune correspondance » et « plusieurs matières possibles » sont deux
+    situations différentes pour celui qui lit l'écran : la première dit qu'on
+    ne sait rien, la seconde qu'on sait trop. Les confondre sous un même
+    ``no_mapping`` effaçait l'information la plus utile — les candidats.
+    """
+    ambiguous = _ambiguous_candidates(hs_code)
+    if ambiguous is not None:
+        dataset, candidates = ambiguous
+        return {
+            "available": False,
+            "reason": "ambiguous_mapping",
+            "hs_code": hs_code,
+            "dataset": dataset,
+            "candidates": candidates,
+        }
+    return {"available": False, "reason": "no_mapping", "hs_code": hs_code}
+
+
+def _ambiguous_candidates(
+    hs_code: str, table: Optional[List[Tuple[str, str, str]]] = None
+) -> Optional[Tuple[str, List[str]]]:
+    """(dataset, [libellés]) si le SH recouvre plusieurs matières sans départage.
+
+    ``None`` dans les deux cas où il n'y a rien à arbitrer : le code ne tombe
+    sur aucune ambiguïté connue, ou une entrée concrète PLUS FINE la lève
+    (typiquement une sous-position nationale rattachée explicitement à l'une
+    des matières). C'est le « si une information supplémentaire le permet » :
+    l'information supplémentaire, ici, est un préfixe plus long.
+    """
+    code = _normalize_hs(hs_code)
+    if not code:
+        return None
+    ambiguous = max(
+        (e for e in HS_AMBIGUOUS if code.startswith(e[0])),
+        key=lambda e: len(e[0]),
+        default=None,
+    )
+    if ambiguous is None:
+        return None
+    concrete = max(
+        (
+            e
+            for e in (HS_TO_COMMODITY if table is None else table)
+            if code.startswith(e[0])
+        ),
+        key=lambda e: len(e[0]),
+        default=None,
+    )
+    if concrete is not None and len(concrete[0]) > len(ambiguous[0]):
+        return None
+    return ambiguous[1], list(ambiguous[2])
+
+
 def _match_commodity(
     hs_code: str, table: Optional[List[Tuple[str, str, str]]] = None
 ) -> Optional[Tuple[str, str, str]]:
@@ -596,6 +673,11 @@ def _match_commodity(
     """
     code = _normalize_hs(hs_code)
     if not code:
+        return None
+    # Une ambiguïté non levée ne se tranche pas : mieux vaut ne rien renvoyer
+    # que de désigner l'une des matières au hasard. L'appelant interroge
+    # ``_ambiguous_candidates`` pour savoir lesquelles étaient en lice.
+    if _ambiguous_candidates(hs_code, table=table) is not None:
         return None
     # Match le plus spécifique d'abord (préfixe le plus long)
     for prefix, dataset, label in sorted(
@@ -692,7 +774,7 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
     iso3 = (country_iso3 or "").strip().upper()
     match = _match_commodity(hs_code)
     if not match:
-        return {"available": False, "reason": "no_mapping", "hs_code": hs_code}
+        return _no_match_payload(hs_code)
 
     dataset, label, match_level = match
     meta = SOURCE_META[dataset]
@@ -908,7 +990,7 @@ def get_continental_producers(hs_code: str) -> Dict:
     """
     match = _match_commodity(hs_code)
     if not match:
-        return {"available": False, "reason": "no_mapping", "hs_code": hs_code}
+        return _no_match_payload(hs_code)
     dataset, label, match_level = match
     meta = SOURCE_META[dataset]
     all_recs = _records_for(dataset, label)
@@ -974,7 +1056,7 @@ def get_regional_producers(hs_code: str, iso3_set) -> Dict:
     """
     match = _match_commodity(hs_code)
     if not match:
-        return {"available": False, "reason": "no_mapping", "hs_code": hs_code}
+        return _no_match_payload(hs_code)
     dataset, label, match_level = match
     all_recs = _records_for(dataset, label)
     if not all_recs:

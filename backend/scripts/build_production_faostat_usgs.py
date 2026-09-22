@@ -49,7 +49,7 @@ SOURCES_DIR = BACKEND_DIR / "engine" / "sources"  # gitignored
 
 sys.path.insert(0, str(BACKEND_DIR))
 from etl.faostat_data import FAOSTAT_AGRICULTURE_DATA
-from etl.faostat_hs_mapping import FAOSTAT_REACHABLE_COMMODITIES
+from etl.faostat_hs_mapping import FAOSTAT_AGGREGATE_ITEMS, FAOSTAT_REACHABLE_COMMODITIES
 from etl.unido_data import UNIDO_INDUSTRY_DATA
 
 # ── URLs FAOSTAT officielles ───────────────────────────────────────────────────
@@ -718,6 +718,7 @@ def fetch_faostat_bulk(
             val: float,
             area_ha: Optional[float] = None,
             yield_kg_ha: Optional[float] = None,
+            hs_reachable: bool = True,
         ):
             records.append(
                 {
@@ -743,6 +744,13 @@ def fetch_faostat_bulk(
                     "area_ha": area_ha,
                     "yield_kg_ha": yield_kg_ha,
                     "rank_africa": None,
+                    # Aucun code SH ne mène à cette commodité : sa production
+                    # est réelle et publiée, mais une recherche par SH ne la
+                    # trouvera pas. La porter explicitement vaut mieux que de
+                    # la jeter — le chiffre reste lisible dans le profil du
+                    # pays, et l'absence de route SH est déclarée au lieu
+                    # d'être silencieuse.
+                    "hs_reachable": hs_reachable,
                     "_ingested_from": "FAOSTAT_BULK",
                 }
             )
@@ -779,10 +787,26 @@ def fetch_faostat_bulk(
             item_raw = row.get("Item", "").strip()
             if not item_raw:
                 continue
-            commodity = FAOSTAT_ITEM_TO_COMMODITY.get(item_raw, item_raw)
-            if commodity not in FAOSTAT_REACHABLE_COMMODITIES:
-                unknown_items.add(item_raw)
+            # Un AGRÉGAT (préfixe CPC « F1 ») totalise des productions déjà
+            # portées ligne à ligne : « Meat, Total » recouvre la volaille, le
+            # bœuf et le mouton. Le garder ferait compter deux fois la même
+            # récolte et le ferait remonter en tête de tout classement par
+            # volume. Il était écarté jusqu'ici par EFFET DE BORD du filtre
+            # d'atteignabilité ; maintenant que ce filtre ne jette plus rien,
+            # la règle doit être dite — et elle l'est par la correspondance
+            # publiée, pas à la main (voir etl/faostat_hs_mapping.py).
+            if item_raw in FAOSTAT_AGGREGATE_ITEMS:
                 continue
+
+            commodity = FAOSTAT_ITEM_TO_COMMODITY.get(item_raw, item_raw)
+            # Écarter ces lignes était une perte sèche : la production est
+            # publiée par la FAO, seule la ROUTE SH manque. On les garde donc,
+            # marquées ``hs_reachable: False``. L'invariant du dépôt devient :
+            # toute commodité est joignable par un code SH, OU dit pourquoi
+            # elle ne l'est pas.
+            hs_reachable = commodity in FAOSTAT_REACHABLE_COMMODITIES
+            if not hs_reachable:
+                unknown_items.add(item_raw)
 
             # Unité (FAOSTAT bulk utilise "t" pour tonnes)
             raw_unit = row.get("Unit", "t").strip()
@@ -800,15 +824,16 @@ def fetch_faostat_bulk(
                     val,
                     area_ha=side[FAOSTAT_ELEMENT_AREA].get(side_key),
                     yield_kg_ha=side[FAOSTAT_ELEMENT_YIELD].get(side_key),
+                    hs_reachable=hs_reachable,
                 )
                 matched_rows += 1
 
         print(f"      {total_rows:,} lignes lues → {matched_rows:,} retenues")
         if unknown_items:
             print(
-                f"      Items écartés faute de code SH propre : {len(unknown_items)} "
-                "(un même SH recouvre plusieurs commodités — voir "
-                "etl/faostat_hs_mapping.py)"
+                f"      Items CONSERVÉS mais sans route SH : {len(unknown_items)} "
+                "(marqués hs_reachable=False ; un même SH recouvre plusieurs "
+                "commodités — voir etl/faostat_hs_mapping.py)"
             )
 
         return records

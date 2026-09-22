@@ -125,11 +125,21 @@ def test_no_production_commodity_left_without_hs_mapping():
     data = load_production_data()
     mapped = {label for _, _, label in pcs.HS_TO_COMMODITY}
     mapped |= {label for _, (_, label) in pcs.HS_CHAPTER_FALLBACK.items()}
+    # Une matière citée comme CANDIDATE d'un SH ambigu reste joignable : la
+    # recherche la nomme, elle ne la tranche simplement pas seule. L'exclure
+    # ici rendrait la vermiculite orpheline alors que 2530.10 la propose.
+    mapped |= {label for _, _, labels in pcs.HS_AMBIGUOUS for label in labels}
 
     orphans = []
     for rec in data.get("agri_faostat", []):
         lbl = rec.get("commodity_label")
-        if lbl and lbl not in mapped:
+        # Une commodité agricole peut légitimement n'avoir aucune route SH :
+        # la FAO publie sa production à une granularité que le SH ne sépare
+        # pas (beurre de vache et beurre de bufflonne partagent 0405). On la
+        # CONSERVE alors, à condition qu'elle le DISE — `hs_reachable: False`.
+        # Le silence, lui, reste interdit : c'est lui qui faisait disparaître
+        # des productions réelles sans que personne puisse le constater.
+        if lbl and lbl not in mapped and rec.get("hs_reachable") is not False:
             orphans.append(("agri", lbl))
     for rec in data.get("mining_usgs", []):
         lbl = rec.get("commodity_label")
@@ -143,3 +153,87 @@ def test_no_production_commodity_left_without_hs_mapping():
     assert not set(
         orphans
     ), f"commodités avec données mais sans mapping HS : {sorted(set(orphans))}"
+
+
+def test_unreachable_agri_commodities_declare_themselves():
+    # Contrôle miroir du précédent : le statut doit être PORTÉ, pas supposé.
+    # Sans ce test, écrire `hs_reachable: False` partout ferait passer
+    # l'invariant ci-dessus en le vidant de son sens.
+    from production_data import load_production_data
+
+    data = load_production_data()
+    mapped = {label for _, _, label in pcs.HS_TO_COMMODITY}
+    mapped |= {label for _, (_, label) in pcs.HS_CHAPTER_FALLBACK.items()}
+
+    for rec in data.get("agri_faostat", []):
+        lbl = rec.get("commodity_label")
+        if lbl and lbl in mapped:
+            # L'inverse serait pire qu'une absence : une commodité joignable
+            # qui se déclare injoignable se retirerait elle-même de l'écran.
+            assert rec.get("hs_reachable") is not False, lbl
+
+
+# ---------------------------------------------------------------------------
+# Le repli large qui masquait ses propres sous-positions
+# ---------------------------------------------------------------------------
+# La table curée portait ("0802", "agri", "Cashew nuts"). C'était faux : le
+# 0802 du SH est « AUTRES fruits à coques » — amandes, noisettes, noix,
+# châtaignes, pistaches — et la noix de cajou est en 0801.3x. Comme 0802 est
+# un HS4, l'erreur masquait TOUTES ses sous-positions, et le générateur du
+# pont FAOSTAT s'effaçait devant elle : 208 codes SH précis étaient supprimés
+# et 139 productions FAOSTAT restaient hors ingestion.
+
+
+def test_other_nuts_are_not_cashews():
+    # Le symptôme d'origine : des amandes et des noix remontaient sous le
+    # libellé « noix de cajou ».
+    for hs in ("080212", "080232", "0802"):
+        match = pcs._match_commodity(hs)
+        assert match is None or match[1] != "Cashew nuts", (hs, match)
+    # Contrôle miroir : la cajou reste joignable là où elle est réellement.
+    assert pcs._match_commodity("0801")[1] == "Cashew nuts"
+    assert pcs._match_commodity("080132")[1] == "Cashew nuts"
+
+
+def test_precise_subheadings_shadowed_by_the_wrong_hs4_are_back():
+    # Ces cinq productions étaient exclues de l'ingestion par le seul effet du
+    # 0802 fautif. Chacune a désormais sa sous-position propre.
+    expected = {
+        "080121": "Brazil nuts, in shell",
+        "080221": "Hazelnuts, in shell",
+        "080231": "Walnuts, in shell",
+        "080241": "Chestnuts, in shell",
+        "080251": "Pistachios, in shell",
+    }
+    for hs, label in expected.items():
+        match = pcs._match_commodity(hs)
+        assert match and match[1] == label, (hs, match)
+
+
+def test_curated_table_still_wins_at_equal_precision():
+    # La correction ne renverse PAS la règle du dépôt. Le générateur ne
+    # s'efface plus devant un repli PLUS LARGE, mais la table curée garde la
+    # main partout où elle tranche aussi finement : 080211 et 080270 sont
+    # curés en HS6 et restent tels quels.
+    assert pcs._match_commodity("080211") == ("agri", "Almonds", "HS6")
+    assert pcs._match_commodity("080270") == ("agri", "Kola nuts", "HS6")
+
+
+def test_specificity_rule_distinguishes_a_fallback_from_a_verdict():
+    # Le cœur du correctif, testé sur la fonction elle-même plutôt que sur son
+    # effet : un préfixe PLUS COURT que le code est un repli et ne bloque pas ;
+    # un préfixe aussi long ou plus long a tranché et bloque.
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "_bfhm", os.path.join(_backend_dir, "scripts", "build_faostat_hs_mapping.py")
+    )
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    at_least = mod._curated_is_at_least_as_precise
+
+    assert at_least(("agri", "X", "HS6"), "080212") is True  # égal → prime
+    assert at_least(("agri", "X", "HS8"), "080212") is True  # plus fin → prime
+    assert at_least(("agri", "X", "HS4"), "080212") is False  # repli → s'efface
+    # Le repli de chapitre ne tranche jamais rien de précis.
+    assert at_least(("agri", "X", "HS2 (chapitre)"), "080212") is False

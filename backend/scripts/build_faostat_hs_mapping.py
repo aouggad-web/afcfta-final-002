@@ -165,19 +165,59 @@ def _resolve_hs(cpc: str, cpc_to_hs: dict[str, set[str]]) -> tuple[list[str], st
     return [], "aucun"
 
 
+def _curated_is_at_least_as_precise(existing: tuple, hs: str) -> bool:
+    """La table curée tranche-t-elle ce code aussi finement que lui-même ?
+
+    ``_match_commodity`` renvoie le niveau du préfixe qui a répondu — ``HS4``,
+    ``HS6``…, ou ``HS2 (chapitre)`` pour le repli de chapitre. Comparer ce
+    niveau à la longueur du code demandé sépare deux situations que l'ancienne
+    règle confondait :
+
+    * préfixe AUSSI LONG que le code — la table curée a tranché ce code précis
+      (ou un code d'égale finesse) : elle prime, et le générateur s'efface ;
+    * préfixe PLUS COURT — un repli large, qui n'a rien dit de ce code en
+      particulier. S'effacer devant lui laissait un seul HS4 approximatif
+      rendre invisibles toutes ses sous-positions.
+
+    Le repli de chapitre ne tranche jamais rien de précis : il ne bloque pas.
+    """
+    level = existing[2]
+    if not level.startswith("HS") or "chapitre" in level:
+        return False
+    try:
+        return int(level[2:]) >= len(str(hs).strip())
+    except ValueError:  # niveau inattendu : on ne présume pas qu'il tranche
+        return False
+
+
 def build() -> tuple[list[tuple[str, str]], dict]:
     """Couples (préfixe SH, libellé) à ajouter, plus un rapport de génération."""
     # La table de normalisation est importée du script d'ingestion lui-même,
     # et non recopiée : le pont doit pointer vers le libellé que l'ingestion
     # écrit réellement. Deux copies dériveraient au premier ajout.
     from build_production_faostat_usgs import FAOSTAT_ITEM_TO_COMMODITY
-    from services.production_capacity_service import HS_TO_COMMODITY_CURATED, _match_commodity
+    from services.production_capacity_service import (
+        HS_CHAPTER_FALLBACK,
+        HS_TO_COMMODITY_CURATED,
+        _match_commodity,
+    )
 
     _ensure_unsd_table()
     cpc_to_hs = _load_cpc_to_hs()
     items, produced = _load_faostat_items()
 
+    # Une commodité que la table CURÉE atteint déjà est atteignable, que le
+    # générateur émette quelque chose pour elle ou non. Ne pas l'admettre ici
+    # faisait déclarer « sans route SH » des productions que
+    # ``_match_commodity`` trouve parfaitement — coton-graine, viande et lait
+    # de bovins — parce que leur code SH est revendiqué par plusieurs items
+    # FAOSTAT et que le générateur s'abstient alors d'émettre. L'abstention du
+    # générateur n'efface pas la route curée.
+    curated_agri = {lbl for _, ds, lbl in HS_TO_COMMODITY_CURATED if ds == "agri"}
+    curated_agri |= {lbl for _, (ds, lbl) in HS_CHAPTER_FALLBACK.items() if ds == "agri"}
+
     entries: dict[str, str] = {}
+    aggregates: set[str] = set()
     stats = collections.Counter()
     unresolved: list[tuple[str, str]] = []
     reachable: set[str] = set()
@@ -193,6 +233,13 @@ def build() -> tuple[list[tuple[str, str]], dict]:
         if not raw_label or cpc.startswith(CPC_AGGREGATE_PREFIX):
             if raw_label:
                 stats["agrégats écartés"] += 1
+                # Un agrégat n'est pas une production « non résolue » : c'est
+                # la SOMME de productions qu'on porte déjà par ailleurs. Le
+                # conserver à côté de ses composants ferait compter deux fois
+                # le même blé. On émet donc la liste, pour que l'ingestion
+                # applique la même règle publiée (préfixe CPC) au lieu de
+                # s'en remettre à un effet de bord de l'atteignabilité.
+                aggregates.add(raw_label)
             continue
         hs_codes, how = _resolve_hs(cpc, cpc_to_hs)
         if not hs_codes:
@@ -213,21 +260,31 @@ def build() -> tuple[list[tuple[str, str]], dict]:
             # précédente : la deuxième exécution verrait ses propres entrées
             # comme « déjà couvertes » et écrirait un module vide.
             existing = _match_commodity(hs, table=HS_TO_COMMODITY_CURATED)
-            if existing is not None:
-                # Déjà résolu par la table curée. Si c'est vers NOTRE libellé,
-                # l'item est atteignable sans rien ajouter ; sinon on n'y
-                # touche pas, le pont existant prime.
+            if existing is not None and _curated_is_at_least_as_precise(existing, hs):
+                # La table curée tranche ce code à une précision ÉGALE ou
+                # SUPÉRIEURE : elle prime, on n'y touche pas. Si c'est vers
+                # NOTRE libellé, l'item est atteignable sans rien ajouter.
                 if existing[1] == label:
                     emitted = True
                 else:
                     stats["déjà couverts par la table curée"] += 1
                 continue
+            if existing is not None:
+                # La table curée ne répond que par un préfixe PLUS COURT — un
+                # repli large (HS4, ou le repli de chapitre). Émettre le code
+                # précis ne la contredit pas : ``_match_commodity`` prend le
+                # plus long préfixe, donc ce HS6 l'emportera naturellement à
+                # la lecture, et le repli continuera de servir tout ce que ce
+                # HS6 ne couvre pas. S'effacer ici était le défaut : un seul
+                # HS4 approximatif suffisait à rendre invisibles toutes ses
+                # sous-positions et les productions correspondantes.
+                stats["précisent un repli plus large"] += 1
             if len(claims[hs]) > 1:
                 stats["SH revendiqués par plusieurs items"] += 1
                 continue
             entries[hs] = label
             emitted = True
-        if emitted:
+        if emitted or label in curated_agri:
             reachable.add(label)
         else:
             unreachable.append(label)
@@ -243,6 +300,7 @@ def build() -> tuple[list[tuple[str, str]], dict]:
         "labels_added": len(set(entries.values())),
         "reachable_labels": sorted(reachable),
         "unreachable_labels": sorted(set(unreachable) - reachable),
+        "aggregate_items": sorted(aggregates),
     }
     return sorted(entries.items()), report
 
@@ -252,6 +310,7 @@ def render(entries: list[tuple[str, str]], report: dict) -> str:
     body = "\n".join(f'    ("{hs}", "agri", "{label}"),' for hs, label in entries)
     stats = "\n".join(f"#   {k:38} {v}" for k, v in sorted(report["stats"].items()))
     reachable = "\n".join(f'    "{lbl}",' for lbl in report["reachable_labels"])
+    aggregates = "\n".join(f'    "{lbl}",' for lbl in report["aggregate_items"])
     unreachable = "\n".join(f"#   {lbl}" for lbl in report["unreachable_labels"])
     return f'''"""
 Pont SH → commodités FAOSTAT, dérivé de correspondances publiées.
@@ -310,6 +369,17 @@ FAOSTAT_REACHABLE_COMMODITIES: FrozenSet[str] = frozenset({{
 # attendant que le pont sache exprimer une relation un-à-plusieurs.
 #
 {unreachable}
+
+# Items FAOSTAT qui sont des AGRÉGATS (préfixe CPC « F1 ») : ils totalisent des
+# productions déjà portées ligne à ligne. « Meat, Total » recouvre la volaille,
+# le bœuf et le mouton ; « Cereals, primary » recouvre blé, maïs et riz. Les
+# ingérer à côté de leurs composants ferait compter deux fois la même récolte,
+# et les ferait remonter en tête de tout classement par volume. Ils sont donc
+# écartés à l'ingestion — non pour une lacune de correspondance, mais parce
+# qu'ils ne sont pas une production supplémentaire.
+FAOSTAT_AGGREGATE_ITEMS: FrozenSet[str] = frozenset({{
+{aggregates}
+}})
 '''
 
 

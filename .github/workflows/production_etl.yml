@@ -121,15 +121,27 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-      - name: Committer le dataset sur la branche
+      # Le JSON seul ne suffit pas. Les étapes ci-dessus RÉGÉNÈRENT aussi
+      # backend/etl/macro_wdi_data.py et backend/etl/unsd_manufacturing_data.py
+      # depuis les API World Bank et UNSD, et c'est l'enrichissement qui lit
+      # ces modules pour fabriquer le JSON. Ne committer que le JSON laissait
+      # donc les modules PÉRIMÉS dans le dépôt : un enrichissement relancé
+      # ensuite hors ligne rouvrait les anciennes valeurs et défaisait
+      # silencieusement le rafraîchissement. On committe la source AVEC son
+      # produit, sinon les deux divergent.
+      - name: Committer le dataset et ses modules sources
         if: ${{ inputs.commit_data }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [ -f data/json/production_africaine.json ]; then git add data/json/production_africaine.json; fi
+          for f in data/json/production_africaine.json \
+                   backend/etl/macro_wdi_data.py \
+                   backend/etl/unsd_manufacturing_data.py; do
+            if [ -f "$f" ]; then git add "$f"; fi
+          done
           if git diff --cached --quiet; then
-            echo "Dataset production inchangé — rien à committer."
+            echo "Dataset production et modules sources inchangés — rien à committer."
           else
-            git commit -m "data: production africaine (FAOSTAT + USGS) via workflow"
+            git commit -m "data: production africaine (FAOSTAT + USGS) et modules sources via workflow"
             git push
           fi
