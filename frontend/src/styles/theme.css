@@ -744,9 +744,20 @@ body::before {
   color: var(--text) !important;
   border: 1px solid rgba(200,83,26,0.18) !important;
   border-radius: 10px;
-  padding: 11px 12px;
+  padding-block: 11px;
   outline: none;
   font-size: 14px;
+}
+
+/* Le retrait horizontal par défaut ne doit pas écraser celui qu'un composant
+   demande. Sans :where(), la spécificité (0,1,1) de la règle ci-dessus battait
+   les classes Tailwind pl-9 / pl-10 posées pour réserver la place d'une icône
+   de loupe : le champ retombait à 12px et l'icône, large de 28px, masquait les
+   premiers caractères saisis. :where() ramène le sélecteur à (0,0,1) — un
+   composant qui réserve la place l'obtient, un champ nu garde ce retrait. */
+:where(.afcfta-shell) input,
+:where(.afcfta-shell) textarea {
+  padding-inline: 12px;
 }
 
 .afcfta-shell input:focus,

@@ -220,7 +220,7 @@ html.theme-light [style*="background:#18"] {
 html.theme-light .afcfta-shell select,
 html.theme-light .afcfta-shell input,
 html.theme-light .afcfta-shell textarea {
-  background: #FFFFFF !important;
+  background: var(--surface) !important;
   color: var(--text) !important;
   border-color: var(--afcfta-border) !important;
 }
