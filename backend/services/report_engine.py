@@ -792,9 +792,22 @@ async def get_opportunity_report_ultra_fine(
     # banane dessert et pas une tonne de manioc, deux produits pourtant
     # indiscernables sur les seuls signaux locaux. L'appel réseau n'a lieu que
     # dans ce cas, rare, et il change la conclusion.
+    # Troisième déclencheur : la production nationale est NULLE ET ÉTABLIE.
+    # Le besoin servi est alors un proxy démographique alors qu'une mesure
+    # existe — les importations du pays SONT sa consommation, puisqu'il ne
+    # produit rien. Cas du café vers l'Afrique du Nord : l'Algérie n'en
+    # produit pas un gramme et en importe 86 642 tonnes. L'appel réseau se
+    # justifie par la même règle que les deux autres — il change la
+    # conclusion, en remplaçant un modèle par une mesure.
+    _absence_etablie = bool(
+        (national_need.get("self_sufficiency") or {}).get("absence_established")
+    )
     if (
         national_need.get("available")
-        and (national_need.get("consumption_basket") or {}).get("status") == "unverifiable"
+        and (
+            (national_need.get("consumption_basket") or {}).get("status") == "unverifiable"
+            or (_absence_etablie and national_need.get("is_estimation"))
+        )
     ):
         try:
             from services.real_trade_data_service import real_trade_service

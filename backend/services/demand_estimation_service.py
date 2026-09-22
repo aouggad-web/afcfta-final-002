@@ -832,6 +832,60 @@ def estimate_national_need(
         if own_imports_estimate:
             return own_imports_estimate
 
+    # Production nationale NULLE ET ÉTABLIE : les importations du pays SONT
+    # sa consommation.
+    # -----------------------------------------------------------------------
+    # La cascade descendait ici sur le proxy démographique alors qu'une mesure
+    # existe. Quand un pays ne produit rien — et que ce « rien » est établi,
+    # pas seulement non documenté — la consommation apparente vaut
+    # 0 + importations − exportations : ses propres importations la donnent
+    # directement.
+    #
+    # Le café en Afrique du Nord est le cas type. L'Algérie n'en produit pas
+    # un gramme, et FAOSTAT couvre les 54 pays : son silence PROUVE la
+    # production nulle. Elle en importe pourtant 86 642 tonnes (2024). Servir
+    # à la place une disponibilité continentale par habitant — moyenne de
+    # pays dont plusieurs sont de grands producteurs — modélise un besoin là
+    # où on peut le mesurer.
+    #
+    # La règle de priorité est donc : une mesure bat un modèle. Le proxy
+    # garde tout son rôle là où la production n'est pas établie, c'est-à-dire
+    # là où l'on ne peut PAS conclure.
+    if own_imports_history:
+        _dom = domestic_supply(hs_code, country_iso3, prod.get("dimension"))
+        if _dom.get("absence_established"):
+            mesure = estimate_need_from_own_imports(
+                hs_code, country_iso3, own_imports_history
+            )
+            if mesure:
+                mesure["production_absence_established"] = True
+                # Le libellé par défaut de ce bloc dit « sans production
+                # continentale » : c'est le cas qui l'a fait naître, ce n'est
+                # pas celui-ci. Ici la référence continentale EXISTE — le café
+                # a de grands producteurs africains — mais elle ne décrit pas
+                # ce pays, qui n'en produit rien.
+                mesure["level_label"] = (
+                    "Importations nationales observées (production nationale nulle établie)"
+                )
+                # Et la valeur reste une ESTIMATION, contrairement à ce qu'on
+                # pourrait croire. Les importations ne sont pas la
+                # consommation apparente : il faudrait en soustraire les
+                # exportations, que cet historique ne porte pas. Elles en sont
+                # un plancher serré quand le pays réexporte peu — 12 tonnes de
+                # café algérien exporté contre 86 642 importées — mais un
+                # plancher tout de même. Le dire vaut mieux que de présenter
+                # un flux pour une consommation.
+                mesure["note"] = (
+                    (mesure.get("note") or "").rstrip()
+                    + " Production nationale nulle ÉTABLIE (la source qui couvre ce "
+                    "pays ne lui attribue aucune production) : les importations "
+                    "observées estiment le besoin bien mieux qu'une disponibilité "
+                    "continentale par habitant, qui moyenne des pays producteurs. "
+                    "Elles restent un PLANCHER : les exportations ne sont pas "
+                    "soustraites, faute d'être portées par cet historique."
+                ).strip()
+                return mesure
+
     if not cont_total or not pop.get("available") or not idx:
         return {
             "available": False,

@@ -128,3 +128,108 @@ def test_faostat_absence_is_established_only_for_agriculture():
 
     src = inspect.getsource(des.domestic_supply)
     assert 'dimension == "agri"' in src
+
+
+# ---------------------------------------------------------------------------
+# Une mesure bat un modèle : les importations priment sur le proxy
+# ---------------------------------------------------------------------------
+# La cascade descendait sur le proxy démographique dès qu'une référence de
+# production continentale existait — même quand le pays évalué, lui, ne
+# produit rien. Or s'il ne produit rien et que ce « rien » est ÉTABLI, ses
+# importations SONT sa consommation : la mesure existe, il suffisait de la
+# préférer.
+
+
+def _coffee_imports(iso3="DZA"):
+    return [
+        {"year": 2020, "import_value_usd": 300_000_000.0},
+        {"year": 2021, "import_value_usd": 350_000_000.0},
+        {"year": 2022, "import_value_usd": 400_000_000.0},
+        {"year": 2023, "import_value_usd": 410_000_000.0},
+        {"year": 2024, "import_value_usd": 427_820_897.0},
+    ]
+
+
+def test_algerian_coffee_need_comes_from_imports_not_from_a_population_proxy(
+    monkeypatch,
+):
+    """Le cas nommé : l'Algérie ne produit pas un gramme de café.
+
+    Le café a pourtant une référence de production continentale bien fournie
+    (Éthiopie, Ouganda, Côte d'Ivoire…), donc l'ancienne cascade servait une
+    disponibilité continentale par habitant — la moyenne de pays dont
+    plusieurs sont de grands producteurs. C'est un modèle appliqué à un pays
+    qui n'en partage pas le régime.
+    """
+    monkeypatch.setattr(
+        des,
+        "domestic_supply",
+        lambda hs, iso, dim=None: {
+            "available": False,
+            "reason": "country_absent_from_dataset",
+            "absence_established": True,
+            "dimension": "agri",
+        },
+    )
+    need = des.estimate_national_need(
+        "0901", "DZA", own_imports_history=_coffee_imports()
+    )
+    assert need["available"] is True
+    assert need.get("production_absence_established") is True
+    assert "nulle ÉTABLIE" in need["note"]
+    # La valeur vient des importations observées de 2024, pas d'une moyenne
+    # continentale. Arrondie à 3 chiffres significatifs comme tout le reste de
+    # la cascade — la précision affichée ne doit pas dépasser la précision réelle.
+    assert need["value"] == 428_000_000.0
+    # Elle reste une ESTIMATION, et le payload ne prétend pas l'inverse : les
+    # exportations ne sont pas soustraites, faute d'être portées par
+    # l'historique d'importations. Présenter un flux pour une consommation
+    # apparente serait le travers que ce service existe pour éviter.
+    assert need["is_estimation"] is True
+    assert "PLANCHER" in need["note"]
+    # Et le libellé dit la VRAIE raison du repli : pas « sans production
+    # continentale » (le café en a), mais production nationale nulle établie.
+    assert "production nationale nulle établie" in need["level_label"].lower()
+
+
+def test_the_proxy_still_serves_when_absence_is_not_established(monkeypatch):
+    """Le garde-fou : ne pas savoir ne devient pas savoir que c'est zéro.
+
+    Sans lui, tout pays dont la production n'est pas documentée verrait son
+    besoin ramené à ses seules importations — ce qui SOUS-estimerait un pays
+    qui produit beaucoup et importe peu.
+    """
+    monkeypatch.setattr(
+        des,
+        "domestic_supply",
+        lambda hs, iso, dim=None: {
+            "available": False,
+            "reason": "lookup_failed",
+            "absence_established": False,
+        },
+    )
+    need = des.estimate_national_need(
+        "0901", "DZA", own_imports_history=_coffee_imports()
+    )
+    # Le chemin mesuré ne s'est PAS déclenché.
+    assert need.get("production_absence_established") is not True
+
+
+def test_a_country_that_produces_keeps_the_full_cascade(monkeypatch):
+    # Contrôle miroir : une production RELEVÉE ne doit pas basculer sur les
+    # importations, sinon on perdrait la part couverte localement.
+    monkeypatch.setattr(
+        des,
+        "domestic_supply",
+        lambda hs, iso, dim=None: {
+            "available": True,
+            "value": 500_000.0,
+            "year": 2024,
+            "unit": "tonnes",
+            "commodity": "Coffee",
+        },
+    )
+    need = des.estimate_national_need(
+        "0901", "ETH", own_imports_history=_coffee_imports()
+    )
+    assert need.get("production_absence_established") is not True
