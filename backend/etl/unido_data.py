@@ -244,31 +244,47 @@ UNIDO_INDUSTRY_DATA = {
         "data_year": 2024,
     },
     "DZA": {
+        # Valeurs RÉELLES publiées, collectées via l'API officielle du portail
+        # UNIDO (stat.unido.org/portal) le 2026-09-22 — voir
+        # scripts/fetch_unido_indstat.py et le versement
+        # data/unido/unido_idsb_indstat_isic4_dza_2005_2017.csv.gz.
+        # DEUX bases ONS/UNIDO de périmètre différent, à ne pas mélanger :
+        #  • National Accounts (base réharmonisée UNIDO) — les totaux MVA
+        #    ci-dessous ; son périmètre est plus étroit que l'autre base
+        #    (MVA 2015 = 13,3 Md$).
+        #  • INDSTAT par division (source ONS, « Les Comptes Économiques ») —
+        #    la structure top_sectors, qui inclut le raffinage : somme des
+        #    divisions 2015 = 36,4 Md$, dont 80 % pour la division 19. Le
+        #    contrôlé croisé divisions ↔ classes 1910+1920 du versement ISIC4
+        #    est exact (test test_unido_dza_curated).
+        # top_sectors : VA par division, INDSTAT 2026 année 2015 (la dernière
+        # transmise par l'ONS), mln USD publiés ; share_mva calculée sur la
+        # somme des divisions de cette même base.
         "country_name": "Algérie",
         "region": "Afrique du Nord",
-        "mva_2023_mln_usd": 18500,
-        "mva_gdp_percent": 10.2,
-        "mva_per_capita_usd": 410,
+        "mva_2023_mln_usd": 23017.8,
+        "mva_gdp_percent": 9.48,
+        "mva_per_capita_usd": 541,
         "industry_employment": 1150000,
         "top_sectors": [
-            {"isic": "19", "name": "Raffinage pétrolier", "share_mva": 28.5, "value_mln_usd": 5273},
+            {"isic": "19", "name": "Raffinage pétrolier", "share_mva": 80.3, "value_mln_usd": 29221.36},
             {
                 "isic": "10",
                 "name": "Produits alimentaires",
-                "share_mva": 18.2,
-                "value_mln_usd": 3367,
+                "share_mva": 8.8,
+                "value_mln_usd": 3201.44,
             },
             {
                 "isic": "23",
                 "name": "Minéraux non métalliques",
-                "share_mva": 14.5,
-                "value_mln_usd": 2683,
+                "share_mva": 2.7,
+                "value_mln_usd": 988.28,
             },
-            {"isic": "24", "name": "Métallurgie de base", "share_mva": 9.8, "value_mln_usd": 1813},
-            {"isic": "20", "name": "Produits chimiques", "share_mva": 8.2, "value_mln_usd": 1517},
+            {"isic": "24", "name": "Métallurgie de base", "share_mva": 2.0, "value_mln_usd": 740.48},
+            {"isic": "20", "name": "Produits chimiques", "share_mva": 1.0, "value_mln_usd": 351.21},
         ],
-        "growth_rate_2023": 4.1,
-        "exports_manuf_mln_usd": 3200,
+        "growth_rate_2023": 2.8,
+        "exports_manuf_mln_usd": 17544.63,
         "key_products": [
             "Produits pétroliers raffinés",
             "Engrais",
@@ -277,15 +293,19 @@ UNIDO_INDUSTRY_DATA = {
             "Produits alimentaires",
         ],
         "industrial_zones": 10,
-        "source": "UNIDO INDSTAT4 2024, ONS Algérie, UNIDO Yearbook 2024",
-        "mva_2024_mln_usd": 19200,
-        "mva_per_capita_2015usd": 330,
-        "growth_rate_2024_est": 4.5,
-        "cip_index_rank": 99,
-        "mht_share_mva": 8.5,
-        "industry_va_gdp_percent": 38.5,
-        "manuf_share_exports": 5.2,
-        "data_year": 2024,
+        "source": (
+            "ONS Algérie via UNIDO — INDSTAT 2026 (divisions 2015), "
+            "National Accounts (totaux 2023-2024), Manufacturing Trade (2025), "
+            "CIP 2024 — API stat.unido.org"
+        ),
+        "mva_2024_mln_usd": 25318.5,
+        "mva_per_capita_2015usd": 333,
+        "growth_rate_2024_est": 4.1,
+        "cip_index_rank": 93,
+        "mht_share_mva": 2.69,
+        "industry_va_gdp_percent": 22.75,
+        "manuf_share_exports": 36.6,
+        "data_year": 2015,
     },
     "TUN": {
         "country_name": "Tunisie",
