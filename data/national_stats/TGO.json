@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "country_iso3": "TGO",
+  "country_name": "Togo",
+  "source": {
+    "publisher": "INSEED Togo (Institut national de la statistique et des études économiques et démographiques)",
+    "publication": "Bulletin trimestriel des statistiques du commerce international des marchandises — 4e trimestre 2025",
+    "url": "https://inseed.tg/download/7638/",
+    "data_year": 2025,
+    "currency": "XOF",
+    "unit": "millions de FCFA",
+    "unit_short": "FCFA M"
+  },
+  "export_flow_caveat": {
+    "period": "2025T4",
+    "total_exports_fob": 258434.7,
+    "separable_by_product": false,
+    "separable_by_market": false,
+    "source_definition": "L'exportation regroupe l'exportation simple et la réexportation. L'exportation simple est l'expédition des marchandises nationales (ou nationalisées par la mise à la consommation). La réexportation est l'expédition de biens d'origine étrangère ayant été auparavant enregistrés comme des importations.",
+    "source_definition_ref": "Note méthodologique, p. xii"
+  },
+  "free_zone_regimes": [
+    {
+      "code": "9300",
+      "label": "Entrée en zone franche industrielle",
+      "value": 100527.6
+    },
+    {
+      "code": "1093",
+      "label": "Exportation définitive en suite de zone franche industrielle",
+      "value": 84248.9
+    },
+    {
+      "code": "3093",
+      "label": "Réexportation en suite de zone franche pour avitaillement",
+      "value": 22121.7
+    },
+    {
+      "code": "4093",
+      "label": "Mise à la consommation en suite de zone franche industrielle",
+      "value": 4010.5
+    }
+  ]
+}

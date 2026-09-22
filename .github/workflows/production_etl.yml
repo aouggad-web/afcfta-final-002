@@ -3,7 +3,11 @@ name: Production — Ingestion FAOSTAT + USGS
 # Ingestion des données de production africaine (réseau ouvert sur runner GitHub) :
 #   • FAOSTAT bulk QCL (Production Crops & Livestock — Afrique), 2019-2024 ;
 #   • USGS Mineral Commodity Summaries (données curées multi-années intégrées) ;
-#   • UNIDO INDSTAT (valeur ajoutée manufacturière, curée).
+#   • UNIDO INDSTAT (valeur ajoutée manufacturière, curée) ;
+#   • puis la SURCOUCHE d'enrichissement (macro World Bank, minéraux étendus,
+#     manufacturier mesuré UNSD, prévisions OCDE-FAO). Elle est indispensable :
+#     le script de construction n'écrit que le socle, et committer celui-ci
+#     seul ÉCRASERAIT les dimensions enrichies.
 # Le script filtre FAOSTAT via FAOSTAT_ITEM_TO_COMMODITY : élargir cette table
 # (fait) importe davantage de produits. Aucune valeur inventée : réseau
 # indisponible -> conserve les données existantes.
@@ -67,6 +71,36 @@ jobs:
           if [ "${{ inputs.faostat_only }}" = "true" ]; then FLAG="--faostat-only"; fi
           python3 scripts/build_production_faostat_usgs.py $FLAG
 
+      # Sans cette étape, ce workflow commet le SOCLE SEUL : macro retombe à
+      # ~162 enregistrements et les mines à ~166, écrasant les dimensions
+      # enrichies déjà committées. Le workflow mensuel a reçu le même
+      # correctif ; celui-ci commet directement sur la branche, il était donc
+      # le plus dangereux des deux.
+      - name: Rafraîchir les sources à API libre (non bloquant)
+        continue-on-error: true
+        working-directory: backend
+        run: |
+          python3 scripts/fetch_wdi_macro.py
+          python3 scripts/fetch_unsd_manufacturing.py
+
+      - name: Appliquer la surcouche d'enrichissement
+        working-directory: backend
+        run: python3 scripts/enrich_production_data.py
+
+      # Garde-fou anti-régression, calé sur la surcouche et non sur le socle :
+      # un fichier amputé ne doit jamais être committé.
+      - name: Refuser de committer un dataset amputé
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          counts = json.load(open("data/json/production_africaine.json"))["metadata"]["record_counts"]
+          seuils = {"agriculture": 5000, "mining": 400, "macro": 4000, "manufacturing_unsd": 800}
+          manquants = {k: counts.get(k, 0) for k, v in seuils.items() if counts.get(k, 0) < v}
+          if manquants:
+              sys.exit(f"Dataset amputé, commit refusé : {manquants} (seuils {seuils})")
+          print(f"OK — {counts}")
+          PY
+
       - name: Comptage produits APRÈS
         run: |
           python3 - <<'PY'
@@ -87,15 +121,27 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
-      - name: Committer le dataset sur la branche
+      # Le JSON seul ne suffit pas. Les étapes ci-dessus RÉGÉNÈRENT aussi
+      # backend/etl/macro_wdi_data.py et backend/etl/unsd_manufacturing_data.py
+      # depuis les API World Bank et UNSD, et c'est l'enrichissement qui lit
+      # ces modules pour fabriquer le JSON. Ne committer que le JSON laissait
+      # donc les modules PÉRIMÉS dans le dépôt : un enrichissement relancé
+      # ensuite hors ligne rouvrait les anciennes valeurs et défaisait
+      # silencieusement le rafraîchissement. On committe la source AVEC son
+      # produit, sinon les deux divergent.
+      - name: Committer le dataset et ses modules sources
         if: ${{ inputs.commit_data }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [ -f data/json/production_africaine.json ]; then git add data/json/production_africaine.json; fi
+          for f in data/json/production_africaine.json \
+                   backend/etl/macro_wdi_data.py \
+                   backend/etl/unsd_manufacturing_data.py; do
+            if [ -f "$f" ]; then git add "$f"; fi
+          done
           if git diff --cached --quiet; then
-            echo "Dataset production inchangé — rien à committer."
+            echo "Dataset production et modules sources inchangés — rien à committer."
           else
-            git commit -m "data: production africaine (FAOSTAT + USGS) via workflow"
+            git commit -m "data: production africaine (FAOSTAT + USGS) et modules sources via workflow"
             git push
           fi

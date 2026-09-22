@@ -8,12 +8,22 @@ réelles + date de récupération). Ce module est ensuite lu hors-ligne par
 ``etl/macro_extended.py`` : l'enrichissement du dataset production ne dépend donc
 d'aucun réseau, tout en servant des chiffres réellement publiés par le World Bank.
 
-Indicateurs (par pays, années 2023-2024) :
+Indicateurs (par pays, années 2015-2024) :
+
+Parts sectorielles et croissance (%) :
   • NV.AGR.TOTL.ZS — Agriculture, valeur ajoutée (% du PIB)
   • NV.IND.TOTL.ZS — Industrie (y c. construction), valeur ajoutée (% du PIB)
   • NV.IND.MANF.ZS — Manufacturier, valeur ajoutée (% du PIB)
   • NV.SRV.TOTL.ZS — Services, valeur ajoutée (% du PIB)
   • NY.GDP.MKTP.KD.ZG — Croissance du PIB réel (% annuel)
+
+Valeurs absolues (USD courants) — une part de PIB ne dit pas un montant, et
+un module d'opportunités a besoin d'une unité de compte :
+  • NV.AGR.TOTL.CD — Agriculture, valeur ajoutée (USD courants)
+  • NV.IND.TOTL.CD — Industrie (y c. construction), valeur ajoutée (USD courants)
+  • NV.IND.MANF.CD — Manufacturier, valeur ajoutée (USD courants)
+  • NV.SRV.TOTL.CD — Services, valeur ajoutée (USD courants)
+  • NY.GDP.MKTP.CD — PIB (USD courants)
 
 Usage (là où l'API World Bank est joignable — bloquée par la politique d'egress
 de certains bacs à sable CI/dev) :
@@ -47,11 +57,26 @@ INDICATORS = {
     "manuf": "NV.IND.MANF.ZS",
     "serv": "NV.SRV.TOTL.ZS",
     "gdp_growth": "NY.GDP.MKTP.KD.ZG",
+    "agri_usd": "NV.AGR.TOTL.CD",
+    "ind_usd": "NV.IND.TOTL.CD",
+    "manuf_usd": "NV.IND.MANF.CD",
+    "serv_usd": "NV.SRV.TOTL.CD",
+    "gdp_usd": "NY.GDP.MKTP.CD",
 }
-YEARS = (2023, 2024)
+
+# Clefs exprimées en USD courants : arrondies à l'unité. Deux décimales sur un
+# montant de l'ordre du milliard n'ajoutent aucune information et alourdissent
+# le module généré.
+_USD_KEYS = frozenset({"agri_usd", "ind_usd", "manuf_usd", "serv_usd", "gdp_usd"})
+
+# Fenêtre complète, pas seulement ses bornes : YEARS sert à la fois à construire
+# l'intervalle de la requête (YEARS[0]:YEARS[-1]) et à filtrer les réponses
+# (``year not in YEARS``). Un couple de bornes rejetterait tout ce qu'il y a
+# entre les deux.
+YEARS = tuple(range(2015, 2025))
 
 
-def _fetch_indicator_by_year(indicator: str) -> dict[str, dict[int, float]]:
+def _fetch_indicator_by_year(indicator: str, key: str) -> dict[str, dict[int, float]]:
     """{iso3: {year: value}} pour les années demandées, par lots de pays."""
     out: dict[str, dict[int, float]] = {}
     for i in range(0, len(AFRICA_ISO3), _CHUNK_SIZE):
@@ -72,17 +97,20 @@ def _fetch_indicator_by_year(indicator: str) -> dict[str, dict[int, float]]:
             year = int(year)
             if year not in YEARS:
                 continue
-            out.setdefault(iso3, {})[year] = round(float(value), 2)
+            value = float(value)
+            out.setdefault(iso3, {})[year] = (
+                int(round(value)) if key in _USD_KEYS else round(value, 2)
+            )
     return out
 
 
 def main() -> None:
-    print("Récupération World Bank WDI (54 pays africains, 2023-2024) …")
+    print(f"Récupération World Bank WDI (54 pays africains, {YEARS[0]}-{YEARS[-1]}) …")
     # {iso3: {year: {key: value}}}
     macro: dict[str, dict[int, dict[str, float]]] = {}
     for key, indicator in INDICATORS.items():
         print(f"  • {key:11s} ({indicator}) …")
-        by_country = _fetch_indicator_by_year(indicator)
+        by_country = _fetch_indicator_by_year(indicator, key)
         for iso3, year_vals in by_country.items():
             for year, value in year_vals.items():
                 macro.setdefault(iso3, {}).setdefault(year, {})[key] = value
@@ -106,9 +134,14 @@ Régénérer là où l'API World Bank est joignable :
     python3 scripts/fetch_wdi_macro.py
 
 Valeurs RÉELLES publiées (World Bank World Development Indicators), aucune
-synthèse. Structure : {{iso3: {{year: {{indicateur: valeur_%}}}}}}.
-Indicateurs : agri=NV.AGR.TOTL.ZS, ind=NV.IND.TOTL.ZS, manuf=NV.IND.MANF.ZS,
-serv=NV.SRV.TOTL.ZS, gdp_growth=NY.GDP.MKTP.KD.ZG.
+synthèse. Structure : {{iso3: {{year: {{clef: valeur}}}}}}.
+
+Clefs en pourcentage : agri=NV.AGR.TOTL.ZS, ind=NV.IND.TOTL.ZS,
+manuf=NV.IND.MANF.ZS, serv=NV.SRV.TOTL.ZS, gdp_growth=NY.GDP.MKTP.KD.ZG.
+
+Clefs en USD courants (entiers) : agri_usd=NV.AGR.TOTL.CD,
+ind_usd=NV.IND.TOTL.CD, manuf_usd=NV.IND.MANF.CD, serv_usd=NV.SRV.TOTL.CD,
+gdp_usd=NY.GDP.MKTP.CD.
 
 Source   : https://data.worldbank.org/ (API v2, sans clé)
 Récupéré : {fetched_at}
@@ -124,9 +157,9 @@ WDI_MACRO = '''
     )
     print(f"\n✅ Écrit : {OUT_MODULE.relative_to(BACKEND_DIR)}")
     print(f"   {n_countries} pays, {n_points} points (pays×année).")
-    # Contrôle rapide
-    for iso3, key in (("NGA", "ind"), ("ZAF", "agri")):
-        vals = {y: macro_sorted.get(iso3, {}).get(y, {}).get(key) for y in YEARS}
+    # Contrôle rapide : une clef en % et une clef en USD, sur les bornes.
+    for iso3, key in (("NGA", "manuf"), ("NGA", "manuf_usd"), ("ZAF", "agri_usd")):
+        vals = {y: macro_sorted.get(iso3, {}).get(y, {}).get(key) for y in (YEARS[0], YEARS[-1])}
         print(f"   {iso3} {key}: {vals}")
 
 

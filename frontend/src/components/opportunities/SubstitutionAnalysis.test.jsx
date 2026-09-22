@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import i18n from '../../i18n';
 import { OpportunityCard } from './SubstitutionAnalysis';
 
 // Reproduit exactement la forme renvoyée par
@@ -32,36 +33,57 @@ const importOpportunity = (overrides = {}) => ({
   ...overrides,
 });
 
-describe('OpportunityCard — difficulty badge (regression: FR backend value vs EN key comparison)', () => {
+describe('OpportunityCard — badge de difficulté (le serveur émet un code, pas un mot)', () => {
+  // Le serveur rendait le libellé FRANÇAIS directement, et cet écran comparait
+  // ce texte d'affichage à des clés anglaises : rien ne correspondait, et
+  // toutes les cartes sortaient « Difficile » en ambre quel que soit le niveau
+  // réel. Le serveur émet désormais `difficulty_code` — un identifiant, que
+  // ni la langue ni une relecture ne déplacent.
+  afterEach(() => i18n.changeLanguage('fr'));
+
   it.each([
-    ['Facile', 'Facile'],
-    ['Modéré', 'Modéré'],
-    ['Difficile', 'Difficile'],
-    ['Très difficile', 'Très difficile'],
-  ])('renders the actual backend difficulty "%s" as-is in French (not a mismatched fallback)', (backendValue, expected) => {
+    ['easy', 'Facile'],
+    ['moderate', 'Modéré'],
+    ['difficult', 'Difficile'],
+    ['very_difficult', 'Très difficile'],
+  ])('rend le code « %s » sous son libellé français', (code, expected) => {
     render(
       <OpportunityCard
-        opportunity={importOpportunity({ difficulty: backendValue })}
+        opportunity={importOpportunity({ difficulty_code: code })}
         type="import"
         language="fr"
       />
     );
-    // Le bug corrigé : avant, toute valeur ('Facile' comme 'Très difficile')
-    // s'affichait "Difficile" faute de correspondance avec les clés 'easy'/
-    // 'moderate'/'difficult'. On vérifie maintenant l'exactitude par valeur.
     expect(screen.getByText(expected)).toBeInTheDocument();
   });
 
-  it('translates the difficulty label in English mode', () => {
+  it('traduit le même code sans que le serveur change quoi que ce soit', async () => {
+    // Tout l'intérêt du code : la langue est une affaire d'écran. Le serveur
+    // renvoie « easy » dans les deux cas.
+    await i18n.changeLanguage('en');
     render(
       <OpportunityCard
-        opportunity={importOpportunity({ difficulty: 'Facile' })}
+        opportunity={importOpportunity({ difficulty_code: 'easy' })}
         type="import"
         language="en"
       />
     );
     expect(screen.getByText('Easy')).toBeInTheDocument();
     expect(screen.queryByText('Facile')).not.toBeInTheDocument();
+  });
+
+  it('accepte encore l’ancien champ `difficulty` d’un client non migré', () => {
+    // La compatibilité est une promesse tenue dans le service backend
+    // (`difficulty` reste servi en français, déprécié). Une promesse non
+    // testée n'en est pas une.
+    render(
+      <OpportunityCard
+        opportunity={importOpportunity({ difficulty: 'Modéré' })}
+        type="import"
+        language="fr"
+      />
+    );
+    expect(screen.getByText('Modéré')).toBeInTheDocument();
   });
 });
 

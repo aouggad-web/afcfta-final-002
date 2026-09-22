@@ -20,7 +20,8 @@ import {
 } from 'recharts';
 import { 
   Search, Package, TrendingUp, Globe, Factory,
-  ArrowRight, Loader2, ChevronRight, BarChart3, Building2, Sparkles, Info
+  ArrowRight, Loader2, ChevronRight, BarChart3, Building2, Sparkles, Info,
+  AlertCircle
 } from 'lucide-react';
 import { getCountryFlag } from '../../utils/countryCodes';
 import { useHsLabel } from '../../hooks/useHsLabel';
@@ -148,35 +149,19 @@ const DataBarChart = ({ data, barColor, title, valueKey = 'tradeValue' }) => {
 };
 
 // Market Share Trend Chart
-const MarketShareTrendChart = ({ trends, language }) => {
+const MarketShareTrendChart = ({ trends }) => {
+  const { t } = useTranslation();
   if (!trends || trends.length === 0) return null;
 
-  const texts = {
-    fr: {
-      title: "Tendances des Parts de Marché",
-      subtitle: "Évolution historique comparée aux moyennes régionale et mondiale",
-      countryValue: "Valeur Pays",
-      regionalAvg: "Moyenne Régionale",
-      globalAvg: "Moyenne Mondiale"
-    },
-    en: {
-      title: "Market Share Trends",
-      subtitle: "Historical evolution compared to regional and global averages",
-      countryValue: "Country Value",
-      regionalAvg: "Regional Average",
-      globalAvg: "Global Average"
-    }
-  };
 
-  const txt = texts[language] || texts.fr;
 
   return (
     <Card className="mt-8 shadow-lg">
       <CardHeader>
         <CardTitle className="text-xl font-black uppercase tracking-tight">
-          {txt.title}
+          {t('opportunities.productAnalysisView.trend.title')}
         </CardTitle>
-        <CardDescription>{txt.subtitle}</CardDescription>
+        <CardDescription>{t('opportunities.productAnalysisView.trend.subtitle')}</CardDescription>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
@@ -212,7 +197,7 @@ const MarketShareTrendChart = ({ trends, language }) => {
             <Line 
               type="monotone" 
               dataKey="countryValue" 
-              name={txt.countryValue}
+              name={t('opportunities.productAnalysisView.trend.countryValue')}
               stroke="#3b82f6" 
               strokeWidth={4} 
               dot={{ r: 6, strokeWidth: 2 }} 
@@ -221,7 +206,7 @@ const MarketShareTrendChart = ({ trends, language }) => {
             <Line 
               type="monotone" 
               dataKey="regionalAverage" 
-              name={txt.regionalAvg}
+              name={t('opportunities.productAnalysisView.trend.regionalAvg')}
               stroke="#10b981" 
               strokeWidth={3} 
               strokeDasharray="5 5" 
@@ -230,7 +215,7 @@ const MarketShareTrendChart = ({ trends, language }) => {
             <Line 
               type="monotone" 
               dataKey="globalAverage" 
-              name={txt.globalAvg}
+              name={t('opportunities.productAnalysisView.trend.globalAvg')}
               stroke="#f59e0b" 
               strokeWidth={2} 
               strokeDasharray="3 3" 
@@ -263,36 +248,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
     { code: '271111', name: 'Gaz naturel' }
   ];
 
-  const texts = {
-    fr: {
-      title: "Analyse par Produit",
-      subtitle: "Intelligence de marché détaillée par code HS",
-      searchLabel: "Code HS (6 chiffres)",
-      searchPlaceholder: "Ex: 090111 (Café)",
-      searchBtn: "Analyser",
-      popularProducts: "Produits populaires",
-      productionTitle: "Capacités de Production Africaines",
-      topImporters: "Principaux Importateurs",
-      topExporters: "Principaux Exportateurs",
-      noData: "Entrez un code HS pour voir l'analyse",
-      source: "Sources: FAOSTAT, UNIDO INDSTAT, USGS Minerals, UNCTADstat, ITC Trademap (2024)"
-    },
-    en: {
-      title: "Product Analysis",
-      subtitle: "Detailed market intelligence by HS code",
-      searchLabel: "HS Code (6 digits)",
-      searchPlaceholder: "Ex: 090111 (Coffee)",
-      searchBtn: "Analyze",
-      popularProducts: "Popular products",
-      productionTitle: "African Production Capacities",
-      topImporters: "Top Importers",
-      topExporters: "Top Exporters",
-      noData: "Enter an HS code to see the analysis",
-      source: "Sources: FAOSTAT, UNIDO INDSTAT, USGS Minerals, UNCTADstat, ITC Trademap (2024)"
-    }
-  };
 
-  const txt = texts[language] || texts.fr;
 
   // Search product data - NOW USES AI API
   const searchProduct = async () => {
@@ -371,16 +327,14 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           importers: [],
           exporters: [],
           marketShareTrends: [],
-          note: language === 'fr'
-            ? "Service d'analyse produit temporairement indisponible. Veuillez réessayer plus tard."
-            : 'Product analysis service temporarily unavailable. Please try again later.',
+          note: t('opportunities.productAnalysisView.productAnalysisServiceTemporarily'),
           isAiGenerated: false
         });
       }
 
     } catch (err) {
       console.error('Error fetching product data:', err);
-      setError('Erreur lors du chargement des données');
+      setError(t('opportunities.productAnalysisView.loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -462,10 +416,10 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         <div className="flex items-center justify-center gap-3 mb-2">
           <Package className="h-8 w-8 text-blue-600" />
           <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">
-            {txt.title}
+            {t('opportunities.productAnalysisView.title')}
           </h2>
         </div>
-        <p className="text-slate-500">{txt.subtitle}</p>
+        <p className="text-slate-500">{t('opportunities.productAnalysisView.subtitle')}</p>
       </div>
 
       {/* Search Section */}
@@ -473,11 +427,11 @@ export default function ProductAnalysisView({ language = 'fr' }) {
         <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
             <div className="md:col-span-2 space-y-2">
-              <Label className="text-sm font-medium">{txt.searchLabel}</Label>
+              <Label className="text-sm font-medium">{t('opportunities.productAnalysisView.searchLabel')}</Label>
               <Input
                 value={hsCode}
                 onChange={(e) => setHsCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                placeholder={txt.searchPlaceholder}
+                placeholder={t('opportunities.productAnalysisView.searchPlaceholder')}
                 className="text-lg font-mono"
                 data-testid="product-hs-input"
               />
@@ -488,7 +442,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               )}
               {/* Popular products */}
               <div className="flex flex-wrap gap-2 mt-2">
-                <span className="text-xs text-slate-500">{txt.popularProducts}:</span>
+                <span className="text-xs text-slate-500">{t('opportunities.productAnalysisView.popularProducts')}:</span>
                 {popularProducts.map((prod) => (
                   <button
                     key={prod.code}
@@ -515,7 +469,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               ) : (
                 <Search className="h-4 w-4 mr-2" />
               )}
-              {txt.searchBtn}
+              {t('opportunities.productAnalysisView.searchBtn')}
             </Button>
           </div>
         </CardContent>
@@ -527,7 +481,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
           {/* Data-status notice (e.g. OEC trade flows temporarily unavailable) */}
           {productData.note && (
             <div className="flex items-center gap-2 px-4 py-3 text-sm" style={{ background: 'rgba(212,137,26,0.08)', borderBottom: '1px solid rgba(212,137,26,0.25)' }}>
-              <Info className="h-4 w-4" style={{ color: '#d4891a', flexShrink: 0 }} />
+              <Info className="h-4 w-4" style={{ color: 'var(--gold)', flexShrink: 0 }} />
               <span>{productData.note}</span>
             </div>
           )}
@@ -551,42 +505,42 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                     const p = productData.product || {};
                     const usd = (v) => (v >= 1e9 ? `$${(v / 1e9).toFixed(2)}B` : v >= 1e6 ? `$${(v / 1e6).toFixed(1)}M` : `$${Math.round(v || 0).toLocaleString()}`);
                     return {
-                      badge: fr ? 'PAR PRODUIT' : 'BY PRODUCT',
+                      badge: t('opportunities.productAnalysisView.byProduct'),
                       title: `${p.name || ''} — SH6 ${p.hsCode || ''}`,
                       subtitle: `${p.hs2Name || ''} (${p.hs2Code || ''}) · ${p.hs4Name || ''} (${p.hs4Code || ''})`,
                       sections: [
                         productData.productionCapacities?.length && {
-                          title: fr ? 'Capacités de production africaines' : 'African production capacities',
+                          title: t('opportunities.productAnalysisView.africanProductionCapacities'),
                           table: {
                             columns: [
-                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
-                              { key: 'volume', label: fr ? 'Volume' : 'Volume', align: 'right', width: 1, fmt: (v, row) => `${Number(v || 0).toLocaleString()} ${row.unit || ''}` },
-                              { key: 'share', label: fr ? 'Part (%)' : 'Share (%)', align: 'right', width: 0.7, fmt: (v) => `${v ?? '—'}%` },
+                              { key: 'country', label: t('opportunities.productAnalysisView.country'), width: 2 },
+                              { key: 'volume', label: t('opportunities.productAnalysisView.volume'), align: 'right', width: 1, fmt: (v, row) => `${Number(v || 0).toLocaleString()} ${row.unit || ''}` },
+                              { key: 'share', label: t('opportunities.productAnalysisView.share'), align: 'right', width: 0.7, fmt: (v) => `${v ?? '—'}%` },
                             ],
                             rows: productData.productionCapacities,
                           },
                         },
                         productData.importers?.length && {
-                          title: txt.topImporters,
+                          title: t('opportunities.productAnalysisView.topImporters'),
                           table: {
                             columns: [
-                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
-                              { key: 'tradeValue', label: fr ? 'Importations' : 'Imports', align: 'right', width: 1, fmt: usd },
+                              { key: 'country', label: t('opportunities.productAnalysisView.country'), width: 2 },
+                              { key: 'tradeValue', label: t('opportunities.productAnalysisView.imports'), align: 'right', width: 1, fmt: usd },
                             ],
                             rows: productData.importers,
                           },
                         },
                         productData.exporters?.length && {
-                          title: txt.topExporters,
+                          title: t('opportunities.productAnalysisView.topExporters'),
                           table: {
                             columns: [
-                              { key: 'country', label: fr ? 'Pays' : 'Country', width: 2 },
-                              { key: 'tradeValue', label: fr ? 'Exportations' : 'Exports', align: 'right', width: 1, fmt: usd },
+                              { key: 'country', label: t('opportunities.productAnalysisView.country'), width: 2 },
+                              { key: 'tradeValue', label: t('opportunities.productAnalysisView.exports'), align: 'right', width: 1, fmt: usd },
                             ],
                             rows: productData.exporters,
                           },
                         },
-                        productData.note && { title: fr ? 'Note' : 'Note', paragraphs: [productData.note] },
+                        productData.note && { title: t('opportunities.productAnalysisView.note'), paragraphs: [productData.note] },
                       ].filter(Boolean),
                       source: (productData.sources || []).join(', '),
                       filename: opportunityPdfFilename('ParProduit', p.hsCode),
@@ -606,7 +560,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                 Code HS6: {productData.product.hsCode}
                 {productData.product.supplementaryUnitLabel && (
                   <span className="ml-2 inline-flex items-center rounded-full bg-white/15 px-2 py-0.5 text-xs font-semibold">
-                    {language === 'fr' ? 'Unité' : 'Unit'} : {productData.product.supplementaryUnitLabel}
+                    {t('opportunities.productAnalysisView.unit')} : {productData.product.supplementaryUnitLabel}
                   </span>
                 )}
               </p>
@@ -623,7 +577,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
                 <div className="flex items-center gap-4 mb-6">
                   <Factory className="h-6 w-6 text-emerald-600" />
                   <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">
-                    {txt.productionTitle}
+                    {t('opportunities.productAnalysisView.productionTitle')}
                   </h3>
                   <div className="flex-grow h-px bg-slate-200" />
                 </div>
@@ -641,7 +595,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               <Card className="bg-slate-50 border-0 shadow-sm">
                 <CardHeader className="border-l-4 border-blue-500 ml-4">
                   <CardTitle className="text-lg font-black uppercase tracking-tight text-slate-800">
-                    {txt.topImporters}
+                    {t('opportunities.productAnalysisView.topImporters')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -657,7 +611,7 @@ export default function ProductAnalysisView({ language = 'fr' }) {
               <Card className="bg-slate-50 border-0 shadow-sm">
                 <CardHeader className="border-l-4 border-emerald-500 ml-4">
                   <CardTitle className="text-lg font-black uppercase tracking-tight text-slate-800">
-                    {txt.topExporters}
+                    {t('opportunities.productAnalysisView.topExporters')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -672,28 +626,38 @@ export default function ProductAnalysisView({ language = 'fr' }) {
 
             {/* Market Share Trends (only when a real time series exists) */}
             {productData.marketShareTrends?.length > 0 && (
-              <MarketShareTrendChart
-                trends={productData.marketShareTrends}
-                language={language}
-              />
+              <MarketShareTrendChart trends={productData.marketShareTrends} />
             )}
           </CardContent>
         </Card>
       )}
 
+      {/* L'échec se disait au `console.error` et nulle part ailleurs : l'écran
+          retombait sur « aucune donnée », qui affirme tout autre chose. Un
+          lecteur en concluait que le produit n'existe pas et ressaisissait son
+          code, sans jamais apprendre que le service avait échoué. */}
+      {error && !loading && (
+        <Card className="bg-red-50 border-red-200" data-testid="product-analysis-error">
+          <CardContent className="py-8 flex items-center gap-3 justify-center">
+            <AlertCircle className="h-6 w-6 text-red-500 shrink-0" />
+            <p className="text-red-700">{error}</p>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Empty State */}
-      {!productData && !loading && (
+      {!productData && !loading && !error && (
         <Card className="bg-slate-50 border-slate-200">
           <CardContent className="py-16 text-center">
             <Package className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-500">{txt.noData}</p>
+            <p className="text-slate-500">{t('opportunities.productAnalysisView.noData')}</p>
           </CardContent>
         </Card>
       )}
 
       {/* Source Footer */}
       <div className="text-center">
-        <p className="text-xs text-slate-400 italic">{txt.source}</p>
+        <p className="text-xs text-slate-400 italic">{t('opportunities.productAnalysisView.source')}</p>
       </div>
     </div>
   );

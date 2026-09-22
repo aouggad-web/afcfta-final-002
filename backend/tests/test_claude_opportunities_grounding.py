@@ -718,8 +718,13 @@ def test_official_stats_mauritius_domestic_vs_reexport():
     assert stats["source"]["currency"] == "MUR"
     assert stats["source"]["data_year"] == 2023
     # Thon en conserve : 1er produit d'export DOMESTIQUE 2023 (11,5 Md MUR).
+    # Le montant se lit dans ``value``, et l'unité dans ``source`` : la clé
+    # portait autrefois la devise (``value_mur_mn``), ce qui aurait obligé
+    # chaque pays ajouté au registre à inventer la sienne. Le montant servi et
+    # les lignes d'ancrage sont inchangés.
     top = stats["top_domestic_export_product"]
-    assert top["hs4"] == "1604" and top["value_mur_mn"] == 11_500
+    assert top["hs4"] == "1604" and top["value"] == 11_500
+    assert stats["source"]["unit_short"] == "MUR Mn"
     # Les réexportations sont suivies SÉPARÉMENT — leurs marchés diffèrent
     # des marchés d'export domestique (Vietnam en tête des réexports).
     assert stats["top_reexport_markets"][0]["iso3"] == "VNM"

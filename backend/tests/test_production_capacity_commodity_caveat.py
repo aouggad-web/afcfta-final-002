@@ -68,8 +68,24 @@ def test_country_profile_banana_entry_has_methodology_caveat():
     # get_capacity("NGA", "080390") établit que la fixture contient bien des
     # données banane pour le Nigéria — l'entrée DOIT donc exister dans le profil,
     # sans quoi la propagation get_country_profile ne serait pas réellement testée.
+    #
+    # ``top_n`` est explicite parce que le profil est TRONQUÉ par part africaine
+    # décroissante. Tant que le pont ne portait que 92 commodités agricoles, la
+    # banane tenait dans les 20 premières du Nigéria par accident de rareté ;
+    # avec 151, vingt produits la devancent réellement. Le test porte sur la
+    # PROPAGATION du caveat, pas sur le rang de la banane — figer ce rang
+    # ferait échouer la suite à chaque fois que le référentiel s'enrichit.
     assert pcs.get_capacity("NGA", "080390").get("available")
-    profile = pcs.get_country_profile("NGA")
+    profile = pcs.get_country_profile("NGA", top_n=len(pcs.list_tracked_products()))
     bananas = [p for p in profile.get("products", []) if p.get("commodity") == "Bananas"]
     assert bananas, "attendu : une entrée « Bananas » dans le profil du Nigéria"
     assert bananas[0].get("commodity_caveat")
+
+
+def test_country_profile_is_truncated_and_ranked_by_african_share():
+    # Contrôle miroir du précédent : si la troncature disparaissait, le test
+    # ci-dessus passerait sans rien prouver de la propagation sur un profil réel.
+    profile = pcs.get_country_profile("NGA", top_n=5)
+    shares = [p["share_pct"] or 0.0 for p in profile["products"]]
+    assert len(profile["products"]) == 5
+    assert shares == sorted(shares, reverse=True)

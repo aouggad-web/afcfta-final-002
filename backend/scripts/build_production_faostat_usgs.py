@@ -49,6 +49,7 @@ SOURCES_DIR = BACKEND_DIR / "engine" / "sources"  # gitignored
 
 sys.path.insert(0, str(BACKEND_DIR))
 from etl.faostat_data import FAOSTAT_AGRICULTURE_DATA
+from etl.faostat_hs_mapping import FAOSTAT_AGGREGATE_ITEMS, FAOSTAT_REACHABLE_COMMODITIES
 from etl.unido_data import UNIDO_INDUSTRY_DATA
 
 # ── URLs FAOSTAT officielles ───────────────────────────────────────────────────
@@ -56,7 +57,13 @@ FAOSTAT_BULK_URL = (
     "https://fenixservices.fao.org/faostat/static/bulkdownloads/"
     "Production_Crops_Livestock_E_Africa.zip"
 )
-FAOSTAT_ELEMENT_CODE = "5510"  # Production quantity
+FAOSTAT_ELEMENT_CODE = "5510"  # Production quantity (tonnes)
+# Surface récoltée (ha) et rendement (kg/ha) : publiés par FAOSTAT dans le MÊME
+# fichier bulk, pour les items qui sont des cultures. Les unités du fichier
+# ('ha', 'kg/ha') correspondent exactement aux champs area_ha / yield_kg_ha du
+# schéma, restés vides jusqu'ici.
+FAOSTAT_ELEMENT_AREA = "5312"  # Area harvested (ha)
+FAOSTAT_ELEMENT_YIELD = "5412"  # Yield (kg/ha)
 YEARS_RANGE = set(range(2019, 2025))  # 2019–2024
 
 # ── Mapping : nom anglais FAOSTAT → ISO-3166-1 alpha-3 ───────────────────────
@@ -626,6 +633,9 @@ def fetch_faostat_bulk(
             raw_bytes = raw_bytes[3:]
 
         reader = csv.DictReader(io.StringIO(raw_bytes.decode("utf-8", errors="replace")))
+        # Deux passes sont nécessaires (surface/rendement d'abord, production
+        # ensuite) : le fichier tient largement en mémoire (~15 000 lignes).
+        all_rows = list(reader)
 
         # Le bulk FAOSTAT existe en deux formats :
         #   - LONG (« Normalized ») : une ligne par (pays, item, année), colonne "Year" ;
@@ -643,11 +653,73 @@ def fetch_faostat_bulk(
         if wide_format:
             print(f"      Format LARGE détecté ({len(year_columns)} colonnes années retenues)")
 
+        def _to_value(val_str: str) -> Optional[float]:
+            val_str = (val_str or "").strip()
+            if not val_str:
+                return None
+            try:
+                val = float(val_str)
+            except ValueError:
+                return None
+            return val if val > 0 else None
+
+        def _values_by_year(row: dict) -> dict[int, float]:
+            """{année: valeur} d'une ligne, quel que soit le format du bulk."""
+            if wide_format:
+                out = {}
+                for col, year in year_columns:
+                    val = _to_value(row.get(col, ""))
+                    if val is not None:
+                        out[year] = val
+                return out
+            try:
+                year = int(row.get("Year", "0").strip())
+            except ValueError:
+                return {}
+            if year not in YEARS_RANGE:
+                return {}
+            val = _to_value(row.get("Value", ""))
+            return {year: val} if val is not None else {}
+
+        # Passe 1 — surface récoltée (5312) et rendement (5412), indexés sur la
+        # clé naturelle du bulk (pays, item, année). Ces deux éléments ne sont
+        # publiés que pour les cultures : un item d'élevage ou un produit
+        # transformé n'en a pas, et gardera donc des champs vides — une absence,
+        # pas un zéro.
+        side: dict[str, dict[tuple[str, str, int], float]] = {
+            FAOSTAT_ELEMENT_AREA: {},
+            FAOSTAT_ELEMENT_YIELD: {},
+        }
+        for row in all_rows:
+            elem = row.get("Element Code", row.get("Element code", "")).strip()
+            if elem not in side:
+                continue
+            iso3 = _resolve_fao_country(row)
+            if not iso3:
+                continue
+            item_code = row.get("Item Code", row.get("Item code", "")).strip()
+            for year, val in _values_by_year(row).items():
+                side[elem][(iso3, item_code, year)] = val
+
+        n_area = len(side[FAOSTAT_ELEMENT_AREA])
+        n_yield = len(side[FAOSTAT_ELEMENT_YIELD])
+        print(f"      Surface récoltée : {n_area:,} points — rendement : {n_yield:,} points")
+
         total_rows = 0
         matched_rows = 0
         unknown_items: set[str] = set()
 
-        def _emit(iso3: str, commodity: str, item_code: str, unit: str, year: int, val: float):
+        def _emit(
+            iso3: str,
+            commodity: str,
+            item_code: str,
+            unit: str,
+            year: int,
+            val: float,
+            area_ha: Optional[float] = None,
+            yield_kg_ha: Optional[float] = None,
+            hs_reachable: bool = True,
+        ):
             records.append(
                 {
                     "country_name": ISO3_FR_NAME.get(iso3, iso3),
@@ -669,24 +741,23 @@ def fetch_faostat_bulk(
                     "commodity_label": commodity,
                     "element_code": "5510",
                     "element_label": "Production",
-                    "area_ha": None,
-                    "yield_kg_ha": None,
+                    "area_ha": area_ha,
+                    "yield_kg_ha": yield_kg_ha,
                     "rank_africa": None,
+                    # Aucun code SH ne mène à cette commodité : sa production
+                    # est réelle et publiée, mais une recherche par SH ne la
+                    # trouvera pas. La porter explicitement vaut mieux que de
+                    # la jeter — le chiffre reste lisible dans le profil du
+                    # pays, et l'absence de route SH est déclarée au lieu
+                    # d'être silencieuse.
+                    "hs_reachable": hs_reachable,
                     "_ingested_from": "FAOSTAT_BULK",
                 }
             )
 
-        def _to_value(val_str: str) -> Optional[float]:
-            val_str = (val_str or "").strip()
-            if not val_str:
-                return None
-            try:
-                val = float(val_str)
-            except ValueError:
-                return None
-            return val if val > 0 else None
-
-        for row in reader:
+        # Passe 2 — production, enrichie de la surface et du rendement publiés
+        # pour le même (pays, item, année).
+        for row in all_rows:
             total_rows += 1
 
             # Filtre élément : Production quantity uniquement
@@ -699,46 +770,71 @@ def fetch_faostat_bulk(
             if not iso3:
                 continue
 
-            # Résolution commodity
+            # Résolution commodity, en deux temps.
+            #
+            # 1. La table curée NORMALISE : elle réconcilie les variantes de
+            #    libellé d'un même produit selon le millésime FAOSTAT
+            #    ('Cassava' / 'Cassava, fresh'). Un item absent de cette table
+            #    n'est pas douteux pour autant : on retient alors le libellé
+            #    PUBLIÉ par la FAO, tel quel.
+            # 2. Le filtre d'atteignabilité porte l'invariant du dépôt — toute
+            #    commodité présente doit être joignable par un code SH, sans
+            #    quoi sa donnée est invisible au module Opportunités et le
+            #    besoin national retombe sur un proxy
+            #    (tests/test_hs_commodity_mapping.py). L'ensemble est dérivé de
+            #    la correspondance publiée CPC↔SH, pas maintenu à la main :
+            #    voir scripts/build_faostat_hs_mapping.py.
             item_raw = row.get("Item", "").strip()
-            commodity = FAOSTAT_ITEM_TO_COMMODITY.get(item_raw)
-            if not commodity:
-                unknown_items.add(item_raw)
+            if not item_raw:
                 continue
+            # Un AGRÉGAT (préfixe CPC « F1 ») totalise des productions déjà
+            # portées ligne à ligne : « Meat, Total » recouvre la volaille, le
+            # bœuf et le mouton. Le garder ferait compter deux fois la même
+            # récolte et le ferait remonter en tête de tout classement par
+            # volume. Il était écarté jusqu'ici par EFFET DE BORD du filtre
+            # d'atteignabilité ; maintenant que ce filtre ne jette plus rien,
+            # la règle doit être dite — et elle l'est par la correspondance
+            # publiée, pas à la main (voir etl/faostat_hs_mapping.py).
+            if item_raw in FAOSTAT_AGGREGATE_ITEMS:
+                continue
+
+            commodity = FAOSTAT_ITEM_TO_COMMODITY.get(item_raw, item_raw)
+            # Écarter ces lignes était une perte sèche : la production est
+            # publiée par la FAO, seule la ROUTE SH manque. On les garde donc,
+            # marquées ``hs_reachable: False``. L'invariant du dépôt devient :
+            # toute commodité est joignable par un code SH, OU dit pourquoi
+            # elle ne l'est pas.
+            hs_reachable = commodity in FAOSTAT_REACHABLE_COMMODITIES
+            if not hs_reachable:
+                unknown_items.add(item_raw)
 
             # Unité (FAOSTAT bulk utilise "t" pour tonnes)
             raw_unit = row.get("Unit", "t").strip()
             unit = "tonnes" if raw_unit in ("t", "T") else raw_unit
             item_code = row.get("Item Code", row.get("Item code", "")).strip()
 
-            if wide_format:
-                # Une ligne = toutes les années : émettre un enregistrement par
-                # colonne Y#### non vide dans la plage.
-                for col, year in year_columns:
-                    val = _to_value(row.get(col, ""))
-                    if val is None:
-                        continue
-                    _emit(iso3, commodity, item_code, unit, year, val)
-                    matched_rows += 1
-            else:
-                try:
-                    year = int(row.get("Year", "0").strip())
-                except ValueError:
-                    continue
-                if year not in YEARS_RANGE:
-                    continue
-                val = _to_value(row.get("Value", ""))
-                if val is None:
-                    continue
-                _emit(iso3, commodity, item_code, unit, year, val)
+            for year, val in _values_by_year(row).items():
+                side_key = (iso3, item_code, year)
+                _emit(
+                    iso3,
+                    commodity,
+                    item_code,
+                    unit,
+                    year,
+                    val,
+                    area_ha=side[FAOSTAT_ELEMENT_AREA].get(side_key),
+                    yield_kg_ha=side[FAOSTAT_ELEMENT_YIELD].get(side_key),
+                    hs_reachable=hs_reachable,
+                )
                 matched_rows += 1
 
         print(f"      {total_rows:,} lignes lues → {matched_rows:,} retenues")
         if unknown_items:
-            sample = sorted(unknown_items)[:15]
-            print(f"      Items FAOSTAT non mappés (ignorés, {len(unknown_items)} total) :")
-            for it in sample:
-                print(f"        - {it!r}")
+            print(
+                f"      Items CONSERVÉS mais sans route SH : {len(unknown_items)} "
+                "(marqués hs_reachable=False ; un même SH recouvre plusieurs "
+                "commodités — voir etl/faostat_hs_mapping.py)"
+            )
 
         return records
 
@@ -755,15 +851,59 @@ def fetch_faostat_bulk(
 
 
 def _merge_agri_duplicates(records: list[dict]) -> list[dict]:
-    """Fusionne les doublons (iso3, commodity, year) en sommant les valeurs."""
+    """Fusionne les doublons (iso3, commodity, year).
+
+    Des doublons apparaissent quand plusieurs items FAOSTAT retombent sur la
+    même commodité — le plus souvent deux libellés d'un même produit selon le
+    millésime FAOSTAT, parfois deux produits réellement distincts.
+
+    Production et surface sont des grandeurs extensives : elles s'additionnent.
+    Le rendement ne l'est pas — c'est un rapport, et la somme de deux rendements
+    ne veut rien dire. Lors d'une fusion effective, il est donc VIDÉ plutôt que
+    recalculé : un rendement recalculé ne serait plus un chiffre publié par la
+    FAO, et le contrat de ce script est de ne servir que du publié.
+    """
     merged: dict[tuple, dict] = {}
     for r in records:
         key = (r["country_iso3"], r["commodity_label"], r["year"])
-        if key in merged:
-            merged[key]["value"] += r["value"]
-        else:
+        prev = merged.get(key)
+        if prev is None:
             merged[key] = dict(r)
+            continue
+        prev["value"] += r["value"]
+        if prev.get("area_ha") is not None or r.get("area_ha") is not None:
+            prev["area_ha"] = (prev.get("area_ha") or 0) + (r.get("area_ha") or 0)
+        prev["yield_kg_ha"] = None
     return list(merged.values())
+
+
+def _assign_africa_ranks(records: list[dict]) -> list[dict]:
+    """Renseigne ``rank_africa`` : rang continental du pays pour (produit, année).
+
+    Le champ est déclaré par le schéma depuis l'origine et n'a jamais été
+    rempli. Le calculer ici plutôt qu'à la lecture évite de refaire le tri à
+    chaque appel d'API, et rend le classement identique partout.
+
+    Rang 1 = premier producteur africain du produit cette année-là. Le
+    classement ne porte que sur les pays effectivement publiés : un pays absent
+    n'est pas dernier, il est absent. Les ex æquo reçoivent le même rang.
+    """
+    by_group: dict[tuple, list[dict]] = {}
+    for r in records:
+        by_group.setdefault((r["commodity_label"], r["year"]), []).append(r)
+
+    for group in by_group.values():
+        group.sort(key=lambda r: r["value"], reverse=True)
+        previous_value = None
+        previous_rank = 0
+        for position, rec in enumerate(group, start=1):
+            if previous_value is not None and rec["value"] == previous_value:
+                rec["rank_africa"] = previous_rank
+            else:
+                rec["rank_africa"] = position
+                previous_rank = position
+            previous_value = rec["value"]
+    return records
 
 
 # =============================================================================
@@ -993,7 +1133,7 @@ def main() -> None:
         fao_records = fetch_faostat_bulk(force_download=args.force_download)
 
         if fao_records and len(fao_records) > 200:
-            agri_final = _merge_agri_duplicates(fao_records)
+            agri_final = _assign_africa_ranks(_merge_agri_duplicates(fao_records))
             print(f"   → {len(agri_final)} enregistrements agri (bulk FAOSTAT)")
         else:
             if fao_records is None:
@@ -1003,7 +1143,7 @@ def main() -> None:
                     f"   Données bulk insuffisantes ({len(fao_records)} lignes) — "
                     "fallback sur données curées FAO."
                 )
-            agri_final = curated.build_agriculture()
+            agri_final = _assign_africa_ranks(curated.build_agriculture())
             print(f"   → {len(agri_final)} enregistrements agri (curé FAO)")
 
     # ── Mines : USGS multi-années (curé) ou Excel local ───────────────────

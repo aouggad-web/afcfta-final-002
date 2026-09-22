@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -13,66 +14,8 @@ const API = `${BACKEND_URL}/api`;
 const CHART_COLORS = ['#3b82f6', '#2563eb', '#1d4ed8', '#1e40af', '#1e3a8a', '#60a5fa', '#93c5fd', '#bfdbfe'];
 
 // Libellés officiels ISIC Rev.4, divisions manufacturières (Section C, 10-33).
-const ISIC_DIVISION_LABELS = {
-  fr: {
-    '10': 'Produits alimentaires', '11': 'Boissons', '12': 'Produits du tabac',
-    '13': 'Textiles', '14': "Articles d'habillement", '15': 'Cuir et articles de cuir',
-    '16': 'Bois et articles en bois', '17': 'Papier et articles en papier',
-    '18': 'Imprimerie et reproduction', '19': 'Cokéfaction et raffinage',
-    '20': 'Produits chimiques', '21': 'Produits pharmaceutiques',
-    '22': 'Caoutchouc et plastiques', '23': 'Minéraux non métalliques',
-    '24': 'Métallurgie de base', '25': 'Ouvrages en métaux',
-    '26': 'Produits informatiques et électroniques', '27': 'Équipements électriques',
-    '28': 'Machines et équipements', '29': 'Véhicules automobiles',
-    '30': 'Autres matériels de transport', '31': 'Meubles',
-    '32': 'Autres industries manufacturières', '33': 'Réparation et installation',
-  },
-  en: {
-    '10': 'Food products', '11': 'Beverages', '12': 'Tobacco products',
-    '13': 'Textiles', '14': 'Wearing apparel', '15': 'Leather and related products',
-    '16': 'Wood and products of wood', '17': 'Paper and paper products',
-    '18': 'Printing and reproduction', '19': 'Coke and refined petroleum',
-    '20': 'Chemicals', '21': 'Pharmaceuticals',
-    '22': 'Rubber and plastics', '23': 'Non-metallic mineral products',
-    '24': 'Basic metals', '25': 'Fabricated metal products',
-    '26': 'Computer, electronic and optical products', '27': 'Electrical equipment',
-    '28': 'Machinery and equipment', '29': 'Motor vehicles',
-    '30': 'Other transport equipment', '31': 'Furniture',
-    '32': 'Other manufacturing', '33': 'Repair and installation of machinery',
-  },
-};
 
 // Libellés des indicateurs UNIDO IDSB (estimations dérivées) + INDSTAT (statistiques officielles).
-const ISIC4_INDICATOR_LABELS = {
-  fr: {
-    output_usd: 'Production (IDSB)',
-    imports_world_usd: 'Importations mondiales',
-    exports_world_usd: 'Exportations mondiales',
-    apparent_consumption_usd: 'Consommation apparente',
-    establishments: 'Établissements',
-    employees: 'Emplois',
-    female_employees: 'Emplois (femmes)',
-    wages_salaries_usd: 'Salaires et traitements',
-    output_usd_official: 'Production (INDSTAT, officiel)',
-    value_added_usd: 'Valeur ajoutée',
-    gross_fixed_capital_formation_usd: 'FBCF',
-    share_mva_pct: 'Part de la MVA (estimée)',
-  },
-  en: {
-    output_usd: 'Output (IDSB)',
-    imports_world_usd: 'Imports World',
-    exports_world_usd: 'Exports World',
-    apparent_consumption_usd: 'Apparent Consumption',
-    establishments: 'Establishments',
-    employees: 'Employees',
-    female_employees: 'Female employees',
-    wages_salaries_usd: 'Wages and salaries',
-    output_usd_official: 'Output (INDSTAT, official)',
-    value_added_usd: 'Value added',
-    gross_fixed_capital_formation_usd: 'Gross fixed capital formation',
-    share_mva_pct: 'Share of MVA (estimated)',
-  },
-};
 
 // Ordre d'affichage stable des indicateurs (IDSB puis INDSTAT).
 const ISIC4_INDICATOR_ORDER = [
@@ -103,6 +46,7 @@ const USD_INDICATORS = new Set([
 ]);
 
 function ProductionManufacturing({ language = 'fr' }) {
+  const { t } = useTranslation();
   const [selectedCountry, setSelectedCountry] = useState('MAR');
   const [unidoData, setUnidoData] = useState(null);
   const [unidoStats, setUnidoStats] = useState(null);
@@ -126,75 +70,6 @@ function ProductionManufacturing({ language = 'fr' }) {
   const isic4DetailRef = useRef(null);
 
   // Translations
-  const texts = {
-    fr: {
-      title: "Production Industrielle UNIDO",
-      subtitle: "Données UNIDO INDSTAT4 - Valeur Ajoutée Manufacturière (2023)",
-      totalMva: "MVA Total",
-      countries: "pays",
-      loading: "Chargement des données UNIDO...",
-      noData: "Données non disponibles",
-      noDataDesc: "Aucune donnée UNIDO disponible pour ce pays.",
-      mvaLabel: "Valeur Ajoutée Manuf.",
-      inAfrica: "en Afrique",
-      mvaGdp: "MVA / PIB",
-      industrialShare: "Part industrielle du PIB",
-      mvaPerCapita: "MVA par habitant",
-      industrialization: "Industrialisation per capita",
-      growth2023: "Croissance 2023",
-      annualGrowth: "Taux de croissance annuel",
-      data: "Données",
-      industrialZones: "zones industrielles",
-      industrialJobs: "Emplois industriels",
-      manufExports: "Export. manufacturées",
-      keySectors: "Secteurs clés",
-      specialZones: "Zones éco. spéciales",
-      sectorDistribution: "Répartition Sectorielle (% MVA)",
-      sectorValue: "Valeur par Secteur (Millions USD)",
-      mainIndustrialSectors: "Principaux Secteurs Industriels",
-      keyProducts: "Produits Manufacturés Clés",
-      top10Africa: "Top 10 Africain - Valeur Ajoutée Manufacturière",
-      otherCountries: "Autres pays",
-      selectedCountry: "Pays sélectionné",
-      source: "Source:",
-      sourceNote: "Les données proviennent de la base UNIDO INDSTAT4 (Organisation des Nations Unies pour le Développement Industriel). La classification sectorielle suit la nomenclature ISIC Rev.4.",
-      value: "Valeur"
-    },
-    en: {
-      title: "UNIDO Industrial Production",
-      subtitle: "UNIDO INDSTAT4 Data - Manufacturing Value Added (2023)",
-      totalMva: "Total MVA",
-      countries: "countries",
-      loading: "Loading UNIDO data...",
-      noData: "Data not available",
-      noDataDesc: "No UNIDO data available for this country.",
-      mvaLabel: "Manufacturing Value Added",
-      inAfrica: "in Africa",
-      mvaGdp: "MVA / GDP",
-      industrialShare: "Industrial share of GDP",
-      mvaPerCapita: "MVA per capita",
-      industrialization: "Per capita industrialization",
-      growth2023: "2023 Growth",
-      annualGrowth: "Annual growth rate",
-      data: "Data",
-      industrialZones: "industrial zones",
-      industrialJobs: "Industrial jobs",
-      manufExports: "Manuf. exports",
-      keySectors: "Key sectors",
-      specialZones: "Special eco. zones",
-      sectorDistribution: "Sectoral Distribution (% MVA)",
-      sectorValue: "Value by Sector (Millions USD)",
-      mainIndustrialSectors: "Main Industrial Sectors",
-      keyProducts: "Key Manufactured Products",
-      top10Africa: "African Top 10 - Manufacturing Value Added",
-      otherCountries: "Other countries",
-      selectedCountry: "Selected country",
-      source: "Source:",
-      sourceNote: "Data comes from the UNIDO INDSTAT4 database (United Nations Industrial Development Organization). Sectoral classification follows the ISIC Rev.4 nomenclature.",
-      value: "Value"
-    }
-  };
-  const t = texts[language] || texts.fr;
 
   useEffect(() => {
     fetchUnidoStats();
@@ -367,7 +242,9 @@ function ProductionManufacturing({ language = 'fr' }) {
         const stats = divisionStats[division] || {};
         return {
           division,
-          label: ISIC_DIVISION_LABELS[language]?.[division] || ISIC_DIVISION_LABELS.fr[division] || stats.sourceName || division,
+          label: t(`production.manufacturing.isicDivision.${division}`, {
+            defaultValue: stats.sourceName || division,
+          }),
           shareMva: stats.shareMva ?? null,
           valueMlnUsd: stats.valueMlnUsd ?? null,
           sectors: groups[division].sort((a, b) => a.isic4.localeCompare(b.isic4)),
@@ -493,18 +370,18 @@ function ProductionManufacturing({ language = 'fr' }) {
             <div>
               <CardTitle className="text-3xl font-bold flex items-center gap-3">
                 <Factory className="w-8 h-8" />
-                {t.title}
+                {t('production.manufacturing.panel.title')}
               </CardTitle>
               <CardDescription className="text-blue-100 text-lg mt-2">
-                {t.subtitle}
+                {t('production.manufacturing.panel.subtitle')}
               </CardDescription>
             </div>
             {unidoStats && (
               <div className="text-right">
                 <Badge className="bg-white/20 text-white hover:bg-white/30">
-                  ${unidoStats.total_mva_bln_usd}B {t.totalMva}
+                  ${unidoStats.total_mva_bln_usd}B {t('production.manufacturing.panel.totalMva')}
                 </Badge>
-                <p className="text-xs text-blue-200 mt-1">{unidoStats.total_countries} {t.countries}</p>
+                <p className="text-xs text-blue-200 mt-1">{unidoStats.total_countries} {t('production.manufacturing.panel.countries')}</p>
               </div>
             )}
           </div>
@@ -518,7 +395,7 @@ function ProductionManufacturing({ language = 'fr' }) {
             <EnhancedCountrySelector
               value={selectedCountry}
               onChange={setSelectedCountry}
-              label={language === 'en' ? "Select an African country" : "Sélectionner un pays africain"}
+              label={t('production.manufacturing.panel.selectAnAfricanCountry')}
               variant="prominent"
               language={language}
             />
@@ -532,7 +409,7 @@ function ProductionManufacturing({ language = 'fr' }) {
           <CardContent className="flex items-center justify-center h-48">
             <div className="text-center">
               <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto" />
-              <p className="mt-4 text-gray-600">{t.loading}</p>
+              <p className="mt-4 text-gray-600">{t('production.manufacturing.panel.loading')}</p>
             </div>
           </CardContent>
         </Card>
@@ -544,8 +421,8 @@ function ProductionManufacturing({ language = 'fr' }) {
           <CardContent className="flex items-center gap-4 py-8">
             <AlertTriangle className="w-12 h-12 text-amber-500" />
             <div>
-              <h3 className="font-bold text-lg text-gray-800">{t.noData}</h3>
-              <p className="text-gray-600">{t.noDataDesc}</p>
+              <h3 className="font-bold text-lg text-gray-800">{t('production.manufacturing.panel.noData')}</h3>
+              <p className="text-gray-600">{t('production.manufacturing.panel.noDataDesc')}</p>
             </div>
           </CardContent>
         </Card>
@@ -560,14 +437,14 @@ function ProductionManufacturing({ language = 'fr' }) {
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-blue-100 text-sm">{t.mvaLabel}</p>
+                    <p className="text-blue-100 text-sm">{t('production.manufacturing.panel.mvaLabel')}</p>
                     <p className="text-3xl font-bold">${formatNumber(unidoData.mva_2023_mln_usd * 1000000)}</p>
                   </div>
                   <DollarSign className="w-10 h-10 text-blue-200" />
                 </div>
                 {getCountryRank() && (
                   <Badge className="mt-3 bg-white/20 text-white">
-                    #{getCountryRank()} {t.inAfrica}
+                    #{getCountryRank()} {t('production.manufacturing.panel.inAfrica')}
                   </Badge>
                 )}
               </CardContent>
@@ -577,12 +454,12 @@ function ProductionManufacturing({ language = 'fr' }) {
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-emerald-100 text-sm">{t.mvaGdp}</p>
+                    <p className="text-emerald-100 text-sm">{t('production.manufacturing.panel.mvaGdp')}</p>
                     <p className="text-3xl font-bold">{unidoData.mva_gdp_percent}%</p>
                   </div>
                   <TrendingUp className="w-10 h-10 text-emerald-200" />
                 </div>
-                <p className="text-sm text-emerald-100 mt-2">{t.industrialShare}</p>
+                <p className="text-sm text-emerald-100 mt-2">{t('production.manufacturing.panel.industrialShare')}</p>
               </CardContent>
             </Card>
 
@@ -590,12 +467,12 @@ function ProductionManufacturing({ language = 'fr' }) {
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-purple-100 text-sm">{t.mvaPerCapita}</p>
+                    <p className="text-purple-100 text-sm">{t('production.manufacturing.panel.mvaPerCapita')}</p>
                     <p className="text-3xl font-bold">${unidoData.mva_per_capita_usd}</p>
                   </div>
                   <Users className="w-10 h-10 text-purple-200" />
                 </div>
-                <p className="text-sm text-purple-100 mt-2">{t.industrialization}</p>
+                <p className="text-sm text-purple-100 mt-2">{t('production.manufacturing.panel.industrialization')}</p>
               </CardContent>
             </Card>
 
@@ -603,14 +480,14 @@ function ProductionManufacturing({ language = 'fr' }) {
               <CardContent className="pt-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-amber-100 text-sm">{t.growth2023}</p>
+                    <p className="text-amber-100 text-sm">{t('production.manufacturing.panel.growth2023')}</p>
                     <p className="text-3xl font-bold">
                       {unidoData.growth_rate_2023 > 0 ? '+' : ''}{unidoData.growth_rate_2023}%
                     </p>
                   </div>
                   <TrendingUp className="w-10 h-10 text-amber-200" />
                 </div>
-                <p className="text-sm text-amber-100 mt-2">{t.annualGrowth}</p>
+                <p className="text-sm text-amber-100 mt-2">{t('production.manufacturing.panel.annualGrowth')}</p>
               </CardContent>
             </Card>
           </div>
@@ -624,10 +501,10 @@ function ProductionManufacturing({ language = 'fr' }) {
               </CardTitle>
               <CardDescription className="text-blue-700 flex items-center gap-2 flex-wrap">
                 <Badge variant="outline" className="border-blue-500 text-blue-700">{unidoData.region}</Badge>
-                <Badge variant="outline" className="border-blue-500 text-blue-700">{t.data} {unidoData.data_year}</Badge>
+                <Badge variant="outline" className="border-blue-500 text-blue-700">{t('production.manufacturing.panel.data')} {unidoData.data_year}</Badge>
                 {unidoData.industrial_zones && (
                   <Badge variant="outline" className="border-blue-500 text-blue-700">
-                    <Building2 className="w-3 h-3 mr-1" /> {unidoData.industrial_zones} {t.industrialZones}
+                    <Building2 className="w-3 h-3 mr-1" /> {unidoData.industrial_zones} {t('production.manufacturing.panel.industrialZones')}
                   </Badge>
                 )}
               </CardDescription>
@@ -637,25 +514,25 @@ function ProductionManufacturing({ language = 'fr' }) {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                 {unidoData.industry_employment && (
                   <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-100">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t.industrialJobs}</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t('production.manufacturing.panel.industrialJobs')}</p>
                     <p className="text-2xl font-bold text-blue-700">{formatNumber(unidoData.industry_employment)}</p>
                   </div>
                 )}
                 {unidoData.exports_manuf_mln_usd && (
                   <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-100">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t.manufExports}</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t('production.manufacturing.panel.manufExports')}</p>
                     <p className="text-2xl font-bold text-green-700">${formatNumber(unidoData.exports_manuf_mln_usd * 1000000)}</p>
                   </div>
                 )}
                 {unidoData.top_sectors && (
                   <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-100">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t.keySectors}</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t('production.manufacturing.panel.keySectors')}</p>
                     <p className="text-2xl font-bold text-blue-700">{unidoData.top_sectors.length}</p>
                   </div>
                 )}
                 {unidoData.special_economic_zones && (
                   <div className="bg-white p-4 rounded-xl shadow-sm border border-blue-100">
-                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t.specialZones}</p>
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">{t('production.manufacturing.panel.specialZones')}</p>
                     <p className="text-2xl font-bold text-purple-700">{unidoData.special_economic_zones}</p>
                   </div>
                 )}
@@ -670,7 +547,7 @@ function ProductionManufacturing({ language = 'fr' }) {
               <Card className="shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-lg text-gray-700 flex items-center gap-2">
-                    <Package className="w-5 h-5" /> {t.sectorDistribution}
+                    <Package className="w-5 h-5" /> {t('production.manufacturing.panel.sectorDistribution')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -688,7 +565,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                           <Cell key={`cell-${index}`} fill={entry.fill} />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(value) => value + '% ' + (language === 'en' ? 'of MVA' : 'de la MVA')} />
+                      <Tooltip formatter={(value) => value + '% ' + t('production.manufacturing.panel.mva')} />
                       <Legend />
                     </PieChart>
                   </ResponsiveContainer>
@@ -699,7 +576,7 @@ function ProductionManufacturing({ language = 'fr' }) {
               <Card className="shadow-lg">
                 <CardHeader>
                   <CardTitle className="text-lg text-gray-700 flex items-center gap-2">
-                    <Factory className="w-5 h-5" /> {t.sectorValue}
+                    <Factory className="w-5 h-5" /> {t('production.manufacturing.panel.sectorValue')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -709,7 +586,7 @@ function ProductionManufacturing({ language = 'fr' }) {
                       <XAxis type="number" tickFormatter={(v) => `$${formatNumber(v * 1000000)}`} />
                       <YAxis type="category" dataKey="name" width={120} tick={{ fontSize: 11 }} />
                       <Tooltip 
-                        formatter={(value) => [`$${formatNumber(value * 1000000)}`, t.value]}
+                        formatter={(value) => [`$${formatNumber(value * 1000000)}`, t('production.manufacturing.panel.value')]}
                         labelFormatter={(label) => prepareSectorBarData().find(d => d.name === label)?.fullName || label}
                       />
                       <Bar dataKey="value" fill="#3b82f6" radius={[0, 4, 4, 0]} />
@@ -726,12 +603,12 @@ function ProductionManufacturing({ language = 'fr' }) {
             <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50">
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <CardTitle className="text-xl text-blue-700 flex items-center gap-2">
-                  <Award className="w-5 h-5" /> {t.mainIndustrialSectors}
+                  <Award className="w-5 h-5" /> {t('production.manufacturing.panel.mainIndustrialSectors')}
                 </CardTitle>
                 {isic4Status === 'ready' && (
                   <div className="flex items-center gap-2 flex-wrap">
                     <Badge variant="outline" className="text-xs">
-                      {isic4Sectors.length} {language === 'fr' ? 'classes ISIC 4 chiffres' : 'ISIC 4-digit classes'}
+                      {isic4Sectors.length} {t('production.manufacturing.panel.isic4DigitClasses')}
                     </Badge>
                     {/* Trois natures distinctes, jamais deux pastilles à la fois :
                         structure estimée hors couverture, estimations dérivées
@@ -740,15 +617,15 @@ function ProductionManufacturing({ language = 'fr' }) {
                         mesuré. */}
                     {isic4Basis === 'ESTIMATED_FROM_ISIC2' ? (
                       <Badge className="text-xs bg-amber-500 hover:bg-amber-500 text-white">
-                        {language === 'fr' ? 'Structure estimée' : 'Estimated structure'}
+                        {t('production.manufacturing.panel.estimatedStructure')}
                       </Badge>
                     ) : isic4DataQuality?.is_fully_estimated ? (
                       <Badge className="text-xs bg-sky-600 hover:bg-sky-600 text-white">
-                        {language === 'fr' ? 'Estimations dérivées UNIDO' : 'UNIDO derived estimates'}
+                        {t('production.manufacturing.panel.unidoDerivedEstimates')}
                       </Badge>
                     ) : (
                       <Badge className="text-xs bg-emerald-600 hover:bg-emerald-600 text-white">
-                        {language === 'fr' ? 'Mesuré (UNIDO)' : 'Measured (UNIDO)'}
+                        {t('production.manufacturing.panel.measuredUnido')}
                       </Badge>
                     )}
                     <button
@@ -759,79 +636,65 @@ function ProductionManufacturing({ language = 'fr' }) {
                     >
                       {pdfBusy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
                       {pdfBusy
-                        ? (language === 'fr' ? 'Génération...' : 'Generating...')
-                        : (language === 'fr' ? 'Exporter en PDF' : 'Export to PDF')}
+                        ? t('production.manufacturing.panel.generating')
+                        : t('production.manufacturing.panel.exportPdf')}
                     </button>
                   </div>
                 )}
               </div>
               <CardDescription className="text-blue-700 text-xs mt-1">
-                {language === 'fr'
-                  ? 'Source : UNIDO Statistics Data Portal — IDSB (imports/exports/conso. apparente/production, estimations dérivées) + INDSTAT (production/valeur ajoutée/emplois, statistiques officielles), 2018-2024.'
-                  : 'Source: UNIDO Statistics Data Portal — IDSB (imports/exports/apparent consumption/output, derived estimates) + INDSTAT (output/value added/employment, official statistics), 2018-2024.'}
+                {t('production.manufacturing.panel.sourceUnidoStatisticsData')}
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
               {isic4Status === 'loading' && (
                 <p className="text-sm text-gray-500 py-6 text-center">
                   <Loader2 className="w-4 h-4 inline animate-spin mr-2" />
-                  {language === 'fr' ? 'Chargement...' : 'Loading...'}
+                  {t('production.manufacturing.panel.loadingShort')}
                 </p>
               )}
               {isic4Status === 'error' && (
                 <div className="text-sm text-red-600 flex items-center justify-between gap-2 py-4">
-                  <span>{language === 'fr' ? 'Erreur lors du chargement des données ISIC4.' : 'Failed to load ISIC4 data.'}</span>
+                  <span>{t('production.manufacturing.panel.failedLoadIsic4Data')}</span>
                   <button type="button" className="underline hover:no-underline" onClick={() => fetchIsic4Sectors(selectedCountry)}>
-                    {language === 'fr' ? 'Réessayer' : 'Retry'}
+                    {t('production.manufacturing.panel.retry')}
                   </button>
                 </div>
               )}
               {isic4Status === 'no_data' && (
                 <p className="text-sm text-gray-500 py-4 flex items-center gap-2">
                   <Info className="w-4 h-4 shrink-0" />
-                  {language === 'fr'
-                    ? 'Aucune donnée ISIC4 UNIDO IDSB/INDSTAT disponible pour ce pays.'
-                    : 'No UNIDO IDSB/INDSTAT ISIC4 data available for this country.'}
+                  {t('production.manufacturing.panel.noUnidoIdsbIndstat')}
                 </p>
               )}
               {isic4Status === 'ready' && isic4Sectors.length === 0 && (
                 <p className="text-sm text-gray-500 py-4">
-                  {language === 'fr' ? 'Aucun secteur ISIC4 pour ce pays.' : 'No ISIC4 sector for this country.'}
+                  {t('production.manufacturing.panel.noIsic4SectorFor')}
                 </p>
               )}
               {isic4Status === 'ready' && isic4Basis === 'ESTIMATED_FROM_ISIC2' && (
                 <div className="mb-5 rounded-lg border-l-4 border-amber-500 bg-amber-50 px-4 py-3">
                   <p className="text-sm font-semibold text-amber-900 flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4 shrink-0" />
-                    {language === 'fr'
-                      ? 'Ces chiffres sont des estimations de structure, pas des mesures.'
-                      : 'These figures are structural estimates, not measurements.'}
+                    {t('production.manufacturing.panel.theseFiguresAreStructural')}
                   </p>
                   <ul className="text-xs text-amber-900/90 mt-2 space-y-1 list-disc list-inside">
                     <li>
-                      {language === 'fr'
-                        ? "UNIDO ne publie pas de statistiques au niveau de la classe ISIC 4 chiffres pour ce pays. La part de valeur ajoutée manufacturière de chaque division ISIC 2 chiffres — celle-là réelle — est répartie à parts égales entre les classes de la division."
-                        : 'UNIDO publishes no ISIC 4-digit class statistics for this country. Each ISIC 2-digit division\u2019s manufacturing value-added share \u2014 that figure being real \u2014 is split equally across the classes of the division.'}
+                      {t('production.manufacturing.panel.unidoPublishesNoIsic')}
                     </li>
                     <li>
-                      {language === 'fr'
-                        ? "Toutes les classes d'une même division portent donc la même valeur : ces chiffres situent un secteur, ils ne permettent pas de comparer deux classes entre elles."
-                        : 'Every class within a division therefore carries the same value: these figures place a sector, they cannot rank two classes against each other.'}
+                      {t('production.manufacturing.panel.everyClassWithinDivision')}
                     </li>
                     <li>
-                      {language === 'fr'
-                        ? "Seuls les secteurs principaux du pays sont couverts, pas les 24 divisions manufacturières 10-33. Une division absente n'est pas nulle : elle n'est pas renseignée."
-                        : 'Only the country\u2019s main sectors are covered, not all 24 manufacturing divisions 10-33. A missing division is not zero: it is not documented.'}
+                      {t('production.manufacturing.panel.onlyCountryU2019sMain')}
                     </li>
                     <li>
-                      {language === 'fr'
-                        ? "Aucune série temporelle n'existe à ce niveau pour ce pays."
-                        : 'No time series exists at this level for this country.'}
+                      {t('production.manufacturing.panel.noTimeSeriesExists')}
                     </li>
                   </ul>
                   {isic4Method?.source && (
                     <p className="text-[11px] text-amber-800/80 mt-2">
-                      {language === 'fr' ? 'Source : ' : 'Source: '}{isic4Method.source}
+                      {t('production.manufacturing.panel.sourcePrefix')}{isic4Method.source}
                     </p>
                   )}
                 </div>
@@ -853,7 +716,6 @@ function ProductionManufacturing({ language = 'fr' }) {
                         sectors={sectors}
                         selectedIsic4={expandedIsic4}
                         onSelect={selectIsic4Class}
-                        language={language}
                       />
                     ))}
                   </div>
@@ -867,7 +729,6 @@ function ProductionManufacturing({ language = 'fr' }) {
                         sector={isic4Sectors.find((s) => s.isic4 === expandedIsic4)}
                         timeseries={isic4Timeseries[expandedIsic4]}
                         dataBasis={isic4Basis}
-                        language={language}
                         formatIndicatorValue={formatIndicatorValue}
                         onRetry={() => fetchIsic4Timeseries(expandedIsic4)}
                         onClose={() => setExpandedIsic4(null)}
@@ -884,7 +745,7 @@ function ProductionManufacturing({ language = 'fr' }) {
             <Card className="shadow-lg">
               <CardHeader>
                 <CardTitle className="text-xl text-gray-700 flex items-center gap-2">
-                  <Package className="w-5 h-5" /> {t.keyProducts}
+                  <Package className="w-5 h-5" /> {t('production.manufacturing.panel.keyProducts')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -908,7 +769,7 @@ function ProductionManufacturing({ language = 'fr' }) {
             <Card className="shadow-lg">
               <CardHeader className="bg-gradient-to-r from-amber-50 to-orange-50">
                 <CardTitle className="text-xl text-amber-700 flex items-center gap-2">
-                  <Award className="w-5 h-5" /> {t.top10Africa}
+                  <Award className="w-5 h-5" /> {t('production.manufacturing.panel.top10Africa')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-6">
@@ -937,11 +798,11 @@ function ProductionManufacturing({ language = 'fr' }) {
                 <div className="flex justify-center gap-4 mt-4">
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-blue-500" />
-                    <span className="text-sm text-gray-600">{t.otherCountries}</span>
+                    <span className="text-sm text-gray-600">{t('production.manufacturing.panel.otherCountries')}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 rounded bg-amber-500" />
-                    <span className="text-sm text-gray-600">{t.selectedCountry}</span>
+                    <span className="text-sm text-gray-600">{t('production.manufacturing.panel.selectedCountry')}</span>
                   </div>
                 </div>
               </CardContent>
@@ -954,9 +815,9 @@ function ProductionManufacturing({ language = 'fr' }) {
               <div className="flex items-start gap-3">
                 <Info className="w-5 h-5 text-gray-400 mt-0.5" />
                 <div className="text-sm text-gray-600">
-                  <p><strong>{t.source}</strong> {unidoData.source}</p>
+                  <p><strong>{t('production.manufacturing.panel.source')}</strong> {unidoData.source}</p>
                   <p className="mt-1">
-                    {t.sourceNote}
+                    {t('production.manufacturing.panel.sourceNote')}
                   </p>
                 </div>
               </div>
@@ -992,7 +853,8 @@ export function femaleSharePct(series, year) {
 
 // Encadré carré d'une division ISIC 2 chiffres : intitulé, code, part de MVA
 // chiffrée, puis la liste de ses classes ISIC 4 en liens cliquables.
-function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sectors, selectedIsic4, onSelect, language }) {
+function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sectors, selectedIsic4, onSelect }) {
+  const { t } = useTranslation();
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col">
       <div className="px-4 pt-4 pb-3 border-b border-gray-100">
@@ -1012,11 +874,11 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
                   {shareMva.toLocaleString()} %
                 </div>
                 <div className="text-[11px] text-gray-500 mt-1">
-                  {language === 'fr' ? 'de la MVA' : 'of MVA'}
+                  {t('production.manufacturing.panel.mva')}
                 </div>
               </>
             ) : (
-              <div className="text-sm text-gray-400" title={language === 'fr' ? 'Part non publiée pour cette division' : 'Share not published for this division'}>
+              <div className="text-sm text-gray-400" title={t('production.manufacturing.panel.shareNotPublishedFor')}>
                 —
               </div>
             )}
@@ -1024,7 +886,7 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
         </div>
         {valueMlnUsd != null && (
           <p className="text-xs text-gray-500 mt-2 tabular-nums">
-            ${valueMlnUsd.toLocaleString()} {language === 'fr' ? 'M USD de valeur ajoutée' : 'M USD value added'}
+            ${valueMlnUsd.toLocaleString()} {t('production.manufacturing.panel.mUsdValueAdded')}
           </p>
         )}
       </div>
@@ -1058,7 +920,7 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
                 <span className="text-sm text-gray-700 leading-snug break-words">
                   {sector.isic_description || sector.description || (
                     <span className="text-gray-400 italic">
-                      {language === 'fr' ? 'libellé non publié' : 'label not published'}
+                      {t('production.manufacturing.panel.labelNotPublished')}
                     </span>
                   )}
                 </span>
@@ -1069,7 +931,7 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
       </ul>
 
       <div className="px-4 pb-3 text-[11px] text-gray-400">
-        {sectors.length} {language === 'fr' ? 'classes ISIC 4' : 'ISIC 4 classes'}
+        {sectors.length} {t('production.manufacturing.panel.isic4Classes')}
       </div>
     </div>
   );
@@ -1078,7 +940,8 @@ function IsicDivisionCard({ rank, division, label, shareMva, valueMlnUsd, sector
 // Tableau années × indicateurs d'une famille. Dimensionné pour tout montrer :
 // aucune troncature de libellé, et c'est le conteneur qui défile si la série
 // est longue, jamais le contenu qui est coupé.
-function YearMatrix({ title, subtitle, fields, series, years, labels, formatIndicatorValue, accent, language, extraRows = [] }) {
+function YearMatrix({ title, subtitle, fields, series, years, formatIndicatorValue, accent, extraRows = [] }) {
+  const { t } = useTranslation();
   const present = fields.filter((f) => series[f]?.length);
   if (!present.length && !extraRows.length) return null;
 
@@ -1098,7 +961,7 @@ function YearMatrix({ title, subtitle, fields, series, years, labels, formatIndi
           <thead>
             <tr className={accent.head}>
               <th className="text-left font-semibold px-4 py-2.5 whitespace-nowrap sticky left-0 z-10 bg-inherit">
-                {language === 'fr' ? 'Indicateur' : 'Indicator'}
+                {t('production.manufacturing.panel.indicator')}
               </th>
               {years.map((year) => (
                 <th key={year} className="text-right font-semibold px-4 py-2.5 whitespace-nowrap tabular-nums">
@@ -1111,7 +974,7 @@ function YearMatrix({ title, subtitle, fields, series, years, labels, formatIndi
             {present.map((field, i) => (
               <tr key={field} className={i % 2 ? 'bg-gray-50/60' : 'bg-white'}>
                 <th scope="row" className="text-left font-medium text-gray-700 px-4 py-2 whitespace-nowrap sticky left-0 z-10 bg-inherit">
-                  {labels[field] || field}
+                  {t(`production.manufacturing.isicIndicator.${field}`, { defaultValue: field })}
                 </th>
                 {years.map((year) => (
                   <td key={year} className="text-right px-4 py-2 whitespace-nowrap tabular-nums text-gray-900">
@@ -1140,8 +1003,8 @@ function YearMatrix({ title, subtitle, fields, series, years, labels, formatIndi
 }
 
 // Détail d'une classe ISIC 4, affiché sous la grille.
-function Isic4DetailPanel({ sector, timeseries, dataBasis, language, formatIndicatorValue, onRetry, onClose }) {
-  const labels = ISIC4_INDICATOR_LABELS[language] || ISIC4_INDICATOR_LABELS.fr;
+function Isic4DetailPanel({ sector, timeseries, dataBasis, formatIndicatorValue, onRetry, onClose }) {
+  const { t } = useTranslation();
   const isEstimatedCountry = dataBasis === 'ESTIMATED_FROM_ISIC2';
   const status = timeseries?.status;
   const series = timeseries?.series || {};
@@ -1156,7 +1019,7 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, language, formatIndic
   const femaleShareRow = series.employees?.length && series.female_employees?.length
     ? [{
         key: 'female_share_pct',
-        label: language === 'fr' ? 'Part des femmes (calculée)' : 'Female share (computed)',
+        label: t('production.manufacturing.panel.femaleShareComputed'),
         valueAt: (year) => {
           const pct = femaleSharePct(series, year);
           return pct == null ? '—' : `${pct.toFixed(1)} %`;
@@ -1182,15 +1045,13 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, language, formatIndic
           onClick={onClose}
           className="text-sm text-blue-600 hover:underline shrink-0"
         >
-          {language === 'fr' ? 'Fermer' : 'Close'}
+          {t('production.manufacturing.panel.close')}
         </button>
       </div>
 
       {isEstimatedCountry ? (
         <EstimatedDetail
           indicators={sector?.indicators || {}}
-          labels={labels}
-          language={language}
           formatIndicatorValue={formatIndicatorValue}
         />
       ) : (
@@ -1198,51 +1059,45 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, language, formatIndic
           {status === 'loading' && (
             <p className="text-sm text-gray-500 py-3">
               <Loader2 className="w-4 h-4 inline animate-spin mr-2" />
-              {language === 'fr' ? 'Chargement...' : 'Loading...'}
+              {t('production.manufacturing.panel.loadingShort')}
             </p>
           )}
           {status === 'error' && (
             <div className="text-sm text-red-600 flex items-center justify-between gap-2 py-2">
-              <span>{language === 'fr' ? "Erreur lors du chargement de l'historique." : 'Failed to load history.'}</span>
+              <span>{t('production.manufacturing.panel.failedLoadHistory')}</span>
               <button type="button" className="underline hover:no-underline" onClick={onRetry}>
-                {language === 'fr' ? 'Réessayer' : 'Retry'}
+                {t('production.manufacturing.panel.retry')}
               </button>
             </div>
           )}
           {status === 'ready' && years.length === 0 && (
             <p className="text-sm text-gray-500 py-2">
-              {language === 'fr' ? 'Aucune série temporelle disponible pour cette classe.' : 'No time series available for this class.'}
+              {t('production.manufacturing.panel.noTimeSeriesAvailable')}
             </p>
           )}
           {status === 'ready' && years.length > 0 && (
             <>
               <YearMatrix
-                title={language === 'fr' ? 'INDSTAT — statistiques officielles' : 'INDSTAT — official statistics'}
-                subtitle={language === 'fr' ? 'production, emploi, salaires, valeur ajoutée' : 'output, employment, wages, value added'}
+                title={t('production.manufacturing.panel.indstatOfficialStatistics')}
+                subtitle={t('production.manufacturing.panel.outputEmploymentWagesValue')}
                 fields={INDSTAT_FIELDS}
                 series={series}
                 years={years}
-                labels={labels}
-                language={language}
                 formatIndicatorValue={formatIndicatorValue}
                 accent={{ text: 'text-emerald-800', head: 'bg-emerald-50 text-emerald-900 border-b-2 border-emerald-200' }}
                 extraRows={femaleShareRow}
               />
               <YearMatrix
-                title={language === 'fr' ? 'IDSB — estimations dérivées' : 'IDSB — derived estimates'}
-                subtitle={language === 'fr' ? 'production, importations, exportations, consommation apparente' : 'output, imports, exports, apparent consumption'}
+                title={t('production.manufacturing.panel.idsbDerivedEstimates')}
+                subtitle={t('production.manufacturing.panel.outputImportsExportsApparent')}
                 fields={IDSB_FIELDS}
                 series={series}
                 years={years}
-                labels={labels}
-                language={language}
                 formatIndicatorValue={formatIndicatorValue}
                 accent={{ text: 'text-sky-800', head: 'bg-sky-50 text-sky-900 border-b-2 border-sky-200' }}
               />
               <p className="text-[11px] text-gray-500 mt-3">
-                {language === 'fr'
-                  ? "Les deux tableaux ne se mélangent pas : INDSTAT publie des statistiques officielles, IDSB des estimations dérivées. Une case vide est une absence de donnée, pas un zéro."
-                  : 'The two tables are kept apart: INDSTAT publishes official statistics, IDSB derived estimates. An empty cell is missing data, not a zero.'}
+                {t('production.manufacturing.panel.twoTablesAreKept')}
               </p>
             </>
           )}
@@ -1252,14 +1107,13 @@ function Isic4DetailPanel({ sector, timeseries, dataBasis, language, formatIndic
   );
 }
 
-function EstimatedDetail({ indicators, labels, language, formatIndicatorValue }) {
+function EstimatedDetail({ indicators, formatIndicatorValue }) {
+  const { t } = useTranslation();
   const fields = ISIC4_INDICATOR_ORDER.filter((f) => indicators[f]?.value !== undefined && indicators[f]?.value !== null);
   if (fields.length === 0) {
     return (
       <p className="text-sm text-gray-500 py-2">
-        {language === 'fr'
-          ? "Aucune valeur estimée pour cette classe : la division dont elle relève n'a pas de valeur monétaire publiée."
-          : 'No estimated value for this class: its division has no published monetary value.'}
+        {t('production.manufacturing.panel.noEstimatedValueFor')}
       </p>
     );
   }
@@ -1269,9 +1123,9 @@ function EstimatedDetail({ indicators, labels, language, formatIndicatorValue })
         <table className="text-sm border-collapse w-full">
           <thead>
             <tr className="bg-gray-100 text-gray-700">
-              <th className="py-2 px-3 font-semibold text-left">{language === 'fr' ? 'Indicateur' : 'Indicator'}</th>
-              <th className="py-2 px-3 font-semibold text-right">{language === 'fr' ? 'Valeur estimée' : 'Estimated value'}</th>
-              <th className="py-2 px-3 font-semibold text-left">{language === 'fr' ? 'Nature' : 'Nature'}</th>
+              <th className="py-2 px-3 font-semibold text-left">{t('production.manufacturing.panel.indicator')}</th>
+              <th className="py-2 px-3 font-semibold text-right">{t('production.manufacturing.panel.estimatedValue')}</th>
+              <th className="py-2 px-3 font-semibold text-left">{t('production.manufacturing.panel.nature')}</th>
             </tr>
           </thead>
           <tbody>
@@ -1283,7 +1137,7 @@ function EstimatedDetail({ indicators, labels, language, formatIndicatorValue })
                 </td>
                 <td className="py-2 px-3">
                   <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
-                    {language === 'fr' ? 'estimation de structure' : 'structural estimate'}
+                    {t('production.manufacturing.panel.structuralEstimate')}
                   </span>
                 </td>
               </tr>
@@ -1292,9 +1146,7 @@ function EstimatedDetail({ indicators, labels, language, formatIndicatorValue })
         </table>
       </div>
       <p className="text-xs text-amber-800 italic pt-3">
-        {language === 'fr'
-          ? "Valeur obtenue en divisant la part de MVA réelle de la division ISIC 2 chiffres par son nombre de classes. Toutes les classes de cette division portent donc le même chiffre : il situe le secteur, il ne le mesure pas."
-          : 'Value obtained by dividing the real ISIC 2-digit division MVA share by its number of classes. Every class of this division therefore carries the same figure: it places the sector, it does not measure it.'}
+        {t('production.manufacturing.panel.valueObtainedByDividing')}
       </p>
     </>
   );

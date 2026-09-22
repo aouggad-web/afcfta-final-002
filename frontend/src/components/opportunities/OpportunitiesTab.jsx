@@ -17,33 +17,25 @@ import OpportunitySummary from './OpportunitySummary';
 import ZlecafImpactSimulator from './ZlecafImpactSimulator';
 import BilateralTariffComparator from './BilateralTariffComparator';
 
-const TABS = {
-  fr: [
-    { id: 'ai',           label: 'Analyse IA',         icon: Sparkles },
-    { id: 'strategic',    label: 'Flux stratégiques',   icon: TrendingUp },
-    { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
-    { id: 'simulator',    label: 'Simulateur ZLECAf',   icon: Calculator },
-    { id: 'bilateral',    label: 'Comparateur bilatéral', icon: Scale },
-    { id: 'summary',      label: "Vue d'ensemble",      icon: BarChart3 },
-    { id: 'valueChains',  label: 'Chaînes de Valeur',   icon: Layers },
-    { id: 'byProduct',    label: 'Par Produit',          icon: Package },
-    { id: 'comparison',   label: 'Comparaison',          icon: Scale },
-  ],
-  en: [
-    { id: 'ai',           label: 'AI Analysis',         icon: Sparkles },
-    { id: 'strategic',    label: 'Strategic Flows',      icon: TrendingUp },
-    { id: 'substitution', label: 'Substitution',        icon: ArrowLeftRight },
-    { id: 'simulator',    label: 'AfCFTA Simulator',    icon: Calculator },
-    { id: 'bilateral',    label: 'Bilateral comparator', icon: Scale },
-    { id: 'summary',      label: 'Overview',             icon: BarChart3 },
-    { id: 'valueChains',  label: 'Value Chains',         icon: Layers },
-    { id: 'byProduct',    label: 'By Product',           icon: Package },
-    { id: 'comparison',   label: 'Comparison',           icon: Scale },
-  ],
-};
+// Les libellés vivaient ici en deux listes parallèles, une par langue. Toute
+// nouvelle langue en aurait demandé une troisième, et tout renommage devait
+// être fait deux fois sans que rien ne le vérifie. Ils sont désormais dans
+// i18n ; cette table ne garde que ce qui n'est pas traduisible — l'ordre des
+// sous-onglets et leur icône.
+const TABS = [
+  { id: 'ai',           icon: Sparkles },
+  { id: 'strategic',    icon: TrendingUp },
+  { id: 'substitution', icon: ArrowLeftRight },
+  { id: 'simulator',    icon: Calculator },
+  { id: 'bilateral',    icon: Scale },
+  { id: 'summary',      icon: BarChart3 },
+  { id: 'valueChains',  icon: Layers },
+  { id: 'byProduct',    icon: Package },
+  { id: 'comparison',   icon: Scale },
+];
 
 export default function OpportunitiesTab({ language = 'fr' }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const lang = i18n.language || language;
   const [active, setActive] = useState('ai');
   const [handoffCountry, setHandoffCountry] = useState(null);
@@ -65,8 +57,6 @@ export default function OpportunitiesTab({ language = 'fr' }) {
       /* handoff illisible : ignorer */
     }
   }, []);
-
-  const tabs = TABS[lang] || TABS.fr;
 
   const renderContent = () => {
     switch (active) {
@@ -95,7 +85,7 @@ export default function OpportunitiesTab({ language = 'fr' }) {
         border: '1px solid var(--afcfta-border)',
         flexWrap: 'wrap',
       }}>
-        {tabs.map(({ id, label, icon: Icon }) => (
+        {TABS.map(({ id, icon: Icon }) => (
           <button
             key={id}
             onClick={() => setActive(id)}
@@ -118,7 +108,7 @@ export default function OpportunitiesTab({ language = 'fr' }) {
             }}
           >
             <Icon style={{ width: 14, height: 14, flexShrink: 0, color: active === id ? 'var(--gold)' : 'inherit' }} />
-            <span className="hidden sm:inline">{label}</span>
+            <span className="hidden sm:inline">{t(`opportunities.tabs.${id}`)}</span>
           </button>
         ))}
       </div>

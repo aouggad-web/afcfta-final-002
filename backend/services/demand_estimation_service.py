@@ -431,10 +431,31 @@ def get_gdp_per_capita(country_iso3: str) -> Dict:
 
 
 def _apparent_consumption(apparent: Optional[Dict]) -> Optional[float]:
-    """Production + Imports − Exports, only if all three legs are present."""
+    """Production + Importations − Exportations.
+
+    Exiger les trois jambes NON NULLES écartait un cas pourtant mesurable, et
+    fréquent : celui où la production est absente parce qu'elle est NULLE, et
+    que cette nullité est établie. Le café en Afrique du Nord en est l'exemple
+    type — l'Algérie n'en produit pas, FAOSTAT couvre tous les pays africains,
+    donc son silence sur ce couple pays/commodité PROUVE une production nulle
+    (voir :func:`domestic_supply` et son ``absence_established``).
+
+    Dans ce cas, la consommation apparente vaut 0 + importations − exportations
+    et elle est MESURÉE. La refuser faisait retomber le besoin sur le proxy
+    démographique L2 alors qu'un chiffre réel existait : pour le café algérien
+    2024, 86 630 tonnes mesurées contre une estimation par population.
+
+    La distinction qui ne se négocie pas reste entière : une production
+    absente et NON établie continue de rendre ``None``. Ne pas savoir n'est
+    pas savoir que c'est zéro, et traiter l'un comme l'autre attribuerait la
+    totalité du besoin à l'importation pour un pays qui produit peut-être tout
+    ce qu'il consomme.
+    """
     if not apparent:
         return None
     p, m, x = apparent.get("production"), apparent.get("imports"), apparent.get("exports")
+    if p is None and apparent.get("production_absence_established"):
+        p = 0.0
     if p is None or m is None or x is None:
         return None
     return float(p) + float(m) - float(x)
@@ -662,6 +683,8 @@ def _l1_importable(apparent: Optional[Dict], consumption: float) -> Dict:
     production = src.get("production")
     imports = src.get("imports")
     exports = src.get("exports")
+    if production is None and src.get("production_absence_established"):
+        production = 0.0
     if imports is None:
         return {}
 
@@ -759,6 +782,14 @@ def estimate_national_need(
                 "production": apparent.get("production"),
                 "imports": apparent.get("imports"),
                 "exports": apparent.get("exports"),
+                # Un zéro ÉTABLI est une mesure, pas une absence de mesure —
+                # le payload doit dire lequel des deux il porte, sinon un
+                # lecteur ne peut pas distinguer « ne produit pas » de
+                # « production non documentée, comptée pour zéro ».
+                "production_absence_established": bool(
+                    apparent.get("production") is None
+                    and apparent.get("production_absence_established")
+                ),
             },
             "sources": [(apparent or {}).get("source", "production + trade")],
             "observed_imports": observed_imports if observed_imports else None,
@@ -800,6 +831,60 @@ def estimate_national_need(
         )
         if own_imports_estimate:
             return own_imports_estimate
+
+    # Production nationale NULLE ET ÉTABLIE : les importations du pays SONT
+    # sa consommation.
+    # -----------------------------------------------------------------------
+    # La cascade descendait ici sur le proxy démographique alors qu'une mesure
+    # existe. Quand un pays ne produit rien — et que ce « rien » est établi,
+    # pas seulement non documenté — la consommation apparente vaut
+    # 0 + importations − exportations : ses propres importations la donnent
+    # directement.
+    #
+    # Le café en Afrique du Nord est le cas type. L'Algérie n'en produit pas
+    # un gramme, et FAOSTAT couvre les 54 pays : son silence PROUVE la
+    # production nulle. Elle en importe pourtant 86 642 tonnes (2024). Servir
+    # à la place une disponibilité continentale par habitant — moyenne de
+    # pays dont plusieurs sont de grands producteurs — modélise un besoin là
+    # où on peut le mesurer.
+    #
+    # La règle de priorité est donc : une mesure bat un modèle. Le proxy
+    # garde tout son rôle là où la production n'est pas établie, c'est-à-dire
+    # là où l'on ne peut PAS conclure.
+    if own_imports_history:
+        _dom = domestic_supply(hs_code, country_iso3, prod.get("dimension"))
+        if _dom.get("absence_established"):
+            mesure = estimate_need_from_own_imports(
+                hs_code, country_iso3, own_imports_history
+            )
+            if mesure:
+                mesure["production_absence_established"] = True
+                # Le libellé par défaut de ce bloc dit « sans production
+                # continentale » : c'est le cas qui l'a fait naître, ce n'est
+                # pas celui-ci. Ici la référence continentale EXISTE — le café
+                # a de grands producteurs africains — mais elle ne décrit pas
+                # ce pays, qui n'en produit rien.
+                mesure["level_label"] = (
+                    "Importations nationales observées (production nationale nulle établie)"
+                )
+                # Et la valeur reste une ESTIMATION, contrairement à ce qu'on
+                # pourrait croire. Les importations ne sont pas la
+                # consommation apparente : il faudrait en soustraire les
+                # exportations, que cet historique ne porte pas. Elles en sont
+                # un plancher serré quand le pays réexporte peu — 12 tonnes de
+                # café algérien exporté contre 86 642 importées — mais un
+                # plancher tout de même. Le dire vaut mieux que de présenter
+                # un flux pour une consommation.
+                mesure["note"] = (
+                    (mesure.get("note") or "").rstrip()
+                    + " Production nationale nulle ÉTABLIE (la source qui couvre ce "
+                    "pays ne lui attribue aucune production) : les importations "
+                    "observées estiment le besoin bien mieux qu'une disponibilité "
+                    "continentale par habitant, qui moyenne des pays producteurs. "
+                    "Elles restent un PLANCHER : les exportations ne sont pas "
+                    "soustraites, faute d'être portées par cet historique."
+                ).strip()
+                return mesure
 
     if not cont_total or not pop.get("available") or not idx:
         return {

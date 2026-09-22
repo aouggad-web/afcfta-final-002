@@ -6,10 +6,12 @@
  * module Statistiques.
  */
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FileDown, Moon, Loader2 } from 'lucide-react';
 import { buildOpportunityPdf, opportunityPdfFilename } from '../../utils/opportunityPdf';
 
 export default function OpportunityPdfExport({ getSpec, disabled = false, language = 'fr' }) {
+  const { t } = useTranslation();
   const [exporting, setExporting] = useState(null); // null | 'light' | 'dark'
 
   const run = (theme) => {
@@ -49,22 +51,22 @@ export default function OpportunityPdfExport({ getSpec, disabled = false, langua
         onClick={() => run('light')}
         disabled={disabled || exporting != null}
         style={btnStyle}
-        title={language === 'en' ? 'Light PDF — print-optimized' : 'PDF clair — optimisé impression'}
+        title={t('opportunities.opportunityPdfExport.lightPdfPrintOptimized')}
         data-testid="opportunity-pdf-light"
       >
         {exporting === 'light' ? <Loader2 size={13} className="animate-spin" /> : <FileDown size={13} />}
-        {language === 'en' ? 'PDF · Light' : 'PDF · Clair'}
+        {t('opportunities.opportunityPdfExport.pdfLight')}
       </button>
       <button
         type="button"
         onClick={() => run('dark')}
         disabled={disabled || exporting != null}
         style={btnStyle}
-        title={language === 'en' ? 'Dark PDF — on-screen look' : 'PDF sombre — rendu écran'}
+        title={t('opportunities.opportunityPdfExport.darkPdfOnScreen')}
         data-testid="opportunity-pdf-dark"
       >
         {exporting === 'dark' ? <Loader2 size={13} className="animate-spin" /> : <Moon size={13} />}
-        {language === 'en' ? 'PDF · Dark' : 'PDF · Sombre'}
+        {t('opportunities.opportunityPdfExport.pdfDark')}
       </button>
     </div>
   );

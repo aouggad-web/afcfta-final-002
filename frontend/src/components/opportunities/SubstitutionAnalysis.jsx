@@ -40,66 +40,12 @@ const COLORS = ['#059669', '#0891b2', '#7c3aed', '#dc2626', '#ea580c', '#ca8a04'
 // marque, l'écart technologique, le réseau après-vente et la certification bornent la part
 // réalistement adressable. Le backend calcule déjà coefficient + barrières + justification
 // (champ `substitution_feasibility` sur chaque opportunité d'import) ; ce bloc les affiche.
-const FEASIBILITY_TXT = {
-  fr: {
-    title: 'Faisabilité de substitution',
-    coefficient: 'Part réalistement adressable',
-    bindingCapacity: 'Facteur limitant : capacité africaine (offre insuffisante)',
-    bindingExporterCapacity: "Facteur limitant : capacité d'export du pays",
-    bindingFeasibility: 'Facteur limitant : substituabilité (marque / technologie)',
-    barriers: 'Barrières non tarifaires',
-    brand_effect: 'Effet marque',
-    technology_gap: 'Écart technologique',
-    after_sales_network: 'Réseau après-vente',
-    certification: 'Certification',
-    intensityLabel: { faible: 'Faible', moyen: 'Moyen', fort: 'Fort' },
-  },
-  en: {
-    title: 'Substitution feasibility',
-    coefficient: 'Realistically addressable share',
-    bindingCapacity: 'Binding constraint: African capacity (insufficient supply)',
-    bindingExporterCapacity: "Binding constraint: the country's export capacity",
-    bindingFeasibility: 'Binding constraint: substitutability (brand / technology)',
-    barriers: 'Non-tariff barriers',
-    brand_effect: 'Brand effect',
-    technology_gap: 'Technology gap',
-    after_sales_network: 'After-sales network',
-    certification: 'Certification',
-    intensityLabel: { faible: 'Low', moyen: 'Medium', fort: 'High' },
-  },
-};
 
 // Production africaine VÉRIFIÉE (FAOSTAT / UNIDO / USGS) : le backend joint à
 // chaque opportunité la production physique réelle du produit sur le continent
 // (champ `verified_production`) — la preuve matérielle derrière les flux
 // commerciaux. Bloc + textes du panneau d'analyse transversal et du drill-down
 // chapitre (SH2) -> position (SH4) -> produit (SH6).
-const ENRICHED_TXT = {
-  fr: {
-    verifiedTitle: 'Production africaine vérifiée',
-    verifiedNone: 'Produit non couvert par le référentiel production (FAOSTAT / UNIDO / USGS)',
-    analysisTitle: "Synthèse d'analyse",
-    avgCoef: 'Substituabilité moyenne (pondérée par la valeur)',
-    constraints: 'Facteurs limitants',
-    difficulties: 'Difficulté',
-    verifiedCount: 'Opportunités adossées à une production vérifiée',
-    hierarchyTitle: 'Priorités par chapitre — affiner en SH4 puis SH6',
-    hierarchyHint: 'Cliquez un chapitre pour le détailler en positions SH4, puis en produits SH6.',
-    opportunitiesCount: 'opportunités',
-  },
-  en: {
-    verifiedTitle: 'Verified African production',
-    verifiedNone: 'Product not covered by the production reference (FAOSTAT / UNIDO / USGS)',
-    analysisTitle: 'Analysis summary',
-    avgCoef: 'Average substitutability (value-weighted)',
-    constraints: 'Binding constraints',
-    difficulties: 'Difficulty',
-    verifiedCount: 'Opportunities backed by verified production',
-    hierarchyTitle: 'Priorities by chapter — refine to HS4 then HS6',
-    hierarchyHint: 'Click a chapter to break it down into HS4 headings, then HS6 products.',
-    opportunitiesCount: 'opportunities',
-  },
-};
 
 // Valeur de production : l'unité varie selon le référentiel (tonnes FAOSTAT,
 // USD de valeur ajoutée UNIDO, tonnes/carats USGS) — formater en conséquence.
@@ -125,10 +71,6 @@ const POSITIONING_CHIP = {
   'premium': 'bg-amber-100 text-amber-700',
 };
 
-const POSITIONING_LABEL = {
-  fr: { 'compétitif': 'Compétitif', 'aligné': 'Aligné', 'premium': 'Premium' },
-  en: { 'compétitif': 'Competitive', 'aligné': 'Aligned', 'premium': 'Premium' },
-};
 
 const coefficientColor = (coef) => {
   if (coef >= 0.7) return { bar: 'bg-emerald-500', text: 'text-emerald-700', chip: 'bg-emerald-100 text-emerald-700' };
@@ -153,18 +95,21 @@ const BINDING_LABEL_KEY = {
   'substituabilité': 'bindingFeasibility',
 };
 
-const FeasibilityBlock = ({ feasibility, bindingConstraint, language }) => {
+const FeasibilityBlock = ({ feasibility, bindingConstraint }) => {
+  const { t } = useTranslation();
   if (!feasibility) return null;
-  const txt = FEASIBILITY_TXT[language] || FEASIBILITY_TXT.fr;
   const coef = feasibility.coefficient;
   const colors = coefficientColor(coef);
   const barriers = feasibility.barriers;
-  const bindingLabel = txt[BINDING_LABEL_KEY[bindingConstraint]] || null;
+  const bindingKey = BINDING_LABEL_KEY[bindingConstraint];
+  const bindingLabel = bindingKey
+    ? t(`opportunities.substitutionAnalysis.feasibility.${bindingKey}`)
+    : null;
 
   return (
     <div className="mb-4 bg-slate-50 rounded-lg p-3" data-testid="substitution-feasibility">
       <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs font-medium text-slate-500">{txt.coefficient}</span>
+        <span className="text-xs font-medium text-slate-500">{t('opportunities.substitutionAnalysis.feasibility.coefficient')}</span>
         <span className={`text-sm font-bold ${colors.text}`}>{Math.round(coef * 100)}%</span>
       </div>
       <div className="h-1.5 w-full bg-slate-200 rounded-full overflow-hidden mb-2">
@@ -179,7 +124,7 @@ const FeasibilityBlock = ({ feasibility, bindingConstraint, language }) => {
               className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${intensityChipColor(intensity)}`}
               title={feasibility.rationale}
             >
-              {txt[key] || key} · {txt.intensityLabel[intensity] || intensity}
+              {t(`opportunities.substitutionAnalysis.feasibility.${key}`, { defaultValue: key })} · {t(`opportunities.substitutionAnalysis.feasibility.intensityLabel.${intensity}`, { defaultValue: intensity })}
             </span>
           ))}
         </div>
@@ -191,14 +136,14 @@ const FeasibilityBlock = ({ feasibility, bindingConstraint, language }) => {
 // Production africaine réelle du produit (FAOSTAT / UNIDO / USGS) : commodité,
 // année, institution source et top producteurs mesurés — avec le garde-fou de
 // couverture quand le référentiel n'ingère qu'une poignée de pays.
-const VerifiedProductionBlock = ({ production, language }) => {
+const VerifiedProductionBlock = ({ production }) => {
+  const { t } = useTranslation();
   if (!production) return null;
-  const txt = ENRICHED_TXT[language] || ENRICHED_TXT.fr;
   return (
     <div className="mb-4 bg-emerald-50/60 border border-emerald-100 rounded-lg p-3" data-testid="verified-production">
       <div className="flex items-center gap-1.5 mb-1.5">
         <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-        <span className="text-xs font-semibold text-emerald-800">{txt.verifiedTitle}</span>
+        <span className="text-xs font-semibold text-emerald-800">{t('opportunities.substitutionAnalysis.enriched.verifiedTitle')}</span>
         <span className="text-[10px] text-emerald-600 ml-auto">
           {production.institution} · {production.year}
         </span>
@@ -267,23 +212,22 @@ const StatCard = ({ title, value, icon: Icon, trend, color = "emerald", subtitle
 // devoir mocker tout le cycle de fetch axios de SubstitutionAnalysis pour
 // vérifier l'affichage difficulté/faisabilité).
 export const OpportunityCard = ({ opportunity, type, language }) => {
+  const { t } = useTranslation();
   const isImport = type === 'import';
   const product = isImport ? opportunity.imported_product : (opportunity.exportable_product || opportunity.export_product);
   const targets = isImport ? opportunity.african_suppliers : (opportunity.target_markets || opportunity.potential_markets);
   
-  // _assess_difficulty (real_substitution_service.py) renvoie directement les
-  // libellés français "Facile"/"Modéré"/"Difficile"/"Très difficile" — les
-  // comparer à des clés anglaises ('easy'/'moderate'/'difficult') ne matchait
-  // jamais, donc toutes les cartes s'affichaient en "Difficile"/ambre par
-  // défaut quel que soit le niveau réel.
+  // Le serveur émet désormais un CODE (`difficulty_code`), pas un libellé.
+  // Il émettait auparavant le français directement, et cet écran comparait
+  // ce texte d'affichage à des clés anglaises : rien ne correspondait, et
+  // toutes les cartes sortaient « Difficile » en ambre quel que soit le
+  // niveau réel. Un texte d'affichage est un mauvais identifiant.
+  // `difficulty` reste lu en repli, le temps que d'anciens clients passent.
   const difficultyColors = {
-    'Facile': "bg-emerald-100 text-emerald-700",
-    'Modéré': "bg-amber-100 text-amber-700",
-    'Difficile': "bg-orange-100 text-orange-700",
-    'Très difficile': "bg-red-100 text-red-700",
-  };
-  const difficultyLabelEn = {
-    'Facile': 'Easy', 'Modéré': 'Moderate', 'Difficile': 'Difficult', 'Très difficile': 'Very difficult',
+    easy: "bg-emerald-100 text-emerald-700",
+    moderate: "bg-amber-100 text-amber-700",
+    difficult: "bg-orange-100 text-orange-700",
+    very_difficult: "bg-red-100 text-red-700",
   };
 
   const competitivenessColors = {
@@ -306,8 +250,12 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
             </h3>
           </div>
           {isImport ? (
-            <Badge className={difficultyColors[opportunity.difficulty] || difficultyColors['Modéré']}>
-              {language === 'en' ? (difficultyLabelEn[opportunity.difficulty] || opportunity.difficulty) : opportunity.difficulty}
+            <Badge className={difficultyColors[opportunity.difficulty_code] || difficultyColors.moderate}>
+              {opportunity.difficulty_code
+                ? t(`opportunities.substitutionAnalysis.difficulty.${opportunity.difficulty_code}`, {
+                    defaultValue: opportunity.difficulty,
+                  })
+                : opportunity.difficulty}
             </Badge>
           ) : (
             <Badge className={competitivenessColors[opportunity.competitiveness] || competitivenessColors.competitive}>
@@ -341,14 +289,10 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
         <FeasibilityBlock
           feasibility={opportunity.substitution_feasibility}
           bindingConstraint={opportunity.binding_constraint}
-          language={language}
         />
 
         {/* Real African production of this product (FAOSTAT / UNIDO / USGS) */}
-        <VerifiedProductionBlock
-          production={opportunity.verified_production}
-          language={language}
-        />
+        <VerifiedProductionBlock production={opportunity.verified_production} />
 
         {/* Current Source (for imports) */}
         {isImport && product?.current_source && (
@@ -363,16 +307,14 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
           <div className="mb-3 flex items-center gap-2 text-sm text-slate-600" data-testid="exporter-avg-price">
             <DollarSign className="h-4 w-4 text-slate-400" />
             <span>
-              {language === 'en' ? 'Average export price' : "Prix moyen à l'export"} :{' '}
+              {t('opportunities.substitutionAnalysis.averageExportPrice')} :{' '}
               <strong className="text-slate-800">{fmtPerTonne(opportunity.exporter_avg_price_usd_per_tonne)}</strong>
             </span>
           </div>
         )}
         {!isImport && opportunity.market_match_level === 'hs4' && (
           <p className="mb-3 text-[11px] text-amber-700 bg-amber-50 rounded-md px-2.5 py-1.5" data-testid="market-match-caveat">
-            {language === 'en'
-              ? 'Markets estimated at HS4 level (this exact HS6 product is absent from the top imports of the countries surveyed).'
-              : "Marchés estimés au niveau SH4 (ce produit SH6 exact est absent des top-imports des pays sondés)."}
+            {t('opportunities.substitutionAnalysis.marketsEstimatedAtHs4')}
           </p>
         )}
 
@@ -404,14 +346,14 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
                 {!isImport && target.price_positioning && (
                   <div className="mt-1.5 flex items-center justify-between gap-2" data-testid="price-positioning">
                     <span className="text-[11px] text-slate-500">
-                      {language === 'en' ? 'Market pays' : 'Le marché paie'}{' '}
+                      {t('opportunities.substitutionAnalysis.marketPays')}{' '}
                       <strong>{fmtPerTonne(target.price_positioning.market_avg_price_usd_per_tonne)}</strong>
                       {' · '}
                       {target.price_positioning.price_delta_pct > 0 ? '+' : ''}
                       {target.price_positioning.price_delta_pct}%
                     </span>
                     <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${POSITIONING_CHIP[target.price_positioning.positioning] || POSITIONING_CHIP['aligné']}`}>
-                      {(POSITIONING_LABEL[language] || POSITIONING_LABEL.fr)[target.price_positioning.positioning] || target.price_positioning.positioning}
+                      {t(`opportunities.substitutionAnalysis.positioning.${target.price_positioning.positioning}`, { defaultValue: target.price_positioning.positioning })}
                     </span>
                   </div>
                 )}
@@ -429,29 +371,20 @@ export const OpportunityCard = ({ opportunity, type, language }) => {
 // moyenne pondérée, répartition difficulté / facteur limitant, couverture du
 // référentiel production.
 const AnalysisSummaryPanel = ({ analysis, language }) => {
+  const { t } = useTranslation();
   if (!analysis || Object.keys(analysis).length === 0) return null;
-  const txt = ENRICHED_TXT[language] || ENRICHED_TXT.fr;
-  const feasTxt = FEASIBILITY_TXT[language] || FEASIBILITY_TXT.fr;
-  const difficultyLabelEn = {
-    'Facile': 'Easy', 'Modéré': 'Moderate', 'Difficile': 'Difficult', 'Très difficile': 'Very difficult',
-  };
-  const constraintLabels = {
-    fr: { 'capacité africaine': 'Capacité africaine', 'capacité exportateur': 'Capacité exportateur', 'substituabilité': 'Substituabilité' },
-    en: { 'capacité africaine': 'African capacity', 'capacité exportateur': 'Exporter capacity', 'substituabilité': 'Substitutability' },
-  };
-  const cLabels = constraintLabels[language] || constraintLabels.fr;
 
   return (
     <Card className="shadow-lg border-slate-200" data-testid="analysis-summary">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-bold flex items-center gap-2">
           <BarChart3 className="h-5 w-5 text-emerald-600" />
-          {txt.analysisTitle}
+          {t('opportunities.substitutionAnalysis.enriched.analysisTitle')}
         </CardTitle>
       </CardHeader>
       <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-slate-50 rounded-lg p-3">
-          <p className="text-xs text-slate-500 mb-1">{txt.avgCoef}</p>
+          <p className="text-xs text-slate-500 mb-1">{t('opportunities.substitutionAnalysis.enriched.avgCoef')}</p>
           <p className="text-2xl font-bold text-slate-900">
             {analysis.avg_feasibility_coefficient != null
               ? `${Math.round(analysis.avg_feasibility_coefficient * 100)}%`
@@ -459,27 +392,28 @@ const AnalysisSummaryPanel = ({ analysis, language }) => {
           </p>
         </div>
         <div className="bg-slate-50 rounded-lg p-3">
-          <p className="text-xs text-slate-500 mb-1.5">{txt.difficulties}</p>
+          <p className="text-xs text-slate-500 mb-1.5">{t('opportunities.substitutionAnalysis.enriched.difficulties')}</p>
           <div className="flex flex-wrap gap-1.5">
-            {Object.entries(analysis.difficulty_distribution || {}).map(([label, count]) => (
-              <span key={label} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700">
-                {language === 'en' ? (difficultyLabelEn[label] || label) : label} · {count}
+            {Object.entries(analysis.difficulty_distribution || {}).map(([code, count]) => (
+              <span key={code} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700">
+                {t(`opportunities.substitutionAnalysis.difficulty.${code}`, { defaultValue: code })}
+                {' · '}{count}
               </span>
             ))}
           </div>
         </div>
         <div className="bg-slate-50 rounded-lg p-3">
-          <p className="text-xs text-slate-500 mb-1.5">{txt.constraints}</p>
+          <p className="text-xs text-slate-500 mb-1.5">{t('opportunities.substitutionAnalysis.enriched.constraints')}</p>
           <div className="flex flex-wrap gap-1.5">
             {Object.entries(analysis.binding_constraint_distribution || {}).map(([label, count]) => (
               <span key={label} className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-white border border-slate-200 text-slate-700">
-                {cLabels[label] || label} · {count}
+                {t(`opportunities.substitutionAnalysis.constraintLabels.${label}`, { defaultValue: label })} · {count}
               </span>
             ))}
           </div>
         </div>
         <div className="bg-emerald-50 rounded-lg p-3">
-          <p className="text-xs text-emerald-600 mb-1">{txt.verifiedCount}</p>
+          <p className="text-xs text-emerald-600 mb-1">{t('opportunities.substitutionAnalysis.enriched.verifiedCount')}</p>
           <p className="text-2xl font-bold text-emerald-700">
             {analysis.verified_production_count ?? 0}
           </p>
@@ -493,17 +427,17 @@ const AnalysisSummaryPanel = ({ analysis, language }) => {
 // backend (summary.product_hierarchy) : l'utilisateur repère le chapitre
 // porteur, l'ouvre en positions SH4, puis lit les codes SH6 exacts — la
 // granularité où se prend la décision.
-const ProductHierarchyPanel = ({ hierarchy, language }) => {
+const ProductHierarchyPanel = ({ hierarchy }) => {
+  const { t } = useTranslation();
   const [openChapter, setOpenChapter] = useState(null);
   const [openHs4, setOpenHs4] = useState(null);
   if (!hierarchy?.length) return null;
-  const txt = ENRICHED_TXT[language] || ENRICHED_TXT.fr;
 
   return (
     <Card className="shadow-lg" data-testid="product-hierarchy">
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-bold">{txt.hierarchyTitle}</CardTitle>
-        <CardDescription className="text-xs">{txt.hierarchyHint}</CardDescription>
+        <CardTitle className="text-lg font-bold">{t('opportunities.substitutionAnalysis.enriched.hierarchyTitle')}</CardTitle>
+        <CardDescription className="text-xs">{t('opportunities.substitutionAnalysis.enriched.hierarchyHint')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
         {hierarchy.map((chapter) => {
@@ -519,7 +453,7 @@ const ProductHierarchyPanel = ({ hierarchy, language }) => {
                 {isOpen ? <ChevronDown className="h-4 w-4 text-slate-400" /> : <ChevronRight className="h-4 w-4 text-slate-400" />}
                 <Badge variant="outline" className="font-mono text-xs">SH {chapter.chapter}</Badge>
                 <span className="font-medium text-sm text-slate-800 flex-1">{chapter.name}</span>
-                <span className="text-xs text-slate-500">{chapter.opportunity_count} {txt.opportunitiesCount}</span>
+                <span className="text-xs text-slate-500">{chapter.opportunity_count} {t('opportunities.substitutionAnalysis.enriched.opportunitiesCount')}</span>
                 <span className="text-sm font-bold text-emerald-700">{formatValue(chapter.total_value)}</span>
               </button>
               {isOpen && (
@@ -579,52 +513,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
   const [importData, setImportData] = useState(null);
   const [exportData, setExportData] = useState(null);
 
-  const texts = {
-    fr: {
-      title: "Analyse de Substitution Commerciale",
-      subtitle: "Identifiez les opportunités de commerce intra-africain sous la ZLECAf",
-      importTab: "Substitution d'Imports",
-      exportTab: "Opportunités d'Export",
-      selectCountry: "Sélectionnez un pays",
-      analyze: "Analyser",
-      totalOpportunities: "Opportunités identifiées",
-      substitutableValue: "Valeur substituable",
-      potentialSavings: "Économies potentielles",
-      topSectors: "Secteurs prioritaires",
-      noData: "Sélectionnez un pays pour lancer l'analyse",
-      loading: "Analyse en cours...",
-      importSubtitle: "Produits actuellement importés hors Afrique pouvant être sourcés localement",
-      exportSubtitle: "Produits que ce pays peut exporter vers d'autres pays ZLECAf",
-      source: "Sources: UN Comtrade, OEC, UNCTAD, Offices nationaux de statistiques",
-      outsideAfrica: "Hors Afrique",
-      product: "Produit",
-      afcftaMarkets: "Marchés ZLECAf",
-      tradeFlows: "Flux Commerciaux"
-    },
-    en: {
-      title: "Trade Substitution Analysis",
-      subtitle: "Identify intra-African trade opportunities under AfCFTA",
-      importTab: "Import Substitution",
-      exportTab: "Export Opportunities",
-      selectCountry: "Select a country",
-      analyze: "Analyze",
-      totalOpportunities: "Opportunities identified",
-      substitutableValue: "Substitutable value",
-      potentialSavings: "Potential savings",
-      topSectors: "Priority sectors",
-      noData: "Select a country to start analysis",
-      loading: "Analysis in progress...",
-      importSubtitle: "Products currently imported from outside Africa that can be sourced locally",
-      exportSubtitle: "Products this country can export to other AfCFTA countries",
-      source: "Sources: UN Comtrade, OEC, UNCTAD, National statistics offices",
-      outsideAfrica: "Outside Africa",
-      product: "Product",
-      afcftaMarkets: "AfCFTA Markets",
-      tradeFlows: "Trade Flows"
-    }
-  };
 
-  const txt = texts[currentLang] || texts.fr;
 
   // Fetch available countries
   useEffect(() => {
@@ -696,43 +585,42 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
     const fr = currentLang !== 'en';
     const summary = currentData.summary || {};
     const kpis = [
-      { label: txt.totalOpportunities, value: String(summary.total_opportunities ?? 0), accent: 'gold' },
+      { label: t('opportunities.substitutionAnalysis.totalOpportunities'), value: String(summary.total_opportunities ?? 0), accent: 'gold' },
       {
-        label: isImport ? txt.substitutableValue : (fr ? 'Potentiel de marché' : 'Market potential'),
+        label: isImport ? t('opportunities.substitutionAnalysis.substitutableValue') : t('opportunities.substitutionAnalysis.marketPotential'),
         value: formatValue(isImport ? summary.total_substitutable_value : summary.total_market_potential),
         accent: 'green',
       },
     ];
     if (isImport && summary.total_imports_from_outside) {
-      kpis.push({ label: txt.outsideAfrica, value: formatValue(summary.total_imports_from_outside), accent: 'red' });
+      kpis.push({ label: t('opportunities.substitutionAnalysis.outsideAfrica'), value: formatValue(summary.total_imports_from_outside), accent: 'red' });
     }
 
     const sections = [];
     // Synthèse d'analyse (mêmes chiffres que le panneau à l'écran).
     const analysis = summary.analysis || {};
     if (Object.keys(analysis).length) {
-      const enr = ENRICHED_TXT[fr ? 'fr' : 'en'];
       sections.push({
-        title: enr.analysisTitle,
+        title: t('opportunities.substitutionAnalysis.enriched.analysisTitle'),
         keyValues: [
-          { label: enr.avgCoef, value: analysis.avg_feasibility_coefficient != null ? `${Math.round(analysis.avg_feasibility_coefficient * 100)}%` : '—' },
-          { label: enr.difficulties, value: Object.entries(analysis.difficulty_distribution || {}).map(([k, v]) => `${k}: ${v}`).join(' · ') || '—' },
-          { label: enr.constraints, value: Object.entries(analysis.binding_constraint_distribution || {}).map(([k, v]) => `${k}: ${v}`).join(' · ') || '—' },
-          { label: enr.verifiedCount, value: String(analysis.verified_production_count ?? 0) },
+          { label: t('opportunities.substitutionAnalysis.enriched.avgCoef'), value: analysis.avg_feasibility_coefficient != null ? `${Math.round(analysis.avg_feasibility_coefficient * 100)}%` : '—' },
+          { label: t('opportunities.substitutionAnalysis.enriched.difficulties'), value: Object.entries(analysis.difficulty_distribution || {}).map(([k, v]) => `${t(`opportunities.substitutionAnalysis.difficulty.${k}`, { defaultValue: k })}: ${v}`).join(' · ') || '—' },
+          { label: t('opportunities.substitutionAnalysis.enriched.constraints'), value: Object.entries(analysis.binding_constraint_distribution || {}).map(([k, v]) => `${k}: ${v}`).join(' · ') || '—' },
+          { label: t('opportunities.substitutionAnalysis.enriched.verifiedCount'), value: String(analysis.verified_production_count ?? 0) },
         ],
       });
     }
     if (isImport) {
       sections.push({
-        title: fr ? 'Opportunités de substitution d’imports' : 'Import substitution opportunities',
+        title: t('opportunities.substitutionAnalysis.importSubstitutionOpportunities'),
         table: {
           columns: [
             { key: 'hs', label: 'SH', width: 0.7 },
-            { key: 'name', label: fr ? 'Produit' : 'Product', width: 2.6 },
-            { key: 'imp', label: fr ? 'Import actuel' : 'Current import', align: 'right', width: 1.1 },
-            { key: 'coef', label: fr ? 'Substituabilité' : 'Substitutability', align: 'right', width: 1.0 },
-            { key: 'pot', label: fr ? 'Potentiel' : 'Potential', align: 'right', width: 1.1 },
-            { key: 'constraint', label: fr ? 'Contrainte' : 'Constraint', width: 1.2 },
+            { key: 'name', label: t('opportunities.substitutionAnalysis.product'), width: 2.6 },
+            { key: 'imp', label: t('opportunities.substitutionAnalysis.currentImport'), align: 'right', width: 1.1 },
+            { key: 'coef', label: t('opportunities.substitutionAnalysis.substitutability'), align: 'right', width: 1.0 },
+            { key: 'pot', label: t('opportunities.substitutionAnalysis.potential'), align: 'right', width: 1.1 },
+            { key: 'constraint', label: t('opportunities.substitutionAnalysis.constraint'), width: 1.2 },
           ],
           rows: opportunities.map((o) => ({
             hs: o.imported_product?.hs_code || '—',
@@ -746,15 +634,15 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       });
     } else {
       sections.push({
-        title: fr ? 'Opportunités d’export (niveau produit SH6)' : 'Export opportunities (SH6 product level)',
+        title: t('opportunities.substitutionAnalysis.exportOpportunitiesSh6Product'),
         table: {
           columns: [
             { key: 'hs', label: 'SH', width: 0.7 },
-            { key: 'name', label: fr ? 'Produit' : 'Product', width: 2.4 },
-            { key: 'price', label: fr ? 'Prix export' : 'Export price', align: 'right', width: 1.0 },
-            { key: 'coef', label: fr ? 'Substituabilité' : 'Substitutability', align: 'right', width: 1.0 },
-            { key: 'pot', label: fr ? 'Potentiel' : 'Potential', align: 'right', width: 1.1 },
-            { key: 'constraint', label: fr ? 'Contrainte' : 'Constraint', width: 1.2 },
+            { key: 'name', label: t('opportunities.substitutionAnalysis.product'), width: 2.4 },
+            { key: 'price', label: t('opportunities.substitutionAnalysis.exportPrice'), align: 'right', width: 1.0 },
+            { key: 'coef', label: t('opportunities.substitutionAnalysis.substitutability'), align: 'right', width: 1.0 },
+            { key: 'pot', label: t('opportunities.substitutionAnalysis.potential'), align: 'right', width: 1.1 },
+            { key: 'constraint', label: t('opportunities.substitutionAnalysis.constraint'), width: 1.2 },
           ],
           rows: opportunities.map((o) => ({
             hs: o.export_product?.hs_code || '—',
@@ -775,21 +663,21 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
           marketPrice: m.price_positioning ? fmtPerTonne(m.price_positioning.market_avg_price_usd_per_tonne) : '—',
           delta: m.price_positioning ? `${m.price_positioning.price_delta_pct > 0 ? '+' : ''}${m.price_positioning.price_delta_pct}%` : '—',
           positioning: m.price_positioning
-            ? (POSITIONING_LABEL[currentLang] || POSITIONING_LABEL.fr)[m.price_positioning.positioning] || m.price_positioning.positioning
+            ? t(`opportunities.substitutionAnalysis.positioning.${m.price_positioning.positioning}`, { defaultValue: m.price_positioning.positioning })
             : '—',
         })),
       );
       if (marketRows.length) {
         sections.push({
-          title: fr ? 'Marchés cibles et positionnement prix' : 'Target markets and price positioning',
+          title: t('opportunities.substitutionAnalysis.targetMarketsPricePositioning'),
           table: {
             columns: [
-              { key: 'product', label: fr ? 'Produit' : 'Product', width: 2.2 },
-              { key: 'market', label: fr ? 'Marché' : 'Market', width: 1.2 },
-              { key: 'size', label: fr ? 'Taille' : 'Size', align: 'right', width: 0.9 },
-              { key: 'marketPrice', label: fr ? 'Prix marché' : 'Market price', align: 'right', width: 1.0 },
-              { key: 'delta', label: fr ? 'Écart' : 'Delta', align: 'right', width: 0.7 },
-              { key: 'positioning', label: fr ? 'Position' : 'Position', width: 1.0 },
+              { key: 'product', label: t('opportunities.substitutionAnalysis.product'), width: 2.2 },
+              { key: 'market', label: t('opportunities.substitutionAnalysis.market'), width: 1.2 },
+              { key: 'size', label: t('opportunities.substitutionAnalysis.size'), align: 'right', width: 0.9 },
+              { key: 'marketPrice', label: t('opportunities.substitutionAnalysis.marketPrice'), align: 'right', width: 1.0 },
+              { key: 'delta', label: t('opportunities.substitutionAnalysis.delta'), align: 'right', width: 0.7 },
+              { key: 'positioning', label: t('opportunities.substitutionAnalysis.position'), width: 1.0 },
             ],
             rows: marketRows,
           },
@@ -798,7 +686,6 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
     }
 
     // Production africaine vérifiée (FAOSTAT / UNIDO / USGS) par produit.
-    const enr2 = ENRICHED_TXT[fr ? 'fr' : 'en'];
     const verifiedRows = opportunities
       .filter((o) => o.verified_production)
       .map((o) => {
@@ -815,12 +702,12 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       });
     if (verifiedRows.length) {
       sections.push({
-        title: enr2.verifiedTitle,
+        title: t('opportunities.substitutionAnalysis.enriched.verifiedTitle'),
         table: {
           columns: [
             { key: 'hs', label: 'SH', width: 0.7 },
-            { key: 'commodity', label: fr ? 'Commodité' : 'Commodity', width: 1.8 },
-            { key: 'producers', label: fr ? 'Top producteurs réels' : 'Top real producers', width: 3.0 },
+            { key: 'commodity', label: t('opportunities.substitutionAnalysis.commodity'), width: 1.8 },
+            { key: 'producers', label: t('opportunities.substitutionAnalysis.topRealProducers'), width: 3.0 },
             { key: 'source', label: 'Source', width: 0.9 },
           ],
           rows: verifiedRows,
@@ -841,14 +728,14 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
     );
     if (hierarchyRows.length) {
       sections.push({
-        title: enr2.hierarchyTitle,
+        title: t('opportunities.substitutionAnalysis.enriched.hierarchyTitle'),
         table: {
           columns: [
-            { key: 'chapter', label: fr ? 'Chapitre' : 'Chapter', width: 1.7 },
+            { key: 'chapter', label: t('opportunities.substitutionAnalysis.chapter'), width: 1.7 },
             { key: 'hs4', label: 'SH4', width: 0.6 },
             { key: 'hs6', label: 'SH6', width: 0.7 },
-            { key: 'name', label: fr ? 'Produit' : 'Product', width: 2.4 },
-            { key: 'value', label: fr ? 'Valeur' : 'Value', align: 'right', width: 0.9 },
+            { key: 'name', label: t('opportunities.substitutionAnalysis.product'), width: 2.4 },
+            { key: 'value', label: t('opportunities.substitutionAnalysis.value'), align: 'right', width: 0.9 },
           ],
           rows: hierarchyRows,
         },
@@ -857,16 +744,16 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
 
     return {
       badge: 'SUBSTITUTION',
-      title: `${isImport ? (fr ? 'Substitution d’imports' : 'Import substitution') : (fr ? 'Opportunités d’export' : 'Export opportunities')} — ${countryName}`,
+      title: `${isImport ? t('opportunities.substitutionAnalysis.importSubstitution') : t('opportunities.substitutionAnalysis.exportOpportunities')} — ${countryName}`,
       subtitle: currentData.is_estimation
-        ? (fr ? 'Estimation (repli statique — OEC indisponible)' : 'Estimate (static fallback — OEC unavailable)')
-        : (fr ? 'Flux réels OEC / BACI' : 'Real OEC / BACI flows'),
+        ? t('opportunities.substitutionAnalysis.estimateStaticFallbackOec')
+        : t('opportunities.substitutionAnalysis.realOecBaciFlows'),
       kpis,
       sections,
       source: currentData.data_source || 'OEC BACI',
       filename: opportunityPdfFilename('Substitution', `${selectedCountry}_${activeTab}`),
     };
-  }, [currentData, activeTab, currentLang, countryName, opportunities, selectedCountry, txt]);
+  }, [currentData, activeTab, currentLang, countryName, opportunities, selectedCountry, t]);
 
   // Transform substitution data for TradeSankeyDiagram
   // Converts nested API structure to flat format expected by Sankey
@@ -881,7 +768,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         
         return suppliers.map(supplier => ({
           potential_supplier: supplier.country_name,
-          product_name: opp.imported_product?.name || txt.product,
+          product_name: opp.imported_product?.name || t('opportunities.substitutionAnalysis.product'),
           importingCountry: countryName,
           substitution_potential_musd: (supplier.export_value || supplier.production_capacity || 0) / 1e6,
         }));
@@ -890,7 +777,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         const markets = opp.target_markets || opp.potential_markets || [];
         if (!markets.length) return [];
         
-        const productName = opp.exportable_product?.name || opp.export_product?.name || txt.product;
+        const productName = opp.exportable_product?.name || opp.export_product?.name || t('opportunities.substitutionAnalysis.product');
         
         return markets.map(market => ({
           exportingCountry: countryName,
@@ -906,7 +793,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         : item.potential_value_musd;
       return value > 0.1; // At least $100K
     });
-  }, [opportunities, activeTab, countryName, txt.product]);
+  }, [opportunities, activeTab, countryName, t('opportunities.substitutionAnalysis.product')]);
 
   return (
     <div className="space-y-6" data-testid="substitution-analysis">
@@ -915,10 +802,10 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         <div className="flex items-center justify-center gap-3 mb-2">
           <ArrowLeftRight className="h-8 w-8 text-emerald-600" />
           <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight">
-            {txt.title}
+            {t('opportunities.substitutionAnalysis.title')}
           </h2>
         </div>
-        <p className="text-slate-500">{txt.subtitle}</p>
+        <p className="text-slate-500">{t('opportunities.substitutionAnalysis.subtitle')}</p>
       </div>
 
       {/* Country Selection */}
@@ -926,10 +813,10 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         <CardContent className="p-6">
           <div className="flex flex-col sm:flex-row gap-4 items-end">
             <div className="flex-1 space-y-2">
-              <label className="text-sm font-medium text-slate-700">{txt.selectCountry}</label>
+              <label className="text-sm font-medium text-slate-700">{t('opportunities.substitutionAnalysis.selectCountry')}</label>
               <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                 <SelectTrigger className="w-full" data-testid="country-select-substitution">
-                  <SelectValue placeholder={txt.selectCountry} />
+                  <SelectValue placeholder={t('opportunities.substitutionAnalysis.selectCountry')} />
                 </SelectTrigger>
                 <SelectContent>
                   {countries.map((country) => (
@@ -959,7 +846,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
               ) : (
                 <Search className="h-4 w-4 mr-2" />
               )}
-              {txt.analyze}
+              {t('opportunities.substitutionAnalysis.analyze')}
             </Button>
           </div>
         </CardContent>
@@ -969,7 +856,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
       {loading && (
         <div className="flex items-center justify-center py-16">
           <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
-          <span className="ml-3 text-slate-600">{txt.loading}</span>
+          <span className="ml-3 text-slate-600">{t('opportunities.substitutionAnalysis.loading')}</span>
         </div>
       )}
 
@@ -990,11 +877,11 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
               <TabsList className="grid grid-cols-2 max-w-md">
                 <TabsTrigger value="import" className="flex items-center gap-2" data-testid="import-tab">
                   <TrendingDown className="h-4 w-4" />
-                  {txt.importTab}
+                  {t('opportunities.substitutionAnalysis.importTab')}
                 </TabsTrigger>
                 <TabsTrigger value="export" className="flex items-center gap-2" data-testid="export-tab">
                   <TrendingUp className="h-4 w-4" />
-                  {txt.exportTab}
+                  {t('opportunities.substitutionAnalysis.exportTab')}
                 </TabsTrigger>
               </TabsList>
               <OpportunityPdfExport getSpec={buildPdfSpec} language={currentLang} />
@@ -1003,13 +890,13 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
             {/* Summary Stats */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <StatCard
-                title={txt.totalOpportunities}
+                title={t('opportunities.substitutionAnalysis.totalOpportunities')}
                 value={currentData.summary?.total_opportunities || 0}
                 icon={Target}
                 color="emerald"
               />
               <StatCard
-                title={txt.substitutableValue}
+                title={t('opportunities.substitutionAnalysis.substitutableValue')}
                 value={formatValue(
                   activeTab === 'import' 
                     ? currentData.summary?.total_substitutable_value 
@@ -1019,7 +906,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
                 color="blue"
               />
               <StatCard
-                title={activeTab === 'import' ? txt.potentialSavings : "Marchés cibles"}
+                title={activeTab === 'import' ? t('opportunities.substitutionAnalysis.potentialSavings') : "Marchés cibles"}
                 value={activeTab === 'import' 
                   ? `${currentData.summary?.potential_savings_percent?.toFixed(1) || 0}%`
                   : currentData.summary?.top_markets?.length || 0
@@ -1028,7 +915,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
                 color="purple"
               />
               <StatCard
-                title={txt.topSectors}
+                title={t('opportunities.substitutionAnalysis.topSectors')}
                 value={activeTab === 'import'
                   ? currentData.summary?.top_sectors?.length || 0
                   : currentData.summary?.top_products?.length || 0
@@ -1042,7 +929,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
             <Card className="bg-gradient-to-r from-emerald-50 to-teal-50 border-emerald-200">
               <CardContent className="py-4 px-6">
                 <p className="text-sm text-emerald-800">
-                  {activeTab === 'import' ? txt.importSubtitle : txt.exportSubtitle}
+                  {activeTab === 'import' ? t('opportunities.substitutionAnalysis.importSubtitle') : t('opportunities.substitutionAnalysis.exportSubtitle')}
                 </p>
               </CardContent>
             </Card>
@@ -1082,10 +969,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
           </Tabs>
 
           {/* Drill-down chapitre (SH2) -> position (SH4) -> produit (SH6) */}
-          <ProductHierarchyPanel
-            hierarchy={currentData?.summary?.product_hierarchy}
-            language={currentLang}
-          />
+          <ProductHierarchyPanel hierarchy={currentData?.summary?.product_hierarchy} />
 
           {/* Top Sectors Chart — imports ET exports (le backend fournit
               top_sectors pour les deux flux ; dataKey aligné sur total_value,
@@ -1093,7 +977,7 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
           {currentData?.summary?.top_sectors?.length > 0 && (
             <Card className="shadow-lg">
               <CardHeader>
-                <CardTitle className="text-lg font-bold">{txt.topSectors}</CardTitle>
+                <CardTitle className="text-lg font-bold">{t('opportunities.substitutionAnalysis.topSectors')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={250}>
@@ -1118,7 +1002,6 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
             <TradeSankeyDiagram
               opportunities={sankeyOpportunities}
               mode={activeTab}
-              language={currentLang}
             />
           )}
         </>
@@ -1129,14 +1012,14 @@ export default function SubstitutionAnalysis({ language = 'fr', initialCountry =
         <Card className="bg-slate-50 border-slate-200">
           <CardContent className="py-16 text-center">
             <Globe className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-500">{txt.noData}</p>
+            <p className="text-slate-500">{t('opportunities.substitutionAnalysis.noData')}</p>
           </CardContent>
         </Card>
       )}
 
       {/* Source Footer */}
       <div className="text-center">
-        <p className="text-xs text-slate-400 italic">{txt.source}</p>
+        <p className="text-xs text-slate-400 italic">{t('opportunities.substitutionAnalysis.source')}</p>
       </div>
     </div>
   );

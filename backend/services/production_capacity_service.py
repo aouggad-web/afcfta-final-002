@@ -21,6 +21,7 @@ import json
 import os
 from typing import Dict, List, Optional, Tuple
 
+from etl.faostat_hs_mapping import FAOSTAT_HS_TO_COMMODITY
 from production_data import load_production_data
 
 # ── HS → commodité de production ────────────────────────────────────────────────
@@ -30,7 +31,7 @@ from production_data import load_production_data
 #
 # Format : (hs_prefix, dataset, commodity_label)
 #   dataset ∈ {"agri", "mining", "manufacturing"}
-HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
+HS_TO_COMMODITY_CURATED: List[Tuple[str, str, str]] = [
     # ── Agriculture (FAO / FAOSTAT) ──
     ("0901", "agri", "Coffee"),
     ("0902", "agri", "Tea"),
@@ -52,7 +53,13 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     ("0714", "agri", "Cassava"),
     ("0803", "agri", "Plantain"),
     ("0801", "agri", "Cashew nuts"),
-    ("0802", "agri", "Cashew nuts"),
+    # 0802 « AUTRES fruits à coques » (amandes, noisettes, noix, châtaignes,
+    # pistaches) a longtemps pointé ici sur Cashew nuts. C'était faux : la
+    # noix de cajou est en 0801.3x, que la ligne ci-dessus couvre déjà. Comme
+    # 0802 est un HS4, l'erreur masquait TOUTES ses sous-positions — 080212
+    # (amandes décortiquées) et 080232 (noix décortiquées) remontaient sous
+    # le libellé « cajou ». Les sous-positions justes sont curées plus bas
+    # (080211, 080270) ou dérivées par le pont FAOSTAT.
     ("0805", "agri", "Citrus fruits"),
     ("0804", "agri", "Dates"),
     ("2401", "agri", "Tobacco"),
@@ -330,7 +337,73 @@ HS_TO_COMMODITY: List[Tuple[str, str, str]] = [
     # sous laquelle la production vanadium est usuellement rapportée).
     ("282530", "mining", "Vanadium"),  # oxydes/hydroxydes de vanadium (HS6 spécifique)
     ("261400", "mining", "Titanium (ilmenite)"),  # minerais de titane (HS6)
+    # ── Minéraux DÉRIVÉS du fichier USGS (etl/mining_usgs_mcs.py) ──
+    # Assignations lues dans la nomenclature SH, pas devinées. Trois positions
+    # génériques étaient déjà prises et imposent le HS6 : 7102 = Diamonds,
+    # 2523 et 2804 = dimension manufacturière. Le préfixe le plus long gagne,
+    # donc un code HS6 ajouté ici ne masque pas le HS4 voisin.
+    ("280480", "mining", "Arsenic"),  # arsenic
+    ("251110", "mining", "Barite"),  # sulfate de baryum naturel (barytine)
+    # Pas de position minerai propre au béryllium (2617.90 est le fourre-tout
+    # « autres minerais ») → on pointe la forme échangée, le métal brut.
+    ("811212", "mining", "Beryllium"),  # béryllium brut
+    ("252329", "mining", "Cement"),  # ciment Portland, autres (HS6 : 2523 pris)
+    ("2512", "mining", "Diatomite"),  # farines siliceuses fossiles
+    ("252910", "mining", "Feldspar"),  # feldspath
+    ("251320", "mining", "Garnet (industrial)"),  # grenat et abrasifs naturels
+    # « Gemstones » mesure le diamant de QUALITÉ GEMME, quand notre série
+    # « Diamonds » porte l'industriel : deux mesures distinctes du même
+    # minéral, d'où deux codes distincts plutôt qu'une fusion trompeuse.
+    ("710231", "mining", "Gemstones"),  # diamants non industriels, bruts
+    ("280429", "mining", "Helium"),  # gaz rares autres que l'argon
+    ("2522", "mining", "Lime"),  # chaux vive, éteinte, hydraulique
+    ("280540", "mining", "Mercury"),  # mercure
+    ("2525", "mining", "Mica (Natural)"),  # mica
+    # Même raisonnement que pour le vanadium plus haut : 261590 couvre
+    # conjointement niobium/tantale/vanadium et écraserait 2615 = Tantalum.
+    # On pointe donc le ferro-niobium, forme sous laquelle il est échangé.
+    ("720293", "mining", "Niobium"),  # ferro-niobium
+    ("2814", "mining", "Nitrogen(fixed) - Ammonia"),  # ammoniac
+    ("251310", "mining", "Pumice & Pumicite"),  # pierre ponce
+    ("280530", "mining", "Rare earths"),  # terres rares, scandium, yttrium
+    ("280490", "mining", "Selenium"),  # sélénium
+    ("280461", "mining", "Silicon"),  # silicium >= 99,99 %
+    ("280469", "mining", "Silicon"),  # silicium, autres (qualité métallurgique)
+    ("2526", "mining", "Talc, crude"),  # stéatite naturelle, talc
+    ("280450", "mining", "Tellurium"),  # bore, tellure
+    ("2611", "mining", "Tungsten"),  # minerais de tungstène
 ]
+
+# Codes SH que la nomenclature ne permet PAS de rattacher à UNE matière.
+# ----------------------------------------------------------------------
+# Y répondre par un choix unique est arbitraire, même bien commenté. Le code
+# portait ``("253010", "mining", "Vermiculite")`` avec la note « c'est une
+# ambiguïté du SH, pas un choix arbitraire » : l'ambiguïté est bien celle du
+# SH, mais sa RÉSOLUTION était la nôtre, et elle était arbitraire. Une
+# recherche sur 2530.10 renvoyait Vermiculite sans jamais dire que Perlite
+# était aussi plausible — et les deux sont réellement produites en Afrique.
+#
+# On représente donc les candidats au lieu de trancher. Une entrée concrète
+# PLUS FINE (sous-position nationale rattachée explicitement à l'un des deux)
+# lève l'ambiguïté ; sans elle, l'appelant reçoit les candidats et décide.
+HS_AMBIGUOUS: List[Tuple[str, str, Tuple[str, ...]]] = [
+    # 2530.10 « perlite, chlorites et vermiculite, non expansés » : une seule
+    # sous-position pour deux minerais que l'Afrique produit séparément —
+    # vermiculite (UGA, ZAF, ZWE) et perlite (ZAF). Trancher rattacherait une
+    # opportunité à la mauvaise production.
+    ("253010", "mining", ("Perlite", "Vermiculite")),
+]
+
+# Extension GÉNÉRÉE du pont, dérivée de deux correspondances publiées :
+# item FAOSTAT → CPC v2.1 (bulk FAO) puis CPC v2.1 → SH 2017 (table officielle
+# UNSD). Voir scripts/build_faostat_hs_mapping.py pour la dérivation et
+# etl/faostat_hs_mapping.py pour le bilan de génération.
+#
+# Elle est AJOUTÉE APRÈS la table curée et ne contient aucun code que celle-ci
+# résout déjà : le pont existant garde exactement son comportement. La règle
+# « le préfixe le plus spécifique l'emporte » continue de s'appliquer à
+# l'ensemble.
+HS_TO_COMMODITY: List[Tuple[str, str, str]] = HS_TO_COMMODITY_CURATED + FAOSTAT_HS_TO_COMMODITY
 
 # Repli par chapitre HS (2 chiffres) — moins précis mais utile pour couverture large.
 # Couvre les grands secteurs manufacturiers (UNIDO, valeur ajoutée) et agro/mines.
@@ -532,13 +605,84 @@ def _normalize_hs(hs_code: Optional[str]) -> str:
     return "".join(ch for ch in str(hs_code) if ch.isdigit())
 
 
-def _match_commodity(hs_code: str) -> Optional[Tuple[str, str, str]]:
-    """Retourne (dataset, commodity_label, match_level) ou None."""
+def _no_match_payload(hs_code: str) -> Dict:
+    """Pourquoi ce code SH ne mène à aucune production — en distinguant deux cas.
+
+    « Aucune correspondance » et « plusieurs matières possibles » sont deux
+    situations différentes pour celui qui lit l'écran : la première dit qu'on
+    ne sait rien, la seconde qu'on sait trop. Les confondre sous un même
+    ``no_mapping`` effaçait l'information la plus utile — les candidats.
+    """
+    ambiguous = _ambiguous_candidates(hs_code)
+    if ambiguous is not None:
+        dataset, candidates = ambiguous
+        return {
+            "available": False,
+            "reason": "ambiguous_mapping",
+            "hs_code": hs_code,
+            "dataset": dataset,
+            "candidates": candidates,
+        }
+    return {"available": False, "reason": "no_mapping", "hs_code": hs_code}
+
+
+def _ambiguous_candidates(
+    hs_code: str, table: Optional[List[Tuple[str, str, str]]] = None
+) -> Optional[Tuple[str, List[str]]]:
+    """(dataset, [libellés]) si le SH recouvre plusieurs matières sans départage.
+
+    ``None`` dans les deux cas où il n'y a rien à arbitrer : le code ne tombe
+    sur aucune ambiguïté connue, ou une entrée concrète PLUS FINE la lève
+    (typiquement une sous-position nationale rattachée explicitement à l'une
+    des matières). C'est le « si une information supplémentaire le permet » :
+    l'information supplémentaire, ici, est un préfixe plus long.
+    """
     code = _normalize_hs(hs_code)
     if not code:
         return None
+    ambiguous = max(
+        (e for e in HS_AMBIGUOUS if code.startswith(e[0])),
+        key=lambda e: len(e[0]),
+        default=None,
+    )
+    if ambiguous is None:
+        return None
+    concrete = max(
+        (
+            e
+            for e in (HS_TO_COMMODITY if table is None else table)
+            if code.startswith(e[0])
+        ),
+        key=lambda e: len(e[0]),
+        default=None,
+    )
+    if concrete is not None and len(concrete[0]) > len(ambiguous[0]):
+        return None
+    return ambiguous[1], list(ambiguous[2])
+
+
+def _match_commodity(
+    hs_code: str, table: Optional[List[Tuple[str, str, str]]] = None
+) -> Optional[Tuple[str, str, str]]:
+    """Retourne (dataset, commodity_label, match_level) ou None.
+
+    ``table`` permet d'interroger un pont RESTREINT. Le générateur du pont
+    FAOSTAT s'en sert pour se comparer à la seule table curée : se comparer au
+    pont complet reviendrait à se comparer à sa propre sortie précédente, et
+    chaque regénération viderait le module produit.
+    """
+    code = _normalize_hs(hs_code)
+    if not code:
+        return None
+    # Une ambiguïté non levée ne se tranche pas : mieux vaut ne rien renvoyer
+    # que de désigner l'une des matières au hasard. L'appelant interroge
+    # ``_ambiguous_candidates`` pour savoir lesquelles étaient en lice.
+    if _ambiguous_candidates(hs_code, table=table) is not None:
+        return None
     # Match le plus spécifique d'abord (préfixe le plus long)
-    for prefix, dataset, label in sorted(HS_TO_COMMODITY, key=lambda x: -len(x[0])):
+    for prefix, dataset, label in sorted(
+        HS_TO_COMMODITY if table is None else table, key=lambda x: -len(x[0])
+    ):
         if code.startswith(prefix):
             return dataset, label, f"HS{len(prefix)}"
     # Repli par chapitre
@@ -630,7 +774,7 @@ def get_capacity(country_iso3: str, hs_code: str) -> Dict:
     iso3 = (country_iso3 or "").strip().upper()
     match = _match_commodity(hs_code)
     if not match:
-        return {"available": False, "reason": "no_mapping", "hs_code": hs_code}
+        return _no_match_payload(hs_code)
 
     dataset, label, match_level = match
     meta = SOURCE_META[dataset]
@@ -846,7 +990,7 @@ def get_continental_producers(hs_code: str) -> Dict:
     """
     match = _match_commodity(hs_code)
     if not match:
-        return {"available": False, "reason": "no_mapping", "hs_code": hs_code}
+        return _no_match_payload(hs_code)
     dataset, label, match_level = match
     meta = SOURCE_META[dataset]
     all_recs = _records_for(dataset, label)
@@ -912,7 +1056,7 @@ def get_regional_producers(hs_code: str, iso3_set) -> Dict:
     """
     match = _match_commodity(hs_code)
     if not match:
-        return {"available": False, "reason": "no_mapping", "hs_code": hs_code}
+        return _no_match_payload(hs_code)
     dataset, label, match_level = match
     all_recs = _records_for(dataset, label)
     if not all_recs:

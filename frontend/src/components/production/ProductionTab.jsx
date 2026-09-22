@@ -8,8 +8,9 @@ import ProductionMacro from './ProductionMacro';
 import ProductionAgriculture from './ProductionAgriculture';
 import ProductionManufacturing from './ProductionManufacturing';
 import ProductionMining from './ProductionMining';
+import ProductionOutlets from './ProductionOutlets';
 import { PDFExportButton } from '../common/ExportTools';
-import { TrendingUp, Wheat, Factory, Pickaxe, BarChart3, Database, Globe } from 'lucide-react';
+import { TrendingUp, Wheat, Factory, Pickaxe, BarChart3, Database, Globe, PackageSearch } from 'lucide-react';
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || '';
 const API = `${BACKEND_URL}/api`;
@@ -82,7 +83,7 @@ function ProductionTab({ language = 'fr' }) {
       <div ref={contentRef}>
         {/* Sub-tabs Navigation - Enhanced boxed style */}
         <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="space-y-5">
-          <TabsList className="tabs-list-boxed cols-4">
+          <TabsList className="tabs-list-boxed cols-5">
             <TabsTrigger 
               value="macro" 
               className="tab-trigger-enhanced tab-purple"
@@ -111,6 +112,13 @@ function ProductionTab({ language = 'fr' }) {
               <Pickaxe className="tab-icon" />
               <span>{t('production.mining.title')}</span>
             </TabsTrigger>
+            <TabsTrigger
+              value="outlets"
+              className="tab-trigger-enhanced tab-purple"
+            >
+              <PackageSearch className="tab-icon" />
+              <span>{t('production.outletsTab')}</span>
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="macro" className="tab-content-enhanced mt-0">
@@ -127,6 +135,10 @@ function ProductionTab({ language = 'fr' }) {
 
           <TabsContent value="mining" className="tab-content-enhanced mt-0">
             <ProductionMining language={language} />
+          </TabsContent>
+
+          <TabsContent value="outlets" className="tab-content-enhanced mt-0">
+            <ProductionOutlets language={language} />
           </TabsContent>
         </Tabs>
 

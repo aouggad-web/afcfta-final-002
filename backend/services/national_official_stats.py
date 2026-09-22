@@ -1,99 +1,174 @@
 """
-Statistiques officielles NATIONALES (bulletins des agences de promotion /
-offices statistiques nationaux) — complément aux sources internationales
-(OEC/UN Comtrade, FAOSTAT, USGS, UNIDO).
+Statistiques officielles NATIONALES — registre piloté par la donnée
+====================================================================
+Bulletins des offices statistiques nationaux et des agences de promotion,
+en complément des sources internationales (OEC/UN Comtrade, FAOSTAT, USGS,
+UNIDO, UNSD, ILOSTAT).
 
-Intérêt : certaines distinctions n'existent que dans les statistiques
-nationales — en premier lieu la séparation exportations DOMESTIQUES vs
-RÉEXPORTATIONS, décisive pour les règles d'origine ZLECAf (une marchandise
-réexportée depuis une zone franche n'acquiert pas l'origine locale ; seule la
-production/transformation domestique peut y prétendre).
+POURQUOI CES SOURCES, ALORS QUE LES INTERNATIONALES COUVRENT DÉJÀ 54 PAYS
+--------------------------------------------------------------------------
+Parce que certaines distinctions ne sont pas servies au même niveau de détail
+par les sources internationales — en premier lieu la séparation entre
+**exportations domestiques** et **réexportations**, décisive pour les règles
+d'origine ZLECAf : une marchandise réexportée depuis une zone franche
+n'acquiert pas l'origine locale, seule la production ou la transformation
+domestique peut y prétendre.
 
-Garde-fous « zéro fabrication » :
+.. warning::
+
+   Ce module a longtemps affirmé ici qu'« aucune source internationale ne
+   publie cette ventilation ». **C'était faux**, et l'affirmation justifiait
+   à elle seule une collecte office par office qui a rendu un pays sur cinq.
+   UN Comtrade publie les flux ``DX`` / ``RX`` sur un endpoint SANS CLÉ, pour
+   quatorze pays africains dont la ventilation réconcilie — voir
+   ``etl/comtrade_export_split.py`` et son registre.
+
+   Ce que cette couche-ci garde en propre, et que Comtrade ne donne pas à ce
+   niveau : **la ventilation par produit et par marché**. Maurice en est la
+   démonstration — son office la publie jusqu'au produit, et Comtrade ne
+   réconcilie pas pour elle. Les deux couches sont complémentaires : l'une
+   couvre plus de pays, l'autre descend plus bas.
+
+REGISTRE, ET NON DICTIONNAIRE EN DUR
+-------------------------------------
+Les blocs vivent dans ``data/national_stats/<ISO3>.json`` et sont documentés
+par ``docs/data-sources/<ISO3>_STATS_REGISTER.md``, sur le modèle des
+registres de sources juridiques du dépôt : éditeur, publication, URL, année
+des données, devise, empreinte. Ajouter un pays ne demande plus de toucher au
+Python.
+
+GARDE-FOUS « ZÉRO FABRICATION »
+--------------------------------
 - Les valeurs sont reprises TELLES QUE PUBLIÉES, dans la monnaie de
   publication (ex. millions de MUR pour Maurice) — aucune conversion USD
-  maison, aucun chiffre complété.
-- Chaque bloc porte sa source (éditeur, publication, année des données).
+  maison, aucun chiffre complété, aucune agrégation inventée.
+- Chaque bloc porte sa source. Un bloc incomplet est REFUSÉ au chargement
+  plutôt que servi à moitié : voir ``_REQUIRED_SOURCE_FIELDS``.
+- Le champ ``value`` est un nombre dans l'unité déclarée par la source ; il
+  n'est comparable ni entre pays ni à un montant en USD sans conversion
+  explicite, que cette couche ne fait pas.
 
-Première source intégrée : EDB Mauritius (Economic Development Board),
-newsletter de juillet 2024 — « Maurice commerce avec le monde 2023 (MUR Mn) ».
-https://edbmauritius.org/newsletter2024/july/overview.html
+QUAND LA VENTILATION N'EST PAS PUBLIABLE
+-----------------------------------------
+Certains pays ne publient pas la séparation, même en ayant des zones franches
+très actives. Le bloc porte alors ``export_flow_caveat`` : l'avertissement
+daté et la définition citée de la source, qui interdisent de lire un chiffre
+d'export du pays comme de la production domestique. C'est un fait sourcé, pas
+un chiffre reconstitué — voir ``docs/data-sources/TGO_STATS_REGISTER.md``, où
+la tentative de recomposition est montrée en échec contre le total publié.
+
+Premier pays intégré : Maurice (EDB, newsletter de juillet 2024).
 """
 
+from __future__ import annotations
+
+import json
+import logging
+from pathlib import Path
 from typing import Dict, List, Optional
 
-_MUS_EDB_2023: Dict = {
-    "country_iso3": "MUS",
-    "country_name": "Maurice",
-    "source": {
-        "publisher": "EDB Mauritius (Economic Development Board)",
-        "publication": "Newsletter juillet 2024 — Industry Overview",
-        "url": "https://edbmauritius.org/newsletter2024/july/overview.html",
-        "data_year": 2023,
-        "currency": "MUR",
-        "unit": "millions de MUR",
-    },
-    # Le produit d'exportation NATIONALE (domestique) n°1 en 2023.
-    "top_domestic_export_product": {
-        "hs4": "1604",
-        "label": "Thon en conserve",
-        "value_mur_mn": 11_500,
-    },
-    # Produits d'exportation domestique cités par l'EDB (par continent,
-    # dédupliqués) — tous issus de transformation locale ou de collecte,
-    # PAS de réexportation.
-    "domestic_export_products": [
-        {"hs4": "1604", "label": "Thon en conserve"},
-        {"hs4": "1701", "label": "Sucre de canne"},
-        {"hs4": "6203", "label": "Vêtements en denim — hommes"},
-        {"hs4": "6204", "label": "Vêtements en denim — femmes"},
-        {"hs4": "6109", "label": "T-shirts"},
-        {"hs4": "6205", "label": "Chemises pour hommes"},
-        {"hs4": "6105", "label": "Chemises pour hommes (maille)"},
-        {"hs4": "6006", "label": "Tissu"},
-        {"hs4": "9018", "label": "Dispositifs médicaux"},
-        {"hs4": "2301", "label": "Aliments pour animaux"},
-        {"hs4": "1504", "label": "Graisses et huiles de poisson"},
-        {"hs4": "7204", "label": "Déchets ferreux"},
-        {"hs4": "7403", "label": "Cuivre"},
-        {"hs4": "0106", "label": "Animaux vivants"},
-        {"hs4": "0603", "label": "Fleurs coupées"},
-    ],
-    # Top marchés des exportations DOMESTIQUES (2023, millions MUR, part %).
-    "top_domestic_export_markets": [
-        {"market": "Afrique du Sud", "iso3": "ZAF", "value_mur_mn": 7_664, "share_pct": 13},
-        {"market": "Royaume-Uni", "iso3": "GBR", "value_mur_mn": 7_489, "share_pct": 12},
-        {"market": "France", "iso3": "FRA", "value_mur_mn": 6_597, "share_pct": 11},
-        {"market": "États-Unis", "iso3": "USA", "value_mur_mn": 6_543, "share_pct": 11},
-        {"market": "Espagne", "iso3": "ESP", "value_mur_mn": 4_943, "share_pct": 8},
-        {"market": "Madagascar", "iso3": "MDG", "value_mur_mn": 4_910, "share_pct": 8},
-        {"market": "Italie", "iso3": "ITA", "value_mur_mn": 3_819, "share_pct": 6},
-        {"market": "Pays-Bas", "iso3": "NLD", "value_mur_mn": 2_946, "share_pct": 5},
-        {"market": "Inde", "iso3": "IND", "value_mur_mn": 2_111, "share_pct": 3},
-        {"market": "Kenya", "iso3": "KEN", "value_mur_mn": 1_571, "share_pct": 3},
-    ],
-    # Top marchés de RÉEXPORTATION (suivis séparément par l'EDB) — ces flux
-    # ne confèrent PAS l'origine mauricienne au sens ZLECAf.
-    "top_reexport_markets": [
-        {"market": "Vietnam", "iso3": "VNM", "value_mur_mn": 3_082, "share_pct": 13},
-        {"market": "Réunion", "iso3": "REU", "value_mur_mn": 1_967, "share_pct": 8},
-        {"market": "États-Unis", "iso3": "USA", "value_mur_mn": 1_385, "share_pct": 6},
-        {"market": "Afrique du Sud", "iso3": "ZAF", "value_mur_mn": 1_353, "share_pct": 6},
-        {"market": "France", "iso3": "FRA", "value_mur_mn": 1_336, "share_pct": 6},
-        {"market": "Taïwan, Chine", "iso3": "TWN", "value_mur_mn": 1_261, "share_pct": 5},
-        {"market": "Madagascar", "iso3": "MDG", "value_mur_mn": 1_239, "share_pct": 5},
-        {"market": "Mayotte", "iso3": "MYT", "value_mur_mn": 1_040, "share_pct": 4},
-        {"market": "Émirats arabes unis", "iso3": "ARE", "value_mur_mn": 918, "share_pct": 4},
-        {"market": "Thaïlande", "iso3": "THA", "value_mur_mn": 841, "share_pct": 4},
-    ],
-}
+logger = logging.getLogger(__name__)
 
-_OFFICIAL_STATS: Dict[str, Dict] = {"MUS": _MUS_EDB_2023}
+REGISTRY_DIR = Path(__file__).resolve().parent.parent.parent / "data" / "national_stats"
+
+#: Sans l'un de ces champs, une entrée n'est pas vérifiable : elle est écartée.
+#: Un chiffre dont on ne peut pas dire qui l'a publié, quand, et dans quelle
+#: unité ne vaut pas mieux qu'un chiffre absent — il vaut moins, parce qu'il
+#: inspire confiance.
+#: ``unit`` en fait partie parce que ``grounding_lines`` l'injecte dans le
+#: texte servi au modèle : l'omettre produirait « values in None ».
+_REQUIRED_SOURCE_FIELDS = ("publisher", "publication", "url", "data_year", "currency", "unit")
+
+_registry_cache: Optional[Dict[str, Dict]] = None
+
+
+def _entry_is_valid(iso3: str, entry: object) -> bool:
+    """Un bloc est-il assez vérifiable pour être servi ?
+
+    Trois refus, dans cet ordre, parce qu'ils échouent différemment :
+
+    * **forme.** Un JSON valide n'est pas un bloc valide : ``[]`` ou
+      ``{"source": []}`` se chargent sans erreur puis font tomber la lecture
+      plus loin. Le type est donc vérifié avant tout accès.
+    * **provenance.** Sans éditeur, publication, URL, année, devise ou unité,
+      le chiffre n'est pas vérifiable par un lecteur — et ``unit`` manquante
+      se retrouverait telle quelle dans le texte servi au modèle.
+    * **identité.** Le code porté par le fichier doit correspondre à son nom.
+      Un bloc copié d'un pays à l'autre sans changer le code servirait les
+      chiffres de l'un sous le nom de l'autre — l'erreur la plus difficile à
+      repérer à l'écran, parce que rien n'a l'air cassé.
+    """
+    if not isinstance(entry, dict):
+        logger.warning(
+            "Statistiques nationales %s ignorées — le fichier ne contient pas un objet", iso3
+        )
+        return False
+
+    source = entry.get("source")
+    if not isinstance(source, dict):
+        logger.warning(
+            "Statistiques nationales %s ignorées — bloc « source » absent ou mal formé", iso3
+        )
+        return False
+
+    missing = [f for f in _REQUIRED_SOURCE_FIELDS if not source.get(f)]
+    if missing:
+        logger.warning(
+            "Statistiques nationales %s ignorées — champs de source manquants : %s",
+            iso3,
+            ", ".join(missing),
+        )
+        return False
+
+    declared = entry.get("country_iso3")
+    if not declared:
+        logger.warning("Statistiques nationales %s ignorées — country_iso3 absent", iso3)
+        return False
+    if str(declared).strip().upper() != iso3:
+        logger.warning(
+            "Statistiques nationales %s ignorées — le fichier déclare %s : "
+            "un bloc servi sous le nom d'un autre pays est pire qu'un bloc absent",
+            iso3,
+            declared,
+        )
+        return False
+    return True
+
+
+def load_registry(force: bool = False) -> Dict[str, Dict]:
+    """{ISO3: bloc} depuis ``data/national_stats/``, entrées invalides écartées."""
+    global _registry_cache
+    if _registry_cache is not None and not force:
+        return _registry_cache
+
+    registry: Dict[str, Dict] = {}
+    if REGISTRY_DIR.is_dir():
+        for path in sorted(REGISTRY_DIR.glob("*.json")):
+            iso3 = path.stem.upper()
+            try:
+                entry = json.loads(path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError) as exc:
+                logger.warning("Statistiques nationales %s illisibles : %s", iso3, exc)
+                continue
+            if _entry_is_valid(iso3, entry):
+                registry[iso3] = entry
+    _registry_cache = registry
+    return registry
+
+
+def list_covered_countries() -> List[str]:
+    """Codes ISO3 disposant d'un bloc de statistiques nationales."""
+    return sorted(load_registry())
 
 
 def get_official_stats(country_iso3: str) -> Optional[Dict]:
     """Bloc de statistiques officielles nationales pour un pays, s'il existe."""
-    return _OFFICIAL_STATS.get((country_iso3 or "").strip().upper())
+    return load_registry().get((country_iso3 or "").strip().upper())
+
+
+def _amount(value, unit_short: str) -> str:
+    """Montant formaté dans l'unité PUBLIÉE, jamais convertie."""
+    return f"{value:,} {unit_short}" if isinstance(value, (int, float)) else str(value)
 
 
 def grounding_lines(country_iso3: str) -> List[str]:
@@ -105,6 +180,7 @@ def grounding_lines(country_iso3: str) -> List[str]:
     if not stats:
         return []
     src = stats["source"]
+    unit_short = src.get("unit_short") or src.get("currency", "")
     lines = [
         f"OFFICIAL NATIONAL STATISTICS FOR {stats['country_name']} "
         f"({src['publisher']}, {src['publication']}, data year {src['data_year']}, "
@@ -114,7 +190,7 @@ def grounding_lines(country_iso3: str) -> List[str]:
     if top:
         lines.append(
             f"- #1 DOMESTIC export product {src['data_year']}: {top['label']} "
-            f"(HS {top['hs4']}), {top['value_mur_mn']:,} MUR Mn"
+            f"(HS {top['hs4']}), {_amount(top.get('value'), unit_short)}"
         )
     products = stats.get("domestic_export_products") or []
     if products:
@@ -136,5 +212,29 @@ def grounding_lines(country_iso3: str) -> List[str]:
             + ", ".join(f"{m['market']} ({m['share_pct']}%)" for m in reexports[:5])
             + " — re-exported merchandise does NOT acquire local AfCFTA origin and must "
             "never be presented as domestic production or origin-qualifying supply."
+        )
+    caveat = stats.get("export_flow_caveat")
+    if isinstance(caveat, dict):
+        lines.append(
+            f"- WARNING — the two flows are NOT separable for {stats['country_name']}: "
+            f"the national source records total exports "
+            f"({_amount(caveat.get('total_exports_fob'), unit_short)} in "
+            f"{caveat.get('period')}) as domestic exports PLUS re-exports, and publishes "
+            "no split by product or by market. No export figure for this country, from "
+            "this source or from any international source derived from it, may be read "
+            "as domestic production or as origin-qualifying supply. Source definition: "
+            f"\u00ab\u00a0{caveat.get('source_definition')}\u00a0\u00bb"
+        )
+    zones = stats.get("free_zone_regimes") or []
+    if zones:
+        lines.append(
+            "- Free-zone customs regimes, as published (values in "
+            f"{src['unit']}): "
+            + "; ".join(
+                f"{z['label']} = {_amount(z.get('value'), unit_short)}" for z in zones
+            )
+            + " — goods merely entering and leaving a free zone are transformed there at "
+            "most partially; free-zone outflows do not by themselves establish local "
+            "origin."
         )
     return lines

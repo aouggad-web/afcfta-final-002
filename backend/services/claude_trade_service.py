@@ -1019,6 +1019,50 @@ STRICT DATA RULES:
         result["production_capacities"] = kept
         return removed
 
+    async def factual_opportunities(
+        self, country_name: str, mode: str = "export", lang: str = "fr"
+    ) -> Dict:
+        """Opportunités SANS narration : les données d'ancrage, servies telles quelles.
+
+        L'ancrage factuel — production réelle du pays, flux commerciaux réels —
+        est calculé AVANT tout appel au modèle, et n'en dépend en rien. Sans
+        clé d'API, le renvoyer coûte donc zéro appel et conserve l'essentiel :
+        ce que le pays produit, ce qu'il échange, dans quel ordre. Ce qui se
+        perd est la mise en récit et le classement argumenté, pas les faits.
+
+        Sert aussi de repli quand le quota est épuisé, le fournisseur
+        indisponible ou la réponse inexploitable — le chemin d'échec de
+        ``analyze_trade_opportunities`` y renvoie. Mieux vaut un module amputé
+        de sa prose qu'un module muet.
+        """
+        iso3 = self._resolve_iso3(country_name)
+        grounding_text, stats = await self._country_opportunity_grounding(country_name, iso3, mode)
+        return {
+            "country": country_name,
+            "country_iso3": iso3,
+            "mode": mode,
+            "lang": lang,
+            "ai_available": False,
+            "degraded": True,
+            "degraded_reason": "ANTHROPIC_API_KEY not configured",
+            "notice": (
+                "Analyse narrative indisponible : aucune clé d'API n'est configurée. "
+                "Les données réelles ci-dessous sont celles qui servent d'ancrage à "
+                "l'analyse — production du pays et flux commerciaux observés. Elles "
+                "ne sont ni classées ni commentées."
+                if lang == "fr"
+                else (
+                    "Narrative analysis unavailable: no API key configured. The real "
+                    "data below is what normally grounds the analysis — the country's "
+                    "production and observed trade flows. It is neither ranked nor "
+                    "commented."
+                )
+            ),
+            "grounding": grounding_text,
+            "grounding_stats": stats,
+            "opportunities": [],
+        }
+
     async def analyze_trade_opportunities(
         self,
         country_name: str,
@@ -1026,7 +1070,12 @@ STRICT DATA RULES:
         lang: str = "fr",
     ) -> Dict:
         if not self._is_ready():
-            return {"error": "ANTHROPIC_API_KEY not configured", "opportunities": []}
+            # Plutôt qu'une erreur nue : l'ancrage factuel ne dépend pas du
+            # modèle, autant le servir. Le champ ``error`` est conservé pour
+            # les consommateurs qui le testent déjà.
+            payload = await self.factual_opportunities(country_name, mode=mode, lang=lang)
+            payload["error"] = "ANTHROPIC_API_KEY not configured"
+            return payload
 
         # "pv" = version du prompt : incrémentée à chaque évolution majeure du
         # prompt OU des enrichissements post-LLM (v3 : proxy d'exportations
@@ -1596,7 +1645,20 @@ Wrap ALL 15 in this envelope:
 
         except Exception as e:
             logger.error(f"Error in Claude trade analysis: {e}", exc_info=True)
-            return {"error": str(e), "opportunities": []}
+            # Quota épuisé, fournisseur indisponible, réponse inexploitable :
+            # l'ancrage factuel, lui, ne dépend pas du modèle. Le servir coûte
+            # zéro appel et laisse au lecteur ce que le pays produit et
+            # échange réellement, au lieu d'un écran vide. Le docstring de
+            # factual_opportunities promettait déjà ce comportement ; il n'était
+            # câblé qu'à l'absence de clé.
+            try:
+                payload = await self.factual_opportunities(country_name, mode=mode, lang=lang)
+            except Exception as fallback_error:  # pragma: no cover - dernier recours
+                logger.error(f"Factual fallback also failed: {fallback_error}")
+                return {"error": str(e), "opportunities": []}
+            payload["error"] = str(e)
+            payload["degraded_reason"] = f"analysis_failed: {e}"
+            return payload
 
     # ── Country Economic Profile ───────────────────────────────────────────────
 
@@ -1943,11 +2005,143 @@ Return this EXACT JSON structure with one entry per year, deduplicated:
                     real_raw_material_iso3.update(p["country_iso3"] for p in top)
         return "\n".join(lines), real_raw_material_iso3
 
+    #: Libellés et pictogrammes des chaînes, pour le repli factuel. Les clés
+    #: sont celles de ``_SECTOR_HS_SEEDS`` : le repli ne couvre donc jamais
+    #: une chaîne dont on n'a pas les codes SH, plutôt que d'en inventer une.
+    _SECTOR_LABELS = {
+        "coffee/cocoa": ({"fr": "Café & cacao", "en": "Coffee & cocoa"}, "☕"),
+        "cotton/textiles": ({"fr": "Coton & textiles", "en": "Cotton & textiles"}, "🧵"),
+        "minerals": ({"fr": "Minerais", "en": "Minerals"}, "💎"),
+        "petroleum": ({"fr": "Pétrole & gaz", "en": "Petroleum & gas"}, "🛢️"),
+        "automotive/assembly": ({"fr": "Automobile & assemblage", "en": "Automotive & assembly"}, "🚗"),
+        "pharma/chemicals": ({"fr": "Pharmacie & chimie", "en": "Pharma & chemicals"}, "💊"),
+    }
+
+    def factual_value_chains(self, sector: Optional[str] = None, lang: str = "fr") -> Dict:
+        """Chaînes de valeur SANS narration : les producteurs réels, servis tels quels.
+
+        Même parti que ``factual_opportunities`` : les producteurs continentaux
+        (FAOSTAT / USGS / UNIDO) sont calculés AVANT tout appel au modèle et
+        n'en dépendent pas. Sans clé, les renvoyer coûte zéro appel et garde
+        l'essentiel — qui produit quoi, en quelle quantité, d'après quelle
+        source et pour quelle année.
+
+        CE QUE CE REPLI NE FABRIQUE PAS
+        --------------------------------
+        - **Les étapes de la chaîne** (`stages`) sont VIDES. Découper une
+          filière en maillons et leur affecter des pays est une analyse, pas
+          une mesure : rien dans nos sources ne la porte.
+        - **Les potentiels** (`intra_african_potential_musd`,
+          `global_exports_musd`) sont absents pour la même raison.
+
+        Ce qui se perd est donc le récit ; ce qui reste est mesuré. C'est
+        préférable au jeu écrit en dur que le front servait auparavant, dont
+        les valeurs par maillon n'avaient aucune source.
+        """
+        keys = list(self._SECTOR_HS_SEEDS)
+        if sector:
+            sector_lower = sector.lower()
+            keys = [
+                k for k in self._SECTOR_HS_SEEDS
+                if any(part in sector_lower for part in k.split("/"))
+            ] or keys
+
+        chains = []
+        commodities_covered = 0
+        for key in keys:
+            label, icon = self._SECTOR_LABELS.get(
+                key, ({"fr": key, "en": key}, "📦")
+            )
+            producers, seen_iso3, sources, years, first_hs = [], set(), set(), set(), None
+            for hs in self._SECTOR_HS_SEEDS[key]:
+                data = production_capacity_service.get_continental_producers(hs)
+                if not data.get("available"):
+                    continue
+                first_hs = first_hs or hs
+                commodities_covered += 1
+                sources.add(data["source"]["institution"])
+                years.add(data["year"])
+                role = (
+                    "raw_material"
+                    if data["dimension"] in self._RAW_MATERIAL_DATASETS
+                    else "processor"
+                )
+                for prod in data["top_producers"][:5]:
+                    # Un pays peut figurer sous plusieurs codes SH du même
+                    # secteur ; on garde sa première occurrence plutôt que
+                    # d'additionner des unités hétérogènes (tonnes de cacao
+                    # et tonnes de café ne s'ajoutent pas).
+                    if prod["country_iso3"] in seen_iso3:
+                        continue
+                    seen_iso3.add(prod["country_iso3"])
+                    producers.append(
+                        {
+                            "country": prod["country_name"],
+                            "iso3": prod["country_iso3"],
+                            "production_tonnes": prod["value"],
+                            "market_share_percent": prod["share_pct"],
+                            "role": role,
+                            "commodity": data["commodity"],
+                            "unit": data["unit"],
+                            "measure": data["measure"],
+                            "year": data["year"],
+                            "source": data["source"],
+                            "coverage_caveat": data.get("coverage_caveat"),
+                            "commodity_caveat": data.get("commodity_caveat"),
+                        }
+                    )
+            if not producers:
+                continue
+            chains.append(
+                {
+                    "id": key.split("/")[0],
+                    "name": label,
+                    "icon": icon,
+                    "hs_code": first_hs or "",
+                    "stages": [],
+                    "top_producers": producers,
+                    "sources": sorted(sources),
+                    "years": sorted(years),
+                }
+            )
+
+        return {
+            "value_chains": chains,
+            "lang": lang,
+            "ai_available": False,
+            "degraded": True,
+            "degraded_reason": "ANTHROPIC_API_KEY not configured",
+            "notice": (
+                "Analyse narrative indisponible : aucune clé d'API n'est configurée. "
+                "Les producteurs ci-dessous sont mesurés (FAOSTAT, USGS, UNIDO) et "
+                "servent normalement d'ancrage à l'analyse. Le découpage en étapes "
+                "et les potentiels d'échange, qui relèvent de l'interprétation, ne "
+                "sont pas affichés."
+                if lang == "fr"
+                else (
+                    "Narrative analysis unavailable: no API key configured. The "
+                    "producers below are measured (FAOSTAT, USGS, UNIDO) and normally "
+                    "ground the analysis. Chain stages and trade potentials, which are "
+                    "interpretation, are not shown."
+                )
+            ),
+            "grounding_stats": {
+                "chains": len(chains),
+                "commodities": commodities_covered,
+                "producers": sum(len(c["top_producers"]) for c in chains),
+            },
+        }
+
     async def get_value_chains_analysis(
         self, sector: Optional[str] = None, lang: str = "fr"
     ) -> Dict:
         if not self._is_ready():
-            return {"error": "ANTHROPIC_API_KEY not configured"}
+            # Plutôt qu'une erreur nue : les producteurs réels ne dépendent pas
+            # du modèle. Le champ ``error`` est conservé pour les consommateurs
+            # qui le testent déjà.
+            payload = self.factual_value_chains(sector=sector, lang=lang)
+            payload["error"] = "ANTHROPIC_API_KEY not configured"
+            return payload
 
         cache_params = {"sector": sector or "all", "lang": lang}
         cached = cache_service.get("claude_value_chains", cache_params)

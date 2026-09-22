@@ -8,9 +8,13 @@ afin de préserver les 10 000+ enregistrements agricoles FAOSTAT bulk déjà en 
 Applique quatre enrichissements curés (valeurs publiées uniquement) :
 
   1. MINING      — nouveaux minéraux + extension 2024   (etl/mining_extended.py)
-  2. MACRO       — valeur ajoutée sectorielle & croissance PIB réels, World Bank
-                   WDI 2023-2024 (etl/macro_extended.py ← etl/macro_wdi_data.py)
+  2. MACRO       — valeur ajoutée sectorielle (parts du PIB et montants en USD
+                   courants) & croissance PIB réels, World Bank WDI 2015-2024
+                   (etl/macro_extended.py ← etl/macro_wdi_data.py)
   3. AGRICULTURE — prévisions OECD-FAO (2025/2030)        (etl/faostat_projections.py)
+  4. MANUFACTURIER MESURÉ — agrégats nationaux UNSD/UNIDO (VAM par habitant,
+                   part de l'emploi, part moyenne et haute technologie), clé
+                   DÉDIÉE ``manufacturing_unsd``  (etl/manufacturing_unsd.py)
 
 La dimension MANUFACTURING est laissée aux valeurs publiées (aucune série
 rétro-calculée : le contrat « valeurs publiées uniquement » interdit d'extrapoler
@@ -43,6 +47,7 @@ sys.path.insert(0, str(BACKEND_DIR))
 
 from etl.faostat_projections import build_projections
 from etl.macro_extended import build_macro_series
+from etl.manufacturing_unsd import build_manufacturing_unsd
 from etl.mining_extended import build_all as build_mining_additions
 
 
@@ -87,6 +92,7 @@ def _summary(data: Dict) -> None:
         "agri_faostat",
         "agri_projections",
         "manufacturing_unido",
+        "manufacturing_unsd",
         "mining_usgs",
     ):
         recs = data.get(dim, [])
@@ -134,7 +140,7 @@ def main() -> None:
         ["country_iso3", "indicator_code", "sector_isic_section", "year"],
         overwrite=True,
     )
-    print(f"[2] Macro       : +{mac_add} enreg., {mac_up} mis à jour (World Bank WDI 2023-2024)")
+    print(f"[2] Macro       : +{mac_add} enreg., {mac_up} mis à jour (World Bank WDI 2015-2024)")
 
     # ── 3. Agriculture : prévisions OECD-FAO (clé DÉDIÉE agri_projections) ───
     # Stockées à part de agri_faostat : ce sont des PRÉVISIONS (pas des
@@ -160,12 +166,30 @@ def main() -> None:
         "(inchangés — aucune extrapolation)"
     )
 
+    # ── 5. Manufacturier MESURÉ : agrégats nationaux UNSD (clé dédiée) ──────
+    # Tenu à l'écart de manufacturing_unido à dessein : celle-ci ventile par
+    # division ISIC (souvent estimée faute d'accès à INDSTAT), celle-ci mesure
+    # des agrégats nationaux. Les fondre ferait passer du mesuré pour de
+    # l'estimé, et l'inverse.
+    unsd_add = build_manufacturing_unsd()
+    data["manufacturing_unsd"], u_add, u_up = _upsert(
+        data.get("manufacturing_unsd", []),
+        unsd_add,
+        ["country_iso3", "indicator_code", "year"],
+        overwrite=True,
+    )
+    print(
+        f"[5] Manuf. UNSD : +{u_add} enreg., {u_up} mis à jour "
+        f"({len({r['country_iso3'] for r in unsd_add})} pays, agrégats mesurés)"
+    )
+
     # ── Countries agrégés + metadata ────────────────────────────────────────
     all_recs = (
         data.get("value_added_macro", [])
         + data.get("agri_faostat", [])
         + data.get("agri_projections", [])
         + data.get("manufacturing_unido", [])
+        + data.get("manufacturing_unsd", [])
         + data.get("mining_usgs", [])
     )
     data["countries"] = sorted({r.get("country_iso3") for r in all_recs if r.get("country_iso3")})
@@ -180,12 +204,18 @@ def main() -> None:
             "macro": "World Bank WDI 2023-2024 (valeurs réelles API) — etl/macro_wdi_data.py",
             "agriculture_projections": "OECD-FAO Agricultural Outlook 2024-2033 — etl/faostat_projections.py",
             "manufacturing": "UNIDO INDSTAT4 — valeurs publiées (2024, inchangées)",
+            "manufacturing_unsd": (
+                "UNSD base ODD cible 9.2 (source UNIDO) — VAM par habitant, part de "
+                "l'emploi manufacturier, part moyenne et haute technologie — "
+                "etl/manufacturing_unsd.py"
+            ),
         }
     )
     meta["record_counts"] = {
         "agriculture": len(data.get("agri_faostat", [])),
         "agriculture_projections": len(data.get("agri_projections", [])),
         "manufacturing": len(data.get("manufacturing_unido", [])),
+        "manufacturing_unsd": len(data.get("manufacturing_unsd", [])),
         "mining": len(data.get("mining_usgs", [])),
         "macro": len(data.get("value_added_macro", [])),
         "total": len(all_recs),
