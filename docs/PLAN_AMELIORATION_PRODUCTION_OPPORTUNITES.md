@@ -324,7 +324,7 @@ ouvert, comme le notent déjà les commentaires des workflows. À revalider là-
 | **USGS (publications)** | 200 | ✅ PDF, extraction nécessaire |
 | UN Comtrade | 401 | 🔑 clé requise — la rotation de clés est **déjà codée** |
 | WTO API | 401 | 🔑 clé requise |
-| UNIDO stat portal | **403** | ⛔ confirme l'absence d'endpoint libre |
+| UNIDO stat portal (web) | **403** | ⛔ le PORTAIL est fermé — mais pas son API REST, voir §1.1 |
 | AfDB / Knoema | 403 | ⛔ |
 | IMF datamapper | 403 | ⛔ |
 | ILOSTAT (rplumber) | 200 mais 0 ligne | ⚠️ à revalider sur runner — voir §4.3 |
@@ -426,8 +426,21 @@ d'endpoint libre (403 reconfirmé). Deux voies ont été exploitées :
 > nombre de pays en `is_estimation` seule passe sous 15 » — est **inatteignable
 > par cette voie**, et il fallait le dire plutôt que de le contourner. Ces 32
 > pays le sont sur la *ventilation par division ISIC* ; l'UNSD republie des
-> **agrégats nationaux**, pas des divisions. Aucune source libre ne publie la
-> ventilation : elle reste derrière le 403.
+> **agrégats nationaux**, pas des divisions.
+>
+> **Rectification (2026-09-22).** La phrase qui suivait ici — « aucune source
+> libre ne publie la ventilation : elle reste derrière le 403 » — était trop
+> forte, et elle a coûté un contournement. Le 403 est celui du **portail
+> web** ; son **API REST** répond sans clé. Vérifié :
+> `stat.unido.org/` → 403, `/unido-statistics-portal-api/v3/api-docs` → 403,
+> mais `/portal/dataset/getData` en POST → **400 avec des erreurs de
+> validation de champs**, c'est-à-dire une requête traitée. Signalé par la
+> PR #501, qui s'en sert pour verser le détail industriel algérien.
+>
+> C'est la troisième affirmation trop forte de ce document (après « aucune
+> source internationale ne publie la ventilation domestique/réexportation »
+> et la portée du refus togolais). Toutes trois avaient la même forme : un
+> échec constaté sur UN chemin, généralisé en impossibilité.
 >
 > Ce que la voie UNSD apporte est autre chose, et utile : trois grandeurs
 > manufacturières **mesurées** qui permettent de juger un pays sans s'appuyer
