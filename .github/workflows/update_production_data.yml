@@ -138,11 +138,13 @@ jobs:
             (≥ 5 000 agri), vérités de terrain (CIV dans le top cacao, ETH
             dans le top café), lisibilité par le backend.
 
-            **Périmètre** : agriculture (FAOSTAT, automatique) et
-            mines/énergie (USGS, table curée multi-années). La section
-            manufacturing (UNIDO INDSTAT4) n'a pas d'endpoint public de
-            téléchargement — elle reste curée à la main et le backend
-            affiche un garde-fou de couverture là où elle est incomplète.
+            **Périmètre** : agriculture (FAOSTAT, automatique),
+            mines/énergie (USGS, table curée multi-années) et manufacturing
+            mesuré (UNSD, API libre et sans clé, rafraîchi par ce même
+            passage). UNIDO INDSTAT4 reste fermé (403) : le détail par
+            division ISIC qui en dépend demeure curé à la main, et le
+            backend affiche un garde-fou de couverture là où il est
+            incomplet.
 
             La branche est fixe (`automated-production-data`) : si une PR
             de données est déjà ouverte, elle est mise à jour au lieu d'en
