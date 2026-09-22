@@ -7,12 +7,27 @@ UNIDO, UNSD, ILOSTAT).
 
 POURQUOI CES SOURCES, ALORS QUE LES INTERNATIONALES COUVRENT DÉJÀ 54 PAYS
 --------------------------------------------------------------------------
-Parce que certaines distinctions n'existent QUE dans la statistique
-nationale — en premier lieu la séparation entre **exportations domestiques**
-et **réexportations**, décisive pour les règles d'origine ZLECAf : une
-marchandise réexportée depuis une zone franche n'acquiert pas l'origine
-locale, seule la production ou la transformation domestique peut y prétendre.
-Aucune source internationale ne publie cette ventilation.
+Parce que certaines distinctions ne sont pas servies au même niveau de détail
+par les sources internationales — en premier lieu la séparation entre
+**exportations domestiques** et **réexportations**, décisive pour les règles
+d'origine ZLECAf : une marchandise réexportée depuis une zone franche
+n'acquiert pas l'origine locale, seule la production ou la transformation
+domestique peut y prétendre.
+
+.. warning::
+
+   Ce module a longtemps affirmé ici qu'« aucune source internationale ne
+   publie cette ventilation ». **C'était faux**, et l'affirmation justifiait
+   à elle seule une collecte office par office qui a rendu un pays sur cinq.
+   UN Comtrade publie les flux ``DX`` / ``RX`` sur un endpoint SANS CLÉ, pour
+   quatorze pays africains dont la ventilation réconcilie — voir
+   ``etl/comtrade_export_split.py`` et son registre.
+
+   Ce que cette couche-ci garde en propre, et que Comtrade ne donne pas à ce
+   niveau : **la ventilation par produit et par marché**. Maurice en est la
+   démonstration — son office la publie jusqu'au produit, et Comtrade ne
+   réconcilie pas pour elle. Les deux couches sont complémentaires : l'une
+   couvre plus de pays, l'autre descend plus bas.
 
 REGISTRE, ET NON DICTIONNAIRE EN DUR
 -------------------------------------
