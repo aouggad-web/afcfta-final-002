@@ -303,7 +303,13 @@ class PostgresTariffService:
             "fiscal_advantages": [
                 {
                     "tax_code": f["tax_code"],
-                    "reduced_rate": f["reduced_rate_pct"],
+                    # `reduced_rate_pct`, et NON `reduced_rate` : c'est le nom que
+                    # lit `RegulatoryDetailsPanel.jsx` et qu'émet déjà
+                    # `authentic_tariff_service.py`. Sous l'ancien nom, le panneau
+                    # affichait « % » sans chiffre — un taux réduit réel, acquis,
+                    # invisible à l'écran. Deux producteurs du même bloc doivent
+                    # porter la même clé, sinon l'un des deux est muet.
+                    "reduced_rate_pct": f["reduced_rate_pct"],
                     "condition_fr": f["condition_fr"],
                     "condition_en": f["condition_en"],
                 }
