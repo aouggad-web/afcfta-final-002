@@ -86,7 +86,10 @@ def test_le_libelle_de_classe_est_servi(production_routes):
 
 
 def test_une_estimation_se_declare_comme_telle(production_routes):
-    payload = production_routes.get_isic4_country_data("DZA")
+    """Exemple choisi : BEN, absent du socle 2018+ comme du versement DZA
+    2005-2017 — le pays reste au repli estimé. (DZA, qui portait cet exemple
+    depuis que son détail ONS via UNIDO a été versé, est désormais MESURÉ.)"""
+    payload = production_routes.get_isic4_country_data("BEN")
     assert payload["data_basis"] == "ESTIMATED_FROM_ISIC2"
     assert payload["data_quality"]["is_fully_estimated"] is True
     assert payload["data_quality"]["official_indicators"] == 0
@@ -115,8 +118,9 @@ def test_une_valeur_absente_n_est_jamais_servie_comme_zero(production_routes, co
 
 
 def test_un_pays_estime_n_a_pas_de_serie_temporelle(production_routes):
-    """L'absence de série doit être une absence, pas une erreur."""
-    reponse = production_routes.get_all_isic4_timeseries_data("DZA")
+    """L'absence de série doit être une absence, pas une erreur. Exemple : BEN
+    (repli estimé) — DZA est désormais mesuré et porte des séries réelles."""
+    reponse = production_routes.get_all_isic4_timeseries_data("BEN")
     assert reponse["data_basis"] == "ESTIMATED_FROM_ISIC2"
     assert reponse["classes"] == {}
     assert reponse["note"]

@@ -12,9 +12,14 @@ Fichier fourni par l'utilisateur, exporté depuis le portail UNIDO :
 
 Couverture : 20 pays africains (voir `list_covered_countries()`), années
 2018-2024 (filtré depuis la source d'origine 2005-2024 sur demande),
-niveau ISIC 4 chiffres (isic_level=4).
+niveau ISIC 4 chiffres (isic_level=4). S'y ajoute un second versement du même
+schéma, ``unido_idsb_indstat_isic4_dza_2005_2017.csv.gz`` — l'Algérie, dont le
+détail au niveau classe (ONS, via UNIDO) s'arrête en 2017 et qui était donc
+absente du filtre 2018+. Ajouter un pays ne demande pas de toucher au code :
+générer son CSV avec scripts/fetch_unido_indstat.py et le lister dans
+`_DATA_FILES`.
 
-Ce module charge et indexe le CSV compressé une seule fois (cache en
+Ce module charge et indexe les CSV compressés une seule fois (cache en
 mémoire) et expose des fonctions d'agrégation utilisées par les routes
 `production` (voir routes/production.py, endpoints `/unido/idsb/*`).
 """
@@ -29,6 +34,21 @@ from typing import Dict, List, Optional
 _DATA_FILE = os.path.join(
     os.path.dirname(__file__), "..", "data", "unido", "unido_idsb_indstat_isic4_2018plus.csv.gz"
 )
+
+# Deuxième versement, même schéma, fenêtre différente : l'Algérie. Son détail
+# INDSTAT/IDSB au niveau classe s'arrête en 2017 — l'ONS n'a pas transmis de
+# ventilation ISIC 4 chiffres au-delà — et était donc absent du fichier manuel
+# filtré 2018+. Il est généré par scripts/fetch_unido_indstat.py depuis l'API
+# du portail (fournisseur : Office national des statistiques, Algiers), puis
+# servi ici par les mêmes routes que le socle 2018+.
+_DZA_FILE = os.path.join(
+    os.path.dirname(__file__), "..", "data", "unido", "unido_idsb_indstat_isic4_dza_2005_2017.csv.gz"
+)
+
+# Les deux versements se lisent de la même façon ; l'absence de l'un n'est pas
+# une erreur (un dépôt peut ne porter que le socle), une ligne illisible est
+# écartée plutôt que servie à moitié.
+_DATA_FILES = (_DATA_FILE, _DZA_FILE)
 
 # indicator_code -> clé normalisée exposée dans l'API
 _IDSB_INDICATORS = {
@@ -50,32 +70,33 @@ _INDSTAT_INDICATORS = {
 
 @lru_cache(maxsize=1)
 def _load_records() -> List[Dict]:
-    """Charge et parse le CSV compressé une seule fois (mémoïsé)."""
-    if not os.path.exists(_DATA_FILE):
-        return []
-    records = []
-    with gzip.open(_DATA_FILE, mode="rt", encoding="utf-8", newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            try:
-                value = float(row["value"])
-            except (ValueError, KeyError):
-                continue
-            records.append(
-                {
-                    "dataset_code": row["dataset_code"],
-                    "country_iso3": row["country_iso3"],
-                    "country_name": row["country_name_en"],
-                    "isic_code": row["isic_code"],
-                    "isic_description": row["isic_description_en"],
-                    "year": int(row["year"]),
-                    "indicator_code": row["indicator_code"],
-                    "indicator_name": row["indicator_name_en"],
-                    "value": value,
-                    "unit": row["unit"],
-                    "data_nature": row["data_nature"],
-                }
-            )
+    """Charge et parse les CSV compressés une seule fois (mémoïsé)."""
+    records: List[Dict] = []
+    for data_file in _DATA_FILES:
+        if not os.path.exists(data_file):
+            continue
+        with gzip.open(data_file, mode="rt", encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    value = float(row["value"])
+                except (ValueError, KeyError):
+                    continue
+                records.append(
+                    {
+                        "dataset_code": row["dataset_code"],
+                        "country_iso3": row["country_iso3"],
+                        "country_name": row["country_name_en"],
+                        "isic_code": row["isic_code"],
+                        "isic_description": row["isic_description_en"],
+                        "year": int(row["year"]),
+                        "indicator_code": row["indicator_code"],
+                        "indicator_name": row["indicator_name_en"],
+                        "value": value,
+                        "unit": row["unit"],
+                        "data_nature": row["data_nature"],
+                    }
+                )
     return records
 
 
