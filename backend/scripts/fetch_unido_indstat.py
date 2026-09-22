@@ -50,10 +50,12 @@ NUANCES RÉSEAU
 --------------
 Le portail est derrière Cloudflare : des 403 sporadiques se contournent par
 relance espacée avec en-têtes navigateur (la page d'API du portail documente
-elle-même ce comportement). Le sandbox de développement peut en outre échouer
-sur la vérification TLS faute de bundle CA local : dans ce cas — et seulement
-dans ce cas — le script retente sans vérification et le signe, la requête ne
-transportant aucun secret et la source étant publique.
+elle-même ce comportement). La vérification TLS, elle, n'est JAMAIS levée :
+un échec de certificat — le signal qu'on ne parle peut-être pas à qui on
+croit — fait échouer le script franchement ; si l'environnement manque de
+magasin d'AC, pointer un bundle explicite avec ``--cafile``. Une donnée
+collectée par un canal non authentifié ne se distinguerait plus d'une donnée
+saine, et ce collecteur est destiné à être rejoué sur 53 pays.
 """
 
 from __future__ import annotations
@@ -154,24 +156,20 @@ CSV_COLUMNS = [
 ]
 
 
-def _ssl_context() -> ssl.SSLContext:
-    """TLS vérifié si le bundle local le permet, sinon repli non vérifié signé."""
-    ctx = ssl.create_default_context()
-    try:
-        req = urllib.request.Request(f"{API_BASE}/v3/api-docs", headers=_HEADERS)
-        with urllib.request.urlopen(req, timeout=30, context=ctx):  # nosec B501
-            return ctx
-    except (ssl.SSLError, urllib.error.URLError) as exc:
-        # CERTIFICATE_VERIFY_FAILED sur un certificat par ailleurs valide : le
-        # sandbox manque de bundle CA, pas le site. Repli annoncé, sans secret.
-        reason = str(getattr(exc, "reason", exc))
-        if "CERTIFICATE_VERIFY_FAILED" not in reason:
-            raise
-        print("  ⚠ bundle CA local insuffisant — repli sans vérification TLS (source publique)")
-        ctx = ssl.create_default_context()
-        ctx.check_hostname = False
-        ctx.verify_mode = ssl.CERT_NONE
-        return ctx
+def _ssl_context(cafile: Optional[str] = None) -> ssl.SSLContext:
+    """TLS vérifié, TOUJOURS — un échec de certificat est une fin, pas un repli.
+
+    Une première version de ce script retombait sur un contexte non vérifié
+    quand la vérification échouait (« bundle CA local insuffisant »). C'était
+    faux, et c'est précisément le cas où il ne faut pas continuer : un échec
+    de certificat est le signal qu'on ne parle peut-être pas à qui on croit,
+    et un versement industriel collecté par un canal non authentifié ne se
+    distinguerait plus ensuite d'une donnée saine. Un pays non collecté est
+    récupérable ; un canal non authentifié, non. Si l'environnement manque de
+    magasin d'AC, pointer un bundle explicite : ``--cafile`` (certifi ou
+    système). Sinon, le script échoue franchement.
+    """
+    return ssl.create_default_context(cafile=cafile)
 
 
 def _request_json(
@@ -195,6 +193,19 @@ def _request_json(
             with urllib.request.urlopen(req, timeout=180, context=ctx) as resp:  # nosec B310
                 return json.loads(resp.read())
         except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+            # Un échec de certificat n'est pas une panne transitoire : c'est le
+            # signal qu'on ne parle peut-être pas à qui on croit. Abandon franc,
+            # avec le remède (pointer un bundle d'AC explicite).
+            if isinstance(exc, urllib.error.URLError):
+                reason = str(getattr(exc, "reason", exc))
+                if "CERTIFICATE_VERIFY_FAILED" in reason:
+                    raise SystemExit(
+                        "TLS : vérification du certificat échouée — abandon, sans repli "
+                        "non vérifié (une donnée collectée par un canal non authentifié "
+                        "ne se distinguerait plus d'une donnée saine). Si l'environnement "
+                        "manque de magasin d'AC, relancer avec "
+                        "--cafile /chemin/vers/cacert.pem."
+                    )
             last = exc
             code = getattr(exc, "code", None)
             if code in (400, 404):
@@ -370,14 +381,31 @@ def write_csv(rows: List[Dict], out_file: Path) -> None:
         writer.writerows(rows)
 
 
+def _parse_args() -> tuple:
+    """--iso3 (défaut DZA) et --cafile (bundle d'AC explicite, optionnel)."""
+    iso3, cafile = "DZA", None
+    args = sys.argv[1:]
+    i = 0
+    while i < len(args):
+        if args[i] == "--iso3" and i + 1 < len(args):
+            iso3 = args[i + 1].upper()
+            i += 2
+        elif args[i] == "--cafile" and i + 1 < len(args):
+            cafile = args[i + 1]
+            i += 2
+        else:
+            i += 1
+    return iso3, cafile
+
+
 def main() -> None:
-    iso3 = "DZA"
-    if len(sys.argv) > 2 and sys.argv[1] == "--iso3":
-        iso3 = sys.argv[2].upper()
+    iso3, cafile = _parse_args()
     if iso3 not in COUNTRIES:
         sys.exit(f"Pays non configuré : {iso3}. Configuré : {', '.join(COUNTRIES)}")
+    if cafile is not None and not Path(cafile).is_file():
+        sys.exit(f"--cafile : fichier introuvable : {cafile}")
 
-    ctx = _ssl_context()
+    ctx = _ssl_context(cafile)
     print(f"Récupération UNIDO IDSB + INDSTAT (ISIC Rev.4, classes) — {iso3} …")
     rows = fetch_country(iso3, ctx)
     if not rows:
