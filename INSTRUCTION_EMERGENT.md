@@ -323,10 +323,17 @@ touche.
   `CALCULATION_UNAVAILABLE` en nommant les droits spécifiques. Seul
   `enhanced_calculator_service` ramenait le taux absent à 0 %, sur trois
   points d'API que le frontend n'appelle pas ; corrigé par la PR #497.
-- **Un taux réduit réel s'affiche vide.** `RegulatoryDetailsPanel.jsx` lit
-  `adv.reduced_rate_pct` quand `postgres_tariff_service.py` renvoie
-  `reduced_rate` : la valeur existe, elle n'atteint jamais l'écran. Un seul
-  nom de champ à aligner.
+- **Un taux réduit réel s'affichait vide — RÉGLÉ le 22/09/2026** (PR #499).
+  `postgres_tariff_service.py` émettait `reduced_rate` là où
+  `RegulatoryDetailsPanel.jsx` lit `adv.reduced_rate_pct` : le panneau rendait
+  « % » sans chiffre.
+
+  **Ce n'était pas le panneau qui avait tort**, et c'est la leçon à garder :
+  `authentic_tariff_service.py` et un test existant utilisaient déjà
+  `reduced_rate_pct`. **Deux producteurs alimentent le même bloc
+  `fiscal_advantages`, et un seul était lu.** Aligner le consommateur sur le
+  producteur fautif — le réflexe — aurait cassé l'autre. Avant de renommer,
+  compter qui émet et qui lit.
 - **Éthiopie : 1 368 droits perdus à la collecte.** Le collecteur a été corrigé
   le 18/09/2026 ; la collecte, jamais refaite. Le portail `customs.erca.gov.et`
   est injoignable, une veille le sonde et collectera dès son retour. Aucun code
@@ -342,6 +349,54 @@ touche.
   cinq champs d'autorisation n'existent que sur le chemin historique.
 
 ### G3 — juste, mais lourd
+
+- **Le contrat `reduced_rate_pct` tient sur trois littéraux et un test qui lit
+  du texte.** Relevé en revue de la PR #499, et la première trouvaille vise
+  mon propre garde.
+
+  `test_les_deux_producteurs_emettent_la_meme_cle` cherche la chaîne
+  `"reduced_rate_pct":` dans le source des deux services. Deux angles morts :
+  un refactor correct — `dict(reduced_rate_pct=…)`, `**{…}` — le ferait
+  échouer à tort ; et **un second chemin d'émission dans le même fichier
+  pourrait porter la mauvaise clé sans qu'il tombe**, puisqu'il ne lit pas la
+  donnée produite. C'est le défaut que #499 répare, déplacé d'un cran.
+
+  Ce qu'il faut : un test **comportemental** sur le second producteur —
+  `authentic_tariff_service.py` construit son bloc par compréhension sur
+  `measures`, donc il suffit d'une position PostgreSQL portant une mesure
+  `zlecaf_applicable` avec un `zlecaf_rate` — et **une constante partagée**
+  référencée par les deux services et le test, à la place de trois littéraux
+  indépendants. Trois littéraux pour un même contrat, c'est la cause générique
+  dont ce défaut est une instance.
+
+- **`reduced_rate_pct` porte deux sémantiques.** Côté PostgreSQL, un taux
+  réduit **conditionnel** (colonne `fiscal_advantages.reduced_rate_pct`) ;
+  côté `authentic_tariff_service`, le **taux ZLECAf**
+  (`m.get("zlecaf_rate")`, `condition_fr = "ZLECAF applicable: …"`). Le
+  panneau rend les deux en `X%`.
+
+  Antérieur à la PR #499, qui l'a seulement rendu visible en faisant arriver
+  le second producteur jusqu'à l'écran. Ce n'est pas un G2 : `condition_fr`
+  est renseigné des deux côtés, donc l'origine reste lisible. Le correctif de
+  fond est un discriminant — `regime` ou `advantage_type` — que le panneau
+  peut étiqueter, ou deux blocs distincts. **Si quelqu'un touche à ce contrat,
+  qu'il ne cesse pas de renseigner `condition_fr` avant d'avoir posé le
+  discriminant** : c'est ce champ seul qui empêche aujourd'hui de lire un taux
+  préférentiel comme une remise générique.
+
+- **Le zéro n'est vérifié qu'au dict du service.**
+  `test_un_taux_reduit_a_zero_reste_servi` asserte `reduced_rate_pct == 0.0`
+  dans la sortie de `postgres_tariff_service`. Or le risque décrit — 0 confondu
+  avec « absent » — vit dans les **sérialiseurs et les consommateurs**. Une
+  assertion au passage API, que `0.0` ressorte `0.0` et non `null` ni omis,
+  attraperait le cas là où il se produit.
+
+- **Le schéma de la fixture SQLite dérive du SQL qu'il imite.**
+  `backend/tests/test_taux_reduit_atteint_l_ecran.py` recopie les colonnes de
+  la requête de `get_commodity_details()`. Si la requête gagne une colonne, la
+  fixture échoue **à la lecture** et non à l'assertion — ce qui ne prouve plus
+  rien. Constaté en écrivant le test. Un commentaire reliant les deux
+  épargnerait la prochaine reprise.
 
 - **`backend/data/crawled` versionné : 4,7 Go.** Coût mesuré : 1 min 20 de
   `checkout` par job, quatre jobs par exécution d'intégration. Et un mur à
