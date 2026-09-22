@@ -12,34 +12,39 @@
   --afcfta-card2: #131B28;   /* cartes secondaires */
   --afcfta-border: rgba(200,83,26,0.13);
 
-  /* ── Palette africaine ─────────────────────────────────────── */
-  --terra:        #C8531A;   /* terre rouge — accent principal */
-  --gold:         #D4891A;   /* or saharien */
-  --green:        #1A7A4A;   /* vert baobab */
-  --red:          #C62B2B;   /* rouge kente */
-  --atlantic:     #1A6B8A;   /* bleu atlantique */
+  /* ── Caractères ────────────────────────────────────────────── */
+  --font-ui:      'Readex Pro', system-ui, -apple-system, sans-serif;
+  --font-display: 'Young Serif', Georgia, serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
 
-  --terrasoft:    rgba(200,83,26,0.16);
+  /* ── Palette africaine ─────────────────────────────────────── */
+  --terra:        #D9642B;   /* terre rouge — accent principal (relevé : 4,22:1 → 5,20:1) */
+  --gold:         #D4891A;   /* or saharien */
+  --green:        #2E9E68;   /* vert baobab (relevé : 3,52:1 → 5,56:1) */
+  --red:          #E76060;   /* rouge kente (relevé : 3,12:1 → 5,59:1) */
+  --atlantic:     #3E9CBF;   /* bleu atlantique (relevé : 3,15:1 → 6,01:1) */
+
+  --terrasoft:    rgba(217,100,43,0.16);
   --goldSoft:     rgba(212,137,26,0.16);
-  --greenSoft:    rgba(26,122,74,0.16);
+  --greenSoft:    rgba(46,158,104,0.16);
 
   /* ── Texte ─────────────────────────────────────────────────── */
   --text:         #EAE0D0;   /* parchemin — doux et chaud */
-  --afcfta-muted: #8E9BAE;
+  --afcfta-muted: #9AA6B6;
 
   /* ── Statuts ───────────────────────────────────────────────── */
-  --success:      #22A55E;
-  --info:         #2A8FBF;
-  --violet:       #9B6EF5;
+  --success:      #35B972;
+  --info:         #4BA8D4;
+  --violet:       #A98BF7;
   --warning:      #D4891A;
-  --danger:       #E04040;
+  --danger:       #E76060;
 
   /* ── Sidebar ───────────────────────────────────────────────── */
   --sidebar-w:    228px;
   --sidebar-collapsed: 60px;
 
   /* ── Géométrie ─────────────────────────────────────────────── */
-  --r-lg: 16px;
+  --r-lg: 16px;   /* inchangé — le rayon Tailwind vient de --radius */
   --r-md: 12px;
   --r-sm: 8px;
   --shadow:    0 24px 60px rgba(0,0,0,.55);
@@ -61,7 +66,7 @@ body {
     radial-gradient(600px  400px at 50% 90%,  rgba(26,122,74,0.06),  transparent 55%),
     var(--bg);
   color: var(--text);
-  font-family: 'Outfit', Inter, system-ui, -apple-system, sans-serif;
+  font-family: var(--font-ui);
   font-size: 15px;
   line-height: 1.65;
 }

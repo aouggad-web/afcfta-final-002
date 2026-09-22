@@ -7,6 +7,11 @@ module.exports = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			sans: ['Readex Pro', 'system-ui', '-apple-system', 'sans-serif'],
+  			serif: ['Young Serif', 'Georgia', 'serif'],
+  			mono: ['JetBrains Mono', 'ui-monospace', 'monospace']
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
