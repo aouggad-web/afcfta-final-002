@@ -113,9 +113,9 @@ const POPULAR_HS_CODES = {
 
 // HS level badge colors
 const HS_LEVEL_COLORS = {
-  HS2: { badge: 'bg-emerald-100 text-emerald-700', btn: 'bg-emerald-600', indicator: 'text-emerald-600' },
-  HS4: { badge: 'bg-blue-100 text-blue-700', btn: 'bg-blue-600', indicator: 'text-blue-600' },
-  HS6: { badge: 'bg-violet-100 text-violet-700', btn: 'bg-violet-600', indicator: 'text-violet-600' },
+  HS2: { badge: 'bg-emerald-100 text-[var(--success)]', btn: 'bg-emerald-600', indicator: 'text-[var(--success)]' },
+  HS4: { badge: 'bg-blue-100 text-[var(--info)]', btn: 'bg-blue-600', indicator: 'text-[var(--info)]' },
+  HS6: { badge: 'bg-violet-100 text-[var(--violet)]', btn: 'bg-violet-600', indicator: 'text-[var(--violet)]' },
 };
 
 export default function OECTradeStats({ language = 'fr' }) {
@@ -459,7 +459,7 @@ export default function OECTradeStats({ language = 'fr' }) {
   return (
     <div className="space-y-6" data-testid="oec-trade-stats">
       {/* Header moderne et épuré */}
-      <Card className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white border-none shadow-2xl overflow-hidden relative">
+      <Card className="bg-[image:var(--card-grad)] text-[var(--text)] border-none shadow-2xl overflow-hidden relative">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-50"></div>
         <CardHeader className="relative z-10 pb-2">
           <div className="flex items-center justify-between">
@@ -469,10 +469,10 @@ export default function OECTradeStats({ language = 'fr' }) {
               </div>
               <div>
                 <CardTitle className="text-2xl font-bold tracking-tight">{t.title}</CardTitle>
-                <CardDescription className="text-slate-300 mt-1">{t.subtitle}</CardDescription>
+                <CardDescription className="mt-1">{t.subtitle}</CardDescription>
               </div>
             </div>
-            <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1">
+            <Badge className="bg-[var(--greenSoft)] text-[var(--success)] border border-[var(--afcfta-border)] px-3 py-1">
               <TrendingUp className="w-3 h-3 mr-1" />
               Live Data
             </Badge>
@@ -482,10 +482,10 @@ export default function OECTradeStats({ language = 'fr' }) {
 
       {/* Navigation par onglets - Design moderne */}
       <Tabs value={activeView} onValueChange={setActiveView} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 bg-slate-100 p-1.5 rounded-xl h-auto">
+        <TabsList className="grid w-full grid-cols-3 bg-[var(--afcfta-card2)] p-1.5 rounded-xl h-auto">
           <TabsTrigger 
             value="country" 
-            className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-slate-900 rounded-lg py-3 font-medium transition-all"
+            className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-[var(--text)] rounded-lg py-3 font-medium transition-all"
             data-testid="tab-country"
           >
             <Globe2 className="w-4 h-4 mr-2" />
@@ -493,7 +493,7 @@ export default function OECTradeStats({ language = 'fr' }) {
           </TabsTrigger>
           <TabsTrigger 
             value="product"
-            className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-slate-900 rounded-lg py-3 font-medium transition-all"
+            className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-[var(--text)] rounded-lg py-3 font-medium transition-all"
             data-testid="tab-product"
           >
             <BarChart3 className="w-4 h-4 mr-2" />
@@ -501,7 +501,7 @@ export default function OECTradeStats({ language = 'fr' }) {
           </TabsTrigger>
           <TabsTrigger 
             value="bilateral"
-            className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-slate-900 rounded-lg py-3 font-medium transition-all"
+            className="data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-[var(--text)] rounded-lg py-3 font-medium transition-all"
             data-testid="tab-bilateral"
           >
             <ArrowUpRight className="w-4 h-4 mr-2" />
@@ -511,12 +511,12 @@ export default function OECTradeStats({ language = 'fr' }) {
 
         {/* Vue par Pays */}
         <TabsContent value="country" className="space-y-6 mt-6">
-          <Card className="shadow-lg border-slate-200">
+          <Card className="shadow-lg border-[var(--afcfta-border)]">
             <CardContent className="pt-6">
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-slate-700">{t.selectCountry}</Label>
+                  <Label className="text-sm font-medium text-[var(--text)]">{t.selectCountry}</Label>
                   <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                     <SelectTrigger data-testid="country-select" className="bg-white">
                       <SelectValue placeholder={t.selectCountry} />
@@ -535,7 +535,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-slate-700">{t.selectYear}</Label>
+                  <Label className="text-sm font-medium text-[var(--text)]">{t.selectYear}</Label>
                   <Select value={selectedYear} onValueChange={setSelectedYear}>
                     <SelectTrigger className="bg-white">
                       <SelectValue />
@@ -549,7 +549,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-slate-700">{t.tradeFlow}</Label>
+                  <Label className="text-sm font-medium text-[var(--text)]">{t.tradeFlow}</Label>
                   <Select value={selectedFlow} onValueChange={setSelectedFlow}>
                     <SelectTrigger className="bg-white">
                       <SelectValue />
@@ -564,7 +564,7 @@ export default function OECTradeStats({ language = 'fr' }) {
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4">
                   <div className="space-y-2 flex-1">
-                    <Label className="text-sm font-medium text-slate-700">{t.hsLevel}</Label>
+                    <Label className="text-sm font-medium text-[var(--text)]">{t.hsLevel}</Label>
                     <div className="flex gap-2">
                       {HS_LEVELS.map((level) => {
                         const colors = HS_LEVEL_COLORS[level.value];
@@ -578,7 +578,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                             className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold border-2 transition-all ${
                               isActive
                                 ? `${colors.badge} border-current`
-                                : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-slate-300'
+                                : 'bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] border-[var(--afcfta-border)] hover:border-[var(--afcfta-border)]'
                             }`}
                           >
                             {level.value}
@@ -586,7 +586,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                         );
                       })}
                     </div>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-[var(--afcfta-muted)]">
                       {t[`hs${countryHsLevel.slice(2)}Description`] || t.hs4Description}
                     </p>
                   </div>
@@ -595,7 +595,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                   <Button 
                     onClick={searchByCountry}
                     disabled={!selectedCountry || loading}
-                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium"
+                    className="w-full bg-[image:var(--stats-tab-active)] hover:opacity-90 text-[#F7F1E6] font-medium"
                     data-testid="search-country-btn"
                   >
                     {loading ? (
@@ -618,10 +618,10 @@ export default function OECTradeStats({ language = 'fr' }) {
               <Card className="shadow-lg">
                 <CardHeader className="bg-gradient-to-r from-emerald-50 to-cyan-50 border-b">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-semibold text-slate-800">
+                    <CardTitle className="text-lg font-semibold text-[var(--text)]">
                       {selectedFlow === 'exports' ? t.exports : t.imports} - {tradeData.country?.name_fr || tradeData.country?.name_en || selectedCountry}
                     </CardTitle>
-                    <Badge variant="outline" className="text-emerald-700 border-emerald-300">
+                    <Badge variant="outline" className="text-[var(--success)] border-[var(--afcfta-border)]">
                       {t.dataYear} {selectedYear}
                     </Badge>
                   </div>
@@ -630,15 +630,15 @@ export default function OECTradeStats({ language = 'fr' }) {
                   {/* Stats avec Valeur et Volume */}
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="text-center p-3 bg-emerald-50 rounded-lg">
-                      <p className="text-xs text-emerald-600 mb-1">{t.totalValue}</p>
-                      <p className="text-2xl font-bold text-emerald-800">{formatValue(tradeData.total_value || 0)}</p>
+                      <p className="text-xs text-[var(--success)] mb-1">{t.totalValue}</p>
+                      <p className="text-2xl font-bold text-[var(--success)]">{formatValue(tradeData.total_value || 0)}</p>
                     </div>
-                    <div className="text-center p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-blue-600 mb-1">{t.totalVolume}</p>
-                      <p className="text-2xl font-bold text-blue-800">{formatQuantity(tradeData.total_quantity || 0)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
+                    <div className="text-center p-3 bg-[var(--overlay)] rounded-lg">
+                      <p className="text-xs text-[var(--info)] mb-1">{t.totalVolume}</p>
+                      <p className="text-2xl font-bold text-[var(--info)]">{formatQuantity(tradeData.total_quantity || 0)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
                     </div>
                   </div>
-                  <p className="text-sm text-slate-500 text-center mb-4">{tradeData.total_products} {t.topProducts}</p>
+                  <p className="text-sm text-[var(--afcfta-muted)] text-center mb-4">{tradeData.total_products} {t.topProducts}</p>
                   
                   {/* Chart - Produits principaux */}
                   <div className="h-56">
@@ -669,7 +669,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <CardContent className="p-0">
                   <div className="max-h-96 overflow-auto">
                     <Table>
-                      <TableHeader className="sticky top-0 bg-slate-50">
+                      <TableHeader className="sticky top-0 bg-[var(--afcfta-card2)]">
                         <TableRow>
                           <TableHead className="w-12">{t.rank}</TableHead>
                           <TableHead>{t.product} (Code HS)</TableHead>
@@ -682,20 +682,20 @@ export default function OECTradeStats({ language = 'fr' }) {
                             const hsIdKey = `${countryHsLevel} ID`;
                             const hsNameKey = countryHsLevel;
                             return (
-                            <TableRow key={idx} className="hover:bg-slate-50">
-                              <TableCell className="font-medium text-slate-500">{idx + 1}</TableCell>
+                            <TableRow key={idx} className="hover:bg-[var(--afcfta-card2)]">
+                              <TableCell className="font-medium text-[var(--afcfta-muted)]">{idx + 1}</TableCell>
                               <TableCell>
                                 <div className="flex items-start gap-2">
-                                  <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 font-mono text-xs px-1.5 py-0.5 shrink-0">
+                                  <Badge variant="secondary" className="bg-emerald-100 text-[var(--success)] font-mono text-xs px-1.5 py-0.5 shrink-0">
                                     {extractHSCode(item[hsIdKey], countryHsLevel)}
                                   </Badge>
                                   <span className="font-medium text-sm">{item[hsNameKey] || '-'}</span>
                                 </div>
                               </TableCell>
-                              <TableCell className="text-right font-semibold text-emerald-700">
+                              <TableCell className="text-right font-semibold text-[var(--success)]">
                                 {formatValue(item['Trade Value'] || 0)}
                               </TableCell>
-                              <TableCell className="text-right text-sm text-blue-600">
+                              <TableCell className="text-right text-sm text-[var(--info)]">
                                 {formatQuantity(item['Quantity'] || 0)} t
                               </TableCell>
                             </TableRow>
@@ -713,16 +713,16 @@ export default function OECTradeStats({ language = 'fr' }) {
         {/* Vue par Produit */}
         <TabsContent value="product" className="space-y-6 mt-6">
           {/* Panneau Configuration HS */}
-          <Card className="shadow-lg border-slate-200">
+          <Card className="shadow-lg border-[var(--afcfta-border)]">
             <CardHeader className="pb-3">
-              <CardTitle className="text-base font-semibold text-slate-800">{t.hsLevel}</CardTitle>
+              <CardTitle className="text-base font-semibold text-[var(--text)]">{t.hsLevel}</CardTitle>
               <CardDescription>{t.hsLevelDesc}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Sélecteur de niveau HS */}
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-slate-700">{t.hsLevel}</Label>
+                  <Label className="text-sm font-medium text-[var(--text)]">{t.hsLevel}</Label>
                   <div className="flex gap-2">
                     {HS_LEVELS.map((level) => {
                       const colors = HS_LEVEL_COLORS[level.value];
@@ -735,7 +735,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                           className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold border-2 transition-all ${
                             isActive
                               ? `${colors.badge} border-current`
-                              : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-slate-300'
+                              : 'bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] border-[var(--afcfta-border)] hover:border-[var(--afcfta-border)]'
                           }`}
                         >
                           {level.value}
@@ -743,12 +743,12 @@ export default function OECTradeStats({ language = 'fr' }) {
                       );
                     })}
                   </div>
-                  <p className="text-xs text-slate-500">{hsLevelDescription}</p>
+                  <p className="text-xs text-[var(--afcfta-muted)]">{hsLevelDescription}</p>
                 </div>
 
                 {/* Sélecteur de révision HS */}
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-slate-700">{t.hsRevision}</Label>
+                  <Label className="text-sm font-medium text-[var(--text)]">{t.hsRevision}</Label>
                   <Select value={hsRevision} onValueChange={setHsRevision}>
                     <SelectTrigger className="bg-white" data-testid="hs-revision-select">
                       <SelectValue />
@@ -759,19 +759,19 @@ export default function OECTradeStats({ language = 'fr' }) {
                       ))}
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-slate-500">{t.revisionDesc}</p>
+                  <p className="text-xs text-[var(--afcfta-muted)]">{t.revisionDesc}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Filtres de recherche */}
-          <Card className="shadow-lg border-slate-200">
+          <Card className="shadow-lg border-[var(--afcfta-border)]">
             <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div className="space-y-2 md:col-span-2">
                   <div className="flex items-center gap-2">
-                    <Label className="text-sm font-medium text-slate-700">{t.hsCodeLabel}</Label>
+                    <Label className="text-sm font-medium text-[var(--text)]">{t.hsCodeLabel}</Label>
                     <Badge variant="secondary" className={`${HS_LEVEL_COLORS[hsLevel].badge} font-mono text-xs px-1.5 py-0.5`}>
                       {hsLevel}
                     </Badge>
@@ -787,8 +787,8 @@ export default function OECTradeStats({ language = 'fr' }) {
                     />
                     {/* Affichage de la dénomination du code HS */}
                     {hsCodeName && (
-                      <div className="mt-1 px-2 py-1.5 bg-violet-50 border border-violet-200 rounded-md">
-                        <p className="text-sm text-violet-800 font-medium truncate" title={hsCodeName}>
+                      <div className="mt-1 px-2 py-1.5 bg-[var(--overlay)] border border-violet-200 rounded-md">
+                        <p className="text-sm text-[var(--violet)] font-medium truncate" title={hsCodeName}>
                           {hsCodeName}
                         </p>
                       </div>
@@ -796,15 +796,15 @@ export default function OECTradeStats({ language = 'fr' }) {
                   </div>
                   {/* Quick select buttons */}
                   <div className="flex flex-wrap gap-2 mt-2">
-                    <span className="text-xs text-slate-500">{t.popularProducts}:</span>
+                    <span className="text-xs text-[var(--afcfta-muted)]">{t.popularProducts}:</span>
                     {getPopularHSCodes(hsLevel, language).map((item) => (
                       <button
                         key={item.code}
                         onClick={() => setHsCode(item.code)}
                         className={`text-xs px-2 py-1 rounded-full transition-all ${
                           hsCode === item.code 
-                            ? 'bg-slate-900 text-white' 
-                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                            ? 'bg-[image:var(--stats-tab-active)] text-[#F7F1E6]' 
+                            : 'bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] hover:bg-[var(--afcfta-card2)]'
                         }`}
                       >
                         {item.label}
@@ -814,7 +814,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-slate-700">{t.selectYear}</Label>
+                  <Label className="text-sm font-medium text-[var(--text)]">{t.selectYear}</Label>
                   <Select value={selectedYear} onValueChange={setSelectedYear}>
                     <SelectTrigger className="bg-white">
                       <SelectValue />
@@ -831,7 +831,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                   <Button 
                     onClick={searchByProduct}
                     disabled={!hsCode || loading}
-                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium"
+                    className="w-full bg-[image:var(--stats-tab-active)] hover:opacity-90 text-[#F7F1E6] font-medium"
                     data-testid="search-product-btn"
                   >
                     {loading ? (
@@ -857,11 +857,11 @@ export default function OECTradeStats({ language = 'fr' }) {
                       <Badge variant="secondary" className={`${HS_LEVEL_COLORS[hsLevel].badge} font-mono text-xs px-1.5 py-0.5`}>
                         {hsLevel}
                       </Badge>
-                      <CardTitle className="text-lg font-semibold text-slate-800">
+                      <CardTitle className="text-lg font-semibold text-[var(--text)]">
                         {productData.hs_code} - {selectedFlow === 'exports' ? t.exports : t.imports}
                       </CardTitle>
                     </div>
-                    <Badge variant="outline" className="text-violet-700 border-violet-300">
+                    <Badge variant="outline" className="text-[var(--violet)] border-violet-300">
                       {t.dataYear} {selectedYear}
                     </Badge>
                   </div>
@@ -869,16 +869,16 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <CardContent className="pt-6">
                   {/* Stats avec Valeur et Volume */}
                   <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="text-center p-3 bg-violet-50 rounded-lg">
-                      <p className="text-xs text-violet-600 mb-1">{t.totalValue}</p>
-                      <p className="text-2xl font-bold text-violet-800">{formatValue(productData.total_value || 0)}</p>
+                    <div className="text-center p-3 bg-[var(--overlay)] rounded-lg">
+                      <p className="text-xs text-[var(--violet)] mb-1">{t.totalValue}</p>
+                      <p className="text-2xl font-bold text-[var(--violet)]">{formatValue(productData.total_value || 0)}</p>
                     </div>
-                    <div className="text-center p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-blue-600 mb-1">{t.totalVolume}</p>
-                      <p className="text-2xl font-bold text-blue-800">{formatQuantity(productData.total_quantity || 0)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
+                    <div className="text-center p-3 bg-[var(--overlay)] rounded-lg">
+                      <p className="text-xs text-[var(--info)] mb-1">{t.totalVolume}</p>
+                      <p className="text-2xl font-bold text-[var(--info)]">{formatQuantity(productData.total_quantity || 0)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
                     </div>
                   </div>
-                  <p className="text-sm text-slate-500 text-center mb-4">{productData.total_countries} {t.country}</p>
+                  <p className="text-sm text-[var(--afcfta-muted)] text-center mb-4">{productData.total_countries} {t.country}</p>
                   
                   {/* Pie Chart - Pays exportateurs/importateurs */}
                   <div className="h-56">
@@ -915,7 +915,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <CardContent className="p-0">
                   <div className="max-h-96 overflow-auto">
                     <Table>
-                      <TableHeader className="sticky top-0 bg-slate-50">
+                      <TableHeader className="sticky top-0 bg-[var(--afcfta-card2)]">
                         <TableRow>
                           <TableHead className="w-12">{t.rank}</TableHead>
                           <TableHead>{t.country}</TableHead>
@@ -927,18 +927,18 @@ export default function OECTradeStats({ language = 'fr' }) {
                         {productData.data?.slice(0, 20).map((item, idx) => {
                           const countryName = item['Exporter Country'] || item['Importer Country'] || '-';
                           return (
-                            <TableRow key={idx} className="hover:bg-slate-50">
-                              <TableCell className="font-medium text-slate-500">{idx + 1}</TableCell>
+                            <TableRow key={idx} className="hover:bg-[var(--afcfta-card2)]">
+                              <TableCell className="font-medium text-[var(--afcfta-muted)]">{idx + 1}</TableCell>
                               <TableCell className="font-medium">
                                 <span className="flex items-center gap-2">
                                   <span>{getCountryFlagFromName(countryName)}</span>
                                   <span>{countryName}</span>
                                 </span>
                               </TableCell>
-                              <TableCell className="text-right font-semibold text-violet-700">
+                              <TableCell className="text-right font-semibold text-[var(--violet)]">
                                 {formatValue(item['Trade Value'] || 0)}
                               </TableCell>
-                              <TableCell className="text-right text-sm text-blue-600">
+                              <TableCell className="text-right text-sm text-[var(--info)]">
                                 {formatQuantity(item['Quantity'] || 0)} t
                               </TableCell>
                             </TableRow>
@@ -955,12 +955,12 @@ export default function OECTradeStats({ language = 'fr' }) {
 
         {/* Vue Bilatérale */}
         <TabsContent value="bilateral" className="space-y-6 mt-6">
-          <Card className="shadow-lg border-slate-200">
+          <Card className="shadow-lg border-[var(--afcfta-border)]">
             <CardContent className="pt-6">
               <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-slate-700">{t.exporter}</Label>
+                  <Label className="text-sm font-medium text-[var(--text)]">{t.exporter}</Label>
                   <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                     <SelectTrigger data-testid="exporter-select" className="bg-white">
                       <SelectValue placeholder={t.selectCountry} />
@@ -979,7 +979,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-slate-700">{t.importer}</Label>
+                  <Label className="text-sm font-medium text-[var(--text)]">{t.importer}</Label>
                   <Select value={secondCountry} onValueChange={setSecondCountry}>
                     <SelectTrigger data-testid="importer-select" className="bg-white">
                       <SelectValue placeholder={t.selectCountry} />
@@ -998,7 +998,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label className="text-sm font-medium text-slate-700">{t.selectYear}</Label>
+                  <Label className="text-sm font-medium text-[var(--text)]">{t.selectYear}</Label>
                   <Select value={selectedYear} onValueChange={setSelectedYear}>
                     <SelectTrigger className="bg-white">
                       <SelectValue />
@@ -1014,7 +1014,7 @@ export default function OECTradeStats({ language = 'fr' }) {
 
                 <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4">
                   <div className="space-y-2 flex-1">
-                    <Label className="text-sm font-medium text-slate-700">{t.hsLevel}</Label>
+                    <Label className="text-sm font-medium text-[var(--text)]">{t.hsLevel}</Label>
                     <div className="flex gap-2">
                       {HS_LEVELS.map((level) => {
                         const colors = HS_LEVEL_COLORS[level.value];
@@ -1028,7 +1028,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                             className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold border-2 transition-all ${
                               isActive
                                 ? `${colors.badge} border-current`
-                                : 'bg-slate-50 text-slate-500 border-slate-200 hover:border-slate-300'
+                                : 'bg-[var(--afcfta-card2)] text-[var(--afcfta-muted)] border-[var(--afcfta-border)] hover:border-[var(--afcfta-border)]'
                             }`}
                           >
                             {level.value}
@@ -1036,7 +1036,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                         );
                       })}
                     </div>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-[var(--afcfta-muted)]">
                       {t[`hs${bilateralHsLevel.slice(2)}Description`] || t.hs4Description}
                     </p>
                   </div>
@@ -1045,7 +1045,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                   <Button 
                     onClick={searchBilateral}
                     disabled={!selectedCountry || !secondCountry || loading}
-                    className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium"
+                    className="w-full bg-[image:var(--stats-tab-active)] hover:opacity-90 text-[#F7F1E6] font-medium"
                     data-testid="search-bilateral-btn"
                   >
                     {loading ? (
@@ -1069,14 +1069,14 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <CardHeader className="bg-gradient-to-r from-orange-50 to-amber-50 border-b">
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-lg font-semibold text-slate-800">
+                      <CardTitle className="text-lg font-semibold text-[var(--text)]">
                         {t.bilateralTitle}
                       </CardTitle>
                       <CardDescription>
                         {language === 'fr' ? bilateralData.exporter?.name_fr : bilateralData.exporter?.name_en} → {language === 'fr' ? bilateralData.importer?.name_fr : bilateralData.importer?.name_en}
                       </CardDescription>
                     </div>
-                    <Badge variant="outline" className="text-orange-700 border-orange-300">
+                    <Badge variant="outline" className="text-[var(--terra)] border-orange-300">
                       {t.dataYear} {selectedYear}
                     </Badge>
                   </div>
@@ -1085,12 +1085,12 @@ export default function OECTradeStats({ language = 'fr' }) {
                   {/* Stats avec Valeur et Volume */}
                   <div className="grid grid-cols-2 gap-4 mb-4">
                     <div className="text-center p-3 bg-orange-50 rounded-lg">
-                      <p className="text-xs text-orange-600 mb-1">{t.totalValue}</p>
+                      <p className="text-xs text-[var(--terra)] mb-1">{t.totalValue}</p>
                       <p className="text-2xl font-bold text-orange-800">{formatValue(bilateralData.total_value || 0)}</p>
                     </div>
-                    <div className="text-center p-3 bg-blue-50 rounded-lg">
-                      <p className="text-xs text-blue-600 mb-1">{t.totalVolume}</p>
-                      <p className="text-2xl font-bold text-blue-800">{formatQuantity(bilateralData.total_quantity || 0)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
+                    <div className="text-center p-3 bg-[var(--overlay)] rounded-lg">
+                      <p className="text-xs text-[var(--info)] mb-1">{t.totalVolume}</p>
+                      <p className="text-2xl font-bold text-[var(--info)]">{formatQuantity(bilateralData.total_quantity || 0)} <span className="text-sm font-normal">{t.volumeUnit}</span></p>
                     </div>
                   </div>
                   <div className="flex items-center justify-center gap-2 mb-4">
@@ -1128,7 +1128,7 @@ export default function OECTradeStats({ language = 'fr' }) {
                 <CardContent className="p-0">
                   <div className="max-h-96 overflow-auto">
                     <Table>
-                      <TableHeader className="sticky top-0 bg-slate-50">
+                      <TableHeader className="sticky top-0 bg-[var(--afcfta-card2)]">
                         <TableRow>
                           <TableHead className="w-12">{t.rank}</TableHead>
                           <TableHead>{t.product} (Code HS)</TableHead>
@@ -1141,20 +1141,20 @@ export default function OECTradeStats({ language = 'fr' }) {
                           const hsIdKey = `${bilateralHsLevel} ID`;
                           const hsNameKey = bilateralHsLevel;
                           return (
-                          <TableRow key={idx} className="hover:bg-slate-50">
-                            <TableCell className="font-medium text-slate-500">{idx + 1}</TableCell>
+                          <TableRow key={idx} className="hover:bg-[var(--afcfta-card2)]">
+                            <TableCell className="font-medium text-[var(--afcfta-muted)]">{idx + 1}</TableCell>
                             <TableCell>
                               <div className="flex items-start gap-2">
-                                <Badge variant="secondary" className="bg-orange-100 text-orange-700 font-mono text-xs px-1.5 py-0.5 shrink-0">
+                                <Badge variant="secondary" className="bg-orange-100 text-[var(--terra)] font-mono text-xs px-1.5 py-0.5 shrink-0">
                                   {extractHSCode(item[hsIdKey], bilateralHsLevel)}
                                 </Badge>
                                 <span className="font-medium text-sm">{item[hsNameKey] || '-'}</span>
                               </div>
                             </TableCell>
-                            <TableCell className="text-right font-semibold text-orange-700">
+                            <TableCell className="text-right font-semibold text-[var(--terra)]">
                               {formatValue(item['Trade Value'] || 0)}
                             </TableCell>
-                            <TableCell className="text-right text-sm text-blue-600">
+                            <TableCell className="text-right text-sm text-[var(--info)]">
                               {formatQuantity(item['Quantity'] || 0)} t
                             </TableCell>
                           </TableRow>
@@ -1180,9 +1180,9 @@ export default function OECTradeStats({ language = 'fr' }) {
       )}
 
       {/* Footer source */}
-      <Card className="bg-slate-50 border-slate-200">
+      <Card className="bg-[var(--afcfta-card2)] border-[var(--afcfta-border)]">
         <CardContent className="py-3">
-          <p className="text-xs text-slate-500 text-center">
+          <p className="text-xs text-[var(--afcfta-muted)] text-center">
             {t.sourceLabel}
           </p>
         </CardContent>

@@ -33,14 +33,14 @@ const API = `${BACKEND_URL}/api`;
 const AfricaTooltip = ({ active, payload, label, unit }) => {
   if (!active || !payload || !payload.length) return null;
   return (
-    <div className="stats-tooltip" style={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem' }}>
-      <p style={{ color: '#EAE0D0', fontWeight: 700, marginBottom: 4 }}>{label}</p>
+    <div className="stats-tooltip" style={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, padding: '10px 14px', fontSize: '0.8rem' }}>
+      <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>{label}</p>
       {payload.map((p, i) => (
         <p key={i} style={{ color: p.color, margin: 0 }}>
           {p.name}: <strong>{`$${(p.value / 1e9).toFixed(1)}B`}</strong>
         </p>
       ))}
-      {unit && <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.68rem', marginTop: 4 }}>{unit}</p>}
+      {unit && <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.68rem', marginTop: 4 }}>{unit}</p>}
     </div>
   );
 };
@@ -149,8 +149,8 @@ export default function StatisticsTab({ language = 'fr' }) {
         <TabsList
           className="flex flex-wrap h-auto w-full justify-start gap-1 p-1 rounded-xl"
           style={{
-            background: 'rgba(18,24,32,0.85)',
-            border: '1px solid rgba(212,137,26,0.18)',
+            background: 'var(--afcfta-card2)',
+            border: '1px solid var(--afcfta-border)',
           }}
         >
           {tabItems.map(tab => (
@@ -159,13 +159,7 @@ export default function StatisticsTab({ language = 'fr' }) {
               value={tab.value}
               data-testid={`stats-${tab.value}-tab`}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
-              style={{
-                color: activeSubTab === tab.value ? '#EAE0D0' : 'rgba(142,155,174,0.7)',
-                background: activeSubTab === tab.value
-                  ? 'linear-gradient(135deg,rgba(200,83,26,0.85),rgba(160,60,18,0.9))'
-                  : 'transparent',
-                boxShadow: activeSubTab === tab.value ? '0 2px 8px rgba(200,83,26,0.35)' : 'none',
-              }}
+
             >
               {tab.icon}
               <span className="hidden sm:inline">{tab.label}</span>
@@ -205,18 +199,18 @@ export default function StatisticsTab({ language = 'fr' }) {
                             <stop offset="100%" stopColor="#34d399" />
                           </linearGradient>
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.06)" />
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--overlay)" />
                         <XAxis
                           type="number"
                           tickFormatter={(v) => `$${(v / 1e9).toFixed(0)}B`}
-                          tick={{ fontSize: 10, fill: 'rgba(142,155,174,0.8)' }}
+                          tick={{ fontSize: 10, fill: 'var(--afcfta-muted)' }}
                           axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
                           tickLine={false}
                         />
                         <YAxis
                           dataKey="name"
                           type="category"
-                          tick={{ fontSize: 11, fill: '#EAE0D0' }}
+                          tick={{ fontSize: 11, fill: 'var(--text)' }}
                           width={78}
                           axisLine={false}
                           tickLine={false}
@@ -256,18 +250,18 @@ export default function StatisticsTab({ language = 'fr' }) {
                             <stop offset="100%" stopColor="#38bdf8" />
                           </linearGradient>
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.06)" />
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="var(--overlay)" />
                         <XAxis
                           type="number"
                           tickFormatter={(v) => `$${(v / 1e9).toFixed(0)}B`}
-                          tick={{ fontSize: 10, fill: 'rgba(142,155,174,0.8)' }}
+                          tick={{ fontSize: 10, fill: 'var(--afcfta-muted)' }}
                           axisLine={{ stroke: 'rgba(255,255,255,0.1)' }}
                           tickLine={false}
                         />
                         <YAxis
                           dataKey="name"
                           type="category"
-                          tick={{ fontSize: 11, fill: '#EAE0D0' }}
+                          tick={{ fontSize: 11, fill: 'var(--text)' }}
                           width={78}
                           axisLine={false}
                           tickLine={false}

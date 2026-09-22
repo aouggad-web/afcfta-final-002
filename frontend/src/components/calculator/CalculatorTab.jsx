@@ -1565,7 +1565,7 @@ export default function CalculatorTab({ countries, language = 'fr' }) {
                                 setQuantity(e.target.value);
                                 setQuantityFor(result._quantite_cle);
                               }}
-                              className="w-40 px-3 py-2 bg-[var(--overlay)] border border-amber-500/40 rounded-lg text-white text-sm"
+                              className="w-40 px-3 py-2 bg-[var(--field)] border border-[var(--field-border)] rounded-lg text-[var(--text)] text-sm"
                               placeholder={result.quantite_requise.unite}
                             />
                           </div>

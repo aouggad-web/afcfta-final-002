@@ -31,10 +31,12 @@ html.theme-light body {
   --card-grad:     linear-gradient(to bottom right, #FFFDF8, #F4EDDF);
   --card-head:     linear-gradient(135deg, rgba(175,71,24,0.10), rgba(143,92,8,0.07));
   --field-border:  #E0D5C2;
+  --stats-hero:    linear-gradient(135deg, rgba(175,71,24,0.14) 0%, #FFFDF8 35%, #FBF6EC 65%, rgba(23,92,119,0.14) 100%);
+  --stats-tab-active: linear-gradient(135deg, #AF4718, #8E3712);
 
   /* Accents légèrement assombris pour contraste sur fond clair */
-  --terra:        #AF4718;
-  --gold:         #8F5C08;   /* relevé : 3,95:1 → 5,21:1 */
+  --terra:        #9C3F15;   /* relevé : 3,87:1 → 4,61:1 sur voile terre */
+  --gold:         #865608;   /* relevé : 4,20:1 → 4,64:1 sur voile or */
   --green:        #136143;
   --red:          #A82424;
   --atlantic:     #175C77;
@@ -179,9 +181,20 @@ html.theme-light .afcfta-langBtn:hover {
   color: var(--terra);
 }
 html.theme-light .afcfta-langBtn.active {
-  background: linear-gradient(180deg, rgba(200, 83, 26, 0.20) 0%, rgba(200, 83, 26, 0.08) 100%);
-  border-color: rgba(200, 83, 26, 0.6);
+  /* Voile allégé : à 0,20 d'alpha le libellé tombait à 3,61:1. */
+  background: linear-gradient(180deg, rgba(175, 71, 24, 0.10) 0%, rgba(175, 71, 24, 0.04) 100%);
+  border-color: rgba(175, 71, 24, 0.55);
   color: var(--terra);
+}
+
+/* L'élément de nav actif : même raison, le libellé or tombait à 4,11:1. */
+html.theme-light .afcfta-nav-item.active {
+  background: rgba(143, 92, 8, 0.07);
+  border-color: rgba(143, 92, 8, 0.30);
+}
+
+html.theme-light .afcfta-nav-item.active .afcfta-nav-icon {
+  background: rgba(175, 71, 24, 0.12);
 }
 html.theme-light .afcfta-themeToggle {
   background: #FFFFFF;

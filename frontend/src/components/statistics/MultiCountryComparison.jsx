@@ -356,7 +356,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 <SelectTrigger
                   className="w-[180px] h-8 text-sm"
                   data-testid="add-country-select"
-                  style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(212,137,26,0.25)', color: '#EAE0D0', borderRadius: 8 }}
+                  style={{ background: 'var(--overlay)', border: '1px solid rgba(212,137,26,0.25)', color: 'var(--text)', borderRadius: 8 }}
                 >
                   <SelectValue placeholder={txt.selectCountry} />
                 </SelectTrigger>
@@ -384,7 +384,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   ? 'rgba(155,110,245,0.2)'
                   : 'linear-gradient(135deg,#7c3aed,#9B6EF5)',
                 border: '1px solid rgba(155,110,245,0.4)',
-                color: '#EAE0D0', borderRadius: 8,
+                color: 'var(--text)', borderRadius: 8,
                 padding: '6px 14px', fontSize: '0.82rem', fontWeight: 700,
                 opacity: selectedCountries.length < 2 ? 0.5 : 1,
               }}
@@ -400,7 +400,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
               variant="outline"
               onClick={resetSelection}
               disabled={selectedCountries.length === 0}
-              style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'rgba(234,224,208,0.7)', borderRadius: 8, padding: '6px 12px', fontSize: '0.82rem' }}
+              style={{ border: '1px solid rgba(255,255,255,0.12)', background: 'transparent', color: 'var(--text-soft)', borderRadius: 8, padding: '6px 12px', fontSize: '0.82rem' }}
             >
               <RefreshCw className="h-4 w-4 mr-2" />
               {txt.reset}
@@ -409,7 +409,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
         </div>
 
         {/* Max countries hint */}
-        <p style={{ fontSize: '0.7rem', color: 'rgba(142,155,174,0.5)', marginTop: 10 }}>
+        <p style={{ fontSize: '0.7rem', color: 'var(--afcfta-muted)', marginTop: 10 }}>
           {language === 'fr'
             ? `${selectedCountries.length} / ${MAX_COUNTRIES} pays sélectionnés`
             : `${selectedCountries.length} / ${MAX_COUNTRIES} countries selected`}
@@ -420,15 +420,15 @@ export default function MultiCountryComparison({ language = 'fr' }) {
       {loading && (
         <div className="stats-loading">
           <div className="stats-spinner" />
-          <span style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.875rem' }}>{txt.loading}</span>
+          <span style={{ color: 'var(--afcfta-muted)', fontSize: '0.875rem' }}>{txt.loading}</span>
         </div>
       )}
 
       {/* ── Error ─────────────────────────────────────────────── */}
       {error && (
         <div className="stats-chart-card" style={{ padding: '32px 24px', textAlign: 'center' }}>
-          <AlertCircle style={{ width: 32, height: 32, color: '#f87171', margin: '0 auto 12px' }} />
-          <p style={{ color: '#f87171', fontWeight: 600 }}>{error}</p>
+          <AlertCircle style={{ width: 32, height: 32, color: 'var(--danger)', margin: '0 auto 12px' }} />
+          <p style={{ color: 'var(--danger)', fontWeight: 600 }}>{error}</p>
         </div>
       )}
 
@@ -439,8 +439,8 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             <div className="stats-empty-icon">
               <Globe style={{ width: 28, height: 28, color: '#D4891A' }} />
             </div>
-            <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.9rem' }}>{txt.noSelection}</p>
-            <p style={{ color: 'rgba(142,155,174,0.4)', fontSize: '0.78rem', marginTop: 6 }}>
+            <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.9rem' }}>{txt.noSelection}</p>
+            <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.78rem', marginTop: 6 }}>
               {language === 'fr'
                 ? 'Ajoutez au moins 2 pays africains pour commencer la comparaison'
                 : 'Add at least 2 African countries to start the comparison'}
@@ -468,9 +468,9 @@ export default function MultiCountryComparison({ language = 'fr' }) {
             <div style={{ padding: '16px 8px' }}>
               <ResponsiveContainer width="100%" height={400}>
                 <RadarChart data={getRadarData()}>
-                  <PolarGrid stroke="rgba(255,255,255,0.08)" />
-                  <PolarAngleAxis dataKey="indicator" tick={{ fill: 'rgba(234,224,208,0.75)', fontSize: 12 }} />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: 'rgba(142,155,174,0.5)', fontSize: 10 }} axisLine={false} />
+                  <PolarGrid stroke="var(--overlay)" />
+                  <PolarAngleAxis dataKey="indicator" tick={{ fill: 'var(--text-soft)', fontSize: 12 }} />
+                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: 'var(--afcfta-muted)', fontSize: 10 }} axisLine={false} />
                   {selectedCountries.map((iso, idx) => (
                     <Radar
                       key={iso}
@@ -482,10 +482,10 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                       strokeWidth={2}
                     />
                   ))}
-                  <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} />
+                  <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'var(--afcfta-muted)' }} />
                   <Tooltip
-                    contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
-                    labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                    contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                    labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                   />
                 </RadarChart>
               </ResponsiveContainer>
@@ -495,7 +495,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
           {/* Economic Indicators Table */}
           <div className="stats-chart-card">
             <div className="stats-chart-header">
-              <div className="stats-chart-title" style={{ color: '#34d399' }}>
+              <div className="stats-chart-title" style={{ color: 'var(--success)' }}>
                 <DollarSign style={{ width: 18, height: 18 }} />
                 {txt.economicIndicators}
               </div>
@@ -512,14 +512,14 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                 </thead>
                 <tbody>
                   {[
-                    { label: `${txt.gdp} (Mrd $)`, render: (d) => d.gdp ? <strong style={{ color: '#fbbf24' }}>${d.gdp.toFixed(1)}B</strong> : '-' },
+                    { label: `${txt.gdp} (Mrd $)`, render: (d) => d.gdp ? <strong style={{ color: 'var(--gold)' }}>${d.gdp.toFixed(1)}B</strong> : '-' },
                     { label: txt.gdpPerCapita, render: (d) => d.gdpPerCapita ? formatValue(d.gdpPerCapita) : '-' },
                     { label: txt.inflation, render: (d) => d.inflation ? <span className={`stats-chip ${d.inflation > HIGH_INFLATION_THRESHOLD ? 'down' : 'up'}`}>{formatPercent(d.inflation)}</span> : '-' },
                     { label: txt.unemployment, render: (d) => d.unemployment ? formatPercent(d.unemployment) : '-' },
                     { label: `${txt.population} (M)`, render: (d) => d.population ? `${d.population.toFixed(1)}M` : '-' },
                   ].map((row, ri) => (
                     <tr key={ri}>
-                      <td style={{ fontWeight: 600, color: 'rgba(234,224,208,0.8)' }}>{row.label}</td>
+                      <td style={{ fontWeight: 600, color: 'var(--text-soft)' }}>{row.label}</td>
                       {getEconomicData().map((d, idx) => (
                         <td key={idx} style={{ textAlign: 'right' }}>{row.render(d)}</td>
                       ))}
@@ -549,15 +549,15 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                       <stop offset="0%" stopColor="#1A6B8A" /><stop offset="100%" stopColor="#38bdf8" />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.06)" />
-                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: 'rgba(234,224,208,0.75)' }} axisLine={false} tickLine={false} />
-                  <YAxis tickFormatter={(v) => `$${v}M`} tick={{ fontSize: 10, fill: 'rgba(142,155,174,0.7)' }} axisLine={false} tickLine={false} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--overlay)" />
+                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: 'var(--text-soft)' }} axisLine={false} tickLine={false} />
+                  <YAxis tickFormatter={(v) => `$${v}M`} tick={{ fontSize: 10, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} />
                   <Tooltip
                     formatter={(value) => [`$${value.toFixed(0)}M`, '']}
-                    contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
-                    labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                    contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                    labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                   />
-                  <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} />
+                  <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'var(--afcfta-muted)' }} />
                   <Bar dataKey={txt.exports} fill="url(#mcGradExp)" radius={[4, 4, 0, 0]} />
                   <Bar dataKey={txt.imports} fill="url(#mcGradImp)" radius={[4, 4, 0, 0]} />
                 </BarChart>
@@ -587,7 +587,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.exports} (M$)</td>
                     {getTradeData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: '#34d399' }}>
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>
                         {d.exports ? `$${d.exports.toFixed(0)}M` : '-'}
                       </td>
                     ))}
@@ -595,7 +595,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.imports} (M$)</td>
                     {getTradeData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: '#38bdf8' }}>
+                      <td key={idx} style={{ textAlign: 'right', fontWeight: 700, color: 'var(--info)' }}>
                         {d.imports ? `$${d.imports.toFixed(0)}M` : '-'}
                       </td>
                     ))}
@@ -651,7 +651,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.hdi} ({language === 'fr' ? 'Rang' : 'Rank'})</td>
                     {getDevelopmentData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', color: 'rgba(142,155,174,0.8)' }}>
+                      <td key={idx} style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>
                         #{d.hdiRank}
                       </td>
                     ))}
@@ -667,7 +667,7 @@ export default function MultiCountryComparison({ language = 'fr' }) {
                   <tr>
                     <td style={{ fontWeight: 600 }}>{txt.gai} ({language === 'fr' ? 'Rang' : 'Rank'})</td>
                     {getDevelopmentData().map((d, idx) => (
-                      <td key={idx} style={{ textAlign: 'right', color: 'rgba(142,155,174,0.8)' }}>
+                      <td key={idx} style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>
                         #{d.gaiRank}
                       </td>
                     ))}

@@ -122,7 +122,7 @@ const makeTooltip = (txt) => ({ active, payload }) => {
   return (
     <div
       style={{
-        background: 'rgba(16,22,32,0.97)',
+        background: 'var(--afcfta-card)',
         border: '1px solid rgba(212,137,26,0.3)',
         borderRadius: 10,
         padding: '10px 14px',
@@ -130,14 +130,14 @@ const makeTooltip = (txt) => ({ active, payload }) => {
         maxWidth: 280,
       }}
     >
-      <p style={{ color: '#EAE0D0', fontWeight: 700, marginBottom: 4 }}>
+      <p style={{ color: 'var(--text)', fontWeight: 700, marginBottom: 4 }}>
         {d.hsId ? `${d.hsId} · ` : ''}{d.fullName}
       </p>
       <p style={{ color: '#D4891A', margin: 0 }}>
         <strong>{formatUSD(d.size)}</strong>
       </p>
       {d.share != null && (
-        <p style={{ color: 'rgba(142,155,174,0.85)', margin: '2px 0 0' }}>
+        <p style={{ color: 'var(--afcfta-muted)', margin: '2px 0 0' }}>
           {txt.share}: {d.share.toFixed(2)}%
         </p>
       )}
@@ -235,7 +235,7 @@ export default function ProductTreemap({ language = 'fr' }) {
 
   return (
     <Card className="border-none shadow-xl overflow-hidden" data-testid="product-treemap">
-      <CardHeader className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white pb-4">
+      <CardHeader className="bg-[image:var(--card-grad)] text-white pb-4">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-amber-500 rounded-xl flex items-center justify-center shadow-lg">
@@ -243,10 +243,10 @@ export default function ProductTreemap({ language = 'fr' }) {
             </div>
             <div>
               <CardTitle className="text-xl font-bold">{txt.title}</CardTitle>
-              <CardDescription className="text-slate-300 mt-0.5">{txt.subtitle}</CardDescription>
+              <CardDescription className="mt-0.5">{txt.subtitle}</CardDescription>
             </div>
           </div>
-          <Badge className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-3 py-1">
+          <Badge className="bg-[var(--greenSoft)] text-[var(--success)] border border-[var(--afcfta-border)] px-3 py-1">
             OEC/BACI · {year}
           </Badge>
         </div>
@@ -256,7 +256,7 @@ export default function ProductTreemap({ language = 'fr' }) {
         {/* ── Contrôles ───────────────────────────────────────── */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.country}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.country}</label>
             <Select value={selectedCountry} onValueChange={setSelectedCountry}>
               <SelectTrigger data-testid="treemap-country-select">
                 <SelectValue placeholder={txt.selectCountry} />
@@ -275,7 +275,7 @@ export default function ProductTreemap({ language = 'fr' }) {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.year}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.year}</label>
             <Select value={String(year)} onValueChange={(v) => setYear(Number(v))}>
               <SelectTrigger data-testid="treemap-year-select"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -287,22 +287,22 @@ export default function ProductTreemap({ language = 'fr' }) {
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.flow}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.flow}</label>
             <Select value={flow} onValueChange={setFlow}>
               <SelectTrigger data-testid="treemap-flow-select"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="exports">
-                  <span className="flex items-center gap-2"><ArrowUpRight className="w-3.5 h-3.5 text-emerald-600" />{txt.exports}</span>
+                  <span className="flex items-center gap-2"><ArrowUpRight className="w-3.5 h-3.5 text-[var(--success)]" />{txt.exports}</span>
                 </SelectItem>
                 <SelectItem value="imports">
-                  <span className="flex items-center gap-2"><ArrowDownRight className="w-3.5 h-3.5 text-blue-600" />{txt.imports}</span>
+                  <span className="flex items-center gap-2"><ArrowDownRight className="w-3.5 h-3.5 text-[var(--info)]" />{txt.imports}</span>
                 </SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <label className="text-xs font-medium text-slate-500 mb-1 block">{txt.level}</label>
+            <label className="text-xs font-medium text-[var(--afcfta-muted)] mb-1 block">{txt.level}</label>
             <Select value={hsLevel} onValueChange={setHsLevel}>
               <SelectTrigger data-testid="treemap-level-select"><SelectValue /></SelectTrigger>
               <SelectContent>
@@ -318,8 +318,8 @@ export default function ProductTreemap({ language = 'fr' }) {
 
         {/* ── Résumé ──────────────────────────────────────────── */}
         {!loading && !error && response && (
-          <div className="flex items-center gap-4 text-sm text-slate-600 flex-wrap">
-            <span className="font-semibold text-slate-800">
+          <div className="flex items-center gap-4 text-sm text-[var(--afcfta-muted)] flex-wrap">
+            <span className="font-semibold text-[var(--text)]">
               {flow === 'exports' ? txt.exports : txt.imports} {year} · {formatUSD(total)}
             </span>
             <span>{response.total_products || treemapData.length} {txt.products}</span>
@@ -329,13 +329,13 @@ export default function ProductTreemap({ language = 'fr' }) {
         {/* ── Treemap ─────────────────────────────────────────── */}
         <div style={{ width: '100%', height: 460 }}>
           {loading ? (
-            <div className="flex items-center justify-center h-full text-slate-500 gap-2">
+            <div className="flex items-center justify-center h-full text-[var(--afcfta-muted)] gap-2">
               <RefreshCw className="w-5 h-5 animate-spin" /> {txt.loading}
             </div>
           ) : error ? (
-            <div className="flex items-center justify-center h-full text-red-500">{txt.error}</div>
+            <div className="flex items-center justify-center h-full text-[var(--danger)]">{txt.error}</div>
           ) : !treemapData.length ? (
-            <div className="flex items-center justify-center h-full text-slate-500">{txt.noData}</div>
+            <div className="flex items-center justify-center h-full text-[var(--afcfta-muted)]">{txt.noData}</div>
           ) : (
             <ResponsiveContainer width="100%" height="100%">
               <Treemap
@@ -352,7 +352,7 @@ export default function ProductTreemap({ language = 'fr' }) {
           )}
         </div>
 
-        <p className="text-xs text-slate-400">{txt.hint}</p>
+        <p className="text-xs text-[var(--afcfta-muted)]">{txt.hint}</p>
       </CardContent>
     </Card>
   );

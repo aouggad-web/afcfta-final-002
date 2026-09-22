@@ -175,9 +175,9 @@ function TradeProductsTable({ language = 'fr' }) {
                     {product.rank}
                   </span>
                 </td>
-                <td style={{ fontWeight: 600, color: '#EAE0D0', whiteSpace: 'normal', overflowWrap: 'anywhere' }}>{product.product}</td>
+                <td style={{ fontWeight: 600, color: 'var(--text)', whiteSpace: 'normal', overflowWrap: 'anywhere' }}>{product.product}</td>
                 <td>
-                  <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', padding: '2px 6px', borderRadius: 4, background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.1)', color: 'rgba(234,224,208,0.7)' }}>
+                  <span style={{ fontFamily: 'monospace', fontSize: '0.7rem', padding: '2px 6px', borderRadius: 4, background: 'var(--overlay)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-soft)' }}>
                     {product.hs_code}
                   </span>
                 </td>
@@ -186,7 +186,7 @@ function TradeProductsTable({ language = 'fr' }) {
                     {formatValue(product.value_mln_usd)}
                   </span>
                 </td>
-                <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.8)' }}>
+                <td style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>
                   {product.share_percent}%
                 </td>
                 <td style={{ textAlign: 'center' }}>
@@ -195,7 +195,7 @@ function TradeProductsTable({ language = 'fr' }) {
                 <td>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
                     {(isExport ? product.top_exporters : product.top_importers)?.slice(0, 3).map((country, i) => (
-                      <span key={i} style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 100, background: `color-mix(in srgb, ${accentColor} 13%, transparent)`, border: `1px solid color-mix(in srgb, ${accentColor} 27%, transparent)`, color: 'rgba(234,224,208,0.8)' }}>
+                      <span key={i} style={{ fontSize: '0.68rem', padding: '1px 6px', borderRadius: 100, background: `color-mix(in srgb, ${accentColor} 13%, transparent)`, border: `1px solid color-mix(in srgb, ${accentColor} 27%, transparent)`, color: 'var(--text-soft)' }}>
                         {country}
                       </span>
                     ))}
@@ -255,7 +255,7 @@ function TradeProductsTable({ language = 'fr' }) {
     return (
       <div className="stats-loading">
         <div className="stats-spinner" />
-        <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.875rem' }}>{t.loading}</p>
+        <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.875rem' }}>{t.loading}</p>
       </div>
     );
   }
@@ -276,13 +276,13 @@ function TradeProductsTable({ language = 'fr' }) {
           {summary && (
             <div className="grid grid-cols-2 gap-3 flex-1 min-w-0" style={{ maxWidth: 420 }}>
               {[
-                { label: t.importWorld,  value: formatValue(summary.top_20_imports_world_total_mln_usd),  color: '#38bdf8' },
-                { label: t.exportWorld,  value: formatValue(summary.top_20_exports_world_total_mln_usd),  color: '#34d399' },
-                { label: t.importIntra,  value: formatValue(summary.top_20_intra_african_imports_total_mln_usd), color: '#a78bfa' },
+                { label: t.importWorld,  value: formatValue(summary.top_20_imports_world_total_mln_usd),  color: 'var(--info)' },
+                { label: t.exportWorld,  value: formatValue(summary.top_20_exports_world_total_mln_usd),  color: 'var(--success)' },
+                { label: t.importIntra,  value: formatValue(summary.top_20_intra_african_imports_total_mln_usd), color: 'var(--violet)' },
                 { label: t.exportIntra,  value: formatValue(summary.top_20_intra_african_exports_total_mln_usd), color: '#fb923c' },
               ].map((item, i) => (
-                <div key={i} style={{ background: 'rgba(255,255,255,0.07)', backdropFilter: 'blur(6px)', borderRadius: 10, padding: '10px 14px', border: `1px solid color-mix(in srgb, ${item.color} 20%, transparent)` }}>
-                  <p style={{ fontSize: '0.65rem', color: 'rgba(142,155,174,0.8)', textTransform: 'uppercase', letterSpacing: '0.07em', margin: 0 }}>{item.label}</p>
+                <div key={i} style={{ background: 'var(--overlay)', backdropFilter: 'blur(6px)', borderRadius: 10, padding: '10px 14px', border: `1px solid color-mix(in srgb, ${item.color} 20%, transparent)` }}>
+                  <p style={{ fontSize: '0.65rem', color: 'var(--afcfta-muted)', textTransform: 'uppercase', letterSpacing: '0.07em', margin: 0 }}>{item.label}</p>
                   <p style={{ fontSize: '1.2rem', fontWeight: 800, color: item.color, margin: '4px 0 0', whiteSpace: 'nowrap' }}>{item.value}</p>
                 </div>
               ))}
@@ -295,7 +295,7 @@ function TradeProductsTable({ language = 'fr' }) {
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList
           className="inline-flex gap-1 p-1 rounded-xl w-full sm:w-auto"
-          style={{ background: 'rgba(18,24,32,0.85)', border: '1px solid rgba(212,137,26,0.18)' }}
+          style={{ background: 'var(--afcfta-card2)', border: '1px solid rgba(212,137,26,0.18)' }}
         >
           {[
             { value: 'imports-world', icon: <ArrowDownToLine className="w-4 h-4" />, label: t.tabImportWorld,  color: '#1A6B8A', active: '#38bdf8' },
@@ -309,7 +309,7 @@ function TradeProductsTable({ language = 'fr' }) {
               className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all"
               style={{
                 background: activeTab === tab.value ? `${tab.color}cc` : 'transparent',
-                color: activeTab === tab.value ? '#EAE0D0' : 'rgba(142,155,174,0.65)',
+                color: activeTab === tab.value ? 'var(--text)' : 'var(--afcfta-muted)',
                 boxShadow: activeTab === tab.value ? `0 2px 8px ${tab.color}55` : 'none',
               }}
             >
@@ -342,7 +342,7 @@ function TradeProductsTable({ language = 'fr' }) {
         <TabsContent value="exports-world">
           <div className="stats-chart-card">
             <div className="stats-chart-header" style={{ borderBottomColor: 'rgba(52,211,153,0.2)' }}>
-              <div className="stats-chart-title" style={{ color: '#34d399' }}>
+              <div className="stats-chart-title" style={{ color: 'var(--success)' }}>
                 <ArrowUpFromLine className="w-5 h-5" />
                 {language === 'en' ? t.titleExportWorld : exportsWorld?.title}
               </div>
@@ -397,7 +397,7 @@ function TradeProductsTable({ language = 'fr' }) {
       </Tabs>
 
       {/* Footer Info */}
-      <div className="stats-source-note" style={{ background: 'rgba(18,24,32,0.5)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="stats-source-note" style={{ background: 'var(--afcfta-card2)', borderRadius: 10, border: '1px solid var(--overlay)' }}>
         <Info className="w-4 h-4 inline mr-1 opacity-60" />
         <strong>{language === 'en' ? 'Sources' : 'Sources'}:</strong> {t.footerSources}
         <br />

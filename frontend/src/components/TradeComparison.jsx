@@ -230,7 +230,7 @@ const TradeComparison = ({ language = 'fr' }) => {
     return (
       <div className="stats-loading">
         <div className="stats-spinner" />
-        <p style={{ color: 'rgba(142,155,174,0.7)', fontSize: '0.875rem' }}>{t.loading}</p>
+        <p style={{ color: 'var(--afcfta-muted)', fontSize: '0.875rem' }}>{t.loading}</p>
       </div>
     );
   }
@@ -240,11 +240,11 @@ const TradeComparison = ({ language = 'fr' }) => {
       {/* ── Year selector ───────────────────────────────────────── */}
       <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <span style={{ fontSize: 11, color: 'rgba(142,155,174,0.85)', fontWeight: 700, letterSpacing: 0.4 }}>{t.selectYear}</span>
+          <span style={{ fontSize: 11, color: 'var(--afcfta-muted)', fontWeight: 700, letterSpacing: 0.4 }}>{t.selectYear}</span>
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
-            style={{ padding: '8px 10px', borderRadius: 8, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(212,175,55,0.22)', color: 'var(--text)', fontSize: 13, fontWeight: 600 }}
+            style={{ padding: '8px 10px', borderRadius: 8, background: 'var(--overlay)', border: '1px solid var(--goldSoft)', color: 'var(--text)', fontSize: 13, fontWeight: 600 }}
           >
             <option value="2024">2024</option>
             <option value="2023">2023</option>
@@ -256,20 +256,20 @@ const TradeComparison = ({ language = 'fr' }) => {
       {/* ── Info Note: Intra-African data ──────────────────────── */}
       <div className="stats-chart-card" style={{ padding: '16px 20px' }}>
         <div className="flex items-start gap-3">
-          <div style={{ color: '#38bdf8', flexShrink: 0, marginTop: 2 }}>
+          <div style={{ color: 'var(--info)', flexShrink: 0, marginTop: 2 }}>
             <Globe style={{ width: 18, height: 18 }} />
           </div>
           <div>
-            <h4 style={{ fontWeight: 700, color: '#38bdf8', marginBottom: 4, fontSize: '0.85rem' }}>
+            <h4 style={{ fontWeight: 700, color: 'var(--info)', marginBottom: 4, fontSize: '0.85rem' }}>
               {t.intraNoteTitle}
             </h4>
-            <p style={{ fontSize: '0.8rem', color: 'rgba(234,224,208,0.75)', margin: 0 }}>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-soft)', margin: 0 }}>
               {t.intraNoteBodyPre}<strong>{t.intraNoteBodyStrong}</strong>{t.intraNoteBodyMid}
-              <a href="https://oec.world/" target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', textDecoration: 'underline' }}>OEC</a>{t.intraNoteBodyPost}
+              <a href="https://oec.world/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--info)', textDecoration: 'underline' }}>OEC</a>{t.intraNoteBodyPost}
             </p>
-            <p style={{ fontSize: '0.75rem', color: 'rgba(142,155,174,0.65)', marginTop: 6 }}>
-              {t.intraNoteSharePre}<strong style={{ color: '#fbbf24' }}>{t.intraNoteShareVal}</strong>{t.intraNoteShareMid}
-              <strong style={{ color: '#34d399' }}>{t.intraNoteShareGoal}</strong>.
+            <p style={{ fontSize: '0.75rem', color: 'var(--afcfta-muted)', marginTop: 6 }}>
+              {t.intraNoteSharePre}<strong style={{ color: 'var(--gold)' }}>{t.intraNoteShareVal}</strong>{t.intraNoteShareMid}
+              <strong style={{ color: 'var(--success)' }}>{t.intraNoteShareGoal}</strong>.
             </p>
           </div>
         </div>
@@ -278,14 +278,14 @@ const TradeComparison = ({ language = 'fr' }) => {
       {/* ── Commerce Total Africain banner ──────────────────────── */}
       <div className="stats-chart-card" style={{ padding: '16px 20px', borderLeft: '3px solid #D4891A' }}>
         <div className="flex items-start gap-3">
-          <div style={{ color: '#fbbf24', flexShrink: 0, marginTop: 2 }}>
+          <div style={{ color: 'var(--gold)', flexShrink: 0, marginTop: 2 }}>
             <Globe style={{ width: 18, height: 18 }} />
           </div>
           <div>
-            <h3 style={{ fontWeight: 700, color: '#fbbf24', margin: 0, fontSize: '0.9rem' }}>
+            <h3 style={{ fontWeight: 700, color: 'var(--gold)', margin: 0, fontSize: '0.9rem' }}>
               {t.totalAfricaTitle}
             </h3>
-            <p style={{ fontSize: '0.78rem', color: 'rgba(234,224,208,0.65)', marginTop: 4 }}>
+            <p style={{ fontSize: '0.78rem', color: 'var(--text-soft)', marginTop: 4 }}>
               {t.totalAfricaBodyPre}<strong>{t.totalAfricaBodyStrong}</strong>{t.totalAfricaBodyPost}
             </p>
           </div>
@@ -373,25 +373,25 @@ const TradeComparison = ({ language = 'fr' }) => {
                     <stop offset="95%" stopColor="#1A7A4A" stopOpacity={0.04}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
-                <XAxis dataKey="annee" tick={{ fontSize: 12, fontWeight: 600, fill: '#EAE0D0' }} axisLine={false} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--overlay)" />
+                <XAxis dataKey="annee" tick={{ fontSize: 12, fontWeight: 600, fill: 'var(--text)' }} axisLine={false} tickLine={false} />
                 <YAxis
-                  label={{ value: t.billionUsd, angle: -90, position: 'insideLeft', style: { fontSize: 10, fill: 'rgba(142,155,174,0.6)' } }}
-                  tick={{ fontSize: 11, fill: 'rgba(142,155,174,0.7)' }}
+                  label={{ value: t.billionUsd, angle: -90, position: 'insideLeft', style: { fontSize: 10, fill: 'var(--afcfta-muted)' } }}
+                  tick={{ fontSize: 11, fill: 'var(--afcfta-muted)' }}
                   axisLine={false} tickLine={false}
                 />
                 <Tooltip
                   formatter={(value) => [`$${value.toFixed(1)}B USD`, t.commerceLabel]}
-                  contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
-                  labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                  contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                  labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                 />
-                <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} iconType="circle" />
+                <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'var(--afcfta-muted)' }} iconType="circle" />
                 <Area type="monotone" dataKey="commerce" stroke="#34d399" strokeWidth={2.5} fill="url(#colorCommerce)" name={t.commerceLabel} dot={{ fill: '#34d399', r: 4 }} activeDot={{ r: 6 }} />
               </AreaChart>
             </ResponsiveContainer>
 
-            <div style={{ marginTop: 12, padding: '10px 14px', borderRadius: 8, background: 'rgba(26,122,74,0.1)', borderLeft: '3px solid #1A7A4A' }}>
-              <p style={{ fontSize: '0.78rem', color: 'rgba(52,211,153,0.9)' }}>
+            <div style={{ marginTop: 12, padding: '10px 14px', borderRadius: 8, background: 'var(--greenSoft)', borderLeft: '3px solid #1A7A4A' }}>
+              <p style={{ fontSize: '0.78rem', color: 'var(--success)' }}>
                 {t.intraNoteSharePre}<strong>{t.intraNoteShareVal}</strong>{t.intraNoteShareMid}<strong>{t.intraNoteShareGoal}</strong>.
               </p>
             </div>
@@ -412,23 +412,23 @@ const TradeComparison = ({ language = 'fr' }) => {
           <div style={{ minHeight: '380px' }}>
             <ResponsiveContainer width="100%" height={350} debounce={300}>
               <LineChart data={tariffComparison}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
-                <XAxis dataKey="annee" tick={{ fontSize: 12, fill: 'rgba(142,155,174,0.8)' }} axisLine={false} tickLine={false} />
-                <YAxis tick={{ fontSize: 11, fill: 'rgba(142,155,174,0.7)' }} axisLine={false} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--overlay)" />
+                <XAxis dataKey="annee" tick={{ fontSize: 12, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} />
+                <YAxis tick={{ fontSize: 11, fill: 'var(--afcfta-muted)' }} axisLine={false} tickLine={false} />
                 <Tooltip
                   formatter={(value) => `${value.toFixed(1)}%`}
-                  contentStyle={{ background: 'rgba(16,22,32,0.97)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
-                  labelStyle={{ color: '#EAE0D0', fontWeight: 700 }}
+                  contentStyle={{ background: 'var(--afcfta-card)', border: '1px solid rgba(212,137,26,0.3)', borderRadius: 10, fontSize: '0.78rem' }}
+                  labelStyle={{ color: 'var(--text)', fontWeight: 700 }}
                 />
-                <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'rgba(142,155,174,0.8)' }} />
+                <Legend wrapperStyle={{ fontSize: '0.78rem', color: 'var(--afcfta-muted)' }} />
                 <Line type="monotone" dataKey="NPF" stroke="#ef4444" strokeWidth={3} name={t.tariffNpf} dot={{ r: 6 }} />
                 <Line type="monotone" dataKey="ZLECAf" stroke="#34d399" strokeWidth={2.5} name={t.tariffZlecaf} dot={{ r: 5, fill: '#34d399' }} />
                 <Line type="monotone" dataKey="economie" stroke="#38bdf8" strokeWidth={2} strokeDasharray="5 5" name={t.tariffEconomy} dot={{ r: 4, fill: '#38bdf8' }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
-          <div style={{ marginTop: 12, padding: '10px 14px', borderRadius: 8, background: 'rgba(26,122,74,0.1)', borderLeft: '3px solid #34d399' }}>
-            <p style={{ fontSize: '0.78rem', color: 'rgba(52,211,153,0.9)' }}>{t.tariffNote}</p>
+          <div style={{ marginTop: 12, padding: '10px 14px', borderRadius: 8, background: 'var(--greenSoft)', borderLeft: '3px solid #34d399' }}>
+            <p style={{ fontSize: '0.78rem', color: 'var(--success)' }}>{t.tariffNote}</p>
           </div>
         </div>
       </div>
@@ -458,23 +458,23 @@ const TradeComparison = ({ language = 'fr' }) => {
                 {calculationsGlobal.map((item) => (
                   <tr key={item.country}>
                     <td style={{ fontWeight: 600 }}>{item.name}</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: '#34d399' }}>${item.exports.toFixed(1)}B</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>${item.exports.toFixed(1)}B</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: '#fb923c' }}>${item.imports.toFixed(1)}B</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? '#34d399' : '#f87171' }}>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>
                       {item.balance >= 0 ? '+' : ''}{item.balance.toFixed(1)}
                     </td>
                   </tr>
                 ))}
                 <tr style={{ background: 'rgba(200,16,46,0.1)', borderTop: '2px solid rgba(200,16,46,0.3)' }}>
-                  <td colSpan={4} style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.72rem', color: '#f87171', padding: '6px 12px' }}>
+                  <td colSpan={4} style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.72rem', color: 'var(--danger)', padding: '6px 12px' }}>
                     {t.nonSignatories}
                   </td>
                 </tr>
                 <tr>
                   <td style={{ fontWeight: 600 }}>{t.eritrea}</td>
-                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
-                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
-                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>N/A</td>
                 </tr>
               </TableBody>
             </table>
@@ -491,8 +491,8 @@ const TradeComparison = ({ language = 'fr' }) => {
             </div>
             <div className="stats-chart-subtitle">{t.tableIntraSubtitle}</div>
           </div>
-          <div style={{ padding: '10px 16px 6px', background: 'rgba(26,122,74,0.1)', borderBottom: '1px solid rgba(52,211,153,0.15)' }}>
-            <p style={{ fontSize: '0.72rem', color: 'rgba(52,211,153,0.8)', margin: 0 }}>{t.tableIntraBanner}</p>
+          <div style={{ padding: '10px 16px 6px', background: 'var(--greenSoft)', borderBottom: '1px solid var(--afcfta-border)' }}>
+            <p style={{ fontSize: '0.72rem', color: 'var(--success)', margin: 0 }}>{t.tableIntraBanner}</p>
           </div>
           <div style={{ overflowX: 'auto', maxHeight: 500, overflowY: 'auto' }}>
             <table className="stats-table">
@@ -509,29 +509,29 @@ const TradeComparison = ({ language = 'fr' }) => {
                 {calculationsIntraAfrican.map((item) => (
                   <tr key={item.country}>
                     <td style={{ fontWeight: 600 }}>{item.name}</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: '#34d399' }}>${item.exports.toFixed(1)}B</td>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: 'var(--success)' }}>${item.exports.toFixed(1)}B</td>
                     <td style={{ textAlign: 'right', fontWeight: 700, color: '#6ee7b7' }}>${item.imports.toFixed(1)}B</td>
-                    <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? '#34d399' : '#f87171' }}>
+                    <td style={{ textAlign: 'right', fontWeight: 700, color: item.balance >= 0 ? 'var(--success)' : 'var(--danger)' }}>
                       {item.balance >= 0 ? '+' : ''}{item.balance.toFixed(1)}
                     </td>
                     <td style={{ textAlign: 'right' }}>
-                      <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '1px 6px', borderRadius: 100, background: 'rgba(155,110,245,0.18)', color: '#a78bfa', border: '1px solid rgba(155,110,245,0.25)' }}>
+                      <span style={{ fontSize: '0.7rem', fontWeight: 700, padding: '1px 6px', borderRadius: 100, background: 'rgba(155,110,245,0.18)', color: 'var(--violet)', border: '1px solid rgba(155,110,245,0.25)' }}>
                         {item.intra_percentage}%
                       </span>
                     </td>
                   </tr>
                 ))}
                 <tr style={{ background: 'rgba(200,16,46,0.1)', borderTop: '2px solid rgba(200,16,46,0.3)' }}>
-                  <td colSpan={5} style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.72rem', color: '#f87171', padding: '6px 12px' }}>
+                  <td colSpan={5} style={{ textAlign: 'center', fontWeight: 700, fontSize: '0.72rem', color: 'var(--danger)', padding: '6px 12px' }}>
                     {t.nonSignatories}
                   </td>
                 </tr>
                 <tr>
                   <td style={{ fontWeight: 600 }}>{t.eritrea}</td>
-                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
-                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
-                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>N/A</td>
-                  <td style={{ textAlign: 'right', color: 'rgba(142,155,174,0.5)' }}>0%</td>
+                  <td style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>N/A</td>
+                  <td style={{ textAlign: 'right', color: 'var(--afcfta-muted)' }}>0%</td>
                 </tr>
               </TableBody>
             </table>

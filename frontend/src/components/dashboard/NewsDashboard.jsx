@@ -116,9 +116,9 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
     <article
       className={`rounded-2xl border p-4 ${featured ? 'md:p-5' : ''}`}
       style={{
-        background: 'linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015))',
-        borderColor: 'rgba(255,255,255,0.06)',
-        boxShadow: featured ? '0 16px 34px rgba(0,0,0,0.18)' : 'none',
+        background: 'var(--lift)',
+        borderColor: 'var(--lift-border)',
+        boxShadow: featured ? 'var(--lift-shadow)' : 'none',
       }}
     >
       <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -137,7 +137,7 @@ const ArticleCard = ({ article, t, language = 'fr', featured = false }) => {
           variant="outline"
           className="border"
           style={{
-            background: 'rgba(255,255,255,0.03)',
+            background: 'var(--overlay)',
             color: 'var(--text)',
             borderColor: `${regionAccent}50`,
           }}
@@ -285,9 +285,8 @@ const CountrySpotlight = ({ spotlight, t, language }) => {
     <section
       className="rounded-2xl border p-4 md:p-5"
       style={{
-        background:
-          'linear-gradient(135deg, rgba(212,137,26,0.10), rgba(255,255,255,0.02))',
-        borderColor: 'rgba(212,137,26,0.22)',
+        background: 'var(--card-head)',
+        borderColor: 'var(--afcfta-border)',
       }}
     >
       <div className="flex items-center gap-3 mb-4 flex-wrap">
@@ -302,7 +301,7 @@ const CountrySpotlight = ({ spotlight, t, language }) => {
       </div>
 
       {profile && (
-        <p className="text-sm text-[rgba(234,224,208,0.9)] mb-4 leading-relaxed">
+        <p className="text-sm text-[var(--text-soft)] mb-4 leading-relaxed">
           {profile}
         </p>
       )}
@@ -384,8 +383,8 @@ const NewsDashboard = ({ language = 'fr' }) => {
       <div
         className="rounded-2xl border py-20"
         style={{
-          background: 'rgba(255,255,255,0.025)',
-          borderColor: 'rgba(255,255,255,0.06)',
+          background: 'var(--overlay)',
+          borderColor: 'var(--overlay-border)',
         }}
       >
         <div className="flex flex-col items-center justify-center gap-4">
@@ -401,11 +400,11 @@ const NewsDashboard = ({ language = 'fr' }) => {
       <div
         className="rounded-2xl border p-8"
         style={{
-          background: 'rgba(255,255,255,0.025)',
-          borderColor: 'rgba(239,68,68,0.25)',
+          background: 'var(--overlay)',
+          borderColor: 'color-mix(in srgb, var(--danger) 35%, transparent)',
         }}
       >
-        <div className="text-center text-red-400">
+        <div className="text-center text-[var(--danger)]">
           <p>
             {t.error}: {error}
           </p>
@@ -413,8 +412,8 @@ const NewsDashboard = ({ language = 'fr' }) => {
             onClick={handleRefresh}
             className="mt-4 px-4 py-2 rounded-lg text-sm font-medium"
             style={{
-              background: 'rgba(239,68,68,0.12)',
-              border: '1px solid rgba(239,68,68,0.22)',
+              background: 'color-mix(in srgb, var(--danger) 14%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--danger) 32%, transparent)',
             }}
           >
             {t.refresh}
@@ -446,7 +445,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
                 {t.title}
               </h3>
 
-              <p className="mt-2 text-sm md:text-base text-[rgba(234,224,208,0.9)]">
+              <p className="mt-2 text-sm md:text-base text-[var(--text-soft)]">
                 {t.strategicHeadline}
               </p>
 
@@ -461,7 +460,7 @@ const NewsDashboard = ({ language = 'fr' }) => {
 
             <div className="flex items-center gap-3 flex-wrap">
               {lastUpdate && (
-                <div className="text-xs md:text-sm text-[var(--afcfta-muted)] inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-[rgba(255,255,255,0.05)]">
+                <div className="text-xs md:text-sm text-[var(--afcfta-muted)] inline-flex items-center gap-2 rounded-full px-3 py-1.5 bg-[var(--overlay)]">
                   <Clock className="w-4 h-4" />
                   {t.lastUpdate}: {new Date(lastUpdate).toLocaleString(language === 'fr' ? 'fr-FR' : 'en-US')}
                 </div>
@@ -472,9 +471,9 @@ const NewsDashboard = ({ language = 'fr' }) => {
                 disabled={refreshing}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-colors disabled:opacity-50 text-sm font-medium"
                 style={{
-                  background: 'rgba(255,255,255,0.08)',
+                  background: 'var(--overlay)',
                   color: 'var(--text)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  border: '1px solid var(--overlay-border)',
                 }}
               >
                 <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
@@ -498,8 +497,8 @@ const NewsDashboard = ({ language = 'fr' }) => {
       <div
         className="rounded-2xl border p-4 md:p-5"
         style={{
-          background: 'rgba(255,255,255,0.025)',
-          borderColor: 'rgba(255,255,255,0.06)',
+          background: 'var(--overlay)',
+          borderColor: 'var(--overlay-border)',
         }}
       >
         <Tabs value={activeTab} onValueChange={setActiveTab}>
