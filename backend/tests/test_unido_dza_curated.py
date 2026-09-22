@@ -10,23 +10,12 @@ la cohérence croisée entre l'entrée curée et le versement ISIC4 committé
 valoir exactement la somme de ses classes 1910+1920.
 """
 
-import importlib.util
 import csv
 import gzip
 import os
-from pathlib import Path
 
 from etl.unido_data import UNIDO_INDUSTRY_DATA
-
-# scripts/ n'est pas un paquet : le builder se charge par chemin, comme le
-# fait build_production_faostat_usgs.py pour ses imports hérités.
-_SPEC = importlib.util.spec_from_file_location(
-    "build_production_real_under_test",
-    Path(__file__).resolve().parent.parent / "scripts" / "build_production_real.py",
-)
-_build_module = importlib.util.module_from_spec(_SPEC)
-_SPEC.loader.exec_module(_build_module)
-build_manufacturing = _build_module.build_manufacturing
+from scripts.build_production_real import build_manufacturing
 
 DZA = UNIDO_INDUSTRY_DATA["DZA"]
 
