@@ -84,7 +84,7 @@ LIBELLE = (
 
 
 def _normaliser(hs_code: str) -> str:
-    """Le barème indexe en SH à dix chiffres pointés ; le socle, sans points."""
+    """Le barème indexe en SH à huit chiffres pointés (1702.30.00) ; le socle, sans points."""
     brut = (hs_code or "").replace(".", "").replace(" ", "")
     if len(brut) != 8:
         return ""
